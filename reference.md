@@ -2897,7 +2897,7 @@ loops](#infinite-loops), [break expressions](#break-expressions), and
 ### For expressions
 
 A `for` expression is a syntactic construct for looping over elements provided
-by an implementation of `std::iter::Iterator`.
+by an implementation of `std::iter::IntoIterator`.
 
 An example of a for loop over the contents of an array:
 
@@ -2910,8 +2910,8 @@ An example of a for loop over the contents of an array:
 
 let v: &[Foo] = &[a, b, c];
 
-for e in v.iter() {
-    bar(*e);
+for e in v {
+    bar(e);
 }
 ```
 
