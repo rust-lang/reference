@@ -133,7 +133,7 @@ many `U+0023` (`#`) characters as were used to start the raw string literal) or
 
 Examples for string literals:
 
-```
+```rust
 "foo"; r"foo";                     // foo
 "\"foo\""; r#""foo""#;             // "foo"
 
@@ -197,7 +197,7 @@ many `U+0023` (`#`) characters as were used to start the raw string literal) or
 
 Examples for byte string literals:
 
-```
+```rust
 b"foo"; br"foo";                     // foo
 b"\"foo\""; br#""foo""#;             // "foo"
 
@@ -245,7 +245,7 @@ The type of an _unsuffixed_ integer literal is determined by type inference:
 
 Examples of integer literals of various forms:
 
-```
+```rust
 123i32;                            // type i32
 123u32;                            // type u32
 123_u32;                           // type u32
@@ -289,7 +289,7 @@ type inference:
 
 Examples of floating-point literals of various forms:
 
-```
+```rust
 123.0f64;        // type f64
 0.1f64;          // type f64
 0.1f32;          // type f32
