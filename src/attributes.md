@@ -339,7 +339,7 @@ pub mod m1 {
 This example shows how one can use `allow` and `warn` to toggle a particular
 check on and off:
 
-```rust,ignore
+```rust
 #[warn(missing_docs)]
 pub mod m2{
     #[allow(missing_docs)]
