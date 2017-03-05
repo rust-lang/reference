@@ -345,7 +345,7 @@ type signature of `print`, and the cast expression in `main`.
 Within the body of an item that has type parameter declarations, the names of
 its type parameters are types:
 
-```rust,ignore
+```rust
 fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
     if xs.is_empty() {
         return vec![];
