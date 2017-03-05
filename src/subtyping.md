@@ -9,7 +9,7 @@ would be due to type equality.
 Consider the following example: string literals always have `'static`
 lifetime. Nevertheless, we can assign `s` to `t`:
 
-```
+```rust
 fn bar<'a>() {
     let s: &'static str = "hi";
     let t: &'a str = s;
