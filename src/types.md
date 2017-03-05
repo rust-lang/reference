@@ -75,7 +75,7 @@ pattern-matching or by using `N` directly as a field to access the
 
 An example of a tuple type and its use:
 
-```
+```rust
 type Pair<'a> = (i32, &'a str);
 let p: Pair<'static> = (10, "ten");
 let (a, b) = p;
@@ -104,7 +104,7 @@ to, it borrows it.
 
 Examples:
 
-```{rust}
+```rust
 // A stack-allocated array
 let array: [i32; 3] = [1, 2, 3];
 
@@ -191,7 +191,7 @@ enclosing `enum` or `struct` type itself. Such recursion has restrictions:
 
 An example of a *recursive* type and its use:
 
-```
+```rust
 enum List<T> {
     Nil,
     Cons(T, Box<List<T>>)
@@ -238,7 +238,7 @@ or `extern`), a sequence of input types and an output type.
 
 An example of a `fn` type:
 
-```
+```rust
 fn add(x: i32, y: i32) -> i32 {
     x + y
 }
@@ -256,7 +256,7 @@ Internal to the compiler, there are also function types that are specific to a p
 function item. In the following snippet, for example, the internal types of the functions
 `foo` and `bar` are different, despite the fact that they have the same signature:
 
-```
+```rust
 fn foo() { }
 fn bar() { }
 ```
@@ -319,7 +319,7 @@ implementation of `R`, and the pointer value of `E`.
 
 An example of a trait object:
 
-```
+```rust
 trait Printable {
     fn stringify(&self) -> String;
 }
@@ -345,7 +345,7 @@ type signature of `print`, and the cast expression in `main`.
 Within the body of an item that has type parameter declarations, the names of
 its type parameters are types:
 
-```ignore
+```rust,ignore
 fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
     if xs.is_empty() {
         return vec![];
@@ -366,7 +366,7 @@ The special type `Self` has a meaning within traits and impls. In a trait defini
 to an implicit type parameter representing the "implementing" type. In an impl,
 it is an alias for the implementing type. For example, in:
 
-```
+```rust
 pub trait From<T> {
     fn from(T) -> Self;
 }
@@ -381,7 +381,7 @@ impl From<i32> for String {
 The notation `Self` in the impl refers to the implementing type: `String`. In another
 example:
 
-```
+```rust
 trait Printable {
     fn make_string(&self) -> String;
 }
