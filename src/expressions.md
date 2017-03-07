@@ -89,7 +89,7 @@ A _literal expression_ consists of one of the [literal](tokens.html#literals) fo
 described earlier. It directly describes a number, character, string, boolean
 value, or the unit value.
 
-```text
+```rust
 ();        // unit type
 "hello";   // string type
 '5';       // character type
