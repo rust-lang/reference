@@ -14,7 +14,7 @@ crates; an item's canonical path merely identifies it within the crate.
 
 Two examples of simple paths consisting of only identifier components:
 
-```{.ignore}
+```rust,ignore
 x;
 x::y::z;
 ```

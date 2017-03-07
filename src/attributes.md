@@ -17,7 +17,7 @@ apply to the item that follows the attribute.
 
 An example of attributes:
 
-```{.rust}
+```rust
 // General metadata applied to the enclosing module or crate.
 #![crate_type = "lib"]
 
@@ -164,8 +164,8 @@ macro scope.
 
 ## Miscellaneous attributes
 
-- `deprecated` - mark the item as deprecated; the full attribute is 
-  `#[deprecated(since = "crate version", note = "...")`, where both arguments 
+- `deprecated` - mark the item as deprecated; the full attribute is
+  `#[deprecated(since = "crate version", note = "...")`, where both arguments
   are optional.
 - `export_name` - on statics and functions, this determines the name of the
   exported symbol.
@@ -218,7 +218,7 @@ Configuration options are either provided by the compiler or passed in on the
 command line using `--cfg` (e.g. `rustc main.rs --cfg foo --cfg 'bar="baz"'`).
 Rust code then checks for their presence using the `#[cfg(...)]` attribute:
 
-```
+```rust
 // The function is only included in the build when compiling for macOS
 #[cfg(target_os = "macos")]
 fn macos_only() {
@@ -320,7 +320,7 @@ along with their default settings.  [Compiler
 plugins](../unstable-book/plugin.html#lint-plugins) can provide additional
 lint checks.
 
-```{.ignore}
+```rust,ignore
 pub mod m1 {
     // Missing documentation is ignored here
     #[allow(missing_docs)]
@@ -339,7 +339,7 @@ pub mod m1 {
 This example shows how one can use `allow` and `warn` to toggle a particular
 check on and off:
 
-```{.ignore}
+```rust
 #[warn(missing_docs)]
 pub mod m2{
     #[allow(missing_docs)]
@@ -361,7 +361,7 @@ pub mod m2{
 This example shows how one can use `forbid` to disallow uses of `allow` for
 that lint check:
 
-```{.ignore}
+```rust,ignore
 #[forbid(missing_docs)]
 pub mod m3 {
     // Attempting to toggle warning signals an error here
@@ -379,7 +379,7 @@ operations have to be easy for the compiler to find. The `lang` attribute
 makes it possible to declare these operations. For example, the `str` module
 in the Rust standard library defines the string equality function:
 
-```{.ignore}
+```rust,ignore
 #[lang = "str_eq"]
 pub fn eq_slice(a: &str, b: &str) -> bool {
     // details elided
@@ -419,7 +419,7 @@ for data structures. For example, the following will create an `impl` for the
 `PartialEq` and `Clone` traits for `Foo`, the type parameter `T` will be given
 the `PartialEq` or `Clone` constraints for the appropriate `impl`:
 
-```
+```rust
 #[derive(PartialEq, Clone)]
 struct Foo<T> {
     a: i32,
@@ -429,7 +429,7 @@ struct Foo<T> {
 
 The generated `impl` for `PartialEq` is equivalent to
 
-```
+```rust
 # struct Foo<T> { a: i32, b: T }
 impl<T: PartialEq> PartialEq for Foo<T> {
     fn eq(&self, other: &Foo<T>) -> bool {
@@ -454,7 +454,7 @@ considered a full-fledged language feature.
 
 For this reason, Rust recognizes a special crate-level attribute of the form:
 
-```{.ignore}
+```rust,ignore
 #![feature(feature1, feature2, feature3)]
 ```
 

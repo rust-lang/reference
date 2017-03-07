@@ -89,7 +89,7 @@ A _literal expression_ consists of one of the [literal](tokens.html#literals) fo
 described earlier. It directly describes a number, character, string, boolean
 value, or the unit value.
 
-```text
+```rust
 ();        // unit type
 "hello";   // string type
 '5';       // character type
@@ -108,7 +108,7 @@ Tuples are written by enclosing zero or more comma-separated expressions in
 parentheses. They are used to create [tuple-typed](types.html#tuple-types)
 values.
 
-```{.tuple}
+```rust
 (0.0, 4.5);
 ("a", 4usize, true);
 ```
@@ -116,7 +116,7 @@ values.
 You can disambiguate a single-element tuple from a value in parentheses with a
 comma:
 
-```
+```rust
 (0,); // single-element tuple
 (0); // zero in parentheses
 ```
@@ -141,7 +141,7 @@ A _unit-like struct expression_ consists only of the [path](paths.html) of a
 
 The following are examples of struct expressions:
 
-```
+```rust
 # struct Point { x: f64, y: f64 }
 # struct NothingInMe { }
 # struct TuplePoint(f64, f64);
@@ -166,7 +166,7 @@ the same type as the base expression) with the given values for the fields that
 were explicitly specified and the values in the base expression for all other
 fields.
 
-```
+```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
 let base = Point3d {x: 1, y: 2, z: 3};
 Point3d {y: 0, z: 10, .. base};
@@ -180,7 +180,7 @@ This allows a compact syntax with less duplication.
 
 Example:
 
-```
+```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
 # let x = 0;
 # let y_value = 0;
@@ -199,13 +199,13 @@ the block itself.
 A block will execute each statement sequentially, and then execute the
 expression (if given). If the block ends in a statement, its value is `()`:
 
-```
+```rust
 let x: () = { println!("Hello."); };
 ```
 
 If it ends in an expression, its value and type are that of the expression:
 
-```
+```rust
 let x: i32 = { println!("Hello."); 5 };
 
 assert_eq!(5, x);
@@ -227,7 +227,7 @@ identifier, when not immediately followed by a parenthesized expression-list
 (the latter is a [method call expression](#method-call-expressions)). A field
 expression denotes a field of a [struct](types.html#struct-types).
 
-```{.ignore .field}
+```rust,ignore
 mystruct.myfield;
 foo().x;
 (Struct {a: 10, b: 20}).a;
@@ -252,7 +252,7 @@ In the `[expr ';' expr]` form, the expression after the `';'` must be a
 constant expression that can be evaluated at compile time, such as a
 [literal](tokens.html#literals) or a [static item](items.html#static-items).
 
-```
+```rust
 [1, 2, 3, 4];
 ["a", "b", "c", "d"];
 [0; 128];              // array with 128 zeros
@@ -271,7 +271,7 @@ bounds-checked at compile-time for constant arrays being accessed with a
 constant index value.  Otherwise a check will be performed at run-time that
 will put the thread in a _panicked state_ if it fails.
 
-```{should-fail}
+```rust,should_panic
 ([1, 2, 3, 4])[0];
 
 let x = (["a", "b"])[10]; // compiler error: const index-expr is out of bounds
@@ -292,7 +292,7 @@ autoderefs to more.
 
 The `..` operator will construct an object of one of the `std::ops::Range` variants.
 
-```
+```rust
 1..2;   // std::ops::Range
 3..;    // std::ops::RangeFrom
 ..4;    // std::ops::RangeTo
@@ -301,7 +301,7 @@ The `..` operator will construct an object of one of the `std::ops::Range` varia
 
 The following expressions are equivalent.
 
-```
+```rust
 let x = std::ops::Range {start: 0, end: 10};
 let y = 0..10;
 
@@ -311,7 +311,7 @@ assert_eq!(x, y);
 Similarly, the `...` operator will construct an object of one of the
 `std::ops::RangeInclusive` variants.
 
-```
+```rust
 # #![feature(inclusive_range_syntax)]
 1...2;   // std::ops::RangeInclusive
 ...4;    // std::ops::RangeToInclusive
@@ -319,7 +319,7 @@ Similarly, the `...` operator will construct an object of one of the
 
 The following expressions are equivalent.
 
-```
+```rust
 # #![feature(inclusive_range_syntax, inclusive_range)]
 let x = std::ops::RangeInclusive::NonEmpty {start: 0, end: 10};
 let y = 0...10;
@@ -464,7 +464,7 @@ on the right-hand side.
 
 An example of an `as` expression:
 
-```
+```rust
 # fn sum(values: &[f64]) -> f64 { 0.0 }
 # fn len(values: &[f64]) -> i32 { 0 }
 
@@ -493,7 +493,7 @@ Evaluating an assignment expression [either copies or
 moves](#moved-and-copied-types) its right-hand operand to its left-hand
 operand.
 
-```
+```rust
 # let mut x = 0;
 # let y = 0;
 x = y;
@@ -512,7 +512,7 @@ Any such expression always has the [`unit`](types.html#tuple-types) type.
 The precedence of Rust binary operators is ordered as follows, going from
 strong to weak:
 
-```{.text .precedence}
+```text
 as :
 * / %
 + -
@@ -540,7 +540,7 @@ within an expression.
 
 An example of a parenthesized expression:
 
-```
+```rust
 let x: i32 = (2 + 3) * 4;
 ```
 
@@ -553,7 +553,7 @@ eventually returns, then the expression completes.
 
 Some examples of call expressions:
 
-```
+```rust
 # fn add(x: i32, y: i32) -> i32 { 0 }
 
 let x: i32 = add(1i32, 2i32);
@@ -592,7 +592,7 @@ In this example, we define a function `ten_times` that takes a higher-order
 function argument, and we then call it with a lambda expression as an argument,
 followed by a lambda expression that moves values from its environment.
 
-```
+```rust
 fn ten_times<F>(f: F) where F: Fn(i32) {
     for index in 0..10 {
         f(index);
@@ -646,7 +646,7 @@ conditional expression evaluates to `false`, the `while` expression completes.
 
 An example:
 
-```
+```rust
 let mut i = 0;
 
 while i < 10 {
@@ -667,7 +667,7 @@ by an implementation of `std::iter::IntoIterator`.
 
 An example of a `for` loop over the contents of an array:
 
-```
+```rust
 # type Foo = i32;
 # fn bar(f: &Foo) { }
 # let a = 0;
@@ -683,7 +683,7 @@ for e in v {
 
 An example of a for loop over a series of integers:
 
-```
+```rust
 # fn bar(b:usize) { }
 for i in 0..256 {
     bar(i);
@@ -738,7 +738,7 @@ the inside of the match.
 
 An example of a `match` expression:
 
-```
+```rust
 let x = 1;
 
 match x {
@@ -759,7 +759,7 @@ bind to a reference by using the `ref` keyword, or to a mutable reference using
 Subpatterns can also be bound to variables by the use of the syntax `variable @
 subpattern`. For example:
 
-```
+```rust
 let x = 1;
 
 match x {
@@ -772,7 +772,7 @@ Patterns can also dereference pointers by using the `&`, `&mut` and `box`
 symbols, as appropriate. For example, these two matches on `x: &i32` are
 equivalent:
 
-```
+```rust
 # let x = &3;
 let y = match *x { 0 => "zero", _ => "some" };
 let z = match x { &0 => "zero", _ => "some" };
@@ -783,7 +783,7 @@ assert_eq!(y, z);
 Multiple match patterns may be joined with the `|` operator. A range of values
 may be specified with `...`. For example:
 
-```
+```rust
 # let x = 2;
 
 let message = match x {
@@ -802,7 +802,7 @@ criteria for matching a case. Pattern guards appear after the pattern and
 consist of a bool-typed expression following the `if` keyword. A pattern guard
 may refer to the variables bound within the pattern they follow.
 
-```
+```rust
 # let maybe_digit = Some(0);
 # fn process_digit(i: i32) { }
 # fn process_other(i: i32) { }
@@ -822,7 +822,7 @@ pattern. If the value of the expression on the right hand side of the `let`
 statement matches the pattern, the corresponding block will execute, otherwise
 flow proceeds to the first `else` block that follows.
 
-```
+```rust
 let dish = ("Ham", "Eggs");
 
 // this body will be skipped because the pattern is refuted
@@ -853,7 +853,7 @@ transfers control to the caller frame.
 
 An example of a `return` expression:
 
-```
+```rust
 fn max(a: i32, b: i32) -> i32 {
     if a > b {
         return a;

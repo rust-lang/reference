@@ -19,7 +19,7 @@ items in a `pub` Trait are public by default; Enum variants
 in a `pub` enum are also public by default. When an item is declared as `pub`,
 it can be thought of as being accessible to the outside world. For example:
 
-```
+```rust
 # fn main() {}
 // Declare a private struct
 struct Foo;
@@ -79,7 +79,7 @@ scope.
 Here's an example of a program which exemplifies the three cases outlined
 above:
 
-```
+```rust
 // This module is private, meaning that no external crate can access this
 // module. Because it is private at the root of this current crate, however, any
 // module in the crate may access any publicly visible item in this module.
@@ -140,7 +140,7 @@ this is a public directive, this allows the item to be used in the current
 module through the rules above. It essentially allows public access into the
 re-exported item. For example, this program is valid:
 
-```
+```rust
 pub use self::implementation::api;
 
 mod implementation {
