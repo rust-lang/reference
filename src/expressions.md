@@ -427,6 +427,13 @@ assert_eq!(x, y);
 
 ## Operator expressions
 
+Operators are defined for built in types by the Rust language. Operators will
+panic when they overflow when compiled in debug mode. Many of the following
+operators can be overloaded using traits in `std::ops` or `std::cmp`. Note that
+the traits in `std::cmp` are used more generally to show how a type may be
+compared and will likely be assumed to define actual comparisons by functions
+that use these traits as bounds.
+
 ### Unary operator expressions
 
 Rust defines the following unary operators. With the exception of `?`, they are
@@ -459,59 +466,59 @@ all written as prefix operators, before the expression they apply to.
     the borrow expires. If the `&` or `&mut` operators are applied to an
     rvalue, a temporary value is created; the lifetime of this temporary value
     is defined by [syntactic rules](#temporary-lifetimes). `&mut` may only be
-    applied to `lvalues` that can be mutated.
+    applied to `lvalues` that can be mutated. These operators cannot be
+    overloaded.
 * `?`
   : Propagating errors if applied to `Err(_)` and unwrapping if applied to
     `Ok(_)`. Only works on the `Result<T, E>` type, and written in postfix
     notation.
 
-### Arithmetic operators
+### Binary Operators Expressions
 
-Binary arithmetic expressions are syntactic sugar for calls to built-in traits,
-defined in the `std::ops` module of the `std` library. This means that
-arithmetic operators can be overridden for user-defined types. The default
-meaning of the operators on standard types is given here.
+Binary operators expressions are all written with infix notation.
 
 * `+`
-  : Addition and array/string concatenation.
-    Calls the `add` method on the `std::ops::Add` trait.
+  : Addition. Overloaded by the `std::ops::Add` trait.
 * `-`
-  : Subtraction.
-    Calls the `sub` method on the `std::ops::Sub` trait.
+  : Subtraction. Overloaded by the `std::ops::Sub` trait.
 * `*`
-  : Multiplication.
-    Calls the `mul` method on the `std::ops::Mul` trait.
+  : Multiplication. Overloaded by the `std::ops::Mul` trait.
 * `/`
-  : Quotient.
-    Calls the `div` method on the `std::ops::Div` trait.
+  : Quotient. Overloaded by the `std::ops::Div` trait.
 * `%`
-  : Remainder.
-    Calls the `rem` method on the `std::ops::Rem` trait.
-
-### Bitwise operators
-
-Like the [arithmetic operators](#arithmetic-operators), bitwise operators are
-syntactic sugar for calls to methods of built-in traits. This means that
-bitwise operators can be overridden for user-defined types. The default
-meaning of the operators on standard types is given here. Bitwise `&`, `|` and
-`^` applied to boolean arguments are equivalent to logical `&&`, `||` and `!=`
-evaluated in non-lazy fashion.
-
+  : Remainder. Overloaded by the `std::ops::Rem` trait.
 * `&`
-  : Bitwise AND.
-    Calls the `bitand` method of the `std::ops::BitAnd` trait.
+  : Bitwise AND for integer for integer types, logical AND for `bool` which
+    always evaluates both operands. Overloaded by the `std::ops::BitAnd` trait.
 * `|`
-  : Bitwise inclusive OR.
-    Calls the `bitor` method of the `std::ops::BitOr` trait.
+  : Bitwise inclusive OR for integer types, logical OR for `bool` which always
+    evaluates both operands. Overloaded by the `std::ops::BitOr` trait.
 * `^`
-  : Bitwise exclusive OR.
-    Calls the `bitxor` method of the `std::ops::BitXor` trait.
+  : Bitwise exclusive OR, logical XOR for `bool`. Overloaded by the
+    `std::ops::BitXor` trait.
 * `<<`
   : Left shift.
-    Calls the `shl` method of the `std::ops::Shl` trait.
+    Overloaded by the `std::ops::Shl` trait.
 * `>>`
-  : Right shift (arithmetic).
-    Calls the `shr` method of the `std::ops::Shr` trait.
+  : Arithmetic Right shift for signed integers. Logical Right shift for
+    unsigned integers. Overloaded by the `std::ops::Shl` trait.
+* `==`
+  : Equal to. Overloaded by the `eq` method on the `std::cmp::PartialEq` trait.
+* `!=`
+  : Unequal to. Overloaded by the `ne` method on the `std::cmp::PartialEq`
+    trait.
+* `<`
+  : Less than. Overloaded by the `lt` method on the `std::cmp::PartialOrd`
+    trait.
+* `>`
+  : Greater than. Overloaded by the `gt` method on the `std::cmp::PartialOrd`
+    trait.
+* `<=`
+  : Less than or equal. Overloaded by the `le` method on the
+    `std::cmp::PartialOrd` trait.
+* `>=`
+  : Greater than or equal. Overloaded by the `ge` method on the
+    `std::cmp::PartialOrd` trait.
 
 ### Lazy boolean operators
 
@@ -522,33 +529,6 @@ evaluated when the left-hand operand does not already determine the result of
 the expression. That is, `||` only evaluates its right-hand operand when the
 left-hand operand evaluates to `false`, and `&&` only when it evaluates to
 `true`.
-
-### Comparison operators
-
-Comparison operators are, like the [arithmetic
-operators](#arithmetic-operators), and [bitwise operators](#bitwise-operators),
-syntactic sugar for calls to built-in traits. This means that comparison
-operators can be overridden for user-defined types. The default meaning of the
-operators on standard types is given here.
-
-* `==`
-  : Equal to.
-    Calls the `eq` method on the `std::cmp::PartialEq` trait.
-* `!=`
-  : Unequal to.
-    Calls the `ne` method on the `std::cmp::PartialEq` trait.
-* `<`
-  : Less than.
-    Calls the `lt` method on the `std::cmp::PartialOrd` trait.
-* `>`
-  : Greater than.
-    Calls the `gt` method on the `std::cmp::PartialOrd` trait.
-* `<=`
-  : Less than or equal.
-    Calls the `le` method on the `std::cmp::PartialOrd` trait.
-* `>=`
-  : Greater than or equal.
-    Calls the `ge` method on the `std::cmp::PartialOrd` trait.
 
 ### Type cast expressions
 
