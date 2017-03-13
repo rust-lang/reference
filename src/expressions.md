@@ -690,7 +690,6 @@ An example of a `for` loop over the contents of an array:
 # let a = 0;
 # let b = 0;
 # let c = 0;
-
 let v: &[Foo] = &[a, b, c];
 
 for e in v {
@@ -802,7 +801,6 @@ may be specified with `...`. For example:
 
 ```rust
 # let x = 2;
-
 let message = match x {
     0 | 1  => "not many",
     2 ... 9 => "a few",
@@ -823,7 +821,6 @@ may refer to the variables bound within the pattern they follow.
 # let maybe_digit = Some(0);
 # fn process_digit(i: i32) { }
 # fn process_other(i: i32) { }
-
 let message = match maybe_digit {
     Some(x) if x < 10 => process_digit(x),
     Some(x) => process_other(x),
