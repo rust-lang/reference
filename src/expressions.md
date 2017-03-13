@@ -8,7 +8,8 @@ several things:
 
 * Whether or not to evaluate the sub-expressions when evaluating the expression
 * The order in which to evaluate the sub-expressions
-* How to combine the sub-expressions' values to obtain the value of the expression
+* How to combine the sub-expressions' values to obtain the value of the
+  expression
 
 In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions,
@@ -41,19 +42,19 @@ that memory location.
 
 #### Temporary lifetimes
 
-When an rvalue is used in an lvalue context, a temporary un-named
-lvalue is created and used instead. The lifetime of temporary values
-is typically the innermost enclosing statement; the tail expression of
-a block is considered part of the statement that encloses the block.
+When an rvalue is used in an lvalue context, a temporary un-named lvalue is
+created and used instead. The lifetime of temporary values is typically the
+innermost enclosing statement; the tail expression of a block is considered
+part of the statement that encloses the block.
 
 When a temporary rvalue is being created that is assigned into a `let`
-declaration, however, the temporary is created with the lifetime of
-the enclosing block instead, as using the enclosing statement (the
-`let` declaration) would be a guaranteed error (since a pointer to the
-temporary would be stored into a variable, but the temporary would be
-freed before the variable could be used). The compiler uses simple
-syntactic rules to decide which values are being assigned into a `let`
-binding, and therefore deserve a longer temporary lifetime.
+declaration, however, the temporary is created with the lifetime of the
+enclosing block instead, as using the enclosing statement (the `let`
+declaration) would be a guaranteed error (since a pointer to the temporary
+would be stored into a variable, but the temporary would be freed before the
+variable could be used). The compiler uses simple syntactic rules to decide
+which values are being assigned into a `let` binding, and therefore deserve a
+longer temporary lifetime.
 
 Here are some examples:
 
@@ -85,9 +86,9 @@ be copied if its type implements `Copy`. All others are moved.
 
 ## Literal expressions
 
-A _literal expression_ consists of one of the [literal](tokens.html#literals) forms
-described earlier. It directly describes a number, character, string, boolean
-value, or the unit value.
+A _literal expression_ consists of one of the [literal](tokens.html#literals)
+forms described earlier. It directly describes a number, character, string,
+boolean value, or the unit value.
 
 ```rust
 ();        // unit type
@@ -123,11 +124,11 @@ comma:
 
 ## Struct expressions
 
-There are several forms of struct expressions. A _struct expression_
-consists of the [path](paths.html) of a [struct item](items.html#structs), followed
-by a brace-enclosed list of zero or more comma-separated name-value pairs,
+There are several forms of struct expressions. A _struct expression_ consists
+of the [path](paths.html) of a [struct item](items.html#structs), followed by a
+brace-enclosed list of zero or more comma-separated name-value pairs,
 providing the field values of a new instance of the struct. A field name can be
-any identifier, and is separated from its value expression by a colon.  The
+any identifier, and is separated from its value expression by a colon. The
 location denoted by a struct field is mutable if and only if the enclosing
 struct is mutable.
 
@@ -154,9 +155,8 @@ let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
 
-A struct expression forms a new value of the named struct type. Note
-that for a given *unit-like* struct type, this will always be the same
-value.
+A struct expression forms a new value of the named struct type. Note that for a
+given *unit-like* struct type, this will always be the same value.
 
 A struct expression can terminate with the syntax `..` followed by an
 expression to denote a functional update. The expression following `..` (the
@@ -237,10 +237,9 @@ A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
 referring to the value of that field. When the type providing the field
 inherits mutability, it can be [assigned](#assignment-expressions) to.
 
-Also, if the type of the expression to the left of the dot is a
-pointer, it is automatically dereferenced as many times as necessary
-to make the field access possible. In cases of ambiguity, we prefer
-fewer autoderefs to more.
+Also, if the type of the expression to the left of the dot is a pointer, it is
+automatically dereferenced as many times as necessary to make the field access
+possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 ## Array expressions
 
@@ -283,10 +282,9 @@ let arr = ["a", "b"];
 arr[10]; // panics
 ```
 
-Also, if the type of the expression to the left of the brackets is a
-pointer, it is automatically dereferenced as many times as necessary
-to make the indexing possible. In cases of ambiguity, we prefer fewer
-autoderefs to more.
+Also, if the type of the expression to the left of the brackets is a pointer,
+it is automatically dereferenced as many times as necessary to make the
+indexing possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 ## Range expressions
 
@@ -475,12 +473,12 @@ fn average(values: &[f64]) -> f64 {
 }
 ```
 
-Some of the conversions which can be done through the `as` operator
-can also be done implicitly at various points in the program, such as
-argument passing and assignment to a `let` binding with an explicit
-type. Implicit conversions are limited to "harmless" conversions that
-do not lose information and which have minimal or no risk of
-surprising side-effects on the dynamic execution semantics.
+Some of the conversions which can be done through the `as` operator can also be
+done implicitly at various points in the program, such as argument passing and
+assignment to a `let` binding with an explicit type. Implicit conversions are
+limited to "harmless" conversions that do not lose information and which have
+minimal or no risk of surprising side-effects on the dynamic execution
+semantics.
 
 ### Assignment expressions
 
@@ -609,11 +607,11 @@ ten_times(move |j| println!("{}, {}", word, j));
 
 A `loop` expression denotes an infinite loop.
 
-A `loop` expression may optionally have a _label_. The label is written as
-a lifetime preceding the loop expression, as in `'foo: loop{ }`. If a
-label is present, then labeled `break` and `continue` expressions nested
-within this loop may exit out of this loop or return control to its head.
-See [break expressions](#break-expressions) and [continue
+A `loop` expression may optionally have a _label_. The label is written as a
+lifetime preceding the loop expression, as in `'foo: loop{ }`. If a label is
+present, then labeled `break` and `continue` expressions nested within this
+loop may exit out of this loop or return control to its head. See [break
+expressions](#break-expressions) and [continue
 expressions](#continue-expressions).
 
 ## `break` expressions
@@ -621,8 +619,9 @@ expressions](#continue-expressions).
 A `break` expression has an optional _label_. If the label is absent, then
 executing a `break` expression immediately terminates the innermost loop
 enclosing it. It is only permitted in the body of a loop. If the label is
-present, then `break 'foo` terminates the loop with label `'foo`, which need not
-be the innermost label enclosing the `break` expression, but must enclose it.
+present, then `break 'foo` terminates the loop with label `'foo`, which need
+not be the innermost label enclosing the `break` expression, but must enclose
+it.
 
 ## `continue` expressions
 
@@ -639,12 +638,12 @@ A `continue` expression is only permitted in the body of a loop.
 
 ## `while` loops
 
-A `while` loop begins by evaluating the boolean loop conditional expression.
-If the loop conditional expression evaluates to `true`, the loop body block
+A `while` loop begins by evaluating the boolean loop conditional expression. If
+the loop conditional expression evaluates to `true`, the loop body block
 executes and control returns to the loop conditional expression. If the loop
 conditional expression evaluates to `false`, the `while` expression completes.
 
-An example:
+ An example:
 
 ```rust
 let mut i = 0;
@@ -657,8 +656,8 @@ while i < 10 {
 
 Like `loop` expressions, `while` loops can be controlled with `break` or
 `continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and
-[continue expressions](#continue-expressions) for more information.
+loops](#infinite-loops), [break expressions](#break-expressions), and [continue
+expressions](#continue-expressions) for more information.
 
 ## `for` expressions
 
@@ -692,8 +691,8 @@ for i in 0..256 {
 
 Like `loop` expressions, `for` loops can be controlled with `break` or
 `continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and
-[continue expressions](#continue-expressions) for more information.
+loops](#infinite-loops), [break expressions](#break-expressions), and [continue
+expressions](#continue-expressions) for more information.
 
 ## `if` expressions
 
@@ -794,8 +793,8 @@ let message = match x {
 ```
 
 Range patterns only work on scalar types (like integers and characters; not
-like arrays and structs, which have sub-components). A range pattern may not
-be a sub-range of another range pattern inside the same `match`.
+like arrays and structs, which have sub-components). A range pattern may not be
+a sub-range of another range pattern inside the same `match`.
 
 Finally, match patterns can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
