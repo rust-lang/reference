@@ -587,27 +587,27 @@ is used to overload `+=`.
 ### Operator precedence
 
 The precedence of Rust binary operators is ordered as follows, going from
-strong to weak:
+strong to weak. Binary Operators at the same precedence level are evaluated
+in the order given by their associativity.
 
-```text
-as :
-* / %
-+ -
-<< >>
-&
-^
-|
-== != < > <= >=
-&&
-||
-.. ...
-<-
-=
-```
+| Operator                    | Associativity           |
+|-----------------------------|-------------------------|
+| `?`                         |                         |
+| Unary `-` `*` `!` `&` `&mut` |                        |
+| `as` `:`                    | Left to Right           |
+| `*` `/` `%`                 | Left to Right           |
+| `+` `-`                     | Left to Right           |
+| `<<` `>>`                   | Left to Right           |
+| `&`                         | Left to Right           |
+| `^`                         | Left to Right           |
+| <code>&#124;</code>         | Left to Right           |
+| `==` `!=` `<` `>` `<=` `>=` | Require parentheses     |
+| `&&`                        | Left to Right           |
+| <code>&#124;&#124;</code>   | Left to Right           |
+| `..` `...`                  | Require parentheses     |
+| `<-`                        | Right to Left           |
+| `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | Right to Left |
 
-Operators at the same precedence level are evaluated left-to-right. [Unary
-operators](#unary-operator-expressions) have the same precedence level and are
-stronger than any of the binary operators.
 
 ## Grouped expressions
 
