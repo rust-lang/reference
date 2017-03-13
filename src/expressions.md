@@ -214,11 +214,26 @@ assert_eq!(5, x);
 ## Method-call expressions
 
 A _method call_ consists of an expression followed by a single dot, an
-[identifier](identifiers.html), and a parenthesized expression-list. Method calls are resolved to
-methods on specific traits, either statically dispatching to a method if the
-exact `self`-type of the left-hand-side is known, or dynamically dispatching if
-the left-hand-side expression is an indirect [trait
-object](types.html#trait-objects).
+[identifier](identifiers.html), and a parenthesized expression-list. Method
+calls are resolved to methods on specific traits, either statically dispatching
+to a method if the exact `self`-type of the left-hand-side is known, or
+dynamically dispatching if the left-hand-side expression is an indirect [trait
+object](types.html#trait-objects). If the method was defined to take `&self` or
+`&mut self` then a borrow automatically be taken.
+
+When resolving method calls on an expression of type `A`, Rust will use the
+following order:
+1. Methods defined on `A`, with a `self`, `&self` or `&mut self` receiver.
+1. Methods defined by traits, with receiver of type `A`.
+1. Methods defined by traits, with receiver of type `&A`.
+1. Methods defined by traits, with receiver of type `&mut A`.
+1. If it's possible, Rust will then repeat steps 1-5 with
+  `<A as std::ops::Deref>::Target`, and insert a dereference operator.
+
+Note, in steps 2-4 the trait doesn't have to be implemented by `A`, for example
+in step 3 the trait could be implemented for `&A` and with the method taking
+`self`. If a step is reached where there is more than one possible method, then
+it is a compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
