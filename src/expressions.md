@@ -425,7 +425,9 @@ let y = 0...10;
 assert_eq!(x, y);
 ```
 
-## Unary operator expressions
+## Operator expressions
+
+### Unary operator expressions
 
 Rust defines the following unary operators. With the exception of `?`, they are
 all written as prefix operators, before the expression they apply to.
@@ -462,11 +464,6 @@ all written as prefix operators, before the expression they apply to.
   : Propagating errors if applied to `Err(_)` and unwrapping if applied to
     `Ok(_)`. Only works on the `Result<T, E>` type, and written in postfix
     notation.
-
-## Binary operator expressions
-
-Binary operators expressions are given in terms of [operator
-precedence](#operator-precedence).
 
 ### Arithmetic operators
 
