@@ -220,17 +220,96 @@ exact `self`-type of the left-hand-side is known, or dynamically dispatching if
 the left-hand-side expression is an indirect [trait
 object](types.html#trait-objects).
 
+```rust
+let pi: Result<f32, _> = "3.14".parse();
+let log_pi = pi.unwrap_or(0.0).log(2.72);
+# assert!(1.14 < log_pi && log_pi < 1.15)
+```
+
+## Call expressions
+
+A _call expression_ consists of an expression followed by a parenthesized
+expression-list. It invokes a function, providing zero or more input variables.
+If the function eventually returns, then the expression completes. The type of
+the expression that is called must implement one of the `std::ops::Fn`,
+`std::ops::FnMut` or `std::ops::FnOnce` traits, which differ in whether they
+take the type by reference, mutable refernece, or take ownership respectively.
+Some examples of call expressions:
+
+```rust
+# fn add(x: i32, y: i32) -> i32 { 0 }
+let three: i32 = add(1i32, 2i32);
+let name: &'static str = (|| "Rust")();
+```
+
+## Lambda expressions
+
+A _lambda expression_ (sometimes called an "anonymous function expression")
+defines a closure and denotes it as a value, in a single expression. A lambda
+expression is a pipe-symbol-delimited (`|`) list of patterns followed by an
+expression. Type annotations may optionally be added for the type of the
+parameters or for the return type. A lambda expession also may begin with the
+`move` keyword before the initial `|`.
+
+A lambda expression denotes a function that maps a list of parameters
+(`ident_list`) onto the expression that follows the `ident_list`. The
+identifiers in the `ident_list` are the parameters to the function. If the
+parameters' types are not be specified, then the compiler infers them from
+context. Each closure expression has a unique anonymous type.
+
+Lambda expressions are most useful when passing functions as arguments to other
+functions, as an abbreviation for defining and capturing a separate function.
+
+Significantly, lambda expressions _capture their environment_, which regular
+[function definitions](items.html#functions) do not. Without the `move`
+keyword, the lambda expression infers how it captures each variable from its
+environment, prefering to capture by shared reference, effectively borrowing
+all outer variables mentioned inside the closure's body. If needed the compiler
+will infer that instead mutable references should be taken, or that the values
+should be moved or copied (depending on their type) from the environment. A
+closure can be forced to capture its environment by copying or moving values by
+prefixing it with the `move` keyword. This is often used to ensure that the
+closure's type is `'static`.
+
+The compiler will determine which of the [closure
+traits](types.html#closure-types) the closure's type will implement by how it
+acts on them. The closure will also implement [`Send`](the-send-trait.html)
+and/or [`Sync`](the-sync-trait.html) if all of its captured types do. These
+traits allow functions to accept closures using generics, even though the exact
+types can't be named.
+
+In this example, we define a function `ten_times` that takes a higher-order
+function argument, and we then call it with a lambda expression as an argument,
+followed by a lambda expression that moves values from its environment.
+
+```rust
+fn ten_times<F>(f: F) where F: Fn(i32) {
+    for index in 0..10 {
+        f(index);
+    }
+}
+
+ten_times(|j| println!("hello, {}", j));
+
+let word = "konnichiwa".to_owned();
+ten_times(move |j| println!("{}, {}", word, j));
+```
+
 ## Field expressions
 
 A _field expression_ consists of an expression followed by a single dot and an
 identifier, when not immediately followed by a parenthesized expression-list
-(the latter is a [method call expression](#method-call-expressions)). A field
-expression denotes a field of a [struct](types.html#struct-types).
+(the latter is always a [method call expression](#method-call-expressions)). A
+field expression denotes a field of a [struct](types.html#struct-types). To
+call a function stored in a struct parentheses are needed around the field
+epression
 
 ```rust,ignore
 mystruct.myfield;
 foo().x;
 (Struct {a: 10, b: 20}).a;
+mystruct.method();          // Method expression
+(mystruct.function_field)() // Call expression
 ```
 
 A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
@@ -540,67 +619,6 @@ An example of a parenthesized expression:
 
 ```rust
 let x: i32 = (2 + 3) * 4;
-```
-
-
-## Call expressions
-
-A _call expression_ invokes a function, providing zero or more input variables
-and an optional location to move the function's output into. If the function
-eventually returns, then the expression completes.
-
-Some examples of call expressions:
-
-```rust
-# fn add(x: i32, y: i32) -> i32 { 0 }
-
-let x: i32 = add(1i32, 2i32);
-let pi: Result<f32, _> = "3.14".parse();
-```
-
-## Lambda expressions
-
-A _lambda expression_ (sometimes called an "anonymous function expression")
-defines a function and denotes it as a value, in a single expression. A lambda
-expression is a pipe-symbol-delimited (`|`) list of identifiers followed by an
-expression.
-
-A lambda expression denotes a function that maps a list of parameters
-(`ident_list`) onto the expression that follows the `ident_list`. The
-identifiers in the `ident_list` are the parameters to the function. These
-parameters' types need not be specified, as the compiler infers them from
-context.
-
-Lambda expressions are most useful when passing functions as arguments to other
-functions, as an abbreviation for defining and capturing a separate function.
-
-Significantly, lambda expressions _capture their environment_, which regular
-[function definitions](items.html#functions) do not. The exact type of capture
-depends on the [function type](types.html#function-types) inferred for the
-lambda expression. In the simplest and least-expensive form (analogous to a
-```|| { }``` expression), the lambda expression captures its environment by
-reference, effectively borrowing pointers to all outer variables mentioned
-inside the function.  Alternately, the compiler may infer that a lambda
-expression should copy or move values (depending on their type) from the
-environment into the lambda expression's captured environment. A lambda can be
-forced to capture its environment by moving values by prefixing it with the
-`move` keyword.
-
-In this example, we define a function `ten_times` that takes a higher-order
-function argument, and we then call it with a lambda expression as an argument,
-followed by a lambda expression that moves values from its environment.
-
-```rust
-fn ten_times<F>(f: F) where F: Fn(i32) {
-    for index in 0..10 {
-        f(index);
-    }
-}
-
-ten_times(|j| println!("hello, {}", j));
-
-let word = "konnichiwa".to_owned();
-ten_times(move |j| println!("{}, {}", word, j));
 ```
 
 ## Infinite loops
