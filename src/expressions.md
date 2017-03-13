@@ -662,7 +662,7 @@ A `continue` expression is only permitted in the body of a loop.
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
 the loop conditional expression evaluates to `true`, the loop body block
-executes and control returns to the loop conditional expression. If the loop
+executes, then control returns to the loop conditional expression. If the loop
 conditional expression evaluates to `false`, the `while` expression completes.
 
  An example:
@@ -859,7 +859,7 @@ if let ("Ham", b) = dish {
 A `while let` loop is semantically identical to a `while` loop but in place of
 a condition expression it expects `let` statement with a refutable pattern. If
 the value of the expression on the right hand side of the `let` statement
-matches the pattern, the loop body block executes and control returns to the
+matches the pattern, the loop body block executes then control returns to the
 pattern matching statement. Otherwise, the while expression completes.
 
 ## `return` expressions
