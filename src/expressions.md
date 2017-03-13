@@ -578,8 +578,11 @@ x = y;
 The `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, and `>>` operators may be
 composed with the `=` operator. The expression `lval OP= val` is equivalent to
 `lval = lval OP val`. For example, `x = x + 1` may be written as `x += 1`.
-
 Any such expression always has the [`unit`](types.html#tuple-types) type.
+These operators can all be overloaded using the trait with the same name as for
+the normal operation followed by 'Assign', for example, `std::ops::AddAssign`
+is used to overload `+=`.
+
 
 ### Operator precedence
 
