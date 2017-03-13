@@ -360,31 +360,31 @@ greater than 1 then this requires that the type of `a` is
 
 ## Index expressions
 
-[Array](types.html#array-and-slice-types)-typed expressions can be indexed by
-writing a square-bracket-enclosed expression (the index) after them. When the
-array is mutable, the resulting
+[Array and slice](types.html#array-and-slice-types)-typed expressions can be
+indexed by writing a square-bracket-enclosed expression (the index) after them.
+When the array is mutable, the resulting
 [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be assigned to.
+For other types an index expression `a[b]` is equivalent to `*a.index(b)`, or
+`*a.index_mut(b)` when needed in a mutable context, where the methods are from
+the traits `std::ops::Index` and `std::ops::IndexMut`. Just as with methods,
+Rust will try to derefence `a` repeatedly until it finds an implementation.
 
-Indices are zero-based, and may be of any integral type. Vector access is
-bounds-checked at compile-time for constant arrays being accessed with a
-constant index value.  Otherwise a check will be performed at run-time that
-will put the thread in a _panicked state_ if it fails.
+Indices are zero-based, and are of type `usize` for arrays and slices. Vector
+access is bounds-checked at compile-time for constant arrays being accessed
+with aconstant index value. Otherwise a check will be performed at run-time
+that will put the thread in a _panicked state_ if it fails.
 
 ```rust,should_panic
-([1, 2, 3, 4])[0];
+([1, 2, 3, 4])[2];        // Evluates to 3
 
 let x = (["a", "b"])[10]; // compiler error: const index-expr is out of bounds
 
 let n = 10;
-let y = (["a", "b"])[n]; // panics
+let y = (["a", "b"])[n];  // panics
 
 let arr = ["a", "b"];
-arr[10]; // panics
+arr[10];                  // panics
 ```
-
-Also, if the type of the expression to the left of the brackets is a pointer,
-it is automatically dereferenced as many times as necessary to make the
-indexing possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 ## Range expressions
 
