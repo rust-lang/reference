@@ -29,12 +29,12 @@ expressions](#index-expressions) (`expr[expr]`), and [field
 references](#field-expressions) (`expr.f`). All other expressions are rvalues.
 
 The left operand of an [assignment](#assignment-expressions) or
-[compound-assignment](#compound-assignment-expressions) expression is
-an lvalue context, as is the single operand of a unary
-[borrow](#unary-operator-expressions). The discriminant or subject of
-a [match expression](#match-expressions) may be an lvalue context, if
-ref bindings are made, but is otherwise an rvalue context. All other
-expression contexts are rvalue contexts.
+[compound-assignment](#compound-assignment-expressions) expression is an lvalue
+context, as is the single operand of a unary
+[borrow](#unary-operator-expressions). The discriminant or subject of a [match
+expression](#match-expressions) may be an lvalue context, if ref bindings are
+made, but is otherwise an rvalue context. All other expression contexts are
+rvalue contexts.
 
 When an lvalue is evaluated in an _lvalue context_, it denotes a memory
 location; when evaluated in an _rvalue context_, it denotes the value held _in_
@@ -433,35 +433,35 @@ all written as prefix operators, before the expression they apply to.
 * `-`
   : Negation. Signed integer types and floating-point types support negation. It
     is an error to apply negation to unsigned types; for example, the compiler
-    rejects `-1u32`.
+    rejects `-1u32`. `-` can be overloaded for a type by implementing the
+    `std::ops::Neg` trait.
 * `*`
   : Dereference. When applied to a [pointer](types.html#pointer-types) it
     denotes the pointed-to location. For pointers to mutable locations, the
     resulting [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be
-    assigned to.  On non-pointer types, it calls the `deref` method of the
-    `std::ops::Deref` trait, or the `deref_mut` method of the
-    `std::ops::DerefMut` trait (if implemented by the type and required for an
-    outer expression that will or could mutate the dereference), and produces
-    the result of dereferencing the `&` or `&mut` borrowed pointer returned
-    from the overload method.
+    assigned to. Dereferencing a raw pointer requires `unsafe`. On non-pointer
+    types `*x` is equivalent to `*std::ops::Deref::deref(&x)` or
+    `*std::ops::Deref::deref_mut(&mut x)` depending on whether the rquired
+    lvalue has to be mutable.
 * `!`
   : Logical negation. On the boolean type, this flips between `true` and
-    `false`. On integer types, this inverts the individual bits in the
-    two's complement representation of the value.
+    `false`. On integer types, this inverts the individual bits of the binary
+    representation of the value, using two's complement for signed integers.
+    `!` can be overloaded for a type by implementing the `std::ops::Not` trait.
 * `&` and `&mut`
-  : Borrowing. When applied to an lvalue, these operators produce a
-    reference (pointer) to the lvalue. The lvalue is also placed into
-    a borrowed state for the duration of the reference. For a shared
-    borrow (`&`), this implies that the lvalue may not be mutated, but
-    it may be read or shared again. For a mutable borrow (`&mut`), the
-    lvalue may not be accessed in any way until the borrow expires.
-    If the `&` or `&mut` operators are applied to an rvalue, a
-    temporary value is created; the lifetime of this temporary value
-    is defined by [syntactic rules](#temporary-lifetimes).
+  : Borrowing. When applied to an lvalue, these operators produce a reference
+    (pointer) to the lvalue. The lvalue is also placed into a borrowed state
+    for the duration of the reference. For a shared borrow (`&`), this implies
+    that the lvalue may not be mutated, but it may be read or shared again. For
+    a mutable borrow (`&mut`), the lvalue may not be accessed in any way until
+    the borrow expires. If the `&` or `&mut` operators are applied to an
+    rvalue, a temporary value is created; the lifetime of this temporary value
+    is defined by [syntactic rules](#temporary-lifetimes). `&mut` may only be
+    applied to `lvalues` that can be mutated.
 * `?`
-  : Propagating errors if applied to `Err(_)` and unwrapping if
-    applied to `Ok(_)`. Only works on the `Result<T, E>` type,
-    and written in postfix notation.
+  : Propagating errors if applied to `Err(_)` and unwrapping if applied to
+    `Ok(_)`. Only works on the `Result<T, E>` type, and written in postfix
+    notation.
 
 ## Binary operator expressions
 
