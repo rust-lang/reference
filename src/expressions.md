@@ -126,11 +126,13 @@ comma:
 
 There are several forms of struct expressions. A _struct expression_ consists
 of the [path](paths.html) of a [struct item](items.html#structs), followed by a
-brace-enclosed list of zero or more comma-separated name-value pairs,
-providing the field values of a new instance of the struct. A field name can be
-any [identifier](identifiers.html), and is separated from its value expression by a colon. The
-location denoted by a struct field is mutable if and only if the enclosing
-struct is mutable.
+brace-enclosed list of zero or more comma-separated name-value pairs, providing
+the field values of a new instance of the struct. A field name can be any
+[identifier](identifiers.html), and is separated from its value expression by a
+colon. The location denoted by a struct field is mutable if and only if the
+enclosing struct is mutable. Struct expressions can't be used directly in the
+head of an [`if`](#if-expressions), [`while`](#while-loops),
+[`for`](#for-expressions) or [`match`](#match-expressions) expression.
 
 A _tuple struct expression_ consists of the [path](paths.html) of a [struct
 item](items.html#structs), followed by a parenthesized list of one or more
@@ -634,7 +636,7 @@ lifetime preceding the loop expression, as in `'foo: loop{ }`. If a label is
 present, then labeled `break` and `continue` expressions nested within this
 loop may exit out of this loop or return control to its head. See [break
 expressions](#break-expressions) and [continue
-expressions](#continue-expressions).
+expressions](#continue-expressions). Any `loop` expression has value `()`.
 
 ## `break` expressions
 
@@ -679,7 +681,8 @@ while i < 10 {
 Like `loop` expressions, `while` loops can be controlled with `break` or
 `continue`, and may optionally have a _label_. See [infinite
 loops](#infinite-loops), [break expressions](#break-expressions), and [continue
-expressions](#continue-expressions) for more information.
+expressions](#continue-expressions) for more information. Any `while` loop
+expression has value `()`.
 
 ## `for` expressions
 
@@ -713,7 +716,8 @@ for i in 0..256 {
 Like `loop` expressions, `for` loops can be controlled with `break` or
 `continue`, and may optionally have a _label_. See [infinite
 loops](#infinite-loops), [break expressions](#break-expressions), and [continue
-expressions](#continue-expressions) for more information.
+expressions](#continue-expressions) for more information. Like `loop` and
+`while`, `for` loops evaluate to `()`.
 
 ## `if` expressions
 
@@ -725,7 +729,27 @@ expression evaluates to `true`, the consequent block is executed and any
 subsequent `else if` or `else` block is skipped. If a condition expression
 evaluates to `false`, the consequent block is skipped and any subsequent `else
 if` condition is evaluated. If all `if` and `else if` conditions evaluate to
-`false` then any `else` block is executed.
+`false` then any `else` block is executed. An if expression evaluates to the
+same value as the executed block, or `()` if no block is evaluated. An `if`
+expression must have the same type in all situtaions.
+
+```rust
+# let x = 3;
+if x == 4 {
+    println!("x is four");
+} else if x == 3 {
+    println!("x is three");
+} else {
+    println!("x is something else");
+}
+
+let y = if 12 * 15 > 150 {
+    "Bigger"
+} else {
+    "Smaller"
+};
+assert_eq!(y, "Bigger");
+```
 
 ## `match` expressions
 
@@ -834,11 +858,13 @@ let message = match maybe_digit {
 
 ## `if let` expressions
 
-An `if let` expression is semantically identical to an `if` expression but in
-place of a condition expression it expects a `let` statement with a refutable
-pattern. If the value of the expression on the right hand side of the `let`
-statement matches the pattern, the corresponding block will execute, otherwise
-flow proceeds to the first `else` block that follows.
+An `if let` expression is semantically similar to an `if` expression but in
+place of a condition expression it expects the keyword `let` followed by a
+refutable pattern, an `=` and an expression. If the value of the expression on
+the right hand side of the `=` matches the pattern, the corresponding block
+will execute, otherwise flow proceeds to the following `else` block if it
+exists. Like `if` expressions, `if let` expressions have a value determined by
+the block that is evaluated.
 
 ```rust
 let dish = ("Ham", "Eggs");
@@ -846,6 +872,9 @@ let dish = ("Ham", "Eggs");
 // this body will be skipped because the pattern is refuted
 if let ("Bacon", b) = dish {
     println!("Bacon is served with {}", b);
+} else {
+    // This block is evaluated instead.
+    println!("No bacon will be served");
 }
 
 // this body will execute
@@ -856,11 +885,20 @@ if let ("Ham", b) = dish {
 
 ## `while let` loops
 
-A `while let` loop is semantically identical to a `while` loop but in place of
-a condition expression it expects `let` statement with a refutable pattern. If
-the value of the expression on the right hand side of the `let` statement
-matches the pattern, the loop body block executes then control returns to the
-pattern matching statement. Otherwise, the while expression completes.
+A `while let` loop is semantically similar to a `while` loop but in place of a
+condition expression it expects the keyword `let` followed by a refutable
+pattern, an `=` and an expression. If the value of the expression on the right
+hand side of the `=` matches the pattern, the loop body block executes then
+control returns to the pattern matching statement. Otherwise, the while
+expression completes. Like `while` loops, `while let` loops evaluate to `()`.
+
+```rust
+let x = vec![1, 2, 3];
+
+while let Some(y) = x.pop() {
+    println!("y = {}");
+}
+```
 
 ## `return` expressions
 
