@@ -252,10 +252,10 @@ parameters or for the return type. A lambda expession also may begin with the
 `move` keyword before the initial `|`.
 
 A lambda expression denotes a function that maps a list of parameters
-(`ident_list`) onto the expression that follows the `ident_list`. The
-identifiers in the `ident_list` are the parameters to the function. If the
-parameters' types are not be specified, then the compiler infers them from
-context. Each closure expression has a unique anonymous type.
+(`ident_list`) onto the expression that follows the `ident_list`. The patterns
+in the `ident_list` are the parameters to the closure. If a parameter's types
+is not specified, then the compiler infers it from context. Each closure
+expression has a unique anonymous type.
 
 Lambda expressions are most useful when passing functions as arguments to other
 functions, as an abbreviation for defining and capturing a separate function.
