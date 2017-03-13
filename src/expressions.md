@@ -223,17 +223,18 @@ object](types.html#trait-objects). If the method was defined to take `&self` or
 
 When resolving method calls on an expression of type `A`, Rust will use the
 following order:
-1. Methods defined on `A`, with a `self`, `&self` or `&mut self` receiver.
-1. Methods defined by traits, with receiver of type `A`.
-1. Methods defined by traits, with receiver of type `&A`.
-1. Methods defined by traits, with receiver of type `&mut A`.
+1. Inherent methods, with receiver `A`, `&A`, `&mut A`.
+1. Trait methods with receiver of type `A`.
+1. Trait methods with receiver of type `&A`.
+1. Trait methods with receiver of type `&mut A`.
 1. If it's possible, Rust will then repeat steps 1-5 with
   `<A as std::ops::Deref>::Target`, and insert a dereference operator.
 
-Note, in steps 2-4 the trait doesn't have to be implemented by `A`, for example
-in step 3 the trait could be implemented for `&A` and with the method taking
-`self`. If a step is reached where there is more than one possible method, then
-it is a compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
+Note: in steps 1-4 the method doesn't have to be implemented on `A`. For
+example in step 3 the trait could be implemented for `&A` with the method
+taking `self`. If a step is reached where there is more than one possible
+method, then it is a compiler error. To resolve this use THIS ISN'T IN THE
+REFERENCE!!!!!!!!
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
