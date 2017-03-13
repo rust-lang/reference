@@ -128,7 +128,7 @@ There are several forms of struct expressions. A _struct expression_ consists
 of the [path](paths.html) of a [struct item](items.html#structs), followed by a
 brace-enclosed list of zero or more comma-separated name-value pairs,
 providing the field values of a new instance of the struct. A field name can be
-any identifier, and is separated from its value expression by a colon. The
+any [identifier](identifiers.html), and is separated from its value expression by a colon. The
 location denoted by a struct field is mutable if and only if the enclosing
 struct is mutable.
 
@@ -214,7 +214,7 @@ assert_eq!(5, x);
 ## Method-call expressions
 
 A _method call_ consists of an expression followed by a single dot, an
-identifier, and a parenthesized expression-list. Method calls are resolved to
+[identifier](identifiers.html), and a parenthesized expression-list. Method calls are resolved to
 methods on specific traits, either statically dispatching to a method if the
 exact `self`-type of the left-hand-side is known, or dynamically dispatching if
 the left-hand-side expression is an indirect [trait
@@ -298,7 +298,7 @@ ten_times(move |j| println!("{}, {}", word, j));
 ## Field expressions
 
 A _field expression_ consists of an expression followed by a single dot and an
-identifier, when not immediately followed by a parenthesized expression-list
+[identifier](identifiers.html), when not immediately followed by a parenthesized expression-list
 (the latter is always a [method call expression](#method-call-expressions)). A
 field expression denotes a field of a [struct](types.html#struct-types). To
 call a function stored in a struct parentheses are needed around the field
