@@ -322,13 +322,19 @@ possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 ## Array expressions
 
-An [array](types.html#array-and-slice-types) _expression_ is written by
+An [array](types.html#array-and-slice-types) _expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
-brackets.
+brackets. This produces and array containing each of these values in the
+order they are written.
 
-In the `[expr ';' expr]` form, the expression after the `';'` must be a
-constant expression that can be evaluated at compile time, such as a
-[literal](tokens.html#literals) or a [static item](items.html#static-items).
+Alternatively there can be exactly two expresions inside the brackets,
+separated by a semi-colon. The expression after the `;` must be a have type
+`usize` and be a constant expression that can be evaluated at compile time,
+such as a [literal](tokens.html#literals) or a [constant item
+item](items.html#constant-items). `[a; b]` creates an array containing `b` copies
+of the value of `a`. If the expression after the semi-colon has a value
+greater than 1 then this requires that the type of `a` is
+[`Copy`](the-copy-trait.html).
 
 ```rust
 [1, 2, 3, 4];
