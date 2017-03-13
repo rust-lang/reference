@@ -618,7 +618,10 @@ within an expression.
 An example of a parenthesized expression:
 
 ```rust
-let x: i32 = (2 + 3) * 4;
+let x: i32 = 2 + 3 * 4;
+let y: i32 = (2 + 3) * 4;
+assert_eq!(x, 14);
+assert_eq!(y, 20);
 ```
 
 ## Infinite loops
