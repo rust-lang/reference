@@ -244,6 +244,31 @@ let log_pi = pi.unwrap_or(0.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
+## Field expressions
+
+A _field expression_ consists of an expression followed by a single dot and an
+[identifier](identifiers.html), when not immediately followed by a parenthesized expression-list
+(the latter is always a [method call expression](#method-call-expressions)). A
+field expression denotes a field of a [struct](types.html#struct-types). To
+call a function stored in a struct parentheses are needed around the field
+epression
+
+```rust,ignore
+mystruct.myfield;
+foo().x;
+(Struct {a: 10, b: 20}).a;
+mystruct.method();          // Method expression
+(mystruct.function_field)() // Call expression
+```
+
+A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
+referring to the value of that field. When the type providing the field
+inherits mutability, it can be [assigned](#assignment-expressions) to.
+
+Also, if the type of the expression to the left of the dot is a pointer, it is
+automatically dereferenced as many times as necessary to make the field access
+possible. In cases of ambiguity, we prefer fewer autoderefs to more.
+
 ## Call expressions
 
 A _call expression_ consists of an expression followed by a parenthesized
@@ -312,31 +337,6 @@ ten_times(|j| println!("hello, {}", j));
 let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
 ```
-
-## Field expressions
-
-A _field expression_ consists of an expression followed by a single dot and an
-[identifier](identifiers.html), when not immediately followed by a parenthesized expression-list
-(the latter is always a [method call expression](#method-call-expressions)). A
-field expression denotes a field of a [struct](types.html#struct-types). To
-call a function stored in a struct parentheses are needed around the field
-epression
-
-```rust,ignore
-mystruct.myfield;
-foo().x;
-(Struct {a: 10, b: 20}).a;
-mystruct.method();          // Method expression
-(mystruct.function_field)() // Call expression
-```
-
-A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
-referring to the value of that field. When the type providing the field
-inherits mutability, it can be [assigned](#assignment-expressions) to.
-
-Also, if the type of the expression to the left of the dot is a pointer, it is
-automatically dereferenced as many times as necessary to make the field access
-possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 ## Array expressions
 
