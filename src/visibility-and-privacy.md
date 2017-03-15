@@ -134,6 +134,41 @@ For a Rust program to pass the privacy checking pass, all paths must be valid
 accesses given the two rules above. This includes all use statements,
 expressions, types, etc.
 
+## `pub(crate)` and `pub(in path)`
+
+In addition to public and private, Rust allows users to declare an item as
+`pub(crate)` or `pub(in path)`. These restrictions make it possible to specify
+the exact scope of an item's visibility. As their names would suggest,
+`pub(crate)` makes an item public within the current crate, and `pub(in path)`
+makes an item public within the specified path.
+
+Here's an example using `pub(crate)` and `pub(in path)`:
+
+```rust
+pub mod outer_mod {
+    pub mod inner_mod {
+        // This function is public to the entire crate
+        pub(crate) fn crate_visible_fn() {}
+
+        // This function is public within `outer_mod`
+        pub(in outer_mod) fn outer_mod_visible_fn() {}
+    }
+    fn foo() {
+        inner_mod::crate_visible_fn();
+        inner_mod::outer_mod_visible_fn();
+    }
+}
+
+fn bar() {
+    // This function is still visible since we're in the same crate
+    outer_mod::inner_mod::crate_visible_fn();
+
+    // This function is no longer visible since we're outside of `outer_mod`
+    // Error! `outer_mod_visible_fn` is private
+    //outer_mod::inner_mod::outer_mod_visible_fn();
+}
+```
+
 ## Re-exporting and Visibility
 
 Rust allows publicly re-exporting items through a `pub use` directive. Because
