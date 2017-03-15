@@ -132,7 +132,8 @@ the field values of a new instance of the struct. A field name can be any
 colon. The location denoted by a struct field is mutable if and only if the
 enclosing struct is mutable. Struct expressions can't be used directly in the
 head of an [`if`](#if-expressions), [`while`](#while-loops),
-[`for`](#for-expressions) or [`match`](#match-expressions) expression.
+[`match`](#match-expressions), [`for`](#for-expressions), [`if
+let`](#if-let-expressions) or [`while let`](#while-let-loops) expression.
 
 A _tuple struct expression_ consists of the [path](paths.html) of a [struct
 item](items.html#structs), followed by a parenthesized list of one or more
@@ -476,52 +477,72 @@ all written as prefix operators, before the expression they apply to.
     `Ok(_)`. Only works on the `Result<T, E>` type, and written in postfix
     notation.
 
+```rust
+let x = 6;
+assert_eq!(-x, -6);
+let y = &x;
+assert_eq!(*y, 6);
+assert_eq!(!x, -7);
+```
+
 ### Binary Operators Expressions
 
-Binary operators expressions are all written with infix notation.
+Binary operators expressions are all written with infix notation. This table
+summarizes the behaivour of arithmetic and logical operators on primitive types
+and which traits are used to overload these operators for other types. Remember
+that signed integers are always represented using two's complement.
 
-* `+`
-  : Addition. Overloaded by the `std::ops::Add` trait.
-* `-`
-  : Subtraction. Overloaded by the `std::ops::Sub` trait.
-* `*`
-  : Multiplication. Overloaded by the `std::ops::Mul` trait.
-* `/`
-  : Quotient. Overloaded by the `std::ops::Div` trait.
-* `%`
-  : Remainder. Overloaded by the `std::ops::Rem` trait.
-* `&`
-  : Bitwise AND for integer for integer types, logical AND for `bool` which
-    always evaluates both operands. Overloaded by the `std::ops::BitAnd` trait.
-* `|`
-  : Bitwise inclusive OR for integer types, logical OR for `bool` which always
-    evaluates both operands. Overloaded by the `std::ops::BitOr` trait.
-* `^`
-  : Bitwise exclusive OR, logical XOR for `bool`. Overloaded by the
-    `std::ops::BitXor` trait.
-* `<<`
-  : Left shift.
-    Overloaded by the `std::ops::Shl` trait.
-* `>>`
-  : Arithmetic Right shift for signed integers. Logical Right shift for
-    unsigned integers. Overloaded by the `std::ops::Shl` trait.
-* `==`
-  : Equal to. Overloaded by the `eq` method on the `std::cmp::PartialEq` trait.
-* `!=`
-  : Unequal to. Overloaded by the `ne` method on the `std::cmp::PartialEq`
-    trait.
-* `<`
-  : Less than. Overloaded by the `lt` method on the `std::cmp::PartialOrd`
-    trait.
-* `>`
-  : Greater than. Overloaded by the `gt` method on the `std::cmp::PartialOrd`
-    trait.
-* `<=`
-  : Less than or equal. Overloaded by the `le` method on the
-    `std::cmp::PartialOrd` trait.
-* `>=`
-  : Greater than or equal. Overloaded by the `ge` method on the
-    `std::cmp::PartialOrd` trait.
+| Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  |
+|--------|-------------------------|-------------|----------------|--------------------|
+| `+`    | Addition                |             | Addition       | `std::ops::Add`    |
+| `-`    | Subtraction             |             | Subtraction    | `std::ops::Sub`    |
+| `*`    | Multiplication          |             | Multiplication | `std::ops::Mul`    |
+| `/`    | Division                |             | Division       | `std::ops::Div`    |
+| `%`    | Remainder               |             | Remainder      | `std::ops::Rem`    |
+| `&`    | Bitwise AND             | Logical AND |                | `std::ops::BitAnd` |
+| <code>&#124;</code> | Bitwise OR | Logical OR  |                | `std::ops::BitOr`  |
+| `^`    | Bitwise XOR             | Logical XOR |                | `std::ops::BitXor` |
+| `<<`   | Left Shift              |             |                | `std::ops::Shl`    |
+| `>>`   | Right Shift*            |             |                | `std::ops::Shr`    |
+
+\* Arithmetic right shift on signed integers, Logical right shift on unsigned integers.
+
+
+Comparison operators are also defined both for primitive types and many type in
+the standard library. Unlike arithemetic and logical operators, the traits for
+overloading the operators the traits for these operators require that they are
+implemented to define actual comparisons. Many functions and macros in the
+standard library can then use that assumption (although not to ensure safety).
+
+| Symbol | Meaning                  | Overloading method         |
+|--------|--------------------------|----------------------------|
+| `==`   | Equal                    | `std::cmp::PartialEq::eq`  |
+| `!=`   | Not equal                | `std::cmp::PartialEq::ne`  |
+| `>`    | Greater than             | `std::cmp::PartialOrd::gt` |
+| `<`    | Less than                | `std::cmp::PartialOrd::lt` |
+| `>=`   | Greater than or equal to | `std::cmp::PartialOrd::ge` |
+| `<=`   | Less than or equal to    | `std::cmp::PartialOrd::le` |
+
+Here is an example of all of these operators being used.
+
+```rust
+assert_eq!(3 + 6, 9);
+assert_eq!(5.5 - 1.25, 4.25);
+assert_eq!(-5 * 14, -70);
+assert_eq!(14 / 3, 4);
+assert_eq!(100 % 7, 2);
+assert_eq!(0b1010 & 0b1100, 0b1000);
+assert_eq!(0b1010 | 0b1100, 0b1110);
+assert_eq!(0b1010 ^ 0b1100, 0b110);
+assert_eq!(13 << 3, 104);
+assert_eq!(-10 >> 2, -3);
+assert!(123 == 123);
+assert!(23 != -12);
+assert!(12.5 > 12.2);
+assert!([1, 2, 3] < [1, 3, 4]);
+assert!('A' <= 'B');
+assert!("World" >= "Hello");
+```
 
 ### Lazy boolean operators
 
