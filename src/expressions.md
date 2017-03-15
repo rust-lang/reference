@@ -554,6 +554,11 @@ the expression. That is, `||` only evaluates its right-hand operand when the
 left-hand operand evaluates to `false`, and `&&` only when it evaluates to
 `true`.
 
+```rust
+let x = false || true; // true
+let y = false && panic!(); // false, doesn't evaluate `panic!()`
+```
+
 ### Type cast expressions
 
 A type cast expression is denoted with the binary operator `as`.
@@ -607,12 +612,18 @@ These operators can all be overloaded using the trait with the same name as for
 the normal operation followed by 'Assign', for example, `std::ops::AddAssign`
 is used to overload `+=`.
 
+```rust
+let mut x = 10;
+x += 4;
+assert_eq!(x, 14);
+```
+
 
 ### Operator precedence
 
-The precedence of Rust binary operators is ordered as follows, going from
-strong to weak. Binary Operators at the same precedence level are evaluated
-in the order given by their associativity.
+The precedence of Rust operators is ordered as follows, going from strong to
+weak. Binary Operators at the same precedence level are evaluated in the order
+given by their associativity.
 
 | Operator                    | Associativity           |
 |-----------------------------|-------------------------|
