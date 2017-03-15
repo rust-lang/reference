@@ -149,7 +149,7 @@ On `struct`s:
   list of names `#[macro_use(foo, bar)]` restricts the import to just those
   macros named.  The `extern crate` must appear at the crate root, not inside
   `mod`, which ensures proper function of the [`$crate` macro
-  variable](../book/macros.html#the-variable-crate).
+  variable](../book/first-edition/macros.html#the-variable-crate).
 
 - `macro_reexport` on an `extern crate` — re-export the named macros.
 
@@ -159,7 +159,7 @@ On `struct`s:
   link it into the output.
 
 See the [macros section of the
-book](../book/macros.html#scoping-and-macro-importexport) for more information on
+book](../book/first-edition/macros.html#scoping-and-macro-importexport) for more information on
 macro scope.
 
 ## Miscellaneous attributes
