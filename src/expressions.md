@@ -925,10 +925,10 @@ control returns to the pattern matching statement. Otherwise, the while
 expression completes. Like `while` loops, `while let` loops evaluate to `()`.
 
 ```rust
-let x = vec![1, 2, 3];
+let mut x = vec![1, 2, 3];
 
 while let Some(y) = x.pop() {
-    println!("y = {}");
+    println!("y = {}", y);
 }
 ```
 
