@@ -134,28 +134,46 @@ For a Rust program to pass the privacy checking pass, all paths must be valid
 accesses given the two rules above. This includes all use statements,
 expressions, types, etc.
 
-## `pub(crate)` and `pub(in path)`
+## `pub(in path)`, `pub(crate)`, `pub(super)`, and `pub(self)`
 
 In addition to public and private, Rust allows users to declare an item as
-`pub(crate)` or `pub(in path)`. These restrictions make it possible to specify
-the exact scope of an item's visibility. As their names would suggest,
-`pub(crate)` makes an item public within the current crate, and `pub(in path)`
-makes an item public within the specified path.
+visible within a given scope. The rules for `pub` restrictions are as follows:
+- `pub(in path)` makes an item visible within the provided `path`. `path` must
+be a parent module of the item whose visibility is being declared.
+- `pub(crate)` makes an item visible within the current crate.
+- `pub(super)` makes an item visible to the parent module. This equivalent to
+`pub(in super)`.
+- `pub(self)` makes an item visible to the current module. This is equivalent
+to `pub(in self)`.
 
-Here's an example using `pub(crate)` and `pub(in path)`:
+Here's an example:
 
 ```rust
 pub mod outer_mod {
     pub mod inner_mod {
-        // This function is public to the entire crate
+        // This function is visible within `outer_mod`
+        pub(in outer_mod) fn outer_mod_visible_fn() {}
+
+        // This function is visible to the entire crate
         pub(crate) fn crate_visible_fn() {}
 
-        // This function is public within `outer_mod`
-        pub(in outer_mod) fn outer_mod_visible_fn() {}
+        // This function is visible within `outer_mod`
+        pub(super) fn super_mod_visible_fn() {
+            // This function is visible since we're in the same `mod`
+            inner_mod_visible_fn();
+        }
+
+        // This function is visible
+        pub(self) fn inner_mod_visible_fn() {}
     }
-    fn foo() {
-        inner_mod::crate_visible_fn();
+    pub fn foo() {
         inner_mod::outer_mod_visible_fn();
+        inner_mod::crate_visible_fn();
+        inner_mod::super_mod_visible_fn();
+
+        // This function is no longer visible since we're outside of `inner_mod`
+        // Error! `inner_mod_visible_fn` is private
+        //inner_mod::inner_mod_visible_fn();
     }
 }
 
@@ -164,9 +182,17 @@ fn bar() {
     outer_mod::inner_mod::crate_visible_fn();
 
     // This function is no longer visible since we're outside of `outer_mod`
+    // Error! `super_mod_visible_fn` is private
+    //outer_mod::inner_mod::super_mod_visible_fn();
+
+    // This function is no longer visible since we're outside of `outer_mod`
     // Error! `outer_mod_visible_fn` is private
     //outer_mod::inner_mod::outer_mod_visible_fn();
+    
+    outer_mod::foo();
 }
+
+fn main() { bar() }
 ```
 
 ## Re-exporting and Visibility
