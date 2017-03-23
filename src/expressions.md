@@ -308,25 +308,6 @@ let y = 0..10;
 assert_eq!(x, y);
 ```
 
-Similarly, the `...` operator will construct an object of one of the
-`std::ops::RangeInclusive` variants.
-
-```rust
-# #![feature(inclusive_range_syntax)]
-1...2;   // std::ops::RangeInclusive
-...4;    // std::ops::RangeToInclusive
-```
-
-The following expressions are equivalent.
-
-```rust
-# #![feature(inclusive_range_syntax, inclusive_range)]
-let x = std::ops::RangeInclusive::NonEmpty {start: 0, end: 10};
-let y = 0...10;
-
-assert_eq!(x, y);
-```
-
 ## Unary operator expressions
 
 Rust defines the following unary operators. With the exception of `?`, they are
