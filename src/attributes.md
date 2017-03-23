@@ -64,6 +64,15 @@ type int8_t = i8;
                       infinitely-recursive compile-time operations like
                       auto-dereference or macro expansion. The default is
                       `#![recursion_limit="64"]`.
+- `windows_subsystem` - Indicates that when this crate is linked for a Windows
+                        target it will configure the resulting binary's
+                        [subsystem] via the linker. Valid values for this
+                        attribute are `console` and `windows`, corresponding to
+                        those two respective subsystems. More subsystems may be
+                        allowed in the future, and this attribute is ignored on
+                        non-Windows targets.
+
+[subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx
 
 ### Module-only attributes
 
