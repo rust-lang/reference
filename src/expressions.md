@@ -303,11 +303,15 @@ following order:
 1. If `A` is now an [array](#types.html#array-and-slice-types) type, then
   repeat steps 1-4 with the corresponding slice type.
 
-Note: that in steps 1-4 `Self` may not be the same as `A`. For example in this
-example `Self` is `&A`, not `A`
+Note: that in steps 1-4 `Self` may not be the same as `A`. For example
 ```rust
+// `Self` is `&A`, receiver is `&A`.
 impl<'a> Trait for &'a A {
     fn method(self) {}
+}
+// If `A` is `&B`, then `Self` is `B` and the receiver is `A`.
+impl B {
+    fn method(&self) {}
 }
 ```
 
