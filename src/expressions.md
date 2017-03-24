@@ -288,6 +288,9 @@ let x: i32 = { println!("Hello."); 5 };
 assert_eq!(5, x);
 ```
 
+Blocks are always [rvalues](#lvalues-and-rvalues) and evaluate the last
+expression in rvalue context.
+
 ## Method-call expressions
 
 A _method call_ consists of an expression followed by a single dot, an
