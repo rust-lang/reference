@@ -42,9 +42,9 @@ rvalue context. All other expression contexts are rvalue contexts.
 
 When an lvalue is evaluated in an _rvalue context_, it denotes the value held
 _in_ that memory location. If value is of a type that implements `Copy`, then
-the value will be copied. In other situations then if the type of the value is
-[`Sized`](the-sized-trait.html) and then it may be possible to move the value.
-Only the following lvalues may be moved out of:
+the value will be copied. In other situations if the type of the value is
+[`Sized`](the-sized-trait.html) it may be possible to move the value. Only the
+following lvalues may be moved out of:
 * [Variables](#variables.html) which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions) of an lvalue which can be moved out of and
@@ -66,7 +66,7 @@ _immutable_.
 
 The following expressions can create mutable lvalues:
 * Mutable [variables](#variables.html), which are not currently borrowed.
-* Mutable `static` items.
+* [Mutable `static` items](items.html#mutable-statics).
 * [Temporary values](#temporary-lifetimes)
 * [Fields](#field-expressions), this evaluates the expression in a mutable
   lvalue context.
@@ -300,7 +300,7 @@ following order:
 1. Trait methods with receiver of type `&mut A`.
 1. If it's possible, Rust will then repeat steps 1-5 with
   `<A as std::ops::Deref>::Target`, and insert a dereference operator.
-1. If `A` is now an [array](#types.html#array-and-slice-types) type, then
+1. If `A` is now an [array](types.html#array-and-slice-types) type, then
   repeat steps 1-4 with the corresponding slice type.
 
 Note: that in steps 1-4 `Self` may not be the same as `A`. For example
@@ -317,7 +317,7 @@ impl B {
 
 Another note: this process does not use the mutablility or lifetime of the
 receiver, or whether `unsafe` methods can currently be called to resolve
-methods. The constraints instead lead to compiler errors.
+methods. These constraints instead lead to compiler errors.
 
 If a step is reached where there is more than one possible method, then it is a
 compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
