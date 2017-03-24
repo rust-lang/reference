@@ -33,10 +33,10 @@ expressions. All other expressions are rvalues.
 The left operand of an [assignment](#assignment-expressions) or
 [compound-assignment](#compound-assignment-expressions) expression is an lvalue
 context, as is the single operand of a unary [borrow](#borrow-operators), and
-the operand of any implicit borrow. The discriminant or subject of a [match
-expression](#match-expressions) may be an lvalue context, if ref bindings are
-made, but is otherwise an rvalue context. All other expression contexts are
-rvalue contexts.
+the operand of any [implicit borrow](#implicit-borrows). The discriminant or
+subject of a [match expression](#match-expressions) and right side of a `let`
+binding may be an lvalue context, if ref bindings are made, but is otherwise an
+rvalue context. All other expression contexts are rvalue contexts.
 
 ### Moved and copied types
 
@@ -45,12 +45,39 @@ _in_ that memory location. If value is of a type that implements `Copy`, then
 the value will be copied. In other situations then if the type of the value is
 [`Sized`](the-sized-trait.html) and then it may be possible to move the value.
 Only the following lvalues may be moved out of:
-* Local varables which are not currently borrowed.
-* The result of dereferencing an expression of type `Box<T>` which can also be moved out of.
-* Fields of an lvalue which can be moved out of.
-Moving out of an lvalue deinitialises that location, so that it can't be read
-from again. In all other cases, trying to use an lvalue in an rvalue context is
-an error.
+* [Variables](#variables.html) which are not currently borrowed.
+* [Temporary values](#temporary-lifetimes).
+* [Fields](#field-expressions) of an lvalue which can be moved out of and
+  doesn't implement [`Drop`](#the-drop-trait).
+* The result of [dereferencing](#the-dereference-operator) an expression with
+  type `Box<T>` and that can also be moved out of.
+
+Moving out of an lvalue deinitialises that location (if it comes from a local
+vairable), so that it can't be read from again. In all other cases, trying to
+use an lvalue in an rvalue context is an error.
+
+### Mutability
+
+For an lvalue to be [assigned](#assignment-expressions) to, [mutably
+borrowed](#borrow-operators), [implicitly mutably borrowed](#implicit-borrows)
+or bound to a pattern containing `ref mut` it must be _mutable_, we call these
+contexts _mutable_ lvalue contexts, other lvalue contexts are called
+_immutable_.
+
+The following expressions can create mutable lvalues:
+* Mutable [variables](#variables.html), which are not currently borrowed.
+* Mutable `static` items.
+* [Temporary values](#temporary-lifetimes)
+* [Fields](#field-expressions), this evaluates the expression in a mutable
+  lvalue context.
+* [Dereferenes](#the-dereference-operator) of a `*mut T` pointer.
+* Dereference of a variable, or field of a variable, with type `&mut T`. Note:
+  this is an exception to the next rule.
+* Dereferences of a type that implements `DerefMut`, this then requires that
+  the value being derefenced is evalutated is a mutable lvalue context.
+* [Indexing](#index-expressions) of a type that implements `DerefMut`, this
+  then evalutes the value being indexed (but not the index) in mutable lvalue
+  context.
 
 ### Temporary lifetimes
 
@@ -90,6 +117,30 @@ Here are some examples:
 - `let ref x = temp()`. In this case, the temporary is created using a ref binding,
   but the result is the same: the lifetime is extended to the enclosing block.
 
+### Implicit Borrows
+
+Certain expressions will treat an expression as an lvalue by implicitly
+borrowing it. For example, it is possible to compare two unsized
+[slices](#array-and-slice-types) for equality direcly, because the `==`
+operator implicitly borrows it's operands:
+
+```rust
+let a: &[i32] = &[1, 2, 3];
+let b: &[i32] = &vec![1, 2, 3];
+*a == *b;
+/// Equivalent form:
+::std::cmp::PartialEq::eq(&*a, &*b);
+```
+
+Implicit borrows may be taken in the following expressions:
+* Left operand in [method-call expressions](#method-call-expressions)
+* Left operand in [field expressions](#field-expressions)
+* Left operand in [call expressions](#call-expressions)
+* Left operand in [index expressions](#index-expressions)
+* Operand of the [dereference](#the-dereference-operator) (`*`) operator
+* Operands of [comparison operators](#comparison-operators)
+* Left operands of the [compound assignment](#compound-assignment-expressions)
+
 ## Literal expressions
 
 A _literal expression_ consists of one of the [literal](tokens.html#literals)
@@ -106,9 +157,19 @@ boolean value, or the unit value.
 ## Path expressions
 
 A [path](paths.html) used as an expression context denotes either a local
-variable or an item. Path expressions that resolve to local or static
-variables are [lvalues](expressions.html#lvalues-rvalues-and-temporaries).
-Other paths are rvalues.
+variable or an item. Path expressions that resolve to local or static variables
+are [lvalues](expressions.html#lvalues-rvalues-and-temporaries). Using a
+`static mut` variable requires an [`unsafe` block](unsafe-blocks.html) Other
+paths are rvalues.
+
+```rust
+let local_var = 3;
+static STATIC_VAR: i32 = 5;
+static mut STATIC_MUT_VAR: i32 = 7;
+local_var;
+STATIC_VAR;
+unsafe { STATIC_MUT_VAR };
+```
 
 ## Tuple expressions
 
@@ -233,18 +294,29 @@ take a shared or mutable borrow of the reciever if needed.
 
 When resolving method calls on an expression of type `A`, Rust will use the
 following order:
-1. Inherent methods, with receiver or type `A`, `&A`, `&mut A`.
+1. Inherent methods, with receiver of type `A`, `&A`, `&mut A`.
 1. Trait methods with receiver of type `A`.
 1. Trait methods with receiver of type `&A`.
 1. Trait methods with receiver of type `&mut A`.
 1. If it's possible, Rust will then repeat steps 1-5 with
   `<A as std::ops::Deref>::Target`, and insert a dereference operator.
+1. If `A` is now an [array](#types.html#array-and-slice-types) type, then
+  repeat steps 1-4 with the corresponding slice type.
 
-Note: in steps 1-4 the method doesn't have to be implemented on `A`. For
-example in step 3 the trait could be implemented for `&A` with the method
-taking `self`. If a step is reached where there is more than one possible
-method, then it is a compiler error. To resolve this use THIS ISN'T IN THE
-REFERENCE!!!!!!!!
+Note: that in steps 1-4 `Self` may not be the same as `A`. For example in this
+example `Self` is `&A`, not `A`
+```rust
+impl<'a> Trait for &'a A {
+    fn method(self) {}
+}
+```
+
+Another note: this process does not use the mutablility or lifetime of the
+receiver, or whether `unsafe` methods can currently be called to resolve
+methods. The constraints instead lead to compiler errors.
+
+If a step is reached where there is more than one possible method, then it is a
+compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -255,11 +327,11 @@ let log_pi = pi.unwrap_or(0.0).log(2.72);
 ## Field expressions
 
 A _field expression_ consists of an expression followed by a single dot and an
-[identifier](identifiers.html), when not immediately followed by a parenthesized expression-list
-(the latter is always a [method call expression](#method-call-expressions)). A
-field expression denotes a field of a [struct](types.html#struct-types). To
-call a function stored in a struct parentheses are needed around the field
-epression
+[identifier](identifiers.html), when not immediately followed by a
+parenthesized expression-list (the latter is always a [method call
+expression](#method-call-expressions)). A field expression denotes a field of a
+[struct](types.html#struct-types). To call a function stored in a struct
+parentheses are needed around the field epression
 
 ```rust,ignore
 mystruct.myfield;
@@ -420,46 +492,38 @@ let y = 0..10;
 assert_eq!(x, y);
 ```
 
-Similarly, the `...` operator will construct an object of one of the
-`std::ops::RangeInclusive` variants.
-
-```rust
-# #![feature(inclusive_range_syntax)]
-1...2;   // std::ops::RangeInclusive
-...4;    // std::ops::RangeToInclusive
-```
-
-The following expressions are equivalent.
-
-```rust
-# #![feature(inclusive_range_syntax, inclusive_range)]
-let x = std::ops::RangeInclusive::NonEmpty {start: 0, end: 10};
-let y = 0...10;
-
-assert_eq!(x, y);
-```
-
 ## Operator expressions
 
-Operators are defined for built in types by the Rust language. Operators will
-panic when they overflow when compiled in debug mode. Many of the following
-operators can be overloaded using traits in `std::ops` or `std::cmp`. Note that
-the traits in `std::cmp` are used more generally to show how a type may be
-compared and will likely be assumed to define actual comparisons by functions
-that use these traits as bounds.
+Operators are defined for built in types by the Rust language. Many of the
+following operators can be overloaded using traits in `std::ops` or `std::cmp`.
+Note that the traits in `std::cmp` are used more generally to show how a type
+may be compared and will likely be assumed to define actual comparisons by
+functions that use these traits as bounds.
+
+### Overflow
+
+Integer operators will panic when they overflow when compiled in debug mode,
+i.e. when one of the following happens:
+* `+`, `*` or `-` create a value greater than the maximum value, or less than
+  the minimum value that can be stored. Includes unary `-` on the smallest
+  value of any signed integer type.
+* `/` or `%`, where the left-hand argument is the smallest integer of a signed
+integer type and the right-hand argument is `-1`.
+* `<<` or `>>` where the right-hand argument is greater than or equal to the
+  number of bits in the type of the left-hand argument, or is negative.
 
 ### Borrow operators
 
-The `&` and `&mut` operators are unary prefix operators. When applied to an
-lvalue produce a reference (pointer) to the location that the value refers to.
-The lvalue is also placed into a borrowed state for the duration of the
-reference. For a shared borrow (`&`), this implies that the lvalue may not be
-mutated, but it may be read or shared again. For a mutable borrow (`&mut`), the
-lvalue may not be accessed in any way until the borrow expires. `&mut` may only
-be applied to `lvalues` that can be mutated. If the `&` or `&mut` operators are
-applied to an rvalue, a temporary value is created; the lifetime of this
-temporary value is defined by [syntactic rules](#temporary-lifetimes). These
-operators cannot be overloaded.
+The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
+operators. When applied to an lvalue produce a reference (pointer) to the
+location that the value refers to. The lvalue is also placed into a borrowed
+state for the duration of the reference. For a shared borrow (`&`), this
+implies that the lvalue may not be mutated, but it may be read or shared again.
+For a mutable borrow (`&mut`), the lvalue may not be accessed in any way until
+the borrow expires. `&mut` evaluates its operand in a mutable lvalue context.
+If the `&` or `&mut` operators are applied to an rvalue, a temporary value is
+created; the lifetime of this temporary value is defined by [syntactic
+rules](#temporary-lifetimes). These operators cannot be overloaded.
 
 ```rust
 {
@@ -476,16 +540,16 @@ let mut array = [-2, 3, 9];
 
 ### The dereference operator
 
-When the `*` (dereference) operator is also a unary prefix operator applied to
+The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
 variable, a (nested) field of a local varaince or is a mutable lvalue, then the
 resulting [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be
 assigned to. Dereferencing a raw pointer requires `unsafe`.
 
-On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` or
-`*std::ops::Deref::deref_mut(&mut x)` depending on whether the rquired lvalue
-has to be mutable.
+On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
+[immutable lvalue context](#mutability) and`*std::ops::Deref::deref_mut(&mut
+x)` in a mutable lvalue context.
 
 ```rust
 let x = &7;
@@ -526,8 +590,10 @@ context and are moved or copied.
 
 | Symbol | Integer     | `bool`      | Floating Point | Overloading Trait  |
 |--------|-------------|-------------|----------------|--------------------|
-| `-`    | Negation    |             | Negation       | `std::ops::Neg`    |
+| `-`    | Negation*   |             | Negation       | `std::ops::Neg`    |
 | `!`    | Bitwise NOT | Logical NOT |                | `std::ops::Not`    |
+
+\* Only for signed integer types.
 
 Here are some example of these operators
 
@@ -538,7 +604,7 @@ assert_eq!(!x, -7);
 assert_eq!(true, !false);
 ```
 
-### Binary Operators Expressions
+### Arithmetic and Logical Binary Operators
 
 Binary operators expressions are all written with infix notation. This table
 summarizes the behaivour of arithmetic and logical binary operators on
@@ -560,8 +626,25 @@ context and are moved or copied.
 | `<<`   | Left Shift              |             |                | `std::ops::Shl`    |
 | `>>`   | Right Shift*            |             |                | `std::ops::Shr`    |
 
-\* Arithmetic right shift on signed integers, logical right shift on unsigned integers.
+\* Arithmetic right shift on signed integer types, logical right shift on
+unsigned integer types.
 
+Here are examples of these operators being used.
+
+```rust
+assert_eq!(3 + 6, 9);
+assert_eq!(5.5 - 1.25, 4.25);
+assert_eq!(-5 * 14, -70);
+assert_eq!(14 / 3, 4);
+assert_eq!(100 % 7, 2);
+assert_eq!(0b1010 & 0b1100, 0b1000);
+assert_eq!(0b1010 | 0b1100, 0b1110);
+assert_eq!(0b1010 ^ 0b1100, 0b110);
+assert_eq!(13 << 3, 104);
+assert_eq!(-10 >> 2, -3);
+```
+
+### Comparison Operators
 
 Comparison operators are also defined both for primitive types and many type in
 the standard library. Unlike arithemetic and logical operators, the traits for
@@ -581,19 +664,8 @@ means that the operands don't have to be sized.
 | `>=`   | Greater than or equal to | `std::cmp::PartialOrd::ge` |
 | `<=`   | Less than or equal to    | `std::cmp::PartialOrd::le` |
 
-Here is an example of all of these operators being used.
-
+Here are examples of the comparison operators being used.
 ```rust
-assert_eq!(3 + 6, 9);
-assert_eq!(5.5 - 1.25, 4.25);
-assert_eq!(-5 * 14, -70);
-assert_eq!(14 / 3, 4);
-assert_eq!(100 % 7, 2);
-assert_eq!(0b1010 & 0b1100, 0b1000);
-assert_eq!(0b1010 | 0b1100, 0b1110);
-assert_eq!(0b1010 ^ 0b1100, 0b110);
-assert_eq!(13 << 3, 104);
-assert_eq!(-10 >> 2, -3);
 assert!(123 == 123);
 assert!(23 != -12);
 assert!(12.5 > 12.2);
