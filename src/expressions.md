@@ -141,6 +141,12 @@ Implicit borrows may be taken in the following expressions:
 * Operands of [comparison operators](#comparison-operators)
 * Left operands of the [compound assignment](#compound-assignment-expressions)
 
+## Traits
+
+Many of the following operators and expressions can also be overloaded for
+other types using traits in `std::ops` or `std::cmp`, these traits here also
+exist in `core::ops` and `core::cmp` with the same names.
+
 ## Literal expressions
 
 A _literal expression_ consists of one of the [literal](tokens.html#literals)
@@ -324,7 +330,7 @@ compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
-let log_pi = pi.unwrap_or(0.0).log(2.72);
+let log_pi = pi.unwrap_or(1.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
@@ -378,10 +384,10 @@ expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
 [non-function types](types.html#function-types), the expression f(...) uses the
 method on one of the `std::ops::Fn`, `std::ops::FnMut` or `std::ops::FnOnce`
-traits (or the correspond traits in `core::ops`), which differ in whether they
-take the type by reference, mutable refernece, or take ownership respectively.
-An automatic borrow will be taken if needed. Rust will also automatically
-dereference `f` as required. Some examples of call expressions:
+traits, which differ in whether they take the type by reference, mutable
+refernece, or take ownership respectively. An automatic borrow will be taken if
+needed. Rust will also automatically dereference `f` as required. Some examples
+of call expressions:
 
 ```rust
 # fn add(x: i32, y: i32) -> i32 { 0 }
@@ -473,9 +479,8 @@ When the array is mutable, the resulting
 [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be assigned to.
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or `*std::opsIndexMut::index_mut(&mut a, b)`
-in a mutable lvalue context (these traits also exist in `core::ops`). Just as
-with methods, Rust will also insert dereference operations on `a` repeatedly
-to find an implementation.
+in a mutable lvalue context. Just as with methods, Rust will also insert
+dereference operations on `a` repeatedly to find an implementation.
 
 Indices are zero-based, and are of type `usize` for arrays and slices. Vector
 access is bounds-checked at compile-time for constant arrays being accessed
@@ -518,11 +523,8 @@ assert_eq!(x, y);
 ## Operator expressions
 
 Operators are defined for built in types by the Rust language. Many of the
-following operators can be overloaded using traits in `std::ops` or `std::cmp`.
-Note that the traits in `std::cmp` are used more generally to show how a type
-may be compared and will likely be assumed to define actual comparisons by
-functions that use these traits as bounds. All traits here also exist in `core`
-with the same names.
+following operators can also be overloaded using traits in `std::ops` or
+`std::cmp`.
 
 ### Overflow
 
@@ -672,12 +674,14 @@ assert_eq!(-10 >> 2, -3);
 
 Comparison operators are also defined both for primitive types and many type in
 the standard library. Unlike arithemetic and logical operators, the traits for
-overloading the operators the traits for these operators require that they are
-implemented to define actual comparisons. Many functions and macros in the
-standard library can then use that assumption (although not to ensure safety).
-Unlike the arithmetic and logical operators above, these operators implicitly
-take shared borrows of their operands, evaluating them in lvalue context. This
-means that the operands don't have to be sized.
+overloading the operators the traits for these operators are used more
+generally to show how a type may be compared and will likely be assumed to
+define actual comparisons by functions that use these traits as bounds. Many
+functions and macros in the standard library can then use that assumption
+(although not to ensure safety). Unlike the arithmetic and logical operators
+above, these operators implicitly take shared borrows of their operands,
+evaluating them in lvalue context. This means that the operands don't have to
+be moved out of.
 
 | Symbol | Meaning                  | Overloading method         |
 |--------|--------------------------|----------------------------|
