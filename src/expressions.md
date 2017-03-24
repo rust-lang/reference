@@ -128,7 +128,7 @@ operator implicitly borrows it's operands:
 let a: &[i32] = &[1, 2, 3];
 let b: &[i32] = &vec![1, 2, 3];
 *a == *b;
-/// Equivalent form:
+// Equivalent form:
 ::std::cmp::PartialEq::eq(&*a, &*b);
 ```
 
@@ -683,8 +683,14 @@ define actual comparisons by functions that use these traits as bounds. Many
 functions and macros in the standard library can then use that assumption
 (although not to ensure safety). Unlike the arithmetic and logical operators
 above, these operators implicitly take shared borrows of their operands,
-evaluating them in lvalue context. This means that the operands don't have to
-be moved out of.
+evaluating them in lvalue context:
+```rust
+a == b;
+// is equivalent to
+::std::cmp::PartialEq::eq(&a, &b);
+```
+
+This means that the operands don't have to be moved out of.
 
 | Symbol | Meaning                  | Overloading method         |
 |--------|--------------------------|----------------------------|
