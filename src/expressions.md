@@ -342,7 +342,7 @@ mystruct.myfield;
 foo().x;
 (Struct {a: 10, b: 20}).a;
 mystruct.method();          // Method expression
-(mystruct.function_field)() // Call expression
+(mystruct.function_field)() // Call expression containing a field expression
 ```
 
 A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
@@ -378,10 +378,10 @@ expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
 [non-function types](types.html#function-types), the expression f(...) uses the
 method on one of the `std::ops::Fn`, `std::ops::FnMut` or `std::ops::FnOnce`
-traits, which differ in whether they take the type by reference, mutable
-refernece, or take ownership respectively. An automatic borrow will be taken if
-needed. Rust will also automatically dereference `f` as required. Some examples
-of call expressions:
+traits (or the correspond traits in `core::ops`), which differ in whether they
+take the type by reference, mutable refernece, or take ownership respectively.
+An automatic borrow will be taken if needed. Rust will also automatically
+dereference `f` as required. Some examples of call expressions:
 
 ```rust
 # fn add(x: i32, y: i32) -> i32 { 0 }
@@ -473,9 +473,9 @@ When the array is mutable, the resulting
 [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be assigned to.
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or `*std::opsIndexMut::index_mut(&mut a, b)`
-when needed in a mutable context (these traits also exist in `core::ops`). Just
-as with methods, Rust will also insert dereference operations on `a` repeatedly
-until it finds an implementation.
+in a mutable lvalue context (these traits also exist in `core::ops`). Just as
+with methods, Rust will also insert dereference operations on `a` repeatedly
+to find an implementation.
 
 Indices are zero-based, and are of type `usize` for arrays and slices. Vector
 access is bounds-checked at compile-time for constant arrays being accessed
@@ -496,7 +496,8 @@ arr[10];                  // panics
 
 ## Range expressions
 
-The `..` operator will construct an object of one of the `std::ops::Range` variants.
+The `..` operator will construct an object of one of the `std::ops::Range` (or
+`core::ops::Range`) variants.
 
 ```rust
 1..2;   // std::ops::Range
@@ -520,7 +521,8 @@ Operators are defined for built in types by the Rust language. Many of the
 following operators can be overloaded using traits in `std::ops` or `std::cmp`.
 Note that the traits in `std::cmp` are used more generally to show how a type
 may be compared and will likely be assumed to define actual comparisons by
-functions that use these traits as bounds.
+functions that use these traits as bounds. All traits here also exist in `core`
+with the same names.
 
 ### Overflow
 
@@ -530,7 +532,7 @@ i.e. when one of the following happens:
   the minimum value that can be stored. Includes unary `-` on the smallest
   value of any signed integer type.
 * `/` or `%`, where the left-hand argument is the smallest integer of a signed
-integer type and the right-hand argument is `-1`.
+  integer type and the right-hand argument is `-1`.
 * `<<` or `>>` where the right-hand argument is greater than or equal to the
   number of bits in the type of the left-hand argument, or is negative.
 
@@ -778,22 +780,22 @@ The precedence of Rust operators is ordered as follows, going from strong to
 weak. Binary Operators at the same precedence level are evaluated in the order
 given by their associativity.
 
-| Operator                    | Associativity           |
-|-----------------------------|-------------------------|
-| `?`                         |                         |
-| Unary `-` `*` `!` `&` `&mut` |                        |
-| `as` `:`                    | Left to Right           |
-| `*` `/` `%`                 | Left to Right           |
-| `+` `-`                     | Left to Right           |
-| `<<` `>>`                   | Left to Right           |
-| `&`                         | Left to Right           |
-| `^`                         | Left to Right           |
-| <code>&#124;</code>         | Left to Right           |
-| `==` `!=` `<` `>` `<=` `>=` | Require parentheses     |
-| `&&`                        | Left to Right           |
-| <code>&#124;&#124;</code>   | Left to Right           |
-| `..` `...`                  | Require parentheses     |
-| `<-`                        | Right to Left           |
+| Operator                    | Associativity       |
+|-----------------------------|---------------------|
+| `?`                         |                     |
+| Unary `-` `*` `!` `&` `&mut` |                    |
+| `as` `:`                    | Left to Right       |
+| `*` `/` `%`                 | Left to Right       |
+| `+` `-`                     | Left to Right       |
+| `<<` `>>`                   | Left to Right       |
+| `&`                         | Left to Right       |
+| `^`                         | Left to Right       |
+| <code>&#124;</code>         | Left to Right       |
+| `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
+| `&&`                        | Left to Right       |
+| <code>&#124;&#124;</code>   | Left to Right       |
+| `..` `...`                  | Require parentheses |
+| `<-`                        | Right to Left       |
 | `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | Right to Left |
 
 
