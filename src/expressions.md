@@ -353,6 +353,24 @@ Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
 possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
+Finally the fields of a struct, a reference to a struct, or a `Box` containing
+a struct are treated as spearate entities when borrowing. If the struct does
+not implement [`Drop`](#the-drop-trait) this also applies to moving where
+possible. This also does not apply if automatic dereferencing is done though
+other types.
+```rust
+# struct A { f1: String, f2: String, f3: String }
+# let mut x = A {
+#     f1: "f1".to_string(),
+#     f2: "f2".to_string(),
+#     f3: "f3".to_string()
+# };
+let a: &mut String = &mut x.f1; // x.f1 borrowed mutably
+let b: &String = &x.f2;         // x.f2 borrowed immutably
+let c: &String = &x.f2;
+let d: String = x.f3;           // Move out of x.f3
+```
+
 ## Call expressions
 
 A _call expression_ consists of an expression followed by a parenthesized
