@@ -165,16 +165,18 @@ boolean value, or the unit value.
 A [path](paths.html) used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
 are [lvalues](expressions.html#lvalues-rvalues-and-temporaries). Using a
-`static mut` variable requires an [`unsafe` block](unsafe-blocks.html) Other
+`static mut` variable requires an [`unsafe` block](#unsafe-block) Other
 paths are rvalues.
 
 ```rust
+mod globals {
+    static STATIC_VAR: i32 = 5;
+    static mut STATIC_MUT_VAR: i32 = 7;
+}
 let local_var = 3;
-static STATIC_VAR: i32 = 5;
-static mut STATIC_MUT_VAR: i32 = 7;
 local_var;
-STATIC_VAR;
-unsafe { STATIC_MUT_VAR };
+globals::STATIC_VAR;
+unsafe { globals::STATIC_MUT_VAR };
 ```
 
 ## Tuple expressions
@@ -266,6 +268,22 @@ Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
 
+### Enumeration Variant expressions
+
+Enumeration variants can be constructed similarly to structs, using a path to
+an enum variant instead of a struct:
+
+```rust
+# enum Message {
+#     Quit,
+#     WriteString(String),
+#     Move { x: i32, y: i32 },
+# }
+let q = Message::Quit;
+let w = Message::WriteString("Some string".to_string());
+let m = Message::Move { x: 50, y: 200 };
+```
+
 ## Block expressions
 
 A _block expression_ is similar to a module in terms of the declarations that
@@ -291,6 +309,13 @@ assert_eq!(5, x);
 Blocks are always [rvalues](#lvalues-and-rvalues) and evaluate the last
 expression in rvalue context.
 
+### `unsafe` blocks
+
+_See [`unsafe` block](unsafe-blocks.html) for more information on when to use `unsafe`_
+
+A block of code can be prefixed with the `unsafe` keyword, to permit calling
+`unsafe` functions or dereferencing raw pointers within a safe function.
+
 ## Method-call expressions
 
 A _method call_ consists of an expression followed by a single dot, an
@@ -300,6 +325,12 @@ to a method if the exact `self`-type of the left-hand-side is known, or
 dynamically dispatching if the left-hand-side expression is an indirect [trait
 object](types.html#trait-objects). Method call expressions will automatically
 take a shared or mutable borrow of the reciever if needed.
+
+```rust
+let pi: Result<f32, _> = "3.14".parse();
+let log_pi = pi.unwrap_or(1.0).log(2.72);
+# assert!(1.14 < log_pi && log_pi < 1.15)
+```
 
 When resolving method calls on an expression of type `A`, Rust will use the
 following order:
@@ -312,7 +343,8 @@ following order:
 1. If `A` is now an [array](types.html#array-and-slice-types) type, then
   repeat steps 1-4 with the corresponding slice type.
 
-Note: that in steps 1-4 `Self` may not be the same as `A`. For example
+Note: that in steps 1-4 the receiver is used, not the type of `Self`, which may
+not be the same as `A`. For example
 ```rust
 // `Self` is `&A`, receiver is `&A`.
 impl<'a> Trait for &'a A {
@@ -328,13 +360,14 @@ Another note: this process does not use the mutablility or lifetime of the
 receiver, or whether `unsafe` methods can currently be called to resolve
 methods. These constraints instead lead to compiler errors.
 
-If a step is reached where there is more than one possible method, then it is a
-compiler error. To resolve this use THIS ISN'T IN THE REFERENCE!!!!!!!!
+If a step is reached where there is more than one possible method (where
+generic methods or traits are considered the same), then it is a compiler
+error. To resolve this either use more distinctive names, or call the method as
+a function, using the required trait name in the path:
 
-```rust
-let pi: Result<f32, _> = "3.14".parse();
-let log_pi = pi.unwrap_or(1.0).log(2.72);
-# assert!(1.14 < log_pi && log_pi < 1.15)
+```rust,ignore
+Trait::method(a, b)
+<Type as Trait>::method(a, b);
 ```
 
 ## Field expressions
@@ -367,6 +400,7 @@ a struct are treated as spearate entities when borrowing. If the struct does
 not implement [`Drop`](#the-drop-trait) this also applies to moving where
 possible. This also does not apply if automatic dereferencing is done though
 other types.
+
 ```rust
 # struct A { f1: String, f2: String, f3: String }
 # let mut x = A {
@@ -378,6 +412,23 @@ let a: &mut String = &mut x.f1; // x.f1 borrowed mutably
 let b: &String = &x.f2;         // x.f2 borrowed immutably
 let c: &String = &x.f2;
 let d: String = x.f3;           // Move out of x.f3
+```
+
+### Tuple indexing expressions
+
+[Tuples](types.html#tuple-types) and [struct tuples](items.html#structs) can be
+indexed using the number corresponding to the possition of the field. The index
+must be a [decimal literal](tokens.html#integer-literals) with no underscores
+or suffix. Tuple indexing expressions also differ from field expressions in
+that they can unabiguously be called as a function. In all other aspects they
+have the same behaviour.
+
+```rust
+# struct Point(f32, f32);
+let pair = (1, 2);
+assert_eq!(pair.1, 2);
+let unit_x = Point(1.0, 0.0);
+assert_eq!(unit_x.0, 1.0);
 ```
 
 ## Call expressions
@@ -609,7 +660,7 @@ println!("{:?}", res);
 # assert!(res.is_err())
 ```
 
-### Other prefix unary operators
+### Negation operators
 
 This table summarizes the behaivour of the last two unary operators on
 primitive types and which traits are used to overload these operators for other
@@ -795,21 +846,25 @@ given by their associativity.
 
 | Operator                    | Associativity       |
 |-----------------------------|---------------------|
+| paths                       |                     |
+| block expressions <br> control flow block expressions <br> tuple expressions <br> array expressions <br> (braced) struct and variant expressions <br> method calls <br> field expressions | left to right |
+| function calls <br> tuple struct expressions <br> index expressions |           |
 | `?`                         |                     |
 | Unary `-` `*` `!` `&` `&mut` |                    |
-| `as` `:`                    | Left to Right       |
-| `*` `/` `%`                 | Left to Right       |
-| `+` `-`                     | Left to Right       |
-| `<<` `>>`                   | Left to Right       |
-| `&`                         | Left to Right       |
-| `^`                         | Left to Right       |
-| <code>&#124;</code>         | Left to Right       |
+| `as` `:`                    | left to right       |
+| `*` `/` `%`                 | left to right       |
+| `+` `-`                     | left to right       |
+| `<<` `>>`                   | left to right       |
+| `&`                         | left to right       |
+| `^`                         | left to right       |
+| <code>&#124;</code>         | left to right       |
 | `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
-| `&&`                        | Left to Right       |
-| <code>&#124;&#124;</code>   | Left to Right       |
+| `&&`                        | left to right       |
+| <code>&#124;&#124;</code>   | left to right       |
 | `..` `...`                  | Require parentheses |
-| `<-`                        | Right to Left       |
-| `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | Right to Left |
+| `<-`                        | right to left       |
+| `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
+| `return` `break` `continue`<br>Lambda expressions | right to left |
 
 
 ## Grouped expressions
