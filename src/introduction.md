@@ -26,6 +26,11 @@ is what we have for now.
 
 You may also be interested in the [grammar].
 
+N. B. This document may be incomplete. Documenting everything might take a
+while. We have a [big issue] to track documentation for every Rust feature,
+so check that out if you can't find something here.
+
 [book]: ../book/index.html
 [standard]: ../std/index.html
 [grammar]: ../grammar.html
+[big issue]: https://github.com/rust-lang-nursery/reference/issues/9
