@@ -67,7 +67,7 @@ _immutable_.
 The following expressions can create mutable lvalues:
 * Mutable [variables](#variables.html), which are not currently borrowed.
 * [Mutable `static` items](items.html#mutable-statics).
-* [Temporary values](#temporary-lifetimes)
+* [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions), this evaluates the expression in a mutable
   lvalue context.
 * [Dereferenes](#the-dereference-operator) of a `*mut T` pointer.
@@ -133,19 +133,58 @@ let b: &[i32] = &vec![1, 2, 3];
 ```
 
 Implicit borrows may be taken in the following expressions:
-* Left operand in [method-call expressions](#method-call-expressions)
-* Left operand in [field expressions](#field-expressions)
-* Left operand in [call expressions](#call-expressions)
-* Left operand in [index expressions](#index-expressions)
-* Operand of the [dereference](#the-dereference-operator) (`*`) operator
-* Operands of [comparison operators](#comparison-operators)
-* Left operands of the [compound assignment](#compound-assignment-expressions)
+* Left operand in [method-call expressions](#method-call-expressions).
+* Left operand in [field expressions](#field-expressions).
+* Left operand in [call expressions](#call-expressions).
+* Left operand in [index expressions](#index-expressions).
+* Operand of the [dereference](#the-dereference-operator) (`*`) operator.
+* Operands of [comparison operators](#comparison-operators).
+* Left operands of the [compound assignment](#compound-assignment-expressions).
 
 ## Traits
 
 Many of the following operators and expressions can also be overloaded for
 other types using traits in `std::ops` or `std::cmp`, these traits here also
 exist in `core::ops` and `core::cmp` with the same names.
+
+## Constant expressions
+
+Certain types of expressions can be evaluated at compile time. These are called
+_constant expressions_. The following expressions are constant expressions, so
+long as any operands are also constant expressions. Certain places may put
+further restrictions on which constant expressions may be used, for example,
+[statics](items.html#static-items) can't be used when defining a
+[constant](items.html#constant-items).
+
+* [Literals](#literal-expressions).
+* [Paths](#paths) to [functions](items.html#functions) and constants, recursion
+  is not allowed however.
+* Statics, so long as only their address, not their value, is used, even with.
+* [Tuple expressions](#tuple-expressions).
+* [Array expressions](#array-expressions).
+* [Struct expressions](#struct-expressions), where the type does not implement
+  [`Drop`](the-drop-trait.html).
+* [Variant expressions](#enumeration-variant-expressions), where the
+  enumeration type does not implement `Drop`.
+* [Block expressions](#block-expressions) (and `unsafe` blocks) which contain
+  only items and possibly a (constant) tail expression.
+* [Field expressions](#field-expressions).
+* [Index expressions](#index-expressions), indexing a [array or
+  slice](types.html#array-and-slice-types) with a `usize`.
+* [Range expressions](#range-expressions).
+* [Lambda expressions](#lambda-expressions) which don't capture variables from
+  the environment.
+* Built in [negation](#negation-operators), [arithmetic,
+  logical](#arithmetic-and-logical-binary-operators),
+  [comparison](#comparison-operators) or [lazy
+  boolean](#lazy-boolean-operators) operatators used on integer and floating
+  point types, `bool` and `char`.
+* Shared [borrow expressions](#borrow-operators).
+* The [dereference operator](#dereference-operator), but not to circumvent the
+  rule on statics.
+* [Grouped expressions](#grouped-expressions).
+* [Cast expressions](#type-cast-expressions), except pointer to address and
+  function pointer to address casts.
 
 ## Literal expressions
 
@@ -177,6 +216,9 @@ let local_var = 3;
 local_var;
 globals::STATIC_VAR;
 unsafe { globals::STATIC_MUT_VAR };
+let some_constructor = Option::<i32>::Some;
+let push_integer = Vec::<i32>::push;
+let slice_eq = <[i32]>::eq;
 ```
 
 ## Tuple expressions
@@ -205,11 +247,13 @@ of the [path](paths.html) of a [struct item](items.html#structs), followed by a
 brace-enclosed list of zero or more comma-separated name-value pairs, providing
 the field values of a new instance of the struct. A field name can be any
 [identifier](identifiers.html), and is separated from its value expression by a
-colon. The location denoted by a struct field is mutable if and only if the
-enclosing struct is mutable. Struct expressions can't be used directly in the
+colon. In the case of a tuple structs the field names are instead decimal
+integer literals, containing no underscores or leading zeros, corresponding to
+the position of the field. Struct expressions can't be used directly in the
 head of an [`if`](#if-expressions), [`while`](#while-loops),
 [`match`](#match-expressions), [`for`](#for-expressions), [`if
-let`](#if-let-expressions) or [`while let`](#while-let-loops) expression.
+let`](#if-let-expressions) or [`while let`](#while-let-loops) expression. But
+struct expressions can still be in used inside parentheses, for example.
 
 A _tuple struct expression_ consists of the [path](paths.html) of a [struct
 item](items.html#structs), followed by a parenthesized list of one or more
@@ -230,6 +274,7 @@ The following are examples of struct expressions:
 Point {x: 10.0, y: 20.0};
 NothingInMe {};
 TuplePoint(10.0, 20.0);
+TuplePoint { 0: 10.0, 1: 20.0 }; // Same as above line
 let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
@@ -796,12 +841,79 @@ fn average(values: &[f64]) -> f64 {
 }
 ```
 
-Some of the conversions which can be done through the `as` operator can also be
-done implicitly at various points in the program, such as argument passing and
-assignment to a `let` binding with an explicit type. Implicit conversions are
-limited to "harmless" conversions that do not lose information and which have
-minimal or no risk of surprising side-effects on the dynamic execution
-semantics.
+`as` can be used to explicitly perform [coercions](type-coercions.html), as
+well as the following additional casts. We write `*T` as short for either
+`*const T` or `*mut T`
+
+| Type of `e`           | `U`                   | Cast performed by `e as U`       |
+|-----------------------|-----------------------|----------------------------------|
+| Integer or Float type | Integer or Float type | Numeric cast                     |
+| C-like enum           | Integer type          | Enum cast                        |
+| `bool` or `char`      | Integer type          | Primitive to integer cast        |
+| `u8`                  | `char`                | `u8` to `char` cast              |
+| `*T`, `&T` or `&mut T`| `*V` where `V: Sized` | Pointer to pointer cast          |
+| `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
+| Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
+| [Function pointer](type.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
+| Function pointer      | Interger              | Function pointer to address cast |
+
+
+* `e` has type `T` and `T` and `U` are any numeric types; *numeric-cast*
+    * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
+    * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
+      truncate
+    * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
+        * zero-extend if the source is unsigned
+        * sign-extend if the source is signed
+    * Casting from a float to an integer will round the float towards zero
+        * **[NOTE: currently this will cause Undefined Behavior if the rounded
+          value cannot be represented by the target integer type][float-int]**.
+          This includes Inf and NaN. This is a bug and will be fixed.
+    * Casting from an integer to float will produce the floating point
+      representation of the integer, rounded if necessary (rounding strategy
+      unspecified)
+    * Casting from an f32 to an f64 is perfect and lossless
+    * Casting from an f64 to an f32 will produce the closest possible value
+      (rounding strategy unspecified)
+        * **[NOTE: currently this will cause Undefined Behavior if the value
+          is finite but larger or smaller than the largest or smallest finite
+          value representable by f32][float-float]**. This is a bug and will
+          be fixed.
+* `e` is a C-like enum (with no data attached to the variants), and `U` is an
+  integer type; *enum-cast*
+    * What are the guarantees here? Equivalent to C?
+* `e` has type `bool` or `char` and `U` is an integer type; *prim-int-cast*
+    * `false` casts to `0`, `true` casts to `1`?
+    * `char` casts to the value of the code point, truncating if required?
+* `e` has type `u8` and `U` is `char`; *u8-char-cast*
+    * Interprets the `u8` as a code point?
+* `e` has type `*T`, `U` has type `*U_0`, and either `U_0: Sized` or
+  `unsize_kind(T) == unsize_kind(U_0)`; a *ptr-ptr-cast*
+    * Points at same location?
+    * Alignment??
+    * Fat pointers have the same "additional information"?
+    * Is unsize_kind described anywhere?
+    * Round trips?
+* `e` has type `*T` and `U` is a numeric type, while `T: Sized`;
+  *ptr-addr-cast*
+    * What do we guarantee here?
+    * Equivalent to `mem::transmute` followed by truncation/extension?
+    * Extend as though the pointer is unsigned?
+* `e` is an integer and `U` is `*U_0`, while `U_0: Sized`; *addr-ptr-cast*
+    * Alignment??
+    * Round trips with pointer address casts (either way)?
+    * Probably out of scope, but is 'getting (un)lucky' with addresses defined?
+    * Use in embedded?
+    * Does casting 0 in this way guaranteed to be a null pointer?
+* `e` has type `&[T; n]` and `U` is `*const T`; *array-ptr-cast*
+    * Equivalent to taking reference to first element and csating (if n > 0)?
+* `e` is a function pointer type and `U` has type `*T`, while `T: Sized`;
+  *fptr-ptr-cast*
+    * Same concerns as with pointer to pointer casts
+* `e` is a function pointer type and `U` is an integer; *fptr-addr-cast*
+    * Same concerns as with pointer to address casts
+
+TODO: Explain every last one of these...
 
 ### Assignment expressions
 
