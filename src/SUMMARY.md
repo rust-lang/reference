@@ -56,3 +56,5 @@
     - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
 
 [Appendix: Influences](influences.md)
+
+[Appendix: As-yet-undocumented Features](undocumented.md)
