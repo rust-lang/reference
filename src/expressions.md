@@ -52,8 +52,8 @@ following lvalues may be moved out of:
 * The result of [dereferencing](#the-dereference-operator) an expression with
   type `Box<T>` and that can also be moved out of.
 
-Moving out of an lvalue deinitialises that location (if it comes from a local
-vairable), so that it can't be read from again. In all other cases, trying to
+Moving out of an lvalue deinitializes that location (if it comes from a local
+variable), so that it can't be read from again. In all other cases, trying to
 use an lvalue in an rvalue context is an error.
 
 ### Mutability
@@ -74,14 +74,14 @@ The following expressions can create mutable lvalues:
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
   this is an exception to the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
-  the value being derefenced is evalutated is a mutable lvalue context.
+  the value being dereferenced is evaluated is a mutable lvalue context.
 * [Indexing](#index-expressions) of a type that implements `DerefMut`, this
   then evalutes the value being indexed (but not the index) in mutable lvalue
   context.
 
 ### Temporary lifetimes
 
-When using an rvalue in most lvalue contexts, a temporary un-named lvalue is
+When using an rvalue in most lvalue contexts, a temporary unnamed lvalue is
 created and used instead. The lifetime of temporary values is typically the
 innermost enclosing statement; the tail expression of a block is considered
 part of the statement that encloses the block.
@@ -121,7 +121,7 @@ Here are some examples:
 
 Certain expressions will treat an expression as an lvalue by implicitly
 borrowing it. For example, it is possible to compare two unsized
-[slices](#array-and-slice-types) for equality direcly, because the `==`
+[slices](#array-and-slice-types) for equality directly, because the `==`
 operator implicitly borrows it's operands:
 
 ```rust
@@ -150,16 +150,23 @@ exist in `core::ops` and `core::cmp` with the same names.
 ## Constant expressions
 
 Certain types of expressions can be evaluated at compile time. These are called
-_constant expressions_. The following expressions are constant expressions, so
-long as any operands are also constant expressions. Certain places may put
-further restrictions on which constant expressions may be used, for example,
-[statics](items.html#static-items) can't be used when defining a
-[constant](items.html#constant-items).
+_constant expressions_. Certain places, such as in
+[constants](items.html#constant-items) and [statics](items.html#static-items),
+require a constant expression, and are always evaluated at compile time. In
+other places, such as in [`let` statements](let-statements), constant
+expressions may be evaluated at compile time. If errors, such as out of bounds
+[array access](#index-expressions) or [overflow](#overflow) occurs, then it is
+a compiler error if the value must be evaluated at compile time, otherwise it
+is just a warning, but the code will most likely panic when run.
+
+The following expressions are constant expressions, so long as any operands are
+also constant expressions:
 
 * [Literals](#literal-expressions).
-* [Paths](#paths) to [functions](items.html#functions) and constants, recursion
-  is not allowed however.
-* Statics, so long as only their address, not their value, is used, even with.
+* [Paths](#paths) to [functions](items.html#functions) and constants. Recursively
+  defining constants is not allowed.
+* Statics, so long as only their address, not their value, is used: even
+  indirectly through a compilicated constant expression. \*
 * [Tuple expressions](#tuple-expressions).
 * [Array expressions](#array-expressions).
 * [Struct expressions](#struct-expressions), where the type does not implement
@@ -177,7 +184,7 @@ further restrictions on which constant expressions may be used, for example,
 * Built in [negation](#negation-operators), [arithmetic,
   logical](#arithmetic-and-logical-binary-operators),
   [comparison](#comparison-operators) or [lazy
-  boolean](#lazy-boolean-operators) operatators used on integer and floating
+  boolean](#lazy-boolean-operators) operators used on integer and floating
   point types, `bool` and `char`.
 * Shared [borrow expressions](#borrow-operators).
 * The [dereference operator](#dereference-operator), but not to circumvent the
@@ -185,6 +192,8 @@ further restrictions on which constant expressions may be used, for example,
 * [Grouped expressions](#grouped-expressions).
 * [Cast expressions](#type-cast-expressions), except pointer to address and
   function pointer to address casts.
+
+\* Only in static items.
 
 ## Literal expressions
 
@@ -284,11 +293,12 @@ given *unit-like* struct type, this will always be the same value.
 
 A struct expression can terminate with the syntax `..` followed by an
 expression to denote a functional update. The expression following `..` (the
-base) must have the same struct type as the new struct type being formed.
-The entire expression denotes the result of constructing a new struct (with
-the same type as the base expression) with the given values for the fields that
+base) must have the same struct type as the new struct type being formed. The
+entire expression denotes the result of constructing a new struct (with the
+same type as the base expression) with the given values for the fields that
 were explicitly specified and the values in the base expression for all other
-fields.
+fields. Just as with all struct expressions, all of the fields of the struct
+must be [visible](visibility-and-privacy.html).
 
 ```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
@@ -369,7 +379,7 @@ calls are resolved to methods on specific traits, either statically dispatching
 to a method if the exact `self`-type of the left-hand-side is known, or
 dynamically dispatching if the left-hand-side expression is an indirect [trait
 object](types.html#trait-objects). Method call expressions will automatically
-take a shared or mutable borrow of the reciever if needed.
+take a shared or mutable borrow of the receiver if needed.
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -401,7 +411,7 @@ impl B {
 }
 ```
 
-Another note: this process does not use the mutablility or lifetime of the
+Another note: this process does not use the mutability or lifetime of the
 receiver, or whether `unsafe` methods can currently be called to resolve
 methods. These constraints instead lead to compiler errors.
 
@@ -422,7 +432,7 @@ A _field expression_ consists of an expression followed by a single dot and an
 parenthesized expression-list (the latter is always a [method call
 expression](#method-call-expressions)). A field expression denotes a field of a
 [struct](types.html#struct-types). To call a function stored in a struct
-parentheses are needed around the field epression
+parentheses are needed around the field expression
 
 ```rust,ignore
 mystruct.myfield;
@@ -440,11 +450,11 @@ Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
 possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
-Finally the fields of a struct, a reference to a struct, or a `Box` containing
-a struct are treated as spearate entities when borrowing. If the struct does
-not implement [`Drop`](#the-drop-trait) this also applies to moving where
-possible. This also does not apply if automatic dereferencing is done though
-other types.
+Finally the fields of a struct, a reference to a struct are treated as separate
+entities when borrowing. If the struct does not implement
+[`Drop`](#the-drop-trait) this also applies to moving out of each of its fields
+where possible. This also does not apply if automatic dereferencing is done
+though other types.
 
 ```rust
 # struct A { f1: String, f2: String, f3: String }
@@ -465,8 +475,8 @@ let d: String = x.f3;           // Move out of x.f3
 indexed using the number corresponding to the possition of the field. The index
 must be a [decimal literal](tokens.html#integer-literals) with no underscores
 or suffix. Tuple indexing expressions also differ from field expressions in
-that they can unabiguously be called as a function. In all other aspects they
-have the same behaviour.
+that they can unambiguously be called as a function. In all other aspects they
+have the same behavior.
 
 ```rust
 # struct Point(f32, f32);
@@ -484,7 +494,7 @@ If the function eventually returns, then the expression completes. For
 [non-function types](types.html#function-types), the expression f(...) uses the
 method on one of the `std::ops::Fn`, `std::ops::FnMut` or `std::ops::FnOnce`
 traits, which differ in whether they take the type by reference, mutable
-refernece, or take ownership respectively. An automatic borrow will be taken if
+reference, or take ownership respectively. An automatic borrow will be taken if
 needed. Rust will also automatically dereference `f` as required. Some examples
 of call expressions:
 
@@ -500,8 +510,10 @@ A _lambda expression_ (sometimes called an "anonymous function expression")
 defines a closure and denotes it as a value, in a single expression. A lambda
 expression is a pipe-symbol-delimited (`|`) list of patterns followed by an
 expression. Type annotations may optionally be added for the type of the
-parameters or for the return type. A lambda expession also may begin with the
-`move` keyword before the initial `|`.
+parameters or for the return type. If there is a return type, the expression
+used for the body of the lambda must be a normal [block](#block-expressions). A
+lambda expression also may begin with the `move` keyword before the initial
+`|`.
 
 A lambda expression denotes a function that maps a list of parameters
 (`ident_list`) onto the expression that follows the `ident_list`. The patterns
@@ -515,7 +527,7 @@ functions, as an abbreviation for defining and capturing a separate function.
 Significantly, lambda expressions _capture their environment_, which regular
 [function definitions](items.html#functions) do not. Without the `move`
 keyword, the lambda expression infers how it captures each variable from its
-environment, prefering to capture by shared reference, effectively borrowing
+environment, preferring to capture by shared reference, effectively borrowing
 all outer variables mentioned inside the closure's body. If needed the compiler
 will infer that instead mutable references should be taken, or that the values
 should be moved or copied (depending on their type) from the environment. A
@@ -554,7 +566,7 @@ enclosing zero or more comma-separated expressions of uniform type in square
 brackets. This produces and array containing each of these values in the
 order they are written.
 
-Alternatively there can be exactly two expresions inside the brackets,
+Alternatively there can be exactly two expressions inside the brackets,
 separated by a semi-colon. The expression after the `;` must be a have type
 `usize` and be a constant expression that can be evaluated at compile time,
 such as a [literal](tokens.html#literals) or a [constant item
@@ -581,15 +593,16 @@ For other types an index expression `a[b]` is equivalent to
 in a mutable lvalue context. Just as with methods, Rust will also insert
 dereference operations on `a` repeatedly to find an implementation.
 
-Indices are zero-based, and are of type `usize` for arrays and slices. Vector
-access is bounds-checked at compile-time for constant arrays being accessed
-with aconstant index value. Otherwise a check will be performed at run-time
-that will put the thread in a _panicked state_ if it fails.
+Indices are zero-based, and are of type `usize` for arrays and slices. Array
+access is a [constant expression](#constant-expressions), so bounds can be
+checked at compile-time for constant arrays with a constant index value.
+Otherwise a check will be performed at run-time that will put the thread in a
+_panicked state_ if it fails.
 
 ```rust,should_panic
-([1, 2, 3, 4])[2];        // Evluates to 3
+([1, 2, 3, 4])[2];        // Evaluates to 3
 
-let x = (["a", "b"])[10]; // compiler error: const index-expr is out of bounds
+let x = (["a", "b"])[10]; // warning: const index-expr is out of bounds
 
 let n = 10;
 let y = (["a", "b"])[n];  // panics
@@ -627,15 +640,17 @@ following operators can also be overloaded using traits in `std::ops` or
 
 ### Overflow
 
-Integer operators will panic when they overflow when compiled in debug mode,
-i.e. when one of the following happens:
-* `+`, `*` or `-` create a value greater than the maximum value, or less than
-  the minimum value that can be stored. Includes unary `-` on the smallest
-  value of any signed integer type.
-* `/` or `%`, where the left-hand argument is the smallest integer of a signed
-  integer type and the right-hand argument is `-1`.
-* `<<` or `>>` where the right-hand argument is greater than or equal to the
-  number of bits in the type of the left-hand argument, or is negative.
+Integer operators will panic when they overflow when compiled in debug mode.
+The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used
+to control this more directly. The following things are considered to be
+overflow:
+* When `+`, `*` or `-` create a value greater than the maximum value, or less
+  than the minimum value that can be stored. This includes unary `-` on the
+  smallest value of any signed integer type.
+* Using `/` or `%`, where the left-hand argument is the smallest integer of a
+  signed integer type and the right-hand argument is `-1`.
+* Using `<<` or `>>` where the right-hand argument is greater than or equal to
+  the number of bits in the type of the left-hand argument, or is negative.
 
 ### Borrow operators
 
@@ -668,7 +683,7 @@ let mut array = [-2, 3, 9];
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
-variable, a (nested) field of a local varaince or is a mutable lvalue, then the
+variable, a (nested) field of a local variance or is a mutable lvalue, then the
 resulting [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be
 assigned to. Dereferencing a raw pointer requires `unsafe`.
 
@@ -687,7 +702,7 @@ assert_eq!(*y, 11);
 ### The `?` operator.
 
 The `?` operator can be applied to values of the `Result<T, E>` type to
-propogate errors. If applied to `Err(e)` it will return `Err(From::from(e))`
+propagate errors. If applied to `Err(e)` it will return `Err(From::from(e))`
 from the enclosing function or closure. If applied to `Ok(x)` it will unwrap
 the value to return `x`. Unlike other unary operators `?` is written in postfix
 notation. `?` cannot be overloaded.
@@ -707,7 +722,7 @@ println!("{:?}", res);
 
 ### Negation operators
 
-This table summarizes the behaivour of the last two unary operators on
+This table summarizes the behavior of the last two unary operators on
 primitive types and which traits are used to overload these operators for other
 types. Remember that signed integers are always represented using two's
 complement. The operands of all of these operators are evaluated in rvalue
@@ -732,7 +747,7 @@ assert_eq!(true, !false);
 ### Arithmetic and Logical Binary Operators
 
 Binary operators expressions are all written with infix notation. This table
-summarizes the behaivour of arithmetic and logical binary operators on
+summarizes the behavior of arithmetic and logical binary operators on
 primitive types and which traits are used to overload these operators for other
 types. Remember that signed integers are always represented using two's
 complement. The operands of all of these operators are evaluated in rvalue
@@ -772,7 +787,7 @@ assert_eq!(-10 >> 2, -3);
 ### Comparison Operators
 
 Comparison operators are also defined both for primitive types and many type in
-the standard library. Unlike arithemetic and logical operators, the traits for
+the standard library. Unlike arithmetic and logical operators, the traits for
 overloading the operators the traits for these operators are used more
 generally to show how a type may be compared and will likely be assumed to
 define actual comparisons by functions that use these traits as bounds. Many
@@ -851,12 +866,14 @@ well as the following additional casts. We write `*T` as short for either
 | C-like enum           | Integer type          | Enum cast                        |
 | `bool` or `char`      | Integer type          | Primitive to integer cast        |
 | `u8`                  | `char`                | `u8` to `char` cast              |
-| `*T`, `&T` or `&mut T`| `*V` where `V: Sized` | Pointer to pointer cast          |
+| `*T`, `&T` or `&mut T`| `*V` where `V: Sized` \* | Pointer to pointer cast          |
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
+| `&[T; n]`             | `*const T`            | Array to pointer cast            |
 | [Function pointer](type.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
-| Function pointer      | Interger              | Function pointer to address cast |
+| Function pointer      | Integer               | Function pointer to address cast |
 
+\* or `T` and `V` are compatible unsized types, e.g., both slices.
 
 * `e` has type `T` and `T` and `U` are any numeric types; *numeric-cast*
     * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
@@ -897,16 +914,18 @@ well as the following additional casts. We write `*T` as short for either
 * `e` has type `*T` and `U` is a numeric type, while `T: Sized`;
   *ptr-addr-cast*
     * What do we guarantee here?
-    * Equivalent to `mem::transmute` followed by truncation/extension?
+    * Equivalent to `mem::transmute` to `usize`, followed by truncation/extension?
     * Extend as though the pointer is unsigned?
+    * Doing pointer arithmetic this way?
 * `e` is an integer and `U` is `*U_0`, while `U_0: Sized`; *addr-ptr-cast*
     * Alignment??
-    * Round trips with pointer address casts (either way)?
+    * Round trips with pointer address casts (either way), with pointer arithmetic?
     * Probably out of scope, but is 'getting (un)lucky' with addresses defined?
     * Use in embedded?
+    * Equivalent to cast to `usize` followed by `mem::transmute`?
     * Does casting 0 in this way guaranteed to be a null pointer?
 * `e` has type `&[T; n]` and `U` is `*const T`; *array-ptr-cast*
-    * Equivalent to taking reference to first element and csating (if n > 0)?
+    * Equivalent to taking reference to first element and casting (if n > 0)?
 * `e` is a function pointer type and `U` has type `*T`, while `T: Sized`;
   *fptr-ptr-cast*
     * Same concerns as with pointer to pointer casts
@@ -1000,7 +1019,7 @@ A `loop` expression denotes an infinite loop.
 
 A `loop` expression may optionally have a _label_. The label is written as a
 lifetime preceding the loop expression, as in `'foo: loop{ }`. If a label is
-present, then labeled `break` and `continue` expressions nested within this
+present, then labelled `break` and `continue` expressions nested within this
 loop may exit out of this loop or return control to its head. See [break
 expressions](#break-expressions) and [continue
 expressions](#continue-expressions). Any `loop` expression has value `()`.
@@ -1074,7 +1093,7 @@ for e in v {
 An example of a for loop over a series of integers:
 
 ```rust
-# fn bar(b:usize) { }
+# fn bar(b: usize) { }
 for i in 0..256 {
     bar(i);
 }
@@ -1098,7 +1117,7 @@ evaluates to `false`, the consequent block is skipped and any subsequent `else
 if` condition is evaluated. If all `if` and `else if` conditions evaluate to
 `false` then any `else` block is executed. An if expression evaluates to the
 same value as the executed block, or `()` if no block is evaluated. An `if`
-expression must have the same type in all situtaions.
+expression must have the same type in all situations.
 
 ```rust
 # let x = 3;
