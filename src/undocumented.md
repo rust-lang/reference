@@ -26,7 +26,7 @@ to shrink!
 [Trait reform]: https://github.com/rust-lang/rfcs/pull/48
 [Attributes on `match` arms]: https://github.com/rust-lang/rfcs/pull/49
 [Flexible target specification]: https://github.com/rust-lang/rfcs/pull/131
-[Conditional compilation]: attributes.html#conditonal-compilation
+[Conditional compilation]: attributes.html#conditional-compilation
 [Unambiguous function call syntax]: https://github.com/rust-lang/rfcs/pull/132
 [Require parentheses for chained comparisons]: https://github.com/rust-lang/rfcs/pull/558
 [Integer overflow not `unsafe`]: https://github.com/rust-lang/rfcs/pull/560
