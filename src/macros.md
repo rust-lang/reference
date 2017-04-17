@@ -14,4 +14,4 @@ And one unstable way: [compiler plugins].
 
 [Macros]: ../book/macros.html
 [Procedural Macros]: ../book/procedural-macros.html
-[compiler plugins]: ../unstable-book/plugin.html
+[compiler plugins]: ../unstable-book/language-features/plugin.html

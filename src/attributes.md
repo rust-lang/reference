@@ -327,8 +327,7 @@ For any lint check `C`:
 
 The lint checks supported by the compiler can be found via `rustc -W help`,
 along with their default settings.  [Compiler
-plugins](../unstable-book/plugin.html#lint-plugins) can provide additional
-lint checks.
+plugins][unstable book plugin] can provide additional lint checks.
 
 ```rust,ignore
 pub mod m1 {
@@ -488,3 +487,4 @@ If an unknown feature is found in a directive, it results in a compiler error.
 An unknown feature is one which has never been recognized by the compiler.
 
 [The Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
+[unstable book plugin]: (../unstable-book/language-features/plugin.html#lint-plugins)
