@@ -436,6 +436,9 @@ operators on standard types is given here.
   : Greater than or equal.
     Calls the `ge` method on the `std::cmp::PartialOrd` trait.
 
+Parentheses are required when chaining comparison operators. For example, the
+expression `a == b == c` is invalid and may be written as `((a == b) == c)`.
+
 ### Type cast expressions
 
 A type cast expression is denoted with the binary operator `as`.
