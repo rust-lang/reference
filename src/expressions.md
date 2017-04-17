@@ -437,7 +437,7 @@ operators on standard types is given here.
     Calls the `ge` method on the `std::cmp::PartialOrd` trait.
 
 Parentheses are required when chaining comparison operators. For example, the
-expression `a == b == c` is invalid and may be written as `((a == b) == c)`.
+expression `a == b == c` is invalid and may be written as `(a == b) == c`.
 
 ### Type cast expressions
 
