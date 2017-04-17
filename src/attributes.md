@@ -487,4 +487,4 @@ If an unknown feature is found in a directive, it results in a compiler error.
 An unknown feature is one which has never been recognized by the compiler.
 
 [The Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
-[unstable book plugin]: (../unstable-book/language-features/plugin.html#lint-plugins)
+[unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
