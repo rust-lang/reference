@@ -220,6 +220,9 @@ exact `self`-type of the left-hand-side is known, or dynamically dispatching if
 the left-hand-side expression is an indirect [trait
 object](types.html#trait-objects).
 
+[UFCS](#unambiguous-function-call-syntax) allows method invocation using
+function-like syntax.
+
 ## Field expressions
 
 A _field expression_ consists of an expression followed by a single dot and an
@@ -543,6 +546,41 @@ Some examples of call expressions:
 let x: i32 = add(1i32, 2i32);
 let pi: Result<f32, _> = "3.14".parse();
 ```
+
+Function calls may sometimes result in ambiguities about receiver or referent.
+See [UFCS](#unambiguous-function-call-syntax) for how to resolve this.
+
+### Unambiguous Function Call Syntax
+
+Several situations often occur which result in ambiguities about the receiver or
+referent of method or associated function calls. These situations may include:
+
+* Multiple in-scope traits define the same method for the same types
+* Auto-`deref` is undesirable; for example, distinguishing between methods on a
+  smart pointer itself and the pointer's referent.
+* Methods which take no arguments and return properties of a type, like
+  `SizeOf::size_of()`
+
+The programmer may unambiguously refer to their desired method or function using
+Unambiguous Function Call Syntax (UFCS), specifying only as much type and path
+information as necessary.
+
+For example,
+
+```rust,ignore
+// shorthand, only if `T` is a path
+T::size_of()
+
+// infer trait `SizeOf` based on traits in scope.
+<T>::size_of()
+
+// completely unambiguous; works if multiple in-scope traits define `size_of()`
+<T as SizeOf>::size_of()
+```
+
+Refer to [RFC 132] for further details, motivations, and subtleties of syntax.
+
+[RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 
 ## Lambda expressions
 
