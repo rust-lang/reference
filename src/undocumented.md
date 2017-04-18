@@ -16,8 +16,6 @@ to shrink!
   in [Conditional compilation]
 - [Unambiguous function call syntax]
 - [Require parentheses for chained comparisons]
-- [Integer overflow not `unsafe`] - documented with a reference to the RFC, but
-  requires further details
 - [`dllimport`] - one element mentioned but not explained at [FFI attributes]
 - [define `crt_link`]
 - [define `unaligned_access`]
