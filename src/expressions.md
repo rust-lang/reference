@@ -866,7 +866,7 @@ well as the following additional casts. We write `*T` as short for either
 | C-like enum           | Integer type          | Enum cast                        |
 | `bool` or `char`      | Integer type          | Primitive to integer cast        |
 | `u8`                  | `char`                | `u8` to `char` cast              |
-| `*T`, `&T` or `&mut T`| `*V` where `V: Sized` \* | Pointer to pointer cast          |
+| `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
