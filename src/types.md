@@ -340,6 +340,52 @@ fn main() {
 In this example, the trait `Printable` occurs as a trait object in both the
 type signature of `print`, and the cast expression in `main`.
 
+Since a trait object can contain references, the lifetimes of those references
+need to be expressed as part of the trait object. The assumed lifetime of
+references held by a trait object is called its _default object lifetime bound_.
+These were defined in [RFC 599] and amended in [RFC 1156].
+
+[RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
+[RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
+
+For traits that themselves have no lifetime parameters, the default bound is
+based on what kind of trait object is used:
+
+```rust,ignore
+// For the following trait...
+trait Foo { }
+
+// ...these two are the same:
+Box<Foo>
+Box<Foo + 'static>
+
+// ...and so are these:
+&'a Foo
+&'a (Foo + 'a)
+```
+
+The `+ 'static` and `+ 'a` refer to the default bounds of those kinds of trait
+objects, and also to how you can directly override them. Note that the innermost
+object sets the bound, so `&'a Box<Foo>` is still `&'a Box<Foo + 'static>`.
+
+For traits that have lifetime parameters of their own, the default bound is
+based on that lifetime parameter:
+
+```rust,ignore
+// For the following trait...
+trait Bar<'a>: 'a { }
+
+// ...these two are the same:
+Box<Bar<'a>>
+Box<Bar<'a> + 'a>
+```
+
+The default for user-defined trait objects is based on the object type itself.
+If a type parameter has a lifetime bound, then that lifetime bound becomes the
+default bound for trait objects of that type. For example, `std::cell::Ref<'a,
+T>` contains a `T: 'a` bound, therefore trait objects of type `Ref<'a,
+SomeTrait>` are the same as `Ref<'a, (SomeTrait + 'a)>`.
+
 ### Type parameters
 
 Within the body of an item that has type parameter declarations, the names of
