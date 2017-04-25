@@ -19,6 +19,12 @@ that does _not_ occur in the set of [keywords].
 > character ranges used to form the more familiar C and Java language-family
 > identifiers.
 
+Links to Unicode descriptions:
+
+   * XID_start:http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B%3AXID_Start%3A%5D&abb=on&g=&i=
+   * XID_continue:http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B%3AXID_Continue%3A%5D&abb=on&g=&i=
+   
+   
 [keywords]: ../grammar.html#keywords
 [^non_ascii_idents]: Non-ASCII characters in identifiers are currently feature
   gated. This is expected to improve soon.
