@@ -550,16 +550,16 @@ let pi: Result<f32, _> = "3.14".parse();
 Function calls may sometimes result in ambiguities about receiver or referent.
 See [UFCS](#unambiguous-function-call-syntax) for how to resolve this.
 
-### Unambiguous Function Call Syntax
+### Unambiguous Function Call Syntax (UFCS)
 
 Several situations often occur which result in ambiguities about the receiver or
 referent of method or associated function calls. These situations may include:
 
 * Multiple in-scope traits define the same method for the same types
 * Auto-`deref` is undesirable; for example, distinguishing between methods on a
-  smart pointer itself and the pointer's referent.
-* Methods which take no arguments and return properties of a type, like
-  `SizeOf::size_of()`
+  smart pointer itself and the pointer's referent
+* Methods which take no arguments, like `default()`, and return properties of a
+  type, like `size_of()`
 
 The programmer may unambiguously refer to their desired method or function using
 Unambiguous Function Call Syntax (UFCS), specifying only as much type and path
@@ -567,15 +567,37 @@ information as necessary.
 
 For example,
 
-```rust,ignore
-// shorthand, only if `T` is a path
-T::size_of()
+```rust
+trait Foo {
+  fn quux();
+}
 
-// infer trait `SizeOf` based on traits in scope.
-<T>::size_of()
+trait Bar {
+  fn quux();
+}
 
-// completely unambiguous; works if multiple in-scope traits define `size_of()`
-<T as SizeOf>::size_of()
+struct Faz;
+impl Foo for Faz {
+    fn quux() {}
+}
+
+struct Baz;
+impl Foo for Baz {
+    fn quux() {}
+}
+impl Bar for Baz {
+    fn quux() {}
+}
+
+fn main() {
+    // shorthand, only if unambiguous
+    Faz::quux();
+
+    // Baz::quux(); // Error: multiple `quux` found
+
+    // completely unambiguous; works if multiple in-scope traits define `quux`
+    <Baz as Foo>::quux();
+}
 ```
 
 Refer to [RFC 132] for further details, motivations, and subtleties of syntax.
