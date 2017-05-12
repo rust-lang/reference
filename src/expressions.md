@@ -564,7 +564,7 @@ Significantly, lambda expressions _capture their environment_, which regular
 [function definitions](items.html#functions) do not. The exact type of capture
 depends on the [function type](types.html#function-types) inferred for the
 lambda expression. In the simplest and least-expensive form (analogous to a
-```|| { }``` expression), the lambda expression captures its environment by
+`|| { }` expression), the lambda expression captures its environment by
 reference, effectively borrowing pointers to all outer variables mentioned
 inside the function.  Alternately, the compiler may infer that a lambda
 expression should copy or move values (depending on their type) from the
