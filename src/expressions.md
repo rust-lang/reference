@@ -932,7 +932,7 @@ well as the following additional casts. We write `*T` as short for either
 * `e` is a function pointer type and `U` is an integer; *fptr-addr-cast*
     * Same concerns as with pointer to address casts
 
-TODO: Explain every last one of these...
+TODO: Explain the semantics of these.
 
 ### Assignment expressions
 
@@ -973,7 +973,10 @@ assert_eq!(x, 14);
 
 The precedence of Rust operators is ordered as follows, going from strong to
 weak. Binary Operators at the same precedence level are evaluated in the order
-given by their associativity.
+given by their associativity.#
+
+<!-- The non-operator things are more a matter of how things are parsed,
+rather than are evaluated, so probably shouldn't be here. -->
 
 | Operator                    | Associativity       |
 |-----------------------------|---------------------|
