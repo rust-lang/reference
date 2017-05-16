@@ -170,14 +170,16 @@ path required to refer to a module item. These declarations may appear in
 
 Use declarations support a number of convenient shortcuts:
 
-* Rebinding the target name as a new local name, using the syntax `use p::q::r as x;`
 * Simultaneously binding a list of paths differing only in their final element,
   using the glob-like brace syntax `use a::b::{c,d,e,f};`
-* Binding all paths matching a given prefix, using the asterisk wildcard syntax
-  `use a::b::*;`
 * Simultaneously binding a list of paths differing only in their final element
   and their immediate parent module, using the `self` keyword, such as
   `use a::b::{self, c, d};`
+* Rebinding the target name as a new local name, using the syntax `use p::q::r
+  as x;`. This can also be used with the last two features: `use a::b::{self as
+  ab, c as abc}`.
+* Binding all paths matching a given prefix, using the asterisk wildcard syntax
+  `use a::b::*;`
 
 An example of `use` declarations:
 
