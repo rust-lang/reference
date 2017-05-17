@@ -600,7 +600,7 @@ Rust supports three loop expressions:
 
 All three types of loop support [`break` expressions](#break-expressions),
 [`continue` expressions](#continue-expressions), and [labels](#loop-labels).
-Only `loop` supports [break-with-value](#break-with-value).
+Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
 ### Infinite loops
 
@@ -699,7 +699,7 @@ be used to specify which enclosing loop is affected. Example:
 ```
 
 A `break` expression is only permitted in the body of a loop, and has one of
-the forms `break`, `break 'label` or (see [break-with-value](#break-with-value))
+the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
 `break EXPR` or `break 'label EXPR`.
 
 ### `continue` expressions
@@ -714,14 +714,13 @@ Like `break`, `continue` is normally associated with the innermost enclosing
 loop, but `continue 'label` may be used to specify the loop affected.
 A `continue` expression is only permitted in the body of a loop.
 
-### Break-with-value
+### `break` and loop values
 
 When associated with a `loop`, a break expression may be used to return a value
 from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where
 `EXPR` is an expression whose result is returned from the `loop`. For example:
 
 ```rust
-#![feature(loop_break_value)]
 let (mut a, mut b) = (1, 1);
 let result = loop {
     if b > 10 {
