@@ -589,52 +589,32 @@ let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
 ```
 
-## Infinite loops
+## Loops
 
-A `loop` expression denotes an infinite loop.
+Rust supports three loop expressions:
 
-A `loop` expression may optionally have a _label_. The label is written as
-a lifetime preceding the loop expression, as in `'foo: loop{ }`. If a
-label is present, then labeled `break` and `continue` expressions nested
-within this loop may exit out of this loop or return control to its head.
-See [break expressions](#break-expressions) and [continue
-expressions](#continue-expressions).
+*   A [`loop` expression](#infinite-loops) denotes an infinite loop.
+*   A [`while` expression](#predicate-loops) loops until a predicate is false.
+*   A [`for` expression](#iterator-loops) extracts values from an iterator,
+    looping until the iterator is empty.
 
-A `loop` expression is [diverging](items.html#diverging-functions), and doesn't
-return anything. However, when it contains a [break
-expression](#break-expressions), it returns the value attached to the `break`
-that caused the loop to stop.
+All three types of loop support [`break` expressions](#break-expressions),
+[`continue` expressions](#continue-expressions), and [labels](#loop-labels).
+Only `loop` supports [break-with-value](#break-with-value).
 
-## `break` expressions
+### Infinite loops
 
-A `break` expression has an optional _label_. If the label is absent, then
-executing a `break` expression immediately terminates the innermost loop
-enclosing it. It is only permitted in the body of a loop. If the label is
-present, then `break 'foo` terminates the loop with label `'foo`, which need not
-be the innermost label enclosing the `break` expression, but must enclose it.
+A `loop` expression repeats execution of its body continuously:
+`loop { println!("I live."); }`.
 
-When the `break` expression is enclosed in a `loop` it has an optional return
-value attached which will be returned by the loop ended by the
-expression. When it's not provided it defaults to `()`.
+A `loop` expression without an associated `break` expression is
+[diverging](items.html#diverging-functions), and doesn't
+return anything. A `loop` expression containing associated
+[`break` expression(s)](#break-expressions)
+may terminate, and must have type compatible with the value of the `break`
+expression(s).
 
-If both a label and a return value are present in the expression, the label
-must be placed before the return value. For example `break 'label 42` breaks
-the loop labelled `'label`, returning `42` from it.
-
-## `continue` expressions
-
-A `continue` expression has an optional _label_. If the label is absent, then
-executing a `continue` expression immediately terminates the current iteration
-of the innermost loop enclosing it, returning control to the loop *head*. In
-the case of a `while` loop, the head is the conditional expression controlling
-the loop. In the case of a `for` loop, the head is the call-expression
-controlling the loop. If the label is present, then `continue 'foo` returns
-control to the head of the loop with label `'foo`, which need not be the
-innermost label enclosing the `continue` expression, but must enclose it.
-
-A `continue` expression is only permitted in the body of a loop.
-
-## `while` loops
+### Predicate loops
 
 A `while` loop begins by evaluating the boolean loop conditional expression.
 If the loop conditional expression evaluates to `true`, the loop body block
@@ -652,45 +632,113 @@ while i < 10 {
 }
 ```
 
-Like `loop` expressions, `while` loops can be controlled with `break` or
-`continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and
-[continue expressions](#continue-expressions) for more information.
-
-## `for` expressions
+### Iterator loops
 
 A `for` expression is a syntactic construct for looping over elements provided
-by an implementation of `std::iter::IntoIterator`.
+by an implementation of `std::iter::IntoIterator`. If the iterator yields a
+value, that value is given the specified name and the body of the loop is
+executed, then control returns to the head of the `for` loop. If the iterator
+is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
 ```rust
-# type Foo = i32;
-# fn bar(f: &Foo) { }
-# let a = 0;
-# let b = 0;
-# let c = 0;
+let v = &["apples", "cake", "coffee"];
 
-let v: &[Foo] = &[a, b, c];
-
-for e in v {
-    bar(e);
+for text in v {
+    println!("I like {}.", text);
 }
 ```
 
 An example of a for loop over a series of integers:
 
 ```rust
-# fn bar(b:usize) { }
-for i in 0..256 {
-    bar(i);
+let mut sum = 0;
+for n in 1..11 {
+    sum += n;
+}
+assert_eq!(sum, 55);
+```
+
+### Loop labels
+
+A loop expression may optionally have a _label_. The label is written as
+a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`,
+`'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
+If a label is present, then labeled `break` and `continue` expressions nested
+within this loop may exit out of this loop or return control to its head.
+See [break expressions](#break-expressions) and [continue
+expressions](#continue-expressions).
+
+### `break` expressions
+
+When `break` is encountered, execution of the associated loop body is
+immediately terminated, for example:
+
+```rust
+let mut last = 0;
+for x in 1..100 {
+    if x > 12 {
+        break;
+    }
+    last = x;
+}
+assert_eq!(last, 12);
+```
+
+A `break` expression is normally associated with the innermost `loop`, `for` or
+`while` loop enclosing the `break` expression, but a [label](#loop-labels) can
+be used to specify which enclosing loop is affected. Example:
+
+```rust
+'outer: loop {
+    while true {
+        break 'outer;
+    }
 }
 ```
 
-Like `loop` expressions, `for` loops can be controlled with `break` or
-`continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and
-[continue expressions](#continue-expressions) for more information.
+A `break` expression is only permitted in the body of a loop, and has one of
+the forms `break`, `break 'label` or (see [break-with-value](#break-with-value))
+`break EXPR` or `break 'label EXPR`.
+
+### `continue` expressions
+
+When `continue` is encountered, the current iteration of the associated loop
+body is immediately terminated, returning control to the loop *head*. In
+the case of a `while` loop, the head is the conditional expression controlling
+the loop. In the case of a `for` loop, the head is the call-expression
+controlling the loop.
+
+Like `break`, `continue` is normally associated with the innermost enclosing
+loop, but `continue 'label` may be used to specify the loop affected.
+A `continue` expression is only permitted in the body of a loop.
+
+### Break-with-value
+
+When associated with a `loop`, a break expression may be used to return a value
+from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where
+`EXPR` is an expression whose result is returned from the `loop`. For example:
+
+```rust
+#![feature(loop_break_value)]
+let (mut a, mut b) = (1, 1);
+let result = loop {
+    if b > 10 {
+        break b;
+    }
+    let c = a + b;
+    a = b;
+    b = c;
+};
+// first number in Fibonacci sequence over 10:
+assert_eq!(result, 13);
+```
+
+In the case a `loop` has an associated `break`, it is not considered diverging,
+and the `loop` must have a type compatible with each `break` expression.
+`break` without an expression is considered identical to `break` with
+expression `()`.
 
 ## `if` expressions
 
