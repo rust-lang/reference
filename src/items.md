@@ -18,7 +18,7 @@ There are several kinds of item:
 * [modules](#modules)
 * [function definitions](#functions)
 * [`extern` blocks](#external-blocks)
-* [type definitions](../grammar.html#type-definitions)
+* [type definitions](#type-aliases)
 * [struct definitions](#structs)
 * [enumeration definitions](#enumerations)
 * [constant items](#constant-items)
@@ -446,8 +446,7 @@ type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
 
-Currently a type alias to an enum type cannot be used to qualify the
-constructors:
+A type alias to an enum type cannot be used to qualify the constructors:
 
 ```rust
 enum E { A }
