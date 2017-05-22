@@ -220,8 +220,9 @@ exact `self`-type of the left-hand-side is known, or dynamically dispatching if
 the left-hand-side expression is an indirect [trait
 object](types.html#trait-objects).
 
-[UFCS](#unambiguous-function-call-syntax) allows method invocation using
-function-like syntax.
+The compiler sometimes cannot infer to which function or method a given call
+refers. These cases require a [more specific syntax.](#disambiguating-function-calls)
+for method and function invocation.
 
 ## Field expressions
 
@@ -547,60 +548,75 @@ let x: i32 = add(1i32, 2i32);
 let pi: Result<f32, _> = "3.14".parse();
 ```
 
-Function calls may sometimes result in ambiguities about receiver or referent.
-See [UFCS](#unambiguous-function-call-syntax) for how to resolve this.
+### Disambiguating Function Calls
 
-### Unambiguous Function Call Syntax (UFCS)
+Rust treats all function calls as sugar for a more explicit, fully-qualified
+syntax. Upon compilation, Rust will desugar all function calls into the explicit
+form. Rust may sometimes require you to qualify function calls with trait,
+depending on the ambiguity of a call in light of in-scope items.
+
+> **Note**: In the past, the Rust community used the terms "Unambiguous
+> Function Call Syntax", "Universal Function Call Syntax", or "UFCS", in
+> documentation, issues, RFCs, and other community writings. However, the term
+> lacks descriptive power and potentially confuses the issue at hand. We mention
+> it here for searchability's sake.
 
 Several situations often occur which result in ambiguities about the receiver or
 referent of method or associated function calls. These situations may include:
 
-* Multiple in-scope traits define the same method for the same types
+* Multiple in-scope traits define methods with the same name for the same types
 * Auto-`deref` is undesirable; for example, distinguishing between methods on a
   smart pointer itself and the pointer's referent
 * Methods which take no arguments, like `default()`, and return properties of a
   type, like `size_of()`
 
-The programmer may unambiguously refer to their desired method or function using
-Unambiguous Function Call Syntax (UFCS), specifying only as much type and path
-information as necessary.
+To resolve the ambiguity, the programmer may refer to their desired method or
+function using more specific paths, types, or traits.
 
 For example,
 
 ```rust
-trait Foo {
-  fn quux();
+trait Pretty {
+    fn print(&self);
 }
 
-trait Bar {
-  fn quux();
+trait Ugly {
+  fn print(&self);
 }
 
-struct Faz;
-impl Foo for Faz {
-    fn quux() {}
+struct Foo;
+impl Pretty for Foo {
+    fn print(&self) {}
 }
 
-struct Baz;
-impl Foo for Baz {
-    fn quux() {}
+struct Bar;
+impl Pretty for Bar {
+    fn print(&self) {}
 }
-impl Bar for Baz {
-    fn quux() {}
+impl Ugly for Bar{
+    fn print(&self) {}
 }
 
 fn main() {
-    // shorthand, only if unambiguous
-    Faz::quux();
+    let f = Foo;
+    let b = Bar;
 
-    // Baz::quux(); // Error: multiple `quux` found
+    // we can do this because we only have one item called `print` for `Foo`s
+    f.print();
+    // more explicit, and, in the case of `Foo`, not necessary
+    Foo::print(&f);
+    // if you're not into the whole brevity thing
+    <Foo as Pretty>::print(&f);
 
-    // completely unambiguous; works if multiple in-scope traits define `quux`
-    <Baz as Foo>::quux();
+    // b.print(); // Error: multiple 'print' found
+    // Bar::print(&b); // Still an error: multiple `print` found
+
+    // necessary because of in-scope items defining `print`
+    <Bar as Pretty>::print(&b);
 }
 ```
 
-Refer to [RFC 132] for further details, motivations, and subtleties of syntax.
+Refer to [RFC 132] for further details and motivations.
 
 [RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 
