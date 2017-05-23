@@ -286,9 +286,22 @@ more of the closure traits:
 * `Fn`
   : The closure can be called multiple times through a shared reference.
     A closure called as `Fn` can neither move out from nor mutate values
-    from its environment. `Fn` inherits from `FnMut`, which itself
-    inherits from `FnOnce`.
+    from its environment, but read-only access to such values is allowed.
+    `Fn` inherits from `FnMut`, which itself inherits from `FnOnce`.
 
+Closures that don't use anything from their environment ("non capturing closures")
+can be coerced to function pointers (`fn`) with the matching signature.
+To adopt the example from the section above:
+
+```rust
+let add = |x, y| x + y;
+
+let mut x = add(5,7);
+
+type Binop = fn(i32, i32) -> i32;
+let bo: Binop = add;
+x = bo(5,7);
+```
 
 ## Trait objects
 
