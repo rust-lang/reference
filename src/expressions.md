@@ -179,7 +179,7 @@ also constant expressions:
 * [Index expressions](#index-expressions), indexing a [array or
   slice](types.html#array-and-slice-types) with a `usize`.
 * [Range expressions](#range-expressions).
-* [Lambda expressions](#lambda-expressions) which don't capture variables from
+* [Closure expressions](#closure-expressions) which don't capture variables from
   the environment.
 * Built in [negation](#negation-operators), [arithmetic,
   logical](#arithmetic-and-logical-binary-operators),
@@ -571,29 +571,29 @@ Refer to [RFC 132] for further details and motivations.
 
 [RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 
-## Lambda expressions
+## Closure expressions
 
-A _lambda expression_ (sometimes called an "anonymous function expression")
-defines a closure and denotes it as a value, in a single expression. A lambda
+A _closure expression_ (sometimes called an "anonymous function expression")
+defines a closure and denotes it as a value, in a single expression. A closure
 expression is a pipe-symbol-delimited (`|`) list of patterns followed by an
 expression. Type annotations may optionally be added for the type of the
 parameters or for the return type. If there is a return type, the expression
-used for the body of the lambda must be a normal [block](#block-expressions). A
-lambda expression also may begin with the `move` keyword before the initial
+used for the body of the closure must be a normal [block](#block-expressions).
+A closure expression also may begin with the `move` keyword before the initial
 `|`.
 
-A lambda expression denotes a function that maps a list of parameters
+A closure expression denotes a function that maps a list of parameters
 (`ident_list`) onto the expression that follows the `ident_list`. The patterns
 in the `ident_list` are the parameters to the closure. If a parameter's types
 is not specified, then the compiler infers it from context. Each closure
 expression has a unique anonymous type.
 
-Lambda expressions are most useful when passing functions as arguments to other
+Closure expressions are most useful when passing functions as arguments to other
 functions, as an abbreviation for defining and capturing a separate function.
 
-Significantly, lambda expressions _capture their environment_, which regular
+Significantly, closure expressions _capture their environment_, which regular
 [function definitions](items.html#functions) do not. Without the `move`
-keyword, the lambda expression infers how it captures each variable from its
+keyword, the closure expression infers how it captures each variable from its
 environment, preferring to capture by shared reference, effectively borrowing
 all outer variables mentioned inside the closure's body. If needed the compiler
 will infer that instead mutable references should be taken, or that the values
@@ -610,8 +610,8 @@ traits allow functions to accept closures using generics, even though the exact
 types can't be named.
 
 In this example, we define a function `ten_times` that takes a higher-order
-function argument, and we then call it with a lambda expression as an argument,
-followed by a lambda expression that moves values from its environment.
+function argument, and we then call it with a closure expression as an argument,
+followed by a closure expression that moves values from its environment.
 
 ```rust
 fn ten_times<F>(f: F) where F: Fn(i32) {
@@ -1069,7 +1069,7 @@ rather than are evaluated, so probably shouldn't be here. -->
 | `..` `...`                  | Require parentheses |
 | `<-`                        | right to left       |
 | `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
-| `return` `break` `continue`<br>Lambda expressions | right to left |
+| `return` `break` `continue`<br>Closure expressions | right to left |
 
 
 ## Grouped expressions
