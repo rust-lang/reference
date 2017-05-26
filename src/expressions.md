@@ -123,13 +123,15 @@ comma:
 
 ## Struct expressions
 
-There are several forms of struct expressions. A _struct expression_
-consists of the [path](paths.html) of a [struct item](items.html#structs), followed
-by a brace-enclosed list of zero or more comma-separated name-value pairs,
-providing the field values of a new instance of the struct. A field name can be
-any identifier, and is separated from its value expression by a colon.  The
-location denoted by a struct field is mutable if and only if the enclosing
-struct is mutable.
+There are several forms of struct expressions. A _struct expression_ consists
+of the [path](paths.html) of a [struct item](items.html#structs), followed by a
+brace-enclosed list of zero or more comma-separated name-value pairs, providing
+the field values of a new instance of the struct. A field name can be any
+identifier, and is separated from its value expression by a colon. In the case
+of a tuple struct the field names are numbers corresponding to the position of
+the field. The numbers must be written in decimal, containing no underscores
+and with no leading zeros or integer suffix. The location denoted by a struct
+field is mutable if and only if the enclosing struct is mutable.
 
 A _tuple struct expression_ consists of the [path](paths.html) of a [struct
 item](items.html#structs), followed by a parenthesized list of one or more
@@ -150,6 +152,7 @@ The following are examples of struct expressions:
 Point {x: 10.0, y: 20.0};
 NothingInMe {};
 TuplePoint(10.0, 20.0);
+TuplePoint { 0: 10.0, 1: 20.0 }; // Results in the same value as the above line
 let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
@@ -174,9 +177,9 @@ Point3d {y: 0, z: 10, .. base};
 
 #### Struct field init shorthand
 
-When initializing a data structure (struct, enum, union) with named fields,
-it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
-This allows a compact syntax with less duplication.
+When initializing a data structure (struct, enum, union) with named (but not
+numbered) fields, it is allowed to write `fieldname` as a shorthand for
+`fieldname: fieldname`. This allows a compact syntax with less duplication.
 
 Example:
 
@@ -777,10 +780,6 @@ variable binding specifications, wildcards (`..`), and placeholders (`_`). A
 the patterns. The type of the patterns must equal the type of the head
 expression.
 
-In a pattern whose head expression has an `enum` type, a placeholder (`_`)
-stands for a *single* data field, whereas a wildcard `..` stands for *all* the
-fields of a particular variant.
-
 A `match` behaves differently depending on whether or not the head expression
 is an [lvalue or an rvalue](expressions.html#lvalues-rvalues-and-temporaries).
 If the head expression is an rvalue, it is first evaluated into a temporary
@@ -816,16 +815,31 @@ matched value (depending on the matched value's type). This can be changed to
 bind to a reference by using the `ref` keyword, or to a mutable reference using
 `ref mut`.
 
-Subpatterns can also be bound to variables by the use of the syntax `variable @
-subpattern`. For example:
+Patterns can be used to *destructure* structs, enums, and tuples. Destructuring
+breaks a value up into its component pieces. The syntax used is the same as
+when creating such values. When destructing a data structure with named (but
+not numbered) fields, it is allowed to write `fieldname` as a shorthand for
+`fieldname: fieldname`. In a pattern whose head expression has a `struct`,
+`enum` or `tupl` type, a placeholder (`_`) stands for a *single* data field,
+whereas a wildcard `..` stands for *all* the fields of a particular variant.
 
 ```rust
-let x = 1;
-
-match x {
-    e @ 1 ... 5 => println!("got a range element {}", e),
-    _ => println!("anything"),
-}
+# enum Message {
+#     Quit,
+#     WriteString(String),
+#     Move { x: i32, y: i32 },
+#     ChangeColor(u8, u8, u8),
+# }
+# let message = Message::Quit;
+match message {
+    Message::Quit => println!("Quit"),
+    Message::WriteString(write) => println!("{}", &write),
+    Message::Move{ x, y: 0 } => println!("move {} horizontally", x),
+    Message::Move{ .. } => println!("other move"),
+    Message::ChangeColor { 0: red, 1: green, 2: _ } => {
+        println!("color change, red: {}, green: {}", red, green);
+    }
+};
 ```
 
 Patterns can also dereference pointers by using the `&`, `&mut` and `box`
@@ -838,6 +852,18 @@ let y = match *x { 0 => "zero", _ => "some" };
 let z = match x { &0 => "zero", _ => "some" };
 
 assert_eq!(y, z);
+```
+
+Subpatterns can also be bound to variables by the use of the syntax `variable @
+subpattern`. For example:
+
+```rust
+let x = 1;
+
+match x {
+    e @ 1 ... 5 => println!("got a range element {}", e),
+    _ => println!("anything"),
+}
 ```
 
 Multiple match patterns may be joined with the `|` operator. A range of values
