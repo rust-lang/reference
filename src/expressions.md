@@ -221,16 +221,16 @@ paths are rvalues.
 
 ```rust
 mod globals {
-    static STATIC_VAR: i32 = 5;
-    static mut STATIC_MUT_VAR: i32 = 7;
+    pub static STATIC_VAR: i32 = 5;
+    pub static mut STATIC_MUT_VAR: i32 = 7;
 }
 let local_var = 3;
 local_var;
 globals::STATIC_VAR;
 unsafe { globals::STATIC_MUT_VAR };
-let some_constructor = Option::<i32>::Some;
+let some_constructor = Option::Some::<i32>;
 let push_integer = Vec::<i32>::push;
-let slice_eq = <[i32]>::eq;
+let slice_reverse = <[i32]>::reverse;
 ```
 
 ## Tuple expressions
@@ -404,7 +404,7 @@ following order:
 Note: that in steps 1-4 the receiver is used, not the type of `Self`, which may
 not be the same as `A`. For example
 
-```rust
+```rust,ignore
 // `Self` is `&A`, receiver is `&A`.
 impl<'a> Trait for &'a A {
     fn method(self) {}
