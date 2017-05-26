@@ -260,19 +260,17 @@ colon. In the case of a tuple struct the field names are numbers corresponding
 to the position of the field. The numbers must be written in decimal,
 containing no underscores and with no leading zeros or integer suffix.
 
-Struct expressions can't be used directly in the head of an
-[`if`](#if-expressions), [`while`](#while-loops),
-[`match`](#match-expressions), [`for`](#for-expressions), [`if
-let`](#if-let-expressions) or [`while let`](#while-let-loops) expression. But
-struct expressions can still be in used inside parentheses, for example.
+Struct expressions can't be used directly in the head of a [loop](#loops) or an
+[`if`](#if-expressions), [`if let`](#if-let-expressions) or
+[`match`](#match-expressions) expression. But struct expressions can still be
+in used inside parentheses, for example.
 
-A _tuple struct expression_ consists of the [path](paths.html) of a [struct
-item](items.html#structs), followed by a parenthesized list of one or more
-comma-separated expressions (in other words, the path of a struct item followed
-by a tuple expression). The struct item must be a tuple struct item.
+A _tuple struct expression_ consists of the path of a struct item, followed by
+a parenthesized list of one or more comma-separated expressions (in other
+words, the path of a struct item followed by a tuple expression). The struct
+item must be a tuple struct item.
 
-A _unit-like struct expression_ consists only of the [path](paths.html) of a
-[struct item](items.html#structs).
+A _unit-like struct expression_ consists only of the path of a struct item.
 
 The following are examples of struct expressions:
 
