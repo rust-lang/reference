@@ -772,11 +772,11 @@ assert_eq!(*y, 11);
 
 ### The `?` operator.
 
-The `?` operator can be applied to values of the `Result<T, E>` type to
-propagate errors. If applied to `Err(e)` it will return `Err(From::from(e))`
-from the enclosing function or closure. If applied to `Ok(x)` it will unwrap
-the value to return `x`. Unlike other unary operators `?` is written in postfix
-notation. `?` cannot be overloaded.
+The `?` ("question mark") operator can be applied to values of the `Result<T,
+E>` type to propagate errors. If applied to `Err(e)` it will return
+`Err(From::from(e))` from the enclosing function or closure. If applied to
+`Ok(x)` it will unwrap the value to return `x`. Unlike other unary operators
+`?` is written in postfix notation. `?` cannot be overloaded.
 
 ```rust
 # use std::num::ParseIntError;
@@ -871,7 +871,7 @@ functions and macros in the standard library can then use that assumption
 above, these operators implicitly take shared borrows of their operands,
 evaluating them in lvalue context:
 
-```rust
+```rust,ignore
 a == b;
 // is equivalent to
 ::std::cmp::PartialEq::eq(&a, &b);
@@ -1018,21 +1018,15 @@ x += 4;
 assert_eq!(x, 14);
 ```
 
-
 ### Operator precedence
 
 The precedence of Rust operators is ordered as follows, going from strong to
 weak. Binary Operators at the same precedence level are evaluated in the order
-given by their associativity.#
+given by their associativity.
 
-<!-- The non-operator things are more a matter of how things are parsed,
-rather than are evaluated, so probably shouldn't be here. -->
 
 | Operator                    | Associativity       |
 |-----------------------------|---------------------|
-| paths                       |                     |
-| block expressions <br> control flow block expressions <br> tuple expressions <br> array expressions <br> (braced) struct and variant expressions <br> method calls <br> field expressions | left to right |
-| function calls <br> tuple struct expressions <br> index expressions |           |
 | `?`                         |                     |
 | Unary `-` `*` `!` `&` `&mut` |                    |
 | `as` `:`                    | left to right       |
@@ -1048,8 +1042,6 @@ rather than are evaluated, so probably shouldn't be here. -->
 | `..` `...`                  | Require parentheses |
 | `<-`                        | right to left       |
 | `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
-| `return` `break` `continue`<br>Closure expressions | right to left |
-
 
 ## Grouped expressions
 
