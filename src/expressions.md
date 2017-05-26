@@ -42,11 +42,11 @@ rvalue context. All other expression contexts are rvalue contexts.
 
 When an lvalue is evaluated in an _rvalue context_, it denotes the value held
 _in_ that memory location. If value is of a type that implements `Copy`, then
-the value will be copied. In other situations if the type of the value is
-[`Sized`](the-sized-trait.html) it may be possible to move the value. Only the
-following lvalues may be moved out of:
+the value will be copied. In the remaining situations if the type of the value
+is [`Sized`](the-sized-trait.html) it may be possible to move the value. Only
+the following lvalues may be moved out of:
 
-* [Variables](#variables.html) which are not currently borrowed.
+* [Variables](variables.html) which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions) of an lvalue which can be moved out of and
   doesn't implement [`Drop`](#the-drop-trait).
@@ -67,14 +67,14 @@ _immutable_.
 
 The following expressions can create mutable lvalues:
 
-* Mutable [variables](#variables.html), which are not currently borrowed.
+* Mutable [variables](variables.html), which are not currently borrowed.
 * [Mutable `static` items](items.html#mutable-statics).
 * [Temporary values](#temporary-lifetimes).
-* [Fields](#field-expressions), this evaluates the expression in a mutable
+* [Fields](#field-expressions), this evaluates the subexpression in a mutable
   lvalue context.
 * [Dereferenes](#the-dereference-operator) of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
-  this is an exception to the next rule.
+  this is an exception to the requirement for the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
   the value being dereferenced is evaluated is a mutable lvalue context.
 * [Indexing](#index-expressions) of a type that implements `DerefMut`, this
@@ -127,8 +127,13 @@ borrowing it. For example, it is possible to compare two unsized
 operator implicitly borrows it's operands:
 
 ```rust
-let a: &[i32] = &[1, 2, 3];
-let b: &[i32] = &vec![1, 2, 3];
+# let c = [1, 2, 3];
+# let d = vec![1, 2, 3];
+let a: &[i32];
+let b: &[i32];
+# a = &c;
+# b = &d;
+// ...
 *a == *b;
 // Equivalent form:
 ::std::cmp::PartialEq::eq(&*a, &*b);
@@ -143,12 +148,6 @@ Implicit borrows may be taken in the following expressions:
 * Operand of the [dereference](#the-dereference-operator) (`*`) operator.
 * Operands of [comparison operators](#comparison-operators).
 * Left operands of the [compound assignment](#compound-assignment-expressions).
-
-## Traits
-
-Many of the following operators and expressions can also be overloaded for
-other types using traits in `std::ops` or `std::cmp`, these traits here also
-exist in `core::ops` and `core::cmp` with the same names.
 
 ## Constant expressions
 
@@ -166,10 +165,11 @@ The following expressions are constant expressions, so long as any operands are
 also constant expressions:
 
 * [Literals](#literal-expressions).
-* [Paths](#paths) to [functions](items.html#functions) and constants. Recursively
-  defining constants is not allowed.
-* Statics, so long as only their address, not their value, is used: even
-  indirectly through a compilicated constant expression. \*
+* [Paths](#paths) to [functions](items.html#functions) and constants.
+  Recursively defining constants is not allowed.
+* Paths to statics, so long as only their address, not their value, is used.
+  This includes using their value indirectly through a compilicated expression.
+  \*
 * [Tuple expressions](#tuple-expressions).
 * [Array expressions](#array-expressions).
 * [Struct expressions](#struct-expressions), where the type does not implement
@@ -182,8 +182,8 @@ also constant expressions:
 * [Index expressions](#index-expressions), indexing a [array or
   slice](types.html#array-and-slice-types) with a `usize`.
 * [Range expressions](#range-expressions).
-* [Closure expressions](#closure-expressions) which don't capture variables from
-  the environment.
+* [Closure expressions](#closure-expressions) which don't capture variables
+  from the environment.
 * Built in [negation](#negation-operators), [arithmetic,
   logical](#arithmetic-and-logical-binary-operators),
   [comparison](#comparison-operators) or [lazy
@@ -197,6 +197,12 @@ also constant expressions:
   function pointer to address casts.
 
 \* Only in static items.
+
+## Overloading Traits
+
+Many of the following operators and expressions can also be overloaded for
+other types using traits in `std::ops` or `std::cmp`, these traits here also
+exist in `core::ops` and `core::cmp` with the same names.
 
 ## Literal expressions
 
@@ -215,20 +221,20 @@ boolean value, or the unit value.
 
 A [path](paths.html) used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
-are [lvalues](expressions.html#lvalues-rvalues-and-temporaries). Using a
-`static mut` variable requires an [`unsafe` block](#unsafe-block) Other
-paths are rvalues.
+are [lvalues](expressions.html#lvalues-rvalues-and-temporaries), other paths
+are rvalues. Using a `static mut` variable requires an [`unsafe`
+block](#unsafe-block).
 
 ```rust
-mod globals {
-    pub static STATIC_VAR: i32 = 5;
-    pub static mut STATIC_MUT_VAR: i32 = 7;
-}
-let local_var = 3;
+# mod globals {
+#     pub static STATIC_VAR: i32 = 5;
+#     pub static mut STATIC_MUT_VAR: i32 = 7;
+# }
+# let local_var = 3;
 local_var;
 globals::STATIC_VAR;
 unsafe { globals::STATIC_MUT_VAR };
-let some_constructor = Option::Some::<i32>;
+let some_constructor = Some::<i32>;
 let push_integer = Vec::<i32>::push;
 let slice_reverse = <[i32]>::reverse;
 ```
@@ -301,7 +307,8 @@ entire expression denotes the result of constructing a new struct (with the
 same type as the base expression) with the given values for the fields that
 were explicitly specified and the values in the base expression for all other
 fields. Just as with all struct expressions, all of the fields of the struct
-must be [visible](visibility-and-privacy.html).
+must be [visible](visibility-and-privacy.html), even those not explicitly
+named.
 
 ```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
@@ -329,7 +336,7 @@ Point3d { x, y: y_value, z };
 ### Enumeration Variant expressions
 
 Enumeration variants can be constructed similarly to structs, using a path to
-an enum variant instead of a struct:
+an enum variant instead of to a struct:
 
 ```rust
 # enum Message {
@@ -345,12 +352,14 @@ let m = Message::Move { x: 50, y: 200 };
 ## Block expressions
 
 A _block expression_ is similar to a module in terms of the declarations that
-are possible. Each block conceptually introduces a new namespace scope. Use
+are possible, but can also contain [statements](statements.html) and end with
+an expression. Each block conceptually introduces a new namespace scope. Use
 items can bring new names into scopes and declared items are in scope for only
 the block itself.
 
 A block will execute each statement sequentially, and then execute the
-expression (if given). If the block ends in a statement, its value is `()`:
+expression (if given). If the block doesn't end in an expression, its value is
+`()`:
 
 ```rust
 let x: () = { println!("Hello."); };
@@ -365,7 +374,8 @@ assert_eq!(5, x);
 ```
 
 Blocks are always [rvalues](#lvalues-and-rvalues) and evaluate the last
-expression in rvalue context.
+expression in rvalue context. This can be used to force moving a value
+if really needed.
 
 ### `unsafe` blocks
 
@@ -392,6 +402,7 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 
 When resolving method calls on an expression of type `A`, Rust will use the
 following order:
+
 1. Inherent methods, with receiver of type `A`, `&A`, `&mut A`.
 1. Trait methods with receiver of type `A`.
 1. Trait methods with receiver of type `&A`.
@@ -401,8 +412,8 @@ following order:
 1. If `A` is now an [array](types.html#array-and-slice-types) type, then
   repeat steps 1-4 with the corresponding slice type.
 
-Note: that in steps 1-4 the receiver is used, not the type of `Self`, which may
-not be the same as `A`. For example
+Note: that in steps 1-4 the receiver is used, not the type of `Self` nor the
+type of `A`. For example
 
 ```rust,ignore
 // `Self` is `&A`, receiver is `&A`.
@@ -442,8 +453,8 @@ mystruct.method();          // Method expression
 ```
 
 A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
-referring to the value of that field. When the type providing the field
-inherits mutability, it can be [assigned](#assignment-expressions) to.
+referring to the value of that field. When the subexpression is
+[mutable](#mutability), the field expression is also mutable.
 
 Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
@@ -453,7 +464,7 @@ Finally the fields of a struct, a reference to a struct are treated as separate
 entities when borrowing. If the struct does not implement
 [`Drop`](#the-drop-trait) this also applies to moving out of each of its fields
 where possible. This also does not apply if automatic dereferencing is done
-though other types.
+though user defined types.
 
 ```rust
 # struct A { f1: String, f2: String, f3: String }
@@ -464,7 +475,7 @@ though other types.
 # };
 let a: &mut String = &mut x.f1; // x.f1 borrowed mutably
 let b: &String = &x.f2;         // x.f2 borrowed immutably
-let c: &String = &x.f2;
+let c: &String = &x.f2;         // Can borrow again
 let d: String = x.f3;           // Move out of x.f3
 ```
 
@@ -472,10 +483,10 @@ let d: String = x.f3;           // Move out of x.f3
 
 [Tuples](types.html#tuple-types) and [struct tuples](items.html#structs) can be
 indexed using the number corresponding to the possition of the field. The index
-must be a [decimal literal](tokens.html#integer-literals) with no underscores
-or suffix. Tuple indexing expressions also differ from field expressions in
-that they can unambiguously be called as a function. In all other aspects they
-have the same behavior.
+must be written as a [decimal literal](tokens.html#integer-literals) with no
+underscores or suffix. Tuple indexing expressions also differ from field
+expressions in that they can unambiguously be called as a function. In all
+other aspects they have the same behavior.
 
 ```rust
 # struct Point(f32, f32);
@@ -577,14 +588,13 @@ Refer to [RFC 132] for further details and motivations.
 
 ## Closure expressions
 
-A _closure expression_ (sometimes called an "anonymous function expression")
-defines a closure and denotes it as a value, in a single expression. A closure
-expression is a pipe-symbol-delimited (`|`) list of patterns followed by an
-expression. Type annotations may optionally be added for the type of the
-parameters or for the return type. If there is a return type, the expression
-used for the body of the closure must be a normal [block](#block-expressions).
-A closure expression also may begin with the `move` keyword before the initial
-`|`.
+A _closure expression_ defines a closure and denotes it as a value, in a single
+expression. A closure expression is a pipe-symbol-delimited (`|`) list of
+patterns followed by an expression. Type annotations may optionally be added
+for the type of the parameters or for the return type. If there is a return
+type, the expression used for the body of the closure must be a normal
+[block](#block-expressions). A closure expression also may begin with the
+`move` keyword before the initial `|`.
 
 A closure expression denotes a function that maps a list of parameters
 (`ident_list`) onto the expression that follows the `ident_list`. The patterns
@@ -608,10 +618,10 @@ closure's type is `'static`.
 
 The compiler will determine which of the [closure
 traits](types.html#closure-types) the closure's type will implement by how it
-acts on them. The closure will also implement [`Send`](the-send-trait.html)
-and/or [`Sync`](the-sync-trait.html) if all of its captured types do. These
-traits allow functions to accept closures using generics, even though the exact
-types can't be named.
+acts on its captured variables. The closure will also implement
+[`Send`](the-send-trait.html) and/or [`Sync`](the-sync-trait.html) if all of
+its captured types do. These traits allow functions to accept closures using
+generics, even though the exact types can't be named.
 
 In this example, we define a function `ten_times` that takes a higher-order
 function argument, and we then call it with a closure expression as an argument,
@@ -625,6 +635,8 @@ fn ten_times<F>(f: F) where F: Fn(i32) {
 }
 
 ten_times(|j| println!("hello, {}", j));
+// With type annotations
+ten_times(|j: i32| -> () { println!("hello, {}", j) });
 
 let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
@@ -632,17 +644,17 @@ ten_times(move |j| println!("{}, {}", word, j));
 
 ## Array expressions
 
-An [array](types.html#array-and-slice-types) _expression_ can be written by
+An _[array](types.html#array-and-slice-types) expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
 brackets. This produces and array containing each of these values in the
 order they are written.
 
 Alternatively there can be exactly two expressions inside the brackets,
 separated by a semi-colon. The expression after the `;` must be a have type
-`usize` and be a constant expression that can be evaluated at compile time,
-such as a [literal](tokens.html#literals) or a [constant item
-item](items.html#constant-items). `[a; b]` creates an array containing `b` copies
-of the value of `a`. If the expression after the semi-colon has a value
+`usize` and be a [constant expression](#constant-expressions), such as a
+[literal](tokens.html#literals) or a [constant
+item](items.html#constant-items). `[a; b]` creates an array containing `b`
+copies of the value of `a`. If the expression after the semi-colon has a value
 greater than 1 then this requires that the type of `a` is
 [`Copy`](the-copy-trait.html).
 
@@ -715,6 +727,7 @@ Integer operators will panic when they overflow when compiled in debug mode.
 The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used
 to control this more directly. The following things are considered to be
 overflow:
+
 * When `+`, `*` or `-` create a value greater than the maximum value, or less
   than the minimum value that can be stored. This includes unary `-` on the
   smallest value of any signed integer type.
@@ -759,7 +772,7 @@ resulting [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be
 assigned to. Dereferencing a raw pointer requires `unsafe`.
 
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
-[immutable lvalue context](#mutability) and`*std::ops::Deref::deref_mut(&mut
+[immutable lvalue context](#mutability) and `*std::ops::Deref::deref_mut(&mut
 x)` in a mutable lvalue context.
 
 ```rust
@@ -793,11 +806,11 @@ println!("{:?}", res);
 
 ### Negation operators
 
-This table summarizes the behavior of the last two unary operators on
-primitive types and which traits are used to overload these operators for other
-types. Remember that signed integers are always represented using two's
-complement. The operands of all of these operators are evaluated in rvalue
-context and are moved or copied.
+These are the last two unary operators. This table summarizes the behavior of
+them on primitive types and which traits are used to overload these operators
+for other types. Remember that signed integers are always represented using
+two's complement. The operands of all of these operators are evaluated in
+rvalue context so are moved or copied.
 
 | Symbol | Integer     | `bool`      | Floating Point | Overloading Trait  |
 |--------|-------------|-------------|----------------|--------------------|
@@ -822,7 +835,7 @@ summarizes the behavior of arithmetic and logical binary operators on
 primitive types and which traits are used to overload these operators for other
 types. Remember that signed integers are always represented using two's
 complement. The operands of all of these operators are evaluated in rvalue
-context and are moved or copied.
+context so are moved or copied.
 
 | Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  |
 |--------|-------------------------|-------------|----------------|--------------------|
@@ -934,8 +947,8 @@ fn average(values: &[f64]) -> f64 {
 ```
 
 `as` can be used to explicitly perform [coercions](type-coercions.html), as
-well as the following additional casts. `*T` is short for either
-`*const T` or `*mut T`.
+well as the following additional casts. Here `*T` means either `*const T` or
+`*mut T`.
 
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
 |-----------------------|-----------------------|----------------------------------|
@@ -950,7 +963,10 @@ well as the following additional casts. `*T` is short for either
 | [Function pointer](type.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
 | Function pointer      | Integer               | Function pointer to address cast |
 
-\* or `T` and `V` are compatible unsized types, e.g., both slices.
+\* or `T` and `V` are compatible unsized types, e.g., both slices, both the
+same trait object.
+
+#### Semantics
 
 * Numeric cast
     * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
@@ -1041,7 +1057,7 @@ given by their associativity.
 | <code>&#124;&#124;</code>   | left to right       |
 | `..` `...`                  | Require parentheses |
 | `<-`                        | right to left       |
-| `=` `+=` `-=` `*=` `/=` `%=` `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
+| `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 
 ## Grouped expressions
 
@@ -1402,7 +1418,7 @@ condition expression it expects the keyword `let` followed by a refutable
 pattern, an `=` and an expression. If the value of the expression on the right
 hand side of the `=` matches the pattern, the loop body block executes then
 control returns to the pattern matching statement. Otherwise, the while
-expression completes. Like `while` loops, `while let` loops evaluate to `()`.
+expression completes.
 
 ```rust
 let mut x = vec![1, 2, 3];
