@@ -928,8 +928,8 @@ fn average(values: &[f64]) -> f64 {
 ```
 
 `as` can be used to explicitly perform [coercions](type-coercions.html), as
-well as the following additional casts. We write `*T` as short for either
-`*const T` or `*mut T`
+well as the following additional casts. `*T` is short for either
+`*const T` or `*mut T`.
 
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
 |-----------------------|-----------------------|----------------------------------|
@@ -946,7 +946,7 @@ well as the following additional casts. We write `*T` as short for either
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices.
 
-* `e` has type `T` and `T` and `U` are any numeric types; *numeric-cast*
+* Numeric cast
     * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
     * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
       truncate
@@ -967,43 +967,16 @@ well as the following additional casts. We write `*T` as short for either
           is finite but larger or smaller than the largest or smallest finite
           value representable by f32][float-float]**. This is a bug and will
           be fixed.
-* `e` is a C-like enum (with no data attached to the variants), and `U` is an
-  integer type; *enum-cast*
-    * What are the guarantees here? Equivalent to C?
-* `e` has type `bool` or `char` and `U` is an integer type; *prim-int-cast*
-    * `false` casts to `0`, `true` casts to `1`?
-    * `char` casts to the value of the code point, truncating if required?
-* `e` has type `u8` and `U` is `char`; *u8-char-cast*
-    * Interprets the `u8` as a code point?
-* `e` has type `*T`, `U` has type `*U_0`, and either `U_0: Sized` or
-  `unsize_kind(T) == unsize_kind(U_0)`; a *ptr-ptr-cast*
-    * Points at same location?
-    * Alignment??
-    * Fat pointers have the same "additional information"?
-    * Is unsize_kind described anywhere?
-    * Round trips?
-* `e` has type `*T` and `U` is a numeric type, while `T: Sized`;
-  *ptr-addr-cast*
-    * What do we guarantee here?
-    * Equivalent to `mem::transmute` to `usize`, followed by truncation/extension?
-    * Extend as though the pointer is unsigned?
-    * Doing pointer arithmetic this way?
-* `e` is an integer and `U` is `*U_0`, while `U_0: Sized`; *addr-ptr-cast*
-    * Alignment??
-    * Round trips with pointer address casts (either way), with pointer arithmetic?
-    * Probably out of scope, but is 'getting (un)lucky' with addresses defined?
-    * Use in embedded?
-    * Equivalent to cast to `usize` followed by `mem::transmute`?
-    * Does casting 0 in this way guaranteed to be a null pointer?
-* `e` has type `&[T; n]` and `U` is `*const T`; *array-ptr-cast*
-    * Equivalent to taking reference to first element and casting (if n > 0)?
-* `e` is a function pointer type and `U` has type `*T`, while `T: Sized`;
-  *fptr-ptr-cast*
-    * Same concerns as with pointer to pointer casts
-* `e` is a function pointer type and `U` is an integer; *fptr-addr-cast*
-    * Same concerns as with pointer to address casts
+* Enum cast
+    * Casts an enum to its discriminant, then uses a numeric cast if needed.
+* Primitive to integer cast
+    * `false` casts to `0`, `true` casts to `1`
+    * `char` casts to the value of the code point, then uses a numeric cast if needed.
+* `u8` to `char` cast
+    * Casts to the `char` with the corresponding code point.
 
-TODO: Explain the semantics of these.
+[float-int]: https://github.com/rust-lang/rust/issues/10184
+[float-float]: https://github.com/rust-lang/rust/issues/15536
 
 ### Assignment expressions
 
