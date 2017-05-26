@@ -643,7 +643,7 @@ Significantly, lambda expressions _capture their environment_, which regular
 [function definitions](items.html#functions) do not. The exact type of capture
 depends on the [function type](types.html#function-types) inferred for the
 lambda expression. In the simplest and least-expensive form (analogous to a
-```|| { }``` expression), the lambda expression captures its environment by
+`|| { }` expression), the lambda expression captures its environment by
 reference, effectively borrowing pointers to all outer variables mentioned
 inside the function.  Alternately, the compiler may infer that a lambda
 expression should copy or move values (depending on their type) from the
@@ -679,6 +679,11 @@ within this loop may exit out of this loop or return control to its head.
 See [break expressions](#break-expressions) and [continue
 expressions](#continue-expressions).
 
+A `loop` expression is [diverging](items.html#diverging-functions), and doesn't
+return anything. However, when it contains a [break
+expression](#break-expressions), it returns the value attached to the `break`
+that caused the loop to stop.
+
 ## `break` expressions
 
 A `break` expression has an optional _label_. If the label is absent, then
@@ -686,6 +691,14 @@ executing a `break` expression immediately terminates the innermost loop
 enclosing it. It is only permitted in the body of a loop. If the label is
 present, then `break 'foo` terminates the loop with label `'foo`, which need not
 be the innermost label enclosing the `break` expression, but must enclose it.
+
+When the `break` expression is enclosed in a `loop` it has an optional return
+value attached which will be returned by the loop ended by the
+expression. When it's not provided it defaults to `()`.
+
+If both a label and a return value are present in the expression, the label
+must be placed before the return value. For example `break 'label 42` breaks
+the loop labelled `'label`, returning `42` from it.
 
 ## `continue` expressions
 
