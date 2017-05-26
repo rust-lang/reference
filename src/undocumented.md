@@ -14,7 +14,6 @@ to shrink!
   specified.
 - [Flexible target specification] - Some---but not all---flags are documented
   in [Conditional compilation]
-- [Unambiguous function call syntax]
 - [Require parentheses for chained comparisons]
 - [Integer overflow not `unsafe`] - documented with a reference to the RFC, but
   requires further details
