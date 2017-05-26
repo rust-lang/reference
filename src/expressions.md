@@ -45,6 +45,7 @@ _in_ that memory location. If value is of a type that implements `Copy`, then
 the value will be copied. In other situations if the type of the value is
 [`Sized`](the-sized-trait.html) it may be possible to move the value. Only the
 following lvalues may be moved out of:
+
 * [Variables](#variables.html) which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions) of an lvalue which can be moved out of and
@@ -65,6 +66,7 @@ contexts _mutable_ lvalue contexts, other lvalue contexts are called
 _immutable_.
 
 The following expressions can create mutable lvalues:
+
 * Mutable [variables](#variables.html), which are not currently borrowed.
 * [Mutable `static` items](items.html#mutable-statics).
 * [Temporary values](#temporary-lifetimes).
@@ -133,6 +135,7 @@ let b: &[i32] = &vec![1, 2, 3];
 ```
 
 Implicit borrows may be taken in the following expressions:
+
 * Left operand in [method-call expressions](#method-call-expressions).
 * Left operand in [field expressions](#field-expressions).
 * Left operand in [call expressions](#call-expressions).
@@ -400,6 +403,7 @@ following order:
 
 Note: that in steps 1-4 the receiver is used, not the type of `Self`, which may
 not be the same as `A`. For example
+
 ```rust
 // `Self` is `&A`, receiver is `&A`.
 impl<'a> Trait for &'a A {
@@ -866,6 +870,7 @@ functions and macros in the standard library can then use that assumption
 (although not to ensure safety). Unlike the arithmetic and logical operators
 above, these operators implicitly take shared borrows of their operands,
 evaluating them in lvalue context:
+
 ```rust
 a == b;
 // is equivalent to
@@ -884,6 +889,7 @@ This means that the operands don't have to be moved out of.
 | `<=`   | Less than or equal to    | `std::cmp::PartialOrd::le` |
 
 Here are examples of the comparison operators being used.
+
 ```rust
 assert!(123 == 123);
 assert!(23 != -12);
@@ -1092,7 +1098,7 @@ the loop conditional expression evaluates to `true`, the loop body block
 executes, then control returns to the loop conditional expression. If the loop
 conditional expression evaluates to `false`, the `while` expression completes.
 
- An example:
+An example:
 
 ```rust
 let mut i = 0;
