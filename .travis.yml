@@ -8,3 +8,4 @@ before_script:
 
 script: 
   - export PATH=$PATH:/home/travis/.cargo/bin && mdbook test
+  - cd stable-check && cargo run -- ../src

@@ -256,10 +256,12 @@ of the [path](paths.html) of a [struct item](items.html#structs), followed by a
 brace-enclosed list of zero or more comma-separated name-value pairs, providing
 the field values of a new instance of the struct. A field name can be any
 [identifier](identifiers.html), and is separated from its value expression by a
-colon. In the case of a tuple structs the field names are instead decimal
-integer literals, containing no underscores or leading zeros, corresponding to
-the position of the field. Struct expressions can't be used directly in the
-head of an [`if`](#if-expressions), [`while`](#while-loops),
+colon. In the case of a tuple struct the field names are numbers corresponding
+to the position of the field. The numbers must be written in decimal,
+containing no underscores and with no leading zeros or integer suffix.
+
+Struct expressions can't be used directly in the head of an
+[`if`](#if-expressions), [`while`](#while-loops),
 [`match`](#match-expressions), [`for`](#for-expressions), [`if
 let`](#if-let-expressions) or [`while let`](#while-let-loops) expression. But
 struct expressions can still be in used inside parentheses, for example.
@@ -283,7 +285,7 @@ The following are examples of struct expressions:
 Point {x: 10.0, y: 20.0};
 NothingInMe {};
 TuplePoint(10.0, 20.0);
-TuplePoint { 0: 10.0, 1: 20.0 }; // Same as above line
+TuplePoint { 0: 10.0, 1: 20.0 }; // Results in the same value as the above line
 let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
@@ -308,9 +310,9 @@ Point3d {y: 0, z: 10, .. base};
 
 #### Struct field init shorthand
 
-When initializing a data structure (struct, enum, union) with named fields,
-it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
-This allows a compact syntax with less duplication.
+When initializing a data structure (struct, enum, union) with named (but not
+numbered) fields, it is allowed to write `fieldname` as a shorthand for
+`fieldname: fieldname`. This allows a compact syntax with less duplication.
 
 Example:
 
@@ -417,13 +419,8 @@ methods. These constraints instead lead to compiler errors.
 
 If a step is reached where there is more than one possible method (where
 generic methods or traits are considered the same), then it is a compiler
-error. To resolve this either use more distinctive names, or call the method as
-a function, using the required trait name in the path:
-
-```rust,ignore
-Trait::method(a, b)
-<Type as Trait>::method(a, b);
-```
+error. These cases require a [more specific
+syntax.](#disambiguating-function-calls) for method and function invocation.
 
 ## Field expressions
 
@@ -503,6 +500,78 @@ of call expressions:
 let three: i32 = add(1i32, 2i32);
 let name: &'static str = (|| "Rust")();
 ```
+
+### Disambiguating Function Calls
+
+Rust treats all function calls as sugar for a more explicit, fully-qualified
+syntax. Upon compilation, Rust will desugar all function calls into the explicit
+form. Rust may sometimes require you to qualify function calls with trait,
+depending on the ambiguity of a call in light of in-scope items.
+
+> **Note**: In the past, the Rust community used the terms "Unambiguous
+> Function Call Syntax", "Universal Function Call Syntax", or "UFCS", in
+> documentation, issues, RFCs, and other community writings. However, the term
+> lacks descriptive power and potentially confuses the issue at hand. We mention
+> it here for searchability's sake.
+
+Several situations often occur which result in ambiguities about the receiver or
+referent of method or associated function calls. These situations may include:
+
+* Multiple in-scope traits define methods with the same name for the same types
+* Auto-`deref` is undesirable; for example, distinguishing between methods on a
+  smart pointer itself and the pointer's referent
+* Methods which take no arguments, like `default()`, and return properties of a
+  type, like `size_of()`
+
+To resolve the ambiguity, the programmer may refer to their desired method or
+function using more specific paths, types, or traits.
+
+For example,
+
+```rust
+trait Pretty {
+    fn print(&self);
+}
+
+trait Ugly {
+  fn print(&self);
+}
+
+struct Foo;
+impl Pretty for Foo {
+    fn print(&self) {}
+}
+
+struct Bar;
+impl Pretty for Bar {
+    fn print(&self) {}
+}
+impl Ugly for Bar{
+    fn print(&self) {}
+}
+
+fn main() {
+    let f = Foo;
+    let b = Bar;
+
+    // we can do this because we only have one item called `print` for `Foo`s
+    f.print();
+    // more explicit, and, in the case of `Foo`, not necessary
+    Foo::print(&f);
+    // if you're not into the whole brevity thing
+    <Foo as Pretty>::print(&f);
+
+    // b.print(); // Error: multiple 'print' found
+    // Bar::print(&b); // Still an error: multiple `print` found
+
+    // necessary because of in-scope items defining `print`
+    <Bar as Pretty>::print(&b);
+}
+```
+
+Refer to [RFC 132] for further details and motivations.
+
+[RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 
 ## Lambda expressions
 
@@ -787,7 +856,11 @@ assert_eq!(-10 >> 2, -3);
 ### Comparison Operators
 
 Comparison operators are also defined both for primitive types and many type in
-the standard library. Unlike arithmetic and logical operators, the traits for
+the standard library. Parentheses are required when chaining comparison
+operators. For example, the expression `a == b == c` is invalid and may be
+written as `(a == b) == c`.
+
+Unlike arithmetic and logical operators, the traits for
 overloading the operators the traits for these operators are used more
 generally to show how a type may be compared and will likely be assumed to
 define actual comparisons by functions that use these traits as bounds. Many
@@ -1016,40 +1089,32 @@ assert_eq!(x, 14);
 assert_eq!(y, 20);
 ```
 
-## Infinite loops
+## Loops
 
-A `loop` expression denotes an infinite loop.
+Rust supports three loop expressions:
 
-A `loop` expression may optionally have a _label_. The label is written as a
-lifetime preceding the loop expression, as in `'foo: loop{ }`. If a label is
-present, then labelled `break` and `continue` expressions nested within this
-loop may exit out of this loop or return control to its head. See [break
-expressions](#break-expressions) and [continue
-expressions](#continue-expressions). Any `loop` expression has value `()`.
+*   A [`loop` expression](#infinite-loops) denotes an infinite loop.
+*   A [`while` expression](#predicate-loops) loops until a predicate is false.
+*   A [`for` expression](#iterator-loops) extracts values from an iterator,
+    looping until the iterator is empty.
 
-## `break` expressions
+All three types of loop support [`break` expressions](#break-expressions),
+[`continue` expressions](#continue-expressions), and [labels](#loop-labels).
+Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
-A `break` expression has an optional _label_. If the label is absent, then
-executing a `break` expression immediately terminates the innermost loop
-enclosing it. It is only permitted in the body of a loop. If the label is
-present, then `break 'foo` terminates the loop with label `'foo`, which need
-not be the innermost label enclosing the `break` expression, but must enclose
-it.
+### Infinite loops
 
-## `continue` expressions
+A `loop` expression repeats execution of its body continuously:
+`loop { println!("I live."); }`.
 
-A `continue` expression has an optional _label_. If the label is absent, then
-executing a `continue` expression immediately terminates the current iteration
-of the innermost loop enclosing it, returning control to the loop *head*. In
-the case of a `while` loop, the head is the conditional expression controlling
-the loop. In the case of a `for` loop, the head is the call-expression
-controlling the loop. If the label is present, then `continue 'foo` returns
-control to the head of the loop with label `'foo`, which need not be the
-innermost label enclosing the `continue` expression, but must enclose it.
+A `loop` expression without an associated `break` expression is
+[diverging](items.html#diverging-functions), and doesn't
+return anything. A `loop` expression containing associated
+[`break` expression(s)](#break-expressions)
+may terminate, and must have type compatible with the value of the `break`
+expression(s).
 
-A `continue` expression is only permitted in the body of a loop.
-
-## `while` loops
+### Predicate loops
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
 the loop conditional expression evaluates to `true`, the loop body block
@@ -1067,46 +1132,112 @@ while i < 10 {
 }
 ```
 
-Like `loop` expressions, `while` loops can be controlled with `break` or
-`continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and [continue
-expressions](#continue-expressions) for more information. Any `while` loop
-expression has value `()`.
-
-## `for` expressions
+### Iterator loops
 
 A `for` expression is a syntactic construct for looping over elements provided
-by an implementation of `std::iter::IntoIterator`.
+by an implementation of `std::iter::IntoIterator`. If the iterator yields a
+value, that value is given the specified name and the body of the loop is
+executed, then control returns to the head of the `for` loop. If the iterator
+is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
 ```rust
-# type Foo = i32;
-# fn bar(f: &Foo) { }
-# let a = 0;
-# let b = 0;
-# let c = 0;
-let v: &[Foo] = &[a, b, c];
+let v = &["apples", "cake", "coffee"];
 
-for e in v {
-    bar(e);
+for text in v {
+    println!("I like {}.", text);
 }
 ```
 
 An example of a for loop over a series of integers:
 
 ```rust
-# fn bar(b: usize) { }
-for i in 0..256 {
-    bar(i);
+let mut sum = 0;
+for n in 1..11 {
+    sum += n;
+}
+assert_eq!(sum, 55);
+```
+
+### Loop labels
+
+A loop expression may optionally have a _label_. The label is written as
+a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`,
+`'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
+If a label is present, then labeled `break` and `continue` expressions nested
+within this loop may exit out of this loop or return control to its head.
+See [break expressions](#break-expressions) and [continue
+expressions](#continue-expressions).
+
+### `break` expressions
+
+When `break` is encountered, execution of the associated loop body is
+immediately terminated, for example:
+
+```rust
+let mut last = 0;
+for x in 1..100 {
+    if x > 12 {
+        break;
+    }
+    last = x;
+}
+assert_eq!(last, 12);
+```
+
+A `break` expression is normally associated with the innermost `loop`, `for` or
+`while` loop enclosing the `break` expression, but a [label](#loop-labels) can
+be used to specify which enclosing loop is affected. Example:
+
+```rust
+'outer: loop {
+    while true {
+        break 'outer;
+    }
 }
 ```
 
-Like `loop` expressions, `for` loops can be controlled with `break` or
-`continue`, and may optionally have a _label_. See [infinite
-loops](#infinite-loops), [break expressions](#break-expressions), and [continue
-expressions](#continue-expressions) for more information. Like `loop` and
-`while`, `for` loops evaluate to `()`.
+A `break` expression is only permitted in the body of a loop, and has one of
+the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
+`break EXPR` or `break 'label EXPR`.
+
+### `continue` expressions
+
+When `continue` is encountered, the current iteration of the associated loop
+body is immediately terminated, returning control to the loop *head*. In
+the case of a `while` loop, the head is the conditional expression controlling
+the loop. In the case of a `for` loop, the head is the call-expression
+controlling the loop.
+
+Like `break`, `continue` is normally associated with the innermost enclosing
+loop, but `continue 'label` may be used to specify the loop affected.
+A `continue` expression is only permitted in the body of a loop.
+
+### `break` and loop values
+
+When associated with a `loop`, a break expression may be used to return a value
+from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where
+`EXPR` is an expression whose result is returned from the `loop`. For example:
+
+```rust
+let (mut a, mut b) = (1, 1);
+let result = loop {
+    if b > 10 {
+        break b;
+    }
+    let c = a + b;
+    a = b;
+    b = c;
+};
+// first number in Fibonacci sequence over 10:
+assert_eq!(result, 13);
+```
+
+In the case a `loop` has an associated `break`, it is not considered diverging,
+and the `loop` must have a type compatible with each `break` expression.
+`break` without an expression is considered identical to `break` with
+expression `()`.
 
 ## `if` expressions
 
@@ -1150,10 +1281,6 @@ variable binding specifications, wildcards (`..`), and placeholders (`_`). A
 the patterns. The type of the patterns must equal the type of the head
 expression.
 
-In a pattern whose head expression has an `enum` type, a placeholder (`_`)
-stands for a *single* data field, whereas a wildcard `..` stands for *all* the
-fields of a particular variant.
-
 A `match` behaves differently depending on whether or not the head expression
 is an [lvalue or an rvalue](expressions.html#lvalues-rvalues-and-temporaries).
 If the head expression is an rvalue, it is first evaluated into a temporary
@@ -1189,16 +1316,31 @@ matched value (depending on the matched value's type). This can be changed to
 bind to a reference by using the `ref` keyword, or to a mutable reference using
 `ref mut`.
 
-Subpatterns can also be bound to variables by the use of the syntax `variable @
-subpattern`. For example:
+Patterns can be used to *destructure* structs, enums, and tuples. Destructuring
+breaks a value up into its component pieces. The syntax used is the same as
+when creating such values. When destructing a data structure with named (but
+not numbered) fields, it is allowed to write `fieldname` as a shorthand for
+`fieldname: fieldname`. In a pattern whose head expression has a `struct`,
+`enum` or `tupl` type, a placeholder (`_`) stands for a *single* data field,
+whereas a wildcard `..` stands for *all* the fields of a particular variant.
 
 ```rust
-let x = 1;
-
-match x {
-    e @ 1 ... 5 => println!("got a range element {}", e),
-    _ => println!("anything"),
-}
+# enum Message {
+#     Quit,
+#     WriteString(String),
+#     Move { x: i32, y: i32 },
+#     ChangeColor(u8, u8, u8),
+# }
+# let message = Message::Quit;
+match message {
+    Message::Quit => println!("Quit"),
+    Message::WriteString(write) => println!("{}", &write),
+    Message::Move{ x, y: 0 } => println!("move {} horizontally", x),
+    Message::Move{ .. } => println!("other move"),
+    Message::ChangeColor { 0: red, 1: green, 2: _ } => {
+        println!("color change, red: {}, green: {}", red, green);
+    }
+};
 ```
 
 Patterns can also dereference pointers by using the `&`, `&mut` and `box`
@@ -1211,6 +1353,18 @@ let y = match *x { 0 => "zero", _ => "some" };
 let z = match x { &0 => "zero", _ => "some" };
 
 assert_eq!(y, z);
+```
+
+Subpatterns can also be bound to variables by the use of the syntax `variable @
+subpattern`. For example:
+
+```rust
+let x = 1;
+
+match x {
+    e @ 1 ... 5 => println!("got a range element {}", e),
+    _ => println!("anything"),
+}
 ```
 
 Multiple match patterns may be joined with the `|` operator. A range of values

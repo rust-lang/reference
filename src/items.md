@@ -18,7 +18,7 @@ There are several kinds of item:
 * [modules](#modules)
 * [function definitions](#functions)
 * [`extern` blocks](#external-blocks)
-* [type definitions](../grammar.html#type-definitions)
+* [type definitions](#type-aliases)
 * [struct definitions](#structs)
 * [enumeration definitions](#enumerations)
 * [constant items](#constant-items)
@@ -170,14 +170,16 @@ path required to refer to a module item. These declarations may appear in
 
 Use declarations support a number of convenient shortcuts:
 
-* Rebinding the target name as a new local name, using the syntax `use p::q::r as x;`
 * Simultaneously binding a list of paths differing only in their final element,
   using the glob-like brace syntax `use a::b::{c,d,e,f};`
-* Binding all paths matching a given prefix, using the asterisk wildcard syntax
-  `use a::b::*;`
 * Simultaneously binding a list of paths differing only in their final element
   and their immediate parent module, using the `self` keyword, such as
   `use a::b::{self, c, d};`
+* Rebinding the target name as a new local name, using the syntax `use p::q::r
+  as x;`. This can also be used with the last two features: `use a::b::{self as
+  ab, c as abc}`.
+* Binding all paths matching a given prefix, using the asterisk wildcard syntax
+  `use a::b::*;`
 
 An example of `use` declarations:
 
@@ -365,9 +367,10 @@ fn my_err(s: &str) -> ! {
 ```
 
 We call such functions "diverging" because they never return a value to the
-caller. Every control path in a diverging function must end with a `panic!()` or
-a call to another diverging function on every control path. The `!` annotation
-does *not* denote a type.
+caller. Every control path in a diverging function must end with a `panic!()`,
+a loop expression without an associated break expression, or a call to another
+diverging function on every control path. The `!` annotation does *not* denote
+a type.
 
 It might be necessary to declare a diverging function because as mentioned
 previously, the typechecker checks that every control path in a function ends
@@ -443,8 +446,7 @@ type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
 
-Currently a type alias to an enum type cannot be used to qualify the
-constructors:
+A type alias to an enum type cannot be used to qualify the constructors:
 
 ```rust
 enum E { A }
@@ -665,13 +667,12 @@ type of the value is not required to ascribe to `Sync`.
 
 #### `'static` lifetime elision
 
-[Unstable] Both constant and static declarations of reference types have
-*implicit* `'static` lifetimes unless an explicit lifetime is specified. As
-such, the constant declarations involving `'static` above may be written
-without the lifetimes. Returning to our previous example:
+Both constant and static declarations of reference types have *implicit*
+`'static` lifetimes unless an explicit lifetime is specified. As such, the
+constant declarations involving `'static` above may be written without the
+lifetimes. Returning to our previous example:
 
 ```rust
-# #![feature(static_in_const)]
 const BIT1: u32 = 1 << 0;
 const BIT2: u32 = 1 << 1;
 

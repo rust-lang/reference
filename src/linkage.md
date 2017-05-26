@@ -125,3 +125,83 @@ dependencies will be used:
 In general, `--crate-type=bin` or `--crate-type=lib` should be sufficient for
 all compilation needs, and the other options are just available if more
 fine-grained control is desired over the output format of a Rust crate.
+
+## Static and dynamic C runtimes
+
+The standard library in general strives to support both statically linked and
+dynamically linked C runtimes for targets as appropriate. For example the
+`x86_64-pc-windows-msvc` and `x86_64-unknown-linux-musl` targets typically come
+with both runtimes and the user selects which one they'd like. All targets in
+the compiler have a default mode of linking to the C runtime. Typicall targets
+linked dynamically by default, but there are exceptions which are static by
+default such as:
+
+* `arm-unknown-linux-musleabi`
+* `arm-unknown-linux-musleabihf`
+* `armv7-unknown-linux-musleabihf`
+* `i686-unknown-linux-musl`
+* `x86_64-unknown-linux-musl`
+
+The linkage of the C runtime is configured to respect the `crt-static` target
+feature. These target features are typically configured from the command line
+via flags to the compiler itself. For example to enable a static runtime you
+would execute:
+
+```notrust
+rustc -C target-feature=+crt-static foo.rs
+```
+
+whereas to link dynamically to the C runtime you would execute:
+
+```notrust
+rustc -C target-feature=-crt-static foo.rs
+```
+
+Targets which do not support switching between linkage of the C runtime will
+ignore this flag. It's recommended to inspect the resulting binary to ensure
+that it's linked as you would expect after the compiler succeeds.
+
+Crates may also learn about how the C runtime is being linked. Code on MSVC, for
+example, needs to be compiled differently (e.g. with `/MT` or `/MD`) depending
+on the runtime being linked. This is exported currently through the
+`target_feature` attribute (note this is a nightly feature):
+
+```rust,ignore
+#[cfg(target_feature = "crt-static")]
+fn foo() {
+    println!("the C runtime should be statically linked");
+}
+
+#[cfg(not(target_feature = "crt-static"))]
+fn foo() {
+    println!("the C runtime should be dynamically linked");
+}
+```
+
+Also note that Cargo build scripts can learn about this feature through
+[environment variables][cargo]. In a build script you can detect the linkage
+via:
+
+```rust
+use std::env;
+
+fn main() {
+    let linkage = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or(String::new());
+
+    if linkage.contains("crt-static") {
+        println!("the C runtime will be statically linked");
+    } else {
+        println!("the C runtime will be dynamically linked");
+    }
+}
+```
+
+[cargo]: http://doc.crates.io/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
+
+To use this feature locally, you typically will use the `RUSTFLAGS` environment
+variable to specify flags to the compiler through Cargo. For example to compile
+a statically linked binary on MSVC you would execute:
+
+```ignore,notrust
+RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
+```

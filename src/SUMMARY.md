@@ -16,7 +16,7 @@
 
 - [Macros](macros.md)
     - [Macros By Example](macros-by-example.md)
-    - [Procedrual Macros](procedural-macros.md)
+    - [Procedural Macros](procedural-macros.md)
 
 - [Crates and source files](crates-and-source-files.md)
 
@@ -56,3 +56,5 @@
     - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
 
 [Appendix: Influences](influences.md)
+
+[Appendix: As-yet-undocumented Features](undocumented.md)
