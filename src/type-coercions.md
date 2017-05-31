@@ -1,8 +1,10 @@
 # Type coercions
 
-Coercions are defined in [RFC 401]. A coercion is implicit and has no syntax.
+Coercions are defined in [RFC 401]. [RFC 1558] then expanded on that.
+A coercion is implicit and has no syntax.
 
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
+[RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 
 ## Coercion sites
 
@@ -143,3 +145,5 @@ Coercion is allowed between the following types:
     In the future, coerce_inner will be recursively extended to tuples and
     structs. In addition, coercions from sub-traits to super-traits will be
     added. See [RFC 401] for more details.
+
+* Non capturing closures to `fn` pointers
