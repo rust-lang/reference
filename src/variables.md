@@ -1,6 +1,6 @@
 # Variables
 
-A _variable_ is a component of a stack frame.  That component can be a named function parameter,
+A _variable_ is a component of a stack frame. That component can be a named function parameter,
 an anonymous [temporary](expressions.html#lvalues-rvalues-and-temporaries), or a named local
 variable.
 
