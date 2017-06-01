@@ -268,7 +268,7 @@ messages to indicate "the unique fn type for the function `foo`".
 
 ## Closure types
 
-A [lambda expression](expressions.html#lambda-expressions) produces a closure
+A [closure expression](expressions.html#closure-expressions) produces a closure
 value with a unique, anonymous type that cannot be written out.
 
 Depending on the requirements of the closure, its type implements one or

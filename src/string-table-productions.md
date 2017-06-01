@@ -12,7 +12,7 @@ When such a string enclosed in double-quotes (`"`) occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
 
-[binary operators]: expressions.html#binary-operator-expressions
+[binary operators]: expressions.html#arithmetic-and-logical-binary-operators
 [keywords]: ../grammar.html#keywords
 [tokens]: tokens.html
-[unary operators]: expressions.html#unary-operator-expressions
+[unary operators]: expressions.html#borrow-operators

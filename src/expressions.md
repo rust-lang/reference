@@ -221,7 +221,7 @@ boolean value, or the unit value.
 
 A [path](paths.html) used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
-are [lvalues](expressions.html#lvalues-rvalues-and-temporaries), other paths
+are [lvalues](expressions.html#lvalues-and-rvalues), other paths
 are rvalues. Using a `static mut` variable requires an [`unsafe`
 block](#unsafe-block).
 
@@ -452,7 +452,7 @@ mystruct.method();          // Method expression
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
-A field access is an [lvalue](expressions.html#lvalues-rvalues-and-temporaries)
+A field access is an [lvalue](expressions.html#lvalues-and-rvalues)
 referring to the value of that field. When the subexpression is
 [mutable](#mutability), the field expression is also mutable.
 
@@ -670,7 +670,7 @@ greater than 1 then this requires that the type of `a` is
 [Array and slice](types.html#array-and-slice-types)-typed expressions can be
 indexed by writing a square-bracket-enclosed expression (the index) after them.
 When the array is mutable, the resulting
-[lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be assigned to.
+[lvalue](expressions.html#lvalues-and-rvalues) can be assigned to.
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or `*std::opsIndexMut::index_mut(&mut a, b)`
 in a mutable lvalue context. Just as with methods, Rust will also insert
@@ -768,7 +768,7 @@ The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
 variable, a (nested) field of a local variance or is a mutable lvalue, then the
-resulting [lvalue](expressions.html#lvalues-rvalues-and-temporaries) can be
+resulting [lvalue](expressions.html#lvalues-and-rvalues) can be
 assigned to. Dereferencing a raw pointer requires `unsafe`.
 
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
@@ -1003,9 +1003,9 @@ same trait object.
 ### Assignment expressions
 
 An _assignment expression_ consists of an
-[lvalue](expressions.html#lvalues-rvalues-and-temporaries) expression followed
+[lvalue](expressions.html#lvalues-and-rvalues) expression followed
 by an equals sign (`=`) and an
-[rvalue](expressions.html#lvalues-rvalues-and-temporaries) expression.
+[rvalue](expressions.html#lvalues-and-rvalues) expression.
 
 Evaluating an assignment expression [either copies or
 moves](#moved-and-copied-types) its right-hand operand to its left-hand
@@ -1267,7 +1267,7 @@ the patterns. The type of the patterns must equal the type of the head
 expression.
 
 A `match` behaves differently depending on whether or not the head expression
-is an [lvalue or an rvalue](expressions.html#lvalues-rvalues-and-temporaries).
+is an [lvalue or an rvalue](expressions.html#lvalues-and-rvalues).
 If the head expression is an rvalue, it is first evaluated into a temporary
 location, and the resulting value is sequentially compared to the patterns in
 the arms until a match is found. The first arm with a matching pattern is
