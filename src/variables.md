@@ -1,7 +1,7 @@
 # Variables
 
 A _variable_ is a component of a stack frame, either a named function parameter,
-an anonymous [temporary](expressions.html#lvalues-and-rvalues), or a named local
+an anonymous [temporary](expressions.html#temporary-lifetimes), or a named local
 variable.
 
 A _local variable_ (or *stack-local* allocation) holds a value directly,

@@ -49,7 +49,7 @@ the following lvalues may be moved out of:
 * [Variables](variables.html) which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions) of an lvalue which can be moved out of and
-  doesn't implement [`Drop`](#the-drop-trait).
+  doesn't implement [`Drop`](the-drop-trait.html).
 * The result of [dereferencing](#the-dereference-operator) an expression with
   type `Box<T>` and that can also be moved out of.
 
@@ -123,8 +123,8 @@ Here are some examples:
 
 Certain expressions will treat an expression as an lvalue by implicitly
 borrowing it. For example, it is possible to compare two unsized
-[slices](#array-and-slice-types) for equality directly, because the `==`
-operator implicitly borrows it's operands:
+[slices](types.html#array-and-slice-types) for equality directly, because the
+`==` operator implicitly borrows it's operands:
 
 ```rust
 # let c = [1, 2, 3];
@@ -155,17 +155,17 @@ Certain types of expressions can be evaluated at compile time. These are called
 _constant expressions_. Certain places, such as in
 [constants](items.html#constant-items) and [statics](items.html#static-items),
 require a constant expression, and are always evaluated at compile time. In
-other places, such as in [`let` statements](let-statements), constant
-expressions may be evaluated at compile time. If errors, such as out of bounds
-[array access](#index-expressions) or [overflow](#overflow) occurs, then it is
-a compiler error if the value must be evaluated at compile time, otherwise it
-is just a warning, but the code will most likely panic when run.
+other places, such as in [`let` statements](statements.html#let-statements),
+constant expressions may be evaluated at compile time. If errors, such as out
+of bounds [array access](#index-expressions) or [overflow](#overflow) occurs,
+then it is a compiler error if the value must be evaluated at compile time,
+otherwise it is just a warning, but the code will most likely panic when run.
 
 The following expressions are constant expressions, so long as any operands are
 also constant expressions:
 
 * [Literals](#literal-expressions).
-* [Paths](#paths) to [functions](items.html#functions) and constants.
+* [Paths](#path-expressions) to [functions](items.html#functions) and constants.
   Recursively defining constants is not allowed.
 * Paths to statics, so long as only their address, not their value, is used.
   This includes using their value indirectly through a compilicated expression.
@@ -190,7 +190,7 @@ also constant expressions:
   boolean](#lazy-boolean-operators) operators used on integer and floating
   point types, `bool` and `char`.
 * Shared [borrow expressions](#borrow-operators).
-* The [dereference operator](#dereference-operator), but not to circumvent the
+* The [dereference operator](#the-dereference-operator), but not to circumvent the
   rule on statics.
 * [Grouped expressions](#grouped-expressions).
 * [Cast expressions](#type-cast-expressions), except pointer to address and
@@ -223,7 +223,7 @@ A [path](paths.html) used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
 are [lvalues](expressions.html#lvalues-and-rvalues), other paths
 are rvalues. Using a `static mut` variable requires an [`unsafe`
-block](#unsafe-block).
+block](#unsafe-blocks).
 
 ```rust
 # mod globals {
@@ -452,9 +452,9 @@ mystruct.method();          // Method expression
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
-A field access is an [lvalue](expressions.html#lvalues-and-rvalues)
-referring to the value of that field. When the subexpression is
-[mutable](#mutability), the field expression is also mutable.
+A field access is an [lvalue](lvalues-and-rvalues) referring to the value of
+that field. When the subexpression is [mutable](#mutability), the field
+expression is also mutable.
 
 Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
@@ -462,7 +462,7 @@ possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 Finally the fields of a struct, a reference to a struct are treated as separate
 entities when borrowing. If the struct does not implement
-[`Drop`](#the-drop-trait) this also applies to moving out of each of its fields
+[`Drop`](the-drop-trait.html) this also applies to moving out of each of its fields
 where possible. This also does not apply if automatic dereferencing is done
 though user defined types.
 

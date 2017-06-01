@@ -319,8 +319,8 @@ otherwise appear as [unary operators], [binary
 operators], or [keywords].
 They are catalogued in [the Symbols section][symbols] of the Grammar document.
 
-[unary operators]: expressions.html#unary-operator-expressions
-[binary operators]: expressions.html#binary-operator-expressions
+[unary operators]: expressions.html#borrow-operators
+[binary operators]: expressions.html#arithmetic-and-logical-binary-operators
 [tokens]: #tokens
 [symbols]: ../grammar.html#symbols
 [keywords]: ../grammar.html#keywords
