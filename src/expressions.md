@@ -373,7 +373,7 @@ let x: i32 = { println!("Hello."); 5 };
 assert_eq!(5, x);
 ```
 
-Blocks are always [rvalues](#lvalues-and-rvalues) and evaluate the last
+Blocks are always [rvalues](expressions.html#lvalues-and-rvalues) and evaluate the last
 expression in rvalue context. This can be used to force moving a value
 if really needed.
 
@@ -960,7 +960,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
-| [Function pointer](type.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
+| [Function pointer](types.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
 | Function pointer      | Integer               | Function pointer to address cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the

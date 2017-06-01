@@ -259,7 +259,7 @@ Note that the Rust syntax considers `-1i8` as an application of the [unary minus
 operator] to an integer literal `1i8`, rather than
 a single integer literal.
 
-[unary minus operator]: expressions.html#unary-operator-expressions
+[unary minus operator]: expressions.html#negation-operators
 
 #### Floating-point literals
 
