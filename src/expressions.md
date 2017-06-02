@@ -452,7 +452,7 @@ mystruct.method();          // Method expression
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
-A field access is an [lvalue](lvalues-and-rvalues) referring to the value of
+A field access is an [lvalue](expressions.html#lvalues-and-rvalues) referring to the value of
 that field. When the subexpression is [mutable](#mutability), the field
 expression is also mutable.
 
