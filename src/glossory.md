@@ -2,7 +2,7 @@
 
 ### Abstract Syntax Tree
 
-‘Abstract syntax tree’, or ‘AST’. This tree is an intermediate representation of
+An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
 the structure of your program when the compiler is compiling your program.
 
 For example, `2 + 3` can be turned into a tree:
