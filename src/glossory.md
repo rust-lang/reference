@@ -70,3 +70,18 @@ the element type.
 
 A statement is the smallest standalone element of a programming language
 that commands a computer to perform an action.
+
+### String literal
+
+A string literal is a string stored directly in the final binary, and so will be 
+valid for the `'static` duration. 
+
+Its type is `'static` duration borrowed string slice, `&'static str`.
+
+### String slice
+
+A string slice is the most primitive string type in Rust, written as `str`. It is
+often seen in its borrowed forms, either mutable or shared. The shared
+string slice type is `&str`, while the mutable string slice type is `&mut str`.
+
+Strings slices are always valid UTF-8.
