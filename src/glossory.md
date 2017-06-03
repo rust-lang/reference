@@ -58,6 +58,11 @@ and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
+### Prelude
+
+Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
+imported into very module of every crate. The traits in the prelude are pervasive.
+
 ### Slice
 
 A slice is dynamically-sized view into a contiguous sequence, written as `[T]`. 
