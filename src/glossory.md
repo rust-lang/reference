@@ -58,6 +58,14 @@ and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
+### Slice
+
+A slice is dynamically-sized view into a contiguous sequence, written as `[T]`. 
+
+It is often seen in its borrowed forms, either mutable or shared. The shared 
+slice type is `&[T]`, while the mutable slice type is `&mut [T]`, where `T` represents
+the element type.
+
 ### Statement
 
 A statement is the smallest standalone element of a programming language
