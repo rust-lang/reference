@@ -3,37 +3,12 @@
 ### Abstract Syntax Tree
 
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
-the structure of your program when the compiler is compiling your program.
-
-For example, `2 + 3` can be turned into a tree:
-
-```text
-  +
- / \
-2   3
-```
-
-And `2 + (3 * 4)` would look like this:
-
-```text
-  +
- / \
-2   *
-   / \
-  3   4
-```
+the structure of the program when the compiler is compiling it.
 
 ### Arity
 
 Arity refers to the number of arguments a function or operation takes.
-
-```rust
-let x = (2, 3);
-let y = (4, 6);
-let z = (8, 2, 6);
-```
-
-In the example above `x` and `y` have arity 2. `z` has arity 3.
+For example, `(2, 3)` and `(4, 6)` have arity 2, and`(8, 2, 6)` has arity 3.
 
 ### Array
 
