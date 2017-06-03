@@ -53,6 +53,13 @@ Combinators are higher-order functions that apply only functions and
 earlier defined combinators to provide a result from its arguments. 
 They can be used to manage control flow in a modular fashion.
 
+### Dispatch
+
+Dispatch is the mechanism to determine which specific version of code is actually
+run when it involves polymorphism. Two major forms of dispatch are static dispatch and
+dynamic dispatch. While Rust favors static dispatch, it also supports dynamic dispatch
+through a mechanism called ‘trait objects’.
+
 ### Dynamically Sized Type
 
 A dynamically sized type (DST) is a type without a statically known size or alignment. 
