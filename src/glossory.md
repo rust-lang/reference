@@ -35,6 +35,12 @@ let z = (8, 2, 6);
 
 In the example above `x` and `y` have arity 2. `z` has arity 3.
 
+### Array
+
+An array, sometimes also called a fixed-size array or an inline array, is a value
+describing a collection of elements, each selected by an index that can be computed
+at run time by the program. It occupies a contiguous region of memory.
+
 ### Bound
 
 Bounds are constraints on a type or trait. For example, if a bound
