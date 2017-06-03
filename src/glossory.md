@@ -103,3 +103,10 @@ often seen in its borrowed forms, either mutable or shared. The shared
 string slice type is `&str`, while the mutable string slice type is `&mut str`.
 
 Strings slices are always valid UTF-8.
+
+### Trait
+
+A trait is a language item that is used for describing the functionalities a type must provide.
+It allow a type to make certain promises about its behavior. 
+
+Generic functions and generic structs can exploit traits to constrain, or bound, the types they accept.
