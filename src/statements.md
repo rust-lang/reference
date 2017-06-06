@@ -37,10 +37,9 @@ declaration until the end of the enclosing block scope.
 ## Expression statements
 
 An _expression statement_ is one that evaluates an
-[expression](expressions.html) and ignores its result. The type of an
-expression statement `e;` is always `()`, regardless of the type of `e`. As a
-rule, an expression statement's purpose is to trigger the effects of evaluating
-its expression. An expression that consists of only a [block
+[expression](expressions.html) and ignores its result. As a rule, an expression
+statement's purpose is to trigger the effects of evaluating its expression.
+An expression that consists of only a [block
 expression](expressions.html#block-expressions) or control flow expression,
 that doesn't end a block and evaluates to `()` can also be used as an
 expression statement by omitting the trailing semicolon.
