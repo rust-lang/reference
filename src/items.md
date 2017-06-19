@@ -591,7 +591,7 @@ struct types, except that it must specify exactly one field:
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
-
+#
 let u = MyUnion { f1: 1 };
 ```
 
@@ -612,7 +612,7 @@ union fields have to be placed in `unsafe` blocks.
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
 # let u = MyUnion { f1: 1 };
-
+#
 unsafe {
     let f = u.f1;
 }
@@ -624,7 +624,7 @@ so these writes don't have to be placed in `unsafe` blocks
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
 # let mut u = MyUnion { f1: 1 };
-
+#
 u.f1 = 2;
 ```
 
@@ -639,7 +639,7 @@ to be placed in `unsafe` blocks as well.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
-
+#
 fn f(u: MyUnion) {
     unsafe {
         match u {
@@ -715,11 +715,13 @@ More detailed specification for unions, including unstable bits, can be found in
 
 ## Constant items
 
-A *constant item* is a named _constant value_ which is not associated with a
+A *constant item* is a named _[constant value]_ which is not associated with a
 specific memory location in the program. Constants are essentially inlined
 wherever they are used, meaning that they are copied directly into the relevant
 context when used. References to the same constant are not necessarily
 guaranteed to refer to the same memory address.
+
+[constant value]: expressions.html#constant-expressions
 
 Constant values must not have destructors, and otherwise permit most forms of
 data. Constants may refer to the address of other constants, in which case the
