@@ -132,8 +132,8 @@ The standard library in general strives to support both statically linked and
 dynamically linked C runtimes for targets as appropriate. For example the
 `x86_64-pc-windows-msvc` and `x86_64-unknown-linux-musl` targets typically come
 with both runtimes and the user selects which one they'd like. All targets in
-the compiler have a default mode of linking to the C runtime. Typicall targets
-linked dynamically by default, but there are exceptions which are static by
+the compiler have a default mode of linking to the C runtime. Typically targets
+are linked dynamically by default, but there are exceptions which are static by
 default such as:
 
 * `arm-unknown-linux-musleabi`

@@ -72,13 +72,13 @@ The following expressions can create mutable lvalues:
 * [Temporary values](#temporary-lifetimes).
 * [Fields](#field-expressions), this evaluates the subexpression in a mutable
   lvalue context.
-* [Dereferenes](#the-dereference-operator) of a `*mut T` pointer.
+* [Dereferences](#the-dereference-operator) of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
   this is an exception to the requirement for the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
   the value being dereferenced is evaluated is a mutable lvalue context.
 * [Indexing](#index-expressions) of a type that implements `DerefMut`, this
-  then evalutes the value being indexed (but not the index) in mutable lvalue
+  then evaluates the value being indexed (but not the index) in mutable lvalue
   context.
 
 ### Temporary lifetimes
@@ -168,7 +168,7 @@ also constant expressions:
 * [Paths](#path-expressions) to [functions](items.html#functions) and constants.
   Recursively defining constants is not allowed.
 * Paths to statics, so long as only their address, not their value, is used.
-  This includes using their value indirectly through a compilicated expression.
+  This includes using their value indirectly through a complicated expression.
   \*
 * [Tuple expressions](#tuple-expressions).
 * [Array expressions](#array-expressions).
@@ -441,8 +441,8 @@ A _field expression_ consists of an expression followed by a single dot and an
 [identifier](identifiers.html), when not immediately followed by a
 parenthesized expression-list (the latter is always a [method call
 expression](#method-call-expressions)). A field expression denotes a field of a
-[struct](types.html#struct-types). To call a function stored in a struct
-parentheses are needed around the field expression
+[struct](types.html#struct-types) or [union](items.html#unions). To call a
+function stored in a struct parentheses are needed around the field expression
 
 ```rust,ignore
 mystruct.myfield;
@@ -452,9 +452,9 @@ mystruct.method();          // Method expression
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
-A field access is an [lvalue](expressions.html#lvalues-and-rvalues) referring to the value of
-that field. When the subexpression is [mutable](#mutability), the field
-expression is also mutable.
+A field access is an [lvalue](expressions.html#lvalues-and-rvalues) referring
+to the location of that field. When the subexpression is
+[mutable](#mutability), the field expression is also mutable.
 
 Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
@@ -482,7 +482,7 @@ let d: String = x.f3;           // Move out of x.f3
 ### Tuple indexing expressions
 
 [Tuples](types.html#tuple-types) and [struct tuples](items.html#structs) can be
-indexed using the number corresponding to the possition of the field. The index
+indexed using the number corresponding to the position of the field. The index
 must be written as a [decimal literal](tokens.html#integer-literals) with no
 underscores or suffix. Tuple indexing expressions also differ from field
 expressions in that they can unambiguously be called as a function. In all
