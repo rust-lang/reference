@@ -591,7 +591,7 @@ struct types, except that it must specify exactly one field:
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
-
+#
 let u = MyUnion { f1: 1 };
 ```
 
@@ -612,7 +612,7 @@ union fields have to be placed in `unsafe` blocks.
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
 # let u = MyUnion { f1: 1 };
-
+#
 unsafe {
     let f = u.f1;
 }
@@ -624,7 +624,7 @@ so these writes don't have to be placed in `unsafe` blocks
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
 # let mut u = MyUnion { f1: 1 };
-
+#
 u.f1 = 2;
 ```
 
@@ -639,7 +639,7 @@ to be placed in `unsafe` blocks as well.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
-
+#
 fn f(u: MyUnion) {
     unsafe {
         match u {
