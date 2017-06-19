@@ -267,7 +267,9 @@ the field values of a new instance of the struct. A field name can be any
 [identifier](identifiers.html), and is separated from its value expression by a
 colon. In the case of a tuple struct the field names are numbers corresponding
 to the position of the field. The numbers must be written in decimal,
-containing no underscores and with no leading zeros or integer suffix.
+containing no underscores and with no leading zeros or integer suffix. A value
+of a [union](items.html#unions) type can also be created using this syntax,
+except that it must specify exactly one field.
 
 Struct expressions can't be used directly in the head of a [loop](#loops) or an
 [`if`](#if-expressions), [`if let`](#if-let-expressions) or
