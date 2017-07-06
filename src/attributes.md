@@ -28,7 +28,7 @@ fn test_foo() {
 }
 
 // A conditionally-compiled module
-#[cfg(target_os="linux")]
+#[cfg(target_os = "linux")]
 mod bar {
     /* ... */
 }
