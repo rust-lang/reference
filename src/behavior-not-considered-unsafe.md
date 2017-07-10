@@ -7,6 +7,7 @@ or erroneous.
 ##### Deadlocks
 ##### Leaks of memory and other resources
 ##### Exiting without calling destructors
+##### Exposing randomized base addresses through pointer leaks
 ##### Integer overflow
 
 If a program contains arithmetic overflow, the programmer has made an
