@@ -866,7 +866,7 @@ implement. This interface consists of associated items, which come in
 three varieties:
 
 - functions
-- constants
+- [constants](#associated-constants)
 - types
 
 Associated functions whose first parameter is named `self` are called
@@ -1078,6 +1078,79 @@ Likewise, supertrait methods may also be called on trait objects.
 # let mycircle = 0i32;
 let mycircle = Box::new(mycircle) as Box<Circle>;
 let nonsense = mycircle.radius() * mycircle.area();
+```
+
+#### Associated Constants
+
+
+A trait can define constants like this:
+
+```rust
+trait Foo {
+    const ID: i32;
+}
+
+impl Foo for i32 {
+    const ID: i32 = 1;
+}
+
+fn main() {
+    assert_eq!(1, i32::ID);
+}
+```
+
+Any implementor of `Foo` will have to define `ID`. Without the definition:
+
+```rust,ignore
+trait Foo {
+    const ID: i32;
+}
+
+impl Foo for i32 {
+}
+```
+
+gives
+
+```text
+error: not all trait items implemented, missing: `ID` [E0046]
+     impl Foo for i32 {
+     }
+```
+
+A default value can be implemented as well:
+
+```rust
+trait Foo {
+    const ID: i32 = 1;
+}
+
+impl Foo for i32 {
+}
+
+impl Foo for i64 {
+    const ID: i32 = 5;
+}
+
+fn main() {
+    assert_eq!(1, i32::ID);
+    assert_eq!(5, i64::ID);
+}
+```
+
+As you can see, when implementing `Foo`, you can leave it unimplemented, as
+with `i32`. It will then use the default value. But, as in `i64`, we can also
+add our own definition.
+
+Associated constants don’t have to be associated with a trait. An `impl` block
+for a `struct` or an `enum` works fine too:
+
+```rust
+struct Foo;
+
+impl Foo {
+    const FOO: u32 = 3;
+}
 ```
 
 ### Implementations
