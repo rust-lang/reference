@@ -428,9 +428,6 @@ same type as the functions declared in an extern block.
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-Extern functions may be called directly from Rust code as Rust uses large,
-contiguous stack segments like C.
-
 ## Type aliases
 
 A _type alias_ defines a new name for an existing [type]. Type
