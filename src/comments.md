@@ -17,10 +17,10 @@
 > OUTER_BLOCK_DOC :  
 > &nbsp;&nbsp; `/*!` (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`  
 >  
-> INNER_DOC_LINE :  
+> INNER_LINE_DOC :  
 > &nbsp;&nbsp; `///` (~`/` ~`\n`<sup>\*</sup>)<sup>?</sup>  
 >  
-> INNER_DOC_BLOCK :   
+> INNER_BLOCK_DOC :  
 > &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
 >              (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`  
 >  
