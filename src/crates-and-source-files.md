@@ -1,5 +1,16 @@
 # Crates and source files
 
+> **<sup>Syntax</sup>**  
+> _Crate_ :  
+> &nbsp;&nbsp; UTF8BOM<sup>?</sup>  
+> &nbsp;&nbsp; SHEBANG<sup>?</sup>  
+> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
+> &nbsp;&nbsp; [_Item_]<sup>\*</sup>  
+
+> **<sup>Lexer</sup>**  
+> UTF8BOM : `\uFEFF`  
+> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
+
 Although Rust, like any other language, can be implemented by an interpreter as
 well as a compiler, the only existing implementation is a compiler,
 and the language has
@@ -17,17 +28,6 @@ The compilation model centers on artifacts called _crates_. Each compilation
 processes a single crate in source form, and if successful, produces a single
 crate in binary form: either an executable or some sort of
 library.[^cratesourcefile]
-
-> **<sup>Syntax</sup>**  
-> _Crate_ :  
-> &nbsp;&nbsp; UTF8BOM<sup>?</sup>  
-> &nbsp;&nbsp; SHEBANG<sup>?</sup>  
-> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; [_Item_]<sup>\*</sup>  
-
-> **<sup>Lexer</sup>**  
-> UTF8BOM : `\xFE\xFF`  
-> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
 
 A _crate_ is a unit of compilation and linking, as well as versioning,
 distribution and runtime loading. A crate contains a _tree_ of nested
@@ -70,6 +70,24 @@ A crate that contains a `main` function can be compiled to an executable. If a
 `main` function is present, its return type must be `()`
 ("[unit]") and it must take no arguments.
 
+The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
+file is encoded in UTF8. It can only occur at the beginning of the file and
+is ignored by the compiler.
+
+A source file can have a [_shebang_] (SHEBANG production), which indicates
+to the operating system what program to use to execute this file. It serves
+essentially to treat the source file as an executable script. The shebang
+can only occur at the beginning of the file (but after the optional
+_UTF8BOM_). It is ignored by the compiler. For example:
+
+```text,ignore
+#!/usr/bin/env rustx
+
+fn main() {
+    println!("Hello!");
+}
+```
+
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
     happen before the program is executed regardless of when it is executed.
@@ -84,3 +102,5 @@ A crate that contains a `main` function can be compiled to an executable. If a
 [unit]: types.html#tuple-types
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
+[_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
