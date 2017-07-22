@@ -1,5 +1,14 @@
 # Visibility and Privacy
 
+> **<sup>Syntax<sup>**  
+> _Visibility_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY  
+> &nbsp;&nbsp; | `pub`  
+> &nbsp;&nbsp; | `pub` `(` `crate` `)`  
+> &nbsp;&nbsp; | `pub` `(` `in` _ModulePath_ `)`  
+> &nbsp;&nbsp; | `pub` `(` `in`<sup>?</sup> `self` `)`  
+> &nbsp;&nbsp; | `pub` `(` `in`<sup>?</sup> `super` `)`  
+
 These two terms are often used interchangeably, and what they are attempting to
 convey is the answer to the question "Can this item be used at this location?"
 
