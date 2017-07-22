@@ -1,5 +1,10 @@
 # Identifiers
 
+> **<sup>Lexer:<sup>**  
+> IDENTIFIER :  
+> &nbsp;&nbsp; &nbsp;&nbsp; XID_start XID_continue<sup>\*</sup>  
+> &nbsp;&nbsp; | `_` XID_continue<sup>+</sup>  
+
 An identifier is any nonempty Unicode[^non_ascii_idents] string of the following form:
 
 Either
