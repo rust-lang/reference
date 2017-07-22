@@ -18,6 +18,17 @@ processes a single crate in source form, and if successful, produces a single
 crate in binary form: either an executable or some sort of
 library.[^cratesourcefile]
 
+> **<sup>Syntax</sup>**  
+> _Crate_ :  
+> &nbsp;&nbsp; UTF8BOM<sup>?</sup>  
+> &nbsp;&nbsp; SHEBANG<sup>?</sup>  
+> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
+> &nbsp;&nbsp; [_Item_]<sup>\*</sup>  
+
+> **<sup>Lexer</sup>**  
+> UTF8BOM : `\xFE\xFF`  
+> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
+
 A _crate_ is a unit of compilation and linking, as well as versioning,
 distribution and runtime loading. A crate contains a _tree_ of nested
 [module] scopes. The top level of this tree is a module that is
@@ -71,3 +82,5 @@ A crate that contains a `main` function can be compiled to an executable. If a
 [module path]: paths.html
 [attributes]: items-and-attributes.html
 [unit]: types.html#tuple-types
+[_InnerAttribute_]: attributes.html
+[_Item_]: items.html
