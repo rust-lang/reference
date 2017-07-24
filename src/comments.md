@@ -53,6 +53,8 @@ modules that occupy a source file.
 ## Examples
 
 ```rust
+//! A doc comment that applies to the implicit anonymous module of this crate
+
 pub mod outer_module {
 
     //!  - Inner line doc
@@ -110,7 +112,7 @@ pub mod outer_module {
        require an item that will receive the doc */
 
     /// Where is my item?
-#   mod dummy_item {}
+#   mod boo {}
 }
 ```
 
