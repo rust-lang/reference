@@ -88,9 +88,20 @@ created and used instead. The lifetime of temporary values is typically the
 innermost enclosing statement; the tail expression of a block is considered
 part of the statement that encloses the block.
 
-When a temporary rvalue is being created that is assigned into a `let`
-declaration, however, the temporary is created with the lifetime of the
-enclosing block instead, as using the enclosing statement (the `let`
+A first exception is when a temporary value is created in the
+condition expression of an `if` or an  `if`/`else` expression.
+In this case, the lifetime ends right after the condition expression.
+
+Here is an example:
+
+- `let x = if foo(&temp()) {bar()} else {bas()};`. The expression `temp()` is
+  an rvalue. As the temporary is created in the condition expression
+  of an `if`/`else`, it will be freed at the end of the condition expression
+  (in this example before the call to `bar` or `bas` is made).
+
+Another exception is when a temporary rvalue is being created that is assigned
+into a `let` declaration. In this case the temporary is created with the
+lifetime of the enclosing block, as using the enclosing statement (the `let`
 declaration) would be a guaranteed error (since a pointer to the temporary
 would be stored into a variable, but the temporary would be freed before the
 variable could be used). The compiler uses simple syntactic rules to decide
