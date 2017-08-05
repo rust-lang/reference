@@ -89,15 +89,21 @@ innermost enclosing statement; the tail expression of a block is considered
 part of the statement that encloses the block.
 
 A first exception is when a temporary value is created in the
-condition expression of an `if` or an  `if`/`else` expression.
-In this case, the lifetime ends right after the condition expression.
+condition expression of an `if` or an  `if`/`else` expression or in the
+loop conditional expression of a `while` expression.
+In this case, the lifetime ends right after the condition expression or the
+loop conditional expression.
 
-Here is an example:
+Here are some examples:
 
-- `let x = if foo(&temp()) {bar()} else {bas()};`. The expression `temp()` is
+- `let x = if foo(&temp()) {bar()} else {baz()}`. The expression `temp()` is
   an rvalue. As the temporary is created in the condition expression
   of an `if`/`else`, it will be freed at the end of the condition expression
-  (in this example before the call to `bar` or `bas` is made).
+  (in this example before the call to `bar` or `baz` is made).
+- `while foo(&temp()) {bar();}`. The temporary containing the return value from
+  the call to `temp()` is created in the loop conditional expression. Hence it
+  will be freed at the end of the loop conditional expression (in this example
+  before the call to `bar` if the loop body is executed).
 
 Another exception is when a temporary rvalue is being created that is assigned
 into a `let` declaration. In this case the temporary is created with the
