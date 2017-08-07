@@ -52,8 +52,8 @@ The types `char` and `str` hold textual data.
 
 A value of type `char` is a [Unicode scalar value](
 http://www.unicode.org/glossary/#unicode_scalar_value) (i.e. a code point that
-is not a surrogate), represented as a 32-bit unsigned word in the 0x0000 to
-0xD7FF or 0xE000 to 0x10FFFF range. A `[char]` array is effectively an UCS-4 /
+is not a surrogate) represented as a 32-bit unsigned word in the 0x0000 to
+0xD7FF or 0xE000 to 0x10FFFF range. A `[char]` array is effectively a UCS-4 /
 UTF-32 string.
 
 A value of type `str` is a Unicode string, represented as an array of 8-bit
