@@ -12,22 +12,25 @@
 > &nbsp;&nbsp; | `/***/`  
 >  
 > OUTER_LINE_DOC :  
-> &nbsp;&nbsp; `//!` ~`\n`<sup>\*</sup>  
+> &nbsp;&nbsp; `//!` ~[`\n` _IsolatedCR_]<sup>\*</sup>  
 >  
 > OUTER_BLOCK_DOC :  
-> &nbsp;&nbsp; `/*!` (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`  
+> &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`  
 >  
 > INNER_LINE_DOC :  
-> &nbsp;&nbsp; `///` (~`/` ~`\n`<sup>\*</sup>)<sup>?</sup>  
+> &nbsp;&nbsp; `///` (~`/` ~[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>  
 >  
 > INNER_BLOCK_DOC :  
 > &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
->              (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`  
+>              (_BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_])<sup>\*</sup> `*/`  
 >  
 > _BlockCommentOrDoc_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; BLOCK_COMMENT  
 > &nbsp;&nbsp; | OUTER_BLOCK_DOC  
 > &nbsp;&nbsp; | INNER_BLOCK_DOC  
+>  
+> _IsolatedCR_ :  
+> &nbsp;&nbsp; _A `\r` not followed by a `\n`_  
 
 ## Non-doc comments
 
@@ -49,6 +52,9 @@ doc comments that apply to the parent of the comment, rather than the item
 that follows.  That is, they are equivalent to writing `#![doc="..."]` around
 the body of the comment. `//!` comments are usually used to document
 modules that occupy a source file.
+
+Isolated CRs (`\r`), i.e. not followed by LF (`\n`), are not allowed in doc
+comments.
 
 ## Examples
 
