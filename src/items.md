@@ -165,8 +165,9 @@ some other [path]. Usually a `use` declaration is used to shorten the path
 required to refer to a module item. These declarations may appear in [modules]
 and [blocks], usually at the top.
 
-[path]: paths.html [modules]: #modules [blocks]:
-../grammar.html#block-expressions
+[path]: paths.html
+[modules]: #modules
+[blocks]: expressions.html#block-expressions
 
 > **Note**: Unlike in many languages, `use` declarations in Rust do *not*
 > declare linkage dependency with external crates. Rather, [`extern crate`
@@ -475,7 +476,8 @@ let px: i32 = p.x;
 A _tuple struct_ is a nominal [tuple type], also defined with the keyword
 `struct`. For example:
 
-[struct type]: types.html#struct-types [tuple type]: types.html#tuple-types
+[struct type]: types.html#struct-types
+[tuple type]: types.html#tuple-types
 
 ```rust
 struct Point(i32, i32);
@@ -871,24 +873,22 @@ const RESOLVED_STATIC: Fn(&Foo, &Bar) -> &Baz = ..
 A _trait_ describes an abstract interface that types can implement. This
 interface consists of associated items, which come in three varieties:
 
-- functions
+- [functions](#associated-functions-and-methods)
 - [types](#associated-types)
 - [constants](#associated-constants)
-
-Associated functions whose first parameter is named `self` are called methods
-and may be invoked using `.` notation (e.g., `x.foo()`).
 
 All traits define an implicit type parameter `Self` that refers to "the type
 that is implementing this interface". Traits may also contain additional type
 parameters. These type parameters (including `Self`) may be constrained by
 other traits and so forth as usual.
 
-Trait bounds on `Self` are considered "supertraits". These are required to be
-acyclic.  Supertraits are somewhat different from other constraints in that
-they affect what methods are available in the vtable when the trait is used as
-a [trait object].
-
 Traits are implemented for specific types through separate [implementations].
+
+### Associated functions and methods
+
+Associated functions whose first parameter is named `self` are called methods
+and may be invoked using `.` notation (e.g., `x.foo()`) as well as the usual
+function call notation (`foo(x)`).
 
 Consider the following trait:
 
@@ -903,9 +903,12 @@ trait Shape {
 
 This defines a trait with two methods. All values that have [implementations]
 of this trait in scope can have their `draw` and `bounding_box` methods called,
-using `value.bounding_box()` [syntax].
+using `value.bounding_box()` [syntax]. Note that `&self` is short for `self:
+&Self`, and similarly, `self` is short for `self: Self` and  `&mut self` is
+short for `self: &mut Self`.
 
-[trait object]: types.html#trait-objects [implementations]: #implementations
+[trait object]: types.html#trait-objects
+[implementations]: #implementations
 [syntax]: expressions.html#method-call-expressions
 
 Traits can include default implementations of methods, as in:
@@ -932,6 +935,26 @@ trait Seq<T> {
     fn iter<F>(&self, F) where F: Fn(T);
 }
 ```
+
+Associated functions may lack a `self` argument, sometimes called 'static
+methods'. This means that they can only be called with function call syntax
+(`f(x)`) and not method call syntax (`obj.f()`). The way to refer to the name
+of a static method is to qualify it with the trait name or type name, treating
+the trait name like a module. For example:
+
+```rust
+trait Num {
+    fn from_i32(n: i32) -> Self;
+}
+impl Num for f64 {
+    fn from_i32(n: i32) -> f64 { n as f64 }
+}
+let x: f64 = Num::from_i32(42);
+let x: f64 = f64::from_i32(42);
+```
+
+
+### Associated Types
 
 It is also possible to define associated types for a trait. Consider the
 following example of a `Container` trait. Notice how the type is available for
@@ -962,128 +985,7 @@ impl<T> Container for Vec<T> {
 }
 ```
 
-Generic functions may use traits as _bounds_ on their type parameters. This
-will have two effects:
-
-- Only types that have the trait may instantiate the parameter.
-- Within the generic function, the methods of the trait can be called on values
-  that have the parameter's type.
-
-For example:
-
-```rust
-# type Surface = i32;
-# trait Shape { fn draw(&self, Surface); }
-fn draw_twice<T: Shape>(surface: Surface, sh: T) {
-    sh.draw(surface);
-    sh.draw(surface);
-}
-```
-
-Traits also define a [trait object] with the same name as the trait. Values of
-this type are created by coercing from a pointer of some specific type to a
-pointer of trait type. For example, `&T` could be coerced to `&Shape` if `T:
-Shape` holds (and similarly for `Box<T>`). This coercion can either be implicit
-or [explicit]. Here is an example of an explicit coercion:
-
-[trait object]: types.html#trait-objects [explicit]:
-expressions.html#type-cast-expressions
-
-```rust
-trait Shape { }
-impl Shape for i32 { }
-let mycircle = 0i32;
-let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
-```
-
-The resulting value is a box containing the value that was cast, along with
-information that identifies the methods of the implementation that was used.
-Values with a trait type can have [methods called] on them, for any method in
-the trait, and can be used to instantiate type parameters that are bounded by
-the trait.
-
-[methods called]: expressions.html#method-call-expressions
-
-Trait methods may be static, which means that they lack a `self` argument. This
-means that they can only be called with function call syntax (`f(x)`) and not
-method call syntax (`obj.f()`). The way to refer to the name of a static method
-is to qualify it with the trait name or type name, treating the trait name like
-a module. For example:
-
-```rust
-trait Num {
-    fn from_i32(n: i32) -> Self;
-}
-impl Num for f64 {
-    fn from_i32(n: i32) -> f64 { n as f64 }
-}
-let x: f64 = Num::from_i32(42);
-let x: f64 = f64::from_i32(42);
-```
-
-Traits may inherit from other traits. Consider the following example:
-
-```rust
-trait Shape { fn area(&self) -> f64; }
-trait Circle : Shape { fn radius(&self) -> f64; }
-```
-
-The syntax `Circle : Shape` means that types that implement `Circle` must also
-have an implementation for `Shape`. Multiple supertraits are separated by `+`,
-`trait Circle : Shape + PartialEq { }`. In an implementation of `Circle` for a
-given type `T`, methods can refer to `Shape` methods, since the typechecker
-checks that any type with an implementation of `Circle` also has an
-implementation of `Shape`:
-
-```rust
-struct Foo;
-
-trait Shape { fn area(&self) -> f64; }
-trait Circle : Shape { fn radius(&self) -> f64; }
-impl Shape for Foo {
-    fn area(&self) -> f64 {
-        0.0
-    }
-}
-impl Circle for Foo {
-    fn radius(&self) -> f64 {
-        println!("calling area: {}", self.area());
-
-        0.0
-    }
-}
-
-let c = Foo;
-c.radius();
-```
-
-In type-parameterized functions, methods of the supertrait may be called on
-values of subtrait-bound type parameters. Referring to the previous example of
-`trait Circle : Shape`:
-
-```rust
-# trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
-fn radius_times_area<T: Circle>(c: T) -> f64 {
-    // `c` is both a Circle and a Shape
-    c.radius() * c.area()
-}
-```
-
-Likewise, supertrait methods may also be called on trait objects.
-
-```rust
-# trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
-# impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
-# impl Circle for i32 { fn radius(&self) -> f64 { 0.0 } }
-# let mycircle = 0i32;
-let mycircle = Box::new(mycircle) as Box<Circle>;
-let nonsense = mycircle.radius() * mycircle.area();
-```
-
 ### Associated Constants
-
 
 A trait can define constants like this:
 
@@ -1153,6 +1055,128 @@ struct Foo;
 impl Foo {
     const FOO: u32 = 3;
 }
+```
+
+### Trait bounds
+
+Generic functions may use traits as _bounds_ on their type parameters. This
+will have three effects:
+
+- Only types that have the trait may instantiate the parameter.
+- Within the generic function, the methods of the trait can be called on values
+  that have the parameter's type. Associated types can be used in the
+  function's signature, and associated constants can be used in expressions
+  within the function body.
+- Generic functions and types with the same or weaker bounds can use the
+  generic type in the function body or signature.
+
+For example:
+
+```rust
+# type Surface = i32;
+# trait Shape { fn draw(&self, Surface); }
+struct Figure<S: Shape>(S, S);
+fn draw_twice<T: Shape>(surface: Surface, sh: T) {
+    sh.draw(surface);
+    sh.draw(surface);
+}
+fn draw_figure<U: Shape>(surface: Surface, Figure(sh1, sh2): Figure<U>) {
+    sh1.draw(surface);
+    draw_twice(surface, sh2); // Can call this since U: Shape
+}
+```
+
+### Trait objects
+
+Traits also define a [trait object] with the same name as the trait. Values of
+this type are created by coercing from a pointer of some specific type to a
+pointer of trait type. For example, `&T` could be coerced to `&Shape` if `T:
+Shape` holds (and similarly for `Box<T>`). This coercion can either be implicit
+or [explicit]. Here is an example of an explicit coercion:
+
+[trait object]: types.html#trait-objects
+[explicit]: expressions.html#type-cast-expressions
+
+```rust
+trait Shape { }
+impl Shape for i32 { }
+let mycircle = 0i32;
+let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
+```
+
+The resulting value is a box containing the value that was cast, along with
+information that identifies the methods of the implementation that was used.
+Values with a trait type can have [methods called] on them, for any method in
+the trait, and can be used to instantiate type parameters that are bounded by
+the trait.
+
+[methods called]: expressions.html#method-call-expressions
+
+### Supertraits
+
+
+Trait bounds on `Self` are considered "supertraits". These are required to be
+acyclic.  Supertraits are somewhat different from other constraints in that
+they affect what methods are available in the vtable when the trait is used as
+a [trait object]. Consider the following example:
+
+```rust
+trait Shape { fn area(&self) -> f64; }
+trait Circle : Shape { fn radius(&self) -> f64; }
+```
+
+The syntax `Circle : Shape` means that types that implement `Circle` must also
+have an implementation for `Shape`. Multiple supertraits are separated by `+`,
+`trait Circle : Shape + PartialEq { }`. In an implementation of `Circle` for a
+given type `T`, methods can refer to `Shape` methods, since the typechecker
+checks that any type with an implementation of `Circle` also has an
+implementation of `Shape`:
+
+```rust
+struct Foo;
+
+trait Shape { fn area(&self) -> f64; }
+trait Circle : Shape { fn radius(&self) -> f64; }
+impl Shape for Foo {
+    fn area(&self) -> f64 {
+        0.0
+    }
+}
+impl Circle for Foo {
+    fn radius(&self) -> f64 {
+        println!("calling area: {}", self.area());
+
+        0.0
+    }
+}
+
+let c = Foo;
+c.radius();
+```
+
+In type-parameterized functions, methods of the supertrait may be called on
+values of subtrait-bound type parameters. Referring to the previous example of
+`trait Circle : Shape`:
+
+```rust
+# trait Shape { fn area(&self) -> f64; }
+# trait Circle : Shape { fn radius(&self) -> f64; }
+fn radius_times_area<T: Circle>(c: T) -> f64 {
+    // `c` is both a Circle and a Shape
+    c.radius() * c.area()
+}
+```
+
+Likewise, supertrait methods may also be called on trait objects.
+
+```rust
+# trait Shape { fn area(&self) -> f64; }
+# trait Circle : Shape { fn radius(&self) -> f64; }
+# impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
+# impl Circle for i32 { fn radius(&self) -> f64 { 0.0 } }
+# let mycircle = 0i32;
+let mycircle = Box::new(mycircle) as Box<Circle>;
+let nonsense = mycircle.radius() * mycircle.area();
 ```
 
 ## Implementations
