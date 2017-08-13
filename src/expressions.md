@@ -84,7 +84,15 @@ The following expressions can create mutable lvalues:
 ### Temporary lifetimes
 
 When using an rvalue in most lvalue contexts, a temporary unnamed lvalue is
-created and used instead. The lifetime of temporary values is typically 
+created and used instead, if not promoted to `'static`. Promotion of an
+rvalue expression to a `'static` slot occurs when the expression could be
+written in a constant, borrowed, and dereferencing that borrow where the
+expression was the originally written, without changing the runtime behavior.
+That is, the promoted expression can be evaluated at compile-time and the
+resulting value does not contain interior mutability or destructors (these
+properties are determined based on the value where possible, e.g. `&None`
+always has the type `&'static Option<_>`, as it contains nothing disallowed).
+Otherwise, the lifetime of temporary values is typically 
 
 - the innermost enclosing statement; the tail expression of a block is 
   considered part of the statement that encloses the block, or
