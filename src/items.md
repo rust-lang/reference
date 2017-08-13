@@ -270,46 +270,52 @@ fn main() {}
 
 ## Functions
 
-A _function item_ defines a sequence of [statements] and a
-final [expression], along with a name and a set of
+A _function_ consists of a [block], along with a name and a set of
 parameters. Other than a name, all these are optional.
 Functions are declared with the keyword `fn`. Functions may declare a
 set of *input* [*variables*][variables] as parameters, through which the caller
 passes arguments into the function, and the *output* [*type*][type]
 of the value the function will return to its caller on completion.
 
-[statements]: statements.html
-[expression]: expressions.html
+[block]: expressions.html#block-expressions
 [variables]: variables.html
 [type]: types.html
 
-A function may also be copied into a first-class *value*, in which case the
-value has the corresponding [*function type*][function type], and can be used
-otherwise exactly as a function item (with a minor additional cost of calling
-the function indirectly).
+When referred to, a _function_ yields a first-class *value* of the
+corresponding zero-sized [*function item type*][function item type], which
+when called evaluates to a direct call to the function.
 
-[function type]: types.html#function-types
+[function item type]: types.html#function-item-types
 
-Every control path in a function logically ends with a `return` expression or a
-diverging expression. If the outermost block of a function has a
-value-producing expression in its final-expression position, that expression is
-interpreted as an implicit `return` expression applied to the final-expression.
-
-An example of a function:
-
+For example, this is a simple function:
 ```rust
-fn add(x: i32, y: i32) -> i32 {
-    x + y
+fn answer_to_life_the_universe_and_everything() -> i32 {
+    return 42;
 }
 ```
 
 As with `let` bindings, function arguments are irrefutable patterns, so any
-pattern that is valid in a let binding is also valid as an argument.
+pattern that is valid in a let binding is also valid as an argument:
 
 ```rust
 fn first((value, _): (i32, i32)) -> i32 { value }
 ```
 
+The block of a function is conceptually wrapped in a block that binds the
+argument patterns and then `return`s the value of the function's block. This
+means that the tail expression of the block, if evaluated, ends up being 
+returned to the caller. As usual, an explicit return expression within
+the body of the function will short-cut that implicit return, if reached.
+
+For example, the function above behaves as if it was written as:
+
+```rust,ignore
+// argument_0 is the actual first argument passed from the caller
+let (value, _) = argument_0;
+return {
+    value
+};
+```
 
 ### Generic functions
 
