@@ -8,6 +8,7 @@
 
 - [Lexical structure](lexical-structure.md)
     - [Input format](input-format.md)
+    - [Keywords](keywords.md)
     - [Identifiers](identifiers.md)
     - [Comments](comments.md)
     - [Whitespace](whitespace.md)
