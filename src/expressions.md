@@ -84,9 +84,13 @@ The following expressions can create mutable lvalues:
 ### Temporary lifetimes
 
 When using an rvalue in most lvalue contexts, a temporary unnamed lvalue is
-created and used instead. The lifetime of temporary values is typically the
-innermost enclosing statement; the tail expression of a block is considered
-part of the statement that encloses the block.
+created and used instead. The lifetime of temporary values is typically 
+
+- the innermost enclosing statement; the tail expression of a block is 
+  considered part of the statement that encloses the block, or
+- the condition expression or the loop conditional expression if the 
+  temporary is created in the condition expression of an `if` or an `if`/`else`
+  or in the loop conditional expression of a `while` expression.
 
 When a temporary rvalue is being created that is assigned into a `let`
 declaration, however, the temporary is created with the lifetime of the
@@ -107,6 +111,18 @@ Here are some examples:
   method-call. Here we are assuming that `foo()` is an `&self` method
   defined in some trait, say `Foo`. In other words, the expression
   `temp().foo()` is equivalent to `Foo::foo(&temp())`.
+- `let x = if foo(&temp()) {bar()} else {baz()};`. The expression `temp()` is
+  an rvalue. As the temporary is created in the condition expression
+  of an `if`/`else`, it will be freed at the end of the condition expression
+  (in this example before the call to `bar` or `baz` is made).
+- `let x = if temp().must_run_bar {bar()} else {baz()};`. 
+  Here we assume the type of `temp()` is a struct with a boolean field
+  `must_run_bar`. As the previous example, the temporary corresponding to
+  `temp()` will be freed at the end of the condition expression.
+- `while foo(&temp()) {bar();}`. The temporary containing the return value from
+  the call to `temp()` is created in the loop conditional expression. Hence it
+  will be freed at the end of the loop conditional expression (in this example
+  before the call to `bar` if the loop body is executed).
 - `let x = &temp()`. Here, the same temporary is being assigned into
   `x`, rather than being passed as a parameter, and hence the
   temporary's lifetime is considered to be the enclosing block.
