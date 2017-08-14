@@ -503,7 +503,7 @@ assert_eq!(unit_x.0, 1.0);
 A _call expression_ consists of an expression followed by a parenthesized
 expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
-[non-function types](types.html#function-types), the expression f(...) uses the
+[non-function types](types.html#function-item-types), the expression f(...) uses the
 method on one of the `std::ops::Fn`, `std::ops::FnMut` or `std::ops::FnOnce`
 traits, which differ in whether they take the type by reference, mutable
 reference, or take ownership respectively. An automatic borrow will be taken if
@@ -962,7 +962,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
-| [Function pointer](types.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
+| [Function pointer](types.html#function-pointer-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
 | Function pointer      | Integer               | Function pointer to address cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the
