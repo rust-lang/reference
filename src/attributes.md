@@ -1,5 +1,26 @@
 # Attributes
 
+> **<sup>Syntax</sup>**  
+> _Attribute_ :  
+> &nbsp;&nbsp; _InnerAttribute_ | _OuterAttribute_  
+>  
+> _InnerAttribute_ :  
+> &nbsp;&nbsp; `#![` MetaItem `]`  
+>   
+> _OuterAttribute_ :  
+> &nbsp;&nbsp; `#[` MetaItem `]`  
+>   
+> _MetaItem_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER  
+> &nbsp;&nbsp; | IDENTIFIER `=` LITERAL  
+> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`  
+> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `,` `)`  
+>   
+> _MetaSeq_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY  
+> &nbsp;&nbsp; | _MetaItem_  
+> &nbsp;&nbsp; | _MetaSeq_ `,` _MetaItem_  
+
 Any item declaration may have an _attribute_ applied to it. Attributes in Rust
 are modeled on Attributes in ECMA-335, with the syntax coming from ECMA-334
 (C#). An attribute is a general, free-form metadatum that is interpreted
