@@ -84,9 +84,13 @@ The following expressions can create mutable lvalues:
 ### Temporary lifetimes
 
 When using an rvalue in most lvalue contexts, a temporary unnamed lvalue is
-created and used instead. The lifetime of temporary values is typically the
-innermost enclosing statement; the tail expression of a block is considered
-part of the statement that encloses the block.
+created and used instead. The lifetime of temporary values is typically 
+
+- the innermost enclosing statement; the tail expression of a block is 
+  considered part of the statement that encloses the block, or
+- the condition expression or the loop conditional expression if the 
+  temporary is created in the condition expression of an `if` or an `if`/`else`
+  or in the loop conditional expression of a `while` expression.
 
 When a temporary rvalue is being created that is assigned into a `let`
 declaration, however, the temporary is created with the lifetime of the
@@ -107,6 +111,18 @@ Here are some examples:
   method-call. Here we are assuming that `foo()` is an `&self` method
   defined in some trait, say `Foo`. In other words, the expression
   `temp().foo()` is equivalent to `Foo::foo(&temp())`.
+- `let x = if foo(&temp()) {bar()} else {baz()};`. The expression `temp()` is
+  an rvalue. As the temporary is created in the condition expression
+  of an `if`/`else`, it will be freed at the end of the condition expression
+  (in this example before the call to `bar` or `baz` is made).
+- `let x = if temp().must_run_bar {bar()} else {baz()};`. 
+  Here we assume the type of `temp()` is a struct with a boolean field
+  `must_run_bar`. As the previous example, the temporary corresponding to
+  `temp()` will be freed at the end of the condition expression.
+- `while foo(&temp()) {bar();}`. The temporary containing the return value from
+  the call to `temp()` is created in the loop conditional expression. Hence it
+  will be freed at the end of the loop conditional expression (in this example
+  before the call to `bar` if the loop body is executed).
 - `let x = &temp()`. Here, the same temporary is being assigned into
   `x`, rather than being passed as a parameter, and hence the
   temporary's lifetime is considered to be the enclosing block.
@@ -503,7 +519,7 @@ assert_eq!(unit_x.0, 1.0);
 A _call expression_ consists of an expression followed by a parenthesized
 expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
-[non-function types](types.html#function-types), the expression f(...) uses the
+[non-function types](types.html#function-item-types), the expression f(...) uses the
 method on one of the `std::ops::Fn`, `std::ops::FnMut` or `std::ops::FnOnce`
 traits, which differ in whether they take the type by reference, mutable
 reference, or take ownership respectively. An automatic borrow will be taken if
@@ -962,7 +978,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
-| [Function pointer](types.html#function-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
+| [Function pointer](types.html#function-pointer-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
 | Function pointer      | Integer               | Function pointer to address cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the

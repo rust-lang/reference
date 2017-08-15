@@ -1,5 +1,10 @@
 # Identifiers
 
+> **<sup>Lexer:<sup>**  
+> IDENTIFIER :  
+> &nbsp;&nbsp; &nbsp;&nbsp; XID_start XID_continue<sup>\*</sup>  
+> &nbsp;&nbsp; | `_` XID_continue<sup>+</sup>  
+
 An identifier is any nonempty Unicode[^non_ascii_idents] string of the following form:
 
 Either
@@ -23,6 +28,6 @@ that does _not_ occur in the set of [keywords].
    
 [`XID_start`]:  http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B%3AXID_Start%3A%5D&abb=on&g=&i=
 [`XID_continue`]: http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B%3AXID_Continue%3A%5D&abb=on&g=&i=
-[keywords]: ../grammar.html#keywords
+[keywords]: keywords.html
 [^non_ascii_idents]: Non-ASCII characters in identifiers are currently feature
   gated. This is expected to improve soon.

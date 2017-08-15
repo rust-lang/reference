@@ -52,8 +52,8 @@ The types `char` and `str` hold textual data.
 
 A value of type `char` is a [Unicode scalar value](
 http://www.unicode.org/glossary/#unicode_scalar_value) (i.e. a code point that
-is not a surrogate), represented as a 32-bit unsigned word in the 0x0000 to
-0xD7FF or 0xE000 to 0x10FFFF range. A `[char]` array is effectively an UCS-4 /
+is not a surrogate) represented as a 32-bit unsigned word in the 0x0000 to
+0xD7FF or 0xE000 to 0x10FFFF range. A `[char]` array is effectively a UCS-4 /
 UTF-32 string.
 
 A value of type `str` is a Unicode string, represented as an array of 8-bit
@@ -230,11 +230,62 @@ varieties of pointer in Rust:
 The standard library contains additional 'smart pointer' types beyond references
 and raw pointers.
 
-## Function types
+## Function item types
 
-The function type constructor `fn` forms new function types. A function type
-consists of a possibly-empty set of function-type modifiers (such as `unsafe`
-or `extern`), a sequence of input types and an output type.
+When referred to, a function item yields a zero-sized value of its
+_function item type_. That type explicitly identifies the function - its name,
+its type arguments, and its early-bound lifetime arguments (but not its
+late-bound lifetime arguments, which are only assigned when the function
+is called) - so the value does not need to contain an actual function pointer,
+and no indirection is needed when the function is called.
+
+There is currently no syntax that directly refers to a function item type, but
+the compiler will display the type as something like `fn() {foo::<u32>}` in error
+messages.
+
+Because the function item type explicitly identifies the function, the item
+types of different functions - different items, or the same item with different
+generics - are distinct, and mixing them will create a type error:
+
+```rust,ignore
+fn foo<T>() { }
+let x = &mut foo::<i32>;
+*x = foo::<u32>; //~ ERROR mismatched types
+```
+
+However, there is a [coercion] from function items to [function pointers](#function-pointer-types)
+with the same signature, which is triggered not only when a function item
+is used when a function pointer is directly expected, but also when different
+function item types with the same signature meet in different arms of the same
+`if` or `match`:
+
+[coercion]: type-coercions.html
+
+```rust
+# let want_i32 = false;
+# fn foo<T>() { }
+
+// `foo_ptr_1` has function pointer type `fn()` here
+let foo_ptr_1: fn() = foo::<i32>;
+
+// ... and so does `foo_ptr_2` - this type-checks.
+let foo_ptr_2 = if want_i32 {
+    foo::<i32>
+} else {
+    foo::<u32>
+};
+```
+
+## Function pointer types
+
+Function pointer types, created using the `fn` type constructor, refer
+to a function whose identity is not necessarily known at compile-time. They
+can be created via a coercion from both [function items](#function-item-types)
+and non-capturing [closures](#closure-types).
+
+A function pointer type consists of a possibly-empty set of function-type
+modifiers (such as `unsafe` or `extern`), a sequence of input types and an
+output type.
 
 An example of a `fn` type:
 
@@ -249,22 +300,6 @@ type Binop = fn(i32, i32) -> i32;
 let bo: Binop = add;
 x = bo(5,7);
 ```
-
-### Function types for specific items
-
-Internal to the compiler, there are also function types that are specific to a particular
-function item. In the following snippet, for example, the internal types of the functions
-`foo` and `bar` are different, despite the fact that they have the same signature:
-
-```rust
-fn foo() { }
-fn bar() { }
-```
-
-The types of `foo` and `bar` can both be implicitly coerced to the fn
-pointer type `fn()`. There is currently no syntax for unique fn types,
-though the compiler will emit a type like `fn() {foo}` in error
-messages to indicate "the unique fn type for the function `foo`".
 
 ## Closure types
 
