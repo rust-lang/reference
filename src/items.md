@@ -1,9 +1,9 @@
 # Items
 
 An _item_ is a component of a crate. Items are organized within a crate by a
-nested set of [modules]. Every crate has a single "outermost"
-anonymous module; all further items within the crate have [paths]
-within the module tree of the crate.
+nested set of [modules]. Every crate has a single "outermost" anonymous module;
+all further items within the crate have [paths] within the module tree of the
+crate.
 
 [modules]: #modules
 [paths]: paths.html
@@ -13,11 +13,10 @@ execution, and may reside in read-only memory.
 
 There are several kinds of item:
 
+* [modules](#modules)
 * [`extern crate` declarations](#extern-crate-declarations)
 * [`use` declarations](#use-declarations)
-* [modules](#modules)
 * [function definitions](#functions)
-* [`extern` blocks](#external-blocks)
 * [type definitions](#type-aliases)
 * [struct definitions](#structs)
 * [enumeration definitions](#enumerations)
@@ -26,6 +25,7 @@ There are several kinds of item:
 * [static items](#static-items)
 * [trait definitions](#traits)
 * [implementations](#implementations)
+* [`extern` blocks](#external-blocks)
 
 Some items form an implicit scope for the declaration of sub-items. In other
 words, within a function or module, declarations of items can (in many cases)
@@ -39,17 +39,20 @@ which sub-item declarations may appear.
 
 ## Type Parameters
 
-All items except modules, constants and statics may be *parameterized* by type.
-Type parameters are given as a comma-separated list of identifiers enclosed in
-angle brackets (`<...>`), after the name of the item and before its definition.
+Functions, type aliases, structs, enumerations, unions, traits and
+implementations may be *parameterized* by type. Type parameters are given as a
+comma-separated list of identifiers enclosed in angle brackets (`<...>`), after
+the name of the item (except for implementations, where they come directly
+after `impl`) and before its definition.
+
 The type parameters of an item are considered "part of the name", not part of
-the type of the item. A referencing [path] must (in principle) provide
-type arguments as a list of comma-separated types enclosed within angle
-brackets, in order to refer to the type-parameterized item. In practice, the
-type-inference system can usually infer such argument types from context. There
-are no general type-parametric types, only type-parametric items. That is, Rust
-has no notion of type abstraction: there are no higher-ranked (or "forall") types
-abstracted over other types, though higher-ranked types do exist for lifetimes.
+the type of the item. A referencing [path] must (in principle) provide type
+arguments as a list of comma-separated types enclosed within angle brackets, in
+order to refer to the type-parameterized item. In practice, the type-inference
+system can usually infer such argument types from context. There are no general
+type-parametric types, only type-parametric items. That is, Rust has no notion
+of type abstraction: there are no higher-ranked (or "forall") types abstracted
+over other types, though higher-ranked types do exist for lifetimes.
 
 [path]: paths.html
 
@@ -83,10 +86,11 @@ mod math {
 }
 ```
 
-Modules and types share the same namespace. Declaring a named type with
-the same name as a module in scope is forbidden: that is, a type definition,
-trait, struct, enumeration, or type parameter can't shadow the name of a module
-in scope, or vice versa.
+Modules and types share the same namespace. Declaring a named type with the
+same name as a module in scope is forbidden: that is, a type definition, trait,
+struct, enumeration, union, type parameter or crate can't shadow the name of a
+module in scope, or vice versa. Items brought into scope with `use` also have
+this restriction.
 
 A module without a body is loaded from an external file, by default with the
 same name as the module, plus the `.rs` extension. When a nested submodule is
@@ -157,25 +161,25 @@ extern crate hello_world; // hyphen replaced with an underscore
 ### Use declarations
 
 A _use declaration_ creates one or more local name bindings synonymous with
-some other [path]. Usually a `use` declaration is used to shorten the
-path required to refer to a module item. These declarations may appear in
-[modules] and [blocks], usually at the top.
+some other [path]. Usually a `use` declaration is used to shorten the path
+required to refer to a module item. These declarations may appear in [modules]
+and [blocks], usually at the top.
 
 [path]: paths.html
 [modules]: #modules
-[blocks]: ../grammar.html#block-expressions
+[blocks]: expressions.html#block-expressions
 
-> **Note**: Unlike in many languages,
-> `use` declarations in Rust do *not* declare linkage dependency with external crates.
-> Rather, [`extern crate` declarations](#extern-crate-declarations) declare linkage dependencies.
+> **Note**: Unlike in many languages, `use` declarations in Rust do *not*
+> declare linkage dependency with external crates. Rather, [`extern crate`
+> declarations](#extern-crate-declarations) declare linkage dependencies.
 
 Use declarations support a number of convenient shortcuts:
 
 * Simultaneously binding a list of paths differing only in their final element,
   using the glob-like brace syntax `use a::b::{c,d,e,f};`
 * Simultaneously binding a list of paths differing only in their final element
-  and their immediate parent module, using the `self` keyword, such as
-  `use a::b::{self, c, d};`
+  and their immediate parent module, using the `self` keyword, such as `use
+  a::b::{self, c, d};`
 * Rebinding the target name as a new local name, using the syntax `use p::q::r
   as x;`. This can also be used with the last two features: `use a::b::{self as
   ab, c as abc}`.
@@ -229,9 +233,9 @@ In this example, the module `quux` re-exports two public names defined in
 `foo`.
 
 Also note that the paths contained in `use` items are relative to the crate
-root. So, in the previous example, the `use` refers to `quux::foo::{bar,
-baz}`, and not simply to `foo::{bar, baz}`. This also means that top-level
-module declarations should be at the crate root if direct usage of the declared
+root. So, in the previous example, the `use` refers to `quux::foo::{bar, baz}`,
+and not simply to `foo::{bar, baz}`. This also means that top-level module
+declarations should be at the crate root if direct usage of the declared
 modules within `use` items is desired. It is also possible to use `self` and
 `super` at the beginning of a `use` item to refer to the current and direct
 parent modules respectively. All rules regarding accessing declared modules in
@@ -270,12 +274,12 @@ fn main() {}
 
 ## Functions
 
-A _function_ consists of a [block], along with a name and a set of
-parameters. Other than a name, all these are optional.
-Functions are declared with the keyword `fn`. Functions may declare a
-set of *input* [*variables*][variables] as parameters, through which the caller
-passes arguments into the function, and the *output* [*type*][type]
-of the value the function will return to its caller on completion.
+A _function_ consists of a [block], along with a name and a set of parameters.
+Other than a name, all these are optional. Functions are declared with the
+keyword `fn`. Functions may declare a set of *input* [*variables*][variables]
+as parameters, through which the caller passes arguments into the function, and
+the *output* [*type*][type] of the value the function will return to its caller
+on completion.
 
 [block]: expressions.html#block-expressions
 [variables]: variables.html
@@ -303,7 +307,7 @@ fn first((value, _): (i32, i32)) -> i32 { value }
 
 The block of a function is conceptually wrapped in a block that binds the
 argument patterns and then `return`s the value of the function's block. This
-means that the tail expression of the block, if evaluated, ends up being 
+means that the tail expression of the block, if evaluated, ends up being
 returned to the caller. As usual, an explicit return expression within
 the body of the function will short-cut that implicit return, if reached.
 
@@ -323,19 +327,22 @@ A _generic function_ allows one or more _parameterized types_ to appear in its
 signature. Each type parameter must be explicitly declared in an
 angle-bracket-enclosed and comma-separated list, following the function name.
 
-```rust,ignore
+```rust
 // foo is generic over A and B
 
 fn foo<A, B>(x: A, y: B) {
+# }
 ```
 
 Inside the function signature and body, the name of the type parameter can be
-used as a type name. [Trait](#traits) bounds can be specified for type parameters
-to allow methods with that trait to be called on values of that type. This is
-specified using the `where` syntax:
+used as a type name. [Trait](#traits) bounds can be specified for type
+parameters to allow methods with that trait to be called on values of that
+type. This is specified using the `where` syntax:
 
-```rust,ignore
+```rust
+# use std::fmt::Debug;
 fn foo<T>(x: T) where T: Debug {
+# }
 ```
 
 When a generic function is referenced, its type is instantiated based on the
@@ -346,7 +353,6 @@ use std::fmt::Debug;
 
 fn foo<T>(x: &[T]) where T: Debug {
     // details elided
-    # ()
 }
 
 foo(&[1, 2]);
@@ -354,9 +360,9 @@ foo(&[1, 2]);
 
 will instantiate type parameter `T` with `i32`.
 
-The type parameters can also be explicitly supplied in a trailing
-[path] component after the function name. This might be necessary if
-there is not sufficient context to determine the type parameters. For example,
+The type parameters can also be explicitly supplied in a trailing [path]
+component after the function name. This might be necessary if there is not
+sufficient context to determine the type parameters. For example,
 `mem::size_of::<u32>() == 4`.
 
 [path]: paths.html
@@ -381,9 +387,8 @@ a type.
 
 It might be necessary to declare a diverging function because as mentioned
 previously, the typechecker checks that every control path in a function ends
-with a [`return`] or diverging expression. So, if `my_err`
-were declared without the `!` annotation, the following code would not
-typecheck:
+with a [`return`] or diverging expression. So, if `my_err` were declared
+without the `!` annotation, the following code would not typecheck:
 
 [`return`]: expressions.html#return-expressions
 
@@ -402,19 +407,19 @@ fn f(i: i32) -> i32 {
 
 This will not compile without the `!` annotation on `my_err`, since the `else`
 branch of the conditional in `f` does not return an `i32`, as required by the
-signature of `f`. Adding the `!` annotation to `my_err` informs the
-typechecker that, should control ever enter `my_err`, no further type judgments
-about `f` need to hold, since control will never resume in any context that
-relies on those judgments. Thus the return type on `f` only needs to reflect
-the `if` branch of the conditional.
+signature of `f`. Adding the `!` annotation to `my_err` informs the typechecker
+that, should control ever enter `my_err`, no further type judgments about `f`
+need to hold, since control will never resume in any context that relies on
+those judgments. Thus the return type on `f` only needs to reflect the `if`
+branch of the conditional.
 
 ### Extern functions
 
 Extern functions are part of Rust's foreign function interface, providing the
-opposite functionality to [external blocks](#external-blocks). Whereas
-external blocks allow Rust code to call foreign code, extern functions with
-bodies defined in Rust code _can be called by foreign code_. They are defined
-in the same way as any other Rust function, except that they have the `extern`
+opposite functionality to [external blocks](#external-blocks). Whereas external
+blocks allow Rust code to call foreign code, extern functions with bodies
+defined in Rust code _can be called by foreign code_. They are defined in the
+same way as any other Rust function, except that they have the `extern`
 modifier.
 
 ```rust
@@ -436,10 +441,10 @@ let fptr: extern "C" fn() -> i32 = new_i32;
 
 ## Type aliases
 
-A _type alias_ defines a new name for an existing [type]. Type
-aliases are declared with the keyword `type`. Every value has a single,
-specific type, but may implement several different traits, or be compatible with
-several different type constraints.
+A _type alias_ defines a new name for an existing [type]. Type aliases are
+declared with the keyword `type`. Every value has a single, specific type, but
+may implement several different traits, or be compatible with several different
+type constraints.
 
 [type]: types.html
 
@@ -462,8 +467,7 @@ let _: F = E::A;  // OK
 
 ## Structs
 
-A _struct_ is a nominal [struct type] defined with the
-keyword `struct`.
+A _struct_ is a nominal [struct type] defined with the keyword `struct`.
 
 An example of a `struct` item and its use:
 
@@ -473,8 +477,8 @@ let p = Point {x: 10, y: 11};
 let px: i32 = p.x;
 ```
 
-A _tuple struct_ is a nominal [tuple type], also defined with
-the keyword `struct`. For example:
+A _tuple struct_ is a nominal [tuple type], also defined with the keyword
+`struct`. For example:
 
 [struct type]: types.html#struct-types
 [tuple type]: types.html#tuple-types
@@ -485,9 +489,9 @@ let p = Point(10, 11);
 let px: i32 = match p { Point(x, _) => x };
 ```
 
-A _unit-like struct_ is a struct without any fields, defined by leaving off
-the list of fields entirely. Such a struct implicitly defines a constant of
-its type with the same name. For example:
+A _unit-like struct_ is a struct without any fields, defined by leaving off the
+list of fields entirely. Such a struct implicitly defines a constant of its
+type with the same name. For example:
 
 ```rust
 struct Cookie;
@@ -509,9 +513,9 @@ particular layout using the [`repr` attribute].
 
 ## Enumerations
 
-An _enumeration_ is a simultaneous definition of a nominal [enumerated
-type] as well as a set of *constructors*, that can be used
-to create or pattern-match values of the corresponding enumerated type.
+An _enumeration_ is a simultaneous definition of a nominal [enumerated type] as
+well as a set of *constructors*, that can be used to create or pattern-match
+values of the corresponding enumerated type.
 
 [enumerated type]: types.html#enumerated-types
 
@@ -541,37 +545,41 @@ let mut a: Animal = Animal::Dog("Cocoa".to_string(), 37.2);
 a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 ```
 
-In this example, `Cat` is a _struct-like enum variant_,
-whereas `Dog` is simply called an enum variant.
+In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
+called an enum variant. Each enum instance has a _discriminant_ which is an
+integer associated to it that is used to determine which variant it holds.
 
-Each enum value has a _discriminant_ which is an integer associated to it. You
-can specify it explicitly:
+### C-like Enumerations
+
+If there is no data attached to *any* of the variants of an enumeration it is
+called a *c-like enumeration*. If a discriminant isn't specified, they start at
+zero, and add one for each variant, in order. Each enum value is just its
+discriminant which you can specify explicitly:
 
 ```rust
 enum Foo {
-    Bar = 123,
+    Bar,            // 0
+    Baz = 123,
+    Quux,           // 124
 }
 ```
 
 The right hand side of the specification is interpreted as an `isize` value,
 but the compiler is allowed to use a smaller type in the actual memory layout.
-The [`repr` attribute] can be added in order to change
-the type of the right hand side and specify the memory layout.
+The [`repr` attribute] can be added in order to change the type of the right
+hand side and specify the memory layout.
 
 [`repr` attribute]: attributes.html#ffi-attributes
 
-If a discriminant isn't specified, they start at zero, and add one for each
-variant, in order.
-
-You can cast an enum to get its discriminant:
+You can also cast a c-like enum to get its discriminant:
 
 ```rust
-# enum Foo { Bar = 123 }
-let x = Foo::Bar as u32; // x is now 123u32
+# enum Foo { Baz = 123 }
+let x = Foo::Baz as u32; // x is now 123u32
 ```
 
-This only works as long as none of the variants have data attached. If
-it were `Bar(i32)`, this is disallowed.
+This only works as long as none of the variants have data attached. If it were
+`Baz(i32)`, this is disallowed.
 
 ## Unions
 
@@ -587,8 +595,8 @@ union MyUnion {
 ```
 
 The key property of unions is that all fields of a union share common storage.
-As a result writes to one field of a union can overwrite its other fields,
-and size of a union is determined by the size of its largest field.
+As a result writes to one field of a union can overwrite its other fields, and
+size of a union is determined by the size of its largest field.
 
 A value of a union type can be created using the same syntax that is used for
 struct types, except that it must specify exactly one field:
@@ -607,11 +615,10 @@ let f = u.f1;
 ```
 
 Inactive fields can be accessed as well (using the same syntax) if they are
-sufficiently layout compatible with the
-current value kept by the union. Reading incompatible fields results in
-undefined behavior.
-However, the active field is not generally known statically, so all reads of
-union fields have to be placed in `unsafe` blocks.
+sufficiently layout compatible with the current value kept by the union.
+Reading incompatible fields results in undefined behavior. However, the active
+field is not generally known statically, so all reads of union fields have to
+be placed in `unsafe` blocks.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -622,8 +629,8 @@ unsafe {
 }
 ```
 
-Writes to `Copy` union fields do not require reads for running destructors,
-so these writes don't have to be placed in `unsafe` blocks
+Writes to `Copy` union fields do not require reads for running destructors, so
+these writes don't have to be placed in `unsafe` blocks
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -632,14 +639,13 @@ so these writes don't have to be placed in `unsafe` blocks
 u.f1 = 2;
 ```
 
-Commonly, code using unions will provide safe wrappers around unsafe
-union field accesses.
+Commonly, code using unions will provide safe wrappers around unsafe union
+field accesses.
 
-Another way to access union fields is to use pattern matching.
-Pattern matching on union fields uses the same syntax as struct patterns,
-except that the pattern must specify exactly one field.
-Since pattern matching accesses potentially inactive fields it has
-to be placed in `unsafe` blocks as well.
+Another way to access union fields is to use pattern matching. Pattern matching
+on union fields uses the same syntax as struct patterns, except that the
+pattern must specify exactly one field. Since pattern matching accesses
+potentially inactive fields it has to be placed in `unsafe` blocks as well.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -685,11 +691,11 @@ fn is_zero(v: Value) -> bool {
 }
 ```
 
-Since union fields share common storage, gaining write access to one
-field of a union can give write access to all its remaining fields.
-Borrow checking rules have to be adjusted to account for this fact.
-As a result, if one field of a union is borrowed, all its remaining fields
-are borrowed as well for the same lifetime.
+Since union fields share common storage, gaining write access to one field of a
+union can give write access to all its remaining fields. Borrow checking rules
+have to be adjusted to account for this fact. As a result, if one field of a
+union is borrowed, all its remaining fields are borrowed as well for the same
+lifetime.
 
 ```rust,ignore
 // ERROR: cannot borrow `u` (via `u.f2`) as mutable more than once at a time
@@ -708,14 +714,14 @@ fn test() {
 ```
 
 As you could see, in many aspects (except for layouts, safety and ownership)
-unions behave exactly like structs, largely as a consequence of inheriting their
-syntactic shape from structs.
-This is also true for many unmentioned aspects of Rust language (such as
-privacy, name resolution, type inference, generics, trait implementations,
-inherent implementations, coherence, pattern checking, etc etc etc).
+unions behave exactly like structs, largely as a consequence of inheriting
+their syntactic shape from structs. This is also true for many unmentioned
+aspects of Rust language (such as privacy, name resolution, type inference,
+generics, trait implementations, inherent implementations, coherence, pattern
+checking, etc etc etc).
 
-More detailed specification for unions, including unstable bits, can be found in
-[RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
+More detailed specification for unions, including unstable bits, can be found
+in [RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
 
 ## Constant items
 
@@ -729,16 +735,18 @@ guaranteed to refer to the same memory address.
 
 Constant values must not have destructors, and otherwise permit most forms of
 data. Constants may refer to the address of other constants, in which case the
-address will have elided lifetimes where applicable, otherwise – in most cases –
-defaulting to the `static` lifetime. (See below on [static lifetime elision].)
-The compiler is, however, still at liberty to translate the constant many times,
-so the address referred to may not be stable.
+address will have elided lifetimes where applicable, otherwise – in most cases
+– defaulting to the `static` lifetime. (See below on [static lifetime
+elision].) The compiler is, however, still at liberty to translate the constant
+many times, so the address referred to may not be stable.
 
 [static lifetime elision]: #static-lifetime-elision
 
-Constants must be explicitly typed. The type may be `bool`, `char`, a number, or
-a type derived from those primitive types. The derived types are references with
-the `static` lifetime, fixed-size arrays, tuples, enum variants, and structs.
+Constants must be explicitly typed. The type may be any type that doesn't
+implement [`Drop`] and has a `'static` lifetime: any references it contains
+must have `'static` lifetimes.
+
+[`Drop`]: the-drop-trait.html
 
 ```rust
 const BIT1: u32 = 1 << 0;
@@ -772,21 +780,23 @@ All access to a static is safe, but there are a number of restrictions on
 statics:
 
 * Statics may not contain any destructors.
-* The types of static values must ascribe to `Sync` to allow thread-safe access.
+* The types of static values must ascribe to `Sync` to allow thread-safe
+  access.
 * Statics may not refer to other statics by value, only by reference.
 * Constants cannot refer to statics.
 
 Constants should in general be preferred over statics, unless large amounts of
-data are being stored, or single-address and mutability properties are required.
+data are being stored, or single-address and mutability properties are
+required.
 
 ### Mutable statics
 
-If a static item is declared with the `mut` keyword, then it is allowed to
-be modified by the program. One of Rust's goals is to make concurrency bugs
-hard to run into, and this is obviously a very large source of race conditions
-or other bugs. For this reason, an `unsafe` block is required when either
-reading or writing a mutable static variable. Care should be taken to ensure
-that modifications to a mutable static are safe with respect to other threads
+If a static item is declared with the `mut` keyword, then it is allowed to be
+modified by the program. One of Rust's goals is to make concurrency bugs hard
+to run into, and this is obviously a very large source of race conditions or
+other bugs. For this reason, an `unsafe` block is required when either reading
+or writing a mutable static variable. Care should be taken to ensure that
+modifications to a mutable static are safe with respect to other threads
 running in the same process.
 
 Mutable statics are still very useful, however. They can be used with C
@@ -842,10 +852,10 @@ const BITS_N_STRINGS: BitsNStrings = BitsNStrings {
 ```
 
 Note that if the `static` or `const` items include function or closure
-references, which themselves include references, the compiler will first try the
-standard elision rules ([see discussion in the nomicon][elision-nomicon]). If it
-is unable to resolve the lifetimes by its usual rules, it will default to using
-the `'static` lifetime. By way of example:
+references, which themselves include references, the compiler will first try
+the standard elision rules ([see discussion in the nomicon][elision-nomicon]).
+If it is unable to resolve the lifetimes by its usual rules, it will default to
+using the `'static` lifetime. By way of example:
 
 [elision-nomicon]: ../nomicon/lifetime-elision.html
 
@@ -862,31 +872,27 @@ const RESOLVED_MULTIPLE: Fn(&Foo, &Bar, &Baz) -> usize = ..
 const RESOLVED_STATIC: Fn(&Foo, &Bar) -> &Baz = ..
 ```
 
-### Traits
+## Traits
 
-A _trait_ describes an abstract interface that types can
-implement. This interface consists of associated items, which come in
-three varieties:
+A _trait_ describes an abstract interface that types can implement. This
+interface consists of associated items, which come in three varieties:
 
-- functions
+- [functions](#associated-functions-and-methods)
+- [types](#associated-types)
 - [constants](#associated-constants)
-- types
 
-Associated functions whose first parameter is named `self` are called
-methods and may be invoked using `.` notation (e.g., `x.foo()`).
+All traits define an implicit type parameter `Self` that refers to "the type
+that is implementing this interface". Traits may also contain additional type
+parameters. These type parameters (including `Self`) may be constrained by
+other traits and so forth as usual.
 
-All traits define an implicit type parameter `Self` that refers to
-"the type that is implementing this interface". Traits may also
-contain additional type parameters. These type parameters (including
-`Self`) may be constrained by other traits and so forth as usual.
+Traits are implemented for specific types through separate [implementations].
 
-Trait bounds on `Self` are considered "supertraits". These are
-required to be acyclic.  Supertraits are somewhat different from other
-constraints in that they affect what methods are available in the
-vtable when the trait is used as a [trait object].
+### Associated functions and methods
 
-Traits are implemented for specific types through separate
-[implementations].
+Associated functions whose first parameter is named `self` are called methods
+and may be invoked using `.` notation (e.g., `x.foo()`) as well as the usual
+function call notation (`foo(x)`).
 
 Consider the following trait:
 
@@ -899,10 +905,11 @@ trait Shape {
 }
 ```
 
-This defines a trait with two methods. All values that have
-[implementations] of this trait in scope can have their
-`draw` and `bounding_box` methods called, using `value.bounding_box()`
-[syntax].
+This defines a trait with two methods. All values that have [implementations]
+of this trait in scope can have their `draw` and `bounding_box` methods called,
+using `value.bounding_box()` [syntax]. Note that `&self` is short for `self:
+&Self`, and similarly, `self` is short for `self: Self` and  `&mut self` is
+short for `self: &mut Self`.
 
 [trait object]: types.html#trait-objects
 [implementations]: #implementations
@@ -918,8 +925,8 @@ trait Foo {
 ```
 
 Here the `baz` method has a default implementation, so types that implement
-`Foo` need only implement `bar`. It is also possible for implementing types
-to override a method that has a default implementation.
+`Foo` need only implement `bar`. It is also possible for implementing types to
+override a method that has a default implementation.
 
 Type parameters can be specified for a trait to make it generic. These appear
 after the trait name, using the same syntax used in [generic
@@ -933,9 +940,29 @@ trait Seq<T> {
 }
 ```
 
+Associated functions may lack a `self` argument, sometimes called 'static
+methods'. This means that they can only be called with function call syntax
+(`f(x)`) and not method call syntax (`obj.f()`). The way to refer to the name
+of a static method is to qualify it with the trait name or type name, treating
+the trait name like a module. For example:
+
+```rust
+trait Num {
+    fn from_i32(n: i32) -> Self;
+}
+impl Num for f64 {
+    fn from_i32(n: i32) -> f64 { n as f64 }
+}
+let x: f64 = Num::from_i32(42);
+let x: f64 = f64::from_i32(42);
+```
+
+
+### Associated Types
+
 It is also possible to define associated types for a trait. Consider the
-following example of a `Container` trait. Notice how the type is available
-for use in the method signatures:
+following example of a `Container` trait. Notice how the type is available for
+use in the method signatures:
 
 ```rust
 trait Container {
@@ -946,8 +973,8 @@ trait Container {
 ```
 
 In order for a type to implement this trait, it must not only provide
-implementations for every method, but it must specify the type `E`. Here's
-an implementation of `Container` for the standard library type `Vec`:
+implementations for every method, but it must specify the type `E`. Here's an
+implementation of `Container` for the standard library type `Vec`:
 
 ```rust
 # trait Container {
@@ -962,129 +989,7 @@ impl<T> Container for Vec<T> {
 }
 ```
 
-Generic functions may use traits as _bounds_ on their type parameters. This
-will have two effects:
-
-- Only types that have the trait may instantiate the parameter.
-- Within the generic function, the methods of the trait can be
-  called on values that have the parameter's type.
-
-For example:
-
-```rust
-# type Surface = i32;
-# trait Shape { fn draw(&self, Surface); }
-fn draw_twice<T: Shape>(surface: Surface, sh: T) {
-    sh.draw(surface);
-    sh.draw(surface);
-}
-```
-
-Traits also define a [trait object] with the same
-name as the trait. Values of this type are created by coercing from a
-pointer of some specific type to a pointer of trait type. For example,
-`&T` could be coerced to `&Shape` if `T: Shape` holds (and similarly
-for `Box<T>`). This coercion can either be implicit or
-[explicit]. Here is an example of an explicit
-coercion:
-
-[trait object]: types.html#trait-objects
-[explicit]: expressions.html#type-cast-expressions
-
-```rust
-trait Shape { }
-impl Shape for i32 { }
-let mycircle = 0i32;
-let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
-```
-
-The resulting value is a box containing the value that was cast, along with
-information that identifies the methods of the implementation that was used.
-Values with a trait type can have [methods called] on
-them, for any method in the trait, and can be used to instantiate type
-parameters that are bounded by the trait.
-
-[methods called]: expressions.html#method-call-expressions
-
-Trait methods may be static, which means that they lack a `self` argument.
-This means that they can only be called with function call syntax (`f(x)`) and
-not method call syntax (`obj.f()`). The way to refer to the name of a static
-method is to qualify it with the trait name, treating the trait name like a
-module. For example:
-
-```rust
-trait Num {
-    fn from_i32(n: i32) -> Self;
-}
-impl Num for f64 {
-    fn from_i32(n: i32) -> f64 { n as f64 }
-}
-let x: f64 = Num::from_i32(42);
-```
-
-Traits may inherit from other traits. Consider the following example:
-
-```rust
-trait Shape { fn area(&self) -> f64; }
-trait Circle : Shape { fn radius(&self) -> f64; }
-```
-
-The syntax `Circle : Shape` means that types that implement `Circle` must also
-have an implementation for `Shape`. Multiple supertraits are separated by `+`,
-`trait Circle : Shape + PartialEq { }`. In an implementation of `Circle` for a
-given type `T`, methods can refer to `Shape` methods, since the typechecker
-checks that any type with an implementation of `Circle` also has an
-implementation of `Shape`:
-
-```rust
-struct Foo;
-
-trait Shape { fn area(&self) -> f64; }
-trait Circle : Shape { fn radius(&self) -> f64; }
-impl Shape for Foo {
-    fn area(&self) -> f64 {
-        0.0
-    }
-}
-impl Circle for Foo {
-    fn radius(&self) -> f64 {
-        println!("calling area: {}", self.area());
-
-        0.0
-    }
-}
-
-let c = Foo;
-c.radius();
-```
-
-In type-parameterized functions, methods of the supertrait may be called on
-values of subtrait-bound type parameters. Referring to the previous example of
-`trait Circle : Shape`:
-
-```rust
-# trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
-fn radius_times_area<T: Circle>(c: T) -> f64 {
-    // `c` is both a Circle and a Shape
-    c.radius() * c.area()
-}
-```
-
-Likewise, supertrait methods may also be called on trait objects.
-
-```rust,ignore
-# trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
-# impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
-# impl Circle for i32 { fn radius(&self) -> f64 { 0.0 } }
-# let mycircle = 0i32;
-let mycircle = Box::new(mycircle) as Box<Circle>;
-let nonsense = mycircle.radius() * mycircle.area();
-```
-
-#### Associated Constants
-
+### Associated Constants
 
 A trait can define constants like this:
 
@@ -1104,7 +1009,7 @@ fn main() {
 
 Any implementor of `Foo` will have to define `ID`. Without the definition:
 
-```rust,ignore
+```rust,compile_fail,E0046
 trait Foo {
     const ID: i32;
 }
@@ -1156,9 +1061,131 @@ impl Foo {
 }
 ```
 
-### Implementations
+### Trait bounds
 
-An _implementation_ is an item that implements a [trait](#traits) for a
+Generic functions may use traits as _bounds_ on their type parameters. This
+will have three effects:
+
+- Only types that have the trait may instantiate the parameter.
+- Within the generic function, the methods of the trait can be called on values
+  that have the parameter's type. Associated types can be used in the
+  function's signature, and associated constants can be used in expressions
+  within the function body.
+- Generic functions and types with the same or weaker bounds can use the
+  generic type in the function body or signature.
+
+For example:
+
+```rust
+# type Surface = i32;
+# trait Shape { fn draw(&self, Surface); }
+struct Figure<S: Shape>(S, S);
+fn draw_twice<T: Shape>(surface: Surface, sh: T) {
+    sh.draw(surface);
+    sh.draw(surface);
+}
+fn draw_figure<U: Shape>(surface: Surface, Figure(sh1, sh2): Figure<U>) {
+    sh1.draw(surface);
+    draw_twice(surface, sh2); // Can call this since U: Shape
+}
+```
+
+### Trait objects
+
+Traits also define a [trait object] with the same name as the trait. Values of
+this type are created by coercing from a pointer of some specific type to a
+pointer of trait type. For example, `&T` could be coerced to `&Shape` if `T:
+Shape` holds (and similarly for `Box<T>`). This coercion can either be implicit
+or [explicit]. Here is an example of an explicit coercion:
+
+[trait object]: types.html#trait-objects
+[explicit]: expressions.html#type-cast-expressions
+
+```rust
+trait Shape { }
+impl Shape for i32 { }
+let mycircle = 0i32;
+let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
+```
+
+The resulting value is a box containing the value that was cast, along with
+information that identifies the methods of the implementation that was used.
+Values with a trait type can have [methods called] on them, for any method in
+the trait, and can be used to instantiate type parameters that are bounded by
+the trait.
+
+[methods called]: expressions.html#method-call-expressions
+
+### Supertraits
+
+
+Trait bounds on `Self` are considered "supertraits". These are required to be
+acyclic.  Supertraits are somewhat different from other constraints in that
+they affect what methods are available in the vtable when the trait is used as
+a [trait object]. Consider the following example:
+
+```rust
+trait Shape { fn area(&self) -> f64; }
+trait Circle : Shape { fn radius(&self) -> f64; }
+```
+
+The syntax `Circle : Shape` means that types that implement `Circle` must also
+have an implementation for `Shape`. Multiple supertraits are separated by `+`,
+`trait Circle : Shape + PartialEq { }`. In an implementation of `Circle` for a
+given type `T`, methods can refer to `Shape` methods, since the typechecker
+checks that any type with an implementation of `Circle` also has an
+implementation of `Shape`:
+
+```rust
+struct Foo;
+
+trait Shape { fn area(&self) -> f64; }
+trait Circle : Shape { fn radius(&self) -> f64; }
+impl Shape for Foo {
+    fn area(&self) -> f64 {
+        0.0
+    }
+}
+impl Circle for Foo {
+    fn radius(&self) -> f64 {
+        println!("calling area: {}", self.area());
+
+        0.0
+    }
+}
+
+let c = Foo;
+c.radius();
+```
+
+In type-parameterized functions, methods of the supertrait may be called on
+values of subtrait-bound type parameters. Referring to the previous example of
+`trait Circle : Shape`:
+
+```rust
+# trait Shape { fn area(&self) -> f64; }
+# trait Circle : Shape { fn radius(&self) -> f64; }
+fn radius_times_area<T: Circle>(c: T) -> f64 {
+    // `c` is both a Circle and a Shape
+    c.radius() * c.area()
+}
+```
+
+Likewise, supertrait methods may also be called on trait objects.
+
+```rust
+# trait Shape { fn area(&self) -> f64; }
+# trait Circle : Shape { fn radius(&self) -> f64; }
+# impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
+# impl Circle for i32 { fn radius(&self) -> f64 { 0.0 } }
+# let mycircle = 0i32;
+let mycircle = Box::new(mycircle) as Box<Circle>;
+let nonsense = mycircle.radius() * mycircle.area();
+```
+
+## Implementations
+
+An _implementation_ is an item that can implement a [trait](#traits) for a
 specific type.
 
 Implementations are defined with the keyword `impl`.
@@ -1196,11 +1223,11 @@ impl Shape for Circle {
 ```
 
 It is possible to define an implementation without referring to a trait. The
-methods in such an implementation can only be used as direct calls on the values
-of the type that the implementation targets. In such an implementation, the
-trait type and `for` after `impl` are omitted. Such implementations are limited
-to nominal types (enums, structs, trait objects), and the implementation must
-appear in the same crate as the `self` type:
+methods in such an implementation can only be used as direct calls on the
+values of the type that the implementation targets. In such an implementation,
+the trait type and `for` after `impl` are omitted. Such implementations are
+limited to nominal types (enums, structs, unions, trait objects), and the
+implementation must appear in the same crate as the `Self` type:
 
 ```rust
 struct Point {x: i32, y: i32}
@@ -1218,9 +1245,10 @@ my_point.log();
 When a trait _is_ specified in an `impl`, all methods declared as part of the
 trait must be implemented, with matching types and type parameter counts.
 
-An implementation can take type parameters, which can be different from the
-type parameters taken by the trait it implements. Implementation parameters
-are written after the `impl` keyword.
+An implementation can take type and lifetime parameters, which can be used in
+the rest of the implementation. Type parameters declared for an implementation
+must be used at least once in either the trait or the type of an
+implementation. Implementation parameters are written after the `impl` keyword.
 
 ```rust
 # trait Seq<T> { fn dummy(&self, _: T) { } }
@@ -1232,7 +1260,7 @@ impl Seq<bool> for u32 {
 }
 ```
 
-### External blocks
+## External blocks
 
 External blocks form the basis for Rust's foreign function interface.
 Declarations in an external block describe symbols in external, non-Rust
@@ -1276,8 +1304,8 @@ are guaranteed to support:
 * `extern "C"` -- This is the same as `extern fn foo()`; whatever the default
   your C compiler supports.
 * `extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
-  which case it's `"stdcall"`, or what you should use to link to the Windows API
-  itself
+  which case it's `"stdcall"`, or what you should use to link to the Windows
+  API itself
 
 There are also some platform-specific ABI strings:
 
@@ -1312,5 +1340,6 @@ An) -> R`, where `A1...An` are the declared types of its arguments and `R` is
 the declared return type.
 
 It is valid to add the `link` attribute on an empty extern block. You can use
-this to satisfy the linking requirements of extern blocks elsewhere in your code
-(including upstream crates) instead of adding the attribute to each extern block.
+this to satisfy the linking requirements of extern blocks elsewhere in your
+code (including upstream crates) instead of adding the attribute to each extern
+block.
