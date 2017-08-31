@@ -6,12 +6,12 @@ names, and invoked through a consistent syntax: `some_extension!(...)`.
 
 Users of `rustc` can define new macros in two ways:
 
-* [Macros] define new syntax in a higher-level,
+* [Macros by Example] define new syntax in a higher-level,
   declarative way.
 * [Procedural Macros] can be used to implement custom derive.
 
 And one unstable way: [compiler plugins].
 
-[Macros]: ../book/macros.html
-[Procedural Macros]: ../book/procedural-macros.html
+[Macros by Example]: macros-by-example.html
+[Procedural Macros]: procedural-macros.html
 [compiler plugins]: ../unstable-book/language-features/plugin.html
