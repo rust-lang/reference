@@ -264,6 +264,22 @@ a single integer literal.
 
 #### Floating-point literals
 
+> **<sup>Lexer</sup>**  
+> FLOAT_LITERAL :  
+> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
+>   _(not immediately followed by `.`, `_` or an identifier_)  
+> &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT  
+> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>  
+> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
+>                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX  
+>  
+> FLOAT_EXPONENT :  
+> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
+>               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>   
+>  
+> FLOAT_SUFFIX :  
+> &nbsp;&nbsp; `f32` | `f64`
+
 A _floating-point literal_ has one of two forms:
 
 * A _decimal literal_ followed by a period character `U+002E` (`.`). This is
