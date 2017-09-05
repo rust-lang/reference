@@ -216,16 +216,51 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 
 #### Integer literals
 
+> **<sup>Lexer</sup>**  
+> INTEGER_LITERAL :  
+> &nbsp;&nbsp; ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )
+>              INTEGER_SUFFIX<sup>?</sup>
+>   
+> DEC_LITERAL :  
+> &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>  
+>  
+> BIN_LITERAL :  
+> &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>  
+>  
+> OCT_LITERAL :  
+> &nbsp;&nbsp; `0o` (OCT_DIGIT|`_`)<sup>\*</sup> OCT_DIGIT (OCT_DIGIT|`_`)<sup>\*</sup>  
+>  
+> HEX_LITERAL :  
+> &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>  
+>  
+> BIN_DIGIT : [`0`-`1` `_`]  
+>  
+> OCT_DIGIT : [`0`-`7` `_`]  
+>  
+> DEC_DIGIT : [`0`-`9` `_`]  
+>  
+> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F` `_`]  
+>  
+> INTEGER_SUFFIX :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `usize`  
+> &nbsp;&nbsp; | `i8` | `u16` | `i32` | `i64` | `usize`
+
+<!-- FIXME: separate the DECIMAL_LITERAL with no prefix or suffix (used on tuple indexing and float_literal -->
+<!-- FIXME: u128 and i128 -->
+
 An _integer literal_ has one of four forms:
 
 * A _decimal literal_ starts with a *decimal digit* and continues with any
   mixture of *decimal digits* and _underscores_.
 * A _hex literal_ starts with the character sequence `U+0030` `U+0078`
-  (`0x`) and continues as any mixture of hex digits and underscores.
+  (`0x`) and continues as any mixture (with at least one digit) of hex digits
+  and underscores.
 * An _octal literal_ starts with the character sequence `U+0030` `U+006F`
-  (`0o`) and continues as any mixture of octal digits and underscores.
+  (`0o`) and continues as any mixture (with at least one digit) of octal digits
+  and underscores.
 * A _binary literal_ starts with the character sequence `U+0030` `U+0062`
-  (`0b`) and continues as any mixture of binary digits and underscores.
+  (`0b`) and continues as any mixture (with at least one digit) of binary digits
+  and underscores.
 
 Like any literal, an integer literal may be followed (immediately,
 without any spaces) by an _integer suffix_, which forcibly sets the
@@ -247,13 +282,47 @@ The type of an _unsuffixed_ integer literal is determined by type inference:
 Examples of integer literals of various forms:
 
 ```rust
+123;                               // type i32
 123i32;                            // type i32
 123u32;                            // type u32
 123_u32;                           // type u32
+let a: u64 = 123;                  // type u64
+
+0xff;                              // type i32
 0xff_u8;                           // type u8
+
+0o70;                              // type i32
 0o70_i16;                          // type i16
-0b1111_1111_1001_0000_i32;         // type i32
+
+0b1111_1111_1001_0000;             // type i32
+0b1111_1111_1001_0000i32;          // type i64
+0b________1;                       // type i32
+
 0usize;                            // type usize
+```
+
+Examples of invalid integer literals:
+
+```rust,ignore
+// invalid suffixes
+
+0invalidSuffix;
+
+// uses numbers of the wrong base
+
+123AFB43;
+0b0102;
+0o0581;
+
+// integers too big for their type (they overflow)
+
+128_i8;
+256_u8;
+
+// bin, hex and octal literals must have at least one digit
+
+0b_;
+0b____;
 ```
 
 Note that the Rust syntax considers `-1i8` as an application of the [unary minus
