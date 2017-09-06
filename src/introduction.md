@@ -26,6 +26,9 @@ is what we have for now.
 
 You may also be interested in the [grammar].
 
+You can contribute to this document by opening an issue or sending a pull
+request to [the Rust Reference repository].
+
 N. B. This document may be incomplete. Documenting everything might take a
 while. We have a [big issue] to track documentation for every Rust feature,
 so check that out if you can't find something here.
@@ -33,4 +36,5 @@ so check that out if you can't find something here.
 [book]: ../book/index.html
 [standard]: ../std/index.html
 [grammar]: ../grammar.html
+[the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
 [big issue]: https://github.com/rust-lang-nursery/reference/issues/9
