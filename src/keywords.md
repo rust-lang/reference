@@ -45,7 +45,7 @@ not allowed to declare a variable with name `struct`.
 > KW_TYPE           : `type`  
 > KW_UNSAFE         : `unsafe`  
 > KW_USE            : `use`  
-> KW_WHERE          : `wher`  
+> KW_WHERE          : `where`  
 > KW_WHILE          : `while`  
 
 ## Weak keywords
