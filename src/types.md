@@ -93,8 +93,8 @@ Tuple types and values are denoted by listing the types or values of their
 elements, respectively, in a parenthesized, comma-separated list.
 
 Because tuple elements don't have a name, they can only be accessed by
-pattern-matching or by using `N` directly as a field to access the
-`N`th element.
+pattern-matching or by using `N` directly as a field to access the `N`th
+element.
 
 An example of a tuple type and its use:
 
@@ -149,7 +149,7 @@ array or slice is always bounds-checked in safe methods and operators.
 The [`Vec<T>`] standard library type provides a heap allocated resizable array
 type.
 
-[dynamically sized type]: #dynamically-sized-types
+[dynamically sized type]: dynamically-sized-types.html
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 
 ## Struct types
@@ -162,13 +162,13 @@ expression](expressions.html#struct-expressions).
 
 The memory layout of a `struct` is undefined by default to allow for compiler
 optimizations like field reordering, but it can be fixed with the
-`#[repr(...)]` attribute. In either case, fields may be given in any order in
-a corresponding struct *expression*; the resulting `struct` value will always
+`#[repr(...)]` attribute. In either case, fields may be given in any order in a
+corresponding struct *expression*; the resulting `struct` value will always
 have the same memory layout.
 
 The fields of a `struct` may be qualified by [visibility
-modifiers](visibility-and-privacy.html), to allow access to data in a
-struct outside a module.
+modifiers](visibility-and-privacy.html), to allow access to data in a struct
+outside a module.
 
 A _tuple struct_ type is just like a struct type, except that the fields are
 anonymous.
@@ -201,6 +201,21 @@ named reference to an [`enum` item](items.html#enumerations).
 
 [^enumtype]: The `enum` type is analogous to a `data` constructor declaration in
              ML, or a *pick ADT* in Limbo.
+
+## Union types
+
+A *union type* is a nominal, heterogeneous C-like union, denoted by the name of
+a [`union` item](items.html#unions).
+
+A union contains the value of any one of its fields. Since the accessing the
+wrong field can cause unexpected or undefined behaviour, `unsafe` is required
+to read from a union field or to write to a field that doesn't implement
+[`Copy`].
+
+The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
+attribute can be used to fix a layout.
+
+[`Copy`]: the-copy-trait.html
 
 ## Recursive types
 
@@ -240,7 +255,7 @@ copied, stored into data structs, and returned from functions.
 
 These point to memory _owned by some other value_. When a shared reference to a
 value is created it prevents direct mutation of the value. [Interior
-mutability](#interior-mutability) provides an exception for this in certain
+mutability](interior-mutability.html) provides an exception for this in certain
 circumstances. As the name suggests, any number of shared references to a value
 may exit. A shared reference type is written `&type`, or `&'a type` when you
 need to specify an explicit lifetime. Copying a reference is a "shallow"
@@ -248,6 +263,12 @@ operation: it involves only copying the pointer itself, that is, pointers are
 `Copy`. Releasing a reference has no effect on the value it points to, but
 referencing of a [temporary value](expressions.html#temporary-lifetimes) will
 keep it alive during the scope of the reference itself.
+
+### Mutable references (`&mut`)
+
+These also point to memory owned by some other value. A mutable reference type
+is written `&mut type` or `&'a mut type`. A mutable reference (that hasn't been
+borrowed) is the only way to access the value it points to, so is not `Copy`.
 
 ### Raw pointers (`*const` and `*mut`)
 
@@ -262,7 +283,8 @@ foreign code, and writing performance-critical or low-level functions.
 
 When comparing pointers they are compared by their address, rather than by what
 they point to. When comparing pointers to [dynamically sized
-types](#dynamically-sized-types) they also have their addition data compared.
+types](dynamically-sized-types.html) they also have their addition data
+compared.
 
 ### Smart Pointers
 
@@ -365,9 +387,9 @@ more of the closure traits:
     moved in the body of the closure. `Fn` inherits from `FnMut`, which itself
     inherits from `FnOnce`.
 
-Closures that don't use anything from their environment ("non capturing closures")
-can be coerced to function pointers (`fn`) with the matching signature.
-To adopt the example from the section above:
+Closures that don't use anything from their environment ("non capturing
+closures") can be coerced to function pointers (`fn`) with the matching
+signature. To adopt the example from the section above:
 
 ```rust
 let add = |x, y| x + y;
@@ -382,9 +404,11 @@ x = bo(5,7);
 ## Trait objects
 
 In Rust, trait names also refer to [dynamically sized types] called _trait
-objects_. Like all DSTs, trait objects are used behind some kind of pointer:
-`&SomeTrait` or `Box<SomeTrait>`. Each instance of a pointer to a trait object
-includes:
+objects_. Like all <abbr title="dynamically sized types">DSTs</abbr>, trait
+objects are used behind some kind of pointer: `&SomeTrait` or `Box<SomeTrait>`.
+Each instance of a pointer to a trait object includes:
+
+[dynamically sized types]: dynamically-sized-types.html
 
  - a pointer to an instance of a type `T` that implements `SomeTrait`
  - a _virtual method table_, often just called a _vtable_, which contains, for
@@ -464,11 +488,11 @@ Box<Foo + 'static>
 impl Foo {}
 impl Foo + 'static {}
 
-// ...so are these as &'a T requires T: 'a
+// ...so are these, because &'a T requires T: 'a
 &'a Foo
 &'a (Foo + 'a)
 
-// ...std::cell::Ref<'a, T> also requires T: 'a, so these are also the same
+// std::cell::Ref<'a, T> also requires T: 'a, so these are the same
 std::cell::Ref<'a, Foo>
 std::cell::Ref<'a, Foo + 'a>
 
