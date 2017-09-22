@@ -309,6 +309,11 @@ The representation semantics of floating-point numbers are described in
 
 ### Boolean literals
 
+> **<sup>Lexer</sup>**  
+> BOOLEAN_LITERAL :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `true`  
+> &nbsp;&nbsp; | `false`  
+
 The two values of the boolean type are written `true` and `false`.
 
 ## Symbols
@@ -324,4 +329,4 @@ They are catalogued in [the Symbols section][symbols] of the Grammar document.
 [binary operators]: expressions.html#arithmetic-and-logical-binary-operators
 [tokens]: #tokens
 [symbols]: ../grammar.html#symbols
-[keywords]: ../grammar.html#keywords
+[keywords]: keywords.html
