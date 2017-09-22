@@ -32,6 +32,8 @@
 
 - [Type system](type-system.md)
     - [Types](types.md)
+    - [Dynamically Sized Types](dynamically-sized-types.md)
+    - [Interior mutability](interior-mutability.md)
     - [Subtyping](subtyping.md)
     - [Type coercions](type-coercions.md)
 
