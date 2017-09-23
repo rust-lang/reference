@@ -233,13 +233,13 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > HEX_LITERAL :  
 > &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>  
 >  
-> BIN_DIGIT : [`0`-`1` `_`]  
+> BIN_DIGIT : [`0`-`1`]  
 >  
-> OCT_DIGIT : [`0`-`7` `_`]  
+> OCT_DIGIT : [`0`-`7`]  
 >  
-> DEC_DIGIT : [`0`-`9` `_`]  
+> DEC_DIGIT : [`0`-`9`]  
 >  
-> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F` `_`]  
+> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]  
 >  
 > INTEGER_SUFFIX :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `usize`  
