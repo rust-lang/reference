@@ -11,16 +11,16 @@
 > &nbsp;&nbsp; | `/**/`  
 > &nbsp;&nbsp; | `/***/`  
 >  
-> OUTER_LINE_DOC :  
+> INNER_LINE_DOC :  
 > &nbsp;&nbsp; `//!` ~[`\n` _IsolatedCR_]<sup>\*</sup>  
 >  
-> OUTER_BLOCK_DOC :  
+> INNER_BLOCK_DOC :  
 > &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`  
 >  
-> INNER_LINE_DOC :  
+> OUTER_LINE_DOC :  
 > &nbsp;&nbsp; `///` (~`/` ~[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>  
 >  
-> INNER_BLOCK_DOC :  
+> OUTER_BLOCK_DOC :  
 > &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
 >              (_BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_])<sup>\*</sup> `*/`  
 >  
