@@ -97,12 +97,7 @@ evaluated (primarily) at compile time.
 > &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`  
 >  
 > UNICODE_ESCAPE :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `\u{` HEX_DIGIT `_`<sup>\*</sup> `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; `\u{` ( HEX_DIGIT `_`<sup>\*</sup> )<sup>1..6</sup> `}`  
 
 A _character literal_ is a single Unicode character enclosed within two
 `U+0027` (single-quote) characters, with the exception of `U+0027` itself,
@@ -122,7 +117,6 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 >  
 > STRING_CONTINUE :  
 > &nbsp;&nbsp; `\` _followed by_ \\n  
-
 
 A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
@@ -263,7 +257,6 @@ following forms:
 >  
 > ASCII :  
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_  
-
 
 Raw byte string literals do not process any escapes. They start with the
 character `U+0062` (`b`), followed by `U+0072` (`r`), followed by zero or more
