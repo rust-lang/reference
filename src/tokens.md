@@ -97,12 +97,12 @@ evaluated (primarily) at compile time.
 > &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`  
 >  
 > UNICODE_ESCAPE :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `\u{` HEX_DIGIT `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT HEX_DIGIT `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT HEX_DIGIT HEX_DIGIT `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT `}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT`}`  
-> &nbsp;&nbsp; | `\u{` HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT`}`  
+> &nbsp;&nbsp; &nbsp;&nbsp; `\u{` HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
+> &nbsp;&nbsp; | `\u{` HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> HEX_DIGIT `_`<sup>\*</sup> `}`  
 
 A _character literal_ is a single Unicode character enclosed within two
 `U+0027` (single-quote) characters, with the exception of `U+0027` itself,
