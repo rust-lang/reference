@@ -1,8 +1,9 @@
 ## Behavior considered undefined
 
-The following is a list of behavior which is forbidden in all Rust code,
-including within `unsafe` blocks and `unsafe` functions. Type checking provides
-the guarantee that these issues are never caused by safe code.
+Rust code, including within `unsafe` blocks and `unsafe` functions is incorrect
+if it exhibits any of the behaviors in the following list. It is the
+programmer's responsibility when writing `unsafe` code that it is not possible
+to let `safe` code exhibit these behaviors.
 
 * Data races.
 * Dereferencing a null or dangling raw pointer.
