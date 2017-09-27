@@ -7,6 +7,8 @@ to let `safe` code exhibit these behaviors.
 
 * Data races.
 * Dereferencing a null or dangling raw pointer.
+* Unaligned pointer reading and writing outside of [`read_unaligned`]
+  and [`write_unaligned`].
 * Reads of [undef] \(uninitialized) memory.
 * Breaking the [pointer aliasing rules] on accesses through raw pointers;
   a subset of the rules used by C.
@@ -36,3 +38,5 @@ to let `safe` code exhibit these behaviors.
 [`offset`]: https://doc.rust-lang.org/std/primitive.pointer.html#method.offset
 [`std::ptr::copy_nonoverlapping_memory`]: https://doc.rust-lang.org/std/ptr/fn.copy_nonoverlapping.html
 [`UnsafeCell<U>`]: https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
+[`read_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.read_unaligned.html
+[`write_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.write_unaligned.html
