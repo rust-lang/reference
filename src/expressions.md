@@ -232,10 +232,9 @@ exist in `core::ops` and `core::cmp` with the same names.
 
 A _literal expression_ consists of one of the [literal](tokens.html#literals)
 forms described earlier. It directly describes a number, character, string,
-boolean value, or the unit value.
+or boolean value.
 
 ```rust
-();        // unit type
 "hello";   // string type
 '5';       // character type
 5;         // integer type
@@ -272,6 +271,7 @@ values.
 ```rust
 (0.0, 4.5);
 ("a", 4usize, true);
+();
 ```
 
 You can disambiguate a single-element tuple from a value in parentheses with a
