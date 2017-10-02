@@ -32,9 +32,9 @@ syntax named by _designator_. Valid designators are:
 * `meta`: the contents of an [attribute]
 
 [item]: items.html
-[block]: expressions.html#block-expressions
+[block]: expressions/block-expr.html
 [statement]: statements.html
-[pattern]: expressions.html#match-expressions
+[pattern]: expressions/match-expr.html
 [expression]: expressions.html
 [type]: types.html
 [identifier]: identifiers.html

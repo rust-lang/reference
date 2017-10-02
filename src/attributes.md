@@ -137,8 +137,8 @@ On an `extern` block, the following attributes are interpreted:
 - `link` - indicate that a native library should be linked to for the
   declarations in this block to be linked correctly. `link` supports an optional
   `kind` key with three possible values: `dylib`, `static`, and `framework`. See
-  [external blocks](items.html#external-blocks) for more about external blocks. Two
-  examples: `#[link(name = "readline")]` and
+  [external blocks](items/external-blocks.html) for more about external blocks.
+  Two examples: `#[link(name = "readline")]` and 
   `#[link(name = "CoreFoundation", kind = "framework")]`.
 - `linked_from` - indicates what native library this block of FFI items is
   coming from. This attribute is of the form `#[linked_from = "foo"]` where

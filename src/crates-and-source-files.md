@@ -96,7 +96,7 @@ fn main() {
     ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
-[module]: items.html#modules
+[module]: items/modules.html
 [module path]: paths.html
 [attributes]: items-and-attributes.html
 [unit]: types.html#tuple-types

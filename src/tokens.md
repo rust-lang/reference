@@ -404,7 +404,7 @@ Note that the Rust syntax considers `-1i8` as an application of the [unary minus
 operator] to an integer literal `1i8`, rather than
 a single integer literal.
 
-[unary minus operator]: expressions.html#negation-operators
+[unary minus operator]: expressions/operator-expr.html#negation-operators
 
 #### Floating-point literals
 
@@ -485,8 +485,8 @@ otherwise appear as [unary operators], [binary
 operators], or [keywords].
 They are catalogued in [the Symbols section][symbols] of the Grammar document.
 
-[unary operators]: expressions.html#borrow-operators
-[binary operators]: expressions.html#arithmetic-and-logical-binary-operators
+[unary operators]: expressions/operator-expr.html#borrow-operators
+[binary operators]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
 [tokens]: #tokens
 [symbols]: ../grammar.html#symbols
 [keywords]: keywords.html
