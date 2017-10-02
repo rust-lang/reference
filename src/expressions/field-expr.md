@@ -3,7 +3,7 @@
 A _field expression_ consists of an expression followed by a single dot and an
 [identifier](identifiers.html), when not immediately followed by a
 parenthesized expression-list (the latter is always a [method call
-expression](method-call-expr.html)). A field expression denotes a field of a
+expression](expressions/method-call-expr.html)). A field expression denotes a field of a
 [struct](types.html#struct-types) or [union](items/unions.html). To call a
 function stored in a struct parentheses are needed around the field expression
 

@@ -4,7 +4,7 @@ A [path](paths.html) used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
 are [lvalues](expressions.html#lvalues-and-rvalues), other paths
 are rvalues. Using a `static mut` variable requires an [`unsafe`
-block](block-expr.html#unsafe-blocks).
+block](expressions/block-expr.html#unsafe-blocks).
 
 ```rust
 # mod globals {
