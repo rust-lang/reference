@@ -10,7 +10,7 @@ limited capabilities.
 ## Primitive types
 
 Some types are defined by the language, rather than as part of the standard
-library, these are called _primitive types_. Some of these are induvidual
+library, these are called _primitive types_. Some of these are individual
 types:
 
 * The boolean type `bool` with values `true` and `false`.
@@ -158,7 +158,7 @@ A `struct` *type* is a heterogeneous product of other types, called the
 *fields* of the type.[^structtype]
 
 New instances of a `struct` can be constructed with a [struct
-expression](expressions.html#struct-expressions).
+expression](expressions/struct-expr.html).
 
 The memory layout of a `struct` is undefined by default to allow for compiler
 optimizations like field reordering, but it can be fixed with the
@@ -175,7 +175,7 @@ anonymous.
 
 A _unit-like struct_ type is like a struct type, except that it has no fields.
 The one value constructed by the associated [struct
-expression](expressions.html#struct-expressions) is the only value that
+expression](expressions/struct-expr.html) is the only value that
 inhabits such a type.
 
 [^structtype]: `struct` types are analogous to `struct` types in C, the
@@ -184,20 +184,20 @@ inhabits such a type.
 ## Enumerated types
 
 An *enumerated type* is a nominal, heterogeneous disjoint union type, denoted
-by the name of an [`enum` item](items.html#enumerations). [^enumtype]
+by the name of an [`enum` item](items/enumerations.html). [^enumtype]
 
-An [`enum` item](items.html#enumerations) declares both the type and a number
+An [`enum` item](items/enumerations.html) declares both the type and a number
 of *variants*, each of which is independently named and has the syntax of a
 struct, tuple struct or unit-like struct.
 
 New instances of an `enum` can be constructed in an [enumeration variant
-expression](expressions.html#enumeration-variant-expressions).
+expression](expressions/enum-variant-expr.html).
 
 Any `enum` value consumes as much memory as the largest variant for its
 corresponding `enum` type, as well as the size needed to store a discriminant.
 
 Enum types cannot be denoted *structurally* as types, but must be denoted by
-named reference to an [`enum` item](items.html#enumerations).
+named reference to an [`enum` item](items/enumerations.html).
 
 [^enumtype]: The `enum` type is analogous to a `data` constructor declaration in
              ML, or a *pick ADT* in Limbo.
@@ -205,7 +205,7 @@ named reference to an [`enum` item](items.html#enumerations).
 ## Union types
 
 A *union type* is a nominal, heterogeneous C-like union, denoted by the name of
-a [`union` item](items.html#unions).
+a [`union` item](items/unions.html).
 
 A union contains the value of any one of its fields. Since the accessing the
 wrong field can cause unexpected or undefined behaviour, `unsafe` is required
@@ -365,7 +365,7 @@ x = bo(5,7);
 
 ## Closure types
 
-A [closure expression](expressions.html#closure-expressions) produces a closure
+A [closure expression](expressions/closure-expr.html) produces a closure
 value with a unique, anonymous type that cannot be written out.
 
 Depending on the requirements of the closure, its type implements one or

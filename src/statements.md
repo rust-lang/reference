@@ -1,7 +1,7 @@
 # Statements
 
 A _statement_ is a component of a block, which is in turn a component of an
-outer [expression](expressions.html) or [function](items.html#functions).
+outer [expression](expressions.html) or [function](items/functions.html).
 
 Rust has two kinds of statement: [declaration
 statements](#declaration-statements) and [expression
@@ -40,7 +40,7 @@ An _expression statement_ is one that evaluates an
 [expression](expressions.html) and ignores its result. As a rule, an expression
 statement's purpose is to trigger the effects of evaluating its expression.
 An expression that consists of only a [block
-expression](expressions.html#block-expressions) or control flow expression,
+expression](expressions/block-expr.html) or control flow expression,
 that doesn't end a block and evaluates to `()` can also be used as an
 expression statement by omitting the trailing semicolon.
 
