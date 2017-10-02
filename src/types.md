@@ -35,7 +35,7 @@ language:
 [Arrays]: #array-and-slice-types
 [Slices]: #array-and-slice-types
 [References]: #pointer-types
-[Pointers]: #raw-pointers
+[Pointers]: #raw-pointers-const-and-mut
 [Function pointers]: #function-pointer-types
 [function]: #function-types
 [closure]: #closure-types
