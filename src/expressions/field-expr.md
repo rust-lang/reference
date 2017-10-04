@@ -23,15 +23,16 @@ Also, if the type of the expression to the left of the dot is a pointer, it is
 automatically dereferenced as many times as necessary to make the field access
 possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
-Finally the fields of a struct, a reference to a struct are treated as separate
-entities when borrowing. If the struct does not implement
-[`Drop`](the-drop-trait.html) this also applies to moving out of each of its fields
-where possible. This also does not apply if automatic dereferencing is done
-though user defined types.
+Finally, the fields of a struct or a reference to a struct are treated as
+separate entities when borrowing. If the struct does not implement
+[`Drop`](the-drop-trait.html) and is stored in a local variable, this also
+applies to moving out of each of its fields. This also does not apply if
+automatic dereferencing is done though user defined types.
 
 ```rust
-# struct A { f1: String, f2: String, f3: String }
-# let mut x = A {
+struct A { f1: String, f2: String, f3: String }
+let mut x: A;
+# x = A {
 #     f1: "f1".to_string(),
 #     f2: "f2".to_string(),
 #     f3: "f3".to_string()

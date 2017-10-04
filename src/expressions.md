@@ -15,6 +15,35 @@ In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions,
 and blocks again can recursively nest inside each other to an arbitrary depth.
 
+## Expression precedence
+
+The precedence of Rust operators and expressions is ordered as follows, going
+from strong to weak. Binary Operators at the same precedence level are
+evaluated in the order given by their associativity.
+
+| Operator/Expression         | Associativity       |
+|-----------------------------|---------------------|
+| Paths                       |                     |
+| Method calls                |                     |
+| Field expressions           | left to right       |
+| Function calls, array indexing |                  |
+| `?`                         |                     |
+| Unary `-` `*` `!` `&` `&mut` |                    |
+| `as` `:`                    | left to right       |
+| `*` `/` `%`                 | left to right       |
+| `+` `-`                     | left to right       |
+| `<<` `>>`                   | left to right       |
+| `&`                         | left to right       |
+| `^`                         | left to right       |
+| <code>&#124;</code>         | left to right       |
+| `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
+| `&&`                        | left to right       |
+| <code>&#124;&#124;</code>   | left to right       |
+| `..` `...`                  | Require parentheses |
+| `<-`                        | right to left       |
+| `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
+| `return` `break` closures   |                     |
+
 ## Lvalues and rvalues
 
 Expressions are divided into two main categories: _lvalues_ and _rvalues_.
@@ -23,25 +52,24 @@ or _rvalue context_. The evaluation of an expression depends both on its own
 category and the context it occurs within.
 
 An lvalue is an expression that represents a memory location. These expressions
-are paths which refer to local variables, function and method arguments, or
-static variables, [dereferences]&nbsp;(`*expr`), [array indexing] expressions
-(`expr[expr]`), [field] references (`expr.f`) and parenthesized lvalue
-expressions. All other expressions are rvalues.
+are [paths](#path-expressions) which refer to local variables, static
+variables, function parameters, [dereferences]&nbsp;(`*expr`), [array indexing]
+expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized
+lvalue expressions. All other expressions are rvalues.
 
 The left operand of an [assign]ment or [compound assignment] expression is an
 lvalue context, as is the single operand of a unary [borrow], and the operand
 of any [implicit borrow](#implicit-borrows). The discriminant or subject of a
-[match] expression and right side of a `let` binding may be an lvalue context,
-if ref bindings are made, but is otherwise an rvalue context. All other
-expression contexts are rvalue contexts.
+[match] expression and right side of a `let` is also an lvalue context. All
+other expression contexts are rvalue contexts.
 
 ### Moved and copied types
 
-When an lvalue is evaluated in an _rvalue context_, it denotes the value held
-_in_ that memory location. If value is of a type that implements `Copy`, then
-the value will be copied. In the remaining situations if the type of the value
-is [`Sized`](the-sized-trait.html) it may be possible to move the value. Only
-the following lvalues may be moved out of:
+When an lvalue is evaluated in an _rvalue context_ or is bound by value in a
+pattern, it denotes the value held _in_ that memory location. If value is of a
+type that implements `Copy`, then the value will be copied. In the remaining
+situations if the type of the value is [`Sized`](the-sized-trait.html) it may
+be possible to move the value. Only the following lvalues may be moved out of:
 
 * [Variables](variables.html) which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
@@ -88,11 +116,11 @@ That is, the promoted expression can be evaluated at compile-time and the
 resulting value does not contain interior mutability or destructors (these
 properties are determined based on the value where possible, e.g. `&None`
 always has the type `&'static Option<_>`, as it contains nothing disallowed).
-Otherwise, the lifetime of temporary values is typically 
+Otherwise, the lifetime of temporary values is typically
 
-- the innermost enclosing statement; the tail expression of a block is 
+- the innermost enclosing statement; the tail expression of a block is
   considered part of the statement that encloses the block, or
-- the condition expression or the loop conditional expression if the 
+- the condition expression or the loop conditional expression if the
   temporary is created in the condition expression of an `if` or an `if`/`else`
   or in the loop conditional expression of a `while` expression.
 
@@ -119,7 +147,7 @@ Here are some examples:
   an rvalue. As the temporary is created in the condition expression
   of an `if`/`else`, it will be freed at the end of the condition expression
   (in this example before the call to `bar` or `baz` is made).
-- `let x = if temp().must_run_bar {bar()} else {baz()};`. 
+- `let x = if temp().must_run_bar {bar()} else {baz()};`.
   Here we assume the type of `temp()` is a struct with a boolean field
   `must_run_bar`. As the previous example, the temporary corresponding to
   `temp()` will be freed at the end of the condition expression.
@@ -186,14 +214,11 @@ also constant expressions:
 * [Literals].
 * [Paths] to [functions](items/functions.html) and constants.
   Recursively defining constants is not allowed.
-* Paths to statics, so long as only their address, not their value, is used.
-  This includes using their value indirectly through a complicated expression.
-  \*
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions, where the type does not implement [`Drop`](the-drop-trait.html).
 * [Enum variant] expressions, where the enumeration type does not implement `Drop`.
-* [Block expressions]&nbsp;(and `unsafe` blocks) which contain  only items and
+* [Block expressions]&nbsp;(and `unsafe` blocks) which only contain items and
   possibly a (constant) tail expression.
 * [Field] expressions.
 * Index expressions, [array indexing] or [slice] with a `usize`.
@@ -201,13 +226,12 @@ also constant expressions:
 * [Closure expressions] which don't capture variables from the environment.
 * Built in [negation], [arithmetic, logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool` and `char`.
-* Shared [borrow].
-* The [dereference operator], but not to circumvent the rule on statics.
+* Shared [borrow], except if applied to a type with [interior
+  mutability](interior-mutability.html).
+* The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
-
-\* Only in static items.
 
 ## Overloading Traits
 

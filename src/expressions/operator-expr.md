@@ -331,29 +331,3 @@ let mut x = 10;
 x += 4;
 assert_eq!(x, 14);
 ```
-
-## Operator precedence
-
-The precedence of Rust operators is ordered as follows, going from strong to
-weak. Binary Operators at the same precedence level are evaluated in the order
-given by their associativity.
-
-
-| Operator                    | Associativity       |
-|-----------------------------|---------------------|
-| `?`                         |                     |
-| Unary `-` `*` `!` `&` `&mut` |                    |
-| `as` `:`                    | left to right       |
-| `*` `/` `%`                 | left to right       |
-| `+` `-`                     | left to right       |
-| `<<` `>>`                   | left to right       |
-| `&`                         | left to right       |
-| `^`                         | left to right       |
-| <code>&#124;</code>         | left to right       |
-| `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
-| `&&`                        | left to right       |
-| <code>&#124;&#124;</code>   | left to right       |
-| `..` `...`                  | Require parentheses |
-| `<-`                        | right to left       |
-| `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
-
