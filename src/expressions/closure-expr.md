@@ -1,5 +1,11 @@
 # Closure expressions
 
+> **<sup>Syntax</sup>**  
+> _ClosureExpression_ :  
+> &nbsp;&nbsp; `move`<sup>?</sup>  
+> &nbsp;&nbsp; ( `||` | `|` [_FunctionParameters_]<sup>?</sup> `|` )  
+> &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])  
+
 A _closure expression_ defines a closure and denotes it as a value, in a single
 expression. A closure expression is a pipe-symbol-delimited (`|`) list of
 patterns followed by an expression. Type annotations may optionally be added
@@ -56,3 +62,8 @@ ten_times(move |j| println!("{}, {}", word, j));
 
 [block]: expressions/block-expr.html
 [function definitions]: items/functions.html
+
+[_Expression_]: expressions.html
+[_BlockExpression_]: expressions/block-expr.html
+[_TypeNoBounds_]: types.html
+[_FunctionParameters_]: items/functions.html
