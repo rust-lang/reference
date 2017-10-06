@@ -1,5 +1,12 @@
 # Call expressions
 
+> **<sup>Syntax</sup>**  
+> _CallExpression_ :  
+> &nbsp;&nbsp; [_Expression_] `(` _CallParams_<sup>?</sup> `)`  
+>   
+> _CallParams_ :  
+> &nbsp;&nbsp; [_Expression_]&nbsp;( `,` ([_Expression_]) )<sup>\*</sup> `,`<sup>?</sup>  
+
 A _call expression_ consists of an expression followed by a parenthesized
 expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
@@ -87,3 +94,5 @@ fn main() {
 Refer to [RFC 132] for further details and motivations.
 
 [RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
+
+[_Expression_]: expressions.html
