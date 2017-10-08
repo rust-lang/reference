@@ -8,13 +8,20 @@ the structure of the program when the compiler is compiling it.
 ### Arity
 
 Arity refers to the number of arguments a function or operation takes.
-For example, `(2, 3)` and `(4, 6)` have arity 2, and`(8, 2, 6)` has arity 3.
+For example, `f(2, 3)` and `g(4, 6)` have arity 2, while `h(8, 2, 6)` has arity 3.
 
 ### Array
 
 An array, sometimes also called a fixed-size array or an inline array, is a value
 describing a collection of elements, each selected by an index that can be computed
 at run time by the program. It occupies a contiguous region of memory.
+
+### Associated Item
+
+An associated item is an item that is associated with another item. Associated
+items are defined in [implementations] and [traits]. Only functions, constants,
+and types can be associated.
+
 
 ### Bound
 
@@ -51,6 +58,11 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 A variable is initialized if it has been assigned a value and hasn't since been
 moved from. All other lvalues are assumed to be initialized. Only unsafe Rust
 can create such an lvalue without initializing it.
+
+### Nominal Types
+
+Types that can be named directly. Specifically [enums], [structs], [unions],
+and [trait objects].
 
 ### Prelude
 
@@ -91,3 +103,10 @@ A trait is a language item that is used for describing the functionalities a typ
 It allow a type to make certain promises about its behavior.
 
 Generic functions and generic structs can exploit traits to constrain, or bound, the types they accept.
+
+[enums]: items/enumerations.html
+[structs]: items/structs.html
+[unions]: items/unions.html
+[trait objects]: types.html#trait-objects
+[implementations]: items/implementations.html
+[traits]: items/traits.html
