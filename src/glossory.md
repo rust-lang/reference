@@ -25,7 +25,7 @@ must abide by that constraint.
 ### Combinator
 
 Combinators are higher-order functions that apply only functions and
-earlier defined combinators to provide a result from its arguments. 
+earlier defined combinators to provide a result from its arguments.
 They can be used to manage control flow in a modular fashion.
 
 ### Dispatch
@@ -37,14 +37,20 @@ through a mechanism called ‘trait objects’.
 
 ### Dynamically Sized Type
 
-A dynamically sized type (DST) is a type without a statically known size or alignment. 
+A dynamically sized type (DST) is a type without a statically known size or alignment.
 
 ### Expression
 
-An expression is a combination of values, constants, variables, operators 
+An expression is a combination of values, constants, variables, operators
 and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
+
+### Initialized
+
+A variable is initialized if it has been assigned a value and hasn't since been
+moved from. All other lvalues are assumed to be initialized. Only unsafe Rust
+can create such an lvalue without initializing it.
 
 ### Prelude
 
@@ -53,9 +59,9 @@ imported into very module of every crate. The traits in the prelude are pervasiv
 
 ### Slice
 
-A slice is dynamically-sized view into a contiguous sequence, written as `[T]`. 
+A slice is dynamically-sized view into a contiguous sequence, written as `[T]`.
 
-It is often seen in its borrowed forms, either mutable or shared. The shared 
+It is often seen in its borrowed forms, either mutable or shared. The shared
 slice type is `&[T]`, while the mutable slice type is `&mut [T]`, where `T` represents
 the element type.
 
@@ -66,8 +72,8 @@ that commands a computer to perform an action.
 
 ### String literal
 
-A string literal is a string stored directly in the final binary, and so will be 
-valid for the `'static` duration. 
+A string literal is a string stored directly in the final binary, and so will be
+valid for the `'static` duration.
 
 Its type is `'static` duration borrowed string slice, `&'static str`.
 
@@ -82,6 +88,6 @@ Strings slices are always valid UTF-8.
 ### Trait
 
 A trait is a language item that is used for describing the functionalities a type must provide.
-It allow a type to make certain promises about its behavior. 
+It allow a type to make certain promises about its behavior.
 
 Generic functions and generic structs can exploit traits to constrain, or bound, the types they accept.
