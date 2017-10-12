@@ -5,10 +5,6 @@ a namespace qualifier (`::`). If a path consists of only one component, it may
 refer to either an [item] or a [variable] in a local control
 scope. If a path has multiple components, it refers to an item.
 
-Every item has a _canonical path_ within its crate, but the path naming an item
-is only meaningful within a given crate. There is no global namespace across
-crates; an item's canonical path merely identifies it within the crate.
-
 Two examples of simple paths consisting of only identifier components:
 
 ```rust,ignore
@@ -97,7 +93,78 @@ mod a {
 # fn main() {}
 ```
 
+## Canonical paths
+
+Items defined in a module or implementation have a *canonical path* that
+corresponds to where within its crate it is defined. All other paths to these
+items are aliases. The canonical path is defined as a *path prefix* appended by
+the path component the item itself defines.
+
+[Implementations] and [use declarations] do not have canonical paths, although
+the items that implementations define do have them. Items defined in
+block expressions do not have canonical paths. Items defined in a module that
+does not have a canonical path do not have a canonical path. Associated items
+defined in an implementation that refers to an item without a canonical path,
+e.g. as the implementing type, the trait being implemented, a type parameter or
+bound on a type parameter, do not have canonical paths.
+
+The path prefix for modules is the canonical path to that module. For bare
+implementations, it is the canonical path of the item being implemented
+surrounded by angle (`<>`) brackets. For trait implementations, it is the
+canonical path of the item being implemented followed by `as` followed by the
+canonical path to the trait all surrounded in angle (`<>`) brackets. 
+
+The canonical path is only meaningful within a given crate. There is no global
+namespace across crates; an item's canonical path merely identifies it within
+the crate.
+
+```rust
+// Comments show the canonical path of the item.
+
+mod a { // ::a
+    pub struct Struct; // ::a::Struct
+
+    pub trait Trait { // ::a::Trait
+        fn f(&self); // a::Trait::f
+    }
+
+    impl Trait for Struct {
+        fn f(&self) {} // <::a::Struct as ::a::Trait>::f
+    }
+
+    impl Struct {
+        fn g(&self) {} // <::a::Struct>::g
+    }
+}
+
+mod without { // ::without
+    fn canonicals() { // ::without::canonicals
+        struct OtherStruct; // None
+
+        trait OtherTrait { // None
+            fn g(&self); // None
+        }
+
+        impl OtherTrait for OtherStruct {
+            fn g(&self) {} // None
+        }
+
+        impl OtherTrait for ::a::Struct {
+            fn g(&self) {} // None
+        }
+
+        impl ::a::Trait for OtherStruct {
+            fn f(&self) {} // None
+        }
+    }
+}
+
+# fn main() {}
+```
 [item]: items.html
 [variable]: variables.html
 [identifiers]: identifiers.html
 [expression]: expressions.html
+[implementations]: items/implementations.html
+[modules]: items/modules.html
+[use declarations]: items/use_declarations.html
