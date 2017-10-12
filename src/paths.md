@@ -5,9 +5,6 @@ a namespace qualifier (`::`). If a path consists of only one component, it may
 refer to either an [item] or a [variable] in a local control
 scope. If a path has multiple components, it refers to an item.
 
-[item]: items.html
-[variable]: variables.html
-
 Every item has a _canonical path_ within its crate, but the path naming an item
 is only meaningful within a given crate. There is no global namespace across
 crates; an item's canonical path merely identifies it within the crate.
@@ -19,15 +16,11 @@ x;
 x::y::z;
 ```
 
-Path components are usually [identifiers], but they may
-also include angle-bracket-enclosed lists of type arguments. In
-[expression] context, the type argument list is given
-after a `::` namespace qualifier in order to disambiguate it from a
-relational expression involving the less-than symbol (`<`). In type
-expression context, the final namespace qualifier is omitted.
-
-[identifiers]: identifiers.html
-[expression]: expressions.html
+Path components are usually [identifiers], but they may also include
+angle-bracket-enclosed lists of type arguments. In [expression] context, the
+type argument list is given after a `::` namespace qualifier in order to
+disambiguate it from a relational expression involving the less-than symbol
+(`<`). In type expression context, the final namespace qualifier is omitted.
 
 Two examples of paths with type arguments:
 
@@ -103,3 +96,8 @@ mod a {
 }
 # fn main() {}
 ```
+
+[item]: items.html
+[variable]: variables.html
+[identifiers]: identifiers.html
+[expression]: expressions.html
