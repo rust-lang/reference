@@ -1,5 +1,9 @@
 # Extern crate declarations
 
+> **<sup>Syntax:<sup>**  
+> _ExternCrate_ :  
+> &nbsp;&nbsp; `extern` `crate` [IDENTIFIER]&nbsp;(`as` [IDENTIFIER])<sup>?</sup> `;`
+
 An _`extern crate` declaration_ specifies a dependency on an external crate.
 The external crate is then bound into the declaring scope as the `ident`
 provided in the `extern_crate_decl`.
@@ -35,3 +39,5 @@ extern crate hello_world; // hyphen replaced with an underscore
 ```
 
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
+
+[IDENTIFIER]: identifiers.html
