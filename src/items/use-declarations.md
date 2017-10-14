@@ -1,5 +1,17 @@
 # Use declarations
 
+> **<sup>Syntax:<sup>**  
+> _UseDeclaration_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `use` [_SimplePath_]&nbsp;(`as` [IDENTIFIER])<sup>?</sup> `;`  
+> &nbsp;&nbsp; | `use` ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` _UseDeclarationItems_ `}` `;`  
+> &nbsp;&nbsp; | `use` ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*` `;`  
+>  
+> _UseDeclarationItems_ :  
+> &nbsp;&nbsp; _UseDeclarationItem_ ( `,` _UseDeclarationItem_ )<sup>*</sup> `,`<sup>?<sup>  
+>  
+> _UseDeclarationItem_ :  
+> &nbsp;&nbsp; ( `self` | [IDENTIFIER] ) ( `as` [IDENTIFIER] )<sup>?</sup>  
+
 A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
 required to refer to a module item. These declarations may appear in [modules]
@@ -111,3 +123,6 @@ mod foo {
 
 fn main() {}
 ```
+
+[IDENTIFIER]: identifiers.html
+[_SimplePath_]: paths.html
