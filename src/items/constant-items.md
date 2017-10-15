@@ -6,8 +6,6 @@ wherever they are used, meaning that they are copied directly into the relevant
 context when used. References to the same constant are not necessarily
 guaranteed to refer to the same memory address.
 
-[constant value]: expressions.html#constant-expressions
-
 Constant values must not have destructors, and otherwise permit most forms of
 data. Constants may refer to the address of other constants, in which case the
 address will have elided lifetimes where applicable, otherwise – in most cases
@@ -15,13 +13,9 @@ address will have elided lifetimes where applicable, otherwise – in most cases
 elision].) The compiler is, however, still at liberty to translate the constant
 many times, so the address referred to may not be stable.
 
-[static lifetime elision]: items/static-items.html#static-lifetime-elision
-
 Constants must be explicitly typed. The type may be any type that doesn't
 implement [`Drop`] and has a `'static` lifetime: any references it contains
 must have `'static` lifetimes.
-
-[`Drop`]: the-drop-trait.html
 
 ```rust
 const BIT1: u32 = 1 << 0;
@@ -40,3 +34,7 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
     mystring: STRING,
 };
 ```
+
+[constant value]: expressions.html#constant-expressions
+[static lifetime elision]: items/static-items.html#static-lifetime-elision
+[`Drop`]: the-drop-trait.html
