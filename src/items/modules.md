@@ -1,8 +1,14 @@
 # Modules
 
-A module is a container for zero or more [items].
+> **<sup>Syntax:<sup>**  
+> _Module_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `mod` [IDENTIFIER] `;`  
+> &nbsp;&nbsp; | `mod` [IDENTIFIER] `{`  
+> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
+> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>  
+> &nbsp;&nbsp; &nbsp;&nbsp; `}`  
 
-[items]: items.html
+A module is a container for zero or more [items].
 
 A _module item_ is a module, surrounded in braces, named, and prefixed with the
 keyword `mod`. A module item introduces a new, named module into the tree of
@@ -61,3 +67,11 @@ mod thread {
     mod local_data;
 }
 ```
+
+[IDENTIFIER]: identifiers.html
+
+[_InnerAttribute_]: attributes.html
+[_OuterAttribute_]: attributes.html
+
+[_Item_]: items.html
+[items]: items.html
