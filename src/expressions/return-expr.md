@@ -1,5 +1,9 @@
 # `return` expressions
 
+> **<sup>Syntax</sup>**  
+> _ReturnExpression_ :  
+> &nbsp;&nbsp; `return` [_Expression_]<sup>?</sup>  
+
 Return expressions are denoted with the keyword `return`. Evaluating a `return`
 expression moves its argument into the designated output location for the
 current function call, destroys the current function activation frame, and
@@ -15,3 +19,5 @@ fn max(a: i32, b: i32) -> i32 {
     return b;
 }
 ```
+
+[_Expression_]: expressions.html
