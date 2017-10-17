@@ -19,6 +19,11 @@ separately by extracting documentation attributes from their source code. Many
 of the features that one might expect to be language features are library
 features in Rust, so what you're looking for may be there, not here.
 
+This document also only serves as a reference to what is available in stable
+Rust. For unstable features being worked on, see the [Unstable Book]. This was
+a recent change in scope, so unstable features are still documented, but are
+in the process of being removed.
+
 Finally, this document is not normative. It may include details that are
 specific to `rustc` itself, and should not be taken as a specification for
 the Rust language. We intend to produce such a document someday, but this
@@ -38,3 +43,4 @@ so check that out if you can't find something here.
 [grammar]: ../grammar.html
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
 [big issue]: https://github.com/rust-lang-nursery/reference/issues/9
+[Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
