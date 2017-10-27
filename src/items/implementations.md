@@ -1,6 +1,6 @@
 # Implementations
 
-An _implementation_ is an item that associates items with a *implementing type*.
+An _implementation_ is an item that associates items with an *implementing type*.
 
 There are two types of implementations: Bare implementations and [trait] 
 implementations.
@@ -11,16 +11,22 @@ Implementations are defined with the keyword `impl`.
 
 A bare implementation is defined as the keyword `impl` optionally followed by
 generic type declarations followed by a [nominal] type optionally followed by
-where clauses followed by a container of braces of a set of zero or more
-associable items.
+where clauses followed by a set of zero or more associable items contained
+within braces.
+
+sequence of 'impl' keyword, generic type declarations, nominal type, where clause and the associable items. Generic type declarations and where clause can be omitted, if not needed. The associable items are contained within braces.
+
+A bare implementation is defined as the sequence of the `impl` keyword, generic
+type declarations, a path to a nomial tyupe, a where clause, and a bracketed
+set of associable items.
 
 The nominal type is called the *implementing type* and the associable items are
 the *associated items* to the implementing type.
 
 Bare implementations associates the associated items to the implementing type.
 
-The associated item has a canonical path of the canonical path of the
-implementing type followed by the associate item's path component.
+The associated item has a path of a path to the implementing type followed by
+the associate item's path component.
 
 A type can have multiple bare implementations.
 
@@ -54,10 +60,9 @@ A trait implementation must define all non-default associated items declared
 by the implemented trait, may redefine default associated items defined by the 
 implemented trait trait, and cannot define any other items.
 
-The canonical path to the associated items is `<` followed by the canonical path
-of the implementing type followed by `as` followed by the canonical path to the
-trait followed by `>` as a path component followed by the associated item's path
-component.
+The path to the associated items is `<` followed by a path to the implementing
+type followed by `as` followed by a path to the trait followed by `>` as a path
+component followed by the associated item's path component.
 
 ```rust
 # #[derive(Copy, Clone)]
@@ -110,7 +115,7 @@ the following conditions:
    meet the following grammar, where `C` is a nominal type defined
    within the containing crate:
 
-   ```
+   ```ignore
     T = C
       | [T]
       | [T, ..n]
