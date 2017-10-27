@@ -92,4 +92,4 @@
 
 [Appendix: As-yet-undocumented Features](undocumented.md)
 
-[Appendix: Glossary](glossory.md)
+[Appendix: Glossary](glossary.md)
