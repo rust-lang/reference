@@ -9,13 +9,6 @@ Implementations are defined with the keyword `impl`.
 
 ## Bare Implementations
 
-A bare implementation is defined as the keyword `impl` optionally followed by
-generic type declarations followed by a [nominal] type optionally followed by
-where clauses followed by a set of zero or more associable items contained
-within braces.
-
-sequence of 'impl' keyword, generic type declarations, nominal type, where clause and the associable items. Generic type declarations and where clause can be omitted, if not needed. The associable items are contained within braces.
-
 A bare implementation is defined as the sequence of the `impl` keyword, generic
 type declarations, a path to a nomial tyupe, a where clause, and a bracketed
 set of associable items.
@@ -23,7 +16,7 @@ set of associable items.
 The nominal type is called the *implementing type* and the associable items are
 the *associated items* to the implementing type.
 
-Bare implementations associates the associated items to the implementing type.
+Bare implementations associate the associated items to the implementing type.
 
 The associated item has a path of a path to the implementing type followed by
 the associate item's path component.
@@ -117,13 +110,9 @@ the following conditions:
 
    ```ignore
     T = C
-      | [T]
-      | [T, ..n]
       | &T
       | &mut T
       | Box<T>
-      | (..., T, ...)
-      | X<..., T, ...> where X is not bivariant with respect to T
    ```
 
 ## Generic Implementations
