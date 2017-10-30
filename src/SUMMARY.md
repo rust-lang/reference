@@ -66,6 +66,7 @@
     - [Interior mutability](interior-mutability.md)
     - [Subtyping](subtyping.md)
     - [Type coercions](type-coercions.md)
+    - [Destructors](destructors.md)
 
 - [Special traits](special-traits.md)
     - [The Copy trait](the-copy-trait.md)

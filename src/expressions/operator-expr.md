@@ -301,14 +301,15 @@ same trait object.
 ## Assignment expressions
 
 An _assignment expression_ consists of an
-[lvalue](expressions.html#lvalues-and-rvalues) expression followed
-by an equals sign (`=`) and an
-[rvalue](expressions.html#lvalues-and-rvalues) expression.
+[lvalue](expressions.html#lvalues-and-rvalues) expression followed by an equals
+sign (`=`) and an [rvalue](expressions.html#lvalues-and-rvalues) expression.
 
-Evaluating an assignment expression [either copies or
-moves](expressions.html#moved-and-copied-types) its right-hand operand to its left-hand
-operand. The left-hand operand must be an lvalue: using an rvalue results in a
-compiler error, rather than promoting it to a temporary.
+Evaluating an assignment expression [drops](destructors.hmtl) the left-hand
+operand, unless it's an unitialized local variable or field of a local variable,
+and [either copies or moves](expressions.html#moved-and-copied-types) its
+right-hand operand to its left-hand operand. The left-hand operand must be an
+lvalue: using an rvalue results in a compiler error, rather than promoting it
+to a temporary.
 
 ```rust
 # let mut x = 0;
