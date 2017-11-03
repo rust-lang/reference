@@ -12,7 +12,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
     * Pointers to trait objects also store a pointer to a vtable.
 * <abbr title="dynamically sized types">DSTs</abbr> can be provided as
   type arguments when a bound of `?Sized`. By default any type parameter
-  has a `?Sized` bound.
+  has a `Sized` bound.
 * Traits may be implemented for <abbr title="dynamically sized
   types">DSTs</abbr>. Unlike type parameters`Self: ?Sized` by default in trait
   definitions.
