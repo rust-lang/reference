@@ -10,7 +10,7 @@ Implementations are defined with the keyword `impl`.
 ## Bare Implementations
 
 A bare implementation is defined as the sequence of the `impl` keyword, generic
-type declarations, a path to a nomial tyupe, a where clause, and a bracketed
+type declarations, a path to a nomial type, a where clause, and a bracketed
 set of associable items.
 
 The nominal type is called the *implementing type* and the associable items are
@@ -20,6 +20,8 @@ Bare implementations associate the associated items to the implementing type.
 
 The associated item has a path of a path to the implementing type followed by
 the associate item's path component.
+
+Bare implementations cannot contain associated type aliases.
 
 A type can have multiple bare implementations.
 

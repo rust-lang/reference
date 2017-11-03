@@ -7,8 +7,9 @@ the structure of the program when the compiler is compiling it.
 
 ### Arity
 
-Arity refers to the number of arguments a function or operation takes.
-For example, `f(2, 3)` and `g(4, 6)` have arity 2, while `h(8, 2, 6)` has arity 3.
+Arity refers to the number of arguments a function or operator takes.
+For some examples, `f(2, 3)` and `g(4, 6)` have arity 2, while `h(8, 2, 6)`
+has arity 3. The `!` operator has arity 1.
 
 ### Array
 
@@ -19,9 +20,8 @@ at run time by the program. It occupies a contiguous region of memory.
 ### Associated Item
 
 An associated item is an item that is associated with another item. Associated
-items are defined in [implementations] and [traits]. Only functions, constants,
-and types can be associated.
-
+items are defined in [implementations] and declared in [traits]. Only functions,
+constants, and type aliases can be associated.
 
 ### Bound
 
@@ -61,8 +61,8 @@ can create such an lvalue without initializing it.
 
 ### Nominal Types
 
-Types that can be named directly. Specifically [enums], [structs], [unions],
-and [trait objects].
+Types that can be referred to by a path directly. Specifically [enums],
+[structs], [unions], and [trait objects].
 
 ### Prelude
 
@@ -100,9 +100,9 @@ Strings slices are always valid UTF-8.
 ### Trait
 
 A trait is a language item that is used for describing the functionalities a type must provide.
-It allow a type to make certain promises about its behavior.
+It allows a type to make certain promises about its behavior.
 
-Generic functions and generic structs can exploit traits to constrain, or bound, the types they accept.
+Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
 [enums]: items/enumerations.html
 [structs]: items/structs.html
