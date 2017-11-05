@@ -142,8 +142,8 @@ Coercion is allowed between the following types:
     - coerce_inner(`T`) = `U` where `T` is a concrete type which implements the
     trait `U`.
 
-    In the future, coerce_inner will be recursively extended to tuples and
+    <!--In the future, coerce_inner will be recursively extended to tuples and
     structs. In addition, coercions from sub-traits to super-traits will be
-    added. See [RFC 401] for more details.
+    added. See [RFC 401] for more details.-->
 
 * Non capturing closures to `fn` pointers

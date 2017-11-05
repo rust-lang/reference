@@ -301,8 +301,8 @@ which are only assigned when the function is called) - so the value does not
 need to contain an actual function pointer, and no indirection is needed when
 the function is called.
 
-There is currently no syntax that directly refers to a function item type, but
-the compiler will display the type as something like `fn() {foo::<u32>}` in
+There is no syntax that directly refers to a function item type, but the
+compiler will display the type as something like `fn(u32) -> i32 {fn_name}` in
 error messages.
 
 Because the function item type explicitly identifies the function, the item
