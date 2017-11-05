@@ -59,16 +59,10 @@ mod bar {
 type int8_t = i8;
 ```
 
-> **Note:** At some point in the future, the compiler will distinguish between
-> language-reserved and user-available attributes. Until then, there is
-> effectively no difference between an attribute handled by a loadable syntax
-> extension and the compiler.
-
 ## Crate-only attributes
 
 - `crate_name` - specify the crate's crate name.
 - `crate_type` - see [linkage](linkage.html).
-- `feature` - see [compiler features](#compiler-features).
 - `no_builtins` - disable optimizing certain code patterns to invocations of
                   library functions that are assumed to exist
 - `no_main` - disable emitting the `main` symbol. Useful when some other
@@ -76,11 +70,6 @@ type int8_t = i8;
 - `no_start` - disable linking to the `native` crate, which specifies the
   "start" language item.
 - `no_std` - disable linking to the `std` crate.
-- `plugin` - load a list of named crates as compiler plugins, e.g.
-             `#![plugin(foo, bar)]`. Optional arguments for each plugin,
-             i.e. `#![plugin(foo(... args ...))]`, are provided to the plugin's
-             registrar function.  The `plugin` feature gate is required to use
-             this attribute.
 - `recursion_limit` - Sets the maximum depth for potentially
                       infinitely-recursive compile-time operations like
                       auto-dereference or macro expansion. The default is
@@ -107,25 +96,12 @@ type int8_t = i8;
 
 - `main` - indicates that this function should be passed to the entry point,
   rather than the function in the crate root named `main`.
-- `plugin_registrar` - mark this function as the registration point for
-  [compiler plugins][plugin], such as loadable syntax extensions.
-- `start` - indicates that this function should be used as the entry point,
-  overriding the "start" language item. See the "start" [language
-  item](#language-items) for more details.
 - `test` - indicates that this function is a test function, to only be compiled
   in case of `--test`.
   - `ignore` - indicates that this test function is disabled.
 - `should_panic` - indicates that this test function should panic, inverting the success condition.
 - `cold` - The function is unlikely to be executed, so optimize it (and calls
   to it) differently.
-- `naked` - The function utilizes a custom ABI or custom inline ASM that requires
-  epilogue and prologue to be skipped.
-
-## Static-only attributes
-
-- `thread_local` - on a `static mut`, this signals that the value of this
-  static may change depending on the current thread. The exact consequences of
-  this are implementation-defined.
 
 ## FFI attributes
 
@@ -171,6 +147,10 @@ On `struct`s:
   remove any padding between fields (note that this is very fragile and may
   break platforms which require aligned access).
 
+On `union`s:
+
+- `repr` - Same as per `struct`.
+
 ## Macro-related attributes
 
 - `macro_use` on a `mod` — macros defined in this module will be visible in the
@@ -204,33 +184,7 @@ macro scope.
   object file that this item's contents will be placed into.
 - `no_mangle` - on any item, do not apply the standard name mangling. Set the
   symbol for this item to its identifier.
-- `simd` - on certain tuple structs, derive the arithmetic operators, which
-  lower to the target's SIMD instructions, if any; the `simd` feature gate
-  is necessary to use this attribute.
-- `unsafe_destructor_blind_to_params` - on `Drop::drop` method, asserts that the
-  destructor code (and all potential specializations of that code) will
-  never attempt to read from nor write to any references with lifetimes
-  that come in via generic parameters. This is a constraint we cannot
-  currently express via the type system, and therefore we rely on the
-  programmer to assert that it holds. Adding this to a Drop impl causes
-  the associated destructor to be considered "uninteresting" by the
-  Drop-Check rule, and thus it can help sidestep data ordering
-  constraints that would otherwise be introduced by the Drop-Check
-  rule. Such sidestepping of the constraints, if done incorrectly, can
-  lead to undefined behavior (in the form of reading or writing to data
-  outside of its dynamic extent), and thus this attribute has the word
-  "unsafe" in its name. To use this, the
-  `unsafe_destructor_blind_to_params` feature gate must be enabled.
 - `doc` - Doc comments such as `/// foo` are equivalent to `#[doc = "foo"]`.
-- `rustc_on_unimplemented` - Write a custom note to be shown along with the error
-   when the trait is found to be unimplemented on a type.
-   You may use format arguments like `{T}`, `{A}` to correspond to the
-   types at the point of use corresponding to the type parameters of the
-   trait of the same name. `{Self}` will be replaced with the type that is supposed
-   to implement the trait but doesn't. You can also use the trait's name which will
-   be replaced with the full path for the trait, for example for the trait `Foo` in
-   module `Bar`, `{Foo}` can be used and will show up as `Bar::Foo`.
-   To use this, the `on_unimplemented` feature gate must be enabled.
 - `must_use` - on structs and enums, will warn if a value of this type isn't used or
    assigned to a variable. You may also include an optional message by using
    `#[must_use = "message"]` which will be given alongside the warning.
@@ -403,15 +357,6 @@ pub mod m3 {
 }
 ```
 
-### Language items
-
-Some primitive Rust operations are defined in Rust code, rather than being
-implemented directly in C or assembly language. The definitions of these
-operations have to be easy for the compiler to find. The `lang` attribute
-makes it possible to declare these operations.
-The set of language items is currently considered unstable. A complete
-list of the built-in language items will be added in the future.
-
 ### Inline attributes
 
 The inline attribute suggests that the compiler should place a copy of
@@ -461,40 +406,6 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 }
 ```
 
-You can implement `derive` for your own type through [procedural
-macros](procedural-macros.html).
+You can implement `derive` for your own type through [procedural macros].
 
-### Compiler Features
-
-Certain aspects of Rust may be implemented in the compiler, but they're not
-necessarily ready for every-day use. These features are often of "prototype
-quality" or "almost production ready", but may not be stable enough to be
-considered a full-fledged language feature.
-
-For this reason, Rust recognizes a special crate-level attribute of the form:
-
-```rust,ignore
-#![feature(feature1, feature2, feature3)]
-```
-
-This directive informs the compiler that the feature list: `feature1`,
-`feature2`, and `feature3` should all be enabled. This is only recognized at a
-crate-level, not at a module-level. Without this directive, all features are
-considered off, and using the features will result in a compiler error.
-
-The currently implemented features of the reference compiler are documented in
-[The Unstable Book].
-
-If a feature is promoted to a language feature, then all existing programs will
-start to receive compilation warnings about `#![feature]` directives which enabled
-the new feature (because the directive is no longer necessary). However, if a
-feature is decided to be removed from the language, errors will be issued (if
-there isn't a parser error first). The directive in this case is no longer
-necessary, and it's likely that existing code will break if the feature isn't
-removed.
-
-If an unknown feature is found in a directive, it results in a compiler error.
-An unknown feature is one which has never been recognized by the compiler.
-
-[The Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
-[unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
+[procedural macros]: procedural-macros.html
