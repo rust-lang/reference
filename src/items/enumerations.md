@@ -29,8 +29,6 @@ An _enumeration_ is a simultaneous definition of a nominal [enumerated type] as
 well as a set of *constructors*, that can be used to create or pattern-match
 values of the corresponding enumerated type.
 
-[enumerated type]: types.html#enumerated-types
-
 Enumerations are declared with the keyword `enum`.
 
 An example of an `enum` item and its use:
@@ -49,7 +47,7 @@ Enumeration constructors can have either named or unnamed fields:
 
 ```rust
 enum Animal {
-    Dog (String, f64),
+    Dog(String, f64),
     Cat { name: String, weight: f64 },
 }
 
@@ -59,41 +57,50 @@ a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 
 In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant. Each enum instance has a _discriminant_ which is an
-integer associated to it that is used to determine which variant it holds.
+integer associated to it that is used to determine which variant it holds. An
+opaque reference to this variant can be obtained with the [`mem::discriminant`]
+function.
 
 ## Custom Discriminant Values for Field-Less Enumerations
 
 If there is no data attached to *any* of the variants of an enumeration,
 then the discriminant can be directly chosen and accessed.
 
-If a discriminant isn't specified, they start at zero, and add one for each
-variant, in order. Each enum value is just its discriminant which you can
-specify explicitly:
+These enumerations can be cast to integer types with the `as` operator by a
+[numeric cast]. The enumeration can optionaly specify which integer each
+discriminant gets by following the variant name with `=` and then an integer
+literal. If the first variant in the declaration is unspecified, then it is set
+to zero. For every unspecified discriminant, it is set to one higher than the
+previous variant in the declaration.
 
 ```rust
 enum Foo {
     Bar,            // 0
-    Baz = 123,
+    Baz = 123,      // 123
     Quux,           // 124
 }
+
+let baz_discriminant = Foo::Baz as u32;
+assert_eq!(baz_discriminant, 123u32);
 ```
 
-The right hand side of the specification is interpreted as an `isize` value,
-but the compiler is allowed to use a smaller type in the actual memory layout.
-The [`repr` attribute] can be added in order to change the type of the right
-hand side and specify the memory layout.
+Under the [default representation], the specified discriminant is interpreted as
+an `isize` value although the compiler is allowed to use a smaller type in the
+actual memory layout. The size and thus acceptable values can be changed by
+using a [primitive representation] or the [`C` representation].
 
-[`repr` attribute]: attributes.html#ffi-attributes
+It is an error when either two variants share the same discriminant or for an
+unspecified discriminant, the previous discriminant is the maximum value for the
+size of the discriminant. <!-- Need examples here. -->
 
-You can also cast a field-less enum to get its discriminant:
+## Zero-variant Enumerations
+
+Enums with zero variants are known as *zero-variant enumerations*. As they have
+no valid values, they cannot be instantiated.
 
 ```rust
-# enum Foo { Baz = 123 }
-let x = Foo::Baz as u32; // x is now 123u32
+enum ZeroVariants {}
 ```
-
-This only works as long as none of the variants have data attached. If it were
-`Baz(i32)`, this is disallowed.
 
 [IDENTIFIER]: identifiers.html
 [_Generics_]: items.html#type-parameters
@@ -101,3 +108,7 @@ This only works as long as none of the variants have data attached. If it were
 [_Expression_]: expressions.html
 [_TupleFields_]: items/structs.html
 [_StructFields_]: items/structs.html
+[enumerated type]: types.html#enumerated-types
+[`mem::discriminant`]: std/mem/fn.discriminant.html
+[numeric cast]: expressions/operator-expr.html#semantics
+[`repr` attribute]: attributes.html#ffi-attributes

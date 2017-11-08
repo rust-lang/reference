@@ -5,6 +5,11 @@
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
 the structure of the program when the compiler is compiling it.
 
+### Alignment
+
+The *alignment* of a value specifies what addresses are valid to store the value
+at.
+
 ### Arity
 
 Arity refers to the number of arguments a function or operator takes.
@@ -68,6 +73,11 @@ Types that can be referred to by a path directly. Specifically [enums],
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
 imported into very module of every crate. The traits in the prelude are pervasive.
+
+### Size
+
+The *size* of a value is the offset in bytes between successive elements in an
+array with that item type including alignment padding.
 
 ### Slice
 
