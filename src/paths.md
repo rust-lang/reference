@@ -167,4 +167,4 @@ mod without { // ::without
 [expression]: expressions.html
 [implementations]: items/implementations.html
 [modules]: items/modules.html
-[use declarations]: items/use_declarations.html
+[use declarations]: items/use-declarations.html

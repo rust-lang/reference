@@ -5,7 +5,7 @@ Tokens are primitive productions in the grammar defined by regular
 production] form, and occur in the rest of the
 grammar as double-quoted strings. Other tokens have exact rules given.
 
-[string table production]: string-table-productions.html
+[string table production]: notation.html#string-table-productions
 
 ## Literals
 

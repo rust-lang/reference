@@ -52,7 +52,7 @@ or _rvalue context_. The evaluation of an expression depends both on its own
 category and the context it occurs within.
 
 An lvalue is an expression that represents a memory location. These expressions
-are [paths](#path-expressions) which refer to local variables, static
+are [paths](expressions/path-expr.html) which refer to local variables, static
 variables, function parameters, [dereferences]&nbsp;(`*expr`), [array indexing]
 expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized
 lvalue expressions. All other expressions are rvalues.

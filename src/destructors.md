@@ -82,9 +82,9 @@ variable or field from being dropped automatically.
 [Assignment]: expressions/operator-expr.html#assignment-expressions
 [`std::ops::Drop::drop`]: ../std/ops/trait.Drop.html
 [RFC 1857]: https://github.com/rust-lang/rfcs/blob/master/text/1857-stabilize-drop-order.md
-[struct]: types.html#struct
+[struct]: types.html#struct-types
 [tuple]: types.html#tuple-types
-[enum variant]: types.html#enumeration-types
+[enum variant]: types.html#enumerated-types
 [array]: types.html#array-and-slice-types
 [closure]: types.html#closure-types
 [Trait objects]: types.html#trait-objects

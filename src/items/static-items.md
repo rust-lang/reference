@@ -15,7 +15,7 @@ statics:
 * The types of static values must ascribe to `Sync` to allow thread-safe
   access.
 * Statics allow using paths to statics in the
-  [constant-expression](#expresions.html#constant-expressions) used to
+  [constant-expression](expressions.html#constant-expressions) used to
   initialize them, but statics may not refer to other statics by value, only by
   reference.
 * Constants cannot refer to statics.

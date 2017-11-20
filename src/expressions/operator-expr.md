@@ -304,7 +304,7 @@ An _assignment expression_ consists of an
 [lvalue](expressions.html#lvalues-and-rvalues) expression followed by an equals
 sign (`=`) and an [rvalue](expressions.html#lvalues-and-rvalues) expression.
 
-Evaluating an assignment expression [drops](destructors.hmtl) the left-hand
+Evaluating an assignment expression [drops](destructors.html) the left-hand
 operand, unless it's an unitialized local variable or field of a local variable,
 and [either copies or moves](expressions.html#moved-and-copied-types) its
 right-hand operand to its left-hand operand. The left-hand operand must be an
