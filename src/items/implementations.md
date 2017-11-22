@@ -2,28 +2,29 @@
 
 An _implementation_ is an item that associates items with an *implementing type*.
 
-There are two types of implementations: Bare implementations and [trait] 
+There are two types of implementations: inherent implementations and [trait] 
 implementations.
 
 Implementations are defined with the keyword `impl`.
 
-## Bare Implementations
+## Interent Implementations
 
-A bare implementation is defined as the sequence of the `impl` keyword, generic
-type declarations, a path to a nomial type, a where clause, and a bracketed
-set of associable items.
+An inherent implementation is defined as the sequence of the `impl` keyword,
+generic type declarations, a path to a nomial type, a where clause, and a
+bracketed set of associable items.
 
 The nominal type is called the *implementing type* and the associable items are
 the *associated items* to the implementing type.
 
-Bare implementations associate the associated items to the implementing type.
+Inherent implementations associate the associated items to the implementing
+type.
 
 The associated item has a path of a path to the implementing type followed by
 the associate item's path component.
 
-Bare implementations cannot contain associated type aliases.
+Inherent implementations cannot contain associated type aliases.
 
-A type can have multiple bare implementations.
+A type can have multiple inherent implementations.
 
 The implementing type must be defined within the same crate.
 
@@ -42,8 +43,8 @@ my_point.log();
 
 ## Trait Implementations
 
-A *trait implementation* is defined like a bare implementation except that
-the optional generic type declarations is followed by a trait followed
+A *trait implementation* is defined like an inherent implementation except that
+the optional generic type declarations is followed by a [trait] followed
 by the keyword `for`. <!-- To understand this, you have to back-reference to
 the previous section. :( -->
 
