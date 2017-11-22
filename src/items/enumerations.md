@@ -36,12 +36,14 @@ In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant. Each enum instance has a _discriminant_ which is an
 integer associated to it that is used to determine which variant it holds.
 
-## C-like Enumerations
+## Custom Discriminant Values for Field-Less Enumerations
 
-If there is no data attached to *any* of the variants of an enumeration it is
-called a *c-like enumeration*. If a discriminant isn't specified, they start at
-zero, and add one for each variant, in order. Each enum value is just its
-discriminant which you can specify explicitly:
+If there is no data attached to *any* of the variants of an enumeration,
+then the discriminant can directly chosen and accessed.
+
+If a discriminant isn't specified, they start at zero, and add one for each
+variant, in order. Each enum value is just its discriminant which you can
+specify explicitly:
 
 ```rust
 enum Foo {
@@ -58,7 +60,7 @@ hand side and specify the memory layout.
 
 [`repr` attribute]: attributes.html#ffi-attributes
 
-You can also cast a c-like enum to get its discriminant:
+You can also cast a field-less enum to get its discriminant:
 
 ```rust
 # enum Foo { Baz = 123 }
