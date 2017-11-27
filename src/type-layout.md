@@ -1,12 +1,11 @@
 # Type Layout
 
-The layout of a type is the way the size, alignment, and the offsets of any
-fields and discriminants for the values of that type.
+The layout of a type is its size, alignment, and the relative offsets of its
+fields. For enums, how the discriminant is laid out and interpreted is also part
+of type layout.
 
-While specific releases of the compiler will have the same layout for types,
-there is a lot of room for new versions of the compiler to do different things.
-Instead of trying to document exactly what is done, we only document what is
-guaranteed today.
+Type layout can be changed with each compilation. Instead of trying to document
+exactly what is done, we only document what is guaranteed today.
 
 ## Size and Alignment
 
@@ -37,7 +36,6 @@ The size of most primitives is given in this table.
 
 Type | `size_of::\<Type>()`
 - | - | -
-bool | 1
 u8 | 1
 u16 | 2
 u32 | 4
@@ -55,7 +53,7 @@ target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
 bit target, this is 8 bytes.
 
 Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on x86 u64 and f64 may be only
+platform-specific behavior. In particular, on x86 u64 and f64 are only
 aligned to 32 bits.
 
 ## Pointers and References Layout
@@ -82,6 +80,9 @@ has a size of `size_of::<T>() * n` and the same alignment of `T`.
 
 Slices have the same layout as the section of the array they slice.
 
+> Note: This is about the raw `[T]` type, not pointers (`&[T]`, `Box<[T]>`,
+> etc.) to slices.
+
 ## Tuple Layout
 
 Tuples do not have any guarantes about their layout.
@@ -93,6 +94,9 @@ zero-sized type to have a size of 0 and an alignment of 1.
 
 Trait objects have the same layout as the value the trait object is of.
 
+> Note: This is about the raw trait object types, not pointers (`&Trait`,
+> `Box<Trait>`, etc.) to trait objects.
+
 ## Closure Layout
 
 Closures have no layout guarantees.
@@ -101,9 +105,6 @@ Closures have no layout guarantees.
 
 All user-defined composite types (`struct`s, `enum`, and `union`s) have a
 *representation* that specifies what the layout is for the type.
-
-> Note: The representation does not depend upon the type's fields or generic
-> parameters.
 
 The possible representations for a type are the default representation, `C`, the
 primitive representations, and `packed`. Multiple representations can be applied
@@ -121,6 +122,11 @@ struct ThreeInts {
 }
 ```
 
+> Note: As a consequence of the representation being an attribute on the item,
+> the representation does not depend on generic parameters. Any two types with
+> the same name have the same representation. For example, `Foo<Bar>` and
+> `Foo<Baz>` both have the same representation.
+
 The representation of a type does not change the layout of its fields. For
 example, a struct with a `C` representation that contains a struct `Inner` with
 the default representation will not change the layout of Inner.
@@ -134,9 +140,13 @@ There are no guarantees of data layout made by this representation.
 
 ### The `C` Representation
 
-The `C` representation is designed for creating types that are interoptable with
-the C Language and soundly performing operations that rely on data layout such
-as reinterpreting values as a different type.
+The `C` representation is designed for dual purposes. One purpose is for
+creating types that are interoptable with the C Language. The second purpose is
+to create types that you can soundly performing operations that rely on data
+layout such as reinterpreting values as a different type.
+
+Because of this dual purpose, it is possible to create types that are not useful
+for interfacing with the C programming language.
 
 This representation can be applied to structs, unions, and enums.
 
@@ -144,19 +154,39 @@ This representation can be applied to structs, unions, and enums.
 
 The alignment of the struct is the alignment of the most-aligned field in it.
 
-The size and offset of fields is determine by the following algorithm.
+The size and offset of fields is determined by the following algorithm.
 
 Start with a current offset of 0 bytes.
 
 For each field in declaration order in the struct, first determine the size and
 alignment of the field. If the current offset is not a multiple of the field's
-alignment, then add padding bytes increasing the current offset until the
-current offset is a multiple of the field's alignment. The offset for the field
-is what the current offset is now. Then increase the current offset by the size
-of the field.
+alignment, then add padding bytes to the current offset until it is a multiple
+of the field's alignment. The offset for the field is what the current offset
+is now. Then increase the current offset by the size of the field.
 
 Finally, the size of the struct is the current offset rounded up to the nearest
 multiple of the struct's alignment.
+
+Here is this algorithm described in psudeocode.
+
+```rust,ignore
+struct.alignment = struct.fields().map(|field| field.alignment).max();
+
+let current_offset = 0;
+
+for field in struct.fields_in_declaration_order() {
+    // Increase the current offset so that it's a multiple of the alignment
+    // of this field. For the first field, this will always be zero.
+    // The skipped bytes are called padding bytes.
+    current_offset += field.alignment % current_offset;
+
+    struct[field].offset = current_offset;
+
+    current_offset += field.size;
+}
+
+struct.size = current_offset + current_offset % struct.alignment;
+```
 
 > Note: You can have zero-sized structs from this algorithm. This differs from
 > C where structs without data still have a size of one byte.
@@ -165,8 +195,8 @@ multiple of the struct's alignment.
 
 A union declared with `#[repr(C)]` will have the same size and alignment as an
 equivalent C union declaration in the C language for the target platform.
-Usually, a union would have the maximum size of the maximum size of all of its
-fields, and the maximum alignment of the maximum alignment of all of its fields.
+The union will have a size of the maximum size of all of its fields rounded to
+its alignment, and an alignment of the maximum alignment of all of its fields.
 These maximums may come from different fields.
 
 ```
@@ -178,6 +208,17 @@ union Union {
 
 assert_eq!(std::mem::size_of::<Union>(), 4);  // From f2
 assert_eq!(std::mem::align_of::<Union>(), 2); // From f1
+
+#[repr(C)]
+union SizeRoundedUp {
+   a: u32,
+   b: [u16; 3],
+}
+
+assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
+                                                      // rounded up to 8 from
+                                                      // alignment of a.
+assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 ```
 
 #### \#[repr(C)] Enums
@@ -201,6 +242,9 @@ It is an error for [zero-variant enumerations] to have the `C` representation.
 
 For all other enumerations, the layout is unspecified.
 
+Likewise, combining the `C` representation with a primitive representation, the
+layout is unspecified.
+
 ### Primitive representations
 
 The *primitive representations* are the representations with the same names as
@@ -218,6 +262,8 @@ representation.
 
 For all other enumerations, the layout is unspecified.
 
+Likewise, combining two primitive representations together is unspecified.
+
 ### The `packed` Representation
 
 The `packed` representation can only be used on `struct`s and `union`s.
@@ -225,7 +271,7 @@ The `packed` representation can only be used on `struct`s and `union`s.
 It modifies the representation (either the default or `C`) by removing any
 padding bytes and forcing the alignment of the type to `1`.
 
-> Warning: Dereferencing an unaligned pointer is [undefined behaviour] and is
+> Warning: Dereferencing an unaligned pointer is [undefined behaviour] and it is
 > possible to [safely create unaligned pointers to `packed` fields][27060].
 > Like all ways to create undefined behavior in safe Rust, this is a bug.
 

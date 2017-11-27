@@ -25,9 +25,9 @@
 > _EnumItemDiscriminant_ :  
 > &nbsp;&nbsp; `=` [_Expression_]  
 
-An _enumeration_ is a simultaneous definition of a nominal [enumerated type] as
-well as a set of *constructors*, that can be used to create or pattern-match
-values of the corresponding enumerated type.
+An *enumeration*, also referred to as *enum* is a simultaneous definition of a
+nominal [enumerated type] as well as a set of *constructors*, that can be used
+to create or pattern-match values of the corresponding enumerated type.
 
 Enumerations are declared with the keyword `enum`.
 
@@ -43,7 +43,7 @@ let mut a: Animal = Animal::Dog;
 a = Animal::Cat;
 ```
 
-Enumeration constructors can have either named or unnamed fields:
+Enum constructors can have either named or unnamed fields:
 
 ```rust
 enum Animal {
@@ -58,8 +58,8 @@ a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant. Each enum instance has a _discriminant_ which is an
 integer associated to it that is used to determine which variant it holds. An
-opaque reference to this variant can be obtained with the [`mem::discriminant`]
-function.
+opaque reference to this discriminant can be obtained with the
+[`mem::discriminant`] function.
 
 ## Custom Discriminant Values for Field-Less Enumerations
 
@@ -81,7 +81,7 @@ enum Foo {
 }
 
 let baz_discriminant = Foo::Baz as u32;
-assert_eq!(baz_discriminant, 123u32);
+assert_eq!(baz_discriminant, 123);
 ```
 
 Under the [default representation], the specified discriminant is interpreted as
@@ -89,13 +89,42 @@ an `isize` value although the compiler is allowed to use a smaller type in the
 actual memory layout. The size and thus acceptable values can be changed by
 using a [primitive representation] or the [`C` representation].
 
-It is an error when either two variants share the same discriminant or for an
-unspecified discriminant, the previous discriminant is the maximum value for the
-size of the discriminant. <!-- Need examples here. -->
+It is an error when two variants share the same discriminant.
 
-## Zero-variant Enumerations
+```rust,ignore
+enum SharedDiscriminantError {
+    SharedA = 1,
+    SharedB = 1
+}
 
-Enums with zero variants are known as *zero-variant enumerations*. As they have
+enum SharedDiscriminantError2 {
+    Zero,       // 0
+    One,        // 1
+    OneToo = 1  // 1 (collision with previous!)
+}
+```
+
+It is also an error to have an unspecified discriminant where the previous
+discriminant is the maximum value for the size of the discriminant.
+
+```rust,ignore
+#[repr(u8)]
+enum OverflowingDiscriminantError {
+    Max = 255,
+    MaxPlusOne // Would be 256, but that overflows the enum.
+}
+
+#[repr(u8)]
+enum OverflowingDiscriminantError2 {
+    MaxMinusOne = 254, // 254
+    Max,               // 255
+    MaxPlusOne         // Would be 256, but that overflows the enum.
+}
+```
+
+## Zero-variant Enums
+
+Enums with zero variants are known as *zero-variant enumss*. As they have
 no valid values, they cannot be instantiated.
 
 ```rust

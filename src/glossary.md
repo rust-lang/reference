@@ -7,8 +7,9 @@ the structure of the program when the compiler is compiling it.
 
 ### Alignment
 
-The *alignment* of a value specifies what addresses are valid to store the value
-at.
+The alignment of a value specifies what addresses values are preferred to
+start at. Always a power of two. References to a value must be aligned.
+[More][alignment].
 
 ### Arity
 
@@ -76,8 +77,18 @@ imported into very module of every crate. The traits in the prelude are pervasiv
 
 ### Size
 
-The *size* of a value is the offset in bytes between successive elements in an
-array with that item type including alignment padding.
+The size of a value has two definitions.
+
+The first is that it is how much memory must be allocated to store that value.
+
+The second is that it is the offset in bytes between successive elements in an
+array with that item type.
+
+It is a multiple of the alignment, including zero. The size can change
+depending on compiler version (as new optimizations are made) and target
+platform (as `usize` varies).
+
+[More][alignment].
 
 ### Slice
 
@@ -114,6 +125,7 @@ It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
+[alignment]: type-layout.html#size-and-alignment
 [enums]: items/enumerations.html
 [structs]: items/structs.html
 [unions]: items/unions.html
