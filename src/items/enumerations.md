@@ -39,7 +39,7 @@ integer associated to it that is used to determine which variant it holds.
 ## Custom Discriminant Values for Field-Less Enumerations
 
 If there is no data attached to *any* of the variants of an enumeration,
-then the discriminant can directly chosen and accessed.
+then the discriminant can be directly chosen and accessed.
 
 If a discriminant isn't specified, they start at zero, and add one for each
 variant, in order. Each enum value is just its discriminant which you can
