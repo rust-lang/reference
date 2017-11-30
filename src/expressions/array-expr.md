@@ -54,6 +54,9 @@ _panicked state_ if it fails.
 ```rust,should_panic
 ([1, 2, 3, 4])[2];        // Evaluates to 3
 
+let b = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+b[1][2];                  // multidimensional array indexing
+
 let x = (["a", "b"])[10]; // warning: const index-expr is out of bounds
 
 let n = 10;
@@ -61,9 +64,6 @@ let y = (["a", "b"])[n];  // panics
 
 let arr = ["a", "b"];
 arr[10];                  // panics
-
-# let b = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-b[1][2];                  // multidimensional array indexing
 ```
 
 The array index expression can be implemented for types other than arrays and slices
