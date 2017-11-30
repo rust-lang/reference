@@ -5,21 +5,21 @@
 > &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (  
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]  
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]  
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]  
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]  
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_WhileLetExpression_]  
 > &nbsp;&nbsp; )  
 
 [_LoopLabel_]: #loop-labels
 [_InfiniteLoopExpression_]: #infinite-loops
 [_PredicateLoopExpression_]: #predicate-loops
+[_PredicatePatternLoopExpression_]: #predicate-pattern-loops
 [_IteratorLoopExpression_]: #iterator-loops
-[_WhileLetExpression_]: #while-let-loops
 
 Rust supports four loop expressions:
 
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
-*   A [`while let` expression](#while-let-loops) tests a refutable pattern.
+*   A [`while let` expression](#predicate-pattern-loops) tests a refutable pattern.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator,
     looping until the iterator is empty.
 
@@ -65,10 +65,10 @@ while i < 10 {
 }
 ```
 
-## `while let` loops
+## Predicate pattern loops
 
 > **<sup>Syntax</sup>**  
-> [_WhileLetExpression_] :  
+> [_PredicatePatternLoopExpression_] :  
 > &nbsp;&nbsp; `while` `let` _Pattern_ `=` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]  
 
