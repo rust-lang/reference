@@ -1,5 +1,10 @@
 # Type aliases
 
+> **<sup>Syntax</sup>**  
+> _TypeAlias_ :  
+> &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>
+>              [_WhereClause_]<sup>?</sup> `=` [_Type_] `;`  
+
 A _type alias_ defines a new name for an existing [type]. Type aliases are
 declared with the keyword `type`. Every value has a single, specific type, but
 may implement several different traits, or be compatible with several different
@@ -23,3 +28,8 @@ type F = E;
 let _: F = E::A;  // OK
 // let _: F = F::A;  // Doesn't work
 ```
+
+[IDENTIFIER]: identifiers.html
+[_Generics_]: items.html#type-parameters
+[_WhereClause_]: items.html#type-parameters
+[_Type_]: types.html
