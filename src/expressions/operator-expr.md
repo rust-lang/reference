@@ -85,6 +85,19 @@ let mut array = [-2, 3, 9];
 }
 ```
 
+For ease of typing, consecutive borrow expressions can be expressed by the
+single token `&&` as if they were separated:
+
+```rust
+// same meanings:
+let a = &&  10;
+let a = & & 10;
+
+// same meanings:
+let a = &&  mut 10;
+let a = & & mut 10;
+```
+
 ## The dereference operator
 
 > **<sup>Syntax</sup>**  
