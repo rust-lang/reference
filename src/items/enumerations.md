@@ -1,5 +1,30 @@
 # Enumerations
 
+> **<sup>Syntax</sup>**  
+> _Enumeration_ :  
+> &nbsp;&nbsp; `enum`
+>    [IDENTIFIER]&nbsp;
+>    [_Generics_]<sup>?</sup>
+>    [_WhereClause_]<sup>?</sup>
+>    `{` _EnumItems_<sup>?</sup> `}`  
+>  
+> _EnumItems_ :  
+> &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>  
+>  
+> _EnumItem_ :  
+> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup>  
+> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_ 
+>                                | _EnumItemDiscriminant_ )<sup>?</sup>  
+>  
+> _EnumItemTuple_ :  
+> &nbsp;&nbsp; `(` [_TupleFields_]<sup>?</sup> `)`  
+>   
+> _EnumItemStruct_ :  
+> &nbsp;&nbsp; `{` [_StructFields_]<sup>?</sup> `}`  
+>   
+> _EnumItemDiscriminant_ :  
+> &nbsp;&nbsp; `=` [_Expression_]  
+
 An _enumeration_ is a simultaneous definition of a nominal [enumerated type] as
 well as a set of *constructors*, that can be used to create or pattern-match
 values of the corresponding enumerated type.
@@ -67,3 +92,10 @@ let x = Foo::Baz as u32; // x is now 123u32
 
 This only works as long as none of the variants have data attached. If it were
 `Baz(i32)`, this is disallowed.
+
+[IDENTIFIER]: identifiers.html
+[_Generics_]: items.html#type-parameters
+[_WhereClause_]: items.html#type-parameters
+[_Expression_]: expressions.html
+[_TupleFields_]: items/structs.html
+[_StructFields_]: items/structs.html
