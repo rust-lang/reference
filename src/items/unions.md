@@ -1,5 +1,10 @@
 # Unions
 
+> **<sup>Syntax</sup>**  
+> _Union_ :  
+> &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
+>   `{`[_StructFields_] `}`
+
 A union declaration uses the same syntax as a struct declaration, except with
 `union` in place of `struct`.
 
@@ -139,3 +144,8 @@ checking, etc etc etc).
 
 More detailed specification for unions, including unstable bits, can be found
 in [RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
+
+[IDENTIFIER]: identifiers.html
+[_Generics_]: items.html#type-parameters
+[_WhereClause_]: items.html#type-parameters
+[_StructFields_]: items/structs.html
