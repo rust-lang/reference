@@ -1,5 +1,9 @@
 # Constant items
 
+> **<sup>Syntax</sup>**  
+> _ConstantItem_ :  
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] `=` [_Expression_] `;`  
+
 A *constant item* is a named _[constant value]_ which is not associated with a
 specific memory location in the program. Constants are essentially inlined
 wherever they are used, meaning that they are copied directly into the relevant
@@ -38,3 +42,6 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 [constant value]: expressions.html#constant-expressions
 [static lifetime elision]: items/static-items.html#static-lifetime-elision
 [`Drop`]: the-drop-trait.html
+[IDENTIFIER]: identifiers.html
+[_Type_]: types.html
+[_Expression_]: expressions.html
