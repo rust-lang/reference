@@ -1,5 +1,9 @@
 # Field access expressions
 
+> **<sup>Syntax</sup>**  
+> _FieldExpression_ :  
+> &nbsp;&nbsp; [_Expression_] `.` [IDENTIFIER]
+
 A _field expression_ consists of an expression followed by a single dot and an
 [identifier](identifiers.html), when not immediately followed by a
 parenthesized expression-list (the latter is always a [method call
@@ -42,3 +46,6 @@ let b: &String = &x.f2;         // x.f2 borrowed immutably
 let c: &String = &x.f2;         // Can borrow again
 let d: String = x.f3;           // Move out of x.f3
 ```
+
+[_Expression_]: expressions.html
+[IDENTIFIER]: identifiers.html
