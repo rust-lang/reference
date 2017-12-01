@@ -1,7 +1,7 @@
 ## Procedural Macros
 
 *Procedural macros* allow creating syntax extensions as execution of a function.
-Procedural macros can be used for is to implement custom [derive] on your own
+Procedural macros can be used to implement custom [derive] on your own
 types. See [the book][procedural macros] for a tutorial.
 
 Procedural macros involve a few different parts of the language and its
