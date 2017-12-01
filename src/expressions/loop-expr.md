@@ -1,10 +1,25 @@
 # Loops
 
+> **<sup>Syntax</sup>**  
+> _LoopExpression_ :  
+> &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (  
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]  
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]  
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]  
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]  
+> &nbsp;&nbsp; )  
+
+[_LoopLabel_]: #loop-labels
+[_InfiniteLoopExpression_]: #infinite-loops
+[_PredicateLoopExpression_]: #predicate-loops
+[_PredicatePatternLoopExpression_]: #predicate-pattern-loops
+[_IteratorLoopExpression_]: #iterator-loops
+
 Rust supports four loop expressions:
 
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
-*   A [`while let` expression](#while-let-loops) tests a refutable pattern.
+*   A [`while let` expression](#predicate-pattern-loops) tests a refutable pattern.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator,
     looping until the iterator is empty.
 
@@ -13,6 +28,10 @@ All four types of loop support [`break` expressions](#break-expressions),
 Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
 ## Infinite loops
+
+> **<sup>Syntax</sup>**  
+> _InfiniteLoopExpression_ :  
+> &nbsp;&nbsp; `loop` [_BlockExpression_]
 
 A `loop` expression repeats execution of its body continuously:
 `loop { println!("I live."); }`.
@@ -25,6 +44,10 @@ may terminate, and must have type compatible with the value of the `break`
 expression(s).
 
 ## Predicate loops
+
+> **<sup>Syntax</sup>**  
+> _PredicateLoopExpression_ :  
+> &nbsp;&nbsp; `while` [_Expression_]<sub>except struct expression</sub> [_BlockExpression_]
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
 the loop conditional expression evaluates to `true`, the loop body block
@@ -42,12 +65,17 @@ while i < 10 {
 }
 ```
 
-## `while let` loops
+## Predicate pattern loops
+
+> **<sup>Syntax</sup>**  
+> [_PredicatePatternLoopExpression_] :  
+> &nbsp;&nbsp; `while` `let` _Pattern_ `=` [_Expression_]<sub>except struct expression</sub>
+>              [_BlockExpression_]  
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
 condition expression it expects the keyword `let` followed by a refutable
-pattern, an `=` and an expression. If the value of the expression on the right
-hand side of the `=` matches the pattern, the loop body block executes then
+pattern, an `=`, an expression and a block expression. If the value of the expression on
+the right hand side of the `=` matches the pattern, the loop body block executes then
 control returns to the pattern matching statement. Otherwise, the while
 expression completes.
 
@@ -60,6 +88,11 @@ while let Some(y) = x.pop() {
 ```
 
 ## Iterator loops
+
+> **<sup>Syntax</sup>**  
+> _IteratorLoopExpression_ :  
+> &nbsp;&nbsp; `for` _Pattern_ `in` [_Expression_]<sub>except struct expression</sub>
+>              [_BlockExpression_]
 
 A `for` expression is a syntactic construct for looping over elements provided
 by an implementation of `std::iter::IntoIterator`. If the iterator yields a
@@ -89,6 +122,10 @@ assert_eq!(sum, 55);
 
 ## Loop labels
 
+> **<sup>Syntax</sup>**  
+> _LoopLabel_ :  
+> &nbsp;&nbsp; [LIFETIME_OR_LABEL] `:`
+
 A loop expression may optionally have a _label_. The label is written as
 a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`,
 `'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
@@ -98,6 +135,10 @@ See [break expressions](#break-expressions) and [continue
 expressions](#continue-expressions).
 
 ## `break` expressions
+
+> **<sup>Syntax</sup>**  
+> _BreakExpression_ :  
+> &nbsp;&nbsp; `break` [LIFETIME_OR_LABEL]<sup>?</sup> [_Expression_]<sup>?</sup>
 
 When `break` is encountered, execution of the associated loop body is
 immediately terminated, for example:
@@ -130,6 +171,10 @@ the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
 `break EXPR` or `break 'label EXPR`.
 
 ## `continue` expressions
+
+> **<sup>Syntax</sup>**  
+> _ContinueExpression_ :  
+> &nbsp;&nbsp; `continue` [LIFETIME_OR_LABEL]<sup>?</sup>
 
 When `continue` is encountered, the current iteration of the associated loop
 body is immediately terminated, returning control to the loop *head*. In
@@ -165,3 +210,10 @@ In the case a `loop` has an associated `break`, it is not considered diverging,
 and the `loop` must have a type compatible with each `break` expression.
 `break` without an expression is considered identical to `break` with
 expression `()`.
+
+[IDENTIFIER]: identifiers.html
+
+[_Expression_]:      expressions.html
+[_BlockExpression_]: expressions/block-expr.html
+
+[LIFETIME_OR_LABEL]: tokens.html#symbols
