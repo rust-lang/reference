@@ -1,5 +1,10 @@
 # Static items
 
+> **<sup>Syntax</sup>**  
+> _StaticItem_ :  
+> &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
+>              `=` [_Expression_] `;`
+
 A *static item* is similar to a *constant*, except that it represents a precise
 memory location in the program. A static is never "inlined" at the usage site,
 and all references to it refer to the same memory location. Static items have
@@ -106,3 +111,7 @@ const RESOLVED_MULTIPLE: Fn(&Foo, &Bar, &Baz) -> usize = ..
 // `Fn(&'static Foo, &'static Bar) -> &'static Baz`.
 const RESOLVED_STATIC: Fn(&Foo, &Bar) -> &Baz = ..
 ```
+
+[IDENTIFIER]: identifiers.html
+[_Type_]: types.html
+[_Expression_]: expressions.html
