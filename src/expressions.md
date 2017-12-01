@@ -209,8 +209,8 @@ then it is a compiler error if the value must be evaluated at compile time,
 otherwise it is just a warning, but the code will most likely panic when run.
 
 The following expressions are constant expressions, so long as any operands are
-also constant expressions and do not cause any `Drop::drop` calls to be ran in
-[destructors]:
+also constant expressions and do not cause any [`Drop::drop`][destructors] calls
+to be ran.
 
 * [Literals].
 * [Paths] to [functions](items/functions.html) and constants.

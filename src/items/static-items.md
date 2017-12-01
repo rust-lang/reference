@@ -57,7 +57,7 @@ unsafe fn bump_levels_unsafe2() -> u32 {
 ```
 
 Mutable statics have the same restrictions as normal statics, except that the
-type of the value does not require the `Sync` trait bound.
+type does not have to implement the `Sync` trait.
 
 ## `'static` lifetime elision
 
