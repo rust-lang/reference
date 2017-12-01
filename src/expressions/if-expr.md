@@ -2,6 +2,14 @@
 
 ## `if` expressions
 
+> **<sup>Syntax</sup>**  
+> _IfExpression_ :  
+> &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]  
+> &nbsp;&nbsp; (`else` (
+>   [_BlockExpression_]
+> | _IfExpression_
+> | _IfLetExpression_ ) )<sup>\?</sup>  
+
 An `if` expression is a conditional branch in program control. The form of an
 `if` expression is a condition expression, followed by a consequent block, any
 number of `else if` conditions and blocks, and an optional trailing `else`
@@ -31,7 +39,17 @@ let y = if 12 * 15 > 150 {
 };
 assert_eq!(y, "Bigger");
 ```
+
 ## `if let` expressions
+
+> **<sup>Syntax</sup>**  
+> _IfLetExpression_ :  
+> &nbsp;&nbsp; `if` `let` _Pattern_ `=` [_Expression_]<sub>_except struct expression_</sub>
+>              [_BlockExpression_]  
+> &nbsp;&nbsp; (`else` (
+>   [_BlockExpression_]
+> | _IfExpression_
+> | _IfLetExpression_ ) )<sup>\?</sup>  
 
 An `if let` expression is semantically similar to an `if` expression but in
 place of a condition expression it expects the keyword `let` followed by a
@@ -57,3 +75,22 @@ if let ("Ham", b) = dish {
     println!("Ham is served with {}", b);
 }
 ```
+
+`if` and `if let` expressions can be intermixed:
+
+```rust
+let x = Some(3);
+let a = if let Some(1) = x {
+    1
+} else if x == Some(2) {
+    2
+} else if let Some(y) = x {
+    y
+} else {
+    -1
+};
+assert_eq!(a, 3);
+```
+
+[_Expression_]: expressions.html
+[_BlockExpression_]: expressions/block-expr.html
