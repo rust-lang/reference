@@ -56,8 +56,8 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 ### Initialized
 
 A variable is initialized if it has been assigned a value and hasn't since been
-moved from. All other lvalues are assumed to be initialized. Only unsafe Rust
-can create such an lvalue without initializing it.
+moved from. All other memory locations are assumed to be initialized. Only
+unsafe Rust can create such a memory without initializing it.
 
 ### Nominal Types
 

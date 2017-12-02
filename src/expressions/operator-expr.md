@@ -25,6 +25,8 @@ An expression enclosed in parentheses evaluates to the result of the enclosed
 expression. Parentheses can be used to explicitly specify evaluation order
 within an expression.
 
+This operator cannot be overloaded.
+
 An example of a parenthesized expression:
 
 ```rust
@@ -37,15 +39,17 @@ assert_eq!(y, 20);
 ## Borrow operators
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
-operators. When applied to an lvalue produce a reference (pointer) to the
-location that the value refers to. The lvalue is also placed into a borrowed
-state for the duration of the reference. For a shared borrow (`&`), this
-implies that the lvalue may not be mutated, but it may be read or shared again.
-For a mutable borrow (`&mut`), the lvalue may not be accessed in any way until
-the borrow expires. `&mut` evaluates its operand in a mutable lvalue context.
-If the `&` or `&mut` operators are applied to an rvalue, a temporary value is
-created; the lifetime of this temporary value is defined by [syntactic
-rules](expressions.html#temporary-lifetimes). These operators cannot be overloaded.
+operators. When applied to a [place expression], this expressions produces a
+reference (pointer) to the location that the value refers to. The place is also
+placed into a borrowed state for the duration of the reference. For a shared
+borrow (`&`), this implies that the place may not be mutated, but it may be read
+or shared again. For a mutable borrow (`&mut`), the place may not be accessed in
+any way until the borrow expires. `&mut` evaluates its operand in a mutable
+place expression context. If the `&` or `&mut` operators are applied to a [value
+expression], then a temporary value is created; the lifetime of this temporary
+value is defined by [syntactic rules].
+
+These operators cannot be overloaded.
 
 ```rust
 {
@@ -65,13 +69,13 @@ let mut array = [-2, 3, 9];
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
-variable, a (nested) field of a local variance or is a mutable lvalue, then the
-resulting [lvalue](expressions.html#lvalues-and-rvalues) can be
-assigned to. Dereferencing a raw pointer requires `unsafe`.
+variable, a (nested) field of a local variance or is a mutable [place 
+expression], then the resulting place can be assigned to. Dereferencing a raw
+pointer requires `unsafe`.
 
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
-[immutable lvalue context](expressions.html#mutability) and
-`*std::ops::Deref::deref_mut(&mut x)` in a mutable lvalue context.
+[immutable place expression context](expressions.html#mutability) and
+`*std::ops::Deref::deref_mut(&mut x)` in a mutable place expression context.
 
 ```rust
 let x = &7;
@@ -81,7 +85,7 @@ let y = &mut 9;
 assert_eq!(*y, 11);
 ```
 
-## The `?` operator.
+## The `?` operator
 
 The `?` ("question mark") operator can be applied to values of the `Result<T,
 E>` type to propagate errors. If applied to `Err(e)` it will return
@@ -108,7 +112,7 @@ These are the last two unary operators. This table summarizes the behavior of
 them on primitive types and which traits are used to overload these operators
 for other types. Remember that signed integers are always represented using
 two's complement. The operands of all of these operators are evaluated in
-rvalue context so are moved or copied.
+[value expression context][value expression] so are moved or copied.
 
 | Symbol | Integer     | `bool`      | Floating Point | Overloading Trait  |
 |--------|-------------|-------------|----------------|--------------------|
@@ -132,8 +136,8 @@ Binary operators expressions are all written with infix notation. This table
 summarizes the behavior of arithmetic and logical binary operators on
 primitive types and which traits are used to overload these operators for other
 types. Remember that signed integers are always represented using two's
-complement. The operands of all of these operators are evaluated in rvalue
-context so are moved or copied.
+complement. The operands of all of these operators are evaluated in [value
+expression context][value expression] so are moved or copied.
 
 | Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  |
 |--------|-------------------------|-------------|----------------|--------------------|
@@ -180,7 +184,7 @@ define actual comparisons by functions that use these traits as bounds. Many
 functions and macros in the standard library can then use that assumption
 (although not to ensure safety). Unlike the arithmetic and logical operators
 above, these operators implicitly take shared borrows of their operands,
-evaluating them in lvalue context:
+evaluating them in [place expression context][place expression]:
 
 ```rust,ignore
 a == b;
@@ -295,21 +299,17 @@ same trait object.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
 
-[float-int]: https://github.com/rust-lang/rust/issues/10184
-[float-float]: https://github.com/rust-lang/rust/issues/15536
-
 ## Assignment expressions
 
-An _assignment expression_ consists of an
-[lvalue](expressions.html#lvalues-and-rvalues) expression followed by an equals
-sign (`=`) and an [rvalue](expressions.html#lvalues-and-rvalues) expression.
+An _assignment expression_ consists of a [place expression] followed by an
+equals sign (`=`) and a [value expression].
 
 Evaluating an assignment expression [drops](destructors.html) the left-hand
 operand, unless it's an unitialized local variable or field of a local variable,
 and [either copies or moves](expressions.html#moved-and-copied-types) its
-right-hand operand to its left-hand operand. The left-hand operand must be an
-lvalue: using an rvalue results in a compiler error, rather than promoting it
-to a temporary.
+right-hand operand to its left-hand operand. The left-hand operand must be a
+place expression: using a value expression results in a compiler error, rather
+than promoting it to a temporary.
 
 ```rust
 # let mut x = 0;
@@ -320,15 +320,23 @@ x = y;
 ## Compound assignment expressions
 
 The `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, and `>>` operators may be
-composed with the `=` operator. The expression `lval OP= val` is equivalent to
-`lval = lval OP val`. For example, `x = x + 1` may be written as `x += 1`.
-Any such expression always has the [`unit`](types.html#tuple-types) type.
+composed with the `=` operator. The expression `place_exp OP= value` is
+equivalent to `place_expr = place_expr OP val`. For example, `x = x + 1` may be
+written as `x += 1`. Any such expression always has the [`unit` type].
 These operators can all be overloaded using the trait with the same name as for
 the normal operation followed by 'Assign', for example, `std::ops::AddAssign`
-is used to overload `+=`. As with `=`, `lval` must be an lvalue.
+is used to overload `+=`. As with `=`, `place_expr` must be a [place
+expression].
 
 ```rust
 let mut x = 10;
 x += 4;
 assert_eq!(x, 14);
 ```
+
+[place expression]: expressions.html#place-expressions-and-value-expressions
+[value expression]: expressions.html#place-expressions-and-value-expressions
+[syntactic rules]: expressions.html#temporary-lifetimes
+[float-int]: https://github.com/rust-lang/rust/issues/10184
+[float-float]: https://github.com/rust-lang/rust/issues/15536
+[`unit` type]: types.html#tuple-types

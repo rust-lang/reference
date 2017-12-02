@@ -9,19 +9,19 @@ the patterns. The type of the patterns must equal the type of the head
 expression.
 
 A `match` behaves differently depending on whether or not the head expression
-is an [lvalue or an rvalue](expressions.html#lvalues-and-rvalues).
-If the head expression is an rvalue, it is first evaluated into a temporary
-location, and the resulting value is sequentially compared to the patterns in
-the arms until a match is found. The first arm with a matching pattern is
-chosen as the branch target of the `match`, any variables bound by the pattern
-are assigned to local variables in the arm's block, and control enters the
-block.
+is a [place expression or value expression][place expression].
+If the head expression is a [value expression], it is first evaluated into a
+temporary location, and the resulting value is sequentially compared to the
+patterns in the arms until a match is found. The first arm with a matching
+pattern is chosen as the branch target of the `match`, any variables bound by
+the pattern are assigned to local variables in the arm's block, and control
+enters the block.
 
-When the head expression is an lvalue, the match does not allocate a temporary
-location (however, a by-value binding may copy or move from the lvalue). When
-possible, it is preferable to match on lvalues, as the lifetime of these
-matches inherits the lifetime of the lvalue, rather than being restricted to
-the inside of the match.
+When the head expression is a [place expression], the match does not allocate a
+temporary location; however, a by-value binding may copy or move from the place.
+When possible, it is preferable to match on place expressions, as the lifetime
+of these matches inherits the lifetime of the place expression rather than being
+restricted to the inside of the match.
 
 An example of a `match` expression:
 
@@ -126,3 +126,5 @@ let message = match maybe_digit {
 };
 ```
 
+[place expression]: expressions.html#place-expressions-and-value-expressions
+[value expression]: expressions.html#place-expressions-and-value-expressions

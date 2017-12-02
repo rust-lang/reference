@@ -9,13 +9,13 @@
 > &nbsp;&nbsp; `}`  
 
 A _block expression_ is similar to a module in terms of the declarations that
-are possible, but can also contain [statements](statements.html) and end with
-an expression. Each block conceptually introduces a new namespace scope. Use
+are possible, but can also contain [statements] and end with
+an [expression]. Each block conceptually introduces a new namespace scope. Use
 items can bring new names into scopes and declared items are in scope for only
 the block itself.
 
 A block will execute each statement sequentially, and then execute the
-expression (if given). If the block doesn't end in an expression, its value is
+expression, if given. If the block doesn't end in an expression, its value is
 `()`:
 
 ```rust
@@ -30,9 +30,9 @@ let x: i32 = { println!("Hello."); 5 };
 assert_eq!(5, x);
 ```
 
-Blocks are always [rvalues](expressions.html#lvalues-and-rvalues) and evaluate the last
-expression in rvalue context. This can be used to force moving a value
-if really needed.
+Blocks are always [value expressions] and evaluate the last expression in 
+value expression context. This can be used to force moving a value if really
+needed.
 
 ## `unsafe` blocks
 
@@ -60,3 +60,6 @@ let a = unsafe { f() };
 [_InnerAttribute_]: attributes.html
 [_Statement_]: statements.html
 [_Expression_]: expressions.html
+[expression]: expressions.html
+[statements]: statements.html
+[value expressions]: expressions.html#place-expressions-and-value-expressions
