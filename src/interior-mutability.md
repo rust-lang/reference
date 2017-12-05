@@ -1,13 +1,13 @@
 # Interior Mutability
 
-Sometimes a type needs be mutated while having multiple aliases, in Rust this
+Sometimes a type needs be mutated while having multiple aliases. In Rust this
 is achieved using a pattern called _interior mutability_. A type has interior
 mutability if its internal state can be changed through a [shared reference] to
 it. This goes against the usual [requirement][ub] that the value pointed to by a
 shared reference is not mutated.
 
-[`std::cell::UnsafeCell<T>`] type is the only legal way in Rust to disable this
-requirement. When `UnsafeCell<T>` is immutably aliased, it is still safe to
+[`std::cell::UnsafeCell<T>`] type is the only allowed way in Rust to disable
+this requirement. When `UnsafeCell<T>` is immutably aliased, it is still safe to
 mutate, or obtain a mutable reference to, the `T` it contains. As with all
 other types, it is undefined behavior to have multiple `&mut UnsafeCell<T>`
 aliases.

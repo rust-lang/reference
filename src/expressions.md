@@ -209,25 +209,25 @@ then it is a compiler error if the value must be evaluated at compile time,
 otherwise it is just a warning, but the code will most likely panic when run.
 
 The following expressions are constant expressions, so long as any operands are
-also constant expressions:
+also constant expressions and do not cause any [`Drop::drop`][destructors] calls
+to be ran.
 
 * [Literals].
 * [Paths] to [functions](items/functions.html) and constants.
   Recursively defining constants is not allowed.
 * [Tuple expressions].
 * [Array expressions].
-* [Struct] expressions, where the type does not implement [`Drop`](the-drop-trait.html).
-* [Enum variant] expressions, where the enumeration type does not implement `Drop`.
-* [Block expressions]&nbsp;(and `unsafe` blocks) which only contain items and
-  possibly a (constant) tail expression.
+* [Struct] expressions.
+* [Enum variant] expressions.
+* [Block expressions], including `unsafe` blocks, which only contain items and
+  possibly a constant tail expression.
 * [Field] expressions.
 * Index expressions, [array indexing] or [slice] with a `usize`.
 * [Range expressions].
 * [Closure expressions] which don't capture variables from the environment.
 * Built in [negation], [arithmetic, logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool` and `char`.
-* Shared [borrow], except if applied to a type with [interior
-  mutability](interior-mutability.html).
+* Shared [borrow]s, except if applied to a type with [interior mutability].
 * The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
@@ -269,4 +269,6 @@ exist in `core::ops` and `core::cmp` with the same names.
 [negation]:             expressions/operator-expr.html#negation-operators
 [overflow]:             expressions/operator-expr.html#overflow
 
+[destructors]:          destructors.html
+[interior-mutability]:  interior-mutability.html
 [slice]:                types.html#array-and-slice-types
