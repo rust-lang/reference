@@ -18,7 +18,8 @@ the pattern are assigned to local variables in the arm's block, and control
 enters the block.
 
 When the head expression is a [place expression], the match does not allocate a
-temporary location; however, a by-value binding may copy or move from the place.
+temporary location; however, a by-value binding may copy or move from the 
+memory location.
 When possible, it is preferable to match on place expressions, as the lifetime
 of these matches inherits the lifetime of the place expression rather than being
 restricted to the inside of the match.

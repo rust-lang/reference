@@ -40,14 +40,13 @@ assert_eq!(y, 20);
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
 operators. When applied to a [place expression], this expressions produces a
-reference (pointer) to the location that the value refers to. The place is also
-placed into a borrowed state for the duration of the reference. For a shared
-borrow (`&`), this implies that the place may not be mutated, but it may be read
-or shared again. For a mutable borrow (`&mut`), the place may not be accessed in
-any way until the borrow expires. `&mut` evaluates its operand in a mutable
-place expression context. If the `&` or `&mut` operators are applied to a [value
-expression], then a temporary value is created; the lifetime of this temporary
-value is defined by [syntactic rules].
+reference (pointer) to the location that the value refers to. The memory
+location is also placed into a borrowed state for the duration of the reference.
+For a shared borrow (`&`), this implies that the place may not be mutated, but
+it may be read or shared again. For a mutable borrow (`&mut`), the place may not
+be accessed in any way until the borrow expires. `&mut` evaluates its operand in
+a mutable place expression context. If the `&` or `&mut` operators are applied
+to a [value expression], then a [temporary value] is created.
 
 These operators cannot be overloaded.
 
@@ -70,8 +69,8 @@ The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
 variable, a (nested) field of a local variance or is a mutable [place 
-expression], then the resulting place can be assigned to. Dereferencing a raw
-pointer requires `unsafe`.
+expression], then the resulting memory location can be assigned to.
+Dereferencing a raw pointer requires `unsafe`.
 
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
 [immutable place expression context](expressions.html#mutability) and
@@ -336,7 +335,7 @@ assert_eq!(x, 14);
 
 [place expression]: expressions.html#place-expressions-and-value-expressions
 [value expression]: expressions.html#place-expressions-and-value-expressions
-[syntactic rules]: expressions.html#temporary-lifetimes
+[temporary value]: expressions.html#temporary-lifetimes
 [float-int]: https://github.com/rust-lang/rust/issues/10184
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: types.html#tuple-types

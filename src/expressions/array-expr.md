@@ -38,7 +38,7 @@ greater than 1 then this requires that the type of `a` is
 
 [Array and slice](types.html#array-and-slice-types)-typed expressions can be
 indexed by writing a square-bracket-enclosed expression (the index) after them.
-When the array is mutable, the resulting [place] can be assigned to.
+When the array is mutable, the resulting [memory location] can be assigned to.
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or `*std::opsIndexMut::index_mut(&mut a, b)`
 in a mutable place expression context. Just as with methods, Rust will also
@@ -69,7 +69,7 @@ The array index expression can be implemented for types other than arrays and sl
 by implementing the [Index] and [IndexMut] traits.
 
 [_Expression_]: expressions.html
-[place]: expressions.html#place-expressions-and-value-expressions
+[memory location]: expressions.html#place-expressions-and-value-expressions
 [Index]: ../std/ops/trait.Index.html
 [IndexMut]: ../std/ops/trait.IndexMut.html
 [constant expression]: expressions.html#constant-expressions
