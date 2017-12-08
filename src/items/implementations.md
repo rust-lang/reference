@@ -1,9 +1,64 @@
 # Implementations
 
-An _implementation_ is an item that can implement a [trait](items/traits.html) for a
-specific type.
+An _implementation_ is an item that associates items with an *implementing type*.
+
+There are two types of implementations: inherent implementations and [trait] 
+implementations.
 
 Implementations are defined with the keyword `impl`.
+
+## Interent Implementations
+
+An inherent implementation is defined as the sequence of the `impl` keyword,
+generic type declarations, a path to a nomial type, a where clause, and a
+bracketed set of associable items.
+
+The nominal type is called the *implementing type* and the associable items are
+the *associated items* to the implementing type.
+
+Inherent implementations associate the associated items to the implementing
+type.
+
+The associated item has a path of a path to the implementing type followed by
+the associate item's path component.
+
+Inherent implementations cannot contain associated type aliases.
+
+A type can have multiple inherent implementations.
+
+The implementing type must be defined within the same crate.
+
+```rust
+struct Point {x: i32, y: i32}
+
+impl Point {
+    fn log(&self) {
+        println!("Point is at ({}, {})", self.x, self.y);
+    }
+}
+
+let my_point = Point {x: 10, y:11};
+my_point.log();
+```
+
+## Trait Implementations
+
+A *trait implementation* is defined like an inherent implementation except that
+the optional generic type declarations is followed by a [trait] followed
+by the keyword `for`. <!-- To understand this, you have to back-reference to
+the previous section. :( -->
+
+The trait is known as the *implemented trait*.
+
+The implementing type implements the implemented trait.
+
+A trait implementation must define all non-default associated items declared
+by the implemented trait, may redefine default associated items defined by the 
+implemented trait trait, and cannot define any other items.
+
+The path to the associated items is `<` followed by a path to the implementing
+type followed by `as` followed by a path to the trait followed by `>` as a path
+component followed by the associated item's path component.
 
 ```rust
 # #[derive(Copy, Clone)]
@@ -37,33 +92,39 @@ impl Shape for Circle {
 }
 ```
 
-It is possible to define an implementation without referring to a trait. The
-methods in such an implementation can only be used as direct calls on the
-values of the type that the implementation targets. In such an implementation,
-the trait type and `for` after `impl` are omitted. Such implementations are
-limited to nominal types (enums, structs, unions, trait objects), and the
-implementation must appear in the same crate as the `Self` type:
+### Trait Implementation Coherence
 
-```rust
-struct Point {x: i32, y: i32}
+A trait implementation is consider incoherent if either the orphan check fails
+or there are overlapping implementation instaces. 
 
-impl Point {
-    fn log(&self) {
-        println!("Point is at ({}, {})", self.x, self.y);
-    }
-}
+Two trait implementations overlap when there is a non-empty intersection of the
+traits the implementation is for, the implementations can be instantiated with
+the same type. <!-- This is probably wrong? Source: No two implementations can 
+be instantiable with the same set of types for the input type parameters. -->
 
-let my_point = Point {x: 10, y:11};
-my_point.log();
-```
+The `Orphan Check` states that every trait implementation must meet either of
+the following conditions:
 
-When a trait _is_ specified in an `impl`, all methods declared as part of the
-trait must be implemented, with matching types and type parameter counts.
+1. The trait being implemented is defined in the same crate.
+
+2. At least one of either `Self` or a generic type parameter of the trait must
+   meet the following grammar, where `C` is a nominal type defined
+   within the containing crate:
+
+   ```ignore
+    T = C
+      | &T
+      | &mut T
+      | Box<T>
+   ```
+
+## Generic Implementations
 
 An implementation can take type and lifetime parameters, which can be used in
 the rest of the implementation. Type parameters declared for an implementation
-must be used at least once in either the trait or the type of an
-implementation. Implementation parameters are written after the `impl` keyword.
+must be used at least once in either the trait or the implementing type of an
+implementation. Implementation parameters are written directly after the `impl`
+keyword.
 
 ```rust
 # trait Seq<T> { fn dummy(&self, _: T) { } }
@@ -74,3 +135,6 @@ impl Seq<bool> for u32 {
     /* Treat the integer as a sequence of bits */
 }
 ```
+
+
+[trait]: items/traits.html
