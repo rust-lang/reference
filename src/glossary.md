@@ -5,6 +5,12 @@
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
 the structure of the program when the compiler is compiling it.
 
+### Alignment
+
+The alignment of a value specifies what addresses values are preferred to
+start at. Always a power of two. References to a value must be aligned.
+[More][alignment].
+
 ### Arity
 
 Arity refers to the number of arguments a function or operator takes.
@@ -69,6 +75,21 @@ Types that can be referred to by a path directly. Specifically [enums],
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
 imported into very module of every crate. The traits in the prelude are pervasive.
 
+### Size
+
+The size of a value has two definitions.
+
+The first is that it is how much memory must be allocated to store that value.
+
+The second is that it is the offset in bytes between successive elements in an
+array with that item type.
+
+It is a multiple of the alignment, including zero. The size can change
+depending on compiler version (as new optimizations are made) and target
+platform (similar to how `usize` varies per-platform).
+
+[More][alignment].
+
 ### Slice
 
 A slice is dynamically-sized view into a contiguous sequence, written as `[T]`.
@@ -104,6 +125,7 @@ It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
+[alignment]: type-layout.html#size-and-alignment
 [enums]: items/enumerations.html
 [structs]: items/structs.html
 [unions]: items/unions.html

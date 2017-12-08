@@ -357,7 +357,7 @@ pub mod m3 {
 }
 ```
 
-### Inline attributes
+### Inline attribute
 
 The inline attribute suggests that the compiler should place a copy of
 the function or static in the caller, rather than generating code to

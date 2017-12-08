@@ -146,8 +146,8 @@ let slice: &[i32] = &boxed_array[..];
 All elements of arrays and slices are always initialized, and access to an
 array or slice is always bounds-checked in safe methods and operators.
 
-The [`Vec<T>`] standard library type provides a heap allocated resizable array
-type.
+> Note: The [`Vec<T>`] standard library type provides a heap allocated resizable
+> array type.
 
 [dynamically sized type]: dynamically-sized-types.html
 [`Vec<T>`]: ../std/vec/struct.Vec.html

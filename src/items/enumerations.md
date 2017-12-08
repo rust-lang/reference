@@ -25,11 +25,9 @@
 > _EnumItemDiscriminant_ :  
 > &nbsp;&nbsp; `=` [_Expression_]  
 
-An _enumeration_ is a simultaneous definition of a nominal [enumerated type] as
-well as a set of *constructors*, that can be used to create or pattern-match
-values of the corresponding enumerated type.
-
-[enumerated type]: types.html#enumerated-types
+An *enumeration*, also referred to as *enum* is a simultaneous definition of a
+nominal [enumerated type] as well as a set of *constructors*, that can be used
+to create or pattern-match values of the corresponding enumerated type.
 
 Enumerations are declared with the keyword `enum`.
 
@@ -45,11 +43,11 @@ let mut a: Animal = Animal::Dog;
 a = Animal::Cat;
 ```
 
-Enumeration constructors can have either named or unnamed fields:
+Enum constructors can have either named or unnamed fields:
 
 ```rust
 enum Animal {
-    Dog (String, f64),
+    Dog(String, f64),
     Cat { name: String, weight: f64 },
 }
 
@@ -59,41 +57,79 @@ a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 
 In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant. Each enum instance has a _discriminant_ which is an
-integer associated to it that is used to determine which variant it holds.
+integer associated to it that is used to determine which variant it holds. An
+opaque reference to this discriminant can be obtained with the
+[`mem::discriminant`] function.
 
 ## Custom Discriminant Values for Field-Less Enumerations
 
 If there is no data attached to *any* of the variants of an enumeration,
 then the discriminant can be directly chosen and accessed.
 
-If a discriminant isn't specified, they start at zero, and add one for each
-variant, in order. Each enum value is just its discriminant which you can
-specify explicitly:
+These enumerations can be cast to integer types with the `as` operator by a
+[numeric cast]. The enumeration can optionaly specify which integer each
+discriminant gets by following the variant name with `=` and then an integer
+literal. If the first variant in the declaration is unspecified, then it is set
+to zero. For every unspecified discriminant, it is set to one higher than the
+previous variant in the declaration.
 
 ```rust
 enum Foo {
     Bar,            // 0
-    Baz = 123,
+    Baz = 123,      // 123
     Quux,           // 124
+}
+
+let baz_discriminant = Foo::Baz as u32;
+assert_eq!(baz_discriminant, 123);
+```
+
+Under the [default representation], the specified discriminant is interpreted as
+an `isize` value although the compiler is allowed to use a smaller type in the
+actual memory layout. The size and thus acceptable values can be changed by
+using a [primitive representation] or the [`C` representation].
+
+It is an error when two variants share the same discriminant.
+
+```rust,ignore
+enum SharedDiscriminantError {
+    SharedA = 1,
+    SharedB = 1
+}
+
+enum SharedDiscriminantError2 {
+    Zero,       // 0
+    One,        // 1
+    OneToo = 1  // 1 (collision with previous!)
 }
 ```
 
-The right hand side of the specification is interpreted as an `isize` value,
-but the compiler is allowed to use a smaller type in the actual memory layout.
-The [`repr` attribute] can be added in order to change the type of the right
-hand side and specify the memory layout.
+It is also an error to have an unspecified discriminant where the previous
+discriminant is the maximum value for the size of the discriminant.
 
-[`repr` attribute]: attributes.html#ffi-attributes
+```rust,ignore
+#[repr(u8)]
+enum OverflowingDiscriminantError {
+    Max = 255,
+    MaxPlusOne // Would be 256, but that overflows the enum.
+}
 
-You can also cast a field-less enum to get its discriminant:
-
-```rust
-# enum Foo { Baz = 123 }
-let x = Foo::Baz as u32; // x is now 123u32
+#[repr(u8)]
+enum OverflowingDiscriminantError2 {
+    MaxMinusOne = 254, // 254
+    Max,               // 255
+    MaxPlusOne         // Would be 256, but that overflows the enum.
+}
 ```
 
-This only works as long as none of the variants have data attached. If it were
-`Baz(i32)`, this is disallowed.
+## Zero-variant Enums
+
+Enums with zero variants are known as *zero-variant enums*. As they have
+no valid values, they cannot be instantiated.
+
+```rust
+enum ZeroVariants {}
+```
 
 [IDENTIFIER]: identifiers.html
 [_Generics_]: items.html#type-parameters
@@ -101,3 +137,7 @@ This only works as long as none of the variants have data attached. If it were
 [_Expression_]: expressions.html
 [_TupleFields_]: items/structs.html
 [_StructFields_]: items/structs.html
+[enumerated type]: types.html#enumerated-types
+[`mem::discriminant`]: std/mem/fn.discriminant.html
+[numeric cast]: expressions/operator-expr.html#semantics
+[`repr` attribute]: attributes.html#ffi-attributes
