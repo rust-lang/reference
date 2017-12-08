@@ -86,7 +86,7 @@ array with that item type.
 
 It is a multiple of the alignment, including zero. The size can change
 depending on compiler version (as new optimizations are made) and target
-platform (as `usize` varies).
+platform (similar to how `usize` varies per-platform).
 
 [More][alignment].
 

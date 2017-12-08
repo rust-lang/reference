@@ -188,7 +188,7 @@ for field in struct.fields_in_declaration_order() {
 struct.size = current_offset + current_offset % struct.alignment;
 ```
 
-> Note: You can have zero-sized structs from this algorithm. This differs from
+> Note: This algorithm can produce zero-sized structs. This differs from
 > C where structs without data still have a size of one byte.
 
 #### \#[repr(C)] Unions

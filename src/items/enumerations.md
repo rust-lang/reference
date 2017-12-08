@@ -124,7 +124,7 @@ enum OverflowingDiscriminantError2 {
 
 ## Zero-variant Enums
 
-Enums with zero variants are known as *zero-variant enumss*. As they have
+Enums with zero variants are known as *zero-variant enums*. As they have
 no valid values, they cannot be instantiated.
 
 ```rust
