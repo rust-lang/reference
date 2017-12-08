@@ -1,7 +1,7 @@
 # Method-call expressions
 
 A _method call_ consists of an expression followed by a single dot, an
-[identifier](identifiers.html), and a parenthesized expression-list. Method
+[identifier], and a parenthesized expression-list. Method
 calls are resolved to methods on specific traits, either statically dispatching
 to a method if the exact `self`-type of the left-hand-side is known, or
 dynamically dispatching if the left-hand-side expression is an indirect [trait
@@ -50,3 +50,5 @@ generic methods or traits are considered the same), then it is a compiler
 error. These cases require a [more specific
 syntax.](expressions/call-expr.html#disambiguating-function-calls) for method
 and function invocation.
+
+[IDENTIFIER]: identifiers.html

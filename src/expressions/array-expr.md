@@ -38,18 +38,17 @@ greater than 1 then this requires that the type of `a` is
 
 [Array and slice](types.html#array-and-slice-types)-typed expressions can be
 indexed by writing a square-bracket-enclosed expression (the index) after them.
-When the array is mutable, the resulting
-[lvalue](expressions.html#lvalues-and-rvalues) can be assigned to.
+When the array is mutable, the resulting [memory location] can be assigned to.
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or `*std::opsIndexMut::index_mut(&mut a, b)`
-in a mutable lvalue context. Just as with methods, Rust will also insert
-dereference operations on `a` repeatedly to find an implementation.
+in a mutable place expression context. Just as with methods, Rust will also
+insert dereference operations on `a` repeatedly to find an implementation.
 
 Indices are zero-based, and are of type `usize` for arrays and slices. Array
-access is a [constant expression](expressions.html#constant-expressions), so bounds can be
-checked at compile-time for constant arrays with a constant index value.
-Otherwise a check will be performed at run-time that will put the thread in a
-_panicked state_ if it fails.
+access is a [constant expression], so
+bounds can be checked at compile-time for constant arrays with a constant index
+value. Otherwise a check will be performed at run-time that will put the thread
+in a _panicked state_ if it fails.
 
 ```rust,should_panic
 ([1, 2, 3, 4])[2];        // Evaluates to 3
@@ -69,6 +68,8 @@ arr[10];                  // panics
 The array index expression can be implemented for types other than arrays and slices
 by implementing the [Index] and [IndexMut] traits.
 
-[Index]: https://doc.rust-lang.org/std/ops/trait.Index.html
-[IndexMut]: https://doc.rust-lang.org/std/ops/trait.IndexMut.html
 [_Expression_]: expressions.html
+[memory location]: expressions.html#place-expressions-and-value-expressions
+[Index]: ../std/ops/trait.Index.html
+[IndexMut]: ../std/ops/trait.IndexMut.html
+[constant expression]: expressions.html#constant-expressions

@@ -1,10 +1,10 @@
 # Struct expressions
 
 There are several forms of struct expressions. A _struct expression_ consists
-of the [path](paths.html) of a [struct item](items/structs.html), followed by a
+of the [path] of a [struct item](items/structs.html), followed by a
 brace-enclosed list of zero or more comma-separated name-value pairs, providing
 the field values of a new instance of the struct. A field name can be any
-[identifier](identifiers.html), and is separated from its value expression by a
+[identifier], and is separated from its value expression by a
 colon. In the case of a tuple struct the field names are numbers corresponding
 to the position of the field. The numbers must be written in decimal,
 containing no underscores and with no leading zeros or integer suffix. A value
@@ -14,11 +14,6 @@ except that it must specify exactly one field.
 Struct expressions can't be used directly in the head of a [loop] 
 or an [if], [if let] or [match] expression. But struct expressions can still be
 in used inside parentheses, for example.
-
-[loop]: expressions/loop-expr.html
-[if]: expressions/if-expr.html#if-expressions
-[if let]: expressions/if-expr.html#if-let-expressions
-[match]: expressions/match-expr.html
 
 A _tuple struct expression_ consists of the path of a struct item, followed by
 a parenthesized list of one or more comma-separated expressions (in other
@@ -78,3 +73,10 @@ Example:
 Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
+
+[IDENTIFIER]: identifiers.html
+[path]: paths.html
+[loop]: expressions/loop-expr.html
+[if]: expressions/if-expr.html#if-expressions
+[if let]: expressions/if-expr.html#if-let-expressions
+[match]: expressions/match-expr.html

@@ -44,76 +44,84 @@ evaluated in the order given by their associativity.
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
-## Lvalues and rvalues
+## Place Expressions and Value Expressions 
 
-Expressions are divided into two main categories: _lvalues_ and _rvalues_.
-Likewise within each expression, sub-expressions may occur in _lvalue context_
-or _rvalue context_. The evaluation of an expression depends both on its own
-category and the context it occurs within.
+Expressions are divided into two main categories: place expressions and
+value expressions. Likewise within each expression, sub-expressions may occur
+in either place context or value context. The evaluation of an expression
+depends both on its own category and the context it occurs within.
 
-An lvalue is an expression that represents a memory location. These expressions
-are [paths](expressions/path-expr.html) which refer to local variables, static
-variables, function parameters, [dereferences]&nbsp;(`*expr`), [array indexing]
-expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized
-lvalue expressions. All other expressions are rvalues.
+A *place expression* is an expression that represents a memory location. These
+expressions are [paths] which refer to local variables, [static variables],
+[dereferences]&nbsp;(`*expr`), [array indexing] expressions (`expr[expr]`),
+[field] references (`expr.f`) and parenthesized place expressions. All other
+expressions are value expressions.
 
-The left operand of an [assign]ment or [compound assignment] expression is an
-lvalue context, as is the single operand of a unary [borrow], and the operand
-of any [implicit borrow](#implicit-borrows). The discriminant or subject of a
-[match] expression and right side of a `let` is also an lvalue context. All
-other expression contexts are rvalue contexts.
+A *value expression* is an expression that represents an actual value.
+
+The left operand of an [assignment][assign] or [compound assignment] expression
+is a place expression context, as is the single operand of a unary [borrow], and
+the operand of any [implicit borrow]. The discriminant or subject of a
+[match expression][match] and right side of a [let statement] is also a place
+expression context. All other expression contexts are value expression contexts.
+
+> Note: Historically, place expressions were called *lvalues* and value
+> expressions were called *rvalues*.
 
 ### Moved and copied types
 
-When an lvalue is evaluated in an _rvalue context_ or is bound by value in a
-pattern, it denotes the value held _in_ that memory location. If value is of a
-type that implements `Copy`, then the value will be copied. In the remaining
-situations if the type of the value is [`Sized`](the-sized-trait.html) it may
-be possible to move the value. Only the following lvalues may be moved out of:
+When a place expression is evaluated in a value expression context, or is bound
+by value in a pattern, it denotes the value held _in_ that memory location. If
+the type of that value implements `Copy`, then the value will be copied. In the
+remaining situations if that type is [`Sized`](the-sized-trait.html), then it
+may be possible to move the value. Only the following place expressions may be
+moved out of:
 
-* [Variables](variables.html) which are not currently borrowed.
+* [Variables] which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
-* [Field]s of an lvalue which can be moved out of and
+* [Fields][field] of a place expression which can be moved out of and
   doesn't implement [`Drop`](the-drop-trait.html).
-* The result of [dereferencing] an expression with type `Box<T>` and that can
+* The result of [dereferencing] an expression with type [`Box<T>`] and that can
   also be moved out of.
 
-Moving out of an lvalue deinitializes that location (if it comes from a local
-variable), so that it can't be read from again. In all other cases, trying to
-use an lvalue in an rvalue context is an error.
+Moving out of a place expression that evaluates to a local variable, the
+location is deinitialized and cannot be read from again until it is
+reinitialized. In all other cases, trying to use a place expression in a value
+expression context is an error.
 
 ### Mutability
 
-For an lvalue to be [assign]ed to, mutably [borrow]ed,
-[implicitly mutably borrowed](#implicit-borrows)
-or bound to a pattern containing `ref mut` it must be _mutable_, we call these
-contexts _mutable_ lvalue contexts, other lvalue contexts are called
-_immutable_.
+For a place expression to be [assigned][assign] to, mutably [borrowed][borrow],
+[implicitly mutably borrowed], or bound to a pattern containing `ref mut` it
+must be _mutable_. We call these *mutable place expressions*. In contrast,
+other place expressions are called *immutable place expressions*.
 
-The following expressions can create mutable lvalues:
+The following expressions can be mutable place expression contexts:
 
-* Mutable [variables](variables.html), which are not currently borrowed.
-* [Mutable `static` items](items/static-items.html#mutable-statics).
-* [Temporary values](#temporary-lifetimes).
-* [Field]s, this evaluates the subexpression in a mutable lvalue context.
+* Mutable [variables], which are not currently borrowed.
+* [Mutable `static` items].
+* [Temporary values].
+* [Fields][field], this evaluates the subexpression in a mutable place
+  expression context.
 * [Dereferences] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
-  this is an exception to the requirement for the next rule.
+  This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
-  the value being dereferenced is evaluated is a mutable lvalue context.
+  the value being dereferenced is evaluated is a mutable place expression context.
 * [Array indexing] of a type that implements `DerefMut`, this
-  then evaluates the value being indexed (but not the index) in mutable lvalue
-  context.
+  then evaluates the value being indexed, but not the index, in mutable place
+  expression context.
 
 ### Temporary lifetimes
 
-When using an rvalue in most lvalue contexts, a temporary unnamed lvalue is
-created and used instead, if not promoted to `'static`. Promotion of an
-rvalue expression to a `'static` slot occurs when the expression could be
+When using a value expression in most place expression contexts, a temporary
+unnamed memory location is created initialized to that value and the expression
+evaluates to that location instead, except if promoted to `'static`. Promotion
+of a value expression to a `'static` slot occurs when the expression could be
 written in a constant, borrowed, and dereferencing that borrow where the
 expression was the originally written, without changing the runtime behavior.
 That is, the promoted expression can be evaluated at compile-time and the
-resulting value does not contain interior mutability or destructors (these
+resulting value does not contain [interior mutability] or [destructors] (these
 properties are determined based on the value where possible, e.g. `&None`
 always has the type `&'static Option<_>`, as it contains nothing disallowed).
 Otherwise, the lifetime of temporary values is typically
@@ -121,13 +129,13 @@ Otherwise, the lifetime of temporary values is typically
 - the innermost enclosing statement; the tail expression of a block is
   considered part of the statement that encloses the block, or
 - the condition expression or the loop conditional expression if the
-  temporary is created in the condition expression of an `if` or an `if`/`else`
-  or in the loop conditional expression of a `while` expression.
+  temporary is created in the condition expression of an `if` or in the loop
+  conditional expression of a `while` expression.
 
-When a temporary rvalue is being created that is assigned into a `let`
-declaration, however, the temporary is created with the lifetime of the
-enclosing block instead, as using the enclosing statement (the `let`
-declaration) would be a guaranteed error (since a pointer to the temporary
+When a temporary value expression is being created that is assigned into a
+[`let` declaration][let], however, the temporary is created with the lifetime of
+the enclosing block instead, as using the enclosing [`let` declaration][let]
+would be a guaranteed error (since a pointer to the temporary
 would be stored into a variable, but the temporary would be freed before the
 variable could be used). The compiler uses simple syntactic rules to decide
 which values are being assigned into a `let` binding, and therefore deserve a
@@ -135,26 +143,26 @@ longer temporary lifetime.
 
 Here are some examples:
 
-- `let x = foo(&temp())`. The expression `temp()` is an rvalue. As it
+- `let x = foo(&temp())`. The expression `temp()` is a value expression. As it
   is being borrowed, a temporary is created which will be freed after
-  the innermost enclosing statement (the `let` declaration, in this case).
+  the innermost enclosing statement; in this case, the `let` declaration.
 - `let x = temp().foo()`. This is the same as the previous example,
   except that the value of `temp()` is being borrowed via autoref on a
   method-call. Here we are assuming that `foo()` is an `&self` method
   defined in some trait, say `Foo`. In other words, the expression
   `temp().foo()` is equivalent to `Foo::foo(&temp())`.
 - `let x = if foo(&temp()) {bar()} else {baz()};`. The expression `temp()` is
-  an rvalue. As the temporary is created in the condition expression
-  of an `if`/`else`, it will be freed at the end of the condition expression
-  (in this example before the call to `bar` or `baz` is made).
+  a value expression. As the temporary is created in the condition expression
+  of an `if`, it will be freed at the end of the condition expression;
+  in this example before the call to `bar` or `baz` is made.
 - `let x = if temp().must_run_bar {bar()} else {baz()};`.
   Here we assume the type of `temp()` is a struct with a boolean field
   `must_run_bar`. As the previous example, the temporary corresponding to
   `temp()` will be freed at the end of the condition expression.
 - `while foo(&temp()) {bar();}`. The temporary containing the return value from
   the call to `temp()` is created in the loop conditional expression. Hence it
-  will be freed at the end of the loop conditional expression (in this example
-  before the call to `bar` if the loop body is executed).
+  will be freed at the end of the loop conditional expression; in this example
+  before the call to `bar` if the loop body is executed.
 - `let x = &temp()`. Here, the same temporary is being assigned into
   `x`, rather than being passed as a parameter, and hence the
   temporary's lifetime is considered to be the enclosing block.
@@ -164,12 +172,13 @@ Here are some examples:
 - `let x = [ &temp() ]`. As in the previous case, the
   temporary is assigned into an array which is then assigned into a
   binding, and hence it is given the lifetime of the enclosing block.
-- `let ref x = temp()`. In this case, the temporary is created using a ref binding,
-  but the result is the same: the lifetime is extended to the enclosing block.
+- `let ref x = temp()`. In this case, the temporary is created using a ref
+  binding, but the result is the same: the lifetime is extended to the enclosing
+  block.
 
 ### Implicit Borrows
 
-Certain expressions will treat an expression as an lvalue by implicitly
+Certain expressions will treat an expression as a place expression by implicitly
 borrowing it. For example, it is possible to compare two unsized [slices] for
 equality directly, because the `==` operator implicitly borrows it's operands:
 
@@ -192,7 +201,7 @@ Implicit borrows may be taken in the following expressions:
 * Left operand in [field] expressions.
 * Left operand in [call expressions].
 * Left operand in [array indexing] expressions.
-* Operand of the [dereference] operator (`*`).
+* Operand of the [dereference operator] \(`*`).
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 
@@ -236,7 +245,7 @@ to be ran.
 ## Overloading Traits
 
 Many of the following operators and expressions can also be overloaded for
-other types using traits in `std::ops` or `std::cmp`, these traits here also
+other types using traits in `std::ops` or `std::cmp`. These traits also
 exist in `core::ops` and `core::cmp` with the same names.
 
 [block expressions]:    expressions/block-expr.html
@@ -270,5 +279,14 @@ exist in `core::ops` and `core::cmp` with the same names.
 [overflow]:             expressions/operator-expr.html#overflow
 
 [destructors]:          destructors.html
-[interior-mutability]:  interior-mutability.html
+[interior mutability]:  interior-mutability.html
+[`Box<T>`]:             ../std/boxed/struct.Box.html
+[implicit borrow]:      #implicit-borrows
+[implicitly mutably borrowed]: #implicit-borrows
+[let]:                  statements.html#let-statements
+[let statement]:        statements.html#let-statements
+[Mutable `static` items]: items/static-items.html#mutable-statics
 [slice]:                types.html#array-and-slice-types
+[static variables]:     items/static-items.html
+[Temporary values]:     #temporary-lifetimes
+[Variables]:            variables.html

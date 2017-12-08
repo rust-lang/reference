@@ -1,10 +1,9 @@
 # Path expressions
 
-A [path](paths.html) used as an expression context denotes either a local
+A [path] used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
-are [lvalues](expressions.html#lvalues-and-rvalues), other paths
-are rvalues. Using a `static mut` variable requires an [`unsafe`
-block](expressions/block-expr.html#unsafe-blocks).
+are [place expressions], other paths are [value expressions]. Using a
+[`static mut`] variable requires an [`unsafe` block].
 
 ```rust
 # mod globals {
@@ -19,3 +18,9 @@ let some_constructor = Some::<i32>;
 let push_integer = Vec::<i32>::push;
 let slice_reverse = <[i32]>::reverse;
 ```
+
+[place expressions]: expressions.html#place-expressions-and-value-expressions
+[value expressions]: expressions.html#place-expressions-and-value-expressions
+[path]: paths.html
+[`static mut`]: items/static-items.html#mutable-statics
+[`unsafe` block]: expressions/block-expr.html#unsafe-blocks
