@@ -16,7 +16,10 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 
 When resolving method calls on an expression of type `A`, Rust will use the
 following order, only looking at methods that are
-[visible](visibility-and-privacy.html) and traits that are in scope:
+[visible](visibility-and-privacy.html). If the type of `A` is a type parameter
+or `Self` in a trait definitition then steps 2-4 first consider traits from
+bounds on the type paramter, then the traits that are in scope. For other
+types, only the traits that are in scope are considered.
 
 1. Inherent methods, with receiver of type `A`, `&A`, `&mut A`.
 1. Trait methods with receiver of type `A`.
