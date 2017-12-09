@@ -23,7 +23,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
 Notably: [variables], function parameters, [const] and [static] items must be
 `Sized`.
 
-[sized]: the-sized-trait.html
+[sized]: special-types-and-traits.html#sized
 [Slices]: types.html#array-and-slice-types
 [trait objects]: types.html#trait-objects
 [Pointer types]: types.html#pointer-types

@@ -67,13 +67,7 @@
     - [Type coercions](type-coercions.md)
     - [Destructors](destructors.md)
 
-- [Special traits](special-traits.md)
-    - [The Copy trait](the-copy-trait.md)
-    - [The Sized trait](the-sized-trait.md)
-    - [The Drop trait](the-drop-trait.md)
-    - [The Deref trait](the-deref-trait.md)
-    - [The Send trait](the-send-trait.md)
-    - [The Sync trait](the-sync-trait.md)
+- [Special types and traits](special-types-and-traits.md)
 
 - [Memory model](memory-model.md)
     - [Memory allocation and lifetime](memory-allocation-and-lifetime.md)

@@ -20,7 +20,7 @@ such as a [literal](tokens.html#literals) or a [constant
 item](items/constant-items.html). `[a; b]` creates an array containing `b`
 copies of the value of `a`. If the expression after the semi-colon has a value
 greater than 1 then this requires that the type of `a` is
-[`Copy`](the-copy-trait.html).
+[`Copy`](special-types-and-traits.html#copy).
 
 ```rust
 [1, 2, 3, 4];

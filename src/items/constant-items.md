@@ -1,8 +1,8 @@
 # Constant items
 
-> **<sup>Syntax</sup>**  
-> _ConstantItem_ :  
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] `=` [_Expression_] `;`  
+> **<sup>Syntax</sup>**
+> _ConstantItem_ :
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] `=` [_Expression_] `;`
 
 A *constant item* is a named _[constant value]_ which is not associated with a
 specific memory location in the program. Constants are essentially inlined
@@ -62,7 +62,7 @@ fn create_and_drop_zero_with_destructor() {
 
 [constant value]: expressions.html#constant-expressions
 [static lifetime elision]: items/static-items.html#static-lifetime-elision
-[`Drop`]: the-drop-trait.html
+[`Drop`]: special-types-and-traits.html#drop
 [IDENTIFIER]: identifiers.html
 [_Type_]: types.html
 [_Expression_]: expressions.html
