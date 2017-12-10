@@ -37,9 +37,10 @@ closure's type is `'static`.
 The compiler will determine which of the [closure
 traits](types.html#closure-types) the closure's type will implement by how it
 acts on its captured variables. The closure will also implement
-[`Send`](the-send-trait.html) and/or [`Sync`](the-sync-trait.html) if all of
-its captured types do. These traits allow functions to accept closures using
-generics, even though the exact types can't be named.
+[`Send`](special-types-and-traits.html#send) and/or
+[`Sync`](special-types-and-traits.html#sync) if all of its captured types do.
+These traits allow functions to accept closures using generics, even though the
+exact types can't be named.
 
 In this example, we define a function `ten_times` that takes a higher-order
 function argument, and we then call it with a closure expression as an argument,

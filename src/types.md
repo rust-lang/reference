@@ -215,7 +215,7 @@ to read from a union field or to write to a field that doesn't implement
 The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
 attribute can be used to fix a layout.
 
-[`Copy`]: the-copy-trait.html
+[`Copy`]: special-types-and-traits.html#copy
 
 ## Recursive types
 

@@ -44,7 +44,7 @@ evaluated in the order given by their associativity.
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
-## Place Expressions and Value Expressions 
+## Place Expressions and Value Expressions
 
 Expressions are divided into two main categories: place expressions and
 value expressions. Likewise within each expression, sub-expressions may occur
@@ -72,15 +72,14 @@ expression context. All other expression contexts are value expression contexts.
 
 When a place expression is evaluated in a value expression context, or is bound
 by value in a pattern, it denotes the value held _in_ that memory location. If
-the type of that value implements `Copy`, then the value will be copied. In the
-remaining situations if that type is [`Sized`](the-sized-trait.html), then it
-may be possible to move the value. Only the following place expressions may be
-moved out of:
+the type of that value implements [`Copy`], then the value will be copied. In
+the remaining situations if that type is [`Sized`], then it may be possible to
+move the value. Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporary-lifetimes).
 * [Fields][field] of a place expression which can be moved out of and
-  doesn't implement [`Drop`](the-drop-trait.html).
+  doesn't implement [`Drop`].
 * The result of [dereferencing] an expression with type [`Box<T>`] and that can
   also be moved out of.
 
@@ -281,6 +280,9 @@ exist in `core::ops` and `core::cmp` with the same names.
 [destructors]:          destructors.html
 [interior mutability]:  interior-mutability.html
 [`Box<T>`]:             ../std/boxed/struct.Box.html
+[`Copy`]:               special-types-and-traits.html#copy
+[`Drop`]:               special-types-and-traits.html#drop
+[`Sized`]:              special-types-and-traits.html#sized
 [implicit borrow]:      #implicit-borrows
 [implicitly mutably borrowed]: #implicit-borrows
 [let]:                  statements.html#let-statements
