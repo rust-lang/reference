@@ -138,7 +138,6 @@ compiler, not by [implementation items].
 [implementation items]: items.html/implementations.html
 [indexing expressions]: expressions/array-expr.html#array-and-slice-indexing-expressions
 [interior mutability]: iterior-mutability.html
-[lang items]: attributes.html#language-items
 [Numeric types]: types.html#numeric-types
 [Methods]: items.html#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.html
