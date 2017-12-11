@@ -318,7 +318,7 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 >  
 > INTEGER_SUFFIX :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `usize`  
-> &nbsp;&nbsp; | `i8` | `u16` | `i32` | `i64` | `usize`
+> &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `isize`
 
 <!-- FIXME: separate the DECIMAL_LITERAL with no prefix or suffix (used on tuple indexing and float_literal -->
 <!-- FIXME: u128 and i128 -->
