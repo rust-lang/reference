@@ -223,9 +223,6 @@ pointer of trait type. For example, `&T` could be coerced to `&Shape` if `T:
 Shape` holds (and similarly for `Box<T>`). This coercion can either be implicit
 or [explicit]. Here is an example of an explicit coercion:
 
-[trait object]: types.html#trait-objects
-[explicit]: expressions/operator-expr.html#type-cast-expressions
-
 ```rust
 trait Shape { }
 impl Shape for i32 { }
@@ -239,12 +236,10 @@ Values with a trait type can have [methods called] on them, for any method in
 the trait, and can be used to instantiate type parameters that are bounded by
 the trait.
 
-[methods called]: expressions/method-call-expr.html
-
 ## Supertraits
 
 Trait bounds on `Self` are considered "supertraits". These are required to be
-acyclic.  Supertraits are somewhat different from other constraints in that
+acyclic. Supertraits are somewhat different from other constraints in that
 they affect what methods are available in the vtable when the trait is used as
 a [trait object]. Consider the following example:
 
@@ -306,3 +301,7 @@ Likewise, supertrait methods may also be called on trait objects.
 let mycircle = Box::new(mycircle) as Box<Circle>;
 let nonsense = mycircle.radius() * mycircle.area();
 ```
+
+[trait object]: types.html#trait-objects
+[explicit]: expressions/operator-expr.html#type-cast-expressions
+[methods called]: expressions/method-call-expr.html

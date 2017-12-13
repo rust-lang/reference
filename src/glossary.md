@@ -70,6 +70,11 @@ unsafe Rust can create such a memory without initializing it.
 Types that can be referred to by a path directly. Specifically [enums],
 [structs], [unions], and [trait objects].
 
+### Object Safe Traits
+
+[Traits] that can be used as [trait objects]. Only traits that follow specifc
+[rules][object safety] are object safe. 
+
 ### Prelude
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
@@ -132,3 +137,5 @@ Generic functions and generic structs can use traits to constrain, or bound, the
 [trait objects]: types.html#trait-objects
 [implementations]: items/implementations.html
 [traits]: items/traits.html
+[object safety]: types.html#object-safety
+[trait objects]: types.html#trait-objects

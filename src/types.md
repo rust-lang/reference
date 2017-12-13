@@ -405,10 +405,8 @@ x = bo(5,7);
 
 In Rust, trait names also refer to [dynamically sized types] called _trait
 objects_. Like all <abbr title="dynamically sized types">DSTs</abbr>, trait
-objects are used behind some kind of pointer: `&SomeTrait` or `Box<SomeTrait>`.
-Each instance of a pointer to a trait object includes:
-
-[dynamically sized types]: dynamically-sized-types.html
+objects are used behind some type of pointer; for example `&SomeTrait` or
+`Box<SomeTrait>`. Each instance of a pointer to a trait object includes:
 
  - a pointer to an instance of a type `T` that implements `SomeTrait`
  - a _virtual method table_, often just called a _vtable_, which contains, for
@@ -421,9 +419,8 @@ function pointer is loaded from the trait object vtable and invoked indirectly.
 The actual implementation for each vtable entry can vary on an object-by-object
 basis.
 
-Note that trait object types only exist for _object-safe_ traits ([RFC 255]):
-
-[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
+Note that trait object types only exist for
+<span id="object-safety">*object-safe*</span> traits ([RFC 255]):
 
 * It must not require `Self: Sized`
 * All associated functions must either have a `where Self: Sized` bound or
@@ -466,9 +463,6 @@ Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. The assumed lifetime of
 references held by a trait object is called its _default object lifetime bound_.
 These were defined in [RFC 599] and amended in [RFC 1156].
-
-[RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
-[RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
 
 For traits that themselves have no lifetime parameters:
 * If there is a unique bound from the containing type then that is the default
@@ -580,3 +574,8 @@ impl Printable for String {
 ```
 
 The notation `&self` is a shorthand for `self: &Self`.
+
+[dynamically sized types]: dynamically-sized-types.html
+[RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
+[RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
+[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
