@@ -184,10 +184,16 @@ macro scope.
   object file that this item's contents will be placed into.
 - `no_mangle` - on any item, do not apply the standard name mangling. Set the
   symbol for this item to its identifier.
-- `doc` - Doc comments such as `/// foo` are equivalent to `#[doc = "foo"]`.
 - `must_use` - on structs and enums, will warn if a value of this type isn't used or
    assigned to a variable. You may also include an optional message by using
    `#[must_use = "message"]` which will be given alongside the warning.
+
+### Documentation
+
+The `doc` attribute is used to document items and fields. [Doc comments]
+are transformed into `doc` attributes.
+
+See [The Rustdoc Book] for reference material on this attribute.
 
 ### Conditional compilation
 
@@ -408,4 +414,6 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own type through [procedural macros].
 
+[Doc comments]: comments.html#doc-comments
+[The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [procedural macros]: procedural-macros.html
