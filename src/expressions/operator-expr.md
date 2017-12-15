@@ -84,13 +84,16 @@ let y = &mut 9;
 assert_eq!(*y, 11);
 ```
 
-## The `?` operator
+## The question mark operator
 
-The `?` ("question mark") operator can be applied to values of the `Result<T,
-E>` type to propagate errors. If applied to `Err(e)` it will return
-`Err(From::from(e))` from the enclosing function or closure. If applied to
-`Ok(x)` it will unwrap the value to return `x`. Unlike other unary operators
-`?` is written in postfix notation. `?` cannot be overloaded.
+The question mark operator (`?`) unwraps valid values or returns errornous
+values, propagating them to the calling function. It is a unary postfix
+operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
+
+When applied to values of the `Result<T, E>` type, it propagates errors. If 
+the value is `Err(e)`, then it will return `Err(From::from(e))` from the
+enclosing function or closure. If applied to `Ok(x)`, then it will unwrap the
+value to evaulate to `x`.
 
 ```rust
 # use std::num::ParseIntError;
@@ -104,6 +107,26 @@ let res = try_to_parse();
 println!("{:?}", res);
 # assert!(res.is_err())
 ```
+
+When applied to values of the `Option<T>` type, it propagates `Nones`. If the
+value is `None`, then it will return `None`. If applied to `Some(x)`, then it
+will unwrap the value to evaluate to `x`.
+
+```rust
+fn try_option_some() -> Option<u8> {
+    let val = Some(1)?;
+    Some(val)
+}
+assert_eq!(try_option_some(), Some(1));
+
+fn try_option_none() -> Option<u8> {
+    let val = None?;
+    Some(val)
+}
+assert_eq!(try_option_none(), None);
+```
+
+`?` cannot be overloaded.
 
 ## Negation operators
 
