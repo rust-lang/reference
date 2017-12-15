@@ -338,6 +338,9 @@ let foo_ptr_2 = if want_i32 {
 };
 ```
 
+All function items implement [Fn], [FnMut], [FnOnce], [Copy], [Clone], [Send], 
+and [Sync].
+
 ## Function pointer types
 
 Function pointer types, written using the `fn` keyword, refer to a function
@@ -575,6 +578,13 @@ impl Printable for String {
 
 The notation `&self` is a shorthand for `self: &Self`.
 
+[Fn]: ../std/ops/trait.Fn.html
+[FnMut]: ../std/ops/trait.FnMut.html
+[FnOnce]: ../std/ops/trait.FnOnce.html
+[Copy]: special-types-and-traits.html#copy
+[Clone]: special-types-and-traits.html#clone
+[Send]: special-types-and-traits.html#send
+[Sync]: special-types-and-traits.html#sync
 [dynamically sized types]: dynamically-sized-types.html
 [RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
