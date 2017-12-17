@@ -1,7 +1,7 @@
 # Statements
 
-A _statement_ is a component of a block, which is in turn a component of an
-outer [expression](expressions.html) or [function](items/functions.html).
+A *statement* is a component of a [block], which is in turn a component of an
+outer [expression] or [function].
 
 Rust has two kinds of statement: [declaration
 statements](#declaration-statements) and [expression
@@ -9,25 +9,40 @@ statements](#expression-statements).
 
 ## Declaration statements
 
-A _declaration statement_ is one that introduces one or more *names* into the
+A *declaration statement* is one that introduces one or more *names* into the
 enclosing statement block. The declared names may denote new variables or new
-items.
+[items][item].
+
+The two kinds of declaration statements are item declarations and `let`
+statements.
 
 ### Item declarations
 
-An _item declaration statement_ has a syntactic form identical to an
-[item](items.html) declaration within a module. Declaring an item &mdash; a
-function, enumeration, struct, type, static, trait, implementation or module
-&mdash; locally within a statement block is simply a way of restricting its
-scope to a narrow region containing all of its uses; it is otherwise identical
-in meaning to declaring the item outside the statement block.
+An *item declaration statement* has a syntactic form identical to an
+[item declaration][item] within a [module]. Declaring an item within a statement
+block restricts its scope to the block containing the statement. The item is not
+given a [canonical path] nor are any sub-items it may declare. The exception to
+this is that associated items defined by [implementations] are still accessible
+in outer scopes as long as the item and, if applicable, trait are accessible.
+It is otherwise identical in meaning to declaring the item inside a module.
 
-> **Note**: there is no implicit capture of the function's dynamic environment when
-> declaring a function-local item.
+There is no implicit capture of the containing function's generic parameters,
+parameters, and local variables. For example, `inner` may not access
+`outer_var`.
+
+```rust
+fn outer() {
+  let outer_var = true;
+
+  fn inner() { /* outer_var is not in scope here */ }
+
+  inner();
+}
+```
 
 ### `let` statements
 
-A _`let` statement_ introduces a new set of variables, given by a pattern. The
+A *`let` statement* introduces a new set of variables, given by a pattern. The
 pattern may be followed by a type annotation, and/or an initializer expression.
 When no type annotation is given, the compiler will infer the type, or signal
 an error if insufficient type information is available for definite inference.
@@ -36,13 +51,11 @@ declaration until the end of the enclosing block scope.
 
 ## Expression statements
 
-An _expression statement_ is one that evaluates an
-[expression](expressions.html) and ignores its result. As a rule, an expression
-statement's purpose is to trigger the effects of evaluating its expression.
-An expression that consists of only a [block
-expression](expressions/block-expr.html) or control flow expression,
-that doesn't end a block and evaluates to `()` can also be used as an
-expression statement by omitting the trailing semicolon.
+An *expression statement* is one that evaluates an [expression] and ignores its
+result. As a rule, an expression statement's purpose is to trigger the effects
+of evaluating its expression. An expression that consists of only a [block
+expression][block] or control flow expression and that does not end a block 
+can also be used as an expression statement by omitting the trailing semicolon.
 
 ```rust
 # let mut v = vec![1, 2, 3];
@@ -54,3 +67,11 @@ if v.is_empty() {
 }                 // Semicolon can be omitted.
 [1];              // Separate expression statement, not an indexing expression.
 ```
+
+[block]: expressions/block-expr.html
+[expression]: expressions.html
+[function]: items/functions.html
+[item]: items.html
+[module]: items/modules.html
+[canonical path]: path.html#canonical-paths
+[implementations]: items/implementations.html
