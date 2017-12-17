@@ -59,11 +59,26 @@ and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
+### Inherent Implementation
+
+An implementation that associates items directly to a type. These associated
+items are also called inherent: *inherent method*, *inherent function*,
+*inherent constant*.
+
+[More][inherent implementations].
+
+Contrast with [*trait implementation*][#trait-implementation].
+
 ### Initialized
 
 A variable is initialized if it has been assigned a value and hasn't since been
 moved from. All other memory locations are assumed to be initialized. Only
 unsafe Rust can create such a memory without initializing it.
+
+### Method
+
+An associated function that takes `Self`, `&Self`, `&mut Self` or `Box<Self>` as
+the first parameter. Can be called with the [method call operator]. 
 
 ### Nominal Types
 
@@ -125,17 +140,32 @@ Strings slices are always valid UTF-8.
 
 ### Trait
 
-A trait is a language item that is used for describing the functionalities a type must provide.
-It allows a type to make certain promises about its behavior.
+A trait is a language item that is used for describing the functionalities a
+type must provide. It allows a type to make certain promises about its behavior.
 
-Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
+Generic functions and generic structs can use traits to constrain, or bound,
+the types they accept.
+
+[More][traits].
+
+### Trait Implementation
+
+An implementation that associates items through a trait giving the implemented
+item the trait bound of the trait.
+
+[More][trait implementations].
+
+Contrast with [*inherent implementation*][#inherent-implementation]
 
 [alignment]: type-layout.html#size-and-alignment
 [enums]: items/enumerations.html
 [structs]: items/structs.html
 [unions]: items/unions.html
+[inherent implementations]: items/implementations.html#interent-implementations
+[trait implementations]: items/implementations.html#trait-implementations
 [trait objects]: types.html#trait-objects
 [implementations]: items/implementations.html
 [traits]: items/traits.html
 [object safety]: types.html#object-safety
 [trait objects]: types.html#trait-objects
+[method call operator]: expressions/method-call-expr.html
