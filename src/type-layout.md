@@ -264,12 +264,28 @@ For all other enumerations, the layout is unspecified.
 
 Likewise, combining two primitive representations together is unspecified.
 
+### The `align` Representation
+
+The `align` representation can be used on `struct`s and `union`s to raise the
+alignment of the type to a given value.
+
+Alignment is specified as a parameter in the form of `#[repr(align(x))]`. The
+alignment value must be a power of two of type `u32`. The `align` representation
+can raise the alignment of a type to be greater than it's primitive alignment,
+it cannot lower the alignment of a type.
+
+The `align` and `packed` representations cannot be applied on the same type and
+a `packed` type cannot transitively contain another `align`ed type.
+
 ### The `packed` Representation
 
 The `packed` representation can only be used on `struct`s and `union`s.
 
 It modifies the representation (either the default or `C`) by removing any
 padding bytes and forcing the alignment of the type to `1`.
+
+The `align` and `packed` representations cannot be applied on the same type and
+a `packed` type cannot transitively contain another `align`ed type.
 
 > Warning: Dereferencing an unaligned pointer is [undefined behaviour] and it is
 > possible to [safely create unaligned pointers to `packed` fields][27060].
