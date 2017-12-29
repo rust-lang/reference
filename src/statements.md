@@ -53,9 +53,13 @@ declaration until the end of the enclosing block scope.
 
 An *expression statement* is one that evaluates an [expression] and ignores its
 result. As a rule, an expression statement's purpose is to trigger the effects
-of evaluating its expression. An expression that consists of only a [block
-expression][block] or control flow expression and that does not end a block 
-can also be used as an expression statement by omitting the trailing semicolon.
+of evaluating its expression.
+
+An expression that consists of only a [block expression][block] or control flow
+expression, if used in a context where a statement is permitted, can omit the
+trailing semicolon. This can cause an ambiguity between it being parsed as a
+standalone statement and as a part of another expression; in this case, it is
+parsed as a statement.
 
 ```rust
 # let mut v = vec![1, 2, 3];
@@ -66,6 +70,21 @@ if v.is_empty() {
     v.remove(0);
 }                 // Semicolon can be omitted.
 [1];              // Separate expression statement, not an indexing expression.
+```
+
+When the trailing semicolon is omitted, the result must be type `()`.
+
+```rust
+// bad: the block's type is i32, not ()
+// Error: expected `()` because of default return type
+// if true {
+//   1
+// }
+
+// good: the block's type is i32
+if true {
+  1
+};
 ```
 
 [block]: expressions/block-expr.html
