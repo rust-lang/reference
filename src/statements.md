@@ -84,6 +84,8 @@ When the trailing semicolon is omitted, the result must be type `()`.
 // good: the block's type is i32
 if true {
   1
+} else {
+  2
 };
 ```
 
