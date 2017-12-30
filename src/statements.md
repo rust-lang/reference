@@ -94,5 +94,5 @@ if true {
 [function]: items/functions.html
 [item]: items.html
 [module]: items/modules.html
-[canonical path]: path.html#canonical-paths
+[canonical path]: paths.html#canonical-paths
 [implementations]: items/implementations.html
