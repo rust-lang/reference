@@ -34,6 +34,7 @@
         - [Traits](items/traits.md)
         - [Implementations](items/implementations.md)
         - [External blocks](items/external-blocks.md)
+    - [Associated Items](items/associated-items.md)
     - [Visibility and Privacy](visibility-and-privacy.md)
     - [Attributes](attributes.md)
 

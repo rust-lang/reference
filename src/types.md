@@ -554,8 +554,8 @@ Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
 
 ## Self types
 
-The special type `Self` has a meaning within traits and impls: it refers to
-the implementing type. For example, in:
+The special type `Self` has a meaning within traits and implementations: it
+refers to the implementing type. For example, in:
 
 ```rust
 pub trait From<T> {
@@ -584,7 +584,7 @@ impl Printable for String {
 }
 ```
 
-The notation `&self` is a shorthand for `self: &Self`.
+> Note: The notation `&self` is a shorthand for `self: &Self`.
 
 [Fn]: ../std/ops/trait.Fn.html
 [FnMut]: ../std/ops/trait.FnMut.html

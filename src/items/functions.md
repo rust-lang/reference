@@ -12,10 +12,10 @@ on completion.
 [type]: types.html
 
 When referred to, a _function_ yields a first-class *value* of the
-corresponding zero-sized [*function item type*][function item type], which
+corresponding zero-sized [*function item type*], which
 when called evaluates to a direct call to the function.
 
-[function item type]: types.html#function-item-types
+[*function item type*]: types.html#function-item-types
 
 For example, this is a simple function:
 ```rust

@@ -1,11 +1,11 @@
 # Traits
 
 A _trait_ describes an abstract interface that types can implement. This
-interface consists of associated items, which come in three varieties:
+interface consists of [associated items], which come in three varieties:
 
-- [functions](#associated-functions-and-methods)
-- [types](#associated-types)
-- [constants](#associated-constants)
+- [functions](items/associated-items.html#associated-functions-and-methods)
+- [types](items/associated-items.html#associated-types)
+- [constants](items/associated-items.html#associated-constants)
 
 All traits define an implicit type parameter `Self` that refers to "the type
 that is implementing this interface". Traits may also contain additional type
@@ -13,178 +13,6 @@ parameters. These type parameters (including `Self`) may be constrained by
 other traits and so forth as usual.
 
 Traits are implemented for specific types through separate [implementations].
-
-## Associated functions and methods
-
-Associated functions whose first parameter is named `self` are called methods
-and may be invoked using `.` notation (e.g., `x.foo()`) as well as the usual
-function call notation (`foo(x)`).
-
-Consider the following trait:
-
-```rust
-# type Surface = i32;
-# type BoundingBox = i32;
-trait Shape {
-    fn draw(&self, Surface);
-    fn bounding_box(&self) -> BoundingBox;
-}
-```
-
-This defines a trait with two methods. All values that have [implementations]
-of this trait in scope can have their `draw` and `bounding_box` methods called,
-using `value.bounding_box()` [syntax]. Note that `&self` is short for `self:
-&Self`, and similarly, `self` is short for `self: Self` and  `&mut self` is
-short for `self: &mut Self`.
-
-[trait object]: types.html#trait-objects
-[implementations]: items/implementations.html
-[syntax]: expressions/method-call-expr.html
-
-Traits can include default implementations of methods, as in:
-
-```rust
-trait Foo {
-    fn bar(&self);
-    fn baz(&self) { println!("We called baz."); }
-}
-```
-
-Here the `baz` method has a default implementation, so types that implement
-`Foo` need only implement `bar`. It is also possible for implementing types to
-override a method that has a default implementation.
-
-Type parameters can be specified for a trait to make it generic. These appear
-after the trait name, using the same syntax used in [generic
-functions](items/functions.html#generic-functions).
-
-```rust
-trait Seq<T> {
-    fn len(&self) -> u32;
-    fn elt_at(&self, n: u32) -> T;
-    fn iter<F>(&self, F) where F: Fn(T);
-}
-```
-
-Associated functions may lack a `self` argument, sometimes called 'static
-methods'. This means that they can only be called with function call syntax
-(`f(x)`) and not method call syntax (`obj.f()`). The way to refer to the name
-of a static method is to qualify it with the trait name or type name, treating
-the trait name like a module. For example:
-
-```rust
-trait Num {
-    fn from_i32(n: i32) -> Self;
-}
-impl Num for f64 {
-    fn from_i32(n: i32) -> f64 { n as f64 }
-}
-let x: f64 = Num::from_i32(42);
-let x: f64 = f64::from_i32(42);
-```
-
-## Associated Types
-
-It is also possible to define associated types for a trait. Consider the
-following example of a `Container` trait. Notice how the type is available for
-use in the method signatures:
-
-```rust
-trait Container {
-    type E;
-    fn empty() -> Self;
-    fn insert(&mut self, Self::E);
-}
-```
-
-In order for a type to implement this trait, it must not only provide
-implementations for every method, but it must specify the type `E`. Here's an
-implementation of `Container` for the standard library type `Vec`:
-
-```rust
-# trait Container {
-#     type E;
-#     fn empty() -> Self;
-#     fn insert(&mut self, Self::E);
-# }
-impl<T> Container for Vec<T> {
-    type E = T;
-    fn empty() -> Vec<T> { Vec::new() }
-    fn insert(&mut self, x: T) { self.push(x); }
-}
-```
-
-## Associated Constants
-
-A trait can define constants like this:
-
-```rust
-trait Foo {
-    const ID: i32;
-}
-
-impl Foo for i32 {
-    const ID: i32 = 1;
-}
-
-fn main() {
-    assert_eq!(1, i32::ID);
-}
-```
-
-Any implementor of `Foo` will have to define `ID`. Without the definition:
-
-```rust,compile_fail,E0046
-trait Foo {
-    const ID: i32;
-}
-
-impl Foo for i32 {
-}
-```
-
-gives
-
-```text
-error: not all trait items implemented, missing: `ID` [E0046]
-     impl Foo for i32 {
-     }
-```
-
-A default value can be implemented as well:
-
-```rust
-trait Foo {
-    const ID: i32 = 1;
-}
-
-impl Foo for i32 {
-}
-
-impl Foo for i64 {
-    const ID: i32 = 5;
-}
-
-fn main() {
-    assert_eq!(1, i32::ID);
-    assert_eq!(5, i64::ID);
-}
-```
-
-As you can see, when implementing `Foo`, you can leave it unimplemented, as
-with `i32`. It will then use the default value. But, as in `i64`, we can also
-add our own definition.
-
-Associated constants don’t have to be associated with a trait. An `impl` block
-for a `struct` or an `enum` works fine too:
-
-```rust
-struct Foo;
-
-impl Foo {
-    const FOO: u32 = 3;
-}
-```
 
 ## Trait bounds
 
@@ -212,6 +40,20 @@ fn draw_twice<T: Shape>(surface: Surface, sh: T) {
 fn draw_figure<U: Shape>(surface: Surface, Figure(sh1, sh2): Figure<U>) {
     sh1.draw(surface);
     draw_twice(surface, sh2); // Can call this since U: Shape
+}
+```
+
+## Generic Traits
+
+Type parameters can be specified for a trait to make it generic. These appear
+after the trait name, using the same syntax used in [generic
+functions](items/functions.html#generic-functions).
+
+```rust
+trait Seq<T> {
+    fn len(&self) -> u32;
+    fn elt_at(&self, n: u32) -> T;
+    fn iter<F>(&self, F) where F: Fn(T);
 }
 ```
 
@@ -302,3 +144,4 @@ let nonsense = mycircle.radius() * mycircle.area();
 [explicit]: expressions/operator-expr.html#type-cast-expressions
 [methods called]: expressions/method-call-expr.html
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
+[associated items]: items/associated-items.html
