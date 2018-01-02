@@ -146,11 +146,8 @@ let slice: &[i32] = &boxed_array[..];
 All elements of arrays and slices are always initialized, and access to an
 array or slice is always bounds-checked in safe methods and operators.
 
-> Note: The [`Vec<T>`] standard library type provides a heap allocated resizable
+> Note: The [`Vec<T>`] standard library type provides a heap-allocated resizable
 > array type.
-
-[dynamically sized type]: dynamically-sized-types.html
-[`Vec<T>`]: ../std/vec/struct.Vec.html
 
 ## Struct types
 
@@ -174,9 +171,8 @@ A _tuple struct_ type is just like a struct type, except that the fields are
 anonymous.
 
 A _unit-like struct_ type is like a struct type, except that it has no fields.
-The one value constructed by the associated [struct
-expression](expressions/struct-expr.html) is the only value that
-inhabits such a type.
+The one value constructed by the associated [struct expression] is the only
+value that inhabits such a type.
 
 [^structtype]: `struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.
@@ -368,8 +364,8 @@ x = bo(5,7);
 
 ## Closure types
 
-A [closure expression](expressions/closure-expr.html) produces a closure
-value with a unique, anonymous type that cannot be written out.
+A [closure expression] produces a closure value with a unique, anonymous type
+that cannot be written out.
 
 Depending on the requirements of the closure, its type implements one or
 more of the closure traits:
@@ -390,8 +386,8 @@ more of the closure traits:
     moved in the body of the closure. `Fn` inherits from `FnMut`, which itself
     inherits from `FnOnce`.
 
-Closures that don't use anything from their environment ("non capturing
-closures") can be coerced to function pointers (`fn`) with the matching
+Closures that don't use anything from their environment, called *non-capturing
+closures*, can be coerced to function pointers (`fn`) with the matching
 signature. To adopt the example from the section above:
 
 ```rust
@@ -406,10 +402,37 @@ x = bo(5,7);
 
 ## Trait objects
 
-In Rust, trait names also refer to [dynamically sized types] called _trait
-objects_. Like all <abbr title="dynamically sized types">DSTs</abbr>, trait
-objects are used behind some type of pointer; for example `&SomeTrait` or
-`Box<SomeTrait>`. Each instance of a pointer to a trait object includes:
+A *trait object* is an opaque value of another type that implements a set of
+traits. The set of traits is made up of an [object safe] *base trait* plus any
+number of [auto traits].
+
+Trait objects implement the base trait, its auto traits, and any super traits
+of the base trait.
+
+Trait objects are written as the path to the base trait followed by the list
+of auto traits followed optionally by a lifetime bound all separated by `+`. For
+example, given a trait `Trait`, the following are all trait objects: `Trait`,
+`Trait + Send`, `Trait + Send + Sync`, `Trait + 'static`,
+`Trait + Send + 'static`.
+
+Two trait object types alias each other if the base traits alias each other and
+if the sets of auto traits are the same and the lifetime bounds are the same.
+For example, `Trait + Send + UnwindSafe` is the same as
+`Trait + Unwindsafe + Send`.
+
+> Warning: With two trait object types, even when the complete set of traits is
+> the same, if the base traits differ, the type is different. For example,
+> `Send + Sync` is a different type from `Sync + Send`. See [issue 33140].
+
+> Warning: Including the same auto trait multiple times is allowed, and each
+> instance is considered a unique type. As such, `Trait + Send` is a distinct
+> type than `Trait + Send + Send`. See [issue 47010].
+
+Due to the opaqueness of which concrete type the value is of, trait objects are
+[dynamically sized types]. Like all
+<abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
+behind some type of pointer; for example `&SomeTrait` or `Box<SomeTrait>`. Each
+instance of a pointer to a trait object includes:
 
  - a pointer to an instance of a type `T` that implements `SomeTrait`
  - a _virtual method table_, often just called a _vtable_, which contains, for
@@ -421,23 +444,6 @@ method on a trait object results in virtual dispatch at runtime: that is, a
 function pointer is loaded from the trait object vtable and invoked indirectly.
 The actual implementation for each vtable entry can vary on an object-by-object
 basis.
-
-Note that trait object types only exist for
-<span id="object-safety">*object-safe*</span> traits ([RFC 255]):
-
-* It must not require `Self: Sized`
-* All associated functions must either have a `where Self: Sized` bound or
-    * Not have any type parameters (lifetime parameters are allowed)
-    * Must be a method: its first parameter must be called self, with type
-      `Self`, `&Self`, `&mut Self`, `Box<Self>`.
-    * `Self` may only be used in the type of the receiver.
-* It must not have any associated constants.
-
-Given a pointer-typed expression `E` of type `&T` or `Box<T>`, where `T`
-implements trait `R`, casting `E` to the corresponding pointer type `&R` or
-`Box<R>` results in a value of the _trait object_ `R`. This result is
-represented as a pair of pointers: the vtable pointer for the `T`
-implementation of `R`, and the pointer value of `E`.
 
 An example of a trait object:
 
@@ -462,16 +468,18 @@ fn main() {
 In this example, the trait `Printable` occurs as a trait object in both the
 type signature of `print`, and the cast expression in `main`.
 
+### Trait Object Lifetime Bounds
+
 Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. The assumed lifetime of
-references held by a trait object is called its _default object lifetime bound_.
+references held by a trait object is called its *default object lifetime bound*.
 These were defined in [RFC 599] and amended in [RFC 1156].
 
 For traits that themselves have no lifetime parameters:
-* If there is a unique bound from the containing type then that is the default
-* If there is more than one bound from the containing type then an explicit bound must
-  be specified
-* Otherwise the default bound is `'static`
+* If there is a unique bound from the containing type then that is the default.
+* If there is more than one bound from the containing type then an explicit
+  bound must be specified.
+* Otherwise the default bound is `'static`.
 
 ```rust,ignore
 // For the following trait...
@@ -585,7 +593,14 @@ The notation `&self` is a shorthand for `self: &Self`.
 [Clone]: special-types-and-traits.html#clone
 [Send]: special-types-and-traits.html#send
 [Sync]: special-types-and-traits.html#sync
+[`Vec<T>`]: ../std/vec/struct.Vec.html
+[dynamically sized type]: dynamically-sized-types.html
 [dynamically sized types]: dynamically-sized-types.html
 [RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
-[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
+[struct expression]: expressions/struct-expr.html
+[closure expression]: expressions/closure-expr.html
+[auto traits]: special-types-and-traits.html#auto-traits
+[object safe]: items/traits.html#object-safety
+[issue 47010]: https://github.com/rust-lang/rust/issues/47010
+[issue 33140]: https://github.com/rust-lang/rust/issues/33140

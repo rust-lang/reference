@@ -215,26 +215,18 @@ fn draw_figure<U: Shape>(surface: Surface, Figure(sh1, sh2): Figure<U>) {
 }
 ```
 
-## Trait objects
+## Object Safety
 
-Traits also define a [trait object] with the same name as the trait. Values of
-this type are created by coercing from a pointer of some specific type to a
-pointer of trait type. For example, `&T` could be coerced to `&Shape` if `T:
-Shape` holds (and similarly for `Box<T>`). This coercion can either be implicit
-or [explicit]. Here is an example of an explicit coercion:
+Object safe traits can be the base trait of a [trait object]. A trait is
+*object safe* if it has the following qualities (defined in [RFC 255]):
 
-```rust
-trait Shape { }
-impl Shape for i32 { }
-let mycircle = 0i32;
-let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
-```
-
-The resulting value is a box containing the value that was cast, along with
-information that identifies the methods of the implementation that was used.
-Values with a trait type can have [methods called] on them, for any method in
-the trait, and can be used to instantiate type parameters that are bounded by
-the trait.
+* It must not require `Self: Sized`
+* All associated functions must either have a `where Self: Sized` bound or
+    * Not have any type parameters (although lifetime parameters are allowed)
+    * Must be a method: its first parameter must be called self, with type
+      `Self`, `&Self`, `&mut Self`, `Box<Self>`.
+    * `Self` may only be used in the type of the receiver.
+* It must not have any associated constants.
 
 ## Supertraits
 
@@ -302,6 +294,11 @@ let mycircle = Box::new(mycircle) as Box<Circle>;
 let nonsense = mycircle.radius() * mycircle.area();
 ```
 
+[`Send`]: ../std/marker/trait.Send.html
+[`Send`]: ../std/marker/trait.Sync.html
+[`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
+[`RefUnwindSafe`]: ../std/panic/trait.RefUnwindSafe.html
 [trait object]: types.html#trait-objects
 [explicit]: expressions/operator-expr.html#type-cast-expressions
 [methods called]: expressions/method-call-expr.html
+[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md

@@ -127,7 +127,7 @@ compiler, not by [implementation items].
 [`Sync`]: ../std/marker/trait.Sync.html
 
 [Arrays]: types.html#array-and-slice-types
-[call expressions]: expressoins/call-expr.html
+[call expressions]: expressions/call-expr.html
 [deref coercions]: type-coercions.html#coercion-types
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
 [destructor]: destructors.html
@@ -135,11 +135,11 @@ compiler, not by [implementation items].
 [dynamically sized type]: dynamically-sized-types.html
 [Function pointers]: types.html#function-pointer-types
 [function item types]: types.html#function-item-types
-[implementation items]: items.html/implementations.html
+[implementation items]: items/implementations.html
 [indexing expressions]: expressions/array-expr.html#array-and-slice-indexing-expressions
-[interior mutability]: iterior-mutability.html
+[interior mutability]: interior-mutability.html
 [Numeric types]: types.html#numeric-types
-[Methods]: items.html#associated-functions-and-methods
+[Methods]: items/traits.html#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.html
 [operators]: expressions/operator-expr.html
 [orphan rules]: items/implementations.html#trait-implementation-coherence

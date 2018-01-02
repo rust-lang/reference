@@ -114,7 +114,7 @@ following are true:
 * Interior mutability is required.
 
 [constant]: items/constant-items.html
-[interior mutable]: interior_mutability.html
+[interior mutable]: interior-mutability.html
 [IDENTIFIER]: identifiers.html
 [_Type_]: types.html
 [_Expression_]: expressions.html
