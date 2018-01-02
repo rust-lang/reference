@@ -403,13 +403,19 @@ A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
 number of [auto traits].
 
+Trait objects implement the base trait, its auto traits, and any super traits
+of the base trait.
+
 Trait objects are written as the path to the base trait followed by the list
-of auto traits all separated by `+`. For example, given a trait `Trait`, the
-following are all trait objects: `Trait`, `Trait + Send`, `Trait + Send + Sync`.
+of auto traits followed optionally by a lifetime bound all separated by `+`. For
+example, given a trait `Trait`, the following are all trait objects: `Trait`,
+`Trait + Send`, `Trait + Send + Sync`, `Trait + 'static`,
+`Trait + Send + 'static`.
 
 Two trait object types alias each other if the base traits alias each other and
-if the sets of auto traits are the same. For example,
-`Trait + Send + UnwindSafe` is the same as `Trait + Unwindsafe + Send`.
+if the sets of auto traits are the same and the lifetime bounds are the same.
+For example, `Trait + Send + UnwindSafe` is the same as
+`Trait + Unwindsafe + Send`.
 
 > Warning: With two trait object types, even when the complete set of traits is
 > the same, if the base traits differ, the type is different. For example,
