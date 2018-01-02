@@ -14,38 +14,68 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
-When resolving method calls on an expression of type `A`, Rust will use the
-following order, only looking at methods that are [visible]. If the type of `A`
-is a type parameter or `Self` in a trait definitition then steps 2-4 first
-consider traits from bounds on the type paramter, then the traits that are in
-scope. For other types, only the traits that are in scope are considered.
+When resolving method calls on an expression of type `A`, Rust looks up methods
+both on the type itself and the traits in implements. Additionally, unlike with
+non-method function calls, the `self` parameter is special and may be
+automatically dereferenced in order to resolve it. Rust uses the following
+process to resolve method calls.
 
-1. Inherent methods, with receiver of type `A`, `&A`, `&mut A`.
-1. Trait methods with receiver of type `A`.
-1. Trait methods with receiver of type `&A`.
-1. Trait methods with receiver of type `&mut A`.
-1. If it's possible, Rust will then repeat steps 1-5 with
-  `<A as std::ops::Deref>::Target`, and insert a dereference operator.
-1. If `A` is now an [array] type, then repeat steps 1-4 with the corresponding
-  slice type.
+First, Rust will attempt to build a list of candidate receiver types. It obtains
+these by repeatedly [dereferencing][dereference] the type, adding each type
+encountered to the list, then finally attempting an [unsized coercion] at the
+end, and adding the result type if that is successful. Then, for each candidate
+`T`, Rust adds `&T` and `&mut T` to the list immediately afterward.
 
-Note: In steps 1-4, the receiver is used, not the type of `Self` nor the
-type of `A`. For example:
+So, for instance, if `A` is `Box<[i32;2]>`, then the candidate types will be
+`Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by
+dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion),
+`&[i32]`, and finally `&mut [i32]`.
 
-```rust,ignore
-// `Self` is `&A`, receiver is `&A`.
-impl<'a> Trait for &'a A {
-    fn method(self) {}
+Then, for each candidate type `T`, Rust will search for a [visible] method with
+a receiver of that type in the following places:
+
+1. `T`'s inherent methods (methods implemented directly on `T`).
+1. Any of the methods provided by a trait implemented by `T`. If `T` is
+   a type parameter (including the `Self` parameter of a trait), then only
+   methods from the trait constraints on `T` are available for lookup. If `T` is
+   not, then methods from any in-scope trait are available.
+
+Note that the lookup is done for each type in order, which can occasionally lead
+to surprising results. The below code will print "In trait impl!", because
+`&self` methods are looked up first, the trait method is found before the
+struct's `&mut self` method is found.
+
+```rust
+struct Foo {}
+
+trait Bar {
+  fn bar(&self);
 }
-// If `A` is `&B`, then `Self` is `B` and the receiver is `A`.
-impl B {
-    fn method(&self) {}
+
+impl Foo {
+  fn bar(&mut self) {
+    println!("In struct impl!")
+  }
+}
+
+impl Bar for Foo {
+  fn bar(&self) {
+    println!("In trait impl!")
+  }
+}
+
+fn main() {
+  let mut f = Foo{};
+  f.bar();
 }
 ```
 
-Another note: this process does not use the mutability or lifetime of the
-receiver, or whether `unsafe` methods can currently be called to resolve
-methods. These constraints instead lead to compiler errors.
+If this results in multiple possible candidates, then it is an error, and the
+receiver must be [converted][disambiguate call] to an appropriate receiver type
+to make the method call.
+
+The lookup process does not take into account the mutability or lifetime of the
+receiver, or whether a method is `unsafe`. Once a method is looked up.
 
 If a step is reached where there is more than one possible method, such as where
 generic methods or traits are considered the same, then it is a compiler
@@ -64,4 +94,5 @@ and function invocation.
 [visible]: visibility-and-privacy.html
 [array]: types.html#array-and-slice-types
 [trait objects]: types.html#trait-objects
-[disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
+[disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
+[dereference]: expressions/operator-expr.html#the-dereference-operator
