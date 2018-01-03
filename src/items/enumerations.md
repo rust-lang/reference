@@ -67,7 +67,7 @@ If there is no data attached to *any* of the variants of an enumeration,
 then the discriminant can be directly chosen and accessed.
 
 These enumerations can be cast to integer types with the `as` operator by a
-[numeric cast]. The enumeration can optionaly specify which integer each
+[numeric cast]. The enumeration can optionally specify which integer each
 discriminant gets by following the variant name with `=` and then an integer
 literal. If the first variant in the declaration is unspecified, then it is set
 to zero. For every unspecified discriminant, it is set to one higher than the
