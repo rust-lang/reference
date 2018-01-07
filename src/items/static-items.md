@@ -59,50 +59,6 @@ unsafe fn bump_levels_unsafe2() -> u32 {
 Mutable statics have the same restrictions as normal statics, except that the
 type does not have to implement the `Sync` trait.
 
-## `'static` lifetime elision
-
-Both constant and static declarations of reference types have *implicit*
-`'static` lifetimes unless an explicit lifetime is specified. As such, the
-constant declarations involving `'static` above may be written without the
-lifetimes. Returning to our previous example:
-
-```rust
-const BIT1: u32 = 1 << 0;
-const BIT2: u32 = 1 << 1;
-
-const BITS: [u32; 2] = [BIT1, BIT2];
-const STRING: &str = "bitstring";
-
-struct BitsNStrings<'a> {
-    mybits: [u32; 2],
-    mystring: &'a str,
-}
-
-const BITS_N_STRINGS: BitsNStrings = BitsNStrings {
-    mybits: BITS,
-    mystring: STRING,
-};
-```
-
-Note that if the `static` or `const` items include function or closure
-references, which themselves include references, the compiler will first try
-the standard elision rules ([see discussion in the nomicon][elision-nomicon]).
-If it is unable to resolve the lifetimes by its usual rules, it will default to
-using the `'static` lifetime. By way of example:
-
-```rust,ignore
-// Resolved as `fn<'a>(&'a str) -> &'a str`.
-const RESOLVED_SINGLE: fn(&str) -> &str = ..
-
-// Resolved as `Fn<'a, 'b, 'c>(&'a Foo, &'b Bar, &'c Baz) -> usize`.
-const RESOLVED_MULTIPLE: Fn(&Foo, &Bar, &Baz) -> usize = ..
-
-// There is insufficient information to bound the return reference lifetime
-// relative to the argument lifetimes, so the signature is resolved as
-// `Fn(&'static Foo, &'static Bar) -> &'static Baz`.
-const RESOLVED_STATIC: Fn(&Foo, &Bar) -> &Baz = ..
-```
-
 ## Using Statics or Consts
 
 In can be confusing whether or not you should use a constant item or a static
@@ -118,4 +74,3 @@ following are true:
 [IDENTIFIER]: identifiers.html
 [_Type_]: types.html
 [_Expression_]: expressions.html
-[elision-nomicon]: ../nomicon/lifetime-elision.html
