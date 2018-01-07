@@ -14,36 +14,36 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
-When resolving method calls on an expression of type `A`, Rust looks up methods
-both on the type itself and the traits in implements. Additionally, unlike with
-non-method function calls, the `self` parameter is special and may be
-automatically dereferenced in order to resolve it. Rust uses the following
-process to resolve method calls.
+When resolving method calls on an expression of type `A`, that expression will
+be the `self` parameter. This  parameter is special and, unlike with other
+parameters to methods or other functions, may be automatically dereferenced or
+borrowed in order to call a method. This requires a more complex lookup process,
+since there may be a number of possible methods to call. The following procedure
+is used:
 
-First, Rust will attempt to build a list of candidate receiver types. It obtains
+The first step is to build a list of candidate receiver types. Obtain
 these by repeatedly [dereferencing][dereference] the type, adding each type
 encountered to the list, then finally attempting an [unsized coercion] at the
 end, and adding the result type if that is successful. Then, for each candidate
-`T`, Rust adds `&T` and `&mut T` to the list immediately afterward.
+`T`, add `&T` and `&mut T` to the list immediately after `T`.
 
-So, for instance, if `A` is `Box<[i32;2]>`, then the candidate types will be
+For instance, if `A` is `Box<[i32;2]>`, then the candidate types will be
 `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by
 dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion),
 `&[i32]`, and finally `&mut [i32]`.
 
-Then, for each candidate type `T`, Rust will search for a [visible] method with
+Then, for each candidate type `T`, search for a [visible] method with
 a receiver of that type in the following places:
 
 1. `T`'s inherent methods (methods implemented directly on `T`).
-1. Any of the methods provided by a trait implemented by `T`. If `T` is
-   a type parameter (including the `Self` parameter of a trait), then only
-   methods from the trait constraints on `T` are available for lookup. If `T` is
-   not, then methods from any in-scope trait are available.
+1. Any of the methods provided by a [visible] trait implemented by `T`. If `T`
+   is a type parameter, methods provided by trait bounds on `T` are looked up
+   first. Then all remaining methods in scope are looked up.
 
-Note that the lookup is done for each type in order, which can occasionally lead
-to surprising results. The below code will print "In trait impl!", because
-`&self` methods are looked up first, the trait method is found before the
-struct's `&mut self` method is found.
+    Note: the lookup is done for each type in order, which can occasionally lead
+    to surprising results. The below code will print "In trait impl!", because
+    `&self` methods are looked up first, the trait method is found before the
+    struct's `&mut self` method is found.
 
 ```rust
 struct Foo {}
@@ -74,8 +74,10 @@ If this results in multiple possible candidates, then it is an error, and the
 receiver must be [converted][disambiguate call] to an appropriate receiver type
 to make the method call.
 
-The lookup process does not take into account the mutability or lifetime of the
-receiver, or whether a method is `unsafe`. Once a method is looked up.
+This process does not take into account the mutability or lifetime of the
+receiver, or whether a method is `unsafe`. Once a method is looked up, if it
+can't be called for one (or more) of those reasons, the result is a compiler
+error.
 
 If a step is reached where there is more than one possible method, such as where
 generic methods or traits are considered the same, then it is a compiler
