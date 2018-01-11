@@ -1,12 +1,11 @@
 # Method-call expressions
 
-A _method call_ consists of an expression followed by a single dot, an
-[identifier], and a parenthesized expression-list. Method
-calls are resolved to methods on specific traits, either statically dispatching
-to a method if the exact `self`-type of the left-hand-side is known, or
-dynamically dispatching if the left-hand-side expression is an indirect [trait
-object](types.html#trait-objects). Method call expressions will automatically
-take a shared or mutable borrow of the receiver if needed.
+A _method call_ consists of an expression (the *receiver*) followed by a single
+dot, an [identifier], and a parenthesized expression-list. Method calls are
+resolved to methods on specific traits, either statically dispatching to a
+method if the exact `self`-type of the left-hand-side is known, or dynamically
+dispatching if the left-hand-side expression is an indirect [trait
+object](types.html#trait-objects).
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -14,21 +13,19 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
-When resolving method calls on an expression of type `A`, that expression will
-be the `self` parameter. This  parameter is special and, unlike with other
-parameters to methods or other functions, may be automatically dereferenced or
-borrowed in order to call a method. This requires a more complex lookup process,
-since there may be a number of possible methods to call. The following procedure
-is used:
+When looking up a method call, the receiver may be automatically dereferenced or
+borrowed in order to call a method. This requires a more complex lookup process
+than for other functions, since there may be a number of possible methods to
+call. The following procedure is used:
 
 The first step is to build a list of candidate receiver types. Obtain
-these by repeatedly [dereferencing][dereference] the type, adding each type
-encountered to the list, then finally attempting an [unsized coercion] at the
-end, and adding the result type if that is successful. Then, for each candidate
-`T`, add `&T` and `&mut T` to the list immediately after `T`.
+these by repeatedly [dereferencing][dereference] the receiver expression's type,
+adding each type encountered to the list, then finally attempting an [unsized
+coercion] at the end, and adding the result type if that is successful. Then,
+for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
 
-For instance, if `A` is `Box<[i32;2]>`, then the candidate types will be
-`Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by
+For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types
+will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by
 dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion),
 `&[i32]`, and finally `&mut [i32]`.
 
@@ -40,35 +37,35 @@ a receiver of that type in the following places:
    is a type parameter, methods provided by trait bounds on `T` are looked up
    first. Then all remaining methods in scope are looked up.
 
-    Note: the lookup is done for each type in order, which can occasionally lead
-    to surprising results. The below code will print "In trait impl!", because
-    `&self` methods are looked up first, the trait method is found before the
-    struct's `&mut self` method is found.
-
-```rust
-struct Foo {}
-
-trait Bar {
-  fn bar(&self);
-}
-
-impl Foo {
-  fn bar(&mut self) {
-    println!("In struct impl!")
-  }
-}
-
-impl Bar for Foo {
-  fn bar(&self) {
-    println!("In trait impl!")
-  }
-}
-
-fn main() {
-  let mut f = Foo{};
-  f.bar();
-}
-```
+> Note: the lookup is done for each type in order, which can occasionally lead
+> to surprising results. The below code will print "In trait impl!", because
+> `&self` methods are looked up first, the trait method is found before the
+> struct's `&mut self` method is found.
+>
+> ```rust
+> struct Foo {}
+>
+> trait Bar {
+>   fn bar(&self);
+> }
+>
+> impl Foo {
+>   fn bar(&mut self) {
+>     println!("In struct impl!")
+>   }
+> }
+>
+> impl Bar for Foo {
+>   fn bar(&self) {
+>     println!("In trait impl!")
+>   }
+> }
+>
+> fn main() {
+>   let mut f = Foo{};
+>   f.bar();
+> }
+> ```
 
 If this results in multiple possible candidates, then it is an error, and the
 receiver must be [converted][disambiguate call] to an appropriate receiver type

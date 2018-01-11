@@ -155,10 +155,10 @@ relate to converting sized types to unsized types, and are permitted in a few
 cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
-Two traits, `Unsized` and `CoerceUnsized`, are used to assist in this process
-and expose it for library use. The compiler following coercions are built-in
-and, if `T` can be coerced to `U` with one of the, then the compiler will
-provide an implementation of `Unsized<U>` for `T`:
+Two traits, [`Unsize`](Unsize) and [`CoerceUnsized`](CoerceUnsized), are used
+to assist in this process and expose it for library use. The compiler following
+coercions are built-in and, if `T` can be coerced to `U` with one of the, then
+the compiler will provide an implementation of `Unsize<U>` for `T`:
 
 * `[T; n]` to `[T]`.
 
@@ -167,15 +167,18 @@ provide an implementation of `Unsized<U>` for `T`:
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
-    * `T` implements `Unsized<U>`.
+    * `T` implements `Unsize<U>`.
     * The last field of `Foo` has a type involving `T`.
     * If that field has type `Bar<T>`, then `Bar<T>` implements `Unsized<Bar<U>>`.
     * T is not part of the type of any other fields.
 
 Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T`
-implements `Unsized<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide a
+implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide a
 unsized coercion to `Foo<U>`.
 
-    Note: While the definition of the unsized coercions and their implementation
-    has been stabilized, the traits themselves are not yet stable and therefore
-    can't be used directly in stable Rust.
+> Note: While the definition of the unsized coercions and their implementation
+> has been stabilized, the traits themselves are not yet stable and therefore
+> can't be used directly in stable Rust.
+
+[Unsize]: ../std/marker/trait.Unsize.html
+[CoerceUnsized]: ../std/ops/trait.CoerceUnsized.html
