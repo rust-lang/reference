@@ -1,12 +1,11 @@
 # Method-call expressions
 
-A _method call_ consists of an expression followed by a single dot, an
-[identifier], and a parenthesized expression-list. Method
-calls are resolved to methods on specific traits, either statically dispatching
-to a method if the exact `self`-type of the left-hand-side is known, or
-dynamically dispatching if the left-hand-side expression is an indirect [trait
-object](types.html#trait-objects). Method call expressions will automatically
-take a shared or mutable borrow of the receiver if needed.
+A _method call_ consists of an expression (the *receiver*) followed by a single
+dot, an [identifier], and a parenthesized expression-list. Method calls are
+resolved to methods on specific traits, either statically dispatching to a
+method if the exact `self`-type of the left-hand-side is known, or dynamically
+dispatching if the left-hand-side expression is an indirect [trait
+object](types.html#trait-objects).
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -14,38 +13,68 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 # assert!(1.14 < log_pi && log_pi < 1.15)
 ```
 
-When resolving method calls on an expression of type `A`, Rust will use the
-following order, only looking at methods that are [visible]. If the type of `A`
-is a type parameter or `Self` in a trait definitition then steps 2-4 first
-consider traits from bounds on the type paramter, then the traits that are in
-scope. For other types, only the traits that are in scope are considered.
+When looking up a method call, the receiver may be automatically dereferenced or
+borrowed in order to call a method. This requires a more complex lookup process
+than for other functions, since there may be a number of possible methods to
+call. The following procedure is used:
 
-1. Inherent methods, with receiver of type `A`, `&A`, `&mut A`.
-1. Trait methods with receiver of type `A`.
-1. Trait methods with receiver of type `&A`.
-1. Trait methods with receiver of type `&mut A`.
-1. If it's possible, Rust will then repeat steps 1-5 with
-  `<A as std::ops::Deref>::Target`, and insert a dereference operator.
-1. If `A` is now an [array] type, then repeat steps 1-4 with the corresponding
-  slice type.
+The first step is to build a list of candidate receiver types. Obtain
+these by repeatedly [dereferencing][dereference] the receiver expression's type,
+adding each type encountered to the list, then finally attempting an [unsized
+coercion] at the end, and adding the result type if that is successful. Then,
+for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
 
-Note: In steps 1-4, the receiver is used, not the type of `Self` nor the
-type of `A`. For example:
+For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types
+will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by
+dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion),
+`&[i32]`, and finally `&mut [i32]`.
 
-```rust,ignore
-// `Self` is `&A`, receiver is `&A`.
-impl<'a> Trait for &'a A {
-    fn method(self) {}
-}
-// If `A` is `&B`, then `Self` is `B` and the receiver is `A`.
-impl B {
-    fn method(&self) {}
-}
-```
+Then, for each candidate type `T`, search for a [visible] method with
+a receiver of that type in the following places:
 
-Another note: this process does not use the mutability or lifetime of the
-receiver, or whether `unsafe` methods can currently be called to resolve
-methods. These constraints instead lead to compiler errors.
+1. `T`'s inherent methods (methods implemented directly on `T`).
+1. Any of the methods provided by a [visible] trait implemented by `T`. If `T`
+   is a type parameter, methods provided by trait bounds on `T` are looked up
+   first. Then all remaining methods in scope are looked up.
+
+> Note: the lookup is done for each type in order, which can occasionally lead
+> to surprising results. The below code will print "In trait impl!", because
+> `&self` methods are looked up first, the trait method is found before the
+> struct's `&mut self` method is found.
+>
+> ```rust
+> struct Foo {}
+>
+> trait Bar {
+>   fn bar(&self);
+> }
+>
+> impl Foo {
+>   fn bar(&mut self) {
+>     println!("In struct impl!")
+>   }
+> }
+>
+> impl Bar for Foo {
+>   fn bar(&self) {
+>     println!("In trait impl!")
+>   }
+> }
+>
+> fn main() {
+>   let mut f = Foo{};
+>   f.bar();
+> }
+> ```
+
+If this results in multiple possible candidates, then it is an error, and the
+receiver must be [converted][disambiguate call] to an appropriate receiver type
+to make the method call.
+
+This process does not take into account the mutability or lifetime of the
+receiver, or whether a method is `unsafe`. Once a method is looked up, if it
+can't be called for one (or more) of those reasons, the result is a compiler
+error.
 
 If a step is reached where there is more than one possible method, such as where
 generic methods or traits are considered the same, then it is a compiler
@@ -64,4 +93,5 @@ and function invocation.
 [visible]: visibility-and-privacy.html
 [array]: types.html#array-and-slice-types
 [trait objects]: types.html#trait-objects
-[disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
+[disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
+[dereference]: expressions/operator-expr.html#the-dereference-operator

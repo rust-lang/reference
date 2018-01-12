@@ -38,6 +38,9 @@ sites are:
   }
   ```
 
+  For method calls, the receiver (`self` parameter) can only take advantage
+  of [unsized coercions](#unsafe-coercions).
+
 * Instantiations of struct or variant fields
 
   For example, `42` is coerced to have type `i8` in the following:
@@ -130,20 +133,52 @@ Coercion is allowed between the following types:
 
 * `&mut T` to `&mut U` if `T` implements `DerefMut<Target = U>`.
 
-* TyCtor(`T`) to TyCtor(coerce_inner(`T`)), where TyCtor(`T`) is one of
+* TyCtor(`T`) to TyCtor(`U`), where TyCtor(`T`) is one of
     - `&T`
     - `&mut T`
     - `*const T`
     - `*mut T`
     - `Box<T>`
 
-    and where
-    - coerce_inner(`[T, ..n]`) = `[T]`
-    - coerce_inner(`T`) = `U` where `T` is a concrete type which implements the
-    trait `U`.
+    and where `T` can obtained from `U` by [unsized coercion](#unsized-coercion).
 
     <!--In the future, coerce_inner will be recursively extended to tuples and
     structs. In addition, coercions from sub-traits to super-traits will be
     added. See [RFC 401] for more details.-->
 
 * Non capturing closures to `fn` pointers
+
+### Unsized Coercions
+
+The following coercions are called `unsized coercions`, since they
+relate to converting sized types to unsized types, and are permitted in a few
+cases where other coercions are not, as described above. They can still happen
+anywhere else a coercion can occur.
+
+Two traits, [`Unsize`](Unsize) and [`CoerceUnsized`](CoerceUnsized), are used
+to assist in this process and expose it for library use. The compiler following
+coercions are built-in and, if `T` can be coerced to `U` with one of the, then
+the compiler will provide an implementation of `Unsize<U>` for `T`:
+
+* `[T; n]` to `[T]`.
+
+* `T` to `U`, when `U` is a trait object type and either `T` implements `U` or
+  `T` is a trait object for a subtrait of `U`.
+
+* `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
+    * `Foo` is a struct.
+    * `T` implements `Unsize<U>`.
+    * The last field of `Foo` has a type involving `T`.
+    * If that field has type `Bar<T>`, then `Bar<T>` implements `Unsized<Bar<U>>`.
+    * T is not part of the type of any other fields.
+
+Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T`
+implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide a
+unsized coercion to `Foo<U>`.
+
+> Note: While the definition of the unsized coercions and their implementation
+> has been stabilized, the traits themselves are not yet stable and therefore
+> can't be used directly in stable Rust.
+
+[Unsize]: ../std/marker/trait.Unsize.html
+[CoerceUnsized]: ../std/ops/trait.CoerceUnsized.html
