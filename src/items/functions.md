@@ -142,7 +142,7 @@ branch of the conditional.
 ## Extern functions
 
 Extern functions are part of Rust's foreign function interface, providing the
-opposite functionality to [external blocks](items/external-blocks.html). Whereas external
+opposite functionality to [external blocks]. Whereas external
 blocks allow Rust code to call foreign code, extern functions with bodies
 defined in Rust code _can be called by foreign code_. They are defined in the
 same way as any other Rust function, except that they have the `extern`
@@ -165,4 +165,8 @@ same type as the functions declared in an extern block.
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-As non-Rust calling conventions do not support unwinding, unwinding past the end of an extern function will cause the process to abort (in LLVM, this is implemented by executing an illegal instruction).
+As non-Rust calling conventions do not support unwinding, unwinding past the end
+of an extern function will cause the process to abort. In LLVM, this is
+implemented by executing an illegal instruction.
+
+[external blocks]: items/external-blocks.html
