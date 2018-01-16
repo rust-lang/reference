@@ -7,7 +7,7 @@ implementations.
 
 Implementations are defined with the keyword `impl`.
 
-## Interent Implementations
+## Inherent Implementations
 
 An inherent implementation is defined as the sequence of the `impl` keyword,
 generic type declarations, a path to a nomial type, a where clause, and a
