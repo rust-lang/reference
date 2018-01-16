@@ -136,8 +136,8 @@ On `enum`s:
   representation. Takes one argument, which is the primitive
   type this enum should be represented for, or `C`, which specifies that it
   should be the default `enum` size of the C ABI for that platform. Note that
-  enum representation in C is undefined, and this may be incorrect when the C
-  code is compiled with certain flags.
+  enum representation in C is implementation-defined, and may not be compatible
+  when the C code is compiled with certain flags.
 
 On `struct`s:
 
