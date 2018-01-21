@@ -85,6 +85,7 @@
 - [Tools](tools.md)
     - [rustc](tools/rustc.md)
     - [rustdoc](tools/rustdoc.md)
+    - [cargo](tools/cargo.md)
 
 [Appendix: Influences](influences.md)
 

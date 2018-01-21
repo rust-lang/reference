@@ -12,3 +12,4 @@ source code.
 
 [rustc]: tools/rustc.html
 [rustdoc]: tools/rustdoc.html
+[cargo]: tools/cargo.html
