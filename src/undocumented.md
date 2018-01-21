@@ -14,9 +14,7 @@ to shrink!
   specified.
 - [Flexible target specification] - Some---but not all---flags are documented
   in [Conditional compilation]
-- [Require parentheses for chained comparisons]
 - [`dllimport`] - one element mentioned but not explained at [FFI attributes]
-- [define `crt_link`]
 - [define `unaligned_access`]
 
 [`libstd` facade]: https://github.com/rust-lang/rfcs/pull/40
@@ -24,10 +22,6 @@ to shrink!
 [Attributes on `match` arms]: https://github.com/rust-lang/rfcs/pull/49
 [Flexible target specification]: https://github.com/rust-lang/rfcs/pull/131
 [Conditional compilation]: attributes.html#conditional-compilation
-[Unambiguous function call syntax]: https://github.com/rust-lang/rfcs/pull/132
-[Require parentheses for chained comparisons]: https://github.com/rust-lang/rfcs/pull/558
-[Integer overflow not `unsafe`]: https://github.com/rust-lang/rfcs/pull/560
 [`dllimport`]: https://github.com/rust-lang/rfcs/pull/1717
 [FFI attributes]: attributes.html#ffi-attributes
-[define `crt_link`]: https://github.com/rust-lang/rfcs/pull/1721
 [define `unaligned_access`]: https://github.com/rust-lang/rfcs/pull/1725
