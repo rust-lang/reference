@@ -28,9 +28,6 @@ to let `safe` code exhibit these behaviors.
   * A discriminant in an `enum` not included in the type definition.
   * A value in a `char` which is a surrogate or above `char::MAX`.
   * Non-UTF-8 byte sequences in a `str`.
-* Unwinding into Rust from foreign code or unwinding from Rust into foreign
-  code. Rust's panic system is not compatible with exception handling in
-  other languages. Unwinding must be caught and handled at FFI boundaries.
 
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
