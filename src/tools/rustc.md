@@ -40,15 +40,10 @@ Providing the `-g` option is equivalent to `-C debuginfo=2`. If both `-g` and
 ### Optimization
 
 To produce optimized output, use the `-C opt-level=val` option, where `val`
-may be one of `0`, `1`, `2`, `3`. The nightly compiler will also accept `s`,
-or `z`. The default is `0`.
-  - `0-3` direct `rustc` to optimize for execution speed with `0` meaning no
-    optimizations, and `3` meaning aggressive optimization.
-  - `s` and `z` direct `rustc` to optimize for output size, with `s` meaning
-    typical size optimizations and `z` meaning aggressive size optimizations.
+may be one of `0`, `1`, `2`, `3`. The default is `0`.
+
+The numbers indicate increasing levels of optimization for execution speed,
+with `0` meaning no optimizations, and `3` meaning aggressive optimization.
 
 Providing the option `-O` is equivalent to `-C opt-level=2`. If both `-O` and
 `-C opt-level` are provided, the compiler will complain.
-
-If `s` or `z` are provided on a non-nightly compiler, the compiler will
-complain.
