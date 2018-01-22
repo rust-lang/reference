@@ -82,8 +82,7 @@
     - [Behavior considered undefined](behavior-considered-undefined.md)
     - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
 
-[Appendix: Influences](influences.md)
-
-[Appendix: As-yet-undocumented Features](undocumented.md)
-
-[Appendix: Glossary](glossary.md)
+- [Appendix]()
+    - [Influences](appendix/influences.md)
+    - [As-yet-undocumented Features](appendix/undocumented.md)
+    - [Glossary](appendix/glossary.md)
