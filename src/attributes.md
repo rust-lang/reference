@@ -196,10 +196,9 @@ fields, `since` and `note`.
 - `note` is a free text field, allowing you to provide an explanation about
   the deprecation and preferred alternatives.
 
-Public API items can be given the `#[deprecated]` attribute. This includes
-`fn`s, methods, trait and inherent `impl`s, `const`s, type definitions,
-`struct` fields, and `enum` variants. `#[deprecated]` on a module is inherited
-by all child items of that module.
+Only [public items](visibility-and-privacy.html) can be given the
+`#[deprecated]` attribute. `#[deprecated]` on a module is inherited by all
+child items of that module.
 
 `rustc` will issue warnings on usage of `#[deprecated]` items. `rustdoc` will
 show item deprecation, including the `since` version and `note`, if available.
