@@ -72,13 +72,13 @@ Types that can be referred to by a path directly. Specifically [enums],
 
 ### Object Safe Traits
 
-[Traits] that can be used as [trait objects]. Only traits that follow specifc
+[Traits] that can be used as [trait objects]. Only traits that follow specific
 [rules][object safety] are object safe. 
 
 ### Prelude
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
-imported into very module of every crate. The traits in the prelude are pervasive.
+imported into every module of every crate. The traits in the prelude are pervasive.
 
 ### Size
 
