@@ -84,7 +84,7 @@ type int8_t = i8;
 
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx
 
-### Module-only attributes
+## Module-only attributes
 
 - `no_implicit_prelude` - disable injecting `use std::prelude::*` in this
   module.
@@ -175,9 +175,6 @@ macro scope.
 
 ## Miscellaneous attributes
 
-- `deprecated` - mark the item as deprecated; the full attribute is
-  `#[deprecated(since = "crate version", note = "...")`, where both arguments
-  are optional.
 - `export_name` - on statics and functions, this determines the name of the
   exported symbol.
 - `link_section` - on statics and functions, this specifies the section of the
@@ -187,6 +184,37 @@ macro scope.
 - `must_use` - on structs and enums, will warn if a value of this type isn't used or
    assigned to a variable. You may also include an optional message by using
    `#[must_use = "message"]` which will be given alongside the warning.
+
+### Deprecation
+
+The `deprecated` attribute marks an item as deprecated. It has two optional
+fields, `since` and `note`.
+
+- `since` expects a version number, as in `#[deprecated(since = "1.4.1")]`
+    - `rustc` doesn't know anything about versions, but external tools like
+      `clippy` may check the validity of this field.
+- `note` is a free text field, allowing you to provide an explanation about
+  the deprecation and preferred alternatives.
+
+Only [public items](visibility-and-privacy.html) can be given the
+`#[deprecated]` attribute. `#[deprecated]` on a module is inherited by all
+child items of that module.
+
+`rustc` will issue warnings on usage of `#[deprecated]` items. `rustdoc` will
+show item deprecation, including the `since` version and `note`, if available.
+
+Here's an example.
+
+```rust
+#[deprecated(since = "5.2", note = "foo was rarely used. Users should instead use bar")]
+pub fn foo() {}
+
+pub fn bar() {}
+```
+
+The [RFC][1270-deprecation.md] contains motivations and more details.
+
+[1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
 
 ### Documentation
 
