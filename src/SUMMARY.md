@@ -82,6 +82,11 @@
     - [Behavior considered undefined](behavior-considered-undefined.md)
     - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
 
+- [Tools](tools.md)
+    - [rustc](tools/rustc.md)
+    - [rustdoc](tools/rustdoc.md)
+    - [cargo](tools/cargo.md)
+
 [Appendix: Influences](influences.md)
 
 [Appendix: As-yet-undocumented Features](undocumented.md)
