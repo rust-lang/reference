@@ -13,6 +13,7 @@
 > _MetaItem_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER  
 > &nbsp;&nbsp; | IDENTIFIER `=` LITERAL  
+> &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`  
 > &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`  
 > &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `,` `)`  
 >   
@@ -29,6 +30,8 @@ may appear as any of:
 
 * A single identifier, the attribute name
 * An identifier followed by the equals sign '=' and a literal, providing a
+  key/value pair
+* An identifier followed by a parenthesized literal, providing a
   key/value pair
 * An identifier followed by a parenthesized list of sub-attribute arguments
 
@@ -130,26 +133,8 @@ interpreted:
 - `linkage` - on a static, this specifies the [linkage
   type](http://llvm.org/docs/LangRef.html#linkage-types).
 
-On `enum`s:
-
-- `repr` - on C-like enums, this sets the underlying type used for
-  representation. Takes one argument, which is the primitive
-  type this enum should be represented for, or `C`, which specifies that it
-  should be the default `enum` size of the C ABI for that platform. Note that
-  enum representation in C is implementation-defined, and may not be compatible
-  when the C code is compiled with certain flags.
-
-On `struct`s:
-
-- `repr` - specifies the representation to use for this struct. Takes a list
-  of options. The currently accepted ones are `C` and `packed`, which may be
-  combined. `C` will use a C ABI compatible struct layout, and `packed` will
-  remove any padding between fields (note that this is very fragile and may
-  break platforms which require aligned access).
-
-On `union`s:
-
-- `repr` - Same as per `struct`.
+See [type layout](type-layout.html) for documentation on the `repr` attribute
+which can be used to control type layout.
 
 ## Macro-related attributes
 
