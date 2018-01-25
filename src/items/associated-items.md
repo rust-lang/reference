@@ -4,7 +4,7 @@
 [implementations]. They are called this because they are defined on an associate
 type &mdash; the type in the implementation. They are a subset of the kinds of
 items you can declare in a module. Specifically, there are [associated
-functions], [associated types], and [associated constants].
+functions] (including methods), [associated types], and [associated constants].
 
 [associated functions]: #associated-functions-and-methods
 [associated types]: #associated-types
@@ -14,15 +14,20 @@ Associated items are useful when the associated item logically is related to the
 associating item. For example, the `is_some` method on `Option` is intrinsically
 related to Options, so should be associated.
 
-Associated items are also the contract that traits have. 
+Every associated item kind comes in two varieties: definitions that contain the
+actual implementation and declarations that declare specifications for
+definitions.
+
+It is the declarations that make up the contract of traits and what it available
+on generic types.
 
 ## Associated functions and methods
 
 *Associated functions* are [functions] associated with a type.
 
-An *associated function declaration* is written as `fn`, then an [identifier]
-then optional generics, then `(` then a parameter list, then `)`, then
-optionally `->` and a type, then an optional where clause, then finally a `;`.
+An *associated function declaration* declares a specification for an associated
+function definition. It is written as a function item, except the
+function block is replaced with a `;`.
 
 The identifier if the name of the function. The generics declares types for
 usage in the rest of the function declaration. The generics, parameter list,
@@ -38,7 +43,7 @@ a value of the type the associated function is associated with.
 
 ```rust
 struct Struct {
-    field: i32;
+    field: i32
 }
 
 impl Struct {
@@ -50,9 +55,9 @@ impl Struct {
 }
 ```
 
-When the associated function is declared on a trait, the function can be called
-on the trait. When this happens, it is substituted for
-`<_ as Trait>::function_name`. 
+When the associated function is declared on a trait, the function can also be
+called on the trait. When this happens, it is substituted for
+`<_ as Trait>::function_name`.
 
 ```rust
 trait Num {
@@ -69,12 +74,13 @@ Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
 well as the usual function call notation.
 
-When the first parameter is named `self`, the following shorthands may be used:
+When the first parameter is named `self`, the following shorthands may be used.
 
 * `self` -> `self: Self`
-* `&self` -> `self: &Self`
-* `&mut self` -> `&mut Self`
-* `Box<self>` -> `self: Box<Self>`
+* `&'lifetime self` -> `self: &'lifetime Self`
+* `&'lifetime mut self` -> `&'lifetime mut Self`
+
+> Note: Lifetimes can be and usually are elided with this shorthand.
 
 Consider the following trait:
 
@@ -88,7 +94,8 @@ trait Shape {
 ```
 
 This defines a trait with two methods. All values that have [implementations]
-of this trait in scope can have their `draw` and `bounding_box` methods called.
+of this trait while the trait is in scope can have their `draw` and
+`bounding_box` methods called.
 
 ```rust
 # type Surface = i32;
@@ -104,11 +111,11 @@ struct Circle {
 
 impl Shape for Circle {
     // ...
-#   fn draw(&self, Surface) -> {}
-#   fn bounding_box(&self) -> BoundingBox { 0i32; }
+#   fn draw(&self, _: Surface) {}
+#   fn bounding_box(&self) -> BoundingBox { 0i32 }
 }
 
-# impl Box {
+# impl Circle {
 #     fn new() -> Circle { Circle{} }
 }
 
@@ -122,17 +129,20 @@ let bounding_box = circle_shape.bounding_box();
 types cannot be defined in [inherent implementations] nor can they be given a
 default implementation in traits.
 
-An *associated type declaration* is written as `type`, then an [identifier], and
+An *associated type declaration* declares a specification for associated type
+definitions. It is written as `type`, then an [identifier], and
 finally an optional trait bounds.
 
 The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
 
-An *associated type definition* is written as `type`, then an [identifier], then
-an `=`, and finally a [type].
+An *associated type definition* defines a type alias on another type. It is 
+written as `type`, then an [identifier], then an `=`, and finally a [type].
 
-If an item `Item` has an associated type `Assoc`, then `Item::Assoc` is a type
-that is an alias of the type specified in the associated type definition.
+If an item `Item` has an associated type `Assoc` from a trait `Trait`, then 
+`<Item as Trait>::Assoc` is a type that is an alias of the type specified in the
+associated type definition. Furthermore, `Item::Assoc` can be used in type
+parameters.
 
 ```rust
 trait AssociatedType {
@@ -156,14 +166,14 @@ impl OtherStruct {
 }
 
 fn main() {
-    // Usage of the associated type to refer to OtherStruct as Struct::Assoc
-    let _other_struct: OtherStruct = Struct::Assoc::new();
+    // Usage of the associated type to refer to OtherStruct as <Struct as AssociatedType>::Assoc
+    let _other_struct: OtherStruct = <Struct as AssociatedType>::Assoc::new();
 }
 ```
 
 ### Associated Types Container Example
 
-Consider the following example of a `Container` trait. Notice how the type is
+Consider the following example of a `Container` trait. Notice that the type is
 available for use in the method signatures:
 
 ```rust
@@ -195,14 +205,15 @@ impl<T> Container for Vec<T> {
 
 *Associated constants* are [constants] associated with a type.
 
-An *associated constant declaration* is written as `const`, then an identifier,
+An *associated constant declaration* declares a specificatoin for associated
+constant definitions. It is written as `const`, then an identifier,
 then `:`, then a type, finished by a `;`.
 
 The identifier is the name of the constant used in the path. The type is the
 type that the definition has to implement.
 
-An *associated constant definition* is written as a declaraction, but between
-the type and the `;`, there is an `=` followed by a [constant expression].
+An *associated constant definition* defines a constant associated with another
+type. It is written the same as a [constant item].
 
 ### Associated Constants Examples
 
@@ -247,14 +258,15 @@ fn main() {
 ```
 
 [trait]: items/traits.html
+[traits]: items/traits.html
 [type aliases]: items/type-aliases.html
 [inherent implementations]: items/implementations.html#inherent-implementations
 [identifier]: identifiers.html
 [trait object]: types.html#trait-objects
 [implementations]: items/implementations.html
 [type]: types.html
-[constants]: items/constants.html
-[constant expression]: expressions.html#constant-expressions
+[constants]: items/constant-items.html
+[constant item]: items/constant-items.html
 [functions]: items/functions.html
 [method call operator]: expressions/method-call-expr.html
 [block]: expressions/block-expr.html
