@@ -39,7 +39,7 @@ sites are:
   ```
 
   For method calls, the receiver (`self` parameter) can only take advantage
-  of [unsized coercions](#unsafe-coercions).
+  of [unsized coercions](#unsized-coercions).
 
 * Instantiations of struct or variant fields
 
@@ -140,7 +140,7 @@ Coercion is allowed between the following types:
     - `*mut T`
     - `Box<T>`
 
-    and where `T` can obtained from `U` by [unsized coercion](#unsized-coercion).
+    and where `T` can obtained from `U` by [unsized coercion](#unsized-coercions).
 
     <!--In the future, coerce_inner will be recursively extended to tuples and
     structs. In addition, coercions from sub-traits to super-traits will be
@@ -155,7 +155,7 @@ relate to converting sized types to unsized types, and are permitted in a few
 cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
-Two traits, [`Unsize`](Unsize) and [`CoerceUnsized`](CoerceUnsized), are used
+Two traits, [`Unsize`] and [`CoerceUnsized`], are used
 to assist in this process and expose it for library use. The compiler following
 coercions are built-in and, if `T` can be coerced to `U` with one of the, then
 the compiler will provide an implementation of `Unsize<U>` for `T`:
