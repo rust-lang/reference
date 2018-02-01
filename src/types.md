@@ -89,9 +89,8 @@ instantiated through a pointer type, such as `&str`.
 ## Never type
 
 The never type `!` is a type with no values, representing the result of
-computations that never complete. Although it has size `0` the empty bit
-pattern is not a valid representation. Expressions of type `!` can be coerced
-into any other type.
+computations that never complete. Expressions of type `!` can be coerced into
+any other type.
 
 ## Tuple types
 
