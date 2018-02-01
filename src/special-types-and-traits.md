@@ -150,5 +150,5 @@ compiler, not by [implementation items].
 [trait object]: types.html#trait-objects
 [Tuples]: types.html#tuple-types
 [Type parameters]: types.html#type-parameters
-[variance]: ../nomicon/subtyping.html
+[variance]: subtyping.html#variance
 [`!`]: types.html#never-type

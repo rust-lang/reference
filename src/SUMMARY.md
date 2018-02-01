@@ -65,7 +65,7 @@
     - [Dynamically Sized Types](dynamically-sized-types.md)
     - [Type layout](type-layout.md)
     - [Interior mutability](interior-mutability.md)
-    - [Subtyping](subtyping.md)
+    - [Subtyping and Variance](subtyping.md)
     - [Type coercions](type-coercions.md)
     - [Destructors](destructors.md)
     - [Lifetime elision](lifetime-elision.md)
