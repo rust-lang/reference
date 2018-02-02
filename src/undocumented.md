@@ -25,7 +25,6 @@ to shrink!
 [Flexible target specification]: https://github.com/rust-lang/rfcs/pull/131
 [Conditional compilation]: attributes.html#conditional-compilation
 [Unambiguous function call syntax]: https://github.com/rust-lang/rfcs/pull/132
-[Require parentheses for chained comparisons]: https://github.com/rust-lang/rfcs/pull/558
 [Integer overflow not `unsafe`]: https://github.com/rust-lang/rfcs/pull/560
 [`dllimport`]: https://github.com/rust-lang/rfcs/pull/1717
 [FFI attributes]: attributes.html#ffi-attributes
