@@ -36,6 +36,7 @@ The size of most primitives is given in this table.
 
 Type | `size_of::\<Type>()`
 - | - | -
+bool | 1
 u8 | 1
 u16 | 2
 u32 | 4
