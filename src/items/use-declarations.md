@@ -1,16 +1,13 @@
 # Use declarations
 
-> **<sup>Syntax:<sup>**  
+> **<sup>Syntax:</sup>**  
 > _UseDeclaration_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `use` [_SimplePath_]&nbsp;(`as` [IDENTIFIER])<sup>?</sup> `;`  
-> &nbsp;&nbsp; | `use` ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` _UseDeclarationItems_ `}` `;`  
-> &nbsp;&nbsp; | `use` ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*` `;`  
+> &nbsp;&nbsp; ([_Visibility_])<sup>?</sup> `use` _UseTree_ `;`  
 >  
-> _UseDeclarationItems_ :  
-> &nbsp;&nbsp; _UseDeclarationItem_ ( `,` _UseDeclarationItem_ )<sup>*</sup> `,`<sup>?<sup>  
->  
-> _UseDeclarationItem_ :  
-> &nbsp;&nbsp; ( `self` | [IDENTIFIER] ) ( `as` [IDENTIFIER] )<sup>?</sup>  
+> _UseTree_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`  
+> &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`  
+> &nbsp;&nbsp; | [_SimplePath_] `as` [IDENTIFIER]  
 
 A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
@@ -27,16 +24,17 @@ and [blocks], usually at the top.
 
 Use declarations support a number of convenient shortcuts:
 
-* Simultaneously binding a list of paths differing only in their final element,
-  using the glob-like brace syntax `use a::b::{c,d,e,f};`
-* Simultaneously binding a list of paths differing only in their final element
-  and their immediate parent module, using the `self` keyword, such as `use
-  a::b::{self, c, d};`
+* Simultaneously binding a list of paths with a common prefix, using the
+  glob-like brace syntax `use a::b::{c, d, e::f, g::h::i};`
+* Simultaneously binding a list of paths with a common prefix and their common
+  parent module, using the `self` keyword, such as `use a::b::{self, c, d::e};`
 * Rebinding the target name as a new local name, using the syntax `use p::q::r
-  as x;`. This can also be used with the last two features: `use a::b::{self as
-  ab, c as abc}`.
+  as x;`. This can also be used with the last two features:
+  `use a::b::{self as ab, c as abc}`.
 * Binding all paths matching a given prefix, using the asterisk wildcard syntax
-  `use a::b::*;`
+  `use a::b::*;`.
+* Nesting groups of the previous features multiple times, such as
+  `use a::b::{self as ab, c, d::{*, e::f}};`
 
 An example of `use` declarations:
 
@@ -126,3 +124,4 @@ fn main() {}
 
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html
+[_Visibility_]: visibility-and-privacy.html
