@@ -1,5 +1,15 @@
 # `match` expressions
 
+> **<sup>Syntax</sup>**  
+> _MatchExpression_ :  
+> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> _MatchBlock_  
+>  
+> _MatchBlock_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `{` `}`  
+> &nbsp;&nbsp; | `{` (`|`<sup>?</sup> _Pattern_ (`|` _Pattern_)<sup>\*</sup> (`if` [_Expression_])<sup>?</sup> `=>` ([_BlockExpression_] `,`<sup>?</sup> | [_Expression_] `,`))<sup>\*</sup>  
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; (`|`<sup>?</sup> _Pattern_ (`|` _Pattern_)<sup>\*</sup> (`if` [_Expression_])<sup>?</sup> `=>` ([_BlockExpression_] `,`<sup>?</sup> | [_Expression_] `,`<sup>?</sup>))  
+> &nbsp;&nbsp; &nbsp;&nbsp; `}`  
+
 A `match` expression branches on a *pattern*. The exact form of matching that
 occurs depends on the pattern. Patterns consist of some combination of
 literals, destructured arrays or enum constructors, structs and tuples,
@@ -127,5 +137,7 @@ let message = match maybe_digit {
 };
 ```
 
+[_Expression_]: expressions.html
+[_BlockExpression_]: expressions/block-expr.html#block-expressions
 [place expression]: expressions.html#place-expressions-and-value-expressions
 [value expression]: expressions.html#place-expressions-and-value-expressions
