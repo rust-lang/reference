@@ -106,7 +106,7 @@ Coercion is allowed between the following types:
 
 * `&mut T` to `*mut T`
 
-* `&T` to `&U` if `T` implements `Deref<Target = U>`. For example:
+* `&T` or `&mut T` to `&U` if `T` implements `Deref<Target = U>`. For example:
 
   ```rust
   use std::ops::Deref;
