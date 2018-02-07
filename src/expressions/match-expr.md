@@ -117,8 +117,7 @@ let message = match x {
 };
 ```
 
-Range patterns only work on scalar types (like integers and characters; not
-like arrays and structs, which have sub-components). A range pattern may not be
+Range patterns only work on `char` and numeric types. A range pattern may not be
 a sub-range of another range pattern inside the same `match`.
 
 Finally, match patterns can accept *pattern guards* to further refine the
