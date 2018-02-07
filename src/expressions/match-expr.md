@@ -117,8 +117,8 @@ let message = match x {
 };
 ```
 
-Range patterns only work on `char` and numeric types. A range pattern may not be
-a sub-range of another range pattern inside the same `match`.
+Range patterns only work on [`char`] and [numeric types]. A range pattern may
+not be a sub-range of another range pattern inside the same `match`.
 
 Finally, match patterns can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
@@ -140,3 +140,5 @@ let message = match maybe_digit {
 [_BlockExpression_]: expressions/block-expr.html#block-expressions
 [place expression]: expressions.html#place-expressions-and-value-expressions
 [value expression]: expressions.html#place-expressions-and-value-expressions
+[`char`]: types.html#textual-types
+[numeric types]: types.html#numeric-types
