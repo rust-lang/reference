@@ -25,7 +25,7 @@
 >  
 > _StructField_ :  
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>  
+> &nbsp;&nbsp; [_Visibility_]
 > &nbsp;&nbsp; [IDENTIFIER] `:` [_Type_]  
 >  
 > _TupleFields_ :  
@@ -33,7 +33,7 @@
 >  
 > _TupleField_ :  
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>  
+> &nbsp;&nbsp; [_Visibility_]
 > &nbsp;&nbsp; [_Type_]  
 
 A _struct_ is a nominal [struct type] defined with the keyword `struct`.
