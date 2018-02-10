@@ -216,4 +216,4 @@ expression `()`.
 [_Expression_]:      expressions.html
 [_BlockExpression_]: expressions/block-expr.html
 
-[LIFETIME_OR_LABEL]: tokens.html#symbols
+[LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
