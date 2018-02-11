@@ -227,8 +227,7 @@ preceded by the characters `U+0062` (`b`) and `U+0022` (double-quote), and
 followed by the character `U+0022`. If the character `U+0022` is present within
 the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
 Alternatively, a byte string literal can be a _raw byte string literal_, defined
-below. A byte string literal of length `n` is equivalent to a `&'static [u8; n]` borrowed fixed-sized array
-of unsigned 8-bit integers.
+below. The type of a byte string literal of length `n` is `&'static [u8; n]`.
 
 Some additional _escapes_ are available in either byte or non-raw byte string
 literals. An escape starts with a `U+005C` (`\`) and continues with one of the
