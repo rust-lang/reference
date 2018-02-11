@@ -411,7 +411,7 @@ a single integer literal.
 > **<sup>Lexer</sup>**  
 > FLOAT_LITERAL :  
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an identifier_)  
+>   _(not immediately followed by `.`, `_` or an [identifier]_)  
 > &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT  
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>  
 > &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
@@ -476,6 +476,16 @@ The representation semantics of floating-point numbers are described in
 
 The two values of the boolean type are written `true` and `false`.
 
+## Lifetimes and loop labels
+
+> **<sup>Lexer</sup>**  
+> LIFETIME_OR_LABEL:  
+> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER][identifier]
+
+Lifetime parameters and [loop labels] both use this syntax.
+
+[loop labels]: expressions/loop-expr.html
+
 ## Symbols
 
 Symbols are a general class of printable [tokens] that play structural
@@ -490,3 +500,4 @@ They are catalogued in [the Symbols section][symbols] of the Grammar document.
 [tokens]: #tokens
 [symbols]: ../grammar.html#symbols
 [keywords]: keywords.html
+[identifier]: identifiers.html
