@@ -15,7 +15,7 @@ associating item. For example, the `is_some` method on `Option` is intrinsically
 related to Options, so should be associated.
 
 Every associated item kind comes in two varieties: definitions that contain the
-actual implementation and declarations that declare specifications for
+actual implementation and declarations that declare signatures for
 definitions.
 
 It is the declarations that make up the contract of traits and what it available
@@ -25,20 +25,18 @@ on generic types.
 
 *Associated functions* are [functions] associated with a type.
 
-An *associated function declaration* declares a specification for an associated
+An *associated function declaration* declares a signature for an associated
 function definition. It is written as a function item, except the
-function block is replaced with a `;`.
+function body is replaced with a `;`.
 
-The identifier if the name of the function. The generics declares types for
-usage in the rest of the function declaration. The generics, parameter list,
-return type, and where clause must be the same in the associated function
-definition.
+The identifier if the name of the function. The generics, parameter list,
+return type, and where clause of the associated function must be the same as the
+associated function declarations's.
 
-An *associated function definiton* is written as an associated function
-declaration, but instead of a `;`, there is a [block] that evaluates to the
-return type.
+An *associated function definiton* defines a function associated with another
+type. It is written the same as a [function item].
 
-An example of a common associated function is the `new` function that returns
+An example of a common associated function is a `new` function that returns
 a value of the type the associated function is associated with.
 
 ```rust
@@ -53,21 +51,30 @@ impl Struct {
         }
     }
 }
+
+fn main () {
+    let _struct = Struct::new();
+}
 ```
 
 When the associated function is declared on a trait, the function can also be
-called on the trait. When this happens, it is substituted for
-`<_ as Trait>::function_name`.
+called with a [path] that is a path to the trait appended by the name of the
+trait. When this happens, it is substituted for `<_ as Trait>::function_name`.
 
 ```rust
 trait Num {
     fn from_i32(n: i32) -> Self;
 }
+
 impl Num for f64 {
     fn from_i32(n: i32) -> f64 { n as f64 }
 }
-let x: f64 = Num::from_i32(42);
-let x: f64 = f64::from_i32(42);
+
+// These 4 are all equivalent in this case.
+let _: f64 = Num::from_i32(42);
+let _: f64 = <_ as Num>::from_i32(42);
+let _: f64 = <f64 as Num>::from_i32(42);
+let _: f64 = f64::from_i32(42);
 ```
 
 Associated functions whose first parameter is named `self` are called *methods*
@@ -78,7 +85,7 @@ When the first parameter is named `self`, the following shorthands may be used.
 
 * `self` -> `self: Self`
 * `&'lifetime self` -> `self: &'lifetime Self`
-* `&'lifetime mut self` -> `&'lifetime mut Self`
+* `&'lifetime mut self` -> `self: &'lifetime mut Self`
 
 > Note: Lifetimes can be and usually are elided with this shorthand.
 
@@ -129,9 +136,9 @@ let bounding_box = circle_shape.bounding_box();
 types cannot be defined in [inherent implementations] nor can they be given a
 default implementation in traits.
 
-An *associated type declaration* declares a specification for associated type
+An *associated type declaration* declares a signature for associated type
 definitions. It is written as `type`, then an [identifier], and
-finally an optional trait bounds.
+finally an optional list of trait bounds.
 
 The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
@@ -139,10 +146,10 @@ must be fulfilled by the implementations of the type alias.
 An *associated type definition* defines a type alias on another type. It is 
 written as `type`, then an [identifier], then an `=`, and finally a [type].
 
-If an item `Item` has an associated type `Assoc` from a trait `Trait`, then 
+If a type `Item` has an associated type `Assoc` from a trait `Trait`, then 
 `<Item as Trait>::Assoc` is a type that is an alias of the type specified in the
-associated type definition. Furthermore, `Item::Assoc` can be used in type
-parameters.
+associated type definition. Furthermore, if `Item` is a type parameter, then 
+`Item::Assoc` can be used in type parameters.
 
 ```rust
 trait AssociatedType {
@@ -205,14 +212,14 @@ impl<T> Container for Vec<T> {
 
 *Associated constants* are [constants] associated with a type.
 
-An *associated constant declaration* declares a specificatoin for associated
+An *associated constant declaration* declares a signature for associated
 constant definitions. It is written as `const`, then an identifier,
 then `:`, then a type, finished by a `;`.
 
 The identifier is the name of the constant used in the path. The type is the
 type that the definition has to implement.
 
-An *associated constant definition* defines a constant associated with another
+An *associated constant definition* defines a constant associated with a
 type. It is written the same as a [constant item].
 
 ### Associated Constants Examples
@@ -270,3 +277,4 @@ fn main() {
 [functions]: items/functions.html
 [method call operator]: expressions/method-call-expr.html
 [block]: expressions/block-expr.html
+[path]: paths.html
