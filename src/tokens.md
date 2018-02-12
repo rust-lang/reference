@@ -294,10 +294,14 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > INTEGER_LITERAL :  
 > &nbsp;&nbsp; ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )
 >              INTEGER_SUFFIX<sup>?</sup>
->   
+>  
 > DEC_LITERAL :  
 > &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>  
 >  
+> TUPLE_INDEX :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `0`
+> &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>  
+>
 > BIN_LITERAL :  
 > &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>  
 >  
@@ -313,19 +317,23 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 >  
 > DEC_DIGIT : [`0`-`9`]  
 >  
+> NON_ZERO_DEC_DIGIT : [`1`-`9`]  
+>  
 > HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]  
 >  
 > INTEGER_SUFFIX :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `usize`  
 > &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `isize`
 
-<!-- FIXME: separate the DECIMAL_LITERAL with no prefix or suffix (used on tuple indexing and float_literal -->
 <!-- FIXME: u128 and i128 -->
 
 An _integer literal_ has one of four forms:
 
 * A _decimal literal_ starts with a *decimal digit* and continues with any
   mixture of *decimal digits* and _underscores_.
+* A _tuple index_ is either `0`, or starts with a *non-zero decimal digit* and
+  continues with zero or more decimal digits. Tuple indexes are used to refer
+  to the fields of [tuples], [tuple structs] and [tuple variants].
 * A _hex literal_ starts with the character sequence `U+0030` `U+0078`
   (`0x`) and continues as any mixture (with at least one digit) of hex digits
   and underscores.
@@ -500,3 +508,6 @@ They are catalogued in [the Symbols section][symbols] of the Grammar document.
 [symbols]: ../grammar.html#symbols
 [keywords]: keywords.html
 [identifier]: identifiers.html
+[tuples]: types.html#tuple-types
+[tuple structs]: items/structs.html
+[tuple variants]: items/enumerations.html
