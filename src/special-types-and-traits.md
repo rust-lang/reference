@@ -52,7 +52,7 @@ whose type implements `Copy` are copied rather than moved upon assignment.
 fields that are not `Copy`. `Copy` is implemented by the compiler for
 
 * [Numeric types]
-* `char` and `bool`
+* `char`, `bool` and [`!`]
 * [Tuples] of `Copy` types
 * [Arrays] of `Copy` types
 * [Shared references]
@@ -151,3 +151,4 @@ compiler, not by [implementation items].
 [Tuples]: types.html#tuple-types
 [Type parameters]: types.html#type-parameters
 [variance]: ../nomicon/subtyping.html
+[`!`]: types.html#never-type
