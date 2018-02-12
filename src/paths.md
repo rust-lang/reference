@@ -1,9 +1,10 @@
 # Paths
 
 A *path* is a sequence of one or more path components _logically_ separated by
-a namespace qualifier (`::`). If a path consists of only one component, it
-refers to either an [item] or a [variable] in a local control
-scope. If a path has multiple components, it always refers to an item.
+a namespace <span class="parenthetical">qualifier (`::`)</span>. If a path
+consists of only one component, it refers to either an [item] or a [variable] in
+a local control scope. If a path has multiple components, it always refers to an
+item.
 
 Two examples of simple paths consisting of only identifier components:
 
@@ -15,8 +16,9 @@ x::y::z;
 Path components are usually [identifiers], but they may also include
 angle-bracket-enclosed lists of type arguments. In [expression] context, the
 type argument list is given after a `::` namespace qualifier in order to
-disambiguate it from a relational expression involving the less-than symbol
-(`<`). In type expression context, the final namespace qualifier is omitted.
+disambiguate it from a relational expression involving the less-than
+<span class="parenthetical">symbol (`<`)</span>. In type expression context, the
+final namespace qualifier is omitted.
 
 Two examples of paths with type arguments:
 
@@ -110,9 +112,10 @@ bound on a type parameter, do not have canonical paths.
 
 The path prefix for modules is the canonical path to that module. For bare
 implementations, it is the canonical path of the item being implemented
-surrounded by angle (`<>`) brackets. For trait implementations, it is the
-canonical path of the item being implemented followed by `as` followed by the
-canonical path to the trait all surrounded in angle (`<>`) brackets. 
+surrounded by <span class="parenthetical">angle (`<>`)</span> brackets. For
+trait implementations, it is the canonical path of the item being implemented
+followed by `as` followed by the canonical path to the trait all surrounded in
+<span class="parenthetical">angle (`<>`)</span> brackets. 
 
 The canonical path is only meaningful within a given crate. There is no global
 namespace across crates; an item's canonical path merely identifies it within
