@@ -111,7 +111,7 @@ of this trait while the trait is in scope can have their `draw` and
 #     fn draw(&self, Surface);
 #     fn bounding_box(&self) -> BoundingBox;
 # }
-
+#
 struct Circle {
     // ...
 }
@@ -124,8 +124,8 @@ impl Shape for Circle {
 
 # impl Circle {
 #     fn new() -> Circle { Circle{} }
-}
-
+# }
+#
 let circle_shape = Circle::new();
 let bounding_box = circle_shape.bounding_box();
 ```
