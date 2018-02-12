@@ -48,3 +48,13 @@ p.warning a {
 a .hljs {
     color: #4183c4;
 }
+
+/*
+.parenthetical class used to keep e.g. "less-than symbol (<)" from wrapping
+the end parenthesis onto its own line. Use in a span between the last word and
+the parenthetical. So for this example, you'd use
+```less-than <span class="parenthetical">symbol (`<`)</span>```
+*/
+.parenthetical {
+    white-space: nowrap;
+}
