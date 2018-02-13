@@ -525,8 +525,6 @@ The notation `&self` is a shorthand for `self: &Self`.
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html
 [dynamically sized types]: dynamically-sized-types.html
-[RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
-[RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
 [struct expression]: expressions/struct-expr.html
 [closure expression]: expressions/closure-expr.html
 [auto traits]: special-types-and-traits.html#auto-traits
