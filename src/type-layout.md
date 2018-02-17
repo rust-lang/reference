@@ -34,7 +34,7 @@ alignment of the type respectively.
 
 The size of most primitives is given in this table.
 
-Type | `size_of::\<Type>()`
+Type | `size_of::<Type>()`
 - | - | -
 bool | 1
 u8 | 1
