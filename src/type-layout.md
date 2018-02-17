@@ -224,7 +224,7 @@ assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 
 #### \#[repr(C)] Enums
 
-For [C-like enumerations], the `C` representation has the size and alignment of
+For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
 
 > Note: The enum representation in C is implementation defined, so this is
@@ -232,19 +232,60 @@ the default `enum` size and alignment for the target platform's C ABI.
 > of interest is compiled with certain flags.
 
 > Warning: There are crucial differences between an `enum` in the C language and
-> Rust's C-like enumerations with this representation. An `enum` in  C is
+> Rust's field-less enumerations with this representation. An `enum` in  C is
 > mostly a `typedef` plus some named constants; in other words, an object of an
 > `enum` type can hold any integer value. For example, this is often used for
-> bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
+> bitflags in `C`. In contrast, Rust’s field-less enums can only legally hold
 > the discrimnant values, everything else is undefined behaviour. Therefore,
-> using a C-like enumeration in FFI to model a C `enum` is often wrong.
+> using a field-less enum in FFI to model a C `enum` is often wrong.
+
+For enums with fields, the `C` representation has the same representation as
+it would with the [primitive representation] with the field-less enum in its
+description having the `C` representation.
+
+```rust
+// This Enum has the same layout as
+#[repr(C)]
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+}
+
+// this struct.
+#[repr(C)]
+struct MyEnumRepr {
+    tag: MyEnumTag,
+    payload: MyEnumPayload,
+}
+
+#[repr(C)]
+enum MyEnumTag { A, B, C, D }
+
+#[repr(C)]
+union MyEnumPayload {
+   A: u32,
+   B: MyEnumPayloadB,
+   C: MyEnumPayloadC,
+   D: (),
+}
+
+#[repr(C)]
+struct MyEnumPayloadB(f32, u64);
+
+#[repr(C)]
+struct MyEnumPayloadC { x: u32, y: u8 }
+```
 
 It is an error for [zero-variant enumerations] to have the `C` representation.
 
-For all other enumerations, the layout is unspecified.
-
-Likewise, combining the `C` representation with a primitive representation, the
-layout is unspecified.
+<span id="c-primitive-representation">Combining the `C` representation and a
+primitive representation is only defined for enums with fields and it changes
+the representation of the tag, e.g. `MyEnumTag` in the previous example, to have
+the representation of the chosen primitive representation. So, if you chose the
+`u8` representation, then the tag would have a size and alignment of 1 byte.
+</span>
 
 ### Primitive representations
 
@@ -254,16 +295,65 @@ the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `usize`, `i8`,
 
 Primitive representations can only be applied to enumerations.
 
-For [C-like enumerations], they set the size and alignment to be the same as the
-primitive type of the same name. For example, a C-like enumeration with a `u8`
-representation can only have discriminants between 0 and 255 inclusive.
+For [field-less enums], they set the size and alignment to be the same as
+the primitive type of the same name. For example, a field-less enum with
+a `u8` representation can only have discriminants between 0 and 255 inclusive.
+
+For enums with fields, the enum will have the same type layout a union with the
+`C` representation that's fields consist of structs with the `C` representation
+corresponding to each variant in the enum. The first field in each struct is
+the same field-less enum with the same primitive representation that is
+the enum with all fields in its variants removed and the rest of the fields
+consisting of the fields of the corresponding variant in the order defined in
+original enumeration.
+
+> Note: This is commonly different than what is done in C and C++. Projects in
+> those languages often use a tuple of `(enum, payload)`. For making your enum
+> represented like that, see [the tagged union representation] below.
+
+```rust
+// This custom enum
+#[repr(u8)]
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+}
+
+// has the same type layout as this union
+#[repr(C)]
+union MyEnumRepr {
+    A: MyEnumVariantA,
+    B: MyEnumVariantB,
+    C: MyEnumVariantC,
+    D: MyEnumVariantD,
+}
+
+#[repr(u8)]
+enum MyEnumDiscriminant { A, B, C, D }
+
+#[repr(C)]
+struct MyEnumVariantA(MyEnumDiscriminant, u32);
+
+#[repr(C)]
+struct MyEnumVariantB(MyEnumDiscriminant, f32, u64);
+
+#[repr(C)]
+struct MyEnumVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
+
+#[repr(C)]
+struct MyEnumVariantD(MyEnumDiscriminant);
+```
 
 It is an error for [zero-variant enumerations] to have a primitive
 representation.
 
-For all other enumerations, the layout is unspecified.
+Combining two primitive representations together is unspecified.
 
-Likewise, combining two primitive representations together is unspecified.
+Combining the `C` representation and a primitive representation is described
+[above][#c-primitive-representation].
+
 
 ### The `align` Representation
 
@@ -298,7 +388,8 @@ a `packed` type cannot transitively contain another `align`ed type.
 [`size_of`]: ../std/mem/fn.size_of.html
 [`Sized`]: ../std/marker/trait.Sized.html
 [dynamically sized types]: dynamically-sized-types.html
-[C-like enumerations]:  items/enumerations.html#custom-discriminant-values-for-field-less-enumerations
+[field-less enums]:  items/enumerations.html#custom-discriminant-values-for-field-less-enumerations
 [zero-variant enumerations]: items/enumerations.html#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.html
 [27060]: https://github.com/rust-lang/rust/issues/27060
+[primitive representation]: #primitive-representations
