@@ -149,7 +149,8 @@ layout such as reinterpreting values as a different type.
 Because of this dual purpose, it is possible to create types that are not useful
 for interfacing with the C programming language.
 
-This representation can be applied to structs, unions, and enums.
+This representation can be applied to structs, unions, and enums. The exception
+is [zero-variant enumerations] for which the `C` representation is an error.
 
 #### \#[repr(C)] Structs
 
@@ -222,7 +223,7 @@ assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
 assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 ```
 
-#### \#[repr(C)] Enums
+#### \#[repr(C)] Field-less Enums
 
 For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
@@ -236,12 +237,21 @@ the default `enum` size and alignment for the target platform's C ABI.
 > mostly a `typedef` plus some named constants; in other words, an object of an
 > `enum` type can hold any integer value. For example, this is often used for
 > bitflags in `C`. In contrast, Rust’s field-less enums can only legally hold
-> the discrimnant values, everything else is undefined behaviour. Therefore,
+> the discrimnant values, everything else is [undefined behavior]. Therefore,
 > using a field-less enum in FFI to model a C `enum` is often wrong.
 
-For enums with fields, the `C` representation has the same representation as
-it would with the [primitive representation] with the field-less enum in its
-description having the `C` representation.
+#### \#[repr(C)] Enums With Fields
+
+For enums with fields, the `C` representation is a struct with representation
+`C` of two fields where the first field is a field-less enum with the `C`
+representation that has one variant for each variant in the enum with fields
+and the second field a union with the `C` representation that's fields consist
+of structs with the `C` representation corresponding to each variant in the
+enum. Each struct consists of the fields from the corresponding variant in the
+order defined in the enum with fields.
+
+Because unions with non-copy fields aren't allowed, this representation can only
+be used if every field is also [`Copy`].
 
 ```rust
 // This Enum has the same layout as
@@ -272,32 +282,50 @@ union MyEnumPayload {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumPayloadB(f32, u64);
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumPayloadC { x: u32, y: u8 }
 ```
 
-It is an error for [zero-variant enumerations] to have the `C` representation.
-
 <span id="c-primitive-representation">Combining the `C` representation and a
-primitive representation is only defined for enums with fields and it changes
-the representation of the tag, e.g. `MyEnumTag` in the previous example, to have
-the representation of the chosen primitive representation. So, if you chose the
-`u8` representation, then the tag would have a size and alignment of 1 byte.
-</span>
+primitive representation is only defined for enums with fields. The primitive
+representation modifies the `C` representation by changing the representation of
+the tag, e.g. `MyEnumTag` in the previous example, to have the representation of
+the chosen primitive representation. So, if you chose the `u8` representation,
+then the tag would have a size and alignment of 1 byte. </span>
 
-### Primitive representations
+> Note: This representation was designed for primarily interfacing with C code
+> that already exists matching a common way Rust's enums are implemented in
+> C. If you have control over both the Rust and C code, such as using C as FFI
+> glue between Rust and some third language, then you should use a
+> [primitive representation](#primitive-representation-of-enums-with-fields)
+> instead.
+
+### Primitive Representations
 
 The *primitive representations* are the representations with the same names as
 the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `usize`, `i8`,
 `i16`, `i32`, `i64`, and `isize`.
 
-Primitive representations can only be applied to enumerations.
+Primitive representations can only be applied to enumerations, and have
+different behavior whether the enum has fields or no fields. It is an error
+for [zero-variant enumerations] to have a primitive representation.
+
+Combining two primitive representations together is unspecified.
+
+Combining the `C` representation and a primitive representation is described
+[above](#c-primitive-representation).
+
+#### Primitive Fepresentation of Field-less Enums
 
 For [field-less enums], they set the size and alignment to be the same as
 the primitive type of the same name. For example, a field-less enum with
 a `u8` representation can only have discriminants between 0 and 255 inclusive.
+
+#### Primitive Representation of Enums With Fields
 
 For enums with fields, the enum will have the same type layout a union with the
 `C` representation that's fields consist of structs with the `C` representation
@@ -307,9 +335,12 @@ the enum with all fields in its variants removed and the rest of the fields
 consisting of the fields of the corresponding variant in the order defined in
 original enumeration.
 
+Because unions with non-copy fields aren't allowed, this representation can only
+be used if every field is also [`Copy`].
+
 > Note: This is commonly different than what is done in C and C++. Projects in
 > those languages often use a tuple of `(enum, payload)`. For making your enum
-> represented like that, see [the tagged union representation] below.
+> represented like that, use the `C` representation.
 
 ```rust
 // This custom enum
@@ -323,6 +354,7 @@ enum MyEnum {
 
 // has the same type layout as this union
 #[repr(C)]
+#[derive(Clone, Copy)]
 union MyEnumRepr {
     A: MyEnumVariantA,
     B: MyEnumVariantB,
@@ -331,29 +363,25 @@ union MyEnumRepr {
 }
 
 #[repr(u8)]
+#[derive(Clone, Copy)]
 enum MyEnumDiscriminant { A, B, C, D }
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumVariantA(MyEnumDiscriminant, u32);
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumVariantB(MyEnumDiscriminant, f32, u64);
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
 
 #[repr(C)]
+#[derive(Clone, Copy)]
 struct MyEnumVariantD(MyEnumDiscriminant);
 ```
-
-It is an error for [zero-variant enumerations] to have a primitive
-representation.
-
-Combining two primitive representations together is unspecified.
-
-Combining the `C` representation and a primitive representation is described
-[above][#c-primitive-representation].
-
 
 ### The `align` Representation
 
@@ -378,7 +406,7 @@ padding bytes and forcing the alignment of the type to `1`.
 The `align` and `packed` representations cannot be applied on the same type and
 a `packed` type cannot transitively contain another `align`ed type.
 
-> Warning: Dereferencing an unaligned pointer is [undefined behaviour] and it is
+> Warning: Dereferencing an unaligned pointer is [undefined behavior] and it is
 > possible to [safely create unaligned pointers to `packed` fields][27060].
 > Like all ways to create undefined behavior in safe Rust, this is a bug.
 
@@ -393,3 +421,4 @@ a `packed` type cannot transitively contain another `align`ed type.
 [undefined behavior]: behavior-considered-undefined.html
 [27060]: https://github.com/rust-lang/rust/issues/27060
 [primitive representation]: #primitive-representations
+[`Copy`]: special-types-and-traits.html#copy
