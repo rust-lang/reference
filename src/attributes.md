@@ -166,9 +166,6 @@ macro scope.
   object file that this item's contents will be placed into.
 - `no_mangle` - on any item, do not apply the standard name mangling. Set the
   symbol for this item to its identifier.
-- `must_use` - on structs and enums, will warn if a value of this type isn't used or
-   assigned to a variable. You may also include an optional message by using
-   `#[must_use = "message"]` which will be given alongside the warning.
 
 ### Deprecation
 
@@ -325,7 +322,7 @@ The lint checks supported by the compiler can be found via `rustc -W help`,
 along with their default settings.  [Compiler
 plugins][unstable book plugin] can provide additional lint checks.
 
-```rust,ignore
+```rust
 pub mod m1 {
     // Missing documentation is ignored here
     #[allow(missing_docs)]
@@ -366,7 +363,7 @@ pub mod m2{
 This example shows how one can use `forbid` to disallow uses of `allow` for
 that lint check:
 
-```rust,ignore
+```rust,compile_fail
 #[forbid(missing_docs)]
 pub mod m3 {
     // Attempting to toggle warning signals an error here
@@ -375,6 +372,82 @@ pub mod m3 {
     pub fn undocumented_too() -> i32 { 2 }
 }
 ```
+
+#### Must Use Attribute
+
+The `must_use` attribute can be used on user-defined composite types
+([`struct`s][struct], [`enum`s][enum], and [`union`s][union]) and [functions].
+
+When used on user-defined composite types, if the [expression] of an
+[expression statement] has that type, then the `unused_must_use` lint is
+violated.
+
+```rust
+#[must_use]
+struct MustUse {
+  // some fields
+}
+
+# impl MustUse {
+#   fn new() -> MustUse { MustUse {} }
+# }
+
+fn main() {
+  // Violates the `unused_must_use` lint.
+  MustUse::new();
+}
+```
+
+When used on a function, if the [expression] of an
+[expression statement] is a [call expression] to that function, then the
+`unused_must_use` lint is violated.
+
+```rust
+#[must_use]
+fn five() -> i32 { 5i32 }
+
+fn main() {
+  // Violates the unused_must_use lint.
+  five();
+}
+```
+
+> Note: Trivial no-op expressions containing the value will not violate the
+> lint. Examples include wrapping the value in a type that does not implement
+> [`Drop`] and then not using that type and being the final expression of a
+> [block expression] that is not used.
+>
+> ```rust
+> #[must_use]
+> fn five() -> i32 { 5i32 }
+>
+> fn main() {
+>   // None of these violate the unused_must_use lint.
+>   (five(),);
+>   Some(five());
+>   { five() };
+>   if true { five() } else { 0i32 };
+>   match true {
+>     _ => five()  
+>   };
+> }
+> ```
+
+> Note: It is idiomatic to use a [let statement] with a pattern of `_`
+> when a must-used value is purposely discarded.
+>
+> ```rust
+> #[must_use]
+> fn five() -> i32 { 5i32 }
+>
+> fn main() {
+>   // Does not violate the unused_must_use lint.
+>   let _ = five();
+> }
+> ```
+
+The `must_use` attribute may also include a message by using
+`#[must_use = "message"]`. The message will be given alongside the warning.
 
 ### Inline attribute
 
@@ -430,4 +503,14 @@ You can implement `derive` for your own type through [procedural macros].
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [procedural macros]: procedural-macros.html
+[struct]: items/structs.html
+[enum]: items/enumerations.html
+[union]: items/unions.html
+[functions]: items/functions.html
+[expression]: expressions.html
+[expression statement]: statements.html#expression-statements
+[call expression]: expressions/call-expr.html
+[block expression]: expressions/block-expr.html
+[`Drop`]: special-types-and-traits.html#drop
+[let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
