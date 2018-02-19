@@ -400,7 +400,9 @@ fn main() {
 
 When used on a function, if the [expression] of an
 [expression statement] is a [call expression] to that function, then the
-`unused_must_use` lint is violated.
+`unused_must_use` lint is violated. The exceptions to this is if the return type
+of the function is `()`, `!`, or a [zero-variant enum], in which case the
+attribute does nothing.
 
 ```rust
 #[must_use]
@@ -514,3 +516,4 @@ You can implement `derive` for your own type through [procedural macros].
 [`Drop`]: special-types-and-traits.html#drop
 [let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
+[zero-variant enum]: enumerations.html#zero-variant-enums
