@@ -242,21 +242,28 @@ the default `enum` size and alignment for the target platform's C ABI.
 
 #### \#[repr(C)] Enums With Fields
 
-For enums with fields, the `C` representation is a struct with representation
-`C` of two fields where the first field is a field-less enum with the `C`
-representation that has one variant for each variant in the enum with fields
-and the second field a union with the `C` representation that's fields consist
-of structs with the `C` representation corresponding to each variant in the
-enum. Each struct consists of the fields from the corresponding variant in the
-order defined in the enum with fields.
+For enums with fields, the `C` representation is defined to be the same as the
+follow types. These types don't actually exist, so the names are only here to
+help describe relationships. All of these type have the `C` representation.
 
-Because unions with non-copy fields aren't allowed, this representation can only
-be used if every field is also [`Copy`].
+The enums with fields with the `C` representation, the represented enum, has
+the same representation of a a struct two fields, the tagged union. The first
+field of the tagged union is a field-less enum, the discriminant enum. The
+second field of the tagged union is a union, the fields union.
+
+The discrimiant enum has one variant for each variant in the represented enum
+and are ordered in the same way as in the represented enum.
+
+The fields union consists of fields corresponding to each variant in the
+represented enum. Each field contains the fields from the corresponding variant
+in the order defined in the variant. The valid field in the union is the one
+that corresponds to the same variant that the discriminant enum's value
+corresponds with.
 
 ```rust
 // This Enum has the same layout as
 #[repr(C)]
-enum MyEnum {
+enum RepresentedEnum {
     A(u32),
     B(f32, u64),
     C { x: u32, y: u8 },
@@ -265,37 +272,43 @@ enum MyEnum {
 
 // this struct.
 #[repr(C)]
-struct MyEnumRepr {
-    tag: MyEnumTag,
-    payload: MyEnumPayload,
+struct TaggedUnion {
+    tag: DiscriminantEnum,
+    payload: FieldsUnion,
+}
+
+// This is the discriminant enum.
+#[repr(C)]
+enum DiscriminantEnum { A, B, C, D }
+
+// This is the variant union.
+#[repr(C)]
+union FieldsUnion {
+   A: FieldsA,
+   B: FieldsB,
+   C: FieldsC,
+   D: FieldsD,
 }
 
 #[repr(C)]
-enum MyEnumTag { A, B, C, D }
+struct FieldsA(u32);
 
 #[repr(C)]
-union MyEnumPayload {
-   A: u32,
-   B: MyEnumPayloadB,
-   C: MyEnumPayloadC,
-   D: (),
-}
+struct FieldsB(f32, u64);
 
 #[repr(C)]
-#[derive(Clone, Copy)]
-struct MyEnumPayloadB(f32, u64);
+struct FieldsC { x: u32, y: u8 }
 
 #[repr(C)]
-#[derive(Clone, Copy)]
-struct MyEnumPayloadC { x: u32, y: u8 }
+struct FieldsD;
 ```
 
 <span id="c-primitive-representation">Combining the `C` representation and a
 primitive representation is only defined for enums with fields. The primitive
 representation modifies the `C` representation by changing the representation of
-the tag, e.g. `MyEnumTag` in the previous example, to have the representation of
-the chosen primitive representation. So, if you chose the `u8` representation,
-then the tag would have a size and alignment of 1 byte. </span>
+the discriminant enum to have the representation of the chosen primitive
+representation. So, if you chose the `u8` representation, then the discriminant
+enum would have a size and alignment of 1 byte.</span>
 
 > Note: This representation was designed for primarily interfacing with C code
 > that already exists matching a common way Rust's enums are implemented in
@@ -319,7 +332,7 @@ Combining two primitive representations together is unspecified.
 Combining the `C` representation and a primitive representation is described
 [above](#c-primitive-representation).
 
-#### Primitive Fepresentation of Field-less Enums
+#### Primitive Representation of Field-less Enums
 
 For [field-less enums], they set the size and alignment to be the same as
 the primitive type of the same name. For example, a field-less enum with
