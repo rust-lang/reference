@@ -365,30 +365,99 @@ x = bo(5,7);
 ## Closure types
 
 A [closure expression] produces a closure value with a unique, anonymous type
-that cannot be written out.
+that cannot be written out. A closure type is approximately equivalent to a
+struct which contains the captured variables. For instance, the following
+closure:
 
-Depending on the requirements of the closure, its type implements one or
-more of the closure traits:
+```rust
+fn f<F : FnOnce() -> String> (g: F) {
+    println!("{}", g());
+}
 
-* `FnOnce`
-  : The closure can be called once. A closure called as `FnOnce` can move out
-    of its captured values.
+let mut s = String::from("foo");
+let t = String::from("bar");
 
-* `FnMut`
-  : The closure can be called multiple times as mutable. A closure called as
-    `FnMut` can mutate values from its environment. `FnMut` inherits from
-    `FnOnce` (i.e. anything implementing `FnMut` also implements `FnOnce`).
+f(|| {
+    s += t;
+    s
+});
+// Prints "foobar".
+```
 
-* `Fn` : The closure can be called multiple times through a shared reference. A
-    closure called as `Fn` can neither move out from nor mutate captured
-    variables, but read-only access to such values is allowed. Using `move` to
-    capture variables by value is allowed so long as they aren't mutated or
-    moved in the body of the closure. `Fn` inherits from `FnMut`, which itself
-    inherits from `FnOnce`.
+generates a closure type roughly like the following:
 
-Closures that don't use anything from their environment, called *non-capturing
-closures*, can be coerced to function pointers (`fn`) with the matching
-signature. To adopt the example from the section above:
+```rust
+struct Closure<'a> {
+    s : String
+    t : &'a String
+}
+
+impl<'a> FnOnce() -> String for Closure<'a> {
+    fn call_once(self) -> String {
+        self.s += self.t;
+        self.s
+    }
+}
+```
+
+so that the call to `f` works as if it were:
+
+```rust,ignore
+f(Closure{s: s, t: &t});
+```
+
+The compiler prefers to capture a closed-over variable by immutable borrow,
+followed by mutable borrow and finally by move (or copy, for [`Copy`] types). It
+will pick the first choice of these that allows the closure to compile. If the
+`move` keyword is used, then all captures are by move or copy, regardless of
+whether a borrow would work. The `move` keyword is usually used to allow the
+closure to outlive the captured values, such as if the closure is being returned
+or used to spawn a new thread.
+
+Structs and tuples are always captured entirely, not by individual fields. It
+may be necessary to borrow into a local variable in order to capture a single
+field:
+
+```rust
+struct SetVec {
+    set: HashSet<u32>,
+    vec: Vec<u32>
+}
+
+impl Pair {
+    fn populate(&mut self) {
+        let vec = &mut self.vec;
+        self.set.iter().for_each(|&n| {
+            vec.push(n);
+        })
+    }
+}
+```
+
+If, instead, the closure were to use `self.vec` directly, then it would attempt
+to capture `self` by mutable reference. But since `self.set` is already
+borrowed to iterate over, the closure would not compile.
+
+### Call traits and coercions
+
+Closure types all implement `[FnOnce]`, indicating that they can be called once
+by consuming ownership of the closure. Additionally, some closures implement
+more specific call traits:
+
+* A closure which does not move out of any captured variables implements
+  `[FnMut]`, indicating that it can be called by mutable reference.
+
+* A closure which does not mutate or move out of any captured variables
+  implements `[Fn]`, indicating that it can be called by shared reference.
+
+> Note that `move` closures may still implement `[Fn]` or `[FnMut]`, even
+> though they capture variables by move. This is because the traits
+> implemented by a closure type are determined by what the closure does with
+> captured values, not how it captures them.
+
+In addition to the call traits, *non-capturing closures*---those that don't
+capture anything from their environment---can be coerced to function pointers
+(`fn`) with the matching signature.
 
 ```rust
 let add = |x, y| x + y;
@@ -399,6 +468,33 @@ type Binop = fn(i32, i32) -> i32;
 let bo: Binop = add;
 x = bo(5,7);
 ```
+
+### Other traits
+
+Closure types implement the following traits, if allowed to do so by the
+captured values:
+
+* `[Sized]`
+* `[Send]`
+* `[Sync]`
+* `[Clone]`
+* `[Copy]`
+
+`[Sized]` is always implemented (local variables are all sized, so all captured
+values must be too). The rules for `[Send]` and `[Sync]` match those for normal
+struct types, while `[Clone]` and `[Copy]` behave as if [derived][derive]. For
+`[Clone]`, the order of cloning of the captured variables is left unspecified.
+
+Because captures are often by reference, the following general rules arise:
+
+* All closures are `[Sized]`.
+* A closure is `[Sync]` if all values captured by mutable reference, move, or
+  copy are `[Sync]`.
+* A closure is `[Send]` if all values captured by shared reference are `[Sync]`,
+  and all values captured by mutable reference, move, or copy are `[Send]`.
+* A closure is `[Clone]` or `[Copy]` if it does not capture any values by
+  mutable reference, and if all values it captures by move or copy are `[Clone]`
+  or `[Copy]`, respectively.
 
 ## Trait objects
 
@@ -593,6 +689,7 @@ impl Printable for String {
 [Clone]: special-types-and-traits.html#clone
 [Send]: special-types-and-traits.html#send
 [Sync]: special-types-and-traits.html#sync
+[derive]: attributes.html#derive
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html
 [dynamically sized types]: dynamically-sized-types.html
