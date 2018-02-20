@@ -373,7 +373,7 @@ pub mod m3 {
 }
 ```
 
-#### Must Use Attribute
+#### `must_use` Attribute
 
 The `must_use` attribute can be used on user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]) and [functions].
@@ -391,7 +391,7 @@ struct MustUse {
 # impl MustUse {
 #   fn new() -> MustUse { MustUse {} }
 # }
-
+#
 fn main() {
   // Violates the `unused_must_use` lint.
   MustUse::new();
