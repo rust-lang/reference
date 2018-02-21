@@ -378,7 +378,7 @@ let mut s = String::from("foo");
 let t = String::from("bar");
 
 f(|| {
-    s += t;
+    s += &*t;
     s
 });
 // Prints "foobar".
@@ -386,15 +386,15 @@ f(|| {
 
 generates a closure type roughly like the following:
 
-```rust
+```rust,ignore
 struct Closure<'a> {
-    s : String
-    t : &'a String
+    s : String,
+    t : &'a String,
 }
 
-impl<'a> FnOnce() -> String for Closure<'a> {
+impl<'a> (FnOnce() -> String) for Closure<'a> {
     fn call_once(self) -> String {
-        self.s += self.t;
+        self.s += &*self.t;
         self.s
     }
 }
@@ -419,12 +419,14 @@ may be necessary to borrow into a local variable in order to capture a single
 field:
 
 ```rust
+# use std::collections::HashSet;
+# 
 struct SetVec {
     set: HashSet<u32>,
     vec: Vec<u32>
 }
 
-impl Pair {
+impl SetVec {
     fn populate(&mut self) {
         let vec = &mut self.vec;
         self.set.iter().for_each(|&n| {
