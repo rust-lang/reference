@@ -430,3 +430,4 @@ You can implement `derive` for your own type through [procedural macros].
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [procedural macros]: procedural-macros.html
+[unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
