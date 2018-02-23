@@ -10,7 +10,7 @@ Implementations are defined with the keyword `impl`.
 ## Inherent Implementations
 
 An inherent implementation is defined as the sequence of the `impl` keyword,
-generic type declarations, a path to a nomial type, a where clause, and a
+generic type declarations, a path to a nominal type, a where clause, and a
 bracketed set of associable items.
 
 The nominal type is called the *implementing type* and the associable items are
