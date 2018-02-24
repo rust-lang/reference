@@ -452,10 +452,10 @@ more specific call traits:
 * A closure which does not mutate or move out of any captured variables
   implements `[Fn]`, indicating that it can be called by shared reference.
 
-> Note that `move` closures may still implement `[Fn]` or `[FnMut]`, even
-> though they capture variables by move: this is because the traits
-> implemented by a closure type are determined by what the closure does with
-> captured values, not how it captures them.
+> Note: `move` closures may still implement `[Fn]` or `[FnMut]`, even though
+> they capture variables by move. This is because the traits implemented by a
+> closure type are determined by what the closure does with captured values, not
+> how it captures them.
 
 *Non-capturing closures* are closures that don't capture anything from their
 environment. They can be coerced to function pointers (`fn`) with the matching
