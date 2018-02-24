@@ -407,16 +407,16 @@ f(Closure{s: s, t: &t});
 ```
 
 The compiler prefers to capture a closed-over variable by immutable borrow,
-followed by mutable borrow and finally by move (or copy, for [`Copy`] types). It
-will pick the first choice of these that allows the closure to compile. If the
-`move` keyword is used, then all captures are by move or copy, regardless of
-whether a borrow would work. The `move` keyword is usually used to allow the
-closure to outlive the captured values, such as if the closure is being returned
-or used to spawn a new thread.
+followed by mutable borrow, by copy, and finally by move. It will pick the first
+choice of these that allows the closure to compile. If the `move` keyword is
+used, then all captures are by move or copy, regardless of whether a borrow
+would work. The `move` keyword is usually used to allow the closure to outlive
+the captured values, such as if the closure is being returned or used to spawn a
+new thread.
 
-Structs and tuples are always captured entirely, not by individual fields. It
-may be necessary to borrow into a local variable in order to capture a single
-field:
+Composite types such as structs, tuples, and enums are always captured entirely,
+not by individual fields. It may be necessary to borrow into a local variable in
+order to capture a single field:
 
 ```rust
 # use std::collections::HashSet;
@@ -438,7 +438,7 @@ impl SetVec {
 
 If, instead, the closure were to use `self.vec` directly, then it would attempt
 to capture `self` by mutable reference. But since `self.set` is already
-borrowed to iterate over, the closure would not compile.
+borrowed to iterate over, the code would not compile.
 
 ### Call traits and coercions
 
@@ -453,13 +453,13 @@ more specific call traits:
   implements `[Fn]`, indicating that it can be called by shared reference.
 
 > Note that `move` closures may still implement `[Fn]` or `[FnMut]`, even
-> though they capture variables by move. This is because the traits
+> though they capture variables by move: this is because the traits
 > implemented by a closure type are determined by what the closure does with
 > captured values, not how it captures them.
 
-In addition to the call traits, *non-capturing closures*---those that don't
-capture anything from their environment---can be coerced to function pointers
-(`fn`) with the matching signature.
+*Non-capturing closures* are closures that don't capture anything from their
+environment. They can be coerced to function pointers (`fn`) with the matching
+signature.
 
 ```rust
 let add = |x, y| x + y;
@@ -473,29 +473,27 @@ x = bo(5,7);
 
 ### Other traits
 
-Closure types implement the following traits, if allowed to do so by the
-captured values:
+All closure types implement `[Sized]`. Additionally, closure types implement the
+following traits if allowed to do so by the types of the captures it stores:
 
-* `[Sized]`
-* `[Send]`
-* `[Sync]`
 * `[Clone]`
 * `[Copy]`
+* `[Sync]`
+* `[Send]`
 
-`[Sized]` is always implemented (local variables are all sized, so all captured
-values must be too). The rules for `[Send]` and `[Sync]` match those for normal
-struct types, while `[Clone]` and `[Copy]` behave as if [derived][derive]. For
-`[Clone]`, the order of cloning of the captured variables is left unspecified.
+The rules for `[Send]` and `[Sync]` match those for normal struct types, while
+`[Clone]` and `[Copy]` behave as if [derived][derive]. For `[Clone]`, the order
+of cloning of the captured variables is left unspecified.
 
 Because captures are often by reference, the following general rules arise:
 
-* All closures are `[Sized]`.
-* A closure is `[Sync]` if all values captured by mutable reference, move, or
-  copy are `[Sync]`.
-* A closure is `[Send]` if all values captured by shared reference are `[Sync]`,
-  and all values captured by mutable reference, move, or copy are `[Send]`.
+* A closure is `[Sync]` if all variables captured by mutable reference, copy, or
+  move are `[Sync]`.
+* A closure is `[Send]` if all variables captured by shared reference are
+  `[Sync]`, and all values captured by mutable reference, copy, or move are
+  `[Send]`.
 * A closure is `[Clone]` or `[Copy]` if it does not capture any values by
-  mutable reference, and if all values it captures by move or copy are `[Clone]`
+  mutable reference, and if all values it captures by copy or move are `[Clone]`
   or `[Copy]`, respectively.
 
 ## Trait objects
