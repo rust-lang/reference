@@ -498,6 +498,13 @@ Because captures are often by reference, the following general rules arise:
 
 ## Trait objects
 
+> **<sup>Syntax</sup>**  
+> _TraitObjectType_ :  
+> &nbsp;&nbsp; [_LifetimeOrPath_] ( `+` [_LifetimeOrPath_] )<sup>\*</sup> `+`<sup>?</sup>
+>
+> _LifetimeOrPath_ :
+> &nbsp;&nbsp; [_Path_] | [_LIFETIME_OR_LABEL_]
+
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
 number of [auto traits].
@@ -505,11 +512,11 @@ number of [auto traits].
 Trait objects implement the base trait, its auto traits, and any super traits
 of the base trait.
 
-Trait objects are written as the path to the base trait followed by the list
-of auto traits followed optionally by a lifetime bound all separated by `+`. For
-example, given a trait `Trait`, the following are all trait objects: `Trait`,
-`Trait + Send`, `Trait + Send + Sync`, `Trait + 'static`,
-`Trait + Send + 'static`.
+Trait objects are written the same as trait bounds with the exception that all
+traits except the first trait must be auto traits and there may not be more than
+one lifetime. For example, given a trait `Trait`, the following
+are all trait objects: `Trait`, `Trait + Send`, `Trait + Send + Sync`,
+`Trait + 'static`, `Trait + Send + 'static`, `Trait +`, `'static + Trait`.
 
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
@@ -701,3 +708,5 @@ impl Printable for String {
 [object safe]: items/traits.html#object-safety
 [issue 47010]: https://github.com/rust-lang/rust/issues/47010
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
+[_PATH_]: paths.html
+[_LIFETIME_OR_LABEL_]: tokens.html#lifetimes-and-loop-labels
