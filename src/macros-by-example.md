@@ -26,7 +26,7 @@ syntax named by _designator_. Valid designators are:
 * `pat`: a [pattern]
 * `expr`: an [expression]
 * `ty`: a [type]
-* `ident`: an [identifier]
+* `ident`: an [identifier] or [keyword]
 * `path`: a [path]
 * `tt`: a token tree (a single [token] by matching `()`, `[]`, or `{}`)
 * `meta`: the contents of an [attribute]
@@ -38,6 +38,7 @@ syntax named by _designator_. Valid designators are:
 [expression]: expressions.html
 [type]: types.html
 [identifier]: identifiers.html
+[keyword]: keyword.html
 [path]: paths.html
 [token]: tokens.html
 [attribute]: attributes.html
