@@ -1,18 +1,27 @@
 # Keywords
 
 Rust divides keywords into three categories:
-  - [strict](#strict-keywords)
-  - [weak](#weak-keywords)
-  - [reserved](#reserved-keywords)
+
+* [strict](#strict-keywords)
+* [reserved](#reserved-keywords)
+* [weak](#weak-keywords)
 
 ## Strict keywords
 
-These keywords can only be used in their correct contexts. For example, it is
-not allowed to declare a variable with name `struct`.
+These keywords can only be used in their correct contexts. They cannnot
+be used as the names of:
+
+* [Items]
+* [Variables] and function parameters
+* Fields and [variants]
+* [Type parameters]
+* Lifetime parameters or [loop labels]
+* [Macros] or [attributes]
+* [Macro placeholders]
+* [Crates]
 
 > **<sup>Lexer:<sup>**  
 > KW_AS             : `as`  
-> KW_BOX            : `box`  
 > KW_BREAK          : `break`  
 > KW_CONST          : `const`  
 > KW_CONTINUE       : `continue`  
@@ -48,27 +57,18 @@ not allowed to declare a variable with name `struct`.
 > KW_WHERE          : `where`  
 > KW_WHILE          : `while`  
 
-## Weak keywords
-
-These keywords have special meaning only in certain contexts. For example,
-it is possible to declare a variable or method with the name `union`.
-
-> **<sup>Lexer</sup>**  
-> KW_CATCH          : `catch`  
-> KW_DEFAULT        : `default`  
-> KW_UNION          : `union`  
-> KW_STATICLIFETIME : `'static`  
-
 ## Reserved keywords
 
-These keywords aren't used yet, but they are reserved for future use.
-The reasoning behind this is to make current programs forward compatible with
-future versions of Rust by forbidding them to use these keywords.
+These keywords aren't used yet, but they are reserved for future use. They have
+the same restrictions as strict keywords. The reasoning behind this is to make
+current programs forward compatible with future versions of Rust by forbidding
+them to use these keywords.
 
 > **<sup>Lexer</sup>**  
 > KW_ABSTRACT       : `abstract`  
 > KW_ALIGNOF        : `alignof`  
 > KW_BECOME         : `become`  
+> KW_BOX            : `box`  
 > KW_DO             : `do`  
 > KW_FINAL          : `final`  
 > KW_MACRO          : `macro`  
@@ -82,3 +82,26 @@ future versions of Rust by forbidding them to use these keywords.
 > KW_UNSIZED        : `unsized`  
 > KW_VIRTUAL        : `virtual`  
 > KW_YIELD          : `yield`  
+
+## Weak keywords
+
+These keywords have special meaning only in certain contexts. For example, it
+is possible to declare a variable or method with the name `union`.
+
+* `union` is used to declare a [union]
+* `'static` is used for a static lifetime
+
+> **<sup>Lexer</sup>**  
+> KW_UNION          : `union`  
+> KW_STATICLIFETIME : `'static`  
+
+[items]: items.html
+[Variables]: variables.html
+[Type parameters]: types.html#type-parameters
+[loop labels]: expressions/loop-expr.html#loop-labels
+[Macros]: macros.html
+[attributes]: attributes.html
+[Macro placholders]: macros-by-example.html
+[Crates]: crates-and-source-files.html
+[union]: items/unions.html
+[variants]: items/enumerations.html
