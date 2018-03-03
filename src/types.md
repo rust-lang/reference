@@ -567,66 +567,11 @@ type signature of `print`, and the cast expression in `main`.
 ### Trait Object Lifetime Bounds
 
 Since a trait object can contain references, the lifetimes of those references
-need to be expressed as part of the trait object. The assumed lifetime of
-references held by a trait object is called its *default object lifetime bound*.
-These were defined in [RFC 599] and amended in [RFC 1156].
+need to be expressed as part of the trait object. This lifetime is written as
+`Trait + 'a`. There are [defaults] that allow this lifetime to usually be
+infered with a sensible choice.
 
-For traits that themselves have no lifetime parameters:
-* If there is a unique bound from the containing type then that is the default.
-* If there is more than one bound from the containing type then an explicit
-  bound must be specified.
-* Otherwise the default bound is `'static`.
-
-```rust,ignore
-// For the following trait...
-trait Foo { }
-
-// These two are the same as Box<T> has no lifetime bound on T
-Box<Foo>
-Box<Foo + 'static>
-
-// ...and so are these:
-impl Foo {}
-impl Foo + 'static {}
-
-// ...so are these, because &'a T requires T: 'a
-&'a Foo
-&'a (Foo + 'a)
-
-// std::cell::Ref<'a, T> also requires T: 'a, so these are the same
-std::cell::Ref<'a, Foo>
-std::cell::Ref<'a, Foo + 'a>
-
-// This is an error:
-struct TwoBounds<'a, 'b, T: ?Sized + 'a + 'b>
-TwoBounds<'a, 'b, Foo> // Error: the lifetime bound for this object type cannot
-                       // be deduced from context
-
-```
-
-The `+ 'static` and `+ 'a` refer to the default bounds of those kinds of trait
-objects, and also to how you can directly override them. Note that the innermost
-object sets the bound, so `&'a Box<Foo>` is still `&'a Box<Foo + 'static>`.
-
-For traits that have a single lifetime _bound_ of their own then, instead of
-infering 'static as the default bound, the bound on the trait is used instead
-
-```rust,ignore
-// For the following trait...
-trait Bar<'a>: 'a { }
-
-// ...these two are the same:
-Box<Bar<'a>>
-Box<Bar<'a> + 'a>
-
-// ...and so are these:
-impl<'a> Foo<'a> {}
-impl<'a> Foo<'a> + 'a {}
-
-// This is still an error:
-struct TwoBounds<'a, 'b, T: ?Sized + 'a + 'b>
-TwoBounds<'a, 'b, Foo<'c>>
-```
+[defaults]: lifetime-elision.html#elision-and-defaults-in-trait-objects
 
 ## Type parameters
 
@@ -693,8 +638,6 @@ impl Printable for String {
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html
 [dynamically sized types]: dynamically-sized-types.html
-[RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
-[RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
 [struct expression]: expressions/struct-expr.html
 [closure expression]: expressions/closure-expr.html
 [auto traits]: special-types-and-traits.html#auto-traits

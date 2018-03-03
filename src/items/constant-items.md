@@ -61,7 +61,7 @@ fn create_and_drop_zero_with_destructor() {
 ```
 
 [constant value]: expressions.html#constant-expressions
-[static lifetime elision]: items/static-items.html#static-lifetime-elision
+[static lifetime elision]: items/lifetime-elision.html#static-lifetime-elision
 [`Drop`]: special-types-and-traits.html#drop
 [IDENTIFIER]: identifiers.html
 [_Type_]: types.html
