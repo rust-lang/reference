@@ -500,7 +500,7 @@ Because captures are often by reference, the following general rules arise:
 
 > **<sup>Syntax</sup>**  
 > _TraitObjectType_ :  
-> &nbsp;&nbsp; [_LifetimeOrPath_] ( `+` [_LifetimeOrPath_] )<sup>\*</sup> `+`<sup>?</sup>
+> &nbsp;&nbsp; _LifetimeOrPath_ ( `+` _LifetimeOrPath_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _LifetimeOrPath_ :
 > &nbsp;&nbsp; [_Path_] | [_LIFETIME_OR_LABEL_]
@@ -512,11 +512,12 @@ number of [auto traits].
 Trait objects implement the base trait, its auto traits, and any super traits
 of the base trait.
 
-Trait objects are written the same as trait bounds with the exception that all
-traits except the first trait must be auto traits and there may not be more than
-one lifetime. For example, given a trait `Trait`, the following
-are all trait objects: `Trait`, `Trait + Send`, `Trait + Send + Sync`,
-`Trait + 'static`, `Trait + Send + 'static`, `Trait +`, `'static + Trait`.
+Trait objects are written the same as trait bounds, but with the following
+restrictions. All traits except the first trait must be auto traits, there may
+not be more than one lifetime, and opt-out bounds (e.g. `?sized`) are not
+allowed. For example, given a trait `Trait`, the following are all trait
+objects: `Trait`, `Trait + Send`, `Trait + Send + Sync`, `Trait + 'static`,
+`Trait + Send + 'static`, `Trait +`, `'static + Trait`.
 
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
