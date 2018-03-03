@@ -82,7 +82,7 @@ particular layout using the [`repr` attribute].
 
 [_OuterAttribute_]: attributes.html
 [IDENTIFIER]: identifiers.html
-[_Generics_]: items.html#type-parameters
-[_WhereClause_]: items.html#type-parameters
+[_Generics_]: items/generics.html
+[_WhereClause_]: items/generics.html#where-clauses
 [_Visibility_]: visibility-and-privacy.html
 [_Type_]: types.html

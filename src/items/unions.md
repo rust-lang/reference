@@ -146,6 +146,6 @@ More detailed specification for unions, including unstable bits, can be found
 in [RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
 
 [IDENTIFIER]: identifiers.html
-[_Generics_]: items.html#type-parameters
-[_WhereClause_]: items.html#type-parameters
+[_Generics_]: items/generics.html
+[_WhereClause_]: items/generics.html#where-clauses
 [_StructFields_]: items/structs.html
