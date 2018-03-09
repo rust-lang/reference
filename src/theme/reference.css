@@ -45,8 +45,19 @@ p.warning a {
     color: rgb(0, 136, 204)
 }
 
-a .hljs {
+/* color hyperlinked inline code items identically to normal links */
+.light a > .hljs {
     color: #4183c4;
+}
+
+.rust a > .hljs,
+.coal a > .hljs,
+.navy a > .hljs {
+    color: #2b79a2;
+}
+
+.ayu a > .hljs {
+    color: #0096cf;
 }
 
 /*
