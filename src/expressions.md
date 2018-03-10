@@ -247,6 +247,7 @@ Many of the following operators and expressions can also be overloaded for
 other types using traits in `std::ops` or `std::cmp`. These traits also
 exist in `core::ops` and `core::cmp` with the same names.
 
+[grouped]:              expressions/grouped-expr.html
 [block expressions]:    expressions/block-expr.html
 [call expressions]:     expressions/call-expr.html
 [closure expressions]:  expressions/closure-expr.html
@@ -272,7 +273,6 @@ exist in `core::ops` and `core::cmp` with the same names.
 [dereferences]:         expressions/operator-expr.html#the-dereference-operator
 [dereferencing]:        expressions/operator-expr.html#the-dereference-operator
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
-[grouped]:              expressions/operator-expr.html#grouped-expressions
 [lazy boolean]:         expressions/operator-expr.html#lazy-boolean-operators
 [negation]:             expressions/operator-expr.html#negation-operators
 [overflow]:             expressions/operator-expr.html#overflow
