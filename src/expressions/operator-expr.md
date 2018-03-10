@@ -1,5 +1,18 @@
 # Operator expressions
 
+> **<sup>Syntax</sup>**  
+> _OperatorExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BorrowExpression_]  
+> &nbsp;&nbsp; | [_DereferenceExpression_]  
+> &nbsp;&nbsp; | [_ErrorPropagationExpression_]  
+> &nbsp;&nbsp; | [_NegationExpression_]  
+> &nbsp;&nbsp; | [_ArithmeticOrLogicalExpression_]  
+> &nbsp;&nbsp; | [_ComparisonExpression_]  
+> &nbsp;&nbsp; | [_LazyBooleanExpression_]  
+> &nbsp;&nbsp; | [_TypeCastExpression_]  
+> &nbsp;&nbsp; | [_AssignmentExpression_]  
+> &nbsp;&nbsp; | [_CompoundAssignmentExpression_]  
+
 Operators are defined for built in types by the Rust language. Many of the
 following operators can also be overloaded using traits in `std::ops` or
 `std::cmp`.
@@ -21,6 +34,10 @@ overflow:
 
 ## Grouped expressions
 
+> **<sup>Syntax</sup>**  
+> _GroupedExpression_ :  
+> &nbsp;&nbsp; `(` [_Expression_] `)`
+
 An expression enclosed in parentheses evaluates to the result of the enclosed
 expression. Parentheses can be used to explicitly specify evaluation order
 within an expression.
@@ -37,6 +54,11 @@ assert_eq!(y, 20);
 ```
 
 ## Borrow operators
+
+> **<sup>Syntax</sup>**  
+> _BorrowExpression_ :   
+> &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]  
+> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]  
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
 operators. When applied to a [place expression], this expressions produces a
@@ -63,7 +85,25 @@ let mut array = [-2, 3, 9];
 }
 ```
 
+Even though `&&` is a single token ([the lazy 'and' operator](#lazy-boolean-operators)),
+when used in the context of borrow expressions it works as two borrows:
+
+```rust
+// same meanings:
+let a = &&  10;
+let a = & & 10;
+
+// same meanings:
+let a = &&&&  mut 10;
+let a = && && mut 10;
+let a = & & & & mut 10;
+```
+
 ## The dereference operator
+
+> **<sup>Syntax</sup>**  
+> _DereferenceExpression_ :  
+> &nbsp;&nbsp; `*` [_Expression_]
 
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
@@ -85,6 +125,10 @@ assert_eq!(*y, 11);
 ```
 
 ## The question mark operator
+
+> **<sup>Syntax</sup>**  
+> _ErrorPropagationExpression_ :  
+> &nbsp;&nbsp; [_Expression_] `?`  
 
 The question mark operator (`?`) unwraps valid values or returns errornous
 values, propagating them to the calling function. It is a unary postfix
@@ -130,6 +174,11 @@ assert_eq!(try_option_none(), None);
 
 ## Negation operators
 
+> **<sup>Syntax</sup>**  
+> _NegationExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]  
+> &nbsp;&nbsp; | `!` [_Expression_]  
+
 These are the last two unary operators. This table summarizes the behavior of
 them on primitive types and which traits are used to overload these operators
 for other types. Remember that signed integers are always represented using
@@ -153,6 +202,19 @@ assert_eq!(true, !false);
 ```
 
 ## Arithmetic and Logical Binary Operators
+
+> **<sup>Syntax</sup>**  
+> _ArithmeticOrLogicalExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `-` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `*` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `/` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `%` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `&` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `|` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `^` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]  
 
 Binary operators expressions are all written with infix notation. This table
 summarizes the behavior of arithmetic and logical binary operators on
@@ -193,6 +255,15 @@ assert_eq!(-10 >> 2, -3);
 ```
 
 ## Comparison Operators
+
+> **<sup>Syntax</sup>**  
+> _ComparisonExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `==` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `!=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `>` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `<` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]  
 
 Comparison operators are also defined both for primitive types and many type in
 the standard library. Parentheses are required when chaining comparison
@@ -238,6 +309,11 @@ assert!("World" >= "Hello");
 
 ## Lazy boolean operators
 
+> **<sup>Syntax</sup>**  
+> _LazyBooleanExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `&&` [_Expression_]
+
 The operators `||` and `&&` may be applied to operands of boolean type. The
 `||` operator denotes logical 'or', and the `&&` operator denotes logical
 'and'. They differ from `|` and `&` in that the right-hand operand is only
@@ -252,6 +328,10 @@ let y = false && panic!(); // false, doesn't evaluate `panic!()`
 ```
 
 ## Type cast expressions
+
+> **<sup>Syntax</sup>**  
+> _TypeCastExpression_ :  
+> &nbsp;&nbsp; [_Expression_] `as` [_PathInExpression_]
 
 A type cast expression is denoted with the binary operator `as`.
 
@@ -321,7 +401,14 @@ same trait object.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
 
+[float-int]: https://github.com/rust-lang/rust/issues/10184
+[float-float]: https://github.com/rust-lang/rust/issues/15536
+
 ## Assignment expressions
+
+> **<sup>Syntax</sup>**  
+> _AssignmentExpression_ :  
+> &nbsp;&nbsp; | [_Expression_] `=` [_Expression_]  
 
 An _assignment expression_ consists of a [place expression] followed by an
 equals sign (`=`) and a [value expression].
@@ -340,6 +427,19 @@ x = y;
 ```
 
 ## Compound assignment expressions
+
+> **<sup>Syntax</sup>**  
+> _CompoundAssignmentExpression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `-=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `*=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `/=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `%=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `&=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `|=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `^=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]  
+> &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]  
 
 The `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, and `>>` operators may be
 composed with the `=` operator. The expression `place_exp OP= value` is
@@ -362,3 +462,17 @@ assert_eq!(x, 14);
 [float-int]: https://github.com/rust-lang/rust/issues/10184
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: types.html#tuple-types
+
+[_BorrowExpression_]: #borrow-operators
+[_DereferenceExpression_]: #the-dereference-operator
+[_ErrorPropagationExpression_]: #the--operator
+[_NegationExpression_]: #negation-operators
+[_ArithmeticOrLogicalExpression_]: #arithmetic-and-logical-binary-operators
+[_ComparisonExpression_]: #comparison-operators
+[_LazyBooleanExpression_]: #lazy-boolean-operators
+[_TypeCastExpression_]: #type-cast-expressions
+[_AssignmentExpression_]: #assignment-expressions
+[_CompoundAssignmentExpression_]: #compound-assignment-expressions
+
+[_Expression_]: expressions.html
+[_PathInExpression_]: paths.html
