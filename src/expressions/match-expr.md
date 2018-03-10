@@ -2,13 +2,26 @@
 
 > **<sup>Syntax</sup>**  
 > _MatchExpression_ :  
-> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> _MatchBlock_  
+> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> `{`  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
+> &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>  
+> &nbsp;&nbsp; `}`  
 >  
-> _MatchBlock_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `{` `}`  
-> &nbsp;&nbsp; | `{` (`|`<sup>?</sup> _Pattern_ (`|` _Pattern_)<sup>\*</sup> (`if` [_Expression_])<sup>?</sup> `=>` ([_BlockExpression_] `,`<sup>?</sup> | [_Expression_] `,`))<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; (`|`<sup>?</sup> _Pattern_ (`|` _Pattern_)<sup>\*</sup> (`if` [_Expression_])<sup>?</sup> `=>` ([_BlockExpression_] `,`<sup>?</sup> | [_Expression_] `,`<sup>?</sup>))  
-> &nbsp;&nbsp; &nbsp;&nbsp; `}`  
+> _MatchArms_ :  
+> &nbsp;&nbsp; ( _MatchArm_ `=>` 
+>                             ( [_BlockExpression_] `,`<sup>?</sup>
+>                             | [_Expression_] `,` ) 
+>                           )<sup>\*</sup>  
+> &nbsp;&nbsp; _MatchArm_ `=>` ( [_BlockExpression_] | [_Expression_] ) `,`<sup>?</sup>  
+>  
+> _MatchArm_ :  
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_
+>  
+> _MatchArmPatterns_ :  
+> &nbsp;&nbsp; _Pattern_ ( `|` _Pattern_ )<sup>*</sup>  
+>  
+> _MatchArmGuard_ :  
+> &nbsp;&nbsp; `if` [_Expression_]  
 
 A `match` expression branches on a *pattern*. The exact form of matching that
 occurs depends on the pattern. Patterns consist of some combination of
@@ -142,3 +155,5 @@ let message = match maybe_digit {
 [value expression]: expressions.html#place-expressions-and-value-expressions
 [`char`]: types.html#textual-types
 [numeric types]: types.html#numeric-types
+[_InnerAttribute_]: attributes.html
+[_OuterAttribute_]: attributes.html
