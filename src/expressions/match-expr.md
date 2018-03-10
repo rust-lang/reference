@@ -18,7 +18,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_
 >  
 > _MatchArmPatterns_ :  
-> &nbsp;&nbsp; _Pattern_ ( `|` _Pattern_ )<sup>*</sup>  
+> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>*</sup>  
 >  
 > _MatchArmGuard_ :  
 > &nbsp;&nbsp; `if` [_Expression_]  
