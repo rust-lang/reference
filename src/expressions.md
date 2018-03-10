@@ -247,12 +247,12 @@ Many of the following operators and expressions can also be overloaded for
 other types using traits in `std::ops` or `std::cmp`. These traits also
 exist in `core::ops` and `core::cmp` with the same names.
 
-[grouped]:              expressions/grouped-expr.html
 [block expressions]:    expressions/block-expr.html
 [call expressions]:     expressions/call-expr.html
 [closure expressions]:  expressions/closure-expr.html
 [enum variant]:         expressions/enum-variant-expr.html
 [field]:                expressions/field-expr.html
+[grouped]:              expressions/grouped-expr.html
 [literals]:             expressions/literal-expr.html
 [match]:                expressions/match-expr.html
 [method-call]:          expressions/method-call-expr.html

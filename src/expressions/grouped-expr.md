@@ -8,8 +8,6 @@ An expression enclosed in parentheses evaluates to the result of the enclosed
 expression. Parentheses can be used to explicitly specify evaluation order
 within an expression.
 
-This operator cannot be overloaded.
-
 An example of a parenthesized expression:
 
 ```rust
@@ -33,8 +31,8 @@ that is a member of a struct:
 # }
 # let a = A{f: || "The field f"};
 # 
-assert_eq!(  a.f (), "The method f");
-assert_eq!( (a.f)(), "The field f");
+assert_eq!( a.f (), "The method f");
+assert_eq!((a.f)(), "The field f");
 ```
 
 [_Expression_]: expressions.html
