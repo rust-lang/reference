@@ -1,5 +1,31 @@
 # Expressions
 
+> **<sup>Syntax</sup>**  
+> _Expression_ :  
+> &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]  
+> &nbsp;&nbsp; | [_PathExpression_]  
+> &nbsp;&nbsp; | [_BlockExpression_]  
+> &nbsp;&nbsp; | [_OperatorExpression_]  
+> &nbsp;&nbsp; | [_GroupedExpression_]  
+> &nbsp;&nbsp; | [_ArrayExpression_]  
+> &nbsp;&nbsp; | [_IndexExpression_]  
+> &nbsp;&nbsp; | [_TupleExpression_]  
+> &nbsp;&nbsp; | [_TupleIndexingExpression_]  
+> &nbsp;&nbsp; | [_StructExpression_]  
+> &nbsp;&nbsp; | [_EnumerationVariantExpression_]  
+> &nbsp;&nbsp; | [_CallExpression_]  
+> &nbsp;&nbsp; | [_MethodCallExpression_]  
+> &nbsp;&nbsp; | [_FieldExpression_]  
+> &nbsp;&nbsp; | [_ClosureExpression_]  
+> &nbsp;&nbsp; | [_LoopExpression_]  
+> &nbsp;&nbsp; | [_ContinueExpression_]  
+> &nbsp;&nbsp; | [_BreakExpression_]  
+> &nbsp;&nbsp; | [_RangeExpression_]  
+> &nbsp;&nbsp; | [_IfExpression_]  
+> &nbsp;&nbsp; | [_IfLetExpression_]  
+> &nbsp;&nbsp; | [_MatchExpression_]  
+> &nbsp;&nbsp; | [_ReturnExpression_]  
+
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a
 value, and has effects during *evaluation*. Many expressions contain
@@ -292,3 +318,27 @@ exist in `core::ops` and `core::cmp` with the same names.
 [static variables]:     items/static-items.html
 [Temporary values]:     #temporary-lifetimes
 [Variables]:            variables.html
+
+[_ArrayExpression_]:              expressions/array-expr.html
+[_BlockExpression_]:              expressions/block-expr.html
+[_BreakExpression_]:              expressions/loop-expr.html#break-expressions
+[_CallExpression_]:               expressions/call-expr.html
+[_ClosureExpression_]:            expressions/closure-expr.html
+[_ContinueExpression_]:           expressions/loop-expr.html#continue-expressions
+[_EnumerationVariantExpression_]: expressions/enum-variant-expr.html
+[_FieldExpression_]:              expressions/field-expr.html
+[_GroupedExpression_]:            expressions/grouped-expr.html
+[_IfExpression_]:                 expressions/if-expr.html#if-expressions
+[_IfLetExpression_]:              expressions/if-expr.html#if-let-expressions
+[_IndexExpression_]:              expressions/array-expr.html#array-and-slice-indexing-expressions
+[_LiteralExpression_]:            expressions/literal-expr.html
+[_LoopExpression_]:               expressions/loop-expr.html
+[_MatchExpression_]:              expressions/match-expr.html
+[_MethodCallExpression_]:         expressions/method-call-expr.html
+[_OperatorExpression_]:           expressions/operator-expr.html
+[_PathExpression_]:               expressions/path-expr.html
+[_RangeExpression_]:              expressions/range-expr.html
+[_ReturnExpression_]:             expressions/return-expr.html
+[_StructExpression_]:             expressions/struct-expr.html
+[_TupleExpression_]:              expressions/tuple-expr.html
+[_TupleIndexingExpression_]:      expressions/tuple-expr.html#tuple-indexing-expressions
