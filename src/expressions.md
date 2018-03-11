@@ -252,6 +252,7 @@ exist in `core::ops` and `core::cmp` with the same names.
 [closure expressions]:  expressions/closure-expr.html
 [enum variant]:         expressions/enum-variant-expr.html
 [field]:                expressions/field-expr.html
+[grouped]:              expressions/grouped-expr.html
 [literals]:             expressions/literal-expr.html
 [match]:                expressions/match-expr.html
 [method-call]:          expressions/method-call-expr.html
@@ -272,7 +273,6 @@ exist in `core::ops` and `core::cmp` with the same names.
 [dereferences]:         expressions/operator-expr.html#the-dereference-operator
 [dereferencing]:        expressions/operator-expr.html#the-dereference-operator
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
-[grouped]:              expressions/operator-expr.html#grouped-expressions
 [lazy boolean]:         expressions/operator-expr.html#lazy-boolean-operators
 [negation]:             expressions/operator-expr.html#negation-operators
 [overflow]:             expressions/operator-expr.html#overflow

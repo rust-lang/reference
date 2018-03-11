@@ -45,6 +45,7 @@
         - [Path expressions](expressions/path-expr.md)
         - [Block expressions](expressions/block-expr.md)
         - [Operator expressions](expressions/operator-expr.md)
+        - [Grouped expressions](expressions/grouped-expr.md)
         - [Array and index expressions](expressions/array-expr.md)
         - [Tuple and index expressions](expressions/tuple-expr.md)
         - [Struct expressions](expressions/struct-expr.md)
