@@ -18,7 +18,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>
 >
 > _MatchArmPatterns_ :
-> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>*</sup>
+> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>\*</sup>
 >
 > _MatchArmGuard_ :
 > &nbsp;&nbsp; `if` [_Expression_]
@@ -183,4 +183,3 @@ let message = match maybe_digit {
 [numeric types]: types.html#numeric-types
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
-[range]: expressions/range-expr.html
