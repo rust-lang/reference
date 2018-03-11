@@ -5,9 +5,7 @@
 > **<sup>Syntax</sup>**  
 > _TupleExpression_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`  
-> &nbsp;&nbsp; | `(` [_Expression_] `,` `)`  
-> &nbsp;&nbsp; | `(` [_Expression_] (`,` [_Expression_] )<sup>\+</sup> 
->                `,`<sup>?</sup> `)`  
+> &nbsp;&nbsp; | `(` ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup> `)`
 
 Tuples are written by enclosing zero or more comma-separated expressions in
 parentheses. They are used to create [tuple-typed](types.html#tuple-types)
@@ -31,7 +29,7 @@ comma:
 
 > **<sup>Syntax</sup>**  
 > _TupleIndexingExpression_ :  
-> &nbsp;&nbsp; [_Expression_] `.` [INTEGER_LITERAL]
+> &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
 
 [Tuples](types.html#tuple-types) and [struct tuples](items/structs.html) can be
 indexed using the number corresponding to the position of the field. The index
@@ -48,5 +46,5 @@ let unit_x = Point(1.0, 0.0);
 assert_eq!(unit_x.0, 1.0);
 ```
 
-[INTEGER_LITERAL]: tokens.html#integer-literals
+[TUPLE_INDEX]: tokens.html#integer-literals
 [_Expression_]: expressions.html
