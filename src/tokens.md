@@ -143,8 +143,10 @@ literals. An escape starts with a `U+005C` (`\`) and continues with one of the
 following forms:
 
 * An _8-bit code point escape_ starts with `U+0078` (`x`) and is
-  followed by exactly two _hex digits_. It denotes the Unicode code point
-  equal to the provided hex value.
+  followed by exactly two _hex digits_ with value up to `0x7F`. It denotes the
+  ASCII character with value equal to the provided hex value. Higher values are
+  not permitted because it is ambiguous whether they mean Unicode code points or
+  byte values.
 * A _24-bit code point escape_ starts with `U+0075` (`u`) and is followed
   by up to six _hex digits_ surrounded by braces `U+007B` (`{`) and `U+007D`
   (`}`). It denotes the Unicode code point equal to the provided hex value.
@@ -154,7 +156,7 @@ following forms:
 * The _null escape_ is the character `U+0030` (`0`) and denotes the Unicode
   value `U+0000` (NUL).
 * The _backslash escape_ is the character `U+005C` (`\`) which must be
-  escaped in order to denote *itself*.
+  escaped in order to denote itself.
 
 #### Raw string literals
 
