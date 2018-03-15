@@ -6,6 +6,8 @@
 > &nbsp;&nbsp; | _RangeFromExpr_  
 > &nbsp;&nbsp; | _RangeToExpr_  
 > &nbsp;&nbsp; | _RangeFullExpr_  
+> &nbsp;&nbsp; | _RangeInclusiveExpr_  
+> &nbsp;&nbsp; | _RangeToInclusiveExpr_  
 >  
 > _RangeExpr_ :  
 > &nbsp;&nbsp; [_Expression_] `..` [_Expression_]  
@@ -18,9 +20,16 @@
 >  
 > _RangeFullExpr_ :  
 > &nbsp;&nbsp; `..`  
+>
+> _RangeExpr_ :  
+> &nbsp;&nbsp; [_Expression_] `..=` [_Expression_]  
+>  
+> _RangeToExpr_ :  
+> &nbsp;&nbsp; `..=` [_Expression_]  
 
-The `..` operator will construct an object of one of the `std::ops::Range` (or
-`core::ops::Range`) variants, according to the following table:
+The `..` and `..=` operators will construct an object of one of the
+`std::ops::Range` (or `core::ops::Range`) variants, according to the following
+table:
 
 | Production             | Syntax        | Type                         | Range                 |
 |------------------------|---------------|------------------------------|-----------------------|
@@ -28,6 +37,8 @@ The `..` operator will construct an object of one of the `std::ops::Range` (or
 | _RangeFromExpr_        | start`..`     | [std::ops::RangeFrom]        | start &le; x          |
 | _RangeToExpr_          | `..`end       | [std::ops::RangeTo]          |            x &lt; end |
 | _RangeFullExpr_        | `..`          | [std::ops::RangeFull]        |            -          |
+| _RangeInclusiveExpr_   | start`..=`end | [std::ops::RangeInclusive]   | start &le; x &le; end |
+| _RangeToInclusiveExpr_ | `..=`end      | [std::ops::RangeToInclusive] |            x &le; end |
 
 Examples:
 
@@ -36,6 +47,8 @@ Examples:
 3..;    // std::ops::RangeFrom
 ..4;    // std::ops::RangeTo
 ..;     // std::ops::RangeFull
+5..=6;  // std::ops::RangeInclusive
+..=7;   // std::ops::RangeToInclusive
 ```
 
 The following expressions are equivalent.
@@ -57,7 +70,9 @@ for i in 1..11 {
 
 [_Expression_]: expressions.html
 
-[std::ops::Range]:     https://doc.rust-lang.org/std/ops/struct.Range.html
-[std::ops::RangeFrom]: https://doc.rust-lang.org/std/ops/struct.RangeFrom.html
-[std::ops::RangeTo]:   https://doc.rust-lang.org/std/ops/struct.RangeTo.html
-[std::ops::RangeFull]: https://doc.rust-lang.org/std/ops/struct.RangeFull.html
+[std::ops::Range]:            https://doc.rust-lang.org/std/ops/struct.Range.html
+[std::ops::RangeFrom]:        https://doc.rust-lang.org/std/ops/struct.RangeFrom.html
+[std::ops::RangeTo]:          https://doc.rust-lang.org/std/ops/struct.RangeTo.html
+[std::ops::RangeFull]:        https://doc.rust-lang.org/std/ops/struct.RangeFull.html
+[std::ops::RangeInclusive]:   https://doc.rust-lang.org/std/ops/struct.RangeInclusive.html
+[std::ops::RangeToInclusive]: https://doc.rust-lang.org/std/ops/struct.RangeToInclusive.html

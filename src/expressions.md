@@ -65,7 +65,7 @@ evaluated in the order given by their associativity.
 | `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
 | `&&`                        | left to right       |
 | <code>&#124;&#124;</code>   | left to right       |
-| `..` `...`                  | Require parentheses |
+| `..` `..=`                  | Require parentheses |
 | `<-`                        | right to left       |
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
