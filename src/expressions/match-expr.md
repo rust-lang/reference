@@ -1,27 +1,27 @@
 # `match` expressions
 
-> **<sup>Syntax</sup>**  
-> _MatchExpression_ :  
-> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> `{`  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>  
-> &nbsp;&nbsp; `}`  
->  
-> _MatchArms_ :  
-> &nbsp;&nbsp; ( _MatchArm_ `=>` 
+> **<sup>Syntax</sup>**
+> _MatchExpression_ :
+> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> `{`
+> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>
+> &nbsp;&nbsp; `}`
+>
+> _MatchArms_ :
+> &nbsp;&nbsp; ( _MatchArm_ `=>`
 >                             ( [_BlockExpression_] `,`<sup>?</sup>
->                             | [_Expression_] `,` ) 
->                           )<sup>\*</sup>  
-> &nbsp;&nbsp; _MatchArm_ `=>` ( [_BlockExpression_] | [_Expression_] ) `,`<sup>?</sup>  
->  
-> _MatchArm_ :  
+>                             | [_Expression_] `,` )
+>                           )<sup>\*</sup>
+> &nbsp;&nbsp; _MatchArm_ `=>` ( [_BlockExpression_] | [_Expression_] ) `,`<sup>?</sup>
+>
+> _MatchArm_ :
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>
->  
-> _MatchArmPatterns_ :  
-> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>*</sup>  
->  
-> _MatchArmGuard_ :  
-> &nbsp;&nbsp; `if` [_Expression_]  
+>
+> _MatchArmPatterns_ :
+> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>*</sup>
+>
+> _MatchArmGuard_ :
+> &nbsp;&nbsp; `if` [_Expression_]
 
 A `match` expression branches on a *pattern*. The exact form of matching that
 occurs depends on the pattern. Patterns consist of some combination of
@@ -41,7 +41,7 @@ the pattern are assigned to local variables in the arm's block, and control
 enters the block.
 
 When the head expression is a [place expression], the match does not allocate a
-temporary location; however, a by-value binding may copy or move from the 
+temporary location; however, a by-value binding may copy or move from the
 memory location.
 When possible, it is preferable to match on place expressions, as the lifetime
 of these matches inherits the lifetime of the place expression rather than being
@@ -118,20 +118,27 @@ match x {
 }
 ```
 
-Multiple match patterns may be joined with the `|` operator. A range of values
-may be specified with `...`. For example:
+Multiple match patterns may be joined with the `|` operator. An inclusive range
+of values may be specified with `..=`. For example:
 
 ```rust
-# let x = 2;
+# let x = 9;
 let message = match x {
     0 | 1  => "not many",
-    2 ... 9 => "a few",
+    2 ..= 9 => "a few",
     _      => "lots"
 };
+
+assert_eq!(message, "a few");
 ```
 
-Range patterns only work on [`char`] and [numeric types]. A range pattern may
-not be a sub-range of another range pattern inside the same `match`.
+Other forms of [range] \(`..` for an exclusive range, or any range with one or
+both endpoints left unspecified) are not supported in matches. The
+syntax `...` is also accepted for inclusive ranges in patterns only, for
+backwards compatibility.
+
+Range patterns only work [`char`] and [numeric types]. A range pattern may not
+be a sub-range of another range pattern inside the same `match`.
 
 Finally, match patterns can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
@@ -157,3 +164,4 @@ let message = match maybe_digit {
 [numeric types]: types.html#numeric-types
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
+[range]: range-expr.html
