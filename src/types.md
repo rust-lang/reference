@@ -17,6 +17,7 @@ types:
 * The [machine types] (integer and floating-point).
 * The [machine-dependent integer types].
 * The [textual types] `char` and `str`.
+* The [never type] `!`
 
 There are also some primitive constructs for generic types built in to the
 language:
@@ -31,6 +32,7 @@ language:
 [machine types]: #machine-types
 [machine-dependent integer types]: #machine-dependent-integer-types
 [textual types]: #textual-types
+[never-type]: #never-type
 [Tuples]: #tuple-types
 [Arrays]: #array-and-slice-types
 [Slices]: #array-and-slice-types
@@ -83,6 +85,12 @@ A value of type `str` is a Unicode string, represented as an array of 8-bit
 unsigned bytes holding a sequence of UTF-8 code points. Since `str` is a
 [dynamically sized type], it is not a _first-class_ type, but can only be
 instantiated through a pointer type, such as `&str`.
+
+## Never type
+
+The never type `!` is a type with no values, representing the result of
+computations that never complete. Expressions of type `!` can be coerced into
+any other type.
 
 ## Tuple types
 

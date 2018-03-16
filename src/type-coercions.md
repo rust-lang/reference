@@ -148,6 +148,8 @@ Coercion is allowed between the following types:
 
 * Non capturing closures to `fn` pointers
 
+* `!` to any `T`
+
 ### Unsized Coercions
 
 The following coercions are called `unsized coercions`, since they
