@@ -14,14 +14,19 @@ other traits and so forth as usual.
 
 Traits are implemented for specific types through separate [implementations].
 
+Items associated with a trait do not need to be defined in the trait, but they
+may be. If the trait provides a definition, then this definition acts as a
+default for any implementation which does not override it. If it does not, then
+any implementation must provide a definition.
+
 ## Trait bounds
 
 Generic functions may use traits as _bounds_ on their type parameters. This
 will have three effects:
 
 - Only types that have the trait may instantiate the parameter.
-- Within the generic function, the methods of the trait can be called on values
-  that have the parameter's type. Associated types can be used in the
+- Within the generic function, the functions of the trait can be called on
+  values that have the parameter's type. Associated types can be used in the
   function's signature, and associated constants can be used in expressions
   within the function body.
 - Generic functions and types with the same or weaker bounds can use the
@@ -63,11 +68,10 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 *object safe* if it has the following qualities (defined in [RFC 255]):
 
 * It must not require `Self: Sized`
-* All associated functions must either have a `where Self: Sized` bound or
-    * Not have any type parameters (although lifetime parameters are allowed)
-    * Must be a method: its first parameter must be called self, with type
-      `Self`, `&Self`, `&mut Self`, `Box<Self>`.
-    * `Self` may only be used in the type of the receiver.
+* All associated functions must either have a `where Self: Sized` bound, or
+    * Not have any type parameters (although lifetime parameters are allowed),
+      and
+    * Be a [method] that does not use `Self` except in the type of the receiver.
 * It must not have any associated constants.
 
 ## Supertraits
@@ -142,6 +146,6 @@ let nonsense = mycircle.radius() * mycircle.area();
 [`RefUnwindSafe`]: ../std/panic/trait.RefUnwindSafe.html
 [trait object]: types.html#trait-objects
 [explicit]: expressions/operator-expr.html#type-cast-expressions
-[methods called]: expressions/method-call-expr.html
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: items/associated-items.html
+[method]: items/functions.html#methods
