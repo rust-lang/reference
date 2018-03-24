@@ -587,7 +587,7 @@ need to be expressed as part of the trait object. This lifetime is written as
 `Trait + 'a`. There are [defaults] that allow this lifetime to usually be
 infered with a sensible choice.
 
-[defaults]: lifetime-elision.html#elision-and-defaults-in-trait-objects
+[defaults]: lifetime-elision.html#default-trait-object-lifetimes
 
 ## Type parameters
 

@@ -139,7 +139,7 @@ compiler, not by [implementation items].
 [indexing expressions]: expressions/array-expr.html#array-and-slice-indexing-expressions
 [interior mutability]: interior-mutability.html
 [Numeric types]: types.html#numeric-types
-[Methods]: items/traits.html#associated-functions-and-methods
+[Methods]: items/associated-items.html#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.html
 [operators]: expressions/operator-expr.html
 [orphan rules]: items/implementations.html#trait-implementation-coherence

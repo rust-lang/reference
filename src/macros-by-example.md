@@ -38,7 +38,7 @@ syntax named by _designator_. Valid designators are:
 [expression]: expressions.html
 [type]: types.html
 [identifier]: identifiers.html
-[keyword]: keyword.html
+[keyword]: keywords.html
 [path]: paths.html
 [token]: tokens.html
 [attribute]: attributes.html

@@ -444,7 +444,7 @@ assert_eq!(x, 14);
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
-[_ErrorPropagationExpression_]: #the--operator
+[_ErrorPropagationExpression_]: #the-question-mark-operator
 [_NegationExpression_]: #negation-operators
 [_ArithmeticOrLogicalExpression_]: #arithmetic-and-logical-binary-operators
 [_ComparisonExpression_]: #comparison-operators
