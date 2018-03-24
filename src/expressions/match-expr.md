@@ -159,6 +159,25 @@ match v[..] {
 }
 ```
 
+Slice patterns can match both arrays of fixed size and slices of dynamic size.
+```rust
+// Fixed size
+let arr = [1, 2, 3];
+match arr {
+    [1, _, _] => "starts with one",
+    [a, b, c] => "starts with something else",
+}
+```
+```rust
+// Dynamic size
+let v = vec![1, 2, 3];
+match v[..] {
+    [a, b] => { /* this arm will not apply because the length doesn't match */ }
+    [a, b, c] => { /* this arm will apply */ }
+    _ => { /* this wildcard is required, since we don't know length statically */ }
+}
+```
+
 Finally, match patterns can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
 consist of a bool-typed expression following the `if` keyword. A pattern guard
