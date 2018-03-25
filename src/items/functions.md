@@ -7,15 +7,9 @@ as parameters, through which the caller passes arguments into the function, and
 the *output* [*type*][type] of the value the function will return to its caller
 on completion.
 
-[block]: expressions/block-expr.html
-[variables]: variables.html
-[type]: types.html
-
 When referred to, a _function_ yields a first-class *value* of the
 corresponding zero-sized [*function item type*], which
 when called evaluates to a direct call to the function.
-
-[*function item type*]: types.html#function-item-types
 
 For example, this is a simple function:
 ```rust
@@ -61,7 +55,7 @@ fn foo<A, B>(x: A, y: B) {
 ```
 
 Inside the function signature and body, the name of the type parameter can be
-used as a type name. [Trait](items/traits.html) bounds can be specified for type
+used as a type name. [Trait] bounds can be specified for type
 parameters to allow methods with that trait to be called on values of that
 type. This is specified using the `where` syntax:
 
@@ -90,8 +84,6 @@ The type parameters can also be explicitly supplied in a trailing [path]
 component after the function name. This might be necessary if there is not
 sufficient context to determine the type parameters. For example,
 `mem::size_of::<u32>() == 4`.
-
-[path]: paths.html
 
 ## Extern functions
 
@@ -124,3 +116,9 @@ of an extern function will cause the process to abort. In LLVM, this is
 implemented by executing an illegal instruction.
 
 [external blocks]: items/external-blocks.html
+[path]: paths.html
+[block]: expressions/block-expr.html
+[variables]: variables.html
+[type]: types.html
+[*function item type*]: types.html#function-item-types
+[Trait]: items/traits.html
