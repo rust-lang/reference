@@ -33,7 +33,7 @@ The identifier if the name of the function. The generics, parameter list,
 return type, and where clause of the associated function must be the same as the
 associated function declarations's.
 
-An *associated function definiton* defines a function associated with another
+An *associated function definition* defines a function associated with another
 type. It is written the same as a [function item].
 
 An example of a common associated function is a `new` function that returns
