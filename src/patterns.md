@@ -39,7 +39,7 @@ For example, the pattern used in:
 if let
     Person {
         car: Some(_),
-        age: person_age @ 13...19,
+        age: person_age @ 13..=19,
         name: ref person_name,
         ..
     } = person
@@ -202,7 +202,8 @@ The wildcard pattern is always irrefutable.
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp;  _RangePatternBound_ `...` _RangePatternBound_
+> &nbsp;&nbsp;&nbsp;&nbsp;  _RangePatternBound_ `..=` _RangePatternBound_\
+> &nbsp;&nbsp; | _RangePatternBound_ `...` _RangePatternBound_
 >
 > _RangePatternBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
@@ -216,11 +217,13 @@ The wildcard pattern is always irrefutable.
 [_QualifiedPathInExpression_]: paths.html
 
 Range patterns match values that are within the closed range defined by its lower and
-upper bounds. For example, a pattern `'m'...'p'` will match only the values `'m'`, `'n'`,
+upper bounds. For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`,
 `'o'`, and `'p'`. The bounds can be literals or paths that point to constant values.
 
-A pattern a `...` b must always have a &le; b. Thus, it is not possible to have a range
-pattern `10...0`, for example.
+A pattern a `..=` b must always have a &le; b. Thus, it is not possible to have a range
+pattern `10..=0`, for example.
+
+The `...` syntax is kept for backwards compatibility.
 
 Range patterns only work on scalar types. The accepted types are:
 
@@ -235,17 +238,17 @@ Examples:
 ```rust
 # let c = 'f';
 let valid_variable = match c {
-    'a'...'z' => true,
-    'A'...'Z' => true,
-    'α'...'ω' => true,
+    'a'..='z' => true,
+    'A'..='Z' => true,
+    'α'..='ω' => true,
     _ => false,
 };
 
 # let ph = 10;
 println!("{}", match ph {
-    0...6 => "acid",
+    0..=6 => "acid",
     7 => "neutral",
-    8...14 => "base",
+    8..=14 => "base",
     _ => unreachable!(),
 });
 
@@ -262,9 +265,9 @@ println!("{}", match ph {
 # let altitude = 70;
 #
 println!("{}", match altitude {
-    TROPOSPHERE_MIN...TROPOSPHERE_MAX => "troposphere",
-    STRATOSPHERE_MIN...STRATOSPHERE_MAX => "stratosphere",
-    MESOSPHERE_MIN...MESOSPHERE_MAX => "mesosphere",
+    TROPOSPHERE_MIN..=TROPOSPHERE_MAX => "troposphere",
+    STRATOSPHERE_MIN..=STRATOSPHERE_MAX => "stratosphere",
+    MESOSPHERE_MIN..=MESOSPHERE_MAX => "mesosphere",
     _ => "outer space, maybe",
 });
 
@@ -274,7 +277,7 @@ println!("{}", match altitude {
 # }
 # let n_items = 20_832_425;
 # let bytes_per_item = 12;
-if let size @ binary::MEGA...binary::GIGA = n_items * bytes_per_item {
+if let size @ binary::MEGA..=binary::GIGA = n_items * bytes_per_item {
     println!("It fits and occupies {} bytes", size);
 }
 
@@ -292,16 +295,16 @@ if let size @ binary::MEGA...binary::GIGA = n_items * bytes_per_item {
 # }
 // using qualified paths:
 println!("{}", match 0xfacade {
-    0 ... <u8 as MaxValue>::MAX => "fits in a u8",
-    0 ... <u16 as MaxValue>::MAX => "fits in a u16",
-    0 ... <u32 as MaxValue>::MAX => "fits in a u32",
+    0 ..= <u8 as MaxValue>::MAX => "fits in a u8",
+    0 ..= <u16 as MaxValue>::MAX => "fits in a u16",
+    0 ..= <u32 as MaxValue>::MAX => "fits in a u32",
     _ => "too big",
 });
 
 ```
 
 Range patterns are always refutable, even when they cover the complete set
-of possible values of a type. For example, `0u8...255u8` is refutable even though
+of possible values of a type. For example, `0u8..=255u8` is refutable even though
 it covers all possible values of `u8`.
 
 ## Reference patterns
@@ -358,7 +361,7 @@ subpattern` is needed. For example:
 let x = 2;
 
 match x {
-    e @ 1 ... 5 => println!("got a range element {}", e),
+    e @ 1 ..= 5 => println!("got a range element {}", e),
     _ => println!("anything"),
 }
 ```
@@ -394,7 +397,7 @@ the value's fields. For example:
 #    age: u8,
 # }
 # let value = Person{ name: String::from("John"), age: 23 };
-if let Person{& name: person_name, age: 18...150} = value { }
+if let Person{& name: person_name, age: 18..=150} = value { }
 ```
 
 is not valid. What we must do is:
@@ -405,7 +408,7 @@ is not valid. What we must do is:
 #    age: u8,
 # }
 # let value = Person{ name: String::from("John"), age: 23 };
-if let Person{name: ref person_name, age: 18...150} = value { }
+if let Person{name: ref person_name, age: 18..=150} = value { }
 ```
 
 Thus, `ref` is not something that is being matched against. Its objective is
