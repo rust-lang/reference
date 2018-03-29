@@ -67,7 +67,7 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**  
 > [_PredicatePatternLoopExpression_] :  
-> &nbsp;&nbsp; `while` `let` _Pattern_ `=` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]  
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
@@ -213,5 +213,6 @@ expression `()`.
 
 [_Expression_]:      expressions.html
 [_BlockExpression_]: expressions/block-expr.html
+[_Pattern_]: patterns.html
 
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
