@@ -553,7 +553,7 @@ let arr = [1, 2, 3];
 match arr {
     [1, _, _] => "starts with one",
     [a, b, c] => "starts with something else",
-}
+};
 ```
 ```rust
 // Dynamic size
@@ -562,7 +562,7 @@ match v[..] {
     [a, b] => { /* this arm will not apply because the length doesn't match */ }
     [a, b, c] => { /* this arm will apply */ }
     _ => { /* this wildcard is required, since we don't know length statically */ }
-}
+};
 ```
 
 ## Path patterns

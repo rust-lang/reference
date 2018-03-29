@@ -44,7 +44,7 @@ assert_eq!(y, "Bigger");
 
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` _Pattern_ `=` [_Expression_]<sub>_except struct expression_</sub>
+> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Expression_]<sub>_except struct expression_</sub>
 >              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
@@ -113,3 +113,4 @@ match EXPR {
 
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
+[_Pattern_]: patterns.html
