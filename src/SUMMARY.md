@@ -60,6 +60,8 @@
         - [Match expressions](expressions/match-expr.md)
         - [Return expressions](expressions/return-expr.md)
 
+- [Patterns](patterns.md)
+
 - [Type system](type-system.md)
     - [Types](types.md)
     - [Dynamically Sized Types](dynamically-sized-types.md)
