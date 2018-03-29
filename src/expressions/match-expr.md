@@ -70,14 +70,14 @@ Multiple match patterns may be joined with the `|` operator:
 # let x = 9;
 let message = match x {
     0 | 1  => "not many",
-    2 ... 9 => "a few",
+    2 ..= 9 => "a few",
     _      => "lots"
 };
 
 assert_eq!(message, "a few");
 ```
 
-Please notice that the `2...9` is a [Range Pattern], not a [Range Expression]
+Please notice that the `2..=9` is a [Range Pattern], not a [Range Expression]
 and, thus, only those types of ranges supported by range patterns can be used
 in match arms.
 
