@@ -66,7 +66,7 @@ reference does not change the layout.
 
 Pointers to sized types have the same size and alignment as `usize`.
 
-Pointers to unsized types are sized. The size and alignemnt is guaranteed to be
+Pointers to unsized types are sized. The size and alignment is guaranteed to be
 at least equal to the size and alignment of a pointer.
 
 > Note: Though you should not rely on this, all pointers to <abbr
@@ -88,7 +88,7 @@ Slices have the same layout as the section of the array they slice.
 
 ## Tuple Layout
 
-Tuples do not have any guarantes about their layout.
+Tuples do not have any guarantees about their layout.
 
 The exception to this is the unit tuple (`()`) which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
@@ -170,7 +170,7 @@ is now. Then increase the current offset by the size of the field.
 Finally, the size of the struct is the current offset rounded up to the nearest
 multiple of the struct's alignment.
 
-Here is this algorithm described in psudeocode.
+Here is this algorithm described in pseudocode.
 
 ```rust,ignore
 struct.alignment = struct.fields().map(|field| field.alignment).max();
@@ -238,7 +238,7 @@ the default `enum` size and alignment for the target platform's C ABI.
 > mostly a `typedef` plus some named constants; in other words, an object of an
 > `enum` type can hold any integer value. For example, this is often used for
 > bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
-> the discrimnant values, everything else is undefined behaviour. Therefore,
+> the discriminant values, everything else is undefined behaviour. Therefore,
 > using a C-like enumeration in FFI to model a C `enum` is often wrong.
 
 It is an error for [zero-variant enumerations] to have the `C` representation.

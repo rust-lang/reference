@@ -585,7 +585,7 @@ type signature of `print`, and the cast expression in `main`.
 Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. This lifetime is written as
 `Trait + 'a`. There are [defaults] that allow this lifetime to usually be
-infered with a sensible choice.
+inferred with a sensible choice.
 
 [defaults]: lifetime-elision.html#default-trait-object-lifetimes
 

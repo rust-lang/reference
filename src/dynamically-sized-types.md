@@ -14,7 +14,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
   type arguments when a bound of `?Sized`. By default any type parameter
   has a `Sized` bound.
 * Traits may be implemented for <abbr title="dynamically sized
-  types">DSTs</abbr>. Unlike type parameters`Self: ?Sized` by default in trait
+  types">DSTs</abbr>. Unlike type parameters `Self: ?Sized` by default in trait
   definitions.
 * Structs may contain a <abbr title="dynamically sized type">DST</abbr> as the
   last field, this makes the struct itself a

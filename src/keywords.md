@@ -8,7 +8,7 @@ Rust divides keywords into three categories:
 
 ## Strict keywords
 
-These keywords can only be used in their correct contexts. They cannnot
+These keywords can only be used in their correct contexts. They cannot
 be used as the names of:
 
 * [Items]
