@@ -414,6 +414,27 @@ fn main() {
 }
 ```
 
+When used on a function in a trait declaration, then the behavior also applies
+when the call expression is a function from an implementation of the trait.
+
+```rust
+trait Trait {
+  #[must_use]
+  fn use_me(&self) -> i32;
+}
+
+impl Trait for i32 {
+  fn use_me(&self) -> i32 { 0i32 }
+}
+
+fn main() {
+  // Violates the `unused_must_use` lint.
+  5i32.use_me();
+}
+```
+
+When used on a function in an implementation, the attribute does nothing.
+
 > Note: Trivial no-op expressions containing the value will not violate the
 > lint. Examples include wrapping the value in a type that does not implement
 > [`Drop`] and then not using that type and being the final expression of a
