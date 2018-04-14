@@ -61,7 +61,7 @@ type does not have to implement the `Sync` trait.
 
 ## Using Statics or Consts
 
-In can be confusing whether or not you should use a constant item or a static
+It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the
 following are true:
 
