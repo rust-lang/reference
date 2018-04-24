@@ -75,7 +75,6 @@ them to use these keywords.
 > KW_OFFSETOF       : `offsetof`  
 > KW_OVERRIDE       : `override`  
 > KW_PRIV           : `priv`  
-> KW_PROC           : `proc`  
 > KW_PURE           : `pure`  
 > KW_SIZEOF         : `sizeof`  
 > KW_TYPEOF         : `typeof`  
