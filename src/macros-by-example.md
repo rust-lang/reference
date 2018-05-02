@@ -30,6 +30,7 @@ syntax named by _designator_. Valid designators are:
 * `path`: a [path]
 * `tt`: a token tree (a single [token] by matching `()`, `[]`, or `{}`)
 * `meta`: the contents of an [attribute]
+* `lifetime`: a lifetime. Examples: `'static`, `'a`.
 
 [item]: items.html
 [block]: expressions/block-expr.html
