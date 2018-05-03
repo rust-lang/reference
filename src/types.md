@@ -511,7 +511,7 @@ Because captures are often by reference, the following general rules arise:
 > &nbsp;&nbsp; `dyn`<sup>?</sup> _LifetimeOrPath_ ( `+` _LifetimeOrPath_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _LifetimeOrPath_ :
-> &nbsp;&nbsp; [_Path_] | [_LIFETIME_OR_LABEL_]
+> &nbsp;&nbsp; [_Path_] |  `(` [_Path_] `)` | [_LIFETIME_OR_LABEL_]
 
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
@@ -523,8 +523,10 @@ of the base trait.
 Trait objects are written as the optional keyword `dyn` followed by a set of
 trait bounds, but with the following restrictions on the trait bounds. All
 traits except the first trait must be auto traits, there may not be more than
-one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. For example,
-given a trait `Trait`, the following are all trait objects: 
+one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. Furthermore,
+paths to traits may be parenthesized.
+
+For example, given a trait `Trait`, the following are all trait objects: 
 
 * `Trait`
 * `dyn Trait`
@@ -534,6 +536,13 @@ given a trait `Trait`, the following are all trait objects:
 * `dyn Trait + Send + 'static`
 * `dyn Trait +`
 * `dyn 'static + Trait`.
+* `dyn (Trait)`
+
+If the first bound of the trait object is a path that starts with `::`, then the
+`dyn` will be treated as a part of the path. The first path can be put in
+parenthesis to get around this. As such, if you want a trait object with the
+trait `::your_module::Trait`, you should write it as
+`dyn (::your_module::Trait)`.
 
 > Note: For clarity, it is recommended to always use the `dyn` keyword on your
 > trait objects unless your codebase supports compiling with Rust 1.26 or lower.
