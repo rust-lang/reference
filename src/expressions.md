@@ -44,8 +44,8 @@ and blocks again can recursively nest inside each other to an arbitrary depth.
 ## Expression precedence
 
 The precedence of Rust operators and expressions is ordered as follows, going
-from strong to weak. Binary Operators at the same precedence level are
-evaluated in the order given by their associativity.
+from strong to weak. Binary Operators at the same precedence level are grouped
+in the order given by their associativity.
 
 | Operator/Expression         | Associativity       |
 |-----------------------------|---------------------|
@@ -55,7 +55,7 @@ evaluated in the order given by their associativity.
 | Function calls, array indexing |                  |
 | `?`                         |                     |
 | Unary `-` `*` `!` `&` `&mut` |                    |
-| `as` `:`                    | left to right       |
+| `as`                        | left to right       |
 | `*` `/` `%`                 | left to right       |
 | `+` `-`                     | left to right       |
 | `<<` `>>`                   | left to right       |
@@ -66,7 +66,6 @@ evaluated in the order given by their associativity.
 | `&&`                        | left to right       |
 | <code>&#124;&#124;</code>   | left to right       |
 | `..` `..=`                  | Require parentheses |
-| `<-`                        | right to left       |
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
