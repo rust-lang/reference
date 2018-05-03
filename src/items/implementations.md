@@ -113,9 +113,9 @@ the following conditions:
 
    ```ignore
     T = C
-      | &T
-      | &mut T
-      | Box<T>
+      | &C
+      | &mut C
+      | Box<C>
    ```
 
 ## Generic Implementations
