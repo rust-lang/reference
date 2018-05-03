@@ -537,4 +537,4 @@ You can implement `derive` for your own type through [procedural macros].
 [`Drop`]: special-types-and-traits.html#drop
 [let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
-[zero-variant enum]: enumerations.html#zero-variant-enums
+[zero-variant enum]: items/enumerations.html#zero-variant-enums

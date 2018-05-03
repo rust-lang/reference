@@ -148,4 +148,4 @@ let nonsense = mycircle.radius() * mycircle.area();
 [explicit]: expressions/operator-expr.html#type-cast-expressions
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: items/associated-items.html
-[method]: items/functions.html#methods
+[method]: items/associated-items.html#methods
