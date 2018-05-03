@@ -134,8 +134,12 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 }
 ```
 
-> Warning: lifetime bounds are allowed on lifetimes in a `for` binder, but have
-> no effect: `for<'a, 'b: 'a>` is no different to `for<'a, 'b>`.
+<div class="warning">
+
+***Warning:*** lifetime bounds are allowed on lifetimes in a `for` binder, but
+have no effect: `for<'a, 'b: 'a>` is no different to `for<'a, 'b>`.
+
+</div>
 
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
 [_TraitPath_]: paths.html

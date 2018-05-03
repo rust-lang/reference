@@ -233,13 +233,17 @@ the default `enum` size and alignment for the target platform's C ABI.
 > really a "best guess". In particular, this may be incorrect when the C code
 > of interest is compiled with certain flags.
 
-> Warning: There are crucial differences between an `enum` in the C language and
-> Rust's C-like enumerations with this representation. An `enum` in  C is
-> mostly a `typedef` plus some named constants; in other words, an object of an
-> `enum` type can hold any integer value. For example, this is often used for
-> bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
-> the discriminant values, everything else is undefined behaviour. Therefore,
-> using a C-like enumeration in FFI to model a C `enum` is often wrong.
+<div class="warning">
+
+Warning: There are crucial differences between an `enum` in the C language and
+Rust's C-like enumerations with this representation. An `enum` in  C is
+mostly a `typedef` plus some named constants; in other words, an object of an
+`enum` type can hold any integer value. For example, this is often used for
+bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
+the discriminant values, everything else is undefined behaviour. Therefore,
+using a C-like enumeration in FFI to model a C `enum` is often wrong.
+
+</div>
 
 It is an error for [zero-variant enumerations] to have the `C` representation.
 
@@ -290,9 +294,13 @@ padding bytes and forcing the alignment of the type to `1`.
 The `align` and `packed` representations cannot be applied on the same type and
 a `packed` type cannot transitively contain another `align`ed type.
 
-> Warning: Dereferencing an unaligned pointer is [undefined behaviour] and it is
-> possible to [safely create unaligned pointers to `packed` fields][27060].
-> Like all ways to create undefined behavior in safe Rust, this is a bug.
+<div class="warning">
+
+***Warning:*** Dereferencing an unaligned pointer is [undefined behaviour] and
+it is possible to [safely create unaligned pointers to `packed` fields][27060].
+Like all ways to create undefined behavior in safe Rust, this is a bug.
+
+</div>
 
 [`align_of_val`]: ../std/mem/fn.align_of_val.html
 [`size_of_val`]: ../std/mem/fn.size_of_val.html

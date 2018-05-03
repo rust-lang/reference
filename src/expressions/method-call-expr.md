@@ -81,13 +81,17 @@ generic methods or traits are considered the same, then it is a compiler
 error. These cases require a [disambiguating function call syntax] for method
 and function invocation.
 
-> Warning: For [trait objects], if there is an inherent method of the same name
-> as a trait method, it will give a compiler error when trying to call the
-> method in a method call expression. Instead, you can call the method using
-> [disambiguating function call syntax], in which case it calls the trait
-> method, not the inherent method. There is no way to call the inherent method.
-> Just don't define inherent methods on trait objects with the same name a trait
-> method and you'll be fine.
+<div class="warning">
+
+***Warning:*** For [trait objects], if there is an inherent method of the same
+name as a trait method, it will give a compiler error when trying to call the
+method in a method call expression. Instead, you can call the method using
+[disambiguating function call syntax], in which case it calls the trait
+method, not the inherent method. There is no way to call the inherent method.
+Just don't define inherent methods on trait objects with the same name a trait
+method and you'll be fine.
+
+</div>
 
 [IDENTIFIER]: identifiers.html
 [visible]: visibility-and-privacy.html
