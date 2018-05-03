@@ -415,12 +415,16 @@ f(Closure{s: s, t: &t});
 ```
 
 The compiler prefers to capture a closed-over variable by immutable borrow,
-followed by mutable borrow, by copy, and finally by move. It will pick the first
-choice of these that allows the closure to compile. If the `move` keyword is
-used, then all captures are by move or copy, regardless of whether a borrow
-would work. The `move` keyword is usually used to allow the closure to outlive
-the captured values, such as if the closure is being returned or used to spawn a
-new thread.
+followed by unique immutable borrow (see below), by mutable borrow, and finally
+by move. It will pick the first choice of these that allows the closure to
+compile. The choice is made only with regards to the contents of the closure
+expression; the compiler does not take into account surrounding code, such as
+the lifetimes of involved variables.
+
+If the `move` keyword is used, then all captures are by move or, for `Copy`
+types, by copy, regardless of whether a borrow would work. The `move` keyword is
+usually used to allow the closure to outlive the captured values, such as if the
+closure is being returned or used to spawn a new thread.
 
 Composite types such as structs, tuples, and enums are always captured entirely,
 not by individual fields. It may be necessary to borrow into a local variable in
@@ -447,6 +451,34 @@ impl SetVec {
 If, instead, the closure were to use `self.vec` directly, then it would attempt
 to capture `self` by mutable reference. But since `self.set` is already
 borrowed to iterate over, the code would not compile.
+
+### Unique immutable borrows in captures
+
+Captures can occur by a special kind of borrow called a _unique immutable
+borrow_, which cannot be used anywhere else in the language and cannot be
+written out explicitly. It occurs when modifying the referent of a mutable
+reference, as in the following example:
+
+```rust
+let mut b = false;
+let x = &mut b;
+{
+    let mut c = || { *x = true; };
+    // The following line is an error:
+    // let y = &x;
+    c();
+}
+let z = &x;
+```
+
+In this case, borrowing `x` mutably is not possible, because `x` is not `mut`.
+But at the same time, borrowing `x` immutably would make the assignment illegal,
+because a `& &mut` reference may not be unique, so it cannot safely be used to
+modify a value. So a unique immutable borrow is used: it borrows `x` immutably,
+but like a mutable borrow, it must be unique. In the above example, uncommenting
+the declaration of `y` will produce an error because it would violate the
+uniqueness of the closure's borrow of `x`; the declaration of z is valid because
+the closure's lifetime has expired at the end of the block, releasing the borrow.
 
 ### Call traits and coercions
 
@@ -496,12 +528,12 @@ of cloning of the captured variables is left unspecified.
 Because captures are often by reference, the following general rules arise:
 
 * A closure is [`Sync`] if all captured variables are [`Sync`].
-* A closure is [`Send`] if all variables captured by shared reference are
-  [`Sync`], and all values captured by mutable reference, copy, or move are
-  [`Send`].
+* A closure is [`Send`] if all variables captured by non-unique immutable
+  reference are [`Sync`], and all values captured by unique immutable or mutable
+  reference, copy, or move are [`Send`].
 * A closure is [`Clone`] or [`Copy`] if it does not capture any values by
-  mutable reference, and if all values it captures by copy or move are
-  [`Clone`] or [`Copy`], respectively.
+  unique immutable or mutable reference, and if all values it captures by copy
+  or move are [`Clone`] or [`Copy`], respectively.
 
 ## Trait objects
 
