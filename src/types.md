@@ -507,10 +507,10 @@ Because captures are often by reference, the following general rules arise:
 
 > **<sup>Syntax</sup>**  
 > _TraitObjectType_ :  
-> &nbsp;&nbsp; _LifetimeOrPath_ ( `+` _LifetimeOrPath_ )<sup>\*</sup> `+`<sup>?</sup>
+> &nbsp;&nbsp; `dyn`<sup>?</sup> _LifetimeOrPath_ ( `+` _LifetimeOrPath_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _LifetimeOrPath_ :
-> &nbsp;&nbsp; [_Path_] | [_LIFETIME_OR_LABEL_]
+> &nbsp;&nbsp; [_Path_] |  `(` [_Path_] `)` | [_LIFETIME_OR_LABEL_]
 
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
@@ -519,31 +519,52 @@ number of [auto traits].
 Trait objects implement the base trait, its auto traits, and any super traits
 of the base trait.
 
-Trait objects are written the same as trait bounds, but with the following
-restrictions. All traits except the first trait must be auto traits, there may
-not be more than one lifetime, and opt-out bounds (e.g. `?sized`) are not
-allowed. For example, given a trait `Trait`, the following are all trait
-objects: `Trait`, `Trait + Send`, `Trait + Send + Sync`, `Trait + 'static`,
-`Trait + Send + 'static`, `Trait +`, `'static + Trait`.
+Trait objects are written as the optional keyword `dyn` followed by a set of
+trait bounds, but with the following restrictions on the trait bounds. All
+traits except the first trait must be auto traits, there may not be more than
+one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. Furthermore,
+paths to traits may be parenthesized.
+
+For example, given a trait `Trait`, the following are all trait objects: 
+
+* `Trait`
+* `dyn Trait`
+* `dyn Trait + Send`
+* `dyn Trait + Send + Sync`
+* `dyn Trait + 'static`
+* `dyn Trait + Send + 'static`
+* `dyn Trait +`
+* `dyn 'static + Trait`.
+* `dyn (Trait)`
+
+If the first bound of the trait object is a path that starts with `::`, then the
+`dyn` will be treated as a part of the path. The first path can be put in
+parenthesis to get around this. As such, if you want a trait object with the
+trait `::your_module::Trait`, you should write it as
+`dyn (::your_module::Trait)`.
+
+> Note: For clarity, it is recommended to always use the `dyn` keyword on your
+> trait objects unless your codebase supports compiling with Rust 1.26 or lower.
 
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
-For example, `Trait + Send + UnwindSafe` is the same as
-`Trait + Unwindsafe + Send`.
+For example, `dyn Trait + Send + UnwindSafe` is the same as
+`dyn Trait + Unwindsafe + Send`.
 
 > Warning: With two trait object types, even when the complete set of traits is
 > the same, if the base traits differ, the type is different. For example,
-> `Send + Sync` is a different type from `Sync + Send`. See [issue 33140].
+> `dyn Send + Sync` is a different type from `dyn Sync + Send`. See
+> [issue 33140].
 
 > Warning: Including the same auto trait multiple times is allowed, and each
-> instance is considered a unique type. As such, `Trait + Send` is a distinct
-> type than `Trait + Send + Send`. See [issue 47010].
+> instance is considered a unique type. As such, `dyn Trait + Send` is a
+> distinct type to `dyn Trait + Send + Send`. See [issue 47010].
 
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
 <abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
-behind some type of pointer; for example `&SomeTrait` or `Box<SomeTrait>`. Each
-instance of a pointer to a trait object includes:
+behind some type of pointer; for example `&dyn SomeTrait` or
+`Box<dyn SomeTrait>`. Each instance of a pointer to a trait object includes:
 
  - a pointer to an instance of a type `T` that implements `SomeTrait`
  - a _virtual method table_, often just called a _vtable_, which contains, for
@@ -567,12 +588,12 @@ impl Printable for i32 {
     fn stringify(&self) -> String { self.to_string() }
 }
 
-fn print(a: Box<Printable>) {
+fn print(a: Box<dyn Printable>) {
     println!("{}", a.stringify());
 }
 
 fn main() {
-    print(Box::new(10) as Box<Printable>);
+    print(Box::new(10) as Box<dyn Printable>);
 }
 ```
 
