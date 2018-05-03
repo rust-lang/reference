@@ -85,7 +85,9 @@ immutable [`static` items].
 The [`Send`], [`Sync`], [`UnwindSafe`] and [`RefUnwindSafe`] traits are _auto
 traits_. Auto traits have special properties.
 
-First, auto traits are automatically implemented using the following rules:
+If no explicit implementation or negative implementation is written out for an
+auto trait for a given type, then the compiler implements it automatically
+according to the following rules:
 
 * `&T`, `&mut T`, `*const T`, `*mut T`, `[T; n]` and `[T]` implement the trait
   if `T` does.
@@ -96,12 +98,23 @@ First, auto traits are automatically implemented using the following rules:
   closure that captures a `T` by shared reference and a `U` by value implements
   any auto traits that both `&T` and `U` do.
 
+For generic types (counting the built-in types above as generic over `T`), if an
+generic implementation is available, then the compiler does not automatically
+implement it for types that could use the implementation except that they do not
+meet the requisite trait bounds. For instance, the standard library implements
+`Send` for all `&T` where `T` is `Sync`; this means that the compiler will not
+implement `Send` for `&T` if `T` is `Send` but not `Sync`.
+
 Auto traits can also have negative implementations, shown as `impl !AutoTrait
 for T` in the standard library documentation, that override the automatic
 implementations. For example `*mut T` has a negative implementation of `Send`,
-and so `*mut T` and `(*mut T,)` are not `Send`. Finally, auto traits may
-be added as a bound to any [trait object]\: `Box<Debug + Send + UnwindSafe>` is
-a valid type.
+and so `*mut T` is not `Send`, even if `T` is. There is currently no stable way
+to specify additional negative implementations; they exist only in the standard
+library.
+
+Auto traits may be added as an additional bound to any [trait object], even
+though normally only one trait is allowed. For instance, `Box<dyn Debug + Send +
+UnwindSafe>` is a valid type.
 
 ## `Sized`
 
