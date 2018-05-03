@@ -41,10 +41,12 @@ u8 | 1
 u16 | 2
 u32 | 4
 u64 | 8
+u128 | 16
 i8 | 1
 i16 | 2
 i32 | 4
 i64 | 8
+i128 | 16
 f32 | 4
 f64 | 8
 char | 4
@@ -64,7 +66,7 @@ reference does not change the layout.
 
 Pointers to sized types have the same size and alignment as `usize`.
 
-Pointers to unsized types are sized. The size and alignemnt is guaranteed to be
+Pointers to unsized types are sized. The size and alignment is guaranteed to be
 at least equal to the size and alignment of a pointer.
 
 > Note: Though you should not rely on this, all pointers to <abbr
@@ -86,7 +88,7 @@ Slices have the same layout as the section of the array they slice.
 
 ## Tuple Layout
 
-Tuples do not have any guarantes about their layout.
+Tuples do not have any guarantees about their layout.
 
 The exception to this is the unit tuple (`()`) which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
@@ -104,7 +106,7 @@ Closures have no layout guarantees.
 
 ## Representations
 
-All user-defined composite types (`struct`s, `enum`, and `union`s) have a
+All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
 *representation* that specifies what the layout is for the type.
 
 The possible representations for a type are the default representation, `C`, the
@@ -168,7 +170,7 @@ is now. Then increase the current offset by the size of the field.
 Finally, the size of the struct is the current offset rounded up to the nearest
 multiple of the struct's alignment.
 
-Here is this algorithm described in psudeocode.
+Here is this algorithm described in pseudocode.
 
 ```rust,ignore
 struct.alignment = struct.fields().map(|field| field.alignment).max();
@@ -236,7 +238,7 @@ the default `enum` size and alignment for the target platform's C ABI.
 > mostly a `typedef` plus some named constants; in other words, an object of an
 > `enum` type can hold any integer value. For example, this is often used for
 > bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
-> the discrimnant values, everything else is undefined behaviour. Therefore,
+> the discriminant values, everything else is undefined behaviour. Therefore,
 > using a C-like enumeration in FFI to model a C `enum` is often wrong.
 
 It is an error for [zero-variant enumerations] to have the `C` representation.

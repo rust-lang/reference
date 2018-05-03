@@ -18,7 +18,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>  
 >
 > _MatchArmPatterns_ :  
-> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>*</sup>  
+> &nbsp;&nbsp; `|`<sup>?</sup> _Pattern_ ( `|` _Pattern_ )<sup>\*</sup>  
 >
 > _MatchArmGuard_ :  
 > &nbsp;&nbsp; `if` [_Expression_]
@@ -140,6 +140,25 @@ backwards compatibility.
 Range patterns only work [`char`] and [numeric types]. A range pattern may not
 be a sub-range of another range pattern inside the same `match`.
 
+Slice patterns can match both arrays of fixed size and slices of dynamic size.
+```rust
+// Fixed size
+let arr = [1, 2, 3];
+match arr {
+    [1, _, _] => "starts with one",
+    [a, b, c] => "starts with something else",
+};
+```
+```rust
+// Dynamic size
+let v = vec![1, 2, 3];
+match v[..] {
+    [a, b] => { /* this arm will not apply because the length doesn't match */ }
+    [a, b, c] => { /* this arm will apply */ }
+    _ => { /* this wildcard is required, since we don't know length statically */ }
+}
+```
+
 Finally, match patterns can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
 consist of a bool-typed expression following the `if` keyword. A pattern guard
@@ -164,4 +183,3 @@ let message = match maybe_digit {
 [numeric types]: types.html#numeric-types
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
-[range]: range-expr.html

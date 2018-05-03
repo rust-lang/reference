@@ -6,18 +6,17 @@
 >              `=` [_Expression_] `;`
 
 A *static item* is similar to a [constant], except that it represents a precise
-memory location in the program. A static is never "inlined" at the usage site,
-and all references to it refer to the same memory location. Static items have
-the `static` lifetime, which outlives all other lifetimes in a Rust program.
-Static items may be placed in read-only memory if the type is not [interior 
-mutable]. Static items do not call `drop` at the end of the program.
+memory location in the program. All references to the static refer to the same
+memory location. Static items have the `static` lifetime, which outlives all
+other lifetimes in a Rust program. Non-`mut` static items that contain a type
+that is not [interior mutable] may be placed in read-only memory. Static items
+do not call [`drop`] at the end of the program.
 
 All access to a static is safe, but there are a number of restrictions on
 statics:
 
 * The type must have the `Sync` trait bound to allow thread-safe access.
-* Statics allow using paths to statics in the
-  [constant-expression](expressions.html#constant-expressions) used to
+* Statics allow using paths to statics in the [constant-expression] used to
   initialize them, but statics may not refer to other statics by value, only
   through a reference.
 * Constants cannot refer to statics.
@@ -33,7 +32,7 @@ modifications to a mutable static are safe with respect to other threads
 running in the same process.
 
 Mutable statics are still very useful, however. They can be used with C
-libraries and can also be bound from C libraries (in an `extern` block).
+libraries and can also be bound from C libraries in an `extern` block.
 
 ```rust
 # fn atomic_add(_: &mut u32, _: u32) -> u32 { 2 }
@@ -61,15 +60,17 @@ type does not have to implement the `Sync` trait.
 
 ## Using Statics or Consts
 
-In can be confusing whether or not you should use a constant item or a static
+It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the
 following are true:
 
 * Large amounts of data are being stored
-* The single-address or non-inlining property of statics is required.
+* The single-address property of statics is required.
 * Interior mutability is required.
 
 [constant]: items/constant-items.html
+[`drop`]: destructors.html
+[constant expression]: expressions.html#constant-expressions
 [interior mutable]: interior-mutability.html
 [IDENTIFIER]: identifiers.html
 [_Type_]: types.html

@@ -6,7 +6,7 @@
 >  
 > _UseTree_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`  
-> &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`  
+> &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`  
 > &nbsp;&nbsp; | [_SimplePath_] `as` [IDENTIFIER]  
 
 A _use declaration_ creates one or more local name bindings synonymous with

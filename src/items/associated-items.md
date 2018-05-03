@@ -33,7 +33,7 @@ The identifier if the name of the function. The generics, parameter list,
 return type, and where clause of the associated function must be the same as the
 associated function declarations's.
 
-An *associated function definiton* defines a function associated with another
+An *associated function definition* defines a function associated with another
 type. It is written the same as a [function item].
 
 An example of a common associated function is a `new` function that returns
@@ -77,15 +77,19 @@ let _: f64 = <f64 as Num>::from_i32(42);
 let _: f64 = f64::from_i32(42);
 ```
 
+### Methods
+
 Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
 well as the usual function call notation.
 
-When the first parameter is named `self`, the following shorthands may be used.
+The `self` parameter must have one of the following types. As a result, the
+following shorthands may be used to declare `self`:
 
 * `self` -> `self: Self`
 * `&'lifetime self` -> `self: &'lifetime Self`
 * `&'lifetime mut self` -> `self: &'lifetime mut Self`
+* `self : Box<Self>` (no shorthand)
 
 > Note: Lifetimes can be and usually are elided with this shorthand.
 

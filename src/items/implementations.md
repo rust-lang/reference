@@ -54,7 +54,7 @@ The implementing type implements the implemented trait.
 
 A trait implementation must define all non-default associated items declared
 by the implemented trait, may redefine default associated items defined by the 
-implemented trait trait, and cannot define any other items.
+implemented trait, and cannot define any other items.
 
 The path to the associated items is `<` followed by a path to the implementing
 type followed by `as` followed by a path to the trait followed by `>` as a path
@@ -95,7 +95,7 @@ impl Shape for Circle {
 ### Trait Implementation Coherence
 
 A trait implementation is consider incoherent if either the orphan check fails
-or there are overlapping implementation instaces. 
+or there are overlapping implementation instances. 
 
 Two trait implementations overlap when there is a non-empty intersection of the
 traits the implementation is for, the implementations can be instantiated with
@@ -113,9 +113,9 @@ the following conditions:
 
    ```ignore
     T = C
-      | &T
-      | &mut T
-      | Box<T>
+      | &C
+      | &mut C
+      | Box<C>
    ```
 
 ## Generic Implementations

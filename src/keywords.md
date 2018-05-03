@@ -8,7 +8,7 @@ Rust divides keywords into three categories:
 
 ## Strict keywords
 
-These keywords can only be used in their correct contexts. They cannnot
+These keywords can only be used in their correct contexts. They cannot
 be used as the names of:
 
 * [Items]
@@ -75,7 +75,6 @@ them to use these keywords.
 > KW_OFFSETOF       : `offsetof`  
 > KW_OVERRIDE       : `override`  
 > KW_PRIV           : `priv`  
-> KW_PROC           : `proc`  
 > KW_PURE           : `pure`  
 > KW_SIZEOF         : `sizeof`  
 > KW_TYPEOF         : `typeof`  

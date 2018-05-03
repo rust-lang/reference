@@ -2,11 +2,11 @@
 
 When an [initialized]&#32;[variable] in Rust goes out of scope or a [temporary]
 is no longer needed its _destructor_ is run. [Assignment] also runs the
-destructor of its left-hand operand, unless it's an unitialized variable. If a
+destructor of its left-hand operand, unless it's an uninitialized variable. If a
 [struct] variable has been partially initialized, only its initialized fields
 are dropped.
 
-The destrutor of a type consists of
+The destructor of a type consists of
 
 1. Calling its [`std::ops::Drop::drop`] method, if it has one.
 2. Recursively running the destructor of all of its fields.

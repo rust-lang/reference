@@ -109,14 +109,14 @@ assert_eq!(*y, 11);
 > _ErrorPropagationExpression_ :  
 > &nbsp;&nbsp; [_Expression_] `?`  
 
-The question mark operator (`?`) unwraps valid values or returns errornous
+The question mark operator (`?`) unwraps valid values or returns erroneous
 values, propagating them to the calling function. It is a unary postfix
 operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
 When applied to values of the `Result<T, E>` type, it propagates errors. If 
 the value is `Err(e)`, then it will return `Err(From::from(e))` from the
 enclosing function or closure. If applied to `Ok(x)`, then it will unwrap the
-value to evaulate to `x`.
+value to evaluate to `x`.
 
 ```rust
 # use std::num::ParseIntError;
@@ -393,7 +393,7 @@ An _assignment expression_ consists of a [place expression] followed by an
 equals sign (`=`) and a [value expression].
 
 Evaluating an assignment expression [drops](destructors.html) the left-hand
-operand, unless it's an unitialized local variable or field of a local variable,
+operand, unless it's an uninitialized local variable or field of a local variable,
 and [either copies or moves](expressions.html#moved-and-copied-types) its
 right-hand operand to its left-hand operand. The left-hand operand must be a
 place expression: using a value expression results in a compiler error, rather
@@ -444,7 +444,7 @@ assert_eq!(x, 14);
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
-[_ErrorPropagationExpression_]: #the--operator
+[_ErrorPropagationExpression_]: #the-question-mark-operator
 [_NegationExpression_]: #negation-operators
 [_ArithmeticOrLogicalExpression_]: #arithmetic-and-logical-binary-operators
 [_ComparisonExpression_]: #comparison-operators
