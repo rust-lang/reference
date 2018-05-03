@@ -495,8 +495,7 @@ of cloning of the captured variables is left unspecified.
 
 Because captures are often by reference, the following general rules arise:
 
-* A closure is [`Sync`] if all variables captured by mutable reference, copy,
-  or move are [`Sync`].
+* A closure is [`Sync`] if all captured variables are [`Sync`].
 * A closure is [`Send`] if all variables captured by shared reference are
   [`Sync`], and all values captured by mutable reference, copy, or move are
   [`Send`].
