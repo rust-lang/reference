@@ -87,12 +87,22 @@ them to use these keywords.
 These keywords have special meaning only in certain contexts. For example, it
 is possible to declare a variable or method with the name `union`.
 
-* `union` is used to declare a [union]
-* `'static` is used for a static lifetime
+* `union` is used to declare a [union] and is only a keyword when used in a
+  union declaration.
+* `'static` is used for the static lifetime and cannot be used as a generic
+  lifetime parameter
+  
+  ```compile_fail
+  // error[E0262]: invalid lifetime parameter name: `'static`
+  fn invalid_lifetime_parameter<'static>(s: &'static str) -> &'static str { s }
+  ```
+* `dyn` denotes a [trait object] and is a keyword when used in a type position
+  followed by a path that does not start with `::`.
 
 > **<sup>Lexer</sup>**  
-> KW_UNION          : `union`  
-> KW_STATICLIFETIME : `'static`  
+> KW_UNION          : `union`
+> KW_STATICLIFETIME : `'static`
+> KW_DYN            : `dyn`
 
 [items]: items.html
 [Variables]: variables.html
@@ -104,3 +114,4 @@ is possible to declare a variable or method with the name `union`.
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
 [variants]: items/enumerations.html
+[trait object]: types.html#trait-objects
