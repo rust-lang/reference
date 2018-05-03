@@ -462,10 +462,13 @@ reference, as in the following example:
 ```rust
 let mut b = false;
 let x = &mut b;
-let c = || { *x = true; };
-// The following line is an error:
-// let y = &x;
-c();
+{
+    let mut c = || { *x = true; };
+    // The following line is an error:
+    // let y = &x;
+    c();
+}
+let z = &x;
 ```
 
 In this case, borrowing `x` mutably is not possible, because `x` is not `mut`.
@@ -474,7 +477,8 @@ because a `& &mut` reference may not be unique, so it cannot safely be used to
 modify a value. So a unique immutable borrow is used: it borrows `x` immutably,
 but like a mutable borrow, it must be unique. In the above example, uncommenting
 the declaration of `y` will produce an error because it would violate the
-uniqueness of the closure's borrow of `x`.
+uniqueness of the closure's borrow of `x`; the declaration of z is valid because
+the closure's lifetime has expired at the end of the block, releasing the borrow.
 
 ### Call traits and coercions
 
@@ -524,12 +528,12 @@ of cloning of the captured variables is left unspecified.
 Because captures are often by reference, the following general rules arise:
 
 * A closure is [`Sync`] if all captured variables are [`Sync`].
-* A closure is [`Send`] if all variables captured by shared reference are
-  [`Sync`], and all values captured by mutable reference, copy, or move are
-  [`Send`].
+* A closure is [`Send`] if all variables captured by non-unique immutable
+  reference are [`Sync`], and all values captured by unique immutable or mutable
+  reference, copy, or move are [`Send`].
 * A closure is [`Clone`] or [`Copy`] if it does not capture any values by
-  mutable reference, and if all values it captures by copy or move are
-  [`Clone`] or [`Copy`], respectively.
+  unique immutable or mutable reference, and if all values it captures by copy
+  or move are [`Clone`] or [`Copy`], respectively.
 
 ## Trait objects
 
