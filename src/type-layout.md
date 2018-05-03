@@ -106,7 +106,7 @@ Closures have no layout guarantees.
 
 ## Representations
 
-All user-defined composite types (`struct`s, `enum`, and `union`s) have a
+All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
 *representation* that specifies what the layout is for the type.
 
 The possible representations for a type are the default representation, `C`, the
