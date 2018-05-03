@@ -342,8 +342,8 @@ let foo_ptr_2 = if want_i32 {
 };
 ```
 
-All function items implement [Fn], [FnMut], [FnOnce], [Copy], [Clone], [Send], 
-and [Sync].
+All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
+[`Clone]`, [`Send`], and [`Sync`].
 
 ## Function pointer types
 
@@ -450,20 +450,20 @@ borrowed to iterate over, the code would not compile.
 
 ### Call traits and coercions
 
-Closure types all implement `[FnOnce]`, indicating that they can be called once
+Closure types all implement [`FnOnce`], indicating that they can be called once
 by consuming ownership of the closure. Additionally, some closures implement
 more specific call traits:
 
 * A closure which does not move out of any captured variables implements
-  `[FnMut]`, indicating that it can be called by mutable reference.
+  [`FnMut`], indicating that it can be called by mutable reference.
 
 * A closure which does not mutate or move out of any captured variables
-  implements `[Fn]`, indicating that it can be called by shared reference.
+  implements [`Fn`], indicating that it can be called by shared reference.
 
-> Note: `move` closures may still implement `[Fn]` or `[FnMut]`, even though
+> Note: `move` closures may still implement [`Fn`] or [`FnMut`], even though
 > they capture variables by move. This is because the traits implemented by a
-> closure type are determined by what the closure does with captured values, not
-> how it captures them.
+> closure type are determined by what the closure does with captured values,
+> not how it captures them.
 
 *Non-capturing closures* are closures that don't capture anything from their
 environment. They can be coerced to function pointers (`fn`) with the matching
@@ -481,28 +481,28 @@ x = bo(5,7);
 
 ### Other traits
 
-All closure types implement `[Sized]`. Additionally, closure types implement the
+All closure types implement [`Sized`]. Additionally, closure types implement the
 following traits if allowed to do so by the types of the captures it stores:
 
-* `[Clone]`
-* `[Copy]`
-* `[Sync]`
-* `[Send]`
+* [`Clone`]
+* [`Copy`]
+* [`Sync`]
+* [`Send`]
 
-The rules for `[Send]` and `[Sync]` match those for normal struct types, while
-`[Clone]` and `[Copy]` behave as if [derived][derive]. For `[Clone]`, the order
+The rules for [`Send`] and [`Sync`] match those for normal struct types, while
+[`Clone`] and [`Copy`] behave as if [derived][derive]. For [`Clone`], the order
 of cloning of the captured variables is left unspecified.
 
 Because captures are often by reference, the following general rules arise:
 
-* A closure is `[Sync]` if all variables captured by mutable reference, copy, or
-  move are `[Sync]`.
-* A closure is `[Send]` if all variables captured by shared reference are
-  `[Sync]`, and all values captured by mutable reference, copy, or move are
-  `[Send]`.
-* A closure is `[Clone]` or `[Copy]` if it does not capture any values by
-  mutable reference, and if all values it captures by copy or move are `[Clone]`
-  or `[Copy]`, respectively.
+* A closure is [`Sync`] if all variables captured by mutable reference, copy,
+  or move are [`Sync`].
+* A closure is [`Send`] if all variables captured by shared reference are
+  [`Sync`], and all values captured by mutable reference, copy, or move are
+  [`Send`].
+* A closure is [`Clone`] or [`Copy`] if it does not capture any values by
+  mutable reference, and if all values it captures by copy or move are
+  [`Clone`] or [`Copy`], respectively.
 
 ## Trait objects
 
@@ -643,13 +643,14 @@ impl Printable for String {
 
 > Note: The notation `&self` is a shorthand for `self: &Self`.
 
-[Fn]: ../std/ops/trait.Fn.html
-[FnMut]: ../std/ops/trait.FnMut.html
-[FnOnce]: ../std/ops/trait.FnOnce.html
-[Copy]: special-types-and-traits.html#copy
-[Clone]: special-types-and-traits.html#clone
-[Send]: special-types-and-traits.html#send
-[Sync]: special-types-and-traits.html#sync
+[`Fn`]: ../std/ops/trait.Fn.html
+[`FnMut`]: ../std/ops/trait.FnMut.html
+[`FnOnce`]: ../std/ops/trait.FnOnce.html
+[`Copy`]: special-types-and-traits.html#copy
+[`Clone`]: special-types-and-traits.html#clone
+[`Send`]: special-types-and-traits.html#send
+[`Sync`]: special-types-and-traits.html#sync
+[`Sized`]: special-types-and-traits.html#sized
 [derive]: attributes.html#derive
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html

@@ -488,11 +488,11 @@ The two values of the boolean type are written `true` and `false`.
 ## Lifetimes and loop labels
 
 > **<sup>Lexer</sup>**  
-> LIFETIME_TOKEN
+> LIFETIME_TOKEN :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]  
 > &nbsp;&nbsp; | `'_`  
 >  
-> LIFETIME_OR_LABEL:  
+> LIFETIME_OR_LABEL :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER][identifier]
 
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
