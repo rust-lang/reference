@@ -15,12 +15,12 @@
 > &nbsp;&nbsp; | IDENTIFIER `=` LITERAL  
 > &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`  
 > &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`  
-> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `,` `)`  
+> &nbsp;&nbsp; | IDENTIFIER `(` _MetaItem_ `,` _MetaSeq_ `)`  
 >   
 > _MetaSeq_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; EMPTY  
 > &nbsp;&nbsp; | _MetaItem_  
-> &nbsp;&nbsp; | _MetaSeq_ `,` _MetaItem_  
+> &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
 Any item declaration may have an _attribute_ applied to it. Attributes in Rust
 are modeled on Attributes in ECMA-335, with the syntax coming from ECMA-334
