@@ -15,7 +15,6 @@
 > &nbsp;&nbsp; | IDENTIFIER `=` LITERAL  
 > &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`  
 > &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`  
-> &nbsp;&nbsp; | IDENTIFIER `(` _MetaItem_ `,` _MetaSeq_ `)`  
 >   
 > _MetaSeq_ :  
 > &nbsp;&nbsp; &nbsp;&nbsp; EMPTY  
