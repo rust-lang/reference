@@ -23,7 +23,7 @@
 Functions, type aliases, structs, enumerations, unions, traits and
 implementations may be *parameterized* by types and lifetimes. These parameters
 are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
-usually immediattely after and before its definition the name of the item. For
+usually immediately after and before its definition the name of the item. For
 implementations, which don't have a name, they come directly after `impl`.
 Lifetime parameters must be declared before type parameters. Some examples of
 items with type and lifetime parameters:
@@ -36,7 +36,7 @@ struct Ref<'a, T> where T: 'a { r: &'a T }
 
 [References], [raw pointers], [arrays], [slices][arrays], [tuples] and
 [function pointers] have lifetime or type parameters as well, but are not
-refered to with path syntax.
+referred to with path syntax.
 
 ## Where clauses
 
@@ -61,8 +61,8 @@ refered to with path syntax.
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
 
-Bounds that don't use the item's parameters are checked when the item is
-defined. It is an error for such a bound to be false.
+Bounds that don't use the item's parameters or higher-ranked lifetimes are
+checked when the item is defined. It is an error for such a bound to be false.
 
 [`Copy`], [`Clone`] and [`Sized`] bounds are also checked for certain generic
 types when defining the item. It is an error to have `Copy` or `Clone`as a
