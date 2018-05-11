@@ -133,7 +133,7 @@ enum ZeroVariants {}
 
 [IDENTIFIER]: identifiers.html
 [_Generics_]: items/generics.html
-[_WhereClause_]: iitems/generics.html#where-clauses
+[_WhereClause_]: items/generics.html#where-clauses
 [_Expression_]: expressions.html
 [_TupleFields_]: items/structs.html
 [_StructFields_]: items/structs.html
