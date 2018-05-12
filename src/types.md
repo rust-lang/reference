@@ -537,12 +537,9 @@ Because captures are often by reference, the following general rules arise:
 
 ## Trait objects
 
-> **<sup>Syntax</sup>**  
-> _TraitObjectType_ :  
-> &nbsp;&nbsp; `dyn`<sup>?</sup> _LifetimeOrPath_ ( `+` _LifetimeOrPath_ )<sup>\*</sup> `+`<sup>?</sup>
->
-> _LifetimeOrPath_ :
-> &nbsp;&nbsp; [_Path_] |  `(` [_Path_] `)` | [_LIFETIME_OR_LABEL_]
+> **<sup>Syntax</sup>**
+> _TraitObjectType_ :
+> &nbsp;&nbsp; `dyn`<sup>?</sup> _TypeParamBounds_
 
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
