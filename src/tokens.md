@@ -79,7 +79,7 @@ evaluated (primarily) at compile time.
 
 | Integer | Floating-point |
 |---------|----------------|
-| `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `isize`, `usize` | `f32`, `f64` |
+| `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, `isize` | `f32`, `f64` |
 
 ### Character and string literals
 
