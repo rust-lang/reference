@@ -121,3 +121,4 @@ let nonsense = mycircle.radius() * mycircle.area();
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: items/associated-items.html
 [method]: items/associated-items.html#methods
+[implementations]: items/implementations.html
