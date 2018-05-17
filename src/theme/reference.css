@@ -94,10 +94,19 @@ main .warning p {
     margin: 20px 0;
 }
 
+main .warning p::before {
+    content: "⚠️ ";
+}
+
 .light main .warning p,
 .rust main .warning p {
     border: 2px solid red;
-    background: #f2dede;
+    background: #ffcece;
+}
+
+.rust main .warning p {
+    /* overrides previous declaration */
+    border-color: #961717;
 }
 
 .coal main .warning p,
@@ -106,6 +115,9 @@ main .warning p {
     background: #542626
 }
 
-main .warning p::before {
-    content: "⚠️ ";
+/* Make the links higher contrast on dark themes */
+.coal main .warning p a,
+.navy main .warning p a,
+.ayu main .warning p a {
+    color: #80d0d0
 }
