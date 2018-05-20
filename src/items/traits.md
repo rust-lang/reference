@@ -9,8 +9,8 @@ interface consists of [associated items], which come in three varieties:
 
 All traits define an implicit type parameter `Self` that refers to "the type
 that is implementing this interface". Traits may also contain additional type
-parameters. These type parameters (including `Self`) may be constrained by
-other traits and so forth [as usual].
+parameters. These type parameters, including `Self`, may be constrained by
+other traits and so forth [as usual][generics].
 
 Traits are implemented for specific types through separate [implementations].
 
@@ -26,8 +26,7 @@ Generic items may use traits as [bounds] on their type parameters.
 ## Generic Traits
 
 Type parameters can be specified for a trait to make it generic. These appear
-after the trait name, using the same syntax used in [generic
-functions](items/functions.html#generic-functions).
+after the trait name, using the same syntax used in [generic functions].
 
 ```rust
 trait Seq<T> {
@@ -60,6 +59,8 @@ Supertraits are declared by trait bounds on the `Self` type of a trait and
 transitively the supertraits of the traits declared in those trait bounds. It is
 an error for a trait to be its own supertrait.
 
+The trait with a supertrait is called a **subtrait** of its supertrait.
+
 The following is an example of declaring `Shape` to be a supertrait of `Circle`.
 
 ```rust
@@ -89,9 +90,7 @@ trait Circle where Self: Shape {
 }
 ```
 
-In type-parameterized functions, methods of the supertrait may be called on
-values of subtrait-bound type parameters. Continuing the example of
-`trait Circle : Shape`:
+This next example calls a supertrait method on a generic parameter.
 
 ```rust
 # trait Shape { fn area(&self) -> f64; }
@@ -103,16 +102,16 @@ fn print_area_and_radius<C: Circle>(c: C) {
 }
 ```
 
-Likewise, here is an example of calling supertrait methods on trait objects.
+Similarly, here is an example of calling supertrait methods on trait objects.
 
 ```rust
 # trait Shape { fn area(&self) -> f64; }
 # trait Circle : Shape { fn radius(&self) -> f64; }
 # struct UnitCircle;
-# impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
-# impl Circle for i32 { fn radius(&self) -> f64 { 0.0 } }
-# let mycircle = 0i32;
-let circle = Box::new(mycircle) as Box<dyn Circle>;
+# impl Shape for UnitCircle { fn area(&self) -> f64 { std::f64::consts::PI } }
+# impl Circle for UnitCircle { fn radius(&self) -> f64 { 1.0 } }
+# let circle = UnitCircle;
+let circle = Box::new(circle) as Box<dyn Circle>;
 let nonsense = circle.radius() * circle.area();
 ```
 
@@ -123,5 +122,6 @@ let nonsense = circle.radius() * circle.area();
 [associated items]: items/associated-items.html
 [method]: items/associated-items.html#methods
 [implementations]: items/implementations.html
-[as usual]: items/generics.html
+[generics]: items/generics.html
 [where clauses]: items/generics.html#where-clauses
+[generic functions]: items/functions.html#generic-functions
