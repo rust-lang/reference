@@ -1,10 +1,10 @@
 # Type coercions
 
-Coercions are defined in [RFC 401]. [RFC 1558] then expanded on that.
-A coercion is implicit and has no syntax.
+**Type coercions** are implicit changes of the type of a value. They happen
+automatically at specific locations and are highly restricted in what types
+actually coerce.
 
-[RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
-[RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
+Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
 
 ## Coercion sites
 
@@ -21,7 +21,7 @@ sites are:
    let _: i8 = 42;
    ```
 
-* `static` and `const` statements (similar to `let` statements).
+* `static` and `const` items (similar to `let` statements).
 
 * Arguments for function calls
 
@@ -41,7 +41,7 @@ sites are:
   For method calls, the receiver (`self` parameter) can only take advantage
   of [unsized coercions](#unsized-coercions).
 
-* Instantiations of struct or variant fields
+* Instantiations of struct, union, or enum variant fields
 
   For example, `42` is coerced to have type `i8` in the following:
 
@@ -53,7 +53,7 @@ sites are:
   }
   ```
 
-* Function results, either the final line of a block if it is not
+* Function results &ndash; either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
   For example, `42` is coerced to have type `i8` in the following:
@@ -91,7 +91,7 @@ the block has a known type.
 
 Coercion is allowed between the following types:
 
-* `T` to `U` if `T` is a subtype of `U` (*reflexive case*)
+* `T` to `U` if `T` is a [subtype] of `U` (*reflexive case*)
 
 * `T_1` to `T_3` where `T_1` coerces to `T_2` and `T_2` coerces to `T_3`
 (*transitive case*)
@@ -164,8 +164,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `[T; n]` to `[T]`.
 
-* `T` to `U`, when `U` is a trait object type and either `T` implements `U` or
-  `T` is a trait object for a subtrait of `U`.
+* `T` to `dyn U`, when `T` implements `U + Sized`
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
@@ -182,5 +181,8 @@ unsized coercion to `Foo<U>`.
 > has been stabilized, the traits themselves are not yet stable and therefore
 > can't be used directly in stable Rust.
 
+[RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
+[RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
+[subtype]: subtyping.html
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
