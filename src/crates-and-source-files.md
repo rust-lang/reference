@@ -72,13 +72,11 @@ A crate that contains a `main` [function] can be compiled to an executable. If a
 type must  be one of the following:
 
 * `()`
-* `bool`
-* `i32`
-<!-- `!` -->
+<!-- * `!` -->
 * `Result<T, E> where T: on this list, E: Error`
 
-> Note: The implementation of which return types is allowed is the unstable
-> [`Termination`] trait.
+> Note: The implementation of which return types are allowed is determined by
+> the unstable [`Termination`] trait.
 
 The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
 file is encoded in UTF8. It can only occur at the beginning of the file and
