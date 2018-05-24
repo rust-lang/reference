@@ -67,12 +67,14 @@ apply to the crate as a whole.
 ```
 
 A crate that contains a `main` [function] can be compiled to an executable. If a
-`main` function is present, it must take no arguments and its return type must 
-be one of the following:
+`main` function is present, it must take no arguments, must not declare any
+[trait or lifetime bounds], must not have any [where clauses], and  its return
+type must  be one of the following:
 
 * `()`
 * `bool`
 * `i32`
+<!-- `!` -->
 * `Result<T, E> where T: on this list, E: Error`
 
 > Note: The implementation of which return types is allowed is the unstable
@@ -114,3 +116,5 @@ fn main() {
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [function]: items/functions.html
 [`Termination`]: ../std/process/trait.Termination.html
+[where clause]: items/where-clauses.html
+[trait or lifetime bounds]: trait-bounds.html
