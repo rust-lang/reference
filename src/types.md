@@ -57,7 +57,7 @@ The machine types are the following:
   [-(2^15), 2^15 - 1], [-(2^31), 2^31 - 1], [-(2^63), 2^63 - 1], and
   [-(2^127), 2^127 - 1] respectively.
 
-* The IEEE 754-2008 `binary32` and `binary64` floating-point types: `f32` and
+* The IEEE 754-2008 "binary32" and "binary64" floating-point types: `f32` and
   `f64`, respectively.
 
 ### Machine-dependent integer types
