@@ -87,7 +87,7 @@ let a = & & & & mut 10;
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
-variable, a (nested) field of a local variance or is a mutable [place 
+variable, a (nested) field of a local variable or is a mutable [place 
 expression], then the resulting memory location can be assigned to.
 Dereferencing a raw pointer requires `unsafe`.
 
@@ -207,15 +207,17 @@ expression context][value expression] so are moved or copied.
 | `+`    | Addition                |             | Addition       | `std::ops::Add`    |
 | `-`    | Subtraction             |             | Subtraction    | `std::ops::Sub`    |
 | `*`    | Multiplication          |             | Multiplication | `std::ops::Mul`    |
-| `/`    | Division                |             | Division       | `std::ops::Div`    |
+| `/`    | Division*                |             | Division       | `std::ops::Div`    |
 | `%`    | Remainder               |             | Remainder      | `std::ops::Rem`    |
 | `&`    | Bitwise AND             | Logical AND |                | `std::ops::BitAnd` |
 | <code>&#124;</code> | Bitwise OR | Logical OR  |                | `std::ops::BitOr`  |
 | `^`    | Bitwise XOR             | Logical XOR |                | `std::ops::BitXor` |
 | `<<`   | Left Shift              |             |                | `std::ops::Shl`    |
-| `>>`   | Right Shift*            |             |                | `std::ops::Shr`    |
+| `>>`   | Right Shift**            |             |                | `std::ops::Shr`    |
 
-\* Arithmetic right shift on signed integer types, logical right shift on
+\* Integer division rounds towards zero.
+
+\*\* Arithmetic right shift on signed integer types, logical right shift on
 unsigned integer types.
 
 Here are examples of these operators being used.
@@ -345,9 +347,12 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
 | [Function pointer](types.html#function-pointer-types) | `*V` where `V: Sized` | Function pointer to pointer cast |
 | Function pointer      | Integer               | Function pointer to address cast |
+| Closure \*\*          | Function pointer      | Closure to function pointer cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the
 same trait object.
+
+\*\* only for closures that do capture (close over) any local variables
 
 ### Semantics
 
@@ -390,7 +395,8 @@ same trait object.
 > &nbsp;&nbsp; | [_Expression_] `=` [_Expression_]  
 
 An _assignment expression_ consists of a [place expression] followed by an
-equals sign (`=`) and a [value expression].
+equals sign (`=`) and a [value expression]. Such an expression always has
+the [`unit` type].
 
 Evaluating an assignment expression [drops](destructors.html) the left-hand
 operand, unless it's an uninitialized local variable or field of a local variable,
