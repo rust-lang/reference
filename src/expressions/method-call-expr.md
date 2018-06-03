@@ -94,5 +94,6 @@ and function invocation.
 [array]: types.html#array-and-slice-types
 [trait objects]: types.html#trait-objects
 [disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
+[disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
 [dereference]: expressions/operator-expr.html#the-dereference-operator
 [methods]: items/associated-items.html#methods

@@ -94,7 +94,7 @@ impl Shape for Circle {
 
 ### Trait Implementation Coherence
 
-A trait implementation is consider incoherent if either the orphan check fails
+A trait implementation is considered incoherent if either the orphan check fails
 or there are overlapping implementation instances. 
 
 Two trait implementations overlap when there is a non-empty intersection of the

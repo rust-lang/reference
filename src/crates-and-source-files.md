@@ -11,11 +11,11 @@
 > UTF8BOM : `\uFEFF`  
 > SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
 
-Although Rust, like any other language, can be implemented by an interpreter as
-well as a compiler, the only existing implementation is a compiler,
-and the language has
-always been designed to be compiled. For these reasons, this section assumes a
-compiler.
+
+> Note: Although Rust, like any other language, can be implemented by an
+> interpreter as well as a compiler, the only existing implementation is a
+> compiler,and the language has always been designed to be compiled. For these
+> reasons, this section assumes a compiler.
 
 Rust's semantics obey a *phase distinction* between compile-time and
 run-time.[^phase-distinction] Semantic rules that have a *static
@@ -66,9 +66,17 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-A crate that contains a `main` function can be compiled to an executable. If a
-`main` function is present, its return type must be `()`
-("[unit]") and it must take no arguments.
+A crate that contains a `main` [function] can be compiled to an executable. If a
+`main` function is present, it must take no arguments, must not declare any
+[trait or lifetime bounds], must not have any [where clauses], and  its return
+type must  be one of the following:
+
+* `()`
+<!-- * `!` -->
+* `Result<T, E> where T: on this list, E: Error`
+
+> Note: The implementation of which return types are allowed is determined by
+> the unstable [`Termination`] trait.
 
 The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
 file is encoded in UTF8. It can only occur at the beginning of the file and
@@ -98,9 +106,13 @@ fn main() {
 
 [module]: items/modules.html
 [module path]: paths.html
-[attributes]: items-and-attributes.html
+[attributes]: attributes.html
 [unit]: types.html#tuple-types
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
+[function]: items/functions.html
+[`Termination`]: ../std/process/trait.Termination.html
+[where clause]: items/where-clauses.html
+[trait or lifetime bounds]: trait-bounds.html

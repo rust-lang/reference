@@ -57,7 +57,7 @@ The machine types are the following:
   [-(2^15), 2^15 - 1], [-(2^31), 2^31 - 1], [-(2^63), 2^63 - 1], and
   [-(2^127), 2^127 - 1] respectively.
 
-* The IEEE 754-2008 `binary32` and `binary64` floating-point types: `f32` and
+* The IEEE 754-2008 "binary32" and "binary64" floating-point types: `f32` and
   `f64`, respectively.
 
 ### Machine-dependent integer types
@@ -545,7 +545,7 @@ A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
 number of [auto traits].
 
-Trait objects implement the base trait, its auto traits, and any super traits
+Trait objects implement the base trait, its auto traits, and any [supertraits]
 of the base trait.
 
 Trait objects are written as the optional keyword `dyn` followed by a set of
@@ -597,8 +597,8 @@ behind some type of pointer; for example `&dyn SomeTrait` or
 
  - a pointer to an instance of a type `T` that implements `SomeTrait`
  - a _virtual method table_, often just called a _vtable_, which contains, for
-   each method of `SomeTrait` that `T` implements, a pointer to `T`'s
-   implementation (i.e. a function pointer).
+   each method of `SomeTrait` and its [supertraits] that `T` implements, a
+   pointer to `T`'s implementation (i.e. a function pointer).
 
 The purpose of trait objects is to permit "late binding" of methods. Calling a
 method on a trait object results in virtual dispatch at runtime: that is, a
@@ -712,3 +712,4 @@ impl Printable for String {
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
 [_PATH_]: paths.html
 [_LIFETIME_OR_LABEL_]: tokens.html#lifetimes-and-loop-labels
+[supertraits]: items/traits.html#supertraits

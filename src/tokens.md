@@ -20,13 +20,15 @@ evaluated (primarily) at compile time.
 #### Characters and strings
 
 |                                              | Example         | `#` sets   | Characters  | Escapes             |
-|----------------------------------------------|-----------------|------------|-------------|---------------------|
-| [Character](#character-literals)             | `'H'`           | `N/A`      | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [String](#string-literals)                   | `"hello"`       | `N/A`      | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [Raw](#raw-string-literals)                  | `r#"hello"#`    | `0...`     | All Unicode | `N/A`                                                      |
-| [Byte](#byte-literals)                       | `b'H'`          | `N/A`      | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Byte string](#byte-string-literals)         | `b"hello"`      | `N/A`      | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | `0...`     | All ASCII   | `N/A`                                                      |
+|----------------------------------------------|-----------------|-------------|-------------|---------------------|
+| [Character](#character-literals)             | `'H'`           | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [String](#string-literals)                   | `"hello"`       | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [Raw](#raw-string-literals)                  | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                      |
+| [Byte](#byte-literals)                       | `b'H'`          | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                      |
+
+\* The number of `#`s on each side of the same literal must be equivalent
 
 #### ASCII escapes
 
@@ -142,7 +144,7 @@ Some additional _escapes_ are available in either character or non-raw string
 literals. An escape starts with a `U+005C` (`\`) and continues with one of the
 following forms:
 
-* An _8-bit code point escape_ starts with `U+0078` (`x`) and is
+* A _7-bit code point escape_ starts with `U+0078` (`x`) and is
   followed by exactly two _hex digits_ with value up to `0x7F`. It denotes the
   ASCII character with value equal to the provided hex value. Higher values are
   not permitted because it is ambiguous whether they mean Unicode code points or
@@ -202,7 +204,7 @@ r##"foo #"# bar"##;                // foo #"# bar
 > &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'`  
 >  
 > ASCII_FOR_CHAR :  
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `/`, \\n, \\r or \\t  
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t  
 >  
 > BYTE_ESCAPE :  
 > &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT  
@@ -222,7 +224,7 @@ _number literal_.
 > &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"`  
 >  
 > ASCII_FOR_STRING :  
-> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `/` _and IsolatedCR_ 
+> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_ 
 
 A non-raw _byte string literal_ is a sequence of ASCII characters and _escapes_,
 preceded by the characters `U+0062` (`b`) and `U+0022` (double-quote), and
@@ -324,10 +326,8 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]  
 >  
 > INTEGER_SUFFIX :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `usize`  
-> &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `isize`
-
-<!-- FIXME: u128 and i128 -->
+> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`  
+> &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `i128` | `isize`
 
 An _integer literal_ has one of four forms:
 
