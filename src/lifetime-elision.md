@@ -5,10 +5,14 @@ compiler can infer a sensible default choice.
 
 ## Lifetime elision in functions
 
-In order to make common patterns more ergonomic, Rust allows lifetimes to be
-*elided* in [function item], [function pointer] and [closure trait] signatures.
-The following rules are used to infer lifetime parameters for elided lifetimes.
-It is an error to elide lifetime parameters that cannot be inferred.
+In order to make common patterns more ergonomic, Rust allows lifetime argument
+to be *elided* in [function item], [function pointer] and [closure trait]
+signatures. The following rules are used to infer lifetime parameters for
+elided lifetimes. It is an error to elide lifetime parameters that cannot be
+inferred. The placeholder lifetime, `'_`, can also be used to have a lifetime
+inferred in the same way. For lifetimes in paths, using `'_` is preferred.
+Trait object lifetimes follow different rules discussed
+[below](#default-trait-object-lifetimes).
 
 * Each elided lifetime in the parameters becomes a distinct lifetime parameter.
 * If there is exactly one lifetime used in the parameters (elided or not), that
@@ -23,6 +27,7 @@ Examples:
 
 ```rust,ignore
 fn print(s: &str);                                      // elided
+fn print(s: &'_ str);                                   // also elided
 fn print<'a>(s: &'a str);                               // expanded
 
 fn debug(lvl: usize, s: &str);                          // elided
@@ -41,6 +46,7 @@ fn get_mut<'a>(&'a mut self) -> &'a mut T;              // expanded
 fn args<T: ToCStr>(&mut self, args: &[T]) -> &mut Command;                  // elided
 fn args<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command; // expanded
 
+fn new(buf: &mut [u8]) -> BufWriter<'_>;                // elided - preferred
 fn new(buf: &mut [u8]) -> BufWriter;                    // elided
 fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>;         // expanded
 
@@ -55,8 +61,12 @@ type FunTrait = for<'a> Fn(&'a str) -> &'a str;         // expanded
 
 The assumed lifetime of references held by a [trait object] is called its
 _default object lifetime bound_. These were defined in [RFC 599] and amended in
-[RFC 1156]. Default object lifetime bounds are used instead of the lifetime
-parameter elision rules defined above.
+[RFC 1156].
+
+These default object lifetime bounds are used instead of the lifetime parameter
+elision rules defined above when the lifetime bound is omitted entirely. If
+`'_` is used as the lifetime bound then the bound follows the usual elision
+rules.
 
 If the trait object is used as a type argument of a generic type then the
 containing type is first used to try to infer a bound.
@@ -136,7 +146,7 @@ struct BitsNStrings<'a> {
 }
 
 // BITS_N_STRINGS: BitsNStrings<'static>
-const BITS_N_STRINGS: BitsNStrings = BitsNStrings {
+const BITS_N_STRINGS: BitsNStrings<'_> = BitsNStrings {
     mybits: [1, 2],
     mystring: STRING,
 };
