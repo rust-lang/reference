@@ -53,8 +53,8 @@ fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>;         // expanded
 type FunPtr = fn(&str) -> &str;                         // elided
 type FunPtr = for<'a> fn(&'a str) -> &'a str;           // expanded
 
-type FunTrait = Fn(&str) -> &str;                       // elided
-type FunTrait = for<'a> Fn(&'a str) -> &'a str;         // expanded
+type FunTrait = dyn Fn(&str) -> &str;                   // elided
+type FunTrait = dyn for<'a> Fn(&'a str) -> &'a str;     // expanded
 ```
 
 ## Default trait object lifetimes
@@ -88,45 +88,45 @@ If neither of those rules apply, then the bounds on the trait are used:
 trait Foo { }
 
 // These two are the same as Box<T> has no lifetime bound on T
-Box<Foo>
-Box<Foo + 'static>
+Box<dyn Foo>
+Box<dyn Foo + 'static>
 
 // ...and so are these:
-impl Foo {}
-impl Foo + 'static {}
+impl dyn Foo {}
+impl dyn Foo + 'static {}
 
 // ...so are these, because &'a T requires T: 'a
-&'a Foo
-&'a (Foo + 'a)
+&'a dyn Foo
+&'a (dyn Foo + 'a)
 
 // std::cell::Ref<'a, T> also requires T: 'a, so these are the same
-std::cell::Ref<'a, Foo>
-std::cell::Ref<'a, Foo + 'a>
+std::cell::Ref<'a, dyn Foo>
+std::cell::Ref<'a, dyn Foo + 'a>
 
 // This is an error:
 struct TwoBounds<'a, 'b, T: ?Sized + 'a + 'b>
-TwoBounds<'a, 'b, Foo> // Error: the lifetime bound for this object type cannot
-                       // be deduced from context
+TwoBounds<'a, 'b, dyn Foo> // Error: the lifetime bound for this object type
+                           // cannot be deduced from context
 ```
 
-Note that the innermost object sets the bound, so `&'a Box<Foo>` is still `&'a
-Box<Foo + 'static>`.
+Note that the innermost object sets the bound, so `&'a Box<dyn Foo>` is still
+`&'a Box<dyn Foo + 'static>`.
 
 ```rust,ignore
 // For the following trait...
 trait Bar<'a>: 'a { }
 
 // ...these two are the same:
-Box<Bar<'a>>
-Box<Bar<'a> + 'a>
+Box<dyn Bar<'a>>
+Box<dyn Bar<'a> + 'a>
 
 // ...and so are these:
-impl<'a> Foo<'a> {}
-impl<'a> Foo<'a> + 'a {}
+impl<'a> dyn Foo<'a> {}
+impl<'a> dyn Foo<'a> + 'a {}
 
 // This is still an error:
 struct TwoBounds<'a, 'b, T: ?Sized + 'a + 'b>
-TwoBounds<'a, 'b, Foo<'c>>
+TwoBounds<'a, 'b, dyn Foo<'c>>
 ```
 
 ## `'static` lifetime elision
@@ -162,11 +162,11 @@ usual rules, then it will error. By way of example:
 const RESOLVED_SINGLE: fn(&str) -> &str = ..
 
 // Resolved as `Fn<'a, 'b, 'c>(&'a Foo, &'b Bar, &'c Baz) -> usize`.
-const RESOLVED_MULTIPLE: &Fn(&Foo, &Bar, &Baz) -> usize = ..
+const RESOLVED_MULTIPLE: &dyn Fn(&Foo, &Bar, &Baz) -> usize = ..
 
 // There is insufficient information to bound the return reference lifetime
 // relative to the argument lifetimes, so this is an error.
-const RESOLVED_STATIC: &Fn(&Foo, &Bar) -> &Baz = ..
+const RESOLVED_STATIC: &dyn Fn(&Foo, &Bar) -> &Baz = ..
 ```
 
 [closure trait]: types.html#closure-types
