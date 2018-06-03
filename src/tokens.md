@@ -81,7 +81,7 @@ evaluated (primarily) at compile time.
 
 | Integer | Floating-point |
 |---------|----------------|
-| `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `isize`, `usize` | `f32`, `f64` |
+| `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, `isize` | `f32`, `f64` |
 
 ### Character and string literals
 
@@ -350,7 +350,7 @@ Like any literal, an integer literal may be followed (immediately,
 without any spaces) by an _integer suffix_, which forcibly sets the
 type of the literal. The integer suffix must be the name of one of the
 integral types: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`,
-`u128`, `i128`, `isize`, or `usize`.
+`u128`, `i128`, `usize`, or `isize`.
 
 The type of an _unsuffixed_ integer literal is determined by type inference:
 
