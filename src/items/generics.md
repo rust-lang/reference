@@ -12,13 +12,13 @@
 > &nbsp;&nbsp; ( _LifetimeParam_ `,` )<sup>\*</sup> _LifetimeParam_<sup>?</sup>  
 >  
 > _LifetimeParam_ :  
-> &nbsp;&nbsp; [LIFETIME_OR_LABEL] `:` [_LifetimeBounds_]<sup>?</sup>  
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL] `:` [_LifetimeBounds_]<sup>?</sup>  
 >  
 > _TypeParams_:  
 > &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_ <sup>?</sup>  
 >  
 > _TypeParam_ :  
-> &nbsp;&nbsp; [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>  
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>  
 
 Functions, type aliases, structs, enumerations, unions, traits and
 implementations may be *parameterized* by types and lifetimes. These parameters
@@ -83,11 +83,29 @@ where
 }
 ```
 
+## Attributes
+
+Generic lifetime and type parameters allow [attributes] on them. There are no
+built-in attributes that do anything in this position, although custom derive
+attributes may give meaning to it.
+
+This example shows using a custom derive attribute to modify the meaning of a
+generic parameter.
+
+```ignore
+// Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
+// an attribute it understands.
+#[derive(MyFlexibleClone)] struct Foo<#[my_flexible_clone(unbounded)] H> {
+    a: *const H
+}
+```
+
 [IDENTIFIER]: identifiers.html
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
 
 [_LifetimeBounds_]: trait-bounds.html
 [_Lifetime_]: trait-bounds.html
+[_OuterAttribute_]: attributes.html
 [_Type_]: types.html
 [_TypeParamBounds_]: trait-bounds.html
 
@@ -100,6 +118,7 @@ where
 [`Sized`]: special-types-and-traits.html#sized
 [tuples]: types.html#tuple-types
 [trait object]: types.html#trait-objects
+[attributes]: attributes.html
 
 [path]: ../paths.html
 [Trait]: traits.html#trait-bounds

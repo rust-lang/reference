@@ -21,11 +21,11 @@
 > &nbsp;&nbsp; | _MetaItem_  
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
-Any item declaration may have an _attribute_ applied to it. Attributes in Rust
-are modeled on Attributes in ECMA-335, with the syntax coming from ECMA-334
-(C#). An attribute is a general, free-form metadatum that is interpreted
-according to name, convention, and language and compiler version. Attributes
-may appear as any of:
+Any [item declaration] or [generic lifetime or type parameter][generics] may
+have an attribute applied to it. Attributes are modeled on Attributes in
+[ECMA-335], with the syntax coming from [ECMA-334] \(C#). An _attribute_ is a
+general, free-form metadatum that is interpreted according to name, convention,
+and language and compiler version. Attributes may appear as any of:
 
 * A single identifier, the attribute name
 * An identifier followed by the equals sign '=' and a literal, providing a
@@ -34,9 +34,10 @@ may appear as any of:
   key/value pair
 * An identifier followed by a parenthesized list of sub-attribute arguments
 
-Attributes with a bang ("!") after the hash ("#") apply to the item that the
-attribute is declared within. Attributes that do not have a bang after the hash
-apply to the item that follows the attribute.
+_Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
+item that the attribute is declared within. _Outer attributes_, written without
+the bang after the hash, apply to the item or generic parameter that follow the
+attribute.
 
 An example of attributes:
 
@@ -101,7 +102,8 @@ type int8_t = i8;
 - `test` - indicates that this function is a test function, to only be compiled
   in case of `--test`.
   - `ignore` - indicates that this test function is disabled.
-- `should_panic` - indicates that this test function should panic, inverting the success condition.
+- `should_panic` - indicates that this test function should panic, inverting the
+  success condition.
 - `cold` - The function is unlikely to be executed, so optimize it (and calls
   to it) differently.
 
@@ -153,9 +155,9 @@ which can be used to control type layout.
 - `no_link` on an `extern crate` — even if we load this crate for macros, don't
   link it into the output.
 
-See the [macros section of the
-book](../book/first-edition/macros.html#scoping-and-macro-importexport) for more information on
-macro scope.
+See the [macros section of the first edition of the
+book](../book/first-edition/macros.html#scoping-and-macro-importexport) for more
+information on macro scope.
 
 ## Miscellaneous attributes
 
@@ -213,8 +215,8 @@ release builds.
 Configuration options are boolean (on or off) and are named either with a
 single identifier (e.g. `foo`) or an identifier and a string (e.g. `foo = "bar"`;
 the quotes are required and spaces around the `=` are unimportant). Note that
-similarly-named options, such as `foo`, `foo="bar"` and `foo="baz"` may each be set
-or unset independently.
+similarly-named options, such as `foo`, `foo="bar"` and `foo="baz"` may each be
+set or unset independently.
 
 Configuration options are either provided by the compiler or passed in on the
 command line using `--cfg` (e.g. `rustc main.rs --cfg foo --cfg 'bar="baz"'`).
@@ -537,3 +539,7 @@ You can implement `derive` for your own type through [procedural macros].
 [let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
 [zero-variant enum]: items/enumerations.html#zero-variant-enums
+[ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
+[ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
+[item declaration]: items.html
+[generics]: generics.html
