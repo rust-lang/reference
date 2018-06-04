@@ -175,6 +175,11 @@ let message = match maybe_digit {
 };
 ```
 
+## Attributes on match arms
+
+Outer attributes are allowed on match arms. The only attributes that have
+meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
+
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html#block-expressions
 [place expression]: expressions.html#place-expressions-and-value-expressions
@@ -183,3 +188,5 @@ let message = match maybe_digit {
 [numeric types]: types.html#numeric-types
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
+[`cfg`]: attributes.html#conditional-compilation
+[lint check attributes]: attributes.html#lint-check-attributes
