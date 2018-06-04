@@ -28,7 +28,7 @@ and language and compiler version. Attributes are modeled on Attributes in
 
 Attributes may appear as any of:
 
-* A single identifier, the attribute name
+* A single identifier, the _attribute name_
 * An identifier followed by the equals sign '=' and a literal, providing a
   key/value pair
 * An identifier followed by a parenthesized literal, providing a
@@ -71,6 +71,9 @@ mod bar {
 #[allow(non_camel_case_types)]
 type int8_t = i8;
 ```
+
+The rest of this page describes or links to descriptions of which attribute
+names have meaning.
 
 ## Crate-only attributes
 
