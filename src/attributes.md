@@ -21,11 +21,12 @@
 > &nbsp;&nbsp; | _MetaItem_\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
-Any [item declaration] or [generic lifetime or type parameter][generics] may
-have an attribute applied to it. Attributes are modeled on Attributes in
-[ECMA-335], with the syntax coming from [ECMA-334] \(C#). An _attribute_ is a
+An _attribute_ is a
 general, free-form metadatum that is interpreted according to name, convention,
-and language and compiler version. Attributes may appear as any of:
+and language and compiler version. Attributes are modeled on Attributes in
+[ECMA-335], with the syntax coming from [ECMA-334] \(C#).
+
+Attributes may appear as any of:
 
 * A single identifier, the attribute name
 * An identifier followed by the equals sign '=' and a literal, providing a
@@ -38,6 +39,9 @@ _Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
 the bang after the hash, apply to the item or generic parameter that follow the
 attribute.
+
+Any [item declaration] or [generic lifetime or type parameter][generics] may
+have an attribute applied to it.
 
 An example of attributes:
 
