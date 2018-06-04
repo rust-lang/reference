@@ -136,5 +136,11 @@ impl Seq<bool> for u32 {
 }
 ```
 
+## Attributes in Implementations
+
+Implementations may contain inner [attributes] inside the brackets that contain
+the associated items. They must come before the associated items.
+
 
 [trait]: items/traits.html
+[attributes]: attributes.html
