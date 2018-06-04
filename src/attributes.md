@@ -49,7 +49,7 @@ Attributes may be applied to many things in the language:
 * [Match expression arms][match expressions] accept outer attributes.
 * [Generic lifetime or type parameter][generics] accept outer attributes.
 
-An example of attributes:
+Some examples of attributes:
 
 ```rust
 // General metadata applied to the enclosing module or crate.
@@ -70,6 +70,15 @@ mod bar {
 // A lint attribute used to suppress a warning/error
 #[allow(non_camel_case_types)]
 type int8_t = i8;
+
+// Outer attribute applies to the entire function.
+fn some_unused_variables() {
+  #![allow(unused_variables)]
+  
+  let x = ();
+  let y = ();
+  let z = ();
+}
 ```
 
 The rest of this page describes or links to descriptions of which attribute
