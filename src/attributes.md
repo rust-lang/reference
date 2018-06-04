@@ -97,8 +97,6 @@ type int8_t = i8;
 
 ## Function-only attributes
 
-- `main` - indicates that this function should be passed to the entry point,
-  rather than the function in the crate root named `main`.
 - `test` - indicates that this function is a test function, to only be compiled
   in case of `--test`.
   - `ignore` - indicates that this test function is disabled.
