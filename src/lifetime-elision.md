@@ -5,13 +5,13 @@ compiler can infer a sensible default choice.
 
 ## Lifetime elision in functions
 
-In order to make common patterns more ergonomic, Rust allows lifetime argument
-to be *elided* in [function item], [function pointer] and [closure trait]
-signatures. The following rules are used to infer lifetime parameters for
-elided lifetimes. It is an error to elide lifetime parameters that cannot be
-inferred. The placeholder lifetime, `'_`, can also be used to have a lifetime
-inferred in the same way. For lifetimes in paths, using `'_` is preferred.
-Trait object lifetimes follow different rules discussed
+In order to make common patterns more ergonomic, lifetime arguments can be
+*elided* in [function item], [function pointer] and [closure trait] signatures.
+The following rules are used to infer lifetime parameters for elided lifetimes.
+It is an error to elide lifetime parameters that cannot be inferred. The
+placeholder lifetime, `'_`, can also be used to have a lifetime inferred in the
+same way. For lifetimes in paths, using `'_` is preferred. Trait object
+lifetimes follow different rules discussed
 [below](#default-trait-object-lifetimes).
 
 * Each elided lifetime in the parameters becomes a distinct lifetime parameter.
