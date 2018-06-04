@@ -115,6 +115,21 @@ As non-Rust calling conventions do not support unwinding, unwinding past the end
 of an extern function will cause the process to abort. In LLVM, this is
 implemented by executing an illegal instruction.
 
+## Function attributes
+
+Inner [attributes] on the function's block apply to the function item as a whole.
+
+For example, this function will only be available while running tests.
+
+```
+fn test_only() {
+    #![test]
+}
+```
+
+> Note: Except for lints, it is idiomatic to only use outer attributes on
+> function items.
+
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html
@@ -122,3 +137,4 @@ implemented by executing an illegal instruction.
 [type]: types.html
 [*function item type*]: types.html#function-item-types
 [Trait]: items/traits.html
+[attributes]: attributes.html
