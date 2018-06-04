@@ -40,8 +40,14 @@ item that the attribute is declared within. _Outer attributes_, written without
 the bang after the hash, apply to the item or generic parameter that follow the
 attribute.
 
-Any [item declaration] or [generic lifetime or type parameter][generics] may
-have an attribute applied to it.
+Attributes may be applied to many things in the language:
+
+* All [item declarations] accept outer attributes while [external blocks],
+  [functions], [implementations], and [modules] accept inner attributes.
+* [Statements] accept outer attributes.
+* [Enum] variants and [struct] and [union] fields accept outer attributes.
+* [Match expression arms][match expressions] accept outer attributes.
+* [Generic lifetime or type parameter][generics] accept outer attributes.
 
 An example of attributes:
 
@@ -543,5 +549,10 @@ You can implement `derive` for your own type through [procedural macros].
 [zero-variant enum]: items/enumerations.html#zero-variant-enums
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
 [ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
-[item declaration]: items.html
+[item declarations]: items.html
 [generics]: items/generics.html
+[implementations]: items/implementations.html
+[modules]: items/modules.html
+[statements]: statements.html
+[match expressions]: expressions/match-expr.html
+[external blocks]: items/external-blocks.html
