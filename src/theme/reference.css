@@ -1,7 +1,15 @@
-/* This selector moves things around to make space for the warning on the top
-   of each page. Get rid of it when the warning goes away. */
+/* These selectors moves things around to make space for the warning on the
+   top of each page. Get rid of it when the warning goes away. */
 .page-wrapper > .nav-chapters {
     /* add height for warning content & margin */
+    top: 120px;
+}
+
+.sidebar-visible .content {
+    top: 120px;
+}
+
+.nav-chapters {
     top: 120px;
 }
 
