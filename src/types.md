@@ -585,10 +585,6 @@ For example, `dyn Trait + Send + UnwindSafe` is the same as
 > `dyn Send + Sync` is a different type from `dyn Sync + Send`. See
 > [issue 33140].
 
-> Warning: Including the same auto trait multiple times is allowed, and each
-> instance is considered a unique type. As such, `dyn Trait + Send` is a
-> distinct type to `dyn Trait + Send + Send`. See [issue 47010].
-
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
 <abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
