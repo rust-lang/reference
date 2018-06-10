@@ -21,10 +21,9 @@
 > &nbsp;&nbsp; | _MetaItem_\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
-An _attribute_ is a
-general, free-form metadatum that is interpreted according to name, convention,
-and language and compiler version. Attributes are modeled on Attributes in
-[ECMA-335], with the syntax coming from [ECMA-334] \(C#).
+An _attribute_ is a general, free-form metadatum that is interpreted according
+to name, convention, and language and compiler version. Attributes are modeled
+on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
 Attributes may appear as any of:
 
@@ -45,6 +44,9 @@ Attributes may be applied to many things in the language:
 * All [item declarations] accept outer attributes while [external blocks],
   [functions], [implementations], and [modules] accept inner attributes.
 * [Statements] accept outer attributes.
+* [Block expressions] accept outer and inner attributes, but only when they are
+  the outer expression of an [expression statement] or the final expression of
+  another block expression.
 * [Enum] variants and [struct] and [union] fields accept outer attributes.
 * [Match expression arms][match expressions] accept outer attributes.
 * [Generic lifetime or type parameter][generics] accept outer attributes.
@@ -555,6 +557,7 @@ You can implement `derive` for your own type through [procedural macros].
 [expression statement]: statements.html#expression-statements
 [call expression]: expressions/call-expr.html
 [block expression]: expressions/block-expr.html
+[block expressions]: expressions/block-expr.html
 [`Drop`]: special-types-and-traits.html#drop
 [let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins

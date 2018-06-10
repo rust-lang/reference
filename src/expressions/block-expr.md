@@ -57,9 +57,32 @@ unsafe {
 let a = unsafe { f() };
 ```
 
+## Attributes on block expressions
+
+Block expressions allow [outer attributes] and [inner attributes] directly after
+the opening brace when the block expression is the outer expression of an
+[expression statement] or the final expression of another block expression. The
+attributes that have meaning on a block expression are [`cfg`], and [the lint
+check attributes].
+
+For example, this function returns `true` on unix platforms and `false` on other
+platforms.
+
+```rust
+fn is_unix_platform() -> bool {
+    #[cfg(unix)] { true }
+    #[cfg(not(unix))] { false }
+}
+```
+
 [_InnerAttribute_]: attributes.html
 [_Statement_]: statements.html
 [_Expression_]: expressions.html
 [expression]: expressions.html
 [statements]: statements.html
 [value expressions]: expressions.html#place-expressions-and-value-expressions
+[outer attributes]: attributes.html
+[inner attributes]: attributes.html
+[expression statement]: statements.html#expression-statements
+[`cfg`]: attributes.html#conditional-compilation
+[the lint check attributes]: attributes.html#lint-check-attributes.html

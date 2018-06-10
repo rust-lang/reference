@@ -136,11 +136,17 @@ impl Seq<bool> for u32 {
 }
 ```
 
-## Attributes in Implementations
+## Attributes on Implementations
 
-Implementations may contain inner [attributes] inside the brackets that contain
-the associated items. They must come before the associated items.
-
+Implementations may contain outer [attributes] before the `impl` keyword and
+inner [attributes] inside the brackets that contain the associated items. Inner
+attributes must come before any associated items. That attributes that have
+meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
+attributes].
 
 [trait]: items/traits.html
 [attributes]: attributes.html
+[`cfg`]: attributes.html#conditional-compilation
+[`deprecated`]: attributes.html#deprecation
+[`doc`]: attributes.html#documentation
+[the lint check attributes]: attributes.html#lint-check-attributes.html
