@@ -66,17 +66,13 @@ them to use these keywords.
 
 > **<sup>Lexer</sup>**  
 > KW_ABSTRACT       : `abstract`  
-> KW_ALIGNOF        : `alignof`  
 > KW_BECOME         : `become`  
 > KW_BOX            : `box`  
 > KW_DO             : `do`  
 > KW_FINAL          : `final`  
 > KW_MACRO          : `macro`  
-> KW_OFFSETOF       : `offsetof`  
 > KW_OVERRIDE       : `override`  
 > KW_PRIV           : `priv`  
-> KW_PURE           : `pure`  
-> KW_SIZEOF         : `sizeof`  
 > KW_TYPEOF         : `typeof`  
 > KW_UNSIZED        : `unsized`  
 > KW_VIRTUAL        : `virtual`  
