@@ -654,6 +654,20 @@ fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
 Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
 `rest` has type `Vec<A>`, a vector with element type `A`.
 
+## Abstract types
+
+> Note: This section is a placeholder for more comprehensive reference
+> material.
+
+Abstract types are types that stand in for another concrete type where the
+use-site may only use the trait methods declared by the trait bounds of the
+type.
+
+Abstract types are only allowed as the type of a parameter or return type of a
+function except for associated functions on traits.
+
+They are written as `impl` followed by a set of trait bounds.
+
 ## Self types
 
 The special type `Self` has a meaning within traits and implementations: it
