@@ -540,4 +540,4 @@ You can implement `derive` for your own type through [procedural macros].
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
 [ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
 [item declaration]: items.html
-[generics]: generics.html
+[generics]: items/generics.html

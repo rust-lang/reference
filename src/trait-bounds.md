@@ -144,6 +144,6 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 [associated types]: items/associated-items.html#associated-types
 [supertraits]: items/traits.html#supertraits
 [generic]: items/generics.html
-[Trait]: traits.html#trait-bounds
+[Trait]: items/traits.html#trait-bounds
 [trait objects]: types.html#trait-objects
-[where clause]: items/where-clauses.html
+[where clause]: items/generics.html#where-clauses
