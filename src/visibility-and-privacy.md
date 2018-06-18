@@ -150,8 +150,8 @@ visible within a given scope. The rules for `pub` restrictions are as follows:
 - `pub(in path)` makes an item visible within the provided `path`. `path` must
 be a parent module of the item whose visibility is being declared.
 - `pub(crate)` makes an item visible within the current crate.
-- `pub(super)` makes an item visible to the parent module. This equivalent to
-`pub(in super)`.
+- `pub(super)` makes an item visible to the parent module. This is equivalent
+  to `pub(in super)`.
 - `pub(self)` makes an item visible to the current module. This is equivalent
 to `pub(in self)`.
 
