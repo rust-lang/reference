@@ -580,10 +580,13 @@ if the sets of auto traits are the same and the lifetime bounds are the same.
 For example, `dyn Trait + Send + UnwindSafe` is the same as
 `dyn Trait + Unwindsafe + Send`.
 
-> Warning: With two trait object types, even when the complete set of traits is
-> the same, if the base traits differ, the type is different. For example,
-> `dyn Send + Sync` is a different type from `dyn Sync + Send`. See
-> [issue 33140].
+<div class="warning">
+
+***Warning:*** With two trait object types, even when the complete set of traits
+is the same, if the base traits differ, the type is different. For example,
+`dyn Send + Sync` is a different type from `dyn Sync + Send`. See [issue 33140].
+
+</div>
 
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
