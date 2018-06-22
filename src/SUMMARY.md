@@ -113,7 +113,6 @@
 
 - [Application Binary Interface](abi.md)
 - [Beneath `std`](beneath-std.md)
-  - [#[panic_implementation]](panic-implementation.md)
 
 [Appendix: Influences](influences.md)
 
