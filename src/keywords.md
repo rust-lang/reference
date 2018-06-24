@@ -96,9 +96,9 @@ is possible to declare a variable or method with the name `union`.
   followed by a path that does not start with `::`.
 
 > **<sup>Lexer</sup>**  
-> KW_UNION          : `union`
-> KW_STATICLIFETIME : `'static`
-> KW_DYN            : `dyn`
+> KW_UNION          : `union`  
+> KW_STATICLIFETIME : `'static`  
+> KW_DYN            : `dyn`  
 
 [items]: items.html
 [Variables]: variables.html
