@@ -1,12 +1,12 @@
 # Block expressions
 
-> **<sup>Syntax</sup>**  
-> _BlockExpression_ :  
-> &nbsp;&nbsp; `{`  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sup>?</sup>  
-> &nbsp;&nbsp; `}`  
+> **<sup>Syntax</sup>**\
+> _BlockExpression_ :\
+> &nbsp;&nbsp; `{`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sup>?</sup>\
+> &nbsp;&nbsp; `}`
 
 A _block expression_ is similar to a module in terms of the declarations that
 are possible, but can also contain [statements] and end with
@@ -30,14 +30,14 @@ let x: i32 = { println!("Hello."); 5 };
 assert_eq!(5, x);
 ```
 
-Blocks are always [value expressions] and evaluate the last expression in 
+Blocks are always [value expressions] and evaluate the last expression in
 value expression context. This can be used to force moving a value if really
 needed.
 
 ## `unsafe` blocks
 
-> **<sup>Syntax</sup>**  
-> _UnsafeBlockExpression_ :  
+> **<sup>Syntax</sup>**\
+> _UnsafeBlockExpression_ :\
 > &nbsp;&nbsp; `unsafe` _BlockExpression_
 
 _See [`unsafe` block](unsafe-blocks.html) for more information on when to use `unsafe`_

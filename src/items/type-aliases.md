@@ -1,9 +1,9 @@
 # Type aliases
 
-> **<sup>Syntax</sup>**  
-> _TypeAlias_ :  
+> **<sup>Syntax</sup>**\
+> _TypeAlias_ :\
 > &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>
->              [_WhereClause_]<sup>?</sup> `=` [_Type_] `;`  
+>              [_WhereClause_]<sup>?</sup> `=` [_Type_] `;`
 
 A _type alias_ defines a new name for an existing [type]. Type aliases are
 declared with the keyword `type`. Every value has a single, specific type, but

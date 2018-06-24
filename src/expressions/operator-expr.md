@@ -1,17 +1,17 @@
 # Operator expressions
 
-> **<sup>Syntax</sup>**  
-> _OperatorExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_BorrowExpression_]  
-> &nbsp;&nbsp; | [_DereferenceExpression_]  
-> &nbsp;&nbsp; | [_ErrorPropagationExpression_]  
-> &nbsp;&nbsp; | [_NegationExpression_]  
-> &nbsp;&nbsp; | [_ArithmeticOrLogicalExpression_]  
-> &nbsp;&nbsp; | [_ComparisonExpression_]  
-> &nbsp;&nbsp; | [_LazyBooleanExpression_]  
-> &nbsp;&nbsp; | [_TypeCastExpression_]  
-> &nbsp;&nbsp; | [_AssignmentExpression_]  
-> &nbsp;&nbsp; | [_CompoundAssignmentExpression_]  
+> **<sup>Syntax</sup>**\
+> _OperatorExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BorrowExpression_]\
+> &nbsp;&nbsp; | [_DereferenceExpression_]\
+> &nbsp;&nbsp; | [_ErrorPropagationExpression_]\
+> &nbsp;&nbsp; | [_NegationExpression_]\
+> &nbsp;&nbsp; | [_ArithmeticOrLogicalExpression_]\
+> &nbsp;&nbsp; | [_ComparisonExpression_]\
+> &nbsp;&nbsp; | [_LazyBooleanExpression_]\
+> &nbsp;&nbsp; | [_TypeCastExpression_]\
+> &nbsp;&nbsp; | [_AssignmentExpression_]\
+> &nbsp;&nbsp; | [_CompoundAssignmentExpression_]
 
 Operators are defined for built in types by the Rust language. Many of the
 following operators can also be overloaded using traits in `std::ops` or
@@ -34,10 +34,10 @@ overflow:
 
 ## Borrow operators
 
-> **<sup>Syntax</sup>**  
-> _BorrowExpression_ :   
-> &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]  
-> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _BorrowExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
+> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
 operators. When applied to a [place expression], this expressions produces a
@@ -80,14 +80,14 @@ let a = & & & & mut 10;
 
 ## The dereference operator
 
-> **<sup>Syntax</sup>**  
-> _DereferenceExpression_ :  
+> **<sup>Syntax</sup>**\
+> _DereferenceExpression_ :\
 > &nbsp;&nbsp; `*` [_Expression_]
 
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](types.html#pointer-types) it denotes the pointed-to location. If
 the expression is of type `&mut T` and `*mut T`, and is either a local
-variable, a (nested) field of a local variable or is a mutable [place 
+variable, a (nested) field of a local variable or is a mutable [place
 expression], then the resulting memory location can be assigned to.
 Dereferencing a raw pointer requires `unsafe`.
 
@@ -105,15 +105,15 @@ assert_eq!(*y, 11);
 
 ## The question mark operator
 
-> **<sup>Syntax</sup>**  
-> _ErrorPropagationExpression_ :  
-> &nbsp;&nbsp; [_Expression_] `?`  
+> **<sup>Syntax</sup>**\
+> _ErrorPropagationExpression_ :\
+> &nbsp;&nbsp; [_Expression_] `?`
 
 The question mark operator (`?`) unwraps valid values or returns erroneous
 values, propagating them to the calling function. It is a unary postfix
 operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
-When applied to values of the `Result<T, E>` type, it propagates errors. If 
+When applied to values of the `Result<T, E>` type, it propagates errors. If
 the value is `Err(e)`, then it will return `Err(From::from(e))` from the
 enclosing function or closure. If applied to `Ok(x)`, then it will unwrap the
 value to evaluate to `x`.
@@ -153,10 +153,10 @@ assert_eq!(try_option_none(), None);
 
 ## Negation operators
 
-> **<sup>Syntax</sup>**  
-> _NegationExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]  
-> &nbsp;&nbsp; | `!` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _NegationExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]\
+> &nbsp;&nbsp; | `!` [_Expression_]
 
 These are the last two unary operators. This table summarizes the behavior of
 them on primitive types and which traits are used to overload these operators
@@ -182,18 +182,18 @@ assert_eq!(true, !false);
 
 ## Arithmetic and Logical Binary Operators
 
-> **<sup>Syntax</sup>**  
-> _ArithmeticOrLogicalExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `-` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `*` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `/` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `%` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `&` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `|` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `^` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _ArithmeticOrLogicalExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `-` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `*` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `/` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `%` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `&` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `|` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `^` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]
 
 Binary operators expressions are all written with infix notation. This table
 summarizes the behavior of arithmetic and logical binary operators on
@@ -237,14 +237,14 @@ assert_eq!(-10 >> 2, -3);
 
 ## Comparison Operators
 
-> **<sup>Syntax</sup>**  
-> _ComparisonExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `==` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `!=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `>` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `<` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _ComparisonExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `==` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `!=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `>` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `<` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]
 
 Comparison operators are also defined both for primitive types and many type in
 the standard library. Parentheses are required when chaining comparison
@@ -290,9 +290,9 @@ assert!("World" >= "Hello");
 
 ## Lazy boolean operators
 
-> **<sup>Syntax</sup>**  
-> _LazyBooleanExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _LazyBooleanExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `&&` [_Expression_]
 
 The operators `||` and `&&` may be applied to operands of boolean type. The
@@ -310,8 +310,8 @@ let y = false && panic!(); // false, doesn't evaluate `panic!()`
 
 ## Type cast expressions
 
-> **<sup>Syntax</sup>**  
-> _TypeCastExpression_ :  
+> **<sup>Syntax</sup>**\
+> _TypeCastExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `as` [_PathInExpression_]
 
 A type cast expression is denoted with the binary operator `as`.
@@ -390,9 +390,9 @@ same trait object.
 
 ## Assignment expressions
 
-> **<sup>Syntax</sup>**  
-> _AssignmentExpression_ :  
-> &nbsp;&nbsp; | [_Expression_] `=` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _AssignmentExpression_ :\
+> &nbsp;&nbsp; | [_Expression_] `=` [_Expression_]
 
 An _assignment expression_ consists of a [place expression] followed by an
 equals sign (`=`) and a [value expression]. Such an expression always has
@@ -413,18 +413,18 @@ x = y;
 
 ## Compound assignment expressions
 
-> **<sup>Syntax</sup>**  
-> _CompoundAssignmentExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `-=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `*=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `/=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `%=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `&=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `|=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `^=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]  
-> &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]  
+> **<sup>Syntax</sup>**\
+> _CompoundAssignmentExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `-=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `*=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `/=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `%=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `&=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `|=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `^=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]\
+> &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]
 
 The `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, and `>>` operators may be
 composed with the `=` operator. The expression `place_exp OP= value` is

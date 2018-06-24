@@ -432,7 +432,7 @@ order to capture a single field:
 
 ```rust
 # use std::collections::HashSet;
-# 
+#
 struct SetVec {
     set: HashSet<u32>,
     vec: Vec<u32>
@@ -554,7 +554,7 @@ traits except the first trait must be auto traits, there may not be more than
 one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
-For example, given a trait `Trait`, the following are all trait objects: 
+For example, given a trait `Trait`, the following are all trait objects:
 
 * `Trait`
 * `dyn Trait`

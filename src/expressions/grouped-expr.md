@@ -1,7 +1,7 @@
 # Grouped expressions
 
-> **<sup>Syntax</sup>**  
-> _GroupedExpression_ :  
+> **<sup>Syntax</sup>**\
+> _GroupedExpression_ :\
 > &nbsp;&nbsp; `(` [_Expression_] `)`
 
 An expression enclosed in parentheses evaluates to the result of the enclosed
@@ -30,7 +30,7 @@ that is a member of a struct:
 #    }
 # }
 # let a = A{f: || "The field f"};
-# 
+#
 assert_eq!( a.f (), "The method f");
 assert_eq!((a.f)(), "The field f");
 ```

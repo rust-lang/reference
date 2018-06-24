@@ -1,29 +1,29 @@
 # Enumerations
 
-> **<sup>Syntax</sup>**  
-> _Enumeration_ :  
+> **<sup>Syntax</sup>**\
+> _Enumeration_ :\
 > &nbsp;&nbsp; `enum`
 >    [IDENTIFIER]&nbsp;
 >    [_Generics_]<sup>?</sup>
 >    [_WhereClause_]<sup>?</sup>
->    `{` _EnumItems_<sup>?</sup> `}`  
->  
-> _EnumItems_ :  
-> &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>  
->  
-> _EnumItem_ :  
-> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup>  
-> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_ 
->                                | _EnumItemDiscriminant_ )<sup>?</sup>  
->  
-> _EnumItemTuple_ :  
-> &nbsp;&nbsp; `(` [_TupleFields_]<sup>?</sup> `)`  
->   
-> _EnumItemStruct_ :  
-> &nbsp;&nbsp; `{` [_StructFields_]<sup>?</sup> `}`  
->   
-> _EnumItemDiscriminant_ :  
-> &nbsp;&nbsp; `=` [_Expression_]  
+>    `{` _EnumItems_<sup>?</sup> `}`
+>
+> _EnumItems_ :\
+> &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _EnumItem_ :\
+> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup>\
+> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_
+>                                | _EnumItemDiscriminant_ )<sup>?</sup>
+>
+> _EnumItemTuple_ :\
+> &nbsp;&nbsp; `(` [_TupleFields_]<sup>?</sup> `)`
+>
+> _EnumItemStruct_ :\
+> &nbsp;&nbsp; `{` [_StructFields_]<sup>?</sup> `}`
+>
+> _EnumItemDiscriminant_ :\
+> &nbsp;&nbsp; `=` [_Expression_]
 
 An *enumeration*, also referred to as *enum* is a simultaneous definition of a
 nominal [enumerated type] as well as a set of *constructors*, that can be used

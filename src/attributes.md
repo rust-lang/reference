@@ -1,24 +1,24 @@
 # Attributes
 
-> **<sup>Syntax</sup>**  
-> _Attribute_ :  
-> &nbsp;&nbsp; _InnerAttribute_ | _OuterAttribute_  
->  
-> _InnerAttribute_ :  
-> &nbsp;&nbsp; `#![` MetaItem `]`  
->   
-> _OuterAttribute_ :  
-> &nbsp;&nbsp; `#[` MetaItem `]`  
->   
-> _MetaItem_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER  
-> &nbsp;&nbsp; | IDENTIFIER `=` LITERAL  
-> &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`  
-> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`  
->   
-> _MetaSeq_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY  
-> &nbsp;&nbsp; | _MetaItem_  
+> **<sup>Syntax</sup>**\
+> _Attribute_ :\
+> &nbsp;&nbsp; _InnerAttribute_ | _OuterAttribute_
+>
+> _InnerAttribute_ :\
+> &nbsp;&nbsp; `#![` MetaItem `]`
+>
+> _OuterAttribute_ :\
+> &nbsp;&nbsp; `#[` MetaItem `]`
+>
+> _MetaItem_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER\
+> &nbsp;&nbsp; | IDENTIFIER `=` LITERAL\
+> &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`\
+> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`
+>
+> _MetaSeq_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY\
+> &nbsp;&nbsp; | _MetaItem_\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
 Any [item declaration] or [generic lifetime or type parameter][generics] may
@@ -116,7 +116,7 @@ On an `extern` block, the following attributes are interpreted:
   declarations in this block to be linked correctly. `link` supports an optional
   `kind` key with three possible values: `dylib`, `static`, and `framework`. See
   [external blocks](items/external-blocks.html) for more about external blocks.
-  Two examples: `#[link(name = "readline")]` and 
+  Two examples: `#[link(name = "readline")]` and
   `#[link(name = "CoreFoundation", kind = "framework")]`.
 - `linked_from` - indicates what native library this block of FFI items is
   coming from. This attribute is of the form `#[linked_from = "foo"]` where
@@ -450,7 +450,7 @@ When used on a function in an implementation, the attribute does nothing.
 >   { five() };
 >   if true { five() } else { 0i32 };
 >   match true {
->     _ => five()  
+>     _ => five()
 >   };
 > }
 > ```

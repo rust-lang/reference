@@ -1,7 +1,7 @@
 # Extern crate declarations
 
-> **<sup>Syntax:<sup>**  
-> _ExternCrate_ :  
+> **<sup>Syntax:<sup>**\
+> _ExternCrate_ :\
 > &nbsp;&nbsp; `extern` `crate` [IDENTIFIER]&nbsp;(`as` [IDENTIFIER])<sup>?</sup> `;`
 
 An _`extern crate` declaration_ specifies a dependency on an external crate.

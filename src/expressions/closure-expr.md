@@ -1,10 +1,10 @@
 # Closure expressions
 
-> **<sup>Syntax</sup>**  
-> _ClosureExpression_ :  
-> &nbsp;&nbsp; `move`<sup>?</sup>  
-> &nbsp;&nbsp; ( `||` | `|` [_FunctionParameters_]<sup>?</sup> `|` )  
-> &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])  
+> **<sup>Syntax</sup>**\
+> _ClosureExpression_ :\
+> &nbsp;&nbsp; `move`<sup>?</sup>\
+> &nbsp;&nbsp; ( `||` | `|` [_FunctionParameters_]<sup>?</sup> `|` )\
+> &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
 
 A _closure expression_ defines a closure and denotes it as a value, in a single
 expression. A closure expression is a pipe-symbol-delimited (`|`) list of

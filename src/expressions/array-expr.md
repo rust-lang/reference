@@ -2,11 +2,11 @@
 
 ## Array expressions
 
-> **<sup>Syntax</sup>**  
-> _ArrayExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `[`  `]`  
-> &nbsp;&nbsp; | `[` [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup> `]`  
-> &nbsp;&nbsp; | `[` [_Expression_] `;` [_Expression_] `]`  
+> **<sup>Syntax</sup>**\
+> _ArrayExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `[`  `]`\
+> &nbsp;&nbsp; | `[` [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup> `]`\
+> &nbsp;&nbsp; | `[` [_Expression_] `;` [_Expression_] `]`
 
 An _[array](types.html#array-and-slice-types) expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
@@ -32,8 +32,8 @@ greater than 1 then this requires that the type of `a` is
 
 ## Array and slice indexing expressions
 
-> **<sup>Syntax</sup>**  
-> _IndexExpression_ :  
+> **<sup>Syntax</sup>**\
+> _IndexExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`
 
 [Array and slice](types.html#array-and-slice-types)-typed expressions can be

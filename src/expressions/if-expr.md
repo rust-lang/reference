@@ -2,13 +2,13 @@
 
 ## `if` expressions
 
-> **<sup>Syntax</sup>**  
-> _IfExpression_ :  
-> &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]  
+> **<sup>Syntax</sup>**\
+> _IfExpression_ :\
+> &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
 > | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>  
+> | _IfLetExpression_ ) )<sup>\?</sup>
 
 An `if` expression is a conditional branch in program control. The form of an
 `if` expression is a condition expression, followed by a consequent block, any
@@ -42,14 +42,14 @@ assert_eq!(y, "Bigger");
 
 ## `if let` expressions
 
-> **<sup>Syntax</sup>**  
-> _IfLetExpression_ :  
+> **<sup>Syntax</sup>**\
+> _IfLetExpression_ :\
 > &nbsp;&nbsp; `if` `let` _Pattern_ `=` [_Expression_]<sub>_except struct expression_</sub>
->              [_BlockExpression_]  
+>              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
 > | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>  
+> | _IfLetExpression_ ) )<sup>\?</sup>
 
 An `if let` expression is semantically similar to an `if` expression but in
 place of a condition expression it expects the keyword `let` followed by a

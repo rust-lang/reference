@@ -1,7 +1,7 @@
 # Unions
 
-> **<sup>Syntax</sup>**  
-> _Union_ :  
+> **<sup>Syntax</sup>**\
+> _Union_ :\
 > &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >   `{`[_StructFields_] `}`
 

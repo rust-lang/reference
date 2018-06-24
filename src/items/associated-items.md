@@ -147,12 +147,12 @@ finally an optional list of trait bounds.
 The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
 
-An *associated type definition* defines a type alias on another type. It is 
+An *associated type definition* defines a type alias on another type. It is
 written as `type`, then an [identifier], then an `=`, and finally a [type].
 
-If a type `Item` has an associated type `Assoc` from a trait `Trait`, then 
+If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
 `<Item as Trait>::Assoc` is a type that is an alias of the type specified in the
-associated type definition. Furthermore, if `Item` is a type parameter, then 
+associated type definition. Furthermore, if `Item` is a type parameter, then
 `Item::Assoc` can be used in type parameters.
 
 ```rust

@@ -87,19 +87,19 @@ evaluated (primarily) at compile time.
 
 #### Character literals
 
-> **<sup>Lexer</sup>**  
-> CHAR_LITERAL :  
-> &nbsp;&nbsp; `'` ( ~[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'`  
->  
-> QUOTE_ESCAPE :  
-> &nbsp;&nbsp; `\'` | `\"`  
->  
-> ASCII_ESCAPE :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `\x` OCT_DIGIT HEX_DIGIT  
-> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`  
->  
-> UNICODE_ESCAPE :  
-> &nbsp;&nbsp; `\u{` ( HEX_DIGIT `_`<sup>\*</sup> )<sup>1..6</sup> `}`  
+> **<sup>Lexer</sup>**\
+> CHAR_LITERAL :\
+> &nbsp;&nbsp; `'` ( ~[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'`
+>
+> QUOTE_ESCAPE :\
+> &nbsp;&nbsp; `\'` | `\"`
+>
+> ASCII_ESCAPE :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `\x` OCT_DIGIT HEX_DIGIT\
+> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`
+>
+> UNICODE_ESCAPE :\
+> &nbsp;&nbsp; `\u{` ( HEX_DIGIT `_`<sup>\*</sup> )<sup>1..6</sup> `}`
 
 A _character literal_ is a single Unicode character enclosed within two
 `U+0027` (single-quote) characters, with the exception of `U+0027` itself,
@@ -107,18 +107,18 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 
 #### String literals
 
-> **<sup>Lexer</sup>**  
-> STRING_LITERAL :  
-> &nbsp;&nbsp; `"` (  
-> &nbsp;&nbsp; &nbsp;&nbsp; ~[`"` `\` _IsolatedCR_]  
-> &nbsp;&nbsp; &nbsp;&nbsp; | QUOTE_ESCAPE  
-> &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE  
-> &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE  
-> &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE  
-> &nbsp;&nbsp; )<sup>\*</sup> `"`  
->  
-> STRING_CONTINUE :  
-> &nbsp;&nbsp; `\` _followed by_ \\n  
+> **<sup>Lexer</sup>**\
+> STRING_LITERAL :\
+> &nbsp;&nbsp; `"` (\
+> &nbsp;&nbsp; &nbsp;&nbsp; ~[`"` `\` _IsolatedCR_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | QUOTE_ESCAPE\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE\
+> &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
+> &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE\
+> &nbsp;&nbsp; )<sup>\*</sup> `"`
+>
+> STRING_CONTINUE :\
+> &nbsp;&nbsp; `\` _followed by_ \\n
 
 A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
@@ -162,13 +162,13 @@ following forms:
 
 #### Raw string literals
 
-> **<sup>Lexer</sup>**  
-> RAW_STRING_LITERAL :  
-> &nbsp;&nbsp; `r` RAW_STRING_CONTENT  
->  
-> RAW_STRING_CONTENT :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`  
-> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`  
+> **<sup>Lexer</sup>**\
+> RAW_STRING_LITERAL :\
+> &nbsp;&nbsp; `r` RAW_STRING_CONTENT
+>
+> RAW_STRING_CONTENT :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
 
 Raw string literals do not process any escapes. They start with the character
 `U+0072` (`r`), followed by zero or more of the character `U+0023` (`#`) and a
@@ -199,16 +199,16 @@ r##"foo #"# bar"##;                // foo #"# bar
 
 #### Byte literals
 
-> **<sup>Lexer</sup>**  
-> BYTE_LITERAL :  
-> &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'`  
->  
-> ASCII_FOR_CHAR :  
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t  
->  
-> BYTE_ESCAPE :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT  
-> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`  
+> **<sup>Lexer</sup>**\
+> BYTE_LITERAL :\
+> &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'`
+>
+> ASCII_FOR_CHAR :\
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t
+>
+> BYTE_ESCAPE :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
+> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`
 
 A _byte literal_ is a single ASCII character (in the `U+0000` to `U+007F`
 range) or a single _escape_ preceded by the characters `U+0062` (`b`) and
@@ -219,12 +219,12 @@ _number literal_.
 
 #### Byte string literals
 
-> **<sup>Lexer</sup>**  
-> BYTE_STRING_LITERAL :  
-> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"`  
->  
-> ASCII_FOR_STRING :  
-> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_ 
+> **<sup>Lexer</sup>**\
+> BYTE_STRING_LITERAL :\
+> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"`
+>
+> ASCII_FOR_STRING :\
+> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_
 
 A non-raw _byte string literal_ is a sequence of ASCII characters and _escapes_,
 preceded by the characters `U+0062` (`b`) and `U+0022` (double-quote), and
@@ -250,16 +250,16 @@ following forms:
 
 #### Raw byte string literals
 
-> **<sup>Lexer</sup>**  
-> RAW_BYTE_STRING_LITERAL :  
-> &nbsp;&nbsp; `br` RAW_BYTE_STRING_CONTENT  
->  
-> RAW_BYTE_STRING_CONTENT :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`  
-> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`  
->  
-> ASCII :  
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_  
+> **<sup>Lexer</sup>**\
+> RAW_BYTE_STRING_LITERAL :\
+> &nbsp;&nbsp; `br` RAW_BYTE_STRING_CONTENT
+>
+> RAW_BYTE_STRING_CONTENT :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
+>
+> ASCII :\
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
 
 Raw byte string literals do not process any escapes. They start with the
 character `U+0062` (`b`), followed by `U+0072` (`r`), followed by zero or more
@@ -294,39 +294,39 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 
 #### Integer literals
 
-> **<sup>Lexer</sup>**  
-> INTEGER_LITERAL :  
+> **<sup>Lexer</sup>**\
+> INTEGER_LITERAL :\
 > &nbsp;&nbsp; ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )
 >              INTEGER_SUFFIX<sup>?</sup>
->  
-> DEC_LITERAL :  
-> &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>  
->  
-> TUPLE_INDEX :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `0`
-> &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>  
 >
-> BIN_LITERAL :  
-> &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>  
->  
-> OCT_LITERAL :  
-> &nbsp;&nbsp; `0o` (OCT_DIGIT|`_`)<sup>\*</sup> OCT_DIGIT (OCT_DIGIT|`_`)<sup>\*</sup>  
->  
-> HEX_LITERAL :  
-> &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>  
->  
-> BIN_DIGIT : [`0`-`1`]  
->  
-> OCT_DIGIT : [`0`-`7`]  
->  
-> DEC_DIGIT : [`0`-`9`]  
->  
-> NON_ZERO_DEC_DIGIT : [`1`-`9`]  
->  
-> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]  
->  
-> INTEGER_SUFFIX :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`  
+> DEC_LITERAL :\
+> &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+>
+> TUPLE_INDEX :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `0`
+> &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>
+>
+> BIN_LITERAL :\
+> &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>
+>
+> OCT_LITERAL :\
+> &nbsp;&nbsp; `0o` (OCT_DIGIT|`_`)<sup>\*</sup> OCT_DIGIT (OCT_DIGIT|`_`)<sup>\*</sup>
+>
+> HEX_LITERAL :\
+> &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>
+>
+> BIN_DIGIT : [`0`-`1`]
+>
+> OCT_DIGIT : [`0`-`7`]
+>
+> DEC_DIGIT : [`0`-`9`]
+>
+> NON_ZERO_DEC_DIGIT : [`1`-`9`]
+>
+> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]
+>
+> INTEGER_SUFFIX :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`\
 > &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `i128` | `isize`
 
 An _integer literal_ has one of four forms:
@@ -417,20 +417,20 @@ a single integer literal.
 
 #### Floating-point literals
 
-> **<sup>Lexer</sup>**  
-> FLOAT_LITERAL :  
+> **<sup>Lexer</sup>**\
+> FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an [identifier]_)  
-> &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT  
-> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>  
+>   _(not immediately followed by `.`, `_` or an [identifier]_)\
+> &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
+> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
 > &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
->                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX  
->  
-> FLOAT_EXPONENT :  
+>                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
+>
+> FLOAT_EXPONENT :\
 > &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
->               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>   
->  
-> FLOAT_SUFFIX :  
+>               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+>
+> FLOAT_SUFFIX :\
 > &nbsp;&nbsp; `f32` | `f64`
 
 A _floating-point literal_ has one of two forms:
@@ -478,21 +478,21 @@ The representation semantics of floating-point numbers are described in
 
 ### Boolean literals
 
-> **<sup>Lexer</sup>**  
-> BOOLEAN_LITERAL :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `true`  
-> &nbsp;&nbsp; | `false`  
+> **<sup>Lexer</sup>**\
+> BOOLEAN_LITERAL :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `true`\
+> &nbsp;&nbsp; | `false`
 
 The two values of the boolean type are written `true` and `false`.
 
 ## Lifetimes and loop labels
 
-> **<sup>Lexer</sup>**  
-> LIFETIME_TOKEN :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]  
-> &nbsp;&nbsp; | `'_`  
->  
-> LIFETIME_OR_LABEL :  
+> **<sup>Lexer</sup>**\
+> LIFETIME_TOKEN :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]\
+> &nbsp;&nbsp; | `'_`
+>
+> LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER][identifier]
 
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any

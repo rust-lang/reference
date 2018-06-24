@@ -1,25 +1,25 @@
 # Trait and lifetime bounds
 
-> **<sup>Syntax</sup>**  
-> _TypeParamBounds_ :  
-> &nbsp;&nbsp; _TypeParamBound_ ( `+` _TypeParamBound_ )<sup>\*</sup> `+`<sup>?</sup>  
->  
-> _TypeParamBound_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_  
->  
-> _TraitBound_ :  
+> **<sup>Syntax</sup>**\
+> _TypeParamBounds_ :\
+> &nbsp;&nbsp; _TypeParamBound_ ( `+` _TypeParamBound_ )<sup>\*</sup> `+`<sup>?</sup>
+>
+> _TypeParamBound_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_
+>
+> _TraitBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_]  
+> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_]\
 > &nbsp;&nbsp; | `(` `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_] `)`  
->  
-> _LifetimeBounds_ :  
-> &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>  
->  
-> _Lifetime_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]  
-> &nbsp;&nbsp; | `'static`  
-> &nbsp;&nbsp; | `'_`  
+> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_] `)`
+>
+> _LifetimeBounds_ :\
+> &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>
+>
+> _Lifetime_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
+> &nbsp;&nbsp; | `'static`\
+> &nbsp;&nbsp; | `'_`
 
 [Trait] and lifetime bounds provide a way for [generic items][generic] to
 restrict which types and lifetimes are used as their parameters. Bounds can be

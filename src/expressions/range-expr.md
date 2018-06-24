@@ -1,31 +1,31 @@
 # Range expressions
 
-> **<sup>Syntax</sup>**  
-> _RangeExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; _RangeExpr_  
-> &nbsp;&nbsp; | _RangeFromExpr_  
-> &nbsp;&nbsp; | _RangeToExpr_  
-> &nbsp;&nbsp; | _RangeFullExpr_  
-> &nbsp;&nbsp; | _RangeInclusiveExpr_  
-> &nbsp;&nbsp; | _RangeToInclusiveExpr_  
->  
-> _RangeExpr_ :  
-> &nbsp;&nbsp; [_Expression_] `..` [_Expression_]  
->  
-> _RangeFromExpr_ :  
-> &nbsp;&nbsp; [_Expression_] `..`  
->  
-> _RangeToExpr_ :  
-> &nbsp;&nbsp; `..` [_Expression_]  
->  
-> _RangeFullExpr_ :  
-> &nbsp;&nbsp; `..`  
+> **<sup>Syntax</sup>**\
+> _RangeExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangeExpr_\
+> &nbsp;&nbsp; | _RangeFromExpr_\
+> &nbsp;&nbsp; | _RangeToExpr_\
+> &nbsp;&nbsp; | _RangeFullExpr_\
+> &nbsp;&nbsp; | _RangeInclusiveExpr_\
+> &nbsp;&nbsp; | _RangeToInclusiveExpr_
 >
-> _RangeExpr_ :  
-> &nbsp;&nbsp; [_Expression_] `..=` [_Expression_]  
->  
-> _RangeToExpr_ :  
-> &nbsp;&nbsp; `..=` [_Expression_]  
+> _RangeExpr_ :\
+> &nbsp;&nbsp; [_Expression_] `..` [_Expression_]
+>
+> _RangeFromExpr_ :\
+> &nbsp;&nbsp; [_Expression_] `..`
+>
+> _RangeToExpr_ :\
+> &nbsp;&nbsp; `..` [_Expression_]
+>
+> _RangeFullExpr_ :\
+> &nbsp;&nbsp; `..`
+>
+> _RangeExpr_ :\
+> &nbsp;&nbsp; [_Expression_] `..=` [_Expression_]
+>
+> _RangeToExpr_ :\
+> &nbsp;&nbsp; `..=` [_Expression_]
 
 The `..` and `..=` operators will construct an object of one of the
 `std::ops::Range` (or `core::ops::Range`) variants, according to the following

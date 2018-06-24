@@ -1,14 +1,14 @@
 # Crates and source files
 
-> **<sup>Syntax</sup>**  
-> _Crate_ :  
-> &nbsp;&nbsp; UTF8BOM<sup>?</sup>  
-> &nbsp;&nbsp; SHEBANG<sup>?</sup>  
-> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; [_Item_]<sup>\*</sup>  
+> **<sup>Syntax</sup>**\
+> _Crate_ :\
+> &nbsp;&nbsp; UTF8BOM<sup>?</sup>\
+> &nbsp;&nbsp; SHEBANG<sup>?</sup>\
+> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; [_Item_]<sup>\*</sup>
 
-> **<sup>Lexer</sup>**  
-> UTF8BOM : `\uFEFF`  
+> **<sup>Lexer</sup>**\
+> UTF8BOM : `\uFEFF`\
 > SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
 
 
