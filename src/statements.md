@@ -42,12 +42,13 @@ fn outer() {
 
 ### `let` statements
 
-A *`let` statement* introduces a new set of variables, given by a pattern. The
-pattern may be followed by a type annotation, and/or an initializer expression.
-When no type annotation is given, the compiler will infer the type, or signal
-an error if insufficient type information is available for definite inference.
-Any variables introduced by a variable declaration are visible from the point of
-declaration until the end of the enclosing block scope.
+A *`let` statement* introduces a new set of [variables], given by a pattern. The
+pattern is followed optionally by a type annotation and then optionally by an
+initializer expression. When no type annotation is given, the compiler will
+infer the type, or signal an error if insufficient type information is
+available for definite inference. Any variables introduced by a variable
+declaration are visible from the point of declaration until the end of the
+enclosing block scope.
 
 ## Expression statements
 
@@ -96,3 +97,4 @@ if true {
 [module]: items/modules.html
 [canonical path]: paths.html#canonical-paths
 [implementations]: items/implementations.html
+[variables]: variables.html
