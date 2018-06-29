@@ -1,8 +1,8 @@
 # `return` expressions
 
-> **<sup>Syntax</sup>**  
-> _ReturnExpression_ :  
-> &nbsp;&nbsp; `return` [_Expression_]<sup>?</sup>  
+> **<sup>Syntax</sup>**\
+> _ReturnExpression_ :\
+> &nbsp;&nbsp; `return` [_Expression_]<sup>?</sup>
 
 Return expressions are denoted with the keyword `return`. Evaluating a `return`
 expression moves its argument into the designated output location for the

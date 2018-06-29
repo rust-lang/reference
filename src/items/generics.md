@@ -1,24 +1,24 @@
 # Type and Lifetime Parameters
 
-> **<sup>Syntax</sup>**  
-> _Generics_ :  
-> &nbsp;&nbsp; `<` _GenericParams_ `>`  
->  
-> _GenericParams_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeParams_  
-> &nbsp;&nbsp; | ( _LifetimeParam_ `,` )<sup>\*</sup> _TypeParams_  
->  
-> _LifetimeParams_ :  
-> &nbsp;&nbsp; ( _LifetimeParam_ `,` )<sup>\*</sup> _LifetimeParam_<sup>?</sup>  
->  
-> _LifetimeParam_ :  
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL] `:` [_LifetimeBounds_]<sup>?</sup>  
->  
-> _TypeParams_:  
-> &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_ <sup>?</sup>  
->  
-> _TypeParam_ :  
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>  
+> **<sup>Syntax</sup>**\
+> _Generics_ :\
+> &nbsp;&nbsp; `<` _GenericParams_ `>`
+>
+> _GenericParams_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeParams_\
+> &nbsp;&nbsp; | ( _LifetimeParam_ `,` )<sup>\*</sup> _TypeParams_
+>
+> _LifetimeParams_ :\
+> &nbsp;&nbsp; ( _LifetimeParam_ `,` )<sup>\*</sup> _LifetimeParam_<sup>?</sup>
+>
+> _LifetimeParam_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL] `:` [_LifetimeBounds_]<sup>?</sup>
+>
+> _TypeParams_:\
+> &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_ <sup>?</sup>
+>
+> _TypeParam_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 
 Functions, type aliases, structs, enumerations, unions, traits and
 implementations may be *parameterized* by types and lifetimes. These parameters
@@ -40,22 +40,22 @@ referred to with path syntax.
 
 ## Where clauses
 
-> **<sup>Syntax</sup>**  
-> _WhereClause_ :  
-> &nbsp;&nbsp; `where` ( _WhereClauseItem_ `,` )<sup>\*</sup> _WhereClauseItem_ <sup>?</sup>  
->  
-> _WhereClauseItem_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeWhereClauseItem_  
-> &nbsp;&nbsp; | _TypeBoundWhereClauseItem_  
->  
-> _LifetimeWhereClauseItem_ :  
-> &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]  
->  
-> _TypeBoundWhereClauseItem_ :  
-> &nbsp;&nbsp; _ForLifetimes_<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>  
->  
-> _ForLifetimes_ :  
-> &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#type-and-lifetime-parameters) `>`  
+> **<sup>Syntax</sup>**\
+> _WhereClause_ :\
+> &nbsp;&nbsp; `where` ( _WhereClauseItem_ `,` )<sup>\*</sup> _WhereClauseItem_ <sup>?</sup>
+>
+> _WhereClauseItem_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeWhereClauseItem_\
+> &nbsp;&nbsp; | _TypeBoundWhereClauseItem_
+>
+> _LifetimeWhereClauseItem_ :\
+> &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]
+>
+> _TypeBoundWhereClauseItem_ :\
+> &nbsp;&nbsp; _ForLifetimes_<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
+>
+> _ForLifetimes_ :\
+> &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#type-and-lifetime-parameters) `>`
 
 *Where clauses* provide an another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type

@@ -115,7 +115,7 @@ implementations, it is the canonical path of the item being implemented
 surrounded by <span class="parenthetical">angle (`<>`)</span> brackets. For
 trait implementations, it is the canonical path of the item being implemented
 followed by `as` followed by the canonical path to the trait all surrounded in
-<span class="parenthetical">angle (`<>`)</span> brackets. 
+<span class="parenthetical">angle (`<>`)</span> brackets.
 
 The canonical path is only meaningful within a given crate. There is no global
 namespace across crates; an item's canonical path merely identifies it within

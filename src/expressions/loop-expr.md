@@ -1,13 +1,13 @@
 # Loops
 
-> **<sup>Syntax</sup>**  
-> _LoopExpression_ :  
-> &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (  
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]  
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]  
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]  
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]  
-> &nbsp;&nbsp; )  
+> **<sup>Syntax</sup>**\
+> _LoopExpression_ :\
+> &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]\
+> &nbsp;&nbsp; )
 
 [_LoopLabel_]: #loop-labels
 [_InfiniteLoopExpression_]: #infinite-loops
@@ -29,8 +29,8 @@ Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
 ## Infinite loops
 
-> **<sup>Syntax</sup>**  
-> _InfiniteLoopExpression_ :  
+> **<sup>Syntax</sup>**\
+> _InfiniteLoopExpression_ :\
 > &nbsp;&nbsp; `loop` [_BlockExpression_]
 
 A `loop` expression repeats execution of its body continuously:
@@ -43,8 +43,8 @@ have type compatible with the value of the `break` expression(s).
 
 ## Predicate loops
 
-> **<sup>Syntax</sup>**  
-> _PredicateLoopExpression_ :  
+> **<sup>Syntax</sup>**\
+> _PredicateLoopExpression_ :\
 > &nbsp;&nbsp; `while` [_Expression_]<sub>except struct expression</sub> [_BlockExpression_]
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
@@ -65,10 +65,10 @@ while i < 10 {
 
 ## Predicate pattern loops
 
-> **<sup>Syntax</sup>**  
-> [_PredicatePatternLoopExpression_] :  
+> **<sup>Syntax</sup>**\
+> [_PredicatePatternLoopExpression_] :\
 > &nbsp;&nbsp; `while` `let` _Pattern_ `=` [_Expression_]<sub>except struct expression</sub>
->              [_BlockExpression_]  
+>              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
 condition expression it expects the keyword `let` followed by a refutable
@@ -87,8 +87,8 @@ while let Some(y) = x.pop() {
 
 ## Iterator loops
 
-> **<sup>Syntax</sup>**  
-> _IteratorLoopExpression_ :  
+> **<sup>Syntax</sup>**\
+> _IteratorLoopExpression_ :\
 > &nbsp;&nbsp; `for` _Pattern_ `in` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]
 
@@ -120,8 +120,8 @@ assert_eq!(sum, 55);
 
 ## Loop labels
 
-> **<sup>Syntax</sup>**  
-> _LoopLabel_ :  
+> **<sup>Syntax</sup>**\
+> _LoopLabel_ :\
 > &nbsp;&nbsp; [LIFETIME_OR_LABEL] `:`
 
 A loop expression may optionally have a _label_. The label is written as
@@ -134,8 +134,8 @@ expressions](#continue-expressions).
 
 ## `break` expressions
 
-> **<sup>Syntax</sup>**  
-> _BreakExpression_ :  
+> **<sup>Syntax</sup>**\
+> _BreakExpression_ :\
 > &nbsp;&nbsp; `break` [LIFETIME_OR_LABEL]<sup>?</sup> [_Expression_]<sup>?</sup>
 
 When `break` is encountered, execution of the associated loop body is
@@ -170,8 +170,8 @@ the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
 
 ## `continue` expressions
 
-> **<sup>Syntax</sup>**  
-> _ContinueExpression_ :  
+> **<sup>Syntax</sup>**\
+> _ContinueExpression_ :\
 > &nbsp;&nbsp; `continue` [LIFETIME_OR_LABEL]<sup>?</sup>
 
 When `continue` is encountered, the current iteration of the associated loop

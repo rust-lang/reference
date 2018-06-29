@@ -1,12 +1,12 @@
 # Modules
 
-> **<sup>Syntax:<sup>**  
-> _Module_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `mod` [IDENTIFIER] `;`  
-> &nbsp;&nbsp; | `mod` [IDENTIFIER] `{`  
-> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>  
-> &nbsp;&nbsp; &nbsp;&nbsp; `}`  
+> **<sup>Syntax:<sup>**\
+> _Module_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `mod` [IDENTIFIER] `;`\
+> &nbsp;&nbsp; | `mod` [IDENTIFIER] `{`\
+> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `}`
 
 A module is a container for zero or more [items].
 

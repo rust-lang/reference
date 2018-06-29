@@ -1,30 +1,30 @@
 # Expressions
 
-> **<sup>Syntax</sup>**  
-> _Expression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]  
-> &nbsp;&nbsp; | [_PathExpression_]  
-> &nbsp;&nbsp; | [_BlockExpression_]  
-> &nbsp;&nbsp; | [_OperatorExpression_]  
-> &nbsp;&nbsp; | [_GroupedExpression_]  
-> &nbsp;&nbsp; | [_ArrayExpression_]  
-> &nbsp;&nbsp; | [_IndexExpression_]  
-> &nbsp;&nbsp; | [_TupleExpression_]  
-> &nbsp;&nbsp; | [_TupleIndexingExpression_]  
-> &nbsp;&nbsp; | [_StructExpression_]  
-> &nbsp;&nbsp; | [_EnumerationVariantExpression_]  
-> &nbsp;&nbsp; | [_CallExpression_]  
-> &nbsp;&nbsp; | [_MethodCallExpression_]  
-> &nbsp;&nbsp; | [_FieldExpression_]  
-> &nbsp;&nbsp; | [_ClosureExpression_]  
-> &nbsp;&nbsp; | [_LoopExpression_]  
-> &nbsp;&nbsp; | [_ContinueExpression_]  
-> &nbsp;&nbsp; | [_BreakExpression_]  
-> &nbsp;&nbsp; | [_RangeExpression_]  
-> &nbsp;&nbsp; | [_IfExpression_]  
-> &nbsp;&nbsp; | [_IfLetExpression_]  
-> &nbsp;&nbsp; | [_MatchExpression_]  
-> &nbsp;&nbsp; | [_ReturnExpression_]  
+> **<sup>Syntax</sup>**\
+> _Expression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]\
+> &nbsp;&nbsp; | [_PathExpression_]\
+> &nbsp;&nbsp; | [_BlockExpression_]\
+> &nbsp;&nbsp; | [_OperatorExpression_]\
+> &nbsp;&nbsp; | [_GroupedExpression_]\
+> &nbsp;&nbsp; | [_ArrayExpression_]\
+> &nbsp;&nbsp; | [_IndexExpression_]\
+> &nbsp;&nbsp; | [_TupleExpression_]\
+> &nbsp;&nbsp; | [_TupleIndexingExpression_]\
+> &nbsp;&nbsp; | [_StructExpression_]\
+> &nbsp;&nbsp; | [_EnumerationVariantExpression_]\
+> &nbsp;&nbsp; | [_CallExpression_]\
+> &nbsp;&nbsp; | [_MethodCallExpression_]\
+> &nbsp;&nbsp; | [_FieldExpression_]\
+> &nbsp;&nbsp; | [_ClosureExpression_]\
+> &nbsp;&nbsp; | [_LoopExpression_]\
+> &nbsp;&nbsp; | [_ContinueExpression_]\
+> &nbsp;&nbsp; | [_BreakExpression_]\
+> &nbsp;&nbsp; | [_RangeExpression_]\
+> &nbsp;&nbsp; | [_IfExpression_]\
+> &nbsp;&nbsp; | [_IfLetExpression_]\
+> &nbsp;&nbsp; | [_MatchExpression_]\
+> &nbsp;&nbsp; | [_ReturnExpression_]
 
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a

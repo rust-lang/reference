@@ -2,7 +2,7 @@
 
 An _implementation_ is an item that associates items with an *implementing type*.
 
-There are two types of implementations: inherent implementations and [trait] 
+There are two types of implementations: inherent implementations and [trait]
 implementations.
 
 Implementations are defined with the keyword `impl`.
@@ -53,7 +53,7 @@ The trait is known as the *implemented trait*.
 The implementing type implements the implemented trait.
 
 A trait implementation must define all non-default associated items declared
-by the implemented trait, may redefine default associated items defined by the 
+by the implemented trait, may redefine default associated items defined by the
 implemented trait, and cannot define any other items.
 
 The path to the associated items is `<` followed by a path to the implementing
@@ -95,11 +95,11 @@ impl Shape for Circle {
 ### Trait Implementation Coherence
 
 A trait implementation is considered incoherent if either the orphan check fails
-or there are overlapping implementation instances. 
+or there are overlapping implementation instances.
 
 Two trait implementations overlap when there is a non-empty intersection of the
 traits the implementation is for, the implementations can be instantiated with
-the same type. <!-- This is probably wrong? Source: No two implementations can 
+the same type. <!-- This is probably wrong? Source: No two implementations can
 be instantiable with the same set of types for the input type parameters. -->
 
 The `Orphan Check` states that every trait implementation must meet either of

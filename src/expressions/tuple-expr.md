@@ -2,9 +2,9 @@
 
 ## Tuple expressions
 
-> **<sup>Syntax</sup>**  
-> _TupleExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`  
+> **<sup>Syntax</sup>**\
+> _TupleExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`\
 > &nbsp;&nbsp; | `(` ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup> `)`
 
 Tuples are written by enclosing zero or more comma-separated expressions in
@@ -27,8 +27,8 @@ comma:
 
 ## Tuple indexing expressions
 
-> **<sup>Syntax</sup>**  
-> _TupleIndexingExpression_ :  
+> **<sup>Syntax</sup>**\
+> _TupleIndexingExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
 
 [Tuples](types.html#tuple-types) and [struct tuples](items/structs.html) can be

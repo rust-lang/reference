@@ -1,7 +1,7 @@
 # Field access expressions
 
-> **<sup>Syntax</sup>**  
-> _FieldExpression_ :  
+> **<sup>Syntax</sup>**\
+> _FieldExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [IDENTIFIER]
 
 A _field expression_ consists of an expression followed by a single dot and an

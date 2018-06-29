@@ -1,16 +1,16 @@
 # Literal expressions
 
-> **<sup>Syntax</sup>**  
-> _LiteralExpression_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]  
-> &nbsp;&nbsp; | [STRING_LITERAL]  
-> &nbsp;&nbsp; | [RAW_STRING_LITERAL]  
-> &nbsp;&nbsp; | [BYTE_LITERAL]  
-> &nbsp;&nbsp; | [BYTE_STRING_LITERAL]  
-> &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]  
-> &nbsp;&nbsp; | [INTEGER_LITERAL]  
-> &nbsp;&nbsp; | [FLOAT_LITERAL]  
-> &nbsp;&nbsp; | [BOOLEAN_LITERAL]  
+> **<sup>Syntax</sup>**\
+> _LiteralExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
+> &nbsp;&nbsp; | [STRING_LITERAL]\
+> &nbsp;&nbsp; | [RAW_STRING_LITERAL]\
+> &nbsp;&nbsp; | [BYTE_LITERAL]\
+> &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
+> &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
+> &nbsp;&nbsp; | [INTEGER_LITERAL]\
+> &nbsp;&nbsp; | [FLOAT_LITERAL]\
+> &nbsp;&nbsp; | [BOOLEAN_LITERAL]
 
 A _literal expression_ consists of one of the [literal](tokens.html#literals)
 forms described earlier. It directly describes a number, character, string,

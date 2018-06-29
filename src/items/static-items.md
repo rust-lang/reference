@@ -1,7 +1,7 @@
 # Static items
 
-> **<sup>Syntax</sup>**  
-> _StaticItem_ :  
+> **<sup>Syntax</sup>**\
+> _StaticItem_ :\
 > &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
 >              `=` [_Expression_] `;`
 

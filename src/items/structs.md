@@ -1,40 +1,40 @@
 # Structs
 
-> **<sup>Syntax</sup>**  
-> _Struct_ :  
-> &nbsp;&nbsp; &nbsp;&nbsp; _StructStruct_  
-> &nbsp;&nbsp; | _TupleStruct_  
->  
-> _StructStruct_ :  
+> **<sup>Syntax</sup>**\
+> _Struct_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _StructStruct_\
+> &nbsp;&nbsp; | _TupleStruct_
+>
+> _StructStruct_ :\
 > &nbsp;&nbsp; `struct`
 >   [IDENTIFIER]&nbsp;
 >   [_Generics_]<sup>?</sup>
 >   [_WhereClause_]<sup>?</sup>
->   ( `{` _StructFields_<sup>?</sup> `}` | `;` )  
->  
-> _TupleStruct_ :  
+>   ( `{` _StructFields_<sup>?</sup> `}` | `;` )
+>
+> _TupleStruct_ :\
 > &nbsp;&nbsp; `struct`
 >   [IDENTIFIER]&nbsp;
 >   [_Generics_]<sup>?</sup>
 >   `(` _TupleFields_<sup>?</sup> `)`
 >   [_WhereClause_]<sup>?</sup>
->   `;`  
->  
-> _StructFields_ :  
-> &nbsp;&nbsp; _StructField_ (`,` _StructField_)<sup>\*</sup> `,`<sup>?</sup>  
->  
-> _StructField_ :  
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>  
+>   `;`
+>
+> _StructFields_ :\
+> &nbsp;&nbsp; _StructField_ (`,` _StructField_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _StructField_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]
-> &nbsp;&nbsp; [IDENTIFIER] `:` [_Type_]  
->  
-> _TupleFields_ :  
-> &nbsp;&nbsp; _TupleField_ (`,` _TupleField_)<sup>\*</sup> `,`<sup>?</sup>  
->  
-> _TupleField_ :  
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>  
+> &nbsp;&nbsp; [IDENTIFIER] `:` [_Type_]
+>
+> _TupleFields_ :\
+> &nbsp;&nbsp; _TupleField_ (`,` _TupleField_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _TupleField_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]
-> &nbsp;&nbsp; [_Type_]  
+> &nbsp;&nbsp; [_Type_]
 
 A _struct_ is a nominal [struct type] defined with the keyword `struct`.
 

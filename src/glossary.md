@@ -73,7 +73,7 @@ Types that can be referred to by a path directly. Specifically [enums],
 ### Object Safe Traits
 
 [Traits] that can be used as [trait objects]. Only traits that follow specific
-[rules][object safety] are object safe. 
+[rules][object safety] are object safe.
 
 ### Prelude
 

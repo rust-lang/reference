@@ -11,7 +11,7 @@ containing no underscores and with no leading zeros or integer suffix. A value
 of a [union](items/unions.html) type can also be created using this syntax,
 except that it must specify exactly one field.
 
-Struct expressions can't be used directly in the head of a [loop] 
+Struct expressions can't be used directly in the head of a [loop]
 or an [if], [if let] or [match] expression. But struct expressions can still be
 in used inside parentheses, for example.
 
