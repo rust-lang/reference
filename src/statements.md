@@ -90,6 +90,11 @@ if true {
 };
 ```
 
+## Attributes on Statements
+
+Statements accept [outer attributes]. The attributes that have meaning on a
+statement are [`cfg`], and [the lint check attributes].
+
 [block]: expressions/block-expr.html
 [expression]: expressions.html
 [function]: items/functions.html
@@ -98,3 +103,6 @@ if true {
 [canonical path]: paths.html#canonical-paths
 [implementations]: items/implementations.html
 [variables]: variables.html
+[outer attributes]: attributes.html
+[`cfg`]: attributes.html#conditional-compilation
+[the lint check attributes]: attributes.html#lint-check-attributes.html

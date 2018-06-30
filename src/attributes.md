@@ -21,13 +21,13 @@
 > &nbsp;&nbsp; | _MetaItem_\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
-Any [item declaration] or [generic lifetime or type parameter][generics] may
-have an attribute applied to it. Attributes are modeled on Attributes in
-[ECMA-335], with the syntax coming from [ECMA-334] \(C#). An _attribute_ is a
-general, free-form metadatum that is interpreted according to name, convention,
-and language and compiler version. Attributes may appear as any of:
+An _attribute_ is a general, free-form metadatum that is interpreted according
+to name, convention, and language and compiler version. Attributes are modeled
+on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
-* A single identifier, the attribute name
+Attributes may appear as any of:
+
+* A single identifier, the _attribute name_
 * An identifier followed by the equals sign '=' and a literal, providing a
   key/value pair
 * An identifier followed by a parenthesized literal, providing a
@@ -39,7 +39,19 @@ item that the attribute is declared within. _Outer attributes_, written without
 the bang after the hash, apply to the item or generic parameter that follow the
 attribute.
 
-An example of attributes:
+Attributes may be applied to many things in the language:
+
+* All [item declarations] accept outer attributes while [external blocks],
+  [functions], [implementations], and [modules] accept inner attributes.
+* [Statements] accept outer attributes.
+* [Block expressions] accept outer and inner attributes, but only when they are
+  the outer expression of an [expression statement] or the final expression of
+  another block expression.
+* [Enum] variants and [struct] and [union] fields accept outer attributes.
+* [Match expression arms][match expressions] accept outer attributes.
+* [Generic lifetime or type parameter][generics] accept outer attributes.
+
+Some examples of attributes:
 
 ```rust
 // General metadata applied to the enclosing module or crate.
@@ -60,7 +72,19 @@ mod bar {
 // A lint attribute used to suppress a warning/error
 #[allow(non_camel_case_types)]
 type int8_t = i8;
+
+// Outer attribute applies to the entire function.
+fn some_unused_variables() {
+  #![allow(unused_variables)]
+  
+  let x = ();
+  let y = ();
+  let z = ();
+}
 ```
+
+The rest of this page describes or links to descriptions of which attribute
+names have meaning.
 
 ## Crate-only attributes
 
@@ -533,11 +557,17 @@ You can implement `derive` for your own type through [procedural macros].
 [expression statement]: statements.html#expression-statements
 [call expression]: expressions/call-expr.html
 [block expression]: expressions/block-expr.html
+[block expressions]: expressions/block-expr.html
 [`Drop`]: special-types-and-traits.html#drop
 [let statement]: statements.html#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
 [zero-variant enum]: items/enumerations.html#zero-variant-enums
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
 [ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
-[item declaration]: items.html
+[item declarations]: items.html
 [generics]: items/generics.html
+[implementations]: items/implementations.html
+[modules]: items/modules.html
+[statements]: statements.html
+[match expressions]: expressions/match-expr.html
+[external blocks]: items/external-blocks.html
