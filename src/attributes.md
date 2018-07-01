@@ -161,6 +161,8 @@ information on macro scope.
 
 - `export_name` - on statics and functions, this determines the name of the
   exported symbol.
+- `global_allocator` - when applied to a static item implementing the
+  `GlobalAlloc` trait, sets the global allocator.
 - `link_section` - on statics and functions, this specifies the section of the
   object file that this item's contents will be placed into.
 - `no_mangle` - on any item, do not apply the standard name mangling. Set the
