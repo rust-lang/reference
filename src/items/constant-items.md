@@ -39,7 +39,7 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 
 ## Constants with Destructors
 
-Constants can contain destructors. Destructors are ran when the value goes out
+Constants can contain destructors. Destructors are run when the value goes out
 of scope.
 
 ```rust
