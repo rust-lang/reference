@@ -414,6 +414,8 @@ so that the call to `f` works as if it were:
 f(Closure{s: s, t: &t});
 ```
 
+### Capture modes
+
 The compiler prefers to capture a closed-over variable by immutable borrow,
 followed by unique immutable borrow (see below), by mutable borrow, and finally
 by move. It will pick the first choice of these that allows the closure to
