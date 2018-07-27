@@ -85,4 +85,4 @@ fn is_unix_platform() -> bool {
 [inner attributes]: attributes.html
 [expression statement]: statements.html#expression-statements
 [`cfg`]: attributes.html#conditional-compilation
-[the lint check attributes]: attributes.html#lint-check-attributes.html
+[the lint check attributes]: attributes.html#lint-check-attributes
