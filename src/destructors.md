@@ -90,4 +90,4 @@ variable or field from being dropped automatically.
 [Trait objects]: types.html#trait-objects
 [`std::ptr::drop_in_place`]: ../std/ptr/fn.drop_in_place.html
 [`std::mem::forget`]: ../std/mem/fn.forget.html
-[`std::mem::ManuallyDrop`]: ../std/mem/union.ManuallyDrop.html
+[`std::mem::ManuallyDrop`]: ../std/mem/struct.ManuallyDrop.html
