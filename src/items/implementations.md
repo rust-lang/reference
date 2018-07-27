@@ -149,4 +149,4 @@ attributes].
 [`cfg`]: attributes.html#conditional-compilation
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation
-[the lint check attributes]: attributes.html#lint-check-attributes.html
+[the lint check attributes]: attributes.html#lint-check-attributes
