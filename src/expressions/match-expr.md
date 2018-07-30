@@ -23,8 +23,8 @@
 > _MatchArmGuard_ :\
 > &nbsp;&nbsp; `if` [_Expression_]
 
-A `match` expression branches on a *pattern*. The exact form of matching that
-occurs depends on the pattern. Patterns consist of some combination of
+A *`match` expression* branches on a pattern. The exact form of matching that
+occurs depends on the pattern. *Patterns* consist of some combination of
 literals, destructured arrays or enum constructors, structs and tuples,
 variable binding specifications, wildcards (`..`), and placeholders (`_`). A
 `match` expression has a *head expression*, which is the value to compare to
@@ -99,11 +99,12 @@ symbols, as appropriate. For example, these two matches on `x: &i32` are
 equivalent:
 
 ```rust
-# let x = &3;
-let y = match *x { 0 => "zero", _ => "some" };
-let z = match x { &0 => "zero", _ => "some" };
+let int_reference = &3;
 
-assert_eq!(y, z);
+let a = match *int_reference { 0 => "zero", _ => "some" };
+let b = match int_reference { &0 => "zero", _ => "some" };
+
+assert_eq!(a, b);
 ```
 
 Subpatterns can also be bound to variables by the use of the syntax `variable @
@@ -132,7 +133,7 @@ let message = match x {
 assert_eq!(message, "a few");
 ```
 
-Other forms of [range] \(`..` for an exclusive range, or any range with one or
+Other forms of [range] \(e.g `..` for an exclusive range, or any range with one or
 both endpoints left unspecified) are not supported in matches. The
 syntax `...` is also accepted for inclusive ranges in patterns only, for
 backwards compatibility.
@@ -159,10 +160,15 @@ match v[..] {
 }
 ```
 
-Finally, match patterns can accept *pattern guards* to further refine the
+Finally, match arms can accept *pattern guards* to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
 consist of a bool-typed expression following the `if` keyword. A pattern guard
 may refer to the variables bound within the pattern they follow.
+
+When the pattern matches successfully, the pattern guard expression is executed.
+If the expression is truthy, the pattern is successfully matched against.
+Otherwise, the next pattern, including other matches with the `|` operator in
+the same arm, is tested.
 
 ```rust
 # let maybe_digit = Some(0);
@@ -174,6 +180,21 @@ let message = match maybe_digit {
     None => panic!(),
 };
 ```
+
+> Note: Multiple matches using the `|` operator can cause the pattern guard and
+> and side effects it has to execute multiple times. For example:
+>
+> ```rust
+> use std::cell::Cell;
+> fn main() {
+>     let i : Cell<i32> = Cell::new(0);
+>     match 1 {
+>         1 | _ if { i.set(i.get() + 1); false } => {}
+>         _ => {}
+>     }
+>     assert_eq!(i.get(), 2);
+> }
+> ```
 
 ## Attributes on match arms
 
@@ -190,3 +211,4 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 [_OuterAttribute_]: attributes.html
 [`cfg`]: attributes.html#conditional-compilation
 [lint check attributes]: attributes.html#lint-check-attributes
+[range]: expressions/range-expr.html
