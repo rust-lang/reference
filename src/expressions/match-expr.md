@@ -137,7 +137,7 @@ both endpoints left unspecified) are not supported in matches. The
 syntax `...` is also accepted for inclusive ranges in patterns only, for
 backwards compatibility.
 
-Range patterns only work on [`char`] and [numeric types]. A range pattern may
+Range patterns only work with [`char`] and [numeric types]. A range pattern may
 not be a sub-range of another range pattern inside the same `match`.
 
 Slice patterns can match both arrays of fixed size and slices of dynamic size.
