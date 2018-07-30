@@ -5,6 +5,16 @@ if it exhibits any of the behaviors in the following list. It is the
 programmer's responsibility when writing `unsafe` code that it is not possible
 to let `safe` code exhibit these behaviors.
 
+<div class="warning">
+
+***Warning:*** The following list is not exhaustive. There is no formal model of
+Rust's semantics for what is and is not allowed in unsafe code, so there may be
+more behavior considered unsafe. The following list is just what we know for
+sure is undefined behavior. Please read the [Rustonomicon] before writing unsafe
+code.
+
+</div>
+
 * Data races.
 * Dereferencing a null or dangling raw pointer.
 * Unaligned pointer reading and writing outside of [`read_unaligned`]
@@ -37,3 +47,4 @@ to let `safe` code exhibit these behaviors.
 [`UnsafeCell<U>`]: https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
 [`read_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.read_unaligned.html
 [`write_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.write_unaligned.html
+[Rustonomicon]: ../nomicon
