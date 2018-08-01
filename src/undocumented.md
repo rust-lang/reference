@@ -11,7 +11,6 @@ to shrink!
   not for everything: e.g. coherence and orphan rules.
 - [Flexible target specification] - Some---but not all---flags are documented
   in [Conditional compilation]
-- Require parentheses for chained comparisons
 - [`dllimport`] - one element mentioned but not explained at [FFI attributes]
 - [define `crt_link`]
 - [define `unaligned_access`]
