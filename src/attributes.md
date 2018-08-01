@@ -126,8 +126,6 @@ names have meaning.
   - `ignore` - indicates that this test function is disabled.
 - `should_panic` - indicates that this test function should panic, inverting the
   success condition.
-- `cold` - The function is unlikely to be executed, so optimize it (and calls
-  to it) differently.
 
 ## FFI attributes
 
@@ -405,24 +403,42 @@ When used on a function in an implementation, the attribute does nothing.
 The `must_use` attribute may also include a message by using
 `#[must_use = "message"]`. The message will be given alongside the warning.
 
-### Inline attribute
+### Optimization Hints
 
-The inline attribute suggests that the compiler should place a copy of
-the function or static in the caller, rather than generating code to
-call the function or access the static where it is defined.
+The `cold` and `inline` attributes give suggestions to the compiler to compile
+your code in a way that may be faster than what it would do without the hint.
+The attributes are only suggestions, and the compiler may choose to ignore it.
 
-The compiler automatically inlines functions based on internal heuristics.
-Incorrectly inlining functions can actually make the program slower, so it
-should be used with care.
+#### `inline` Attribute
 
-`#[inline]` and `#[inline(always)]` always cause the function to be serialized
-into the crate metadata to allow cross-crate inlining.
+The *`inline` attribute* suggests to the compiler that it should place a copy of
+the attributed function in the caller, rather than generating code to call the
+function where it is defined.
 
-There are three different types of inline attributes:
+This attribute can be used on [functions] and function prototypes, although it
+does not do anything on function prototypes. When this attribute is applied to
+a function in a [trait], it applies only to that function when used as a default
+function for a trait implementation and not to all trait implementations.
+
+> ***Note***: The compiler automatically inlines functions based on internal
+> heuristics. Incorrectly inlining functions can actually make the program
+> slower, so this attibute should be used with care.
+
+There are three ways of using the inline attribute:
 
 * `#[inline]` hints the compiler to perform an inline expansion.
 * `#[inline(always)]` asks the compiler to always perform an inline expansion.
 * `#[inline(never)]` asks the compiler to never perform an inline expansion.
+
+#### `cold` Attribute
+
+The *`cold` attribute* suggests to the compiler that the attributed function is
+unlikely to be called.
+
+This attribute can be used on [functions] and function prototypes, although it
+does not do anything on function prototypes. When this attribute is applied to
+a function in a [trait], it applies only to that function when used as a default
+function for a trait implementation and not to all trait implementations.
 
 ### `derive`
 
@@ -454,7 +470,7 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 }
 ```
 
-You can implement `derive` for your own type through [procedural macros].
+You can implement `derive` for your own traits through [procedural macros].
 
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
@@ -483,3 +499,4 @@ You can implement `derive` for your own type through [procedural macros].
 [external blocks]: items/external-blocks.html
 [items]: items.html
 [conditional compilation]: conditional-compilation.html
+[trait]: items/traits.html
