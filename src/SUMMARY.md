@@ -19,6 +19,8 @@
 
 - [Crates and source files](crates-and-source-files.md)
 
+- [Conditional compilation](conditional-compilation.md)
+
 - [Items and attributes](items-and-attributes.md)
     - [Items](items.md)
         - [Modules](items/modules.md)
