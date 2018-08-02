@@ -141,3 +141,6 @@ enum ZeroVariants {}
 [`mem::discriminant`]: ../std/mem/fn.discriminant.html
 [numeric cast]: expressions/operator-expr.html#semantics
 [`repr` attribute]: attributes.html#ffi-attributes
+[default representation]: type-layout.html#the-default-representation
+[primitive representation]: type-layout.html#primitive-representations
+[`C` representation]: type-layout.html#the-c-representation

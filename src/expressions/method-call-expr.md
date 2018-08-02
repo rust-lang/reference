@@ -101,3 +101,4 @@ method and you'll be fine.
 [disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
 [dereference]: expressions/operator-expr.html#the-dereference-operator
 [methods]: items/associated-items.html#methods
+[unsized coercion]: type-coercions.html#unsized-coercions

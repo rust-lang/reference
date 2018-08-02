@@ -16,7 +16,7 @@ All access to a static is safe, but there are a number of restrictions on
 statics:
 
 * The type must have the `Sync` trait bound to allow thread-safe access.
-* Statics allow using paths to statics in the [constant-expression] used to
+* Statics allow using paths to statics in the [constant expression] used to
   initialize them, but statics may not refer to other statics by value, only
   through a reference.
 * Constants cannot refer to statics.

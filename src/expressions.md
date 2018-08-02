@@ -203,7 +203,7 @@ Here are some examples:
 ### Implicit Borrows
 
 Certain expressions will treat an expression as a place expression by implicitly
-borrowing it. For example, it is possible to compare two unsized [slices] for
+borrowing it. For example, it is possible to compare two unsized [slices][slice] for
 equality directly, because the `==` operator implicitly borrows it's operands:
 
 ```rust
