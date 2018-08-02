@@ -190,3 +190,4 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 [_OuterAttribute_]: attributes.html
 [`cfg`]: attributes.html#conditional-compilation
 [lint check attributes]: attributes.html#lint-check-attributes
+[range]: expressions/range-expr.html

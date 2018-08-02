@@ -22,6 +22,7 @@ to shrink!
 [`libstd` facade]: https://github.com/rust-lang/rfcs/pull/40
 [Trait reform]: https://github.com/rust-lang/rfcs/pull/48
 [Attributes on `match` arms]: https://github.com/rust-lang/rfcs/pull/49
+[Attributes]: attributes.html
 [Flexible target specification]: https://github.com/rust-lang/rfcs/pull/131
 [Conditional compilation]: attributes.html#conditional-compilation
 [Unambiguous function call syntax]: https://github.com/rust-lang/rfcs/pull/132

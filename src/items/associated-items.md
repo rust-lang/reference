@@ -279,6 +279,7 @@ fn main() {
 [constants]: items/constant-items.html
 [constant item]: items/constant-items.html
 [functions]: items/functions.html
+[function item]: types.html#function-item-types
 [method call operator]: expressions/method-call-expr.html
 [block]: expressions/block-expr.html
 [path]: paths.html

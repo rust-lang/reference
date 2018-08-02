@@ -52,7 +52,7 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 ## Supertraits
 
 **Supertraits** are traits that are required to be implemented for a type to
-implement a specific trait. Furthermore, anywhere a [generic] or [trait object]
+implement a specific trait. Furthermore, anywhere a [generic][generics] or [trait object]
 is bounded by a trait, it has access to the associated items of its supertraits.
 
 Supertraits are declared by trait bounds on the `Self` type of a trait and

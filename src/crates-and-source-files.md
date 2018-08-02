@@ -114,5 +114,5 @@ fn main() {
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [function]: items/functions.html
 [`Termination`]: ../std/process/trait.Termination.html
-[where clause]: items/where-clauses.html
+[where clauses]: items/generics.html#where-clauses
 [trait or lifetime bounds]: trait-bounds.html

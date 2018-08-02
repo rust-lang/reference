@@ -32,7 +32,7 @@ language:
 [machine types]: #machine-types
 [machine-dependent integer types]: #machine-dependent-integer-types
 [textual types]: #textual-types
-[never-type]: #never-type
+[never type]: #never-type
 [Tuples]: #tuple-types
 [Arrays]: #array-and-slice-types
 [Slices]: #array-and-slice-types

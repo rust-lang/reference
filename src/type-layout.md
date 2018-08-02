@@ -296,7 +296,7 @@ a `packed` type cannot transitively contain another `align`ed type.
 
 <div class="warning">
 
-***Warning:*** Dereferencing an unaligned pointer is [undefined behaviour] and
+***Warning:*** Dereferencing an unaligned pointer is [undefined behavior] and
 it is possible to [safely create unaligned pointers to `packed` fields][27060].
 Like all ways to create undefined behavior in safe Rust, this is a bug.
 
