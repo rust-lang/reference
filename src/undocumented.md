@@ -13,7 +13,6 @@ to shrink!
   in [Conditional compilation]
 - [`dllimport`] - one element mentioned but not explained at [FFI attributes]
 - [define `crt_link`]
-- [define `unaligned_access`]
 - `impl Trait`
 
 [`libstd` facade]: https://github.com/rust-lang/rfcs/pull/40
