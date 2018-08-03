@@ -13,12 +13,12 @@
 > _MetaItem_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER\
 > &nbsp;&nbsp; | IDENTIFIER `=` LITERAL\
-> &nbsp;&nbsp; | IDENTIFIER `(` LITERAL `)`\
 > &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`
 >
 > _MetaSeq_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; EMPTY\
 > &nbsp;&nbsp; | _MetaItem_\
+> &nbsp;&nbsp; | LITERAL\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
@@ -30,9 +30,8 @@ Attributes may appear as any of:
 * A single identifier, the _attribute name_
 * An identifier followed by the equals sign '=' and a literal, providing a
   key/value pair
-* An identifier followed by a parenthesized literal, providing a
-  key/value pair
 * An identifier followed by a parenthesized list of sub-attribute arguments
+  which include literals
 
 _Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
