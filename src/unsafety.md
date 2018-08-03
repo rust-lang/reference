@@ -1,6 +1,6 @@
 # Unsafety
 
-Unsafe operations are those that potentially violate the memory-safety
+Unsafe operations are those that can potentially violate the memory-safety
 guarantees of Rust's static semantics.
 
 The following language level features cannot be used in the safe subset of
