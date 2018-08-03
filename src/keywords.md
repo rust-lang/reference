@@ -106,7 +106,7 @@ is possible to declare a variable or method with the name `union`.
 [loop labels]: expressions/loop-expr.html#loop-labels
 [Macros]: macros.html
 [attributes]: attributes.html
-[Macro placholders]: macros-by-example.html
+[Macro placeholders]: macros-by-example.html
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
 [variants]: items/enumerations.html
