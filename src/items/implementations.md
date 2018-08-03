@@ -145,7 +145,7 @@ attributes].
 
 [trait]: items/traits.html
 [attributes]: attributes.html
-[`cfg`]: attributes.html#conditional-compilation
+[`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation
 [the lint check attributes]: attributes.html#lint-check-attributes

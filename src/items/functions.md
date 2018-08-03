@@ -115,11 +115,13 @@ As non-Rust calling conventions do not support unwinding, unwinding past the end
 of an extern function will cause the process to abort. In LLVM, this is
 implemented by executing an illegal instruction.
 
-## Function attributes
+## Attributes on functions
 
-Inner [attributes] on the function's block apply to the function item as a whole.
+Functions allow for [outer attributes][attributes] and for [inner
+attributes][attributes] where inner attributes are allowed on its [block]. 
 
-For example, this function will only be available while running tests.
+For example of an inner attribute on a function, this function will only be 
+available while running tests.
 
 ```
 fn test_only() {
@@ -130,6 +132,11 @@ fn test_only() {
 > Note: Except for lints, it is idiomatic to only use outer attributes on
 > function items.
 
+The attributes that have meaning on a function are [`cfg`], [`deprecated`],
+[`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
+attributes], [`must_use`], [the testing attributes], and [the optimization hint
+attributes].
+
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html
@@ -138,3 +145,10 @@ fn test_only() {
 [*function item type*]: types.html#function-item-types
 [Trait]: items/traits.html
 [attributes]: attributes.html
+[`cfg`]: conditional-compilation.html
+[the lint check attributes]: attributes.html#lint-check-attributes
+[the testing attributes]: attributes.html#testing
+[the optimization hint attributes]: attributes.html#optimization-hints
+[`deprecated`]: attributes.html#deprecation
+[`doc`]: attributes.html#documentation
+[`must_use`]: attributes.html#must_use

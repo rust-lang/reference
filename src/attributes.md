@@ -331,7 +331,7 @@ pub mod m3 {
 }
 ```
 
-#### `must_use` Attribute
+#### `must_use`
 
 The `must_use` attribute can be used on user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]) and [functions].
