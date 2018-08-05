@@ -1,9 +1,18 @@
 # Tokens
 
 Tokens are primitive productions in the grammar defined by regular
-(non-recursive) languages. "Simple" tokens are given in [string table
-production] form, and occur in the rest of the
-grammar in `monospace` font. Other tokens have exact rules given.
+(non-recursive) languages.  Rust source input can be broken down
+into the following kinds of tokens:
+
+* [Keywords]
+* [Identifiers][identifier]
+* [Literals](#literals)
+* [Lifetimes](#lifetimes-and-loop-labels)
+* [Punctuation](#punctuation)
+* [Delimiters](#delimiters)
+
+Within this documentation's grammar, "simple" tokens are given in [string
+table production] form, and appear in `monospace` font.
 
 [string table production]: notation.html#string-table-productions
 
@@ -501,21 +510,104 @@ macros.
 
 [loop labels]: expressions/loop-expr.html
 
-## Symbols
+## Punctuation
 
-Symbols are a general class of printable [tokens] that play structural
-roles in a variety of grammar productions. They are a
-set of remaining miscellaneous printable tokens that do not
-otherwise appear as [unary operators], [binary
-operators], or [keywords].
-They are catalogued in [the Symbols section][symbols] of the Grammar document.
+Punctuation symbol tokens are listed here for completeness. Their individual
+usages and meanings are defined in the linked pages.
 
-[unary operators]: expressions/operator-expr.html#borrow-operators
-[binary operators]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
+| Symbol | Name        | Usage |
+|--------|-------------|-------|
+| `+`    | Plus        | [Addition][arith], [Trait Bounds], [Macro Kleene Matcher][macros]
+| `-`    | Minus       | [Subtraction][arith], [Negation]
+| `*`    | Star        | [Multiplication][arith], [Dereference], [Raw Pointers], [Macro Kleene Matcher][macros]
+| `/`    | Slash       | [Division][arith]
+| `%`    | Percent     | [Remainder][arith]
+| `^`    | Caret       | [Bitwise and Logical XOR][arith]
+| `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type]
+| `&`    | And         | [Bitwise and Logcal AND][arith], [Borrow], [References]
+| <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], [Match]
+| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References]
+| <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]
+| `<<`   | Shl         | [Shift Left][arith], [Nested Generics][generics]
+| `>>`   | Shr         | [Shift Right][arith], [Nested Generics][generics]
+| `+=`   | PlusEq      | [Addition assignment][compound]
+| `-=`   | MinusEq     | [Subtraction assignment][compound]
+| `*=`   | StarEq      | [Multiplication assignment][compound]
+| `/=`   | SlashEq     | [Division assignment][compound]
+| `%=`   | PercentEq   | [Remainder assignment][compound]
+| `^=`   | CaretEq     | [Bitwise XOR assignment][compound]
+| `&=`   | AndEq       | [Bitwise And assignment][compound]
+| <code>\|=</code> | OrEq | [Bitwise Or assignment][compound]
+| `<<=`  | ShlEq       | [Shift Left assignment][compound]
+| `>>=`  | ShrEq       | [Shift Right assignment][compound], [Nested Generics][generics]
+| `=`    | Eq          | [Assignment], [Attributes], Various type definitions
+| `==`   | EqEq        | [Equal][comparison]
+| `!=`   | Ne          | [Not Equal][comparison]
+| `>`    | Gt          | [Greater than][comparison], [Generics], [Paths]
+| `<`    | Lt          | [Less than][comparison], [Generics], [Paths]
+| `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
+| `<=`   | Le          | [Less than or equal to][comparison]
+| `@`    | At          | [Subpattern binding][match]
+| `_`    | Underscore  | [Placeholder patterns][match], Inferred types
+| `.`    | Dot         | [Field access][field], [Tuple index]
+| `..`   | DotDot      | [Range][range], [Struct expressions], [Wildcard patterns][match]
+| `...`  | DotDotDot   | [Variadic functions][extern]
+| `..=`  | DotDotEq    | [Inclusive Range][range]
+| `,`    | Comma       | Various separators
+| `;`    | Semi        | Terminator for various items and statements, [Array types]
+| `:`    | Colon       | Various separators
+| `::`   | PathSep     | [Path separator][paths]
+| `->`   | RArrow      | [Function return type][functions], [Closure return type][closures]
+| `=>`   | FatArrow    | [Match arms][match], [Macros]
+| `#`    | Pound       | [Attributes]
+| `$`    | Dollar      | [Macros]
+| `?`    | Question    | [Question mark operator][question], [Questionably sized][sized]
+
+## Delimiters
+
+Bracket punctuation is used in various parts of the grammar. An open bracket
+must always be paired with a close bracket. Brackets and the tokens within
+them are referred to as "token trees" in [macros].  The three types of brackets are:
+
+| Bracket | Type            |
+|---------|-----------------|
+| `{` `}` | Curly braces    |
+| `[` `]` | Square brackets |
+| `(` `)` | Parentheses     |
+
+
+[Operator expressions]: expressions/operator-expr.html
 [tokens]: #tokens
-[symbols]: ../grammar.html#symbols
 [keywords]: keywords.html
 [identifier]: identifiers.html
 [tuples]: types.html#tuple-types
 [tuple structs]: items/structs.html
 [tuple variants]: items/enumerations.html
+[arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
+[negation]: expressions/operator-expr.html#negation-operators
+[lazy-bool]: expressions/operator-expr.html#lazy-boolean-operators
+[compound]: /expressions/operator-expr.html#compound-assignment-expressions
+[comparison]: expressions/operator-expr.html#comparison-operators
+[match]: expressions/match-expr.html
+[field]: expressions/field-expr.html
+[range]: expressions/range-expr.html
+[trait bounds]: trait-bounds.html
+[dereference]: expressions/operator-expr.html#the-dereference-operator
+[raw pointers]: types.html#raw-pointers-const-and-mut
+[macros]: macros-by-example.html
+[attributes]: attributes.html
+[never type]: types.html#never-type
+[borrow]: expressions/operator-expr.html#borrow-operators
+[references]: types.html#pointer-types
+[closures]: expressions/closure-expr.html
+[assignment]: expressions/operator-expr.html#assignment-expressions
+[constant items]: items/constant-items.html
+[generics]: items/generics.html
+[paths]: paths.html
+[array types]: types.html#array-and-slice-types
+[functions]: items/functions.html
+[question]: expressions/operator-expr.html#the-question-mark-operator
+[sized]: trait-bounds.html#sized
+[extern]: items/external-blocks.html
+[struct expressions]: expressions/struct-expr.html
+[tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
