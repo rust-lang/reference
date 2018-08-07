@@ -4,11 +4,7 @@
 [implementations]. They are called this because they are defined on an associate
 type &mdash; the type in the implementation. They are a subset of the kinds of
 items you can declare in a module. Specifically, there are [associated
-functions] (including methods), [associated types], and [associated constants].
-
-[associated functions]: #associated-functions-and-methods
-[associated types]: #associated-types
-[associated constants]: #associated-constants
+functions] \(including methods), [associated types], and [associated constants].
 
 Associated items are useful when the associated item logically is related to the
 associating item. For example, the `is_some` method on `Option` is intrinsically
@@ -324,31 +320,31 @@ fn main() {
 }
 ```
 
-[_BlockExpression_]: expressions/block-expr.html
-[_FunctionParam_]: items/functions.html
-[_FunctionQualifiers_]: items/functions.html
-[_FunctionReturnType_]: items/functions.html
-[_Generics_]: items/generics.html
-[_Lifetime_]: trait-bounds.html
-[_Type_]: types.html#type-expressions
-[_WhereClause_]: items/generics.html#where-clauses
-[`Arc<Self>`]: special-types-and-traits.html#arct
-[`Box<Self>`]: special-types-and-traits.html#boxt
-[`Pin<P>`]: special-types-and-traits.html#pinp
-[`Rc<Self>`]: special-types-and-traits.html#rct
-[trait]: items/traits.html
-[traits]: items/traits.html
-[type aliases]: items/type-aliases.html
-[inherent implementations]: items/implementations.html#inherent-implementations
-[identifier]: identifiers.html
-[identifier pattern]: patterns.html#identifier-patterns
-[trait object]: types/trait-object.html
-[implementations]: items/implementations.html
-[type]: types.html#type-expressions
-[constants]: items/constant-items.html
-[constant item]: items/constant-items.html
-[functions]: items/functions.html
-[function item]: types/function-item.html
-[method call operator]: expressions/method-call-expr.html
-[block]: expressions/block-expr.html
-[path]: paths.html
+[_BlockExpression_]: ../expressions/block-expr.html
+[_FunctionParam_]: ../items/functions.html
+[_FunctionQualifiers_]: ../items/functions.html
+[_FunctionReturnType_]: ../items/functions.html
+[_Generics_]: ../items/generics.html
+[_Lifetime_]: ../trait-bounds.html
+[_Type_]: ../types.html#type-expressions
+[_WhereClause_]: ../items/generics.html#where-clauses
+[`Arc<Self>`]: ../special-types-and-traits.html#arct
+[`Box<Self>`]: ../special-types-and-traits.html#boxt
+[`Pin<P>`]: ../special-types-and-traits.html#pinp
+[`Rc<Self>`]: ../special-types-and-traits.html#rct
+[trait]: ../items/traits.html
+[traits]: ../items/traits.html
+[type aliases]: ../items/type-aliases.html
+[inherent implementations]: ../items/implementations.html#inherent-implementations
+[identifier]: ../identifiers.html
+[identifier pattern]: ../patterns.html#identifier-patterns
+[trait object]: ../types/trait-object.html
+[implementations]: ../items/implementations.html
+[type]: ../types.html#type-expressions
+[constants]: ../items/constant-items.html
+[constant item]: ../items/constant-items.html
+[functions]: ../items/functions.html
+[function item]: ../types/function-item.html
+[method call operator]: ../expressions/method-call-expr.html
+[block]: ../expressions/block-expr.html
+[path]: ../paths.html

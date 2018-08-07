@@ -14,9 +14,13 @@ some other [path]. Usually a `use` declaration is used to shorten the path
 required to refer to a module item. These declarations may appear in [modules]
 and [blocks], usually at the top.
 
-[path]: paths.html
-[modules]: items/modules.html
-[blocks]: expressions/block-expr.html
+[path]: ../paths.html
+[modules]: ../items/modules.html
+[blocks]: ../expressions/block-expr.html
+
+> **Note**: Unlike in many languages, `use` declarations in Rust do *not*
+> declare linkage dependency with external crates. Rather, [`extern crate`
+> declarations](../items/extern-crates.html) declare linkage dependencies.
 
 Use declarations support a number of convenient shortcuts:
 
@@ -195,8 +199,8 @@ m!(use std as _;);
 // use std as _;
 ```
 
-[IDENTIFIER]: identifiers.html
-[_SimplePath_]: paths.html#simple-paths
-[`extern crate`]: items/extern-crates.html
-[extern prelude]: items/extern-crates.html#extern-prelude
-[path qualifiers]: paths.html#path-qualifiers
+[IDENTIFIER]: ../identifiers.html
+[_SimplePath_]: ../paths.html#simple-paths
+[`extern crate`]: ../items/extern-crates.html
+[extern prelude]: ../items/extern-crates.html#extern-prelude
+[path qualifiers]: ../paths.html#path-qualifiers

@@ -11,5 +11,5 @@ implement [`Copy`].
 The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
 attribute can be used to fix a layout.
 
-[`Copy`]: special-types-and-traits.html#copy
-[`union` item]: items/unions.html
+[`Copy`]: ../special-types-and-traits.html#copy
+[`union` item]: ../items/unions.html

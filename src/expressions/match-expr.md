@@ -134,24 +134,24 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 expression in the same expression contexts as [attributes on block
 expressions].
 
-[_Expression_]: expressions.html
-[_BlockExpression_]: expressions/block-expr.html#block-expressions
-[place expression]: expressions.html#place-expressions-and-value-expressions
-[value expression]: expressions.html#place-expressions-and-value-expressions
-[_InnerAttribute_]: attributes.html
-[_OuterAttribute_]: attributes.html
-[`cfg`]: conditional-compilation.html
-[lint check attributes]: attributes.html#lint-check-attributes
-[Range Expression]: expressions/range-expr.html
+[_Expression_]: ../expressions.html
+[_BlockExpression_]: ../expressions/block-expr.html#block-expressions
+[place expression]: ../expressions.html#place-expressions-and-value-expressions
+[value expression]: ../expressions.html#place-expressions-and-value-expressions
+[_InnerAttribute_]: ../attributes.html
+[_OuterAttribute_]: ../attributes.html
+[`cfg`]: ../conditional-compilation.html
+[lint check attributes]: ../attributes.html#lint-check-attributes
+[Range Expression]: ../expressions/range-expr.html
 
-[_Pattern_]: patterns.html
-[pattern]: patterns.html
-[Identifier Patterns]: patterns.html#identifier-patterns
-[Inner attributes]: attributes.html
-[Struct Patterns]: patterns.html#struct-patterns
-[Tuple Struct Patterns]: patterns.html#tuplestruct-patterns
-[Tuple Patterns]: patterns.html#tuple-patterns
-[Range Pattern]: patterns.html#range-patterns
-[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
-[binding mode]: patterns.html#binding-modes
-[scrutinee]: glossary.html#scrutinee
+[_Pattern_]: ../patterns.html
+[pattern]: ../patterns.html
+[Identifier Patterns]: ../patterns.html#identifier-patterns
+[Inner attributes]: ../attributes.html
+[Struct Patterns]: ../patterns.html#struct-patterns
+[Tuple Struct Patterns]: ../patterns.html#tuplestruct-patterns
+[Tuple Patterns]: ../patterns.html#tuple-patterns
+[Range Pattern]: ../patterns.html#range-patterns
+[attributes on block expressions]: ../expressions/block-expr.html#attributes-on-block-expressions
+[binding mode]: ../patterns.html#binding-modes
+[scrutinee]: ../glossary.html#scrutinee

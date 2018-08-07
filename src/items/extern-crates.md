@@ -96,14 +96,14 @@ will avoid being reported as unused.
 The [`#[macro_use]` attribute] will work as usual and import the macro names
 into the macro-use prelude.
 
-[IDENTIFIER]: identifiers.html
+[IDENTIFIER]: ../identifiers.html
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
-[`#[macro_use]` attribute]: attributes.html#macro-related-attributes
+[`#[macro_use]` attribute]: ../attributes.html#macro-related-attributes
 [`alloc`]: https://doc.rust-lang.org/alloc/
-[`crate::`]: paths.html#crate
-[`no_implicit_prelude`]: items/modules.html#prelude-items
-[`no_std`]: crates-and-source-files.html#preludes-and-no_std
+[`crate::`]: ../paths.html#crate
+[`no_implicit_prelude`]: ../items/modules.html#prelude-items
+[`no_std`]: ../crates-and-source-files.html#preludes-and-no_std
 [`proc_macro`]: https://doc.rust-lang.org/proc_macro/
-[`self::`]: paths.html#self
+[`self::`]: ../paths.html#self
 [`test`]: https://doc.rust-lang.org/test/
-[use declarations]: items/use-declarations.html
+[use declarations]: ../items/use-declarations.html

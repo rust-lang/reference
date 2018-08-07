@@ -177,23 +177,23 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[IDENTIFIER]: identifiers.html
-[_ConstantItem_]: items/constant-items.html
-[_Function_]: items/functions.html
-[_Generics_]: items/generics.html
-[_InnerAttribute_]: attributes.html
-[_MacroInvocationSemi_]: macros.html#macro-invocation
-[_Method_]: items/associated-items.html#methods
-[_OuterAttribute_]: attributes.html
-[_TypeAlias_]: items/type-aliases.html
-[_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html#type-expressions
-[_Visibility_]: visibility-and-privacy.html
-[_WhereClause_]: items/generics.html#where-clauses
-[trait]: items/traits.html
-[attributes]: attributes.html
-[`cfg`]: conditional-compilation.html
-[`deprecated`]: attributes.html#deprecation
-[`doc`]: attributes.html#documentation
-[the lint check attributes]: attributes.html#lint-check-attributes
-[Unsafe traits]: items/traits.html#unsafe-traits
+[IDENTIFIER]: ../identifiers.html
+[_ConstantItem_]: ../items/constant-items.html
+[_Function_]: ../items/functions.html
+[_Generics_]: ../items/generics.html
+[_InnerAttribute_]: ../attributes.html
+[_MacroInvocationSemi_]: ../macros.html#macro-invocation
+[_Method_]: ../items/associated-items.html#methods
+[_OuterAttribute_]: ../attributes.html
+[_TypeAlias_]: ../items/type-aliases.html
+[_TypePath_]: ../paths.html#paths-in-types
+[_Type_]: ../types.html#type-expressions
+[_Visibility_]: ../visibility-and-privacy.html
+[_WhereClause_]: ../items/generics.html#where-clauses
+[trait]: ../items/traits.html
+[attributes]: ../attributes.html
+[`cfg`]: ../conditional-compilation.html
+[`deprecated`]: ../attributes.html#deprecation
+[`doc`]: ../attributes.html#documentation
+[the lint check attributes]: ../attributes.html#lint-check-attributes
+[Unsafe traits]: ../items/traits.html#unsafe-traits

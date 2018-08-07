@@ -86,7 +86,8 @@ fn move_by_block_expression() {
 > _UnsafeBlockExpression_ :\
 > &nbsp;&nbsp; `unsafe` _BlockExpression_
 
-_See [`unsafe` block](unsafe-blocks.html) for more information on when to use `unsafe`_
+_See [`unsafe` block](../unsafe-blocks.html) for more information on when to use
+`unsafe`_
 
 A block of code can be prefixed with the `unsafe` keyword to permit [unsafe
 operations]. Examples:
@@ -129,26 +130,26 @@ fn is_unix_platform() -> bool {
 }
 ```
 
-[_ExpressionWithoutBlock_]: expressions.html
-[_InnerAttribute_]: attributes.html
-[_Statement_]: statements.html
-[`cfg`]: conditional-compilation.html
-[`for`]: expressions/loop-expr.html#iterator-loops
-[`loop`]: expressions/loop-expr.html#infinite-loops
-[`while let`]: expressions/loop-expr.html#predicate-pattern-loops
-[`while`]: expressions/loop-expr.html#predicate-loops
-[array expressions]: expressions/array-expr.html
-[call expressions]: expressions/call-expr.html
-[enum variant]: expressions/enum-variant-expr.html
-[expression attributes]: expressions.html#expression-attributes
-[expression]: expressions.html
-[function]: items/functions.html
-[inner attributes]: attributes.html
-[method]: items/associated-items.html#methods
-[statement]: statements.html
-[statements]: statements.html
-[struct]: expressions/struct-expr.html
-[the lint check attributes]: attributes.html#lint-check-attributes
-[tuple expressions]: expressions/tuple-expr.html
-[unsafe operations]: unsafety.html
-[value expressions]: expressions.html#place-expressions-and-value-expressions
+[_ExpressionWithoutBlock_]: ../expressions.html
+[_InnerAttribute_]: ../attributes.html
+[_Statement_]: ../statements.html
+[`cfg`]: ../conditional-compilation.html
+[`for`]: ../expressions/loop-expr.html#iterator-loops
+[`loop`]: ../expressions/loop-expr.html#infinite-loops
+[`while let`]: ../expressions/loop-expr.html#predicate-pattern-loops
+[`while`]: ../expressions/loop-expr.html#predicate-loops
+[array expressions]: ../expressions/array-expr.html
+[call expressions]: ../expressions/call-expr.html
+[enum variant]: ../expressions/enum-variant-expr.html
+[expression attributes]: ../expressions.html#expression-attributes
+[expression]: ../expressions.html
+[function]: ../items/functions.html
+[inner attributes]: ../attributes.html
+[method]: ../items/associated-items.html#methods
+[statement]: ../statements.html
+[statements]: ../statements.html
+[struct]: ../expressions/struct-expr.html
+[the lint check attributes]: ../attributes.html#lint-check-attributes
+[tuple expressions]: ../expressions/tuple-expr.html
+[unsafe operations]: ../unsafety.html
+[value expressions]: ../expressions.html#place-expressions-and-value-expressions

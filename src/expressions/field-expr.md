@@ -26,10 +26,10 @@ automatically dereferenced as many times as necessary to make the field access
 possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 Finally, the fields of a struct or a reference to a struct are treated as
-separate entities when borrowing. If the struct does not implement
-[`Drop`](special-types-and-traits.html#drop) and is stored in a local variable,
-this also applies to moving out of each of its fields. This also does not apply
-if automatic dereferencing is done though user defined types.
+separate entities when borrowing. If the struct does not implement [`Drop`] and
+is stored in a local variable, this also applies to moving out of each of its
+fields. This also does not apply if automatic dereferencing is done though user
+defined types.
 
 ```rust
 struct A { f1: String, f2: String, f3: String }
@@ -45,10 +45,11 @@ let c: &String = &x.f2;         // Can borrow again
 let d: String = x.f3;           // Move out of x.f3
 ```
 
-[_Expression_]: expressions.html
-[IDENTIFIER]: identifiers.html
-[method call expression]: expressions/method-call-expr.html
-[struct]: items/structs.html
-[union]: items/unions.html
-[place expression]: expressions.html#place-expressions-and-value-expressions
-[mutable]: expressions.html#mutability
+[_Expression_]: ../expressions.html
+[IDENTIFIER]: ../identifiers.html
+[method call expression]: ../expressions/method-call-expr.html
+[struct]: ../items/structs.html
+[union]: ../items/unions.html
+[place expression]: ../expressions.html#place-expressions-and-value-expressions
+[mutable]: ../expressions.html#mutability
+[`Drop`]: ../special-types-and-traits.html#drop

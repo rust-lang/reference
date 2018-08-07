@@ -68,11 +68,10 @@ for i in 1..11 {
 }
 ```
 
-[_Expression_]: expressions.html
-
-[std::ops::Range]:            https://doc.rust-lang.org/std/ops/struct.Range.html
-[std::ops::RangeFrom]:        https://doc.rust-lang.org/std/ops/struct.RangeFrom.html
-[std::ops::RangeTo]:          https://doc.rust-lang.org/std/ops/struct.RangeTo.html
-[std::ops::RangeFull]:        https://doc.rust-lang.org/std/ops/struct.RangeFull.html
-[std::ops::RangeInclusive]:   https://doc.rust-lang.org/std/ops/struct.RangeInclusive.html
-[std::ops::RangeToInclusive]: https://doc.rust-lang.org/std/ops/struct.RangeToInclusive.html
+[_Expression_]: ../expressions.html
+[std::ops::Range]: ../../std/ops/struct.Range.html
+[std::ops::RangeFrom]: ../../std/ops/struct.RangeFrom.html
+[std::ops::RangeTo]: ../../std/ops/struct.RangeTo.html
+[std::ops::RangeFull]: ../../std/ops/struct.RangeFull.html
+[std::ops::RangeInclusive]: ../../std/ops/struct.RangeInclusive.html
+[std::ops::RangeToInclusive]: ../../std/ops/struct.RangeToInclusive.html

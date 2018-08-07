@@ -31,20 +31,21 @@ functions, as an abbreviation for defining and capturing a separate function.
 
 Significantly, closure expressions _capture their environment_, which regular
 [function definitions] do not. Without the `move` keyword, the closure expression
-[infers how it captures each variable from its environment](types/closure.html#capture-modes),
-preferring to capture by shared reference, effectively borrowing
-all outer variables mentioned inside the closure's body. If needed the compiler
-will infer that instead mutable references should be taken, or that the values
-should be moved or copied (depending on their type) from the environment. A
-closure can be forced to capture its environment by copying or moving values by
-prefixing it with the `move` keyword. This is often used to ensure that the
+[infers how it captures each variable from its
+environment](../types/closure.html#capture-modes), preferring to capture by shared
+reference, effectively borrowing all outer variables mentioned inside the
+closure's body. If needed the compiler will infer that instead mutable
+references should be taken, or that the values should be moved or copied
+(depending on their type) from the environment. A closure can be forced to
+capture its environment by copying or moving values by prefixing it with the
+`move` keyword. This is often used to ensure that the
 closure's type is `'static`.
 
 The compiler will determine which of the [closure
-traits](types/closure.html#call-traits-and-coercions) the closure's type will implement by how it
-acts on its captured variables. The closure will also implement
-[`Send`](special-types-and-traits.html#send) and/or
-[`Sync`](special-types-and-traits.html#sync) if all of its captured types do.
+traits](../types/closure.html#call-traits-and-coercions) the closure's type will
+implement by how it acts on its captured variables. The closure will also
+implement [`Send`](../special-types-and-traits.html#send) and/or
+[`Sync`](../special-types-and-traits.html#sync) if all of its captured types do.
 These traits allow functions to accept closures using generics, even though the
 exact types can't be named.
 
@@ -67,14 +68,13 @@ let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
 ```
 
-[block]: expressions/block-expr.html
-[function definitions]: items/functions.html
-[patterns]: patterns.html
-
-[_Expression_]: expressions.html
-[_BlockExpression_]: expressions/block-expr.html
-[_TypeNoBounds_]: types.html#type-expressions
-[_FunctionParameters_]: items/functions.html
-[_Pattern_]: patterns.html
-[_Type_]: types.html#type-expressions
-[`let` binding]: statements.html#let-statements
+[block]: ../expressions/block-expr.html
+[function definitions]: ../items/functions.html
+[patterns]: ../patterns.html
+[_Expression_]: ../expressions.html
+[_BlockExpression_]: ../expressions/block-expr.html
+[_TypeNoBounds_]: ../types.html#type-expressions
+[_FunctionParameters_]: ../items/functions.html
+[_Pattern_]: ../patterns.html
+[_Type_]: ../types.html#type-expressions
+[`let` binding]: ../statements.html#let-statements
