@@ -4,5 +4,5 @@ title = "The Rust Reference"
 author = "The Rust Project Developers"
 
 [output.html]
+additional-css = ["theme/reference.css"]
 
-additional-css = ["src/theme/reference.css"]
