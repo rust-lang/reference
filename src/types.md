@@ -343,7 +343,7 @@ let foo_ptr_2 = if want_i32 {
 ```
 
 All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
-[`Clone]`, [`Send`], and [`Sync`].
+[`Clone`], [`Send`], and [`Sync`].
 
 ## Function pointer types
 
