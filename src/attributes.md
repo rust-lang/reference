@@ -454,7 +454,7 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 }
 ```
 
-You can implement `derive` for your own type through [procedural macros].
+You can implement `derive` for your own trait through [procedural macros].
 
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
