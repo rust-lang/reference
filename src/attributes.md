@@ -230,8 +230,8 @@ attribute must take no arguments, must not declare any
 type must be one of the following:
 
 * `()`
-<!-- * `!` -->
 * `Result<(), E> where E: Error`
+<!-- * `!` -->
 <!-- * Result<!, E> where E: Error` -->
 
 > Note: The implementation of which return types are allowed is determined by

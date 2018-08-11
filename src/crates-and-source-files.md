@@ -72,8 +72,8 @@ A crate that contains a `main` [function] can be compiled to an executable. If a
 type must  be one of the following:
 
 * `()`
-<!-- * `!` -->
 * `Result<(), E> where E: Error`
+<!-- * `!` -->
 <!-- * Result<!, E> where E: Error` -->
 
 > Note: The implementation of which return types are allowed is determined by
