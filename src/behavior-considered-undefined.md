@@ -47,4 +47,4 @@ code.
 [`UnsafeCell<U>`]: https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
 [`read_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.read_unaligned.html
 [`write_unaligned`]: https://doc.rust-lang.org/std/ptr/fn.write_unaligned.html
-[Rustonomicon]: ../nomicon
+[Rustonomicon]: ../nomicon/index.html
