@@ -31,6 +31,7 @@ syntax named by _designator_. Valid designators are:
 * `tt`: a token tree (a single [token] by matching `()`, `[]`, or `{}`)
 * `meta`: the contents of an [attribute]
 * `lifetime`: a lifetime. Examples: `'static`, `'a`.
+* `vis`: a (visibility qualifier)[visibility-and-privacy]
 
 [item]: items.html
 [block]: expressions/block-expr.html
@@ -43,6 +44,7 @@ syntax named by _designator_. Valid designators are:
 [path]: paths.html
 [token]: tokens.html
 [attribute]: attributes.html
+[visibility-and-privacy]: visibility-and-privacy.html
 
 In the transcriber, the
 designator is already known, and so only the name of a matched nonterminal comes
