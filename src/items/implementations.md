@@ -24,8 +24,8 @@ The associated item has a path of a path to the implementing type followed by
 the associate item's path component. Inherent implementations cannot contain
 associated type aliases.
 
-A type can also have multiple inherent implementations. Although the
-implementing type must be defined within the same crate.
+A type can also have multiple inherent implementations but the implementing type
+must be defined within the same crate.
 
 ```rust
 struct Point {x: i32, y: i32}
