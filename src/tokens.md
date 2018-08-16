@@ -586,7 +586,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
 [negation]: expressions/operator-expr.html#negation-operators
 [lazy-bool]: expressions/operator-expr.html#lazy-boolean-operators
-[compound]: /expressions/operator-expr.html#compound-assignment-expressions
+[compound]: expressions/operator-expr.html#compound-assignment-expressions
 [comparison]: expressions/operator-expr.html#comparison-operators
 [match]: expressions/match-expr.html
 [field]: expressions/field-expr.html
