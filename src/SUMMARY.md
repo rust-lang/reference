@@ -4,6 +4,8 @@
 
 - [Notation](notation.md)
 
+- [Editions](editions.md)
+
 - [Lexical structure](lexical-structure.md)
     - [Input format](input-format.md)
     - [Keywords](keywords.md)
