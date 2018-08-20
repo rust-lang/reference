@@ -24,8 +24,8 @@ The associated item has a path of a path to the implementing type followed by
 the associate item's path component. Inherent implementations cannot contain
 associated type aliases.
 
-A type can also have multiple inherent implementations but the implementing type
-must be defined within the same crate.
+A type can also have multiple inherent implementations. An implementing type
+must be defined within the same crate as the original type definition.
 
 ```rust
 struct Point {x: i32, y: i32}
@@ -45,6 +45,7 @@ my_point.log();
 A _trait implementation_ is defined like an inherent implementation except that
 the optional generic type declarations is followed by a [trait] followed
 by the keyword `for`. Followed by a path to a nominal type.
+
 <!-- To understand this, you have to back-reference to the previous section. :( -->
 
 The trait is known as the _implemented trait_. The implementing type
