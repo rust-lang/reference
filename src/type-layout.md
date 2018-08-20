@@ -302,6 +302,23 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 
 </div>
 
+### The `transparent` Representation
+
+The `transparent` representation can only be used on `struct`s that have a
+single non-zero sized field and any number of zero-sized fields, including
+[`PhantomData<T>`].
+
+Structs with this representation have the same layout and ABI as the single
+non-zero sized field.
+
+This is different than the `C` representation because
+a struct with the `C` representation will always have the ABI of a `C` `struct`
+while, for example, a struct with the `transparent` representation with a
+primitive field will have the ABI of the primitive field.
+
+Because this representation delegates type layout to another type, it cannot be
+used with any other representation.
+
 [`align_of_val`]: ../std/mem/fn.align_of_val.html
 [`size_of_val`]: ../std/mem/fn.size_of_val.html
 [`align_of`]: ../std/mem/fn.align_of.html
@@ -312,3 +329,4 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 [zero-variant enumerations]: items/enumerations.html#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.html
 [27060]: https://github.com/rust-lang/rust/issues/27060
+[`PhantomData<T>`]: special-types-and-traits.html#phantomdatat
