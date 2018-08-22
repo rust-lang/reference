@@ -7,8 +7,10 @@
 >
 > RAW_IDENTIFIER : `r#` IDENTIFIER_OR_KEYWORD <sub>*Except `crate`, `extern`, `self`, `super`, `Self`*</sub>
 >
+> NON_KEYWORD_IDENTIFIER : IDENTIFIER_OR_KEYWORD <sub>*Except a [strict] or [reserved] keyword*</sub>
+>
 > IDENTIFIER :\
-> IDENTIFIER_OR_KEYWORD <sub>*Except a [strict] or [reserved] keyword*</sub> | RAW_IDENTIFIER
+> NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
 
 An identifier is any nonempty ASCII string of the following form:
 
