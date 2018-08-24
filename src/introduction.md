@@ -9,7 +9,7 @@ provides three kinds of material:
   - Appendix chapters providing rationale and references to languages that
     influenced the design.
 
-You may also be interested in the [grammar].
+> **Note**: You may also be interested in the [grammar].
 
 <div class="warning">
 
@@ -44,13 +44,76 @@ specific to `rustc` itself, and should not be taken as a specification for
 the Rust language. We intend to produce such a document someday, and until then,
 the reference is the closest thing we have to one.
 
-## How to Read The Reference
+## How to Use This Book
 
-You sould not read this document sequentially. As a reference document, you
-should skim the table of contents until you find the section you are interested
-in and read that section. If you are viewing this in a browser and have
-JavaScript enabled, you can also press `s` or click the magnifying glass on the
-top bar to open a search bar.
+This book does not assume you are reading this document sequentially. Each
+chapter generally can be read standalone, but will cross-link to other chapters
+for facets of the language they refer to, but do not discuss.
+
+There are two main ways to read this document.
+
+The first is to answer a specific question. If you know which chapter answers
+that question, you can jump to that chapter in the table of contents. Otherwise,
+you can press `s` or the click the magnifying glass on the top bar to search for
+keywords related to your question. For example, say you wanted to know when a
+temporary value created in a let statement is dropped. If you didn't already
+know that the [lifetime of temporaries] is defined in the [expressions chapter],
+you could search "temporary let" and the first search result will take you to
+that section.
+
+The second is to generally improve your knowledge of a facet of the language.
+In that case, just browse the table of contents until you see something you
+want to know more about, and just start reading. If a link looks interesting,
+click it, and read about that section.
+
+That said, there is no wrong way to read this book. Read it however you feel
+helps you best.
+
+### Conventions
+
+Like all technical books, this book has certain conventions in how it displays
+information. These conventions are documented here.
+
+* Statements that define a term contain that term in *italics*. Whenever that
+  term is used outside of that chapter, it is usually a link to the section that
+  has this definition.
+
+  An *example term* is an example of a term beind defined.
+
+* Notes that contain useful information about the state of the book or point out
+  useful, but mostly out of scope, information are in blockquotes that start with
+  the word "Note:" in **bold**.
+
+  > Note: This is an example note.
+
+* Warnings that show unsound behavior in the language or possibly confusing
+  interactions of language features are in a special warning box.
+
+  <div class="warning">
+
+  Warning: This is an example warning.
+
+  </div>
+
+* Code snippets inline in the text are inside `<code>` tags.
+
+  Longer code examples are in a syntax highlighted box that has controls for
+  copying, executing, and showing hidden lines in the top right corner.
+
+  ```rust
+  # // This is a hidden line.
+  fn main() {
+      println!("This is a code example");
+  }
+  ```
+
+* The grammar and lexical structure is in blockquotes with either "Lexer" or
+  "Syntax" in **bold** as the first line in <sup>superscript</sup>.
+
+  > **<sup>Syntax</sup>**\
+  > _ExampleGrammar_:\
+  > &nbsp;&nbsp; &nbsp;&nbsp; `~` [_Expression_]\
+  > &nbsp;&nbsp; | `box` [_Expression_]
 
 ## Contributing
 
@@ -69,6 +132,9 @@ attention to making those sections the best that they can be.
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
 [big issue]: https://github.com/rust-lang-nursery/reference/issues/9
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
+[_Expression_]: expressions.html
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
+[expressions chapter]: expressions.html
+[lifetime of temporaries]: expressions.html#temporary-lifetimes
 [linkage]: linkage.html
