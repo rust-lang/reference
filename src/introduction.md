@@ -9,6 +9,18 @@ provides three kinds of material:
   - Appendix chapters providing rationale and references to languages that
     influenced the design.
 
+You may also be interested in the [grammar].
+
+<div class="warning">
+
+Warning: This document is incomplete. Documenting everything takes a
+while. We have a [big issue] to track documentation for every Rust feature,
+so check that out if you can't find something here.
+
+</div>
+
+## What *The Reference* is Not
+
 This document does not serve as an introduction to the language. Background
 familiarity with the language is assumed. A separate [book] is available to
 help acquire such background familiarity.
@@ -32,13 +44,17 @@ specific to `rustc` itself, and should not be taken as a specification for
 the Rust language. We intend to produce such a document someday, and until then,
 the reference is the closest thing we have to one.
 
+## How to Read The Reference
+
 You sould not read this document sequentially. As a reference document, you
 should skim the table of contents until you find the section you are interested
 in and read that section. If you are viewing this in a browser and have
 JavaScript enabled, you can also press `s` or click the magnifying glass on the
 top bar to open a search bar.
 
-You may also be interested in the [grammar].
+## Contributing
+
+We welcome contributions of all kind.
 
 You can contribute to this document by opening an issue or sending a pull
 request to [the Rust Reference repository]. If this document does not answer
@@ -46,14 +62,6 @@ your question, and you think its answer is in scope of it, please do not
 hesitate to file an issue or ask about it in the Rust docs channels on IRC or
 discord. Knowing what people use this document for the most helps direct our
 attention to making those sections the best that they can be.
-
-<div class="warning">
-
-Warning: This document may be incomplete. Documenting everything takes a
-while. We have a [big issue] to track documentation for every Rust feature,
-so check that out if you can't find something here.
-
-</div>
 
 [book]: ../book/index.html
 [standard library]: ../std/index.html
