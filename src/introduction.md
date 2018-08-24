@@ -1,6 +1,6 @@
 # Introduction
 
-This document is the primary reference for the Rust programming language. It
+This book is the primary reference for the Rust programming language. It
 provides three kinds of material:
 
   - Chapters that informally describe each language construct and their use.
@@ -13,7 +13,7 @@ provides three kinds of material:
 
 <div class="warning">
 
-Warning: This document is incomplete. Documenting everything takes a
+Warning: This book is incomplete. Documenting everything takes a
 while. We have a [big issue] to track documentation for every Rust feature,
 so check that out if you can't find something here.
 
@@ -21,32 +21,32 @@ so check that out if you can't find something here.
 
 ## What *The Reference* is Not
 
-This document does not serve as an introduction to the language. Background
+This book does not serve as an introduction to the language. Background
 familiarity with the language is assumed. A separate [book] is available to
 help acquire such background familiarity.
 
-This document also does not serve as a reference to the [standard library]
+This book also does not serve as a reference to the [standard library]
 included in the language distribution. Those libraries are documented
 separately by extracting documentation attributes from their source code. Many
 of the features that one might expect to be language features are library
 features in Rust, so what you're looking for may be there, not here.
 
-Similarly, this document does not usually document the specifics of `rustc` as a
+Similarly, this book does not usually book the specifics of `rustc` as a
 tool or of Cargo. Cargo has a [book][cargo book] that contains a
 [reference][cargo reference]. There are a few pages such as [linkage] that still
 describe how `rustc` works.
 
-This document also only serves as a reference to what is available in stable
+This book also only serves as a reference to what is available in stable
 Rust. For unstable features being worked on, see the [Unstable Book].
 
-Finally, this document is not normative. It may include details that are
+Finally, this book is not normative. It may include details that are
 specific to `rustc` itself, and should not be taken as a specification for
-the Rust language. We intend to produce such a document someday, and until then,
+the Rust language. We intend to produce such a book someday, and until then,
 the reference is the closest thing we have to one.
 
 ## How to Use This Book
 
-This book does not assume you are reading this document sequentially. Each
+This book does not assume you are reading this book sequentially. Each
 chapter generally can be read standalone, but will cross-link to other chapters
 for facets of the language they refer to, but do not discuss.
 
@@ -119,11 +119,11 @@ information. These conventions are documented here.
 
 We welcome contributions of all kind.
 
-You can contribute to this document by opening an issue or sending a pull
-request to [the Rust Reference repository]. If this document does not answer
+You can contribute to this book by opening an issue or sending a pull
+request to [the Rust Reference repository]. If this book does not answer
 your question, and you think its answer is in scope of it, please do not
 hesitate to file an issue or ask about it in the Rust docs channels on IRC or
-discord. Knowing what people use this document for the most helps direct our
+discord. Knowing what people use this book for the most helps direct our
 attention to making those sections the best that they can be.
 
 [book]: ../book/index.html
