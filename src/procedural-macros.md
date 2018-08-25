@@ -39,30 +39,17 @@ pub fn foo() {}
 
 because the `foo` function is not a procedural macro. Procedural macros are
 loaded dynamically by the compiler when they are needed during compilation.
-Cargo will naturally make procedural macro crates available to crates which
-depend on them, or you can use the `--extern` argument.
 
 ### The `proc_macro` crate
 
-Procedural macro crates almost always will link to the in-tree `proc_macro`
-crate. The `proc_macro` crate is a compiler-provided crate which provides
+Procedural macro crates almost always will link to the compiler-provided 
+`proc_macro` crate. The `proc_macro` crate is a crate which provides
 facilities to working with the types of each procedural macro function. You can
-learn more about this crate by exploring [the documentation][pm-dox].
-
-[pm-dox]: https://doc.rust-lang.org/stable/proc_macro/
-
-Linking to the `proc_macro` crate can currently be done with:
-
-```rust,ignore
-extern crate proc_macro;
-```
-
-In the 2018 edition, however, this statement will not be necessary.
+learn more about this crate by exploring [its documentation][proc macro crate].
 
 ### The `TokenStream` Type
 
-One aspect you may notice about the `proc_macro` crate is that it doesn't
-contain any AST items! Instead, it primarily contains a `TokenStream` type.
+It primarily contains a `TokenStream` type.
 Procedural macros operate over *token streams* instead of AST nodes,
 which is a far more stable interface over time for both the compiler and for
 procedural macros to target.
@@ -72,13 +59,9 @@ can roughly be thought of as lexical token. For example `foo` is an `Ident`
 token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
 type, unlike `Vec<TokenTree>`, is cheap to clone (like `Rc<T>`).
 
-To learn more about token streams, let's first dive into writing our first
-procedural macro.
-
 ### Bang Macros
 
-The first kind of procedural macro is the "procedural bang macro" macro. This
-flavor of procedural macro is like writing `macro_rules!` only you get to
+This flavor of procedural macro is like writing `macro_rules!` only you get to
 execute arbitrary code over the input tokens instead of being limited to
 `macro_rules!` syntax.
 
@@ -94,22 +77,7 @@ pub fn foo(input: TokenStream) -> TokenStream {
 
 This item is defining a procedural bang macro (`#[proc_macro]`) which is called
 `foo`. The first argument is the input to the macro which explore in a second,
-and the return value is the tokens that it should expand to. Let's fill in all
-the pieces here with a noop macro.
-
-First up, let's generate a skeleton project:
-
-```sh
-$ cargo new foo
-$ cd foo
-$ cargo new my-macro --lib
-$ echo 'my-macro = { path = "my-macro" }' >> Cargo.toml
-$ echo '[lib]' >> my-macro/Cargo.toml
-$ echo 'proc-macro = true' >> my-macro/Cargo.toml
-```
-
-This'll set up a main binary project called `foo` along with a subcrate called
-`my-macro` which is declared as a procedural macro. Next up we'll fill in:
+and the return value is the tokens that it should expand to. 
 
 ```rust,ignore
 // my-macro/src/lib.rs
@@ -136,20 +104,6 @@ fn main() {
 }
 ```
 
-and finally, build it!
-
-```sh
-$ cargo run
-   Compiling my-macro v0.1.0 (file://.../foo/my-macro)
-   Compiling foo v0.1.0 (file://.../foo)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.37s
-     Running `target/debug/foo`
-the answer was: 3
-```
-
-Alright! This end-to-end example shows how we can create a macro that doesn't
-do anything, so let's do something a bit more useful.
-
 First up, let's see what the input to our macro looks like by modifying our
 macro:
 
@@ -162,39 +116,7 @@ pub fn foo(input: TokenStream) -> TokenStream {
 }
 ```
 
-and reexecute (output edited slightly here):
-
-```sh
-$ cargo run
-   Compiling my-macro v0.1.0 (file://.../foo/my-macro)
-   Compiling foo v0.1.0 (file://.../foo)
-TokenStream [
-    Ident { ident: "fn", span: #0 bytes(39..41) },
-    Ident { ident: "answer", span: #0 bytes(42..48) },
-    Group { delimiter: Parenthesis, stream: TokenStream [], span: #0 bytes(48..50) },
-    Punct { ch: '-', spacing: Joint, span: #0 bytes(51..53) },
-    Punct { ch: '>', spacing: Alone, span: #0 bytes(51..53) },
-    Ident { ident: "u32", span: #0 bytes(54..57) },
-    Group {
-        delimiter: Brace,
-        stream: TokenStream [
-            Literal { lit: Integer(3), suffix: None, span: #0 bytes(60..61) }
-        ],
-        span: #0 bytes(58..63)
-    }
-]
-    Finished dev [unoptimized + debuginfo] target(s) in 0.37s
-     Running `target/debug/foo`
-the answer was: 3
-```
-
-Here we can see how a procedural bang macro's input is a token stream (list) of
-all the tokens provided as input to the macro itself, excluding the delimiters
-used to invoke the macro. Notice how the braces and parentheses are using the
-`Group` token tree which is used to enforce that macros always have balanced
-delimiters.
-
-As you may have guessed by now the macro invocation is effectively replaced by
+The macro invocation is effectively replaced by
 the return value of the macro, creating the function that we provided as input.
 We can see another example of this where we simply ignore the input:
 
@@ -206,26 +128,15 @@ pub fn foo(_input: TokenStream) -> TokenStream {
 }
 ```
 
-and recompiling shows:
-
-```sh
-$ cargo run
-   Compiling my-macro v0.1.0 (file://.../foo/my-macro)
-   Compiling foo v0.1.0 (file://.../foo)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.37s
-     Running `target/debug/foo`
+```
 the answer was: 4
 ```
 
-showing us how the input was ignored and the macro's output was used instead.
-
 ### Derive macros
 
-[The book][procedural macros] has a tutorial on creating derive macros and here
-we'll go into some of the nitty-gritty of how this works. The derive macro
-feature allows you to define a new `#[derive(Foo)]` mode which often makes it
-much easier to systematically implement traits, removing quite a lot of
-boilerplate.
+The derive macro feature allows you to define a new `#[derive(Foo)]` mode which
+often makes it much easier to systematically implement traits, removing quite a
+lot of boilerplate.
 
 Custom derives are defined like so:
 
@@ -274,17 +185,7 @@ fn main() {
 
 and compiling it:
 
-```sh
-$ cargo run
-   Compiling my-macro v0.1.0 (file://.../foo/my-macro)
-   Compiling foo v0.1.0 (file://.../foo)
-TokenStream [
-    Ident { ident: "struct", span: #0 bytes(67..73) },
-    Ident { ident: "Foo", span: #0 bytes(74..77) },
-    Punct { ch: ';', spacing: Alone, span: #0 bytes(77..78) }
-]
-    Finished dev [unoptimized + debuginfo] target(s) in 0.34s
-     Running `target/debug/foo`
+```
 the answer was: 2
 ```
 
@@ -295,11 +196,7 @@ derive macros *append* items, they don't replace them.
 
 Now this is a pretty wonky macro derive, and would likely be confusing to
 users! Derive macros are primarily geared towards implementing traits, like
-`Serialize` and `Deserialize`. The `syn` crate also has a [number of
-examples][synex] of defining derive macros.
-
-[procedural macros]: ../book/first-edition/procedural-macros.html
-[synex]: https://github.com/dtolnay/syn/tree/master/examples
+`Serialize` and `Deserialize`.
 
 #### Derive helper attributes
 
@@ -333,14 +230,13 @@ struct Foo;
 you'll see that the `#[my_attribute(hello)]` attribute is fed through to the
 macro for processing.
 
-Attributes are often used to customize the behavior of derive macros, such as
-the `#[serde]` attribute for the `serde` crate.
+Attributes are often used to customize the behavior of derive macros.
 
 ### Attribute macros
 
-The third and final form of procedural macros is the attribute macro. Attribute
-macros allow you to define a new `#[attr]`-style attribute which can be
-attached to items and generate wrappers and such. These macros are defined like:
+Attribute macros allow you to define a new `#[attr]`-style attribute which can
+be attached to items and generate wrappers and such. These macros are defined
+like:
 
 ```rust,ignore
 #[proc_macro_attribute]
@@ -353,9 +249,8 @@ The `#[proc_macro_attribute]` indicates that this macro is an attribute macro
 and can only be invoked like `#[foo]`. The name of the function here will be the
 name of the attribute as well.
 
-The first input, `attr`, is the arguments to the attribute provided, which
-we'll see in a moment. The second argument, `item`, is the item that the
-attribute is attached to.
+The first input, `attr`, is the arguments to the attribute provided. The second
+argument, `item`, is the item that the attribute is attached to.
 
 Like with bang macros at the beginning (and unlike derive macros), the return
 value here *replaces* the input `item`.
@@ -402,9 +297,7 @@ fn main() {
 
 compiled as:
 
-```sh
-$ cargo run
-   Compiling foo v0.1.0 (file://.../foo)
+```
 attr:
 input: fn invoke1() { }
 attr: bar
@@ -413,8 +306,6 @@ attr: crazy custom syntax
 input: fn invoke3() { }
 attr: delimiters
 input: fn invoke4() { }
-    Finished dev [unoptimized + debuginfo] target(s) in 0.12s
-     Running `target/debug/foo`
 ```
 
 Here we can see how the arguments to the attribute show up in the `attr`
@@ -452,31 +343,6 @@ pub fn swap_spans(input: TokenStream) -> TokenStream {
 }
 ```
 
-We can see what's going on here by feeding invalid syntax into the macro and
-seeing what the compiler reports. Let's start off by seeing what the compiler
-does normally:
-
-```rust,ignore
-// src/main.rs
-fn _() {}
-```
-
-is compiled as:
-
-```sh
-$ cargo run
-   Compiling foo v0.1.0 (file://.../foo)
-error: expected identifier, found reserved identifier `_`
- --> src/main.rs:1:4
-  |
-1 | fn _() {}
-  |    ^ expected identifier, found reserved identifier
-
-error: aborting due to previous error
-```
-
-but when we feed it through our macro:
-
 ```rust,ignore
 extern crate my_macro;
 
@@ -504,9 +370,6 @@ error: aborting due to previous error
 notice how the error message is pointing to the wrong span! This is because we
 swapped the spans of the first two tokens, giving the compiler false information
 about where the tokens came from.
-
-Controlling spans is quite a powerful feature and needs to be used with care,
-misuse can lead to some excessively confusing error messages!
 
 ### Procedural macros and hygiene
 
@@ -552,3 +415,4 @@ macros in some respects. These limitations include:
   an invocation of the `compile_error!` macro with a custom message.
 
 [crate type]: linkage.html
+[proc_macro crate]: ../proc_macro/index.html
