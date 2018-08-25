@@ -13,7 +13,8 @@ procedural macros as functions from an AST to another AST.
 
 ### Crates and procedural macros
 
-All procedural macros are compiled as a crate.
+Procedural macros must be defined in a crate with the [crate type] of
+`proc-macro`.
 
 > **Note**: When using Cargo, Procedural macro crates are defined with the
 > `proc-macro` key in your manfiest:
@@ -549,3 +550,5 @@ macros in some respects. These limitations include:
 * Error reporting is currently quite primitive. While an unstable diagnostic API
   exists on stable your only option is to `panic!` or to in some cases expand to
   an invocation of the `compile_error!` macro with a custom message.
+
+[crate type]: linkage.html
