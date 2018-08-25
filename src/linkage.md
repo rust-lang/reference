@@ -1,8 +1,11 @@
 # Linkage
 
-The Rust compiler supports various methods to link crates together both
+> Note: This section is described more in terms of the compiler than of
+> the language.
+
+The compiler supports various methods to link crates together both
 statically and dynamically. This section will explore the various methods to
-link Rust crates together, and more information about native libraries can be
+link crates together, and more information about native libraries can be
 found in the [FFI section of the book][ffi].
 
 [ffi]: ../book/ffi.html
@@ -35,7 +38,7 @@ be ignored in favor of only building the artifacts specified by command line.
 
 * `--crate-type=staticlib`, `#[crate_type = "staticlib"]` - A static system
   library will be produced. This is different from other library outputs in that
-  the Rust compiler will never attempt to link to `staticlib` outputs. The
+  the compiler will never attempt to link to `staticlib` outputs. The
   purpose of this output type is to create a static library containing all of
   the local crate's code along with all upstream dependencies. The static
   library is actually a `*.a` archive on linux and osx and a `*.lib` file on
@@ -44,7 +47,7 @@ be ignored in favor of only building the artifacts specified by command line.
   dynamic dependencies on other Rust code.
 
 * `--crate-type=cdylib`, `#[crate_type = "cdylib"]` - A dynamic system
-  library will be produced.  This is used when compiling Rust code as
+  library will be produced.  This is used when compiling
   a dynamic library to be loaded from another language.  This output type will
   create `*.so` files on Linux, `*.dylib` files on macOS, and `*.dll` files on
   Windows.
@@ -52,7 +55,7 @@ be ignored in favor of only building the artifacts specified by command line.
 * `--crate-type=rlib`, `#[crate_type = "rlib"]` - A "Rust library" file will be
   produced. This is used as an intermediate artifact and can be thought of as a
   "static Rust library". These `rlib` files, unlike `staticlib` files, are
-  interpreted by the Rust compiler in future linkage. This essentially means
+  interpreted by the compiler in future linkage. This essentially means
   that `rustc` will look for metadata in `rlib` files like it looks for metadata
   in dynamic libraries. This form of output is used to produce statically linked
   executables as well as `staticlib` outputs.
@@ -125,7 +128,7 @@ dependencies will be used:
 
 In general, `--crate-type=bin` or `--crate-type=lib` should be sufficient for
 all compilation needs, and the other options are just available if more
-fine-grained control is desired over the output format of a Rust crate.
+fine-grained control is desired over the output format of a crate.
 
 ## Static and dynamic C runtimes
 
@@ -206,3 +209,7 @@ a statically linked binary on MSVC you would execute:
 ```ignore,notrust
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
+
+
+[configuration option]: conditional-compilation.html
+[procedural macros]: procedural-macros.html
