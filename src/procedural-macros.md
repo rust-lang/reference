@@ -59,6 +59,107 @@ can roughly be thought of as lexical token. For example `foo` is an `Ident`
 token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
 type, unlike `Vec<TokenTree>`, is cheap to clone (like `Rc<T>`).
 
+### Spans
+
+All tokens have an associated `Span`. A `Span` is currently an opaque value you
+cannot modify (but you can manufacture). `Span`s represent an extent of source
+code within a program and are primarily used for error reporting currently. You
+can modify the `Span` of any token, and by doing so if the compiler would like
+to print an error for the token in question it'll use the `Span` that you
+manufactured.
+
+For example let's create a wonky procedural macro which swaps the spans of the
+first two tokens:
+
+```rust,ignore
+// my-macro/src/lib.rs
+extern crate proc_macro;
+
+use proc_macro::*;
+
+#[proc_macro]
+pub fn swap_spans(input: TokenStream) -> TokenStream {
+    let mut iter = input.into_iter();
+    let mut a = iter.next().unwrap();
+    let mut b = iter.next().unwrap();
+    let a_span = a.span();
+    a.set_span(b.span());
+    b.set_span(a_span);
+    return vec![a, b].into_iter().chain(iter).collect()
+}
+```
+
+```rust,ignore
+extern crate my_macro;
+
+my_macro::swap_spans! {
+    fn _() {}
+}
+
+fn main() {}
+```
+
+and compile it:
+
+```sh
+$ cargo run
+   Compiling foo v0.1.0 (file://.../foo)
+error: expected identifier, found reserved identifier `_`
+ --> src/main.rs:4:5
+  |
+4 |     fn _() {}
+  |     ^^ expected identifier, found reserved identifier
+
+error: aborting due to previous error
+```
+
+notice how the error message is pointing to the wrong span! This is because we
+swapped the spans of the first two tokens, giving the compiler false information
+about where the tokens came from.
+
+### Procedural macros and hygiene
+
+Currently all procedural macros are "unhygienic". This means that all procedural
+macros behave as if the output token stream was simply written inline to the
+code it's next to. This means that it's affected by external items and also
+affected by external imports and such.
+
+Macro authors need to be careful to ensure their macros work in as many contexts
+as possible given this limitation. This often includes using absolute paths to
+items in libraries (`::std::option::Option` instead of `Option`) or
+by ensuring that generated functions have names that are unlikely to clash with
+other functions (like `__internal_foo` instead of `foo`).
+
+Eventually more support for hygiene will be added to make it easier to write a
+robust macro.
+
+### Limitations of procedural macros
+
+Procedural macros are not currently quite as powerful as `macro_rules!`-defined
+macros in some respects. These limitations include:
+
+* Procedural bang macros can only be invoked in *item* contexts. For example you
+  can't define your own `format!` yet because that's only ever invoked in an
+  expression context. Put another way, procedural bang macros can only expand to
+  items (things like functions, impls, etc), not expressions.
+
+  This is primarily due to the lack of hygiene with procedural macros. Once a
+  better hygiene story is stabilized this restriction will likely be lifted.
+
+* Procedural macros cannot expand to definitions of `macro_rules!` macros (none
+  of them). This restriction may be lifted over time but for now this is a
+  conservative limitation while compiler bugs are worked through and a design is
+  agreed upon.
+
+* Procedural attributes can only be attached to items, not expressions. For
+  example `#[my_attr] fn foo() {}` is ok but `#[my_attr] return 3` is not. This
+  is again due to the lack of hygiene today but this restriction may eventually
+  be lifted.
+
+* Error reporting is currently quite primitive. While an unstable diagnostic API
+  exists on stable your only option is to `panic!` or to in some cases expand to
+  an invocation of the `compile_error!` macro with a custom message.
+
 ### Bang Macros
 
 This flavor of procedural macro is like writing `macro_rules!` only you get to
@@ -312,107 +413,6 @@ Here we can see how the arguments to the attribute show up in the `attr`
 argument. Notably these arguments do not include the delimiters used to enclose
 the arguments (like procedural bang macros. Furthermore we can see the item
 continue to operate on it, either replacing it or augmenting it.
-
-### Spans
-
-All tokens have an associated `Span`. A `Span` is currently an opaque value you
-cannot modify (but you can manufacture). `Span`s represent an extent of source
-code within a program and are primarily used for error reporting currently. You
-can modify the `Span` of any token, and by doing so if the compiler would like
-to print an error for the token in question it'll use the `Span` that you
-manufactured.
-
-For example let's create a wonky procedural macro which swaps the spans of the
-first two tokens:
-
-```rust,ignore
-// my-macro/src/lib.rs
-extern crate proc_macro;
-
-use proc_macro::*;
-
-#[proc_macro]
-pub fn swap_spans(input: TokenStream) -> TokenStream {
-    let mut iter = input.into_iter();
-    let mut a = iter.next().unwrap();
-    let mut b = iter.next().unwrap();
-    let a_span = a.span();
-    a.set_span(b.span());
-    b.set_span(a_span);
-    return vec![a, b].into_iter().chain(iter).collect()
-}
-```
-
-```rust,ignore
-extern crate my_macro;
-
-my_macro::swap_spans! {
-    fn _() {}
-}
-
-fn main() {}
-```
-
-and compile it:
-
-```sh
-$ cargo run
-   Compiling foo v0.1.0 (file://.../foo)
-error: expected identifier, found reserved identifier `_`
- --> src/main.rs:4:5
-  |
-4 |     fn _() {}
-  |     ^^ expected identifier, found reserved identifier
-
-error: aborting due to previous error
-```
-
-notice how the error message is pointing to the wrong span! This is because we
-swapped the spans of the first two tokens, giving the compiler false information
-about where the tokens came from.
-
-### Procedural macros and hygiene
-
-Currently all procedural macros are "unhygienic". This means that all procedural
-macros behave as if the output token stream was simply written inline to the
-code it's next to. This means that it's affected by external items and also
-affected by external imports and such.
-
-Macro authors need to be careful to ensure their macros work in as many contexts
-as possible given this limitation. This often includes using absolute paths to
-items in libraries (`::std::option::Option` instead of `Option`) or
-by ensuring that generated functions have names that are unlikely to clash with
-other functions (like `__internal_foo` instead of `foo`).
-
-Eventually more support for hygiene will be added to make it easier to write a
-robust macro.
-
-### Limitations of procedural macros
-
-Procedural macros are not currently quite as powerful as `macro_rules!`-defined
-macros in some respects. These limitations include:
-
-* Procedural bang macros can only be invoked in *item* contexts. For example you
-  can't define your own `format!` yet because that's only ever invoked in an
-  expression context. Put another way, procedural bang macros can only expand to
-  items (things like functions, impls, etc), not expressions.
-
-  This is primarily due to the lack of hygiene with procedural macros. Once a
-  better hygiene story is stabilized this restriction will likely be lifted.
-
-* Procedural macros cannot expand to definitions of `macro_rules!` macros (none
-  of them). This restriction may be lifted over time but for now this is a
-  conservative limitation while compiler bugs are worked through and a design is
-  agreed upon.
-
-* Procedural attributes can only be attached to items, not expressions. For
-  example `#[my_attr] fn foo() {}` is ok but `#[my_attr] return 3` is not. This
-  is again due to the lack of hygiene today but this restriction may eventually
-  be lifted.
-
-* Error reporting is currently quite primitive. While an unstable diagnostic API
-  exists on stable your only option is to `panic!` or to in some cases expand to
-  an invocation of the `compile_error!` macro with a custom message.
 
 [crate type]: linkage.html
 [proc_macro crate]: ../proc_macro/index.html
