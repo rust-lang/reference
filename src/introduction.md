@@ -13,9 +13,8 @@ provides three kinds of material:
 
 <div class="warning">
 
-Warning: This book is incomplete. Documenting everything takes a
-while. We have a [big issue] to track documentation for every Rust feature,
-so check that out if you can't find something here.
+Warning: This book is incomplete. Documenting everything takes a while. See
+the [undocumented] page for what is not documented in this book.
 
 </div>
 
@@ -81,10 +80,10 @@ information. These conventions are documented here.
   An *example term* is an example of a term beind defined.
 
 * Notes that contain useful information about the state of the book or point out
-  useful, but mostly out of scope, information are in blockquotes that start with
-  the word "Note:" in **bold**.
+  useful, but mostly out of scope, information are in blockquotes that start
+  with the word "Note:" in **bold**.
 
-  > Note: This is an example note.
+  > **Note**: This is an example note.
 
 * Warnings that show unsound behavior in the language or possibly confusing
   interactions of language features are in a special warning box.
@@ -108,7 +107,7 @@ information. These conventions are documented here.
   ```
 
 * The grammar and lexical structure is in blockquotes with either "Lexer" or
-  "Syntax" in **bold** as the first line in <sup>superscript</sup>.
+  "Syntax" in <sup>**bold** superscript</sup> as the first line.
 
   > **<sup>Syntax</sup>**\
   > _ExampleGrammar_:\
@@ -139,3 +138,4 @@ attention to making those sections the best that they can be.
 [lifetime of temporaries]: expressions.html#temporary-lifetimes
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
+[undocumented]: undocumeted.html
