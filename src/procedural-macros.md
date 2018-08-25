@@ -13,13 +13,15 @@ procedural macros as functions from an AST to another AST.
 
 ### Crates and procedural macros
 
-All procedural macros are compiled as a crate. Procedural macro crates
-are defined with Cargo via the `proc-macro` key in your manfiest:
+All procedural macros are compiled as a crate.
 
-```toml
-[lib]
-proc-macro = true
-```
+> **Note**: When using Cargo, Procedural macro crates are defined with the
+> `proc-macro` key in your manfiest:
+>
+> ```toml
+> [lib]
+> proc-macro = true
+> ```
 
 Procedural macros are always compiled with the same target as the compiler
 itself. For example if you execute `cargo build --target
