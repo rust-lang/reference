@@ -9,11 +9,11 @@ Procedural macros currently come in one of three flavors:
 
 Procedural macros allow you to run code at compile time that operates over Rust
 syntax, both consuming and producing Rust syntax. You can sort of think of
-procedural macros as Rust functions from an AST to another AST.
+procedural macros as functions from an AST to another AST.
 
 ### Crates and procedural macros
 
-All procedural macros in Rust are compiled as a crate. Procedural macro crates
+All procedural macros are compiled as a crate. Procedural macro crates
 are defined with Cargo via the `proc-macro` key in your manfiest:
 
 ```toml
@@ -60,7 +60,7 @@ In the 2018 edition, however, this statement will not be necessary.
 
 One aspect you may notice about the `proc_macro` crate is that it doesn't
 contain any AST items! Instead, it primarily contains a `TokenStream` type.
-Procedural macros in Rust operate over *token streams* instead of AST nodes,
+Procedural macros operate over *token streams* instead of AST nodes,
 which is a far more stable interface over time for both the compiler and for
 procedural macros to target.
 
