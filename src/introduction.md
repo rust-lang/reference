@@ -32,9 +32,9 @@ of the features that one might expect to be language features are library
 features in Rust, so what you're looking for may be there, not here.
 
 Similarly, this book does not usually book the specifics of `rustc` as a
-tool or of Cargo. Cargo has a [book][cargo book] that contains a
-[reference][cargo reference]. There are a few pages such as [linkage] that still
-describe how `rustc` works.
+tool or of Cargo. `rustc` has its own [book][rustc book]. Cargo has a
+[book][cargo book] that contains a [reference][cargo reference]. There are a few
+pages such as [linkage] that still describe how `rustc` works.
 
 This book also only serves as a reference to what is available in stable
 Rust. For unstable features being worked on, see the [Unstable Book].
@@ -117,7 +117,7 @@ information. These conventions are documented here.
 
 ## Contributing
 
-We welcome contributions of all kind.
+We welcome contributions of all kinds.
 
 You can contribute to this book by opening an issue or sending a pull
 request to [the Rust Reference repository]. If this book does not answer
@@ -138,3 +138,4 @@ attention to making those sections the best that they can be.
 [expressions chapter]: expressions.html
 [lifetime of temporaries]: expressions.html#temporary-lifetimes
 [linkage]: linkage.html
+[rustc book]: ../rustc/index.html
