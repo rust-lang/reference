@@ -84,6 +84,8 @@ The following configurations must be defined by the implementation:
   This can be used to enable extra debugging code in development but not in
   production.  For example, it controls the behavior of the standard library's
   `debug_assert!` macro.
+* `proc_macro` - Set when the crate being compiled is being compiled with the
+  `proc_macro` [crate type].
 
 You can also set another [attribute] based on a `cfg` variable with `cfg_attr`:
 
@@ -97,3 +99,4 @@ Lastly, configuration options can be used in expressions by invoking the `cfg!`
 macro: `cfg!(a)` evaluates to `true` if `a` is set, and `false` otherwise.
 
 [attribute]: attributes.html
+[crate type]: linkage.html
