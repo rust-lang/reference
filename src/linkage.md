@@ -60,12 +60,13 @@ be ignored in favor of only building the artifacts specified by command line.
 * `--crate-type=proc-macro`, `#[crate_type = "proc-macro"]` - The output
   produced is not specified, but if a `-L` path is provided to it then the
   compiler will recognize the output artifacts as a macro and it can be loaded
-  for a program. If a crate is compiled with the `proc-macro` crate type it
-  will forbid exporting any items in the crate other than those functions
-  tagged `#[proc_macro_derive]` and those functions must also be placed at the
-  crate root. Finally, the compiler will automatically set the
-  `cfg(proc_macro)` annotation whenever any crate type of a compilation is the
-  `proc-macro` crate type.
+  for a program. Crates compiled with this crate type  must only export
+  [procedural macros]. The compiler will automatically set the `proc_macro`
+  [configuration option]. The crates are always compiled with the same target
+  that the compiler itself was built with. For example, if you are executing
+  the compiler from Linux with an `x86_64` CPU, the target will be
+  `x86_64-unknown-linux-gnu` even if the crate is a dependency of another crate
+  being built for a different target.
 
 Note that these outputs are stackable in the sense that if multiple are
 specified, then the compiler will produce each form of output at once without

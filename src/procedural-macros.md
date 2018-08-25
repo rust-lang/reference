@@ -24,22 +24,6 @@ Procedural macros must be defined in a crate with the [crate type] of
 > proc-macro = true
 > ```
 
-Procedural macros are always compiled with the same target as the compiler
-itself. For example if you execute `cargo build --target
-arm-unknown-linux-gnueabi` then procedural macros will not be compiled for ARM,
-but rather your build computer (for example `x86_64-unknown-linux-gnu`).
-
-Procedural macro crates are not currently allowed to export any items except
-procedural macros (we'll see how to define these in a bit). For example this
-crate is not allowed:
-
-```rust
-pub fn foo() {}
-```
-
-because the `foo` function is not a procedural macro. Procedural macros are
-loaded dynamically by the compiler when they are needed during compilation.
-
 ### The `proc_macro` crate
 
 Procedural macro crates almost always will link to the compiler-provided 
