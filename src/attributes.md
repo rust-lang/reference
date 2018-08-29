@@ -35,8 +35,7 @@ Attributes may appear as any of:
 
 _Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
-the bang after the hash, apply to the item or generic parameter that follow the
-attribute.
+the bang after the hash, apply to the thing that follows the attribute.
 
 Attributes may be applied to many things in the language:
 
@@ -81,6 +80,47 @@ fn some_unused_variables() {
   let z = ();
 }
 ```
+
+There are three kinds of attributes:
+
+* Built-in attributes
+* Macro attributes
+* Derive mode helper attributes
+
+## Dynamic and inert attributes
+
+An attribute is either dynamic or inert. During attribute processing, *dynamic
+attributes* remove themselves from the thing they are on while *inert attriutes*
+stay on.
+
+The `cfg` and `cfg_attr` attributes are dynamic. The `test` attribute is inert
+when compiling for tests and dynamic otherwise. Attribute macros are dynamic.
+All other attributes are inert. 
+
+## Attribute resolution
+
+On all things except for items, attribute resolution is straightforward. The
+`cfg` and `cfg_attr` attributes are applied and only inert attributes are
+allowed. Each of those inert attributes then resolve to either a built-in
+attribute or a derive mode helper attribute. If the attribute cannot resolve to
+either, it is an error.
+
+For items, attribute resolution is a bit more involved. First off, if there are
+any `cfg`, `cfg_attr`, or `test` attributes when not compiling tests, they are
+resolved first, and removed from the item. Then, each attribute is checked in
+the order they are written. If the attribute resolves to an inert attribute,
+check the next attribute. If the attribute resolves to a dynamic attribute, then
+perform its dynamic behavior. This will effectively replace the item with a new
+set of items that must go through attribute resolution from the beginning. If
+the attribute resolves to a macro that is not an attribute macro, it is an
+error. Otherwise, the attriute is not current resolveable. In this case, wait
+until another item brings the attribute into scope, and then recheck it. If all
+other items have their attributes resolved or are also waiting for attribute or
+derive mode resolution, it is an error. If all of the attributes are inert, then
+the item is finalized. If the item defines a new path for a macro, it is now
+available for other items.
+
+---
 
 The rest of this page describes or links to descriptions of which attribute
 names have meaning.
