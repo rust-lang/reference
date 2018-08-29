@@ -27,79 +27,21 @@ Procedural macros must be defined in a crate with the [crate type] of
 ### The `proc_macro` crate
 
 Procedural macro crates almost always will link to the compiler-provided 
-`proc_macro` crate. The `proc_macro` crate is a crate which provides
-facilities to working with the types of each procedural macro function. You can
-learn more about this crate by exploring [its documentation][proc macro crate].
+[`proc_macro` crate]. The `proc_macro` crate provides types required for
+writing procedural macros and facilities to make it easier.
 
-### The `TokenStream` Type
-
-It primarily contains a `TokenStream` type.
-Procedural macros operate over *token streams* instead of AST nodes,
-which is a far more stable interface over time for both the compiler and for
-procedural macros to target.
-
-A *token stream* is roughly equivalent to `Vec<TokenTree>` where a `TokenTree`
+This crate primarily contains a [`TokenStream`] type. Procedural macros operate
+over *token streams* instead of AST nodes, which is a far more stable interface
+over time for both the compiler and for procedural macros to target. A
+*token stream* is roughly equivalent to `Vec<TokenTree>` where a `TokenTree`
 can roughly be thought of as lexical token. For example `foo` is an `Ident`
 token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
-type, unlike `Vec<TokenTree>`, is cheap to clone (like `Rc<T>`).
+type, unlike `Vec<TokenTree>`, is cheap to clone.
 
-### Spans
-
-All tokens have an associated `Span`. A `Span` is currently an opaque value you
-cannot modify (but you can manufacture). `Span`s represent an extent of source
-code within a program and are primarily used for error reporting currently. You
-can modify the `Span` of any token, and by doing so if the compiler would like
-to print an error for the token in question it'll use the `Span` that you
-manufactured.
-
-For example let's create a wonky procedural macro which swaps the spans of the
-first two tokens:
-
-```rust,ignore
-// my-macro/src/lib.rs
-extern crate proc_macro;
-
-use proc_macro::*;
-
-#[proc_macro]
-pub fn swap_spans(input: TokenStream) -> TokenStream {
-    let mut iter = input.into_iter();
-    let mut a = iter.next().unwrap();
-    let mut b = iter.next().unwrap();
-    let a_span = a.span();
-    a.set_span(b.span());
-    b.set_span(a_span);
-    return vec![a, b].into_iter().chain(iter).collect()
-}
-```
-
-```rust,ignore
-extern crate my_macro;
-
-my_macro::swap_spans! {
-    fn _() {}
-}
-
-fn main() {}
-```
-
-and compile it:
-
-```sh
-$ cargo run
-   Compiling foo v0.1.0 (file://.../foo)
-error: expected identifier, found reserved identifier `_`
- --> src/main.rs:4:5
-  |
-4 |     fn _() {}
-  |     ^^ expected identifier, found reserved identifier
-
-error: aborting due to previous error
-```
-
-notice how the error message is pointing to the wrong span! This is because we
-swapped the spans of the first two tokens, giving the compiler false information
-about where the tokens came from.
+All tokens have an associated `Span`. A `Span` is an opaque value that cannot
+be modified but can be manufactured. `Span`s represent an extent of source
+code within a program and are primarily used for error reporting. You can modify
+the `Span` of any token.
 
 ### Procedural macros and hygiene
 
@@ -398,5 +340,6 @@ argument. Notably these arguments do not include the delimiters used to enclose
 the arguments (like procedural bang macros. Furthermore we can see the item
 continue to operate on it, either replacing it or augmenting it.
 
+[`TokenStream`]: ../proc_macro/struct.TokenStream.html
+[`proc_macro` crate]: ../proc_macro/index.html
 [crate type]: linkage.html
-[proc_macro crate]: ../proc_macro/index.html
