@@ -1,7 +1,7 @@
 ## Procedural Macros
 
 *Procedural macros* allow creating syntax extensions as execution of a function.
-Procedural macros currently come in one of three flavors:
+Procedural macros come in one of three flavors:
 
 * Bang macros - `my_macro!(...)`
 * Derive macros - `#[derive(MyTrait)]`
@@ -45,37 +45,28 @@ the `Span` of any token.
 
 ### Procedural macros and hygiene
 
-Currently all procedural macros are "unhygienic". This means that all procedural
-macros behave as if the output token stream was simply written inline to the
-code it's next to. This means that it's affected by external items and also
-affected by external imports and such.
+Procedural macros are *unhygienic*. This means they behave as if the output
+token stream was simply written inline to the code it's next to. This means that
+it's affected by external items and also affects external imports.
 
 Macro authors need to be careful to ensure their macros work in as many contexts
 as possible given this limitation. This often includes using absolute paths to
-items in libraries (`::std::option::Option` instead of `Option`) or
+items in libraries (for example, `::std::option::Option` instead of `Option`) or
 by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
-Eventually more support for hygiene will be added to make it easier to write a
-robust macro.
-
 ### Limitations of procedural macros
 
-Procedural macros are not currently quite as powerful as `macro_rules!`-defined
-macros in some respects. These limitations include:
+Procedural macros are not quite as powerful as `macro_rules!`-defined macros
+in certain respects. These limitations include:
 
-* Procedural bang macros can only be invoked in *item* contexts. For example you
-  can't define your own `format!` yet because that's only ever invoked in an
-  expression context. Put another way, procedural bang macros can only expand to
-  items (things like functions, impls, etc), not expressions.
+* Bang macros can only be invoked in *item* contexts. For example,
+  `format!` cannot yet be created in user libraries because it is only ever
+  invoked in an expression context. Put another way, these macros can only
+  expand to [items], not expressions.
 
-  This is primarily due to the lack of hygiene with procedural macros. Once a
-  better hygiene story is stabilized this restriction will likely be lifted.
-
-* Procedural macros cannot expand to definitions of `macro_rules!` macros (none
-  of them). This restriction may be lifted over time but for now this is a
-  conservative limitation while compiler bugs are worked through and a design is
-  agreed upon.
+* Procedural macros cannot expand to definitions of `macro_rules!` macros, with
+  exception to derive mode macros.
 
 * Procedural attributes can only be attached to items, not expressions. For
   example `#[my_attr] fn foo() {}` is ok but `#[my_attr] return 3` is not. This
