@@ -3,9 +3,9 @@
 *Procedural macros* allow creating syntax extensions as execution of a function.
 Procedural macros come in one of three flavors:
 
-* Bang macros - `my_macro!(...)`
-* Derive macros - `#[derive(MyTrait)]`
-* Attribute macros - `#[my_attribute]`
+* Bang macros - `custom_bang!(...)`
+* Derive mode macros - `#[derive(CustomMode)]`
+* Attribute macros - `#[CustomAttribute]`
 
 Procedural macros allow you to run code at compile time that operates over Rust
 syntax, both consuming and producing Rust syntax. You can sort of think of
@@ -150,105 +150,83 @@ pub fn foo(_input: TokenStream) -> TokenStream {
 the answer was: 4
 ```
 
-### Derive macros
+### Derive mode macros
 
-The derive macro feature allows you to define a new `#[derive(Foo)]` mode which
-often makes it much easier to systematically implement traits, removing quite a
-lot of boilerplate.
+*Derive mode macros* define new modes for the `derive` attribute. The macros
+define new items given the token stream of a [struct], [enum], or [union]. They
+also define derive mode helper attributes.
 
-Custom derives are defined like so:
+Custom derivers are defined by a [public] [function] with the `proc_maco_derive`
+attribute that takes a single input of the type [`TokenStream`] and returns a
+[`TokenStream`].
 
-```rust,ignore
-#[proc_macro_derive(MyTrait)]
-pub fn foo(item: TokenStream) -> TokenStream {
-    // ...
-}
-```
+The input [`TokenStream`] is the token stream of the item that has the `derive`
+attribute on it. The output [`TokenStream`] must be a set of items that are
+then appended to the [module] or [block] that the item from the input
+[`TokenStream`] is in.
 
-Here the argument to the `proc_macro_derive` attribute, `MyTrait`, is the name
-of the identifier to pass to `#[derive]`. The name of the function here, `foo`,
-is not currently used (but it may one day be used).
-
-Like procedural bang macros the input to the macro here is the item that the
-attribute was applied to. Unlike bang macros, however, the output is *appended*
-to the program rather than replacing the item its attached to. We can see this
-behavior by defining a macro like:
+The following is an example of a derive mode macro. Instead of doing anything
+useful with its input, it just appends a function `answer`.
 
 ```rust,ignore
 extern crate proc_macro;
-use proc_macro::*;
+use proc_macro::TokenStream;
 
-#[proc_macro_derive(MyTrait)]
-pub fn foo(item: TokenStream) -> TokenStream {
-    println!("{:#?}", item);
-    "fn answer() -> u32 { 2 }".parse().unwrap()
+#[proc_macro_derive(AnswerFn)]
+pub fn foo(_item: TokenStream) -> TokenStream {
+    "fn answer() -> u32 { 42 }".parse().unwrap()
 }
 ```
 
-using it liek:
+And then using said derive mode:
 
 ```rust,ignore
-extern crate my_macro;
+extern crate proc_macro_examples;
+use proc_macro_examples::AnswerFn;
 
-use my_macro::MyTrait;
-
-#[derive(MyTrait)]
-struct Foo;
+#[derive(AnswerFn)]
+struct Struct;
 
 fn main() {
-    drop(Foo);
-    println!("the answer was: {}", answer());
+    assert_eq!(42, answer());
 }
 ```
 
-and compiling it:
+#### Derive mode helper attributes
 
-```
-the answer was: 2
-```
+Derive mode macros can add additional [attributes] into the scope of the item
+they are on. Said attributes are called *derive mode helper attributes*. These
+attributes are inert, and their only purpose is to be fed into the derive
+mode macro that defined them. That said, they can be seen by all macros.
 
-Here we can see how the input to the macro was a `TokenStream` representing
-the three input tokens `struct Foo;`. While our output only contained the
-`answer` function, we were still able to use `Foo` in the main program because
-derive macros *append* items, they don't replace them.
+The way to define helper attributes is to put an `attributes` key in the
+`proc_macro_derive` macro with a comma separated list of identifiers that are
+the names of the helper attributes.
 
-Now this is a pretty wonky macro derive, and would likely be confusing to
-users! Derive macros are primarily geared towards implementing traits, like
-`Serialize` and `Deserialize`.
+For example, the following derive mode macro defines a helper attribute
+`helper`, but ultimately doesn't do anything with it.
 
-#### Derive helper attributes
+```rust, ignore
+# extern crate proc_macro;
+# use proc_macro::TokenStream;
 
-An additional feature of derive macros is that they can whitelist names
-of attributes which are considered "helper attributes" and don't participate in
-normal attribute macro expansion.  Taking our example from earlier we can
-define:
-
-```rust,ignore
-#[proc_macro_derive(MyTrait, attributes(my_attribute))]
-pub fn foo(item: TokenStream) -> TokenStream {
-    // ...
+#[proc_macro_derive(HelperAttr, attributes(helper))]
+pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
+    TokenStream::new();
 }
 ```
 
-The extra `attributes` key in the `proc_macro_derive` attribute contains a
-comma-separated list of identifiers. Each identifier is a whitelist of
-an attribute name that can be attached to items which also have
-`#[derive(MyTrait)]`. These derive helper attributes will not do anything but
-will be passed through to the `foo` procedural macro defined above as part of
-the input.
+And then usage on the derive mode on a struct:
 
-If we change our invocation to look like:
-
-```rust,ignore
-#[derive(MyTrait)]
-#[my_attribute(hello)]
-struct Foo;
 ```
+# extern crate proc_macro_examples;
+# use proc_macro_examples::HelperAttr;
 
-you'll see that the `#[my_attribute(hello)]` attribute is fed through to the
-macro for processing.
-
-Attributes are often used to customize the behavior of derive macros.
+#[derive(HelperAttr)]
+struct Struct {
+    #[helper] field: ()
+}
+```
 
 ### Attribute macros
 
