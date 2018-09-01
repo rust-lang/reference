@@ -157,8 +157,7 @@ define new items given the token stream of a [struct], [enum], or [union]. They
 also define derive mode helper attributes.
 
 Custom derivers are defined by a [public] [function] with the `proc_maco_derive`
-attribute that takes a single input of the type [`TokenStream`] and returns a
-[`TokenStream`].
+attribute and a signature of `(TokenStream) -> TokenStream`.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
 attribute on it. The output [`TokenStream`] must be a set of items that are
@@ -230,85 +229,91 @@ struct Struct {
 
 ### Attribute macros
 
-Attribute macros allow you to define a new `#[attr]`-style attribute which can
-be attached to items and generate wrappers and such. These macros are defined
-like:
+*Attribute macros* define new [attributes] which can be attached to [items].
 
-```rust,ignore
-#[proc_macro_attribute]
-pub fn foo(attr: TokenStream, input: TokenStream) -> TokenStream {
-    // ...
-}
-```
+Attribute macros are defined by a [public] [function] with the
+`proc_macro_attribute` attribute that a signature of `(TokenStream, TokenStream)
+-> TokenStream`. The first [`TokenStream`] is the attribute's metaitems, not
+including the delimiters. If the attribute is written without a metaitem, the
+attribute [`TokenStream`] is empty. The second [`TokenStream`] is of the rest of
+the item including other attributes on the item. The returned [`TokenStream`]
+replaces the item. It may contain an arbitrary number of items. The returned
+[`TokenStream`] cannot include any [macro] definitions.
 
-The `#[proc_macro_attribute]` indicates that this macro is an attribute macro
-and can only be invoked like `#[foo]`. The name of the function here will be the
-name of the attribute as well.
+For example, this attribute macro takes the input stream and returns it as is,
+effectively being the no-op of attributes.
 
-The first input, `attr`, is the arguments to the attribute provided. The second
-argument, `item`, is the item that the attribute is attached to.
+```rust
+#![crate_type = "proc_macro"]
 
-Like with bang macros at the beginning (and unlike derive macros), the return
-value here *replaces* the input `item`.
-
-Let's see this attribute in action:
-
-```rust,ignore
-// my-macro/src/lib.rs
 extern crate proc_macro;
-use proc_macro::*;
+
+use proc_macro::TokenStream;
 
 #[proc_macro_attribute]
-pub fn foo(attr: TokenStream, input: TokenStream) -> TokenStream {
-    println!("attr: {}", attr.to_string());
-    println!("input: {}", input.to_string());
+pub fn return_as_is(_attr: TokenStream, item: TokenStream) -> TokenStream {
     item
 }
 ```
 
-and invoke it as:
+This following example shows the stringified [`TokenStream`s] that the attribute
+macros see. The output will show in the output of the compiler. The output is
+shown in the comments after the function prefixed with "out:".
 
 ```rust,ignore
-// src/main.rs
-extern crate my_macro;
+// my-macro/src/lib.rs
+# extern crate proc_macro;
+# use proc_macro::TokenStream;
 
-use my_macro::foo;
-
-#[foo]
-fn invoke1() {}
-
-#[foo(bar)]
-fn invoke2() {}
-
-#[foo(crazy custom syntax)]
-fn invoke3() {}
-
-#[foo { delimiters }]
-fn invoke4() {}
-
-fn main() {
-    // ...
+#[proc_macro_attribute]
+pub fn show_streams(attr: TokenStream, input: TokenStream) -> TokenStream {
+    println!("attr: \"{}\"", attr.to_string());
+    println!("item: \"{}\"', input.to_string());
+    item
 }
 ```
 
-compiled as:
+```rust,ignore
+// src/lib.rs
+extern crate my_macro;
 
-```
-attr:
-input: fn invoke1() { }
-attr: bar
-input: fn invoke2() { }
-attr: crazy custom syntax
-input: fn invoke3() { }
-attr: delimiters
-input: fn invoke4() { }
-```
+use my_macro::show_streams;
 
-Here we can see how the arguments to the attribute show up in the `attr`
-argument. Notably these arguments do not include the delimiters used to enclose
-the arguments (like procedural bang macros. Furthermore we can see the item
-continue to operate on it, either replacing it or augmenting it.
+// Example: Basic function
+#[show_streams]
+fn invoke1() {}
+// out: attr: ""
+// out: item: "fn invoke1() { }"
+
+// Example: Attribute has a metaitem
+#[show_streams(bar)]
+fn invoke2() {}
+// out: attr: "bar"
+// out: item: "fn invoke2() {}"
+
+// Example: Multiple words in metaitem
+#[show_streams(multiple words)]
+fn invoke3() {}
+// out: attr: "multiple words"
+// out: item: "fn invoke3() {}"
+
+// Example: 
+#[show_streams { delimiters }]
+fn invoke4() {}
+// out: "delimiters"
+// out: "fn invoke4() {}"
+```
 
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
+[`TokenStream`s]: ../proc_macro/struct.TokenStream.html
+[`derive`]: attributes.html#derive
 [`proc_macro` crate]: ../proc_macro/index.html
+[attributes]: attributes.html
+[custom attributes]: attributes.html
 [crate type]: linkage.html
+[item]: items.html
+[function]: items/functions.html
+[macro]: macros.html
+[module]: items/modules.html
+[procedural macro tutorial]: ../book/2018-edition/appendix-04-macros.html#procedural-macros-for-custom-derive
+[public]: visibility-and-privacy.html
