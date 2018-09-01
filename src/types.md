@@ -13,7 +13,7 @@ Some types are defined by the language, rather than as part of the standard
 library, these are called _primitive types_. Some of these are individual
 types:
 
-* The boolean type `bool` with values `true` and `false`.
+* The [boolean type] `bool` with values `true` and `false`.
 * The [machine types] (integer and floating-point).
 * The [machine-dependent integer types].
 * The [textual types] `char` and `str`.
@@ -29,6 +29,7 @@ language:
 * [References]
 * [Pointers]
 
+[boolean type]: #boolean-type
 [machine types]: #machine-types
 [machine-dependent integer types]: #machine-dependent-integer-types
 [textual types]: #textual-types
@@ -42,18 +43,36 @@ language:
 [function]: #function-types
 [closure]: #closure-types
 
+### Boolean type
+
+The `bool` type is a datatype which can be either `true` or `false`. The boolean
+type uses one byte of memory. It is used in comparisons and bitwise operations
+like `&`, `|`, and `!`.
+
+```rust
+fn main() {
+    let x = true;
+    let y: bool = false; // with the boolean type annotation
+
+    // Use of booleans in conditional expressions
+    if x {
+        println!("x is true");
+    }
+}
+```
+
 ## Numeric types
 
 ### Machine types
 
 The machine types are the following:
 
-* The unsigned word types `u8`, `u16`, `u32`, `u64`, and `u128` with values drawn from
-  the integer intervals [0, 2^8 - 1], [0, 2^16 - 1], [0, 2^32 - 1],
+* The unsigned word types `u8`, `u16`, `u32`, `u64`, and `u128` with values
+  drawn from the integer intervals [0, 2^8 - 1], [0, 2^16 - 1], [0, 2^32 - 1],
   [0, 2^64 - 1], and [0, 2^128 - 1] respectively.
 
-* The signed two's complement word types `i8`, `i16`, `i32`, `i64`, and `i128`, with
-  values drawn from the integer intervals [-(2^7), 2^7 - 1],
+* The signed two's complement word types `i8`, `i16`, `i32`, `i64`, and `i128`,
+  with values drawn from the integer intervals [-(2^7), 2^7 - 1],
   [-(2^15), 2^15 - 1], [-(2^31), 2^31 - 1], [-(2^63), 2^63 - 1], and
   [-(2^127), 2^127 - 1] respectively.
 
