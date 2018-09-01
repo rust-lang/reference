@@ -11,8 +11,6 @@ Procedural macros allow you to run code at compile time that operates over Rust
 syntax, both consuming and producing Rust syntax. You can sort of think of
 procedural macros as functions from an AST to another AST.
 
-### Crates and procedural macros
-
 Procedural macros must be defined in a crate with the [crate type] of
 `proc-macro`.
 
@@ -23,6 +21,20 @@ Procedural macros must be defined in a crate with the [crate type] of
 > [lib]
 > proc-macro = true
 > ```
+
+As functions, they must either return syntax, panic, or loop endlessly. Returned
+syntax either replaces or adds the syntax depending on the kind of procedural
+macro. Panics are caught by the compiler and are turned into a compiler error.
+Endless loops are not caught by the compiler which hangs the compiler.
+
+Procedural macros run during compilation, and thus have the same resources that
+the compiler has. For example, standard input, error, and output are the same
+that the compiler has access to. Similarly, file access is the same. Because
+of this, procedural macros have the same security concerns that [Cargo's
+build scripts] have.
+
+Procedural macros have two ways of reporting errors. The first is to panic. The
+second is to emit a [`compile_error`] macro invocation.
 
 ### The `proc_macro` crate
 
@@ -306,8 +318,10 @@ fn invoke4() {}
 
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
 [`TokenStream`s]: ../proc_macro/struct.TokenStream.html
+[`compile_error`]: ../std/macro.compile_error.html
 [`derive`]: attributes.html#derive
 [`proc_macro` crate]: ../proc_macro/index.html
+[Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [attributes]: attributes.html
 [custom attributes]: attributes.html
 [crate type]: linkage.html
