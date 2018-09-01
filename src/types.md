@@ -43,8 +43,6 @@ language:
 [function]: #function-types
 [closure]: #closure-types
 
-## Numeric types
-
 ### Boolean type
 
 The `bool` type is a datatype which can be either `true` or `false`. The boolean
@@ -62,6 +60,8 @@ fn main() {
     }
 }
 ```
+
+## Numeric types
 
 ### Machine types
 
