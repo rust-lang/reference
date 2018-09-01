@@ -68,15 +68,19 @@ apply to the crate as a whole.
 
 A crate that contains a `main` [function] can be compiled to an executable. If a
 `main` function is present, it must take no arguments, must not declare any
-[trait or lifetime bounds], must not have any [where clauses], and  its return
+[trait or lifetime bounds], must not have any [where clauses], and its return
 type must  be one of the following:
 
 * `()`
+* `Result<(), E> where E: Error`
 <!-- * `!` -->
-* `Result<T, E> where T: on this list, E: Error`
+<!-- * Result<!, E> where E: Error` -->
 
 > Note: The implementation of which return types are allowed is determined by
 > the unstable [`Termination`] trait.
+
+<!-- If the previous section needs updating (from "must take no arguments"
+  onwards, also update it in the attributes.md file, testing section -->
 
 The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
 file is encoded in UTF8. It can only occur at the beginning of the file and

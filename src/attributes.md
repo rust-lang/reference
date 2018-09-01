@@ -118,14 +118,6 @@ names have meaning.
   bar;` is equivalent to `mod bar { /* contents of foo.rs */ }`. The path is
   taken relative to the directory that the current module is in.
 
-## Function-only attributes
-
-- `test` - indicates that this function is a test function, to only be compiled
-  in case of `--test`.
-  - `ignore` - indicates that this test function is disabled.
-- `should_panic` - indicates that this test function should panic, inverting the
-  success condition.
-
 ## FFI attributes
 
 On an `extern` block, the following attributes are interpreted:
@@ -226,6 +218,42 @@ The `doc` attribute is used to document items and fields. [Doc comments]
 are transformed into `doc` attributes.
 
 See [The Rustdoc Book] for reference material on this attribute.
+
+### Testing
+
+The compiler comes with a default test framework. It works by attributing
+functions with the `test` attribute. These functions are only compiled when
+compiling with the test harness. Like [main], functions annotated with this
+attribute must take no arguments, must not declare any
+[trait or lifetime bounds], must not have any [where clauses], and its return
+type must be one of the following:
+
+* `()`
+* `Result<(), E> where E: Error`
+<!-- * `!` -->
+<!-- * Result<!, E> where E: Error` -->
+
+> Note: The implementation of which return types are allowed is determined by
+> the unstable [`Termination`] trait.
+
+<!-- If the previous section needs updating (from "must take no arguments"
+  onwards, also update it in the crates-and-source-files.md file -->
+
+> Note: The test harness is ran by passing the `--test` argument to `rustc` or
+> using `cargo test`.
+
+Tests that return `()` pass as long as they terminate and do not panic. Tests
+that return a `Result` pass as long as they return `Ok(())`. Tests that do not
+terminate neither pass nor fail.
+
+A function annotated with the `test` attribute can also be annotated with the
+`ignore` attribute. The *`ignore` attribute* tells the test harness to not
+execute that function as a test. It will still only be compiled when compiling
+with the test harness.
+
+A function annotated with the `test` attribute that returns `()` can also be
+annotated with the `should_panic` attribute. The *`should_panic` attribute*
+makes the test only pass if it actually panics.
 
 ### Conditional compilation
 
@@ -499,3 +527,7 @@ You can implement `derive` for your own traits through [procedural macros].
 [items]: items.html
 [conditional compilation]: conditional-compilation.html
 [trait]: items/traits.html
+[main]: crates-and-source-files.html
+[`Termination`]: ../std/process/trait.Termination.html
+[where clause]: items/where-clauses.html
+[trait or lifetime bounds]: trait-bounds.html
