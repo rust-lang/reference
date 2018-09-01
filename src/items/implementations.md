@@ -1,11 +1,14 @@
 # Implementations
 
-An _implementation_ is an item that associates items with an *implementing type*.
+An _implementation_ is an item that associates items with an _implementing type_.
+Implementations are defined with the keyword `impl` and contain functions
+that belong to an instance of the type that is being implemented or to the
+type statically.
 
-There are two types of implementations: inherent implementations and [trait]
-implementations.
+There are two types of implementations:
 
-Implementations are defined with the keyword `impl`.
+- inherent implementations
+- [trait] implementations
 
 ## Inherent Implementations
 
@@ -13,20 +16,16 @@ An inherent implementation is defined as the sequence of the `impl` keyword,
 generic type declarations, a path to a nominal type, a where clause, and a
 bracketed set of associable items.
 
-The nominal type is called the *implementing type* and the associable items are
-the *associated items* to the implementing type.
+The nominal type is called the _implementing type_ and the associable items are
+the _associated items_ to the implementing type.
 
-Inherent implementations associate the associated items to the implementing
-type.
-
+Inherent implementations associate the contained items to the implementing type.
 The associated item has a path of a path to the implementing type followed by
-the associate item's path component.
+the associate item's path component. Inherent implementations cannot contain
+associated type aliases.
 
-Inherent implementations cannot contain associated type aliases.
-
-A type can have multiple inherent implementations.
-
-The implementing type must be defined within the same crate.
+A type can also have multiple inherent implementations. An implementing type
+must be defined within the same crate as the original type definition.
 
 ```rust
 struct Point {x: i32, y: i32}
@@ -43,14 +42,14 @@ my_point.log();
 
 ## Trait Implementations
 
-A *trait implementation* is defined like an inherent implementation except that
+A _trait implementation_ is defined like an inherent implementation except that
 the optional generic type declarations is followed by a [trait] followed
-by the keyword `for`. <!-- To understand this, you have to back-reference to
-the previous section. :( -->
+by the keyword `for`. Followed by a path to a nominal type.
 
-The trait is known as the *implemented trait*.
+<!-- To understand this, you have to back-reference to the previous section. :( -->
 
-The implementing type implements the implemented trait.
+The trait is known as the _implemented trait_. The implementing type
+implements the implemented trait.
 
 A trait implementation must define all non-default associated items declared
 by the implemented trait, may redefine default associated items defined by the
@@ -105,18 +104,18 @@ be instantiable with the same set of types for the input type parameters. -->
 The `Orphan Check` states that every trait implementation must meet either of
 the following conditions:
 
-1. The trait being implemented is defined in the same crate.
+1.  The trait being implemented is defined in the same crate.
 
-2. At least one of either `Self` or a generic type parameter of the trait must
-   meet the following grammar, where `C` is a nominal type defined
-   within the containing crate:
+2.  At least one of either `Self` or a generic type parameter of the trait must
+    meet the following grammar, where `C` is a nominal type defined
+    within the containing crate:
 
-   ```ignore
-    T = C
-      | &C
-      | &mut C
-      | Box<C>
-   ```
+    ```ignore
+     T = C
+       | &C
+       | &mut C
+       | Box<C>
+    ```
 
 ## Generic Implementations
 
