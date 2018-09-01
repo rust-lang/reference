@@ -13,7 +13,7 @@ Some types are defined by the language, rather than as part of the standard
 library, these are called _primitive types_. Some of these are individual
 types:
 
-* The boolean type `bool` with values `true` and `false`.
+* The [boolean type] `bool` with values `true` and `false`.
 * The [machine types] (integer and floating-point).
 * The [machine-dependent integer types].
 * The [textual types] `char` and `str`.
@@ -29,6 +29,7 @@ language:
 * [References]
 * [Pointers]
 
+[boolean type]: #boolean-type
 [machine types]: #machine-types
 [machine-dependent integer types]: #machine-dependent-integer-types
 [textual types]: #textual-types
@@ -43,6 +44,24 @@ language:
 [closure]: #closure-types
 
 ## Numeric types
+
+### Boolean type
+
+The `bool` type is a datatype which can be either `true` or `false`. The boolean
+type uses one byte of memory. It is used in comparisons and bitwise operations
+like `&`, `|`, and `!`.
+
+```rust
+fn main() {
+    let x = true;
+    let y: bool = false; // with the boolean type annotation
+
+    // Use of booleans in conditional expressions
+    if x {
+        println!("x is true");
+    }
+}
+```
 
 ### Machine types
 
