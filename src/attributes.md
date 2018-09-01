@@ -243,8 +243,8 @@ type must be one of the following:
 > Note: The test harness is ran by passing the `--test` argument to `rustc` or
 > using `cargo test`.
 
-Tests that return `()` pass as long as they terminate do not panic. Tests that
-return a `Result` pass as long as they return `Ok(())`. Tests that do not
+Tests that return `()` pass as long as they terminate and do not panic. Tests
+that return a `Result` pass as long as they return `Ok(())`. Tests that do not
 terminate neither pass nor fail.
 
 A function annotated with the `test` attribute can also be annotated with the
