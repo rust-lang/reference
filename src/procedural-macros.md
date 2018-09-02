@@ -3,7 +3,7 @@
 *Procedural macros* allow creating syntax extensions as execution of a function.
 Procedural macros come in one of three flavors:
 
-* Bang macros - `custom_bang!(...)`
+* Function-like macros - `custom!(...)`
 * Derive mode macros - `#[derive(CustomMode)]`
 * Attribute macros - `#[CustomAttribute]`
 
@@ -89,78 +89,47 @@ in certain respects. These limitations include:
   exists on stable your only option is to `panic!` or to in some cases expand to
   an invocation of the `compile_error!` macro with a custom message.
 
-### Bang Macros
+## Function-like procedural macros
 
-This flavor of procedural macro is like writing `macro_rules!` only you get to
-execute arbitrary code over the input tokens instead of being limited to
-`macro_rules!` syntax.
+Function-like procedural macros define new invokable macros.
 
-Procedural bang macros are defined with the `#[proc_macro]` attribute and have
-the following signature:
+These macros are defined by a [public] [function] with the `proc_maco`
+[attribute] and a signature of `(TokenStream) -> TokenStream`. The input
+[`TokenStream`] is what is inside the delimiters of the macro invocation and the
+output [`TokenStream`] replaces the entire macro invocation. It may contain an
+arbitrary number of items.
 
-```rust,ignore
-#[proc_macro]
-pub fn foo(input: TokenStream) -> TokenStream {
-    // ...
-}
-```
-
-This item is defining a procedural bang macro (`#[proc_macro]`) which is called
-`foo`. The first argument is the input to the macro which explore in a second,
-and the return value is the tokens that it should expand to. 
+For example, the following macro definition ignores its input and outputs a
+function `answer` into its scope.
 
 ```rust,ignore
-// my-macro/src/lib.rs
 extern crate proc_macro;
-
-use proc_macro::*;
+use proc_macro::TokenStream;
 
 #[proc_macro]
-pub fn foo(input: TokenStream) -> TokenStream {
-    input
+pub fn make_answer(_item: TokenStream) -> TokenStream {
+    "fn answer() -> u32 { 42 }".parse().unwrap()
 }
 ```
 
-And now let's invoke it:
+And then we use it a binary crate to print "42" to standard output.
 
 ```rust,ignore
-// src/main.rs
-extern crate my_macro;
+extern crate proc_macro_examples;
+use proc_macro_examples::make_answer;
 
-my_macro::foo!(fn answer() -> u32 { 3 });
+make_answer!();
 
 fn main() {
-    println!("the answer was: {}", answer());
+    println!("{}", answer());
 }
 ```
 
-First up, let's see what the input to our macro looks like by modifying our
-macro:
-
-```rust,ignore
-// my-macro/src/lib.rs
-#[proc_macro]
-pub fn foo(input: TokenStream) -> TokenStream {
-    println!("{:#?}", input);
-    input
-}
-```
-
-The macro invocation is effectively replaced by
-the return value of the macro, creating the function that we provided as input.
-We can see another example of this where we simply ignore the input:
-
-```rust,ignore
-// my-macro/src/lib.rs
-#[proc_macro]
-pub fn foo(_input: TokenStream) -> TokenStream {
-    "fn answer() -> u32 { 4 }".parse().unwrap()
-}
-```
-
-```
-the answer was: 4
-```
+These macros are only invokable in [modules]. They cannot even be invoked to
+make [item declaration statements]. Furthermore, they must either be invoked
+with curly braces and no semicolon or a different delimiter followed by a
+semicolon. For example, `make_answer` from the previous example can be invoked
+as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 
 ### Derive mode macros
 
@@ -168,8 +137,8 @@ the answer was: 4
 define new items given the token stream of a [struct], [enum], or [union]. They
 also define derive mode helper attributes.
 
-Custom derivers are defined by a [public] [function] with the `proc_maco_derive`
-attribute and a signature of `(TokenStream) -> TokenStream`.
+Custom deriver modes are defined by a [public] [function] with the
+`proc_maco_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
 attribute on it. The output [`TokenStream`] must be a set of items that are
@@ -184,7 +153,7 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 
 #[proc_macro_derive(AnswerFn)]
-pub fn foo(_item: TokenStream) -> TokenStream {
+pub fn derive_answer_fn(_item: TokenStream) -> TokenStream {
     "fn answer() -> u32 { 42 }".parse().unwrap()
 }
 ```
@@ -326,8 +295,10 @@ fn invoke4() {}
 [custom attributes]: attributes.html
 [crate type]: linkage.html
 [item]: items.html
+[item declaration statements]: statements.html#item-declarations
 [function]: items/functions.html
 [macro]: macros.html
 [module]: items/modules.html
+[modules]: items/modules.html
 [procedural macro tutorial]: ../book/2018-edition/appendix-04-macros.html#procedural-macros-for-custom-derive
 [public]: visibility-and-privacy.html
