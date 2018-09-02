@@ -112,7 +112,7 @@ let a = unsafe { an_unsafe_fn() };
 Block expressions allow [outer attributes] and [inner attributes] directly after
 the opening brace when the block expression is the outer expression of an
 [expression statement] or the final expression of another block expression. The
-attributes that have meaning on a block expression are [`cfg`], and [the lint
+attributes that have meaning on a block expression are [`cfg`] and [the lint
 check attributes].
 
 For example, this function returns `true` on unix platforms and `false` on other
@@ -136,6 +136,6 @@ fn is_unix_platform() -> bool {
 [outer attributes]: attributes.html
 [inner attributes]: attributes.html
 [expression statement]: statements.html#expression-statements
-[`cfg`]: attributes.html#conditional-compilation
+[`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [unsafe operations]: unsafety.html

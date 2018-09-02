@@ -209,6 +209,6 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 [numeric types]: types.html#numeric-types
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
-[`cfg`]: attributes.html#conditional-compilation
+[`cfg`]: conditional-compilation.html
 [lint check attributes]: attributes.html#lint-check-attributes
 [range]: expressions/range-expr.html

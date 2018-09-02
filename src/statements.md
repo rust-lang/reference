@@ -104,5 +104,5 @@ statement are [`cfg`], and [the lint check attributes].
 [implementations]: items/implementations.html
 [variables]: variables.html
 [outer attributes]: attributes.html
-[`cfg`]: attributes.html#conditional-compilation
+[`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
