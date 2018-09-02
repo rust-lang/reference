@@ -3,9 +3,9 @@
 *Procedural macros* allow creating syntax extensions as execution of a function.
 Procedural macros come in one of three flavors:
 
-* Function-like macros - `custom!(...)`
-* Derive mode macros - `#[derive(CustomMode)]`
-* Attribute macros - `#[CustomAttribute]`
+* [Function-like macros] - `custom!(...)`
+* [Derive mode macros] - `#[derive(CustomMode)]`
+* [Attribute macros] - `#[CustomAttribute]`
 
 Procedural macros allow you to run code at compile time that operates over Rust
 syntax, both consuming and producing Rust syntax. You can sort of think of
@@ -55,7 +55,7 @@ be modified but can be manufactured. `Span`s represent an extent of source
 code within a program and are primarily used for error reporting. You can modify
 the `Span` of any token.
 
-### Procedural macros and hygiene
+### Procedural macro hygiene
 
 Procedural macros are *unhygienic*. This means they behave as if the output
 token stream was simply written inline to the code it's next to. This means that
@@ -67,29 +67,7 @@ items in libraries (for example, `::std::option::Option` instead of `Option`) or
 by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
-### Limitations of procedural macros
-
-Procedural macros are not quite as powerful as `macro_rules!`-defined macros
-in certain respects. These limitations include:
-
-* Bang macros can only be invoked in *item* contexts. For example,
-  `format!` cannot yet be created in user libraries because it is only ever
-  invoked in an expression context. Put another way, these macros can only
-  expand to [items], not expressions.
-
-* Procedural macros cannot expand to definitions of `macro_rules!` macros, with
-  exception to derive mode macros.
-
-* Procedural attributes can only be attached to items, not expressions. For
-  example `#[my_attr] fn foo() {}` is ok but `#[my_attr] return 3` is not. This
-  is again due to the lack of hygiene today but this restriction may eventually
-  be lifted.
-
-* Error reporting is currently quite primitive. While an unstable diagnostic API
-  exists on stable your only option is to `panic!` or to in some cases expand to
-  an invocation of the `compile_error!` macro with a custom message.
-
-## Function-like procedural macros
+### Function-like procedural macros
 
 Function-like procedural macros define new invokable macros.
 
@@ -97,7 +75,8 @@ These macros are defined by a [public] [function] with the `proc_maco`
 [attribute] and a signature of `(TokenStream) -> TokenStream`. The input
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
 output [`TokenStream`] replaces the entire macro invocation. It may contain an
-arbitrary number of items.
+arbitrary number of [items]. The returned [`TokenStream`] cannot include any
+[macro] definitions.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -131,9 +110,11 @@ with curly braces and no semicolon or a different delimiter followed by a
 semicolon. For example, `make_answer` from the previous example can be invoked
 as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 
+These macros cannot expand to syntax that defines new `macro_rule` style macros.
+
 ### Derive mode macros
 
-*Derive mode macros* define new modes for the `derive` attribute. The macros
+*Derive mode macros* define new modes for the `derive` attribute. These macros
 define new items given the token stream of a [struct], [enum], or [union]. They
 also define derive mode helper attributes.
 
@@ -291,6 +272,9 @@ fn invoke4() {}
 [`derive`]: attributes.html#derive
 [`proc_macro` crate]: ../proc_macro/index.html
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
+[Derive mode macros]: #derive-mode-macros
+[Attribute macros]: #attribute-macros
+[Function-like macros]: #function-like-procedural-macros
 [attributes]: attributes.html
 [custom attributes]: attributes.html
 [crate type]: linkage.html
