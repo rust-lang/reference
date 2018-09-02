@@ -134,7 +134,8 @@ fn test_only() {
 
 The attributes that have meaning on a function are [`cfg`], [`deprecated`],
 [`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
-attributes], [`must_use`], [the testing attributes], and [the optimization hint
+attributes], [`must_use`], [the procedural macro attributes], [the testing
+attributes], and [the optimization hint
 attributes].
 
 [external blocks]: items/external-blocks.html
@@ -147,6 +148,7 @@ attributes].
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
+[the procedural macro attributes]: procedural-macros.html
 [the testing attributes]: attributes.html#testing
 [the optimization hint attributes]: attributes.html#optimization-hints
 [`deprecated`]: attributes.html#deprecation
