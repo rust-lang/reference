@@ -117,10 +117,10 @@ implemented by executing an illegal instruction.
 
 ## Attributes on functions
 
-Functions allow for [outer attributes][attributes] and for [inner
-attributes][attributes] where inner attributes are allowed on its [block]. 
+[Outer attributes][attributes] are allowed on functions. [Inner
+attributes][attributes] are allowed directly after the `{` inside its [block].
 
-For example of an inner attribute on a function, this function will only be 
+This example shows an inner attribute on a function. The function will only be 
 available while running tests.
 
 ```
