@@ -107,7 +107,7 @@ information. These conventions are documented here.
   ```
 
 * The grammar and lexical structure is in blockquotes with either "Lexer" or
-  "Syntax" in <sup>**bold** superscript</sup> as the first line.
+  "Syntax" in <sup>**bold superscript**</sup> as the first line.
 
   > **<sup>Syntax</sup>**\
   > _ExampleGrammar_:\
