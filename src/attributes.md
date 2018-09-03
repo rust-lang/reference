@@ -87,15 +87,15 @@ There are three kinds of attributes:
 * Macro attributes
 * Derive mode helper attributes
 
-## Dynamic and inert attributes
+## Active and inert attributes
 
-An attribute is either dynamic or inert. During attribute processing, *dynamic
+An attribute is either active or inert. During attribute processing, *active
 attributes* remove themselves from the thing they are on while *inert attriutes*
 stay on.
 
-The `cfg` and `cfg_attr` attributes are dynamic. The `test` attribute is inert
-when compiling for tests and dynamic otherwise. Attribute macros are dynamic.
-All other attributes are inert. 
+The `cfg` and `cfg_attr` attributes are active. The `test` attribute is inert
+when compiling for tests and active otherwise. Attribute macros are active.
+All other attributes are inert.
 
 ---
 
