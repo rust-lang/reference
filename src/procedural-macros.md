@@ -71,7 +71,7 @@ other functions (like `__internal_foo` instead of `foo`).
 
 Function-like procedural macros define new invokable macros.
 
-These macros are defined by a [public] [function] with the `proc_maco`
+These macros are defined by a [public] [function] with the `proc_macro`
 [attribute] and a signature of `(TokenStream) -> TokenStream`. The input
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
 output [`TokenStream`] replaces the entire macro invocation. It may contain an
@@ -119,7 +119,7 @@ define new items given the token stream of a [struct], [enum], or [union]. They
 also define derive mode helper attributes.
 
 Custom deriver modes are defined by a [public] [function] with the
-`proc_maco_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
+`proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
 attribute on it. The output [`TokenStream`] must be a set of items that are
