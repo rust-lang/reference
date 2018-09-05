@@ -69,14 +69,15 @@ other functions (like `__internal_foo` instead of `foo`).
 
 ### Function-like procedural macros
 
-Function-like procedural macros define new invokable macros.
+*Function-like procedural macros* are procedural macros that are invoked using
+the macro invocation operator (`!`).
 
-These macros are defined by a [public] [function] with the `proc_macro`
+These macros are defined by a [public]&#32;[function] with the `proc_macro`
 [attribute] and a signature of `(TokenStream) -> TokenStream`. The input
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
 output [`TokenStream`] replaces the entire macro invocation. It may contain an
-arbitrary number of [items]. The returned [`TokenStream`] cannot include any
-[macro] definitions.
+arbitrary number of [items]. These macros cannot expand to syntax that defines
+new `macro_rule` style macros.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -105,20 +106,18 @@ fn main() {
 ```
 
 These macros are only invokable in [modules]. They cannot even be invoked to
-make [item declaration statements]. Furthermore, they must either be invoked
+create [item declaration statements]. Furthermore, they must either be invoked
 with curly braces and no semicolon or a different delimiter followed by a
 semicolon. For example, `make_answer` from the previous example can be invoked
 as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 
-These macros cannot expand to syntax that defines new `macro_rule` style macros.
-
 ### Derive mode macros
 
-*Derive mode macros* define new modes for the `derive` attribute. These macros
-define new items given the token stream of a [struct], [enum], or [union]. They
-also define derive mode helper attributes.
+*Derive mode macros* define new modes for the `derive` [attribute]. These macros
+define new [items] given the token stream of a [struct], [enum], or [union]. 
+They also define [derive mode helper attributes].
 
-Custom deriver modes are defined by a [public] [function] with the
+Custom deriver modes are defined by a [public]&#32;[function] with the
 `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
@@ -155,9 +154,9 @@ fn main() {
 
 #### Derive mode helper attributes
 
-Derive mode macros can add additional [attributes] into the scope of the item
+Derive mode macros can add additional [attributes] into the scope of the [item]
 they are on. Said attributes are called *derive mode helper attributes*. These
-attributes are inert, and their only purpose is to be fed into the derive
+attributes are [inert], and their only purpose is to be fed into the derive
 mode macro that defined them. That said, they can be seen by all macros.
 
 The way to define helper attributes is to put an `attributes` key in the
@@ -167,7 +166,8 @@ the names of the helper attributes.
 For example, the following derive mode macro defines a helper attribute
 `helper`, but ultimately doesn't do anything with it.
 
-```rust, ignore
+```rust,ignore
+# #[crate_type="proc-macro"]
 # extern crate proc_macro;
 # use proc_macro::TokenStream;
 
@@ -179,7 +179,8 @@ pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
 
 And then usage on the derive mode on a struct:
 
-```
+```rust,ignore
+# #![crate_type="proc-macro"]
 # extern crate proc_macro_examples;
 # use proc_macro_examples::HelperAttr;
 
@@ -193,24 +194,23 @@ struct Struct {
 
 *Attribute macros* define new [attributes] which can be attached to [items].
 
-Attribute macros are defined by a [public] [function] with the
-`proc_macro_attribute` attribute that a signature of `(TokenStream, TokenStream)
--> TokenStream`. The first [`TokenStream`] is the attribute's metaitems, not
-including the delimiters. If the attribute is written without a metaitem, the
-attribute [`TokenStream`] is empty. The second [`TokenStream`] is of the rest of
-the item including other attributes on the item. The returned [`TokenStream`]
-replaces the item. It may contain an arbitrary number of items. The returned
-[`TokenStream`] cannot include any [macro] definitions.
+Attribute macros are defined by a [public]&#32;[function] with the
+`proc_macro_attribute` [attribute] that a signature of 
+`(TokenStream, TokenStream) -> TokenStream`. The first [`TokenStream`] is the
+attribute's metaitems, not including the delimiters. If the attribute is written
+without a metaitem, the attribute [`TokenStream`] is empty. The second
+[`TokenStream`] is of the rest of the [item] including other [attributes] on the
+[item]. The returned [`TokenStream`] replaces the [item] with an arbitrary
+number of [items]. These macros cannot expand to syntax that defines new
+`macro_rule` style macros.
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
 
-```rust
-#![crate_type = "proc_macro"]
-
-extern crate proc_macro;
-
-use proc_macro::TokenStream;
+```rust,ignore
+# #![crate_type = "proc-macro"]
+# extern crate proc_macro;
+# use proc_macro::TokenStream;
 
 #[proc_macro_attribute]
 pub fn return_as_is(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -275,14 +275,21 @@ fn invoke4() {}
 [Derive mode macros]: #derive-mode-macros
 [Attribute macros]: #attribute-macros
 [Function-like macros]: #function-like-procedural-macros
+[attribute]: attributes.html
 [attributes]: attributes.html
 [custom attributes]: attributes.html
 [crate type]: linkage.html
+[derive mode helper attributes]: #derive-mode-helper-attributes
+[enum]: items/enumerations.html
+[inert]: attributes.html#active-and-inert-attributes
 [item]: items.html
 [item declaration statements]: statements.html#item-declarations
+[items]: items.html
 [function]: items/functions.html
 [macro]: macros.html
 [module]: items/modules.html
 [modules]: items/modules.html
 [procedural macro tutorial]: ../book/2018-edition/appendix-04-macros.html#procedural-macros-for-custom-derive
 [public]: visibility-and-privacy.html
+[struct]: items/structs.html
+[unions]: items/unions.html
