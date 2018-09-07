@@ -112,7 +112,8 @@
 - [Constant Evaluation](const_eval.md)
 
 - [Application Binary Interface](abi.md)
-- [Beneath `std`](beneath-std.md)
+
+- [The Rust runtime](runtime.md)
 
 [Appendix: Influences](influences.md)
 
