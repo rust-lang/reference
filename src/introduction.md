@@ -138,4 +138,4 @@ attention to making those sections the best that they can be.
 [lifetime of temporaries]: expressions.html#temporary-lifetimes
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
-[undocumented]: undocumeted.html
+[undocumented]: undocumented.html
