@@ -17,15 +17,30 @@ The `panic_handler` attribute can only be applied to a function with signature
 Below is shown a `panic_handler` function that logs the panic message and then halts the
 thread.
 
-``` rust
+<!-- NOTE(ignore) `mdbook test` doesn't support `no_std` code -->
+
+``` rust, ignore
 #![no_std]
 
-use core::intrinsics;
+use core::fmt::{self, Write};
 use core::panic::PanicInfo;
+
+struct Sink {
+    // ..
+#    _0: (),
+}
+#
+# impl Sink {
+#     fn new() -> Sink { Sink { _0: () }}
+# }
+#
+# impl fmt::Write for Sink {
+#     fn write_str(&mut self, _: &str) -> fmt::Result { Ok(()) }
+# }
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    let mut sink = /* .. */;
+    let mut sink = Sink::new();
 
     // logs "panicked at '$reason', src/main.rs:27:4" to some `sink`
     let _ = writeln!(sink, "{}", info);
