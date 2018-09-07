@@ -187,7 +187,7 @@ See the [macros section of the first edition of the
 book](../book/first-edition/macros.html#scoping-and-macro-importexport) for more
 information on `macro_rules` macro scope.
 
-- `proc_macro` - Defines a [bang macro].
+- `proc_macro` - Defines a [function-like macro].
 
 - `proc_macro_derive` - Defines a [derive macro].
 
@@ -549,7 +549,7 @@ You can implement `derive` for your own traits through [procedural macros].
 [external blocks]: items/external-blocks.html
 [items]: items.html
 [attribute macro]: procedural-macros.html#attribute-macros
-[bang macro]: procedural-macros.html#bang-macros
+[function-like macro]: procedural-macros.html#function-like-procedural-macros
 [conditional compilation]: conditional-compilation.html
 [derive macro]: procedural-macros.html#derive-macros
 [trait]: items/traits.html[main]: crates-and-source-files.html
