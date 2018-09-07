@@ -35,8 +35,7 @@ Attributes may appear as any of:
 
 _Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
-the bang after the hash, apply to the item or generic parameter that follow the
-attribute.
+the bang after the hash, apply to the thing that follows the attribute.
 
 Attributes may be applied to many things in the language:
 
@@ -81,6 +80,24 @@ fn some_unused_variables() {
   let z = ();
 }
 ```
+
+There are three kinds of attributes:
+
+* Built-in attributes
+* Macro attributes
+* Derive mode helper attributes
+
+## Active and inert attributes
+
+An attribute is either active or inert. During attribute processing, *active
+attributes* remove themselves from the thing they are on while *inert attriutes*
+stay on.
+
+The `cfg` and `cfg_attr` attributes are active. The `test` attribute is inert
+when compiling for tests and active otherwise. Attribute macros are active.
+All other attributes are inert.
+
+---
 
 The rest of this page describes or links to descriptions of which attribute
 names have meaning.
@@ -161,14 +178,20 @@ which can be used to control type layout.
 
 - `macro_reexport` on an `extern crate` — re-export the named macros.
 
-- `macro_export` - export a macro for cross-crate usage.
+- `macro_export` - export a `macro_rules` macro for cross-crate usage.
 
 - `no_link` on an `extern crate` — even if we load this crate for macros, don't
   link it into the output.
 
 See the [macros section of the first edition of the
 book](../book/first-edition/macros.html#scoping-and-macro-importexport) for more
-information on macro scope.
+information on `macro_rules` macro scope.
+
+- `proc_macro` - Defines a [bang macro].
+
+- `proc_macro_derive` - Defines a [derive macro].
+
+- `proc_macro_attribute` - Defines an [attribute macro].
 
 ## Miscellaneous attributes
 
@@ -525,9 +548,11 @@ You can implement `derive` for your own traits through [procedural macros].
 [match expressions]: expressions/match-expr.html
 [external blocks]: items/external-blocks.html
 [items]: items.html
+[attribute macro]: procedural-macros.html#attribute-macros
+[bang macro]: procedural-macros.html#bang-macros
 [conditional compilation]: conditional-compilation.html
-[trait]: items/traits.html
-[main]: crates-and-source-files.html
+[derive macro]: procedural-macros.html#derive-macros
+[trait]: items/traits.html[main]: crates-and-source-files.html
 [`Termination`]: ../std/process/trait.Termination.html
 [where clause]: items/where-clauses.html
 [trait or lifetime bounds]: trait-bounds.html
