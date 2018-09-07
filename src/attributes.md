@@ -189,7 +189,7 @@ information on `macro_rules` macro scope.
 
 - `proc_macro` - Defines a [function-like macro].
 
-- `proc_macro_derive` - Defines a [derive macro].
+- `proc_macro_derive` - Defines a [derive mode macro].
 
 - `proc_macro_attribute` - Defines an [attribute macro].
 
@@ -551,7 +551,7 @@ You can implement `derive` for your own traits through [procedural macros].
 [attribute macro]: procedural-macros.html#attribute-macros
 [function-like macro]: procedural-macros.html#function-like-procedural-macros
 [conditional compilation]: conditional-compilation.html
-[derive macro]: procedural-macros.html#derive-macros
+[derive mode macro]: procedural-macros.html#derive-mode-macros
 [trait]: items/traits.html[main]: crates-and-source-files.html
 [`Termination`]: ../std/process/trait.Termination.html
 [where clause]: items/where-clauses.html
