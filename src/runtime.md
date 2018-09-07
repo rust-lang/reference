@@ -51,8 +51,7 @@ fn panic(info: &PanicInfo) -> ! {
 
 ### Standard behavior
 
-The standard library provides an implementation of `panic_handler` than can be
-statically customized using the `-C panic` flag. `-C panic=abort` makes panics
-abort the process, and `-C panic=unwind` makes panics unwind the panicking
-thread. If no panicking behavior is specified using `-C panic` one of these two
-behaviors is chosen according to the compilation target.
+The standard library provides an implementation of `panic_handler` than defaults
+to unwinding the stack but that can be [changed to abort the process][abort].
+
+[abort]: ../book/2018-edition/ch09-01-unrecoverable-errors-with-panic.html
