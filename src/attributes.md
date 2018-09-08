@@ -552,7 +552,8 @@ You can implement `derive` for your own traits through [procedural macros].
 [function-like macro]: procedural-macros.html#function-like-procedural-macros
 [conditional compilation]: conditional-compilation.html
 [derive mode macro]: procedural-macros.html#derive-mode-macros
-[trait]: items/traits.html[main]: crates-and-source-files.html
+[trait]: items/traits.html
+[main]: crates-and-source-files.html
 [`Termination`]: ../std/process/trait.Termination.html
 [where clause]: items/where-clauses.html
 [trait or lifetime bounds]: trait-bounds.html
