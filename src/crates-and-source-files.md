@@ -20,9 +20,8 @@
 Rust's semantics obey a *phase distinction* between compile-time and
 run-time.[^phase-distinction] Semantic rules that have a *static
 interpretation* govern the success or failure of compilation, while
-semantic rules
-that have a *dynamic interpretation* govern the behavior of the program at
-run-time.
+semantic rules that have a *dynamic interpretation* govern the behavior of the
+program at run-time.
 
 The compilation model centers on artifacts called _crates_. Each compilation
 processes a single crate in source form, and if successful, produces a single
@@ -66,22 +65,6 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-A crate that contains a `main` [function] can be compiled to an executable. If a
-`main` function is present, it must take no arguments, must not declare any
-[trait or lifetime bounds], must not have any [where clauses], and its return
-type must  be one of the following:
-
-* `()`
-* `Result<(), E> where E: Error`
-<!-- * `!` -->
-<!-- * Result<!, E> where E: Error` -->
-
-> Note: The implementation of which return types are allowed is determined by
-> the unstable [`Termination`] trait.
-
-<!-- If the previous section needs updating (from "must take no arguments"
-  onwards, also update it in the attributes.md file, testing section -->
-
 The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
 file is encoded in UTF8. It can only occur at the beginning of the file and
 is ignored by the compiler.
@@ -100,6 +83,48 @@ fn main() {
 }
 ```
 
+## Preludes and `no_std`
+
+All crates have a *prelude* that automatically inserts a [use declaration] into
+each [module] and an [`extern crate]` into the crate root module. By default,
+the *standard prelude* is used. The linked crate is [`std`] and the [use
+delcaration] uses [`std::prelude::v1::*`].
+
+The prelude can be changed to the *core prelude* by using the `no_std`
+[attribute] on the root crate module. The linked crate is [`core`] and the
+[`use` declaration] uses [`core::prelude::v1::*`]. Using the core prelude over
+the standard prelude is useful when either the crate is targeting a platform
+that does not support the standard library or is purposefully not using the
+capabilities of the standard library. Those capabilities are mainly dynamic
+memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g.
+`std::fs` and `std::io`).
+
+<div class="warning">
+
+Warning: Using `no_std` does not prevent the standard library from being linked
+in. It is still valid to put `extern crate std;` into the crate and dependencies
+can also link it in.
+
+</div>
+
+## Main Functions
+
+A crate that contains a `main` [function] can be compiled to an executable. If a
+`main` function is present, it must take no arguments, must not declare any
+[trait or lifetime bounds], must not have any [where clauses], and its return
+type must  be one of the following:
+
+* `()`
+* `Result<(), E> where E: Error`
+<!-- * `!` -->
+<!-- * Result<!, E> where E: Error` -->
+
+> Note: The implementation of which return types are allowed is determined by
+> the unstable [`Termination`] trait.
+
+<!-- If the previous section needs updating (from "must take no arguments"
+  onwards, also update it in the attributes.md file, testing section -->
+
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
     happen before the program is executed regardless of when it is executed.
@@ -108,15 +133,21 @@ fn main() {
     ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
-[module]: items/modules.html
-[module path]: paths.html
-[attributes]: attributes.html
-[unit]: types.html#tuple-types
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
-[function]: items/functions.html
 [`Termination`]: ../std/process/trait.Termination.html
-[where clauses]: items/generics.html#where-clauses
+[`core`]: ../core/index.html
+[`core::prelude::v1::*`]: ../core/preludce.index.html
+[`std`]: ../std/index.html
+[`std::prelude::v1::*`]: ../std/prelude/index.html
+[`use` declaration]: items/use-declarations.html
+[attribute]: attributes.html
+[attributes]: attributes.html
+[function]: items/functions.html
+[module]: items/modules.html
+[module path]: paths.html
 [trait or lifetime bounds]: trait-bounds.html
+[unit]: types.html#tuple-types
+[where clauses]: items/generics.html#where-clauses
