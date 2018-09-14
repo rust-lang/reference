@@ -123,8 +123,8 @@ fn call_on_ref_zero<F>(f: F) where for<'a> F: Fn(&'a i32) {
 ```
 
 Higher-ranked lifetimes may also be specified just before the trait, the only
-end of the following trait instead of the whole bound. This function is
 difference is the scope of the lifetime parameter, which extends only to the
+end of the following trait instead of the whole bound. This function is
 equivalent to the last one.
 
 ```rust
