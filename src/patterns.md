@@ -241,6 +241,37 @@ Thus, `ref` is not something that is being matched against. Its objective is
 exclusively to make the matched binding a reference, instead of potentially
 copying or moving what was matched.
 
+[Path patterns](#path-patterns) take precedence over identifier patterns. It is an error
+if `ref` or `ref mut` is specified and the identifier shadows a constant.
+
+### Binding modes
+
+In order to service better ergonomics, patterns operate in different *binding modes* in
+order to make it easier to bind references to values. When a reference value is matched by
+a non-reference pattern, it will be automatically treated as a `ref` or `ref mut` binding.
+Example:
+
+```rust
+let x: &Option<i32> = &Some(3);
+if let Some(y) = x {
+    // y was converted to `ref y` and its type is &i32
+}
+```
+
+*Non-reference patterns* include all patterns except bindings, [wildcard
+patterns](#wildcard-pattern) (`_`), [`const` patterns](#path-patterns) of reference types,
+and [reference patterns](#reference-patterns).
+
+If a binding pattern does not explicitly have `ref`, `ref mut`, or `mut`, then it uses the
+*default binding mode* to determine how the variable should be bound. The default binding
+mode starts in "move" mode which uses move semantics. When matching a pattern, the
+compiler starts from the outside of the pattern and works inwards. Each time a reference
+is matched using a non-reference pattern, it will automatically dereference the value and
+update the default binding mode. References will set the default binding mode to `ref`.
+Mutable references will set the mode to `ref mut` unless the mode is already `ref` in
+which case it remains `ref`. If the automatically dereferenced value is still a reference,
+it is dereferenced and this process repeats.
+
 ## Wildcard pattern
 
 > **<sup>Syntax</sup>**\
@@ -591,6 +622,9 @@ Unqualified path patterns can refer to:
 * associated constants
 
 Qualified path patterns can only refer to associated constants.
+
+Constants cannot be a union type. Struct and enum constants must have
+`#[derive(PartialEq, Eq)]` (not merely implemented).
 
 Path patterns are irrefutable when they refer to structs or an enum variant when the enum
 has only one variant or a constant whose type is irrefutable. They are refutable when they
