@@ -18,7 +18,7 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 }
 ```
 
-As with `let` bindings, function arguments are irrefutable patterns, so any
+As with `let` bindings, function arguments are irrefutable [patterns], so any
 pattern that is valid in a let binding is also valid as an argument:
 
 ```rust
@@ -120,7 +120,7 @@ implemented by executing an illegal instruction.
 [Outer attributes][attributes] are allowed on functions. [Inner
 attributes][attributes] are allowed directly after the `{` inside its [block].
 
-This example shows an inner attribute on a function. The function will only be 
+This example shows an inner attribute on a function. The function will only be
 available while running tests.
 
 ```
@@ -154,3 +154,4 @@ attributes].
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation
 [`must_use`]: attributes.html#must_use
+[patterns]: patterns.html

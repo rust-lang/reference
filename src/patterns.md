@@ -98,7 +98,7 @@ match message {
 
 ## Refutability
 
-A pattern is said to be *Refutable* when it **has the possibily of not being matched**
+A pattern is said to be *Refutable* when it **has the possibility of not being matched**
 by the value it is being matched against. *Irrefutable* patterns, on the other hand,
 always match the value they are being matched against. Examples:
 
@@ -163,7 +163,7 @@ for i in -2..5 {
 
 > **<sup>Syntax</sup>**\
 > _IdentifierPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> IDENTIFIER (`@` [_Pattern_] ) <sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER] (`@` [_Pattern_] ) <sup>?</sup>
 
 _Identifier patterns_ bind the value they match to a **previously undeclared** variable.
 
@@ -410,8 +410,11 @@ let b = match int_reference { &0 => "zero", _ => "some" };
 assert_eq!(a, b);
 ```
 
-The grammar production for reference patterns has to match the token `&&`
-because it is a token by itself, not two `&` tokens.
+The grammar production for reference patterns has to match the token `&&` to match a
+reference to a reference because it is a token by itself, not two `&` tokens.
+
+Adding the `mut` keyword dereferences a mutable reference. The mutability must match the
+mutability of the reference.
 
 Reference patterns are always irrefutable.
 
@@ -431,16 +434,18 @@ Reference patterns are always irrefutable.
 > &nbsp;&nbsp; _StructPatternField_ (`,` _StructPatternField_) <sup>\*</sup>
 >
 > _StructPatternField_ :\
-> &nbsp;&nbsp; _OuterAttribute_ <sup>\*</sup>\
+> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; INTEGER_LITERAL `:` [_Pattern_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | IDENTIFIER `:` [_Pattern_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | `ref`<sup>?</sup> `mut`<sup>?</sup> IDENTIFIER\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [INTEGER_LITERAL] `:` [_Pattern_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [IDENTIFIER] `:` [_Pattern_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER]\
 > &nbsp;&nbsp; )
 >
 > _StructPatternEtCetera_ :\
-> &nbsp;&nbsp; _OuterAttribute_ <sup>\*</sup>\
+> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; `..`
+
+[_OuterAttribute_]: attributes.html
 
 Struct patterns match struct values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a struct.
@@ -531,7 +536,7 @@ A TupleStruct pattern is refutable when one of its subpatterns is refutable.
 
 > **<sup>Syntax</sup>**\
 > _TuplePattern_ :<a name="tuple-pattern-syntax"></a>\
-> &nbsp;&nbsp; `(` _TupplePatternItems_<sup>?</sup> `)`
+> &nbsp;&nbsp; `(` _TuplePatternItems_<sup>?</sup> `)`
 >
 > _TuplePatternItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_] `,`\
@@ -604,3 +609,4 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_PathPattern_]: #path-patterns
 
 [Copy trait]: special-types-and-traits.html#copy
+[IDENTIFIER]: identifiers.html

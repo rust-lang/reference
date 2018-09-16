@@ -524,9 +524,9 @@ usages and meanings are defined in the linked pages.
 | `%`    | Percent     | [Remainder][arith]
 | `^`    | Caret       | [Bitwise and Logical XOR][arith]
 | `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type]
-| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References]
+| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References], [Reference patterns]
 | <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], [Match]
-| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References]
+| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References], [Reference patterns]
 | <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]
 | `<<`   | Shl         | [Shift Left][arith], [Nested Generics][generics]
 | `>>`   | Shr         | [Shift Right][arith], [Nested Generics][generics]
@@ -547,12 +547,12 @@ usages and meanings are defined in the linked pages.
 | `<`    | Lt          | [Less than][comparison], [Generics], [Paths]
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
-| `@`    | At          | [Subpattern binding][match]
-| `_`    | Underscore  | [Placeholder patterns][match], Inferred types
+| `@`    | At          | [Subpattern binding]
+| `_`    | Underscore  | [Wildcard patterns], Inferred types
 | `.`    | Dot         | [Field access][field], [Tuple index]
-| `..`   | DotDot      | [Range][range], [Struct expressions], [Wildcard patterns][match]
-| `...`  | DotDotDot   | [Variadic functions][extern]
-| `..=`  | DotDotEq    | [Inclusive Range][range]
+| `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns]
+| `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
+| `..=`  | DotDotEq    | [Inclusive Range][range], [Range patterns]
 | `,`    | Comma       | Various separators
 | `;`    | Semi        | Terminator for various items and statements, [Array types]
 | `:`    | Colon       | Various separators
@@ -611,3 +611,8 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [extern]: items/external-blocks.html
 [struct expressions]: expressions/struct-expr.html
 [tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
+[Wildcard patterns]: patterns.html#wildcard-pattern
+[patterns]: patterns.html
+[Subpattern binding]: patterns.html#identifier-patterns
+[Range patterns]: patterns.html#range-patterns
+[Reference patterns]: patterns.html#reference-patterns

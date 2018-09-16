@@ -36,7 +36,7 @@ syntax named by _designator_. Valid designators are:
 [item]: items.html
 [block]: expressions/block-expr.html
 [statement]: statements.html
-[pattern]: expressions/match-expr.html
+[pattern]: patterns.html
 [expression]: expressions.html
 [type]: types.html
 [identifier]: identifiers.html
