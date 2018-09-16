@@ -81,8 +81,6 @@ Please notice that the `2..=9` is a [Range Pattern], not a [Range Expression]
 and, thus, only those types of ranges supported by range patterns can be used
 in match arms.
 
-A range pattern may not be a sub-range of another range pattern inside the same `match`.
-
 Match arms can accept _match guards_ to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
 consist of a bool-typed expression following the `if` keyword. A pattern guard

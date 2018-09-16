@@ -3,10 +3,10 @@
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralPattern_]\
+> &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_WildcardPattern_]\
 > &nbsp;&nbsp; | [_RangePattern_]\
 > &nbsp;&nbsp; | [_ReferencePattern_]\
-> &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
 > &nbsp;&nbsp; | [_TuplePattern_]\
@@ -59,11 +59,12 @@ does four things:
 Patterns are used in:
 
 * [`let` declarations](statements.html#let-statements)
-* [Function](items.html#functions) and [closure](expressions.html#closure-expressions)
+* [Function](items/functions.html) and [closure](expressions/closure-expr.html)
   parameters
-* [`match` expressions](expressions.html#match-expressions)
-* [`if let` expressions](expressions.html#if-let-expressions)
-* [`while let` expressions](expressions.html#while-let-loops)
+* [`match` expressions](expressions/match-expr.html)
+* [`if let` expressions](expressions/if-expr.html)
+* [`while let` expressions](expressions/loop-expr.html#predicate-pattern-loops)
+* [`for` expressions](expressions/loop-expr.html#iterator-loops)
 * Inside other patterns
 
 ## Destructuring
@@ -73,7 +74,7 @@ breaks a value up into its component pieces. The syntax used is almost the same 
 when creating such values. When destructing a data structure with named (but
 not numbered) fields, it is allowed to write `fieldname` as a shorthand for
 `fieldname: fieldname`. In a pattern whose head expression has a `struct`,
-`enum` or `tupl` type, a placeholder (`_`) stands for a *single* data field,
+`enum` or `tuple` type, a placeholder (`_`) stands for a *single* data field,
 whereas a wildcard `..` stands for *all* the remaining fields of a particular variant.
 
 ```rust
@@ -158,6 +159,88 @@ for i in -2..5 {
 }
 ```
 
+## Identifier patterns
+
+> **<sup>Syntax</sup>**\
+> _IdentifierPattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> IDENTIFIER (`@` [_Pattern_] ) <sup>?</sup>
+
+_Identifier patterns_ bind the value they match to a **previously undeclared** variable.
+
+Patterns that consist of only an identifier, possibly with a `mut`, like
+`variable`, `x`, and `y` below:
+
+```rust
+let mut variable = 10;
+fn sum(x: i32, y: i32) -> i32 {
+#    x + y
+# }
+```
+
+match any value and bind it to that identifier. This is the most commonly
+used pattern in variable declarations and function/closure parameters.
+
+To bind non-trivial patterns to a variable, the use of the syntax `variable @
+subpattern` is needed. For example:
+
+```rust
+let x = 2;
+
+match x {
+    e @ 1 ..= 5 => println!("got a range element {}", e),
+    _ => println!("anything"),
+}
+```
+
+binds to `e` the value 2 (not the entire range: the range here is a range subpattern).
+
+By default, identifier patterns bind a variable to a copy of or move from the
+matched value (depending whether the matched value implements the [Copy trait]).
+This can be changed to bind to a reference by using the `ref` keyword,
+or to a mutable reference using `ref mut`. For example:
+
+```rust
+# let a = Some(10);
+match a {
+    None => (),
+    Some(value) => (),
+}
+
+match a {
+    None => (),
+    Some(ref value) => (),
+}
+```
+
+in the first match expression, the value is copied (or moved). In the second match,
+a reference to the same memory location is bound to the variable value. This syntax is
+needed because in destructuring subpatterns we can't apply the `&` operator to
+the value's fields. For example:
+
+```rust,compile_fail
+# struct Person {
+#    name: String,
+#    age: u8,
+# }
+# let value = Person{ name: String::from("John"), age: 23 };
+if let Person{name: &person_name, age: 18..=150} = value { }
+```
+
+is not valid. What we must do is:
+
+```rust
+# struct Person {
+#    name: String,
+#    age: u8,
+# }
+# let value = Person{ name: String::from("John"), age: 23 };
+if let Person{name: ref person_name, age: 18..=150} = value { }
+```
+
+Thus, `ref` is not something that is being matched against. Its objective is
+exclusively to make the matched binding a reference, instead of potentially
+copying or moving what was matched.
+
 ## Wildcard pattern
 
 > **<sup>Syntax</sup>**\
@@ -166,7 +249,8 @@ for i in -2..5 {
 
 The _wildcard pattern_ matches any value. It is used to ignore values when they don't
 matter. Inside other patterns it matches a single data field (as opposed to the `..`
-which matches the remaining fields).
+which matches the remaining fields). Unlike identifier patterns, it does not copy, move
+or borrow the value it matches.
 
 Examples:
 
@@ -220,8 +304,8 @@ Range patterns match values that are within the closed range defined by its lowe
 upper bounds. For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`,
 `'o'`, and `'p'`. The bounds can be literals or paths that point to constant values.
 
-A pattern a `..=` b must always have a &le; b. Thus, it is not possible to have a range
-pattern `10..=0`, for example.
+A pattern a `..=` b must always have a &le; b. It is an error to have a range pattern
+`10..=0`, for example.
 
 The `...` syntax is kept for backwards compatibility.
 
@@ -300,7 +384,6 @@ println!("{}", match 0xfacade {
     0 ..= <u32 as MaxValue>::MAX => "fits in a u32",
     _ => "too big",
 });
-
 ```
 
 Range patterns are always refutable, even when they cover the complete set
@@ -332,89 +415,6 @@ because it is a token by itself, not two `&` tokens.
 
 Reference patterns are always irrefutable.
 
-## Identifier patterns
-
-> **<sup>Syntax</sup>**\
-> _IdentifierPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `mut`<sup>?</sup> IDENTIFIER (`@` [_Pattern_] ) <sup>?</sup>\
-> &nbsp;&nbsp; | `ref` `mut`<sup>?</sup> IDENTIFIER (`@` [_Pattern_] ) <sup>?</sup>
-
-_Identifier patterns_ bind the value they match to a **previously undeclared** variable.
-
-Patterns that consist of only an identifier, possibly with a `mut`, like
-`variable`, `x`, and `y` below:
-
-```rust
-let mut variable = 10;
-fn sum(x: i32, y: i32) -> i32 {
-#    x + y
-# }
-```
-
-match any value and bind it to that identifier. This is the most commonly
-used pattern in variable declarations and function/closure parameters.
-
-To bind non-trivial patterns to a variable, the use of the syntax `variable @
-subpattern` is needed. For example:
-
-```rust
-let x = 2;
-
-match x {
-    e @ 1 ..= 5 => println!("got a range element {}", e),
-    _ => println!("anything"),
-}
-```
-
-binds to `e` the value 2 (not the entire range: the range here is a range subpattern).
-
-By default, identifier patterns bind a variable to a copy of or move from the
-matched value (depending whether the matched value implements the [Copy trait]).
-This can be changed to bind to a reference by using the `ref` keyword,
-or to a mutable reference using `ref mut`. For example:
-
-```rust
-# let a = Some(10);
-match a {
-    None => (),
-    Some(value) => (),
-}
-
-match a {
-    None => (),
-    Some(ref value) => (),
-}
-```
-
-in the first match expression, the value is copied (or moved). In the second match,
-a reference to the same memory location is bound to the variable value. This syntax is
-needed because in destructuring subpatterns we can't apply the `&` operator to
-the value's fields. For example:
-
-```rust,compile_fail
-# struct Person {
-#    name: String,
-#    age: u8,
-# }
-# let value = Person{ name: String::from("John"), age: 23 };
-if let Person{& name: person_name, age: 18..=150} = value { }
-```
-
-is not valid. What we must do is:
-
-```rust
-# struct Person {
-#    name: String,
-#    age: u8,
-# }
-# let value = Person{ name: String::from("John"), age: 23 };
-if let Person{name: ref person_name, age: 18..=150} = value { }
-```
-
-Thus, `ref` is not something that is being matched against. Its objective is
-exclusively to make the matched binding a reference, instead of potentially
-copying or moving what was matched.
-
 ## Struct patterns
 
 > **<sup>Syntax</sup>**\
@@ -443,9 +443,9 @@ copying or moving what was matched.
 > &nbsp;&nbsp; `..`
 
 Struct patterns match struct values that match all criteria defined by its subpatterns.
-They are also used to [destructure](destructuring) a struct.
+They are also used to [destructure](#destructuring) a struct.
 
-On a struct pattern, the fields are referenced by name, index (in the case of tuples
+On a struct pattern, the fields are referenced by name, index (in the case of tuple
 structs) or ignored by use of `..`:
 
 ```rust
@@ -522,7 +522,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 > &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` ( (`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup> )<sup>?</sup>
 
 TupleStruct patterns match tuple struct and enum values that match all criteria defined
-by its subpatterns. They are also used to [destructure](destructuring) a tuple struct or
+by its subpatterns. They are also used to [destructure](#destructuring) a tuple struct or
 enum value.
 
 A TupleStruct pattern is refutable when one of its subpatterns is refutable.
@@ -539,7 +539,7 @@ A TupleStruct pattern is refutable when one of its subpatterns is refutable.
 > &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` ( (`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup> )<sup>?</sup>
 
 Tuple patterns match tuple values that match all criteria defined by its subpatterns.
-They are also used to [destructure](destructuring) a tuple.
+They are also used to [destructure](#destructuring) a tuple.
 
 This pattern is refutable when one of its subpatterns is refutable.
 
@@ -587,8 +587,9 @@ Unqualified path patterns can refer to:
 
 Qualified path patterns can only refer to associated constants.
 
-Path patterns are irrefutable when they refer to constants or structs.
-They are refutable when the refer to enum variants.
+Path patterns are irrefutable when they refer to structs or an enum variant when the enum
+has only one variant or a constant whose type is irrefutable. They are refutable when they
+refer to refutable constants or enum variants for enums with multiple variants.
 
 [_Pattern_]: #patterns
 [_LiteralPattern_]: #literal-patterns

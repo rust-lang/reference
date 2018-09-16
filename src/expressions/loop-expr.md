@@ -109,7 +109,7 @@ is equivalent to
 
 > **<sup>Syntax</sup>**\
 > _IteratorLoopExpression_ :\
-> &nbsp;&nbsp; `for` _Pattern_ `in` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]
 
 A `for` expression is a syntactic construct for looping over elements provided
