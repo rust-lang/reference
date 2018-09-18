@@ -171,7 +171,7 @@ for i in -2..5 {
 Identifier patterns bind the value they match to a variable. The identifier
 must be unique within the pattern. The variable will shadow any variables of
 the same name in scope. The scope of the new binding depends on the context of
-where the pattern is used (such as a `let` binding versus a `match` arm).
+where the pattern is used (such as a `let` binding or a `match` arm).
 
 Patterns that consist of only an identifier, possibly with a `mut`, like
 `variable`, `x`, and `y` below:
@@ -201,7 +201,7 @@ match x {
 binds to `e` the value 2 (not the entire range: the range here is a range subpattern).
 
 By default, identifier patterns bind a variable to a copy of or move from the
-matched value depending on whether the matched value implements [Copy].
+matched value depending on whether the matched value implements [`Copy`].
 This can be changed to bind to a reference by using the `ref` keyword,
 or to a mutable reference using `ref mut`. For example:
 
@@ -648,7 +648,7 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_SlicePattern_]: #slice-patterns
 [_PathPattern_]: #path-patterns
 
-[Copy]: special-types-and-traits.html#copy
+[`Copy`]: special-types-and-traits.html#copy
 [IDENTIFIER]: identifiers.html
 [enums]: items/enumerations.html
 [literals]: expressions/literal-expr.html

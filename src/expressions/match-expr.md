@@ -24,7 +24,7 @@
 > &nbsp;&nbsp; `if` [_Expression_]
 
 A *`match` expression* branches on a pattern. The exact form of matching that
-occurs depends on the [pattern][Patterns]. A `match`
+occurs depends on the [pattern]. A `match`
 expression has a *head expression*, which is the value to compare to the
 patterns. The head expression and the patterns must have the same type.
 
@@ -131,7 +131,7 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 [Range Expression]: expressions/range-expr.html
 
 [_Pattern_]: patterns.html
-[Patterns]: patterns.html
+[pattern]: patterns.html
 [Identifier Patterns]: patterns.html#identifier-patterns
 [Struct Patterns]: patterns.html#struct-patterns
 [Tuple Struct Patterns]: patterns.html#tuplestruct-patterns
