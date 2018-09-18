@@ -24,9 +24,9 @@
 > &nbsp;&nbsp; `if` [_Expression_]
 
 A *`match` expression* branches on a pattern. The exact form of matching that
-occurs depends on the pattern. See [Patterns] for more details. A `match`
+occurs depends on the [pattern][Patterns]. A `match`
 expression has a *head expression*, which is the value to compare to the
-patterns. The type of the patterns must equal the type of the head expression.
+patterns. The head expression and the patterns must have the same type.
 
 A `match` behaves differently depending on whether or not the head expression
 is a [place expression or value expression][place expression].
@@ -59,10 +59,8 @@ match x {
 }
 ```
 
-Patterns that bind variables default to binding to a copy or move of the
-matched value (depending on the matched value's type). This can be changed to
-bind to a reference by using the `ref` keyword, or to a mutable reference using
-`ref mut`. See [Identifier Patterns].
+Variables bound within the pattern are scoped to the match guard and the arm's
+expression. The [binding mode] (move, copy, or reference) depends on the pattern.
 
 Multiple match patterns may be joined with the `|` operator:
 
@@ -139,3 +137,4 @@ meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
 [Tuple Struct Patterns]: patterns.html#tuplestruct-patterns
 [Tuple Patterns]: patterns.html#tuple-patterns
 [Range Pattern]: patterns.html#range-patterns
+[binding mode]: patterns.html#binding-modes

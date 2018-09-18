@@ -13,11 +13,9 @@
 > &nbsp;&nbsp; | [_SlicePattern_]\
 > &nbsp;&nbsp; | [_PathPattern_]
 
-Patterns in Rust are used to match values against structures and to,
+Patterns are used to match values against structures and to,
 optionally, bind variables to values inside these structures. They are also
-used in variable declarations and function/closure parameters, though in these
-cases most of the time they are simply used as an identifier that binds to a
-value.
+used in variable declarations and parameters for functions and closures.
 
 For example, the pattern used in:
 
@@ -65,17 +63,17 @@ Patterns are used in:
 * [`if let` expressions](expressions/if-expr.html)
 * [`while let` expressions](expressions/loop-expr.html#predicate-pattern-loops)
 * [`for` expressions](expressions/loop-expr.html#iterator-loops)
-* Inside other patterns
 
 ## Destructuring
 
-Patterns can be used to *destructure* structs, enums, and tuples. Destructuring
-breaks a value up into its component pieces. The syntax used is almost the same as
-when creating such values. When destructing a data structure with named (but
-not numbered) fields, it is allowed to write `fieldname` as a shorthand for
-`fieldname: fieldname`. In a pattern whose head expression has a `struct`,
-`enum` or `tuple` type, a placeholder (`_`) stands for a *single* data field,
-whereas a wildcard `..` stands for *all* the remaining fields of a particular variant.
+Patterns can be used to *destructure* [structs], [enums], and [tuples].
+Destructuring breaks up a value into its component pieces. The syntax used is
+almost the same as when creating such values. In a pattern whose head
+expression has a `struct`, `enum` or `tuple` type, a placeholder (`_`) stands
+in for a *single* data field, whereas a wildcard `..` stands in for *all* the
+remaining fields of a particular variant. When destructuring a data structure
+with named (but not numbered) fields, it is allowed to write `fieldname` as a
+shorthand for `fieldname: fieldname`.
 
 ```rust
 # enum Message {
@@ -98,7 +96,7 @@ match message {
 
 ## Refutability
 
-A pattern is said to be *Refutable* when it **has the possibility of not being matched**
+A pattern is said to be *refutable* when it has the possibility of not being matched
 by the value it is being matched against. *Irrefutable* patterns, on the other hand,
 always match the value they are being matched against. Examples:
 
@@ -136,13 +134,18 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 [INTEGER_LITERAL]: tokens.html#integer-literals
 [FLOAT_LITERAL]: tokens.html#floating-point-literals
 
-_Literal patterns_ match exactly the value they represent. Since negative numbers are
-not literals in Rust, literal patterns also accept an optional minus sign before the
-literal.
+_Literal patterns_ match exactly the same value as what is created by the
+literal. Since negative numbers are not [literals], literal patterns also
+accept an optional minus sign before the literal, which acts like the negation
+operator.
+
+<div class="warning">
 
 Floating-point literals are currently accepted, but due to the complexity of comparing
 them, they are going to be forbidden on literal patterns in a future version of Rust (see
 [issue #41620](https://github.com/rust-lang/rust/issues/41620)).
+
+</div>
 
 Literal patterns are always refutable.
 
@@ -165,7 +168,10 @@ for i in -2..5 {
 > _IdentifierPattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER] (`@` [_Pattern_] ) <sup>?</sup>
 
-_Identifier patterns_ bind the value they match to a **previously undeclared** variable.
+Identifier patterns bind the value they match to a variable. The identifier
+must be unique within the pattern. The variable will shadow any variables of
+the same name in scope. The scope of the new binding depends on the context of
+where the pattern is used (such as a `let` binding versus a `match` arm).
 
 Patterns that consist of only an identifier, possibly with a `mut`, like
 `variable`, `x`, and `y` below:
@@ -178,7 +184,7 @@ fn sum(x: i32, y: i32) -> i32 {
 ```
 
 match any value and bind it to that identifier. This is the most commonly
-used pattern in variable declarations and function/closure parameters.
+used pattern in variable declarations and parameters for functions and closures.
 
 To bind non-trivial patterns to a variable, the use of the syntax `variable @
 subpattern` is needed. For example:
@@ -195,7 +201,7 @@ match x {
 binds to `e` the value 2 (not the entire range: the range here is a range subpattern).
 
 By default, identifier patterns bind a variable to a copy of or move from the
-matched value (depending whether the matched value implements the [Copy trait]).
+matched value depending on whether the matched value implements [Copy].
 This can be changed to bind to a reference by using the `ref` keyword,
 or to a mutable reference using `ref mut`. For example:
 
@@ -642,5 +648,9 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_SlicePattern_]: #slice-patterns
 [_PathPattern_]: #path-patterns
 
-[Copy trait]: special-types-and-traits.html#copy
+[Copy]: special-types-and-traits.html#copy
 [IDENTIFIER]: identifiers.html
+[enums]: items/enumerations.html
+[literals]: expressions/literal-expr.html
+[structs]: items/structs.html
+[tuples]: types.html#tuple-types
