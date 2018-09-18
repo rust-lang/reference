@@ -32,7 +32,7 @@ after the trait name, using the same syntax used in [generic functions].
 trait Seq<T> {
     fn len(&self) -> u32;
     fn elt_at(&self, n: u32) -> T;
-    fn iter<F>(&self, F) where F: Fn(T);
+    fn iter<F>(&self, f: F) where F: Fn(T);
 }
 ```
 

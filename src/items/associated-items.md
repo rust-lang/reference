@@ -99,7 +99,7 @@ Consider the following trait:
 # type Surface = i32;
 # type BoundingBox = i32;
 trait Shape {
-    fn draw(&self, Surface);
+    fn draw(&self, surface: Surface);
     fn bounding_box(&self) -> BoundingBox;
 }
 ```
@@ -112,7 +112,7 @@ of this trait while the trait is in scope can have their `draw` and
 # type Surface = i32;
 # type BoundingBox = i32;
 # trait Shape {
-#     fn draw(&self, Surface);
+#     fn draw(&self, surface: Surface);
 #     fn bounding_box(&self) -> BoundingBox;
 # }
 #
@@ -191,7 +191,7 @@ available for use in the method signatures:
 trait Container {
     type E;
     fn empty() -> Self;
-    fn insert(&mut self, Self::E);
+    fn insert(&mut self, elem: Self::E);
 }
 ```
 
@@ -203,7 +203,7 @@ implementation of `Container` for the standard library type `Vec`:
 # trait Container {
 #     type E;
 #     fn empty() -> Self;
-#     fn insert(&mut self, Self::E);
+#     fn insert(&mut self, elem: Self::E);
 # }
 impl<T> Container for Vec<T> {
     type E = T;
