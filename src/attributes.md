@@ -74,7 +74,7 @@ type int8_t = i8;
 // Outer attribute applies to the entire function.
 fn some_unused_variables() {
   #![allow(unused_variables)]
-  
+
   let x = ();
   let y = ();
   let z = ();
@@ -90,7 +90,7 @@ There are three kinds of attributes:
 ## Active and inert attributes
 
 An attribute is either active or inert. During attribute processing, *active
-attributes* remove themselves from the thing they are on while *inert attriutes*
+attributes* remove themselves from the thing they are on while *inert attributes*
 stay on.
 
 The `cfg` and `cfg_attr` attributes are active. The `test` attribute is inert
@@ -472,7 +472,7 @@ function for a trait implementation and not to all trait implementations.
 
 > ***Note***: The compiler automatically inlines functions based on internal
 > heuristics. Incorrectly inlining functions can actually make the program
-> slower, so this attibute should be used with care.
+> slower, so this attribute should be used with care.
 
 There are three ways of using the inline attribute:
 

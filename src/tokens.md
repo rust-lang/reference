@@ -524,7 +524,7 @@ usages and meanings are defined in the linked pages.
 | `%`    | Percent     | [Remainder][arith]
 | `^`    | Caret       | [Bitwise and Logical XOR][arith]
 | `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type]
-| `&`    | And         | [Bitwise and Logcal AND][arith], [Borrow], [References]
+| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References]
 | <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], [Match]
 | `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References]
 | <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]

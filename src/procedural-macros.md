@@ -15,7 +15,7 @@ Procedural macros must be defined in a crate with the [crate type] of
 `proc-macro`.
 
 > **Note**: When using Cargo, Procedural macro crates are defined with the
-> `proc-macro` key in your manfiest:
+> `proc-macro` key in your manifest:
 >
 > ```toml
 > [lib]

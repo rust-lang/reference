@@ -144,7 +144,7 @@ There are no guarantees of data layout made by this representation.
 ### The `C` Representation
 
 The `C` representation is designed for dual purposes. One purpose is for
-creating types that are interoptable with the C Language. The second purpose is
+creating types that are interoperable with the C Language. The second purpose is
 to create types that you can soundly performing operations that rely on data
 layout such as reinterpreting values as a different type.
 
