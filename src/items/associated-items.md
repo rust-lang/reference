@@ -134,10 +134,9 @@ let circle_shape = Circle::new();
 let bounding_box = circle_shape.bounding_box();
 ```
 
-> **Edition Differences**: Until the 2018 edition, it was possible to declare
-> trait methods with anonymous parameters (e.g. `fn foo(u8)`). This was
-> deprecated and disallowed in the 2018 edition. All parameters must have an
-> argument name. See [RFC 1685](https://github.com/rust-lang/rfcs/pull/1685).
+> **Edition Differences**: In the 2015 edition, it is possible to declare trait
+> methods with anonymous parameters (e.g. `fn foo(u8)`). This is deprecated and
+> an error as of the 2018 edition. All parameters must have an argument name.
 
 ## Associated Types
 
