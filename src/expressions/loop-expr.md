@@ -85,6 +85,26 @@ while let Some(y) = x.pop() {
 }
 ```
 
+A `while let` loop is equivalent to a `loop` expression containing a `match`
+expression as follows.
+
+```rust,ignore
+'label: while let PAT = EXPR {
+    /* loop body */
+}
+```
+
+is equivalent to
+
+```rust,ignore
+'label: loop {
+    match EXPR {
+        PAT => { /* loop body */ },
+        _ => break,
+    }
+}
+```
+
 ## Iterator loops
 
 > **<sup>Syntax</sup>**\
@@ -117,6 +137,43 @@ for n in 1..11 {
 }
 assert_eq!(sum, 55);
 ```
+
+A for loop is equivalent to the following block expression.
+
+```rust,ignore
+'label: for PATTERN in iter_expr {
+    /* loop body */
+}
+```
+
+is equivalent to
+
+```rust,ignore
+{
+    let result = match IntoIterator::into_iter(iter_expr) {
+        mut iter => 'label: loop {
+            let mut next;
+            match Iterator::next(&mut iter) {
+                Option::Some(val) => next = val,
+                Option::None => break,
+            };
+            let PAT = next;
+            let () = { /* loop body */ };
+        },
+    };
+    result
+}
+```
+
+`IntoIterator`, `Iterator` and `Option` are always the standard library items
+here, not whatever those names resolve to in the current scope. The variable
+names `next`, `iter` and `val` are for exposition only, they do not actually
+have names the user can type.
+
+> **Note**: that the outer `match` is used to ensure that any
+> [temporary values] in `iter_expr` don't get dropped before the loop is
+> finished. `next` is declared before being assigned because it results in
+> types being inferred correctly more often.
 
 ## Loop labels
 
@@ -210,6 +267,7 @@ and the `loop` must have a type compatible with each `break` expression.
 expression `()`.
 
 [IDENTIFIER]: identifiers.html
+[temporary values]: expressions.html#temporary-lifetimes
 
 [_Expression_]:      expressions.html
 [_BlockExpression_]: expressions/block-expr.html
