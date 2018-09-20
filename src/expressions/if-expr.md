@@ -92,5 +92,24 @@ let a = if let Some(1) = x {
 assert_eq!(a, 3);
 ```
 
+An `if let` expression is equivalent to a `match` expression as follows:
+
+```rust,ignore
+if let PAT = EXPR {
+    /* body */
+} else {
+    /*else */
+}
+```
+
+is equivalent to
+
+```rust,ignore
+match EXPR {
+    PAT => { /* body */ },
+    _ => { /* else */ },    // () if there is no else
+}
+```
+
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
