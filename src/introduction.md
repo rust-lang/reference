@@ -77,7 +77,7 @@ information. These conventions are documented here.
   term is used outside of that chapter, it is usually a link to the section that
   has this definition.
 
-  An *example term* is an example of a term beind defined.
+  An *example term* is an example of a term being defined.
 
 * Notes that contain useful information about the state of the book or point out
   useful, but mostly out of scope, information are in blockquotes that start
