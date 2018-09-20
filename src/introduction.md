@@ -79,6 +79,12 @@ information. These conventions are documented here.
 
   An *example term* is an example of a term beind defined.
 
+* Differences in the language by which edition the crate is compiled under are
+  in a blockquote that start with the words "Edition Differences:" in **bold**.
+
+  > **Edition Differences**: In the 2015 edition, this syntax is valid that is
+  > disallowed as of the 2018 edition.
+
 * Notes that contain useful information about the state of the book or point out
   useful, but mostly out of scope, information are in blockquotes that start
   with the word "Note:" in **bold**.
