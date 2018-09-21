@@ -17,7 +17,14 @@ Patterns are used to match values against structures and to,
 optionally, bind variables to values inside these structures. They are also
 used in variable declarations and parameters for functions and closures.
 
-For example, the pattern used in:
+The pattern in the following example does four things:
+
+* Tests if `person` has the `car` field filled with something.
+* Tests if the person's `age` field is between 13 and 19, and binds its value to
+  the `person_age` variable.
+* Binds a reference to the `name` field to the variable `person_name`.
+* Ignores the rest of the fields of `person`. The remaining fields can have any value and
+  are not bound to any variables.
 
 ```rust
 # struct Car;
@@ -45,14 +52,6 @@ if let
     println!("{} has a car and is {} years old.", person_name, person_age);
 }
 ```
-does four things:
-
-* Tests if `person` has the `car` field filled with something.
-* Tests if the person's `age` field is between 13 and 19, and binds its value to
-  the `person_age` variable.
-* Binds a reference to the `name` field to the variable `person_name`.
-* Ignores the rest of the fields of `person`, i.e., they can have any value and
-  are not bound to any variables.
 
 Patterns are used in:
 
@@ -173,8 +172,9 @@ must be unique within the pattern. The variable will shadow any variables of
 the same name in scope. The scope of the new binding depends on the context of
 where the pattern is used (such as a `let` binding or a `match` arm).
 
-Patterns that consist of only an identifier, possibly with a `mut`, like
-`variable`, `x`, and `y` below:
+Patterns that consist of only an identifier, possibly with a `mut`, match any value and
+bind it to that identifier. This is the most commonly used pattern in variable
+declarations and parameters for functions and closures.
 
 ```rust
 let mut variable = 10;
@@ -183,11 +183,9 @@ fn sum(x: i32, y: i32) -> i32 {
 # }
 ```
 
-match any value and bind it to that identifier. This is the most commonly
-used pattern in variable declarations and parameters for functions and closures.
-
-To bind non-trivial patterns to a variable, the use of the syntax `variable @
-subpattern` is needed. For example:
+To bind the matched value of a pattern to a variable, use the syntax `variable @
+subpattern`. For example, the following binds the value 2 to `e` (not the
+entire range: the range here is a range subpattern).
 
 ```rust
 let x = 2;
@@ -197,8 +195,6 @@ match x {
     _ => println!("anything"),
 }
 ```
-
-binds to `e` the value 2 (not the entire range: the range here is a range subpattern).
 
 By default, identifier patterns bind a variable to a copy of or move from the
 matched value depending on whether the matched value implements [`Copy`].
@@ -218,10 +214,10 @@ match a {
 }
 ```
 
-in the first match expression, the value is copied (or moved). In the second match,
+In the first match expression, the value is copied (or moved). In the second match,
 a reference to the same memory location is bound to the variable value. This syntax is
-needed because in destructuring subpatterns we can't apply the `&` operator to
-the value's fields. For example:
+needed because in destructuring subpatterns the `&` operator can't be applied to
+the value's fields. For example, the following is not valid:
 
 ```rust,compile_fail
 # struct Person {
@@ -232,7 +228,7 @@ the value's fields. For example:
 if let Person{name: &person_name, age: 18..=150} = value { }
 ```
 
-is not valid. What we must do is:
+To make it valid, write the following:
 
 ```rust
 # struct Person {
@@ -252,7 +248,7 @@ if `ref` or `ref mut` is specified and the identifier shadows a constant.
 
 ### Binding modes
 
-In order to service better ergonomics, patterns operate in different *binding modes* in
+To service better ergonomics, patterns operate in different *binding modes* in
 order to make it easier to bind references to values. When a reference value is matched by
 a non-reference pattern, it will be automatically treated as a `ref` or `ref mut` binding.
 Example:
@@ -269,7 +265,7 @@ patterns](#wildcard-pattern) (`_`), [`const` patterns](#path-patterns) of refere
 and [reference patterns](#reference-patterns).
 
 If a binding pattern does not explicitly have `ref`, `ref mut`, or `mut`, then it uses the
-*default binding mode* to determine how the variable should be bound. The default binding
+*default binding mode* to determine how the variable is bound. The default binding
 mode starts in "move" mode which uses move semantics. When matching a pattern, the
 compiler starts from the outside of the pattern and works inwards. Each time a reference
 is matched using a non-reference pattern, it will automatically dereference the value and
@@ -553,7 +549,7 @@ let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 
 A struct pattern is refutable when one of its subpatterns is refutable.
 
-## TupleStruct patterns
+## Tuple struct patterns
 
 > **<sup>Syntax</sup>**\
 > _TupleStructPattern_ :\
@@ -563,16 +559,16 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>\
 > &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` ( (`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup> )<sup>?</sup>
 
-TupleStruct patterns match tuple struct and enum values that match all criteria defined
+Tuple struct patterns match tuple struct and enum values that match all criteria defined
 by its subpatterns. They are also used to [destructure](#destructuring) a tuple struct or
 enum value.
 
-A TupleStruct pattern is refutable when one of its subpatterns is refutable.
+A tuple struct pattern is refutable when one of its subpatterns is refutable.
 
 ## Tuple patterns
 
 > **<sup>Syntax</sup>**\
-> _TuplePattern_ :<a name="tuple-pattern-syntax"></a>\
+> _TuplePattern_ :\
 > &nbsp;&nbsp; `(` _TuplePatternItems_<sup>?</sup> `)`
 >
 > _TuplePatternItems_ :\
@@ -606,7 +602,7 @@ let v = vec![1, 2, 3];
 match v[..] {
     [a, b] => { /* this arm will not apply because the length doesn't match */ }
     [a, b, c] => { /* this arm will apply */ }
-    _ => { /* this wildcard is required, since we don't know length statically */ }
+    _ => { /* this wildcard is required, since the length is not known statically */ }
 };
 ```
 
@@ -642,7 +638,7 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
 [_IdentifierPattern_]: #identifier-patterns
-[_TupleStructPattern_]: #tuplestruct-patterns
+[_TupleStructPattern_]: #tuple-struct-patterns
 [_StructPattern_]: #struct-patterns
 [_TuplePattern_]: #tuple-patterns
 [_SlicePattern_]: #slice-patterns
