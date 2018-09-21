@@ -469,7 +469,7 @@ Reference patterns are always irrefutable.
 > _StructPatternField_ :\
 > &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [INTEGER_LITERAL] `:` [_Pattern_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [TUPLE_INDEX] `:` [_Pattern_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [IDENTIFIER] `:` [_Pattern_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER]\
 > &nbsp;&nbsp; )
@@ -479,6 +479,7 @@ Reference patterns are always irrefutable.
 > &nbsp;&nbsp; `..`
 
 [_OuterAttribute_]: attributes.html
+[TUPLE_INDEX]: tokens.html#integer-literals
 
 Struct patterns match struct values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a struct.
