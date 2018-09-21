@@ -8,7 +8,7 @@
 
 A _closure expression_ defines a closure and denotes it as a value, in a single
 expression. A closure expression is a pipe-symbol-delimited (`|`) list of
-patterns followed by an expression. Type annotations may optionally be added
+irrefutable [patterns] followed by an expression. Type annotations may optionally be added
 for the type of the parameters or for the return type. If there is a return
 type, the expression used for the body of the closure must be a normal
 [block]. A closure expression also may begin with the
@@ -63,6 +63,7 @@ ten_times(move |j| println!("{}, {}", word, j));
 
 [block]: expressions/block-expr.html
 [function definitions]: items/functions.html
+[patterns]: patterns.html
 
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html

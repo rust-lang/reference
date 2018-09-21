@@ -524,9 +524,9 @@ usages and meanings are defined in the linked pages.
 | `%`    | Percent     | [Remainder][arith]
 | `^`    | Caret       | [Bitwise and Logical XOR][arith]
 | `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type]
-| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References]
+| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References], [Reference patterns]
 | <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], [Match]
-| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References]
+| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References], [Reference patterns]
 | <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]
 | `<<`   | Shl         | [Shift Left][arith], [Nested Generics][generics]
 | `>>`   | Shr         | [Shift Right][arith], [Nested Generics][generics]
@@ -547,12 +547,12 @@ usages and meanings are defined in the linked pages.
 | `<`    | Lt          | [Less than][comparison], [Generics], [Paths]
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
-| `@`    | At          | [Subpattern binding][match]
-| `_`    | Underscore  | [Placeholder patterns][match], Inferred types
+| `@`    | At          | [Subpattern binding]
+| `_`    | Underscore  | [Wildcard patterns], Inferred types
 | `.`    | Dot         | [Field access][field], [Tuple index]
-| `..`   | DotDot      | [Range][range], [Struct expressions], [Wildcard patterns][match]
-| `...`  | DotDotDot   | [Variadic functions][extern]
-| `..=`  | DotDotEq    | [Inclusive Range][range]
+| `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns]
+| `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
+| `..=`  | DotDotEq    | [Inclusive Range][range], [Range patterns]
 | `,`    | Comma       | Various separators
 | `;`    | Semi        | Terminator for various items and statements, [Array types]
 | `:`    | Colon       | Various separators
@@ -577,37 +577,42 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 
 
 [Operator expressions]: expressions/operator-expr.html
-[tokens]: #tokens
-[keywords]: keywords.html
+[Range patterns]: patterns.html#range-patterns
+[Reference patterns]: patterns.html#reference-patterns
+[Subpattern binding]: patterns.html#identifier-patterns
+[Wildcard patterns]: patterns.html#wildcard-pattern
+[arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
+[array types]: types.html#array-and-slice-types
+[assignment]: expressions/operator-expr.html#assignment-expressions
+[attributes]: attributes.html
+[borrow]: expressions/operator-expr.html#borrow-operators
+[closures]: expressions/closure-expr.html
+[comparison]: expressions/operator-expr.html#comparison-operators
+[compound]: expressions/operator-expr.html#compound-assignment-expressions
+[constant items]: items/constant-items.html
+[dereference]: expressions/operator-expr.html#the-dereference-operator
+[extern]: items/external-blocks.html
+[field]: expressions/field-expr.html
+[functions]: items/functions.html
+[generics]: items/generics.html
 [identifier]: identifiers.html
-[tuples]: types.html#tuple-types
+[keywords]: keywords.html
+[lazy-bool]: expressions/operator-expr.html#lazy-boolean-operators
+[macros]: macros-by-example.html
+[match]: expressions/match-expr.html
+[negation]: expressions/operator-expr.html#negation-operators
+[never type]: types.html#never-type
+[paths]: paths.html
+[patterns]: patterns.html
+[question]: expressions/operator-expr.html#the-question-mark-operator
+[range]: expressions/range-expr.html
+[raw pointers]: types.html#raw-pointers-const-and-mut
+[references]: types.html#pointer-types
+[sized]: trait-bounds.html#sized
+[struct expressions]: expressions/struct-expr.html
+[tokens]: #tokens
+[trait bounds]: trait-bounds.html
+[tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
 [tuple structs]: items/structs.html
 [tuple variants]: items/enumerations.html
-[arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[negation]: expressions/operator-expr.html#negation-operators
-[lazy-bool]: expressions/operator-expr.html#lazy-boolean-operators
-[compound]: expressions/operator-expr.html#compound-assignment-expressions
-[comparison]: expressions/operator-expr.html#comparison-operators
-[match]: expressions/match-expr.html
-[field]: expressions/field-expr.html
-[range]: expressions/range-expr.html
-[trait bounds]: trait-bounds.html
-[dereference]: expressions/operator-expr.html#the-dereference-operator
-[raw pointers]: types.html#raw-pointers-const-and-mut
-[macros]: macros-by-example.html
-[attributes]: attributes.html
-[never type]: types.html#never-type
-[borrow]: expressions/operator-expr.html#borrow-operators
-[references]: types.html#pointer-types
-[closures]: expressions/closure-expr.html
-[assignment]: expressions/operator-expr.html#assignment-expressions
-[constant items]: items/constant-items.html
-[generics]: items/generics.html
-[paths]: paths.html
-[array types]: types.html#array-and-slice-types
-[functions]: items/functions.html
-[question]: expressions/operator-expr.html#the-question-mark-operator
-[sized]: trait-bounds.html#sized
-[extern]: items/external-blocks.html
-[struct expressions]: expressions/struct-expr.html
-[tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
+[tuples]: types.html#tuple-types

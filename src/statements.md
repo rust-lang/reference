@@ -42,7 +42,7 @@ fn outer() {
 
 ### `let` statements
 
-A *`let` statement* introduces a new set of [variables], given by a pattern. The
+A *`let` statement* introduces a new set of [variables], given by a [pattern]. The
 pattern is followed optionally by a type annotation and then optionally by an
 initializer expression. When no type annotation is given, the compiler will
 infer the type, or signal an error if insufficient type information is
@@ -106,3 +106,4 @@ statement are [`cfg`], and [the lint check attributes].
 [outer attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
+[pattern]: patterns.html
