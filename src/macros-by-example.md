@@ -59,6 +59,10 @@ matches, in a structure that mimics the structure of the repetition encountered
 on a successful match. The job of the transcriber is to sort that structure
 out.
 
+> **Edition Differences**: In the 2018 edition, a new Kleene operator was
+> added: `?` means "at most once". This operator only works in edition 2018 and
+> onward. `?` does not accept a repetition separator, unlike `+` and `*`.
+
 The rules for transcription of these repetitions are called "Macro By Example".
 Essentially, one "layer" of repetition is discharged at a time, and all of them
 must be discharged by the time a name is transcribed. Therefore, `( $( $i:ident
@@ -88,5 +92,9 @@ Rust syntax is restricted in two ways:
    _name_ `:` _designator_. This requirement most often affects name-designator
    pairs when they occur at the beginning of, or immediately after, a `$(...)*`;
    requiring a distinctive token in front can solve the problem.
+
+> **Edition Differences**: As of the 2018 edition, `?` is not allowed as a
+> repetition separator. This is to remove ambiguity with the new `?` Kleene
+> operator.
 
 [RFC 550]: https://github.com/rust-lang/rfcs/blob/master/text/0550-macro-future-proofing.md
