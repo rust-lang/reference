@@ -1,7 +1,11 @@
 # Method-call expressions
 
+> **<sup>Syntax</sup>**\
+> _MethodCallExpression_ :\
+> &nbsp;&nbsp; [_Expression_] `.` [_PathExprSegment_] `(`[_CallParams_]<sup>?</sup> `)`
+
 A _method call_ consists of an expression (the *receiver*) followed by a single
-dot, an [identifier], and a parenthesized expression-list. Method calls are
+dot, an expression path segment, and a parenthesized expression-list. Method calls are
 resolved to associated [methods] on specific traits, either statically
 dispatching to a method if the exact `self`-type of the left-hand-side is known,
 or dynamically dispatching if the left-hand-side expression is an indirect
@@ -93,7 +97,9 @@ method and you'll be fine.
 
 </div>
 
-[IDENTIFIER]: identifiers.html
+[_CallParams_]: expressions/call-expr.html
+[_Expression_]: expressions.html
+[_PathExprSegment_]: paths.html#paths-in-expressions
 [visible]: visibility-and-privacy.html
 [array]: types.html#array-and-slice-types
 [trait objects]: types.html#trait-objects

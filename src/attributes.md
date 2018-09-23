@@ -11,14 +11,14 @@
 > &nbsp;&nbsp; `#[` MetaItem `]`
 >
 > _MetaItem_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER\
-> &nbsp;&nbsp; | IDENTIFIER `=` LITERAL\
-> &nbsp;&nbsp; | IDENTIFIER `(` _MetaSeq_ `)`
+> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
+> &nbsp;&nbsp; | [_SimplePath_] `=` [_LiteralExpression_]<sub>_without suffix_</sub>\
+> &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_ `)`
 >
 > _MetaSeq_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; EMPTY\
 > &nbsp;&nbsp; | _MetaItem_\
-> &nbsp;&nbsp; | LITERAL\
+> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>\
 > &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
@@ -32,6 +32,8 @@ Attributes may appear as any of:
   key/value pair
 * An identifier followed by a parenthesized list of sub-attribute arguments
   which include literals
+
+Literal values must not include integer or float type suffixes.
 
 _Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
@@ -522,6 +524,8 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own traits through [procedural macros].
 
+[_LiteralExpression_]: expressions/literal-expr.html
+[_SimplePath_]: paths.html#simple-paths
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [procedural macros]: procedural-macros.html

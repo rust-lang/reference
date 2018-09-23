@@ -9,9 +9,9 @@
 >
 > _TraitBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_]\
+> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TypePath_]\
 > &nbsp;&nbsp; | `(` `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TraitPath_] `)`
+> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TypePath_] `)`
 >
 > _LifetimeBounds_ :\
 > &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>
@@ -135,7 +135,7 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 ```
 
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
-[_TraitPath_]: paths.html
+[_TypePath_]: paths.html#paths-in-types
 [`Sized`]: special-types-and-traits.html#sized
 
 [associated types]: items/associated-items.html#associated-types

@@ -1,5 +1,10 @@
 # Path expressions
 
+> **<sup>Syntax</sup>**\
+> _PathExpression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_PathInExpression_]\
+> &nbsp;&nbsp; | [_QualifiedPathInExpression_]
+
 A [path] used as an expression context denotes either a local
 variable or an item. Path expressions that resolve to local or static variables
 are [place expressions], other paths are [value expressions]. Using a
@@ -19,6 +24,8 @@ let push_integer = Vec::<i32>::push;
 let slice_reverse = <[i32]>::reverse;
 ```
 
+[_PathInExpression_]: paths.html#paths-in-expressions
+[_QualifiedPathInExpression_]: paths.html#qualified-paths
 [place expressions]: expressions.html#place-expressions-and-value-expressions
 [value expressions]: expressions.html#place-expressions-and-value-expressions
 [path]: paths.html

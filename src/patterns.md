@@ -331,9 +331,6 @@ The wildcard pattern is always irrefutable.
 > &nbsp;&nbsp; | [_PathInExpression_]\
 > &nbsp;&nbsp; | [_QualifiedPathInExpression_]
 
-[_PathInExpression_]: paths.html
-[_QualifiedPathInExpression_]: paths.html
-
 Range patterns match values that are within the closed range defined by its lower and
 upper bounds. For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`,
 `'o'`, and `'p'`. The bounds can be literals or paths that point to constant values.
@@ -456,7 +453,7 @@ Reference patterns are always irrefutable.
 
 > **<sup>Syntax</sup>**\
 > _StructPattern_ :\
-> &nbsp;&nbsp; _Path_ `{`\
+> &nbsp;&nbsp; [_PathInExpression_] `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; _StructPatternElements_ <sup>?</sup>\
 > &nbsp;&nbsp; `}`
 >
@@ -555,7 +552,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 
 > **<sup>Syntax</sup>**\
 > _TupleStructPattern_ :\
-> &nbsp;&nbsp; _Path_ `(` _TupleStructItems_ `)`
+> &nbsp;&nbsp; [_PathInExpression_] `(` _TupleStructItems_ `)`
 >
 > _TupleStructItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>\
@@ -631,8 +628,8 @@ match v[..] {
 
 > **<sup>Syntax</sup>**\
 > _PathPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _PathForExpression_\
-> &nbsp;&nbsp; | _QualifiedPathForExpression_
+> &nbsp;&nbsp; &nbsp;&nbsp; [_PathInExpression_]\
+> &nbsp;&nbsp; | [_QualifiedPathInExpression_]
 
 _Path patterns_ are patterns that refer either to constant values or
 to structs or enum variants that have no fields.
@@ -656,8 +653,10 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_GroupedPattern_]: #grouped-patterns
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
+[_PathInExpression_]: paths.html#paths-in-expressions
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
+[_QualifiedPathInExpression_]: paths.html#qualified-paths
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
 [_SlicePattern_]: #slice-patterns

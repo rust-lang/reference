@@ -460,4 +460,4 @@ assert_eq!(x, 14);
 [_CompoundAssignmentExpression_]: #compound-assignment-expressions
 
 [_Expression_]: expressions.html
-[_PathInExpression_]: paths.html
+[_PathInExpression_]: paths.html#paths-in-expressions
