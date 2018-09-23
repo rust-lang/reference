@@ -119,7 +119,3 @@ generic parameter.
 [tuples]: types.html#tuple-types
 [trait object]: types.html#trait-objects
 [attributes]: attributes.html
-
-[path]: ../paths.html
-[Trait]: traits.html#trait-bounds
-[_TypePath_]: paths.html

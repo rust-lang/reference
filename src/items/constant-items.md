@@ -1,7 +1,7 @@
 # Constant items
 
-> **<sup>Syntax</sup>**
-> _ConstantItem_ :
+> **<sup>Syntax</sup>**\
+> _ConstantItem_ :\
 > &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] `=` [_Expression_] `;`
 
 A *constant item* is a named _[constant value]_ which is not associated with a

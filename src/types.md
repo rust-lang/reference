@@ -558,8 +558,8 @@ Because captures are often by reference, the following general rules arise:
 
 ## Trait objects
 
-> **<sup>Syntax</sup>**
-> _TraitObjectType_ :
+> **<sup>Syntax</sup>**\
+> _TraitObjectType_ :\
 > &nbsp;&nbsp; `dyn`<sup>?</sup> _TypeParamBounds_
 
 A *trait object* is an opaque value of another type that implements a set of
@@ -758,6 +758,4 @@ impl Printable for String {
 [object safe]: items/traits.html#object-safety
 [issue 47010]: https://github.com/rust-lang/rust/issues/47010
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
-[_PATH_]: paths.html
-[_LIFETIME_OR_LABEL_]: tokens.html#lifetimes-and-loop-labels
 [supertraits]: items/traits.html#supertraits
