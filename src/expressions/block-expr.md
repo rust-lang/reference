@@ -4,19 +4,11 @@
 > _BlockExpression_ :\
 > &nbsp;&nbsp; `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Statements_<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sup>?</sup>\
 > &nbsp;&nbsp; `}`
->
-> _Statements_ :\
-> &nbsp;&nbsp; ( `;`\
-> &nbsp;&nbsp; | [_ItemDeclaration_]\
-> &nbsp;&nbsp; | [_LetStatement_] ;\
-> &nbsp;&nbsp; | [_NonControlFlowExpressionStatement_][expression statement] ;\
-> &nbsp;&nbsp; | [_FlowControlExpressionStatement_][expression statement] ;<sup>?</sup>\
-> &nbsp;&nbsp; )<sup>\*</sup>
 
-A *block expression*, or *block*, is a control flow expression and anonymouse
+A *block expression*, or *block*, is a control flow expression and anonymous
 namespace scope for items and variable declarations. As a control flow
 expression, a block sequentially executes its component non-item declaration
 statements and then its final optional expression. As an anonymous namespace
@@ -60,7 +52,7 @@ assert_eq!(5, five);
 > expression of an expression statement, the expected type is `()` unless it
 > is followed immediately by a semicolon.
 
-Blocks are always [value expressions] and evaluate the last expression in 
+Blocks are always [value expressions] and evaluate the last expression in
 value expression context. This can be used to force moving a value if really
 needed. For example, the following example fails on the call to `consume_self`
 because the struct was moved out of `s` in the block expression.
@@ -126,9 +118,7 @@ fn is_unix_platform() -> bool {
 ```
 
 [_InnerAttribute_]: attributes.html
-[_ItemDeclaration_]: items.html
-[_LetStatement_]: statements.html#let-statements
-[expression statement]: statements.html#expression-statements
+[_Statement_]: statements.html
 [_Expression_]: expressions.html
 [expression]: expressions.html
 [statements]: statements.html

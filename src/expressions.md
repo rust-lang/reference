@@ -2,9 +2,12 @@
 
 > **<sup>Syntax</sup>**\
 > _Expression_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _ExpressionWithoutBlock_\
+> &nbsp;&nbsp; | _ExpressionWithBlock_
+>
+> _ExpressionWithoutBlock_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]\
 > &nbsp;&nbsp; | [_PathExpression_]\
-> &nbsp;&nbsp; | [_BlockExpression_]\
 > &nbsp;&nbsp; | [_OperatorExpression_]\
 > &nbsp;&nbsp; | [_GroupedExpression_]\
 > &nbsp;&nbsp; | [_ArrayExpression_]\
@@ -17,14 +20,18 @@
 > &nbsp;&nbsp; | [_MethodCallExpression_]\
 > &nbsp;&nbsp; | [_FieldExpression_]\
 > &nbsp;&nbsp; | [_ClosureExpression_]\
-> &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; | [_ContinueExpression_]\
 > &nbsp;&nbsp; | [_BreakExpression_]\
 > &nbsp;&nbsp; | [_RangeExpression_]\
+> &nbsp;&nbsp; | [_ReturnExpression_]
+>
+> _ExpressionWithBlock_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
+> &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; | [_IfExpression_]\
 > &nbsp;&nbsp; | [_IfLetExpression_]\
-> &nbsp;&nbsp; | [_MatchExpression_]\
-> &nbsp;&nbsp; | [_ReturnExpression_]
+> &nbsp;&nbsp; | [_MatchExpression_]
 
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a
@@ -305,3 +312,4 @@ exist in `core::ops` and `core::cmp` with the same names.
 [_StructExpression_]:             expressions/struct-expr.html
 [_TupleExpression_]:              expressions/tuple-expr.html
 [_TupleIndexingExpression_]:      expressions/tuple-expr.html#tuple-indexing-expressions
+[_UnsafeBlockExpression_]:        expressions/block-expr.html#unsafe-blocks

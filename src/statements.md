@@ -1,5 +1,14 @@
 # Statements
 
+> **<sup>Syntax</sup>**\
+> _Statement_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `;`\
+> &nbsp;&nbsp; | [_Item_]\
+> &nbsp;&nbsp; | [_LetStatement_]\
+> &nbsp;&nbsp; | [_ExpressionWithoutBlock_][expression] `;`\
+> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression]
+
+
 A *statement* is a component of a [block], which is in turn a component of an
 outer [expression] or [function].
 
@@ -41,6 +50,10 @@ fn outer() {
 ```
 
 ### `let` statements
+
+> **<sup>Syntax</sup>**\
+> _LetStatement_ :\
+> &nbsp;&nbsp; `let` [_Pattern_] ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
 
 A *`let` statement* introduces a new set of [variables], given by a [pattern]. The
 pattern is followed optionally by a type annotation and then optionally by an
@@ -107,3 +120,8 @@ statement are [`cfg`], and [the lint check attributes].
 [`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [pattern]: patterns.html
+[_Expression_]: expressions.html
+[_Item_]: items.html
+[_LetStatement_]: #let-statements
+[_Pattern_]: patterns.html
+[_Type_]: types.html
