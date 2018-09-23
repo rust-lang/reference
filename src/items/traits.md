@@ -1,5 +1,25 @@
 # Traits
 
+> **<sup>Syntax</sup>**\
+> _Trait_ :\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
+>              [_GenericsDecl_]<sup>?</sup>
+>              [_WhereClause_]<sup>?</sup> `{`\
+> &nbsp;&nbsp;&nbsp;&nbsp; _TraitItem_<sup>\*</sup>\
+> &nbsp;&nbsp; `}`
+>
+> _TraitItem_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (_TraitMethod_ | _TraitConst_ | _TraitType_)
+>
+> _TraitMethod_ :\
+> &nbsp;&nbsp; [_MethodType_] `;` | [_Method_]
+>
+> _TraitConst_ :\
+> &nbsp;&nbsp; `const` [IDENTIFIER] ( ( `:` [_Type_] ) ( `=` [_Expression_] )<sup>?</sup> )<sup>?</sup> `;`
+>
+> _TraitType_ :\
+> &nbsp;&nbsp; `type` [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> `;`
+
 A _trait_ describes an abstract interface that types can implement. This
 interface consists of [associated items], which come in three varieties:
 
@@ -115,6 +135,23 @@ let circle = Box::new(circle) as Box<dyn Circle>;
 let nonsense = circle.radius() * circle.area();
 ```
 
+## Unsafe traits
+
+Traits that begin with the `unsafe` keyword indicate that *implementing* the
+trait may be [unsafe]. It is safe to use a correctly implemented unsafe trait.
+The [trait implementation] must also include the `unsafe` keyword.
+
+[`Sync`] and [`Send`] are examples of unsafe traits.
+
+[IDENTIFIER]: identifiers.html
+[_Expression_]: expressions.html
+[_GenericsDecl_]: types.html#type-parameters
+[_Method_]: items/implementations.html
+[_MethodType_]: items/implementations.html
+[_OuterAttribute_]: attributes.html
+[_TypeParamBounds_]: trait-bounds.html
+[_Type_]: types.html
+[_WhereClause_]: items/generics.html#where-clauses
 [bounds]: trait-bounds.html
 [trait object]: types.html#trait-objects
 [explicit]: expressions/operator-expr.html#type-cast-expressions
@@ -125,3 +162,7 @@ let nonsense = circle.radius() * circle.area();
 [generics]: items/generics.html
 [where clauses]: items/generics.html#where-clauses
 [generic functions]: items/functions.html#generic-functions
+[unsafe]: unsafety.html
+[trait implementation]: items/implementations.html#trait-implementations
+[`Send`]: special-types-and-traits.html#send
+[`Sync`]: special-types-and-traits.html#sync
