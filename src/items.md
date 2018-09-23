@@ -1,5 +1,42 @@
 # Items
 
+> **<sup>Syntax:<sup>**\
+> _Item_:\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Visibility_]<sup>?</sup>\
+> &nbsp;&nbsp; (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  [_Module_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternCrate_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_UseDeclaration_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Function_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_TypeAlias_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Struct_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Enumeration_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Union_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ConstantItem_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_StaticItem_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Trait_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_Implementation_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternBlock_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _Macro_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _MacroDefinition_\
+> &nbsp;&nbsp; )
+
+[_OuterAttribute_]: attributes.html
+[_Visibility_]: visibility-and-privacy.html
+[_Module_]: items/modules.html
+[_ExternCrate_]: items/extern-crates.html
+[_UseDeclaration_]: items/use-declarations.html
+[_Function_]: items/functions.html
+[_TypeAlias_]: items/type-aliases.html
+[_Struct_]: items/structs.html
+[_Enumeration_]: items/enumerations.html
+[_Union_]: items/unions.html
+[_ConstantItem_]: items/constant-items.html
+[_StaticItem_]: items/static-items.html
+[_Trait_]: items/traits.html
+[_Implementation_]: items/implementations.html
+[_ExternBlock_]: items/extern-blocks.html
+
 An _item_ is a component of a crate. Items are organized within a crate by a
 nested set of [modules]. Every crate has a single "outermost" anonymous module;
 all further items within the crate have [paths] within the module tree of the
