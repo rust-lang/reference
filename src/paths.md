@@ -62,10 +62,17 @@ Vec::<u8>::with_capacity(1024);
 
 > **<sup>Syntax</sup>**\
 > _QualifiedPathInExpression_ :\
-> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>` (`::` _PathExprSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>\*</sup>
+>
+> _QualifiedPathType_ :\
+> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>`
+>
+> _QualifiedPathInType_ :\
+> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>\*</sup>
 
-Fully qualified paths allow for disambiguating the path for [trait implementations] and for
-specifying [canonical paths](#canonical-paths).
+Fully qualified paths allow for disambiguating the path for [trait implementations] and
+for specifying [canonical paths](#canonical-paths). When used in a type specification, it
+supports using the type syntax specified below.
 
 ```rust
 struct S;
@@ -92,10 +99,16 @@ S::f();  // Calls the inherent impl.
 > &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ (`::` _TypePathSegment_)<sup>\*</sup>
 >
 > _TypePathSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> [_Generics_])<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_Generics_] | _TypePathFn_)<sup>?</sup>
+>
+> _TypePathFn_ :\
+> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_Type_])<sup>?</sup>
+>
+> _TypePathFnInputs_ :\
+> [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
 
 Type paths are used within type definitions, trait bounds, type parameter bounds,
-and qualified paths in expressions.
+and qualified paths.
 
 Although the `::` token is allowed before the generics parameters, it is not required
 because there is no ambiguity like there is in _PathInExpression_.
@@ -103,6 +116,7 @@ because there is no ambiguity like there is in _PathInExpression_.
 ```rust,ignore
 impl ops::Index<ops::Range<usize>> for S { /*...*/ }
 fn i() -> impl Iterator<Item = op::Example<'a>> { /*...*/ }
+type G = std::boxed::Box<std::ops::FnOnce(isize) -> isize>;
 ```
 
 ## Path qualifiers
