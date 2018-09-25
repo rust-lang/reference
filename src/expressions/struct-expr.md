@@ -89,7 +89,8 @@ let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
 
 When initializing a data structure (struct, enum, union) with named (but not
 numbered) fields, it is allowed to write `fieldname` as a shorthand for
-`fieldname: fieldname`. This allows a compact syntax with less duplication. Example:
+`fieldname: fieldname`. This allows a compact syntax with less duplication.
+For example:
 
 ```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
@@ -104,7 +105,7 @@ Point3d { x, y: y_value, z };
 
 A struct expression with fields enclosed in parentheses constructs a tuple struct. Though
 it is listed here as a specific expression for completeness, it is equivalent to a [call
-expression] to the tuple struct's constructor. Example:
+expression] to the tuple struct's constructor. For example:
 
 ```rust
 struct Position(i32, i32, i32);
@@ -117,7 +118,7 @@ let pos = c(8, 6, 7);  // Creates a `Position` value.
 
 A unit struct expression is just the path to a unit struct item. This refers to the unit
 struct's implicit constant of its value. The unit struct value can also be constructed
-with fieldless struct expression. Example:
+with a fieldless struct expression. For example:
 
 ```rust
 struct Gamma;
