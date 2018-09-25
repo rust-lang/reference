@@ -24,7 +24,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; _TraitImplItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
 >
-> _ImplItem_ :\
+> _TraitImplItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
 > &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | _Method_ )
