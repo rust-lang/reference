@@ -42,15 +42,37 @@ mod m {
 > &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ (`::` _PathExprSegment_)<sup>\*</sup>
 >
 > _PathExprSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::` [_Generics_])<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ (`::` _GenericArgs_)<sup>?</sup>
 >
 > _PathIdentSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `$crate`
+>
+> _GenericArgs_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`
+>
+> _GenericArgsLifetimes_ :\
+> &nbsp;&nbsp; [_Lifetime_] (`,` [_Lifetime_])<sup>\*</sup>
+>
+> _GenericArgsTypes_ :\
+> &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup>
+>
+> _GenericArgsBindings_ :\
+> &nbsp;&nbsp; _GenericArgsBinding_ (`,` _GenericArgsBinding_)<sup>\*</sup>
+>
+> _GenericArgsBinding_ :\
+> &nbsp;&nbsp; [IDENTIFIER] `=` [_Type_]
 
 Paths in expressions allow for paths with generic arguments to be specified. They are
 used in various places in [expressions] and [patterns].
 
-The `::` token is required before the opening `<` for generic parameters to avoid
+The `::` token is required before the opening `<` for generic arguments to avoid
 ambiguity with the less-than operator. This is colloquially known as "turbofish" syntax.
 
 ```rust
@@ -99,7 +121,7 @@ S::f();  // Calls the inherent impl.
 > &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ (`::` _TypePathSegment_)<sup>\*</sup>
 >
 > _TypePathSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_Generics_] | _TypePathFn_)<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_)<sup>?</sup>
 >
 > _TypePathFn_ :\
 > `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_Type_])<sup>?</sup>
@@ -110,7 +132,7 @@ S::f();  // Calls the inherent impl.
 Type paths are used within type definitions, trait bounds, type parameter bounds,
 and qualified paths.
 
-Although the `::` token is allowed before the generics parameters, it is not required
+Although the `::` token is allowed before the generics arguments, it is not required
 because there is no ambiguity like there is in _PathInExpression_.
 
 ```rust,ignore
@@ -303,6 +325,10 @@ mod without { // ::without
 
 # fn main() {}
 ```
+
+[_GenericArgs_]: #paths-in-expressions
+[_Lifetime_]: trait-bounds.html
+[_Type_]: types.html
 [item]: items.html
 [variable]: variables.html
 [identifiers]: identifiers.html
@@ -310,8 +336,6 @@ mod without { // ::without
 [modules]: items/modules.html
 [use declarations]: items/use-declarations.html
 [IDENTIFIER]: identifiers.html
-[_Generics_]: items/generics.html
-[_Type_]: types.html
 [`use`]: items/use-declarations.html
 [attributes]: attributes.html
 [enum]: items/enumerations.html
