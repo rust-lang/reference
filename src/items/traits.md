@@ -3,7 +3,7 @@
 > **<sup>Syntax</sup>**\
 > _Trait_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
->              [_GenericsDecl_]<sup>?</sup>
+>              [_Generics_]<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp;&nbsp;&nbsp; _TraitItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -145,7 +145,7 @@ The [trait implementation] must also include the `unsafe` keyword.
 
 [IDENTIFIER]: identifiers.html
 [_Expression_]: expressions.html
-[_GenericsDecl_]: types.html#type-parameters
+[_Generics_]: items/generics.html
 [_Method_]: items/implementations.html
 [_MethodType_]: items/implementations.html
 [_OuterAttribute_]: attributes.html

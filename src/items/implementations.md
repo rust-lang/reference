@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; _InherentImpl_ | _TraitImpl_
 >
 > _InherentImpl_ :\
-> &nbsp;&nbsp; `impl` [_GenericsDecl_] [_Type_] [_WhereClause_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `impl` [_Generics_]&nbsp;[_Type_]&nbsp;[_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _InherentImplItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -16,7 +16,7 @@
 > &nbsp;&nbsp; ( [_ConstantItem_] | _Method_ )
 >
 > _TraitImpl_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_GenericsDecl_] `!`<sup>?</sup>
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_] `!`<sup>?</sup>
 >              [_TypePath_] `for` [_Type_]\
 > &nbsp;&nbsp; [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; `{`\
@@ -193,11 +193,10 @@ attributes].
 [IDENTIFIER]: identifiers.html
 [_BlockWithInnerAttributes_]: items/functions.html
 [_ConstantItem_]: items/constant-items.html
-[_Generics_]: items/generics.html
 [_FunctionFront_]: items/functions.html
 [_FunctionParam_]: items/functions.html
 [_FunctionReturnType_]: items/functions.html
-[_GenericsDecl_]: types.html#type-parameters
+[_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
 [_Lifetime_]: trait-bounds.html
 [_OuterAttribute_]: attributes.html
