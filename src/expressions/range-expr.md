@@ -21,10 +21,10 @@
 > _RangeFullExpr_ :\
 > &nbsp;&nbsp; `..`
 >
-> _RangeExpr_ :\
+> _RangeInclusiveExpr_ :\
 > &nbsp;&nbsp; [_Expression_] `..=` [_Expression_]
 >
-> _RangeToExpr_ :\
+> _RangeToInclusiveExpr_ :\
 > &nbsp;&nbsp; `..=` [_Expression_]
 
 The `..` and `..=` operators will construct an object of one of the
