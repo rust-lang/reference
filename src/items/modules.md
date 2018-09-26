@@ -68,8 +68,12 @@ mod thread {
 }
 ```
 
-Modules implicitly have a [use declaration] specified by crate's [prelude]. The
-[use declaration] can be removed by using the `no_implicit_prelude` [attribute].
+Modules implicitly have some paths in scope. These paths are to built-in types,
+macros imported with `#[macro_use]` on an extern crate, and by the crate's
+[prelude]. These paths are all made of a single identifier. These paths are not
+paths of the module, so for example, any path `path`, `self::path` is not also
+a valid path. The paths added by the [prelude] can be removed by placing the
+`no_implicit_prelude` [attribute] onto the module.
 
 ## Attributes on Modules
 

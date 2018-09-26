@@ -85,16 +85,16 @@ fn main() {
 
 ## Preludes and `no_std`
 
-All crates have a *prelude* that automatically inserts a [use declaration] into
-each [module] and an [`extern crate]` into the crate root module. By default,
-the *standard prelude* is used. The linked crate is [`std`] and the [use
-delcaration] uses [`std::prelude::v1::*`].
+All crates have a *prelude* that automatically inserts paths of a specific
+module, the *prelude module*, into scope of each [module] and an [`extern
+crate]` into the crate root module. By default, the *standard prelude* is used.
+The linked crate is [`std`] and the prelude module is [`std::prelude::v1`].
 
 The prelude can be changed to the *core prelude* by using the `no_std`
 [attribute] on the root crate module. The linked crate is [`core`] and the
-[`use` declaration] uses [`core::prelude::v1::*`]. Using the core prelude over
-the standard prelude is useful when either the crate is targeting a platform
-that does not support the standard library or is purposefully not using the
+prelude module is [`core::prelude::v1`]. Using the core prelude over the
+standard prelude is useful when either the crate is targeting a platform that
+does not support the standard library or is purposefully not using the
 capabilities of the standard library. Those capabilities are mainly dynamic
 memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g.
 `std::fs` and `std::io`).
@@ -139,9 +139,9 @@ type must  be one of the following:
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html
 [`core`]: ../core/index.html
-[`core::prelude::v1::*`]: ../core/preludce.index.html
+[`core::prelude::v1`]: ../core/preludce.index.html
 [`std`]: ../std/index.html
-[`std::prelude::v1::*`]: ../std/prelude/index.html
+[`std::prelude::v1`]: ../std/prelude/index.html
 [`use` declaration]: items/use-declarations.html
 [attribute]: attributes.html
 [attributes]: attributes.html
