@@ -10,6 +10,7 @@
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
 > &nbsp;&nbsp; | [_TuplePattern_]\
+> &nbsp;&nbsp; | [_GroupedPattern_]\
 > &nbsp;&nbsp; | [_SlicePattern_]\
 > &nbsp;&nbsp; | [_PathPattern_]
 
@@ -582,6 +583,25 @@ They are also used to [destructure](#destructuring) a tuple.
 
 This pattern is refutable when one of its subpatterns is refutable.
 
+## Grouped patterns
+
+> **<sup>Syntax</sup>**\
+> _GroupedPattern_ :\
+> &nbsp;&nbsp; `(` [_Pattern_] `)`
+
+Enclosing a pattern in parentheses can be used to explicitly control the
+precedence of compound patterns. For example, a reference pattern next to a
+range pattern such as `&0..=5` is ambiguous and is not allowed, but can be
+expressed with parentheses.
+
+```rust
+let int_reference = &3;
+match int_reference {
+    &(0..=5) => (),
+    _ => (),
+}
+```
+
 ## Slice patterns
 
 > **<sup>Syntax</sup>**\
@@ -633,17 +653,18 @@ Path patterns are irrefutable when they refer to structs or an enum variant when
 has only one variant or a constant whose type is irrefutable. They are refutable when they
 refer to refutable constants or enum variants for enums with multiple variants.
 
-[_Pattern_]: #patterns
+[_GroupedPattern_]: #grouped-patterns
+[_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
-[_WildcardPattern_]: #wildcard-pattern
+[_PathPattern_]: #path-patterns
+[_Pattern_]: #patterns
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
-[_IdentifierPattern_]: #identifier-patterns
-[_TupleStructPattern_]: #tuple-struct-patterns
+[_SlicePattern_]: #slice-patterns
 [_StructPattern_]: #struct-patterns
 [_TuplePattern_]: #tuple-patterns
-[_SlicePattern_]: #slice-patterns
-[_PathPattern_]: #path-patterns
+[_TupleStructPattern_]: #tuple-struct-patterns
+[_WildcardPattern_]: #wildcard-pattern
 
 [`Copy`]: special-types-and-traits.html#copy
 [IDENTIFIER]: identifiers.html
