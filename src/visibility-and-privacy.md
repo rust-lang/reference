@@ -4,6 +4,8 @@
 > _Visibility_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `pub`\
 > &nbsp;&nbsp; | `pub` `(` `crate` `)`\
+> &nbsp;&nbsp; | `pub` `(` `self` `)`\
+> &nbsp;&nbsp; | `pub` `(` `super` `)`\
 > &nbsp;&nbsp; | `pub` `(` `in` [_SimplePath_] `)`
 
 These two terms are often used interchangeably, and what they are attempting to
