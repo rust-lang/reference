@@ -51,13 +51,23 @@ designator is already known, and so only the name of a matched nonterminal comes
 after the dollar sign.
 
 In both the matcher and transcriber, the Kleene star-like operator indicates
-repetition. The Kleene star operator consists of `$` and parentheses, optionally
-followed by a separator token, followed by `*` or `+`. `*` means zero or more
-repetitions, `+` means at least one repetition. The parentheses are not matched or
-transcribed. On the matcher side, a name is bound to _all_ of the names it
-matches, in a structure that mimics the structure of the repetition encountered
-on a successful match. The job of the transcriber is to sort that structure
-out.
+repetition. The Kleene star operator consists of `$` and parentheses,
+optionally followed by a separator token, followed by `*`, `+`, or `?`. `*`
+means zero or more repetitions; `+` means _at least_ one repetition; `?` means
+at most one repetition. The parentheses are not matched or transcribed. On the
+matcher side, a name is bound to _all_ of the names it matches, in a structure
+that mimics the structure of the repetition encountered on a successful match.
+The job of the transcriber is to sort that structure out. Also, `?`, unlike `*`
+and `+`, does _not_ allow a separator, since one could never match against it
+anyway.
+
+> **Edition Differences**: The `?` Kleene operator did not exist before the
+> 2018 edition.
+
+> **Edition Differences**: Prior to the 2018 Edition, `?` was an allowed
+> separator token, rather than a Kleene operator. It is no longer allowed as a
+> separator as of the 2018 edition. This avoids ambiguity with the `?` Kleene
+> operator.
 
 The rules for transcription of these repetitions are called "Macro By Example".
 Essentially, one "layer" of repetition is discharged at a time, and all of them
