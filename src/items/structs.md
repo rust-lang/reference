@@ -78,7 +78,7 @@ let c = [Cookie, Cookie {}, Cookie, Cookie {}];
 The precise memory layout of a struct is not specified. One can specify a
 particular layout using the [`repr` attribute].
 
-[`repr` attribute]: attributes.html#ffi-attributes
+[`repr` attribute]: type-layout.html#representations
 
 [_OuterAttribute_]: attributes.html
 [IDENTIFIER]: identifiers.html
