@@ -114,6 +114,22 @@ match EXPR {
 The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 Use of a lazy boolean operator is ambiguous with a planned feature change
 of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
+When lazy boolean operator expression is desired, this can be achieved
+by using parenthesis as below:
+
+```rust,ignore
+// Before...
+if let PAT = EXPR && EXPR { .. }
+
+// After...
+if let PAT = ( EXPR && EXPR ) { .. }
+
+// Before...
+if let PAT = EXPR || EXPR { .. }
+
+// After...
+if let PAT = ( EXPR || EXPR ) { .. }
+```
 
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
