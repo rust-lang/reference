@@ -29,7 +29,7 @@ An *associated function declaration* declares a signature for an associated
 function definition. It is written as a function item, except the
 function body is replaced with a `;`.
 
-The identifier if the name of the function. The generics, parameter list,
+The identifier is the name of the function. The generics, parameter list,
 return type, and where clause of the associated function must be the same as the
 associated function declarations's.
 
