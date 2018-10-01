@@ -9,10 +9,29 @@
 > &nbsp;&nbsp; `}`
 >
 > _TraitItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (_TraitMethod_ | _TraitConst_ | _TraitType_)
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (_TraitFunc_ | _TraitMethod_ | _TraitConst_ | _TraitType_)
+>
+> _TraitFunc_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunctionDecl_ ( `;` | [_BlockExpression_] )
 >
 > _TraitMethod_ :\
-> &nbsp;&nbsp; [_MethodType_] `;` | [_Method_]
+> &nbsp;&nbsp; &nbsp;&nbsp; _TraitMethodDecl_ ( `;` | [_BlockExpression_] )
+>
+> _TraitFunctionDecl_ :\
+> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` _TraitFunctionParameters_<sup>?</sup> `)`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
+>
+> _TraitMethodDecl_ :\
+> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` [_SelfParam_] (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup> `)`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
+>
+> _TraitFunctionParameters_ :\
+> &nbsp;&nbsp; _TraitFunctionParam_ (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _TraitFunctionParam_<sup>[†](#parameter-patterns)</sup> :\
+> &nbsp;&nbsp; ( [_Pattern_] `:` )<sup>?</sup> [_Type_]
 >
 > _TraitConst_ :\
 > &nbsp;&nbsp; `const` [IDENTIFIER] ( ( `:` [_Type_] ) ( `=` [_Expression_] )<sup>?</sup> )<sup>?</sup> `;`
@@ -137,18 +156,54 @@ let nonsense = circle.radius() * circle.area();
 
 ## Unsafe traits
 
-Traits that begin with the `unsafe` keyword indicate that *implementing* the
+Traits items that begin with the `unsafe` keyword indicate that *implementing* the
 trait may be [unsafe]. It is safe to use a correctly implemented unsafe trait.
-The [trait implementation] must also include the `unsafe` keyword.
+The [trait implementation] must also begin with the `unsafe` keyword.
 
 [`Sync`] and [`Send`] are examples of unsafe traits.
 
+## Parameter patterns
+
+The pattern for a trait function or method parameter is optional:
+
+```rust
+trait T {
+    fn f(i32);  // Parameter identifiers are not required.
+}
+```
+
+The kinds of patterns for parameters is limited to one of the following:
+
+* [IDENTIFIER]
+* `mut` [IDENTIFIER]
+* [`_`][WildcardPattern]
+* `&` [IDENTIFIER]
+* `&&` [IDENTIFIER]
+
+Function or method declarations without a body only allow [IDENTIFIER] or
+[wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
+allowed, but it is deprecated and will become a hard error in the future.
+<!-- https://github.com/rust-lang/rust/issues/35203 -->
+
+<!-- 2018 changes:
+
+Function or method parameter patterns are no longer optional, and are required.
+
+All irrefutable pattern kinds are allowed (as long as there is a body).
+-->
+
+
 [IDENTIFIER]: identifiers.html
+[WildcardPattern]: patterns.html#wildcard-pattern
+[_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
+[_FunctionFront_]: items/functions.html
+[_FunctionParam_]: items/functions.html
+[_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
-[_Method_]: items/implementations.html
-[_MethodType_]: items/implementations.html
 [_OuterAttribute_]: attributes.html
+[_Pattern_]: patterns.html
+[_SelfParam_]: items/associated-items.html#methods
 [_TypeParamBounds_]: trait-bounds.html
 [_Type_]: types.html
 [_WhereClause_]: items/generics.html#where-clauses

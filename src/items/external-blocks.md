@@ -17,14 +17,17 @@
 >
 > _ExternalFunctionItem_ :\
 > &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
-> &nbsp;&nbsp; `(` [_FunctionParameters_]<sup>?</sup> | _FunctionParametersWithVariadics_ ) `)`\
+> &nbsp;&nbsp; `(` _NamedFunctionParameters_<sup>?</sup> | _NamedFunctionParametersWithVariadics_ ) `)`\
 > &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
 >
-> _FunctionParametersWithVariadics_ :\
-> &nbsp;&nbsp; ( [_FunctionParam_] `,` )<sup>\*</sup> _VariadicFunctionParam_
+> _NamedFunctionParameters_ :\
+> &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> `,`<sup>?</sup>
 >
-> _VariadicFunctionParam_ :\
-> &nbsp;&nbsp; [_FunctionParam_] `,` `...`
+> _NamedFunctionParam_ :\
+> &nbsp;&nbsp; ( [IDENTIFIER] | `_` ) `:` [_Type_]
+>
+> _NamedFunctionParametersWithVariadics_ :\
+> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
 
 External blocks form the basis for Rust's foreign function interface.
 Declarations in an external block describe symbols in external, non-Rust
@@ -32,7 +35,8 @@ libraries.
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
-terminated by a semicolon.
+terminated by a semicolon. Patterns are not allowed in parameters, only
+[IDENTIFIER] or `_` may be used.
 
 Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between

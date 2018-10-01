@@ -13,7 +13,7 @@
 > _InherentImplItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_ConstantItem_] | _Method_ )
+> &nbsp;&nbsp; ( [_ConstantItem_] | [_Function_] | [_Method_] )
 >
 > _TraitImpl_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_] `!`<sup>?</sup>
@@ -27,22 +27,7 @@
 > _TraitImplItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | _Method_ )
->
-> _Method_:\
-> &nbsp;&nbsp; _MethodType_ [_BlockWithInnerAttributes_]
->
-> _MethodType_:\
-> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MethodParameters_<sup>?</sup> `)`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
->
-> _MethodParameters_:\
-> &nbsp;&nbsp; (_SelfParam_ | [_FunctionParam_] ) (`,` [_FunctionParam_])<sup>\*</sup> `,`<sup>?</sup>
->
-> _SelfParam_:\
-> &nbsp;&nbsp; &nbsp;&nbsp; (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`\
-> &nbsp;&nbsp; | `mut`<sup>?</sup> `self` (`:` [_Type_])<sup>?</sup>
+> &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] )
 
 An _implementation_ is an item that associates items with an _implementing type_.
 Implementations are defined with the keyword `impl` and contain functions
@@ -191,18 +176,15 @@ meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
 [IDENTIFIER]: identifiers.html
-[_BlockWithInnerAttributes_]: items/functions.html
 [_ConstantItem_]: items/constant-items.html
-[_FunctionFront_]: items/functions.html
-[_FunctionParam_]: items/functions.html
-[_FunctionReturnType_]: items/functions.html
+[_Function_]: items/functions.html
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
-[_Lifetime_]: trait-bounds.html
+[_Method_]: items/associated-items.html#methods
 [_OuterAttribute_]: attributes.html
-[_Type_]: types.html
 [_TypeAlias_]: items/type-aliases.html
 [_TypePath_]: paths.html#paths-in-types
+[_Type_]: types.html
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
