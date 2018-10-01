@@ -421,12 +421,22 @@ All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
 > **<sup>Syntax</sup>**\
 > _BareFunctionType_ :\
 > &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionFront_] `fn`\
-> &nbsp;&nbsp; &nbsp;&nbsp;  `(` [_FunctionParametersMaybeNamedVariadic_]<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
 >
 > _BareFunctionReturnType_:\
 > &nbsp;&nbsp; `->` [_TypeNoBounds_]
-
-<!-- TODO: _FunctionParametersMaybeNamedVariadic_ -->
+>
+> _FunctionParametersMaybeNamedVariadic_ :\
+> &nbsp;&nbsp; _MaybeNamedFunctionParameters_ | _MaybeNamedFunctionParametersVariadic_
+>
+> _MaybeNamedFunctionParameters_ :\
+> &nbsp;&nbsp; _MaybeNamedParam_ ( `,` _MaybeNamedParam_ )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _MaybeNamedParam_ :\
+> &nbsp;&nbsp; ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
+>
+> _MaybeNamedFunctionParametersVariadic_ :\
+> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` `...`
 
 Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time. They can be created
@@ -436,6 +446,9 @@ non-capturing [closures](#closure-types).
 A function pointer type consists of a possibly-empty set of function-type
 modifiers (such as `unsafe` or `extern`), a sequence of input types and an
 output type.
+
+Variadic parameters can only be specified with [`extern`] function types with
+the `"C"` or `"cdecl"` calling convention.
 
 An example where `Binop` is defined as a function pointer type:
 
@@ -825,6 +838,7 @@ impl Printable for String {
 
 > Note: The notation `&self` is a shorthand for `self: &Self`.
 
+[IDENTIFIER]: identifiers.html
 [_ArrayType_]: #array-and-slice-types
 [_BareFunctionType_]: #function-pointer-types
 [_Expression_]: expressions.html
@@ -854,6 +868,7 @@ impl Printable for String {
 [`Send`]: special-types-and-traits.html#send
 [`Sync`]: special-types-and-traits.html#sync
 [`Sized`]: special-types-and-traits.html#sized
+[`extern`]: items/external-blocks.html
 [derive]: attributes.html#derive
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html
