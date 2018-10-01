@@ -13,13 +13,14 @@
 > _MetaItem_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
 > &nbsp;&nbsp; | [_SimplePath_] `=` [_LiteralExpression_]<sub>_without suffix_</sub>\
-> &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_ `)`
+> &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_<sup>?</sup> `)`
 >
 > _MetaSeq_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY\
-> &nbsp;&nbsp; | _MetaItem_\
-> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>\
-> &nbsp;&nbsp; | _MetaItem_ `,` _MetaSeq_
+> &nbsp;&nbsp; _MetaItemInner_ ( `,` MetaItemInner )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _MetaItemInner_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _MetaItem_\
+> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
 to name, convention, and language and compiler version. Attributes are modeled

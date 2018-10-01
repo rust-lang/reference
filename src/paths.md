@@ -84,13 +84,13 @@ Vec::<u8>::with_capacity(1024);
 
 > **<sup>Syntax</sup>**\
 > _QualifiedPathInExpression_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>+</sup>
 >
 > _QualifiedPathType_ :\
 > &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>`
 >
 > _QualifiedPathInType_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>+</sup>
 
 Fully qualified paths allow for disambiguating the path for [trait implementations] and
 for specifying [canonical paths](#canonical-paths). When used in a type specification, it
