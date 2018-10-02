@@ -22,7 +22,7 @@ x::y::z;
 > &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ (`::` _SimplePathSegment_)<sup>\*</sup>
 >
 > _SimplePathSegment_ :\
-> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `$crate`
+> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
 
 Simple paths are used in [visibility] markers, [attributes], [macros], and [`use`] items.
 Examples:
@@ -45,7 +45,7 @@ mod m {
 > &nbsp;&nbsp; _PathIdentSegment_ (`::` _GenericArgs_)<sup>?</sup>
 >
 > _PathIdentSegment_ :\
-> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `$crate`
+> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `crate` | `$crate`
 >
 > _GenericArgs_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
@@ -152,6 +152,12 @@ Paths starting with `::` are considered to be global paths where the segments of
 start being resolved from the crate root. Each identifier in the path must resolve to an
 item.
 
+> **Edition Differences**: In the 2015 Edition, the crate root contains a variety of
+> different items, including external crates, default crates such as `std` and `core`, and
+> items in the top level of the crate (including `use` imports).
+>
+> Beginning with the 2018 Edition, paths starting with `::` can only reference crates.
+
 ```rust
 mod a {
     pub fn foo() {}
@@ -166,8 +172,8 @@ mod b {
 
 ### `self`
 
-`self` resolves the path relative to the current module. When referring to an item, `self`
-can only be used as the first segment, without a preceding `::`.
+`self` resolves the path relative to the current module. `self` can only be used as the
+first segment, without a preceding `::`.
 
 ```rust
 fn foo() {}
@@ -236,13 +242,27 @@ mod a {
 # fn main() {}
 ```
 
+### `crate`
+
+`crate` resolves the path relative to the current crate. `crate` can only be used as the
+first segment, without a preceding `::`.
+
+```rust
+fn foo() {}
+mod a {
+    fn bar() {
+        crate::foo();
+    }
+}
+# fn main() {}
+```
+
 ### `$crate`
 
 `$crate` is only used within [macro transcribers], and can only be used as the first
-segment, without a preceding `::`. When a macro is imported from a crate named `foo`,
-`$crate` will expand to `::foo`. When a macro is used in the same crate where it is
-defined, `$crate` will expand to nothing. This allows you to reliably refer to items in
-the crate where the macro is defined.
+segment, without a preceding `::`. `$crate` will expand to a path to access items from the
+top level of the crate where the macro is defined, regardless of which crate the macro is
+invoked.
 
 ```rust
 pub fn increment(x: u32) -> u32 {

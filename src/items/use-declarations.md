@@ -57,6 +57,8 @@ fn main() {
 }
 ```
 
+## `use` Visibility
+
 Like items, `use` declarations are private to the containing module, by
 default. Also like items, a `use` declaration can be public, if qualified by
 the `pub` keyword. Such a `use` declaration serves to _re-export_ a name. A
@@ -82,21 +84,21 @@ mod quux {
 In this example, the module `quux` re-exports two public names defined in
 `foo`.
 
-Also note that the paths contained in `use` items are relative to the crate
-root. So, in the previous example, the `use` refers to `quux::foo::{bar, baz}`,
-and not simply to `foo::{bar, baz}`. This also means that top-level module
-declarations should be at the crate root if direct usage of the declared
-modules within `use` items is desired. It is also possible to use `self` and
-`super` at the beginning of a `use` item to refer to the current and direct
-parent modules respectively. All rules regarding accessing declared modules in
-`use` declarations apply to both module declarations and `extern crate`
-declarations.
+## `use` Paths
+
+Paths in `use` items must start with a crate name or one of the [path
+qualifiers] `crate`, `self`, `super`, or `::`. `crate` refers to the current
+crate. `self` refers to the current module. `super` refers to the parent
+module. `::` can be used to explicitly refer to a crate, requiring an extern
+crate name to follow.
 
 An example of what will and will not work for `use` items:
+<!-- Note: This example works as-is in either 2015 or 2018. -->
 
 ```rust
 # #![allow(unused_imports)]
-use foo::baz::foobaz;    // good: foo is at the root of the crate
+use std::path::{self, Path, PathBuf};  // good: std is a crate name
+use crate::foo::baz::foobaz;    // good: foo is at the root of the crate
 
 mod foo {
 
@@ -104,10 +106,10 @@ mod foo {
         pub mod iter {}
     }
 
-    use foo::example::iter; // good: foo is at crate root
-//  use example::iter;      // bad:  example is not at the crate root
+    use crate::foo::example::iter; // good: foo is at crate root
+//  use example::iter;      // bad: relative paths are not allowed without `self`
     use self::baz::foobaz;  // good: self refers to module 'foo'
-    use foo::bar::foobar;   // good: foo is at crate root
+    use crate::foo::bar::foobar;   // good: foo is at crate root
 
     pub mod bar {
         pub fn foobar() { }
@@ -122,6 +124,33 @@ mod foo {
 fn main() {}
 ```
 
+> **Edition Differences**: In the 2015 Edition, `use` paths also allow
+> accessing items in the crate root. Using the example above, the following
+> `use` paths work in 2015 but not 2018:
+>
+> ```rust,ignore
+> use foo::example::iter;
+> use ::foo::baz::foobaz;
+> ```
+>
+> In the 2018 Edition, if an in-scope item has the same name as an external
+> crate, then `use` of that crate name requires a leading `::` to
+> unambiguously select the crate name. This is to retain compatibility with
+> potential future changes. <!-- uniform_paths future-proofing -->
+>
+> ```rust,edition2018
+> // use std::fs; // Error, this is ambiguous.
+> use ::std::fs;  // Imports from the `std` crate, not the module below.
+> use self::std::fs as self_fs;  // Imports the module below.
+>
+> mod std {
+>     pub mod fs {}
+> }
+> # fn main() {}
+> ```
+
+
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html#simple-paths
 [_Visibility_]: visibility-and-privacy.html
+[path qualifiers]: paths.html#path-qualifiers
