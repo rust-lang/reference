@@ -164,7 +164,13 @@ The [trait implementation] must also begin with the `unsafe` keyword.
 
 ## Parameter patterns
 
-The pattern for a trait function or method parameter is optional:
+Function or method declarations without a body only allow [IDENTIFIER] or
+`_` [wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
+allowed, but it is deprecated and will become a hard error in the future.
+<!-- https://github.com/rust-lang/rust/issues/35203 -->
+
+In the 2015 edition, the pattern for a trait function or method parameter is
+optional:
 
 ```rust
 trait T {
@@ -180,18 +186,16 @@ The kinds of patterns for parameters is limited to one of the following:
 * `&` [IDENTIFIER]
 * `&&` [IDENTIFIER]
 
-Function or method declarations without a body only allow [IDENTIFIER] or
-[wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
-allowed, but it is deprecated and will become a hard error in the future.
-<!-- https://github.com/rust-lang/rust/issues/35203 -->
+Beginning in the 2018 edition, function or method parameter patterns are no
+longer optional. Also, all irrefutable patterns are allowed as long as there
+is a body. Without a body, the limitations listed above are still in effect.
 
-<!-- 2018 changes:
-
-Function or method parameter patterns are no longer optional, and are required.
-
-All irrefutable pattern kinds are allowed (as long as there is a body).
--->
-
+```rust,edition2018
+trait T {
+    fn f1((a, b): (i32, i32)) {}
+    fn f2(_: (i32, i32));  // Cannot use tuple pattern without a body.
+}
+```
 
 [IDENTIFIER]: identifiers.html
 [WildcardPattern]: patterns.html#wildcard-pattern
