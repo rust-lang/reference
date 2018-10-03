@@ -85,7 +85,7 @@ fn main() {
 
 ## Preludes and `no_std`
 
-All crates have a *prelude* that automatically inserts paths of a specific
+All crates have a *prelude* that automatically inserts names from a specific
 module, the *prelude module*, into scope of each [module] and an [`extern
 crate]` into the crate root module. By default, the *standard prelude* is used.
 The linked crate is [`std`] and the prelude module is [`std::prelude::v1`].
