@@ -1,5 +1,27 @@
 # Functions
 
+> **<sup>Syntax</sup>**\
+> _Function_ :\
+> &nbsp;&nbsp; _FunctionFront_ `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` _FunctionParameters_<sup>?</sup> `)`\
+> &nbsp;&nbsp; &nbsp;&nbsp; _FunctionReturnType_<sup>?</sup> [_WhereClause_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
+>
+> _FunctionFront_ :\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+>
+> _Abi_ :\
+> &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
+>
+> _FunctionParameters_ :\
+> &nbsp;&nbsp; _FunctionParam_ (`,` _FunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _FunctionParam_ :\
+> &nbsp;&nbsp; [_Pattern_] `:` [_Type_]
+>
+> _FunctionReturnType_ :\
+> &nbsp;&nbsp; `->` [_Type_]
+
 A _function_ consists of a [block], along with a name and a set of parameters.
 Other than a name, all these are optional. Functions are declared with the
 keyword `fn`. Functions may declare a set of *input* [*variables*][variables]
@@ -138,6 +160,16 @@ attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint
 attributes].
 
+[IDENTIFIER]: identifiers.html
+[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
+[STRING_LITERAL]: tokens.html#string-literals
+[_BlockExpression_]: expressions/block-expr.html
+[_Generics_]: items/generics.html
+[_InnerAttribute_]: attributes.html
+[_Pattern_]: patterns.html
+[_Statement_]: statements.html
+[_Type_]: types.html
+[_WhereClause_]: items/generics.html#where-clauses
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html

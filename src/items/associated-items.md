@@ -79,17 +79,31 @@ let _: f64 = f64::from_i32(42);
 
 ### Methods
 
+> _Method_ :\
+> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` _SelfParam_ (`,` [_FunctionParam_])<sup>\*</sup> `,`<sup>?</sup> `)`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
+>
+> _SelfParam_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`\
+> &nbsp;&nbsp; | `mut`<sup>?</sup> `self` (`:` [_Type_])<sup>?</sup>
+
 Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
 well as the usual function call notation.
 
-The `self` parameter must have one of the following types. As a result, the
-following shorthands may be used to declare `self`:
+If the type of the `self` parameter is specified, it is limited to the type
+being implemented (or `Self`), or a reference or mutable reference to the
+type, or a boxed value of the type being implemented (such as `Box<Self>`).
+Shorthand syntax can be used without specifying a type, which have the
+following equivalents:
 
-* `self` -> `self: Self`
-* `&'lifetime self` -> `self: &'lifetime Self`
-* `&'lifetime mut self` -> `self: &'lifetime mut Self`
-* `self : Box<Self>` (no shorthand)
+Shorthand             | Equivalent
+----------------------|-----------
+`self`                | `self: Self`
+`&'lifetime self`     | `self: &'lifetime Self`
+`&'lifetime mut self` | `self: &'lifetime mut Self`
 
 > Note: Lifetimes can be and usually are elided with this shorthand.
 
@@ -272,6 +286,14 @@ fn main() {
 }
 ```
 
+[_BlockExpression_]: expressions/block-expr.html
+[_FunctionFront_]: items/functions.html
+[_FunctionParam_]: items/functions.html
+[_FunctionReturnType_]: items/functions.html
+[_Generics_]: items/generics.html
+[_Lifetime_]: trait-bounds.html
+[_Type_]: types.html
+[_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
 [traits]: items/traits.html
 [type aliases]: items/type-aliases.html

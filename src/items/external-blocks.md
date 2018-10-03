@@ -1,12 +1,42 @@
 # External blocks
 
+> **<sup>Syntax</sup>**\
+> _ExternBlock_ :\
+> &nbsp;&nbsp; `extern` [_Abi_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
+> &nbsp;&nbsp; `}`
+>
+> _ExternalItem_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
+> &nbsp;&nbsp; ( _ExternalStaticItem_ | _ExternalFunctionItem_ )
+>
+> _ExternalStaticItem_ :\
+> &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_] `;`
+>
+> _ExternalFunctionItem_ :\
+> &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; `(` _NamedFunctionParameters_<sup>?</sup> | _NamedFunctionParametersWithVariadics_ ) `)`\
+> &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
+>
+> _NamedFunctionParameters_ :\
+> &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _NamedFunctionParam_ :\
+> &nbsp;&nbsp; ( [IDENTIFIER] | `_` ) `:` [_Type_]
+>
+> _NamedFunctionParametersWithVariadics_ :\
+> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
+
 External blocks form the basis for Rust's foreign function interface.
 Declarations in an external block describe symbols in external, non-Rust
 libraries.
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
-terminated by a semicolon.
+terminated by a semicolon. Patterns are not allowed in parameters, only
+[IDENTIFIER] or `_` may be used.
 
 Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between
@@ -22,8 +52,6 @@ extern {
 ```
 
 A number of [attributes] control the behavior of external blocks.
-
-[attributes]: attributes.html#ffi-attributes
 
 By default external blocks assume that the library they are calling uses the
 standard C ABI on the specific platform. Other ABIs may be specified using an
@@ -81,3 +109,16 @@ It is valid to add the `link` attribute on an empty extern block. You can use
 this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
+
+[IDENTIFIER]: identifiers.html
+[_Abi_]: items/functions.html
+[_FunctionParam_]: items/functions.html
+[_FunctionParameters_]: items/functions.html
+[_FunctionReturnType_]: items/functions.html
+[_Generics_]: items/generics.html
+[_InnerAttribute_]: attributes.html
+[_OuterAttribute_]: attributes.html
+[_Type_]: types.html
+[_Visibility_]: visibility-and-privacy.html
+[_WhereClause_]: items/generics.html#where-clauses
+[attributes]: attributes.html#ffi-attributes
