@@ -1,5 +1,26 @@
 # Types
 
+> **<sup>Syntax</sup>**\
+> _Type_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _TypeNoBounds_\
+> &nbsp;&nbsp; | [_ImplTraitType_]\
+> &nbsp;&nbsp; | [_TraitObjectType_]
+>
+> _TypeNoBounds_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_ParenthesizedType_]\
+> &nbsp;&nbsp; | [_ImplTraitTypeOneBound_]\
+> &nbsp;&nbsp; | [_TraitObjectTypeOneBound_]\
+> &nbsp;&nbsp; | [_TypePath_]\
+> &nbsp;&nbsp; | [_TupleType_]\
+> &nbsp;&nbsp; | [_NeverType_]\
+> &nbsp;&nbsp; | [_RawPointerType_]\
+> &nbsp;&nbsp; | [_ReferenceType_]\
+> &nbsp;&nbsp; | [_ArrayType_]\
+> &nbsp;&nbsp; | [_SliceType_]\
+> &nbsp;&nbsp; | [_InferredType_]\
+> &nbsp;&nbsp; | [_QualifiedPathInType_]\
+> &nbsp;&nbsp; | [_BareFunctionType_]
+
 Every variable, item and value in a Rust program has a type. The _type_ of a
 *value* defines the interpretation of the memory holding it.
 
@@ -107,11 +128,19 @@ instantiated through a pointer type, such as `&str`.
 
 ## Never type
 
+> **<sup>Syntax</sup>**\
+> _NeverType_ : `!`
+
 The never type `!` is a type with no values, representing the result of
 computations that never complete. Expressions of type `!` can be coerced into
 any other type.
 
 ## Tuple types
+
+> **<sup>Syntax</sup>**\
+> _TupleType_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`\
+> &nbsp;&nbsp; | `(` ( [_Type_] `,` )<sup>+</sup> [_Type_]<sup>?</sup> `)`
 
 A tuple *type* is a heterogeneous product of other types, called the *elements*
 of the tuple. It has no nominal name and is instead structurally typed.
@@ -139,15 +168,41 @@ assert_eq!(p.1, "ten");
 For historical reasons and convenience, the tuple type with no elements (`()`)
 is often called ‘unit’ or ‘the unit type’.
 
+## Parenthesized types
+
+> _ParenthesizedType_ :\
+> &nbsp;&nbsp; `(` [_Type_] `)`
+
+In some situations the combination of types may be ambiguous. Use parentheses
+around a type to avoid ambiguity. For example, the `+` operator for [type
+boundaries] within a [reference type][_ReferenceType_] is unclear where the
+boundary applies, so the use of parentheses is required. Grammar rules that
+require this disambiguation use the [_TypeNoBounds_] rule instead of
+[_Type_].
+
+
+```rust
+# use std::any::Any;
+type T<'a> = &'a(Any + Send);
+```
+
 ## Array, and Slice types
 
-Rust has two different types for a list of items:
+> **<sup>Syntax</sup>**\
+> _ArrayType_ :\
+> &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
+>
+> _SliceType_ :\
+> &nbsp;&nbsp; `[` [_Type_] `]`
+
+Rust has two different types for a list of items of the same type:
 
 * `[T; N]`, an 'array'
 * `[T]`, a 'slice'
 
 An array has a fixed size, and can be allocated on either the stack or the
-heap.
+heap. The size is an expression that evaluates to a
+[`usize`](#machine-dependent-integer-types).
 
 A slice is a [dynamically sized type] representing a 'view' into an array. To
 use a slice type it generally has to be used behind a pointer for example as
@@ -276,6 +331,10 @@ copied, stored into data structs, and returned from functions.
 
 ### Shared references (`&`)
 
+> **<sup>Syntax</sup>**\
+> _ReferenceType_ :\
+> &nbsp;&nbsp; `&` [_Lifetime_]<sup>?</sup> `mut`<sup>?</sup> [_TypeNoBounds_]
+
 These point to memory _owned by some other value_. When a shared reference to a
 value is created it prevents direct mutation of the value. [Interior
 mutability](interior-mutability.html) provides an exception for this in certain
@@ -294,6 +353,10 @@ is written `&mut type` or `&'a mut type`. A mutable reference (that hasn't been
 borrowed) is the only way to access the value it points to, so is not `Copy`.
 
 ### Raw pointers (`*const` and `*mut`)
+
+> **<sup>Syntax</sup>**\
+> _RawPointerType_ :\
+> &nbsp;&nbsp; `*` ( `mut` | `const` ) [_TypeNoBounds_]
 
 Raw pointers are pointers without safety or liveness guarantees. Raw pointers
 are written as `*const T` or `*mut T`, for example `*const i32` means a raw
@@ -366,6 +429,26 @@ All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
 
 ## Function pointer types
 
+> **<sup>Syntax</sup>**\
+> _BareFunctionType_ :\
+> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionFront_] `fn`\
+> &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
+>
+> _BareFunctionReturnType_:\
+> &nbsp;&nbsp; `->` [_TypeNoBounds_]
+>
+> _FunctionParametersMaybeNamedVariadic_ :\
+> &nbsp;&nbsp; _MaybeNamedFunctionParameters_ | _MaybeNamedFunctionParametersVariadic_
+>
+> _MaybeNamedFunctionParameters_ :\
+> &nbsp;&nbsp; _MaybeNamedParam_ ( `,` _MaybeNamedParam_ )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _MaybeNamedParam_ :\
+> &nbsp;&nbsp; ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
+>
+> _MaybeNamedFunctionParametersVariadic_ :\
+> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` `...`
+
 Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time. They can be created
 via a coercion from both [function items](#function-item-types) and
@@ -374,6 +457,9 @@ non-capturing [closures](#closure-types).
 A function pointer type consists of a possibly-empty set of function-type
 modifiers (such as `unsafe` or `extern`), a sequence of input types and an
 output type.
+
+Variadic parameters can only be specified with [`extern`] function types with
+the `"C"` or `"cdecl"` calling convention.
 
 An example where `Binop` is defined as a function pointer type:
 
@@ -560,7 +646,10 @@ Because captures are often by reference, the following general rules arise:
 
 > **<sup>Syntax</sup>**\
 > _TraitObjectType_ :\
-> &nbsp;&nbsp; `dyn`<sup>?</sup> _TypeParamBounds_
+> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TypeParamBounds_]
+>
+> _TraitObjectTypeOneBound_ :\
+> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
 
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
@@ -658,6 +747,24 @@ inferred with a sensible choice.
 
 [defaults]: lifetime-elision.html#default-trait-object-lifetimes
 
+## Inferred type
+> **<sup>Syntax</sup>**\
+> _InferredType_ : `_`
+
+The inferred type asks the compiler to infer the type if possible based on the
+surrounding information available. It cannot be used in item signatures. It is
+often used in generic arguments:
+
+```rust
+let x: Vec<_> = (0..10).collect();
+```
+
+<!--
+  What else should be said here?
+  The only documentation I am aware of is https://rust-lang-nursery.github.io/rustc-guide/type-inference.html
+  There should be a broader discussion of type inference somewhere.
+-->
+
 ## Type parameters
 
 Within the body of an item that has type parameter declarations, the names of
@@ -678,7 +785,14 @@ fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
 Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
 `rest` has type `Vec<A>`, a vector with element type `A`.
 
-## Anonymous type parameters
+## Impl trait
+
+> **<sup>Syntax</sup>**\
+> _ImplTraitType_ : `impl` [_TypeParamBounds_]
+>
+> _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
+
+### Anonymous type parameters
 
 > Note: This section is a placeholder for more comprehensive reference
 > material.
@@ -692,7 +806,7 @@ bounds of the anonymous type parameter.
 
 They are written as `impl` followed by a set of trait bounds.
 
-## Abstract return types
+### Abstract return types
 
 > Note: This section is a placeholder for more comprehensive reference
 > material.
@@ -740,6 +854,31 @@ impl Printable for String {
 
 > Note: The notation `&self` is a shorthand for `self: &Self`.
 
+[IDENTIFIER]: identifiers.html
+[_ArrayType_]: #array-and-slice-types
+[_BareFunctionType_]: #function-pointer-types
+[_Expression_]: expressions.html
+[_ForLifetimes_]: items/generics.html#where-clauses
+[_FunctionFront_]: items/functions.html
+[_FunctionParametersMaybeNamed_]: items/functions.html
+[_ImplTraitTypeOneBound_]: #impl-trait
+[_ImplTraitType_]: #impl-trait
+[_InferredType_]: #inferred-type
+[_Lifetime_]: trait-bounds.html
+[_NeverType_]: #never-type
+[_ParenthesizedType_]: #parenthesized-types
+[_QualifiedPathInType_]: paths.html#qualified-paths
+[_RawPointerType_]: #raw-pointers-const-and-mut
+[_ReferenceType_]: #shared-references-
+[_SliceType_]: #array-and-slice-types
+[_TraitBound_]: trait-bounds.html
+[_TraitObjectTypeOneBound_]: #trait-objects
+[_TraitObjectType_]: #trait-objects
+[_TupleType_]: #tuple-types
+[_TypeNoBounds_]: #types
+[_TypeParamBounds_]: trait-bounds.html
+[_TypePath_]: paths.html#paths-in-types
+[_Type_]: #types
 [`Fn`]: ../std/ops/trait.Fn.html
 [`FnMut`]: ../std/ops/trait.FnMut.html
 [`FnOnce`]: ../std/ops/trait.FnOnce.html
@@ -748,6 +887,7 @@ impl Printable for String {
 [`Send`]: special-types-and-traits.html#send
 [`Sync`]: special-types-and-traits.html#sync
 [`Sized`]: special-types-and-traits.html#sized
+[`extern`]: items/external-blocks.html
 [derive]: attributes.html#derive
 [`Vec<T>`]: ../std/vec/struct.Vec.html
 [dynamically sized type]: dynamically-sized-types.html
@@ -759,3 +899,4 @@ impl Printable for String {
 [issue 47010]: https://github.com/rust-lang/rust/issues/47010
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
 [supertraits]: items/traits.html#supertraits
+[type boundaries]: trait-bounds.html

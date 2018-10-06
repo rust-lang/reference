@@ -548,7 +548,7 @@ usages and meanings are defined in the linked pages.
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
 | `@`    | At          | [Subpattern binding]
-| `_`    | Underscore  | [Wildcard patterns], Inferred types
+| `_`    | Underscore  | [Wildcard patterns], [Inferred types]
 | `.`    | Dot         | [Field access][field], [Tuple index]
 | `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns]
 | `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
@@ -576,6 +576,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `(` `)` | Parentheses     |
 
 
+[Inferred types]: types.html#inferred-type
 [Operator expressions]: expressions/operator-expr.html
 [Range patterns]: patterns.html#range-patterns
 [Reference patterns]: patterns.html#reference-patterns
