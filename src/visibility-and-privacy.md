@@ -2,12 +2,11 @@
 
 > **<sup>Syntax<sup>**\
 > _Visibility_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; EMPTY\
-> &nbsp;&nbsp; | `pub`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `pub`\
 > &nbsp;&nbsp; | `pub` `(` `crate` `)`\
-> &nbsp;&nbsp; | `pub` `(` `in` _ModulePath_ `)`\
-> &nbsp;&nbsp; | `pub` `(` `in`<sup>?</sup> `self` `)`\
-> &nbsp;&nbsp; | `pub` `(` `in`<sup>?</sup> `super` `)`
+> &nbsp;&nbsp; | `pub` `(` `self` `)`\
+> &nbsp;&nbsp; | `pub` `(` `super` `)`\
+> &nbsp;&nbsp; | `pub` `(` `in` [_SimplePath_] `)`
 
 These two terms are often used interchangeably, and what they are attempting to
 convey is the answer to the question "Can this item be used at this location?"
@@ -229,3 +228,5 @@ receive a privacy violation, while the path `api::f` would be allowed.
 When re-exporting a private item, it can be thought of as allowing the "privacy
 chain" being short-circuited through the reexport instead of passing through
 the namespace hierarchy as it normally would.
+
+[_SimplePath_]: paths.html#simple-paths

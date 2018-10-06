@@ -312,7 +312,7 @@ let y = false && panic!(); // false, doesn't evaluate `panic!()`
 
 > **<sup>Syntax</sup>**\
 > _TypeCastExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `as` [_PathInExpression_]
+> &nbsp;&nbsp; [_Expression_] `as` [_TypeNoBounds_]
 
 A type cast expression is denoted with the binary operator `as`.
 
@@ -460,4 +460,4 @@ assert_eq!(x, 14);
 [_CompoundAssignmentExpression_]: #compound-assignment-expressions
 
 [_Expression_]: expressions.html
-[_PathInExpression_]: paths.html
+[_TypeNoBounds_]: types.html
