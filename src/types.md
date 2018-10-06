@@ -2,19 +2,16 @@
 
 > **<sup>Syntax</sup>**\
 > _Type_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TypeCommon_\
-> &nbsp;&nbsp; | _ParenthesizedType_&nbsp;(`+` [_TypeParamBounds_])<sup>?</sup>\
-> &nbsp;&nbsp; | [_TypePath_]&nbsp;(`+` [_TypeParamBounds_])<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; _TypeNoBounds_\
 > &nbsp;&nbsp; | [_ImplTraitType_]\
 > &nbsp;&nbsp; | [_TraitObjectType_]
 >
 > _TypeNoBounds_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TypeCommon_\
-> &nbsp;&nbsp; | _ParenthesizedType_\
-> &nbsp;&nbsp; | [_TypePath_]
->
-> _TypeCommon_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_TupleType_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_ParenthesizedType_]\
+> &nbsp;&nbsp; | [_ImplTraitTypeOneBound_]\
+> &nbsp;&nbsp; | [_TraitObjectTypeOneBound_]\
+> &nbsp;&nbsp; | [_TypePath_]\
+> &nbsp;&nbsp; | [_TupleType_]\
 > &nbsp;&nbsp; | [_NeverType_]\
 > &nbsp;&nbsp; | [_RawPointerType_]\
 > &nbsp;&nbsp; | [_ReferenceType_]\
@@ -23,9 +20,6 @@
 > &nbsp;&nbsp; | [_InferredType_]\
 > &nbsp;&nbsp; | [_QualifiedPathInType_]\
 > &nbsp;&nbsp; | [_BareFunctionType_]
->
-> _ParenthesizedType_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _Type_ `)`
 
 Every variable, item and value in a Rust program has a type. The _type_ of a
 *value* defines the interpretation of the memory holding it.
@@ -146,8 +140,7 @@ any other type.
 > **<sup>Syntax</sup>**\
 > _TupleType_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`\
-> &nbsp;&nbsp; | `(` [_Type_] `,` `)`\
-> &nbsp;&nbsp; | `(` [_Type_]&nbsp;( `,` [_Type_] ) <sup>+</sup> `,`<sup>?</sup> `)`
+> &nbsp;&nbsp; | `(` ( [_Type_] `,` )<sup>+</sup> [_Type_]<sup>?</sup> `)`
 
 A tuple *type* is a heterogeneous product of other types, called the *elements*
 of the tuple. It has no nominal name and is instead structurally typed.
@@ -174,6 +167,24 @@ assert_eq!(p.1, "ten");
 
 For historical reasons and convenience, the tuple type with no elements (`()`)
 is often called ‘unit’ or ‘the unit type’.
+
+## Parenthesized types
+
+> _ParenthesizedType_ :\
+> &nbsp;&nbsp; `(` [_Type_] `)`
+
+In some situations the combination of types may be ambiguous. Use parentheses
+around a type to avoid ambiguity. For example, the `+` operator for [type
+boundaries] within a [reference type][_ReferenceType_] is unclear where the
+boundary applies, so the use of parentheses is required. Grammar rules that
+require this disambiguation use the [_TypeNoBounds_] rule instead of
+[_Type_].
+
+
+```rust
+# use std::any::Any;
+type T<'a> = &'a(Any + Send);
+```
 
 ## Array, and Slice types
 
@@ -636,6 +647,9 @@ Because captures are often by reference, the following general rules arise:
 > **<sup>Syntax</sup>**\
 > _TraitObjectType_ :\
 > &nbsp;&nbsp; `dyn`<sup>?</sup> [_TypeParamBounds_]
+>
+> _TraitObjectTypeOneBound_ :\
+> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
 
 A *trait object* is an opaque value of another type that implements a set of
 traits. The set of traits is made up of an [object safe] *base trait* plus any
@@ -748,7 +762,7 @@ let x: Vec<_> = (0..10).collect();
 <!--
   What else should be said here?
   The only documentation I am aware of is https://rust-lang-nursery.github.io/rustc-guide/type-inference.html
-  Should there be a broader discussion of type inference somewhere?
+  There should be a broader discussion of type inference somewhere.
 -->
 
 ## Type parameters
@@ -775,6 +789,8 @@ Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
 
 > **<sup>Syntax</sup>**\
 > _ImplTraitType_ : `impl` [_TypeParamBounds_]
+>
+> _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
 
 ### Anonymous type parameters
 
@@ -845,15 +861,18 @@ impl Printable for String {
 [_ForLifetimes_]: items/generics.html#where-clauses
 [_FunctionFront_]: items/functions.html
 [_FunctionParametersMaybeNamed_]: items/functions.html
+[_ImplTraitTypeOneBound_]: #impl-trait
 [_ImplTraitType_]: #impl-trait
 [_InferredType_]: #inferred-type
 [_Lifetime_]: trait-bounds.html
 [_NeverType_]: #never-type
-[_ParenthesizedType_]: #parenthesized-type
+[_ParenthesizedType_]: #parenthesized-types
 [_QualifiedPathInType_]: paths.html#qualified-paths
 [_RawPointerType_]: #raw-pointers-const-and-mut
 [_ReferenceType_]: #shared-references-
 [_SliceType_]: #array-and-slice-types
+[_TraitBound_]: trait-bounds.html
+[_TraitObjectTypeOneBound_]: #trait-objects
 [_TraitObjectType_]: #trait-objects
 [_TupleType_]: #tuple-types
 [_TypeNoBounds_]: #types
@@ -880,3 +899,4 @@ impl Printable for String {
 [issue 47010]: https://github.com/rust-lang/rust/issues/47010
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
 [supertraits]: items/traits.html#supertraits
+[type boundaries]: trait-bounds.html
