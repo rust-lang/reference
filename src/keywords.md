@@ -57,6 +57,11 @@ be used as the names of:
 > KW_WHERE          : `where`\
 > KW_WHILE          : `while`
 
+The following keywords were added beginning in the 2018 edition.
+
+> **<sup>Lexer 2018+</sup>**\
+> KW_DYN            : `dyn`
+
 ## Reserved keywords
 
 These keywords aren't used yet, but they are reserved for future use. They have
@@ -78,6 +83,13 @@ them to use these keywords.
 > KW_VIRTUAL        : `virtual`\
 > KW_YIELD          : `yield`
 
+The following keywords are reserved beginning in the 2018 edition.
+
+> **<sup>Lexer 2018+</sup>**\
+> KW_ASYNC : `async`\
+> KW_AWAIT : `await`\
+> KW_TRY   : `try`
+
 ## Weak keywords
 
 These keywords have special meaning only in certain contexts. For example, it
@@ -92,12 +104,16 @@ is possible to declare a variable or method with the name `union`.
   // error[E0262]: invalid lifetime parameter name: `'static`
   fn invalid_lifetime_parameter<'static>(s: &'static str) -> &'static str { s }
   ```
-* `dyn` denotes a [trait object] and is a keyword when used in a type position
+* In the 2015 edition, [`dyn`] is a keyword when used in a type position
   followed by a path that does not start with `::`.
+
+  Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
 > **<sup>Lexer</sup>**\
 > KW_UNION          : `union`\
-> KW_STATICLIFETIME : `'static`\
+> KW_STATICLIFETIME : `'static`
+>
+> **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
 
 [items]: items.html
@@ -110,4 +126,4 @@ is possible to declare a variable or method with the name `union`.
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
 [variants]: items/enumerations.html
-[trait object]: types.html#trait-objects
+[`dyn`]: types.html#trait-objects

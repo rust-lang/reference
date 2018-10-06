@@ -676,11 +676,14 @@ For example, given a trait `Trait`, the following are all trait objects:
 * `dyn 'static + Trait`.
 * `dyn (Trait)`
 
-If the first bound of the trait object is a path that starts with `::`, then the
-`dyn` will be treated as a part of the path. The first path can be put in
-parenthesis to get around this. As such, if you want a trait object with the
-trait `::your_module::Trait`, you should write it as
-`dyn (::your_module::Trait)`.
+> **Edition Differences**: In the 2015 edition, if the first bound of the
+> trait object is a path that starts with `::`, then the `dyn` will be treated
+> as a part of the path. The first path can be put in parenthesis to get
+> around this. As such, if you want a trait object with the trait
+> `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
+>
+> Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in
+> paths, so the parentheses are not necessary.
 
 > Note: For clarity, it is recommended to always use the `dyn` keyword on your
 > trait objects unless your codebase supports compiling with Rust 1.26 or lower.
