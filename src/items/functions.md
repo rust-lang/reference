@@ -170,26 +170,26 @@ If a `const fn` is called outside a "const context", it is indistinguishable fro
 
 Exhaustive list of permitted structures in `const fn`:
 
-1. type parameters where the parameters have any of the following as part of their bounds (either on `where` or directly on the parameters):
+1. type parameters where the parameters only have any of the following as part of their bounds (either on `where` or directly on the parameters):
     1. lifetimes
     2. `Sized`
 
-    This means that `<T: 'a + ?Sized>` and `<T: 'b + Sized>` + `<T>` are all permitted.
+    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>` and `<T>` are all permitted.
     Note that `?Sized` is the absence of a constraint when bounds have been fully elaborated
     which includes adding implicit `Sized` bounds.
     This entails that permitting `Sized` + lifetimes allows the above examples.
 
     This rule also applies to type parameters of items that contain `const fn`s.
 
-2. arithmetic operators on integers
-3. boolean operators (except for `&&` and `||` which are banned since they are short-circuiting).
+2. arithmetic and comparison operators on integers
+3. all boolean operators except for `&&` and `||` which are banned since they are short-circuiting.
 4. any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
 5. calls to other *safe* `const fn`s (methods and functions)
 6. index operations on arrays and slices
 7. field accesses on structs and tuples
 8. reading from constants (but not statics, not even taking a reference to a static)
 9. `&` and `*` (only dereferencing of references, not raw pointers)
-10. casts except for raw pointer to `usize` casts
+10. casts except for raw pointer to integer casts
 11. `const unsafe fn` is allowed, but the body must consist of safe operations only and you won't be able to call the `const unsafe fn` from within another `const fn` even if you use `unsafe`
 
 [IDENTIFIER]: identifiers.html
