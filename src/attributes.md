@@ -44,13 +44,16 @@ Attributes may be applied to many things in the language:
 
 * All [item declarations] accept outer attributes while [external blocks],
   [functions], [implementations], and [modules] accept inner attributes.
-* [Statements] accept outer attributes.
+* Most [statements] accept outer attributes (see [Expression Attributes] for
+  limitations on expression statements).
 * [Block expressions] accept outer and inner attributes, but only when they are
   the outer expression of an [expression statement] or the final expression of
   another block expression.
 * [Enum] variants and [struct] and [union] fields accept outer attributes.
 * [Match expression arms][match expressions] accept outer attributes.
 * [Generic lifetime or type parameter][generics] accept outer attributes.
+* Expressions accept outer attributes in limited situations, see [Expression
+  Attributes] for details.
 
 Some examples of attributes:
 
@@ -600,3 +603,4 @@ You can implement `derive` for your own traits through [procedural macros].
 [`Termination`]: ../std/process/trait.Termination.html
 [where clause]: items/where-clauses.html
 [trait or lifetime bounds]: trait-bounds.html
+[Expression Attributes]: expressions.html#expression-attributes
