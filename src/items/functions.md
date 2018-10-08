@@ -187,7 +187,7 @@ on floating point computations.
 Exhaustive list of permitted structures in `const fn`:
 
 > **Note**: this list is more restrictive than what you can write in
-regular constants
+> regular constants
 
 * type parameters where the parameters only have any [trait bounds]
   of the following kind:
