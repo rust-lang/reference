@@ -53,7 +53,8 @@ fn outer() {
 
 > **<sup>Syntax</sup>**\
 > _LetStatement_ :\
-> &nbsp;&nbsp; `let` [_Pattern_] ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_Pattern_]
+>     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
 
 A *`let` statement* introduces a new set of [variables], given by a [pattern]. The
 pattern is followed optionally by a type annotation and then optionally by an
@@ -123,5 +124,6 @@ statement are [`cfg`], and [the lint check attributes].
 [_Expression_]: expressions.html
 [_Item_]: items.html
 [_LetStatement_]: #let-statements
+[_OuterAttribute_]: attributes.html
 [_Pattern_]: patterns.html
 [_Type_]: types.html
