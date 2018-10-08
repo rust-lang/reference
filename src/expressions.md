@@ -232,9 +232,7 @@ Implicit borrows may be taken in the following expressions:
 ## Constant expressions
 
 Certain types of expressions can be evaluated at compile time. These are called
-_constant expressions_. Certain places, such as in
-[constants](items/constant-items.html) and [statics](items/static-items.html),
-require a constant expression, and are always evaluated at compile time. In
+_constant expressions_ and are required in [const contexts]. In
 other places, such as in [`let` statements](statements.html#let-statements),
 constant expressions may be evaluated at compile time. If errors, such as out
 of bounds [array indexing] or [overflow] occurs,
@@ -313,6 +311,7 @@ exist in `core::ops` and `core::cmp` with the same names.
 [let]:                  statements.html#let-statements
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
+[const contexts]:       const_eval.html
 [slice]:                types.html#array-and-slice-types
 [static variables]:     items/static-items.html
 [Temporary values]:     #temporary-lifetimes
