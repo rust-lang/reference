@@ -162,35 +162,57 @@ attributes].
 
 ## Const functions
 
-Functions can be `const`, meaning they can be called from within array length expressions and the initializer of constants, statics and enum discriminants. When called from such a so-called "const context", the function is interpreted by the compiler at compile time. The interpretation happens in the environment of the compilation target and not the host. So `usize` is `32` bits if you are compiling against a `32` bit system, irrelevant of whether you are building on a `64` bit or a `32` bit system.
+Functions can be `const`, meaning they can be called from within array length
+expressions and the initializer of constants, statics and enum discriminants.
+When called from such a so-called "const context", the function is interpreted
+by the compiler at compile time. The interpretation happens in the environment
+of the compilation target and not the host. So `usize` is `32` bits if you are
+compiling against a `32` bit system, irrelevant of whether you are building on
+a `64` bit or a `32` bit system.
 
-If a `const fn` is called outside a "const context", it is indistinguishable from any other function. You can freely do anything with a `const fn` that you can do with a regular fn.
+If a `const fn` is called outside a "const context", it is indistinguishable
+from any other function. You can freely do anything with a `const fn` that
+you can do with a regular function.
 
-`const fn`s have various restrictions to makes sure that you cannot define a `const fn` that can't be evaluated at compile-time. You will, for example, never be able to write a random number generator as a const fn. Calling a const fn at compile-time will always yield the same result as calling it at runtime, even if you call it multiple times. There's one exception to this rule: if you are doing complex floating point operations in extreme situations, then you might get (very slightly) different results. It is adviseable to not make array lengths and enum discriminants depend on floating point computations.
+`const fn`s have various restrictions to makes sure that you cannot define a
+`const fn` that can't be evaluated at compile-time. It is, for example, not
+possible to write a random number generator as a const fn. Calling a
+const fn at compile-time will always yield the same result as calling it at
+runtime, even when called multiple times. There's one exception to this rule:
+if you are doing complex floating point operations in extreme situations,
+then you might get (very slightly) different results.
+It is adviseable to not make array lengths and enum discriminants depend
+on floating point computations.
 
 Exhaustive list of permitted structures in `const fn`:
 
-1. type parameters where the parameters only have any of the following as part of their bounds (either on `where` or directly on the parameters):
-    1. lifetimes
-    2. `Sized`
+> **Note**: this list is more restrictive than what you can write in
+regular constants
 
-    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>` and `<T>` are all permitted.
-    Note that `?Sized` is the absence of a constraint when bounds have been fully elaborated
-    which includes adding implicit `Sized` bounds.
-    This entails that permitting `Sized` + lifetimes allows the above examples.
+* type parameters where the parameters only have any [trait bounds]
+  of the following kind:
+    * lifetimes
+    * `Sized` or [`?Sized`]
 
-    This rule also applies to type parameters of items that contain `const fn`s.
+    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>` and `<T>`
+    are all permitted.
 
-2. arithmetic and comparison operators on integers
-3. all boolean operators except for `&&` and `||` which are banned since they are short-circuiting.
-4. any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
-5. calls to other *safe* `const fn`s (methods and functions)
-6. index operations on arrays and slices
-7. field accesses on structs and tuples
-8. reading from constants (but not statics, not even taking a reference to a static)
-9. `&` and `*` (only dereferencing of references, not raw pointers)
-10. casts except for raw pointer to integer casts
-11. `const unsafe fn` is allowed, but the body must consist of safe operations only and you won't be able to call the `const unsafe fn` from within another `const fn` even if you use `unsafe`
+    This rule also applies to type parameters of impl blocks that
+    contain `const fn` methods
+
+* arithmetic and comparison operators on integers
+* all boolean operators except for `&&` and `||` which are banned since
+  they are short-circuiting.
+* any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
+* calls to other *safe* `const fn`s (whether by function call or method call)
+* index expressions on arrays and slices
+* field accesses on structs and tuples
+* reading from constants (but not statics, not even taking a reference to a static)
+* `&` and `*` (only dereferencing of references, not raw pointers)
+* casts except for raw pointer to integer casts
+* `const unsafe fn` is allowed, but the body must consist of safe operations
+  only and you won't be able to call the `const unsafe fn` from within another
+  `const fn` even if you use `unsafe`
 
 [IDENTIFIER]: identifiers.html
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
@@ -219,3 +241,5 @@ Exhaustive list of permitted structures in `const fn`:
 [`doc`]: attributes.html#documentation
 [`must_use`]: attributes.html#must_use
 [patterns]: patterns.html
+[`?Sized`]: trait-bounds.html#sized
+[trait bounds]: trait-bounds.html
