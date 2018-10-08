@@ -162,9 +162,8 @@ attributes].
 
 ## Const functions
 
-Functions can be `const`, meaning they can be called from within array length
-expressions and the initializer of constants, statics and enum discriminants.
-When called from such a so-called "const context", the function is interpreted
+Functions can be `const`, meaning they can be called from within
+[const contexts]. When called from a const context, the function is interpreted
 by the compiler at compile time. The interpretation happens in the environment
 of the compilation target and not the host. So `usize` is `32` bits if you are
 compiling against a `32` bit system, irrelevant of whether you are building on
@@ -224,6 +223,7 @@ Exhaustive list of permitted structures in `const fn`:
 [_Statement_]: statements.html
 [_Type_]: types.html
 [_WhereClause_]: items/generics.html#where-clauses
+[const contexts]: const_eval.html
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html
