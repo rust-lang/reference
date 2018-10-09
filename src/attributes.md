@@ -357,6 +357,35 @@ pub mod m3 {
 }
 ```
 
+#### Tool lint attributes
+
+Tool lints let you use scoped lints, to `allow`, `warn`, `deny` or `forbid` lints of
+certain tools.
+
+Currently `clippy` is the only available lint tool.
+
+They only get checked when the associated tool is active, so if you try to use an `allow` attribute for a nonexistant tool lint, the compiler will not warn about the nonexistant lint until you use the tool.
+
+Otherwise, they work just like regular lint attributes:
+
+
+```rust,ignore
+// set the entire `pedantic` clippy lint group to warn
+#![warn(clippy::pedantic)]
+// silence warnings from the `filter_map` clippy lint
+#![allow(clippy::filter_map)]
+
+fn main() {
+    // ...
+}
+
+// silence the `cmp_nan` clippy lint just for this function
+#[allow(clippy::cmp_nan)]
+fn foo() {
+    // ...
+}
+```
+
 #### `must_use`
 
 The `must_use` attribute can be used on user-defined composite types
