@@ -11,13 +11,16 @@
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;(`=` ([STRING_LITERAL] | [RAW_STRING_LITERAL]))<sup>?</sup>
 >
 > _ConfigurationAll_\
-> &nbsp;&nbsp; `all` `(` _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup> `)`
+> &nbsp;&nbsp; `all` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
 >
 > _ConfigurationAny_\
-> &nbsp;&nbsp; `any` `(` _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup> `)`
+> &nbsp;&nbsp; `any` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
 >
 > _ConfigurationNot_\
 > &nbsp;&nbsp; `not` `(` _ConfigurationPredicate_ `)`
+>
+> _ConfigurationPredicateList_\
+> &nbsp;&nbsp; _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup>
 
 *Conditionally compiled source code* is source code that may or may not be
 considered a part of the source code depending on certain conditions. <!-- This
@@ -79,12 +82,12 @@ identical.
 
 Example values:
 
-* `"x86"`,
+* `"x86"`
 * `"x86_64"`
 * `"mips"`
 * `"powerpc"`
 * `"powerpc64"`
-* `"arm"`,
+* `"arm"`
 * `"aarch64"`
 
 ### `target_os`
