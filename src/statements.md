@@ -5,7 +5,8 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; `;`\
 > &nbsp;&nbsp; | [_Item_]\
 > &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_ExpressionStatement_]
+> &nbsp;&nbsp; | [_ExpressionStatement_]\
+> &nbsp;&nbsp; | [_MacroInvocationSemi_]
 
 
 A *statement* is a component of a [block], which is in turn a component of an
@@ -130,6 +131,7 @@ statement are [`cfg`], and [the lint check attributes].
 [_Expression_]: expressions.html
 [_Item_]: items.html
 [_LetStatement_]: #let-statements
+[_MacroInvocationSemi_]: macros.html#macro-invocation
 [_OuterAttribute_]: attributes.html
 [_Pattern_]: patterns.html
 [_Type_]: types.html

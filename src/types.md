@@ -19,7 +19,8 @@
 > &nbsp;&nbsp; | [_SliceType_]\
 > &nbsp;&nbsp; | [_InferredType_]\
 > &nbsp;&nbsp; | [_QualifiedPathInType_]\
-> &nbsp;&nbsp; | [_BareFunctionType_]
+> &nbsp;&nbsp; | [_BareFunctionType_]\
+> &nbsp;&nbsp; | [_MacroInvocation_]
 
 Every variable, item and value in a Rust program has a type. The _type_ of a
 *value* defines the interpretation of the memory holding it.
@@ -868,6 +869,7 @@ impl Printable for String {
 [_ImplTraitType_]: #impl-trait
 [_InferredType_]: #inferred-type
 [_Lifetime_]: trait-bounds.html
+[_MacroInvocation_]: macros.html#macro-invocation
 [_NeverType_]: #never-type
 [_ParenthesizedType_]: #parenthesized-types
 [_QualifiedPathInType_]: paths.html#qualified-paths

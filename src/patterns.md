@@ -12,7 +12,8 @@
 > &nbsp;&nbsp; | [_TuplePattern_]\
 > &nbsp;&nbsp; | [_GroupedPattern_]\
 > &nbsp;&nbsp; | [_SlicePattern_]\
-> &nbsp;&nbsp; | [_PathPattern_]
+> &nbsp;&nbsp; | [_PathPattern_]\
+> &nbsp;&nbsp; | [_MacroInvocation_]
 
 Patterns are used to match values against structures and to,
 optionally, bind variables to values inside these structures. They are also
@@ -653,6 +654,7 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_GroupedPattern_]: #grouped-patterns
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
+[_MacroInvocation_]: macros.html#macro-invocation
 [_PathInExpression_]: paths.html#paths-in-expressions
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns

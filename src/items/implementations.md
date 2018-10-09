@@ -13,7 +13,7 @@
 > _InherentImplItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_ConstantItem_] | [_Function_] | [_Method_] )
+> &nbsp;&nbsp; ( [_ConstantItem_] | [_Function_] | [_Method_] | [_MacroInvocationSemi_]&nbsp;[^novis] )
 >
 > _TraitImpl_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_] `!`<sup>?</sup>
@@ -27,7 +27,7 @@
 > _TraitImplItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] )
+> &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] | [_MacroInvocationSemi_]&nbsp;[^novis] )
 
 An _implementation_ is an item that associates items with an _implementing type_.
 Implementations are defined with the keyword `impl` and contain functions
@@ -175,11 +175,14 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
+[^novis]: Macro invocations may not start with a visibility modifier.
+
 [IDENTIFIER]: identifiers.html
 [_ConstantItem_]: items/constant-items.html
 [_Function_]: items/functions.html
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
+[_MacroInvocationSemi_]: macros.html#macro-invocation
 [_Method_]: items/associated-items.html#methods
 [_OuterAttribute_]: attributes.html
 [_TypeAlias_]: items/type-aliases.html

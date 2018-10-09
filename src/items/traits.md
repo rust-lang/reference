@@ -9,7 +9,13 @@
 > &nbsp;&nbsp; `}`
 >
 > _TraitItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (_TraitFunc_ | _TraitMethod_ | _TraitConst_ | _TraitType_)
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunc_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitMethod_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitConst_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitType_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; )
 >
 > _TraitFunc_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunctionDecl_ ( `;` | [_BlockExpression_] )
@@ -205,6 +211,7 @@ trait T {
 [_FunctionQualifiers_]: items/functions.html
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
+[_MacroInvocationSemi_]: macros.html#macro-invocation
 [_OuterAttribute_]: attributes.html
 [_Pattern_]: patterns.html
 [_SelfParam_]: items/associated-items.html#methods

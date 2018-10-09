@@ -17,8 +17,8 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Trait_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Implementation_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternBlock_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _Macro_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _MacroDefinition_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocationSemi_]&nbsp;[^novis]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroRulesDefinition_]&nbsp;[^novis]\
 > &nbsp;&nbsp; )
 
 An _item_ is a component of a crate. Items are organized within a crate by a
@@ -55,12 +55,16 @@ qualified by the name of the enclosing item, or is private to the enclosing
 item (in the case of functions). The grammar specifies the exact locations in
 which sub-item declarations may appear.
 
+[^novis]: Macros may not start with a visibility modifier.
+
 [_ConstantItem_]: items/constant-items.html
 [_Enumeration_]: items/enumerations.html
 [_ExternBlock_]: items/external-blocks.html
 [_ExternCrate_]: items/extern-crates.html
 [_Function_]: items/functions.html
 [_Implementation_]: items/implementations.html
+[_MacroInvocationSemi_]: macros.html#macro-invocation
+[_MacroRulesDefinition_]: macros-by-example.html
 [_Module_]: items/modules.html
 [_OuterAttribute_]: attributes.html
 [_StaticItem_]: items/static-items.html
