@@ -37,8 +37,8 @@ to be ran.
 * The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
-* function pointer to address casts.
-* function and method calls
+  function pointer to address casts.
+* calls of const functions and const methods
 
 ## Const context
 
