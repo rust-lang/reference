@@ -137,29 +137,6 @@ As non-Rust calling conventions do not support unwinding, unwinding past the end
 of an extern function will cause the process to abort. In LLVM, this is
 implemented by executing an illegal instruction.
 
-## Attributes on functions
-
-[Outer attributes][attributes] are allowed on functions. [Inner
-attributes][attributes] are allowed directly after the `{` inside its [block].
-
-This example shows an inner attribute on a function. The function will only be
-available while running tests.
-
-```
-fn test_only() {
-    #![test]
-}
-```
-
-> Note: Except for lints, it is idiomatic to only use outer attributes on
-> function items.
-
-The attributes that have meaning on a function are [`cfg`], [`deprecated`],
-[`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
-attributes], [`must_use`], [the procedural macro attributes], [the testing
-attributes], and [the optimization hint
-attributes].
-
 ## Const functions
 
 Functions qualified with the `const` keyword are const functions. _Const
@@ -211,6 +188,29 @@ Exhaustive list of permitted structures in const functions:
 * `const unsafe fn` is allowed, but the body must consist of safe operations
   only and you won't be able to call the `const unsafe fn` from within another
   const function even if you use `unsafe`
+
+## Attributes on functions
+
+[Outer attributes][attributes] are allowed on functions. [Inner
+attributes][attributes] are allowed directly after the `{` inside its [block].
+
+This example shows an inner attribute on a function. The function will only be
+available while running tests.
+
+```
+fn test_only() {
+    #![test]
+}
+```
+
+> Note: Except for lints, it is idiomatic to only use outer attributes on
+> function items.
+
+The attributes that have meaning on a function are [`cfg`], [`deprecated`],
+[`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
+attributes], [`must_use`], [the procedural macro attributes], [the testing
+attributes], and [the optimization hint
+attributes].
 
 [IDENTIFIER]: identifiers.html
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
