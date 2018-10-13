@@ -2,12 +2,12 @@
 
 > **<sup>Syntax</sup>**\
 > _Function_ :\
-> &nbsp;&nbsp; _FunctionFront_ `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _FunctionParameters_<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; _FunctionReturnType_<sup>?</sup> [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
 >
-> _FunctionFront_ :\
+> _FunctionQualifiers_ :\
 > &nbsp;&nbsp; `const`<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
 >
 > _Abi_ :\

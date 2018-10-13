@@ -431,7 +431,7 @@ All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
 
 > **<sup>Syntax</sup>**\
 > _BareFunctionType_ :\
-> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionFront_] `fn`\
+> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionQualifiers_] `fn`\
 > &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
 >
 > _BareFunctionReturnType_:\
@@ -862,8 +862,8 @@ impl Printable for String {
 [_BareFunctionType_]: #function-pointer-types
 [_Expression_]: expressions.html
 [_ForLifetimes_]: items/generics.html#where-clauses
-[_FunctionFront_]: items/functions.html
 [_FunctionParametersMaybeNamed_]: items/functions.html
+[_FunctionQualifiers_]: items/functions.html
 [_ImplTraitTypeOneBound_]: #impl-trait
 [_ImplTraitType_]: #impl-trait
 [_InferredType_]: #inferred-type
