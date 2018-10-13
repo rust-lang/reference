@@ -114,7 +114,7 @@ opposite functionality to [external blocks]. Whereas external
 blocks allow Rust code to call foreign code, extern functions with bodies
 defined in Rust code _can be called by foreign code_. They are defined in the
 same way as any other Rust function, except that they have the `extern`
-modifier.
+qualifier.
 
 ```rust
 // Declares an extern fn, the ABI defaults to "C"
@@ -162,33 +162,32 @@ attributes].
 
 ## Const functions
 
-Functions can be `const`, meaning they can be called from within
-[const contexts]. When called from a const context, the function is interpreted
-by the compiler at compile time. The interpretation happens in the environment
-of the compilation target and not the host. So `usize` is `32` bits if you are
-compiling against a `32` bit system, irrelevant of whether you are building on
-a `64` bit or a `32` bit system.
+Functions qualified with the `const` keyword are const functions. _Const
+funcions_  can be called from within [const contexts]. When called from a const
+context, the function is interpreted by the compiler at compile time. The
+interpretation happens in the environment of the compilation target and not the
+host. So `usize` is `32` bits if you are compiling against a `32` bit system,
+irrelevant of whether you are building on a `64` bit or a `32` bit system.
 
-If a const function is called outside a "const context", it is indistinguishable
+If a const function is called outside a [const context], it is indistinguishable
 from any other function. You can freely do anything with a const function that
 you can do with a regular function.
 
-const functions have various restrictions to makes sure that you cannot define a
-const function that can't be evaluated at compile-time. It is, for example, not
-possible to write a random number generator as a const function. Calling a
-const function at compile-time will always yield the same result as calling it at
-runtime, even when called multiple times. There's one exception to this rule:
-if you are doing complex floating point operations in extreme situations,
-then you might get (very slightly) different results.
-It is adviseable to not make array lengths and enum discriminants depend
-on floating point computations.
+Const functions have various restrictions to makes sure that they can't be
+evaluated at compile-time. It is, for example, not possible to write a random
+number generator as a const function. Calling a const function at compile-time
+will always yield the same result as calling it at runtime, even when called
+multiple times. There's one exception to this rule: if you are doing complex
+floating point operations in extreme situations, then you might get (very
+slightly) different results. It is adviseable to not make array lengths and enum
+discriminants depend on floating point computations.
 
 Exhaustive list of permitted structures in const functions:
 
 > **Note**: this list is more restrictive than what you can write in
 > regular constants
 
-* type parameters where the parameters only have any [trait bounds]
+* Type parameters where the parameters only have any [trait bounds]
   of the following kind:
     * lifetimes
     * `Sized` or [`?Sized`]
@@ -199,16 +198,16 @@ Exhaustive list of permitted structures in const functions:
     This rule also applies to type parameters of impl blocks that
     contain const methods
 
-* arithmetic and comparison operators on integers
-* all boolean operators except for `&&` and `||` which are banned since
+* Arithmetic and comparison operators on integers
+* All boolean operators except for `&&` and `||` which are banned since
   they are short-circuiting.
-* any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
-* calls to other *safe* const functions (whether by function call or method call)
-* index expressions on arrays and slices
-* field accesses on structs and tuples
-* reading from constants (but not statics, not even taking a reference to a static)
+* Any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
+* Calls to other *safe* const functions (whether by function call or method call)
+* Index expressions on arrays and slices
+* Field accesses on structs and tuples
+* Reading from constants (but not statics, not even taking a reference to a static)
 * `&` and `*` (only dereferencing of references, not raw pointers)
-* casts except for raw pointer to integer casts
+* Casts except for raw pointer to integer casts
 * `const unsafe fn` is allowed, but the body must consist of safe operations
   only and you won't be able to call the `const unsafe fn` from within another
   const function even if you use `unsafe`

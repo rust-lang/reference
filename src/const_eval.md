@@ -38,15 +38,15 @@ to be ran.
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
-* calls of const functions and const methods
+* Calls of const functions and const methods
 
 ## Const context
 
 A _const context_ is one of the following:
 
-* [array type length expressions]
-* repeat expression length expessions
-* the initializer of
+* [Array type length expressions]
+* Repeat expression length expessions
+* The initializer of
   * [constants]
   * [statics]
   * [enum discriminants]
