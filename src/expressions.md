@@ -229,43 +229,6 @@ Implicit borrows may be taken in the following expressions:
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 
-## Constant expressions
-
-Certain types of expressions can be evaluated at compile time. These are called
-_constant expressions_. Certain places, such as in
-[constants](items/constant-items.html) and [statics](items/static-items.html),
-require a constant expression, and are always evaluated at compile time. In
-other places, such as in [`let` statements](statements.html#let-statements),
-constant expressions may be evaluated at compile time. If errors, such as out
-of bounds [array indexing] or [overflow] occurs,
-then it is a compiler error if the value must be evaluated at compile time,
-otherwise it is just a warning, but the code will most likely panic when run.
-
-The following expressions are constant expressions, so long as any operands are
-also constant expressions and do not cause any [`Drop::drop`][destructors] calls
-to be ran.
-
-* [Literals].
-* [Paths] to [functions](items/functions.html) and constants.
-  Recursively defining constants is not allowed.
-* [Tuple expressions].
-* [Array expressions].
-* [Struct] expressions.
-* [Enum variant] expressions.
-* [Block expressions], including `unsafe` blocks, which only contain items and
-  possibly a constant tail expression.
-* [Field] expressions.
-* Index expressions, [array indexing] or [slice] with a `usize`.
-* [Range expressions].
-* [Closure expressions] which don't capture variables from the environment.
-* Built in [negation], [arithmetic, logical], [comparison] or [lazy boolean]
-  operators used on integer and floating point types, `bool` and `char`.
-* Shared [borrow]s, except if applied to a type with [interior mutability].
-* The [dereference operator].
-* [Grouped] expressions.
-* [Cast] expressions, except pointer to address and
-  function pointer to address casts.
-
 ## Overloading Traits
 
 Many of the following operators and expressions can also be overloaded for
@@ -313,6 +276,7 @@ exist in `core::ops` and `core::cmp` with the same names.
 [let]:                  statements.html#let-statements
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
+[const contexts]:       const_eval.html
 [slice]:                types.html#array-and-slice-types
 [static variables]:     items/static-items.html
 [Temporary values]:     #temporary-lifetimes
