@@ -158,7 +158,7 @@ The attributes that have meaning on a function are [`cfg`], [`deprecated`],
 [`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
 attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
-macro attributes.
+attributes macros.
 
 [IDENTIFIER]: identifiers.html
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
