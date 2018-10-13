@@ -497,7 +497,7 @@ function for a trait implementation and not to all trait implementations.
 
 The `derive` attribute allows certain traits to be automatically implemented
 for data structures. For example, the following will create an `impl` for the
-`PartialEq` and `Clone` traits for `Foo`, the type parameter `T` will be given
+`PartialEq` and `Clone` traits for `Foo`, and the type parameter `T` will be given
 the `PartialEq` or `Clone` constraints for the appropriate `impl`:
 
 ```rust
