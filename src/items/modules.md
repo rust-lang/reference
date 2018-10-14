@@ -1,6 +1,6 @@
 # Modules
 
-> **<sup>Syntax:<sup>**\
+> **<sup>Syntax:</sup>**\
 > _Module_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `mod` [IDENTIFIER] `;`\
 > &nbsp;&nbsp; | `mod` [IDENTIFIER] `{`\
@@ -40,21 +40,26 @@ struct, enumeration, union, type parameter or crate can't shadow the name of a
 module in scope, or vice versa. Items brought into scope with `use` also have
 this restriction.
 
-A module without a body is loaded from an external file, by default with the
-same name as the module, plus the `.rs` extension. When a nested submodule is
-loaded from an external file, it is loaded from a subdirectory path that
-mirrors the module hierarchy.
+A module without a body is loaded from an external file. By default, the path
+to the file mirrors the logical [module path]. Ancestor path components are
+directories, and the module's contents are in a file with the name of the
+module plus the `.rs` extension. For example, the following module structure
+can have this corresponding filesystem structure:
 
-```rust,ignore
-// Load the `vec` module from `vec.rs`
-mod vec;
+Module Path           | Filesystem Path  | File Contents
+--------------------- | ---------------  | -------------
+`crate`               | `lib.rs`         | `mod util;`
+`crate::util`         | `util.rs`        | `mod config;`
+`crate::util::config` | `util/config.rs` |
 
-mod thread {
-    // Load the `local_data` module from `thread/local_data.rs`
-    // or `thread/local_data/mod.rs`.
-    mod local_data;
-}
-```
+> **Note**: Module filenames may also be the name of the module as a directory
+> with the contents in a file named `mod.rs` within that directory. Previous
+> to Rust 1.30, this was the way to load a module with nested children. The
+> above example can alternately be expressed with `crate::util`'s contents in
+> a file named `util/mod.rs`. It is not allowed to have both `util.rs` and
+> `util/mod.rs`. It is encouraged to use the new naming convention as it is
+> more consistent, and avoids having many files named `mod.rs` within a
+> project.
 
 The directories and files used for loading external file modules can be
 influenced with the `path` attribute.
@@ -94,5 +99,6 @@ The built-in attributes that have meaning on a function are [`cfg`],
 [IDENTIFIER]: identifiers.html
 [attribute]: attributes.html
 [items]: items.html
+[module path]: paths.html
 [prelude]: crates-and-source-files.html#preludes-and-no_std
 [the lint check attributes]: attributes.html#lint-check-attributes
