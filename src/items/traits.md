@@ -18,12 +18,12 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; _TraitMethodDecl_ ( `;` | [_BlockExpression_] )
 >
 > _TraitFunctionDecl_ :\
-> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _TraitFunctionParameters_<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >
 > _TraitMethodDecl_ :\
-> &nbsp;&nbsp; [_FunctionFront_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` [_SelfParam_] (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >
@@ -201,8 +201,8 @@ trait T {
 [WildcardPattern]: patterns.html#wildcard-pattern
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
-[_FunctionFront_]: items/functions.html
 [_FunctionParam_]: items/functions.html
+[_FunctionQualifiers_]: items/functions.html
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
 [_OuterAttribute_]: attributes.html

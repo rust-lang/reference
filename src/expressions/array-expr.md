@@ -15,7 +15,7 @@ order they are written.
 
 Alternatively there can be exactly two expressions inside the brackets,
 separated by a semi-colon. The expression after the `;` must be a have type
-`usize` and be a [constant expression](expressions.html#constant-expressions),
+`usize` and be a [constant expression],
 such as a [literal](tokens.html#literals) or a [constant
 item](items/constant-items.html). `[a; b]` creates an array containing `b`
 copies of the value of `a`. If the expression after the semi-colon has a value
