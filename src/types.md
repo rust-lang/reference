@@ -1,4 +1,42 @@
+{{#include types-redirect.html}}
 # Types
+
+Every variable, item and value in a Rust program has a type. The _type_ of a
+*value* defines the interpretation of the memory holding it and the operations
+that may be performed on the value.
+
+Built-in types are tightly integrated into the language, in nontrivial ways
+that are not possible to emulate in user-defined types. User-defined types have
+limited capabilities.
+
+The list of types is:
+
+* Primitive types:
+    * [Boolean] — `true` or `false`
+    * [Numeric] — integer and float
+    * [Textual] — `char` and `str`
+    * [Never] — `!` — a type with no value
+* Sequence types:
+    * [Tuple]
+    * [Array]
+    * [Slice]
+* User-defined types:
+    * [Struct]
+    * [Enum]
+    * [Union]
+* Function types:
+    * [Functions]
+    * [Closures]
+* Pointer types:
+    * [References]
+    * [Raw pointers]
+    * [Function pointers]
+* Trait types:
+    * [Trait objects]
+    * [Impl trait]
+
+
+## Type expressions
 
 > **<sup>Syntax</sup>**\
 > _Type_ :\
@@ -22,736 +60,41 @@
 > &nbsp;&nbsp; | [_BareFunctionType_]\
 > &nbsp;&nbsp; | [_MacroInvocation_]
 
-Every variable, item and value in a Rust program has a type. The _type_ of a
-*value* defines the interpretation of the memory holding it.
+A _type expression_ as defined in the _Type_ grammar rule above is the syntax
+for referring to a type. It may refer to:
 
-Built-in types are tightly integrated into the language, in nontrivial ways
-that are not possible to emulate in user-defined types. User-defined types have
-limited capabilities.
+* Sequence types ([tuple], [array], [slice]).
+* [Type paths] which can reference:
+    * Primitive types ([boolean], [numeric], [textual]).
+    * Paths to an [item] ([struct], [enum], [union], [type alias], [trait]).
+    * [`Self` path] where `Self` is the implementing type.
+    * Generic [type parameters].
+* Pointer types ([reference], [raw pointer], [function pointer]).
+* The [inferred type] which asks the compiler to determine the type.
+* [Parentheses] which are used for disambiguation.
+* Trait types: [Trait objects] and [impl trait].
+* The [never] type.
+* [Macros] which expand to a type expression.
 
-## Primitive types
 
-Some types are defined by the language, rather than as part of the standard
-library, these are called _primitive types_. Some of these are individual
-types:
-
-* The [boolean type] `bool` with values `true` and `false`.
-* The [machine types] (integer and floating-point).
-* The [machine-dependent integer types].
-* The [textual types] `char` and `str`.
-* The [never type] `!`
-
-There are also some primitive constructs for generic types built in to the
-language:
-
-* [Tuples]
-* [Arrays]
-* [Slices]
-* [Function pointers]
-* [References]
-* [Pointers]
-
-[boolean type]: #boolean-type
-[machine types]: #machine-types
-[machine-dependent integer types]: #machine-dependent-integer-types
-[textual types]: #textual-types
-[never type]: #never-type
-[Tuples]: #tuple-types
-[Arrays]: #array-and-slice-types
-[Slices]: #array-and-slice-types
-[References]: #pointer-types
-[Pointers]: #raw-pointers-const-and-mut
-[Function pointers]: #function-pointer-types
-[function]: #function-types
-[closure]: #closure-types
-
-### Boolean type
-
-The `bool` type is a datatype which can be either `true` or `false`. The boolean
-type uses one byte of memory. It is used in comparisons and bitwise operations
-like `&`, `|`, and `!`.
-
-```rust
-fn main() {
-    let x = true;
-    let y: bool = false; // with the boolean type annotation
-
-    // Use of booleans in conditional expressions
-    if x {
-        println!("x is true");
-    }
-}
-```
-
-## Numeric types
-
-### Machine types
-
-The machine types are the following:
-
-* The unsigned word types `u8`, `u16`, `u32`, `u64`, and `u128` with values
-  drawn from the integer intervals [0, 2^8 - 1], [0, 2^16 - 1], [0, 2^32 - 1],
-  [0, 2^64 - 1], and [0, 2^128 - 1] respectively.
-
-* The signed two's complement word types `i8`, `i16`, `i32`, `i64`, and `i128`,
-  with values drawn from the integer intervals [-(2^7), 2^7 - 1],
-  [-(2^15), 2^15 - 1], [-(2^31), 2^31 - 1], [-(2^63), 2^63 - 1], and
-  [-(2^127), 2^127 - 1] respectively.
-
-* The IEEE 754-2008 "binary32" and "binary64" floating-point types: `f32` and
-  `f64`, respectively.
-
-### Machine-dependent integer types
-
-The `usize` type is an unsigned integer type with the same number of bits as the
-platform's pointer type. It can represent every memory address in the process.
-
-The `isize` type is a signed integer type with the same number of bits as the
-platform's pointer type. The theoretical upper bound on object and array size
-is the maximum `isize` value. This ensures that `isize` can be used to calculate
-differences between pointers into an object or array and can address every byte
-within an object along with one byte past the end.
-
-## Textual types
-
-The types `char` and `str` hold textual data.
-
-A value of type `char` is a [Unicode scalar value](
-http://www.unicode.org/glossary/#unicode_scalar_value) (i.e. a code point that
-is not a surrogate), represented as a 32-bit unsigned word in the 0x0000 to
-0xD7FF or 0xE000 to 0x10FFFF range. A `[char]` is effectively a UCS-4 / UTF-32
-string.
-
-A value of type `str` is a Unicode string, represented as an array of 8-bit
-unsigned bytes holding a sequence of UTF-8 code points. Since `str` is a
-[dynamically sized type], it is not a _first-class_ type, but can only be
-instantiated through a pointer type, such as `&str`.
-
-## Never type
-
-> **<sup>Syntax</sup>**\
-> _NeverType_ : `!`
-
-The never type `!` is a type with no values, representing the result of
-computations that never complete. Expressions of type `!` can be coerced into
-any other type.
-
-## Tuple types
-
-> **<sup>Syntax</sup>**\
-> _TupleType_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` `)`\
-> &nbsp;&nbsp; | `(` ( [_Type_] `,` )<sup>+</sup> [_Type_]<sup>?</sup> `)`
-
-A tuple *type* is a heterogeneous product of other types, called the *elements*
-of the tuple. It has no nominal name and is instead structurally typed.
-
-Tuple types and values are denoted by listing the types or values of their
-elements, respectively, in a parenthesized, comma-separated list.
-
-Because tuple elements don't have a name, they can only be accessed by
-pattern-matching or by using `N` directly as a field to access the `N`th
-element.
-
-An example of a tuple type and its use:
-
-```rust
-type Pair<'a> = (i32, &'a str);
-let p: Pair<'static> = (10, "ten");
-let (a, b) = p;
-
-assert_eq!(a, 10);
-assert_eq!(b, "ten");
-assert_eq!(p.0, 10);
-assert_eq!(p.1, "ten");
-```
-
-For historical reasons and convenience, the tuple type with no elements (`()`)
-is often called ‘unit’ or ‘the unit type’.
-
-## Parenthesized types
+### Parenthesized types
 
 > _ParenthesizedType_ :\
 > &nbsp;&nbsp; `(` [_Type_] `)`
 
 In some situations the combination of types may be ambiguous. Use parentheses
 around a type to avoid ambiguity. For example, the `+` operator for [type
-boundaries] within a [reference type][_ReferenceType_] is unclear where the
+boundaries] within a [reference type] is unclear where the
 boundary applies, so the use of parentheses is required. Grammar rules that
 require this disambiguation use the [_TypeNoBounds_] rule instead of
 [_Type_].
-
 
 ```rust
 # use std::any::Any;
 type T<'a> = &'a(Any + Send);
 ```
 
-## Array, and Slice types
-
-> **<sup>Syntax</sup>**\
-> _ArrayType_ :\
-> &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
->
-> _SliceType_ :\
-> &nbsp;&nbsp; `[` [_Type_] `]`
-
-Rust has two different types for a list of items of the same type:
-
-* `[T; N]`, an 'array'
-* `[T]`, a 'slice'
-
-An array has a fixed size, and can be allocated on either the stack or the
-heap. The size is an expression that evaluates to a
-[`usize`](#machine-dependent-integer-types).
-
-A slice is a [dynamically sized type] representing a 'view' into an array. To
-use a slice type it generally has to be used behind a pointer for example as
-
-* `&[T]`, a 'shared slice', often just called a 'slice', it doesn't own the
-  data it points to, it borrows it.
-* `&mut [T]`, a 'mutable slice', mutably borrows the data it points to.
-* `Box<[T]>`, a 'boxed slice'
-
-Examples:
-
-```rust
-// A stack-allocated array
-let array: [i32; 3] = [1, 2, 3];
-
-// A heap-allocated array, coerced to a slice
-let boxed_array: Box<[i32]> = Box::new([1, 2, 3]);
-
-// A (shared) slice into an array
-let slice: &[i32] = &boxed_array[..];
-```
-
-All elements of arrays and slices are always initialized, and access to an
-array or slice is always bounds-checked in safe methods and operators.
-
-> Note: The [`Vec<T>`] standard library type provides a heap-allocated resizable
-> array type.
-
-## Struct types
-
-A `struct` *type* is a heterogeneous product of other types, called the
-*fields* of the type.[^structtype]
-
-New instances of a `struct` can be constructed with a [struct
-expression](expressions/struct-expr.html).
-
-The memory layout of a `struct` is undefined by default to allow for compiler
-optimizations like field reordering, but it can be fixed with the
-`#[repr(...)]` attribute. In either case, fields may be given in any order in a
-corresponding struct *expression*; the resulting `struct` value will always
-have the same memory layout.
-
-The fields of a `struct` may be qualified by [visibility
-modifiers](visibility-and-privacy.html), to allow access to data in a struct
-outside a module.
-
-A _tuple struct_ type is just like a struct type, except that the fields are
-anonymous.
-
-A _unit-like struct_ type is like a struct type, except that it has no fields.
-The one value constructed by the associated [struct expression] is the only
-value that inhabits such a type.
-
-[^structtype]: `struct` types are analogous to `struct` types in C, the
-    *record* types of the ML family, or the *struct* types of the Lisp family.
-
-## Enumerated types
-
-An *enumerated type* is a nominal, heterogeneous disjoint union type, denoted
-by the name of an [`enum` item](items/enumerations.html). [^enumtype]
-
-An [`enum` item](items/enumerations.html) declares both the type and a number
-of *variants*, each of which is independently named and has the syntax of a
-struct, tuple struct or unit-like struct.
-
-New instances of an `enum` can be constructed in an [enumeration variant
-expression](expressions/enum-variant-expr.html).
-
-Any `enum` value consumes as much memory as the largest variant for its
-corresponding `enum` type, as well as the size needed to store a discriminant.
-
-Enum types cannot be denoted *structurally* as types, but must be denoted by
-named reference to an [`enum` item](items/enumerations.html).
-
-[^enumtype]: The `enum` type is analogous to a `data` constructor declaration in
-             ML, or a *pick ADT* in Limbo.
-
-## Union types
-
-A *union type* is a nominal, heterogeneous C-like union, denoted by the name of
-a [`union` item](items/unions.html).
-
-A union contains the value of any one of its fields. Since the accessing the
-wrong field can cause unexpected or undefined behaviour, `unsafe` is required
-to read from a union field or to write to a field that doesn't implement
-[`Copy`].
-
-The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
-attribute can be used to fix a layout.
-
-[`Copy`]: special-types-and-traits.html#copy
-
-## Recursive types
-
-Nominal types &mdash; [structs](#struct-types),
-[enumerations](#enumerated-types) and [unions](#union-types) &mdash; may be
-recursive. That is, each `enum` variant or `struct` or `union` field may refer,
-directly or indirectly, to the enclosing `enum` or `struct` type itself. Such
-recursion has restrictions:
-
-* Recursive types must include a nominal type in the recursion (not mere [type
-  definitions](../grammar.html#type-definitions), or other structural types
-  such as [arrays](#array-and-slice-types) or [tuples](#tuple-types)). So
-  `type Rec = &'static [Rec]` is not allowed.
-* The size of a recursive type must be finite; in other words the recursive
-  fields of the type must be [pointer types](#pointer-types).
-* Recursive type definitions can cross module boundaries, but not module
-  *visibility* boundaries, or crate boundaries (in order to simplify the module
-  system and type checker).
-
-An example of a *recursive* type and its use:
-
-```rust
-enum List<T> {
-    Nil,
-    Cons(T, Box<List<T>>)
-}
-
-let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
-```
-
-## Pointer types
-
-All pointers in Rust are explicit first-class values. They can be moved or
-copied, stored into data structs, and returned from functions.
-
-### Shared references (`&`)
-
-> **<sup>Syntax</sup>**\
-> _ReferenceType_ :\
-> &nbsp;&nbsp; `&` [_Lifetime_]<sup>?</sup> `mut`<sup>?</sup> [_TypeNoBounds_]
-
-These point to memory _owned by some other value_. When a shared reference to a
-value is created it prevents direct mutation of the value. [Interior
-mutability](interior-mutability.html) provides an exception for this in certain
-circumstances. As the name suggests, any number of shared references to a value
-may exit. A shared reference type is written `&type`, or `&'a type` when you
-need to specify an explicit lifetime. Copying a reference is a "shallow"
-operation: it involves only copying the pointer itself, that is, pointers are
-`Copy`. Releasing a reference has no effect on the value it points to, but
-referencing of a [temporary value](expressions.html#temporary-lifetimes) will
-keep it alive during the scope of the reference itself.
-
-### Mutable references (`&mut`)
-
-These also point to memory owned by some other value. A mutable reference type
-is written `&mut type` or `&'a mut type`. A mutable reference (that hasn't been
-borrowed) is the only way to access the value it points to, so is not `Copy`.
-
-### Raw pointers (`*const` and `*mut`)
-
-> **<sup>Syntax</sup>**\
-> _RawPointerType_ :\
-> &nbsp;&nbsp; `*` ( `mut` | `const` ) [_TypeNoBounds_]
-
-Raw pointers are pointers without safety or liveness guarantees. Raw pointers
-are written as `*const T` or `*mut T`, for example `*const i32` means a raw
-pointer to a 32-bit integer. Copying or dropping a raw pointer has no effect on
-the lifecycle of any other value. Dereferencing a raw pointer is an [`unsafe`
-operation](unsafe-functions.html), this can also be used to convert a raw
-pointer to a reference by reborrowing it (`&*` or `&mut *`). Raw pointers are
-generally discouraged in Rust code; they exist to support interoperability with
-foreign code, and writing performance-critical or low-level functions.
-
-When comparing pointers they are compared by their address, rather than by what
-they point to. When comparing pointers to [dynamically sized
-types](dynamically-sized-types.html) they also have their addition data
-compared.
-
-### Smart Pointers
-
-The standard library contains additional 'smart pointer' types beyond references
-and raw pointers.
-
-## Function item types
-
-When referred to, a function item, or the constructor of a tuple-like struct or
-enum variant, yields a zero-sized value of its _function item type_. That type
-explicitly identifies the function - its name, its type arguments, and its
-early-bound lifetime arguments (but not its late-bound lifetime arguments,
-which are only assigned when the function is called) - so the value does not
-need to contain an actual function pointer, and no indirection is needed when
-the function is called.
-
-There is no syntax that directly refers to a function item type, but the
-compiler will display the type as something like `fn(u32) -> i32 {fn_name}` in
-error messages.
-
-Because the function item type explicitly identifies the function, the item
-types of different functions - different items, or the same item with different
-generics - are distinct, and mixing them will create a type error:
-
-```rust,compile_fail,E0308
-fn foo<T>() { }
-let x = &mut foo::<i32>;
-*x = foo::<u32>; //~ ERROR mismatched types
-```
-
-However, there is a [coercion] from function items to [function
-pointers](#function-pointer-types) with the same signature, which is triggered
-not only when a function item is used when a function pointer is directly
-expected, but also when different function item types with the same signature
-meet in different arms of the same `if` or `match`:
-
-[coercion]: type-coercions.html
-
-```rust
-# let want_i32 = false;
-# fn foo<T>() { }
-
-// `foo_ptr_1` has function pointer type `fn()` here
-let foo_ptr_1: fn() = foo::<i32>;
-
-// ... and so does `foo_ptr_2` - this type-checks.
-let foo_ptr_2 = if want_i32 {
-    foo::<i32>
-} else {
-    foo::<u32>
-};
-```
-
-All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
-[`Clone`], [`Send`], and [`Sync`].
-
-## Function pointer types
-
-> **<sup>Syntax</sup>**\
-> _BareFunctionType_ :\
-> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionQualifiers_] `fn`\
-> &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
->
-> _BareFunctionReturnType_:\
-> &nbsp;&nbsp; `->` [_TypeNoBounds_]
->
-> _FunctionParametersMaybeNamedVariadic_ :\
-> &nbsp;&nbsp; _MaybeNamedFunctionParameters_ | _MaybeNamedFunctionParametersVariadic_
->
-> _MaybeNamedFunctionParameters_ :\
-> &nbsp;&nbsp; _MaybeNamedParam_ ( `,` _MaybeNamedParam_ )<sup>\*</sup> `,`<sup>?</sup>
->
-> _MaybeNamedParam_ :\
-> &nbsp;&nbsp; ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
->
-> _MaybeNamedFunctionParametersVariadic_ :\
-> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` `...`
-
-Function pointer types, written using the `fn` keyword, refer to a function
-whose identity is not necessarily known at compile-time. They can be created
-via a coercion from both [function items](#function-item-types) and
-non-capturing [closures](#closure-types).
-
-A function pointer type consists of a possibly-empty set of function-type
-modifiers (such as `unsafe` or `extern`), a sequence of input types and an
-output type.
-
-Variadic parameters can only be specified with [`extern`] function types with
-the `"C"` or `"cdecl"` calling convention.
-
-An example where `Binop` is defined as a function pointer type:
-
-```rust
-fn add(x: i32, y: i32) -> i32 {
-    x + y
-}
-
-let mut x = add(5,7);
-
-type Binop = fn(i32, i32) -> i32;
-let bo: Binop = add;
-x = bo(5,7);
-```
-
-## Closure types
-
-A [closure expression] produces a closure value with a unique, anonymous type
-that cannot be written out. A closure type is approximately equivalent to a
-struct which contains the captured variables. For instance, the following
-closure:
-
-```rust
-fn f<F : FnOnce() -> String> (g: F) {
-    println!("{}", g());
-}
-
-let mut s = String::from("foo");
-let t = String::from("bar");
-
-f(|| {
-    s += &*t;
-    s
-});
-// Prints "foobar".
-```
-
-generates a closure type roughly like the following:
-
-```rust,ignore
-struct Closure<'a> {
-    s : String,
-    t : &'a String,
-}
-
-impl<'a> (FnOnce() -> String) for Closure<'a> {
-    fn call_once(self) -> String {
-        self.s += &*self.t;
-        self.s
-    }
-}
-```
-
-so that the call to `f` works as if it were:
-
-```rust,ignore
-f(Closure{s: s, t: &t});
-```
-
-### Capture modes
-
-The compiler prefers to capture a closed-over variable by immutable borrow,
-followed by unique immutable borrow (see below), by mutable borrow, and finally
-by move. It will pick the first choice of these that allows the closure to
-compile. The choice is made only with regards to the contents of the closure
-expression; the compiler does not take into account surrounding code, such as
-the lifetimes of involved variables.
-
-If the `move` keyword is used, then all captures are by move or, for `Copy`
-types, by copy, regardless of whether a borrow would work. The `move` keyword is
-usually used to allow the closure to outlive the captured values, such as if the
-closure is being returned or used to spawn a new thread.
-
-Composite types such as structs, tuples, and enums are always captured entirely,
-not by individual fields. It may be necessary to borrow into a local variable in
-order to capture a single field:
-
-```rust
-# use std::collections::HashSet;
-#
-struct SetVec {
-    set: HashSet<u32>,
-    vec: Vec<u32>
-}
-
-impl SetVec {
-    fn populate(&mut self) {
-        let vec = &mut self.vec;
-        self.set.iter().for_each(|&n| {
-            vec.push(n);
-        })
-    }
-}
-```
-
-If, instead, the closure were to use `self.vec` directly, then it would attempt
-to capture `self` by mutable reference. But since `self.set` is already
-borrowed to iterate over, the code would not compile.
-
-### Unique immutable borrows in captures
-
-Captures can occur by a special kind of borrow called a _unique immutable
-borrow_, which cannot be used anywhere else in the language and cannot be
-written out explicitly. It occurs when modifying the referent of a mutable
-reference, as in the following example:
-
-```rust
-let mut b = false;
-let x = &mut b;
-{
-    let mut c = || { *x = true; };
-    // The following line is an error:
-    // let y = &x;
-    c();
-}
-let z = &x;
-```
-
-In this case, borrowing `x` mutably is not possible, because `x` is not `mut`.
-But at the same time, borrowing `x` immutably would make the assignment illegal,
-because a `& &mut` reference may not be unique, so it cannot safely be used to
-modify a value. So a unique immutable borrow is used: it borrows `x` immutably,
-but like a mutable borrow, it must be unique. In the above example, uncommenting
-the declaration of `y` will produce an error because it would violate the
-uniqueness of the closure's borrow of `x`; the declaration of z is valid because
-the closure's lifetime has expired at the end of the block, releasing the borrow.
-
-### Call traits and coercions
-
-Closure types all implement [`FnOnce`], indicating that they can be called once
-by consuming ownership of the closure. Additionally, some closures implement
-more specific call traits:
-
-* A closure which does not move out of any captured variables implements
-  [`FnMut`], indicating that it can be called by mutable reference.
-
-* A closure which does not mutate or move out of any captured variables
-  implements [`Fn`], indicating that it can be called by shared reference.
-
-> Note: `move` closures may still implement [`Fn`] or [`FnMut`], even though
-> they capture variables by move. This is because the traits implemented by a
-> closure type are determined by what the closure does with captured values,
-> not how it captures them.
-
-*Non-capturing closures* are closures that don't capture anything from their
-environment. They can be coerced to function pointers (`fn`) with the matching
-signature.
-
-```rust
-let add = |x, y| x + y;
-
-let mut x = add(5,7);
-
-type Binop = fn(i32, i32) -> i32;
-let bo: Binop = add;
-x = bo(5,7);
-```
-
-### Other traits
-
-All closure types implement [`Sized`]. Additionally, closure types implement the
-following traits if allowed to do so by the types of the captures it stores:
-
-* [`Clone`]
-* [`Copy`]
-* [`Sync`]
-* [`Send`]
-
-The rules for [`Send`] and [`Sync`] match those for normal struct types, while
-[`Clone`] and [`Copy`] behave as if [derived][derive]. For [`Clone`], the order
-of cloning of the captured variables is left unspecified.
-
-Because captures are often by reference, the following general rules arise:
-
-* A closure is [`Sync`] if all captured variables are [`Sync`].
-* A closure is [`Send`] if all variables captured by non-unique immutable
-  reference are [`Sync`], and all values captured by unique immutable or mutable
-  reference, copy, or move are [`Send`].
-* A closure is [`Clone`] or [`Copy`] if it does not capture any values by
-  unique immutable or mutable reference, and if all values it captures by copy
-  or move are [`Clone`] or [`Copy`], respectively.
-
-## Trait objects
-
-> **<sup>Syntax</sup>**\
-> _TraitObjectType_ :\
-> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TypeParamBounds_]
->
-> _TraitObjectTypeOneBound_ :\
-> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
-
-A *trait object* is an opaque value of another type that implements a set of
-traits. The set of traits is made up of an [object safe] *base trait* plus any
-number of [auto traits].
-
-Trait objects implement the base trait, its auto traits, and any [supertraits]
-of the base trait.
-
-Trait objects are written as the optional keyword `dyn` followed by a set of
-trait bounds, but with the following restrictions on the trait bounds. All
-traits except the first trait must be auto traits, there may not be more than
-one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. Furthermore,
-paths to traits may be parenthesized.
-
-For example, given a trait `Trait`, the following are all trait objects:
-
-* `Trait`
-* `dyn Trait`
-* `dyn Trait + Send`
-* `dyn Trait + Send + Sync`
-* `dyn Trait + 'static`
-* `dyn Trait + Send + 'static`
-* `dyn Trait +`
-* `dyn 'static + Trait`.
-* `dyn (Trait)`
-
-> **Edition Differences**: In the 2015 edition, if the first bound of the
-> trait object is a path that starts with `::`, then the `dyn` will be treated
-> as a part of the path. The first path can be put in parenthesis to get
-> around this. As such, if you want a trait object with the trait
-> `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
->
-> Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in
-> paths, so the parentheses are not necessary.
-
-> Note: For clarity, it is recommended to always use the `dyn` keyword on your
-> trait objects unless your codebase supports compiling with Rust 1.26 or lower.
-
-Two trait object types alias each other if the base traits alias each other and
-if the sets of auto traits are the same and the lifetime bounds are the same.
-For example, `dyn Trait + Send + UnwindSafe` is the same as
-`dyn Trait + Unwindsafe + Send`.
-
-<div class="warning">
-
-***Warning:*** With two trait object types, even when the complete set of traits
-is the same, if the base traits differ, the type is different. For example,
-`dyn Send + Sync` is a different type from `dyn Sync + Send`. See [issue 33140].
-
-</div>
-
-Due to the opaqueness of which concrete type the value is of, trait objects are
-[dynamically sized types]. Like all
-<abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
-behind some type of pointer; for example `&dyn SomeTrait` or
-`Box<dyn SomeTrait>`. Each instance of a pointer to a trait object includes:
-
- - a pointer to an instance of a type `T` that implements `SomeTrait`
- - a _virtual method table_, often just called a _vtable_, which contains, for
-   each method of `SomeTrait` and its [supertraits] that `T` implements, a
-   pointer to `T`'s implementation (i.e. a function pointer).
-
-The purpose of trait objects is to permit "late binding" of methods. Calling a
-method on a trait object results in virtual dispatch at runtime: that is, a
-function pointer is loaded from the trait object vtable and invoked indirectly.
-The actual implementation for each vtable entry can vary on an object-by-object
-basis.
-
-An example of a trait object:
-
-```rust
-trait Printable {
-    fn stringify(&self) -> String;
-}
-
-impl Printable for i32 {
-    fn stringify(&self) -> String { self.to_string() }
-}
-
-fn print(a: Box<dyn Printable>) {
-    println!("{}", a.stringify());
-}
-
-fn main() {
-    print(Box::new(10) as Box<dyn Printable>);
-}
-```
-
-In this example, the trait `Printable` occurs as a trait object in both the
-type signature of `print`, and the cast expression in `main`.
-
-### Trait Object Lifetime Bounds
-
-Since a trait object can contain references, the lifetimes of those references
-need to be expressed as part of the trait object. This lifetime is written as
-`Trait + 'a`. There are [defaults] that allow this lifetime to usually be
-inferred with a sensible choice.
-
-[defaults]: lifetime-elision.html#default-trait-object-lifetimes
-
-## Inferred type
+### Inferred type
 > **<sup>Syntax</sup>**\
 > _InferredType_ : `_`
 
@@ -769,7 +112,8 @@ let x: Vec<_> = (0..10).collect();
   There should be a broader discussion of type inference somewhere.
 -->
 
-## Type parameters
+
+### Type parameters
 
 Within the body of an item that has type parameter declarations, the names of
 its type parameters are types:
@@ -789,119 +133,88 @@ fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
 Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
 `rest` has type `Vec<A>`, a vector with element type `A`.
 
-## Impl trait
 
-> **<sup>Syntax</sup>**\
-> _ImplTraitType_ : `impl` [_TypeParamBounds_]
->
-> _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
+## Recursive types
 
-### Anonymous type parameters
+Nominal types &mdash; [structs], [enumerations] and [unions] &mdash; may be
+recursive. That is, each `enum` variant or `struct` or `union` field may
+refer, directly or indirectly, to the enclosing `enum` or `struct` type
+itself. Such recursion has restrictions:
 
-> Note: This section is a placeholder for more comprehensive reference
-> material.
+* Recursive types must include a nominal type in the recursion (not mere [type
+  aliases], or other structural types such as [arrays] or [tuples]). So `type
+  Rec = &'static [Rec]` is not allowed.
+* The size of a recursive type must be finite; in other words the recursive
+  fields of the type must be [pointer types].
+* Recursive type definitions can cross module boundaries, but not module
+  *visibility* boundaries, or crate boundaries (in order to simplify the module
+  system and type checker).
 
-> Note: This is often called "impl Trait in argument position".
-
-Functions can declare an argument to be an anonymous type parameter where the
-callee must provide a type that has the bounds declared by the anonymous type
-parameter and the function can only use the methods available by the trait
-bounds of the anonymous type parameter.
-
-They are written as `impl` followed by a set of trait bounds.
-
-### Abstract return types
-
-> Note: This section is a placeholder for more comprehensive reference
-> material.
-
-> Note: This is often called "impl Trait in return position".
-
-Functions, except for associated trait functions, can return an abstract
-return type. These  types stand in for another concrete type where the
-use-site may only use the trait methods declared by the trait bounds of the
-type.
-
-They are written as `impl` followed by a set of trait bounds.
-
-## Self types
-
-The special type `Self` has a meaning within traits and implementations: it
-refers to the implementing type. For example, in:
+An example of a *recursive* type and its use:
 
 ```rust
-pub trait From<T> {
-    fn from(T) -> Self;
+enum List<T> {
+    Nil,
+    Cons(T, Box<List<T>>)
 }
 
-impl From<i32> for String {
-    fn from(x: i32) -> Self {
-        x.to_string()
-    }
-}
+let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 ```
 
-The notation `Self` in the impl refers to the implementing type: `String`. In
-another example:
-
-```rust
-trait Printable {
-    fn make_string(&self) -> String;
-}
-
-impl Printable for String {
-    fn make_string(&self) -> String {
-        (*self).clone()
-    }
-}
-```
-
-> Note: The notation `&self` is a shorthand for `self: &Self`.
-
-[IDENTIFIER]: identifiers.html
-[_ArrayType_]: #array-and-slice-types
-[_BareFunctionType_]: #function-pointer-types
-[_Expression_]: expressions.html
-[_ForLifetimes_]: items/generics.html#where-clauses
-[_FunctionParametersMaybeNamed_]: items/functions.html
-[_FunctionQualifiers_]: items/functions.html
-[_ImplTraitTypeOneBound_]: #impl-trait
-[_ImplTraitType_]: #impl-trait
-[_InferredType_]: #inferred-type
-[_Lifetime_]: trait-bounds.html
+[_ArrayType_]: types/array.html
+[_BareFunctionType_]: types/function-pointer.html
+[_ImplTraitTypeOneBound_]: types/impl-trait.html
+[_ImplTraitType_]: types/impl-trait.html
+[_InferredType_]: types.html#inferred-type
 [_MacroInvocation_]: macros.html#macro-invocation
-[_NeverType_]: #never-type
-[_ParenthesizedType_]: #parenthesized-types
+[_NeverType_]: types/never.html
+[_ParenthesizedType_]: types.html#parenthesized-types
 [_QualifiedPathInType_]: paths.html#qualified-paths
-[_RawPointerType_]: #raw-pointers-const-and-mut
-[_ReferenceType_]: #shared-references-
-[_SliceType_]: #array-and-slice-types
-[_TraitBound_]: trait-bounds.html
-[_TraitObjectTypeOneBound_]: #trait-objects
-[_TraitObjectType_]: #trait-objects
-[_TupleType_]: #tuple-types
-[_TypeNoBounds_]: #types
-[_TypeParamBounds_]: trait-bounds.html
+[_RawPointerType_]: types/pointer.html#raw-pointers-const-and-mut
+[_ReferenceType_]: types/pointer.html#shared-references-
+[_SliceType_]: types/slice.html
+[_TraitObjectTypeOneBound_]: types/trait-object.html
+[_TraitObjectType_]: types/trait-object.html
+[_TupleType_]: types/tuple.html#tuple-types
+[_TypeNoBounds_]: types.html#type-expressions
 [_TypePath_]: paths.html#paths-in-types
-[_Type_]: #types
-[`Fn`]: ../std/ops/trait.Fn.html
-[`FnMut`]: ../std/ops/trait.FnMut.html
-[`FnOnce`]: ../std/ops/trait.FnOnce.html
-[`Copy`]: special-types-and-traits.html#copy
-[`Clone`]: special-types-and-traits.html#clone
-[`Send`]: special-types-and-traits.html#send
-[`Sync`]: special-types-and-traits.html#sync
-[`Sized`]: special-types-and-traits.html#sized
-[`extern`]: items/external-blocks.html
-[derive]: attributes.html#derive
-[`Vec<T>`]: ../std/vec/struct.Vec.html
-[dynamically sized type]: dynamically-sized-types.html
-[dynamically sized types]: dynamically-sized-types.html
-[struct expression]: expressions/struct-expr.html
-[closure expression]: expressions/closure-expr.html
-[auto traits]: special-types-and-traits.html#auto-traits
-[object safe]: items/traits.html#object-safety
-[issue 47010]: https://github.com/rust-lang/rust/issues/47010
-[issue 33140]: https://github.com/rust-lang/rust/issues/33140
-[supertraits]: items/traits.html#supertraits
+[_Type_]: types.html#type-expressions
+
+[Array]: types/array.html
+[Boolean]: types/boolean.html
+[Closures]: types/closure.html
+[Enum]: types/enum.html
+[Function pointers]: types/function-pointer.html
+[Functions]: types/function-item.html
+[Impl trait]: types/impl-trait.html
+[Macros]: macros.html
+[Numeric]: types/numeric.html
+[Parentheses]: #parenthesized-types
+[Raw pointers]: types/pointer.html#raw-pointers-const-and-mut
+[References]: types/pointer.html#shared-references-
+[Slice]: types/slice.html
+[Struct]: types/struct.html
+[Textual]: types/textual.html
+[Trait objects]: types/trait-object.html
+[Tuple]: types/tuple.html
+[Type paths]: paths.html#paths-in-types
+[Union]: types/union.html
+[`Self` path]: paths.html#self-1
+[arrays]: types/array.html
+[enumerations]: types/enum.html
+[function pointer]: types/function-pointer.html
+[inferred type]: types.html#inferred-type
+[item]: items.html
+[never]: types/never.html
+[pointer types]: types/pointer.html
+[raw pointer]: types/pointer.html#raw-pointers-const-and-mut
+[reference type]: types/pointer.html#shared-references-
+[reference]: types/pointer.html#shared-references-
+[structs]: types/struct.html
+[trait]: types/trait-object.html
+[tuples]: types/tuple.html
+[type alias]: items/type-aliases.html
+[type aliases]: items/type-aliases.html
 [type boundaries]: trait-bounds.html
+[type parameters]: #type-parameters
+[unions]: types/union.html

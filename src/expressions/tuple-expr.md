@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup>
 
 Tuples are written by enclosing zero or more comma-separated expressions in
-parentheses. They are used to create [tuple-typed](types.html#tuple-types)
+parentheses. They are used to create [tuple-typed](types/tuple.html)
 values.
 
 ```rust
@@ -39,7 +39,7 @@ expressions].
 > _TupleIndexingExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
 
-[Tuples](types.html#tuple-types) and [struct tuples](items/structs.html) can be
+[Tuples](types/tuple.html) and [struct tuples](items/structs.html) can be
 indexed using the number corresponding to the position of the field. The index
 must be written as a [decimal literal](tokens.html#integer-literals) with no
 underscores or suffix. Tuple indexing expressions also differ from field

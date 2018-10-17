@@ -126,4 +126,4 @@ is possible to declare a variable or method with the name `union`.
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
 [variants]: items/enumerations.html
-[`dyn`]: types.html#trait-objects
+[`dyn`]: types/trait-object.html

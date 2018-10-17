@@ -32,4 +32,4 @@ let _: F = E::A;  // OK
 [IDENTIFIER]: identifiers.html
 [_Generics_]: items/generics.html
 [_WhereClause_]: items/generics.html#where-clauses
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions

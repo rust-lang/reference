@@ -49,8 +49,8 @@ let px: i32 = p.x;
 A _tuple struct_ is a nominal [tuple type], also defined with the keyword
 `struct`. For example:
 
-[struct type]: types.html#struct-types
-[tuple type]: types.html#tuple-types
+[struct type]: types/struct.html
+[tuple type]: types/tuple.html
 
 ```rust
 struct Point(i32, i32);
@@ -85,4 +85,4 @@ particular layout using the [`repr` attribute].
 [_Generics_]: items/generics.html
 [_WhereClause_]: items/generics.html#where-clauses
 [_Visibility_]: visibility-and-privacy.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions

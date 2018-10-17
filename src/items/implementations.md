@@ -187,7 +187,7 @@ attributes].
 [_OuterAttribute_]: attributes.html
 [_TypeAlias_]: items/type-aliases.html
 [_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html

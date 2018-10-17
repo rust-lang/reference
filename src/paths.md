@@ -185,24 +185,30 @@ fn bar() {
 
 ### `Self`
 
-`Self` with a capital "S" is used to refer to a type relative to the current situation.
+`Self` with a capital "S" is used to refer to the implementing type within
+[traits] and [implementations].
 
-In a [trait] or [trait implementation] it refers to the type the trait is being
-implemented for, or can be used to refer to an associated type or constant of the trait.
+`Self` can only be used as the first segment, without a preceding `::`.
 
 ```rust
 trait T {
     type Item;
     const C: i32;
+    // `Self` will be whatever type that implements `T`.
     fn new() -> Self;
+    // `Self::Item` will be the type alias in the implementation.
     fn f(&self) -> Self::Item;
 }
 struct S;
 impl T for S {
     type Item = i32;
     const C: i32 = 9;
-    fn new() -> Self { S }
-    fn f(&self) -> Self::Item { Self::C }
+    fn new() -> Self {           // `Self` is the type `S`.
+        S
+    }
+    fn f(&self) -> Self::Item {  // `Self::Item` is the type `i32`.
+        Self::C                  // `Self::C` is the constant value `9`.
+    }
 }
 ```
 
@@ -348,7 +354,7 @@ mod without { // ::without
 
 [_GenericArgs_]: #paths-in-expressions
 [_Lifetime_]: trait-bounds.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [item]: items.html
 [variable]: variables.html
 [identifiers]: identifiers.html
@@ -366,6 +372,6 @@ mod without { // ::without
 [struct]: items/structs.html
 [trait implementation]: items/implementations.html#trait-implementations
 [trait implementations]: items/implementations.html#trait-implementations
-[trait]: items/traits.html
+[traits]: items/traits.html
 [union]: items/unions.html
 [visibility]: visibility-and-privacy.html

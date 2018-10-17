@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
 > &nbsp;&nbsp; | [_Expression_] `;` [_Expression_]
 
-An _[array](types.html#array-and-slice-types) expression_ can be written by
+An _[array](types/array.html) expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
 brackets. This produces and array containing each of these values in the
 order they are written.
@@ -44,7 +44,7 @@ expressions].
 > _IndexExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`
 
-[Array and slice](types.html#array-and-slice-types)-typed expressions can be
+[Array](types/array.html) and [slice](types/slice.html)-typed expressions can be
 indexed by writing a square-bracket-enclosed expression of type `usize` (the
 index) after them. When the array is mutable, the resulting [memory location]
 can be assigned to.

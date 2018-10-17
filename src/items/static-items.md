@@ -73,5 +73,5 @@ following are true:
 [constant expression]: const_eval.html#constant-expressions
 [interior mutable]: interior-mutability.html
 [IDENTIFIER]: identifiers.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_Expression_]: expressions.html

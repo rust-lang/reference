@@ -672,4 +672,4 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [enums]: items/enumerations.html
 [literals]: expressions/literal-expr.html
 [structs]: items/structs.html
-[tuples]: types.html#tuple-types
+[tuples]: types/tuple.html

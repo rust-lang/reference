@@ -483,7 +483,7 @@ to call a method named `f64` on `2`.
 The representation semantics of floating-point numbers are described in
 ["Machine Types"].
 
-["Machine Types"]: types.html#machine-types
+["Machine Types"]: types/numeric.html
 
 ### Boolean literals
 
@@ -583,7 +583,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [Subpattern binding]: patterns.html#identifier-patterns
 [Wildcard patterns]: patterns.html#wildcard-pattern
 [arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[array types]: types.html#array-and-slice-types
+[array types]: types/array.html
 [assignment]: expressions/operator-expr.html#assignment-expressions
 [attributes]: attributes.html
 [borrow]: expressions/operator-expr.html#borrow-operators
@@ -602,13 +602,13 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [macros]: macros-by-example.html
 [match]: expressions/match-expr.html
 [negation]: expressions/operator-expr.html#negation-operators
-[never type]: types.html#never-type
+[never type]: types/never.html
 [paths]: paths.html
 [patterns]: patterns.html
 [question]: expressions/operator-expr.html#the-question-mark-operator
 [range]: expressions/range-expr.html
-[raw pointers]: types.html#raw-pointers-const-and-mut
-[references]: types.html#pointer-types
+[raw pointers]: types/pointer.html#raw-pointers-const-and-mut
+[references]: types/pointer.html
 [sized]: trait-bounds.html#sized
 [struct expressions]: expressions/struct-expr.html
 [tokens]: #tokens
@@ -616,4 +616,4 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
 [tuple structs]: items/structs.html
 [tuple variants]: items/enumerations.html
-[tuples]: types.html#tuple-types
+[tuples]: types/tuple.html
