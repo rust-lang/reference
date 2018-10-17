@@ -77,4 +77,4 @@ by implementing the [Index] and [IndexMut] traits.
 [memory location]: expressions.html#place-expressions-and-value-expressions
 [Index]: ../std/ops/trait.Index.html
 [IndexMut]: ../std/ops/trait.IndexMut.html
-[constant expression]: expressions.html#constant-expressions
+[constant expression]: const_eval.html#constant-expressions
