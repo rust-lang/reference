@@ -21,15 +21,15 @@ mod math {
     type Complex = (f64, f64);
     fn sin(f: f64) -> f64 {
         /* ... */
-# panic!();
+#       unimplemented!();
     }
     fn cos(f: f64) -> f64 {
         /* ... */
-# panic!();
+#       unimplemented!();
     }
     fn tan(f: f64) -> f64 {
         /* ... */
-# panic!();
+#       unimplemented!();
     }
 }
 ```
@@ -68,10 +68,31 @@ mod thread {
 }
 ```
 
-[IDENTIFIER]: identifiers.html
+Modules implicitly have some names in scope. These name are to built-in types,
+macros imported with `#[macro_use]` on an extern crate, and by the crate's
+[prelude]. These names are all made of a single identifier. These names are not
+part of the module, so for example, any name `name`, `self::name` is not a
+valid path. The names added by the [prelude] can be removed by placing the
+`no_implicit_prelude` [attribute] onto the module.
+
+## Attributes on Modules
+
+Modules, like all items, accept outer attributes. They also accept inner
+attibutes: either after `{` for a module with a body, or at the beginning of the
+source file, after the optional BOM and shebang.
+
+The built-in attributes that have meaning on a function are [`cfg`],
+[`deprecated`], [`doc`], [the lint check attributes], `path`, and
+`no_implicit_prelude`. Modules also accept macro attributes.
 
 [_InnerAttribute_]: attributes.html
-[_OuterAttribute_]: attributes.html
-
 [_Item_]: items.html
+[_OuterAttribute_]: attributes.html
+[`cfg`]: conditional-compilation.html
+[`deprecated`]: attributes.html#deprecation
+[`doc`]: attributes.html#documentation
+[IDENTIFIER]: identifiers.html
+[attribute]: attributes.html
 [items]: items.html
+[prelude]: crates-and-source-files.html#preludes-and-no_std
+[the lint check attributes]: attributes.html#lint-check-attributes

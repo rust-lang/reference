@@ -107,6 +107,9 @@ names have meaning.
 
 ## Crate-only attributes
 
+> **Note**: This section is in the process of being removed, with specific
+> sections for each attribute. It is not the full list of crate-root attributes.
+
 - `crate_name` - specify the crate's crate name.
 - `crate_type` - see [linkage](linkage.html).
 - `no_builtins` - disable optimizing certain code patterns to invocations of
@@ -115,7 +118,6 @@ names have meaning.
    object being linked to defines `main`.
 - `no_start` - disable linking to the `native` crate, which specifies the
   "start" language item.
-- `no_std` - disable linking to the `std` crate.
 - `recursion_limit` - Sets the maximum depth for potentially
                       infinitely-recursive compile-time operations like
                       auto-dereference or macro expansion. The default is
@@ -129,14 +131,6 @@ names have meaning.
                         non-Windows targets.
 
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx
-
-## Module-only attributes
-
-- `no_implicit_prelude` - disable injecting `use std::prelude::*` in this
-  module.
-- `path` - specifies the file to load the module from. `#[path="foo.rs"] mod
-  bar;` is equivalent to `mod bar { /* contents of foo.rs */ }`. The path is
-  taken relative to the directory that the current module is in.
 
 ## FFI attributes
 
@@ -244,6 +238,17 @@ The `doc` attribute is used to document items and fields. [Doc comments]
 are transformed into `doc` attributes.
 
 See [The Rustdoc Book] for reference material on this attribute.
+
+### `path`
+
+The `path` attribute says where a [module]'s source file is. See [modules] for
+more information.
+
+### Preludes
+
+The [prelude] behavior can be modified with attributes. The [`no_std`] attribute
+changes the prelude to the core prelude while the [`no_implicit_prelude`]
+prevents the prelude from being added to the module.
 
 ### Testing
 
@@ -556,8 +561,12 @@ You can implement `derive` for your own traits through [procedural macros].
 
 [_LiteralExpression_]: expressions/literal-expr.html
 [_SimplePath_]: paths.html#simple-paths
+[`no_implicit_prelude`]: items/modules.html
+[`no_std`]: crates-and-source-files.html#preludes-and-no_std
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
+[module]: items/modules.html
+[prelude]: crates-and-source-files.html#preludes-and-no_std
 [procedural macros]: procedural-macros.html
 [struct]: items/structs.html
 [enum]: items/enumerations.html
