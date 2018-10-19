@@ -74,7 +74,8 @@ An expression that consists of only a [block expression][block] or control flow
 expression, if used in a context where a statement is permitted, can omit the
 trailing semicolon. This can cause an ambiguity between it being parsed as a
 standalone statement and as a part of another expression; in this case, it is
-parsed as a statement.
+parsed as a statement. The type of [_ExpressionWithBlock_][expression]
+expressions when used as statements must be the unit type.
 
 ```rust
 # let mut v = vec![1, 2, 3];

@@ -262,6 +262,7 @@ a few specific cases:
         https://github.com/rust-lang/rust/issues/15701
   -->
 * The tail expression of [block expressions].
+<!-- Keep list in sync with block-expr.md -->
 
 They are never allowed before:
 
