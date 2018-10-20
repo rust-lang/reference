@@ -5,8 +5,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; `;`\
 > &nbsp;&nbsp; | [_Item_]\
 > &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_ExpressionWithoutBlock_][expression] `;`\
-> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression]
+> &nbsp;&nbsp; | [_ExpressionStatement_]
 
 
 A *statement* is a component of a [block], which is in turn a component of an
@@ -66,6 +65,11 @@ enclosing block scope.
 
 ## Expression statements
 
+> **<sup>Syntax</sup>**\
+> _ExpressionStatement_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
+> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression]
+
 An *expression statement* is one that evaluates an [expression] and ignores its
 result. As a rule, an expression statement's purpose is to trigger the effects
 of evaluating its expression.
@@ -122,6 +126,7 @@ statement are [`cfg`], and [the lint check attributes].
 [`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [pattern]: patterns.html
+[_ExpressionStatement_]: #expression-statements
 [_Expression_]: expressions.html
 [_Item_]: items.html
 [_LetStatement_]: #let-statements
