@@ -2,29 +2,42 @@
 
 > **<sup>Syntax</sup>**\
 > _Expression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]\
-> &nbsp;&nbsp; | [_PathExpression_]\
-> &nbsp;&nbsp; | [_BlockExpression_]\
-> &nbsp;&nbsp; | [_OperatorExpression_]\
-> &nbsp;&nbsp; | [_GroupedExpression_]\
-> &nbsp;&nbsp; | [_ArrayExpression_]\
-> &nbsp;&nbsp; | [_IndexExpression_]\
-> &nbsp;&nbsp; | [_TupleExpression_]\
-> &nbsp;&nbsp; | [_TupleIndexingExpression_]\
-> &nbsp;&nbsp; | [_StructExpression_]\
-> &nbsp;&nbsp; | [_EnumerationVariantExpression_]\
-> &nbsp;&nbsp; | [_CallExpression_]\
-> &nbsp;&nbsp; | [_MethodCallExpression_]\
-> &nbsp;&nbsp; | [_FieldExpression_]\
-> &nbsp;&nbsp; | [_ClosureExpression_]\
-> &nbsp;&nbsp; | [_LoopExpression_]\
-> &nbsp;&nbsp; | [_ContinueExpression_]\
-> &nbsp;&nbsp; | [_BreakExpression_]\
-> &nbsp;&nbsp; | [_RangeExpression_]\
-> &nbsp;&nbsp; | [_IfExpression_]\
-> &nbsp;&nbsp; | [_IfLetExpression_]\
-> &nbsp;&nbsp; | [_MatchExpression_]\
-> &nbsp;&nbsp; | [_ReturnExpression_]
+> &nbsp;&nbsp; &nbsp;&nbsp; _ExpressionWithoutBlock_\
+> &nbsp;&nbsp; | _ExpressionWithBlock_
+>
+> _ExpressionWithoutBlock_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
+> &nbsp;&nbsp; (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_PathExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_OperatorExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_GroupedExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ArrayExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_IndexExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleIndexingExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_StructExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_EnumerationVariantExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_CallExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MethodCallExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_FieldExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ClosureExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ContinueExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_BreakExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_RangeExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ReturnExpression_]\
+> &nbsp;&nbsp; )
+>
+> _ExpressionWithBlock_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
+> &nbsp;&nbsp; (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_IfLetExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
+> &nbsp;&nbsp; )
 
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a
@@ -235,6 +248,31 @@ Many of the following operators and expressions can also be overloaded for
 other types using traits in `std::ops` or `std::cmp`. These traits also
 exist in `core::ops` and `core::cmp` with the same names.
 
+## Expression Attributes
+
+[Outer attributes][_OuterAttribute_] before an expression are allowed only in
+a few specific cases:
+
+* Before an expression used as a [statement].
+* Elements of [array expressions], [tuple expressions], [call expressions],
+  tuple-style [struct] and [enum variant] expressions.
+  <!--
+    These were likely stabilized inadvertently.
+    See https://github.com/rust-lang/rust/issues/32796 and
+        https://github.com/rust-lang/rust/issues/15701
+  -->
+* The tail expression of [block expressions].
+<!-- Keep list in sync with block-expr.md -->
+
+They are never allowed before:
+
+* [`if`][_IfExpression_] and [`if let`][_IfLetExpression_] expressions.
+* [Range][_RangeExpression_] expressions.
+* Binary operator expressions ([_ArithmeticOrLogicalExpression_],
+  [_ComparisonExpression_], [_LazyBooleanExpression_], [_TypeCastExpression_],
+  [_AssignmentExpression_], [_CompoundAssignmentExpression_]).
+
+
 [block expressions]:    expressions/block-expr.html
 [call expressions]:     expressions/call-expr.html
 [closure expressions]:  expressions/closure-expr.html
@@ -278,15 +316,21 @@ exist in `core::ops` and `core::cmp` with the same names.
 [Mutable `static` items]: items/static-items.html#mutable-statics
 [const contexts]:       const_eval.html
 [slice]:                types.html#array-and-slice-types
+[statement]:            statements.html
 [static variables]:     items/static-items.html
 [Temporary values]:     #temporary-lifetimes
 [Variables]:            variables.html
 
+
+[_ArithmeticOrLogicalExpression_]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
 [_ArrayExpression_]:              expressions/array-expr.html
+[_AssignmentExpression_]:         expressions/operator-expr.html#assignment-expressions
 [_BlockExpression_]:              expressions/block-expr.html
 [_BreakExpression_]:              expressions/loop-expr.html#break-expressions
 [_CallExpression_]:               expressions/call-expr.html
 [_ClosureExpression_]:            expressions/closure-expr.html
+[_ComparisonExpression_]:         expressions/operator-expr.html#comparison-operators
+[_CompoundAssignmentExpression_]: expressions/operator-expr.html#compound-assignment-expressions
 [_ContinueExpression_]:           expressions/loop-expr.html#continue-expressions
 [_EnumerationVariantExpression_]: expressions/enum-variant-expr.html
 [_FieldExpression_]:              expressions/field-expr.html
@@ -294,14 +338,18 @@ exist in `core::ops` and `core::cmp` with the same names.
 [_IfExpression_]:                 expressions/if-expr.html#if-expressions
 [_IfLetExpression_]:              expressions/if-expr.html#if-let-expressions
 [_IndexExpression_]:              expressions/array-expr.html#array-and-slice-indexing-expressions
+[_LazyBooleanExpression_]:        expressions/operator-expr.html#lazy-boolean-operators
 [_LiteralExpression_]:            expressions/literal-expr.html
 [_LoopExpression_]:               expressions/loop-expr.html
 [_MatchExpression_]:              expressions/match-expr.html
 [_MethodCallExpression_]:         expressions/method-call-expr.html
 [_OperatorExpression_]:           expressions/operator-expr.html
+[_OuterAttribute_]:               attributes.html
 [_PathExpression_]:               expressions/path-expr.html
 [_RangeExpression_]:              expressions/range-expr.html
 [_ReturnExpression_]:             expressions/return-expr.html
 [_StructExpression_]:             expressions/struct-expr.html
 [_TupleExpression_]:              expressions/tuple-expr.html
 [_TupleIndexingExpression_]:      expressions/tuple-expr.html#tuple-indexing-expressions
+[_TypeCastExpression_]:           expressions/operator-expr.html#type-cast-expressions
+[_UnsafeBlockExpression_]:        expressions/block-expr.html#unsafe-blocks

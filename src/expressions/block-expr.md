@@ -4,19 +4,15 @@
 > _BlockExpression_ :\
 > &nbsp;&nbsp; `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Statements_<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; _Statements_<sup>?</sup>\
 > &nbsp;&nbsp; `}`
 >
 > _Statements_ :\
-> &nbsp;&nbsp; ( `;`\
-> &nbsp;&nbsp; | [_ItemDeclaration_]\
-> &nbsp;&nbsp; | [_LetStatement_] ;\
-> &nbsp;&nbsp; | [_NonControlFlowExpressionStatement_][expression statement] ;\
-> &nbsp;&nbsp; | [_FlowControlExpressionStatement_][expression statement] ;<sup>?</sup>\
-> &nbsp;&nbsp; )<sup>\*</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\+</sup>\
+> &nbsp;&nbsp; | [_Statement_]<sup>\+</sup> [_ExpressionWithoutBlock_]\
+> &nbsp;&nbsp; | [_ExpressionWithoutBlock_]
 
-A *block expression*, or *block*, is a control flow expression and anonymouse
+A *block expression*, or *block*, is a control flow expression and anonymous
 namespace scope for items and variable declarations. As a control flow
 expression, a block sequentially executes its component non-item declaration
 statements and then its final optional expression. As an anonymous namespace
@@ -60,7 +56,7 @@ assert_eq!(5, five);
 > expression of an expression statement, the expected type is `()` unless it
 > is followed immediately by a semicolon.
 
-Blocks are always [value expressions] and evaluate the last expression in 
+Blocks are always [value expressions] and evaluate the last expression in
 value expression context. This can be used to force moving a value if really
 needed. For example, the following example fails on the call to `consume_self`
 because the struct was moved out of `s` in the block expression.
@@ -109,11 +105,19 @@ let a = unsafe { an_unsafe_fn() };
 
 ## Attributes on block expressions
 
-Block expressions allow [outer attributes] and [inner attributes] directly after
-the opening brace when the block expression is the outer expression of an
-[expression statement] or the final expression of another block expression. The
-attributes that have meaning on a block expression are [`cfg`] and [the lint
-check attributes].
+[Inner attributes] are allowed directly after the opening brace of a block
+expression in the following situations:
+
+* [Function] and [method] bodies.
+* Loop bodies ([`loop`], [`while`], [`while let`], and [`for`]).
+* Block expressions used as a [statement].
+* Block expressions as elements of [array expressions], [tuple expressions],
+  [call expressions], tuple-style [struct] and [enum variant] expressions.
+* A block expression as the tail expression of another block expression.
+<!-- Keep list in sync with expressions.md -->
+
+The attributes that have meaning on a block expression are [`cfg`] and [the
+lint check attributes].
 
 For example, this function returns `true` on unix platforms and `false` on other
 platforms.
@@ -125,17 +129,26 @@ fn is_unix_platform() -> bool {
 }
 ```
 
+[_ExpressionWithoutBlock_]: expressions.html
 [_InnerAttribute_]: attributes.html
-[_ItemDeclaration_]: items.html
-[_LetStatement_]: statements.html#let-statements
-[expression statement]: statements.html#expression-statements
-[_Expression_]: expressions.html
-[expression]: expressions.html
-[statements]: statements.html
-[value expressions]: expressions.html#place-expressions-and-value-expressions
-[outer attributes]: attributes.html
-[inner attributes]: attributes.html
-[expression statement]: statements.html#expression-statements
+[_Statement_]: statements.html
 [`cfg`]: conditional-compilation.html
+[`for`]: expressions/loop-expr.html#iterator-loops
+[`loop`]: expressions/loop-expr.html#infinite-loops
+[`while let`]: expressions/loop-expr.html#predicate-pattern-loops
+[`while`]: expressions/loop-expr.html#predicate-loops
+[array expressions]: expressions/array-expr.html
+[call expressions]: expressions/call-expr.html
+[enum variant]: expressions/enum-variant-expr.html
+[expression attributes]: expressions.html#expression-attributes
+[expression]: expressions.html
+[function]: items/functions.html
+[inner attributes]: attributes.html
+[method]: items/associated-items.html#methods
+[statement]: statements.html
+[statements]: statements.html
+[struct]: expressions/struct-expr.html
 [the lint check attributes]: attributes.html#lint-check-attributes
+[tuple expressions]: expressions/tuple-expr.html
 [unsafe operations]: unsafety.html
+[value expressions]: expressions.html#place-expressions-and-value-expressions

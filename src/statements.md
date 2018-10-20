@@ -1,5 +1,13 @@
 # Statements
 
+> **<sup>Syntax</sup>**\
+> _Statement_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `;`\
+> &nbsp;&nbsp; | [_Item_]\
+> &nbsp;&nbsp; | [_LetStatement_]\
+> &nbsp;&nbsp; | [_ExpressionStatement_]
+
+
 A *statement* is a component of a [block], which is in turn a component of an
 outer [expression] or [function].
 
@@ -42,6 +50,11 @@ fn outer() {
 
 ### `let` statements
 
+> **<sup>Syntax</sup>**\
+> _LetStatement_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_Pattern_]
+>     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
+
 A *`let` statement* introduces a new set of [variables], given by a [pattern]. The
 pattern is followed optionally by a type annotation and then optionally by an
 initializer expression. When no type annotation is given, the compiler will
@@ -52,6 +65,11 @@ enclosing block scope.
 
 ## Expression statements
 
+> **<sup>Syntax</sup>**\
+> _ExpressionStatement_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
+> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression]
+
 An *expression statement* is one that evaluates an [expression] and ignores its
 result. As a rule, an expression statement's purpose is to trigger the effects
 of evaluating its expression.
@@ -60,7 +78,8 @@ An expression that consists of only a [block expression][block] or control flow
 expression, if used in a context where a statement is permitted, can omit the
 trailing semicolon. This can cause an ambiguity between it being parsed as a
 standalone statement and as a part of another expression; in this case, it is
-parsed as a statement.
+parsed as a statement. The type of [_ExpressionWithBlock_][expression]
+expressions when used as statements must be the unit type.
 
 ```rust
 # let mut v = vec![1, 2, 3];
@@ -107,3 +126,10 @@ statement are [`cfg`], and [the lint check attributes].
 [`cfg`]: conditional-compilation.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [pattern]: patterns.html
+[_ExpressionStatement_]: #expression-statements
+[_Expression_]: expressions.html
+[_Item_]: items.html
+[_LetStatement_]: #let-statements
+[_OuterAttribute_]: attributes.html
+[_Pattern_]: patterns.html
+[_Type_]: types.html

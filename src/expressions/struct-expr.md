@@ -7,7 +7,7 @@
 > &nbsp;&nbsp; | _StructExprUnit_
 >
 > _StructExprStruct_ :\
-> &nbsp;&nbsp; [_PathInExpression_] `{` (_StructExprFields_ | _StructBase_)<sup>?</sup> `}`
+> &nbsp;&nbsp; [_PathInExpression_] `{` [_InnerAttribute_]<sup>\*</sup> (_StructExprFields_ | _StructBase_)<sup>?</sup> `}`
 >
 > _StructExprFields_ :\
 > &nbsp;&nbsp; _StructExprField_ (`,` _StructExprField_)<sup>\*</sup> (`,` _StructBase_ | `,`<sup>?</sup>)
@@ -16,10 +16,12 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [IDENTIFIER]\
 > &nbsp;&nbsp; | ([IDENTIFIER] | [TUPLE_INDEX]) `:` [_Expression_]
 >
-> _StructBase_ : `..` [_Expression_]
+> _StructBase_ :\
+> &nbsp;&nbsp; `..` [_Expression_]
 >
 > _StructExprTuple_ :\
 > &nbsp;&nbsp; [_PathInExpression_] `(`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_Expression_] (`,` [_Expression_])<sup>\*</sup> `,`<sup>?</sup> )<sup>?</sup>\
 > &nbsp;&nbsp; `)`
 >
@@ -126,11 +128,19 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
+## Struct expression attributes
+
+[Inner attributes] are allowed directly after the opening brace or parenthesis
+of a struct expression in the same expression contexts as [attributes on block
+expressions].
 
 [IDENTIFIER]: identifiers.html
+[Inner attributes]: attributes.html
 [TUPLE_INDEX]: tokens.html#integer-literals
 [_Expression_]: expressions.html
+[_InnerAttribute_]: attributes.html
 [_PathInExpression_]: paths.html#paths-in-expressions
+[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
 [call expression]: expressions/call-expr.html
 [if let]: expressions/if-expr.html#if-let-expressions
 [if]: expressions/if-expr.html#if-expressions

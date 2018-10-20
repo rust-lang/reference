@@ -4,9 +4,11 @@
 
 > **<sup>Syntax</sup>**\
 > _ArrayExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `[`  `]`\
-> &nbsp;&nbsp; | `[` [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup> `]`\
-> &nbsp;&nbsp; | `[` [_Expression_] `;` [_Expression_] `]`
+> &nbsp;&nbsp; `[` [_InnerAttribute_]<sup>\*</sup> _ArrayElements_<sup>?</sup> `]`
+>
+> _ArrayElements_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
+> &nbsp;&nbsp; | [_Expression_] `;` [_Expression_]
 
 An _[array](types.html#array-and-slice-types) expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
@@ -29,6 +31,12 @@ greater than 1 then this requires that the type of `a` is
 [0u8, 0u8, 0u8, 0u8,];
 [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; // 2D array
 ```
+
+### Array expression attributes
+
+[Inner attributes] are allowed directly after the opening bracket of an array
+expression in the same expression contexts as [attributes on block
+expressions].
 
 ## Array and slice indexing expressions
 
@@ -73,8 +81,11 @@ arr[10];                  // warning: index out of bounds
 The array index expression can be implemented for types other than arrays and slices
 by implementing the [Index] and [IndexMut] traits.
 
-[_Expression_]: expressions.html
-[memory location]: expressions.html#place-expressions-and-value-expressions
-[Index]: ../std/ops/trait.Index.html
 [IndexMut]: ../std/ops/trait.IndexMut.html
+[Index]: ../std/ops/trait.Index.html
+[Inner attributes]: attributes.html
+[_Expression_]: expressions.html
+[_InnerAttribute_]: attributes.html
+[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
 [constant expression]: const_eval.html#constant-expressions
+[memory location]: expressions.html#place-expressions-and-value-expressions
