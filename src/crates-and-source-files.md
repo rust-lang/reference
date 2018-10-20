@@ -139,7 +139,7 @@ type must  be one of the following:
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html
 [`core`]: ../core/index.html
-[`core::prelude::v1`]: ../core/prelude.index.html
+[`core::prelude::v1`]: ../core/prelude/index.html
 [`std`]: ../std/index.html
 [`std::prelude::v1`]: ../std/prelude/index.html
 [`use` declaration]: items/use-declarations.html
