@@ -38,7 +38,7 @@ second is to emit a [`compile_error`] macro invocation.
 
 ### The `proc_macro` crate
 
-Procedural macro crates almost always will link to the compiler-provided 
+Procedural macro crates almost always will link to the compiler-provided
 [`proc_macro` crate]. The `proc_macro` crate provides types required for
 writing procedural macros and facilities to make it easier.
 
@@ -114,7 +114,7 @@ as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 ### Derive mode macros
 
 *Derive mode macros* define new modes for the `derive` [attribute]. These macros
-define new [items] given the token stream of a [struct], [enum], or [union]. 
+define new [items] given the token stream of a [struct], [enum], or [union].
 They also define [derive mode helper attributes].
 
 Custom deriver modes are defined by a [public]&#32;[function] with the
@@ -195,7 +195,7 @@ struct Struct {
 *Attribute macros* define new [attributes] which can be attached to [items].
 
 Attribute macros are defined by a [public]&#32;[function] with the
-`proc_macro_attribute` [attribute] that a signature of 
+`proc_macro_attribute` [attribute] that a signature of
 `(TokenStream, TokenStream) -> TokenStream`. The first [`TokenStream`] is the
 attribute's metaitems, not including the delimiters. If the attribute is written
 without a metaitem, the attribute [`TokenStream`] is empty. The second
@@ -228,9 +228,9 @@ shown in the comments after the function prefixed with "out:".
 # use proc_macro::TokenStream;
 
 #[proc_macro_attribute]
-pub fn show_streams(attr: TokenStream, input: TokenStream) -> TokenStream {
+pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
     println!("attr: \"{}\"", attr.to_string());
-    println!("item: \"{}\"', input.to_string());
+    println!("item: \"{}\"", item.to_string());
     item
 }
 ```
@@ -259,7 +259,7 @@ fn invoke3() {}
 // out: attr: "multiple words"
 // out: item: "fn invoke3() {}"
 
-// Example: 
+// Example:
 #[show_streams { delimiters }]
 fn invoke4() {}
 // out: "delimiters"
@@ -292,4 +292,4 @@ fn invoke4() {}
 [procedural macro tutorial]: ../book/2018-edition/appendix-04-macros.html#procedural-macros-for-custom-derive
 [public]: visibility-and-privacy.html
 [struct]: items/structs.html
-[unions]: items/unions.html
+[union]: items/unions.html
