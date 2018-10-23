@@ -1,20 +1,32 @@
 # Numeric types
 
-## Machine types
+## Integer types
 
-The machine types are the following:
+The unsigned integer types consist of:
 
-* The unsigned word types `u8`, `u16`, `u32`, `u64`, and `u128` with values
-  drawn from the integer intervals [0, 2^8 - 1], [0, 2^16 - 1], [0, 2^32 - 1],
-  [0, 2^64 - 1], and [0, 2^128 - 1] respectively.
+Type   | Minimum | Maximum
+-------|---------|-------------------
+`u8`   | 0       | 2<sup>8</sup>-1
+`u16`  | 0       | 2<sup>16</sup>-1
+`u32`  | 0       | 2<sup>32</sup>-1
+`u64`  | 0       | 2<sup>64</sup>-1
+`u128` | 0       | 2<sup>128</sup>-1
 
-* The signed two's complement word types `i8`, `i16`, `i32`, `i64`, and `i128`,
-  with values drawn from the integer intervals [-(2^7), 2^7 - 1],
-  [-(2^15), 2^15 - 1], [-(2^31), 2^31 - 1], [-(2^63), 2^63 - 1], and
-  [-(2^127), 2^127 - 1] respectively.
+The signed two's complement integer types consist of:
 
-* The IEEE 754-2008 "binary32" and "binary64" floating-point types: `f32` and
-  `f64`, respectively.
+Type   | Minimum            | Maximum
+-------|--------------------|-------------------
+`i8`   | -(2<sup>7</sup>)   | 2<sup>7</sup>-1
+`i16`  | -(2<sup>15</sup>)  | 2<sup>15</sup>-1
+`i32`  | -(2<sup>31</sup>)  | 2<sup>31</sup>-1
+`i64`  | -(2<sup>63</sup>)  | 2<sup>63</sup>-1
+`i128` | -(2<sup>127</sup>) | 2<sup>127</sup>-1
+
+
+## Floating-point types
+
+The IEEE 754-2008 "binary32" and "binary64" floating-point types are `f32` and
+`f64`, respectively.
 
 ## Machine-dependent integer types
 

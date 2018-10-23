@@ -15,7 +15,7 @@ The list of types is:
     * [Boolean] — `true` or `false`
     * [Numeric] — integer and float
     * [Textual] — `char` and `str`
-    * [Never] — `!` — a type with no value
+    * [Never] — `!` — a type with no values
 * Sequence types:
     * [Tuple]
     * [Array]
@@ -34,7 +34,6 @@ The list of types is:
 * Trait types:
     * [Trait objects]
     * [Impl trait]
-
 
 ## Type expressions
 
@@ -91,7 +90,7 @@ require this disambiguation use the [_TypeNoBounds_] rule instead of
 
 ```rust
 # use std::any::Any;
-type T<'a> = &'a(Any + Send);
+type T<'a> = &'a (dyn Any + Send);
 ```
 
 ### Inferred type

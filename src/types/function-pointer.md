@@ -24,9 +24,8 @@ Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time. They can be created
 via a coercion from both [function items] and non-capturing [closures].
 
-A function pointer type consists of a possibly-empty set of function-type
-modifiers (such as `unsafe` or `extern`), a sequence of input types and an
-output type.
+The `unsafe` qualifier indicates that the type's value is an [unsafe
+function], and the `extern` qualifier indicates it is an [extern function].
 
 Variadic parameters can only be specified with [`extern`] function types with
 the `"C"` or `"cdecl"` calling convention.
@@ -52,4 +51,6 @@ x = bo(5,7);
 [_Type_]: types.html#type-expressions
 [`extern`]: items/external-blocks.html
 [closures]: types/closure.html
+[extern function]: items/functions.html#extern-functions
 [function items]: types/function-item.html
+[unsafe function]: unsafe-functions.html

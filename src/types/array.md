@@ -5,10 +5,8 @@
 > &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
 
 An array is a fixed-size sequence of `N` elements of type `T`. The array type
-is written as `[T; N]`.
-
-An array can be allocated on either the stack or the heap. The size is an
-expression that evaluates to a [`usize`].
+is written as `[T; N]`. The size is an expression that evaluates to a
+[`usize`].
 
 Examples:
 

@@ -185,7 +185,7 @@ fn bar() {
 
 ### `Self`
 
-`Self` with a capital "S" is used to refer to the implementing type within
+`Self`, with a capital "S", is used to refer to the implementing type within
 [traits] and [implementations].
 
 `Self` can only be used as the first segment, without a preceding `::`.
