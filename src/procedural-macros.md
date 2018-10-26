@@ -277,6 +277,7 @@ fn invoke4() {}
 [Function-like macros]: #function-like-procedural-macros
 [attribute]: attributes.html
 [attributes]: attributes.html
+[block]: expressions/block-expr.html
 [custom attributes]: attributes.html
 [crate type]: linkage.html
 [derive mode helper attributes]: #derive-mode-helper-attributes
