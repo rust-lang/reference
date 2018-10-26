@@ -101,9 +101,14 @@ specified name.
 extern { }
 ```
 
-The type of a function declared in an extern block is `extern "abi" fn(A1, ...,
-An) -> R`, where `A1...An` are the declared types of its arguments and `R` is
-the declared return type.
+A function declared in an extern block is implicitly `unsafe`. When coerced to
+a function pointer, a function declared in an extern block has type `unsafe
+extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
+are its lifetime parameters, `A1`, ..., `An` are the declared types of its
+parameters and `R` is the declared return type.
+
+It is `unsafe` to access a static item declared in an extern block, whether or
+not it's mutable.
 
 It is valid to add the `link` attribute on an empty extern block. You can use
 this to satisfy the linking requirements of extern blocks elsewhere in your

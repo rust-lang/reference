@@ -7,14 +7,14 @@ The following language level features cannot be used in the safe subset of
 Rust:
 
 - Dereferencing a [raw pointer].
-- Reading or writing a [mutable static variable].
-- Reading a field of a [`union`], or writing to a field of a
-  union that isn't [`Copy`].
+- Reading or writing a [mutable] or [external] static variable.
+- Accessing a field of a [`union`], other than to assign to it.
 - Calling an unsafe function (including an intrinsic or foreign function).
 - Implementing an [unsafe trait].
 
 [`Copy`]: special-types-and-traits.html#copy
 [`union`]: items/unions.html
 [mutable static variable]: items/static-items.html#mutable-statics
+[external static variable]: items/external-blocks.html
 [raw pointer]: types.html#pointer-types
 [unsafe trait]: items/traits.html#unsafe-traits
