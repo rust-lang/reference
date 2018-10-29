@@ -40,9 +40,9 @@ extern crate hello_world; // hyphen replaced with an underscore
 
 ## Extern Prelude
 
-All external crates are available in the "extern prelude" which exposes the
-crate names into lexical scope of every module without the need for specifying
-`extern crate`.
+External crates provided to the compiler are added to the "extern prelude"
+which exposes the crate names into lexical scope of every module without the
+need for specifying `extern crate`.
 
 > **Edition Differences**: In the 2015 edition, crates in the extern prelude
 > cannot be referenced via [use declarations], so it is generally standard
@@ -69,8 +69,9 @@ crate names into lexical scope of every module without the need for specifying
 <!--
 Possible upcoming changes that will change this:
 
-`extern crate` items will automatically be added to the extern prelude.
-    https://github.com/rust-lang/rust/pull/54658
+The `extern_crate_item_prelude` unstable feature allows `extern crate` to
+update the extern prelude in certain situations, see
+https://github.com/rust-lang/rust/pull/54658
 
 Unstable `--extern proc_macro` flag that would force the crate into the
 extern prelude.
