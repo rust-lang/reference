@@ -59,33 +59,32 @@ balanced, but they are otherwise not special.
 In the matcher, `$` _name_ `:` _designator_ matches the nonterminal in the Rust
 syntax named by _designator_. Valid designators are:
 
-* `item`: an [item]
-* `block`: a [block]
-* `stmt`: a [statement]
-* `pat`: a [pattern]
-* `expr`: an [expression]
-* `ty`: a [type]
-* `ident`: an [identifier] or [keyword]
+* `item`: an [_Item_]
+* `block`: a [_BlockExpression_]
+* `stmt`: a [_Statement_] without the trailing semicolon
+* `pat`: a [_Pattern_]
+* `expr`: an [_Expression_]
+* `ty`: a [_Type_]
+* `ident`: an [IDENTIFIER_OR_KEYWORD]
 * `path`: a [_TypePath_] style path
-* `tt`: a [token tree]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-* `meta`: the contents of an [attribute]
-* `lifetime`: a [lifetime]. Examples: `'static`, `'a`.
-* `vis`: a [visibility qualifier]
+* `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
+* `meta`: a [_MetaItem_], the contents of an attribute
+* `lifetime`: a [LIFETIME_TOKEN]
+* `vis`: a [_Visibility_] qualifier
 
-[item]: items.html
-[block]: expressions/block-expr.html
-[statement]: statements.html
-[pattern]: patterns.html
-[expression]: expressions.html
-[type]: types.html
-[identifier]: identifiers.html
-[keyword]: keywords.html
+[IDENTIFIER_OR_KEYWORD]: identifiers.html
+[LIFETIME_TOKEN]: tokens.html#lifetimes-and-loop-labels
+[_BlockExpression_]: expressions/block-expr.html
+[_Expression_]: expressions.html
+[_Item_]: items.html
+[_MetaItem_]: attributes.html
+[_Pattern_]: patterns.html
+[_Statement_]: statements.html
+[_TokenTree_]: macros.html#macro-invocation
 [_TypePath_]: paths.html#paths-in-types
-[token tree]: macros.html#macro-invocation
+[_Type_]: types.html
+[_Visibility_]: visibility-and-privacy.html
 [token]: tokens.html
-[attribute]: attributes.html
-[lifetime]: tokens.html#lifetimes-and-loop-labels
-[visibility qualifier]: visibility-and-privacy.html
 
 In the transcriber, the
 designator is already known, and so only the name of a matched nonterminal comes
@@ -140,7 +139,7 @@ Rust syntax is restricted in two ways:
    * `expr` and `stmt` may only be followed by one of `=>`, `,`, or `;`.
    * `pat` may only be followed by one of `=>`, `,`, `=`, `|`, `if`, or `in`.
    * `path` and `ty` may only be followed by one of `=>`, `,`, `=`, `|`, `;`,
-     `:`, `>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
+     `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
      fragment type.
    * `vis` may only be followed by one of `,`, `priv`, a raw identifier, any
      token that can begin a type, or a macro variable of `ident`, `ty`, or

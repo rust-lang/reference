@@ -82,6 +82,7 @@ trait T {
 macro_rules! example {
     () => { println!("Macro call in a macro!") };
 }
+// Outer macro `example` is expanded, then inner macro `println` is expanded.
 example!();
 ```
 
