@@ -87,7 +87,7 @@ fn main() {
 
 All crates have a *prelude* that automatically inserts names from a specific
 module, the *prelude module*, into scope of each [module] and an [`extern
-crate]` into the crate root module. By default, the *standard prelude* is used.
+crate`] into the crate root module. By default, the *standard prelude* is used.
 The linked crate is [`std`] and the prelude module is [`std::prelude::v1`].
 
 The prelude can be changed to the *core prelude* by using the `no_std`
@@ -140,6 +140,7 @@ type must  be one of the following:
 [`Termination`]: ../std/process/trait.Termination.html
 [`core`]: ../core/index.html
 [`core::prelude::v1`]: ../core/prelude/index.html
+[`extern crate`]: items/extern-crates.html
 [`std`]: ../std/index.html
 [`std::prelude::v1`]: ../std/prelude/index.html
 [`use` declaration]: items/use-declarations.html
