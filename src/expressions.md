@@ -26,6 +26,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_BreakExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_RangeExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ReturnExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocation_]\
 > &nbsp;&nbsp; )
 >
 > _ExpressionWithBlock_ :\
@@ -341,6 +342,7 @@ They are never allowed before:
 [_LazyBooleanExpression_]:        expressions/operator-expr.html#lazy-boolean-operators
 [_LiteralExpression_]:            expressions/literal-expr.html
 [_LoopExpression_]:               expressions/loop-expr.html
+[_MacroInvocation_]:              macros.html#macro-invocation
 [_MatchExpression_]:              expressions/match-expr.html
 [_MethodCallExpression_]:         expressions/method-call-expr.html
 [_OperatorExpression_]:           expressions/operator-expr.html

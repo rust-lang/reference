@@ -11,9 +11,10 @@
 > &nbsp;&nbsp; `}`
 >
 > _InherentImplItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_ConstantItem_] | [_Function_] | [_Method_] )
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_ConstantItem_] | [_Function_] | [_Method_] ) )\
+> &nbsp;&nbsp; )
 >
 > _TraitImpl_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_] `!`<sup>?</sup>
@@ -25,9 +26,10 @@
 > &nbsp;&nbsp; `}`
 >
 > _TraitImplItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] )
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] ) )\
+> &nbsp;&nbsp; )
 
 An _implementation_ is an item that associates items with an _implementing type_.
 Implementations are defined with the keyword `impl` and contain functions
@@ -180,6 +182,7 @@ attributes].
 [_Function_]: items/functions.html
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
+[_MacroInvocationSemi_]: macros.html#macro-invocation
 [_Method_]: items/associated-items.html#methods
 [_OuterAttribute_]: attributes.html
 [_TypeAlias_]: items/type-aliases.html

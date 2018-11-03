@@ -1,12 +1,51 @@
 # Macros By Example
 
+> **<sup>Syntax</sup>**\
+> _MacroRulesDefinition_ :\
+> &nbsp;&nbsp; `macro_rules` `!` [IDENTIFIER] _MacroRulesDef_
+>
+> _MacroRulesDef_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MacroRules_ `)` `;`\
+> &nbsp;&nbsp; | `[` _MacroRules_ `]` `;`\
+> &nbsp;&nbsp; | `{` _MacroRules_ `}`
+>
+> _MacroRules_ :\
+> &nbsp;&nbsp; _MacroRule_ ( `;` _MacroRule_ )<sup>\*</sup> `;`<sup>?</sup>
+>
+> _MacroRule_ :\
+> &nbsp;&nbsp; _MacroMatcher_ `=>` _MacroTranscriber_
+>
+> _MacroMatcher_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MacroMatch_<sup>\*</sup> `)`\
+> &nbsp;&nbsp; | `[` _MacroMatch_<sup>\*</sup> `]`\
+> &nbsp;&nbsp; | `{` _MacroMatch_<sup>\*</sup> `}`
+>
+> _MacroMatch_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Token_]<sub>_except $ and delimiters_</sub>\
+> &nbsp;&nbsp; | _MacroMatcher_\
+> &nbsp;&nbsp; | `$` [IDENTIFIER] `:` _MacroFragSpec_\
+> &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroKleeneOp_
+>
+> _MacroFragSpec_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime`\
+> &nbsp;&nbsp; | `meta` | `pat` | `path` | `stmt` | `tt` | `ty` | `vis`
+>
+> _MacroRepSep_ :\
+> &nbsp;&nbsp; [_Token_]<sub>_except delimiters and kleene operators_</sub>
+>
+> _MacroKleeneOp_<sub>2015</sub> :\
+> &nbsp;&nbsp; `*` | `+`
+>
+> _MacroKleeneOp_<sub>2018+</sub> :\
+> &nbsp;&nbsp; `*` | `+` | `?`
+>
+> _MacroTranscriber_ :\
+> &nbsp;&nbsp; [_DelimTokenTree_]
+
 `macro_rules` allows users to define syntax extension in a declarative way.  We
 call such extensions "macros by example" or simply "macros".
 
-Currently, macros can expand to expressions, statements, items, or patterns.
-
-(A `sep_token` is any token other than `*` and `+`. A `non_special_token` is
-any token other than a delimiter or `$`.)
+Macros can expand to expressions, statements, items, types, or patterns.
 
 The macro expander looks up macro invocations by name, and tries each macro
 rule in turn. It transcribes the first successful match. Matching and
@@ -20,31 +59,32 @@ balanced, but they are otherwise not special.
 In the matcher, `$` _name_ `:` _designator_ matches the nonterminal in the Rust
 syntax named by _designator_. Valid designators are:
 
-* `item`: an [item]
-* `block`: a [block]
-* `stmt`: a [statement]
-* `pat`: a [pattern]
-* `expr`: an [expression]
-* `ty`: a [type]
-* `ident`: an [identifier] or [keyword]
-* `path`: a [path]
-* `tt`: a token tree (a single [token] by matching `()`, `[]`, or `{}`)
-* `meta`: the contents of an [attribute]
-* `lifetime`: a lifetime. Examples: `'static`, `'a`.
-* `vis`: a (visibility qualifier)[visibility-and-privacy]
+* `item`: an [_Item_]
+* `block`: a [_BlockExpression_]
+* `stmt`: a [_Statement_] without the trailing semicolon
+* `pat`: a [_Pattern_]
+* `expr`: an [_Expression_]
+* `ty`: a [_Type_]
+* `ident`: an [IDENTIFIER_OR_KEYWORD]
+* `path`: a [_TypePath_] style path
+* `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
+* `meta`: a [_MetaItem_], the contents of an attribute
+* `lifetime`: a [LIFETIME_TOKEN]
+* `vis`: a [_Visibility_] qualifier
 
-[item]: items.html
-[block]: expressions/block-expr.html
-[statement]: statements.html
-[pattern]: patterns.html
-[expression]: expressions.html
-[type]: types.html
-[identifier]: identifiers.html
-[keyword]: keywords.html
-[path]: paths.html
+[IDENTIFIER_OR_KEYWORD]: identifiers.html
+[LIFETIME_TOKEN]: tokens.html#lifetimes-and-loop-labels
+[_BlockExpression_]: expressions/block-expr.html
+[_Expression_]: expressions.html
+[_Item_]: items.html
+[_MetaItem_]: attributes.html
+[_Pattern_]: patterns.html
+[_Statement_]: statements.html
+[_TokenTree_]: macros.html#macro-invocation
+[_TypePath_]: paths.html#paths-in-types
+[_Type_]: types.html
+[_Visibility_]: visibility-and-privacy.html
 [token]: tokens.html
-[attribute]: attributes.html
-[visibility-and-privacy]: visibility-and-privacy.html
 
 In the transcriber, the
 designator is already known, and so only the name of a matched nonterminal comes
@@ -94,9 +134,36 @@ Rust syntax is restricted in two ways:
    a macro definition like `$i:expr [ , ]` is not legal, because `[` could be part
    of an expression. A macro definition like `$i:expr,` or `$i:expr;` would be legal,
    however, because `,` and `;` are legal separators. See [RFC 550] for more information.
+   Specifically:
+
+   * `expr` and `stmt` may only be followed by one of `=>`, `,`, or `;`.
+   * `pat` may only be followed by one of `=>`, `,`, `=`, `|`, `if`, or `in`.
+   * `path` and `ty` may only be followed by one of `=>`, `,`, `=`, `|`, `;`,
+     `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
+     fragment type.
+   * `vis` may only be followed by one of `,`, `priv`, a raw identifier, any
+     token that can begin a type, or a macro variable of `ident`, `ty`, or
+     `path` fragment type.
+   * All other fragment types have no restrictions.
+
 2. The parser must have eliminated all ambiguity by the time it reaches a `$`
    _name_ `:` _designator_. This requirement most often affects name-designator
    pairs when they occur at the beginning of, or immediately after, a `$(...)*`;
-   requiring a distinctive token in front can solve the problem.
+   requiring a distinctive token in front can solve the problem. For example:
+
+   ```rust
+   // The matcher `$($i:ident)* $e:expr` would be ambiguous because the parser
+   // would be forced to choose between an identifier or an expression. Use some
+   // token to distinguish them.
+   macro_rules! example {
+       ($(I $i:ident)* E $e:expr) => { ($($i)-*) * $e };
+   }
+   let foo = 2;
+   let bar = 3;
+   // The following expands to `(foo - bar) * 5`
+   example!(I foo I bar E 5);
+   ```
 
 [RFC 550]: https://github.com/rust-lang/rfcs/blob/master/text/0550-macro-future-proofing.md
+[_DelimTokenTree_]: macros.html
+[_Token_]: tokens.html

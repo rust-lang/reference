@@ -2,7 +2,12 @@
 
 > **<sup>Syntax:<sup>**\
 > _Item_:\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Visibility_]<sup>?</sup>\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; _VisItem_\
+> &nbsp;&nbsp; | _MacroItem_
+>
+> _VisItem_:\
+> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  [_Module_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternCrate_]\
@@ -17,9 +22,12 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Trait_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Implementation_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternBlock_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _Macro_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _MacroDefinition_\
 > &nbsp;&nbsp; )
+>
+> _MacroItem_:\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; | [_MacroRulesDefinition_]
+
 
 An _item_ is a component of a crate. Items are organized within a crate by a
 nested set of [modules]. Every crate has a single "outermost" anonymous module;
@@ -61,6 +69,8 @@ which sub-item declarations may appear.
 [_ExternCrate_]: items/extern-crates.html
 [_Function_]: items/functions.html
 [_Implementation_]: items/implementations.html
+[_MacroInvocationSemi_]: macros.html#macro-invocation
+[_MacroRulesDefinition_]: macros-by-example.html
 [_Module_]: items/modules.html
 [_OuterAttribute_]: attributes.html
 [_StaticItem_]: items/static-items.html
