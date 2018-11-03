@@ -2,7 +2,12 @@
 
 > **<sup>Syntax:<sup>**\
 > _Item_:\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Visibility_]<sup>?</sup>\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; _VisItem_\
+> &nbsp;&nbsp; | _MacroItem_
+>
+> _VisItem_:\
+> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  [_Module_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternCrate_]\
@@ -17,9 +22,12 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Trait_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_Implementation_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternBlock_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocationSemi_]&nbsp;[^novis]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroRulesDefinition_]&nbsp;[^novis]\
 > &nbsp;&nbsp; )
+>
+> _MacroItem_:\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; | [_MacroRulesDefinition_]
+
 
 An _item_ is a component of a crate. Items are organized within a crate by a
 nested set of [modules]. Every crate has a single "outermost" anonymous module;
@@ -54,8 +62,6 @@ as if the item was declared outside the scope &mdash; it is still a static item
 qualified by the name of the enclosing item, or is private to the enclosing
 item (in the case of functions). The grammar specifies the exact locations in
 which sub-item declarations may appear.
-
-[^novis]: Macros may not start with a visibility modifier.
 
 [_ConstantItem_]: items/constant-items.html
 [_Enumeration_]: items/enumerations.html
