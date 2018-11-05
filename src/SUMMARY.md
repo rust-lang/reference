@@ -83,6 +83,8 @@
         - [Function pointer types](types/function-pointer.md)
         - [Trait object types](types/trait-object.md)
         - [Impl trait type](types/impl-trait.md)
+        - [Type parameters](types/parameters.md)
+        - [Inferred type](types/inferred.md)
     - [Dynamically Sized Types](dynamically-sized-types.md)
     - [Type layout](type-layout.md)
     - [Interior mutability](interior-mutability.md)

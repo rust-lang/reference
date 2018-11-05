@@ -576,7 +576,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `(` `)` | Parentheses     |
 
 
-[Inferred types]: types.html#inferred-type
+[Inferred types]: types/inferred.html
 [Operator expressions]: expressions/operator-expr.html
 [Range patterns]: patterns.html#range-patterns
 [Reference patterns]: patterns.html#reference-patterns

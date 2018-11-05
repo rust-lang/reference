@@ -162,6 +162,6 @@ compiler, not by [implementation items].
 [the standard library]: ../std/index.html
 [trait object]: types/trait-object.html
 [Tuples]: types/tuple.html
-[Type parameters]: types.html#type-parameters
+[Type parameters]: types/parameters.html
 [variance]: subtyping.html#variance
 [`!`]: types/never.html

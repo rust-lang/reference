@@ -75,7 +75,6 @@ for referring to a type. It may refer to:
 * The [never] type.
 * [Macros] which expand to a type expression.
 
-
 ### Parenthesized types
 
 > _ParenthesizedType_ :\
@@ -92,46 +91,6 @@ require this disambiguation use the [_TypeNoBounds_] rule instead of
 # use std::any::Any;
 type T<'a> = &'a (dyn Any + Send);
 ```
-
-### Inferred type
-> **<sup>Syntax</sup>**\
-> _InferredType_ : `_`
-
-The inferred type asks the compiler to infer the type if possible based on the
-surrounding information available. It cannot be used in item signatures. It is
-often used in generic arguments:
-
-```rust
-let x: Vec<_> = (0..10).collect();
-```
-
-<!--
-  What else should be said here?
-  The only documentation I am aware of is https://rust-lang-nursery.github.io/rustc-guide/type-inference.html
-  There should be a broader discussion of type inference somewhere.
--->
-
-
-### Type parameters
-
-Within the body of an item that has type parameter declarations, the names of
-its type parameters are types:
-
-```rust
-fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
-    if xs.is_empty() {
-        return vec![];
-    }
-    let first: A = xs[0].clone();
-    let mut rest: Vec<A> = to_vec(&xs[1..]);
-    rest.insert(0, first);
-    rest
-}
-```
-
-Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
-`rest` has type `Vec<A>`, a vector with element type `A`.
-
 
 ## Recursive types
 
@@ -164,7 +123,7 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 [_BareFunctionType_]: types/function-pointer.html
 [_ImplTraitTypeOneBound_]: types/impl-trait.html
 [_ImplTraitType_]: types/impl-trait.html
-[_InferredType_]: types.html#inferred-type
+[_InferredType_]: types/inferred.html
 [_MacroInvocation_]: macros.html#macro-invocation
 [_NeverType_]: types/never.html
 [_ParenthesizedType_]: types.html#parenthesized-types
@@ -202,7 +161,7 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 [arrays]: types/array.html
 [enumerations]: types/enum.html
 [function pointer]: types/function-pointer.html
-[inferred type]: types.html#inferred-type
+[inferred type]: types/inferred.html
 [item]: items.html
 [never]: types/never.html
 [pointer types]: types/pointer.html
@@ -215,5 +174,5 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 [type alias]: items/type-aliases.html
 [type aliases]: items/type-aliases.html
 [type boundaries]: trait-bounds.html
-[type parameters]: #type-parameters
+[type parameters]: types/parameters.html
 [unions]: types/union.html
