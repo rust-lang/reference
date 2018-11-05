@@ -82,7 +82,7 @@ syntax named by _designator_. Valid designators are:
 [_Statement_]: statements.html
 [_TokenTree_]: macros.html#macro-invocation
 [_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
 [token]: tokens.html
 

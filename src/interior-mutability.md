@@ -20,7 +20,7 @@ borrow checks to ensure the usual rules around multiple references. The
 accessed with atomic operations, allowing the value to be shared and mutated
 across threads.
 
-[shared reference]: types.html#shared-references-
+[shared reference]: types/pointer.html#shared-references-
 [ub]: behavior-considered-undefined.html
 [`std::mem::transmute`]: ../std/mem/fn.transmute.html
 [`std::cell::UnsafeCell<T>`]: ../std/cell/struct.UnsafeCell.html

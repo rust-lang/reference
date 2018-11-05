@@ -24,9 +24,9 @@ Notably: [variables], function parameters, [const] and [static] items must be
 `Sized`.
 
 [sized]: special-types-and-traits.html#sized
-[Slices]: types.html#array-and-slice-types
-[trait objects]: types.html#trait-objects
-[Pointer types]: types.html#pointer-types
+[Slices]: types/slice.html
+[trait objects]: types/trait-object.html
+[Pointer types]: types/pointer.html
 [variables]: variables.html
 [const]: items/constant-items.html
 [static]: items/static-items.html

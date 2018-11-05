@@ -137,7 +137,7 @@ enum ZeroVariants {}
 [_Expression_]: expressions.html
 [_TupleFields_]: items/structs.html
 [_StructFields_]: items/structs.html
-[enumerated type]: types.html#enumerated-types
+[enumerated type]: types/enum.html
 [`mem::discriminant`]: ../std/mem/fn.discriminant.html
 [numeric cast]: expressions/operator-expr.html#semantics
 [`repr` attribute]: attributes.html#ffi-attributes

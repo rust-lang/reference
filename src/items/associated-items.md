@@ -292,20 +292,20 @@ fn main() {
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
 [_Lifetime_]: trait-bounds.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
 [traits]: items/traits.html
 [type aliases]: items/type-aliases.html
 [inherent implementations]: items/implementations.html#inherent-implementations
 [identifier]: identifiers.html
-[trait object]: types.html#trait-objects
+[trait object]: types/trait-object.html
 [implementations]: items/implementations.html
-[type]: types.html
+[type]: types.html#type-expressions
 [constants]: items/constant-items.html
 [constant item]: items/constant-items.html
 [functions]: items/functions.html
-[function item]: types.html#function-item-types
+[function item]: types/function-item.html
 [method call operator]: expressions/method-call-expr.html
 [block]: expressions/block-expr.html
 [path]: paths.html

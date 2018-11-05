@@ -51,7 +51,7 @@ A _const context_ is one of the following:
   * [statics]
   * [enum discriminants]
 
-[array type length expressions]: types.html#array-and-slice-types
+[array type length expressions]: types/array.html
 [enum discriminants]: items/enumerations.html#custom-discriminant-values-for-field-less-enumerations
 [constants]: items/constant-items.html
 [statics]: items/static-items.html
@@ -68,7 +68,7 @@ A _const context_ is one of the following:
 [block expressions]:    expressions/block-expr.html
 [field]:                expressions/field-expr.html
 [array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
-[slice]:                types.html#array-and-slice-types
+[slice]:                types/slice.html
 [range expressions]:    expressions/range-expr.html
 [closure expressions]:  expressions/closure-expr.html
 [negation]:             expressions/operator-expr.html#negation-operators

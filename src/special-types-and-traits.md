@@ -139,29 +139,29 @@ compiler, not by [implementation items].
 [`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
 [`Sync`]: ../std/marker/trait.Sync.html
 
-[Arrays]: types.html#array-and-slice-types
+[Arrays]: types/array.html
 [call expressions]: expressions/call-expr.html
 [deref coercions]: type-coercions.html#coercion-types
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
 [destructor]: destructors.html
 [drop check]: ../nomicon/dropck.html
 [dynamically sized type]: dynamically-sized-types.html
-[Function pointers]: types.html#function-pointer-types
-[function item types]: types.html#function-item-types
+[Function pointers]: types/function-pointer.html
+[function item types]: types/function-item.html
 [implementation items]: items/implementations.html
 [indexing expressions]: expressions/array-expr.html#array-and-slice-indexing-expressions
 [interior mutability]: interior-mutability.html
-[Numeric types]: types.html#numeric-types
+[Numeric types]: types/numeric.html
 [Methods]: items/associated-items.html#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.html
 [operators]: expressions/operator-expr.html
 [orphan rules]: items/implementations.html#trait-implementation-coherence
-[Raw pointers]: types.html#raw-pointers-const-and-mut
+[Raw pointers]: types/pointer.html#raw-pointers-const-and-mut
 [`static` items]: items/static-items.html
-[Shared references]: types.html#shared-references-
+[Shared references]: types/pointer.html#shared-references-
 [the standard library]: ../std/index.html
-[trait object]: types.html#trait-objects
-[Tuples]: types.html#tuple-types
-[Type parameters]: types.html#type-parameters
+[trait object]: types/trait-object.html
+[Tuples]: types/tuple.html
+[Type parameters]: types/parameters.html
 [variance]: subtyping.html#variance
-[`!`]: types.html#never-type
+[`!`]: types/never.html

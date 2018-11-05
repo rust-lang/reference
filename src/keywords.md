@@ -118,7 +118,7 @@ is possible to declare a variable or method with the name `union`.
 
 [items]: items.html
 [Variables]: variables.html
-[Type parameters]: types.html#type-parameters
+[Type parameters]: types/parameters.html
 [loop labels]: expressions/loop-expr.html#loop-labels
 [Macros]: macros.html
 [attributes]: attributes.html
@@ -126,4 +126,4 @@ is possible to declare a variable or method with the name `union`.
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
 [variants]: items/enumerations.html
-[`dyn`]: types.html#trait-objects
+[`dyn`]: types/trait-object.html

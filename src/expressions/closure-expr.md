@@ -25,7 +25,7 @@ functions, as an abbreviation for defining and capturing a separate function.
 
 Significantly, closure expressions _capture their environment_, which regular
 [function definitions] do not. Without the `move` keyword, the closure expression
-[infers how it captures each variable from its environment](types.html#capture-modes),
+[infers how it captures each variable from its environment](types/closure.html#capture-modes),
 preferring to capture by shared reference, effectively borrowing
 all outer variables mentioned inside the closure's body. If needed the compiler
 will infer that instead mutable references should be taken, or that the values
@@ -35,7 +35,7 @@ prefixing it with the `move` keyword. This is often used to ensure that the
 closure's type is `'static`.
 
 The compiler will determine which of the [closure
-traits](types.html#call-traits-and-coercions) the closure's type will implement by how it
+traits](types/closure.html#call-traits-and-coercions) the closure's type will implement by how it
 acts on its captured variables. The closure will also implement
 [`Send`](special-types-and-traits.html#send) and/or
 [`Sync`](special-types-and-traits.html#sync) if all of its captured types do.
@@ -67,5 +67,5 @@ ten_times(move |j| println!("{}, {}", word, j));
 
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
-[_TypeNoBounds_]: types.html
+[_TypeNoBounds_]: types.html#type-expressions
 [_FunctionParameters_]: items/functions.html

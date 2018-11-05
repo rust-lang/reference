@@ -220,15 +220,15 @@ attributes macros.
 [_InnerAttribute_]: attributes.html
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
 [const contexts]: const_eval.html
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html
 [variables]: variables.html
-[type]: types.html
-[*function item type*]: types.html#function-item-types
+[type]: types.html#type-expressions
+[*function item type*]: types/function-item.html
 [Trait]: items/traits.html
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html

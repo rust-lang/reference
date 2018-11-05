@@ -316,7 +316,7 @@ They are never allowed before:
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
 [const contexts]:       const_eval.html
-[slice]:                types.html#array-and-slice-types
+[slice]:                types/slice.html
 [statement]:            statements.html
 [static variables]:     items/static-items.html
 [Temporary values]:     #temporary-lifetimes

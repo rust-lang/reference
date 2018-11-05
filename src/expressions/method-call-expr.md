@@ -9,7 +9,7 @@ dot, an expression path segment, and a parenthesized expression-list. Method cal
 resolved to associated [methods] on specific traits, either statically
 dispatching to a method if the exact `self`-type of the left-hand-side is known,
 or dynamically dispatching if the left-hand-side expression is an indirect
-[trait object](types.html#trait-objects).
+[trait object](types/trait-object.html).
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -101,8 +101,8 @@ method and you'll be fine.
 [_Expression_]: expressions.html
 [_PathExprSegment_]: paths.html#paths-in-expressions
 [visible]: visibility-and-privacy.html
-[array]: types.html#array-and-slice-types
-[trait objects]: types.html#trait-objects
+[array]: types/array.html
+[trait objects]: types/trait-object.html
 [disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
 [disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
 [dereference]: expressions/operator-expr.html#the-dereference-operator

@@ -123,7 +123,7 @@ block.
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [attributes]: attributes.html#ffi-attributes

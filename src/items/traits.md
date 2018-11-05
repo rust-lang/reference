@@ -216,10 +216,10 @@ trait T {
 [_Pattern_]: patterns.html
 [_SelfParam_]: items/associated-items.html#methods
 [_TypeParamBounds_]: trait-bounds.html
-[_Type_]: types.html
+[_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
 [bounds]: trait-bounds.html
-[trait object]: types.html#trait-objects
+[trait object]: types/trait-object.html
 [explicit]: expressions/operator-expr.html#type-cast-expressions
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: items/associated-items.html

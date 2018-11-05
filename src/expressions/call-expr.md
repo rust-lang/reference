@@ -10,7 +10,7 @@
 A _call expression_ consists of an expression followed by a parenthesized
 expression-list. It invokes a function, providing zero or more input variables.
 If the function eventually returns, then the expression completes. For
-[non-function types](types.html#function-item-types), the expression f(...) uses
+[non-function types](types/function-item.html), the expression f(...) uses
 the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or
 [`std::ops::FnOnce`] traits, which differ in whether they take the type by
 reference, mutable reference, or take ownership respectively. An automatic

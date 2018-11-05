@@ -134,7 +134,7 @@ Generic functions and generic structs can use traits to constrain, or bound, the
 [enums]: items/enumerations.html
 [structs]: items/structs.html
 [unions]: items/unions.html
-[trait objects]: types.html#trait-objects
+[trait objects]: types/trait-object.html
 [implementations]: items/implementations.html
 [traits]: items/traits.html
 [object safety]: items/traits.html#object-safety

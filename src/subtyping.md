@@ -83,7 +83,7 @@ struct Variance<'a, 'b, T, U: 'a> {
 ```
 
 [coercions]: type-coercions.html
-[function pointers]: types.html#function-pointer-types
+[function pointers]: types/function-pointer.html
 [Higher-ranked]: ../nomicon/hrtb.html
-[lifetime bound]: types.html#trait-object-lifetime-bounds
-[trait objects]: types.html#trait-objects
+[lifetime bound]: types/trait-object.html#trait-object-lifetime-bounds
+[trait objects]: types/trait-object.html
