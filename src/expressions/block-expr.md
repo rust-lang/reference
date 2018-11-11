@@ -72,7 +72,7 @@ impl Struct {
 fn move_by_block_expression() {
     let s = Struct;
 
-    // Move the value out of `s` in the block expreesion.
+    // Move the value out of `s` in the block expression.
     (&{ s }).borrow_self();
 
     // Fails to execute because `s` is moved out of.
