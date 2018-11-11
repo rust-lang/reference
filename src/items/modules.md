@@ -78,7 +78,7 @@ valid path. The names added by the [prelude] can be removed by placing the
 ## Attributes on Modules
 
 Modules, like all items, accept outer attributes. They also accept inner
-attibutes: either after `{` for a module with a body, or at the beginning of the
+attributes: either after `{` for a module with a body, or at the beginning of the
 source file, after the optional BOM and shebang.
 
 The built-in attributes that have meaning on a function are [`cfg`],

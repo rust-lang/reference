@@ -140,7 +140,7 @@ implemented by executing an illegal instruction.
 ## Const functions
 
 Functions qualified with the `const` keyword are const functions. _Const
-funcions_  can be called from within [const contexts]. When called from a const
+functions_  can be called from within [const contexts]. When called from a const
 context, the function is interpreted by the compiler at compile time. The
 interpretation happens in the environment of the compilation target and not the
 host. So `usize` is `32` bits if you are compiling against a `32` bit system,
@@ -156,7 +156,7 @@ number generator as a const function. Calling a const function at compile-time
 will always yield the same result as calling it at runtime, even when called
 multiple times. There's one exception to this rule: if you are doing complex
 floating point operations in extreme situations, then you might get (very
-slightly) different results. It is adviseable to not make array lengths and enum
+slightly) different results. It is advisable to not make array lengths and enum
 discriminants depend on floating point computations.
 
 Exhaustive list of permitted structures in const functions:

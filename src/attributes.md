@@ -372,7 +372,7 @@ certain tools.
 
 Currently `clippy` is the only available lint tool.
 
-They only get checked when the associated tool is active, so if you try to use an `allow` attribute for a nonexistant tool lint, the compiler will not warn about the nonexistant lint until you use the tool.
+They only get checked when the associated tool is active, so if you try to use an `allow` attribute for a nonexistent tool lint, the compiler will not warn about the nonexistent lint until you use the tool.
 
 Otherwise, they work just like regular lint attributes:
 
