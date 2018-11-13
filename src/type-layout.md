@@ -86,6 +86,9 @@ Slices have the same layout as the section of the array they slice.
 > Note: This is about the raw `[T]` type, not pointers (`&[T]`, `Box<[T]>`,
 > etc.) to slices.
 
+## `str` Layout
+String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
+
 ## Tuple Layout
 
 Tuples do not have any guarantees about their layout.
