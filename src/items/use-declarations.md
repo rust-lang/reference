@@ -2,7 +2,7 @@
 
 > **<sup>Syntax:</sup>**\
 > _UseDeclaration_ :\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup> `use` _UseTree_ `;`
+> &nbsp;&nbsp; `use` _UseTree_ `;`
 >
 > _UseTree_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`\
@@ -152,5 +152,4 @@ fn main() {}
 
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html#simple-paths
-[_Visibility_]: visibility-and-privacy.html
 [path qualifiers]: paths.html#path-qualifiers

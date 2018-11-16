@@ -12,10 +12,10 @@
 > &nbsp;&nbsp; ( _LifetimeParam_ `,` )<sup>\*</sup> _LifetimeParam_<sup>?</sup>
 >
 > _LifetimeParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL] `:` [_LifetimeBounds_]<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
 >
 > _TypeParams_:\
-> &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_ <sup>?</sup>
+> &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_<sup>?</sup>
 >
 > _TypeParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
