@@ -72,6 +72,7 @@ syntax named by _designator_. Valid designators are:
 * `lifetime`: a [LIFETIME_TOKEN]
 * `vis`: a [_Visibility_] qualifier
 
+[IDENTIFIER]: identifiers.html
 [IDENTIFIER_OR_KEYWORD]: identifiers.html
 [LIFETIME_TOKEN]: tokens.html#lifetimes-and-loop-labels
 [_BlockExpression_]: expressions/block-expr.html
