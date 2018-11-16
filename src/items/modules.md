@@ -40,38 +40,89 @@ struct, enumeration, union, type parameter or crate can't shadow the name of a
 module in scope, or vice versa. Items brought into scope with `use` also have
 this restriction.
 
-A module without a body is loaded from an external file. By default, the path
-to the file mirrors the logical [module path]. Ancestor path components are
-directories, and the module's contents are in a file with the name of the
-module plus the `.rs` extension. For example, the following module structure
-can have this corresponding filesystem structure:
+## Module Source Filenames
 
-Module Path           | Filesystem Path  | File Contents
---------------------- | ---------------  | -------------
-`crate`               | `lib.rs`         | `mod util;`
-`crate::util`         | `util.rs`        | `mod config;`
-`crate::util::config` | `util/config.rs` |
+A module without a body is loaded from an external file. When the module does
+not have a `path` attribute, the path to the file mirrors the logical [module
+path]. Ancestor module path components are directories, and the module's
+contents are in a file with the name of the module plus the `.rs` extension.
+For example, the following module structure can have this corresponding
+filesystem structure:
 
-> **Note**: Module filenames may also be the name of the module as a directory
-> with the contents in a file named `mod.rs` within that directory. Previous
-> to Rust 1.30, this was the way to load a module with nested children. The
-> above example can alternately be expressed with `crate::util`'s contents in
-> a file named `util/mod.rs`. It is not allowed to have both `util.rs` and
-> `util/mod.rs`. It is encouraged to use the new naming convention as it is
-> more consistent, and avoids having many files named `mod.rs` within a
-> project.
+Module Path               | Filesystem Path  | File Contents
+------------------------- | ---------------  | -------------
+`crate`                   | `lib.rs`         | `mod util;`
+`crate::util`             | `util.rs`        | `mod config;`
+`crate::util::config`     | `util/config.rs` |
+
+Module filenames may also be the name of the module as a directory with the
+contents in a file named `mod.rs` within that directory. The above example can
+alternately be expressed with `crate::util`'s contents in a file named
+`util/mod.rs`. It is not allowed to have both `util.rs` and `util/mod.rs`.
+
+> **Note**: Previous to `rustc` 1.30, using `mod.rs` files was the way to load
+> a module with nested children. It is encouraged to use the new naming
+> convention as it is more consistent, and avoids having many files named
+> `mod.rs` within a project.
+
+### `path` Attribute
 
 The directories and files used for loading external file modules can be
 influenced with the `path` attribute.
 
+For `path` attributes on modules not inside inline module blocks, the file
+path is relative to the directory the source file is located. For example, the
+following code snippet would use the paths shown based on where it is located:
+
+```rust,ignore
+#[path = "foo.rs"]
+mod c;
+```
+
+Source File    | `c`'s File Location | `c`'s Module Path
+-------------- | ------------------- | ----------------------
+`src/a/b.rs`   | `src/a/foo.rs`      | `crate::a::b::c`
+`src/a/mod.rs` | `src/a/foo.rs`      | `crate::a::c`
+
+For `path` attributes inside inline module blocks, the relative location of
+the file path depends on the kind of source file the `path` attribute is
+located in. "mod-rs" source files are root modules (such as `lib.rs` or
+`main.rs`) and modules with files named `mod.rs`. "non-mod-rs" source files
+are all other module files. Paths for `path` attributes inside inline module
+blocks in a mod-rs file are relative to the directory of the mod-rs file
+including the inline module components as directories. For non-mod-rs files,
+it is the same except the path starts with a directory with the name of the
+non-mod-rs module. For example, the following code snippet would use the paths
+shown based on where it is located:
+
+```rust,ignore
+mod inline {
+    #[path = "other.rs"]
+    mod inner;
+}
+```
+
+Source File    | `inner`'s File Location   | `inner`'s Module Path
+-------------- | --------------------------| ----------------------------
+`src/a/b.rs`   | `src/a/b/inline/other.rs` | `crate::a::b::inline::inner`
+`src/a/mod.rs` | `src/a/inline/other.rs`   | `crate::a::inline::inner`
+
+An example of combining the above rules of `path` attributes on inline modules
+and nested modules within (applies to both mod-rs and non-mod-rs files):
+
 ```rust,ignore
 #[path = "thread_files"]
 mod thread {
-    // Load the `local_data` module from `thread_files/tls.rs`
+    // Load the `local_data` module from `thread_files/tls.rs` relative to
+    // this source file's directory.
     #[path = "tls.rs"]
     mod local_data;
 }
 ```
+
+
+
+## Prelude Items
 
 Modules implicitly have some names in scope. These name are to built-in types,
 macros imported with `#[macro_use]` on an extern crate, and by the crate's
