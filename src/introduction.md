@@ -9,8 +9,6 @@ provides three kinds of material:
   - Appendix chapters providing rationale and references to languages that
     influenced the design.
 
-> **Note**: You may also be interested in the [grammar].
-
 <div class="warning">
 
 Warning: This book is incomplete. Documenting everything takes a while. See
@@ -120,6 +118,8 @@ information. These conventions are documented here.
   > &nbsp;&nbsp; &nbsp;&nbsp; `~` [_Expression_]\
   > &nbsp;&nbsp; | `box` [_Expression_]
 
+  See [Notation] for more detail.
+
 ## Contributing
 
 We welcome contributions of all kinds.
@@ -133,7 +133,6 @@ attention to making those sections the best that they can be.
 
 [book]: ../book/index.html
 [standard library]: ../std/index.html
-[grammar]: ../grammar.html
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
 [big issue]: https://github.com/rust-lang-nursery/reference/issues/9
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
@@ -145,3 +144,4 @@ attention to making those sections the best that they can be.
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
 [undocumented]: undocumented.html
+[Notation]: notation.html

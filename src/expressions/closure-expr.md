@@ -3,8 +3,14 @@
 > **<sup>Syntax</sup>**\
 > _ClosureExpression_ :\
 > &nbsp;&nbsp; `move`<sup>?</sup>\
-> &nbsp;&nbsp; ( `||` | `|` [_FunctionParameters_]<sup>?</sup> `|` )\
+> &nbsp;&nbsp; ( `||` | `|` _ClosureParameters_<sup>?</sup> `|` )\
 > &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
+>
+> _ClosureParameters_ :\
+> &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _ClosureParam_ :\
+> &nbsp;&nbsp; [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A _closure expression_ defines a closure and denotes it as a value, in a single
 expression. A closure expression is a pipe-symbol-delimited (`|`) list of
@@ -14,11 +20,11 @@ type, the expression used for the body of the closure must be a normal
 [block]. A closure expression also may begin with the
 `move` keyword before the initial `|`.
 
-A closure expression denotes a function that maps a list of parameters
-(`ident_list`) onto the expression that follows the `ident_list`. The patterns
-in the `ident_list` are the parameters to the closure. If a parameter's types
-is not specified, then the compiler infers it from context. Each closure
-expression has a unique anonymous type.
+A closure expression denotes a function that maps a list of parameters onto
+the expression that follows the parameters. Just like a [`let` binding], the
+parameters are irrefutable [patterns], whose type annotation is optional and
+will be inferred from context if not given. Each closure expression has a
+unique, anonymous type.
 
 Closure expressions are most useful when passing functions as arguments to other
 functions, as an abbreviation for defining and capturing a separate function.
@@ -69,3 +75,6 @@ ten_times(move |j| println!("{}, {}", word, j));
 [_BlockExpression_]: expressions/block-expr.html
 [_TypeNoBounds_]: types.html#type-expressions
 [_FunctionParameters_]: items/functions.html
+[_Pattern_]: patterns.html
+[_Type_]: types.html#type-expressions
+[`let` binding]: statements.html#let-statements
