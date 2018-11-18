@@ -1,18 +1,216 @@
-## Conditional compilation
+# Conditional compilation
 
-Sometimes one wants to have different compiler outputs from the same code,
-depending on build target, such as targeted operating system, or to enable
-release builds.
+> **<sup>Syntax</sup>**\
+> _ConfigurationPredicate_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _ConfigurationOption_\
+> &nbsp;&nbsp; | _ConfigurationAll_\
+> &nbsp;&nbsp; | _ConfigurationAny_\
+> &nbsp;&nbsp; | _ConfigurationNot_
+>
+> _ConfigurationOption_ :\
+> &nbsp;&nbsp; [IDENTIFIER]&nbsp;(`=` ([STRING_LITERAL] | [RAW_STRING_LITERAL]))<sup>?</sup>
+>
+> _ConfigurationAll_\
+> &nbsp;&nbsp; `all` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
+>
+> _ConfigurationAny_\
+> &nbsp;&nbsp; `any` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
+>
+> _ConfigurationNot_\
+> &nbsp;&nbsp; `not` `(` _ConfigurationPredicate_ `)`
+>
+> _ConfigurationPredicateList_\
+> &nbsp;&nbsp; _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup>
 
-Configuration options are boolean (on or off) and are named either with a
-single identifier (e.g. `foo`) or an identifier and a string (e.g. `foo = "bar"`;
-the quotes are required and spaces around the `=` are unimportant). Note that
-similarly-named options, such as `foo`, `foo="bar"` and `foo="baz"` may each be
-set or unset independently.
+*Conditionally compiled source code* is source code that may or may not be
+considered a part of the source code depending on certain conditions. <!-- This
+definition is sort of vacuous --> Source code can be conditionally compiled
+using [attributes], [`cfg`] and [`cfg_attr`], and the built-in [`cfg` macro].
+These conditions are based on the target architecture of the compiled crate,
+arbitrary values passed to the compiler, and a few other miscellaneous things
+further described below in detail.
 
-Configuration options are either provided by the compiler or passed in on the
-command line using `--cfg` (e.g. `rustc main.rs --cfg foo --cfg 'bar="baz"'`).
-Rust code then checks for their presence using the `#[cfg(...)]` [attribute]:
+Each form of conditional compilation takes a _configuration predicate_ that
+evaluates to true or false. The predicate is one of the following:
+
+* A configuration option. It is true if the option is set and false if it is
+  unset.
+* `all()` with a comma separated list of configuration predicates. It is false
+  if at least one predicate is false. If there are no predicates, it is true.
+* `any()` with a comma separated list of configuration predicates. It is true
+  if at least one predicate is true. If there are no predicates, it is false.
+* `not()` with a configuration predicate. It is true if its predicate is false
+  and false if its predicate is true.
+
+_Configuration options_ are names and key-value pairs that are either set or
+unset. Names are written as a single identifier such as, for example, `unix`.
+Key-value pairs are written as an identifier, `=`, and then a string. For
+example, `target_arch = "x86_64"` is a configuration option.
+
+> **Note**: Whitespace around the `=` is ignored. `foo="bar"` and `foo = "bar"`
+> are equivalent configuration options.
+
+Keys are not unique in the set of key-value configuration options. For example,
+both `feature = "std"` and `feature = "serde"` can be set at the same time.
+
+## Set Configuration Options
+
+Which configuration options are set is determined statically during the
+compilation of the crate. Certain options are _compiler-set_ based on data
+about the compilation. Other options are _arbitrarily-set_, set based on input
+passed to the compiler outside of the code. It is not possible to set a
+configuration option from within the source code of the crate being compiled.
+
+> **Note**: For `rustc`, arbitrary-set configuration options are set using the
+> [`--cfg`] flag.
+
+<div class="warning">
+
+Warning: It is possible for arbitrarily-set configuration options to have the
+same value as compiler-set configuration options. For example, it is possible
+to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and
+have both `unix` and `windows` configuration options set at the same time. It
+is unwise to actually do this.
+
+</div>
+
+### `target_arch`
+
+Key-value option set once with the target's CPU architecture. The value is
+similar to the first element of the platform's target triple, but not
+identical.
+
+Example values:
+
+* `"x86"`
+* `"x86_64"`
+* `"mips"`
+* `"powerpc"`
+* `"powerpc64"`
+* `"arm"`
+* `"aarch64"`
+
+### `target_os`
+
+Key-value option set once with the target's operating system. This value is
+similar to the second and third element of the platform's target triple.
+
+Example values:
+
+* `"windows"`
+* `"macos"`
+* `"ios"`
+* `"linux"`
+* `"android"`
+* `"freebsd"`
+* `"dragonfly"`
+* `"bitrig"` 
+* `"openbsd"`
+* `"netbsd"`
+
+### `target_family`
+
+Key-value option set at most once with the target's operating system value.
+
+Example values:
+
+* `"unix"`
+* `"windows"`
+
+### `unix` and `windows`
+
+`unix` is set if `target_family = "unix"` is set and `windows` is set if
+`target_family = "windows"` is set.
+
+### `target_env`
+
+Key-value option set with further disambiguating information about the target
+platform with information about the ABI or `libc` used. For historical reasons,
+this value is only defined as not the empty-string when actually needed for
+disambiguation. Thus, for example, on many GNU platforms, this value will be
+empty. This value is similar to the fourth element of the platform's target
+triple. One difference is that embedded ABIs such as `gnueabihf` will simply
+define `target_env` as `"gnu"`.
+
+Example values:
+
+* `""`
+* `"gnu"`
+* `"msvc"`
+* `"musl"`
+
+### `target_endian`
+
+Key-value option set once with either a value of "little" or "big" depending
+on the endianness of the target's CPU.
+
+### `target_pointer_width`
+
+Key-value option set once with the target's pointer width in bits. For example,
+for targets with 32-bit pointers, this is set to `"32"`. Likewise, it is set
+to `"64"` for targets with 64-bit pointers.
+
+<!-- Are there targets that have a different bit number? --> 
+
+### `target_has_atomic`
+
+Key-value option set for each integer size on which the target can perform
+atomic operations.
+
+Possible values:
+
+* `"8"`
+* `"16"`
+* `"32"`
+* `"64"`
+* `"ptr"`
+
+### `target_vendor`
+
+Key-value option set once with the vendor of the target.
+
+Possible values:
+
+* `"apple"`
+* `"pc"`
+* `"unknown"`
+
+### `test`
+
+Enabled when compiling the test harness. Done with `rustc` by using the
+[`--test`] flag.
+
+### `debug_assertions`
+
+Enabled by default when compiling without optimizations.
+This can be used to enable extra debugging code in development but not in
+production.  For example, it controls the behavior of the standard library's
+[`debug_assert!`] macro.
+
+### `proc_macro`
+
+Set when the crate being compiled is being compiled with the `proc_macro`
+[crate type].
+
+## Forms of conditional compilation
+
+### The `cfg` attribute
+
+> **<sup>Syntax</sup>**\
+> _CfgAttrAttribute_ :\
+> &nbsp;&nbsp; `cfg` `(` _ConfigurationPredicate_ `)`
+
+<!-- should we say they're active attributes here? -->
+
+The `cfg` [attribute] conditionally includes the thing it is attached to based
+on a configuration predicate.
+
+It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
+
+If the predicate is true, the thing is rewritten to not have the `cfg` attribute
+on it. If the predicate is false, the thing is removed from the source code.
+
+Some examples on functions:
 
 ```rust
 // The function is only included in the build when compiling for macOS
@@ -41,62 +239,72 @@ fn needs_not_foo() {
 }
 ```
 
-This illustrates some conditional compilation can be achieved using the
-`#[cfg(...)]` [attribute]. `any`, `all` and `not` can be used to assemble
-arbitrarily complex configurations through nesting.
+The `cfg` attribute is allowed anywhere attributes are allowed except on
+generic parameters.
 
-The following configurations must be defined by the implementation:
+### The `cfg_attr` attribute
 
-* `target_arch = "..."` - Target CPU architecture, such as `"x86"`,
-  `"x86_64"` `"mips"`, `"powerpc"`, `"powerpc64"`, `"arm"`, or
-  `"aarch64"`. This value is closely related to the first element of
-  the platform target triple, though it is not identical.
-* `target_os = "..."` - Operating system of the target, examples
-  include `"windows"`, `"macos"`, `"ios"`, `"linux"`, `"android"`,
-  `"freebsd"`, `"dragonfly"`, `"bitrig"` , `"openbsd"` or
-  `"netbsd"`. This value is closely related to the second and third
-  element of the platform target triple, though it is not identical.
-* `target_family = "..."` - Operating system family of the target, e. g.
-  `"unix"` or `"windows"`. The value of this configuration option is defined
-  as a configuration itself, like `unix` or `windows`.
-* `unix` - See `target_family`.
-* `windows` - See `target_family`.
-* `target_env = ".."` - Further disambiguates the target platform with
-  information about the ABI/libc. Presently this value is either
-  `"gnu"`, `"msvc"`, `"musl"`, or the empty string. For historical
-  reasons this value has only been defined as non-empty when needed
-  for disambiguation. Thus on many GNU platforms this value will be
-  empty. This value is closely related to the fourth element of the
-  platform target triple, though it is not identical. For example,
-  embedded ABIs such as `gnueabihf` will simply define `target_env` as
-  `"gnu"`.
-* `target_endian = "..."` - Endianness of the target CPU, either `"little"` or
-  `"big"`.
-* `target_pointer_width = "..."` - Target pointer width in bits. This is set
-  to `"32"` for targets with 32-bit pointers, and likewise set to `"64"` for
-  64-bit pointers.
-* `target_has_atomic = "..."` - Set of integer sizes on which the target can perform
-  atomic operations. Values are `"8"`, `"16"`, `"32"`, `"64"` and `"ptr"`.
-* `target_vendor = "..."` - Vendor of the target, for example `apple`, `pc`, or
-  simply `"unknown"`.
-* `test` - Enabled when compiling the test harness (using the `--test` flag).
-* `debug_assertions` - Enabled by default when compiling without optimizations.
-  This can be used to enable extra debugging code in development but not in
-  production.  For example, it controls the behavior of the standard library's
-  `debug_assert!` macro.
-* `proc_macro` - Set when the crate being compiled is being compiled with the
-  `proc_macro` [crate type].
+> **<sup>Syntax</sup>**\
+> _CfgAttrAttribute_ :\
+> &nbsp;&nbsp; `cfg_attr` `(` _ConfigurationPredicate_ `,` [_MetaItem_] `,`<sup>?</sup> `)`
 
-You can also set another [attribute] based on a `cfg` variable with `cfg_attr`:
+The `cfg_attr` [attribute] conditionally includes [attributes] based on a
+configuration predicate.
+
+It is written as `cfg_attr` followed by `(`, a configuration predicate, a
+[metaitem], an optional `,`, and finally a `)`.
+
+When the configuration predicate is true, this attribute expands out to be an
+attribute of the attribute metaitem. For example, the following module will
+either be found at `linux.rs` or `windows.rs` based on the target.
 
 ```rust,ignore
-#[cfg_attr(a, b)]
+#[cfg_attr(linux, path = "linux.rs")]
+#[cfg_attr(windows, path = "windows.rs")]
+mod os;
 ```
 
-This is the same as `#[b]` if `a` is set by `cfg`, and nothing otherwise.
+> **Note**: The `cfg_attr` can expand to another `cfg_attr`. For example,
+> `#[cfg_attr(linux, cfg_attr(feature = "multithreaded", some_other_attribute))`
+> is valid. This example would be equivalent to
+> `#[cfg_attr(all(linux, feature ="multithreaded"), some_other_attribute)]`.
 
-Lastly, configuration options can be used in expressions by invoking the `cfg!`
-macro: `cfg!(a)` evaluates to `true` if `a` is set, and `false` otherwise.
+The `cfg_attr` attribute is allowed anywhere attributes are allowed except on
+generic parameters.
 
+### The `cfg` macro
+
+The built-in `cfg` macro takes in a single configuration predicate and evaluates
+to the `true` literal when the predicate is true and the `false` literal when
+it is false.
+
+For example:
+
+```rust
+let machine_kind = if cfg!(unix) {
+  "unix"
+} else if cfg!(windows) {
+  "windows"
+} else {
+  "unknown"
+};
+
+println!("I'm running on a {} machine!", machine_kind);
+```
+
+[IDENTIFIER]: identifiers.html
+[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
+[STRING_LITERAL]: tokens.html#string-literals
+[_MetaItem_]: attributes.html
+[`--cfg`]: ../rustc/command-line-arguments.html#a--cfg-configure-the-compilation-environment
+[`--test`]: ../rustc/command-line-arguments.html#a--test-build-a-test-harness
+[`cfg`]: #the-cfg-attribute
+[`cfg` macro]: #the-cfg-macro
+[`cfg_attr`]: #the-cfg_attr-attribute
+[`debug_assert!`]: ../std/macro.debug_assert.html
 [attribute]: attributes.html
+[attributes]: attributes.html
 [crate type]: linkage.html
+[expressions]: expressions.html
+[items]: items.html
+[metaitem]: attributes.html
