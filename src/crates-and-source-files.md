@@ -42,10 +42,10 @@ extension `.rs`.
 
 A Rust source file describes a module, the name and location of which &mdash;
 in the module tree of the current crate &mdash; are defined from outside the
-source file: either by an explicit [`mod` item][module] in a referencing source file, or
-by the name of the crate itself. Every source file is a module, but not every
-module needs its own source file: [module definitions][module] can be nested
-within one file.
+source file: either by an explicit [`mod` item][module] in a referencing
+source file, or by the name of the crate itself. Every source file is a
+module, but not every module needs its own source file: [module
+definitions][module] can be nested within one file.
 
 Each source file contains a sequence of zero or more `item` definitions, and
 may optionally begin with any number of [attributes]

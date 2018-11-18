@@ -120,8 +120,6 @@ mod thread {
 }
 ```
 
-
-
 ## Prelude Items
 
 Modules implicitly have some names in scope. These name are to built-in types,
