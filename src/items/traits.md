@@ -4,6 +4,7 @@
 > _Trait_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
 >              [_Generics_]<sup>?</sup>
+>              ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp;&nbsp;&nbsp; _TraitItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -40,10 +41,10 @@
 > &nbsp;&nbsp; ( [_Pattern_] `:` )<sup>?</sup> [_Type_]
 >
 > _TraitConst_ :\
-> &nbsp;&nbsp; `const` [IDENTIFIER] ( ( `:` [_Type_] ) ( `=` [_Expression_] )<sup>?</sup> )<sup>?</sup> `;`
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]&nbsp;( `=` [_Expression_] )<sup>?</sup> `;`
 >
 > _TraitType_ :\
-> &nbsp;&nbsp; `type` [IDENTIFIER] ( `:` [_TypeParamBounds_] )<sup>?</sup> `;`
+> &nbsp;&nbsp; `type` [IDENTIFIER] ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> `;`
 
 A _trait_ describes an abstract interface that types can implement. This
 interface consists of [associated items], which come in three varieties:

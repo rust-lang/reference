@@ -2,12 +2,12 @@
 
 > **<sup>Syntax:</sup>**\
 > _UseDeclaration_ :\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup> `use` _UseTree_ `;`
+> &nbsp;&nbsp; `use` _UseTree_ `;`
 >
 > _UseTree_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`\
 > &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`\
-> &nbsp;&nbsp; | [_SimplePath_] `as` [IDENTIFIER]
+> &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` [IDENTIFIER] )<sup>?</sup>
 
 A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
@@ -152,5 +152,4 @@ fn main() {}
 
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html#simple-paths
-[_Visibility_]: visibility-and-privacy.html
 [path qualifiers]: paths.html#path-qualifiers
