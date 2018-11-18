@@ -1,8 +1,8 @@
 # Macros
 
-A number of minor features of Rust are not central enough to have their own
-syntax, and yet are not implementable as functions. Instead, they are given
-names, and invoked through a consistent syntax: `some_extension!(...)`.
+The functionality and syntax of Rust can be extended with custom definitons
+called macros. They are given names, and invoked through a consistent
+syntax:`some_extension!(...)`.
 
 There are two ways to define new macros:
 
