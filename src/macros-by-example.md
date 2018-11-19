@@ -71,6 +71,7 @@ syntax named by _designator_. Valid designators are:
 * `meta`: a [_MetaItem_], the contents of an attribute
 * `lifetime`: a [LIFETIME_TOKEN]
 * `vis`: a [_Visibility_] qualifier
+* `literal`: a [_LiteralPattern_] token. Examples: `4`, `-3`, `"String"`
 
 [IDENTIFIER]: identifiers.html
 [IDENTIFIER_OR_KEYWORD]: identifiers.html
@@ -85,6 +86,7 @@ syntax named by _designator_. Valid designators are:
 [_TypePath_]: paths.html#paths-in-types
 [_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
+[_LiteralPattern_]: patterns.html#literal-patterns
 [token]: tokens.html
 
 In the transcriber, the
