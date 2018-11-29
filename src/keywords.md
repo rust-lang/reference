@@ -99,6 +99,8 @@ is possible to declare a variable or method with the name `union`.
   union declaration.
 * `'static` is used for the static lifetime and cannot be used as a generic
   lifetime parameter
+* `existential` is used to declare a named existential [type] and is only a
+  keyword in a [type] declaration.
 
   ```compile_fail
   // error[E0262]: invalid lifetime parameter name: `'static`
@@ -111,7 +113,8 @@ is possible to declare a variable or method with the name `union`.
 
 > **<sup>Lexer</sup>**\
 > KW_UNION          : `union`\
-> KW_STATICLIFETIME : `'static`
+> KW_STATICLIFETIME : `'static`\
+> KW_EXISTENTIAL    : `existential`
 >
 > **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
@@ -125,5 +128,6 @@ is possible to declare a variable or method with the name `union`.
 [Macro placeholders]: macros-by-example.html
 [Crates]: crates-and-source-files.html
 [union]: items/unions.html
+[type]: items/type-aliases.html
 [variants]: items/enumerations.html
 [`dyn`]: types/trait-object.html
