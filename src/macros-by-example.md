@@ -71,7 +71,7 @@ syntax named by _designator_. Valid designators are:
 * `meta`: a [_MetaItem_], the contents of an attribute
 * `lifetime`: a [LIFETIME_TOKEN]
 * `vis`: a [_Visibility_] qualifier
-* `literal`: a [_LiteralPattern_] token. Examples: `4`, `-3`, `"String"`
+* `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
 
 [IDENTIFIER]: identifiers.html
 [IDENTIFIER_OR_KEYWORD]: identifiers.html
