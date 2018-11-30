@@ -79,6 +79,7 @@ syntax named by _designator_. Valid designators are:
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
 [_Item_]: items.html
+[_LiteralPattern_]: patterns.html#literal-patterns
 [_MetaItem_]: attributes.html
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
@@ -86,7 +87,6 @@ syntax named by _designator_. Valid designators are:
 [_TypePath_]: paths.html#paths-in-types
 [_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
-[_LiteralPattern_]: patterns.html#literal-patterns
 [token]: tokens.html
 
 In the transcriber, the
