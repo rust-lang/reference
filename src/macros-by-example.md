@@ -79,7 +79,7 @@ syntax named by _designator_. Valid designators are:
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
 [_Item_]: items.html
-[_LiteralPattern_]: patterns.html#literal-patterns
+[_LiteralExpression_]: expressions/literal-expr.html
 [_MetaItem_]: attributes.html
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
