@@ -494,16 +494,16 @@ The `cold` and `inline` attributes give suggestions to the compiler to compile
 your code in a way that may be faster than what it would do without the hint.
 The attributes are only suggestions, and the compiler may choose to ignore it.
 
+Both attributes can be used on closures, [functions] and function prototypes,
+although they do not do anything on function prototypes. When applied to a
+function in a [trait], they apply only to that function when used as a default
+function for a trait implementation and not to all trait implementations.
+
 #### `inline` Attribute
 
 The *`inline` attribute* suggests to the compiler that it should place a copy of
 the attributed function in the caller, rather than generating code to call the
 function where it is defined.
-
-This attribute can be used on [functions] and function prototypes, although it
-does not do anything on function prototypes. When this attribute is applied to
-a function in a [trait], it applies only to that function when used as a default
-function for a trait implementation and not to all trait implementations.
 
 > ***Note***: The compiler automatically inlines functions based on internal
 > heuristics. Incorrectly inlining functions can actually make the program
@@ -517,13 +517,8 @@ There are three ways of using the inline attribute:
 
 #### `cold` Attribute
 
-The *`cold` attribute* suggests to the compiler that the attributed function is
-unlikely to be called.
-
-This attribute can be used on [functions] and function prototypes, although it
-does not do anything on function prototypes. When this attribute is applied to
-a function in a [trait], it applies only to that function when used as a default
-function for a trait implementation and not to all trait implementations.
+The *`cold` attribute* suggests to the compiler that the attributed function or
+closure is unlikely to be called.
 
 ### `derive`
 
