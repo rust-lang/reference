@@ -71,6 +71,7 @@ syntax named by _designator_. Valid designators are:
 * `meta`: a [_MetaItem_], the contents of an attribute
 * `lifetime`: a [LIFETIME_TOKEN]
 * `vis`: a [_Visibility_] qualifier
+* `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
 
 [IDENTIFIER]: identifiers.html
 [IDENTIFIER_OR_KEYWORD]: identifiers.html
@@ -78,6 +79,7 @@ syntax named by _designator_. Valid designators are:
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
 [_Item_]: items.html
+[_LiteralExpression_]: expressions/literal-expr.html
 [_MetaItem_]: attributes.html
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
