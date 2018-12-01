@@ -9,7 +9,7 @@
 
 > **<sup>Lexer</sup>**\
 > UTF8BOM : `\uFEFF`\
-> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>*</sup>
+> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>\*</sup>
 
 
 > Note: Although Rust, like any other language, can be implemented by an
@@ -42,12 +42,12 @@ extension `.rs`.
 
 A Rust source file describes a module, the name and location of which &mdash;
 in the module tree of the current crate &mdash; are defined from outside the
-source file: either by an explicit [`mod` item][module] in a referencing
+source file: either by an explicit [_Module_][module] item in a referencing
 source file, or by the name of the crate itself. Every source file is a
 module, but not every module needs its own source file: [module
 definitions][module] can be nested within one file.
 
-Each source file contains a sequence of zero or more `item` definitions, and
+Each source file contains a sequence of zero or more [_Item_] definitions, and
 may optionally begin with any number of [attributes]
 that apply to the containing module, most of which influence the behavior of
 the compiler. The anonymous crate module can have additional attributes that
