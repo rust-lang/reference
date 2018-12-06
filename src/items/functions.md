@@ -140,7 +140,7 @@ implemented by executing an illegal instruction.
 ## Const functions
 
 Functions qualified with the `const` keyword are const functions. _Const
-functions_  can be called from within [const contexts]. When called from a const
+functions_  can be called from within [const context]s. When called from a const
 context, the function is interpreted by the compiler at compile time. The
 interpretation happens in the environment of the compilation target and not the
 host. So `usize` is `32` bits if you are compiling against a `32` bit system,
@@ -150,7 +150,7 @@ If a const function is called outside a [const context], it is indistinguishable
 from any other function. You can freely do anything with a const function that
 you can do with a regular function.
 
-Const functions have various restrictions to makes sure that they can't be
+Const functions have various restrictions to makes sure that they can be
 evaluated at compile-time. It is, for example, not possible to write a random
 number generator as a const function. Calling a const function at compile-time
 will always yield the same result as calling it at runtime, even when called
@@ -222,7 +222,7 @@ attributes macros.
 [_Statement_]: statements.html
 [_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
-[const contexts]: const_eval.html
+[const context]: const_eval.html#const-context
 [external blocks]: items/external-blocks.html
 [path]: paths.html
 [block]: expressions/block-expr.html
