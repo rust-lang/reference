@@ -150,7 +150,7 @@ If a const function is called outside a [const context], it is indistinguishable
 from any other function. You can freely do anything with a const function that
 you can do with a regular function.
 
-Const functions have various restrictions to makes sure that they can't be
+Const functions have various restrictions to make sure that they can't be
 evaluated at compile-time. It is, for example, not possible to write a random
 number generator as a const function. Calling a const function at compile-time
 will always yield the same result as calling it at runtime, even when called
