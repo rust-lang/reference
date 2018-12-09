@@ -38,13 +38,12 @@ let f = u.f1;
 ```
 
 Unions have no notion of an "active field".  Instead, every union access just
-interprets the storage at the type of the field used for the access.  The effect
-of reading a union with a different field than it was written to is that of
-calling [`transmute`].  Reading data at a bad type results in undefined behavior
-(for example, reading the value `3` at type `bool`).
-
-However, which fields are safe to read and which not is generally not known
-statically, so all reads of union fields have to be placed in `unsafe` blocks.
+interprets the storage at the type of the field used for the access.  Reading a
+union field is equivalent to a [`transmute`]: The data in the union, no matter
+how it was stored there, is transmuted to the type if the field.  Reading data
+at a bad type results in undefined behavior (for example, reading the value `3`
+at type `bool`).  For this reason, all reads of union fields have to be placed
+in `unsafe` blocks:
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
