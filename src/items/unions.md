@@ -29,18 +29,22 @@ struct types, except that it must specify exactly one field:
 let u = MyUnion { f1: 1 };
 ```
 
-The expression above creates a value of type `MyUnion` with active field `f1`.
-Active field of a union can be accessed using the same syntax as struct fields:
+The expression above creates a value of type `MyUnion` and initializes the
+storage using field `f1`.  The union can be accessed using the same syntax as
+struct fields:
 
 ```rust,ignore
 let f = u.f1;
 ```
 
-Inactive fields can be accessed as well (using the same syntax) if they are
-sufficiently layout compatible with the current value kept by the union.
-Reading incompatible fields results in undefined behavior. However, the active
-field is not generally known statically, so all reads of union fields have to
-be placed in `unsafe` blocks.
+Unions have no notion of an "active field".  Instead, every union access just
+interprets the storage at the type of the field used for the access.  The effect
+of reading a union with a different field than it was written to is that of
+calling [`transmute`].  Reading data at a bad type results in undefined behavior
+(for example, reading the value `3` at type `bool`).
+
+However, which fields are safe to read and which not is generally not known
+statically, so all reads of union fields have to be placed in `unsafe` blocks.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -65,9 +69,9 @@ Commonly, code using unions will provide safe wrappers around unsafe union
 field accesses.
 
 Another way to access union fields is to use pattern matching. Pattern matching
-on union fields uses the same syntax as struct patterns, except that the
-pattern must specify exactly one field. Since pattern matching accesses
-potentially inactive fields it has to be placed in `unsafe` blocks as well.
+on union fields uses the same syntax as struct patterns, except that the pattern
+must specify exactly one field. Since pattern matching is like reading the union
+with a particular field, it has to be placed in `unsafe` blocks as well.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -149,3 +153,4 @@ in [RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
 [_Generics_]: items/generics.html
 [_WhereClause_]: items/generics.html#where-clauses
 [_StructFields_]: items/structs.html
+[`transmute`]: ../../std/mem/fn.transmute.html
