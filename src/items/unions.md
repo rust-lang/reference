@@ -40,9 +40,9 @@ let f = u.f1;
 Unions have no notion of an "active field". Instead, every union access just
 interprets the storage at the type of the field used for the access. Reading a
 union field is equivalent to a [`transmute`]: The data in the union, no matter
-how it was stored there, is transmuted to the type of the field  Just like with
+how it was stored there, is transmuted to the type of the field. Just like with
 any other transmute, it is the programmer's responsibility to make sure that the
-data is valid for the field type. Failing to do so results in undefined
+data is valid at the field's type. Failing to do so results in undefined
 behavior (for example, reading the value `3` at type `bool` is undefined
 behavior). For this reason, all reads of union fields have to be placed in
 `unsafe` blocks:
