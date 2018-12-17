@@ -154,13 +154,19 @@ be a parent module of the item whose visibility is being declared.
 - `pub(self)` makes an item visible to the current module. This is equivalent
 to `pub(in self)`.
 
+> **Edition Differences**: Starting with the 2018 edition, paths for
+> `pub(in path)` must start with `crate`, `self`, or `super`. The 2015 edition
+> may also use paths starting with `::` or modules from the crate root.
+
 Here's an example:
 
 ```rust
 pub mod outer_mod {
     pub mod inner_mod {
         // This function is visible within `outer_mod`
-        pub(in outer_mod) fn outer_mod_visible_fn() {}
+        pub(in crate::outer_mod) fn outer_mod_visible_fn() {}
+        // Same as above, this is only valid in the 2015 edition.
+        pub(in outer_mod) fn outer_mod_visible_fn_2015() {}
 
         // This function is visible to the entire crate
         pub(crate) fn crate_visible_fn() {}
