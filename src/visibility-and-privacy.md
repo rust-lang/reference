@@ -155,7 +155,8 @@ be a parent module of the item whose visibility is being declared.
 to `pub(in self)`.
 
 > **Edition Differences**: Starting with the 2018 edition, paths for
-> `pub(in path)` must start with `crate`, `self`, or `super`.
+> `pub(in path)` must start with `crate`, `self`, or `super`. The 2015 edition
+> may also use paths starting with `::` or modules from the crate root.
 
 Here's an example:
 
