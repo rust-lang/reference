@@ -179,7 +179,7 @@ pub mod outer_mod {
         }
 
         // This function is visible only within `inner_mod`,
-        // which is the same as leaving it private
+        // which is the same as leaving it private.
         pub(self) fn inner_mod_visible_fn() {}
     }
     pub fn foo() {
@@ -213,7 +213,7 @@ fn main() { bar() }
 
 Note that this syntax only adds another restriction to the visibility of an
 item. It does not guarantee that the item is visible within all parts of the
-specified scope. In order to access an item all of its parent items up to the
+specified scope. To access an item, all of its parent items up to the
 current scope must still be visible as well.
 
 ## Re-exporting and Visibility
