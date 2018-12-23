@@ -185,9 +185,9 @@ Exhaustive list of permitted structures in const functions:
 * Reading from constants (but not statics, not even taking a reference to a static)
 * `&` and `*` (only dereferencing of references, not raw pointers)
 * Casts except for raw pointer to integer casts
-* `const unsafe fn` is allowed, but the body must consist of safe operations
-  only and you won't be able to call the `const unsafe fn` from within another
-  const function even if you use `unsafe`
+* `unsafe` blocks and `const unsafe fn` are allowed, but the body/block may only do
+  the following unsafe operations:
+    * calls to const unsafe functions
 
 ## Attributes on functions
 
