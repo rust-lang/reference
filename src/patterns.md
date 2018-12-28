@@ -418,9 +418,12 @@ println!("{}", match 0xfacade {
 });
 ```
 
-Range patterns are always refutable, even when they cover the complete set
-of possible values of a type. For example, `0u8..=255u8` is refutable even though
-it covers all possible values of `u8`.
+Range patterns for (non-`usize` and -`isize`) integer and `char` types are irrefutable
+when they span the entire set of possible values of a type. For example, `0u8..=255u8`
+is irrefutable. The range of values for an integer type is the closed range from its
+minimum to maximum value. The range of values for a `char` type are precisely those
+ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and
+`'\u{E000}'..='\u{10FFFF}'`.
 
 ## Reference patterns
 
