@@ -83,11 +83,12 @@ by using an underscore with the form `extern crate foo as _`. This may be
 useful for crates that only need to be linked, but are never referenced, and
 will avoid being reported as unused.
 
-The `#[macro_use]` attribute will work as usual and import the macro names
+The [`#[macro_use]` attribute] will work as usual and import the macro names
 into the macro-use prelude.
 
 [IDENTIFIER]: identifiers.html
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
+[`#[macro_use]` attribute]: attributes.html#macro-related-attributes
 [`alloc`]: https://doc.rust-lang.org/alloc/
 [`crate::`]: paths.html#crate
 [`proc_macro`]: https://doc.rust-lang.org/proc_macro/

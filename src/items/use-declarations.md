@@ -180,6 +180,21 @@ fn main() {
 }
 ```
 
+The unique, unnameable symbols are created after macro expansion so that
+macros may safely emit multiple references to `_` imports. For example, the
+following should not produce an error:
+
+```rust
+macro_rules! m {
+    ($item: item) => { $item $item }
+}
+
+m!(use std as _;);
+// This expands to:
+// use std as _;
+// use std as _;
+```
+
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html#simple-paths
 [`extern crate`]: items/extern-crates.html
