@@ -7,7 +7,7 @@
 > _UseTree_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`\
 > &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`\
-> &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` [IDENTIFIER] )<sup>?</sup>
+> &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` ( [IDENTIFIER] | `_` ) )<sup>?</sup>
 
 A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
@@ -17,10 +17,6 @@ and [blocks], usually at the top.
 [path]: paths.html
 [modules]: items/modules.html
 [blocks]: expressions/block-expr.html
-
-> **Note**: Unlike in many languages, `use` declarations in Rust do *not*
-> declare linkage dependency with external crates. Rather, [`extern crate`
-> declarations](items/extern-crates.html) declare linkage dependencies.
 
 Use declarations support a number of convenient shortcuts:
 
@@ -124,7 +120,7 @@ mod foo {
 fn main() {}
 ```
 
-> **Edition Differences**: In the 2015 Edition, `use` paths also allow
+> **Edition Differences**: In the 2015 edition, `use` paths also allow
 > accessing items in the crate root. Using the example above, the following
 > `use` paths work in 2015 but not 2018:
 >
@@ -133,7 +129,13 @@ fn main() {}
 > use ::foo::baz::foobaz;
 > ```
 >
-> In the 2018 Edition, if an in-scope item has the same name as an external
+> The 2015 edition does not allow use declarations to reference the [extern
+> prelude]. Thus [`extern crate`] declarations are still required in 2015 to
+> reference an external crate in a use declaration. Beginning with the 2018
+> edition, use declarations can specify an external crate dependency the same
+> way `extern crate` can.
+>
+> In the 2018 edition, if an in-scope item has the same name as an external
 > crate, then `use` of that crate name requires a leading `::` to
 > unambiguously select the crate name. This is to retain compatibility with
 > potential future changes. <!-- uniform_paths future-proofing -->
@@ -149,7 +151,52 @@ fn main() {}
 > # fn main() {}
 > ```
 
+## Underscore Imports
+
+Items can be imported without binding to a name by using an underscore with
+the form `use path as _`. This is particularly useful to import a trait so
+that its methods may be used without importing the trait's symbol, for example
+if the trait's symbol may conflict with another symbol. Another example is to
+link an external crate without importing its name.
+
+Asterisk glob imports will import items imported with `_` in their unnameable
+form.
+
+```rust
+mod foo {
+    pub trait Zoo {
+        fn zoo(&self) {}
+    }
+
+    impl<T> Zoo for T {}
+}
+
+use self::foo::Zoo as _;
+struct Zoo;  // Underscore import avoids name conflict with this item.
+
+fn main() {
+    let z = Zoo;
+    z.zoo();
+}
+```
+
+The unique, unnameable symbols are created after macro expansion so that
+macros may safely emit multiple references to `_` imports. For example, the
+following should not produce an error:
+
+```rust
+macro_rules! m {
+    ($item: item) => { $item $item }
+}
+
+m!(use std as _;);
+// This expands to:
+// use std as _;
+// use std as _;
+```
 
 [IDENTIFIER]: identifiers.html
 [_SimplePath_]: paths.html#simple-paths
+[`extern crate`]: items/extern-crates.html
+[extern prelude]: items/extern-crates.html#extern-prelude
 [path qualifiers]: paths.html#path-qualifiers
