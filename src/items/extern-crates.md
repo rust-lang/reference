@@ -2,7 +2,7 @@
 
 > **<sup>Syntax:<sup>**\
 > _ExternCrate_ :\
-> &nbsp;&nbsp; `extern` `crate` [IDENTIFIER]&nbsp;(`as` [IDENTIFIER])<sup>?</sup> `;`
+> &nbsp;&nbsp; `extern` `crate` [IDENTIFIER]&nbsp;(`as` ( [IDENTIFIER] | `_` ) )<sup>?</sup> `;`
 
 An _`extern crate` declaration_ specifies a dependency on an external crate.
 The external crate is then bound into the declaring scope as the [identifier]
@@ -68,15 +68,23 @@ need for specifying `extern crate`.
 
 <!--
 Possible upcoming changes that will change this:
-
 The `extern_crate_item_prelude` unstable feature allows `extern crate` to
 update the extern prelude in certain situations, see
 https://github.com/rust-lang/rust/pull/54658
-
 Unstable `--extern proc_macro` flag that would force the crate into the
 extern prelude.
     https://github.com/rust-lang/rust/pull/54116
 -->
+
+## Underscore Imports
+
+An external crate dependency can be declared without binding its name in scope
+by using an underscore with the form `extern crate foo as _`. This may be
+useful for crates that only need to be linked, but are never referenced, and
+will avoid being reported as unused.
+
+The `#[macro_use]` attribute will work as usual and import the macro names
+into the macro-use prelude.
 
 [IDENTIFIER]: identifiers.html
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
