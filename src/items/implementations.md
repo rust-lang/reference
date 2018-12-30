@@ -51,7 +51,7 @@ The nominal type is called the _implementing type_ and the associable items are
 the _associated items_ to the implementing type.
 
 Inherent implementations associate the contained items to the implementing type.
-The associated item has a path of a path to the implementing type followed by
+The path of an associated item consists of a path to the implementing type followed by
 the associate item's path component. Inherent implementations cannot contain
 associated type aliases.
 
