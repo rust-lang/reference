@@ -12,7 +12,7 @@ copied, stored into data structs, and returned from functions.
 These point to memory _owned by some other value_. When a shared reference to
 a value is created it prevents direct mutation of the value. [Interior
 mutability] provides an exception for this in certain circumstances. As the
-name suggests, any number of shared references to a value may exit. A shared
+name suggests, any number of shared references to a value may exist. A shared
 reference type is written `&type`, or `&'a type` when you need to specify an
 explicit lifetime. Copying a reference is a "shallow" operation: it involves
 only copying the pointer itself, that is, pointers are `Copy`. Releasing a
