@@ -59,6 +59,9 @@ The [path] to an associated item is: any path to the implementing type,
 followed by the path to the associate item within the inherent
 implementation.
 
+A type can also have multiple inherent implementations. An implementing type
+must be defined within the same crate as the original type definition.
+
 ``` rust
 pub mod color {
     pub struct Color(pub u8, pub u8, pub u8);
@@ -84,22 +87,6 @@ fn main() {
     Color::red();  // rexported paths to the implementing type also work
     // values::Color::red();  // Does not work, because use in `values` is not pub
 }
-```
-
-A type can also have multiple inherent implementations. An implementing type
-must be defined within the same crate as the original type definition.
-
-```rust
-struct Point {x: i32, y: i32}
-
-impl Point {
-    fn log(&self) {
-        println!("Point is at ({}, {})", self.x, self.y);
-    }
-}
-
-let my_point = Point {x: 10, y:11};
-my_point.log();
 ```
 
 ## Trait Implementations
