@@ -102,13 +102,15 @@ following types:
 - [`Box<Self>`]
 - [`Rc<Self>`]
 - [`Arc<Self>`]
+- [`Pin<P>`] where `P` is one of the above types except `Self`.
 
-The `Self` portion of the type may be replaced with the type being
-implemented.
+As an alternate way of writing the type, the `Self` term may instead be
+written with the type being implemented.
 
 ```rust
 # use std::rc::Rc;
 # use std::sync::Arc;
+# use std::pin::Pin;
 struct Example;
 impl Example {
     fn by_value(self: Self) {}
@@ -117,7 +119,9 @@ impl Example {
     fn by_box(self: Box<Self>) {}
     fn by_rc(self: Rc<Self>) {}
     fn by_arc(self: Arc<Self>) {}
+    fn by_pin(self: Pin<&Self>) {}
     fn explicit_type(self: Arc<Example>) {}
+    fn with_lifetime<'a>(self: &'a Self) {}
 }
 ```
 
@@ -321,6 +325,7 @@ fn main() {
 [_WhereClause_]: items/generics.html#where-clauses
 [`Arc<Self>`]: special-types-and-traits.html#arct
 [`Box<Self>`]: special-types-and-traits.html#boxt
+[`Pin<P>`]: special-types-and-traits.html#pinp
 [`Rc<Self>`]: special-types-and-traits.html#rct
 [trait]: items/traits.html
 [traits]: items/traits.html

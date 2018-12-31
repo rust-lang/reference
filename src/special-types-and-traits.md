@@ -24,6 +24,10 @@ defined types.
 
 [Methods] can take [`Arc<Self>`] as a receiver.
 
+## `Pin<P>`
+
+[Methods] can take [`Pin<P>`] as a receiver.
+
 ## `UnsafeCell<T>`
 
 [`std::cell::UnsafeCell<T>`] is used for [interior mutability]. It ensures that
@@ -138,6 +142,7 @@ compiler, not by [implementation items].
 [`Deref`]: ../std/ops/trait.Deref.html
 [`DerefMut`]: ../std/ops/trait.DerefMut.html
 [`Drop`]: ../std/ops/trait.Drop.html
+[`Pin<P>`]: ../std/pin/struct.Pin.html
 [`Rc<Self>`]: ../std/rc/struct.Rc.html
 [`RefUnwindSafe`]: ../std/panic/trait.RefUnwindSafe.html
 [`Send`]: ../std/marker/trait.Send.html
