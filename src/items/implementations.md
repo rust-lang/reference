@@ -52,24 +52,20 @@ the _associated items_ to the implementing type.
 
 Inherent implementations associate the contained items to the
 implementing type.  Inherent implementations can contain [associated
-functions] (including methods), [associated types], and [associated
-constants]. They cannot contain associated type aliases.
+functions] (including methods) and [associated constants]. They cannot
+contain associated type aliases.
 
-[associated functions]: associated-items.html#associated-functions-and-methods
-[associated types]: associated-items.html#associated-types
-[associated constants]: associated-items.html#associated-constants
-
-The path to an associated item is: any path to the implementing type,
+The [path] to an associated item is: any path to the implementing type,
 followed by the path to the associate item within the inherent
 implementation.
-
-Note that the path to the module containing the inherent
-implementation does not allow access to the associate item, unless the
-implementing type is re-exported from the same location.
 
 ``` rust
 pub mod color {
     pub struct Color(pub u8, pub u8, pub u8);
+
+    impl Color {
+        pub const WHITE: Color = Color(255, 255, 255);
+    }
 }
 
 mod values {
@@ -83,9 +79,10 @@ mod values {
 
 pub use self::color::Color;
 fn main() {
-    color::Color::red();  // actual path to the implementing type
+    color::Color::WHITE; // actual path to the implementing type and impl in the same module
+    color::Color::red();  // impl blocks in different modules are still accessed through a path to the type
     Color::red();  // rexported paths to the implementing type also work
-    // bright_theme::Color::red();  // Does not work, because use in `theme` is not pub
+    // values::Color::red();  // Does not work, because use in `values` is not pub
 }
 ```
 
@@ -225,9 +222,12 @@ attributes].
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
+[associated functions]: associated-items.html#associated-functions-and-methods
+[associated constants]: associated-items.html#associated-constants
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation
+[path]: paths.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [Unsafe traits]: items/traits.html#unsafe-traits
