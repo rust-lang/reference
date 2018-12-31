@@ -50,10 +50,18 @@ bracketed set of associable items.
 The nominal type is called the _implementing type_ and the associable items are
 the _associated items_ to the implementing type.
 
-Inherent implementations associate the contained items to the implementing type.
-The path to an associated item is: any path to the implementing type followed by
-the associate item's path component. Inherent implementations cannot contain
-associated type aliases.
+Inherent implementations associate the contained items to the
+implementing type.  Inherent implementations can contain [associated
+functions] (including methods), [associated types], and [associated
+constants]. They cannot contain associated type aliases.
+
+[associated functions]: associated-items.html#associated-functions-and-methods
+[associated types]: associated-items.html#associated-types
+[associated constants]: associated-items.html#associated-constants
+
+The path to an associated item is: any path to the implementing type,
+followed by the path to the associate item within the inherent
+implementation.
 
 Note that the path to the module containing the inherent
 implementation does not allow access to the associate item, unless the
