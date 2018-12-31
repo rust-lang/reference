@@ -51,9 +51,35 @@ The nominal type is called the _implementing type_ and the associable items are
 the _associated items_ to the implementing type.
 
 Inherent implementations associate the contained items to the implementing type.
-The path of an associated item consists of a path to the implementing type followed by
+The path to an associated item is: any path to the implementing type followed by
 the associate item's path component. Inherent implementations cannot contain
 associated type aliases.
+
+Note that the path to the module containing the inherent
+implementation does not allow access to the associate item, unless the
+implementing type is re-exported from the same location.
+
+``` rust
+pub mod color {
+    pub struct Color(pub u8, pub u8, pub u8);
+}
+
+mod values {
+    use super::color::Color;
+    impl Color {
+        pub fn red() -> Color {
+            Color(255, 0, 0)
+        }
+    }
+}
+
+pub use self::color::Color;
+fn main() {
+    color::Color::red();  // actual path to the implementing type
+    Color::red();  // rexported paths to the implementing type also work
+    // bright_theme::Color::red();  // Does not work, because use in `theme` is not pub
+}
+```
 
 A type can also have multiple inherent implementations. An implementing type
 must be defined within the same crate as the original type definition.
