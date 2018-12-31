@@ -11,13 +11,13 @@ Local variables are immutable unless declared otherwise. For example:
 `let mut x = ...`.
 
 Function parameters are immutable unless declared with `mut`. The `mut` keyword
-applies only to the following parameter. For example: `|mut x, y|` and 
+applies only to the following parameter. For example: `|mut x, y|` and
 `fn f(mut x: Box<i32>, y: Box<i32>)` declare one mutable variable `x` and one
 immutable variable `y`.
 
-Methods that take either `self` or `Box<Self>` can optionally place them in a
-mutable variable by prefixing them with `mut` (similar to regular arguments).
-For example:
+[Methods] that take `self` or one of the supported `Self` types such as
+`Box<Self>` can optionally place them in a mutable variable by prefixing them
+with `mut` (similar to regular arguments). For example:
 
 ```rust
 trait Changer: Sized {
@@ -52,3 +52,5 @@ fn initialization_example() {
     // uninit_after_if; // err: use of possibly uninitialized `uninit_after_if`
 }
 ```
+
+[Methods]: items/associated-items.html#methods

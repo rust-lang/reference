@@ -93,9 +93,34 @@ Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
 well as the usual function call notation.
 
-If the type of the `self` parameter is specified, it is limited to the type
-being implemented (or `Self`), or a reference or mutable reference to the
-type, or a boxed value of the type being implemented (such as `Box<Self>`).
+If the type of the `self` parameter is specified, it is limited to one of the
+following types:
+
+- `Self`
+- `&Self`
+- `&mut Self`
+- [`Box<Self>`]
+- [`Rc<Self>`]
+- [`Arc<Self>`]
+
+The `Self` portion of the type may be replaced with the type being
+implemented.
+
+```rust
+# use std::rc::Rc;
+# use std::sync::Arc;
+struct Example;
+impl Example {
+    fn by_value(self: Self) {}
+    fn by_ref(self: &Self) {}
+    fn by_ref_mut(self: &mut Self) {}
+    fn by_box(self: Box<Self>) {}
+    fn by_rc(self: Rc<Self>) {}
+    fn by_arc(self: Arc<Self>) {}
+    fn explicit_type(self: Arc<Example>) {}
+}
+```
+
 Shorthand syntax can be used without specifying a type, which have the
 following equivalents:
 
@@ -294,6 +319,9 @@ fn main() {
 [_Lifetime_]: trait-bounds.html
 [_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
+[`Arc<Self>`]: special-types-and-traits.html#arct
+[`Box<Self>`]: special-types-and-traits.html#boxt
+[`Rc<Self>`]: special-types-and-traits.html#rct
 [trait]: items/traits.html
 [traits]: items/traits.html
 [type aliases]: items/type-aliases.html
