@@ -136,7 +136,17 @@ Shorthand             | Equivalent
 
 > Note: Lifetimes can be and usually are elided with this shorthand.
 
-Consider the following trait:
+If the `self` parameter is prefixed with `mut`, it becomes a mutable variable,
+similar to regular parameters using a `mut` [identifier pattern]. For example:
+
+```rust
+trait Changer: Sized {
+    fn change(mut self) {}
+    fn modify(mut self: Box<Self>) {}
+}
+```
+
+As an example of methods on a trait, consider the following:
 
 ```rust
 # type Surface = i32;
@@ -332,6 +342,7 @@ fn main() {
 [type aliases]: items/type-aliases.html
 [inherent implementations]: items/implementations.html#inherent-implementations
 [identifier]: identifiers.html
+[identifier pattern]: patterns.html#identifier-patterns
 [trait object]: types/trait-object.html
 [implementations]: items/implementations.html
 [type]: types.html#type-expressions
