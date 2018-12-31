@@ -3,9 +3,9 @@ language: rust
 rust:
   - nightly
 
-before_script:
-  - (cargo install mdbook --version =0.1.7)
+install:
+  - travis_retry curl -Lf https://github.com/rust-lang-nursery/mdBook/releases/download/v0.1.7/mdbook-v0.1.7-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=$HOME/.cargo/bin
 
-script: 
+script:
   - export PATH=$PATH:/home/travis/.cargo/bin && mdbook test
   - cd stable-check && cargo run -- ../src
