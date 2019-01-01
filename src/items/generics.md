@@ -57,7 +57,7 @@ referred to with path syntax.
 > _ForLifetimes_ :\
 > &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#type-and-lifetime-parameters) `>`
 
-*Where clauses* provide an another way to specify bounds on type and lifetime
+*Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
 
