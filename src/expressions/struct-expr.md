@@ -71,8 +71,10 @@ let base = Point3d {x: 1, y: 2, z: 3};
 Point3d {y: 0, z: 10, .. base};
 ```
 
+[scrutinee]: glossary.html#scrutinee
+
 Struct expressions with curly braces can't be used directly in a [loop] or [if]
-expression's head, or in the scrutinee of a [if let] or [match] expression.
+expression's head, or in the [scrutinee] of an [if let] or [match] expression.
 However, struct expressions can be in used in these situations if they are
 within another expression, for example inside [parentheses].
 

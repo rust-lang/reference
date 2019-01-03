@@ -80,6 +80,12 @@ Types that can be referred to by a path directly. Specifically [enums],
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
 imported into every module of every crate. The traits in the prelude are pervasive.
 
+### Scrutinee
+
+A scrutinee is the expression that is matched on in `match` expressions and
+similar pattern matching constructs. For example, in `match x { A => 1, B => 2 }`,
+the expression `x` is the scrutinee.
+
 ### Size
 
 The size of a value has two definitions.

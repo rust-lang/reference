@@ -67,9 +67,11 @@ Patterns are used in:
 
 ## Destructuring
 
+[scrutinee]: glossary.html#scrutinee
+
 Patterns can be used to *destructure* [structs], [enums], and [tuples].
 Destructuring breaks up a value into its component pieces. The syntax used is
-almost the same as when creating such values. In a pattern whose scrutinee
+almost the same as when creating such values. In a pattern whose [scrutinee]
 expression has a `struct`, `enum` or `tuple` type, a placeholder (`_`) stands
 in for a *single* data field, whereas a wildcard `..` stands in for *all* the
 remaining fields of a particular variant. When destructuring a data structure
