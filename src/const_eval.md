@@ -9,10 +9,11 @@ can be evaluated at compile-time.
 Certain forms of expressions, called constant expressions, can be evaluated at
 compile time. In [const contexts](#const-context), these are the only allowed
 expressions, and are always evaluated at compile time. In other places, such as
-[`let` statements](statements.html#let-statements), constant expressions are
-Behaviors such as out of bounds [array indexing] or [overflow] are compiler errors
-if the value must be evaluated at compile time (i.e. in const contexts).
-Otherwise, these behaviors are warnings, but will likely panic at run-time.
+[`let` statements](statements.html#let-statements), constant expressions *may*
+be, but are not guaranteed to be, evaluated at compile time. Behaviors such as
+out of bounds [array indexing] or [overflow] are compiler errors if the value
+must be evaluated at compile time (i.e. in const contexts). Otherwise, these
+behaviors are warnings, but will likely panic at run-time.
 
 The following expressions are constant expressions, so long as any operands are
 also constant expressions and do not cause any [`Drop::drop`][destructors] calls
