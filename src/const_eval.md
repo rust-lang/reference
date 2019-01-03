@@ -6,7 +6,7 @@ can be evaluated at compile-time.
 
 ## Constant expressions
 
-Certain types of expressions, called constant expressions, can be evaluated at
+Certain forms of expressions, called constant expressions, can be evaluated at
 compile time. In [const contexts](#const-context), these are the only allowed
 expressions, and are always evaluated at compile time. In other places, such as
 in [`let` statements](statements.html#let-statements), constant expressions are
