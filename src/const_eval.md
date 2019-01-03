@@ -9,7 +9,7 @@ can be evaluated at compile-time.
 Certain forms of expressions, called constant expressions, can be evaluated at
 compile time. In [const contexts](#const-context), these are the only allowed
 expressions, and are always evaluated at compile time. In other places, such as
-in [`let` statements](statements.html#let-statements), constant expressions are
+[`let` statements](statements.html#let-statements), constant expressions are
 Errors such as out of bounds [array indexing] or [overflow] are compiler errors
 if the value must be evaluated at compile time (i.e. in const contexts);
 otherwise they are just warnings, but the code will most likely panic when run.
