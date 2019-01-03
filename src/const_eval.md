@@ -6,13 +6,14 @@ can be evaluated at compile-time.
 
 ## Constant expressions
 
-Certain types of expressions can be evaluated at compile time. These are called
-_constant expressions_ and are required in const contexts. In
-other places, such as in [`let` statements](statements.html#let-statements),
-constant expressions may be evaluated at compile time. If errors, such as out
-of bounds [array indexing] or [overflow] occurs,
-then it is a compiler error if the value must be evaluated at compile time,
-otherwise it is just a warning, but the code will most likely panic when run.
+Certain forms of expressions, called constant expressions, can be evaluated at
+compile time. In [const contexts](#const-context), these are the only allowed
+expressions, and are always evaluated at compile time. In other places, such as
+[`let` statements](statements.html#let-statements), constant expressions *may*
+be, but are not guaranteed to be, evaluated at compile time. Behaviors such as
+out of bounds [array indexing] or [overflow] are compiler errors if the value
+must be evaluated at compile time (i.e. in const contexts). Otherwise, these
+behaviors are warnings, but will likely panic at run-time.
 
 The following expressions are constant expressions, so long as any operands are
 also constant expressions and do not cause any [`Drop::drop`][destructors] calls
