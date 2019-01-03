@@ -70,8 +70,6 @@ while i < 10 {
 > &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]
 
-[scrutinee]: glossary.html#scrutinee
-
 A `while let` loop is semantically similar to a `while` loop but in place of a
 condition expression it expects the keyword `let` followed by a refutable
 pattern, an `=`, a [scrutinee] expression and a block expression. If the value of
@@ -276,3 +274,5 @@ expression `()`.
 [_Pattern_]: patterns.html
 
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
+
+[scrutinee]: glossary.html#scrutinee

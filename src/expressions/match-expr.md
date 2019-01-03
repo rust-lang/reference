@@ -23,8 +23,6 @@
 > _MatchArmGuard_ :\
 > &nbsp;&nbsp; `if` [_Expression_]
 
-[scrutinee]: glossary.html#scrutinee
-
 A *`match` expression* branches on a pattern. The exact form of matching that
 occurs depends on the [pattern]. A `match`
 expression has a *[scrutinee] expression*, which is the value to compare to the
@@ -146,3 +144,4 @@ expressions].
 [Range Pattern]: patterns.html#range-patterns
 [attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
 [binding mode]: patterns.html#binding-modes
+[scrutinee]: glossary.html#scrutinee

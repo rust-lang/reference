@@ -67,8 +67,6 @@ Patterns are used in:
 
 ## Destructuring
 
-[scrutinee]: glossary.html#scrutinee
-
 Patterns can be used to *destructure* [structs], [enums], and [tuples].
 Destructuring breaks up a value into its component pieces. The syntax used is
 almost the same as when creating such values. In a pattern whose [scrutinee]
@@ -678,3 +676,4 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [literals]: expressions/literal-expr.html
 [structs]: items/structs.html
 [tuples]: types/tuple.html
+[scrutinee]: glossary.html#scrutinee
