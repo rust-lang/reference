@@ -69,7 +69,7 @@ Patterns are used in:
 
 Patterns can be used to *destructure* [structs], [enums], and [tuples].
 Destructuring breaks up a value into its component pieces. The syntax used is
-almost the same as when creating such values. In a pattern whose head
+almost the same as when creating such values. In a pattern whose [scrutinee]
 expression has a `struct`, `enum` or `tuple` type, a placeholder (`_`) stands
 in for a *single* data field, whereas a wildcard `..` stands in for *all* the
 remaining fields of a particular variant. When destructuring a data structure
@@ -676,3 +676,4 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [literals]: expressions/literal-expr.html
 [structs]: items/structs.html
 [tuples]: types/tuple.html
+[scrutinee]: glossary.html#scrutinee
