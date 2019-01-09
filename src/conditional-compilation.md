@@ -163,16 +163,18 @@ Possible values:
 * `"16"`
 * `"32"`
 * `"64"`
+* `"128"`
 * `"ptr"`
 
 ### `target_vendor`
 
 Key-value option set once with the vendor of the target.
 
-Possible values:
+Example values:
 
 * `"apple"`
 * `"pc"`
+* `"sgx"`
 * `"unknown"`
 
 ### `test`
