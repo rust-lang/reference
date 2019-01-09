@@ -43,7 +43,7 @@ union field reads the bits of the union at the field's type. It is the
 programmer's responsibility to make sure that the data is valid at that
 type. Failing to do so results in undefined behavior. For example, reading the
 value `3` at type `bool` is undefined behavior. Effectively, writing to and then
-reading from a union is equivalent to a [`transmute`] from the type used for
+reading from a union is analogous to a [`transmute`] from the type used for
 writing to the type used for reading.
 
 Consequently, all reads of union fields have to be placed in `unsafe` blocks:
