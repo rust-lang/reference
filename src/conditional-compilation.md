@@ -138,6 +138,7 @@ Example values:
 * `"gnu"`
 * `"msvc"`
 * `"musl"`
+* `"sgx"`
 
 ### `target_endian`
 
@@ -173,8 +174,8 @@ Key-value option set once with the vendor of the target.
 Example values:
 
 * `"apple"`
+* `"fortanix"`
 * `"pc"`
-* `"sgx"`
 * `"unknown"`
 
 ### `test`
