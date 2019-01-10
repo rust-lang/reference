@@ -104,8 +104,7 @@ following types:
 - [`Arc<Self>`]
 - [`Pin<P>`] where `P` is one of the above types except `Self`.
 
-As an alternate way of writing the type, the `Self` term may instead be
-written with the type being implemented.
+The `Self` term can be replaced with the type being implemented.
 
 ```rust
 # use std::rc::Rc;
