@@ -44,10 +44,10 @@ External crates imported with `extern crate` in the root module or provided to
 the compiler (as with the `--extern` flag with `rustc`) are added to the
 "extern prelude". Crates in the extern prelude are in scope in the entire
 crate, including inner modules. If imported with `extern crate orig_name as
-new_name`, then the symbol `new_name` is added to the prelude.
+new_name`, then the symbol `new_name` is instead added to the prelude.
 
 The `core` crate is always added to the extern prelude. The `std` crate
-is added as long as the [`no_std`] attribute is not specified.
+is added as long as the [`no_std`] attribute is not specified in the crate root.
 
 The [`no_implicit_prelude`] attribute can be used on a module to disable
 prelude lookups within that module.
@@ -60,7 +60,7 @@ prelude lookups within that module.
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
 > **Note**: Crates not explicitly named with the `--extern` flag with `rustc`
-> are not included in the extern prelude. This means that additional crates
+> are not included in the extern prelude. As a result, additional crates
 > that ship with `rustc`, such as [`proc_macro`], [`alloc`], and [`test`],
 > currently aren't available in the extern prelude and must be brought into
 > scope with an `extern crate` declaration, even in the 2018 edition. `use`
