@@ -59,21 +59,14 @@ prelude lookups within that module.
 > Beginning in the 2018 edition, [use declarations] can reference crates in
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
-> **Note**: Crates not explicitly named with the `--extern` flag with `rustc`
-> are not included in the extern prelude. As a result, additional crates
-> that ship with `rustc`, such as [`proc_macro`], [`alloc`], and [`test`],
-> currently aren't available in the extern prelude and must be brought into
-> scope with an `extern crate` declaration, even in the 2018 edition. `use`
-> paths must reference the `extern crate` item (such as using [`crate::`] or
-> [`self::`] path prefixes).
+> **Note**: Additional crates that ship with `rustc`, such as [`proc_macro`],
+> [`alloc`], and [`test`], are not automatically included with the `--extern`
+> flag when using Cargo. They must be brought into scope with an `extern
+> crate` declaration, even in the 2018 edition.
 >
 > ```rust
 > extern crate proc_macro;
-> // Cannot reference `proc_macro` directly because it is not in the extern prelude.
-> // use proc_macro::TokenStream;
-> // Instead, you must reference the item in scope from the `extern crate`
-> // declaration.
-> use self::proc_macro::TokenStream;
+> use proc_macro::TokenStream;
 > ```
 
 <!--
