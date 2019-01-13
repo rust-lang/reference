@@ -43,7 +43,7 @@ extern crate hello_world; // hyphen replaced with an underscore
 External crates imported with `extern crate` in the root module or provided to
 the compiler (as with the `--extern` flag with `rustc`) are added to the
 "extern prelude". Crates in the extern prelude are in scope in the entire
-crate, including inner modules. If renamed as in `extern crate orig_name as
+crate, including inner modules. If imported with `extern crate orig_name as
 new_name`, then the symbol `new_name` is added to the prelude.
 
 The `core` crate is always added to the extern prelude. The `std` crate
