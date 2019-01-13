@@ -554,7 +554,7 @@ You can implement `derive` for your own traits through [procedural macros].
 
 [_LiteralExpression_]: expressions/literal-expr.html
 [_SimplePath_]: paths.html#simple-paths
-[`no_implicit_prelude`]: items/modules.html
+[`no_implicit_prelude`]: items/modules.html#prelude-items
 [`no_std`]: crates-and-source-files.html#preludes-and-no_std
 [Doc comments]: comments.html#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
