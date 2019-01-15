@@ -77,7 +77,7 @@ mod bar {
 #[allow(non_camel_case_types)]
 type int8_t = i8;
 
-// Outer attribute applies to the entire function.
+// Inner attribute applies to the entire function.
 fn some_unused_variables() {
   #![allow(unused_variables)]
 
