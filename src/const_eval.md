@@ -9,7 +9,7 @@ can be evaluated at compile-time.
 Certain forms of expressions, called constant expressions, can be evaluated at
 compile time. In [const contexts](#const-context), these are the only allowed
 expressions, and are always evaluated at compile time. In other places, such as
-[`let` statements](statements.html#let-statements), constant expressions *may*
+[let statement]s, constant expressions *may*
 be, but are not guaranteed to be, evaluated at compile time. Behaviors such as
 out of bounds [array indexing] or [overflow] are compiler errors if the value
 must be evaluated at compile time (i.e. in const contexts). Otherwise, these
@@ -26,8 +26,13 @@ to be ran.
 * [Array expressions].
 * [Struct] expressions.
 * [Enum variant] expressions.
-* [Block expressions], including `unsafe` blocks, which only contain items and
-  possibly a constant tail expression.
+* [Block expressions], including `unsafe` blocks.
+    * [let statement]s and thus irrefutable [patterns], with the caveat that until `if` and `match`
+    are implemented, one cannot use both short circuiting operators (`&&` and `||`) and let
+    statements within the same constant.
+    * [assignment expressions](operator-expr.html#assignment-expressions)
+    * [assignment operator expressions](operator-expr.html#compound-assignment-expressions)
+    * [expression statements](statements.html#expression-statements)
 * [Field] expressions.
 * Index expressions, [array indexing] or [slice] with a `usize`.
 * [Range expressions].
@@ -39,7 +44,7 @@ to be ran.
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
-* Calls of const functions and const methods
+* Calls of const functions and const methods.
 
 ## Const context
 
@@ -81,3 +86,5 @@ A _const context_ is one of the following:
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
 [grouped]:              expressions/grouped-expr.html
 [cast]:                 expressions/operator-expr.html#type-cast-expressions
+[let statement]: statements.html#let-statements
+[patterns]: patterns.html
