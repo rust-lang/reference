@@ -26,8 +26,13 @@ to be ran.
 * [Array expressions].
 * [Struct] expressions.
 * [Enum variant] expressions.
-* [Block expressions], including `unsafe` blocks, which only contain items and
-  possibly a constant tail expression.
+* [Block expressions], including `unsafe` blocks.
+    * [let statement]s and thus irrefutable [patterns], with the caveat that until `if` and `match`
+    are implemented, one cannot use both short circuiting operators (`&&` and `||`) and let
+    statements within the same constant.
+    * [assignment expressions](operator-expr.html#assignment-expressions)
+    * [assignment operator expressions](operator-expr.html#compound-assignment-expressions)
+    * [expression statements](statements.html#expression-statements)
 * [Field] expressions.
 * Index expressions, [array indexing] or [slice] with a `usize`.
 * [Range expressions].
@@ -39,8 +44,7 @@ to be ran.
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
-* Calls of const functions and const methods
-* [let statement]s and thus irrefutable [patterns]
+* Calls of const functions and const methods.
 
 ## Const context
 
