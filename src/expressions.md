@@ -159,69 +159,13 @@ The following expressions can be mutable place expression contexts:
   then evaluates the value being indexed, but not the index, in mutable place
   expression context.
 
-### Temporary lifetimes
+### Temporaries
 
 When using a value expression in most place expression contexts, a temporary
 unnamed memory location is created initialized to that value and the expression
-evaluates to that location instead, except if promoted to `'static`. Promotion
-of a value expression to a `'static` slot occurs when the expression could be
-written in a constant, borrowed, and dereferencing that borrow where the
-expression was originally written, without changing the runtime behavior. That
-is, the promoted expression can be evaluated at compile-time and the resulting
-value does not contain [interior mutability] or [destructors] (these properties
-are determined based on the value where possible, e.g. `&None` always has the
-type `&'static Option<_>`, as it contains nothing disallowed). Otherwise, the
-lifetime of temporary values is typically
-
-- the innermost enclosing statement; the tail expression of a block is
-  considered part of the statement that encloses the block, or
-- the condition expression or the loop conditional expression if the
-  temporary is created in the condition expression of an `if` or in the loop
-  conditional expression of a `while` expression.
-
-When a temporary value expression is being created that is assigned into a
-[`let` declaration][let], however, the temporary is created with the lifetime of
-the enclosing block instead, as using the enclosing [`let` declaration][let]
-would be a guaranteed error (since a pointer to the temporary
-would be stored into a variable, but the temporary would be freed before the
-variable could be used). The compiler uses simple syntactic rules to decide
-which values are being assigned into a `let` binding, and therefore deserve a
-longer temporary lifetime.
-
-Here are some examples:
-
-- `let x = foo(&temp())`. The expression `temp()` is a value expression. As it
-  is being borrowed, a temporary is created which will be freed after
-  the innermost enclosing statement; in this case, the `let` declaration.
-- `let x = temp().foo()`. This is the same as the previous example,
-  except that the value of `temp()` is being borrowed via autoref on a
-  method-call. Here we are assuming that `foo()` is an `&self` method
-  defined in some trait, say `Foo`. In other words, the expression
-  `temp().foo()` is equivalent to `Foo::foo(&temp())`.
-- `let x = if foo(&temp()) {bar()} else {baz()};`. The expression `temp()` is
-  a value expression. As the temporary is created in the condition expression
-  of an `if`, it will be freed at the end of the condition expression;
-  in this example before the call to `bar` or `baz` is made.
-- `let x = if temp().must_run_bar {bar()} else {baz()};`.
-  Here we assume the type of `temp()` is a struct with a boolean field
-  `must_run_bar`. As the previous example, the temporary corresponding to
-  `temp()` will be freed at the end of the condition expression.
-- `while foo(&temp()) {bar();}`. The temporary containing the return value from
-  the call to `temp()` is created in the loop conditional expression. Hence it
-  will be freed at the end of the loop conditional expression; in this example
-  before the call to `bar` if the loop body is executed.
-- `let x = &temp()`. Here, the same temporary is being assigned into
-  `x`, rather than being passed as a parameter, and hence the
-  temporary's lifetime is considered to be the enclosing block.
-- `let x = SomeStruct { foo: &temp() }`. As in the previous case, the
-  temporary is assigned into a struct which is then assigned into a
-  binding, and hence it is given the lifetime of the enclosing block.
-- `let x = [ &temp() ]`. As in the previous case, the
-  temporary is assigned into an array which is then assigned into a
-  binding, and hence it is given the lifetime of the enclosing block.
-- `let ref x = temp()`. In this case, the temporary is created using a ref
-  binding, but the result is the same: the lifetime is extended to the enclosing
-  block.
+evaluates to that location instead, except if [promoted](#constant-promotion)
+to a `static`. The [drop scope] of the temporary is usually the end of the
+enclosing statement.
 
 ### Implicit Borrows
 
@@ -304,14 +248,15 @@ They are never allowed before:
 [deref]:                expressions/operator-expr.md#the-dereference-operator
 
 [destructors]:          destructors.md
-[interior mutability]:  interior-mutability.md
-[`Box<T>`]:             ../std/boxed/struct.Box.md
+[drop scope]:           destructors.md#drop-scopes
+
+[`Box<T>`]:             ../std/boxed/struct.Box.html
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`Sized`]:              special-types-and-traits.md#sized
 [implicit borrow]:      #implicit-borrows
 [implicitly mutably borrowed]: #implicit-borrows
-[let]:                  statements.md#let-statements
+[interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [scrutinee]:            glossary.md#scrutinee
@@ -320,7 +265,6 @@ They are never allowed before:
 [static variables]:     items/static-items.md
 [Temporary values]:     #temporary-lifetimes
 [Variables]:            variables.md
-
 
 [_ArithmeticOrLogicalExpression_]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [_ArrayExpression_]:              expressions/array-expr.md
