@@ -56,4 +56,4 @@ and raw pointers.
 [_TypeNoBounds_]: ../types.md#type-expressions
 [`unsafe` operation]: ../unsafety.md
 [dynamically sized types]: ../dynamically-sized-types.md
-[temporary value]: ../expressions.md#temporary-lifetimes
+[temporary value]: ../expressions.md#temporaries

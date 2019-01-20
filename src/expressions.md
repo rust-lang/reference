@@ -125,7 +125,7 @@ the remaining situations if that type is [`Sized`], then it may be possible to
 move the value. Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
-* [Temporary values](#temporary-lifetimes).
+* [Temporary values](#temporaries).
 * [Fields][field] of a place expression which can be moved out of and
   doesn't implement [`Drop`].
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and
@@ -163,9 +163,8 @@ The following expressions can be mutable place expression contexts:
 
 When using a value expression in most place expression contexts, a temporary
 unnamed memory location is created initialized to that value and the expression
-evaluates to that location instead, except if [promoted](#constant-promotion)
-to a `static`. The [drop scope] of the temporary is usually the end of the
-enclosing statement.
+evaluates to that location instead, except if [promoted] to a `static`. The
+[drop scope] of the temporary is usually the end of the enclosing statement.
 
 ### Implicit Borrows
 
@@ -260,10 +259,11 @@ They are never allowed before:
 [let statement]:        statements.md#let-statements
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [scrutinee]:            glossary.md#scrutinee
+[promoted]:             destructors.md#constant-promotion
 [slice]:                types/slice.md
 [statement]:            statements.md
 [static variables]:     items/static-items.md
-[Temporary values]:     #temporary-lifetimes
+[Temporary values]:     #temporaries
 [Variables]:            variables.md
 
 [_ArithmeticOrLogicalExpression_]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators

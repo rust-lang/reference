@@ -139,9 +139,9 @@ attention to making those sections the best that they can be.
 [_Expression_]: expressions.md
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
-[expressions chapter]: expressions.md
-[lifetime of temporaries]: expressions.md#temporary-lifetimes
-[linkage]: linkage.md
+[expressions chapter]: expressions.html
+[lifetime of temporaries]: expressions.html#temporaries
+[linkage]: linkage.html
 [rustc book]: ../rustc/index.html
 [Notation]: notation.md
 [Discord]: https://discord.gg/rust-lang

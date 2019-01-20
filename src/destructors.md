@@ -278,7 +278,8 @@ scope of the initializer expression is extended.
 
 #### Extending based on expressions
 
-For a let statement with an initializer, an *extending expression* if it is
+For a let statement with an initializer, an *extending expression* is an
+expression which is one of the following:
 
 * The initializer expression.
 * The operand of a extending [borrow expression].
@@ -342,8 +343,9 @@ variable or field from being dropped automatically.
 [initialized]: glossary.md#initialized
 [interior mutability]: interior-mutability.md
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
+[place context]: expressions.md#place-expressions-and-value-expressions
 [statement]: statements.md
-[temporary]: expressions.md#temporary-lifetimes
+[temporary]: expressions.md#temporaries
 [variable]: variables.md
 
 [array]: types/array.md

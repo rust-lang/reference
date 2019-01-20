@@ -295,6 +295,6 @@ expression `()`.
 [_Pattern_]: ../patterns.md
 [`match` expression]: match-expr.md
 [scrutinee]: ../glossary.md#scrutinee
-[temporary values]: ../expressions.md#temporary-lifetimes
+[temporary values]: ../expressions.md#temporaries
 [_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [`if let` expressions]: if-expr.md#if-let-expressions
