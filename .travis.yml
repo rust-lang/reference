@@ -8,4 +8,5 @@ install:
 
 script:
   - export PATH=$PATH:/home/travis/.cargo/bin && mdbook test
-  - cd stable-check && cargo run -- ../src
+  - (cd stable-check && cargo run -- ../src)
+  - tests/linkcheck.sh
