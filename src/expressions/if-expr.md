@@ -53,11 +53,11 @@ assert_eq!(y, "Bigger");
 
 An `if let` expression is semantically similar to an `if` expression but in
 place of a condition expression it expects the keyword `let` followed by a
-refutable pattern, an `=` and an expression. If the value of the expression on
-the right hand side of the `=` matches the pattern, the corresponding block
-will execute, otherwise flow proceeds to the following `else` block if it
-exists. Like `if` expressions, `if let` expressions have a value determined by
-the block that is evaluated.
+pattern, an `=` and an expression. If the value of the expression on the right
+hand side of the `=` matches the pattern, the corresponding block will
+execute, otherwise flow proceeds to the following `else` block if it exists.
+Like `if` expressions, `if let` expressions have a value determined by the
+block that is evaluated.
 
 ```rust
 let dish = ("Ham", "Eggs");
@@ -73,6 +73,12 @@ if let ("Bacon", b) = dish {
 // this body will execute
 if let ("Ham", b) = dish {
     println!("Ham is served with {}", b);
+}
+
+// Irrefutable patterns are allowed primarily to make it easier for macros to
+// accept any kind of pattern.
+if let _ = 5 {
+    println!("Irrefutable patterns are always true");
 }
 ```
 
