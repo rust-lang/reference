@@ -98,11 +98,16 @@ expressions are value expressions.
 
 A *value expression* is an expression that represents an actual value.
 
-The left operand of an [assignment][assign] or [compound assignment] expression
-is a place expression context, as is the single operand of a unary [borrow], and
-the operand of any [implicit borrow]. The discriminant or subject of a
-[match expression][match] and right side of a [let statement] is also a place
-expression context. All other expression contexts are value expression contexts.
+The following contexts are *place expression* contexts:
+
+* The left operand of an [assignment][assign] or [compound assignment] expression.
+* The operand of a unary [borrow] or [dereference] operator.
+* The operand of a field expression.
+* The indexed operand of an array indexing expression.
+* The operand of any [implicit borrow].
+* The initializer of a [let statement].
+* The [scrutinee] of a [match expression][match].
+* The base of a [functional update] struct expression.
 
 > Note: Historically, place expressions were called *lvalues* and value
 > expressions were called *rvalues*.
@@ -279,6 +284,7 @@ They are never allowed before:
 [closure expressions]:  expressions/closure-expr.html
 [enum variant]:         expressions/enum-variant-expr.html
 [field]:                expressions/field-expr.html
+[functional update]:    expressions/struct-expr.html#functional-update-syntax
 [grouped]:              expressions/grouped-expr.html
 [literals]:             expressions/literal-expr.html
 [match]:                expressions/match-expr.html
@@ -316,6 +322,7 @@ They are never allowed before:
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
 [const contexts]:       const_eval.html
+[scrutinee]:            glossary.html#scrutinee
 [slice]:                types/slice.html
 [statement]:            statements.html
 [static variables]:     items/static-items.html

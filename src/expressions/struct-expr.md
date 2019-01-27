@@ -56,19 +56,23 @@ colon.
 A value of a [union] type can also be created using this syntax, except that it must
 specify exactly one field.
 
+## Functional update syntax
+
 A struct expression can terminate with the syntax `..` followed by an
 expression to denote a functional update. The expression following `..` (the
-base) must have the same struct type as the new struct type being formed. The
-entire expression denotes the result of constructing a new struct (with the
-same type as the base expression) with the given values for the fields that
-were explicitly specified and the values in the base expression for all other
-fields. Just as with all struct expressions, all of the fields of the struct
-must be [visible], even those not explicitly named.
+base) must have the same struct type as the new struct type being formed.
+
+The entire expression uses the given values for the fields that were specified
+and moves or copies the remaining fields from the base expression. Just as with
+all struct expressions, all of the fields of the struct must be [visible], even
+those not explicitly named.
 
 ```rust
 # struct Point3d { x: i32, y: i32, z: i32 }
-let base = Point3d {x: 1, y: 2, z: 3};
-Point3d {y: 0, z: 10, .. base};
+let mut base = Point3d {x: 1, y: 2, z: 3};
+let y_ref = &mut base.y;
+Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
+drop(y_ref);
 ```
 
 Struct expressions with curly braces can't be used directly in a [loop] or [if]
