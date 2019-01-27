@@ -44,7 +44,7 @@ assert_eq!(y, "Bigger");
 
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+> &nbsp;&nbsp; `if` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
@@ -95,10 +95,10 @@ let a = if let Some(1) = x {
 assert_eq!(a, 3);
 ```
 
-An `if let` expression is equivalent to a `match` expression as follows:
+An `if let` expression is equivalent to a [`match` expression] as follows:
 
 ```rust,ignore
-if let PAT = EXPR {
+if let PATS = EXPR {
     /* body */
 } else {
     /*else */
@@ -109,8 +109,23 @@ is equivalent to
 
 ```rust,ignore
 match EXPR {
-    PAT => { /* body */ },
+    PATS => { /* body */ },
     _ => { /* else */ },    // () if there is no else
+}
+```
+
+Multiple patterns may be specified with the `|` operator. This has the same semantics
+as with `|` in `match` expressions:
+
+```rust
+enum E {
+    X(u8),
+    Y(u8),
+    Z(u8),
+}
+let v = E::Y(12);
+if let E::X(n) | E::Y(n) = v {
+    assert_eq!(n, 12);
 }
 ```
 
@@ -134,9 +149,10 @@ if let PAT = EXPR || EXPR { .. }
 if let PAT = ( EXPR || EXPR ) { .. }
 ```
 
-[_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
-[_Pattern_]: patterns.html
+[_Expression_]: expressions.html
 [_LazyBooleanOperatorExpression_]: expressions/operator-expr.html#lazy-boolean-operators
+[_MatchArmPatterns_]: expressions/match-expr.html
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
+[`match` expression]: expressions/match-expr.html
 [scrutinee]: glossary.html#scrutinee

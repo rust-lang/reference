@@ -62,7 +62,8 @@ match x {
 Variables bound within the pattern are scoped to the match guard and the arm's
 expression. The [binding mode] (move, copy, or reference) depends on the pattern.
 
-Multiple match patterns may be joined with the `|` operator:
+Multiple match patterns may be joined with the `|` operator. Each pattern will be
+tested in left-to-right sequence until a successful match is found.
 
 ```rust
 # let x = 9;
@@ -73,11 +74,22 @@ let message = match x {
 };
 
 assert_eq!(message, "a few");
+
+// Demonstration of pattern match order.
+struct S(i32, i32);
+
+match S(1, 2) {
+    S(z @ 1, _) | S(_, z @ 2) => assert_eq!(z, 1),
+    _ => panic!(),
+}
 ```
 
-Please notice that the `2..=9` is a [Range Pattern], not a [Range Expression]
-and, thus, only those types of ranges supported by range patterns can be used
-in match arms.
+> Note: The `2..=9` is a [Range Pattern], not a [Range Expression]. Thus, only
+> those types of ranges supported by range patterns can be used in match arms.
+
+Every binding in each `|` separated pattern must appear in all of the patterns
+in the arm. Every binding of the same name must have the same type, and have
+the same binding mode.
 
 Match arms can accept _match guards_ to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
@@ -85,7 +97,7 @@ consist of a bool-typed expression following the `if` keyword. A pattern guard
 may refer to the variables bound within the pattern they follow.
 
 When the pattern matches successfully, the pattern guard expression is executed.
-If the expression is truthy, the pattern is successfully matched against.
+If the expression evaluates to true, the pattern is successfully matched against.
 Otherwise, the next pattern, including other matches with the `|` operator in
 the same arm, is tested.
 
@@ -104,15 +116,13 @@ let message = match maybe_digit {
 > and side effects it has to execute multiple times. For example:
 >
 > ```rust
-> use std::cell::Cell;
-> fn main() {
->     let i : Cell<i32> = Cell::new(0);
->     match 1 {
->         1 | _ if { i.set(i.get() + 1); false } => {}
->         _ => {}
->     }
->     assert_eq!(i.get(), 2);
+> # use std::cell::Cell;
+> let i : Cell<i32> = Cell::new(0);
+> match 1 {
+>     1 | _ if { i.set(i.get() + 1); false } => {}
+>     _ => {}
 > }
+> assert_eq!(i.get(), 2);
 > ```
 
 ## Attributes on match arms

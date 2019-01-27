@@ -67,7 +67,7 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>except struct expression</sub>
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
@@ -90,11 +90,11 @@ while let _ = 5 {
 }
 ```
 
-A `while let` loop is equivalent to a `loop` expression containing a `match`
-expression as follows.
+A `while let` loop is equivalent to a `loop` expression containing a [`match`
+expression] as follows.
 
 ```rust,ignore
-'label: while let PAT = EXPR {
+'label: while let PATS = EXPR {
     /* loop body */
 }
 ```
@@ -104,9 +104,20 @@ is equivalent to
 ```rust,ignore
 'label: loop {
     match EXPR {
-        PAT => { /* loop body */ },
+        PATS => { /* loop body */ },
         _ => break,
     }
+}
+```
+
+Multiple patterns may be specified with the `|` operator. This has the same semantics
+as with `|` in `match` expressions:
+
+```rust
+let mut vals = vec![2, 3, 1, 2, 2];
+while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
+    // Prints 2, 2, then 1
+    println!("{}", v);
 }
 ```
 
@@ -272,12 +283,11 @@ and the `loop` must have a type compatible with each `break` expression.
 expression `()`.
 
 [IDENTIFIER]: identifiers.html
-[temporary values]: expressions.html#temporary-lifetimes
-
-[_Expression_]:      expressions.html
-[_BlockExpression_]: expressions/block-expr.html
-[_Pattern_]: patterns.html
-
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
-
+[_BlockExpression_]: expressions/block-expr.html
+[_Expression_]:      expressions.html
+[_MatchArmPatterns_]: expressions/match-expr.html
+[_Pattern_]: patterns.html
+[`match` expression]: expressions/match-expr.html
 [scrutinee]: glossary.html#scrutinee
+[temporary values]: expressions.html#temporary-lifetimes
