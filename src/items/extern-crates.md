@@ -2,11 +2,18 @@
 
 > **<sup>Syntax:<sup>**\
 > _ExternCrate_ :\
-> &nbsp;&nbsp; `extern` `crate` [IDENTIFIER]&nbsp;(`as` ( [IDENTIFIER] | `_` ) )<sup>?</sup> `;`
+> &nbsp;&nbsp; `extern` `crate` _CrateRef_ _AsClause_<sup>?</sup> `;`
+>
+> _CrateRef_ :\
+> &nbsp;&nbsp; [IDENTIFIER] | `self`
+>
+> _AsClause_ :\
+> &nbsp;&nbsp; `as` ( [IDENTIFIER] | `_` )
 
 An _`extern crate` declaration_ specifies a dependency on an external crate.
 The external crate is then bound into the declaring scope as the [identifier]
-provided in the `extern crate` declaration.
+provided in the `extern crate` declaration. The `as` clause can be used to
+bind the imported crate to a different name.
 
 The external crate is resolved to a specific `soname` at compile time, and a
 runtime linkage requirement to that `soname` is passed to the linker for
@@ -15,6 +22,9 @@ compiler's library path and matching the optional `crateid` provided against
 the `crateid` attributes that were declared on the external crate when it was
 compiled. If no `crateid` is provided, a default `name` attribute is assumed,
 equal to the [identifier] given in the `extern crate` declaration.
+
+The `self` crate may be imported which creates a binding to the current crate.
+In this case the `as` clause must be used to specify the name to bind it to.
 
 Three examples of `extern crate` declarations:
 
