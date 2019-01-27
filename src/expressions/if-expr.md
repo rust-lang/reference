@@ -44,7 +44,7 @@ assert_eq!(y, "Bigger");
 
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Patterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+> &nbsp;&nbsp; `if` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
@@ -152,7 +152,7 @@ if let PAT = ( EXPR || EXPR ) { .. }
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
 [_LazyBooleanOperatorExpression_]: expressions/operator-expr.html#lazy-boolean-operators
-[_Patterns_]: expressions/match-expr.html
+[_MatchArmPatterns_]: expressions/match-expr.html
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
 [`match` expression]: expressions/match-expr.html
 [scrutinee]: glossary.html#scrutinee

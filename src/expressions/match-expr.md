@@ -15,9 +15,9 @@
 > &nbsp;&nbsp; _MatchArm_ `=>` ( [_BlockExpression_] | [_Expression_] ) `,`<sup>?</sup>
 >
 > _MatchArm_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _Patterns_ _MatchArmGuard_<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>
 >
-> _Patterns_ :\
+> _MatchArmPatterns_ :\
 > &nbsp;&nbsp; `|`<sup>?</sup> [_Pattern_] ( `|` [_Pattern_] )<sup>\*</sup>
 >
 > _MatchArmGuard_ :\
@@ -76,9 +76,8 @@ let message = match x {
 assert_eq!(message, "a few");
 ```
 
-> Note: The `2..=9` is a [Range Pattern], not a [Range Expression] and, thus,
-> only those types of ranges supported by range patterns can be used in match
-> arms.
+> Note: The `2..=9` is a [Range Pattern], not a [Range Expression]. Thus, only
+> those types of ranges supported by range patterns can be used in match arms.
 
 Every binding in each `|` separated pattern must appear in all of the patterns
 in the arm. Every binding of the same name must have the same type, and have
@@ -109,15 +108,13 @@ let message = match maybe_digit {
 > and side effects it has to execute multiple times. For example:
 >
 > ```rust
-> use std::cell::Cell;
-> fn main() {
->     let i : Cell<i32> = Cell::new(0);
->     match 1 {
->         1 | _ if { i.set(i.get() + 1); false } => {}
->         _ => {}
->     }
->     assert_eq!(i.get(), 2);
+> # use std::cell::Cell;
+> let i : Cell<i32> = Cell::new(0);
+> match 1 {
+>     1 | _ if { i.set(i.get() + 1); false } => {}
+>     _ => {}
 > }
+> assert_eq!(i.get(), 2);
 > ```
 
 ## Attributes on match arms
