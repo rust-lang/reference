@@ -29,18 +29,24 @@ struct types, except that it must specify exactly one field:
 let u = MyUnion { f1: 1 };
 ```
 
-The expression above creates a value of type `MyUnion` with active field `f1`.
-Active field of a union can be accessed using the same syntax as struct fields:
+The expression above creates a value of type `MyUnion` and initializes the
+storage using field `f1`. The union can be accessed using the same syntax as
+struct fields:
 
 ```rust,ignore
 let f = u.f1;
 ```
 
-Inactive fields can be accessed as well (using the same syntax) if they are
-sufficiently layout compatible with the current value kept by the union.
-Reading incompatible fields results in undefined behavior. However, the active
-field is not generally known statically, so all reads of union fields have to
-be placed in `unsafe` blocks.
+Unions have no notion of an "active field". Instead, every union access just
+interprets the storage at the type of the field used for the access. Reading a
+union field reads the bits of the union at the field's type. It is the
+programmer's responsibility to make sure that the data is valid at that
+type. Failing to do so results in undefined behavior. For example, reading the
+value `3` at type `bool` is undefined behavior. Effectively, writing to and then
+reading from a union is analogous to a [`transmute`] from the type used for
+writing to the type used for reading.
+
+Consequently, all reads of union fields have to be placed in `unsafe` blocks:
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -65,9 +71,9 @@ Commonly, code using unions will provide safe wrappers around unsafe union
 field accesses.
 
 Another way to access union fields is to use pattern matching. Pattern matching
-on union fields uses the same syntax as struct patterns, except that the
-pattern must specify exactly one field. Since pattern matching accesses
-potentially inactive fields it has to be placed in `unsafe` blocks as well.
+on union fields uses the same syntax as struct patterns, except that the pattern
+must specify exactly one field. Since pattern matching is like reading the union
+with a particular field, it has to be placed in `unsafe` blocks as well.
 
 ```rust
 # union MyUnion { f1: u32, f2: f32 }
@@ -142,10 +148,8 @@ aspects of Rust language (such as privacy, name resolution, type inference,
 generics, trait implementations, inherent implementations, coherence, pattern
 checking, etc etc etc).
 
-More detailed specification for unions, including unstable bits, can be found
-in [RFC 1897 "Unions v1.2"](https://github.com/rust-lang/rfcs/pull/1897).
-
 [IDENTIFIER]: identifiers.html
 [_Generics_]: items/generics.html
 [_WhereClause_]: items/generics.html#where-clauses
 [_StructFields_]: items/structs.html
+[`transmute`]: ../../std/mem/fn.transmute.html
