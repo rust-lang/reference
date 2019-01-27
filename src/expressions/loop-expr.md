@@ -73,9 +73,9 @@ while i < 10 {
 A `while let` loop is semantically similar to a `while` loop but in place of a
 condition expression it expects the keyword `let` followed by a pattern, an
 `=`, a [scrutinee] expression and a block expression. If the value of the
-expression on the right hand side of the `=` matches the pattern, the loop
-body block executes then control returns to the pattern matching statement.
-Otherwise, the while expression completes.
+scrutinee matches the pattern, the loop body block executes then control
+returns to the pattern matching statement. Otherwise, the while expression
+completes.
 
 ```rust
 let mut x = vec![1, 2, 3];
@@ -84,8 +84,6 @@ while let Some(y) = x.pop() {
     println!("y = {}", y);
 }
 
-// Irrefutable patterns are allowed primarily to make it easier for macros to
-// accept any kind of pattern.
 while let _ = 5 {
     println!("Irrefutable patterns are always true");
     break;
