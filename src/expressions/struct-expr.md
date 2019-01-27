@@ -63,8 +63,8 @@ expression to denote a functional update. The expression following `..` (the
 base) must have the same struct type as the new struct type being formed.
 
 The entire expression uses the given values for the fields that were specified
-and moves or copies the remaining fields from the base expression. Just as with
-all struct expressions, all of the fields of the struct must be [visible], even
+and moves or copies the remaining fields from the base expression. As with all
+struct expressions, all of the fields of the struct must be [visible], even
 those not explicitly named.
 
 ```rust
