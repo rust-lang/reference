@@ -2,7 +2,13 @@
 
 > **<sup>Syntax:<sup>**\
 > _ExternCrate_ :\
-> &nbsp;&nbsp; `extern` `crate` ( [IDENTIFIER] | `self` ) (`as` ( [IDENTIFIER] | `_` ) )<sup>?</sup> `;`
+> &nbsp;&nbsp; `extern` `crate` _CrateRef_ _AsClause_<sup>?</sup> `;`
+>
+> _CrateRef_ :\
+> &nbsp;&nbsp; [IDENTIFIER] | `self`
+>
+> _AsClause_ :\
+> &nbsp;&nbsp; `as` ( [IDENTIFIER] | `_` )
 
 An _`extern crate` declaration_ specifies a dependency on an external crate.
 The external crate is then bound into the declaring scope as the [identifier]
