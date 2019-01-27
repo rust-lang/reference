@@ -19,7 +19,7 @@ Rust supports four loop expressions:
 
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
-*   A [`while let` expression](#predicate-pattern-loops) tests a refutable pattern.
+*   A [`while let` expression](#predicate-pattern-loops) tests a pattern.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator,
     looping until the iterator is empty.
 
@@ -71,17 +71,22 @@ while i < 10 {
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
-condition expression it expects the keyword `let` followed by a refutable
-pattern, an `=`, a [scrutinee] expression and a block expression. If the value of
-the expression on the right hand side of the `=` matches the pattern, the loop
-body block executes then control returns to the pattern matching statement.
-Otherwise, the while expression completes.
+condition expression it expects the keyword `let` followed by a pattern, an
+`=`, a [scrutinee] expression and a block expression. If the value of the
+scrutinee matches the pattern, the loop body block executes then control
+returns to the pattern matching statement. Otherwise, the while expression
+completes.
 
 ```rust
 let mut x = vec![1, 2, 3];
 
 while let Some(y) = x.pop() {
     println!("y = {}", y);
+}
+
+while let _ = 5 {
+    println!("Irrefutable patterns are always true");
+    break;
 }
 ```
 

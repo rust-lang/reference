@@ -53,11 +53,10 @@ assert_eq!(y, "Bigger");
 
 An `if let` expression is semantically similar to an `if` expression but in
 place of a condition expression it expects the keyword `let` followed by a
-refutable pattern, an `=` and an expression. If the value of the expression on
-the right hand side of the `=` matches the pattern, the corresponding block
-will execute, otherwise flow proceeds to the following `else` block if it
-exists. Like `if` expressions, `if let` expressions have a value determined by
-the block that is evaluated.
+pattern, an `=` and a [scrutinee] expression. If the value of the scrutinee
+matches the pattern, the corresponding block will execute. Otherwise, flow
+proceeds to the following `else` block if it exists. Like `if` expressions,
+`if let` expressions have a value determined by the block that is evaluated.
 
 ```rust
 let dish = ("Ham", "Eggs");
@@ -73,6 +72,10 @@ if let ("Bacon", b) = dish {
 // this body will execute
 if let ("Ham", b) = dish {
     println!("Ham is served with {}", b);
+}
+
+if let _ = 5 {
+    println!("Irrefutable patterns are always true");
 }
 ```
 
@@ -136,3 +139,4 @@ if let PAT = ( EXPR || EXPR ) { .. }
 [_Pattern_]: patterns.html
 [_LazyBooleanOperatorExpression_]: expressions/operator-expr.html#lazy-boolean-operators
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
+[scrutinee]: glossary.html#scrutinee
