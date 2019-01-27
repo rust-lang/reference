@@ -93,9 +93,37 @@ Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
 well as the usual function call notation.
 
-If the type of the `self` parameter is specified, it is limited to the type
-being implemented (or `Self`), or a reference or mutable reference to the
-type, or a boxed value of the type being implemented (such as `Box<Self>`).
+If the type of the `self` parameter is specified, it is limited to one of the
+following types:
+
+- `Self`
+- `&Self`
+- `&mut Self`
+- [`Box<Self>`]
+- [`Rc<Self>`]
+- [`Arc<Self>`]
+- [`Pin<P>`] where `P` is one of the above types except `Self`.
+
+The `Self` term can be replaced with the type being implemented.
+
+```rust
+# use std::rc::Rc;
+# use std::sync::Arc;
+# use std::pin::Pin;
+struct Example;
+impl Example {
+    fn by_value(self: Self) {}
+    fn by_ref(self: &Self) {}
+    fn by_ref_mut(self: &mut Self) {}
+    fn by_box(self: Box<Self>) {}
+    fn by_rc(self: Rc<Self>) {}
+    fn by_arc(self: Arc<Self>) {}
+    fn by_pin(self: Pin<&Self>) {}
+    fn explicit_type(self: Arc<Example>) {}
+    fn with_lifetime<'a>(self: &'a Self) {}
+}
+```
+
 Shorthand syntax can be used without specifying a type, which have the
 following equivalents:
 
@@ -107,7 +135,17 @@ Shorthand             | Equivalent
 
 > Note: Lifetimes can be and usually are elided with this shorthand.
 
-Consider the following trait:
+If the `self` parameter is prefixed with `mut`, it becomes a mutable variable,
+similar to regular parameters using a `mut` [identifier pattern]. For example:
+
+```rust
+trait Changer: Sized {
+    fn change(mut self) {}
+    fn modify(mut self: Box<Self>) {}
+}
+```
+
+As an example of methods on a trait, consider the following:
 
 ```rust
 # type Surface = i32;
@@ -294,11 +332,16 @@ fn main() {
 [_Lifetime_]: trait-bounds.html
 [_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
+[`Arc<Self>`]: special-types-and-traits.html#arct
+[`Box<Self>`]: special-types-and-traits.html#boxt
+[`Pin<P>`]: special-types-and-traits.html#pinp
+[`Rc<Self>`]: special-types-and-traits.html#rct
 [trait]: items/traits.html
 [traits]: items/traits.html
 [type aliases]: items/type-aliases.html
 [inherent implementations]: items/implementations.html#inherent-implementations
 [identifier]: identifiers.html
+[identifier pattern]: patterns.html#identifier-patterns
 [trait object]: types/trait-object.html
 [implementations]: items/implementations.html
 [type]: types.html#type-expressions
