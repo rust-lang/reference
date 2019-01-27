@@ -107,7 +107,7 @@ The following contexts are *place expression* contexts:
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
 * The initializer of a [let statement].
-* The [scrutinee] of a [`if let`], [`match`][match] or [`while let`]
+* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`]
   expression.
 * The base of a [functional update] struct expression.
 
