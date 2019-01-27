@@ -92,17 +92,24 @@ depends both on its own category and the context it occurs within.
 
 A *place expression* is an expression that represents a memory location. These
 expressions are [paths] which refer to local variables, [static variables],
-[dereferences]&nbsp;(`*expr`), [array indexing] expressions (`expr[expr]`),
+[dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`),
 [field] references (`expr.f`) and parenthesized place expressions. All other
 expressions are value expressions.
 
 A *value expression* is an expression that represents an actual value.
 
-The left operand of an [assignment][assign] or [compound assignment] expression
-is a place expression context, as is the single operand of a unary [borrow], and
-the operand of any [implicit borrow]. The discriminant or subject of a
-[match expression][match] and right side of a [let statement] is also a place
-expression context. All other expression contexts are value expression contexts.
+The following contexts are *place expression* contexts:
+
+* The left operand of an [assignment][assign] or [compound assignment]
+  expression.
+* The operand of a unary [borrow] or [dereference][deref] operator.
+* The operand of a field expression.
+* The indexed operand of an array indexing expression.
+* The operand of any [implicit borrow].
+* The initializer of a [let statement].
+* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`]
+  expression.
+* The base of a [functional update] struct expression.
 
 > Note: Historically, place expressions were called *lvalues* and value
 > expressions were called *rvalues*.
@@ -119,8 +126,8 @@ move the value. Only the following place expressions may be moved out of:
 * [Temporary values](#temporary-lifetimes).
 * [Fields][field] of a place expression which can be moved out of and
   doesn't implement [`Drop`].
-* The result of [dereferencing] an expression with type [`Box<T>`] and that can
-  also be moved out of.
+* The result of [dereferencing][deref] an expression with type [`Box<T>`] and
+  that can also be moved out of.
 
 Moving out of a place expression that evaluates to a local variable, the
 location is deinitialized and cannot be read from again until it is
@@ -141,7 +148,7 @@ The following expressions can be mutable place expression contexts:
 * [Temporary values].
 * [Fields][field], this evaluates the subexpression in a mutable place
   expression context.
-* [Dereferences] of a `*mut T` pointer.
+* [Dereferences][deref] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
   This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
@@ -239,7 +246,7 @@ Implicit borrows may be taken in the following expressions:
 * Left operand in [field] expressions.
 * Left operand in [call expressions].
 * Left operand in [array indexing] expressions.
-* Operand of the [dereference operator] \(`*`).
+* Operand of the [dereference operator][deref] (`*`).
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 
@@ -279,7 +286,9 @@ They are never allowed before:
 [closure expressions]:  expressions/closure-expr.html
 [enum variant]:         expressions/enum-variant-expr.html
 [field]:                expressions/field-expr.html
+[functional update]:    expressions/struct-expr.html#functional-update-syntax
 [grouped]:              expressions/grouped-expr.html
+[`if let`]:             expressions/if-expr.html#if-let-expressions
 [literals]:             expressions/literal-expr.html
 [match]:                expressions/match-expr.html
 [method-call]:          expressions/method-call-expr.html
@@ -287,6 +296,7 @@ They are never allowed before:
 [range expressions]:    expressions/range-expr.html
 [struct]:               expressions/struct-expr.html
 [tuple expressions]:    expressions/tuple-expr.html
+[`while let`]:          expressions/loop-expr.html#predicate-pattern-loops
 
 [array expressions]:    expressions/array-expr.html
 [array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
@@ -297,9 +307,7 @@ They are never allowed before:
 [cast]:                 expressions/operator-expr.html#type-cast-expressions
 [comparison]:           expressions/operator-expr.html#comparison-operators
 [compound assignment]:  expressions/operator-expr.html#compound-assignment-expressions
-[dereferences]:         expressions/operator-expr.html#the-dereference-operator
-[dereferencing]:        expressions/operator-expr.html#the-dereference-operator
-[dereference operator]: expressions/operator-expr.html#the-dereference-operator
+[deref]:                expressions/operator-expr.html#the-dereference-operator
 [lazy boolean]:         expressions/operator-expr.html#lazy-boolean-operators
 [negation]:             expressions/operator-expr.html#negation-operators
 [overflow]:             expressions/operator-expr.html#overflow
@@ -316,6 +324,7 @@ They are never allowed before:
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
 [const contexts]:       const_eval.html
+[scrutinee]:            glossary.html#scrutinee
 [slice]:                types/slice.html
 [statement]:            statements.html
 [static variables]:     items/static-items.html
