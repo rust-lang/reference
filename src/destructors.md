@@ -1,12 +1,12 @@
 # Destructors
 
-When an [initialized]&#32;[variable] or [temporary] in Rust goes out of
+When an [initialized]&#32;[variable] or [temporary] goes out of
 [scope](#drop-scopes) its *destructor* is run, or it is *dropped*. [Assignment]
 also runs the destructor of its left-hand operand, if it's initialized. If a
 variable has been partially initialized, only its initialized fields are
 dropped.
 
-The destructor of a type `T` consists of
+The destructor of a type `T` consists of:
 
 1. If `T: Drop`, calling [`<T as std::ops::Drop>::drop`]
 2. Recursively running the destructor of all of its fields.
@@ -41,7 +41,7 @@ let tuple = (ShowOnDrop("Tuple first"), ShowOnDrop("Tuple second"));
 let moved;
 // No destructor run on assignment.
 moved = ShowOnDrop("Drops when moved");
-// drops now, but is then uninitialized
+// Drops now, but is then uninitialized.
 moved;
 
 // Uninitialized does not drop.
@@ -60,7 +60,7 @@ Each variable or temporary is associated to a *drop scope*. When control flow
 leaves a drop scope all variables associated to that scope are dropped in
 reverse order of declaration (for variables) or creation (for temporaries).
 
-Drop scopes are determined after replacing [`for`], [`if let`] and
+Drop scopes are determined after replacing [`for`], [`if let`], and
 [`while let`] expressions with the equivalent expressions using [`match`].
 Overloaded operators are not distinguished from built-in operators and [binding
 modes] are not considered.
@@ -87,9 +87,9 @@ from the inside outwards.
 * The parent of a statement scope is the scope of the block that contains the
   statement.
 * The parent of the expression for a `match` guard is the scope of the arm that
-  it's for.
+  the guard is for.
 * The parent of the expression for a given `match` arm is that arm's scope.
-* The parent of the arm scope is the scope of the match expression that it
+* The parent of the arm scope is the scope of the `match` expression that it
   belongs to.
 * The parent of all other scopes is the scope of the immediately enclosing
   expression.
@@ -97,7 +97,7 @@ from the inside outwards.
 ### Scopes of function parameters
 
 All function parameters are in the scope of the entire function body, so are
-dropped last when evaluating the function. The actual function parameter is
+dropped last when evaluating the function. Actual function parameters are
 dropped after any named parameters that are bound to parts of it.
 
 ```rust
@@ -124,7 +124,7 @@ patterns_in_parameters(
 
 Local variables declared in a `let` statement are associated to the scope of
 the block that contains the `let` statement. Local variables declared in a
-match are associated to the arm scope of the `match` arm that they are declared
+`match` expression are associated to the arm scope of the `match` arm that they are declared
 in.
 
 ```rust
@@ -141,7 +141,7 @@ let declared_first = ShowOnDrop("Dropped last in outer scope");
 let declared_last = ShowOnDrop("Dropped first in outer scope");
 ```
 
-If multiple patterns are used in the same arm for a match, then an unspecified
+If multiple patterns are used in the same arm for a `match` expression, then an unspecified
 pattern will be used to determine the drop order.
 
 ### Temporary scopes
@@ -256,7 +256,7 @@ let x = &mut 0;
 println!("{}", x);
 ```
 
-If a borrow, dereference, field or tuple indexing expression has an extended
+If a borrow, dereference, field, or tuple indexing expression has an extended
 temporary scope then so does its operand. If an indexing expression has an
 extended temporary scope then the indexed expression also has an extended
 temporary scope.
@@ -267,7 +267,7 @@ An *extending pattern* is either
 
 * An [identifier pattern] that binds by reference or mutable reference.
 * A [struct][struct pattern], [tuple][tuple pattern], [tuple struct][tuple
-  struct pattern] or [slice][slice pattern] pattern where at least one of the
+  struct pattern], or [slice][slice pattern] pattern where at least one of the
   direct subpatterns is a extending pattern.
 
 So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`,
@@ -282,13 +282,13 @@ For a let statement with an initializer, an *extending expression* is an
 expression which is one of the following:
 
 * The initializer expression.
-* The operand of a extending [borrow expression].
+* The operand of an extending [borrow expression].
 * The operand(s) of an extending [array][array expression], [cast][cast
-  expression], [braced struct][struct expression] or [tuple][tuple expression]
+  expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
 * The final expression of any extending [block expression][block expressions].
 
-So the borrow expressions in `&mut 0`, `(&1, &mut 2)` and `Some { 0: &mut 3 }`
+So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some { 0: &mut 3 }`
 are all extending expressions, while the borrows in `&0 + &1` and
 `Some(&mut 0)` are not.
 
@@ -320,7 +320,7 @@ Here are some examples where expressions don't have extended temporary scopes:
 # fn temp() {}
 # trait Use { fn use_temp(&self) -> &Self { self } }
 # impl Use for () {}
-// The temporary that stores the result of `temp()` lives only lives until the
+// The temporary that stores the result of `temp()` only lives until the
 // end of the let statement in these cases.
 
 let x = Some(&temp());         // ERROR
