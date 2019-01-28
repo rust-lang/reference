@@ -25,30 +25,30 @@ pointer, [`std::ptr::drop_in_place`] can be used.
 Some examples:
 
 ```rust
-struct ShowOnDrop(&'static str);
+struct PrintOnDrop(&'static str);
 
-impl Drop for ShowOnDrop {
+impl Drop for PrintOnDrop {
     fn drop(&mut self) {
         println!("{}", self.0);
     }
 }
 
-let mut overwritten = ShowOnDrop("drops when overwritten");
-overwritten = ShowOnDrop("drops when scope ends");
+let mut overwritten = PrintOnDrop("drops when overwritten");
+overwritten = PrintOnDrop("drops when scope ends");
 
-let tuple = (ShowOnDrop("Tuple first"), ShowOnDrop("Tuple second"));
+let tuple = (PrintOnDrop("Tuple first"), PrintOnDrop("Tuple second"));
 
 let moved;
 // No destructor run on assignment.
-moved = ShowOnDrop("Drops when moved");
+moved = PrintOnDrop("Drops when moved");
 // Drops now, but is then uninitialized.
 moved;
 
 // Uninitialized does not drop.
-let uninitialized: ShowOnDrop;
+let uninitialized: PrintOnDrop;
 
 // After a partial move, only the remaining fields are dropped.
-let mut partial_move = (ShowOnDrop("first"), ShowOnDrop("forgotten"));
+let mut partial_move = (PrintOnDrop("first"), PrintOnDrop("forgotten"));
 // Perform a partial move, leaving only `partial_move.0` initialized.
 core::mem::forget(partial_move.1);
 // When partial_move's scope ends, only the first field is dropped.
@@ -101,22 +101,22 @@ dropped last when evaluating the function. Actual function parameters are
 dropped after any named parameters that are bound to parts of it.
 
 ```rust
-# struct ShowOnDrop(&'static str);
-# impl Drop for ShowOnDrop {
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
 #         println!("drop({})", self.0);
 #     }
 # }
 // Drops the second parameter, then `y`, then the first parameter, then `x`
 fn patterns_in_parameters(
-    (x, _): (ShowOnDrop, ShowOnDrop),
-    (_, y): (ShowOnDrop, ShowOnDrop),
+    (x, _): (PrintOnDrop, PrintOnDrop),
+    (_, y): (PrintOnDrop, PrintOnDrop),
 ) {}
 
 // drop order is 3 2 0 1
 patterns_in_parameters(
-    (ShowOnDrop("0"), ShowOnDrop("1")),
-    (ShowOnDrop("2"), ShowOnDrop("3")),
+    (PrintOnDrop("0"), PrintOnDrop("1")),
+    (PrintOnDrop("2"), PrintOnDrop("3")),
 );
 ```
 
@@ -128,17 +128,17 @@ the block that contains the `let` statement. Local variables declared in a
 in.
 
 ```rust
-# struct ShowOnDrop(&'static str);
-# impl Drop for ShowOnDrop {
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
 #         println!("drop({})", self.0);
 #     }
 # }
-let declared_first = ShowOnDrop("Dropped last in outer scope");
+let declared_first = PrintOnDrop("Dropped last in outer scope");
 {
-    let declared_in_block = ShowOnDrop("Dropped in inner scope");
+    let declared_in_block = PrintOnDrop("Dropped in inner scope");
 }
-let declared_last = ShowOnDrop("Dropped first in outer scope");
+let declared_last = PrintOnDrop("Dropped first in outer scope");
 ```
 
 If multiple patterns are used in the same arm for a `match` expression, then an unspecified
@@ -157,7 +157,8 @@ smallest scope that contains the expression and is for one of the following:
 * A statement.
 * The body of a [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The condition expression of an `if` or `while` expression, or a `match` guard.
+* The condition expression of an `if` or `while` expression, or a `match`
+  guard.
 * The expression for a match arm.
 * The second operand of a [lazy boolean expression].
 
@@ -168,36 +169,36 @@ smallest scope that contains the expression and is for one of the following:
 Some examples:
 
 ```rust
-# struct ShowOnDrop(&'static str);
-# impl Drop for ShowOnDrop {
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
 #         println!("drop({})", self.0);
 #     }
 # }
-let local_var = ShowOnDrop("local var");
+let local_var = PrintOnDrop("local var");
 
 // Dropped once the condition has been evaluated
-if ShowOnDrop("If condition").0 == "If condition" {
+if PrintOnDrop("If condition").0 == "If condition" {
     // Dropped at the end of the block
-    ShowOnDrop("If body").0
+    PrintOnDrop("If body").0
 } else {
     unreachable!()
 };
 
 // Dropped at the end of the statement
-(ShowOnDrop("first operand").0 == ""
+(PrintOnDrop("first operand").0 == ""
 // Dropped at the )
-|| ShowOnDrop("second operand").0 == "")
+|| PrintOnDrop("second operand").0 == "")
 // Dropped at the end of the expression
-|| ShowOnDrop("third operand").0 == "";
+|| PrintOnDrop("third operand").0 == "";
 
 // Dropped at the end of the function, after local variables.
 // Changing this to a statement containing a return expression would make the
 // temporary be dropped before the local variables. Binding to a variable
 // which is then returned would also make the temporary be dropped first.
-match ShowOnDrop("Matched value in final expression") {
+match PrintOnDrop("Matched value in final expression") {
     // Dropped once the condition has been evaluated
-    _ if ShowOnDrop("guard condition").0 == "" => (),
+    _ if PrintOnDrop("guard condition").0 == "" => (),
     _ => (),
 }
 ```
@@ -211,8 +212,8 @@ once the expression is evaluated, dropping them has no effect unless one of the
 operands to an expression breaks out of the expression, returns, or panics.
 
 ```rust
-# struct ShowOnDrop(&'static str);
-# impl Drop for ShowOnDrop {
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
 #         println!("drop({})", self.0);
 #     }
@@ -220,14 +221,14 @@ operands to an expression breaks out of the expression, returns, or panics.
 loop {
     // Tuple expression doesn't finish evaluating so operands drop in reverse order
     (
-        ShowOnDrop("Outer tuple first"),
-        ShowOnDrop("Outer tuple second"),
+        PrintOnDrop("Outer tuple first"),
+        PrintOnDrop("Outer tuple second"),
         (
-            ShowOnDrop("Inner tuple first"),
-            ShowOnDrop("Inner tuple second"),
+            PrintOnDrop("Inner tuple first"),
+            PrintOnDrop("Inner tuple second"),
             break,
         ),
-        ShowOnDrop("Never created"),
+        PrintOnDrop("Never created"),
     );
 }
 ```
