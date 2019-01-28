@@ -10,8 +10,9 @@ The destructor of a type `T` consists of:
 
 1. If `T: Drop`, calling [`<T as std::ops::Drop>::drop`]
 2. Recursively running the destructor of all of its fields.
-    * The fields of a [struct] or [tuple] are dropped in declaration order.
+    * The fields of a [struct] are dropped in declaration order.
     * The fields of the active [enum variant] are dropped in declaration order.
+    * The fields of a [tuple] are dropped in order.
     * The elements of an [array] or owned [slice] are dropped from the
       first element to the last.
     * The variables that a [closure] captures by move are dropped in an
@@ -71,7 +72,8 @@ Given a function, or closure, there are drop scopes for:
 * Each [statement]
 * Each [expression]
 * Each block, including the function body
-    * [Block expressions] the expression and block scopes are the same scope.
+    * In the case of a [block expression], the scope for the block and the
+      expression are the same scope.
 * Each arm of a `match` expression
 
 Drop scopes are nested within one another as follows. When multiple scopes are
@@ -82,13 +84,14 @@ from the inside outwards.
 * The function body block is contained within the scope of the entire function.
 * The parent of the expression in an expression statement is the scope of the
   statement.
-* The parent of the initializer of a `let` statement is the `let`
-  statement's scope.
+* The parent of the initializer of a [`let` statement] is the `let` statement's
+  scope.
 * The parent of a statement scope is the scope of the block that contains the
   statement.
 * The parent of the expression for a `match` guard is the scope of the arm that
   the guard is for.
-* The parent of the expression for a given `match` arm is that arm's scope.
+* The parent of the expression after the `=>` in a `match` expression is the
+  scope of the arm that it's in.
 * The parent of the arm scope is the scope of the `match` expression that it
   belongs to.
 * The parent of all other scopes is the scope of the immediately enclosing
@@ -97,8 +100,8 @@ from the inside outwards.
 ### Scopes of function parameters
 
 All function parameters are in the scope of the entire function body, so are
-dropped last when evaluating the function. Actual function parameters are
-dropped after any named parameters that are bound to parts of it.
+dropped last when evaluating the function. Each actual function parameter is
+dropped after any bindings introduced in that parameter's pattern.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -124,8 +127,8 @@ patterns_in_parameters(
 
 Local variables declared in a `let` statement are associated to the scope of
 the block that contains the `let` statement. Local variables declared in a
-`match` expression are associated to the arm scope of the `match` arm that they are declared
-in.
+`match` expression are associated to the arm scope of the `match` arm that they
+are declared in.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -141,14 +144,14 @@ let declared_first = PrintOnDrop("Dropped last in outer scope");
 let declared_last = PrintOnDrop("Dropped first in outer scope");
 ```
 
-If multiple patterns are used in the same arm for a `match` expression, then an unspecified
-pattern will be used to determine the drop order.
+If multiple patterns are used in the same arm for a `match` expression, then an
+unspecified pattern will be used to determine the drop order.
 
 ### Temporary scopes
 
 The *temporary scope* of an expression is the scope that is used for the
 temporary variable that holds the result of that expression when used in a
-[place context], unless it is promoted to a `static`.
+[place context], unless it is [promoted].
 
 Apart from lifetime extension, the temporary scope of an expression is the
 smallest scope that contains the expression and is for one of the following:
@@ -162,9 +165,16 @@ smallest scope that contains the expression and is for one of the following:
 * The expression for a match arm.
 * The second operand of a [lazy boolean expression].
 
-> Note: Temporaries that are created in the final expression of a function body
-> are dropped *after* any named variables bound in the function body, as there
-> is no smaller enclosing temporary scope.
+> **Notes**:
+> 
+> Temporaries that are created in the final expression of a function
+> body are dropped *after* any named variables bound in the function body, as
+> there is no smaller enclosing temporary scope.
+>
+> The [scrutinee] of a `match` expression is not a temporary scope, so
+> temporaries in the scrutinee can be dropped after the `match` expression. For
+> example, the temporary for `1` in `match 1 { ref mut z => z };` lives until
+> the end of the statement.
 
 Some examples:
 
@@ -245,6 +255,9 @@ always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
 ### Temporary lifetime extension
 
+> **Note**: The exact rules for temporary lifetime extension are subject to
+> change. This is describing the current behavior only.
+
 The temporary scopes for expressions in `let` statements are sometimes
 *extended* to the scope of the block containing the `let` statement. This is
 done when the usual temporary scope would be too small, based on certain
@@ -287,11 +300,11 @@ expression which is one of the following:
 * The operand(s) of an extending [array][array expression], [cast][cast
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
-* The final expression of any extending [block expression][block expressions].
+* The final expression of any extending [block expression].
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some { 0: &mut 3 }`
-are all extending expressions, while the borrows in `&0 + &1` and
-`Some(&mut 0)` are not.
+are all extending expressions. The borrows in `&0 + &1` and `Some(&mut 0)` are
+not: the latter is syntactically a function call expression.
 
 The operand of any extending borrow expression has its temporary scope
 extended.
@@ -345,6 +358,8 @@ variable or field from being dropped automatically.
 [interior mutability]: interior-mutability.md
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
 [place context]: expressions.md#place-expressions-and-value-expressions
+[promoted]: destructors.md#constant-promotion
+[scrutinee]: glossary.md#scrutinee
 [statement]: statements.md
 [temporary]: expressions.md#temporaries
 [variable]: variables.md
@@ -362,7 +377,7 @@ variable or field from being dropped automatically.
 [tuple struct pattern]: patterns.md#tuple-struct-patterns
 
 [array expression]: expressions/array-expr.md#array-expressions
-[block expressions]: expressions/block-expr.md
+[block expression]: expressions/block-expr.md
 [borrow expression]: expressions/operator-expr.md#borrow-operators
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
 [struct expression]: expressions/struct-expr.md
