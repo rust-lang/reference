@@ -352,7 +352,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the
 same trait object.
 
-\*\* only for closures that do capture (close over) any local variables
+\*\* only for closures that do not capture (close over) any local variables
 
 ### Semantics
 
