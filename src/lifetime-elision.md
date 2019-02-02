@@ -169,13 +169,13 @@ const RESOLVED_MULTIPLE: &dyn Fn(&Foo, &Bar, &Baz) -> usize = ..
 const RESOLVED_STATIC: &dyn Fn(&Foo, &Bar) -> &Baz = ..
 ```
 
-[closure trait]: types/closure.html
-[constant]: items/constant-items.html
-[function item]: types/function-item.html
-[function pointer]: types/function-pointer.html
-[implementation]: items/implementations.html
+[closure trait]: types/closure.md
+[constant]: items/constant-items.md
+[function item]: types/function-item.md
+[function pointer]: types/function-pointer.md
+[implementation]: items/implementations.md
 [RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
-[static]: items/static-items.html
-[trait object]: types/trait-object.html
-[type aliases]: items/type-aliases.html
+[static]: items/static-items.md
+[trait object]: types/trait-object.md
+[type aliases]: items/type-aliases.md

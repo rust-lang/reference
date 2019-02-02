@@ -212,33 +212,33 @@ attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
 
-[IDENTIFIER]: ../identifiers.html
-[RAW_STRING_LITERAL]: ../tokens.html#raw-string-literals
-[STRING_LITERAL]: ../tokens.html#string-literals
-[_BlockExpression_]: ../expressions/block-expr.html
-[_Generics_]: ../items/generics.html
-[_InnerAttribute_]: ../attributes.html
-[_Pattern_]: ../patterns.html
-[_Statement_]: ../statements.html
-[_Type_]: ../types.html#type-expressions
-[_WhereClause_]: ../items/generics.html#where-clauses
-[const context]: ../const_eval.html#const-context
-[external blocks]: ../items/external-blocks.html
-[path]: ../paths.html
-[block]: ../expressions/block-expr.html
-[variables]: ../variables.html
-[type]: ../types.html#type-expressions
-[*function item type*]: ../types/function-item.html
-[Trait]: ../items/traits.html
-[attributes]: ../attributes.html
-[`cfg`]: ../conditional-compilation.html
-[the lint check attributes]: ../attributes.html#lint-check-attributes
-[the procedural macro attributes]: ../procedural-macros.html
-[the testing attributes]: ../attributes.html#testing
-[the optimization hint attributes]: ../attributes.html#optimization-hints
-[`deprecated`]: ../attributes.html#deprecation
-[`doc`]: ../attributes.html#documentation
-[`must_use`]: ../attributes.html#must_use
-[patterns]: ../patterns.html
-[`?Sized`]: ../trait-bounds.html#sized
-[trait bounds]: ../trait-bounds.html
+[IDENTIFIER]: ../identifiers.md
+[RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
+[STRING_LITERAL]: ../tokens.md#string-literals
+[_BlockExpression_]: ../expressions/block-expr.md
+[_Generics_]: ../items/generics.md
+[_InnerAttribute_]: ../attributes.md
+[_Pattern_]: ../patterns.md
+[_Statement_]: ../statements.md
+[_Type_]: ../types.md#type-expressions
+[_WhereClause_]: ../items/generics.md#where-clauses
+[const context]: ../const_eval.md#const-context
+[external blocks]: ../items/external-blocks.md
+[path]: ../paths.md
+[block]: ../expressions/block-expr.md
+[variables]: ../variables.md
+[type]: ../types.md#type-expressions
+[*function item type*]: ../types/function-item.md
+[Trait]: ../items/traits.md
+[attributes]: ../attributes.md
+[`cfg`]: ../conditional-compilation.md
+[the lint check attributes]: ../attributes.md#lint-check-attributes
+[the procedural macro attributes]: ../procedural-macros.md
+[the testing attributes]: ../attributes.md#testing
+[the optimization hint attributes]: ../attributes.md#optimization-hints
+[`deprecated`]: ../attributes.md#deprecation
+[`doc`]: ../attributes.md#documentation
+[`must_use`]: ../attributes.md#must_use
+[patterns]: ../patterns.md
+[`?Sized`]: ../trait-bounds.md#sized
+[trait bounds]: ../trait-bounds.md

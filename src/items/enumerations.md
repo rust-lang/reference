@@ -131,17 +131,17 @@ no valid values, they cannot be instantiated.
 enum ZeroVariants {}
 ```
 
-[IDENTIFIER]: ../identifiers.html
-[_Generics_]: ../items/generics.html
-[_WhereClause_]: ../items/generics.html#where-clauses
-[_Expression_]: ../expressions.html
-[_TupleFields_]: ../items/structs.html
-[_StructFields_]: ../items/structs.html
-[enumerated type]: ../types/enum.html
+[IDENTIFIER]: ../identifiers.md
+[_Generics_]: ../items/generics.md
+[_WhereClause_]: ../items/generics.md#where-clauses
+[_Expression_]: ../expressions.md
+[_TupleFields_]: ../items/structs.md
+[_StructFields_]: ../items/structs.md
+[enumerated type]: ../types/enum.md
 [`mem::discriminant`]: ../../std/mem/fn.discriminant.html
-[numeric cast]: ../expressions/operator-expr.html#semantics
-[`repr` attribute]: ../attributes.html#ffi-attributes
-[constant expression]: ../const_eval.html#constant-expressions
-[default representation]: ../type-layout.html#the-default-representation
-[primitive representation]: ../type-layout.html#primitive-representations
-[`C` representation]: ../type-layout.html#the-c-representation
+[numeric cast]: ../expressions/operator-expr.md#semantics
+[`repr` attribute]: ../attributes.md#ffi-attributes
+[constant expression]: ../const_eval.md#constant-expressions
+[default representation]: ../type-layout.md#the-default-representation
+[primitive representation]: ../type-layout.md#primitive-representations
+[`C` representation]: ../type-layout.md#the-c-representation

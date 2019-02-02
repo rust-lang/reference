@@ -320,31 +320,31 @@ fn main() {
 }
 ```
 
-[_BlockExpression_]: ../expressions/block-expr.html
-[_FunctionParam_]: ../items/functions.html
-[_FunctionQualifiers_]: ../items/functions.html
-[_FunctionReturnType_]: ../items/functions.html
-[_Generics_]: ../items/generics.html
-[_Lifetime_]: ../trait-bounds.html
-[_Type_]: ../types.html#type-expressions
-[_WhereClause_]: ../items/generics.html#where-clauses
-[`Arc<Self>`]: ../special-types-and-traits.html#arct
-[`Box<Self>`]: ../special-types-and-traits.html#boxt
-[`Pin<P>`]: ../special-types-and-traits.html#pinp
-[`Rc<Self>`]: ../special-types-and-traits.html#rct
-[trait]: ../items/traits.html
-[traits]: ../items/traits.html
-[type aliases]: ../items/type-aliases.html
-[inherent implementations]: ../items/implementations.html#inherent-implementations
-[identifier]: ../identifiers.html
-[identifier pattern]: ../patterns.html#identifier-patterns
-[trait object]: ../types/trait-object.html
-[implementations]: ../items/implementations.html
-[type]: ../types.html#type-expressions
-[constants]: ../items/constant-items.html
-[constant item]: ../items/constant-items.html
-[functions]: ../items/functions.html
-[function item]: ../types/function-item.html
-[method call operator]: ../expressions/method-call-expr.html
-[block]: ../expressions/block-expr.html
-[path]: ../paths.html
+[_BlockExpression_]: ../expressions/block-expr.md
+[_FunctionParam_]: ../items/functions.md
+[_FunctionQualifiers_]: ../items/functions.md
+[_FunctionReturnType_]: ../items/functions.md
+[_Generics_]: ../items/generics.md
+[_Lifetime_]: ../trait-bounds.md
+[_Type_]: ../types.md#type-expressions
+[_WhereClause_]: ../items/generics.md#where-clauses
+[`Arc<Self>`]: ../special-types-and-traits.md#arct
+[`Box<Self>`]: ../special-types-and-traits.md#boxt
+[`Pin<P>`]: ../special-types-and-traits.md#pinp
+[`Rc<Self>`]: ../special-types-and-traits.md#rct
+[trait]: ../items/traits.md
+[traits]: ../items/traits.md
+[type aliases]: ../items/type-aliases.md
+[inherent implementations]: ../items/implementations.md#inherent-implementations
+[identifier]: ../identifiers.md
+[identifier pattern]: ../patterns.md#identifier-patterns
+[trait object]: ../types/trait-object.md
+[implementations]: ../items/implementations.md
+[type]: ../types.md#type-expressions
+[constants]: ../items/constant-items.md
+[constant item]: ../items/constant-items.md
+[functions]: ../items/functions.md
+[function item]: ../types/function-item.md
+[method call operator]: ../expressions/method-call-expr.md
+[block]: ../expressions/block-expr.md
+[path]: ../paths.md

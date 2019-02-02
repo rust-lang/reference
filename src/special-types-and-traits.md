@@ -154,29 +154,29 @@ compiler, not by [implementation items].
 [`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
 [`Sync`]: ../std/marker/trait.Sync.html
 
-[Arrays]: types/array.html
-[call expressions]: expressions/call-expr.html
-[deref coercions]: type-coercions.html#coercion-types
-[dereference operator]: expressions/operator-expr.html#the-dereference-operator
-[destructor]: destructors.html
+[Arrays]: types/array.md
+[call expressions]: expressions/call-expr.md
+[deref coercions]: type-coercions.md#coercion-types
+[dereference operator]: expressions/operator-expr.md#the-dereference-operator
+[destructor]: destructors.md
 [drop check]: ../nomicon/dropck.html
-[dynamically sized type]: dynamically-sized-types.html
-[Function pointers]: types/function-pointer.html
-[function item types]: types/function-item.html
-[implementation items]: items/implementations.html
-[indexing expressions]: expressions/array-expr.html#array-and-slice-indexing-expressions
-[interior mutability]: interior-mutability.html
-[Numeric types]: types/numeric.html
-[Methods]: items/associated-items.html#associated-functions-and-methods
-[method resolution]: expressions/method-call-expr.html
-[operators]: expressions/operator-expr.html
-[orphan rules]: items/implementations.html#trait-implementation-coherence
-[Raw pointers]: types/pointer.html#raw-pointers-const-and-mut
-[`static` items]: items/static-items.html
-[Shared references]: types/pointer.html#shared-references-
+[dynamically sized type]: dynamically-sized-types.md
+[Function pointers]: types/function-pointer.md
+[function item types]: types/function-item.md
+[implementation items]: items/implementations.md
+[indexing expressions]: expressions/array-expr.md#array-and-slice-indexing-expressions
+[interior mutability]: interior-mutability.md
+[Numeric types]: types/numeric.md
+[Methods]: items/associated-items.md#associated-functions-and-methods
+[method resolution]: expressions/method-call-expr.md
+[operators]: expressions/operator-expr.md
+[orphan rules]: items/implementations.md#trait-implementation-coherence
+[Raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[`static` items]: items/static-items.md
+[Shared references]: types/pointer.md#shared-references-
 [the standard library]: ../std/index.html
-[trait object]: types/trait-object.html
-[Tuples]: types/tuple.html
-[Type parameters]: types/parameters.html
-[variance]: subtyping.html#variance
-[`!`]: types/never.html
+[trait object]: types/trait-object.md
+[Tuples]: types/tuple.md
+[Type parameters]: types/parameters.md
+[variance]: subtyping.md#variance
+[`!`]: types/never.md

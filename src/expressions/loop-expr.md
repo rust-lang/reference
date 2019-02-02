@@ -31,7 +31,7 @@ A `loop` expression repeats execution of its body continuously:
 `loop { println!("I live."); }`.
 
 A `loop` expression without an associated `break` expression is diverging and
-has type [`!`](../types/never.html). A `loop` expression containing associated
+has type [`!`](../types/never.md). A `loop` expression containing associated
 [`break` expression(s)](#break-expressions) may terminate, and must have type
 compatible with the value of the `break` expression(s).
 
@@ -275,12 +275,12 @@ and the `loop` must have a type compatible with each `break` expression.
 `break` without an expression is considered identical to `break` with
 expression `()`.
 
-[IDENTIFIER]: ../identifiers.html
-[LIFETIME_OR_LABEL]: ../tokens.html#lifetimes-and-loop-labels
-[_BlockExpression_]: ../expressions/block-expr.html
-[_Expression_]: ../expressions.html
-[_MatchArmPatterns_]: ../expressions/match-expr.html
-[_Pattern_]: ../patterns.html
-[`match` expression]: ../expressions/match-expr.html
-[scrutinee]: ../glossary.html#scrutinee
-[temporary values]: ../expressions.html#temporary-lifetimes
+[IDENTIFIER]: ../identifiers.md
+[LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
+[_BlockExpression_]: ../expressions/block-expr.md
+[_Expression_]: ../expressions.md
+[_MatchArmPatterns_]: ../expressions/match-expr.md
+[_Pattern_]: ../patterns.md
+[`match` expression]: ../expressions/match-expr.md
+[scrutinee]: ../glossary.md#scrutinee
+[temporary values]: ../expressions.md#temporary-lifetimes

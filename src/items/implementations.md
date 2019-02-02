@@ -177,23 +177,23 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[IDENTIFIER]: ../identifiers.html
-[_ConstantItem_]: ../items/constant-items.html
-[_Function_]: ../items/functions.html
-[_Generics_]: ../items/generics.html
-[_InnerAttribute_]: ../attributes.html
-[_MacroInvocationSemi_]: ../macros.html#macro-invocation
-[_Method_]: ../items/associated-items.html#methods
-[_OuterAttribute_]: ../attributes.html
-[_TypeAlias_]: ../items/type-aliases.html
-[_TypePath_]: ../paths.html#paths-in-types
-[_Type_]: ../types.html#type-expressions
-[_Visibility_]: ../visibility-and-privacy.html
-[_WhereClause_]: ../items/generics.html#where-clauses
-[trait]: ../items/traits.html
-[attributes]: ../attributes.html
-[`cfg`]: ../conditional-compilation.html
-[`deprecated`]: ../attributes.html#deprecation
-[`doc`]: ../attributes.html#documentation
-[the lint check attributes]: ../attributes.html#lint-check-attributes
-[Unsafe traits]: ../items/traits.html#unsafe-traits
+[IDENTIFIER]: ../identifiers.md
+[_ConstantItem_]: ../items/constant-items.md
+[_Function_]: ../items/functions.md
+[_Generics_]: ../items/generics.md
+[_InnerAttribute_]: ../attributes.md
+[_MacroInvocationSemi_]: ../macros.md#macro-invocation
+[_Method_]: ../items/associated-items.md#methods
+[_OuterAttribute_]: ../attributes.md
+[_TypeAlias_]: ../items/type-aliases.md
+[_TypePath_]: ../paths.md#paths-in-types
+[_Type_]: ../types.md#type-expressions
+[_Visibility_]: ../visibility-and-privacy.md
+[_WhereClause_]: ../items/generics.md#where-clauses
+[trait]: ../items/traits.md
+[attributes]: ../attributes.md
+[`cfg`]: ../conditional-compilation.md
+[`deprecated`]: ../attributes.md#deprecation
+[`doc`]: ../attributes.md#documentation
+[the lint check attributes]: ../attributes.md#lint-check-attributes
+[Unsafe traits]: ../items/traits.md#unsafe-traits

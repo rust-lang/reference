@@ -136,11 +136,11 @@ It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
-[alignment]: type-layout.html#size-and-alignment
-[enums]: items/enumerations.html
-[structs]: items/structs.html
-[unions]: items/unions.html
-[trait objects]: types/trait-object.html
-[implementations]: items/implementations.html
-[traits]: items/traits.html
-[object safety]: items/traits.html#object-safety
+[alignment]: type-layout.md#size-and-alignment
+[enums]: items/enumerations.md
+[structs]: items/structs.md
+[unions]: items/unions.md
+[trait objects]: types/trait-object.md
+[implementations]: items/implementations.md
+[traits]: items/traits.md
+[object safety]: items/traits.md#object-safety

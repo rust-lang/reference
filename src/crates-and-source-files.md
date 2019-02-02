@@ -133,22 +133,22 @@ type must  be one of the following:
     ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
-[_InnerAttribute_]: attributes.html
-[_Item_]: items.html
+[_InnerAttribute_]: attributes.md
+[_Item_]: items.md
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html
 [`core`]: ../core/index.html
 [`core::prelude::v1`]: ../core/prelude/index.html
-[`extern crate`]: items/extern-crates.html
+[`extern crate`]: items/extern-crates.md
 [`std`]: ../std/index.html
 [`std::prelude::v1`]: ../std/prelude/index.html
-[`use` declaration]: items/use-declarations.html
-[attribute]: attributes.html
-[attributes]: attributes.html
-[function]: items/functions.html
-[module]: items/modules.html
-[module path]: paths.html
-[trait or lifetime bounds]: trait-bounds.html
-[unit]: types.html#tuple-types
-[where clauses]: items/generics.html#where-clauses
+[`use` declaration]: items/use-declarations.md
+[attribute]: attributes.md
+[attributes]: attributes.md
+[function]: items/functions.md
+[module]: items/modules.md
+[module path]: paths.md
+[trait or lifetime bounds]: trait-bounds.md
+[unit]: types.md#tuple-types
+[where clauses]: items/generics.md#where-clauses

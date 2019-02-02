@@ -295,19 +295,19 @@ let machine_kind = if cfg!(unix) {
 println!("I'm running on a {} machine!", machine_kind);
 ```
 
-[IDENTIFIER]: identifiers.html
-[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
-[STRING_LITERAL]: tokens.html#string-literals
-[_MetaItem_]: attributes.html
+[IDENTIFIER]: identifiers.md
+[RAW_STRING_LITERAL]: tokens.md#raw-string-literals
+[STRING_LITERAL]: tokens.md#string-literals
+[_MetaItem_]: attributes.md
 [`--cfg`]: ../rustc/command-line-arguments.html#a--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#a--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute
 [`cfg` macro]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
 [`debug_assert!`]: ../std/macro.debug_assert.html
-[attribute]: attributes.html
-[attributes]: attributes.html
-[crate type]: linkage.html
-[expressions]: expressions.html
-[items]: items.html
-[metaitem]: attributes.html
+[attribute]: attributes.md
+[attributes]: attributes.md
+[crate type]: linkage.md
+[expressions]: expressions.md
+[items]: items.md
+[metaitem]: attributes.md

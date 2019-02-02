@@ -122,4 +122,4 @@ pub mod outer_module {
 }
 ```
 
-[attributes]: attributes.html
+[attributes]: attributes.md

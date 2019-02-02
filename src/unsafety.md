@@ -12,9 +12,9 @@ Rust:
 - Calling an unsafe function (including an intrinsic or foreign function).
 - Implementing an [unsafe trait].
 
-[`Copy`]: special-types-and-traits.html#copy
-[`union`]: items/unions.html
-[mutable static variable]: items/static-items.html#mutable-statics
-[external static variable]: items/external-blocks.html
-[raw pointer]: types/pointer.html
-[unsafe trait]: items/traits.html#unsafe-traits
+[`Copy`]: special-types-and-traits.md#copy
+[`union`]: items/unions.md
+[mutable static variable]: items/static-items.md#mutable-statics
+[external static variable]: items/external-blocks.md
+[raw pointer]: types/pointer.md
+[unsafe trait]: items/traits.md#unsafe-traits

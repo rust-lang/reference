@@ -19,5 +19,5 @@ named reference to an [`enum` item].
 [^enumtype]: The `enum` type is analogous to a `data` constructor declaration in
              ML, or a *pick ADT* in Limbo.
 
-[`enum` item]: ../items/enumerations.html
-[enumeration variant expression]: ../expressions/enum-variant-expr.html
+[`enum` item]: ../items/enumerations.md
+[enumeration variant expression]: ../expressions/enum-variant-expr.md

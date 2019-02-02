@@ -35,7 +35,7 @@ When such a string in `monospace` font occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
 
-[binary operators]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[keywords]: keywords.html
-[tokens]: tokens.html
-[unary operators]: expressions/operator-expr.html#borrow-operators
+[binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[keywords]: keywords.md
+[tokens]: tokens.md
+[unary operators]: expressions/operator-expr.md#borrow-operators

@@ -136,12 +136,12 @@ attention to making those sections the best that they can be.
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
 [big issue]: https://github.com/rust-lang-nursery/reference/issues/9
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
-[_Expression_]: expressions.html
+[_Expression_]: expressions.md
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
-[expressions chapter]: expressions.html
-[lifetime of temporaries]: expressions.html#temporary-lifetimes
-[linkage]: linkage.html
+[expressions chapter]: expressions.md
+[lifetime of temporaries]: expressions.md#temporary-lifetimes
+[linkage]: linkage.md
 [rustc book]: ../rustc/index.html
-[undocumented]: undocumented.html
-[Notation]: notation.html
+[undocumented]: undocumented.md
+[Notation]: notation.md

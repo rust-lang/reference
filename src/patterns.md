@@ -57,13 +57,13 @@ if let
 
 Patterns are used in:
 
-* [`let` declarations](statements.html#let-statements)
-* [Function](items/functions.html) and [closure](expressions/closure-expr.html)
+* [`let` declarations](statements.md#let-statements)
+* [Function](items/functions.md) and [closure](expressions/closure-expr.md)
   parameters
-* [`match` expressions](expressions/match-expr.html)
-* [`if let` expressions](expressions/if-expr.html)
-* [`while let` expressions](expressions/loop-expr.html#predicate-pattern-loops)
-* [`for` expressions](expressions/loop-expr.html#iterator-loops)
+* [`match` expressions](expressions/match-expr.md)
+* [`if let` expressions](expressions/if-expr.md)
+* [`while let` expressions](expressions/loop-expr.md#predicate-pattern-loops)
+* [`for` expressions](expressions/loop-expr.md#iterator-loops)
 
 ## Destructuring
 
@@ -125,15 +125,15 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]
 
-[BOOLEAN_LITERAL]: tokens.html#boolean-literals
-[CHAR_LITERAL]: tokens.html#character-literals
-[BYTE_LITERAL]: tokens.html#byte-literals
-[STRING_LITERAL]: tokens.html#string-literals
-[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
-[BYTE_STRING_LITERAL]: tokens.html#byte-string-literals
-[RAW_BYTE_STRING_LITERAL]: tokens.html#raw-byte-string-literals
-[INTEGER_LITERAL]: tokens.html#integer-literals
-[FLOAT_LITERAL]: tokens.html#floating-point-literals
+[BOOLEAN_LITERAL]: tokens.md#boolean-literals
+[CHAR_LITERAL]: tokens.md#character-literals
+[BYTE_LITERAL]: tokens.md#byte-literals
+[STRING_LITERAL]: tokens.md#string-literals
+[RAW_STRING_LITERAL]: tokens.md#raw-string-literals
+[BYTE_STRING_LITERAL]: tokens.md#byte-string-literals
+[RAW_BYTE_STRING_LITERAL]: tokens.md#raw-byte-string-literals
+[INTEGER_LITERAL]: tokens.md#integer-literals
+[FLOAT_LITERAL]: tokens.md#floating-point-literals
 
 _Literal patterns_ match exactly the same value as what is created by the
 literal. Since negative numbers are not [literals], literal patterns also
@@ -480,8 +480,8 @@ Reference patterns are always irrefutable.
 > &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; `..`
 
-[_OuterAttribute_]: attributes.html
-[TUPLE_INDEX]: tokens.html#integer-literals
+[_OuterAttribute_]: attributes.md
+[TUPLE_INDEX]: tokens.md#integer-literals
 
 Struct patterns match struct values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a struct.
@@ -657,11 +657,11 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_GroupedPattern_]: #grouped-patterns
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
-[_MacroInvocation_]: macros.html#macro-invocation
-[_PathInExpression_]: paths.html#paths-in-expressions
+[_MacroInvocation_]: macros.md#macro-invocation
+[_PathInExpression_]: paths.md#paths-in-expressions
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
-[_QualifiedPathInExpression_]: paths.html#qualified-paths
+[_QualifiedPathInExpression_]: paths.md#qualified-paths
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
 [_SlicePattern_]: #slice-patterns
@@ -670,10 +670,10 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_TupleStructPattern_]: #tuple-struct-patterns
 [_WildcardPattern_]: #wildcard-pattern
 
-[`Copy`]: special-types-and-traits.html#copy
-[IDENTIFIER]: identifiers.html
-[enums]: items/enumerations.html
-[literals]: expressions/literal-expr.html
-[structs]: items/structs.html
-[tuples]: types/tuple.html
-[scrutinee]: glossary.html#scrutinee
+[`Copy`]: special-types-and-traits.md#copy
+[IDENTIFIER]: identifiers.md
+[enums]: items/enumerations.md
+[literals]: expressions/literal-expr.md
+[structs]: items/structs.md
+[tuples]: types/tuple.md
+[scrutinee]: glossary.md#scrutinee

@@ -18,11 +18,11 @@ order they are written.
 Alternatively there can be exactly two expressions inside the brackets,
 separated by a semi-colon. The expression after the `;` must be a have type
 `usize` and be a [constant expression], such as a
-[literal](../tokens.html#literals) or a [constant
-item](../items/constant-items.html). `[a; b]` creates an array containing `b`
+[literal](../tokens.md#literals) or a [constant
+item](../items/constant-items.md). `[a; b]` creates an array containing `b`
 copies of the value of `a`. If the expression after the semi-colon has a value
 greater than 1 then this requires that the type of `a` is
-[`Copy`](../special-types-and-traits.html#copy).
+[`Copy`](../special-types-and-traits.md#copy).
 
 ```rust
 [1, 2, 3, 4];
@@ -43,7 +43,7 @@ expressions].
 > **<sup>Syntax</sup>**\
 > _IndexExpression_ :\
 
-[Array][array] and [slice](../types/slice.html)-typed expressions can be
+[Array][array] and [slice](../types/slice.md)-typed expressions can be
 indexed by writing a square-bracket-enclosed expression of type `usize` (the
 index) after them. When the array is mutable, the resulting [memory location]
 can be assigned to.
@@ -80,12 +80,12 @@ arr[10];                  // warning: index out of bounds
 The array index expression can be implemented for types other than arrays and slices
 by implementing the [Index] and [IndexMut] traits.
 
-[array]: ../types/array.html
+[array]: ../types/array.md
 [IndexMut]: ../../std/ops/trait.IndexMut.html
 [Index]: ../../std/ops/trait.Index.html
-[Inner attributes]: ../attributes.html
-[_Expression_]: ../expressions.html
-[_InnerAttribute_]: ../attributes.html
-[attributes on block expressions]: ../expressions/block-expr.html#attributes-on-block-expressions
-[constant expression]: ../const_eval.html#constant-expressions
-[memory location]: ../expressions.html#place-expressions-and-value-expressions
+[Inner attributes]: ../attributes.md
+[_Expression_]: ../expressions.md
+[_InnerAttribute_]: ../attributes.md
+[attributes on block expressions]: ../expressions/block-expr.md#attributes-on-block-expressions
+[constant expression]: ../const_eval.md#constant-expressions
+[memory location]: ../expressions.md#place-expressions-and-value-expressions

@@ -114,7 +114,7 @@ names have meaning.
 > sections for each attribute. It is not the full list of crate-root attributes.
 
 - `crate_name` - specify the crate's crate name.
-- `crate_type` - see [linkage](linkage.html).
+- `crate_type` - see [linkage](linkage.md).
 - `no_builtins` - disable optimizing certain code patterns to invocations of
                   library functions that are assumed to exist
 - `no_main` - disable emitting the `main` symbol. Useful when some other
@@ -145,7 +145,7 @@ On an `extern` block, the following attributes are interpreted:
 - `link` - indicate that a native library should be linked to for the
   declarations in this block to be linked correctly. `link` supports an optional
   `kind` key with three possible values: `dylib`, `static`, and `framework`. See
-  [external blocks](items/external-blocks.html) for more about external blocks.
+  [external blocks](items/external-blocks.md) for more about external blocks.
   Two examples: `#[link(name = "readline")]` and
   `#[link(name = "CoreFoundation", kind = "framework")]`.
 - `linked_from` - indicates what native library this block of FFI items is
@@ -162,7 +162,7 @@ interpreted:
 - `linkage` - on a static, this specifies the [linkage
   type](http://llvm.org/docs/LangRef.html#linkage-types).
 
-See [type layout](type-layout.html) for documentation on the `repr` attribute
+See [type layout](type-layout.md) for documentation on the `repr` attribute
 which can be used to control type layout.
 
 ## Macro-related attributes
@@ -210,7 +210,7 @@ fields, `since` and `note`.
 - `note` is a free text field, allowing you to provide an explanation about
   the deprecation and preferred alternatives.
 
-Only [public items](visibility-and-privacy.html) can be given the
+Only [public items](visibility-and-privacy.md) can be given the
 `#[deprecated]` attribute. `#[deprecated]` on a module is inherited by all
 child items of that module.
 
@@ -552,45 +552,45 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own traits through [procedural macros].
 
-[_LiteralExpression_]: expressions/literal-expr.html
-[_SimplePath_]: paths.html#simple-paths
-[`no_implicit_prelude`]: items/modules.html#prelude-items
-[`no_std`]: crates-and-source-files.html#preludes-and-no_std
-[Doc comments]: comments.html#doc-comments
+[_LiteralExpression_]: expressions/literal-expr.md
+[_SimplePath_]: paths.md#simple-paths
+[`no_implicit_prelude`]: items/modules.md#prelude-items
+[`no_std`]: crates-and-source-files.md#preludes-and-no_std
+[Doc comments]: comments.md#doc-comments
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
-[module]: items/modules.html
-[prelude]: crates-and-source-files.html#preludes-and-no_std
-[procedural macros]: procedural-macros.html
-[struct]: items/structs.html
-[enum]: items/enumerations.html
-[union]: items/unions.html
-[functions]: items/functions.html
-[expression]: expressions.html
-[expression statement]: statements.html#expression-statements
-[call expression]: expressions/call-expr.html
-[block expression]: expressions/block-expr.html
-[block expressions]: expressions/block-expr.html
-[`Drop`]: special-types-and-traits.html#drop
-[let statement]: statements.html#let-statements
+[module]: items/modules.md
+[prelude]: crates-and-source-files.md#preludes-and-no_std
+[procedural macros]: procedural-macros.md
+[struct]: items/structs.md
+[enum]: items/enumerations.md
+[union]: items/unions.md
+[functions]: items/functions.md
+[expression]: expressions.md
+[expression statement]: statements.md#expression-statements
+[call expression]: expressions/call-expr.md
+[block expression]: expressions/block-expr.md
+[block expressions]: expressions/block-expr.md
+[`Drop`]: special-types-and-traits.md#drop
+[let statement]: statements.md#let-statements
 [unstable book plugin]: ../unstable-book/language-features/plugin.html#lint-plugins
-[zero-variant enum]: items/enumerations.html#zero-variant-enums
+[zero-variant enum]: items/enumerations.md#zero-variant-enums
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
 [ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
-[item declarations]: items.html
-[generics]: items/generics.html
-[implementations]: items/implementations.html
-[modules]: items/modules.html
-[statements]: statements.html
-[match expressions]: expressions/match-expr.html
-[external blocks]: items/external-blocks.html
-[items]: items.html
-[attribute macro]: procedural-macros.html#attribute-macros
-[function-like macro]: procedural-macros.html#function-like-procedural-macros
-[conditional compilation]: conditional-compilation.html
-[derive mode macro]: procedural-macros.html#derive-mode-macros
-[trait]: items/traits.html
-[main]: crates-and-source-files.html
+[item declarations]: items.md
+[generics]: items/generics.md
+[implementations]: items/implementations.md
+[modules]: items/modules.md
+[statements]: statements.md
+[match expressions]: expressions/match-expr.md
+[external blocks]: items/external-blocks.md
+[items]: items.md
+[attribute macro]: procedural-macros.md#attribute-macros
+[function-like macro]: procedural-macros.md#function-like-procedural-macros
+[conditional compilation]: conditional-compilation.md
+[derive mode macro]: procedural-macros.md#derive-mode-macros
+[trait]: items/traits.md
+[main]: crates-and-source-files.md
 [`Termination`]: ../std/process/trait.Termination.html
-[where clause]: items/where-clauses.html
-[trait or lifetime bounds]: trait-bounds.html
-[Expression Attributes]: expressions.html#expression-attributes
+[where clause]: items/where-clauses.md
+[trait or lifetime bounds]: trait-bounds.md
+[Expression Attributes]: expressions.md#expression-attributes

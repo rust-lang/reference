@@ -139,15 +139,15 @@ The built-in attributes that have meaning on a function are [`cfg`],
 [`deprecated`], [`doc`], [the lint check attributes], `path`, and
 `no_implicit_prelude`. Modules also accept macro attributes.
 
-[_InnerAttribute_]: ../attributes.html
-[_Item_]: ../items.html
-[_OuterAttribute_]: ../attributes.html
-[`cfg`]: ../conditional-compilation.html
-[`deprecated`]: ../attributes.html#deprecation
-[`doc`]: ../attributes.html#documentation
-[IDENTIFIER]: ../identifiers.html
-[attribute]: ../attributes.html
-[items]: ../items.html
-[module path]: ../paths.html
-[prelude]: ../crates-and-source-files.html#preludes-and-no_std
-[the lint check attributes]: ../attributes.html#lint-check-attributes
+[_InnerAttribute_]: ../attributes.md
+[_Item_]: ../items.md
+[_OuterAttribute_]: ../attributes.md
+[`cfg`]: ../conditional-compilation.md
+[`deprecated`]: ../attributes.md#deprecation
+[`doc`]: ../attributes.md#documentation
+[IDENTIFIER]: ../identifiers.md
+[attribute]: ../attributes.md
+[items]: ../items.md
+[module path]: ../paths.md
+[prelude]: ../crates-and-source-files.md#preludes-and-no_std
+[the lint check attributes]: ../attributes.md#lint-check-attributes

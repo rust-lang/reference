@@ -119,60 +119,60 @@ enum List<T> {
 let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 ```
 
-[_ArrayType_]: types/array.html
-[_BareFunctionType_]: types/function-pointer.html
-[_ImplTraitTypeOneBound_]: types/impl-trait.html
-[_ImplTraitType_]: types/impl-trait.html
-[_InferredType_]: types/inferred.html
-[_MacroInvocation_]: macros.html#macro-invocation
-[_NeverType_]: types/never.html
-[_ParenthesizedType_]: types.html#parenthesized-types
-[_QualifiedPathInType_]: paths.html#qualified-paths
-[_RawPointerType_]: types/pointer.html#raw-pointers-const-and-mut
-[_ReferenceType_]: types/pointer.html#shared-references-
-[_SliceType_]: types/slice.html
-[_TraitObjectTypeOneBound_]: types/trait-object.html
-[_TraitObjectType_]: types/trait-object.html
-[_TupleType_]: types/tuple.html#tuple-types
-[_TypeNoBounds_]: types.html#type-expressions
-[_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html#type-expressions
+[_ArrayType_]: types/array.md
+[_BareFunctionType_]: types/function-pointer.md
+[_ImplTraitTypeOneBound_]: types/impl-trait.md
+[_ImplTraitType_]: types/impl-trait.md
+[_InferredType_]: types/inferred.md
+[_MacroInvocation_]: macros.md#macro-invocation
+[_NeverType_]: types/never.md
+[_ParenthesizedType_]: types.md#parenthesized-types
+[_QualifiedPathInType_]: paths.md#qualified-paths
+[_RawPointerType_]: types/pointer.md#raw-pointers-const-and-mut
+[_ReferenceType_]: types/pointer.md#shared-references-
+[_SliceType_]: types/slice.md
+[_TraitObjectTypeOneBound_]: types/trait-object.md
+[_TraitObjectType_]: types/trait-object.md
+[_TupleType_]: types/tuple.md#tuple-types
+[_TypeNoBounds_]: types.md#type-expressions
+[_TypePath_]: paths.md#paths-in-types
+[_Type_]: types.md#type-expressions
 
-[Array]: types/array.html
-[Boolean]: types/boolean.html
-[Closures]: types/closure.html
-[Enum]: types/enum.html
-[Function pointers]: types/function-pointer.html
-[Functions]: types/function-item.html
-[Impl trait]: types/impl-trait.html
-[Macros]: macros.html
-[Numeric]: types/numeric.html
+[Array]: types/array.md
+[Boolean]: types/boolean.md
+[Closures]: types/closure.md
+[Enum]: types/enum.md
+[Function pointers]: types/function-pointer.md
+[Functions]: types/function-item.md
+[Impl trait]: types/impl-trait.md
+[Macros]: macros.md
+[Numeric]: types/numeric.md
 [Parentheses]: #parenthesized-types
-[Raw pointers]: types/pointer.html#raw-pointers-const-and-mut
-[References]: types/pointer.html#shared-references-
-[Slice]: types/slice.html
-[Struct]: types/struct.html
-[Textual]: types/textual.html
-[Trait objects]: types/trait-object.html
-[Tuple]: types/tuple.html
-[Type paths]: paths.html#paths-in-types
-[Union]: types/union.html
-[`Self` path]: paths.html#self-1
-[arrays]: types/array.html
-[enumerations]: types/enum.html
-[function pointer]: types/function-pointer.html
-[inferred type]: types/inferred.html
-[item]: items.html
-[never]: types/never.html
-[pointer types]: types/pointer.html
-[raw pointer]: types/pointer.html#raw-pointers-const-and-mut
-[reference type]: types/pointer.html#shared-references-
-[reference]: types/pointer.html#shared-references-
-[structs]: types/struct.html
-[trait]: types/trait-object.html
-[tuples]: types/tuple.html
-[type alias]: items/type-aliases.html
-[type aliases]: items/type-aliases.html
-[type boundaries]: trait-bounds.html
-[type parameters]: types/parameters.html
-[unions]: types/union.html
+[Raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[References]: types/pointer.md#shared-references-
+[Slice]: types/slice.md
+[Struct]: types/struct.md
+[Textual]: types/textual.md
+[Trait objects]: types/trait-object.md
+[Tuple]: types/tuple.md
+[Type paths]: paths.md#paths-in-types
+[Union]: types/union.md
+[`Self` path]: paths.md#self-1
+[arrays]: types/array.md
+[enumerations]: types/enum.md
+[function pointer]: types/function-pointer.md
+[inferred type]: types/inferred.md
+[item]: items.md
+[never]: types/never.md
+[pointer types]: types/pointer.md
+[raw pointer]: types/pointer.md#raw-pointers-const-and-mut
+[reference type]: types/pointer.md#shared-references-
+[reference]: types/pointer.md#shared-references-
+[structs]: types/struct.md
+[trait]: types/trait-object.md
+[tuples]: types/tuple.md
+[type alias]: items/type-aliases.md
+[type aliases]: items/type-aliases.md
+[type boundaries]: trait-bounds.md
+[type parameters]: types/parameters.md
+[unions]: types/union.md

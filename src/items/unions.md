@@ -148,8 +148,8 @@ aspects of Rust language (such as privacy, name resolution, type inference,
 generics, trait implementations, inherent implementations, coherence, pattern
 checking, etc etc etc).
 
-[IDENTIFIER]: ../identifiers.html
-[_Generics_]: ../items/generics.html
-[_WhereClause_]: ../items/generics.html#where-clauses
-[_StructFields_]: ../items/structs.html
+[IDENTIFIER]: ../identifiers.md
+[_Generics_]: ../items/generics.md
+[_WhereClause_]: ../items/generics.md#where-clauses
+[_StructFields_]: ../items/structs.md
 [`transmute`]: ../../std/mem/fn.transmute.html

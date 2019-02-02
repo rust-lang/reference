@@ -210,5 +210,5 @@ a statically linked binary on MSVC you would execute:
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 
-[configuration option]: conditional-compilation.html
-[procedural macros]: procedural-macros.html
+[configuration option]: conditional-compilation.md
+[procedural macros]: procedural-macros.md

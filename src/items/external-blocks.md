@@ -115,15 +115,15 @@ this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
 
-[IDENTIFIER]: ../identifiers.html
-[_Abi_]: ../items/functions.html
-[_FunctionParam_]: ../items/functions.html
-[_FunctionParameters_]: ../items/functions.html
-[_FunctionReturnType_]: ../items/functions.html
-[_Generics_]: ../items/generics.html
-[_InnerAttribute_]: ../attributes.html
-[_OuterAttribute_]: ../attributes.html
-[_Type_]: ../types.html#type-expressions
-[_Visibility_]: ../visibility-and-privacy.html
-[_WhereClause_]: ../items/generics.html#where-clauses
-[attributes]: ../attributes.html#ffi-attributes
+[IDENTIFIER]: ../identifiers.md
+[_Abi_]: ../items/functions.md
+[_FunctionParam_]: ../items/functions.md
+[_FunctionParameters_]: ../items/functions.md
+[_FunctionReturnType_]: ../items/functions.md
+[_Generics_]: ../items/generics.md
+[_InnerAttribute_]: ../attributes.md
+[_OuterAttribute_]: ../attributes.md
+[_Type_]: ../types.md#type-expressions
+[_Visibility_]: ../visibility-and-privacy.md
+[_WhereClause_]: ../items/generics.md#where-clauses
+[attributes]: ../attributes.md#ffi-attributes

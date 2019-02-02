@@ -24,5 +24,5 @@ value that inhabits such a type.
 [^structtype]: `struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.
 
-[struct expression]: ../expressions/struct-expr.html
-[visibility modifiers]: ../visibility-and-privacy.html
+[struct expression]: ../expressions/struct-expr.md
+[visibility modifiers]: ../visibility-and-privacy.md

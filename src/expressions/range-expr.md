@@ -68,7 +68,7 @@ for i in 1..11 {
 }
 ```
 
-[_Expression_]: ../expressions.html
+[_Expression_]: ../expressions.md
 [std::ops::Range]: ../../std/ops/struct.Range.html
 [std::ops::RangeFrom]: ../../std/ops/struct.RangeFrom.html
 [std::ops::RangeTo]: ../../std/ops/struct.RangeTo.html

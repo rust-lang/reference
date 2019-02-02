@@ -27,7 +27,7 @@ let _: F = E::A;  // OK
 // let _: F = F::A;  // Doesn't work
 ```
 
-[IDENTIFIER]: ../identifiers.html
-[_Generics_]: ../items/generics.html
-[_WhereClause_]: ../items/generics.html#where-clauses
-[_Type_]: ../types.html#type-expressions
+[IDENTIFIER]: ../identifiers.md
+[_Generics_]: ../items/generics.md
+[_WhereClause_]: ../items/generics.md#where-clauses
+[_Type_]: ../types.md#type-expressions
