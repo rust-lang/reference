@@ -1,27 +1,28 @@
 # Infer Outlives Requirements
 
-This feature allows some outlives requirements to be
-inferred by the compiler rather than having to state
-them explicitly.
+The Rust compiler is able to infer certain lifetime
+outlives requirements based on lifetime rules, rather
+than having to state them explicitly.
 
 ## Motivation
 
 In the following piece of code, we have the outlives
-relation `T: 'a`; which can be read as T outlives 'a.
-However if we look at the definition of the struct we
-see that the field `bar` is a reference to T with a lifetime
-of 'a. Thus for this code to be valid, the compiler already
-enforces the predicate `T: 'a`.
+relation `T: 'a`; which can be read as `T` outlives `'a`.
+However, looking at the definition of the `struct`, we
+see that the field `bar` is a reference to `T` with a lifetime
+of `'a`. Thus for this code to be valid, the compiler already
+enforces the constraint `T: 'a`.
 
-With this feature the compiler will also infer the outlives
-requirements so that the where-statement becomes optional.
+The compiler will also infer the outlives requirements
+so that the `where`-clause is optional.
 
 ```rust,ignore (pseudo-Rust)
 struct Foo<'a, T>
-  where T: 'a // <-- now optional
-  {
-      bar: &'a T,
-  }
+where
+    T: 'a, // <-- optional
+{
+    bar: &'a T,
+}
 ```
 
 
@@ -33,51 +34,53 @@ see RFC [#44493].
 
 ## Examples
 
-Code speakers louder than words so here are a few examples
-of the feature inferring outlives requirements.
+Here are a few examples were the compiler is able to
+infer outlives requirements rather than having to state
+them explicitly.
 
-Struct, Enum and Union with *reference* to generic parameter:
+A `struct`, `enum` and `union` with a *reference* to a type parameter:
 ```rust,ignore (pseudo-Rust)
-// infer T: 'a
+// The constraint `T: 'a` is inferred.
 struct Foo<'a, T> {
     bar: &'a T,
 }
 ```
 
 ```rust,ignore (pseudo-Rust)
-// infer T: 'a
+// The constraint `T: 'a` is inferred.
 union Foo<'a, T> {
     bar: &'a T,
 }
 ```
 
 ```rust,ignore (pseudo-Rust)
-// infer T: 'a
+// The constraint `T: 'a` is inferred.
 enum Foo<'a, T> {
-  Bar<'a, T>
+    One(Bar<'a, T>)
 }
+
 struct Bar<'a, T> {
-  field: &'a T
+    field: &'a T
 }
 ```
 
-Struct, Enum and Union with an *explicit outlives clause* on
-the nested type:
+An *explicit outlives clause* on the nested type:
 ```rust,ignore (pseudo-Rust)
-// infer `T: 'b`
+// The constraint `T: 'b` is inferred.
 struct Foo<'a, T> {
     bar: Bar<'a, T>
 }
-// contains explicit where clause
+
+// `Bar<'b, K>` has an explicit `where` clause:
 struct Bar<'b, K> where K: 'b {
     x: &'b (),
     y: K,
 }
 ```
 
-Struct, Enum and Union with *lifetime outlives requirements*:
+A `struct` with an inferred *lifetime outlives requirements*:
 ```rust,ignore (pseudo-Rust)
-// infer `b': 'a`
+// The region constraint `b': 'a` is inferred.
 struct Foo<'a, 'b, T> {
     x: &'a &'b T
 }
@@ -85,27 +88,30 @@ struct Foo<'a, 'b, T> {
 
 *Associated types*:
 ```rust,ignore (pseudo-Rust)
-// infer `<T as std::iter::Iterator>::Item : 'a`
+// The constraint `<T as std::iter::Iterator>::Item : 'a` is inferred.
 struct Foo<'a, T: Iterator> {
     bar: &'a T::Item
+}
 ```
 
 ```rust,ignore (pseudo-Rust)
-// infer B: 'a
+// The constraint `B: 'a` is inferred.
 struct Foo<'a, A, B> where A: Trait<'b, K> {
-  field: <A as Trait<'a, B>>::Type
+    field: <A as Trait<'a, B>>::Type
 }
+
 trait Bar<'b, K> where K: 'b {
-  type Type
+  type Type;
 }
 ```
 
 *Trait objects*:
 ```rust,ignore (pseudo-Rust)
-// infer `T': 'a`
+// The constraint `T': 'a` is inferred.
 struct Foo<'a, T> {
     field: Box<dyn Bar<'a, T>>
 }
+
 // contains explicit where clause
 trait Bar<'b, K> where K: 'b {
 }
