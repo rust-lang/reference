@@ -23,7 +23,7 @@
 Functions, type aliases, structs, enumerations, unions, traits and
 implementations may be *parameterized* by types and lifetimes. These parameters
 are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
-usually immediately after and before its definition the name of the item. For
+usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
 Lifetime parameters must be declared before type parameters. Some examples of
 items with type and lifetime parameters:
@@ -57,7 +57,7 @@ referred to with path syntax.
 > _ForLifetimes_ :\
 > &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#type-and-lifetime-parameters) `>`
 
-*Where clauses* provide an another way to specify bounds on type and lifetime
+*Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
 

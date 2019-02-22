@@ -50,25 +50,50 @@ bracketed set of associable items.
 The nominal type is called the _implementing type_ and the associable items are
 the _associated items_ to the implementing type.
 
-Inherent implementations associate the contained items to the implementing type.
-The associated item has a path of a path to the implementing type followed by
-the associate item's path component. Inherent implementations cannot contain
-associated type aliases.
+Inherent implementations associate the contained items to the
+implementing type.  Inherent implementations can contain [associated
+functions] (including methods) and [associated constants]. They cannot
+contain associated type aliases.
+
+The [path] to an associated item is any path to the implementing type,
+followed by the associated item's identifier as the final path
+component.
 
 A type can also have multiple inherent implementations. An implementing type
 must be defined within the same crate as the original type definition.
 
-```rust
-struct Point {x: i32, y: i32}
+``` rust
+pub mod color {
+    pub struct Color(pub u8, pub u8, pub u8);
 
-impl Point {
-    fn log(&self) {
-        println!("Point is at ({}, {})", self.x, self.y);
+    impl Color {
+        pub const WHITE: Color = Color(255, 255, 255);
     }
 }
 
-let my_point = Point {x: 10, y:11};
-my_point.log();
+mod values {
+    use super::color::Color;
+    impl Color {
+        pub fn red() -> Color {
+            Color(255, 0, 0)
+        }
+    }
+}
+
+pub use self::color::Color;
+fn main() {
+    // Actual path to the implementing type and impl in the same module.
+    color::Color::WHITE;
+
+    // Impl blocks in different modules are still accessed through a path to the type.
+    color::Color::red();
+
+    // Re-exported paths to the implementing type also work.
+    Color::red();
+
+    // Does not work, because use in `values` is not pub.
+    // values::Color::red();
+}
 ```
 
 ## Trait Implementations
@@ -191,9 +216,12 @@ attributes].
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
+[associated functions]: items/associated-items.html#associated-functions-and-methods
+[associated constants]: items/associated-items.html#associated-constants
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation
+[path]: paths.html
 [the lint check attributes]: attributes.html#lint-check-attributes
 [Unsafe traits]: items/traits.html#unsafe-traits
