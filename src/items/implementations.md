@@ -55,9 +55,9 @@ implementing type.  Inherent implementations can contain [associated
 functions] (including methods) and [associated constants]. They cannot
 contain associated type aliases.
 
-The [path] to an associated item has the following structure: any path
-to the implementing type, followed by the type path to the associate item
-within the inherent implementation.
+The [path] to an associated item is any path to the implementing type,
+followed by the associated item's identifier as the final path
+component.
 
 A type can also have multiple inherent implementations. An implementing type
 must be defined within the same crate as the original type definition.
@@ -209,8 +209,8 @@ attributes].
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
 [trait]: items/traits.html
-[associated functions]: associated-items.html#associated-functions-and-methods
-[associated constants]: associated-items.html#associated-constants
+[associated functions]: items/associated-items.html#associated-functions-and-methods
+[associated constants]: items/associated-items.html#associated-constants
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes.html#deprecation
