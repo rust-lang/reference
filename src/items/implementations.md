@@ -82,10 +82,17 @@ mod values {
 
 pub use self::color::Color;
 fn main() {
-    color::Color::WHITE; // actual path to the implementing type and impl in the same module
-    color::Color::red();  // impl blocks in different modules are still accessed through a path to the type
-    Color::red();  // rexported paths to the implementing type also work
-    // values::Color::red();  // Does not work, because use in `values` is not pub
+    // Actual path to the implementing type and impl in the same module.
+    color::Color::WHITE;
+
+    // Impl blocks in different modules are still accessed through a path to the type.
+    color::Color::red();
+
+    // Re-exported paths to the implementing type also work.
+    Color::red();
+
+    // Does not work, because use in `values` is not pub.
+    // values::Color::red();
 }
 ```
 
