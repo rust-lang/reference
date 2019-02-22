@@ -96,13 +96,14 @@ struct Foo<'a, T: Iterator> {
 
 ```rust,ignore (pseudo-Rust)
 // The constraint `B: 'a` is inferred.
-struct Foo<'a, A, B> where A: Trait<'b, K> {
-    field: <A as Trait<'a, B>>::Type
+struct Foo<'a, A, B> where A: Bar<'a, B> {
+    field: <A as Bar<'a, B>>::Type
 }
 
-trait Bar<'b, K> where K: 'b {
-  type Type;
+trait Bar<'k, K> where K: 'k {
+    type Type;
 }
+
 ```
 
 *Trait objects*:
