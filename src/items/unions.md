@@ -152,4 +152,4 @@ checking, etc etc etc).
 [_Generics_]: items/generics.html
 [_WhereClause_]: items/generics.html#where-clauses
 [_StructFields_]: items/structs.html
-[`transmute`]: ../../std/mem/fn.transmute.html
+[`transmute`]: ../std/mem/fn.transmute.html
