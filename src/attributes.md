@@ -84,8 +84,9 @@ fn some_unused_variables() {
 
 ## Meta Item Attribute Syntax
 
-A "meta item" is the syntax used for the _Attr_ rule by built-in attributes
-and the [`meta` macro fragment specifier]. It has the following grammar:
+A "meta item" is the syntax used for the _Attr_ rule by most built-in
+attributes and the [`meta` macro fragment specifier]. It has the following
+grammar:
 
 > **<sup>Syntax</sup>**\
 > _MetaItem_ :\
@@ -576,10 +577,12 @@ used.
 struct S {
 }
 
-// Controls the "cyclomatic complexity" threshold for the cLippy tool.
+// Controls the "cyclomatic complexity" threshold for the clippy tool.
 #[clippy::cyclomatic_complexity = "100"]
 pub fn f() {}
 ```
+
+> Note: `rustc` currently recognizes the tools "clippy" and "rustfmt".
 
 [_DelimTokenTree_]: macros.html
 [_LiteralExpression_]: expressions/literal-expr.html
