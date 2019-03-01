@@ -77,7 +77,7 @@ These macros are defined by a [public]&#32;[function] with the `proc_macro`
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
 output [`TokenStream`] replaces the entire macro invocation. It may contain an
 arbitrary number of [items]. These macros cannot expand to syntax that defines
-new `macro_rule` style macros.
+new `macro_rules` style macros.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -195,14 +195,14 @@ struct Struct {
 *Attribute macros* define new [attributes] which can be attached to [items].
 
 Attribute macros are defined by a [public]&#32;[function] with the
-`proc_macro_attribute` [attribute] that a signature of
-`(TokenStream, TokenStream) -> TokenStream`. The first [`TokenStream`] is the
-attribute's metaitems, not including the delimiters. If the attribute is written
-without a metaitem, the attribute [`TokenStream`] is empty. The second
-[`TokenStream`] is of the rest of the [item] including other [attributes] on the
-[item]. The returned [`TokenStream`] replaces the [item] with an arbitrary
-number of [items]. These macros cannot expand to syntax that defines new
-`macro_rule` style macros.
+`proc_macro_attribute` [attribute] that a signature of `(TokenStream,
+TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token
+tree following the attribute's name, not including the outer delimiters. If
+the attribute is written as a bare attribute name, the attribute
+[`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
+including other [attributes] on the [item]. The returned [`TokenStream`]
+replaces the [item] with an arbitrary number of [items]. These macros cannot
+expand to syntax that defines new `macro_rules` style macros.
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
@@ -247,16 +247,16 @@ fn invoke1() {}
 // out: attr: ""
 // out: item: "fn invoke1() { }"
 
-// Example: Attribute has a metaitem
+// Example: Attribute with input
 #[show_streams(bar)]
 fn invoke2() {}
 // out: attr: "bar"
 // out: item: "fn invoke2() {}"
 
-// Example: Multiple words in metaitem
-#[show_streams(multiple words)]
+// Example: Multiple tokens in the input
+#[show_streams(multiple => tokens)]
 fn invoke3() {}
-// out: attr: "multiple words"
+// out: attr: "multiple => tokens"
 // out: item: "fn invoke3() {}"
 
 // Example:
