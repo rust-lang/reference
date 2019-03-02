@@ -4,7 +4,7 @@
 Procedural macros come in one of three flavors:
 
 * [Function-like macros] - `custom!(...)`
-* [Derive mode macros] - `#[derive(CustomMode)]`
+* [Derive macros] - `#[derive(CustomDerive)]`
 * [Attribute macros] - `#[CustomAttribute]`
 
 Procedural macros allow you to run code at compile time that operates over Rust
@@ -111,13 +111,13 @@ with curly braces and no semicolon or a different delimiter followed by a
 semicolon. For example, `make_answer` from the previous example can be invoked
 as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 
-### Derive mode macros
+### Derive macros
 
-*Derive mode macros* define new modes for the `derive` [attribute]. These macros
-define new [items] given the token stream of a [struct], [enum], or [union].
-They also define [derive mode helper attributes].
+*Derive macros* define new inputs for the `derive` [attribute]. These macros
+can create new [items] given the token stream of a [struct], [enum], or [union].
+They can also define [derive macro helper attributes].
 
-Custom deriver modes are defined by a [public]&#32;[function] with the
+Custom derive macros are defined by a [public]&#32;[function] with the
 `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
@@ -125,7 +125,7 @@ attribute on it. The output [`TokenStream`] must be a set of items that are
 then appended to the [module] or [block] that the item from the input
 [`TokenStream`] is in.
 
-The following is an example of a derive mode macro. Instead of doing anything
+The following is an example of a derive macro. Instead of doing anything
 useful with its input, it just appends a function `answer`.
 
 ```rust,ignore
@@ -138,7 +138,7 @@ pub fn derive_answer_fn(_item: TokenStream) -> TokenStream {
 }
 ```
 
-And then using said derive mode:
+And then using said derive macro:
 
 ```rust,ignore
 extern crate proc_macro_examples;
@@ -152,18 +152,18 @@ fn main() {
 }
 ```
 
-#### Derive mode helper attributes
+#### Derive macro helper attributes
 
-Derive mode macros can add additional [attributes] into the scope of the [item]
-they are on. Said attributes are called *derive mode helper attributes*. These
+Derive macros can add additional [attributes] into the scope of the [item]
+they are on. Said attributes are called *derive macro helper attributes*. These
 attributes are [inert], and their only purpose is to be fed into the derive
-mode macro that defined them. That said, they can be seen by all macros.
+macro that defined them. That said, they can be seen by all macros.
 
 The way to define helper attributes is to put an `attributes` key in the
 `proc_macro_derive` macro with a comma separated list of identifiers that are
 the names of the helper attributes.
 
-For example, the following derive mode macro defines a helper attribute
+For example, the following derive macro defines a helper attribute
 `helper`, but ultimately doesn't do anything with it.
 
 ```rust,ignore
@@ -177,7 +177,7 @@ pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
 }
 ```
 
-And then usage on the derive mode on a struct:
+And then usage on the derive macro on a struct:
 
 ```rust,ignore
 # #![crate_type="proc-macro"]
@@ -272,7 +272,7 @@ fn invoke4() {}
 [`derive`]: attributes.html#derive
 [`proc_macro` crate]: ../proc_macro/index.html
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
-[Derive mode macros]: #derive-mode-macros
+[Derive macros]: #derive-macros
 [Attribute macros]: #attribute-macros
 [Function-like macros]: #function-like-procedural-macros
 [attribute]: attributes.html
@@ -280,7 +280,7 @@ fn invoke4() {}
 [block]: expressions/block-expr.html
 [custom attributes]: attributes.html
 [crate type]: linkage.html
-[derive mode helper attributes]: #derive-mode-helper-attributes
+[derive macro helper attributes]: #derive-macro-helper-attributes
 [enum]: items/enumerations.html
 [inert]: attributes.html#active-and-inert-attributes
 [item]: items.html
