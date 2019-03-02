@@ -195,7 +195,7 @@ struct Struct {
 *Attribute macros* define new [attributes] which can be attached to [items].
 
 Attribute macros are defined by a [public]&#32;[function] with the
-`proc_macro_attribute` [attribute] that a signature of `(TokenStream,
+`proc_macro_attribute` [attribute] that has a signature of `(TokenStream,
 TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token
 tree following the attribute's name, not including the outer delimiters. If
 the attribute is written as a bare attribute name, the attribute
