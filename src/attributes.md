@@ -91,7 +91,7 @@ There are three kinds of attributes:
 
 * Built-in attributes
 * Macro attributes
-* Derive mode helper attributes
+* Derive macro helper attributes
 
 ## Active and inert attributes
 
@@ -184,7 +184,7 @@ which can be used to control type layout.
 
 - `proc_macro` - Defines a [function-like macro].
 
-- `proc_macro_derive` - Defines a [derive mode macro].
+- `proc_macro_derive` - Defines a [derive macro].
 
 - `proc_macro_attribute` - Defines an [attribute macro].
 
@@ -587,7 +587,7 @@ You can implement `derive` for your own traits through [procedural macros].
 [attribute macro]: procedural-macros.html#attribute-macros
 [function-like macro]: procedural-macros.html#function-like-procedural-macros
 [conditional compilation]: conditional-compilation.html
-[derive mode macro]: procedural-macros.html#derive-mode-macros
+[derive macro]: procedural-macros.html#derive-macros
 [trait]: items/traits.html
 [main]: crates-and-source-files.html
 [`Termination`]: ../std/process/trait.Termination.html
