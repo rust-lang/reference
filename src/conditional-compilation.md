@@ -153,20 +153,6 @@ to `"64"` for targets with 64-bit pointers.
 
 <!-- Are there targets that have a different bit number? --> 
 
-### `target_has_atomic`
-
-Key-value option set for each integer size on which the target can perform
-atomic operations.
-
-Possible values:
-
-* `"8"`
-* `"16"`
-* `"32"`
-* `"64"`
-* `"128"`
-* `"ptr"`
-
 ### `target_vendor`
 
 Key-value option set once with the vendor of the target.
