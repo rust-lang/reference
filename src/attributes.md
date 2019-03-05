@@ -1,44 +1,39 @@
 # Attributes
 
 > **<sup>Syntax</sup>**\
-> _Attribute_ :\
-> &nbsp;&nbsp; _InnerAttribute_ | _OuterAttribute_
->
 > _InnerAttribute_ :\
-> &nbsp;&nbsp; `#![` MetaItem `]`
+> &nbsp;&nbsp; `#` `!` `[` _Attr_ `]`
 >
 > _OuterAttribute_ :\
-> &nbsp;&nbsp; `#[` MetaItem `]`
+> &nbsp;&nbsp; `#` `[` _Attr_ `]`
 >
-> _MetaItem_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
-> &nbsp;&nbsp; | [_SimplePath_] `=` [_LiteralExpression_]<sub>_without suffix_</sub>\
-> &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_<sup>?</sup> `)`
+> _Attr_ :\
+> &nbsp;&nbsp; [_SimplePath_] _AttrInput_<sup>?</sup>
 >
-> _MetaSeq_ :\
-> &nbsp;&nbsp; _MetaItemInner_ ( `,` MetaItemInner )<sup>\*</sup> `,`<sup>?</sup>
->
-> _MetaItemInner_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _MetaItem_\
-> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>
+> _AttrInput_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
+> &nbsp;&nbsp; | `=` [_LiteralExpression_]<sub>_without suffix_</sub>
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
 to name, convention, and language and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
-Attributes may appear as any of:
-
-* A single identifier, the _attribute name_
-* An identifier followed by the equals sign '=' and a literal, providing a
-  key/value pair
-* An identifier followed by a parenthesized list of sub-attribute arguments
-  which include literals
-
-Literal values must not include integer or float type suffixes.
-
-_Inner attributes_, written with a bang ("!") after the hash ("#"), apply to the
+_Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
 the bang after the hash, apply to the thing that follows the attribute.
+
+The attribute consists of a path to the attribute, followed by an optional
+delimited token tree whose interpretation is defined by the attribute.
+Attributes other than macro attributes also allow the input to be an equals
+sign (`=`) followed by a literal expression. See the [meta item
+syntax](#meta-item-attribute-syntax) below for more details.
+
+Attributes can be classified into the following kinds:
+
+* Built-in attributes
+* [Macro attributes][attribute macro]
+* [Derive macro helper attributes]
+* [Tool attributes](#tool-attributes)
 
 Attributes may be applied to many things in the language:
 
@@ -87,11 +82,34 @@ fn some_unused_variables() {
 }
 ```
 
-There are three kinds of attributes:
+## Meta Item Attribute Syntax
 
-* Built-in attributes
-* Macro attributes
-* Derive macro helper attributes
+A "meta item" is the syntax used for the _Attr_ rule by most built-in
+attributes and the [`meta` macro fragment specifier]. It has the following
+grammar:
+
+> **<sup>Syntax</sup>**\
+> _MetaItem_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
+> &nbsp;&nbsp; | [_SimplePath_] `=` [_LiteralExpression_]<sub>_without suffix_</sub>\
+> &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_<sup>?</sup> `)`
+>
+> _MetaSeq_ :\
+> &nbsp;&nbsp; _MetaItemInner_ ( `,` MetaItemInner )<sup>\*</sup> `,`<sup>?</sup>
+>
+> _MetaItemInner_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _MetaItem_\
+> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>
+
+Literal expressions in meta items must not include integer or float type
+suffixes.
+
+Some examples of meta items are:
+- `no_std`
+- `doc = "example"`
+- `cfg(any())`
+- `deprecated(since = "1.2.0", note = "text")`
+- `repr(align(32))`
 
 ## Active and inert attributes
 
@@ -139,28 +157,18 @@ names have meaning.
 
 On an `extern` block, the following attributes are interpreted:
 
-- `link_args` - specify arguments to the linker, rather than just the library
-  name and type. This is feature gated and the exact behavior is
-  implementation-defined (due to variety of linker invocation syntax).
 - `link` - indicate that a native library should be linked to for the
   declarations in this block to be linked correctly. `link` supports an optional
   `kind` key with three possible values: `dylib`, `static`, and `framework`. See
   [external blocks](items/external-blocks.html) for more about external blocks.
   Two examples: `#[link(name = "readline")]` and
   `#[link(name = "CoreFoundation", kind = "framework")]`.
-- `linked_from` - indicates what native library this block of FFI items is
-  coming from. This attribute is of the form `#[linked_from = "foo"]` where
-  `foo` is the name of a library in either `#[link]` or a `-l` flag. This
-  attribute is currently required to export symbols from a Rust dynamic library
-  on Windows, and it is feature gated behind the `linked_from` feature.
 
 On declarations inside an `extern` block, the following attributes are
 interpreted:
 
 - `link_name` - the name of the symbol that this function or static should be
   imported as.
-- `linkage` - on a static, this specifies the [linkage
-  type](http://llvm.org/docs/LangRef.html#linkage-types).
 
 See [type layout](type-layout.html) for documentation on the `repr` attribute
 which can be used to control type layout.
@@ -174,8 +182,6 @@ which can be used to control type layout.
   list of names `#[macro_use(foo, bar)]` restricts the import to just those
   macros named.  The `extern crate` must appear at the crate root, not inside
   `mod`, which ensures proper function of the `$crate` macro variable.
-
-- `macro_reexport` on an `extern crate` — re-export the named macros.
 
 - `macro_export` - export a `macro_rules` macro for cross-crate usage.
 
@@ -371,8 +377,7 @@ They only get checked when the associated tool is active, so if you try to use a
 
 Otherwise, they work just like regular lint attributes:
 
-
-```rust,ignore
+```rust
 // set the entire `pedantic` clippy lint group to warn
 #![warn(clippy::pedantic)]
 // silence warnings from the `filter_map` clippy lint
@@ -552,6 +557,34 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own traits through [procedural macros].
 
+## Tool attributes
+
+The compiler may allow attributes for external tools where each tool resides
+in its own namespace. The first segment of the attribute path is the name of
+the tool, with one or more additional segments whose interpretation is up to
+the tool.
+
+When a tool is not in use, the tool's attributes are accepted without a
+warning. When the tool is in use, the tool is responsible for processing and
+interpretation of its attributes.
+
+Tool attributes are not available if the [`no_implicit_prelude`] attribute is
+used.
+
+```rust
+// Tells the rustfmt tool to not format the following element.
+#[rustfmt::skip]
+struct S {
+}
+
+// Controls the "cyclomatic complexity" threshold for the clippy tool.
+#[clippy::cyclomatic_complexity = "100"]
+pub fn f() {}
+```
+
+> Note: `rustc` currently recognizes the tools "clippy" and "rustfmt".
+
+[_DelimTokenTree_]: macros.html
 [_LiteralExpression_]: expressions/literal-expr.html
 [_SimplePath_]: paths.html#simple-paths
 [`no_implicit_prelude`]: items/modules.html#prelude-items
@@ -585,6 +618,7 @@ You can implement `derive` for your own traits through [procedural macros].
 [external blocks]: items/external-blocks.html
 [items]: items.html
 [attribute macro]: procedural-macros.html#attribute-macros
+[derive macro helper attributes]: procedural-macros.html#derive-macro-helper-attributes
 [function-like macro]: procedural-macros.html#function-like-procedural-macros
 [conditional compilation]: conditional-compilation.html
 [derive macro]: procedural-macros.html#derive-macros
@@ -594,3 +628,4 @@ You can implement `derive` for your own traits through [procedural macros].
 [where clause]: items/where-clauses.html
 [trait or lifetime bounds]: trait-bounds.html
 [Expression Attributes]: expressions.html#expression-attributes
+[`meta` macro fragment specifier]: macros-by-example.html

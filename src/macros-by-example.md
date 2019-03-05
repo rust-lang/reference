@@ -80,7 +80,7 @@ syntax named by _designator_. Valid designators are:
 [_Expression_]: expressions.html
 [_Item_]: items.html
 [_LiteralExpression_]: expressions/literal-expr.html
-[_MetaItem_]: attributes.html
+[_MetaItem_]: attributes.html#meta-item-attribute-syntax
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
 [_TokenTree_]: macros.html#macro-invocation
