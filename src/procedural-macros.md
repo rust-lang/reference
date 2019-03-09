@@ -262,8 +262,8 @@ fn invoke3() {}
 // Example:
 #[show_streams { delimiters }]
 fn invoke4() {}
-// out: "delimiters"
-// out: "fn invoke4() {}"
+// out: attr: "delimiters"
+// out: item: "fn invoke4() {}"
 ```
 
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
