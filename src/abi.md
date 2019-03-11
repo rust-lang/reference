@@ -9,25 +9,25 @@ linking external libraries.
 
 ## The `used` attribute
 
-The *`used` attribute* can only be applied to [`static` variables]. This [attribute] forces the
+The *`used` attribute* can only be applied to [`static` items]. This [attribute] forces the
 compiler to keep the variable in the output object file (.o, .rlib, etc.) even if the variable is
 not used, or referenced, by any other item in the crate.
 
-Below is an example that shows under what conditions the compiler keeps a `static` variable in the
+Below is an example that shows under what conditions the compiler keeps a `static` item in the
 output object file.
 
 ``` rust
 // foo.rs
 
-// kept because of #[used]
+// This is kept because of `#[used]`:
 #[used]
 static FOO: u32 = 0;
 
-// removable because it is unused
+// This is removable because it is unused:
 #[allow(dead_code)]
 static BAR: u32 = 0;
 
-// kept because it is referenced by a public, reachable function
+// This is kept because it is referenced by a public, reachable function:
 pub static BAZ: u32 = 0;
 
 static QUUX: u32 = 0;
@@ -36,7 +36,7 @@ pub fn quux() -> &'static u32 {
     &QUUX
 }
 
-// removable because it is referenced by a private, unused (dead) function
+// This is removable because it is referenced by a private, unused (dead) function:
 static CORGE: u32 = 0;
 
 #[allow(dead_code)]
@@ -55,7 +55,7 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
-[`static` variables]: items/static-items.html
+[`static` items]: items/static-items.html
 [attribute]: attributes.html
 [extern functions]: items/functions.html#extern-functions
 [external blocks]: items/external-blocks.html

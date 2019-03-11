@@ -204,7 +204,7 @@ which can be used to control type layout.
   object file that this item's contents will be placed into.
 - `no_mangle` - on any item, do not apply the standard name mangling. Set the
   symbol for this item to its identifier.
-- `used` - on statics, this forces the compiler to keep the variable in the
+- [`used`] - on statics, this forces the compiler to keep the variable in the
   output object file.
 
 ### Deprecation
@@ -631,3 +631,4 @@ pub fn f() {}
 [trait or lifetime bounds]: trait-bounds.html
 [Expression Attributes]: expressions.html#expression-attributes
 [`meta` macro fragment specifier]: macros-by-example.html
+[`used`]: abi.html#the-used-attribute
