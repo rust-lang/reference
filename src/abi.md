@@ -1,17 +1,15 @@
 # Application Binary Interface (ABI)
 
-This section documents features that affect the ABI of a Rust program / binary, rlib, dylib, etc. A
-list of such features is shown below:
+This section documents features that affect the ABI of the compiled output of
+a crate.
 
-- `#[export_name]`
-- `#[link_section]`
-- `#[no_mangle]`
-- `#[used]`
-- `extern "$ABI" fn`
+See *[extern functions]* for information on specifying the ABI for exporting
+functions. See *[external blocks]* for information on specifying the ABI for
+linking external libraries.
 
-## `#[used]`
+## The `used` attribute
 
-The `#[used]` attribute can only be applied to `static` variables. This attribute forces the
+The *`used` attribute* can only be applied to [`static` variables]. This [attribute] forces the
 compiler to keep the variable in the output object file (.o, .rlib, etc.) even if the variable is
 not used, or referenced, by any other item in the crate.
 
@@ -21,26 +19,24 @@ output object file.
 ``` rust
 // foo.rs
 
-#![feature(used)]
-
 // kept because of #[used]
 #[used]
 static FOO: u32 = 0;
 
-// removed because it's unused
+// removable because it is unused
 #[allow(dead_code)]
 static BAR: u32 = 0;
 
-// kept because it's referenced by a public, reachable function
+// kept because it is referenced by a public, reachable function
 pub static BAZ: u32 = 0;
 
-pub static QUUX: u32 = 0;
+static QUUX: u32 = 0;
 
 pub fn quux() -> &'static u32 {
     &QUUX
 }
 
-// removed because it's referenced by a private, unused (dead) function
+// removable because it is referenced by a private, unused (dead) function
 static CORGE: u32 = 0;
 
 #[allow(dead_code)]
@@ -58,3 +54,8 @@ $ nm -C foo.o
 0000000000000000 R foo::QUUX
 0000000000000000 T foo::quux
 ```
+
+[`static` variables]: items/static-items.html
+[attribute]: attributes.html
+[extern functions]: items/functions.html#extern-functions
+[external blocks]: items/external-blocks.html
