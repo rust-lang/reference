@@ -40,10 +40,10 @@ code.
   * Non-UTF-8 byte sequences in a `str`.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
-> a function in `C` that exhibits undefined behavior of `C` means your entire
-> program contains undefined behaviour that can also affect the `Rust` code.
-> And vice versa, undefined behavior in `Rust` can cause adverse affects on
-> code executed by any FFI calls to other languages.
+> a function in C that exhibits undefined behavior of C means your entire
+> program contains undefined behaviour that can also affect the Rust code. And
+> vice versa, undefined behavior in Rust can cause adverse affects on code
+> executed by any FFI calls to other languages.
 
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
