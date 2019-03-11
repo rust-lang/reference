@@ -1,18 +1,13 @@
 # The Rust runtime
 
-This section documents features that define some aspects of the Rust runtime. A list of such
-features is shown below:
+This section documents features that define some aspects of the Rust runtime.
 
-- `#[panic_handler]`, the panicking behavior
+## The `panic_handler` attribute
 
-## `#[panic_handler]`
-
-The `panic_handler` attribute can only be applied to a function with signature
-`fn(&PanicInfo) -> !`. The function marked with this attribute defines the behavior of panics. The
+The *`panic_handler` attribute* can only be applied to a function with signature
+`fn(&PanicInfo) -> !`. The function marked with this [attribute] defines the behavior of panics. The
 [`PanicInfo`] struct contains information about the location of the panic. There must be a single
 `panic_handler` function in the dependency graph of a binary, dylib or cdylib crate.
-
-[`PanicInfo`]: https://doc.rust-lang.org/nightly/core/panic/struct.PanicInfo.html
 
 Below is shown a `panic_handler` function that logs the panic message and then halts the
 thread.
@@ -51,7 +46,12 @@ fn panic(info: &PanicInfo) -> ! {
 
 ### Standard behavior
 
-The standard library provides an implementation of `panic_handler` than defaults
-to unwinding the stack but that can be [changed to abort the process][abort].
+The standard library provides an implementation of `panic_handler` that
+defaults to unwinding the stack but that can be [changed to abort the
+process][abort]. The standard library's panic behavior can be modified at
+runtime with the [set_hook] function.
 
-[abort]: ../book/2018-edition/ch09-01-unrecoverable-errors-with-panic.html
+[`PanicInfo`]: ../core/panic/struct.PanicInfo.html
+[abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
+[attribute]: attributes.html
+[set_hook]: ../std/panic/fn.set_hook.html
