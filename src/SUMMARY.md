@@ -113,6 +113,8 @@
 
 - [Application Binary Interface](abi.md)
 
+- [The Rust runtime](runtime.md)
+
 [Appendix: Influences](influences.md)
 
 [Appendix: As-yet-undocumented Features](undocumented.md)

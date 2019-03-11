@@ -206,6 +206,7 @@ which can be used to control type layout.
   symbol for this item to its identifier.
 - [`used`] - on statics, this forces the compiler to keep the variable in the
   output object file.
+- [`panic_handler`] — sets the function to handle panics.
 
 ### Deprecation
 
@@ -632,3 +633,4 @@ pub fn f() {}
 [Expression Attributes]: expressions.html#expression-attributes
 [`meta` macro fragment specifier]: macros-by-example.html
 [`used`]: abi.html#the-used-attribute
+[`panic_handler`]: runtime.html#the-panic_handler-attribute
