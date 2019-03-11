@@ -111,6 +111,8 @@
 
 - [Constant Evaluation](const_eval.md)
 
+- [Application Binary Interface](abi.md)
+
 [Appendix: Influences](influences.md)
 
 [Appendix: As-yet-undocumented Features](undocumented.md)
