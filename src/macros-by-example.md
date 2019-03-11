@@ -49,6 +49,8 @@ the matcher and the transcriber must be surrounded by delimiters. Macros can
 expand to expressions, statements, items (including traits, impls, and foreign
 items), types, or patterns.
 
+## Transcription
+
 When a macro is invoked, the macro expander looks up macro invocations by name,
 and tries each macro rule in turn. It transcribes the first successful match; if
 this results in an error, then future matches are not tried. When matching, no
@@ -60,18 +62,55 @@ invocation unambiguously:
 
 ```rust,compile_fail
 macro_rules! ambiguity {
-    ($($i:ident)* $j:ident) => { ($($i)-*) * $j };
+    ($($i:ident)* $j:ident) => { };
 }
 
 ambiguity!(error); // Error: local ambiguity
 ```
 
 In both the matcher and the transcriber, the `$` token is used to invoke special
-behaviours from the macro engine. Tokens that aren't part of such an invocation
-are matched and transcribed literally, with one exception. The exception is that
-the outer delimiters for the matcher will match any pair of delimiters. Thus,
-for instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
+behaviours from the macro engine (described below in [Metavariables] and
+[Repetitions]). Tokens that aren't part of such an invocation are matched and
+transcribed literally, with one exception. The exception is that the outer
+delimiters for the matcher will match any pair of delimiters. Thus, for
+instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
 `$` cannot be matched or transcribed literally.
+
+When forwarding a matched fragment to another macro-by-example, matchers in
+the second macro will see an opaque AST of the fragment type. The second macro
+can't use literal tokens to match the fragments in the matcher, only a
+fragment specifier of the same type. The `ident`, `lifetime`, and `tt`
+fragment types are an exception, and can be matched by literal tokens. The
+following illustrates this restriction:
+
+```rust,compile_fail
+macro_rules! foo {
+    ($l:expr) => { bar!($l); }
+// ERROR:               ^^ no rules expected this token in macro call
+}
+
+macro_rules! bar {
+    (3) => {}
+}
+
+foo!(3);
+```
+
+The following illustrates how tokens can be directly matched after matching a
+`tt` fragment:
+
+```rust
+// compiles OK
+macro_rules! foo {
+    ($l:tt) => { bar!($l); }
+}
+
+macro_rules! bar {
+    (3) => {}
+}
+
+foo!(3);
+```
 
 ## Metavariables
 
@@ -94,40 +133,44 @@ fragment specifiers are:
   * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
 
-In the transcriber, metavariables are referred to simply by $`_name_`, since
+In the transcriber, metavariables are referred to simply by `$`_name_, since
 the fragment kind is specified in the matcher. Metavariables are replaced with
 the syntax element that matched them. The keyword metavariable `$crate` can be
 used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
-## Repititions
+## Repetitions
 
 In both the matcher and transcriber, repetitions are indicated by placing the
-tokens to be repeated inside `$( ... )`, followed by a repetition operator,
+tokens to be repeated inside `$(`…`)`, followed by a repetition operator,
 optionally with a separator token between. The separator token can be any token
 other than a delimiter or one of the repetition operators, but `;` and `,` are
 the most common. For instance, `$( $i:ident ),*` represents any number of
-identifiers separated by commas. Nested repititions are permitted.
+identifiers separated by commas. Nested repetitions are permitted.
 
-The repetition operators are `*`, which indicates any number of repetitions,
-`+`, which indicates any number but at least one, and `?` which indicates an
-optional fragment with zero or one occurrences. Since `?` represents at most one
-occurrence, it cannot be used with a separator.
+The repetition operators are:
+
+- `*` — indicates any number of repetitions.
+- `+` — indicates any number but at least one.
+- `?` — indicates an optional fragment with zero or one occurrences.
+
+Since `?` represents at most one occurrence, it cannot be used with a
+separator.
 
 The repeated fragment both matches and transcribes to the specified number of
 the fragment, separated by the separator token. Metavariables are matched to
 every repetition of their corresponding fragment. For instance, the `$( $i:ident
 ),*` example above matches `$i` to all of the identifiers in the list.
 
-During transcription, additional restrictions apply to repititions so that the
+During transcription, additional restrictions apply to repetitions so that the
 compiler knows how to expand them properly:
 
 1.  A metavariable must appear in exactly the same number, kind, and nesting
     order of repetitions in the transcriber as it did in the matcher. So for the
-    matcher `$( $i:ident ),*`, the transcribers `=> $i`, `=> $( $( $i)* )*`, and
-    `=> $( $i )+` are all illegal, but `=> { $( $i );* }` is correct and
-    replaces a comma-separated list of identifiers with a semicolon-separated
-    list.
+    matcher `$( $i:ident ),*`, the transcribers `=> { $i }`,
+    `=> { $( $( $i)* )* }`, and `=> { $( $i )+ }` are all illegal, but
+    `=> { $( $i );* }` is correct and replaces a comma-separated list of
+    identifiers with a semicolon-separated list.
 1.  Second, each repetition in the transcriber must contain at least one
     metavariable to decide now many times to expand it. If multiple
     metavariables appear in the same repetition, they must be bound to the same
@@ -147,12 +190,12 @@ compiler knows how to expand them properly:
 For historical reasons, the scoping of macros by example does not work entirely like
 items. Macros have two forms of scope: textual scope, and path-based scope.
 Textual scope is based on the order that things appear in source files, or even
-across multiple files, and is the default scoping. It's explained further below.
+across multiple files, and is the default scoping. It is explained further below.
 Path-based scope works exactly the same way that item scoping does. The scoping,
 exporting, and importing of macros is controlled largely by attributes.
 
 When a macro is invoked by an unqualified identifier (not part of a multi-part
-path), it's first looked up in textual scoping. If this does not yield any
+path), it is first looked up in textual scoping. If this does not yield any
 results, then it is looked up in path-based scoping. If the macro's name is
 qualified with a path, then it is only looked up in path-based scoping.
 
@@ -194,7 +237,7 @@ mod has_macro {
 
 //// src/has_macro/uses_macro.rs
 
-m!{} // OK: appears after delcaration of m in src/lib.rs
+m!{} // OK: appears after declaration of m in src/lib.rs
 ```
 
 It is not an error to define a macro multiple times; the most recent declaration
@@ -241,7 +284,9 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
-The `#[macro_use]` attribute has two purposes. First, it can be used to make a
+### The `macro_use` attribute
+
+The *`macro_use` attribute* has two purposes. First, it can be used to make a
 module's macro scope not end when the module is closed, by applying it to a
 module:
 
@@ -257,7 +302,7 @@ m!();
 ```
 
 Second, it can be used to import macros from another crate, by attaching it to
-an  `extern crate` declaration appearing in the crate's root module. Macros
+an `extern crate` declaration appearing in the crate's root module. Macros
 imported this way are imported into the prelude of the crate, not textually,
 which means that they can be shadowed by any other name. While macros imported
 by `#[macro_use]` can be used before the import statement, in case of a
@@ -270,7 +315,7 @@ module.
 extern crate lazy_static;
 
 lazy_static!{};
-// self::lazy_static!{} // Error: lazy_static is not defined inself
+// self::lazy_static!{} // Error: lazy_static is not defined in `self`
 ```
 
 Macros to be imported with `#[macro_use]` must be exported with
@@ -302,7 +347,7 @@ mod mac {
 Macros labeled with `#[macro_export]` are always `pub` and can be referred to
 by other crates, either by path or by `#[macro_use]` as described above.
 
-## Hygiene 
+## Hygiene
 
 By default, all identifiers referred to in a macro are expanded as-is, and are
 looked up at the macro's invocation site. This can lead to issues if a macro
@@ -418,22 +463,24 @@ When repetitions are involved, then the rules apply to every possible number of
 expansions, taking separators into account. This means:
 
   * If the repetition includes a separator, that separator must be able to
-    follow the contents of the repitition.
-  * If the repitition can repeat multiple times (`*` or `+`), then the contents
+    follow the contents of the repetition.
+  * If the repetition can repeat multiple times (`*` or `+`), then the contents
     must be able to follow themselves.
   * The contents of the repetition must be able to follow whatever comes
     before, and whatever comes after must be able to follow the contents of the
-    repitition.
-  * If the repitition can match zero times (`*` or `?`), then whatever comes
+    repetition.
+  * If the repetition can match zero times (`*` or `?`), then whatever comes
     after must be able to follow whatever comes before.
 
 
 For more detail, see the [formal specification].
 
+[Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.html
 [IDENTIFIER_OR_KEYWORD]: identifiers.html
 [LIFETIME_TOKEN]: tokens.html#lifetimes-and-loop-labels
-[formal specification]: macro-ambiguity.html
+[Metavariables]: #metavariables
+[Repetitions]: #repetitions
 [_BlockExpression_]: expressions/block-expr.html
 [_DelimTokenTree_]: macros.html
 [_Expression_]: expressions.html
@@ -447,5 +494,5 @@ For more detail, see the [formal specification].
 [_TypePath_]: paths.html#paths-in-types
 [_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
+[formal specification]: macro-ambiguity.html
 [token]: tokens.html
-[Hygiene]: #hygiene

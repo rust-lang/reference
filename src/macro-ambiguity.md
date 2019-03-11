@@ -118,7 +118,7 @@ legal macro definition will continue to assign the same determination as to
 where `... tt` ends and `uu ...` begins, even as new syntactic forms are added
 to the language.
 
-The second invariant says that a separated complex NT must use a seperator token
+The second invariant says that a separated complex NT must use a separator token
 that is part of the predetermined follow set for the internal contents of the
 NT. This ensures that a legal macro definition will continue to parse an input
 fragment into the same delimited sequence of `tt ...`'s, even as new syntactic
@@ -273,7 +273,7 @@ LAST(M), defined by case analysis on M itself (a sequence of token-trees):
 
 Below are some examples of FIRST and LAST.
 (Note in particular how the special ε element is introduced and
-eliminated based on the interation between the pieces of the input.)
+eliminated based on the interaction between the pieces of the input.)
 
 Our first example is presented in a tree structure to elaborate on how
 the analysis of the matcher composes. (Some of the simpler subtrees
@@ -365,7 +365,7 @@ why particular matchers are legal and others are not.
 
  * `( $($a:tt $b:tt)* ; )` : legal, because FIRST(`$b:tt`) = { `$b:tt` } is ⊆ FOLLOW(`tt`) = ANYTOKEN, as is FIRST(`;`) = { `;` }.
 
- * `( $($t:tt),* , $(t:tt),* )` : legal,  (though any attempt to actually use this macro will signal a local ambguity error during expansion).
+ * `( $($t:tt),* , $(t:tt),* )` : legal,  (though any attempt to actually use this macro will signal a local ambiguity error during expansion).
 
  * `($ty:ty $(; not sep)* -)` : illegal, because FIRST(`$(; not sep)* -`) = { `;`, `-` } is not in FOLLOW(`ty`).
 
