@@ -27,9 +27,10 @@ static FOO: u32 = 0;
 #[allow(dead_code)]
 static BAR: u32 = 0;
 
-// This is kept because it is referenced by a public, reachable function:
+// This is kept because it is publicly reachable:
 pub static BAZ: u32 = 0;
 
+// This is kept because it is referenced by a public, reachable function:
 static QUUX: u32 = 0;
 
 pub fn quux() -> &'static u32 {
