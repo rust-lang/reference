@@ -49,7 +49,7 @@ the matcher and the transcriber must be surrounded by delimiters. Macros can
 expand to expressions, statements, items (including traits, impls, and foreign
 items), types, or patterns.
 
-## Transcription
+## Transcribing
 
 When a macro is invoked, the macro expander looks up macro invocations by name,
 and tries each macro rule in turn. It transcribes the first successful match; if
