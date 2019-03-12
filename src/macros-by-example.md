@@ -80,7 +80,7 @@ When forwarding a matched fragment to another macro-by-example, matchers in
 the second macro will see an opaque AST of the fragment type. The second macro
 can't use literal tokens to match the fragments in the matcher, only a
 fragment specifier of the same type. The `ident`, `lifetime`, and `tt`
-fragment types are an exception, and can be matched by literal tokens. The
+fragment types are an exception, and *can* be matched by literal tokens. The
 following illustrates this restriction:
 
 ```rust,compile_fail
