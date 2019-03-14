@@ -98,7 +98,7 @@ into the macro-use prelude.
 
 [IDENTIFIER]: identifiers.html
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
-[`#[macro_use]` attribute]: attributes.html#macro-related-attributes
+[`#[macro_use]` attribute]: macros-by-example.html#the-macro_use-attribute
 [`alloc`]: https://doc.rust-lang.org/alloc/
 [`crate::`]: paths.html#crate
 [`no_implicit_prelude`]: items/modules.html#prelude-items

@@ -123,7 +123,7 @@ mod thread {
 ## Prelude Items
 
 Modules implicitly have some names in scope. These name are to built-in types,
-macros imported with `#[macro_use]` on an extern crate, and by the crate's
+macros imported with [`#[macro_use]`] on an extern crate, and by the crate's
 [prelude]. These names are all made of a single identifier. These names are not
 part of the module, so for example, any name `name`, `self::name` is not a
 valid path. The names added by the [prelude] can be removed by placing the
@@ -142,6 +142,7 @@ The built-in attributes that have meaning on a function are [`cfg`],
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
 [_OuterAttribute_]: attributes.html
+[`#[macro_use]`]: macros-by-example.html#the-macro_use-attribute
 [`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes.html#deprecation
 [`doc`]: attributes.html#documentation

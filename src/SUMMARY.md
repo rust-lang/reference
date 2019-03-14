@@ -115,8 +115,8 @@
 
 - [The Rust runtime](runtime.md)
 
-[Appendix: Influences](influences.md)
-
-[Appendix: As-yet-undocumented Features](undocumented.md)
-
-[Appendix: Glossary](glossary.md)
+- [Appendices](appendices.md)
+    - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
+    - [Influences](influences.md)
+    - [As-Yet-Undocumented Features](undocumented.md)
+    - [Glossary](glossary.md)
