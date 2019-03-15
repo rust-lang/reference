@@ -56,7 +56,40 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
+## The `no_mangle` attribute
+
+The *`no_mangle` attribute* may be used on any [item] to disable standard
+symbol name mangling. The symbol for the item will be the identifier of the
+item's name.
+
+## The `link_section` attribute
+
+The *`link_section` attribute* specifies the section of the object file that a
+[function] or [static]'s content will be placed into. It uses the
+[_MetaNameValueStr_] syntax to specify the section name.
+
+```rust,ignore
+#[no_mangle]
+#[link_section = ".example_section"]
+pub static VAR1: u32 = 1;
+```
+
+## The `export_name` attribute
+
+The *`export_name` attribute* specifies the name of the symbol that will be
+exported on a [function] or [static]. It uses the [_MetaNameValueStr_] syntax
+to specify the symbol name.
+
+```rust,ignore
+#[export_name = "exported_symbol_name"]
+pub fn name_in_rust() { }
+```
+
+[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [`static` items]: items/static-items.html
 [attribute]: attributes.html
 [extern functions]: items/functions.html#extern-functions
 [external blocks]: items/external-blocks.html
+[function]: items/functions.html
+[item]: items.html
+[static]: items/static-items.html

@@ -65,7 +65,7 @@ alternately be expressed with `crate::util`'s contents in a file named
 > convention as it is more consistent, and avoids having many files named
 > `mod.rs` within a project.
 
-### `path` Attribute
+### The `path` attribute
 
 The directories and files used for loading external file modules can be
 influenced with the `path` attribute.
@@ -144,11 +144,11 @@ The built-in attributes that have meaning on a function are [`cfg`],
 [_OuterAttribute_]: attributes.html
 [`#[macro_use]`]: macros-by-example.html#the-macro_use-attribute
 [`cfg`]: conditional-compilation.html
-[`deprecated`]: attributes.html#deprecation
-[`doc`]: attributes.html#documentation
+[`deprecated`]: diagnostics.html#the-deprecated-attribute
+[`doc`]: ../rustdoc/the-doc-attribute.html
 [IDENTIFIER]: identifiers.html
 [attribute]: attributes.html
 [items]: items.html
 [module path]: paths.html
 [prelude]: crates-and-source-files.html#preludes-and-no_std
-[the lint check attributes]: attributes.html#lint-check-attributes
+[the lint check attributes]: diagnostics.html#lint-check-attributes

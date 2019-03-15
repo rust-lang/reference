@@ -51,7 +51,28 @@ defaults to unwinding the stack but that can be [changed to abort the
 process][abort]. The standard library's panic behavior can be modified at
 runtime with the [set_hook] function.
 
+## The `global_allocator` attribute
+
+The *`global_allocator` attribute* is used on a static item implementing the
+[`GlobalAlloc`] trait to set the global allocator.
+
+## The `windows_subsystem` attribute
+
+The *`windows_subsystem` attribute* may be applied at the crate level to
+indicate that when this crate is linked for a Windows target it will configure
+the resulting binary's [subsystem] via the linker. It uses the
+[_MetaNameValueStr_] syntax specify the subsystem with a value of either
+`console` or `windows`. More subsystems may be allowed in the future, and this
+attribute is ignored on non-Windows targets.
+
+```rust,ignore
+#![windows_subsystem = "windows"]
+```
+
+[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[`GlobalAlloc`]: ../alloc/alloc/trait.GlobalAlloc.html
 [`PanicInfo`]: ../core/panic/struct.PanicInfo.html
 [abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
 [attribute]: attributes.html
 [set_hook]: ../std/panic/fn.set_hook.html
+[subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx

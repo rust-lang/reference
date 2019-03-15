@@ -123,7 +123,28 @@ type must  be one of the following:
 > the unstable [`Termination`] trait.
 
 <!-- If the previous section needs updating (from "must take no arguments"
-  onwards, also update it in the attributes.md file, testing section -->
+  onwards, also update it in the testing.md file -->
+
+### The `no_main` attribute
+
+The *`no_main` [attribute]* may be applied at the crate level to disable
+emitting the `main` symbol for an executable binary. This is useful when some
+other object being linked to defines `main`.
+
+## The `crate_name` attribute
+
+The *`crate_name` [attribute]* may be applied at the crate level to specify the
+name of the crate with the [_MetaNameValueStr_] syntax.
+
+```rust,ignore
+#![crate_name = "mycrate"]
+```
+
+The crate name must not be empty, and must only contain [Unicode alphanumeric]
+or `-` (U+002D) characters.
+
+<!-- TODO: I feel like this should say more about what the crate name is and
+    what it is used for. -->
 
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
@@ -133,8 +154,10 @@ type must  be one of the following:
     ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
+[Unicode alphanumeric]: ../std/primitive.char.html#method.is_alphanumeric
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
+[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html

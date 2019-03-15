@@ -43,7 +43,7 @@ Non-doc comments are interpreted as a form of whitespace.
 
 Line doc comments beginning with exactly _three_ slashes (`///`), and block
 doc comments (`/** ... */`), both inner doc comments, are interpreted as a
-special syntax for `doc` [attributes]. That is, they are equivalent to writing
+special syntax for [`doc` attributes]. That is, they are equivalent to writing
 `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into
 `#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`.
 
@@ -122,4 +122,4 @@ pub mod outer_module {
 }
 ```
 
-[attributes]: attributes.html
+[`doc` attributes]: ../rustdoc/the-doc-attribute.html

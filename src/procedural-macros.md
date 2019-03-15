@@ -113,7 +113,7 @@ as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
 
 ### Derive macros
 
-*Derive macros* define new inputs for the `derive` [attribute]. These macros
+*Derive macros* define new inputs for the [`derive` attribute]. These macros
 can create new [items] given the token stream of a [struct], [enum], or [union].
 They can also define [derive macro helper attributes].
 
@@ -269,7 +269,7 @@ fn invoke4() {}
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
 [`TokenStream`s]: ../proc_macro/struct.TokenStream.html
 [`compile_error`]: ../std/macro.compile_error.html
-[`derive`]: attributes.html#derive
+[`derive` attribute]: derive.html
 [`proc_macro` crate]: ../proc_macro/index.html
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros

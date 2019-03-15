@@ -21,25 +21,27 @@
 
 - [Conditional compilation](conditional-compilation.md)
 
-- [Items and attributes](items-and-attributes.md)
-    - [Items](items.md)
-        - [Modules](items/modules.md)
-        - [Extern crates](items/extern-crates.md)
-        - [Use declarations](items/use-declarations.md)
-        - [Functions](items/functions.md)
-        - [Type aliases](items/type-aliases.md)
-        - [Structs](items/structs.md)
-        - [Enumerations](items/enumerations.md)
-        - [Unions](items/unions.md)
-        - [Constant items](items/constant-items.md)
-        - [Static items](items/static-items.md)
-        - [Traits](items/traits.md)
-        - [Implementations](items/implementations.md)
-        - [External blocks](items/external-blocks.md)
+- [Items](items.md)
+    - [Modules](items/modules.md)
+    - [Extern crates](items/extern-crates.md)
+    - [Use declarations](items/use-declarations.md)
+    - [Functions](items/functions.md)
+    - [Type aliases](items/type-aliases.md)
+    - [Structs](items/structs.md)
+    - [Enumerations](items/enumerations.md)
+    - [Unions](items/unions.md)
+    - [Constant items](items/constant-items.md)
+    - [Static items](items/static-items.md)
+    - [Traits](items/traits.md)
+    - [Implementations](items/implementations.md)
+    - [External blocks](items/external-blocks.md)
     - [Type and lifetime parameters](items/generics.md)
     - [Associated Items](items/associated-items.md)
     - [Visibility and Privacy](visibility-and-privacy.md)
-    - [Attributes](attributes.md)
+
+- [Attributes](attributes.md)
+    - [Derive](derive.md)
+    - [Compiler attributes](compiler-attrs.md)
 
 - [Statements and expressions](statements-and-expressions.md)
     - [Statements](statements.md)
@@ -114,6 +116,12 @@
 - [Application Binary Interface](abi.md)
 
 - [The Rust runtime](runtime.md)
+
+- [Code generation](codegen.md)
+
+- [Testing](testing.md)
+
+- [Diagnostics](diagnostics.md)
 
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
