@@ -14,7 +14,7 @@ Rust:
 
 [`Copy`]: special-types-and-traits.html#copy
 [`union`]: items/unions.html
-[mutable static variable]: items/static-items.html#mutable-statics
-[external static variable]: items/external-blocks.html
+[mutable]: items/static-items.html#mutable-statics
+[external]: items/external-blocks.html
 [raw pointer]: types/pointer.html
 [unsafe trait]: items/traits.html#unsafe-traits

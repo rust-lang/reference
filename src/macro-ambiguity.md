@@ -169,7 +169,7 @@ ANYTOKEN.
 
 (To review one's understanding of the above informal descriptions, the reader
 at this point may want to jump ahead to the [examples of
-FIRST/LAST][#examples-of-first-and-last] before reading their formal
+FIRST/LAST](#examples-of-first-and-last) before reading their formal
 definitions.)
 
 ### FIRST, LAST
@@ -318,7 +318,7 @@ Here are similar examples but now for LAST.
  * LAST(`$( $d:ident $e:expr );* $(h)*`) = { `$e:expr`, ε, `h` }
  * LAST(`$( $d:ident $e:expr );* $(h)* $( f ;)+`) = { `;` }
  * LAST(`$( $d:ident $e:expr );* $(h)* $( f ;)+ g`) = { `g` }
- 
+
 ### FOLLOW(M)
 
 Finally, the definition for FOLLOW(M) is built up as follows. pat, expr, etc.
