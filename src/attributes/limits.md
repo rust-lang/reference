@@ -1,6 +1,6 @@
-# Compiler setting attributes
+# Limits
 
-The following [attributes] affect internal settings of the compiler.
+The following [attributes] affect compile-time limits.
 
 ## The `recursion_limit` attribute
 

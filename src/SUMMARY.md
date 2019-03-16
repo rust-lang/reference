@@ -44,7 +44,7 @@
     - [Derive](attributes/derive.md)
     - [Diagnostics](attributes/diagnostics.md)
     - [Code generation](attributes/codegen.md)
-    - [Compiler settings](attributes/compiler-settings.md)
+    - [Limits](attributes/limits.md)
 
 - [Statements and expressions](statements-and-expressions.md)
     - [Statements](statements.md)

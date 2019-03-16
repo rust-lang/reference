@@ -209,18 +209,13 @@ The following is an index of all built-in attributes.
   - [`link_section`] — Specifies the section of an object file to use for a
     function or static.
   - [`no_mangle`] — Disables symbol name encoding.
-  - [`used`] - Forces the compiler to keep a static variable in the output
+  - [`used`] — Forces the compiler to keep a static item in the output
     object file.
   - [`crate_name`] — Specifies the crate name.
 - Code generation
   - [`inline`] — Hint to inline code.
   - [`cold`] — Hint that a function is unlikely to be called.
   - [`no_builtins`] — Disables use of certain built-in functions.
-- Compiler setting attributes
-  - `feature` — Used to enable unstable or experimental compiler features. See
-    [The Unstable Book] for features implemented in `rustc`.
-  - [`recursion_limit`] — Sets the maximum recursion limit for certain
-    compile-time operations.
 - Documentation
   - `doc` — Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
@@ -229,10 +224,16 @@ The following is an index of all built-in attributes.
   - [`no_implicit_prelude`] — Disables prelude lookups within a module.
 - Modules
   - [`path`] — Specifies the filename for a module.
+- Limits
+  - [`recursion_limit`] — Sets the maximum recursion limit for certain
+    compile-time operations.
 - Runtime
   - [`panic_handler`] — Sets the function to handle panics.
   - [`global_allocator`] — Sets the global memory allocator.
   - [`windows_subsystem`] — Specifies the windows subsystem to link with.
+- Features
+  - `feature` — Used to enable unstable or experimental compiler features. See
+    [The Unstable Book] for features implemented in `rustc`.
 
 [Doc comments]: comments.html#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
@@ -278,7 +279,7 @@ The following is an index of all built-in attributes.
 [`proc_macro_attribute`]: procedural-macros.html#attribute-macros
 [`proc_macro_derive`]: procedural-macros.html#derive-macros
 [`proc_macro`]: procedural-macros.html#function-like-procedural-macros
-[`recursion_limit`]: attributes/compiler-settings.html#the-recursion_limit-attribute
+[`recursion_limit`]: attributes/limits.html#the-recursion_limit-attribute
 [`repr`]: type-layout.html#representations
 [`should_panic`]: attributes/testing.html#the-should_panic-attribute
 [`test`]: attributes/testing.html#the-test-attribute

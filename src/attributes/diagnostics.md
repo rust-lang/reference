@@ -15,14 +15,13 @@ For any lint check `C`:
 
 * `allow(C)` overrides the check for `C` so that violations will go
    unreported,
+* `warn(C)` warns about violations of `C` but continues compilation.
 * `deny(C)` signals an error after encountering a violation of `C`,
 * `forbid(C)` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
-* `warn(C)` warns about violations of `C` but continues compilation.
 
-The lint checks supported by the compiler can be found via `rustc -W help`,
-along with their default settings and are documented in the [rustc book].
-[Compiler plugins] can provide additional lint checks.
+> Note: The lint checks supported by `rustc` can be found via `rustc -W help`,
+> along with their default settings and are documented in the [rustc book].
 
 ```rust
 pub mod m1 {
@@ -77,8 +76,8 @@ pub mod m3 {
 
 ### Tool lint attributes
 
-Tool lints let you use scoped lints, to `allow`, `warn`, `deny` or `forbid` lints of
-certain tools.
+Tool lints allows using scoped lints, to `allow`, `warn`, `deny` or `forbid`
+lints of certain tools.
 
 Currently `clippy` is the only available lint tool.
 
@@ -146,11 +145,11 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 [1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
 
-
 ## The `must_use` attribute
 
 The *`must_use` attribute* can be used on user-defined composite types
-([`struct`s][struct], [`enum`s][enum], and [`union`s][union]) and [functions].
+([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
+and [traits].
 
 When used on user-defined composite types, if the [expression] of an
 [expression statement] has that type, then the `unused_must_use` lint is
@@ -159,7 +158,7 @@ violated.
 ```rust
 #[must_use]
 struct MustUse {
-  // some fields
+    // some fields
 }
 
 # impl MustUse {
@@ -167,24 +166,22 @@ struct MustUse {
 # }
 #
 fn main() {
-  // Violates the `unused_must_use` lint.
-  MustUse::new();
+    // Violates the `unused_must_use` lint.
+    MustUse::new();
 }
 ```
 
-When used on a function, if the [expression] of an
-[expression statement] is a [call expression] to that function, then the
-`unused_must_use` lint is violated. The exceptions to this is if the return type
-of the function is `()`, `!`, or a [zero-variant enum], in which case the
-attribute does nothing.
+When used on a function, if the [expression] of an [expression statement] is a
+[call expression] to that function, then the `unused_must_use` lint is
+violated.
 
 ```rust
 #[must_use]
 fn five() -> i32 { 5i32 }
 
 fn main() {
-  // Violates the unused_must_use lint.
-  five();
+    // Violates the unused_must_use lint.
+    five();
 }
 ```
 
@@ -193,21 +190,21 @@ when the call expression is a function from an implementation of the trait.
 
 ```rust
 trait Trait {
-  #[must_use]
-  fn use_me(&self) -> i32;
+    #[must_use]
+    fn use_me(&self) -> i32;
 }
 
 impl Trait for i32 {
-  fn use_me(&self) -> i32 { 0i32 }
+    fn use_me(&self) -> i32 { 0i32 }
 }
 
 fn main() {
-  // Violates the `unused_must_use` lint.
-  5i32.use_me();
+    // Violates the `unused_must_use` lint.
+    5i32.use_me();
 }
 ```
 
-When used on a function in an implementation, the attribute does nothing.
+When used on a function in a trait implementation, the attribute does nothing.
 
 > Note: Trivial no-op expressions containing the value will not violate the
 > lint. Examples include wrapping the value in a type that does not implement
@@ -219,14 +216,14 @@ When used on a function in an implementation, the attribute does nothing.
 > fn five() -> i32 { 5i32 }
 >
 > fn main() {
->   // None of these violate the unused_must_use lint.
->   (five(),);
->   Some(five());
->   { five() };
->   if true { five() } else { 0i32 };
->   match true {
->     _ => five()
->   };
+>     // None of these violate the unused_must_use lint.
+>     (five(),);
+>     Some(five());
+>     { five() };
+>     if true { five() } else { 0i32 };
+>     match true {
+>         _ => five()
+>     };
 > }
 > ```
 
@@ -238,17 +235,16 @@ When used on a function in an implementation, the attribute does nothing.
 > fn five() -> i32 { 5i32 }
 >
 > fn main() {
->   // Does not violate the unused_must_use lint.
->   let _ = five();
+>     // Does not violate the unused_must_use lint.
+>     let _ = five();
 > }
 > ```
 
-The `must_use` attribute may also include a message by using the
+The `must_use` attribute may include a message by using the
 [_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
 message will be given alongside the warning.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
-[Compiler plugins]: ../unstable-book/language-features/plugin.html#lint-plugins
 [_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [_MetaListPaths_]: attributes.html#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
@@ -271,5 +267,5 @@ message will be given alongside the warning.
 [struct]: items/structs.html
 [trait implementation items]: items/implementations.html#trait-implementations
 [trait item]: items/traits.html
+[traits]: items/traits.html
 [union]: items/unions.html
-[zero-variant enum]: items/enumerations.html#zero-variant-enums

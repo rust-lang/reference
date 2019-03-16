@@ -7,11 +7,10 @@ enables the [`test` conditional compilation option].
 
 ## The `test` attribute
 
-The *`test` attribute* marks a function to be executed as a test when the
-crate is compiled in test mode. These functions are only compiled when
-compiling in test mode. Test functions must take no arguments, must not
-declare any [trait or lifetime bounds], must not have any [where clauses], and
-its return type must be one of the following:
+The *`test` attribute* marks a function to be executed as a test. These
+functions are only compiled when in test mode. Test functions must be free,
+monomorphic functions that take no arguments, and the return type must be one
+of the following:
 
 * `()`
 * `Result<(), E> where E: Error`
@@ -28,8 +27,8 @@ its return type must be one of the following:
 > or using `cargo test`.
 
 Tests that return `()` pass as long as they terminate and do not panic. Tests
-that return a `Result` pass as long as they return `Ok(())`. Tests that do not
-terminate neither pass nor fail.
+that return a `Result<(), E>` pass as long as they return `Ok(())`. Tests that
+do not terminate neither pass nor fail.
 
 ```rust
 # use std::io;
@@ -47,8 +46,7 @@ fn test_the_thing() -> io::Result<()> {
 
 A function annotated with the `test` attribute can also be annotated with the
 `ignore` attribute. The *`ignore` attribute* tells the test harness to not
-execute that function as a test. It will still only be compiled when compiling
-with the test harness.
+execute that function as a test. It will still be compiled when in test mode.
 
 The `ignore` attribute may optionally be written with the [_MetaNameValueStr_]
 syntax to specify a reason why the test is ignored.

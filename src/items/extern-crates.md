@@ -93,7 +93,7 @@ by using an underscore with the form `extern crate foo as _`. This may be
 useful for crates that only need to be linked, but are never referenced, and
 will avoid being reported as unused.
 
-The [`macro_use` attribute] will work as usual and import the macro names
+The [`macro_use` attribute] works as usual and import the macro names
 into the macro-use prelude.
 
 ## The `no_link` attribute
