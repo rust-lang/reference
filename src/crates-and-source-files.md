@@ -143,9 +143,6 @@ name of the crate with the [_MetaNameValueStr_] syntax.
 The crate name must not be empty, and must only contain [Unicode alphanumeric]
 or `-` (U+002D) characters.
 
-<!-- TODO: I feel like this should say more about what the crate name is and
-    what it is used for. -->
-
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
     happen before the program is executed regardless of when it is executed.

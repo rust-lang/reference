@@ -172,11 +172,11 @@ pub fn f() {}
 
 > Note: `rustc` currently recognizes the tools "clippy" and "rustfmt".
 
-## Built-in attributes
+## Built-in attributes index
 
 The following is an index of all built-in attributes.
 
-- Conditional Compilation
+- Conditional compilation
   - [`cfg`] — Controls conditional compilation.
   - [`cfg_attr`] — Conditionally includes attributes.
 - Testing
@@ -185,7 +185,6 @@ The following is an index of all built-in attributes.
   - [`should_panic`] — Indicates a test should generate a panic.
 - Derive
   - [`derive`] — Automatic trait implementations.
-  <!-- automatically_derived -->
 - Macros
   - [`macro_export`] — Exports a `macro_rules` macro for cross-crate usage.
   - [`macro_use`] — Expands macro visibility, or imports macros from other
@@ -197,7 +196,7 @@ The following is an index of all built-in attributes.
   - [`allow`], [`warn`], [`deny`], [`forbid`] — Alters the default lint level.
   - [`deprecated`] — Generates deprecation notices.
   - [`must_use`] — Generates a lint for unused values.
-- ABI, Linking, Symbols, and FFI
+- ABI, linking, symbols, and FFI
   - [`link`] — Specifies a native library to link with an `extern` block.
   - [`link_name`] — Specifies the name of the symbol for functions or statics
     in an `extern` block.
@@ -213,16 +212,15 @@ The following is an index of all built-in attributes.
   - [`used`] - Forces the compiler to keep a static variable in the output
     object file.
   - [`crate_name`] — Specifies the crate name.
-- Code Generation
+- Code generation
   - [`inline`] — Hint to inline code.
   - [`cold`] — Hint that a function is unlikely to be called.
   - [`no_builtins`] — Disables use of certain built-in functions.
-  <!-- target_feature -->
-- Compiler Settings
+- Compiler setting attributes
+  - `feature` — Used to enable unstable or experimental compiler features. See
+    [The Unstable Book] for features implemented in `rustc`.
   - [`recursion_limit`] — Sets the maximum recursion limit for certain
     compile-time operations.
-  <!-- feature -->
-  <!--type_length_limit -->
 - Documentation
   - `doc` — Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
@@ -244,31 +242,32 @@ The following is an index of all built-in attributes.
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
 [STRING_LITERAL]: tokens.html#string-literals
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
+[The Unstable Book]: ../unstable-book/index.html
 [_DelimTokenTree_]: macros.html
 [_LiteralExpression_]: expressions/literal-expr.html
 [_SimplePath_]: paths.html#simple-paths
-[`allow`]: diagnostics.html#lint-check-attributes
+[`allow`]: attributes/diagnostics.html#lint-check-attributes
 [`cfg_attr`]: conditional-compilation.html#the-cfg_attr-attribute
 [`cfg`]: conditional-compilation.html#the-cfg-attribute
-[`cold`]: codegen.html#the-cold-attribute
+[`cold`]: attributes/codegen.html#the-cold-attribute
 [`crate_name`]: crates-and-source-files.html#the-crate_name-attribute
 [`crate_type`]: linkage.html
-[`deny`]: diagnostics.html#lint-check-attributes
-[`deprecated`]: diagnostics.html#the-deprecated-attribute
-[`derive`]: derive.html
+[`deny`]: attributes/diagnostics.html#lint-check-attributes
+[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
+[`derive`]: attributes/derive.html
 [`export_name`]: abi.html#the-export_name-attribute
-[`forbid`]: diagnostics.html#lint-check-attributes
+[`forbid`]: attributes/diagnostics.html#lint-check-attributes
 [`global_allocator`]: runtime.html#the-global_allocator-attribute
-[`ignore`]: testing.html#the-ignore-attribute
-[`inline`]: codegen.html#the-inline-attribute
+[`ignore`]: attributes/testing.html#the-ignore-attribute
+[`inline`]: attributes/codegen.html#the-inline-attribute
 [`link_name`]: items/external-blocks.html#the-link_name-attribute
 [`link_section`]: abi.html#the-link_section-attribute
 [`link`]: items/external-blocks.html#the-link-attribute
 [`macro_export`]: macros-by-example.html#path-based-scope
 [`macro_use`]: macros-by-example.html#the-macro_use-attribute
 [`meta` macro fragment specifier]: macros-by-example.html
-[`must_use`]: diagnostics.html#the-must_use-attribute
-[`no_builtins`]: codegen.html#the-no_builtins-attribute
+[`must_use`]: attributes/diagnostics.html#the-must_use-attribute
+[`no_builtins`]: attributes/codegen.html#the-no_builtins-attribute
 [`no_implicit_prelude`]: items/modules.html#prelude-items
 [`no_link`]: items/extern-crates.html#the-no_link-attribute
 [`no_main`]: crates-and-source-files.html#the-no_main-attribute
@@ -279,16 +278,16 @@ The following is an index of all built-in attributes.
 [`proc_macro_attribute`]: procedural-macros.html#attribute-macros
 [`proc_macro_derive`]: procedural-macros.html#derive-macros
 [`proc_macro`]: procedural-macros.html#function-like-procedural-macros
-[`recursion_limit`]: compiler-attrs.html#the-recursion_limit-attribute
+[`recursion_limit`]: attributes/compiler-settings.html#the-recursion_limit-attribute
 [`repr`]: type-layout.html#representations
-[`should_panic`]: testing.html#the-should_panic-attribute
-[`test`]: testing.html#the-test-attribute
+[`should_panic`]: attributes/testing.html#the-should_panic-attribute
+[`test`]: attributes/testing.html#the-test-attribute
 [`used`]: abi.html#the-used-attribute
-[`warn`]: diagnostics.html#lint-check-attributes
+[`warn`]: attributes/diagnostics.html#lint-check-attributes
 [`windows_subsystem`]: runtime.html#the-windows_subsystem-attribute
 [attribute macros]: procedural-macros.html#attribute-macros
 [block expressions]: expressions/block-expr.html
-[built-in attributes]: #built-in-attributes
+[built-in attributes]: #built-in-attributes-index
 [derive macro helper attributes]: procedural-macros.html#derive-macro-helper-attributes
 [enum]: items/enumerations.html
 [expression statement]: statements.html#expression-statements

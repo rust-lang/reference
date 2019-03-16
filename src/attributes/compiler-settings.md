@@ -1,8 +1,6 @@
-# Compiler attributes
+# Compiler setting attributes
 
 The following [attributes] affect internal settings of the compiler.
-
-<!-- TODO: feature -->
 
 ## The `recursion_limit` attribute
 
@@ -11,8 +9,6 @@ maximum depth for potentially infinitely-recursive compile-time operations
 like auto-dereference or macro expansion. It uses the [_MetaNameValueStr_]
 syntax to specify the recursion depth. The default is
 `#![recursion_limit="64"]`.
-
-<!-- TODO: type_length_limit -->
 
 [attributes]: attributes.html
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax

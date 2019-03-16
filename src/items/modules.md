@@ -144,11 +144,11 @@ The built-in attributes that have meaning on a function are [`cfg`],
 [_OuterAttribute_]: attributes.html
 [`#[macro_use]`]: macros-by-example.html#the-macro_use-attribute
 [`cfg`]: conditional-compilation.html
-[`deprecated`]: diagnostics.html#the-deprecated-attribute
+[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
 [`doc`]: ../rustdoc/the-doc-attribute.html
 [IDENTIFIER]: identifiers.html
 [attribute]: attributes.html
 [items]: items.html
 [module path]: paths.html
 [prelude]: crates-and-source-files.html#preludes-and-no_std
-[the lint check attributes]: diagnostics.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes

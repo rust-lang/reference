@@ -294,8 +294,6 @@ The `packed` representation can only be used on `struct`s and `union`s.
 It modifies the representation (either the default or `C`) by removing any
 padding bytes and forcing the alignment of the type to `1`.
 
-<!-- TODO: packed(N) syntax, https://github.com/rust-lang-nursery/reference/issues/483 -->
-
 The `align` and `packed` representations cannot be applied on the same type and
 a `packed` type cannot transitively contain another `align`ed type.
 

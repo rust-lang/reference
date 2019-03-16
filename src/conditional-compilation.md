@@ -297,7 +297,7 @@ println!("I'm running on a {} machine!", machine_kind);
 [IDENTIFIER]: identifiers.html
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
 [STRING_LITERAL]: tokens.html#string-literals
-[Testing]: testing.html
+[Testing]: attributes/testing.html
 [_Attr_]: attributes.html
 [`--cfg`]: ../rustc/command-line-arguments.html#a--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#a--test-build-a-test-harness

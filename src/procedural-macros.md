@@ -269,7 +269,7 @@ fn invoke4() {}
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
 [`TokenStream`s]: ../proc_macro/struct.TokenStream.html
 [`compile_error`]: ../std/macro.compile_error.html
-[`derive` attribute]: derive.html
+[`derive` attribute]: attributes/derive.html
 [`proc_macro` crate]: ../proc_macro/index.html
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros

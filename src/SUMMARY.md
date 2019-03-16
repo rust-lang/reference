@@ -40,8 +40,11 @@
     - [Visibility and Privacy](visibility-and-privacy.md)
 
 - [Attributes](attributes.md)
-    - [Derive](derive.md)
-    - [Compiler attributes](compiler-attrs.md)
+    - [Testing](attributes/testing.md)
+    - [Derive](attributes/derive.md)
+    - [Diagnostics](attributes/diagnostics.md)
+    - [Code generation](attributes/codegen.md)
+    - [Compiler settings](attributes/compiler-settings.md)
 
 - [Statements and expressions](statements-and-expressions.md)
     - [Statements](statements.md)
@@ -116,12 +119,6 @@
 - [Application Binary Interface](abi.md)
 
 - [The Rust runtime](runtime.md)
-
-- [Code generation](codegen.md)
-
-- [Testing](testing.md)
-
-- [Diagnostics](diagnostics.md)
 
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)

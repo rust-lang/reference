@@ -1,9 +1,5 @@
 # Derive
 
-<!-- TODO: Maybe link to https://doc.rust-lang.org/book/appendix-03-derivable-traits.html ?
-Should the reference say more about which traits are derivable?
--->
-
 The *`derive` attribute* allows certain traits to be automatically implemented
 for data structures. It uses the [_MetaListPaths_] syntax to specify a list of
 traits to implement.
@@ -36,8 +32,6 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 ```
 
 You can implement `derive` for your own traits through [procedural macros].
-
-<!-- TODO: automatically_derived -->
 
 [_MetaListPaths_]: attributes.html#meta-item-attribute-syntax
 [procedural macros]: procedural-macros.html

@@ -92,7 +92,7 @@ Finally, there are some rustc-specific ABI strings:
 * `extern "platform-intrinsic"` -- Specific platform intrinsics -- like, for
   example, `sqrt` -- have this ABI. You should never have to deal with it.
 
-## Variadic Functions
+## Variadic functions
 
 Functions within external blocks may be variadic by specifying `...` after one
 or more named arguments in the argument list:
@@ -120,8 +120,6 @@ the following possible values:
 - `static` — Indicates a static library.
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
-
-<!-- TODO: Document wasm_import_module, see https://github.com/rust-lang/rust/pull/52445 -->
 
 ```rust,ignore
 #[link(name = "crypto")]

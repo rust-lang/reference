@@ -174,4 +174,4 @@ Because captures are often by reference, the following general rules arise:
 [`Sized`]: special-types-and-traits.html#sized
 [`Sync`]: special-types-and-traits.html#sync
 [closure expression]: expressions/closure-expr.html
-[derived]: derive.html
+[derived]: attributes/derive.html

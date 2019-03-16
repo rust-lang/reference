@@ -53,17 +53,16 @@ runtime with the [set_hook] function.
 
 ## The `global_allocator` attribute
 
-The *`global_allocator` attribute* is used on a static item implementing the
+The *`global_allocator` attribute* is used on a [static item] implementing the
 [`GlobalAlloc`] trait to set the global allocator.
 
 ## The `windows_subsystem` attribute
 
-The *`windows_subsystem` attribute* may be applied at the crate level to
-indicate that when this crate is linked for a Windows target it will configure
-the resulting binary's [subsystem] via the linker. It uses the
-[_MetaNameValueStr_] syntax specify the subsystem with a value of either
-`console` or `windows`. More subsystems may be allowed in the future, and this
-attribute is ignored on non-Windows targets.
+The *`windows_subsystem` attribute* may be applied at the crate level to set
+the [subsystem] when linking on a Windows target. It uses the
+[_MetaNameValueStr_] syntax to specify the subsystem with a value of either
+`console` or `windows`. This attribute is ignored on non-Windows targets, and
+for non-`bin` [crate types].
 
 ```rust,ignore
 #![windows_subsystem = "windows"]
@@ -74,5 +73,7 @@ attribute is ignored on non-Windows targets.
 [`PanicInfo`]: ../core/panic/struct.PanicInfo.html
 [abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
 [attribute]: attributes.html
+[crate types]: linkage.html
 [set_hook]: ../std/panic/fn.set_hook.html
+[static item]: items/static-items.html
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx

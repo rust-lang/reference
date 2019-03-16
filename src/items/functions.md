@@ -232,13 +232,13 @@ attributes macros.
 [Trait]: items/traits.html
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
-[the lint check attributes]: diagnostics.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [the procedural macro attributes]: procedural-macros.html
-[the testing attributes]: testing.html
-[the optimization hint attributes]: codegen.html#optimization-hints
-[`deprecated`]: diagnostics.html#the-deprecated-attribute
+[the testing attributes]: attributes/testing.html
+[the optimization hint attributes]: attributes/codegen.html#optimization-hints
+[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
 [`doc`]: ../rustdoc/the-doc-attribute.html
-[`must_use`]: diagnostics.html#the-must_use-attribute
+[`must_use`]: attributes/diagnostics.html#the-must_use-attribute
 [patterns]: patterns.html
 [`?Sized`]: trait-bounds.html#sized
 [trait bounds]: trait-bounds.html

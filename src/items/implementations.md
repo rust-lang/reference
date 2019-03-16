@@ -220,8 +220,8 @@ attributes].
 [associated constants]: items/associated-items.html#associated-constants
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
-[`deprecated`]: diagnostics.html#the-deprecated-attribute
+[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
 [`doc`]: ../rustdoc/the-doc-attribute.html
 [path]: paths.html
-[the lint check attributes]: diagnostics.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [Unsafe traits]: items/traits.html#unsafe-traits

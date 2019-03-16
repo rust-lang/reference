@@ -141,8 +141,8 @@ expressions].
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
 [`cfg`]: conditional-compilation.html
-[`cold`]: codegen.html#the-cold-attribute
-[lint check attributes]: diagnostics.html#lint-check-attributes
+[`cold`]: attributes/codegen.html#the-cold-attribute
+[lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [Range Expression]: expressions/range-expr.html
 
 [_Pattern_]: patterns.html

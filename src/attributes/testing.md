@@ -1,13 +1,17 @@
-# Testing
+# Testing attributes
+
+The following [attributes] are used for specifying functions for performing
+tests. Compiling a crate in "test" mode enables building the test functions
+along with a test harness for executing the tests. Enabling the test mode also
+enables the [`test` conditional compilation option].
 
 ## The `test` attribute
 
-The compiler comes with a default test framework. It works by attributing
-functions with the `test` attribute. These functions are only compiled when
-compiling with the test harness. Like [main], functions annotated with this
-attribute must take no arguments, must not declare any
-[trait or lifetime bounds], must not have any [where clauses], and its return
-type must be one of the following:
+The *`test` attribute* marks a function to be executed as a test when the
+crate is compiled in test mode. These functions are only compiled when
+compiling in test mode. Test functions must take no arguments, must not
+declare any [trait or lifetime bounds], must not have any [where clauses], and
+its return type must be one of the following:
 
 * `()`
 * `Result<(), E> where E: Error`
@@ -20,8 +24,8 @@ type must be one of the following:
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the crates-and-source-files.md file -->
 
-> Note: The test harness is ran by passing the `--test` argument to `rustc` or
-> using `cargo test`.
+> Note: The test mode is enabled by passing the `--test` argument to `rustc`
+> or using `cargo test`.
 
 Tests that return `()` pass as long as they terminate and do not panic. Tests
 that return a `Result` pass as long as they return `Ok(())`. Tests that do not
@@ -83,6 +87,7 @@ fn mytest() {
 [_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [`Termination`]: ../std/process/trait.Termination.html
-[main]: crates-and-source-files.html
+[`test` conditional compilation option]: conditional-compilation.html#test
+[attributes]: attributes.html
 [trait or lifetime bounds]: trait-bounds.html
 [where clauses]: items/generics.html#where-clauses

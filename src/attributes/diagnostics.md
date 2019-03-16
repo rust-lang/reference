@@ -1,4 +1,7 @@
-# Diagnostics
+# Diagnostic attributes
+
+The following [attributes] are used for controlling or generating diagnostic
+messages during compilation.
 
 ## Lint check attributes
 
@@ -250,6 +253,7 @@ message will be given alongside the warning.
 [_MetaListPaths_]: attributes.html#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [`Drop`]: special-types-and-traits.html#drop
+[attributes]: attributes.html
 [block expression]: expressions/block-expr.html
 [call expression]: expressions/call-expr.html
 [enum variant]: items/enumerations.html
