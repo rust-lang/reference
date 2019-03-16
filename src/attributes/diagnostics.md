@@ -147,9 +147,14 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 ## The `must_use` attribute
 
-The *`must_use` attribute* can be used on user-defined composite types
+The *`must_use` attribute* is used to issue a diagnostic warning when a value
+is not "used". It can be applied to user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
 and [traits].
+
+The `must_use` attribute may include a message by using the
+[_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
+message will be given alongside the warning.
 
 When used on user-defined composite types, if the [expression] of an
 [expression statement] has that type, then the `unused_must_use` lint is
@@ -165,10 +170,8 @@ struct MustUse {
 #   fn new() -> MustUse { MustUse {} }
 # }
 #
-fn main() {
-    // Violates the `unused_must_use` lint.
-    MustUse::new();
-}
+// Violates the `unused_must_use` lint.
+MustUse::new();
 ```
 
 When used on a function, if the [expression] of an [expression statement] is a
@@ -179,10 +182,25 @@ violated.
 #[must_use]
 fn five() -> i32 { 5i32 }
 
-fn main() {
-    // Violates the unused_must_use lint.
-    five();
+// Violates the unused_must_use lint.
+five();
+```
+
+When used on a [trait declaration], a [call expression] of an [expression
+statement] to a function that returns an [impl trait] of that trait violates
+the `unsued_must_use` lint.
+
+```rust
+#[must_use]
+trait Critical {}
+impl Critical for i32 {}
+
+fn get_critical() -> impl Critical {
+    4i32
 }
+
+// Violates the `unused_must_use` lint.
+get_critical();
 ```
 
 When used on a function in a trait declaration, then the behavior also applies
@@ -198,10 +216,8 @@ impl Trait for i32 {
     fn use_me(&self) -> i32 { 0i32 }
 }
 
-fn main() {
-    // Violates the `unused_must_use` lint.
-    5i32.use_me();
-}
+// Violates the `unused_must_use` lint.
+5i32.use_me();
 ```
 
 When used on a function in a trait implementation, the attribute does nothing.
@@ -215,16 +231,14 @@ When used on a function in a trait implementation, the attribute does nothing.
 > #[must_use]
 > fn five() -> i32 { 5i32 }
 >
-> fn main() {
->     // None of these violate the unused_must_use lint.
->     (five(),);
->     Some(five());
->     { five() };
->     if true { five() } else { 0i32 };
->     match true {
->         _ => five()
->     };
-> }
+> // None of these violate the unused_must_use lint.
+> (five(),);
+> Some(five());
+> { five() };
+> if true { five() } else { 0i32 };
+> match true {
+>     _ => five()
+> };
 > ```
 
 > Note: It is idiomatic to use a [let statement] with a pattern of `_`
@@ -234,15 +248,9 @@ When used on a function in a trait implementation, the attribute does nothing.
 > #[must_use]
 > fn five() -> i32 { 5i32 }
 >
-> fn main() {
->     // Does not violate the unused_must_use lint.
->     let _ = five();
-> }
+> // Does not violate the unused_must_use lint.
+> let _ = five();
 > ```
-
-The `must_use` attribute may include a message by using the
-[_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
-message will be given alongside the warning.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
@@ -258,6 +266,7 @@ message will be given alongside the warning.
 [expression]: expressions.html
 [external block item]: items/external-blocks.html
 [functions]: items/functions.html
+[impl trait]: types/impl-trait.html
 [implementation]: items/implementations.html
 [item]: items.html
 [let statement]: statements.html#let-statements
@@ -265,6 +274,7 @@ message will be given alongside the warning.
 [rustc book]: ../rustc/lints/index.html
 [struct field]: items/structs.html
 [struct]: items/structs.html
+[trait declaration]: items/traits.html
 [trait implementation items]: items/implementations.html#trait-implementations
 [trait item]: items/traits.html
 [traits]: items/traits.html
