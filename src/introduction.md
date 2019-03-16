@@ -12,7 +12,7 @@ provides three kinds of material:
 <div class="warning">
 
 Warning: This book is incomplete. Documenting everything takes a while. See
-the [github issues] for what is not documented in this book.
+the [GitHub issues] for what is not documented in this book.
 
 </div>
 
