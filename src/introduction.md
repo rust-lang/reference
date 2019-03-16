@@ -135,7 +135,6 @@ attention to making those sections the best that they can be.
 [github issues]: https://github.com/rust-lang-nursery/reference/issues
 [standard library]: ../std/index.html
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
-[big issue]: https://github.com/rust-lang-nursery/reference/issues/9
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [_Expression_]: expressions.html
 [cargo book]: ../cargo/index.html
