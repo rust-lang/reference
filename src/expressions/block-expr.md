@@ -148,7 +148,7 @@ fn is_unix_platform() -> bool {
 [statement]: statements.html
 [statements]: statements.html
 [struct]: expressions/struct-expr.html
-[the lint check attributes]: attributes.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [tuple expressions]: expressions/tuple-expr.html
 [unsafe operations]: unsafety.html
 [value expressions]: expressions.html#place-expressions-and-value-expressions

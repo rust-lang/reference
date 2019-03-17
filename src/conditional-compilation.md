@@ -167,7 +167,7 @@ Example values:
 ### `test`
 
 Enabled when compiling the test harness. Done with `rustc` by using the
-[`--test`] flag.
+[`--test`] flag. See [Testing] for more on testing support.
 
 ### `debug_assertions`
 
@@ -297,6 +297,7 @@ println!("I'm running on a {} machine!", machine_kind);
 [IDENTIFIER]: identifiers.html
 [RAW_STRING_LITERAL]: tokens.html#raw-string-literals
 [STRING_LITERAL]: tokens.html#string-literals
+[Testing]: attributes/testing.html
 [_Attr_]: attributes.html
 [`--cfg`]: ../rustc/command-line-arguments.html#a--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#a--test-build-a-test-harness
@@ -307,5 +308,3 @@ println!("I'm running on a {} machine!", machine_kind);
 [attribute]: attributes.html
 [attributes]: attributes.html
 [crate type]: linkage.html
-[expressions]: expressions.html
-[items]: items.html

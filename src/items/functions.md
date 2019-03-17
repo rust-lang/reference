@@ -207,7 +207,7 @@ fn test_only() {
 > function items.
 
 The attributes that have meaning on a function are [`cfg`], [`deprecated`],
-[`doc`], `export_name`, `link_section`, `no_mangle`, [the lint check
+[`doc`], [`export_name`], [`link_section`], [`no_mangle`], [the lint check
 attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
@@ -232,13 +232,16 @@ attributes macros.
 [Trait]: items/traits.html
 [attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
-[the lint check attributes]: attributes.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [the procedural macro attributes]: procedural-macros.html
-[the testing attributes]: attributes.html#testing
-[the optimization hint attributes]: attributes.html#optimization-hints
-[`deprecated`]: attributes.html#deprecation
-[`doc`]: attributes.html#documentation
-[`must_use`]: attributes.html#must_use
+[the testing attributes]: attributes/testing.html
+[the optimization hint attributes]: attributes/codegen.html#optimization-hints
+[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
+[`doc`]: ../rustdoc/the-doc-attribute.html
+[`must_use`]: attributes/diagnostics.html#the-must_use-attribute
 [patterns]: patterns.html
 [`?Sized`]: trait-bounds.html#sized
 [trait bounds]: trait-bounds.html
+[`export_name`]: abi.html#the-export_name-attribute
+[`link_section`]: abi.html#the-link_section-attribute
+[`no_mangle`]: abi.html#the-no_mangle-attribute

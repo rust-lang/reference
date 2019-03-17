@@ -7,7 +7,7 @@ New instances of a `struct` can be constructed with a [struct expression].
 
 The memory layout of a `struct` is undefined by default to allow for compiler
 optimizations like field reordering, but it can be fixed with the
-`#[repr(...)]` attribute. In either case, fields may be given in any order in a
+[`repr` attribute]. In either case, fields may be given in any order in a
 corresponding struct *expression*; the resulting `struct` value will always
 have the same memory layout.
 
@@ -24,5 +24,6 @@ value that inhabits such a type.
 [^structtype]: `struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.
 
+[`repr` attribute]: type-layout.html#representations
 [struct expression]: expressions/struct-expr.html
 [visibility modifiers]: visibility-and-privacy.html

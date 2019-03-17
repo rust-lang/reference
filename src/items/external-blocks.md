@@ -42,16 +42,16 @@ Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between
 the Rust ABI and the foreign ABI.
 
-Functions within external blocks may be variadic by specifying `...` after one
-or more named arguments in the argument list:
+A function declared in an extern block is implicitly `unsafe`. When coerced to
+a function pointer, a function declared in an extern block has type `unsafe
+extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
+are its lifetime parameters, `A1`, ..., `An` are the declared types of its
+parameters and `R` is the declared return type.
 
-```rust,ignore
-extern {
-    fn foo(x: i32, ...);
-}
-```
+It is `unsafe` to access a static item declared in an extern block, whether or
+not it's mutable.
 
-A number of [attributes] control the behavior of external blocks.
+## ABI
 
 By default external blocks assume that the library they are calling uses the
 standard C ABI on the specific platform. Other ABIs may be specified using an
@@ -92,28 +92,64 @@ Finally, there are some rustc-specific ABI strings:
 * `extern "platform-intrinsic"` -- Specific platform intrinsics -- like, for
   example, `sqrt` -- have this ABI. You should never have to deal with it.
 
-The `link` attribute allows the name of the library to be specified. When
-specified the compiler will attempt to link against the native library of the
-specified name.
+## Variadic functions
+
+Functions within external blocks may be variadic by specifying `...` after one
+or more named arguments in the argument list:
+
+```rust,ignore
+extern {
+    fn foo(x: i32, ...);
+}
+```
+
+## Attributes on extern blocks
+
+The following [attributes] control the behavior of external blocks.
+
+### The `link` attribute
+
+The *`link` attribute* specifies the name of a native library that the
+compiler should link with. It uses the [_MetaListNameValueStr_] syntax to
+specify its inputs. The `name` key is the name of the native library to link.
+The `kind` key is an optional value which specifies the kind of library with
+the following possible values:
+
+- `dylib` — Indicates a dynamic library. This is the default if `kind` is not
+  specified.
+- `static` — Indicates a static library.
+- `framework` — Indicates a macOS framework. This is only valid for macOS
+  targets.
 
 ```rust,ignore
 #[link(name = "crypto")]
-extern { }
+extern {
+    // …
+}
+
+#[link(name = "CoreFoundation", kind = "framework")]
+extern {
+    // …
+}
 ```
-
-A function declared in an extern block is implicitly `unsafe`. When coerced to
-a function pointer, a function declared in an extern block has type `unsafe
-extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
-are its lifetime parameters, `A1`, ..., `An` are the declared types of its
-parameters and `R` is the declared return type.
-
-It is `unsafe` to access a static item declared in an extern block, whether or
-not it's mutable.
 
 It is valid to add the `link` attribute on an empty extern block. You can use
 this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
+
+### The `link_name` attribute
+
+The `link_name` attribute may be specified on declarations inside an `extern`
+block to indicate the symbol to import for the given function or static. It
+uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
+
+```rust,ignore
+extern {
+    #[link_name = "actual_symbol_name"]
+    fn name_in_rust();
+}
+```
 
 [IDENTIFIER]: identifiers.html
 [_Abi_]: items/functions.html
@@ -122,8 +158,10 @@ block.
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html
+[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
 [_OuterAttribute_]: attributes.html
 [_Type_]: types.html#type-expressions
 [_Visibility_]: visibility-and-privacy.html
 [_WhereClause_]: items/generics.html#where-clauses
-[attributes]: attributes.html#ffi-attributes
+[attributes]: attributes.html

@@ -21,5 +21,5 @@ to shrink!
 [Flexible target specification]: https://github.com/rust-lang/rfcs/pull/131
 [Conditional compilation]: conditional-compilation.html
 [`dllimport`]: https://github.com/rust-lang/rfcs/pull/1717
-[FFI attributes]: attributes.html#ffi-attributes
+[FFI attributes]: attributes.html
 [define `crt_link`]: https://github.com/rust-lang/rfcs/pull/1721

@@ -307,8 +307,8 @@ imported this way are imported into the prelude of the crate, not textually,
 which means that they can be shadowed by any other name. While macros imported
 by `#[macro_use]` can be used before the import statement, in case of a
 conflict, the last macro imported wins. Optionally, a list of macros to import
-can be specified; this is not supported when `#[macro_use]` is applied to a
-module.
+can be specified using the [_MetaListIdents_] syntax; this is not supported
+when `#[macro_use]` is applied to a module.
 
 ```rust,ignore
 #[macro_use(lazy_static)] // Or #[macro_use] to import all macros.
@@ -487,6 +487,7 @@ For more detail, see the [formal specification].
 [_Item_]: items.html
 [_LiteralExpression_]: expressions/literal-expr.html
 [_MetaItem_]: attributes.html#meta-item-attribute-syntax
+[_MetaListIdents_]: attributes.html#meta-item-attribute-syntax
 [_Pattern_]: patterns.html
 [_Statement_]: statements.html
 [_TokenTree_]: macros.html#macro-invocation

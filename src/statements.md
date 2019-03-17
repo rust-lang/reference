@@ -125,7 +125,7 @@ statement are [`cfg`], and [the lint check attributes].
 [variables]: variables.html
 [outer attributes]: attributes.html
 [`cfg`]: conditional-compilation.html
-[the lint check attributes]: attributes.html#lint-check-attributes
+[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [pattern]: patterns.html
 [_ExpressionStatement_]: #expression-statements
 [_Expression_]: expressions.html

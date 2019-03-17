@@ -128,7 +128,7 @@ let message = match maybe_digit {
 ## Attributes on match arms
 
 Outer attributes are allowed on match arms. The only attributes that have
-meaning on match arms are [`cfg`], `cold`, and the [lint check attributes].
+meaning on match arms are [`cfg`], [`cold`], and the [lint check attributes].
 
 [Inner attributes] are allowed directly after the opening brace of the match
 expression in the same expression contexts as [attributes on block
@@ -141,7 +141,8 @@ expressions].
 [_InnerAttribute_]: attributes.html
 [_OuterAttribute_]: attributes.html
 [`cfg`]: conditional-compilation.html
-[lint check attributes]: attributes.html#lint-check-attributes
+[`cold`]: attributes/codegen.html#the-cold-attribute
+[lint check attributes]: attributes/diagnostics.html#lint-check-attributes
 [Range Expression]: expressions/range-expr.html
 
 [_Pattern_]: patterns.html

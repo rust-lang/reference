@@ -112,9 +112,9 @@ Closures have no layout guarantees.
 All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
 *representation* that specifies what the layout is for the type.
 
-The possible representations for a type are the default representation, `C`, the
-primitive representations, and `packed`. Multiple representations can be applied
-to a single type.
+The possible representations for a type are the default representation, `C`,
+the primitive representations, `packed`, and `transparent`. Multiple
+representations can be applied to a single type.
 
 The representation of a type can be changed by applying the `repr` attribute
 to it. The following example shows a struct with a `C` representation.
@@ -258,8 +258,8 @@ layout is unspecified.
 ### Primitive representations
 
 The *primitive representations* are the representations with the same names as
-the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `usize`, `i8`,
-`i16`, `i32`, `i64`, and `isize`.
+the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`,
+`usize`, `i8`, `i16`, `i32`, `i64`, `i128`, and `isize`.
 
 Primitive representations can only be applied to enumerations.
 
