@@ -123,5 +123,4 @@
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
     - [Influences](influences.md)
-    - [As-Yet-Undocumented Features](undocumented.md)
     - [Glossary](glossary.md)

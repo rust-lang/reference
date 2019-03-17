@@ -12,7 +12,7 @@ provides three kinds of material:
 <div class="warning">
 
 Warning: This book is incomplete. Documenting everything takes a while. See
-the [undocumented] page for what is not documented in this book.
+the [GitHub issues] for what is not documented in this book.
 
 </div>
 
@@ -132,9 +132,9 @@ discord. Knowing what people use this book for the most helps direct our
 attention to making those sections the best that they can be.
 
 [book]: ../book/index.html
+[github issues]: https://github.com/rust-lang-nursery/reference/issues
 [standard library]: ../std/index.html
 [the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
-[big issue]: https://github.com/rust-lang-nursery/reference/issues/9
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [_Expression_]: expressions.html
 [cargo book]: ../cargo/index.html
@@ -143,5 +143,4 @@ attention to making those sections the best that they can be.
 [lifetime of temporaries]: expressions.html#temporary-lifetimes
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
-[undocumented]: undocumented.html
 [Notation]: notation.html
