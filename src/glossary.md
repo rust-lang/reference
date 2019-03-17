@@ -1,6 +1,6 @@
 # Glossary
 
-### Abstract Syntax Tree
+### Abstract syntax tree
 
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
 the structure of the program when the compiler is compiling it.
@@ -23,7 +23,7 @@ An array, sometimes also called a fixed-size array or an inline array, is a valu
 describing a collection of elements, each selected by an index that can be computed
 at run time by the program. It occupies a contiguous region of memory.
 
-### Associated Item
+### Associated item
 
 An associated item is an item that is associated with another item. Associated
 items are defined in [implementations] and declared in [traits]. Only functions,
@@ -48,7 +48,7 @@ run when it involves polymorphism. Two major forms of dispatch are static dispat
 dynamic dispatch. While Rust favors static dispatch, it also supports dynamic dispatch
 through a mechanism called ‘trait objects’.
 
-### Dynamically Sized Type
+### Dynamically sized type
 
 A dynamically sized type (DST) is a type without a statically known size or alignment.
 
@@ -59,18 +59,32 @@ and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
+### Free function
+
+A [function] that is not a member of an [implementation].
+
+### Inherent implementation
+
+An [implementation] that applies to a nominal type, not to a trait.
+[More][inherent implementation].
+
+### Inherent method
+
+A [method] defined in an [inherent implementation], not in a trait
+implementation.
+
 ### Initialized
 
 A variable is initialized if it has been assigned a value and hasn't since been
-moved from. All other memory locations are assumed to be initialized. Only
+moved from. All other memory locations are assumed to be uninitialized. Only
 unsafe Rust can create such a memory without initializing it.
 
-### Nominal Types
+### Nominal types
 
 Types that can be referred to by a path directly. Specifically [enums],
 [structs], [unions], and [trait objects].
 
-### Object Safe Traits
+### Object safe traits
 
 [Traits] that can be used as [trait objects]. Only traits that follow specific
 [rules][object safety] are object safe.
@@ -136,11 +150,22 @@ It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
+### Undefined behavior
+
+Compile-time or run-time behavior that is not specified. This may result in,
+but is not limited to: process termination or corruption; improper, incorrect,
+or unintended computation; or platform-specific results.
+[More][undefined-behavior].
+
 [alignment]: type-layout.html#size-and-alignment
 [enums]: items/enumerations.html
-[structs]: items/structs.html
-[unions]: items/unions.html
-[trait objects]: types/trait-object.html
+[function]: items/functions.html
+[implementation]: items/implementations.html
 [implementations]: items/implementations.html
-[traits]: items/traits.html
+[inherent implementation]: items/implementations.html#inherent-implementations
+[method]: items/associated-items.html#methods
 [object safety]: items/traits.html#object-safety
+[structs]: items/structs.html
+[trait objects]: types/trait-object.html
+[traits]: items/traits.html
+[unions]: items/unions.html
