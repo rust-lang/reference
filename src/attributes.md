@@ -227,6 +227,7 @@ The following is an index of all built-in attributes.
 - Limits
   - [`recursion_limit`] — Sets the maximum recursion limit for certain
     compile-time operations.
+  - [`type_length_limit`] — Sets the maximum size of a polymorphic type.
 - Runtime
   - [`panic_handler`] — Sets the function to handle panics.
   - [`global_allocator`] — Sets the global memory allocator.
@@ -283,6 +284,7 @@ The following is an index of all built-in attributes.
 [`repr`]: type-layout.html#representations
 [`should_panic`]: attributes/testing.html#the-should_panic-attribute
 [`test`]: attributes/testing.html#the-test-attribute
+[`type_length_limit`]: attributes/limits.html#the-type_length_limit-attribute
 [`used`]: abi.html#the-used-attribute
 [`warn`]: attributes/diagnostics.html#lint-check-attributes
 [`windows_subsystem`]: runtime.html#the-windows_subsystem-attribute
