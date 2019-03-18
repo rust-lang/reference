@@ -107,8 +107,7 @@ Example values:
 
 See the [`target_feature` attribute] for more details on the available
 features. An additional feature of `crt-static` is available to the
-`target_feature` option to indicate that a static C runtime is available, see
-[static and dynamic C runtimes] for more information.
+`target_feature` option to indicate that a [static C runtime] is available.
 
 ### `target_os`
 
@@ -329,4 +328,4 @@ println!("I'm running on a {} machine!", machine_kind);
 [attribute]: attributes.html
 [attributes]: attributes.html
 [crate type]: linkage.html
-[static and dynamic C runtimes]: linkage.html#static-and-dynamic-c-runtimes
+[static C runtime]: linkage.html#static-and-dynamic-c-runtimes

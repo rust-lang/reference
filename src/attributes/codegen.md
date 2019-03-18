@@ -86,7 +86,7 @@ Feature     | Implicitly Enables | Description
 `rdrand`    |          | [`rdrand`] — Read random number
 `rdseed`    |          | [`rdseed`] — Read random seed
 `sha`       | `sse2`   | [SHA] — Secure Hash Algorithm
-`sse`       |          | [SSE] — Streaming SIMD Extensions
+`sse`       |          | [SSE] — Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
 `sse2`      | `sse`    | [SSE2] — Streaming SIMD Extensions 2
 `sse3`      | `sse2`   | [SSE3] — Streaming SIMD Extensions 3
 `sse4.1`    | `sse3`   | [SSE4.1] — Streaming SIMD Extensions 4.1
@@ -96,6 +96,8 @@ Feature     | Implicitly Enables | Description
 `xsavec`    |          | [`xsavec`] — Save processor extended states with compaction
 `xsaveopt`  |          | [`xsaveopt`] — Save processor extended states optimized
 `xsaves`    |          | [`xsaves`] — Save processor extended states supervisor
+
+<!-- Keep links near each table to make it easier to move and update. -->
 
 [AES]: https://en.wikipedia.org/wiki/AES_instruction_set
 [AVX]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
