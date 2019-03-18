@@ -4,10 +4,12 @@ The following [attributes] affect compile-time limits.
 
 ## The `recursion_limit` attribute
 
-The *`recursion_limit` attribute* may be applied at the crate level to set the
+The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 maximum depth for potentially infinitely-recursive compile-time operations
 like auto-dereference or macro expansion. It uses the [_MetaNameValueStr_]
-syntax to specify the recursion depth. The default is 64.
+syntax to specify the recursion depth.
+
+> Note: The default in `rustc` is 64.
 
 ```rust,ignore
 #![recursion_limit = "4"]
@@ -26,10 +28,12 @@ a!{}
 
 ## The `type_length_limit` attribute
 
-The *`type_length_limit` attribute* limits the maximum size of a type
-constructed during monomorphization. It is applied at the crate level, and
-uses the [_MetaNameValueStr_] syntax to set the limit based on the number of
-type substitutions within the type. The default value is 1048576.
+The *`type_length_limit` attribute* limits the maximum number of type
+substitutions made when constructing a concrete type during monomorphization.
+It is applied at the [crate] level, and uses the [_MetaNameValueStr_] syntax
+to set the limit based on the number of type substitutions.
+
+> Note: The default in `rustc` is 1048576.
 
 ```rust,ignore
 #![type_length_limit = "8"]
@@ -44,5 +48,6 @@ struct C;
 drop::<Option<A>>(None);
 ```
 
-[attributes]: attributes.html
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[attributes]: attributes.html
+[crate]: crates-and-source-files.html
