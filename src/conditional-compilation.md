@@ -90,6 +90,26 @@ Example values:
 * `"arm"`
 * `"aarch64"`
 
+### `target_feature`
+
+Key-value option set for each platform feature available for the current
+compilation target.
+
+Example values:
+
+* `"avx"`
+* `"avx2"`
+* `"crt-static"`
+* `"rdrand"`
+* `"sse"`
+* `"sse2"`
+* `"sse4.1"`
+
+See the [`target_feature` attribute] for more details on the available
+features. An additional feature of `crt-static` is available to the
+`target_feature` option to indicate that a static C runtime is available, see
+[static and dynamic C runtimes] for more information.
+
 ### `target_os`
 
 Key-value option set once with the target's operating system. This value is
@@ -305,6 +325,8 @@ println!("I'm running on a {} machine!", machine_kind);
 [`cfg` macro]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
 [`debug_assert!`]: ../std/macro.debug_assert.html
+[`target_feature` attribute]: attributes/codegen.html#the-target_feature-attribute
 [attribute]: attributes.html
 [attributes]: attributes.html
 [crate type]: linkage.html
+[static and dynamic C runtimes]: linkage.html#static-and-dynamic-c-runtimes
