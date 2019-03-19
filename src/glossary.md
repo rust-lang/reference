@@ -46,7 +46,7 @@ They can be used to manage control flow in a modular fashion.
 
 Concrete items and types are those without free type or lifetime variables.
 
-[More][concrete].
+[More][concrete]. [Wikipedia][concrete wikipedia].
 
 ### Dispatch
 
@@ -70,13 +70,6 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
-
-### Free variables
-
-Free variables are those that refer to a generically declared type or lifetime
-parameter.
-
-[More][concrete].
 
 ### Ground type
 
@@ -179,6 +172,7 @@ or unintended computation; or platform-specific results.
 [alignment]: type-layout.html#size-and-alignment
 [associated item]: #associated-item
 [concrete]: generics.html#free-parameters-and-concrete-items-and-types
+[concrete wikipedia]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
 [enums]: items/enumerations.html
 [free item]: #free-item
 [function]: items/functions.html

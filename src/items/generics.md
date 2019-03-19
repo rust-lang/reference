@@ -87,7 +87,8 @@ where
 
 The *free variables* of an item or type are the type and lifetime variables
 that refer to a generically declared parameter. A *concrete item* or *concrete
-type* is one that does not have any free variables.
+type* is one that does not have any free variables. See [Wikipeida][concrete
+wikipedia] for more.
 
 For example, consider this trait:
 
@@ -159,6 +160,7 @@ generic parameter.
 [_TypeParamBounds_]: trait-bounds.html
 
 [arrays]: types/array.html
+[concrete wikipedia]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
 [function pointers]: types/function-pointer.html
 [references]: types/pointer.html#shared-references-
 [raw pointers]: types/pointer.html#raw-pointers-const-and-mut
