@@ -57,8 +57,8 @@ is the same, if the base traits differ, the type is different. For example,
 
 </div>
 
-Due to the opaqueness of which concrete type the value is of, trait objects are
-[dynamically sized types]. Like all
+Due to the opaqueness of which [concrete type] the value is of, trait objects
+are [dynamically sized types]. Like all
 <abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
 behind some type of pointer; for example `&dyn SomeTrait` or
 `Box<dyn SomeTrait>`. Each instance of a pointer to a trait object includes:
@@ -107,6 +107,7 @@ inferred with a sensible choice.
 [_TraitBound_]: trait-bounds.html
 [_TypeParamBounds_]: types.html#type-expressions
 [auto traits]: special-types-and-traits.html#auto-traits
+[concrete type]: generics.html#free-parameters-and-concrete-items-and-types
 [defaults]: lifetime-elision.html#default-trait-object-lifetimes
 [dynamically sized types]: dynamically-sized-types.html
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140

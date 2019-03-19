@@ -42,6 +42,12 @@ Combinators are higher-order functions that apply only functions and
 earlier defined combinators to provide a result from its arguments.
 They can be used to manage control flow in a modular fashion.
 
+### Concrete
+
+Concrete items and types are those without free type or lifetime parameters.
+
+[More][concrete].
+
 ### Dispatch
 
 Dispatch is the mechanism to determine which specific version of code is actually
@@ -64,6 +70,17 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
+
+### Free parameters
+
+Free parameters are those that refer to a generically declared type or lifetime
+parameter.
+
+[More][concrete].
+
+### Ground type
+
+See [concrete](#concrete).
 
 ### Inherent implementation
 
@@ -161,6 +178,7 @@ or unintended computation; or platform-specific results.
 
 [alignment]: type-layout.html#size-and-alignment
 [associated item]: #associated-item
+[concrete]: generics.html#free-parameters-and-concrete-items-and-types
 [enums]: items/enumerations.html
 [free item]: #free-item
 [function]: items/functions.html

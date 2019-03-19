@@ -27,7 +27,7 @@ They are written as `impl` followed by a set of trait bounds.
 > Note: This is often called "impl Trait in return position".
 
 Functions, except for associated trait functions, can return an abstract
-return type. These  types stand in for another concrete type where the
+return type. These  types stand in for another [concrete type] where the
 use-site may only use the trait methods declared by the trait bounds of the
 type.
 
@@ -35,3 +35,4 @@ They are written as `impl` followed by a set of trait bounds.
 
 [_TraitBound_]: trait-bounds.html
 [_TypeParamBounds_]: trait-bounds.html
+[concrete type]: generics.html#free-parameters-and-concrete-items-and-types

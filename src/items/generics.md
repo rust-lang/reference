@@ -22,11 +22,11 @@
 
 Functions, type aliases, structs, enumerations, unions, traits and
 implementations may be *parameterized* by types and lifetimes. These parameters
-are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
+are declared in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
-implementations, which don't have a name, they come directly after `impl`.
-Lifetime parameters must be declared before type parameters. Some examples of
-items with type and lifetime parameters:
+implementations, which don't have a name, they are declared directly after the
+`impl` keyword. Lifetime parameters must be declared before type parameters.
+Some examples of items with type and lifetime parameters:
 
 ```rust
 fn foo<'a, T>() {}
@@ -82,6 +82,54 @@ where
     f: T,
 }
 ```
+
+## Free parameters and concrete items and types
+
+The *free parameters* of an item or type are the type and lifetime paremeters
+that refer to a generically declared parameter. A *concrete item* or *concrete
+type* is one that does not have any free parameters.
+
+For example, consider this trait:
+
+```rust
+# struct SomeStruct;
+#
+trait Example<A> {
+    fn foo(a: A)
+
+    fn bar<'b'>(a: A, b: &'b SomeStruct)
+
+    fn baz()
+
+    fn quux(a: i32, b: Option<i32>)
+}
+```
+
+In it, the trait `Example` has a free variable `A` because it declares it
+itself. Furthermore, `foo` has `A` as a free variable because it uses it as the
+type of its first argument. `baz` has both `A` and `B` as free type parameters,
+getting `A` from the trait's parameters and defining `B` itself. Both `baz` and
+`quux` have no free type parameters and are thusly concrete.
+
+For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete.
+
+For another example, the following table shows the free type parameters of
+various types. Types without free parmaeters show "concrete" instead of "none".
+Assume `A`, `E`, and `'a` are defined as generic parameters.
+
+| Type | Free Parameters |
+| `i32` | concrete | 
+| `&'a i32` | `'a` |
+| `&'static i32` | concrete |
+| `UserDefinedType` | concrete |
+| `GenericDefinedType<A>` | `A` |
+| `GenericDefinedType<i32>` | concrete |
+| `GenericDefinedType<Option<A>>` | `A` |
+| `GenericDefinedType<Result<&'a A, E>` | `'a`, `A`, `E` |
+| `GenericDefinedType<Option<UserDefinedType>` | concrete |
+
+> Note: In some programming languages and in type theory, concrete types are
+> called *ground types*.
 
 ## Attributes
 
