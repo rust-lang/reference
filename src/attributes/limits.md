@@ -6,12 +6,12 @@ The following [attributes] affect compile-time limits.
 
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 maximum depth for potentially infinitely-recursive compile-time operations
-like auto-dereference or macro expansion. It uses the [_MetaNameValueStr_]
+like macro expansion or auto-dereference. It uses the [_MetaNameValueStr_]
 syntax to specify the recursion depth.
 
 > Note: The default in `rustc` is 64.
 
-```rust,ignore
+```rust,compile_fail
 #![recursion_limit = "4"]
 
 macro_rules! a {
@@ -26,6 +26,13 @@ macro_rules! a {
 a!{}
 ```
 
+```rust,compile_fail
+#![recursion_limit = "1"]
+
+// This fails because it requires two recursive steps to auto-derefence.
+(|_: &u8| {})(&&1);
+```
+
 ## The `type_length_limit` attribute
 
 The *`type_length_limit` attribute* limits the maximum number of type
@@ -35,17 +42,15 @@ to set the limit based on the number of type substitutions.
 
 > Note: The default in `rustc` is 1048576.
 
-```rust,ignore
+```rust,compile_fail
 #![type_length_limit = "8"]
 
-type A = (B, B, B);
-type B = (C, C, C);
-struct C;
+fn f<T>(x: T) {}
 
 // This fails to compile because monomorphizing to
-// `drop::<Option<((C, C, C), (C, C, C), (C, C, C))>>` requires more than 8
-// type elements.
-drop::<Option<A>>(None);
+// `f::<(i32, i32, i32, i32, i32, i32, i32, i32, i32)>>` requires more
+// than 8 type elements.
+f(((1, 2, 3, 4, 5, 6, 7, 8, 9));
 ```
 
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
