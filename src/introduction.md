@@ -127,8 +127,8 @@ We welcome contributions of all kinds.
 You can contribute to this book by opening an issue or sending a pull
 request to [the Rust Reference repository]. If this book does not answer
 your question, and you think its answer is in scope of it, please do not
-hesitate to file an issue or ask about it in the Rust docs channels on IRC or
-discord. Knowing what people use this book for the most helps direct our
+hesitate to file an issue or ask about it in the `#docs` channels on
+[Discord]. Knowing what people use this book for the most helps direct our
 attention to making those sections the best that they can be.
 
 [book]: ../book/index.html
@@ -144,3 +144,4 @@ attention to making those sections the best that they can be.
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
 [Notation]: notation.html
+[Discord]: https://discord.gg/rust-lang
