@@ -176,7 +176,7 @@ or unintended computation; or platform-specific results.
 
 [alignment]: type-layout.html#size-and-alignment
 [associated item]: #associated-item
-[concrete]: generics.html#free-parameters-and-concrete-items-and-types
+[concrete]: items/generics.html#free-variables-and-concrete-items-and-types
 [concrete wikipedia]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
 [enums]: items/enumerations.html
 [free item]: #free-item

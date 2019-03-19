@@ -98,7 +98,7 @@ For example, consider this trait:
 trait Example<A> {
     fn foo(a: A);
 
-    fn bar<'b'>(a: A, b: &'b SomeStruct);
+    fn bar<'b>(a: A, b: &'b SomeStruct);
 
     fn baz();
 

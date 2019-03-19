@@ -35,4 +35,4 @@ They are written as `impl` followed by a set of trait bounds.
 
 [_TraitBound_]: trait-bounds.html
 [_TypeParamBounds_]: trait-bounds.html
-[concrete type]: generics.html#free-parameters-and-concrete-items-and-types
+[concrete type]: items/generics.html#free-variables-and-concrete-items-and-types

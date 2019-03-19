@@ -107,7 +107,7 @@ inferred with a sensible choice.
 [_TraitBound_]: trait-bounds.html
 [_TypeParamBounds_]: types.html#type-expressions
 [auto traits]: special-types-and-traits.html#auto-traits
-[concrete type]: generics.html#free-parameters-and-concrete-items-and-types
+[concrete type]: items/generics.html#free-variables-and-concrete-items-and-types
 [defaults]: lifetime-elision.html#default-trait-object-lifetimes
 [dynamically sized types]: dynamically-sized-types.html
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
