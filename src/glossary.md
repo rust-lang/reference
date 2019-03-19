@@ -26,8 +26,9 @@ at run time by the program. It occupies a contiguous region of memory.
 ### Associated item
 
 An associated item is an item that is associated with another item. Associated
-items are defined in [implementations] and declared in [traits]. Only functions,
-constants, and type aliases can be associated.
+items are defined in [implementations] and declared in [traits]. Only
+functions, constants, and type aliases can be associated. Contrast to a [free
+item].
 
 ### Bound
 
@@ -59,13 +60,14 @@ and functions that evaluate to a single value, with or without side-effects.
 
 For example, `2 + (3 * 4)` is an expression that returns the value 14.
 
-### Free function
+### Free item
 
-A [function] that is not a member of an [implementation].
+An [item] that is not a member of an [implementation], such as a *free
+function* or a *free const*. Contrast to an [associated item].
 
 ### Inherent implementation
 
-An [implementation] that applies to a nominal type, not to a trait.
+An [implementation] that applies to a nominal type, not to a trait-type pair.
 [More][inherent implementation].
 
 ### Inherent method
@@ -158,11 +160,14 @@ or unintended computation; or platform-specific results.
 [More][undefined-behavior].
 
 [alignment]: type-layout.html#size-and-alignment
+[associated item]: #associated-item
 [enums]: items/enumerations.html
+[free item]: #free-item
 [function]: items/functions.html
 [implementation]: items/implementations.html
 [implementations]: items/implementations.html
 [inherent implementation]: items/implementations.html#inherent-implementations
+[item]: items.html
 [method]: items/associated-items.html#methods
 [object safety]: items/traits.html#object-safety
 [structs]: items/structs.html
