@@ -95,13 +95,13 @@ For example, consider this trait:
 # struct SomeStruct;
 #
 trait Example<A> {
-    fn foo(a: A)
+    fn foo(a: A);
 
-    fn bar<'b'>(a: A, b: &'b SomeStruct)
+    fn bar<'b'>(a: A, b: &'b SomeStruct);
 
-    fn baz()
+    fn baz();
 
-    fn quux(a: i32, b: Option<i32>)
+    fn quux(a: i32, b: Option<i32>);
 }
 ```
 
