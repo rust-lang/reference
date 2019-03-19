@@ -91,7 +91,12 @@ A variable is initialized if it has been assigned a value and hasn't since been
 moved from. All other memory locations are assumed to be uninitialized. Only
 unsafe Rust can create such a memory without initializing it.
 
-### Nominal types
+### Monomorphization
+
+The act of substituting free variables in an item or type for [concrete] types
+and lifetimes.
+
+### Nominal Types
 
 Types that can be referred to by a path directly. Specifically [enums],
 [structs], [unions], and [trait objects].
