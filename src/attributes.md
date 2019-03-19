@@ -216,6 +216,7 @@ The following is an index of all built-in attributes.
   - [`inline`] — Hint to inline code.
   - [`cold`] — Hint that a function is unlikely to be called.
   - [`no_builtins`] — Disables use of certain built-in functions.
+  - [`target_feature`] — Configure platform-specific code generation.
 - Documentation
   - `doc` — Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
@@ -282,6 +283,7 @@ The following is an index of all built-in attributes.
 [`recursion_limit`]: attributes/limits.html#the-recursion_limit-attribute
 [`repr`]: type-layout.html#representations
 [`should_panic`]: attributes/testing.html#the-should_panic-attribute
+[`target_feature`]: attributes/codegen.html#the-target_feature-attribute
 [`test`]: attributes/testing.html#the-test-attribute
 [`used`]: abi.html#the-used-attribute
 [`warn`]: attributes/diagnostics.html#lint-check-attributes

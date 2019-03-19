@@ -42,7 +42,112 @@ The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
 assumed to exist.
 
+## The `target_feature` attribute
+
+The *`target_feature` [attribute]* may be applied to an [unsafe function] to
+enable code generation of that function for specific platform architecture
+features. It uses the [_MetaListNameValueStr_] syntax with a single key of
+`enable` whose value is a string of comma-separated feature names to enable.
+
+```rust,ignore
+#[target_feature(enable = "avx2")]
+unsafe fn foo_avx2() {}
+```
+
+Each [target architecture] has a set of features that may be enabled. It is an
+error to specify a feature for a target architecture that the crate is not
+being compiled for.
+
+It is [undefined behavior] to call a function that is compiled with a feature
+that is not supported on the current platform the code is running on.
+
+Functions marked with `target_feature` are not inlined into a context that
+does not support the given features. The `#[inline(always)]` attribute may not
+be used with a `target_feature` attribute.
+
+### Available features
+
+The following is a list of the available feature names.
+
+#### `x86` or `x86_64`
+
+Feature     | Implicitly Enables | Description
+------------|--------------------|-------------------
+`aes`       | `sse2`   | [AES] — Advanced Encryption Standard
+`avx`       | `sse4.2` | [AVX] — Advanced Vector Extensions
+`avx2`      | `avx`    | [AVX2] — Advanced Vector Extensions 2
+`bmi1`      |          | [BMI1] — Bit Manipulation Instruction Sets
+`bmi2`      |          | [BMI2] — Bit Manipulation Instruction Sets 2
+`fma`       | `avx`    | [FMA3] — Three-operand fused multiply-add
+`fxsr`      |          | [`fxsave`] and [`fxrstor`] — Save and restore x87 FPU, MMX Technology, and SSE State
+`lzcnt`     |          | [`lzcnt`] — Leading zeros count
+`pclmulqdq` | `sse2`   | [`pclmulqdq`] — Packed carry-less multiplication quadword
+`popcnt`    |          | [`popcnt`] — Count of bits set to 1
+`rdrand`    |          | [`rdrand`] — Read random number
+`rdseed`    |          | [`rdseed`] — Read random seed
+`sha`       | `sse2`   | [SHA] — Secure Hash Algorithm
+`sse`       |          | [SSE] — Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
+`sse2`      | `sse`    | [SSE2] — Streaming SIMD Extensions 2
+`sse3`      | `sse2`   | [SSE3] — Streaming SIMD Extensions 3
+`sse4.1`    | `sse3`   | [SSE4.1] — Streaming SIMD Extensions 4.1
+`sse4.2`    | `sse4.1` | [SSE4.2] — Streaming SIMD Extensions 4.2
+`ssse3`     | `sse3`   | [SSSE3] — Supplemental Streaming SIMD Extensions 3
+`xsave`     |          | [`xsave`] — Save processor extended states
+`xsavec`    |          | [`xsavec`] — Save processor extended states with compaction
+`xsaveopt`  |          | [`xsaveopt`] — Save processor extended states optimized
+`xsaves`    |          | [`xsaves`] — Save processor extended states supervisor
+
+<!-- Keep links near each table to make it easier to move and update. -->
+
+[AES]: https://en.wikipedia.org/wiki/AES_instruction_set
+[AVX]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
+[AVX2]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX2
+[BMI1]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets
+[BMI2]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#BMI2
+[FMA3]: https://en.wikipedia.org/wiki/FMA_instruction_set
+[`fxsave`]: https://www.felixcloutier.com/x86/fxsave
+[`fxrstor`]: https://www.felixcloutier.com/x86/fxrstor
+[`lzcnt`]: https://www.felixcloutier.com/x86/lzcnt
+[`pclmulqdq`]: https://www.felixcloutier.com/x86/pclmulqdq
+[`popcnt`]: https://www.felixcloutier.com/x86/popcnt
+[`rdrand`]: https://en.wikipedia.org/wiki/RdRand
+[`rdseed`]: https://en.wikipedia.org/wiki/RdRand
+[SHA]: https://en.wikipedia.org/wiki/Intel_SHA_extensions
+[SSE]: https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions
+[SSE2]: https://en.wikipedia.org/wiki/SSE2
+[SSE3]: https://en.wikipedia.org/wiki/SSE3
+[SSE4.1]: https://en.wikipedia.org/wiki/SSE4#SSE4.1
+[SSE4.2]: https://en.wikipedia.org/wiki/SSE4#SSE4.2
+[SSSE3]: https://en.wikipedia.org/wiki/SSSE3
+[`xsave`]: https://www.felixcloutier.com/x86/xsave
+[`xsavec`]: https://www.felixcloutier.com/x86/xsavec
+[`xsaveopt`]: https://www.felixcloutier.com/x86/xsaveopt
+[`xsaves`]: https://www.felixcloutier.com/x86/xsaves
+
+### Additional information
+
+See the [`target_feature` conditional compilation option] for selectively
+enabling or disabling compilation of code based on compile-time settings. Note
+that this option is not affected by the `target_feature` attribute, and is
+only driven by the features enabled for the entire crate.
+
+See the [`is_x86_feature_detected`] macro in the standard library for runtime
+feature detection on the x86 platforms.
+
+> Note: `rustc` has a default set of features enabled for each target and CPU.
+> The CPU may be chosen with the [`-C target-cpu`] flag. Individual features
+> may be enabled or disabled for an entire crate with the
+> [`-C target-feature`] flag.
+
+[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[`-C target-cpu`]: ../rustc/codegen-options/index.html#target-cpu
+[`-C target-feature`]: ../rustc/codegen-options/index.html#target-feature
+[`is_x86_feature_detected`]: ../std/macro.is_x86_feature_detected.html
+[`target_feature` conditional compilation option]: conditional-compilation.html#target_feature
 [attribute]: attributes.html
 [attributes]: attributes.html
 [functions]: items/functions.html
+[target architecture]: conditional-compilation.html#target_arch
 [trait]: items/traits.html
+[undefined behavior]: behavior-considered-undefined.html
+[unsafe function]: unsafe-functions.html

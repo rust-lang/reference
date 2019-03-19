@@ -168,7 +168,7 @@ that it's linked as you would expect after the compiler succeeds.
 Crates may also learn about how the C runtime is being linked. Code on MSVC, for
 example, needs to be compiled differently (e.g. with `/MT` or `/MD`) depending
 on the runtime being linked. This is exported currently through the
-`target_feature` attribute (note this is a nightly feature):
+[`cfg` attribute `target_feature` option]:
 
 ```rust,ignore
 #[cfg(target_feature = "crt-static")]
@@ -210,5 +210,6 @@ a statically linked binary on MSVC you would execute:
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 
+[`cfg` attribute `target_feature` option]: conditional-compilation.html#target_feature
 [configuration option]: conditional-compilation.html
 [procedural macros]: procedural-macros.html
