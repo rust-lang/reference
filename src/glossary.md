@@ -44,7 +44,7 @@ They can be used to manage control flow in a modular fashion.
 
 ### Concrete
 
-Concrete items and types are those without free type or lifetime parameters.
+Concrete items and types are those without free type or lifetime variables.
 
 [More][concrete].
 
@@ -71,9 +71,9 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
 
-### Free parameters
+### Free variables
 
-Free parameters are those that refer to a generically declared type or lifetime
+Free variables are those that refer to a generically declared type or lifetime
 parameter.
 
 [More][concrete].
