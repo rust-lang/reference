@@ -109,19 +109,21 @@ trait Example<A> {
 In it, the trait `Example` has a free variable `A` because it declares it
 itself. Furthermore, `foo` has `A` as a free variable because it uses it as the
 type of its first argument. The function `bar` has `A` as a free type variable,
-getting `A` from the trait's generic parameters. However, the lifetime `'b` is bound in `baz` but is free in `&'b SomeStruct`.
-parmaeter itself. Both `baz` and `quux` have no free type variables and are
-thus concrete.
+getting `A` from the trait's generic parameters. However, the lifetime `'b` is
+bound in `baz` but is free in tye type `&'b SomeStruct`. Both `baz` and `quux`
+have no free type variables and are thus concrete.
 
-For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete but in `&'a i32`, `'a` is a free variable.
+For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete but
+in the type `&'a i32`, `'a` is a free variable.
 
 For another example, the following table shows the free type variables of
 various types. Types without free parameters show "concrete" instead of "none".
 Assume that `A`, `E`, and `'a` are defined as generic parameters.
 
 | Type | Free Variables |
-| `i32` | concrete | 
+| `i32` | concrete |
 | `&'a i32` | `'a` |
+| `&i32` | *anonymous lifetime of reference* |
 | `&'static i32` | concrete |
 | `UserDefinedType` | concrete |
 | `GenericDefinedType<A>` | `A` |
