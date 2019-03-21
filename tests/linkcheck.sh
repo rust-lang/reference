@@ -11,8 +11,10 @@ fi
 rm -rf tests/linkcheck tests/linkchecker
 
 mkdir tests/linkchecker
-curl -o tests/linkchecker/Cargo.toml https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/Cargo.toml
-curl -o tests/linkchecker/main.rs https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/main.rs
+curl -o tests/linkchecker/Cargo.toml \
+    https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/Cargo.toml
+curl -o tests/linkchecker/main.rs \
+    https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/main.rs
 
 mdbook build
 
