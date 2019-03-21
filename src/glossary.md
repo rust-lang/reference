@@ -44,7 +44,7 @@ They can be used to manage control flow in a modular fashion.
 
 ### Concrete
 
-Concrete items and types are those without free type or lifetime variables.
+Concrete things are those without free type or lifetime variables.
 
 [More][concrete]. [Wikipedia][concrete wikipedia].
 
@@ -176,7 +176,7 @@ or unintended computation; or platform-specific results.
 
 [alignment]: type-layout.html#size-and-alignment
 [associated item]: #associated-item
-[concrete]: items/generics.html#free-variables-and-concrete-items-and-types
+[concrete]: items/generics.html#formulae-and-free-variables
 [concrete wikipedia]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
 [enums]: items/enumerations.html
 [free item]: #free-item

@@ -83,14 +83,50 @@ where
 }
 ```
 
-## Free variables and concrete items and types
+## Formulae and Free Variables
 
-The *free variables* of an item or type are the type and lifetime variables
-not bound therein. These variables may be substituted for other types or lifetimes. A *concrete item* or *concrete
-type* is one without free variables. See [Wikipeida][concrete
-wikipedia] for more.
+The syntatic locations a *variable* is allowed is a *formulae*. Formulae for
+type and lifetime variables are:
 
-For example, consider this trait:
+* [Types]
+* Type constructors (for example, `Option` in `enum Option<T> { ... }`)
+* Lifetimes (only lifetime variables)
+* [Items]
+* Item constructors (for example, `Into` in `trait Into<T>`)
+* [Associated Items]
+* [Trait Bounds]
+* [Expressions] \(through path expressions with generics)
+
+The free variables of a formulae are those not referenced (*bound*) by a generic
+binder in the formulae.
+
+These free variables may be substituted for other types or lifetimes.
+A formulae is *concrete*, or *closed*, if there are no free variables in it.
+See [Wikipedia][wikipedia free variables] for more.
+
+Examples of generic binders for type and lifetime variables are:
+
+* `for<'a>` in `for<'a> fn(&'a u8)`
+* `<T>` in `fn identity<T>(x: T) -> T { x }` for item constructors
+* [Traits] and [implementations] implicitly bind `Self`
+
+All type and lifetimes are unbound at the boundaries of items.
+
+Formulae nest. For example, in a function item, the entire function item is a
+formulae but so are the types of the parameters of the function. A type or
+lifetime variable may be free in one formulae but bound in a containing
+formulae. For example, in the function prototype `for<'a> fn foo(a: &'a i32>`,
+`'a` is bound by the `for<'a>` but in the formulae of the type
+`&'a i32`, `'a` is a free variable.
+
+Furthermore, the same syntax may have free variables when looked at as one
+formulae while having no free variables when looked at as another formulae. Most
+commonly, the type or item will have a free variable when the type or item
+constructor does not. For example, `Option<T>` as a type has `T` as a free
+variable but as a type constructor, has no free variables.
+
+For example of free variables and concrete formulae, consider this trait and
+function:
 
 ```rust
 # struct SomeStruct;
@@ -101,29 +137,31 @@ trait Example<A> {
     fn bar<'b>(a: A, b: &'b SomeStruct);
 
     fn baz();
+}
 
-    fn quux(a: i32, b: Option<i32>);
+fn quux(a: i32, b: Option<i32>) {
+#    unimplemented!("")
+    // ...
 }
 ```
 
-In it, the trait `Example` has a free variable `A` because it declares it
+In it, the trait `Example<A>` has a free variable `A` since it declares it
 itself. Furthermore, `foo` has `A` as a free variable because it uses it as the
 type of its first argument. The function `bar` has `A` as a free type variable,
-getting `A` from the trait's generic parameters. However, the lifetime `'b` is
-bound in `baz` but is free in tye type `&'b SomeStruct`. Both `baz` and `quux`
-have no free type variables and are thus concrete.
-
-For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete but
-in the type `&'a i32`, `'a` is a free variable.
+getting `A` from the trait's generic parameters. The lifetime `'b` is bound in
+the function constructor `bar` but is free in the type `&'b SomeStruct`. All of
+these trait functions also have `Self` as a free variable despite not being
+explicitly quantified. The function `quux` is concrete.
 
 For another example, the following table shows the free type variables of
 various types. Types without free parameters show "concrete" instead of "none".
 Assume that `A`, `E`, and `'a` are defined as generic parameters.
 
 | Type | Free Variables |
+| - | - |
 | `i32` | concrete |
 | `&'a i32` | `'a` |
-| `&i32` | *anonymous lifetime of reference* |
+| `&i32` | *anonymous inferred lifetime of reference* |
 | `&'static i32` | concrete |
 | `UserDefinedType` | concrete |
 | `GenericDefinedType<A>` | `A` |
@@ -132,8 +170,10 @@ Assume that `A`, `E`, and `'a` are defined as generic parameters.
 | `GenericDefinedType<Result<&'a A, E>` | `'a`, `A`, `E` |
 | `GenericDefinedType<Option<UserDefinedType>` | concrete |
 
+
 > Note: In some programming languages and in type theory, concrete types are
-> called *ground types*.
+> called *ground types*. In mathematical logic, these are called ground
+> expressions. See [Wikipedia][wikipedia ground expression] for more.
 
 ## Attributes
 
@@ -162,13 +202,21 @@ generic parameter.
 [_TypeParamBounds_]: trait-bounds.html
 
 [arrays]: types/array.html
-[concrete wikipedia]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
+[associated items]: items/associated-items.html
+[attributes]: attributes.html
+[expressions]: expression.html
 [function pointers]: types/function-pointer.html
+[implementations]: items/implementations.html
+[items]: items.html
 [references]: types/pointer.html#shared-references-
 [raw pointers]: types/pointer.html#raw-pointers-const-and-mut
+[trait bounds]: trait-bound.html
+[trait object]: types/trait-object.html
+[traits]: items/traitshtml
+[tuples]: types/tuple.html
+[types]: types.html
+[wikipedia free variables]: https://en.wikipedia.org/wiki/Free_variables_and_bound_variables
+[wikipedia ground expression]: https://en.wikipedia.org/wiki/Ground_expression
 [`Clone`]: special-types-and-traits.html#clone
 [`Copy`]: special-types-and-traits.html#copy
 [`Sized`]: special-types-and-traits.html#sized
-[tuples]: types/tuple.html
-[trait object]: types/trait-object.html
-[attributes]: attributes.html
