@@ -39,8 +39,8 @@ upon. Ideally entries in the glossary link to the associated documentation.
 ## Adding Documentation
 
 There are a lot of features that are not documented at all or are documented
-poorly. This is the hardest, but definitely most valuable. Pick something from
-["Document all features"][9] or a [missing feature] tag, and write about it.
+poorly. This is the hardest, but definitely most valuable. Pick an unassigned
+issue from the [issue tracker], and write about it.
 
 While writing, you may find it handy to have a [playpen] open to test out what
 you are documenting.
@@ -50,47 +50,20 @@ appropriate.
 
 Note that we don't write documentation for purely library features such as
 threads and IO and we don't write about Rust in the future. Documentation is
-written as if the current stable release of Rust is the last release. If you
-want to write about Rust in the future, you want [the Unstable book][unstable].
-
-## RFC Review Process
-
-Older, stable RFCs need review to determine if they need documentation written
-and, if so, need that documentation written. The ["Document all features"][9]
-issue tracks the overall effort, and individual RFCs are laid out on the [RFC
-Status] project. RFCs that have not yet been reviewed to scope out the work are
-in the "Needs Review" column, with ones needing documentation in the "Stable,
-Needs Documentation" column.
-
-If you review an RFC and determine that there is no documentation required,
-please convert the project card to an issue and then close the issue, explaining
-why no documentation is required. This is so as to ensure that there is a record
-and a chance for others to disagree. If you review it and determine
-documentation is necessary, feel free to simply move the card into the "Stable,
-Needs Documentation" column. It can be converted into an issue if it needs
-discussion, or left as a text card.
-
-For RFCs which do not stabilize all at once (for instance, because some aspects
-are insta-stable), if there is any unstabilized part that needs documentation,
-then the RFC should be advanced to "Stable, Needs Documentation" and converted
-to an issue. On the issue, remark about which parts need documentation and which
-are still unstable.
+written as if the current stable release of Rust is the last release. The
+`master` branch of the reference corresponds to what is **stable** on the
+`master` branch ("nightly") of [rust-lang/rust]. If you want to write about
+Rust in the future, you want [the Unstable book][unstable].
 
 ## Stabilization
 
-Now, in order for a new RFC to be stabilized, it must have documentation
-written. If this requires a change to the reference, then the necessary
-documentation should be written and a PR created. Once the PR has been reviewed
-(along with any necessary documentation PRs to other repositories), the feature
-can be stabilized in Rust, and then the doc PRs merged. Anyone is free to write
-these PRs, but they should wait until the feature is unlikely to change much
-before stabilization.
+When something that alters the language is stabilized, an issue should be
+opened on the reference [issue tracker] to track the documentation process.
+This should include links to any relevant information, such as the
+stabilization PR, the RFC, the tracking issue, and anything else that would be
+helpful for writing the documentation.
 
-RFCs needed documentation for stabilization can be added to the [RFC Status]
-project, under the "Awaiting Docs for Stabilization" column.
-
-[9]: https://github.com/rust-lang-nursery/reference/issues/9
-[missing feature]: https://github.com/rust-lang-nursery/reference/issues?q=is%3Aissue+is%3Aopen+label%3A%22Missing+Feature%22
+[issue tracker]: https://github.com/rust-lang-nursery/reference/issues
 [playpen]: https://play.rust-lang.org/
+[rust-lang/rust]: https://github.com/rust-lang/rust/
 [unstable]: https://doc.rust-lang.org/nightly/unstable-book/
-[RFC Status]: https://github.com/rust-lang-nursery/reference/projects/1
