@@ -86,8 +86,8 @@ where
 ## Free variables and concrete items and types
 
 The *free variables* of an item or type are the type and lifetime variables
-that refer to a generically declared parameter. A *concrete item* or *concrete
-type* is one that does not have any free variables. See [Wikipeida][concrete
+not bound therein. These variables may be substituted for other types or lifetimes. A *concrete item* or *concrete
+type* is one without free variables. See [Wikipeida][concrete
 wikipedia] for more.
 
 For example, consider this trait:
@@ -108,16 +108,16 @@ trait Example<A> {
 
 In it, the trait `Example` has a free variable `A` because it declares it
 itself. Furthermore, `foo` has `A` as a free variable because it uses it as the
-type of its first argument. `baz` has both `A` and `B` as free type variables,
-getting `A` from the trait's generic parameters and defining `B` as a generic
+type of its first argument. The function `bar` has `A` as a free type variable,
+getting `A` from the trait's generic parameters. However, the lifetime `'b` is bound in `baz` but is free in `&'b SomeStruct`.
 parmaeter itself. Both `baz` and `quux` have no free type variables and are
-thusly concrete.
+thus concrete.
 
-For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete.
+For another example, the function `for<'a> fn foo(a: &'a i32>` is concrete but in `&'a i32`, `'a` is a free variable.
 
 For another example, the following table shows the free type variables of
-various types. Types without free parmaeters show "concrete" instead of "none".
-Assume `A`, `E`, and `'a` are defined as generic parameters.
+various types. Types without free parameters show "concrete" instead of "none".
+Assume that `A`, `E`, and `'a` are defined as generic parameters.
 
 | Type | Free Variables |
 | `i32` | concrete | 
