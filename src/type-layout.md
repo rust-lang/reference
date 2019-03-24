@@ -119,7 +119,7 @@ representations can be applied to a single type.
 The representation of a type can be changed by applying the `repr` attribute
 to it. The following example shows a struct with a `C` representation.
 
-```
+```rust
 #[repr(C)]
 struct ThreeInts {
     first: i16,
@@ -148,7 +148,7 @@ There are no guarantees of data layout made by this representation.
 
 The `C` representation is designed for dual purposes. One purpose is for
 creating types that are interoperable with the C Language. The second purpose is
-to create types that you can soundly performing operations that rely on data
+to create types that you can soundly perform operations on that rely on data
 layout such as reinterpreting values as a different type.
 
 Because of this dual purpose, it is possible to create types that are not useful
@@ -205,7 +205,7 @@ The union will have a size of the maximum size of all of its fields rounded to
 its alignment, and an alignment of the maximum alignment of all of its fields.
 These maximums may come from different fields.
 
-```
+```rust
 #[repr(C)]
 union Union {
     f1: u16,
@@ -280,19 +280,29 @@ The `align` representation can be used on `struct`s and `union`s to raise the
 alignment of the type to a given value.
 
 Alignment is specified as a parameter in the form of `#[repr(align(x))]`. The
-alignment value must be a power of two of type `u32`. The `align` representation
-can raise the alignment of a type to be greater than it's primitive alignment,
-it cannot lower the alignment of a type.
+alignment value must be a power of two up to 2<sup>29</sup>. The `align`
+representation can raise the alignment of a type to be greater than it's
+primitive alignment, it cannot lower the alignment of a type.
 
 The `align` and `packed` representations cannot be applied on the same type and
 a `packed` type cannot transitively contain another `align`ed type.
 
 ### The `packed` Representation
 
-The `packed` representation can only be used on `struct`s and `union`s.
+The `packed` representation can be used on `struct`s and `union`s to lower the
+alignment and padding of the type.
 
-It modifies the representation (either the default or `C`) by removing any
-padding bytes and forcing the alignment of the type to `1`.
+The packing value is specified as a parameter in the form of
+`#[repr(packed(x))]`. If no value is given, as in `#[repr(packed)]`, then the
+packing value is 1. The packing value must be a power of two up to
+2<sup>29</sup>.
+
+The `packed` representation sets the alignment to the smaller of the specified
+packing and the current alignment (either default or `C`). The alignments of
+each field for the purpose of positioning fields would also be the smaller of
+the specified packing and the alignment of the type of that field. If the
+specified packing is greater than or equal to the default alignment of the
+type, then the alignment and layout is unaffected.
 
 The `align` and `packed` representations cannot be applied on the same type and
 a `packed` type cannot transitively contain another `align`ed type.
