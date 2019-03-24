@@ -33,10 +33,19 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own traits through [procedural macros].
 
+## The `automatically_derived` attribute
+
+The *`automatically_derived` attribute* is automatically added to
+[implementations] created by the `derive` attribute for built-in traits. It
+has no direct effect, but it may be used by tools and diagnostic lints to
+detect these automatically generated implementations.
+
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
 [`Clone`]: ../../std/clone/trait.Clone.html
 [`PartialEq`]: ../../std/cmp/trait.PartialEq.html
 [`impl` item]: ../items/implementations.md
 [items]: ../items.md
 [derive macros]: ../procedural-macros.md#derive-macros
+[implementations]: ../items/implementations.md
+[items]: ../items.md
 [procedural macros]: ../procedural-macros.md#derive-macros
