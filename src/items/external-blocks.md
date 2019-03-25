@@ -123,7 +123,7 @@ specifies the kind of library with the following possible values:
 
 The `name` key must be included if `kind` is specified.
 
-The `wasm_import_module` key may be used to specify the [WebAssembly] module
+The `wasm_import_module` key may be used to specify the [WebAssembly module]
 name for the items within an `extern` block when importing symbols from the
 host environment. The default module name is `env` if `wasm_import_module` is
 not specified.
@@ -164,7 +164,7 @@ extern {
 ```
 
 [IDENTIFIER]: identifiers.html
-[WebAssembly]: https://webassembly.org/
+[WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [_Abi_]: items/functions.html
 [_FunctionParam_]: items/functions.html
 [_FunctionParameters_]: items/functions.html
