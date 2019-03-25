@@ -297,10 +297,10 @@ The packing value is specified as a parameter in the form of
 packing value is 1. The packing value must be a power of two up to
 2<sup>29</sup>.
 
-The `packed` representation sets the alignment to the smaller of the specified
+The `packed` representation sets the type's alignment to the smaller of the specified
 packing and the current alignment (either default or `C`). The alignments of
-each field for the purpose of positioning fields would also be the smaller of
-the specified packing and the alignment of the type of that field. If the
+each field, for the purpose of positioning fields, is the smaller of
+the specified packing and the alignment of the field's type. If the
 specified packing is greater than or equal to the default alignment of the
 type, then the alignment and layout is unaffected.
 
