@@ -110,16 +110,23 @@ The following [attributes] control the behavior of external blocks.
 ### The `link` attribute
 
 The *`link` attribute* specifies the name of a native library that the
-compiler should link with. It uses the [_MetaListNameValueStr_] syntax to
-specify its inputs. The `name` key is the name of the native library to link.
-The `kind` key is an optional value which specifies the kind of library with
-the following possible values:
+compiler should link with for the items within an `extern` block. It uses the
+[_MetaListNameValueStr_] syntax to specify its inputs. The `name` key is the
+name of the native library to link. The `kind` key is an optional value which
+specifies the kind of library with the following possible values:
 
 - `dylib` — Indicates a dynamic library. This is the default if `kind` is not
   specified.
 - `static` — Indicates a static library.
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
+
+The `name` key must be included if `kind` is specified.
+
+The `wasm_import_module` key may be used to specify the [WebAssembly module]
+name for the items within an `extern` block when importing symbols from the
+host environment. The default module name is `env` if `wasm_import_module` is
+not specified.
 
 ```rust,ignore
 #[link(name = "crypto")]
@@ -128,6 +135,11 @@ extern {
 }
 
 #[link(name = "CoreFoundation", kind = "framework")]
+extern {
+    // …
+}
+
+#[link(wasm_import_module = "foo")]
 extern {
     // …
 }
@@ -152,6 +164,7 @@ extern {
 ```
 
 [IDENTIFIER]: identifiers.html
+[WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [_Abi_]: items/functions.html
 [_FunctionParam_]: items/functions.html
 [_FunctionParameters_]: items/functions.html
