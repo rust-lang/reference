@@ -128,7 +128,8 @@ struct ThreeInts {
 ```
 
 The alignment may be raised or lowered with the `align` and `packed` modifiers
-respectively. They alter the representation specified in the attribute:
+respectively. They alter the representation specified in the attribute.
+If no representation is specified, the default one is altered.
 
 ```rust
 // Default representation, alignment lowered to 2.
@@ -156,7 +157,7 @@ struct AlignedStruct {
 The representation of a type can change the padding between fields, but does
 not change the layout of the fields themselves. For example, a struct with a
 `C` representation that contains a struct `Inner` with the default
-representation will not change the layout of Inner.
+representation will not change the layout of `Inner`.
 
 ### The Default Representation
 
@@ -317,13 +318,13 @@ only be applied to the default and `C` representations.
 The `packed` modifier can be used on `struct`s and `union`s to lower the
 alignment of the type to a given value.
 
-The packing value is specified as an integer parameter in the form of
+The packing value (hence: "value") is specified as an integer parameter in the form of
 `#[repr(packed(x))]`. If no value is given, as in `#[repr(packed)]`, then the
-packing value is 1. The packing value must be a power of two from 1 up to
+value is 1. The value must be a power of two from 1 up to
 2<sup>29</sup>.
 
-The `packed` modifier lowers the type's alignment to the specified packing. If
-the specified packing is greater to the alignment of the type without the
+The `packed` modifier lowers the type's alignment to the specified value. If
+the specified value is greater than the type's alignment without the
 `packed` modifier, then the alignment and layout is unaffected. The alignments
 of each field, for the purpose of positioning fields, is the smaller of the
 specified packing and the alignment of the field's type.
