@@ -110,10 +110,13 @@ Closures have no layout guarantees.
 ## Representations
 
 All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
-*representation* that specifies what the layout is for the type.
+*representation* that specifies what the layout is for the type. The possible
+representations for a type are:
 
-The possible representations for a type are the default representation, `C`,
-the primitive representations, and `transparent`.
+- [Default]
+- [`C`]
+- The [primitive representations]
+- [`transparent`]
 
 The representation of a type can be changed by applying the `repr` attribute
 to it. The following example shows a struct with a `C` representation.
@@ -296,42 +299,28 @@ For all other enumerations, the layout is unspecified.
 
 Likewise, combining two primitive representations together is unspecified.
 
-### The `align` modifier
+### The alignment modifiers
 
-The `align` modifier can be used on `struct`s and `union`s to raise the
-alignment of the type to a given value.
+The `align` and `packed` modifiers can be used to respectively raise or lower
+the alignment of `struct`s and `union`s. `packed` may also alter the padding
+between fields.
 
 The alignment is specified as an integer parameter in the form of
-`#[repr(align(x))]`. The alignment value must be a power of two from 1 up to
-2<sup>29</sup>.
+`#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a
+power of two from 1 up to 2<sup>29</sup>. For `packed`, if no value is given,
+as in `#[repr(packed)]`, then the value is 1.
 
-The `align` modifier raises the type's alignment to the specified alignment.
-If the specified alignment is less than the alignment of the type without the
-`align` modifier, then the alignment is unaffected.
+For `align`, if the specified alignment is less than the alignment of the type
+without the `align` modifier, then the alignment is unaffected.
 
-The `align` and `packed` modifiers cannot be applied on the same type and a
-`packed` type cannot transitively contain another `align`ed type. `align` may
-only be applied to the default and `C` representations.
-
-### The `packed` modifier
-
-The `packed` modifier can be used on `struct`s and `union`s to lower the
-alignment of the type to a given value.
-
-The packing value (hence: "value") is specified as an integer parameter in the form of
-`#[repr(packed(x))]`. If no value is given, as in `#[repr(packed)]`, then the
-value is 1. The value must be a power of two from 1 up to
-2<sup>29</sup>.
-
-The `packed` modifier lowers the type's alignment to the specified value. If
-the specified value is greater than the type's alignment without the
-`packed` modifier, then the alignment and layout is unaffected. The alignments
-of each field, for the purpose of positioning fields, is the smaller of the
-specified packing and the alignment of the field's type.
+For `packed`, if the specified alignment is greater than the type's alignment
+without the `packed` modifier, then the alignment and layout is unaffected.
+The alignments of each field, for the purpose of positioning fields, is the
+smaller of the specified alignment and the alignment of the field's type.
 
 The `align` and `packed` modifiers cannot be applied on the same type and a
-`packed` type cannot transitively contain another `align`ed type. `packed` may
-only be applied to the default and `C` representations.
+`packed` type cannot transitively contain another `align`ed type. `align` and
+`packed` may only be applied to the [default] and [`C`] representations.
 
 <div class="warning">
 
@@ -369,3 +358,7 @@ used with any other representation.
 [undefined behavior]: behavior-considered-undefined.html
 [27060]: https://github.com/rust-lang/rust/issues/27060
 [`PhantomData<T>`]: special-types-and-traits.html#phantomdatat
+[Default]: #the-default-representation
+[`C`]: #the-c-representation
+[primitive representations]: #primitive-representations
+[`transparent`]: #the-transparent-representation
