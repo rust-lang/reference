@@ -93,7 +93,7 @@ Dereferencing a raw pointer requires `unsafe`.
 
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
 [immutable place expression context](expressions.html#mutability) and
-`*std::ops::Deref::deref_mut(&mut x)` in a mutable place expression context.
+`*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context.
 
 ```rust
 let x = &7;
