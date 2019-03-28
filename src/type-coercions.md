@@ -96,7 +96,7 @@ Coercion is allowed between the following types:
 * `T_1` to `T_3` where `T_1` coerces to `T_2` and `T_2` coerces to `T_3`
 (*transitive case*)
 
-    Note that this is not fully supported yet
+    Note that this is not fully supported yet.
 
 * `&mut T` to `&T`
 
@@ -158,8 +158,8 @@ cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
 Two traits, [`Unsize`] and [`CoerceUnsized`], are used
-to assist in this process and expose it for library use. The compiler following
-coercions are built-in and, if `T` can be coerced to `U` with one of the, then
+to assist in this process and expose it for library use. The following
+coercions are compiler built-ins and, if `T` can be coerced to `U` with one of them, then
 the compiler will provide an implementation of `Unsize<U>` for `T`:
 
 * `[T; n]` to `[T]`.
@@ -182,5 +182,5 @@ unsized coercion to `Foo<U>`.
 > has been stabilized, the traits themselves are not yet stable and therefore
 > can't be used directly in stable Rust.
 
-[Unsize]: ../std/marker/trait.Unsize.html
-[CoerceUnsized]: ../std/ops/trait.CoerceUnsized.html
+[`Unsize`]: ../std/marker/trait.Unsize.html
+[`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
