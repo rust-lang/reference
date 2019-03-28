@@ -131,7 +131,7 @@ println!("{:?}", res);
 # assert!(res.is_err())
 ```
 
-When applied to values of the `Option<T>` type, it propagates `Nones`. If the
+When applied to values of the `Option<T>` type, it propagates `None`s. If the
 value is `None`, then it will return `None`. If applied to `Some(x)`, then it
 will unwrap the value to evaluate to `x`.
 
