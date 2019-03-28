@@ -159,8 +159,8 @@ anywhere else a coercion can occur.
 
 Two traits, [`Unsize`] and [`CoerceUnsized`], are used
 to assist in this process and expose it for library use. The following
-coercions are compiler built-ins and, if `T` can be coerced to `U` with one of them, then
-the compiler will provide an implementation of `Unsize<U>` for `T`:
+coercions are built-ins and, if `T` can be coerced to `U` with one of them, then
+an implementation of `Unsize<U>` for `T` will be provided:
 
 * `[T; n]` to `[T]`.
 
