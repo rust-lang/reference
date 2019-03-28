@@ -41,3 +41,5 @@ fn initialization_example() {
     // uninit_after_if; // err: use of possibly uninitialized `uninit_after_if`
 }
 ```
+
+[`if` expression]: expressions/if-expr.html#if-expressions

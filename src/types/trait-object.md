@@ -17,7 +17,7 @@ of the base trait.
 Trait objects are written as the optional keyword `dyn` followed by a set of
 trait bounds, but with the following restrictions on the trait bounds. All
 traits except the first trait must be auto traits, there may not be more than
-one lifetime, and opt-out bounds (e.g. `?sized`) are not allowed. Furthermore,
+one lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
 For example, given a trait `Trait`, the following are all trait objects:

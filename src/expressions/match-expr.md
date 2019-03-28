@@ -113,7 +113,7 @@ let message = match maybe_digit {
 ```
 
 > Note: Multiple matches using the `|` operator can cause the pattern guard and
-> and side effects it has to execute multiple times. For example:
+> the side effects it has to execute multiple times. For example:
 >
 > ```rust
 > # use std::cell::Cell;
