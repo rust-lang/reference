@@ -205,7 +205,7 @@ The union will have a size of the maximum size of all of its fields rounded to
 its alignment, and an alignment of the maximum alignment of all of its fields.
 These maximums may come from different fields.
 
-```
+```rust
 #[repr(C)]
 union Union {
     f1: u16,
