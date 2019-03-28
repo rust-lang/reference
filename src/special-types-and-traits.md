@@ -110,7 +110,7 @@ according to the following rules:
   closure that captures a `T` by shared reference and a `U` by value implements
   any auto traits that both `&T` and `U` do.
 
-For generic types (counting the built-in types above as generic over `T`), if an
+For generic types (counting the built-in types above as generic over `T`), if a
 generic implementation is available, then the compiler does not automatically
 implement it for types that could use the implementation except that they do not
 meet the requisite trait bounds. For instance, the standard library implements
