@@ -173,4 +173,5 @@ or unintended computation; or platform-specific results.
 [structs]: items/structs.html
 [trait objects]: types/trait-object.html
 [traits]: items/traits.html
+[undefined-behavior]: behavior-considered-undefined.html
 [unions]: items/unions.html
