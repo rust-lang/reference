@@ -184,7 +184,10 @@ for field in struct.fields_in_declaration_order() {
     // Increase the current offset so that it's a multiple of the alignment
     // of this field. For the first field, this will always be zero.
     // The skipped bytes are called padding bytes.
-    current_offset += field.alignment % current_offset;
+    let misalignment = current_offset % field.alignment;
+    if misalignment > 0 {
+        current_offset += field.alignment - misalignment;
+    }
 
     struct[field].offset = current_offset;
 
