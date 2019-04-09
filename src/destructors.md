@@ -89,5 +89,4 @@ variable or field from being dropped automatically.
 [closure]: types/closure.html
 [Trait objects]: types/trait-object.html
 [`std::ptr::drop_in_place`]: ../std/ptr/fn.drop_in_place.html
-[`std::mem::forget`]: ../std/mem/fn.forget.html
 [`std::mem::ManuallyDrop`]: ../std/mem/struct.ManuallyDrop.html

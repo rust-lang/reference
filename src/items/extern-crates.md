@@ -106,10 +106,8 @@ crate to access only its macros.
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
 [`macro_use` attribute]: macros-by-example.html#the-macro_use-attribute
 [`alloc`]: https://doc.rust-lang.org/alloc/
-[`crate::`]: paths.html#crate
 [`no_implicit_prelude`]: items/modules.html#prelude-items
 [`no_std`]: crates-and-source-files.html#preludes-and-no_std
 [`proc_macro`]: https://doc.rust-lang.org/proc_macro/
-[`self::`]: paths.html#self
 [`test`]: https://doc.rust-lang.org/test/
 [use declarations]: items/use-declarations.html

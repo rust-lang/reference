@@ -74,7 +74,6 @@ ten_times(move |j| println!("{}, {}", word, j));
 [_Expression_]: expressions.html
 [_BlockExpression_]: expressions/block-expr.html
 [_TypeNoBounds_]: types.html#type-expressions
-[_FunctionParameters_]: items/functions.html
 [_Pattern_]: patterns.html
 [_Type_]: types.html#type-expressions
 [`let` binding]: statements.html#let-statements

@@ -166,8 +166,6 @@ extern {
 [IDENTIFIER]: identifiers.html
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [_Abi_]: items/functions.html
-[_FunctionParam_]: items/functions.html
-[_FunctionParameters_]: items/functions.html
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
 [_InnerAttribute_]: attributes.html

@@ -101,7 +101,6 @@ method and you'll be fine.
 [_Expression_]: expressions.html
 [_PathExprSegment_]: paths.html#paths-in-expressions
 [visible]: visibility-and-privacy.html
-[array]: types/array.html
 [trait objects]: types/trait-object.html
 [disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
 [disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls

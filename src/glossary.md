@@ -163,7 +163,6 @@ or unintended computation; or platform-specific results.
 [associated item]: #associated-item
 [enums]: items/enumerations.html
 [free item]: #free-item
-[function]: items/functions.html
 [implementation]: items/implementations.html
 [implementations]: items/implementations.html
 [inherent implementation]: items/implementations.html#inherent-implementations

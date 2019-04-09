@@ -208,7 +208,6 @@ trait T {
 [WildcardPattern]: patterns.html#wildcard-pattern
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]: expressions.html
-[_FunctionParam_]: items/functions.html
 [_FunctionQualifiers_]: items/functions.html
 [_FunctionReturnType_]: items/functions.html
 [_Generics_]: items/generics.html
@@ -221,7 +220,6 @@ trait T {
 [_WhereClause_]: items/generics.html#where-clauses
 [bounds]: trait-bounds.html
 [trait object]: types/trait-object.html
-[explicit]: expressions/operator-expr.html#type-cast-expressions
 [RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: items/associated-items.html
 [method]: items/associated-items.html#methods

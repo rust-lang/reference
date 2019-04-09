@@ -269,7 +269,6 @@ LAST(M), defined by case analysis on M itself (a sequence of token-trees):
         LAST(`uu ...`).
 
 ### Examples of FIRST and LAST
-[examples-of-first-and-last]: #examples-of-first-and-last
 
 Below are some examples of FIRST and LAST.
 (Note in particular how the special ε element is introduced and

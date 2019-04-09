@@ -202,7 +202,6 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[IDENTIFIER]: identifiers.html
 [_ConstantItem_]: items/constant-items.html
 [_Function_]: items/functions.html
 [_Generics_]: items/generics.html

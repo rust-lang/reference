@@ -87,5 +87,3 @@ fn mytest() {
 [`Termination`]: ../std/process/trait.Termination.html
 [`test` conditional compilation option]: conditional-compilation.html#test
 [attributes]: attributes.html
-[trait or lifetime bounds]: trait-bounds.html
-[where clauses]: items/generics.html#where-clauses
