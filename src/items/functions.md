@@ -217,9 +217,7 @@ attributes macros.
 [STRING_LITERAL]: tokens.html#string-literals
 [_BlockExpression_]: expressions/block-expr.html
 [_Generics_]: items/generics.html
-[_InnerAttribute_]: attributes.html
 [_Pattern_]: patterns.html
-[_Statement_]: statements.html
 [_Type_]: types.html#type-expressions
 [_WhereClause_]: items/generics.html#where-clauses
 [const context]: const_eval.html#const-context

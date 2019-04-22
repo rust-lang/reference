@@ -283,17 +283,13 @@ They are never allowed before:
 
 [block expressions]:    expressions/block-expr.html
 [call expressions]:     expressions/call-expr.html
-[closure expressions]:  expressions/closure-expr.html
 [enum variant]:         expressions/enum-variant-expr.html
 [field]:                expressions/field-expr.html
 [functional update]:    expressions/struct-expr.html#functional-update-syntax
-[grouped]:              expressions/grouped-expr.html
 [`if let`]:             expressions/if-expr.html#if-let-expressions
-[literals]:             expressions/literal-expr.html
 [match]:                expressions/match-expr.html
 [method-call]:          expressions/method-call-expr.html
 [paths]:                expressions/path-expr.html
-[range expressions]:    expressions/range-expr.html
 [struct]:               expressions/struct-expr.html
 [tuple expressions]:    expressions/tuple-expr.html
 [`while let`]:          expressions/loop-expr.html#predicate-pattern-loops
@@ -301,16 +297,11 @@ They are never allowed before:
 [array expressions]:    expressions/array-expr.html
 [array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
 
-[arithmetic, logical]:  expressions/operator-expr.html#arithmetic-and-logical-binary-operators
 [assign]:               expressions/operator-expr.html#assignment-expressions
 [borrow]:               expressions/operator-expr.html#borrow-operators
-[cast]:                 expressions/operator-expr.html#type-cast-expressions
 [comparison]:           expressions/operator-expr.html#comparison-operators
 [compound assignment]:  expressions/operator-expr.html#compound-assignment-expressions
 [deref]:                expressions/operator-expr.html#the-dereference-operator
-[lazy boolean]:         expressions/operator-expr.html#lazy-boolean-operators
-[negation]:             expressions/operator-expr.html#negation-operators
-[overflow]:             expressions/operator-expr.html#overflow
 
 [destructors]:          destructors.html
 [interior mutability]:  interior-mutability.html
@@ -323,7 +314,6 @@ They are never allowed before:
 [let]:                  statements.html#let-statements
 [let statement]:        statements.html#let-statements
 [Mutable `static` items]: items/static-items.html#mutable-statics
-[const contexts]:       const_eval.html
 [scrutinee]:            glossary.html#scrutinee
 [slice]:                types/slice.html
 [statement]:            statements.html

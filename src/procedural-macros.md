@@ -278,7 +278,6 @@ fn invoke4() {}
 [attribute]: attributes.html
 [attributes]: attributes.html
 [block]: expressions/block-expr.html
-[custom attributes]: attributes.html
 [crate type]: linkage.html
 [derive macro helper attributes]: #derive-macro-helper-attributes
 [enum]: items/enumerations.html
@@ -287,10 +286,8 @@ fn invoke4() {}
 [item declaration statements]: statements.html#item-declarations
 [items]: items.html
 [function]: items/functions.html
-[macro]: macros.html
 [module]: items/modules.html
 [modules]: items/modules.html
-[procedural macro tutorial]: ../book/2018-edition/appendix-04-macros.html#procedural-macros-for-custom-derive
 [public]: visibility-and-privacy.html
 [struct]: items/structs.html
 [union]: items/unions.html

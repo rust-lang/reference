@@ -12,7 +12,6 @@ Rust:
 - Calling an unsafe function (including an intrinsic or foreign function).
 - Implementing an [unsafe trait].
 
-[`Copy`]: special-types-and-traits.html#copy
 [`union`]: items/unions.html
 [mutable]: items/static-items.html#mutable-statics
 [external]: items/external-blocks.html

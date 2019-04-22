@@ -151,7 +151,6 @@ expressions].
 [loop]: expressions/loop-expr.html
 [match]: expressions/match-expr.html
 [parentheses]: http://localhost:3000/expressions/grouped-expr.html
-[path]: paths.html
 [struct]: items/structs.html
 [union]: items/unions.html
 [visible]: visibility-and-privacy.html

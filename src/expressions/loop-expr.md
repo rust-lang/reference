@@ -282,7 +282,6 @@ and the `loop` must have a type compatible with each `break` expression.
 `break` without an expression is considered identical to `break` with
 expression `()`.
 
-[IDENTIFIER]: identifiers.html
 [LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
 [_BlockExpression_]: expressions/block-expr.html
 [_Expression_]:      expressions.html

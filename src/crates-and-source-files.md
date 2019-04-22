@@ -163,12 +163,10 @@ or `-` (U+002D) characters.
 [`extern crate`]: items/extern-crates.html
 [`std`]: ../std/index.html
 [`std::prelude::v1`]: ../std/prelude/index.html
-[`use` declaration]: items/use-declarations.html
 [attribute]: attributes.html
 [attributes]: attributes.html
 [function]: items/functions.html
 [module]: items/modules.html
 [module path]: paths.html
 [trait or lifetime bounds]: trait-bounds.html
-[unit]: types.html#tuple-types
 [where clauses]: items/generics.html#where-clauses

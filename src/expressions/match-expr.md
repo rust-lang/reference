@@ -147,11 +147,7 @@ expressions].
 
 [_Pattern_]: patterns.html
 [pattern]: patterns.html
-[Identifier Patterns]: patterns.html#identifier-patterns
 [Inner attributes]: attributes.html
-[Struct Patterns]: patterns.html#struct-patterns
-[Tuple Struct Patterns]: patterns.html#tuplestruct-patterns
-[Tuple Patterns]: patterns.html#tuple-patterns
 [Range Pattern]: patterns.html#range-patterns
 [attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
 [binding mode]: patterns.html#binding-modes

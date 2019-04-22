@@ -336,13 +336,11 @@ fn main() {
 [`Box<Self>`]: special-types-and-traits.html#boxt
 [`Pin<P>`]: special-types-and-traits.html#pinp
 [`Rc<Self>`]: special-types-and-traits.html#rct
-[trait]: items/traits.html
 [traits]: items/traits.html
 [type aliases]: items/type-aliases.html
 [inherent implementations]: items/implementations.html#inherent-implementations
 [identifier]: identifiers.html
 [identifier pattern]: patterns.html#identifier-patterns
-[trait object]: types/trait-object.html
 [implementations]: items/implementations.html
 [type]: types.html#type-expressions
 [constants]: items/constant-items.html
@@ -350,5 +348,4 @@ fn main() {
 [functions]: items/functions.html
 [function item]: types/function-item.html
 [method call operator]: expressions/method-call-expr.html
-[block]: expressions/block-expr.html
 [path]: paths.html

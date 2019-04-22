@@ -141,7 +141,6 @@ The built-in attributes that have meaning on a function are [`cfg`],
 
 [_InnerAttribute_]: attributes.html
 [_Item_]: items.html
-[_OuterAttribute_]: attributes.html
 [`#[macro_use]`]: macros-by-example.html#the-macro_use-attribute
 [`cfg`]: conditional-compilation.html
 [`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute

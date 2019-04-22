@@ -577,7 +577,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 
 
 [Inferred types]: types/inferred.html
-[Operator expressions]: expressions/operator-expr.html
 [Range patterns]: patterns.html#range-patterns
 [Reference patterns]: patterns.html#reference-patterns
 [Subpattern binding]: patterns.html#identifier-patterns
@@ -590,7 +589,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [closures]: expressions/closure-expr.html
 [comparison]: expressions/operator-expr.html#comparison-operators
 [compound]: expressions/operator-expr.html#compound-assignment-expressions
-[constant items]: items/constant-items.html
 [dereference]: expressions/operator-expr.html#the-dereference-operator
 [extern]: items/external-blocks.html
 [field]: expressions/field-expr.html
@@ -611,7 +609,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [references]: types/pointer.html
 [sized]: trait-bounds.html#sized
 [struct expressions]: expressions/struct-expr.html
-[tokens]: #tokens
 [trait bounds]: trait-bounds.html
 [tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
 [tuple structs]: items/structs.html

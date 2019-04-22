@@ -140,8 +140,6 @@ fn is_unix_platform() -> bool {
 [array expressions]: expressions/array-expr.html
 [call expressions]: expressions/call-expr.html
 [enum variant]: expressions/enum-variant-expr.html
-[expression attributes]: expressions.html#expression-attributes
-[expression]: expressions.html
 [function]: items/functions.html
 [inner attributes]: attributes.html
 [method]: items/associated-items.html#methods

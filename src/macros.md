@@ -21,7 +21,7 @@ There are two ways to define new macros:
 > &nbsp;&nbsp; | `{` _TokenTree_<sup>\*</sup> `}`
 >
 > _TokenTree_ :\
-> &nbsp;&nbsp; [_Token_]<sub>_except delimiters_</sub> | _DelimTokenTree_
+> &nbsp;&nbsp; [_Token_]<sub>_except [delimiters]_</sub> | _DelimTokenTree_
 >
 > _MacroInvocationSemi_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_] `!` `(` _TokenTree_<sup>\*</sup> `)` `;`\
@@ -91,13 +91,11 @@ example!();
 [_SimplePath_]: paths.html#simple-paths
 [_Token_]: tokens.html
 [associated items]: items/associated-items.html
-[compiler plugins]: ../unstable-book/language-features/plugin.html
 [delimiters]: tokens.html#delimiters
 [expressions]: expressions.html
 [items]: items.html
 [`macro_rules`]: macros-by-example.html
 [patterns]: patterns.html
 [statements]: statements.html
-[tokens]: tokens.html
 [types]: types.html
 [visibility qualifiers]: visibility-and-privacy.html
