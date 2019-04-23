@@ -67,6 +67,8 @@ evaluated (primarily) at compile time.
 |---|------|
 | `\u{7FFF}` | 24-bit Unicode character code (up to 6 digits) |
 
+`*` Escape allows `_` as a visual separator: `\u{7F_FF}`
+
 #### Quote escapes
 
 |   | Name |
