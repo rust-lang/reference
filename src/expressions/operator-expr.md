@@ -392,7 +392,7 @@ same trait object.
 
 > **<sup>Syntax</sup>**\
 > _AssignmentExpression_ :\
-> &nbsp;&nbsp; | [_Expression_] `=` [_Expression_]
+> &nbsp;&nbsp; [_Expression_] `=` [_Expression_]
 
 An _assignment expression_ consists of a [place expression] followed by an
 equals sign (`=`) and a [value expression]. Such an expression always has
