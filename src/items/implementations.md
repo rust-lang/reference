@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; _InherentImpl_ | _TraitImpl_
 >
 > _InherentImpl_ :\
-> &nbsp;&nbsp; `impl` [_Generics_]&nbsp;[_Type_]&nbsp;[_WhereClause_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `impl` [_Generics_]<sup>?</sup>&nbsp;[_Type_]&nbsp;[_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _InherentImplItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -17,7 +17,7 @@
 > &nbsp;&nbsp; )
 >
 > _TraitImpl_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_] `!`<sup>?</sup>
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_Generics_]<sup>?</sup> `!`<sup>?</sup>
 >              [_TypePath_] `for` [_Type_]\
 > &nbsp;&nbsp; [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; `{`\
