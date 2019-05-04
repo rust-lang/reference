@@ -17,7 +17,7 @@ behaviors are warnings, but will likely panic at run-time.
 
 The following expressions are constant expressions, so long as any operands are
 also constant expressions and do not cause any [`Drop::drop`][destructors] calls
-to be ran.
+to be run.
 
 * [Literals].
 * [Paths] to [functions] and constants.
