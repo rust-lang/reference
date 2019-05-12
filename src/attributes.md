@@ -238,6 +238,9 @@ The following is an index of all built-in attributes.
 - Features
   - `feature` — Used to enable unstable or experimental compiler features. See
     [The Unstable Book] for features implemented in `rustc`.
+- Type System
+  - [`non_exhaustive`] — Indicate that a type will have more fields/variants
+    added in future.
 
 [Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
@@ -277,6 +280,7 @@ The following is an index of all built-in attributes.
 [`no_main`]: crates-and-source-files.md#the-no_main-attribute
 [`no_mangle`]: abi.md#the-no_mangle-attribute
 [`no_std`]: crates-and-source-files.md#preludes-and-no_std
+[`non_exhaustive`]: attributes/type_system.md#the-non_exhaustive-attribute
 [`panic_handler`]: runtime.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
 [`proc_macro_attribute`]: procedural-macros.md#attribute-macros

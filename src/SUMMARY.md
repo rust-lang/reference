@@ -45,6 +45,7 @@
     - [Diagnostics](attributes/diagnostics.md)
     - [Code generation](attributes/codegen.md)
     - [Limits](attributes/limits.md)
+    - [Type System](attributes/type_system.md)
 
 - [Statements and expressions](statements-and-expressions.md)
     - [Statements](statements.md)
