@@ -173,7 +173,7 @@ For example, the following derive macro defines a helper attribute
 
 #[proc_macro_derive(HelperAttr, attributes(helper))]
 pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
-    TokenStream::new();
+    TokenStream::new()
 }
 ```
 
