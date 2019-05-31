@@ -32,7 +32,7 @@ evaluated (primarily) at compile time.
 |----------------------------------------------|-----------------|-------------|-------------|---------------------|
 | [Character](#character-literals)             | `'H'`           | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
 | [String](#string-literals)                   | `"hello"`       | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [Raw](#raw-string-literals)                  | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                      |
+| [Raw string](#raw-string-literals)           | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                      |
 | [Byte](#byte-literals)                       | `b'H'`          | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
 | [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
 | [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                      |
@@ -87,6 +87,23 @@ evaluated (primarily) at compile time.
 `*` All number literals allow `_` as a visual separator: `1_234.0E+18f64`
 
 #### Suffixes
+
+A suffix is a non-raw identifier immediately (without whitespace)
+following the primary part of a literal.
+
+Any kind of literal (string, integer, etc) with any suffix is valid as a token,
+and can be passed to a macro without producing an error.  
+The macro itself will decide how to interpret such a token and whether to produce an error or not.
+
+```rust
+macro_rules! blackhole { ($tt:tt) => () }
+
+blackhole!("string"suffix); // OK
+```
+
+However, suffixes on literal tokens parsed as Rust code are restricted.  
+Any suffixes are rejected on non-numeric literal tokens,
+and numeric literal tokens are accepted only with suffixes from the list below.
 
 | Integer | Floating-point |
 |---------|----------------|
