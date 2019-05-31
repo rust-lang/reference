@@ -88,6 +88,9 @@ evaluated (primarily) at compile time.
 
 #### Suffixes
 
+Suffix is a non-raw identifier immediately (without whitespace)
+following the primary part of a literal.
+
 Any kind of literal (string, integer, etc) with any suffix is valid as a token,
 and can be passed to a macro without producing an error.  
 The macro itself will decide how to interpret such a token and whether to produce an error or not.
