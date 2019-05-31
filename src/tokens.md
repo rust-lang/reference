@@ -88,7 +88,7 @@ evaluated (primarily) at compile time.
 
 #### Suffixes
 
-Suffix is a non-raw identifier immediately (without whitespace)
+A suffix is a non-raw identifier immediately (without whitespace)
 following the primary part of a literal.
 
 Any kind of literal (string, integer, etc) with any suffix is valid as a token,
