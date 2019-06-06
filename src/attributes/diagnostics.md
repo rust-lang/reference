@@ -188,7 +188,7 @@ five();
 
 When used on a [trait declaration], a [call expression] of an [expression
 statement] to a function that returns an [impl trait] of that trait violates
-the `unsued_must_use` lint.
+the `unused_must_use` lint.
 
 ```rust
 #[must_use]
