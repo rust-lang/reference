@@ -123,7 +123,6 @@ Example values:
 * `"android"`
 * `"freebsd"`
 * `"dragonfly"`
-* `"bitrig"`
 * `"openbsd"`
 * `"netbsd"`
 
