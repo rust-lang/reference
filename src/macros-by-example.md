@@ -33,8 +33,8 @@
 > _MacroRepSep_ :\
 > &nbsp;&nbsp; [_Token_]<sub>_except delimiters and repetition operators_</sub>
 >
-> _MacroRepOp_<sub>2018+</sub> :\
-> &nbsp;&nbsp; `*` | `+` | `?`<sub>2018+</sub>
+> _MacroRepOp_ :\
+> &nbsp;&nbsp; `*` | `+` | `?`
 >
 > _MacroTranscriber_ :\
 > &nbsp;&nbsp; [_DelimTokenTree_]
@@ -180,10 +180,6 @@ compiler knows how to expand them properly:
     legal and expands to `((a,d), (b,e), c,f))`, but `(a, b, c; d, e)` is
     illegal because it does not have the same number. This requirement applies
     to every layer of nested repetitions.
-
-> **Edition Differences**: The `?` repetition operator did not exist before the
-> 2018 edition. Prior to the 2018 Edition, `?` was an allowed
-> separator token, rather than a repetition operator.
 
 ## Scoping, Exporting, and Importing
 
