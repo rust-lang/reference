@@ -2,10 +2,10 @@
 
 > **<sup>Syntax</sup>**\
 > _ConstantItem_ :\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] `=` [_Expression_] `;`
+> &nbsp;&nbsp; `const` ( [IDENTIFIER] | `_` ) `:` [_Type_] `=` [_Expression_] `;`
 
-A *constant item* is a named _[constant value]_ which is not associated with a
-specific memory location in the program. Constants are essentially inlined
+A *constant item* is an optionally named _[constant value]_ which is not associated
+with a specific memory location in the program. Constants are essentially inlined
 wherever they are used, meaning that they are copied directly into the relevant
 context when used. References to the same constant are not necessarily
 guaranteed to refer to the same memory address.
@@ -60,8 +60,37 @@ fn create_and_drop_zero_with_destructor() {
 }
 ```
 
+## Unnamed constant
+
+Unlike an [associated] constant, a [free] constant may be unnamed by using
+an underscore instead of the name. For example:
+
+```rust
+const _: () =  { struct _SameNameTwice; };
+
+// OK although it is the same name as above:
+const _: () =  { struct _SameNameTwice; };
+```
+
+As with [underscore imports], macros may safely emit the same unnamed constant in
+the same scope more than once. For example, the following should not produce an error:
+
+```rust
+macro_rules! m {
+    ($item: item) => { $item $item }
+}
+
+m!(const _: () = (););
+// This expands to:
+// const _: () = ();
+// const _: () = ();
+```
+
+[associated]: glossary.html#associated-item
 [constant value]: const_eval.html#constant-expressions
+[free]: glossary.html#free-item
 [static lifetime elision]: lifetime-elision.html#static-lifetime-elision
 [IDENTIFIER]: identifiers.html
+[underscore imports]: items/use-declarations.html#underscore-imports
 [_Type_]: types.html#type-expressions
 [_Expression_]: expressions.html
