@@ -322,6 +322,10 @@ The `align` and `packed` modifiers cannot be applied on the same type and a
 `packed` type cannot transitively contain another `align`ed type. `align` and
 `packed` may only be applied to the [default] and [`C`] representations.
 
+The `align` modifier can also be applied on an `enum`.
+When it is, the effect on the `enum`'s alignment is the same as if the `enum`
+was wrapped in a newtype `struct` with the same `align` modifier.
+
 <div class="warning">
 
 ***Warning:*** Dereferencing an unaligned pointer is [undefined behavior] and
