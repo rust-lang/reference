@@ -50,7 +50,7 @@ fn f<T>(x: T) {}
 // This fails to compile because monomorphizing to
 // `f::<(i32, i32, i32, i32, i32, i32, i32, i32, i32)>>` requires more
 // than 8 type elements.
-f(((1, 2, 3, 4, 5, 6, 7, 8, 9));
+f((1, 2, 3, 4, 5, 6, 7, 8, 9));
 ```
 
 [_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
