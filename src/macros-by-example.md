@@ -310,7 +310,7 @@ when `#[macro_use]` is applied to a module.
 #[macro_use(lazy_static)] // Or #[macro_use] to import all macros.
 extern crate lazy_static;
 
-lazy_static!{};
+lazy_static!{}
 // self::lazy_static!{} // Error: lazy_static is not defined in `self`
 ```
 
