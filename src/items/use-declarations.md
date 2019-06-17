@@ -202,5 +202,5 @@ m!(use std as _;);
 [IDENTIFIER]: ../identifiers.md
 [_SimplePath_]: ../paths.md#simple-paths
 [`extern crate`]: extern-crates.md
-[extern prelude]: extern-crates.md#extern-prelude
+[extern prelude]: ../names/preludes.md#extern-prelude
 [path qualifiers]: ../paths.md#path-qualifiers

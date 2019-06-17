@@ -61,6 +61,11 @@ through a mechanism called ‘trait objects’.
 
 A dynamically sized type (DST) is a type without a statically known size or alignment.
 
+### Entity
+
+An [*entity*] is a [type], [item], [generic parameter], [variable binding],
+[loop label], [lifetime], [field], or [attribute].
+
 ### Expression
 
 An expression is a combination of values, constants, variables, operators
@@ -123,6 +128,24 @@ This is not affected by applied type arguments. `struct Foo` is considered local
 `Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not
 affect locality.
 
+### Name
+
+A [*name*] is an [identifier] or [lifetime or loop label] that refers to an
+[entity](#entity). A *name binding* is when an entity declaration introduces
+an identifier or label associated with that entity. [Paths],
+identifiers, and labels are used to refer to an entity.
+
+### Name resolution
+
+[*Name resolution*] is the compile-time process of tying [paths],
+[identifiers], and [labels] to [entity](#entity) declarations.
+
+### Namespace
+
+A [*namespace*] is a collection of uniquely named [entities](#entity).
+Namespaces can be organized in a hierarchy, where each level of the hierarchy
+has its own collection of named entities.
+
 ### Nominal types
 
 Types that can be referred to by a path directly. Specifically [enums],
@@ -133,10 +156,21 @@ Types that can be referred to by a path directly. Specifically [enums],
 [Traits] that can be used as [trait objects]. Only traits that follow specific
 [rules][object safety] are object safe.
 
+### Path
+
+A [*path*] is a sequence of one or more path segments used to refer to an
+[entity](#entity) in the current scope or other levels of a
+[namespace](#namespace) hierarchy.
+
 ### Prelude
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
 imported into every module of every crate. The traits in the prelude are pervasive.
+
+### Scope
+
+A [*scope*] is the region of source text where a named [entity](#entity) may
+be referenced with that name.
 
 ### Scrutinee
 
@@ -216,17 +250,36 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 
 [alignment]: type-layout.md#size-and-alignment
 [associated item]: #associated-item
+[attribute]: attributes.md
+[*entity*]: names.md
 [enums]: items/enumerations.md
+[field]: expressions/field-expr.md
 [free item]: #free-item
+[generic parameter]: items/generics.md
+[identifier]: identifiers.md
+[identifiers]: identifiers.md
 [implementation]: items/implementations.md
 [implementations]: items/implementations.md
 [inherent implementation]: items/implementations.md#inherent-implementations
 [item]: items.md
+[item]: items.md
+[labels]: tokens.md#lifetimes-and-loop-labels
+[lifetime or loop label]: tokens.md#lifetimes-and-loop-labels
+[lifetime]: tokens.md#lifetimes-and-loop-labels
+[loop label]: tokens.md#lifetimes-and-loop-labels
 [method]: items/associated-items.md#methods
+[*Name resolution*]: names/name-resolution.md
+[*name*]: names.md
+[*namespace*]: names/namespaces.md
 [never type]: types/never.md
 [object safety]: items/traits.md#object-safety
+[*path*]: paths.md
+[Paths]: paths.md
+[*scope*]: names/scopes.md
 [structs]: items/structs.md
 [trait objects]: types/trait-object.md
 [traits]: items/traits.md
+[type]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
 [unions]: items/unions.md
+[variable binding]: patterns.md

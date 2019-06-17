@@ -164,10 +164,11 @@ start being resolved from the crate root. Each identifier in the path must resol
 item.
 
 > **Edition Differences**: In the 2015 Edition, the crate root contains a variety of
-> different items, including external crates, default crates such as `std` and `core`, and
+> different items, including external crates, default crates such as `std` or `core`, and
 > items in the top level of the crate (including `use` imports).
 >
-> Beginning with the 2018 Edition, paths starting with `::` can only reference crates.
+> Beginning with the 2018 Edition, paths starting with `::` can only reference
+> crates in the [extern prelude].
 
 ```rust
 mod a {
@@ -380,6 +381,7 @@ mod without { // ::without
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md
 [expressions]: expressions.md
+[extern prelude]: names/preludes.md#extern-prelude
 [macro transcribers]: macros-by-example.md
 [macros]: macros-by-example.md
 [patterns]: patterns.md

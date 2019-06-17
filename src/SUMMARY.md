@@ -11,7 +11,6 @@
     - [Comments](comments.md)
     - [Whitespace](whitespace.md)
     - [Tokens](tokens.md)
-    - [Paths](paths.md)
 
 - [Macros](macros.md)
     - [Macros By Example](macros-by-example.md)
@@ -37,7 +36,6 @@
     - [External blocks](items/external-blocks.md)
     - [Generic parameters](items/generics.md)
     - [Associated Items](items/associated-items.md)
-    - [Visibility and Privacy](visibility-and-privacy.md)
 
 - [Attributes](attributes.md)
     - [Testing](attributes/testing.md)
@@ -102,6 +100,14 @@
     - [Lifetime elision](lifetime-elision.md)
 
 - [Special types and traits](special-types-and-traits.md)
+
+- [Names](names.md)
+    - [Namespaces](names/namespaces.md)
+    - [Scopes](names/scopes.md)
+    - [Preludes](names/preludes.md)
+    - [Paths](paths.md)
+    - [Name resolution](names/name-resolution.md)
+    - [Visibility and privacy](visibility-and-privacy.md)
 
 - [Memory model](memory-model.md)
     - [Memory allocation and lifetime](memory-allocation-and-lifetime.md)

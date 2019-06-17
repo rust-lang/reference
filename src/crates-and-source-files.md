@@ -95,27 +95,8 @@ not treated as a shebang, but instead as the start of an attribute.
 
 ## Preludes and `no_std`
 
-All crates have a *prelude* that automatically inserts names from a specific
-module, the *prelude module*, into scope of each [module] and an [`extern
-crate`] into the crate root module. By default, the *standard prelude* is used.
-The linked crate is [`std`] and the prelude module is [`std::prelude::v1`].
-
-The prelude can be changed to the *core prelude* by using the `no_std`
-[attribute] on the root crate module. The linked crate is [`core`] and the
-prelude module is [`core::prelude::v1`]. Using the core prelude over the
-standard prelude is useful when either the crate is targeting a platform that
-does not support the standard library or is purposefully not using the
-capabilities of the standard library. Those capabilities are mainly dynamic
-memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g.
-`std::fs` and `std::io`).
-
-<div class="warning">
-
-Warning: Using `no_std` does not prevent the standard library from being linked
-in. It is still valid to put `extern crate std;` into the crate and dependencies
-can also link it in.
-
-</div>
+This section has been moved to the [Preludes chapter](names/preludes.md).
+<!-- this is to appease the linkchecker, will remove once other books are updated -->
 
 ## Main Functions
 
@@ -168,11 +149,6 @@ or `-` (U+002D) characters.
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html
-[`core`]: ../core/index.html
-[`core::prelude::v1`]: ../core/prelude/index.html
-[`extern crate`]: items/extern-crates.md
-[`std`]: ../std/index.html
-[`std::prelude::v1`]: ../std/prelude/index.html
 [attribute]: attributes.md
 [attributes]: attributes.md
 [comments]: comments.md
@@ -182,3 +158,17 @@ or `-` (U+002D) characters.
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses
 [whitespace]: whitespace.md
+
+<script>
+(function() {
+    var fragments = {
+        "#preludes-and-no_std": "names/preludes.html",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
