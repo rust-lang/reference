@@ -246,8 +246,7 @@ fn needs_not_foo() {
 }
 ```
 
-The `cfg` attribute is allowed anywhere attributes are allowed except on
-generic parameters.
+The `cfg` attribute is allowed anywhere attributes are allowed.
 
 ### The `cfg_attr` attribute
 
@@ -289,8 +288,7 @@ fn bewitched() {}
 > is valid. This example would be equivalent to
 > `#[cfg_attr(all(linux, feature ="multithreaded"), some_other_attribute)]`.
 
-The `cfg_attr` attribute is allowed anywhere attributes are allowed except on
-generic parameters.
+The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 
 ### The `cfg` macro
 
