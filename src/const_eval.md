@@ -44,7 +44,7 @@ to be run.
 * [Grouped] expressions.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
-* Calls of const functions and const methods.
+* Calls of [const functions] and const methods.
 
 ## Const context
 
@@ -69,6 +69,7 @@ A _const context_ is one of the following:
 [cast]:                 expressions/operator-expr.html#type-cast-expressions
 [closure expressions]:  expressions/closure-expr.html
 [comparison]:           expressions/operator-expr.html#comparison-operators
+[const functions]:      items/functions.html#const-functions
 [constants]:            items/constant-items.html
 [dereference operator]: expressions/operator-expr.html#the-dereference-operator
 [destructors]:          destructors.html
