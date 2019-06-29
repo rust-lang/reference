@@ -20,6 +20,8 @@ The key property of unions is that all fields of a union share common storage.
 As a result writes to one field of a union can overwrite its other fields, and
 size of a union is determined by the size of its largest field.
 
+## Initialization of a union
+
 A value of a union type can be created using the same syntax that is used for
 struct types, except that it must specify exactly one field:
 
@@ -37,15 +39,17 @@ struct fields:
 let f = u.f1;
 ```
 
+## Reading and writing union fields
+
 Unions have no notion of an "active field". Instead, every union access just
 interprets the storage at the type of the field used for the access. Reading a
 union field reads the bits of the union at the field's type. Fields might have a
 non-zero offset (except when `#[repr(C)]` is used); in that case the bits
 starting at the offset of the fields are read. It is the programmer's
-responsibility to make sure that the data is valid at that type. Failing to do
-so results in undefined behavior. For example, reading the value `3` at type
-`bool` is undefined behavior. Effectively, writing to and then reading from a
-`#[repr(C)]` union is analogous to a [`transmute`] from the type used for
+responsibility to make sure that the data is valid at the field's type. Failing
+to do so results in undefined behavior. For example, reading the value `3` at
+type `bool` is undefined behavior. Effectively, writing to and then reading from
+a `#[repr(C)]` union is analogous to a [`transmute`] from the type used for
 writing to the type used for reading.
 
 Consequently, all reads of union fields have to be placed in `unsafe` blocks:
@@ -71,6 +75,8 @@ u.f1 = 2;
 
 Commonly, code using unions will provide safe wrappers around unsafe union
 field accesses.
+
+## Pattern matching on unions
 
 Another way to access union fields is to use pattern matching. Pattern matching
 on union fields uses the same syntax as struct patterns, except that the pattern
@@ -120,6 +126,8 @@ fn is_zero(v: Value) -> bool {
     }
 }
 ```
+
+## References to union fields
 
 Since union fields share common storage, gaining write access to one field of a
 union can give write access to all its remaining fields. Borrow checking rules
