@@ -1,15 +1,16 @@
 # Union types
 
 A *union type* is a nominal, heterogeneous C-like union, denoted by the name of
-a [`union` item].
+a [`union` item][item].
 
-A union access transmutes the content of the union to the type of the accessed
+Unions have no notion of an "active field". Instead, every union access
+transmutes parts of the content of the union to the type of the accessed
 field. Since transmutes can cause unexpected or undefined behaviour, `unsafe` is
 required to read from a union field or to write to a field that doesn't
-implement [`Copy`].
+implement [`Copy`]. See the [item] documentation for further details.
 
 The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
 attribute can be used to fix a layout.
 
 [`Copy`]: special-types-and-traits.html#copy
-[`union` item]: items/unions.html
+[item]: items/unions.html
