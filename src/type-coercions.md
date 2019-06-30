@@ -140,7 +140,7 @@ Coercion is allowed between the following types:
     - `*mut T`
     - `Box<T>`
 
-    and where `T` can obtained from `U` by [unsized coercion](#unsized-coercions).
+    and where `U` can be obtained from `T` by [unsized coercion](#unsized-coercions).
 
     <!--In the future, coerce_inner will be recursively extended to tuples and
     structs. In addition, coercions from sub-traits to super-traits will be
