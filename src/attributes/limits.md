@@ -42,7 +42,11 @@ to set the limit based on the number of type substitutions.
 
 > Note: The default in `rustc` is 1048576.
 
-```rust,compile_fail
+<!-- This code should fail to compile. Unfortunately rustdoc's `compile_fail`
+     stops after analysis phase, and this error is generated after that. So
+     this needs to be `ignore` for now. -->
+
+```rust,compile_fail,ignore
 #![type_length_limit = "8"]
 
 fn f<T>(x: T) {}
