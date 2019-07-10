@@ -13,6 +13,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_OperatorExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_GroupedExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ArrayExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_AwaitExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IndexExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleIndexingExpression_]\
@@ -33,6 +34,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_AsyncBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
@@ -324,6 +326,8 @@ They are never allowed before:
 
 [_ArithmeticOrLogicalExpression_]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [_ArrayExpression_]:              expressions/array-expr.md
+[_AsyncBlockExpression_]:         expressions/block-expr.md#async-blocks
+[_AwaitExpression_]:              expressions/await-expr.md
 [_AssignmentExpression_]:         expressions/operator-expr.md#assignment-expressions
 [_BlockExpression_]:              expressions/block-expr.md
 [_BreakExpression_]:              expressions/loop-expr.md#break-expressions

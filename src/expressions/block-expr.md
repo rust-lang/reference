@@ -80,6 +80,74 @@ fn move_by_block_expression() {
 }
 ```
 
+## `async` blocks
+
+> **<sup>Syntax</sup>**\
+> _AsyncBlockExpression_ :\
+> &nbsp;&nbsp; `async` `move`<sup>?</sup> _BlockExpression_
+
+An *async block* is a variant of a block expression which evaluates to
+a *future*. The final expression of the block, if present, determines
+the result value of the future.
+
+Executing an async block is similar to executing a closure expression:
+its immediate effect is to produce and return an anonymous type.
+Whereas closures return a type that implements one or more of the
+[`std::ops::Fn`] traits, however, the type returned for an async block
+implements the [`std::future::Future`] trait. The actual data format for
+this type is unspecified.
+
+> **Note:** The future type that rustc generates is roughly equivalent
+> to an enum with one variant per `await` point, where each variant
+> stores the data needed to resume from its corresponding point.
+
+> **Edition differences**: Async blocks are only available beginning with Rust 2018.
+
+[`std::ops::Fn`]: ../../std/ops/trait.Fn.html
+[`std::future::Future`]: ../../std/future/trait.Future.html
+
+### Capture modes
+
+Async blocks capture variables from their environment using the same
+[capture modes] as closures. Like closures, when written `async {
+.. }` the capture mode for each variable will be inferred from the
+content of the block. `async move { .. }` blocks however will move all
+referenced variables into the resulting future.
+
+[capture modes]: ../types/closure.md#capture-modes
+[shared references]: ../types/pointer.md#shared-references-
+[mutable reference]: ../types/pointer.md#mutables-references-
+
+### Async context
+
+Because async blocks construct a future, they define an **async
+context** which can in turn contain [`await` expressions].  Async
+contexts are established by async blocks as well as the bodies of
+async functions, whose semantics are defined in terms of async blocks.
+
+[`await` expressions]: await-expr.md
+
+### Control-flow operators
+
+Async blocks act like a function boundary, much like
+closures. Therefore, the `?` operator and `return` expressions both
+affect the output of the future, not the enclosing function or other
+context. That is, `return <expr>` from within a closure will return
+the result of `<expr>` as the output of the future. Similarly, if
+`<expr>?` propagates an error, that error is propagated as the result
+of the future.
+
+Finally, the `break` and `continue` keywords cannot be used to branch
+out from an async block. Therefore the following is illegal:
+
+```rust,edition2018,compile_fail
+loop {
+    async move {
+        break; // This would break out of the loop.
+    }
+}
+```
+
 ## `unsafe` blocks
 
 > **<sup>Syntax</sup>**\
