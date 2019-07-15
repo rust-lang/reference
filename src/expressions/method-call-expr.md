@@ -9,7 +9,7 @@ dot, an expression path segment, and a parenthesized expression-list. Method cal
 resolved to associated [methods] on specific traits, either statically
 dispatching to a method if the exact `self`-type of the left-hand-side is known,
 or dynamically dispatching if the left-hand-side expression is an indirect
-[trait object](types/trait-object.html).
+[trait object](../types/trait-object.md).
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -97,13 +97,13 @@ method and you'll be fine.
 
 </div>
 
-[_CallParams_]: expressions/call-expr.html
-[_Expression_]: expressions.html
-[_PathExprSegment_]: paths.html#paths-in-expressions
-[visible]: visibility-and-privacy.html
-[trait objects]: types/trait-object.html
-[disambiguate call]: expressions/call-expr.html#disambiguating-function-calls
-[disambiguating function call syntax]: expressions/call-expr.html#disambiguating-function-calls
-[dereference]: expressions/operator-expr.html#the-dereference-operator
-[methods]: items/associated-items.html#methods
-[unsized coercion]: type-coercions.html#unsized-coercions
+[_CallParams_]: call-expr.md
+[_Expression_]: ../expressions.md
+[_PathExprSegment_]: ../paths.md#paths-in-expressions
+[visible]: ../visibility-and-privacy.md
+[trait objects]: ../types/trait-object.md
+[disambiguate call]: call-expr.md#disambiguating-function-calls
+[disambiguating function call syntax]: call-expr.md#disambiguating-function-calls
+[dereference]: operator-expr.md#the-dereference-operator
+[methods]: ../items/associated-items.md#methods
+[unsized coercion]: ../type-coercions.md#unsized-coercions

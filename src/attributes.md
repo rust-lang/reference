@@ -237,72 +237,72 @@ The following is an index of all built-in attributes.
   - `feature` — Used to enable unstable or experimental compiler features. See
     [The Unstable Book] for features implemented in `rustc`.
 
-[Doc comments]: comments.html#doc-comments
+[Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
 [ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
-[Expression Attributes]: expressions.html#expression-attributes
-[IDENTIFIER]: identifiers.html
-[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
-[STRING_LITERAL]: tokens.html#string-literals
+[Expression Attributes]: expressions.md#expression-attributes
+[IDENTIFIER]: identifiers.md
+[RAW_STRING_LITERAL]: tokens.md#raw-string-literals
+[STRING_LITERAL]: tokens.md#string-literals
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [The Unstable Book]: ../unstable-book/index.html
-[_DelimTokenTree_]: macros.html
-[_LiteralExpression_]: expressions/literal-expr.html
-[_SimplePath_]: paths.html#simple-paths
-[`allow`]: attributes/diagnostics.html#lint-check-attributes
-[`cfg_attr`]: conditional-compilation.html#the-cfg_attr-attribute
-[`cfg`]: conditional-compilation.html#the-cfg-attribute
-[`cold`]: attributes/codegen.html#the-cold-attribute
-[`crate_name`]: crates-and-source-files.html#the-crate_name-attribute
-[`crate_type`]: linkage.html
-[`deny`]: attributes/diagnostics.html#lint-check-attributes
-[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
-[`derive`]: attributes/derive.html
-[`export_name`]: abi.html#the-export_name-attribute
-[`forbid`]: attributes/diagnostics.html#lint-check-attributes
-[`global_allocator`]: runtime.html#the-global_allocator-attribute
-[`ignore`]: attributes/testing.html#the-ignore-attribute
-[`inline`]: attributes/codegen.html#the-inline-attribute
-[`link_name`]: items/external-blocks.html#the-link_name-attribute
-[`link_section`]: abi.html#the-link_section-attribute
-[`link`]: items/external-blocks.html#the-link-attribute
-[`macro_export`]: macros-by-example.html#path-based-scope
-[`macro_use`]: macros-by-example.html#the-macro_use-attribute
-[`meta` macro fragment specifier]: macros-by-example.html
-[`must_use`]: attributes/diagnostics.html#the-must_use-attribute
-[`no_builtins`]: attributes/codegen.html#the-no_builtins-attribute
-[`no_implicit_prelude`]: items/modules.html#prelude-items
-[`no_link`]: items/extern-crates.html#the-no_link-attribute
-[`no_main`]: crates-and-source-files.html#the-no_main-attribute
-[`no_mangle`]: abi.html#the-no_mangle-attribute
-[`no_std`]: crates-and-source-files.html#preludes-and-no_std
-[`panic_handler`]: runtime.html#the-panic_handler-attribute
-[`path`]: items/modules.html#the-path-attribute
-[`proc_macro_attribute`]: procedural-macros.html#attribute-macros
-[`proc_macro_derive`]: procedural-macros.html#derive-macros
-[`proc_macro`]: procedural-macros.html#function-like-procedural-macros
-[`recursion_limit`]: attributes/limits.html#the-recursion_limit-attribute
-[`repr`]: type-layout.html#representations
-[`should_panic`]: attributes/testing.html#the-should_panic-attribute
-[`target_feature`]: attributes/codegen.html#the-target_feature-attribute
-[`test`]: attributes/testing.html#the-test-attribute
-[`type_length_limit`]: attributes/limits.html#the-type_length_limit-attribute
-[`used`]: abi.html#the-used-attribute
-[`warn`]: attributes/diagnostics.html#lint-check-attributes
-[`windows_subsystem`]: runtime.html#the-windows_subsystem-attribute
-[attribute macros]: procedural-macros.html#attribute-macros
-[block expressions]: expressions/block-expr.html
+[_DelimTokenTree_]: macros.md
+[_LiteralExpression_]: expressions/literal-expr.md
+[_SimplePath_]: paths.md#simple-paths
+[`allow`]: attributes/diagnostics.md#lint-check-attributes
+[`cfg_attr`]: conditional-compilation.md#the-cfg_attr-attribute
+[`cfg`]: conditional-compilation.md#the-cfg-attribute
+[`cold`]: attributes/codegen.md#the-cold-attribute
+[`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
+[`crate_type`]: linkage.md
+[`deny`]: attributes/diagnostics.md#lint-check-attributes
+[`deprecated`]: attributes/diagnostics.md#the-deprecated-attribute
+[`derive`]: attributes/derive.md
+[`export_name`]: abi.md#the-export_name-attribute
+[`forbid`]: attributes/diagnostics.md#lint-check-attributes
+[`global_allocator`]: runtime.md#the-global_allocator-attribute
+[`ignore`]: attributes/testing.md#the-ignore-attribute
+[`inline`]: attributes/codegen.md#the-inline-attribute
+[`link_name`]: items/external-blocks.md#the-link_name-attribute
+[`link_section`]: abi.md#the-link_section-attribute
+[`link`]: items/external-blocks.md#the-link-attribute
+[`macro_export`]: macros-by-example.md#path-based-scope
+[`macro_use`]: macros-by-example.md#the-macro_use-attribute
+[`meta` macro fragment specifier]: macros-by-example.md
+[`must_use`]: attributes/diagnostics.md#the-must_use-attribute
+[`no_builtins`]: attributes/codegen.md#the-no_builtins-attribute
+[`no_implicit_prelude`]: items/modules.md#prelude-items
+[`no_link`]: items/extern-crates.md#the-no_link-attribute
+[`no_main`]: crates-and-source-files.md#the-no_main-attribute
+[`no_mangle`]: abi.md#the-no_mangle-attribute
+[`no_std`]: crates-and-source-files.md#preludes-and-no_std
+[`panic_handler`]: runtime.md#the-panic_handler-attribute
+[`path`]: items/modules.md#the-path-attribute
+[`proc_macro_attribute`]: procedural-macros.md#attribute-macros
+[`proc_macro_derive`]: procedural-macros.md#derive-macros
+[`proc_macro`]: procedural-macros.md#function-like-procedural-macros
+[`recursion_limit`]: attributes/limits.md#the-recursion_limit-attribute
+[`repr`]: type-layout.md#representations
+[`should_panic`]: attributes/testing.md#the-should_panic-attribute
+[`target_feature`]: attributes/codegen.md#the-target_feature-attribute
+[`test`]: attributes/testing.md#the-test-attribute
+[`type_length_limit`]: attributes/limits.md#the-type_length_limit-attribute
+[`used`]: abi.md#the-used-attribute
+[`warn`]: attributes/diagnostics.md#lint-check-attributes
+[`windows_subsystem`]: runtime.md#the-windows_subsystem-attribute
+[attribute macros]: procedural-macros.md#attribute-macros
+[block expressions]: expressions/block-expr.md
 [built-in attributes]: #built-in-attributes-index
-[derive macro helper attributes]: procedural-macros.html#derive-macro-helper-attributes
-[enum]: items/enumerations.html
-[expression statement]: statements.html#expression-statements
-[external blocks]: items/external-blocks.html
-[functions]: items/functions.html
-[generics]: items/generics.html
-[implementations]: items/implementations.html
-[item declarations]: items.html
-[match expressions]: expressions/match-expr.html
-[modules]: items/modules.html
-[statements]: statements.html
-[struct]: items/structs.html
-[union]: items/unions.html
+[derive macro helper attributes]: procedural-macros.md#derive-macro-helper-attributes
+[enum]: items/enumerations.md
+[expression statement]: statements.md#expression-statements
+[external blocks]: items/external-blocks.md
+[functions]: items/functions.md
+[generics]: items/generics.md
+[implementations]: items/implementations.md
+[item declarations]: items.md
+[match expressions]: expressions/match-expr.md
+[modules]: items/modules.md
+[statements]: statements.md
+[struct]: items/structs.md
+[union]: items/unions.md

@@ -82,6 +82,6 @@ struct Variance<'a, 'b, T, U: 'a> {
 }
 ```
 
-[function pointers]: types/function-pointer.html
+[function pointers]: types/function-pointer.md
 [Higher-ranked]: ../nomicon/hrtb.html
-[trait objects]: types/trait-object.html
+[trait objects]: types/trait-object.md

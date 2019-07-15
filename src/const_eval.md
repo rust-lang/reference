@@ -57,39 +57,39 @@ A _const context_ is one of the following:
   * [statics]
   * [enum discriminants]
 
-[arithmetic, logical]:  expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[array expressions]:    expressions/array-expr.html
-[array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
-[array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
-[array type length expressions]: types/array.html
-[assignment expressions]: expressions/operator-expr.html#assignment-expressions
-[assignment operator expressions]: expressions/operator-expr.html#compound-assignment-expressions
-[block expressions]:    expressions/block-expr.html
-[borrow]:               expressions/operator-expr.html#borrow-operators
-[cast]:                 expressions/operator-expr.html#type-cast-expressions
-[closure expressions]:  expressions/closure-expr.html
-[comparison]:           expressions/operator-expr.html#comparison-operators
-[const functions]:      items/functions.html#const-functions
-[constants]:            items/constant-items.html
-[dereference operator]: expressions/operator-expr.html#the-dereference-operator
-[destructors]:          destructors.html
-[enum discriminants]:   items/enumerations.html#custom-discriminant-values-for-field-less-enumerations
-[enum variant]:         expressions/enum-variant-expr.html
-[expression statements]: statements.html#expression-statements
-[expressions]:          expressions.html
-[field]:                expressions/field-expr.html
-[functions]:            items/functions.html
-[grouped]:              expressions/grouped-expr.html
-[interior mutability]:  interior-mutability.html
-[lazy boolean]:         expressions/operator-expr.html#lazy-boolean-operators
-[let statements]:       statements.html#let-statements
-[literals]:             expressions/literal-expr.html
-[negation]:             expressions/operator-expr.html#negation-operators
-[overflow]:             expressions/operator-expr.html#overflow
-[paths]:                expressions/path-expr.html
-[patterns]:             patterns.html
-[range expressions]:    expressions/range-expr.html
-[slice]:                types/slice.html
-[statics]:              items/static-items.html
-[struct]:               expressions/struct-expr.html
-[tuple expressions]:    expressions/tuple-expr.html
+[arithmetic, logical]:  expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[array expressions]:    expressions/array-expr.md
+[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
+[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
+[array type length expressions]: types/array.md
+[assignment expressions]: expressions/operator-expr.md#assignment-expressions
+[assignment operator expressions]: expressions/operator-expr.md#compound-assignment-expressions
+[block expressions]:    expressions/block-expr.md
+[borrow]:               expressions/operator-expr.md#borrow-operators
+[cast]:                 expressions/operator-expr.md#type-cast-expressions
+[closure expressions]:  expressions/closure-expr.md
+[comparison]:           expressions/operator-expr.md#comparison-operators
+[const functions]:      items/functions.md#const-functions
+[constants]:            items/constant-items.md
+[dereference operator]: expressions/operator-expr.md#the-dereference-operator
+[destructors]:          destructors.md
+[enum discriminants]:   items/enumerations.md#custom-discriminant-values-for-field-less-enumerations
+[enum variant]:         expressions/enum-variant-expr.md
+[expression statements]: statements.md#expression-statements
+[expressions]:          expressions.md
+[field]:                expressions/field-expr.md
+[functions]:            items/functions.md
+[grouped]:              expressions/grouped-expr.md
+[interior mutability]:  interior-mutability.md
+[lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
+[let statements]:       statements.md#let-statements
+[literals]:             expressions/literal-expr.md
+[negation]:             expressions/operator-expr.md#negation-operators
+[overflow]:             expressions/operator-expr.md#overflow
+[paths]:                expressions/path-expr.md
+[patterns]:             patterns.md
+[range expressions]:    expressions/range-expr.md
+[slice]:                types/slice.md
+[statics]:              items/static-items.md
+[struct]:               expressions/struct-expr.md
+[tuple expressions]:    expressions/tuple-expr.md

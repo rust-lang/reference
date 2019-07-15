@@ -63,34 +63,34 @@ qualified by the name of the enclosing item, or is private to the enclosing
 item (in the case of functions). The grammar specifies the exact locations in
 which sub-item declarations may appear.
 
-[_ConstantItem_]: items/constant-items.html
-[_Enumeration_]: items/enumerations.html
-[_ExternBlock_]: items/external-blocks.html
-[_ExternCrate_]: items/extern-crates.html
-[_Function_]: items/functions.html
-[_Implementation_]: items/implementations.html
-[_MacroInvocationSemi_]: macros.html#macro-invocation
-[_MacroRulesDefinition_]: macros-by-example.html
-[_Module_]: items/modules.html
-[_OuterAttribute_]: attributes.html
-[_StaticItem_]: items/static-items.html
-[_Struct_]: items/structs.html
-[_Trait_]: items/traits.html
-[_TypeAlias_]: items/type-aliases.html
-[_Union_]: items/unions.html
-[_UseDeclaration_]: items/use-declarations.html
-[_Visibility_]: visibility-and-privacy.html
-[`extern crate` declarations]: items/extern-crates.html
-[`extern` blocks]: items/external-blocks.html
-[`use` declarations]: items/use-declarations.html
-[constant items]: items/constant-items.html
-[enumeration definitions]: items/enumerations.html
-[function definitions]: items/functions.html
-[implementations]: items/implementations.html
-[modules]: items/modules.html
-[paths]: paths.html
-[static items]: items/static-items.html
-[struct definitions]: items/structs.html
-[trait definitions]: items/traits.html
-[type definitions]: items/type-aliases.html
-[union definitions]: items/unions.html
+[_ConstantItem_]: items/constant-items.md
+[_Enumeration_]: items/enumerations.md
+[_ExternBlock_]: items/external-blocks.md
+[_ExternCrate_]: items/extern-crates.md
+[_Function_]: items/functions.md
+[_Implementation_]: items/implementations.md
+[_MacroInvocationSemi_]: macros.md#macro-invocation
+[_MacroRulesDefinition_]: macros-by-example.md
+[_Module_]: items/modules.md
+[_OuterAttribute_]: attributes.md
+[_StaticItem_]: items/static-items.md
+[_Struct_]: items/structs.md
+[_Trait_]: items/traits.md
+[_TypeAlias_]: items/type-aliases.md
+[_Union_]: items/unions.md
+[_UseDeclaration_]: items/use-declarations.md
+[_Visibility_]: visibility-and-privacy.md
+[`extern crate` declarations]: items/extern-crates.md
+[`extern` blocks]: items/external-blocks.md
+[`use` declarations]: items/use-declarations.md
+[constant items]: items/constant-items.md
+[enumeration definitions]: items/enumerations.md
+[function definitions]: items/functions.md
+[implementations]: items/implementations.md
+[modules]: items/modules.md
+[paths]: paths.md
+[static items]: items/static-items.md
+[struct definitions]: items/structs.md
+[trait definitions]: items/traits.md
+[type definitions]: items/type-aliases.md
+[union definitions]: items/unions.md

@@ -86,7 +86,7 @@ fn move_by_block_expression() {
 > _UnsafeBlockExpression_ :\
 > &nbsp;&nbsp; `unsafe` _BlockExpression_
 
-_See [`unsafe` block](unsafe-blocks.html) for more information on when to use `unsafe`_
+_See [`unsafe` block](../unsafe-blocks.md) for more information on when to use `unsafe`_
 
 A block of code can be prefixed with the `unsafe` keyword to permit [unsafe
 operations]. Examples:
@@ -129,24 +129,24 @@ fn is_unix_platform() -> bool {
 }
 ```
 
-[_ExpressionWithoutBlock_]: expressions.html
-[_InnerAttribute_]: attributes.html
-[_Statement_]: statements.html
-[`cfg`]: conditional-compilation.html
-[`for`]: expressions/loop-expr.html#iterator-loops
-[`loop`]: expressions/loop-expr.html#infinite-loops
-[`while let`]: expressions/loop-expr.html#predicate-pattern-loops
-[`while`]: expressions/loop-expr.html#predicate-loops
-[array expressions]: expressions/array-expr.html
-[call expressions]: expressions/call-expr.html
-[enum variant]: expressions/enum-variant-expr.html
-[function]: items/functions.html
-[inner attributes]: attributes.html
-[method]: items/associated-items.html#methods
-[statement]: statements.html
-[statements]: statements.html
-[struct]: expressions/struct-expr.html
-[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
-[tuple expressions]: expressions/tuple-expr.html
-[unsafe operations]: unsafety.html
-[value expressions]: expressions.html#place-expressions-and-value-expressions
+[_ExpressionWithoutBlock_]: ../expressions.md
+[_InnerAttribute_]: ../attributes.md
+[_Statement_]: ../statements.md
+[`cfg`]: ../conditional-compilation.md
+[`for`]: loop-expr.md#iterator-loops
+[`loop`]: loop-expr.md#infinite-loops
+[`while let`]: loop-expr.md#predicate-pattern-loops
+[`while`]: loop-expr.md#predicate-loops
+[array expressions]: array-expr.md
+[call expressions]: call-expr.md
+[enum variant]: enum-variant-expr.md
+[function]: ../items/functions.md
+[inner attributes]: ../attributes.md
+[method]: ../items/associated-items.md#methods
+[statement]: ../statements.md
+[statements]: ../statements.md
+[struct]: struct-expr.md
+[the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+[tuple expressions]: tuple-expr.md
+[unsafe operations]: ../unsafety.md
+[value expressions]: ../expressions.md#place-expressions-and-value-expressions

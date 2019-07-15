@@ -149,10 +149,10 @@ if let PAT = EXPR || EXPR { .. }
 if let PAT = ( EXPR || EXPR ) { .. }
 ```
 
-[_BlockExpression_]: expressions/block-expr.html
-[_Expression_]: expressions.html
-[_LazyBooleanOperatorExpression_]: expressions/operator-expr.html#lazy-boolean-operators
-[_MatchArmPatterns_]: expressions/match-expr.html
+[_BlockExpression_]: block-expr.md
+[_Expression_]: ../expressions.md
+[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
+[_MatchArmPatterns_]: match-expr.md
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
-[`match` expression]: expressions/match-expr.html
-[scrutinee]: glossary.html#scrutinee
+[`match` expression]: match-expr.md
+[scrutinee]: ../glossary.md#scrutinee

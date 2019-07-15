@@ -28,5 +28,5 @@ let slice: &[i32] = &boxed_array[..];
 All elements of slices are always initialized, and access to a slice is always
 bounds-checked in safe methods and operators.
 
-[_Type_]: types.html#type-expressions
-[dynamically sized type]: dynamically-sized-types.html
+[_Type_]: ../types.md#type-expressions
+[dynamically sized type]: ../dynamically-sized-types.md

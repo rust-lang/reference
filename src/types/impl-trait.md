@@ -33,5 +33,5 @@ type.
 
 They are written as `impl` followed by a set of trait bounds.
 
-[_TraitBound_]: trait-bounds.html
-[_TypeParamBounds_]: trait-bounds.html
+[_TraitBound_]: ../trait-bounds.md
+[_TypeParamBounds_]: ../trait-bounds.md

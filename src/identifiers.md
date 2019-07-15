@@ -30,5 +30,5 @@ the `r#` prefix is not included as part of the actual identifier.)
 Unlike a normal identifier, a raw identifier may be any strict or reserved
 keyword except the ones listed above for `RAW_IDENTIFIER`.
 
-[strict]: keywords.html#strict-keywords
-[reserved]: keywords.html#reserved-keywords
+[strict]: keywords.md#strict-keywords
+[reserved]: keywords.md#reserved-keywords

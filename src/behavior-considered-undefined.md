@@ -52,7 +52,7 @@ code.
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`offset`]: ../std/primitive.pointer.html#method.offset
 [`std::ptr::copy_nonoverlapping_memory`]: ../std/ptr/fn.copy_nonoverlapping.html
-[`target_feature`]: attributes/codegen.html#the-target_feature-attribute
+[`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
 [`read_unaligned`]: ../std/ptr/fn.read_unaligned.html
 [`write_unaligned`]: ../std/ptr/fn.write_unaligned.html

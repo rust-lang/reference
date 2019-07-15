@@ -152,21 +152,21 @@ or `-` (U+002D) characters.
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
 [Unicode alphanumeric]: ../std/primitive.char.html#method.is_alphanumeric
-[_InnerAttribute_]: attributes.html
-[_Item_]: items.html
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[_InnerAttribute_]: attributes.md
+[_Item_]: items.md
+[_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`Termination`]: ../std/process/trait.Termination.html
 [`core`]: ../core/index.html
 [`core::prelude::v1`]: ../core/prelude/index.html
-[`extern crate`]: items/extern-crates.html
+[`extern crate`]: items/extern-crates.md
 [`std`]: ../std/index.html
 [`std::prelude::v1`]: ../std/prelude/index.html
-[attribute]: attributes.html
-[attributes]: attributes.html
-[function]: items/functions.html
-[module]: items/modules.html
-[module path]: paths.html
-[trait or lifetime bounds]: trait-bounds.html
-[where clauses]: items/generics.html#where-clauses
+[attribute]: attributes.md
+[attributes]: attributes.md
+[function]: items/functions.md
+[module]: items/modules.md
+[module path]: paths.md
+[trait or lifetime bounds]: trait-bounds.md
+[where clauses]: items/generics.md#where-clauses

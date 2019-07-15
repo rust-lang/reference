@@ -21,9 +21,9 @@ A _unit-like struct_ type is like a struct type, except that it has no fields.
 The one value constructed by the associated [struct expression] is the only
 value that inhabits such a type.
 
-[^structtype]: `struct` types are analogous to `struct` types in C, the
+[^structtype]: ../`struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.
 
-[`repr` attribute]: type-layout.html#representations
-[struct expression]: expressions/struct-expr.html
-[visibility modifiers]: visibility-and-privacy.html
+[`repr` attribute]: ../type-layout.md#representations
+[struct expression]: ../expressions/struct-expr.md
+[visibility modifiers]: ../visibility-and-privacy.md

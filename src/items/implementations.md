@@ -202,25 +202,25 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[_ConstantItem_]: items/constant-items.html
-[_Function_]: items/functions.html
-[_Generics_]: items/generics.html
-[_InnerAttribute_]: attributes.html
-[_MacroInvocationSemi_]: macros.html#macro-invocation
-[_Method_]: items/associated-items.html#methods
-[_OuterAttribute_]: attributes.html
-[_TypeAlias_]: items/type-aliases.html
-[_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html#type-expressions
-[_Visibility_]: visibility-and-privacy.html
-[_WhereClause_]: items/generics.html#where-clauses
-[trait]: items/traits.html
-[associated functions]: items/associated-items.html#associated-functions-and-methods
-[associated constants]: items/associated-items.html#associated-constants
-[attributes]: attributes.html
-[`cfg`]: conditional-compilation.html
-[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
-[`doc`]: ../rustdoc/the-doc-attribute.html
-[path]: paths.html
-[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
-[Unsafe traits]: items/traits.html#unsafe-traits
+[_ConstantItem_]: constant-items.md
+[_Function_]: functions.md
+[_Generics_]: generics.md
+[_InnerAttribute_]: ../attributes.md
+[_MacroInvocationSemi_]: ../macros.md#macro-invocation
+[_Method_]: associated-items.md#methods
+[_OuterAttribute_]: ../attributes.md
+[_TypeAlias_]: type-aliases.md
+[_TypePath_]: ../paths.md#paths-in-types
+[_Type_]: ../types.md#type-expressions
+[_Visibility_]: ../visibility-and-privacy.md
+[_WhereClause_]: generics.md#where-clauses
+[trait]: traits.md
+[associated functions]: associated-items.md#associated-functions-and-methods
+[associated constants]: associated-items.md#associated-constants
+[attributes]: ../attributes.md
+[`cfg`]: ../conditional-compilation.md
+[`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
+[`doc`]: ../../rustdoc/the-doc-attribute.html
+[path]: ../paths.md
+[the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+[Unsafe traits]: traits.md#unsafe-traits

@@ -102,12 +102,12 @@ The *`no_link` attribute* may be specified on an `extern crate` item to
 prevent linking the crate into the output. This is commonly used to load a
 crate to access only its macros.
 
-[IDENTIFIER]: identifiers.html
+[IDENTIFIER]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
-[`macro_use` attribute]: macros-by-example.html#the-macro_use-attribute
+[`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`alloc`]: https://doc.rust-lang.org/alloc/
-[`no_implicit_prelude`]: items/modules.html#prelude-items
-[`no_std`]: crates-and-source-files.html#preludes-and-no_std
+[`no_implicit_prelude`]: modules.md#prelude-items
+[`no_std`]: ../crates-and-source-files.md#preludes-and-no_std
 [`proc_macro`]: https://doc.rust-lang.org/proc_macro/
 [`test`]: https://doc.rust-lang.org/test/
-[use declarations]: items/use-declarations.html
+[use declarations]: use-declarations.md

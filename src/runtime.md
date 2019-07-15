@@ -68,12 +68,12 @@ for non-`bin` [crate types].
 #![windows_subsystem = "windows"]
 ```
 
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
+[_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`GlobalAlloc`]: ../alloc/alloc/trait.GlobalAlloc.html
 [`PanicInfo`]: ../core/panic/struct.PanicInfo.html
 [abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
-[attribute]: attributes.html
-[crate types]: linkage.html
+[attribute]: attributes.md
+[crate types]: linkage.md
 [set_hook]: ../std/panic/fn.set_hook.html
-[static item]: items/static-items.html
+[static item]: items/static-items.md
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx

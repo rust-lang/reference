@@ -86,16 +86,16 @@ macro_rules! example {
 example!();
 ```
 
-[Macros by Example]: macros-by-example.html
-[Procedural Macros]: procedural-macros.html
-[_SimplePath_]: paths.html#simple-paths
-[_Token_]: tokens.html
-[associated items]: items/associated-items.html
-[delimiters]: tokens.html#delimiters
-[expressions]: expressions.html
-[items]: items.html
-[`macro_rules`]: macros-by-example.html
-[patterns]: patterns.html
-[statements]: statements.html
-[types]: types.html
-[visibility qualifiers]: visibility-and-privacy.html
+[Macros by Example]: macros-by-example.md
+[Procedural Macros]: procedural-macros.md
+[_SimplePath_]: paths.md#simple-paths
+[_Token_]: tokens.md
+[associated items]: items/associated-items.md
+[delimiters]: tokens.md#delimiters
+[expressions]: expressions.md
+[items]: items.md
+[`macro_rules`]: macros-by-example.md
+[patterns]: patterns.md
+[statements]: statements.md
+[types]: types.md
+[visibility qualifiers]: visibility-and-privacy.md

@@ -139,15 +139,15 @@ feature detection on the x86 platforms.
 > may be enabled or disabled for an entire crate with the
 > [`-C target-feature`] flag.
 
-[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[`-C target-cpu`]: ../rustc/codegen-options/index.html#target-cpu
-[`-C target-feature`]: ../rustc/codegen-options/index.html#target-feature
-[`is_x86_feature_detected`]: ../std/macro.is_x86_feature_detected.html
-[`target_feature` conditional compilation option]: conditional-compilation.html#target_feature
-[attribute]: attributes.html
-[attributes]: attributes.html
-[functions]: items/functions.html
-[target architecture]: conditional-compilation.html#target_arch
-[trait]: items/traits.html
-[undefined behavior]: behavior-considered-undefined.html
-[unsafe function]: unsafe-functions.html
+[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
+[`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
+[`is_x86_feature_detected`]: ../../std/macro.is_x86_feature_detected.html
+[`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
+[attribute]: ../attributes.md
+[attributes]: ../attributes.md
+[functions]: ../items/functions.md
+[target architecture]: ../conditional-compilation.md#target_arch
+[trait]: ../items/traits.md
+[undefined behavior]: ../behavior-considered-undefined.md
+[unsafe function]: ../unsafe-functions.md

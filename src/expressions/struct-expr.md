@@ -138,20 +138,20 @@ let b = Gamma{};  // Exact same value as `a`.
 of a struct expression in the same expression contexts as [attributes on block
 expressions].
 
-[IDENTIFIER]: identifiers.html
-[Inner attributes]: attributes.html
-[TUPLE_INDEX]: tokens.html#integer-literals
-[_Expression_]: expressions.html
-[_InnerAttribute_]: attributes.html
-[_PathInExpression_]: paths.html#paths-in-expressions
-[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
-[call expression]: expressions/call-expr.html
-[if let]: expressions/if-expr.html#if-let-expressions
-[if]: expressions/if-expr.html#if-expressions
-[loop]: expressions/loop-expr.html
-[match]: expressions/match-expr.html
+[IDENTIFIER]: ../identifiers.md
+[Inner attributes]: ../attributes.md
+[TUPLE_INDEX]: ../tokens.md#integer-literals
+[_Expression_]: ../expressions.md
+[_InnerAttribute_]: ../attributes.md
+[_PathInExpression_]: ../paths.md#paths-in-expressions
+[attributes on block expressions]: block-expr.md#attributes-on-block-expressions
+[call expression]: call-expr.md
+[if let]: if-expr.md#if-let-expressions
+[if]: if-expr.md#if-expressions
+[loop]: loop-expr.md
+[match]: match-expr.md
 [parentheses]: http://localhost:3000/expressions/grouped-expr.html
-[struct]: items/structs.html
-[union]: items/unions.html
-[visible]: visibility-and-privacy.html
-[scrutinee]: glossary.html#scrutinee
+[struct]: ../items/structs.md
+[union]: ../items/unions.md
+[visible]: ../visibility-and-privacy.md
+[scrutinee]: ../glossary.md#scrutinee

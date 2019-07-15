@@ -24,7 +24,7 @@ always bounds-checked in safe methods and operators.
 > Note: The [`Vec<T>`] standard library type provides a heap-allocated resizable
 > array type.
 
-[_Expression_]: expressions.html
-[_Type_]: types.html#type-expressions
-[`Vec<T>`]: ../std/vec/struct.Vec.html
-[`usize`]: types/numeric.html#machine-dependent-integer-types
+[_Expression_]: ../expressions.md
+[_Type_]: ../types.md#type-expressions
+[`Vec<T>`]: ../../std/vec/struct.Vec.html
+[`usize`]: numeric.md#machine-dependent-integer-types

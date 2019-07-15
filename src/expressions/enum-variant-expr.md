@@ -40,8 +40,8 @@ let m = Message::Move { x: 50, y: 200 };
 Enum variant expressions have the same syntax, behavior, and restrictions as [struct
 expressions][structs], except they do not support base update with the `..` syntax.
 
-[IDENTIFIER]: identifiers.html
-[TUPLE_INDEX]: tokens.html#integer-literals
-[_Expression_]: expressions.html
-[_PathInExpression_]: paths.html#paths-in-expressions
-[structs]: expressions/struct-expr.html
+[IDENTIFIER]: ../identifiers.md
+[TUPLE_INDEX]: ../tokens.md#integer-literals
+[_Expression_]: ../expressions.md
+[_PathInExpression_]: ../paths.md#paths-in-expressions
+[structs]: struct-expr.md

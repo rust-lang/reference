@@ -253,29 +253,29 @@ When used on a function in a trait implementation, the attribute does nothing.
 > ```
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
-[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[_MetaListPaths_]: attributes.html#meta-item-attribute-syntax
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[`Drop`]: special-types-and-traits.html#drop
-[attributes]: attributes.html
-[block expression]: expressions/block-expr.html
-[call expression]: expressions/call-expr.html
-[enum variant]: items/enumerations.html
-[enum]: items/enumerations.html
-[expression statement]: statements.html#expression-statements
-[expression]: expressions.html
-[external block item]: items/external-blocks.html
-[functions]: items/functions.html
-[impl trait]: types/impl-trait.html
-[implementation]: items/implementations.html
-[item]: items.html
-[let statement]: statements.html#let-statements
-[module]: items/modules.html
-[rustc book]: ../rustc/lints/index.html
-[struct field]: items/structs.html
-[struct]: items/structs.html
-[trait declaration]: items/traits.html
-[trait implementation items]: items/implementations.html#trait-implementations
-[trait item]: items/traits.html
-[traits]: items/traits.html
-[union]: items/unions.html
+[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[`Drop`]: ../special-types-and-traits.md#drop
+[attributes]: ../attributes.md
+[block expression]: ../expressions/block-expr.md
+[call expression]: ../expressions/call-expr.md
+[enum variant]: ../items/enumerations.md
+[enum]: ../items/enumerations.md
+[expression statement]: ../statements.md#expression-statements
+[expression]: ../expressions.md
+[external block item]: ../items/external-blocks.md
+[functions]: ../items/functions.md
+[impl trait]: ../types/impl-trait.md
+[implementation]: ../items/implementations.md
+[item]: ../items.md
+[let statement]: ../statements.md#let-statements
+[module]: ../items/modules.md
+[rustc book]: ../../rustc/lints/index.html
+[struct field]: ../items/structs.md
+[struct]: ../items/structs.md
+[trait declaration]: ../items/traits.md
+[trait implementation items]: ../items/implementations.md#trait-implementations
+[trait item]: ../items/traits.md
+[traits]: ../items/traits.md
+[union]: ../items/unions.md

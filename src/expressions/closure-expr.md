@@ -31,7 +31,7 @@ functions, as an abbreviation for defining and capturing a separate function.
 
 Significantly, closure expressions _capture their environment_, which regular
 [function definitions] do not. Without the `move` keyword, the closure expression
-[infers how it captures each variable from its environment](types/closure.html#capture-modes),
+[infers how it captures each variable from its environment](../types/closure.md#capture-modes),
 preferring to capture by shared reference, effectively borrowing
 all outer variables mentioned inside the closure's body. If needed the compiler
 will infer that instead mutable references should be taken, or that the values
@@ -41,10 +41,10 @@ prefixing it with the `move` keyword. This is often used to ensure that the
 closure's type is `'static`.
 
 The compiler will determine which of the [closure
-traits](types/closure.html#call-traits-and-coercions) the closure's type will implement by how it
+traits](../types/closure.md#call-traits-and-coercions) the closure's type will implement by how it
 acts on its captured variables. The closure will also implement
-[`Send`](special-types-and-traits.html#send) and/or
-[`Sync`](special-types-and-traits.html#sync) if all of its captured types do.
+[`Send`](../special-types-and-traits.md#send) and/or
+[`Sync`](../special-types-and-traits.md#sync) if all of its captured types do.
 These traits allow functions to accept closures using generics, even though the
 exact types can't be named.
 
@@ -67,13 +67,13 @@ let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
 ```
 
-[block]: expressions/block-expr.html
-[function definitions]: items/functions.html
-[patterns]: patterns.html
+[block]: block-expr.md
+[function definitions]: ../items/functions.md
+[patterns]: ../patterns.md
 
-[_Expression_]: expressions.html
-[_BlockExpression_]: expressions/block-expr.html
-[_TypeNoBounds_]: types.html#type-expressions
-[_Pattern_]: patterns.html
-[_Type_]: types.html#type-expressions
-[`let` binding]: statements.html#let-statements
+[_Expression_]: ../expressions.md
+[_BlockExpression_]: block-expr.md
+[_TypeNoBounds_]: ../types.md#type-expressions
+[_Pattern_]: ../patterns.md
+[_Type_]: ../types.md#type-expressions
+[`let` binding]: ../statements.md#let-statements

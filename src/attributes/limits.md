@@ -57,6 +57,6 @@ fn f<T>(x: T) {}
 f((1, 2, 3, 4, 5, 6, 7, 8, 9));
 ```
 
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[attributes]: attributes.html
-[crate]: crates-and-source-files.html
+[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[attributes]: ../attributes.md
+[crate]: ../crates-and-source-files.md

@@ -163,16 +163,16 @@ extern {
 }
 ```
 
-[IDENTIFIER]: identifiers.html
+[IDENTIFIER]: ../identifiers.md
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
-[_Abi_]: items/functions.html
-[_FunctionReturnType_]: items/functions.html
-[_Generics_]: items/generics.html
-[_InnerAttribute_]: attributes.html
-[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[_OuterAttribute_]: attributes.html
-[_Type_]: types.html#type-expressions
-[_Visibility_]: visibility-and-privacy.html
-[_WhereClause_]: items/generics.html#where-clauses
-[attributes]: attributes.html
+[_Abi_]: functions.md
+[_FunctionReturnType_]: functions.md
+[_Generics_]: generics.md
+[_InnerAttribute_]: ../attributes.md
+[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[_OuterAttribute_]: ../attributes.md
+[_Type_]: ../types.md#type-expressions
+[_Visibility_]: ../visibility-and-privacy.md
+[_WhereClause_]: generics.md#where-clauses
+[attributes]: ../attributes.md
