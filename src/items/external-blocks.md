@@ -131,7 +131,14 @@ specifies the kind of library with the following possible values:
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
 
-The `name` key must be included if `kind` is specified.
+The `name` key must be included if `kind` is specified. Depending on the target `name`
+is interpreted as follows:
+
+- `x86_64-pc-windows-msvc` — Refers to the base name of the `.lib` file (i.e., if you
+have `foo.dll` and `foo.dll.lib`, set `name = "foo.dll"`).
+- All other platforms  — Refers to the base name of the shared library (i.e., to link against
+`libfoo.so`, set `name = "foo"`).
+
 
 The `wasm_import_module` key may be used to specify the [WebAssembly module]
 name for the items within an `extern` block when importing symbols from the
