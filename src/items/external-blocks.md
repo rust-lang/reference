@@ -134,11 +134,9 @@ specifies the kind of library with the following possible values:
 The `name` key must be included if `kind` is specified. Depending on the target `name`
 is interpreted as follows:
 
-- `x86_64-pc-windows-msvc` — Refers to the base name of the `.lib` file (i.e., if you
-have `foo.dll` and `foo.dll.lib`, set `name = "foo.dll"`).
-- All other platforms  — Refers to the base name of the shared library (i.e., to link against
-`libfoo.so`, set `name = "foo"`).
-
+- `*-pc-windows-msvc` — Refers to the base name of the static library `name.lib`,
+or the base name of the import library `name.lib` accompanying a dynamic-link library `name.dll`.
+- All other targets — Refers to the base name of the shared library.
 
 The `wasm_import_module` key may be used to specify the [WebAssembly module]
 name for the items within an `extern` block when importing symbols from the
@@ -147,6 +145,10 @@ not specified.
 
 <!-- ignore: requires extern linking -->
 ```rust,ignore
+// Links to `libcrypto.so` on Linux and the (`foo.lib`, `foo.dll`) pair
+// on windows-msvc. Note that if you wanted to import a `cdylib` produced by Rust
+// on `x86_64-pc-windows-msvc` you would have to link against `name = "crypto.dll"`
+// as Rust produces a (`foo.dll.lib`, `foo.dll`) pair.
 #[link(name = "crypto")]
 extern {
     // …
