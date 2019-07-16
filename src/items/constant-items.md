@@ -86,11 +86,11 @@ m!(const _: () = (););
 // const _: () = ();
 ```
 
-[associated]: glossary.html#associated-item
-[constant value]: const_eval.html#constant-expressions
-[free]: glossary.html#free-item
-[static lifetime elision]: lifetime-elision.html#static-lifetime-elision
-[IDENTIFIER]: identifiers.html
-[underscore imports]: items/use-declarations.html#underscore-imports
-[_Type_]: types.html#type-expressions
-[_Expression_]: expressions.html
+[associated]: ../glossary.md#associated-item
+[constant value]: ../const_eval.md#constant-expressions
+[free]: ../glossary.md#free-item
+[static lifetime elision]: ../lifetime-elision.md#static-lifetime-elision
+[IDENTIFIER]: ../identifiers.md
+[underscore imports]: use-declarations.md#underscore-imports
+[_Type_]: ../types.md#type-expressions
+[_Expression_]: ../expressions.md

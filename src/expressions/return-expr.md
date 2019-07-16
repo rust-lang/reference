@@ -20,4 +20,4 @@ fn max(a: i32, b: i32) -> i32 {
 }
 ```
 
-[_Expression_]: expressions.html
+[_Expression_]: ../expressions.md

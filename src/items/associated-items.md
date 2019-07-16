@@ -324,28 +324,28 @@ fn main() {
 }
 ```
 
-[_BlockExpression_]: expressions/block-expr.html
-[_FunctionParam_]: items/functions.html
-[_FunctionQualifiers_]: items/functions.html
-[_FunctionReturnType_]: items/functions.html
-[_Generics_]: items/generics.html
-[_Lifetime_]: trait-bounds.html
-[_Type_]: types.html#type-expressions
-[_WhereClause_]: items/generics.html#where-clauses
-[`Arc<Self>`]: special-types-and-traits.html#arct
-[`Box<Self>`]: special-types-and-traits.html#boxt
-[`Pin<P>`]: special-types-and-traits.html#pinp
-[`Rc<Self>`]: special-types-and-traits.html#rct
-[traits]: items/traits.html
-[type aliases]: items/type-aliases.html
-[inherent implementations]: items/implementations.html#inherent-implementations
-[identifier]: identifiers.html
-[identifier pattern]: patterns.html#identifier-patterns
-[implementations]: items/implementations.html
-[type]: types.html#type-expressions
-[constants]: items/constant-items.html
-[constant item]: items/constant-items.html
-[functions]: items/functions.html
-[function item]: types/function-item.html
-[method call operator]: expressions/method-call-expr.html
-[path]: paths.html
+[_BlockExpression_]: ../expressions/block-expr.md
+[_FunctionParam_]: functions.md
+[_FunctionQualifiers_]: functions.md
+[_FunctionReturnType_]: functions.md
+[_Generics_]: generics.md
+[_Lifetime_]: ../trait-bounds.md
+[_Type_]: ../types.md#type-expressions
+[_WhereClause_]: generics.md#where-clauses
+[`Arc<Self>`]: ../special-types-and-traits.md#arct
+[`Box<Self>`]: ../special-types-and-traits.md#boxt
+[`Pin<P>`]: ../special-types-and-traits.md#pinp
+[`Rc<Self>`]: ../special-types-and-traits.md#rct
+[traits]: traits.md
+[type aliases]: type-aliases.md
+[inherent implementations]: implementations.md#inherent-implementations
+[identifier]: ../identifiers.md
+[identifier pattern]: ../patterns.md#identifier-patterns
+[implementations]: implementations.md
+[type]: ../types.md#type-expressions
+[constants]: constant-items.md
+[constant item]: constant-items.md
+[functions]: functions.md
+[function item]: ../types/function-item.md
+[method call operator]: ../expressions/method-call-expr.md
+[path]: ../paths.md

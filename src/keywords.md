@@ -116,14 +116,14 @@ is possible to declare a variable or method with the name `union`.
 > **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
 
-[items]: items.html
-[Variables]: variables.html
-[Type parameters]: types/parameters.html
-[loop labels]: expressions/loop-expr.html#loop-labels
-[Macros]: macros.html
-[attributes]: attributes.html
-[Macro placeholders]: macros-by-example.html
-[Crates]: crates-and-source-files.html
-[union]: items/unions.html
-[variants]: items/enumerations.html
-[`dyn`]: types/trait-object.html
+[items]: items.md
+[Variables]: variables.md
+[Type parameters]: types/parameters.md
+[loop labels]: expressions/loop-expr.md#loop-labels
+[Macros]: macros.md
+[attributes]: attributes.md
+[Macro placeholders]: macros-by-example.md
+[Crates]: crates-and-source-files.md
+[union]: items/unions.md
+[variants]: items/enumerations.md
+[`dyn`]: types/trait-object.md

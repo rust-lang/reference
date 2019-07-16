@@ -27,7 +27,7 @@ possible. In cases of ambiguity, we prefer fewer autoderefs to more.
 
 Finally, the fields of a struct or a reference to a struct are treated as
 separate entities when borrowing. If the struct does not implement
-[`Drop`](special-types-and-traits.html#drop) and is stored in a local variable,
+[`Drop`](../special-types-and-traits.md#drop) and is stored in a local variable,
 this also applies to moving out of each of its fields. This also does not apply
 if automatic dereferencing is done though user defined types.
 
@@ -45,10 +45,10 @@ let c: &String = &x.f2;         // Can borrow again
 let d: String = x.f3;           // Move out of x.f3
 ```
 
-[_Expression_]: expressions.html
-[IDENTIFIER]: identifiers.html
-[method call expression]: expressions/method-call-expr.html
-[struct]: items/structs.html
-[union]: items/unions.html
-[place expression]: expressions.html#place-expressions-and-value-expressions
-[mutable]: expressions.html#mutability
+[_Expression_]: ../expressions.md
+[IDENTIFIER]: ../identifiers.md
+[method call expression]: method-call-expr.md
+[struct]: ../items/structs.md
+[union]: ../items/unions.md
+[place expression]: ../expressions.md#place-expressions-and-value-expressions
+[mutable]: ../expressions.md#mutability

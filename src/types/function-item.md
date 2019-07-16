@@ -46,12 +46,12 @@ let foo_ptr_2 = if want_i32 {
 All function items implement [`Fn`], [`FnMut`], [`FnOnce`], [`Copy`],
 [`Clone`], [`Send`], and [`Sync`].
 
-[`Clone`]: special-types-and-traits.html#clone
-[`Copy`]: special-types-and-traits.html#copy
-[`FnMut`]: ../std/ops/trait.FnMut.html
-[`FnOnce`]: ../std/ops/trait.FnOnce.html
-[`Fn`]: ../std/ops/trait.Fn.html
-[`Send`]: special-types-and-traits.html#send
-[`Sync`]: special-types-and-traits.html#sync
-[coercion]: type-coercions.html
-[function pointers]: types/function-pointer.html
+[`Clone`]: ../special-types-and-traits.md#clone
+[`Copy`]: ../special-types-and-traits.md#copy
+[`FnMut`]: ../../std/ops/trait.FnMut.html
+[`FnOnce`]: ../../std/ops/trait.FnOnce.html
+[`Fn`]: ../../std/ops/trait.Fn.html
+[`Send`]: ../special-types-and-traits.md#send
+[`Sync`]: ../special-types-and-traits.md#sync
+[coercion]: ../type-coercions.md
+[function pointers]: function-pointer.md

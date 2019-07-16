@@ -41,7 +41,7 @@ assert_eq!((a.f)(), "The field f");
 group expression in the same expression contexts as [attributes on block
 expressions].
 
-[Inner attributes]: attributes.html
-[_Expression_]: expressions.html
-[_InnerAttribute_]: attributes.html
-[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
+[Inner attributes]: ../attributes.md
+[_Expression_]: ../expressions.md
+[_InnerAttribute_]: ../attributes.md
+[attributes on block expressions]: block-expr.md#attributes-on-block-expressions

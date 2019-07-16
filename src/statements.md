@@ -115,23 +115,23 @@ if true {
 Statements accept [outer attributes]. The attributes that have meaning on a
 statement are [`cfg`], and [the lint check attributes].
 
-[block]: expressions/block-expr.html
-[expression]: expressions.html
-[function]: items/functions.html
-[item]: items.html
-[module]: items/modules.html
-[canonical path]: paths.html#canonical-paths
-[implementations]: items/implementations.html
-[variables]: variables.html
-[outer attributes]: attributes.html
-[`cfg`]: conditional-compilation.html
-[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
-[pattern]: patterns.html
+[block]: expressions/block-expr.md
+[expression]: expressions.md
+[function]: items/functions.md
+[item]: items.md
+[module]: items/modules.md
+[canonical path]: paths.md#canonical-paths
+[implementations]: items/implementations.md
+[variables]: variables.md
+[outer attributes]: attributes.md
+[`cfg`]: conditional-compilation.md
+[the lint check attributes]: attributes/diagnostics.md#lint-check-attributes
+[pattern]: patterns.md
 [_ExpressionStatement_]: #expression-statements
-[_Expression_]: expressions.html
-[_Item_]: items.html
+[_Expression_]: expressions.md
+[_Item_]: items.md
 [_LetStatement_]: #let-statements
-[_MacroInvocationSemi_]: macros.html#macro-invocation
-[_OuterAttribute_]: attributes.html
-[_Pattern_]: patterns.html
-[_Type_]: types.html
+[_MacroInvocationSemi_]: macros.md#macro-invocation
+[_OuterAttribute_]: attributes.md
+[_Pattern_]: patterns.md
+[_Type_]: types.md

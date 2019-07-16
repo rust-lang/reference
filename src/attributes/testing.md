@@ -82,8 +82,8 @@ fn mytest() {
 }
 ```
 
-[_MetaListNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[_MetaNameValueStr_]: attributes.html#meta-item-attribute-syntax
-[`Termination`]: ../std/process/trait.Termination.html
-[`test` conditional compilation option]: conditional-compilation.html#test
-[attributes]: attributes.html
+[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+[`Termination`]: ../../std/process/trait.Termination.html
+[`test` conditional compilation option]: ../conditional-compilation.md#test
+[attributes]: ../attributes.md

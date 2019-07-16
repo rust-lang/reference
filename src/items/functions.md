@@ -212,34 +212,34 @@ attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
 
-[IDENTIFIER]: identifiers.html
-[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
-[STRING_LITERAL]: tokens.html#string-literals
-[_BlockExpression_]: expressions/block-expr.html
-[_Generics_]: items/generics.html
-[_Pattern_]: patterns.html
-[_Type_]: types.html#type-expressions
-[_WhereClause_]: items/generics.html#where-clauses
-[const context]: const_eval.html#const-context
-[external blocks]: items/external-blocks.html
-[path]: paths.html
-[block]: expressions/block-expr.html
-[variables]: variables.html
-[type]: types.html#type-expressions
-[*function item type*]: types/function-item.html
-[Trait]: items/traits.html
-[attributes]: attributes.html
-[`cfg`]: conditional-compilation.html
-[the lint check attributes]: attributes/diagnostics.html#lint-check-attributes
-[the procedural macro attributes]: procedural-macros.html
-[the testing attributes]: attributes/testing.html
-[the optimization hint attributes]: attributes/codegen.html#optimization-hints
-[`deprecated`]: attributes/diagnostics.html#the-deprecated-attribute
-[`doc`]: ../rustdoc/the-doc-attribute.html
-[`must_use`]: attributes/diagnostics.html#the-must_use-attribute
-[patterns]: patterns.html
-[`?Sized`]: trait-bounds.html#sized
-[trait bounds]: trait-bounds.html
-[`export_name`]: abi.html#the-export_name-attribute
-[`link_section`]: abi.html#the-link_section-attribute
-[`no_mangle`]: abi.html#the-no_mangle-attribute
+[IDENTIFIER]: ../identifiers.md
+[RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
+[STRING_LITERAL]: ../tokens.md#string-literals
+[_BlockExpression_]: ../expressions/block-expr.md
+[_Generics_]: generics.md
+[_Pattern_]: ../patterns.md
+[_Type_]: ../types.md#type-expressions
+[_WhereClause_]: generics.md#where-clauses
+[const context]: ../const_eval.md#const-context
+[external blocks]: external-blocks.md
+[path]: ../paths.md
+[block]: ../expressions/block-expr.md
+[variables]: ../variables.md
+[type]: ../types.md#type-expressions
+[*function item type*]: ../types/function-item.md
+[Trait]: traits.md
+[attributes]: ../attributes.md
+[`cfg`]: ../conditional-compilation.md
+[the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+[the procedural macro attributes]: ../procedural-macros.md
+[the testing attributes]: ../attributes/testing.md
+[the optimization hint attributes]: ../attributes/codegen.md#optimization-hints
+[`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
+[`doc`]: ../../rustdoc/the-doc-attribute.html
+[`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
+[patterns]: ../patterns.md
+[`?Sized`]: ../trait-bounds.md#sized
+[trait bounds]: ../trait-bounds.md
+[`export_name`]: ../abi.md#the-export_name-attribute
+[`link_section`]: ../abi.md#the-link_section-attribute
+[`no_mangle`]: ../abi.md#the-no_mangle-attribute

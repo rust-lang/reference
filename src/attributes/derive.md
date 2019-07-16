@@ -33,10 +33,10 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 
 You can implement `derive` for your own traits through [procedural macros].
 
-[_MetaListPaths_]: attributes.html#meta-item-attribute-syntax
-[`Clone`]: ../std/clone/trait.Clone.html
-[`PartialEq`]: ../std/cmp/trait.PartialEq.html
-[`impl` item]: items/implementations.html
-[items]: items.html
-[derive macros]: procedural-macros.html#derive-macros
-[procedural macros]: procedural-macros.html#derive-macros
+[_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
+[`Clone`]: ../../std/clone/trait.Clone.html
+[`PartialEq`]: ../../std/cmp/trait.PartialEq.html
+[`impl` item]: ../items/implementations.md
+[items]: ../items.md
+[derive macros]: ../procedural-macros.md#derive-macros
+[procedural macros]: ../procedural-macros.md#derive-macros

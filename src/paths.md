@@ -353,19 +353,19 @@ mod without { // ::without
 ```
 
 [_GenericArgs_]: #paths-in-expressions
-[_Lifetime_]: trait-bounds.html
-[_Type_]: types.html#type-expressions
-[item]: items.html
-[variable]: variables.html
-[implementations]: items/implementations.html
-[use declarations]: items/use-declarations.html
-[IDENTIFIER]: identifiers.html
-[`use`]: items/use-declarations.html
-[attributes]: attributes.html
-[expressions]: expressions.html
-[macro transcribers]: macros-by-example.html
-[macros]: macros-by-example.html
-[patterns]: patterns.html
-[trait implementations]: items/implementations.html#trait-implementations
-[traits]: items/traits.html
-[visibility]: visibility-and-privacy.html
+[_Lifetime_]: trait-bounds.md
+[_Type_]: types.md#type-expressions
+[item]: items.md
+[variable]: variables.md
+[implementations]: items/implementations.md
+[use declarations]: items/use-declarations.md
+[IDENTIFIER]: identifiers.md
+[`use`]: items/use-declarations.md
+[attributes]: attributes.md
+[expressions]: expressions.md
+[macro transcribers]: macros-by-example.md
+[macros]: macros-by-example.md
+[patterns]: patterns.md
+[trait implementations]: items/implementations.md#trait-implementations
+[traits]: items/traits.md
+[visibility]: visibility-and-privacy.md

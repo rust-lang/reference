@@ -235,4 +235,4 @@ When re-exporting a private item, it can be thought of as allowing the "privacy
 chain" being short-circuited through the reexport instead of passing through
 the namespace hierarchy as it normally would.
 
-[_SimplePath_]: paths.html#simple-paths
+[_SimplePath_]: paths.md#simple-paths

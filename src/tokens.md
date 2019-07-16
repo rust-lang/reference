@@ -14,14 +14,14 @@ into the following kinds of tokens:
 Within this documentation's grammar, "simple" tokens are given in [string
 table production] form, and appear in `monospace` font.
 
-[string table production]: notation.html#string-table-productions
+[string table production]: notation.md#string-table-productions
 
 ## Literals
 
 A literal is an expression consisting of a single token, rather than a sequence
 of tokens, that immediately and directly denotes the value it evaluates to,
 rather than referring to it by name or some other evaluation rule. A literal is
-a form of [constant expression](const_eval.html#constant-expressions), so is
+a form of [constant expression](const_eval.md#constant-expressions), so is
 evaluated (primarily) at compile time.
 
 ### Examples
@@ -439,7 +439,7 @@ Note that the Rust syntax considers `-1i8` as an application of the [unary minus
 operator] to an integer literal `1i8`, rather than
 a single integer literal.
 
-[unary minus operator]: expressions/operator-expr.html#negation-operators
+[unary minus operator]: expressions/operator-expr.md#negation-operators
 
 #### Floating-point literals
 
@@ -500,7 +500,7 @@ to call a method named `f64` on `2`.
 The representation semantics of floating-point numbers are described in
 ["Machine Types"].
 
-["Machine Types"]: types/numeric.html
+["Machine Types"]: types/numeric.md
 
 ### Boolean literals
 
@@ -525,7 +525,7 @@ Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
 macros.
 
-[loop labels]: expressions/loop-expr.html
+[loop labels]: expressions/loop-expr.md
 
 ## Punctuation
 
@@ -593,41 +593,41 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `(` `)` | Parentheses     |
 
 
-[Inferred types]: types/inferred.html
-[Range patterns]: patterns.html#range-patterns
-[Reference patterns]: patterns.html#reference-patterns
-[Subpattern binding]: patterns.html#identifier-patterns
-[Wildcard patterns]: patterns.html#wildcard-pattern
-[arith]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[array types]: types/array.html
-[assignment]: expressions/operator-expr.html#assignment-expressions
-[attributes]: attributes.html
-[borrow]: expressions/operator-expr.html#borrow-operators
-[closures]: expressions/closure-expr.html
-[comparison]: expressions/operator-expr.html#comparison-operators
-[compound]: expressions/operator-expr.html#compound-assignment-expressions
-[dereference]: expressions/operator-expr.html#the-dereference-operator
-[extern]: items/external-blocks.html
-[field]: expressions/field-expr.html
-[functions]: items/functions.html
-[generics]: items/generics.html
-[identifier]: identifiers.html
-[keywords]: keywords.html
-[lazy-bool]: expressions/operator-expr.html#lazy-boolean-operators
-[macros]: macros-by-example.html
-[match]: expressions/match-expr.html
-[negation]: expressions/operator-expr.html#negation-operators
-[never type]: types/never.html
-[paths]: paths.html
-[patterns]: patterns.html
-[question]: expressions/operator-expr.html#the-question-mark-operator
-[range]: expressions/range-expr.html
-[raw pointers]: types/pointer.html#raw-pointers-const-and-mut
-[references]: types/pointer.html
-[sized]: trait-bounds.html#sized
-[struct expressions]: expressions/struct-expr.html
-[trait bounds]: trait-bounds.html
-[tuple index]: expressions/tuple-expr.html#tuple-indexing-expressions
-[tuple structs]: items/structs.html
-[tuple variants]: items/enumerations.html
-[tuples]: types/tuple.html
+[Inferred types]: types/inferred.md
+[Range patterns]: patterns.md#range-patterns
+[Reference patterns]: patterns.md#reference-patterns
+[Subpattern binding]: patterns.md#identifier-patterns
+[Wildcard patterns]: patterns.md#wildcard-pattern
+[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[array types]: types/array.md
+[assignment]: expressions/operator-expr.md#assignment-expressions
+[attributes]: attributes.md
+[borrow]: expressions/operator-expr.md#borrow-operators
+[closures]: expressions/closure-expr.md
+[comparison]: expressions/operator-expr.md#comparison-operators
+[compound]: expressions/operator-expr.md#compound-assignment-expressions
+[dereference]: expressions/operator-expr.md#the-dereference-operator
+[extern]: items/external-blocks.md
+[field]: expressions/field-expr.md
+[functions]: items/functions.md
+[generics]: items/generics.md
+[identifier]: identifiers.md
+[keywords]: keywords.md
+[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[macros]: macros-by-example.md
+[match]: expressions/match-expr.md
+[negation]: expressions/operator-expr.md#negation-operators
+[never type]: types/never.md
+[paths]: paths.md
+[patterns]: patterns.md
+[question]: expressions/operator-expr.md#the-question-mark-operator
+[range]: expressions/range-expr.md
+[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[references]: types/pointer.md
+[sized]: trait-bounds.md#sized
+[struct expressions]: expressions/struct-expr.md
+[trait bounds]: trait-bounds.md
+[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
+[tuple structs]: items/structs.md
+[tuple variants]: items/enumerations.md
+[tuples]: types/tuple.md

@@ -100,22 +100,22 @@ generic parameter.
 }
 ```
 
-[IDENTIFIER]: identifiers.html
-[LIFETIME_OR_LABEL]: tokens.html#lifetimes-and-loop-labels
+[IDENTIFIER]: ../identifiers.md
+[LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 
-[_LifetimeBounds_]: trait-bounds.html
-[_Lifetime_]: trait-bounds.html
-[_OuterAttribute_]: attributes.html
-[_Type_]: types.html#type-expressions
-[_TypeParamBounds_]: trait-bounds.html
+[_LifetimeBounds_]: ../trait-bounds.md
+[_Lifetime_]: ../trait-bounds.md
+[_OuterAttribute_]: ../attributes.md
+[_Type_]: ../types.md#type-expressions
+[_TypeParamBounds_]: ../trait-bounds.md
 
-[arrays]: types/array.html
-[function pointers]: types/function-pointer.html
-[references]: types/pointer.html#shared-references-
-[raw pointers]: types/pointer.html#raw-pointers-const-and-mut
-[`Clone`]: special-types-and-traits.html#clone
-[`Copy`]: special-types-and-traits.html#copy
-[`Sized`]: special-types-and-traits.html#sized
-[tuples]: types/tuple.html
-[trait object]: types/trait-object.html
-[attributes]: attributes.html
+[arrays]: ../types/array.md
+[function pointers]: ../types/function-pointer.md
+[references]: ../types/pointer.md#shared-references-
+[raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
+[`Clone`]: ../special-types-and-traits.md#clone
+[`Copy`]: ../special-types-and-traits.md#copy
+[`Sized`]: ../special-types-and-traits.md#sized
+[tuples]: ../types/tuple.md
+[trait object]: ../types/trait-object.md
+[attributes]: ../attributes.md

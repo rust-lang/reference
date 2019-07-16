@@ -13,4 +13,4 @@ unsigned bytes holding a sequence of UTF-8 code points. Since `str` is a
 instantiated through a pointer type, such as `&str`.
 
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
-[dynamically sized type]: dynamically-sized-types.html
+[dynamically sized type]: ../dynamically-sized-types.md

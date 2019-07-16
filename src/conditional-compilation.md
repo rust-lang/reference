@@ -310,19 +310,19 @@ let machine_kind = if cfg!(unix) {
 println!("I'm running on a {} machine!", machine_kind);
 ```
 
-[IDENTIFIER]: identifiers.html
-[RAW_STRING_LITERAL]: tokens.html#raw-string-literals
-[STRING_LITERAL]: tokens.html#string-literals
-[Testing]: attributes/testing.html
-[_Attr_]: attributes.html
-[`--cfg`]: ../rustc/command-line-arguments.html#a--cfg-configure-the-compilation-environment
-[`--test`]: ../rustc/command-line-arguments.html#a--test-build-a-test-harness
+[IDENTIFIER]: identifiers.md
+[RAW_STRING_LITERAL]: tokens.md#raw-string-literals
+[STRING_LITERAL]: tokens.md#string-literals
+[Testing]: attributes/testing.md
+[_Attr_]: attributes.md
+[`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
+[`--test`]: ../rustc/command-line-arguments.html#--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute
 [`cfg` macro]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
 [`debug_assert!`]: ../std/macro.debug_assert.html
-[`target_feature` attribute]: attributes/codegen.html#the-target_feature-attribute
-[attribute]: attributes.html
-[attributes]: attributes.html
-[crate type]: linkage.html
-[static C runtime]: linkage.html#static-and-dynamic-c-runtimes
+[`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
+[attribute]: attributes.md
+[attributes]: attributes.md
+[crate type]: linkage.md
+[static C runtime]: linkage.md#static-and-dynamic-c-runtimes

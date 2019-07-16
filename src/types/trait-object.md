@@ -104,11 +104,11 @@ need to be expressed as part of the trait object. This lifetime is written as
 `Trait + 'a`. There are [defaults] that allow this lifetime to usually be
 inferred with a sensible choice.
 
-[_TraitBound_]: trait-bounds.html
-[_TypeParamBounds_]: types.html#type-expressions
-[auto traits]: special-types-and-traits.html#auto-traits
-[defaults]: lifetime-elision.html#default-trait-object-lifetimes
-[dynamically sized types]: dynamically-sized-types.html
+[_TraitBound_]: ../trait-bounds.md
+[_TypeParamBounds_]: ../types.md#type-expressions
+[auto traits]: ../special-types-and-traits.md#auto-traits
+[defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
+[dynamically sized types]: ../dynamically-sized-types.md
 [issue 33140]: https://github.com/rust-lang/rust/issues/33140
-[object safe]: items/traits.html#object-safety
-[supertraits]: items/traits.html#supertraits
+[object safe]: ../items/traits.md#object-safety
+[supertraits]: ../items/traits.md#supertraits

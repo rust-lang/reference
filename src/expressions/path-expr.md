@@ -24,10 +24,10 @@ let push_integer = Vec::<i32>::push;
 let slice_reverse = <[i32]>::reverse;
 ```
 
-[_PathInExpression_]: paths.html#paths-in-expressions
-[_QualifiedPathInExpression_]: paths.html#qualified-paths
-[place expressions]: expressions.html#place-expressions-and-value-expressions
-[value expressions]: expressions.html#place-expressions-and-value-expressions
-[path]: paths.html
-[`static mut`]: items/static-items.html#mutable-statics
-[`unsafe` block]: expressions/block-expr.html#unsafe-blocks
+[_PathInExpression_]: ../paths.md#paths-in-expressions
+[_QualifiedPathInExpression_]: ../paths.md#qualified-paths
+[place expressions]: ../expressions.md#place-expressions-and-value-expressions
+[value expressions]: ../expressions.md#place-expressions-and-value-expressions
+[path]: ../paths.md
+[`static mut`]: ../items/static-items.md#mutable-statics
+[`unsafe` block]: block-expr.md#unsafe-blocks

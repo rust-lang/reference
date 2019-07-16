@@ -159,18 +159,18 @@ but is not limited to: process termination or corruption; improper, incorrect,
 or unintended computation; or platform-specific results.
 [More][undefined-behavior].
 
-[alignment]: type-layout.html#size-and-alignment
+[alignment]: type-layout.md#size-and-alignment
 [associated item]: #associated-item
-[enums]: items/enumerations.html
+[enums]: items/enumerations.md
 [free item]: #free-item
-[implementation]: items/implementations.html
-[implementations]: items/implementations.html
-[inherent implementation]: items/implementations.html#inherent-implementations
-[item]: items.html
-[method]: items/associated-items.html#methods
-[object safety]: items/traits.html#object-safety
-[structs]: items/structs.html
-[trait objects]: types/trait-object.html
-[traits]: items/traits.html
-[undefined-behavior]: behavior-considered-undefined.html
-[unions]: items/unions.html
+[implementation]: items/implementations.md
+[implementations]: items/implementations.md
+[inherent implementation]: items/implementations.md#inherent-implementations
+[item]: items.md
+[method]: items/associated-items.md#methods
+[object safety]: items/traits.md#object-safety
+[structs]: items/structs.md
+[trait objects]: types/trait-object.md
+[traits]: items/traits.md
+[undefined-behavior]: behavior-considered-undefined.md
+[unions]: items/unions.md

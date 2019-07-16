@@ -44,13 +44,13 @@ let bo: Binop = add;
 x = bo(5,7);
 ```
 
-[IDENTIFIER]: identifiers.html
-[_ForLifetimes_]: items/generics.html#where-clauses
-[_FunctionQualifiers_]: items/functions.html
-[_TypeNoBounds_]: types.html#type-expressions
-[_Type_]: types.html#type-expressions
-[`extern`]: items/external-blocks.html
-[closures]: types/closure.html
-[extern function]: items/functions.html#extern-functions
-[function items]: types/function-item.html
-[unsafe function]: unsafe-functions.html
+[IDENTIFIER]: ../identifiers.md
+[_ForLifetimes_]: ../items/generics.md#where-clauses
+[_FunctionQualifiers_]: ../items/functions.md
+[_TypeNoBounds_]: ../types.md#type-expressions
+[_Type_]: ../types.md#type-expressions
+[`extern`]: ../items/external-blocks.md
+[closures]: closure.md
+[extern function]: ../items/functions.md#extern-functions
+[function items]: function-item.md
+[unsafe function]: ../unsafe-functions.md

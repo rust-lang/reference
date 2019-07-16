@@ -165,13 +165,13 @@ Because captures are often by reference, the following general rules arise:
   unique immutable or mutable reference, and if all values it captures by copy
   or move are [`Clone`] or [`Copy`], respectively.
 
-[`Clone`]: special-types-and-traits.html#clone
-[`Copy`]: special-types-and-traits.html#copy
-[`FnMut`]: ../std/ops/trait.FnMut.html
-[`FnOnce`]: ../std/ops/trait.FnOnce.html
-[`Fn`]: ../std/ops/trait.Fn.html
-[`Send`]: special-types-and-traits.html#send
-[`Sized`]: special-types-and-traits.html#sized
-[`Sync`]: special-types-and-traits.html#sync
-[closure expression]: expressions/closure-expr.html
-[derived]: attributes/derive.html
+[`Clone`]: ../special-types-and-traits.md#clone
+[`Copy`]: ../special-types-and-traits.md#copy
+[`FnMut`]: ../../std/ops/trait.FnMut.html
+[`FnOnce`]: ../../std/ops/trait.FnOnce.html
+[`Fn`]: ../../std/ops/trait.Fn.html
+[`Send`]: ../special-types-and-traits.md#send
+[`Sized`]: ../special-types-and-traits.md#sized
+[`Sync`]: ../special-types-and-traits.md#sync
+[closure expression]: ../expressions/closure-expr.md
+[derived]: ../attributes/derive.md

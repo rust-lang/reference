@@ -49,9 +49,9 @@ also have their addition data compared.
 The standard library contains additional 'smart pointer' types beyond references
 and raw pointers.
 
-[Interior mutability]: interior-mutability.html
-[_Lifetime_]: trait-bounds.html
-[_TypeNoBounds_]: types.html#type-expressions
-[`unsafe` operation]: unsafety.html
-[dynamically sized types]: dynamically-sized-types.html
-[temporary value]: expressions.html#temporary-lifetimes
+[Interior mutability]: ../interior-mutability.md
+[_Lifetime_]: ../trait-bounds.md
+[_TypeNoBounds_]: ../types.md#type-expressions
+[`unsafe` operation]: ../unsafety.md
+[dynamically sized types]: ../dynamically-sized-types.md
+[temporary value]: ../expressions.md#temporary-lifetimes

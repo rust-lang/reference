@@ -472,24 +472,24 @@ expansions, taking separators into account. This means:
 For more detail, see the [formal specification].
 
 [Hygiene]: #hygiene
-[IDENTIFIER]: identifiers.html
-[IDENTIFIER_OR_KEYWORD]: identifiers.html
-[LIFETIME_TOKEN]: tokens.html#lifetimes-and-loop-labels
+[IDENTIFIER]: identifiers.md
+[IDENTIFIER_OR_KEYWORD]: identifiers.md
+[LIFETIME_TOKEN]: tokens.md#lifetimes-and-loop-labels
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
-[_BlockExpression_]: expressions/block-expr.html
-[_DelimTokenTree_]: macros.html
-[_Expression_]: expressions.html
-[_Item_]: items.html
-[_LiteralExpression_]: expressions/literal-expr.html
-[_MetaItem_]: attributes.html#meta-item-attribute-syntax
-[_MetaListIdents_]: attributes.html#meta-item-attribute-syntax
-[_Pattern_]: patterns.html
-[_Statement_]: statements.html
-[_TokenTree_]: macros.html#macro-invocation
-[_Token_]: tokens.html
-[_TypePath_]: paths.html#paths-in-types
-[_Type_]: types.html#type-expressions
-[_Visibility_]: visibility-and-privacy.html
-[formal specification]: macro-ambiguity.html
-[token]: tokens.html
+[_BlockExpression_]: expressions/block-expr.md
+[_DelimTokenTree_]: macros.md
+[_Expression_]: expressions.md
+[_Item_]: items.md
+[_LiteralExpression_]: expressions/literal-expr.md
+[_MetaItem_]: attributes.md#meta-item-attribute-syntax
+[_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
+[_Pattern_]: patterns.md
+[_Statement_]: statements.md
+[_TokenTree_]: macros.md#macro-invocation
+[_Token_]: tokens.md
+[_TypePath_]: paths.md#paths-in-types
+[_Type_]: types.md#type-expressions
+[_Visibility_]: visibility-and-privacy.md
+[formal specification]: macro-ambiguity.md
+[token]: tokens.md

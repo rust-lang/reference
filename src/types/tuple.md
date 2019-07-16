@@ -31,4 +31,4 @@ assert_eq!(p.1, "ten");
 For historical reasons and convenience, the tuple type with no elements (`()`)
 is often called ‘unit’ or ‘the unit type’.
 
-[_Type_]: types.html#type-expressions
+[_Type_]: ../types.md#type-expressions

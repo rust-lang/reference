@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup>
 
 Tuples are written by enclosing zero or more comma-separated expressions in
-parentheses. They are used to create [tuple-typed](types/tuple.html)
+parentheses. They are used to create [tuple-typed](../types/tuple.md)
 values.
 
 ```rust
@@ -39,9 +39,9 @@ expressions].
 > _TupleIndexingExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
 
-[Tuples](types/tuple.html) and [struct tuples](items/structs.html) can be
+[Tuples](../types/tuple.md) and [struct tuples](../items/structs.md) can be
 indexed using the number corresponding to the position of the field. The index
-must be written as a [decimal literal](tokens.html#integer-literals) with no
+must be written as a [decimal literal](../tokens.md#integer-literals) with no
 underscores or suffix. Tuple indexing expressions also differ from field
 expressions in that they can unambiguously be called as a function. In all
 other aspects they have the same behavior.
@@ -54,8 +54,8 @@ let unit_x = Point(1.0, 0.0);
 assert_eq!(unit_x.0, 1.0);
 ```
 
-[Inner attributes]: attributes.html
-[TUPLE_INDEX]: tokens.html#integer-literals
-[_Expression_]: expressions.html
-[_InnerAttribute_]: attributes.html
-[attributes on block expressions]: expressions/block-expr.html#attributes-on-block-expressions
+[Inner attributes]: ../attributes.md
+[TUPLE_INDEX]: ../tokens.md#integer-literals
+[_Expression_]: ../expressions.md
+[_InnerAttribute_]: ../attributes.md
+[attributes on block expressions]: block-expr.md#attributes-on-block-expressions

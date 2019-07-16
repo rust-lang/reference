@@ -281,76 +281,76 @@ They are never allowed before:
   [_AssignmentExpression_], [_CompoundAssignmentExpression_]).
 
 
-[block expressions]:    expressions/block-expr.html
-[call expressions]:     expressions/call-expr.html
-[enum variant]:         expressions/enum-variant-expr.html
-[field]:                expressions/field-expr.html
-[functional update]:    expressions/struct-expr.html#functional-update-syntax
-[`if let`]:             expressions/if-expr.html#if-let-expressions
-[match]:                expressions/match-expr.html
-[method-call]:          expressions/method-call-expr.html
-[paths]:                expressions/path-expr.html
-[struct]:               expressions/struct-expr.html
-[tuple expressions]:    expressions/tuple-expr.html
-[`while let`]:          expressions/loop-expr.html#predicate-pattern-loops
+[block expressions]:    expressions/block-expr.md
+[call expressions]:     expressions/call-expr.md
+[enum variant]:         expressions/enum-variant-expr.md
+[field]:                expressions/field-expr.md
+[functional update]:    expressions/struct-expr.md#functional-update-syntax
+[`if let`]:             expressions/if-expr.md#if-let-expressions
+[match]:                expressions/match-expr.md
+[method-call]:          expressions/method-call-expr.md
+[paths]:                expressions/path-expr.md
+[struct]:               expressions/struct-expr.md
+[tuple expressions]:    expressions/tuple-expr.md
+[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
 
-[array expressions]:    expressions/array-expr.html
-[array indexing]:       expressions/array-expr.html#array-and-slice-indexing-expressions
+[array expressions]:    expressions/array-expr.md
+[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 
-[assign]:               expressions/operator-expr.html#assignment-expressions
-[borrow]:               expressions/operator-expr.html#borrow-operators
-[comparison]:           expressions/operator-expr.html#comparison-operators
-[compound assignment]:  expressions/operator-expr.html#compound-assignment-expressions
-[deref]:                expressions/operator-expr.html#the-dereference-operator
+[assign]:               expressions/operator-expr.md#assignment-expressions
+[borrow]:               expressions/operator-expr.md#borrow-operators
+[comparison]:           expressions/operator-expr.md#comparison-operators
+[compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
+[deref]:                expressions/operator-expr.md#the-dereference-operator
 
-[destructors]:          destructors.html
-[interior mutability]:  interior-mutability.html
-[`Box<T>`]:             ../std/boxed/struct.Box.html
-[`Copy`]:               special-types-and-traits.html#copy
-[`Drop`]:               special-types-and-traits.html#drop
-[`Sized`]:              special-types-and-traits.html#sized
+[destructors]:          destructors.md
+[interior mutability]:  interior-mutability.md
+[`Box<T>`]:             ../std/boxed/struct.Box.md
+[`Copy`]:               special-types-and-traits.md#copy
+[`Drop`]:               special-types-and-traits.md#drop
+[`Sized`]:              special-types-and-traits.md#sized
 [implicit borrow]:      #implicit-borrows
 [implicitly mutably borrowed]: #implicit-borrows
-[let]:                  statements.html#let-statements
-[let statement]:        statements.html#let-statements
-[Mutable `static` items]: items/static-items.html#mutable-statics
-[scrutinee]:            glossary.html#scrutinee
-[slice]:                types/slice.html
-[statement]:            statements.html
-[static variables]:     items/static-items.html
+[let]:                  statements.md#let-statements
+[let statement]:        statements.md#let-statements
+[Mutable `static` items]: items/static-items.md#mutable-statics
+[scrutinee]:            glossary.md#scrutinee
+[slice]:                types/slice.md
+[statement]:            statements.md
+[static variables]:     items/static-items.md
 [Temporary values]:     #temporary-lifetimes
-[Variables]:            variables.html
+[Variables]:            variables.md
 
 
-[_ArithmeticOrLogicalExpression_]: expressions/operator-expr.html#arithmetic-and-logical-binary-operators
-[_ArrayExpression_]:              expressions/array-expr.html
-[_AssignmentExpression_]:         expressions/operator-expr.html#assignment-expressions
-[_BlockExpression_]:              expressions/block-expr.html
-[_BreakExpression_]:              expressions/loop-expr.html#break-expressions
-[_CallExpression_]:               expressions/call-expr.html
-[_ClosureExpression_]:            expressions/closure-expr.html
-[_ComparisonExpression_]:         expressions/operator-expr.html#comparison-operators
-[_CompoundAssignmentExpression_]: expressions/operator-expr.html#compound-assignment-expressions
-[_ContinueExpression_]:           expressions/loop-expr.html#continue-expressions
-[_EnumerationVariantExpression_]: expressions/enum-variant-expr.html
-[_FieldExpression_]:              expressions/field-expr.html
-[_GroupedExpression_]:            expressions/grouped-expr.html
-[_IfExpression_]:                 expressions/if-expr.html#if-expressions
-[_IfLetExpression_]:              expressions/if-expr.html#if-let-expressions
-[_IndexExpression_]:              expressions/array-expr.html#array-and-slice-indexing-expressions
-[_LazyBooleanExpression_]:        expressions/operator-expr.html#lazy-boolean-operators
-[_LiteralExpression_]:            expressions/literal-expr.html
-[_LoopExpression_]:               expressions/loop-expr.html
-[_MacroInvocation_]:              macros.html#macro-invocation
-[_MatchExpression_]:              expressions/match-expr.html
-[_MethodCallExpression_]:         expressions/method-call-expr.html
-[_OperatorExpression_]:           expressions/operator-expr.html
-[_OuterAttribute_]:               attributes.html
-[_PathExpression_]:               expressions/path-expr.html
-[_RangeExpression_]:              expressions/range-expr.html
-[_ReturnExpression_]:             expressions/return-expr.html
-[_StructExpression_]:             expressions/struct-expr.html
-[_TupleExpression_]:              expressions/tuple-expr.html
-[_TupleIndexingExpression_]:      expressions/tuple-expr.html#tuple-indexing-expressions
-[_TypeCastExpression_]:           expressions/operator-expr.html#type-cast-expressions
-[_UnsafeBlockExpression_]:        expressions/block-expr.html#unsafe-blocks
+[_ArithmeticOrLogicalExpression_]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[_ArrayExpression_]:              expressions/array-expr.md
+[_AssignmentExpression_]:         expressions/operator-expr.md#assignment-expressions
+[_BlockExpression_]:              expressions/block-expr.md
+[_BreakExpression_]:              expressions/loop-expr.md#break-expressions
+[_CallExpression_]:               expressions/call-expr.md
+[_ClosureExpression_]:            expressions/closure-expr.md
+[_ComparisonExpression_]:         expressions/operator-expr.md#comparison-operators
+[_CompoundAssignmentExpression_]: expressions/operator-expr.md#compound-assignment-expressions
+[_ContinueExpression_]:           expressions/loop-expr.md#continue-expressions
+[_EnumerationVariantExpression_]: expressions/enum-variant-expr.md
+[_FieldExpression_]:              expressions/field-expr.md
+[_GroupedExpression_]:            expressions/grouped-expr.md
+[_IfExpression_]:                 expressions/if-expr.md#if-expressions
+[_IfLetExpression_]:              expressions/if-expr.md#if-let-expressions
+[_IndexExpression_]:              expressions/array-expr.md#array-and-slice-indexing-expressions
+[_LazyBooleanExpression_]:        expressions/operator-expr.md#lazy-boolean-operators
+[_LiteralExpression_]:            expressions/literal-expr.md
+[_LoopExpression_]:               expressions/loop-expr.md
+[_MacroInvocation_]:              macros.md#macro-invocation
+[_MatchExpression_]:              expressions/match-expr.md
+[_MethodCallExpression_]:         expressions/method-call-expr.md
+[_OperatorExpression_]:           expressions/operator-expr.md
+[_OuterAttribute_]:               attributes.md
+[_PathExpression_]:               expressions/path-expr.md
+[_RangeExpression_]:              expressions/range-expr.md
+[_ReturnExpression_]:             expressions/return-expr.md
+[_StructExpression_]:             expressions/struct-expr.md
+[_TupleExpression_]:              expressions/tuple-expr.md
+[_TupleIndexingExpression_]:      expressions/tuple-expr.md#tuple-indexing-expressions
+[_TypeCastExpression_]:           expressions/operator-expr.md#type-cast-expressions
+[_UnsafeBlockExpression_]:        expressions/block-expr.md#unsafe-blocks

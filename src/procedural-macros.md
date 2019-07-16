@@ -269,25 +269,25 @@ fn invoke4() {}
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
 [`TokenStream`s]: ../proc_macro/struct.TokenStream.html
 [`compile_error`]: ../std/macro.compile_error.html
-[`derive` attribute]: attributes/derive.html
+[`derive` attribute]: attributes/derive.md
 [`proc_macro` crate]: ../proc_macro/index.html
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros
 [Attribute macros]: #attribute-macros
 [Function-like macros]: #function-like-procedural-macros
-[attribute]: attributes.html
-[attributes]: attributes.html
-[block]: expressions/block-expr.html
-[crate type]: linkage.html
+[attribute]: attributes.md
+[attributes]: attributes.md
+[block]: expressions/block-expr.md
+[crate type]: linkage.md
 [derive macro helper attributes]: #derive-macro-helper-attributes
-[enum]: items/enumerations.html
-[inert]: attributes.html#active-and-inert-attributes
-[item]: items.html
-[item declaration statements]: statements.html#item-declarations
-[items]: items.html
-[function]: items/functions.html
-[module]: items/modules.html
-[modules]: items/modules.html
-[public]: visibility-and-privacy.html
-[struct]: items/structs.html
-[union]: items/unions.html
+[enum]: items/enumerations.md
+[inert]: attributes.md#active-and-inert-attributes
+[item]: items.md
+[item declaration statements]: statements.md#item-declarations
+[items]: items.md
+[function]: items/functions.md
+[module]: items/modules.md
+[modules]: items/modules.md
+[public]: visibility-and-privacy.md
+[struct]: items/structs.md
+[union]: items/unions.md
