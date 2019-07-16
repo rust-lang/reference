@@ -150,7 +150,7 @@ expressions].
 [if]: if-expr.md#if-expressions
 [loop]: loop-expr.md
 [match]: match-expr.md
-[parentheses]: http://localhost:3000/expressions/grouped-expr.html
+[parentheses]: grouped-expr.md
 [struct]: ../items/structs.md
 [union]: ../items/unions.md
 [visible]: ../visibility-and-privacy.md
