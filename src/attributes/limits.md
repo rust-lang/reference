@@ -9,7 +9,7 @@ maximum depth for potentially infinitely-recursive compile-time operations
 like macro expansion or auto-dereference. It uses the [_MetaNameValueStr_]
 syntax to specify the recursion depth.
 
-> Note: The default in `rustc` is 64.
+> Note: The default in `rustc` is 128.
 
 ```rust,compile_fail
 #![recursion_limit = "4"]
