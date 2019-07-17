@@ -131,7 +131,7 @@ specifies the kind of library with the following possible values:
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
 
-The `name` key must be included if `kind` is specified. Depending on the target `name`
+The `name` key must be included if `kind` is specified. Depending on the target, `name`
 is interpreted as follows:
 
 - `*-pc-windows-msvc` — Refers to the base name of the static library `name.lib`,
