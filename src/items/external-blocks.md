@@ -145,11 +145,17 @@ not specified.
 
 <!-- ignore: requires extern linking -->
 ```rust,ignore
-// Links to `libcrypto.so` on Linux and the (`foo.lib`, `foo.dll`) pair
-// on windows-msvc. Note that if you wanted to import a `cdylib` produced by Rust
-// on `x86_64-pc-windows-msvc` you would have to link against `name = "crypto.dll"`
-// as Rust produces a (`foo.dll.lib`, `foo.dll`) pair.
+// Links to `libcrypto.so` on Linux, `libcrypto.dylib` on Mac, and the
+// (`crypto.lib`, `crypto.dll`) pair on windows-msvc.
 #[link(name = "crypto")]
+extern {
+    // …
+}
+
+// Note that if you wanted to import a `cdylib` produced by Rust on
+// `x86_64-pc-windows-msvc` you would have to link against `crypto.dll`
+// as Rust produces a (`crypto.dll.lib`, `crypto.dll`) pair on that target.
+#[link(name = "crypto.dll")]
 extern {
     // …
 }
