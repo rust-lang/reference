@@ -1,9 +1,14 @@
 ## Behavior considered undefined
 
-Rust code, including within `unsafe` blocks and `unsafe` functions is incorrect
-if it exhibits any of the behaviors in the following list. It is the
-programmer's responsibility when writing `unsafe` code that it is not possible
-to let `safe` code exhibit these behaviors.
+Rust code is incorrect if it exhibits any of the behaviors in the following
+list. This includes code within `unsafe` blocks and `unsafe` functions!
+`unsafe` is not an excuse to cause undefined behavior.
+
+It is the programmer's responsibility when writing `unsafe` code that it is not
+possible to let `safe` code exhibit these behaviors. `unsafe` code that
+satisfies this property for any `safe` client is called *sound*; if `unsafe`
+code can be misused by `safe` code to exhibit undefined behavior, it is
+*unsound*.
 
 <div class="warning">
 
