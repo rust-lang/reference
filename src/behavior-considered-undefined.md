@@ -6,11 +6,11 @@ list. This includes code within `unsafe` blocks and `unsafe` functions.
 does not change anything about the fact that Rust programs must never cause
 undefined behavior.
 
-It is the programmer's responsibility when writing `unsafe` code to ensure that it is not
-possible to let `safe` code exhibit these behaviors. `unsafe` code that
-satisfies this property for any safe client is called *sound*; if `unsafe`
-code can be misused by safe code to exhibit undefined behavior, it is
-*unsound*.
+It is the programmer's responsibility when writing `unsafe` code to ensure that
+any safe code interacting with the `unsafe` code cannot trigger these
+behaviors. `unsafe` code that satisfies this property for any safe client is
+called *sound*; if `unsafe` code can be misused by safe code to exhibit
+undefined behavior, it is *unsound*.
 
 <div class="warning">
 
