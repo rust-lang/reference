@@ -63,10 +63,15 @@ loop {
     moved = ShowOnDrop("Drops when moved");
     // drops now, but is then uninitialized
     moved;
+
+    // Uninitialized does not drop.
     let uninitialized: ShowOnDrop;
-    // Only first element drops
-    let mut partially_initialized: (ShowOnDrop, ShowOnDrop);
-    partially_initialized.0 = ShowOnDrop("Partial tuple first");
+
+    // After a partial move, only the remaining fields are dropped.
+    let mut partial_move = (ShowOnDrop("first"), ShowOnDrop("forgotten"));
+    // Perform a partial move, leaving only `partial_move.0` initialized.
+    core::mem::forget(partial_move.1);
+    // When partial_move's scope ends, only the first field is dropped.
 }
 ```
 
