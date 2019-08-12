@@ -16,7 +16,7 @@ that have since been removed):
 * Swift: optional bindings
 * Scheme: hygienic macros
 * C#: attributes
-* Ruby: <strike>block syntax</strike>
+* Ruby: closure syntax, <strike>block syntax</strike>
 * NIL, Hermes: <strike>typestate</strike>
 * [Unicode Annex #31](http://www.unicode.org/reports/tr31/): identifier and
   pattern syntax
