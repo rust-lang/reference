@@ -109,33 +109,69 @@ sufficient context to determine the type parameters. For example,
 
 ## Extern functions
 
-Extern functions are part of Rust's foreign function interface, providing the
-opposite functionality to [external blocks]. Whereas external
-blocks allow Rust code to call foreign code, extern functions with bodies
-defined in Rust code _can be called by foreign code_. They are defined in the
-same way as any other Rust function, except that they have the `extern`
-qualifier.
+Extern function _definitions_ allow defining functions that can be called 
+with a particular ABI:
+
+```rust,norun
+extern "ABI" fn foo() { ... }
+```
+
+An extern function _declaration_ via an [external block] can be used to
+provide an item for these functions that can be called by Rust code without
+providing their definition. 
+
+The default ABI of Rust functions like `fn foo() {}` is `"Rust"`. While we
+abbreviate the type of Rust functions like `foo` as `fn()`, this is actually a 
+synonym for `extern "Rust" fn()`. That is, this:
 
 ```rust
-// Declares an extern fn, the ABI defaults to "C"
-extern fn new_i32() -> i32 { 0 }
+fn foo() {}
+```
 
-// Declares an extern fn with "stdcall" ABI
+is identical to 
+
+```rust
+extern "Rust" fn foo() {}
+```
+
+Functions in Rust can be called by foreign code, and using an ABI that
+differs from Rust allows, for example, to provide functions that can be 
+called from other programming languages like C:
+
+```rust
+// Declares a function with the "C" ABI
+extern "C" fn new_i32() -> i32 { 0 }
+
+// Declares a function with the "stdcall" ABI
 # #[cfg(target_arch = "x86_64")]
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
-Unlike normal functions, extern fns have type `extern "ABI" fn()`. This is the
-same type as the functions declared in an extern block.
+Just as with [external block], when the `extern` keyword is used and the `"ABI` 
+is omitted, the ABI used defaults to `"C"`. That is, this
 
 ```rust
-# extern fn new_i32() -> i32 { 0 }
+extern fn new_i32() -> i32 { 0 }
+let fptr: extern fn() -> i32 = new_i32;
+```
+
+is identical to
+
+```rust
+extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-As non-Rust calling conventions do not support unwinding, unwinding past the end
-of an extern function will cause the process to abort. In LLVM, this is
+Since functions with an ABI that differs from `"Rust"` do not support 
+unwinding in the exact same way that Rust does, unwinding past the end 
+of functions with such ABIs causes the process to abort. In LLVM, this is
 implemented by executing an illegal instruction.
+
+Some ABIs that are identical to `"Rust"` are:
+
+* `"rust-call"`
+* `"platform-intrinsic"`
+* `"rust-intrinsic"`
 
 ## Const functions
 
