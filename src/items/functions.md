@@ -107,21 +107,28 @@ component after the function name. This might be necessary if there is not
 sufficient context to determine the type parameters. For example,
 `mem::size_of::<u32>() == 4`.
 
-## Extern functions
+## Extern function qualifier
 
-Extern function _definitions_ allow defining functions that can be called 
-with a particular ABI:
+The `extern` function qualifier allows providing function _definitions_ that can
+be called with a particular ABI:
 
 ```rust,ignore
 extern "ABI" fn foo() { ... }
 ```
 
-An extern function _declaration_ via an [external block] can be used to
-provide an item for these functions that can be called by Rust code without
-providing their definition. 
+These are often used in combination with [external block] items which provide
+function _declarations_ that can be used to call functions without providing
+their _definition_:
 
-When `"extern" Abi?*` is omitted from `FunctionQualifiers`, the ABI `"Rust"` is
-assigned. For example: 
+```rust,ignore
+extern "ABI" {
+  fn foo(); /* no body */
+}
+unsafe { foo() }
+```
+
+When `"extern" Abi?*` is omitted from `FunctionQualifiers` in function items,
+the ABI `"Rust"` is assigned. For example:
 
 ```rust
 fn foo() {}
