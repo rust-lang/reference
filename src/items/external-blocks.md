@@ -34,7 +34,7 @@ current crate and are the basis of Rust's foreign function interface. Using
 items declared in external blocks is `unsafe`.
 
 Two kind of item _declarations_ are allowed in external blocks:
-[functions](function.md) and [statics](static-items.md).
+[functions] and [statics].
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
@@ -170,6 +170,8 @@ extern {
 
 [IDENTIFIER]: ../identifiers.md
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
+[functions]: functions.md
+[statics]: static-items.md
 [_Abi_]: functions.md
 [_FunctionReturnType_]: functions.md
 [_Generics_]: generics.md

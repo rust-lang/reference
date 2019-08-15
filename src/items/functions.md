@@ -176,13 +176,10 @@ with such ABIs causes the process to abort.
 aborts the process by executing an illegal instruction.
 
 **Non-normative note**: There are other ABIs available in unstable Rust that are
-equivalent to the `"Rust"` ABI, e.g.,
-[`"rust-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/intrinsics.html?highlight=rust-intrin#intrinsics)
-or
-[`"platform-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/platform-intrinsics.html).
-For more information about these refer to the [ABI section of external block
-items][external-blocks.md#ABI] and the [Unstable
-Book](https://doc.rust-lang.org/unstable-book).
+equivalent to the `"Rust"` ABI, e.g., [`"rust-intrinsic"`][rust_intrinsic] or
+[`"platform-intrinsic"`][platform_intrinsic]. For more information about these
+refer to the [ABI section of external block items][external_block_abi] and the
+[Unstable Book].
 
 ## Const functions
 
@@ -290,3 +287,7 @@ attributes macros.
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
+[external_block_abi]: external-blocks.md#abi
+[Unstable Book]: https://doc.rust-lang.org/unstable-book
+[rust_intrinsic]: https://doc.rust-lang.org/unstable-book/language-features/intrinsics.html?highlight=rust-intrin#intrinsics
+[platform_intrinsic]: https://doc.rust-lang.org/unstable-book/language-features/platform-intrinsics.html

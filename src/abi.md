@@ -88,7 +88,7 @@ pub fn name_in_rust() { }
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
-[extern functions]: items/functions.md#extern-functions
+[extern functions]: items/functions.md#extern-function-qualifier
 [external blocks]: items/external-blocks.md
 [function]: items/functions.md
 [item]: items.md
