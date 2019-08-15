@@ -112,7 +112,7 @@ sufficient context to determine the type parameters. For example,
 Extern function _definitions_ allow defining functions that can be called 
 with a particular ABI:
 
-```rust,norun
+```rust,no_run
 extern "ABI" fn foo() { ... }
 ```
 
@@ -120,15 +120,14 @@ An extern function _declaration_ via an [external block] can be used to
 provide an item for these functions that can be called by Rust code without
 providing their definition. 
 
-The default ABI of Rust functions like `fn foo() {}` is `"Rust"`. While we
-abbreviate the type of Rust functions like `foo` as `fn()`, this is actually a 
-synonym for `extern "Rust" fn()`. That is, this:
+When `"extern" Abi?*` is omitted from `FunctionQualifiers`, the ABI `"Rust"` is
+assigned. For example: 
 
 ```rust
 fn foo() {}
 ```
 
-is identical to 
+is equivalent to:
 
 ```rust
 extern "Rust" fn foo() {}
@@ -148,30 +147,34 @@ extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
 Just as with [external block], when the `extern` keyword is used and the `"ABI` 
-is omitted, the ABI used defaults to `"C"`. That is, this
+is omitted, the ABI used defaults to `"C"`. That is, this:
 
 ```rust
 extern fn new_i32() -> i32 { 0 }
 let fptr: extern fn() -> i32 = new_i32;
 ```
 
-is identical to
+is equivalent to:
 
 ```rust
 extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-Since functions with an ABI that differs from `"Rust"` do not support 
-unwinding in the exact same way that Rust does, unwinding past the end 
-of functions with such ABIs causes the process to abort. In LLVM, this is
-implemented by executing an illegal instruction.
+Functions with an ABI that differs from `"Rust"` do not support unwinding in the
+exact same way that Rust does. Therefore, unwinding past the end of functions
+with such ABIs causes the process to abort.
 
-Some ABIs that are identical to `"Rust"` are:
+**Non-normative note**: The LLVM backend of the current Rust implementation
+aborts the process by executing an illegal instruction.
 
-* `"rust-call"`
-* `"platform-intrinsic"`
-* `"rust-intrinsic"`
+**Non-normative note**: There are other ABIs available in unstable Rust that are
+equivalent to the `"Rust"` ABI, e.g.,
+[`"rust-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/intrinsics.html?highlight=rust-intrin#intrinsics)
+or
+[`"platform-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/platform-intrinsics.html).
+Refer to the [Unstable Book](https://doc.rust-lang.org/unstable-book) for more
+information about these.
 
 ## Const functions
 
