@@ -30,8 +30,7 @@
 > &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
 
 External blocks form the basis for Rust's foreign function interface.
-Declarations in an external block describe symbols in external, non-Rust
-libraries.
+Declarations in an external block describe symbols in external libraries.
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
