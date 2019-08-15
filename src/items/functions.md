@@ -172,7 +172,7 @@ Functions with an ABI that differs from `"Rust"` do not support unwinding in the
 exact same way that Rust does. Therefore, unwinding past the end of functions
 with such ABIs causes the process to abort.
 
-**Non-normative note**: The LLVM backend of the current Rust implementation
+> **Note**: The LLVM backend of the `rustc` implementation
 aborts the process by executing an illegal instruction.
 
 ## Const functions
