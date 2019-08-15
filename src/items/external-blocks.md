@@ -31,7 +31,7 @@
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. Using
-items declared in external blocks is `unsafe`.
+items declared in external blocks is only allowed in an `unsafe` context.
 
 Two kind of item _declarations_ are allowed in external blocks:
 [functions] and [statics].
