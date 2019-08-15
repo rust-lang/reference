@@ -30,11 +30,12 @@
 > &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
 
 External blocks provide _declarations_ of items that are not _defined_ in the
-current crate and are the basis of Rust's foreign function interface. Using
-items declared in external blocks is only allowed in an `unsafe` context.
+current crate and are the basis of Rust's foreign function interface. These are
+sort of like unchecked imports. 
 
-Two kind of item _declarations_ are allowed in external blocks:
-[functions] and [statics].
+Two kind of item _declarations_ are allowed in external blocks: [functions] and
+[statics]. Calling functions or accessing statics that are declared in external
+blocks is only allowed in an `unsafe` context.
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
