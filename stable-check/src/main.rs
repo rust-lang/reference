@@ -20,7 +20,7 @@ fn main() {
     }
 }
 
-fn check_directory(dir: &Path) -> Result<(), Box<Error>> {
+fn check_directory(dir: &Path) -> Result<(), Box<dyn Error>> {
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
