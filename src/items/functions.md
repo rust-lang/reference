@@ -175,12 +175,6 @@ with such ABIs causes the process to abort.
 **Non-normative note**: The LLVM backend of the current Rust implementation
 aborts the process by executing an illegal instruction.
 
-**Non-normative note**: There are other ABIs available in unstable Rust that are
-equivalent to the `"Rust"` ABI, e.g., [`"rust-intrinsic"`][rust_intrinsic] or
-[`"platform-intrinsic"`][platform_intrinsic]. For more information about these
-refer to the [ABI section of external block items][external_block_abi] and the
-[Unstable Book].
-
 ## Const functions
 
 Functions qualified with the `const` keyword are const functions. _Const
