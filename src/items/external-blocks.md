@@ -29,8 +29,12 @@
 > _NamedFunctionParametersWithVariadics_ :\
 > &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
 
-External blocks form the basis for Rust's foreign function interface.
-Declarations in an external block describe symbols in external libraries.
+External blocks provide _declarations_ of items that are not _defined_ in the
+current crate and are the basis of Rust's foreign function interface. Using
+items declared in external blocks is `unsafe`.
+
+Two kind of item _declarations_ are allowed in external blocks:
+[functions](function.md) and [statics](static-items.md).
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
@@ -47,6 +51,8 @@ extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
 are its lifetime parameters, `A1`, ..., `An` are the declared types of its
 parameters and `R` is the declared return type.
 
+Statics within external blocks are declared in the same way as other Rust statics,
+with the exception that they may not have an expression initializing their value.
 It is `unsafe` to access a static item declared in an extern block, whether or
 not it's mutable.
 
