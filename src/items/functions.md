@@ -112,7 +112,7 @@ sufficient context to determine the type parameters. For example,
 Extern function _definitions_ allow defining functions that can be called 
 with a particular ABI:
 
-```rust,no_run
+```rust,ignore
 extern "ABI" fn foo() { ... }
 ```
 
@@ -173,8 +173,9 @@ equivalent to the `"Rust"` ABI, e.g.,
 [`"rust-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/intrinsics.html?highlight=rust-intrin#intrinsics)
 or
 [`"platform-intrinsic"`](https://doc.rust-lang.org/unstable-book/language-features/platform-intrinsics.html).
-Refer to the [Unstable Book](https://doc.rust-lang.org/unstable-book) for more
-information about these.
+For more information about these refer to the [ABI section of external block
+items][external-blocks.md#ABI] and the [Unstable
+Book](https://doc.rust-lang.org/unstable-book).
 
 ## Const functions
 

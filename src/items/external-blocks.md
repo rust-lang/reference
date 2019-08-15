@@ -85,12 +85,12 @@ There are also some platform-specific ABI strings:
 * `extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
   `__vectorcall` and clang's `__attribute__((vectorcall))`
 
-Finally, there are some rustc-specific ABI strings:
+Finally, there are some unstable rustc-specific ABI strings:
 
-* `extern "rust-intrinsic"` -- The ABI of rustc intrinsics.
-* `extern "rust-call"` -- The ABI of the Fn::call trait functions.
-* `extern "platform-intrinsic"` -- Specific platform intrinsics -- like, for
-  example, `sqrt` -- have this ABI. You should never have to deal with it.
+* `extern "rust-intrinsic"` -- The ABI of rustc intrinsics, equivalent to `"Rust"`.
+* `extern "rust-call"` -- The ABI of the Fn::call trait functions, equivalent to `"Rust"`.
+* `extern "platform-intrinsic"` -- The ABI of Specific platform intrinsics, equivalent to `"Rust"` -- like, for
+  example, `sqrt` -- equivalent to `"Rust"`. You should never have to deal with it.
 
 ## Variadic functions
 
