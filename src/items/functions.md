@@ -282,6 +282,3 @@ attributes macros.
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
 [external_block_abi]: external-blocks.md#abi
-[Unstable Book]: https://doc.rust-lang.org/unstable-book
-[rust_intrinsic]: https://doc.rust-lang.org/unstable-book/language-features/intrinsics.html?highlight=rust-intrin#intrinsics
-[platform_intrinsic]: https://doc.rust-lang.org/unstable-book/language-features/platform-intrinsics.html
