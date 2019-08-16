@@ -155,10 +155,8 @@ dyn Bar<
 
 **Note:** As of this writing, the rules for associated type bindings
 are implemented incompletely, and explicit bounds may sometimes be
-required when they ought not to be. See [rust-lang/rust#63618][] for
+required when they ought not to be. See [rust-lang/rust#63618] for
 more details.
-
-[rust-lang/rust#63618]: https://github.com/rust-lang/rust/issues/63618
 
 ## `'static` lifetime elision
 
@@ -206,5 +204,6 @@ const RESOLVED_STATIC: &dyn Fn(&Foo, &Bar) -> &Baz = ..
 [function pointer]: types/function-pointer.html
 [RFC 599]: https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
+[rust-lang/rust#63618]: https://github.com/rust-lang/rust/issues/63618
 [static]: items/static-items.html
 [trait object]: types/trait-object.html
