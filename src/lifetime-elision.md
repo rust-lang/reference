@@ -71,9 +71,17 @@ rules.
 If the trait object is used as a type argument of a generic type then the
 containing type is first used to try to infer a bound.
 
-* If there is a unique bound from the containing type then that is the default
+* If there is a unique bound from the containing type then that is the default.
 * If there is more than one bound from the containing type then an explicit
-  bound must be specified
+  bound must be specified.
+
+If the trait object is used as a binding for an associated type (e.g.,
+`Item = dyn Trait`) then the containing trait is first used to try to
+infer a bound, in an analogous way to type arguments:
+
+* If there is a unique bound from the containing type then that is the default.
+* If there is more than one bound from the containing type then an explicit
+  bound must be specified.
 
 If neither of those rules apply, then the bounds on the trait are used:
 
@@ -128,6 +136,29 @@ impl<'a> dyn Foo<'a> + 'a {}
 struct TwoBounds<'a, 'b, T: ?Sized + 'a + 'b>
 TwoBounds<'a, 'b, dyn Foo<'c>>
 ```
+
+Here is an example featuring associated type bindings:
+
+```rust,ignore
+trait Bar<'a> {
+  type Item1: ?Sized;
+  type Item2: ?Sized + 'a;
+}
+trait Baz { }
+
+dyn Bar<
+  'x
+  Item1 = dyn Baz, // defaults to `dyn Baz + 'static`
+  Item2 = dyn Baz, // defaults to 'dyn Baz + `x`
+> 
+```
+
+**Note:** As of this writing, the rules for associated type bindings
+are implemented incompletely, and explicit bounds may sometimes be
+required when they ought not to be. See [rust-lang/rust#63618][] for
+more details.
+
+[rust-lang/rust#63618]: https://github.com/rust-lang/rust/issues/63618
 
 ## `'static` lifetime elision
 
