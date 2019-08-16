@@ -154,7 +154,7 @@ dyn Bar<
 ```
 
 **Note:** As of this writing, the rules for associated type bindings
-are incompletely implemented, and explicit bounds may sometimes be
+are implemented incompletely, and explicit bounds may sometimes be
 required when they ought not to be. See [rust-lang/rust#63618][] for
 more details.
 
