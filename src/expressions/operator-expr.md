@@ -384,7 +384,7 @@ same trait object.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
 
-\* if integer-to-float casts with this rounding ode and overflow behavior are
+\* if integer-to-float casts with this rounding mode and overflow behavior are
 not supported natively by the hardware, these casts will likely be slower than
 expected.
 
