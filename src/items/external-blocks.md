@@ -53,7 +53,7 @@ are its lifetime parameters, `A1`, ..., `An` are the declared types of its
 parameters and `R` is the declared return type.
 
 Statics within external blocks are declared in the same way as statics outside of external blocks,
-with the exception that they may not have an expression initializing their value.
+except that they do not have an expression initializing their value.
 It is `unsafe` to access a static item declared in an extern block, whether or
 not it's mutable.
 
