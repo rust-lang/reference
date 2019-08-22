@@ -107,35 +107,73 @@ component after the function name. This might be necessary if there is not
 sufficient context to determine the type parameters. For example,
 `mem::size_of::<u32>() == 4`.
 
-## Extern functions
+## Extern function qualifier
 
-Extern functions are part of Rust's foreign function interface, providing the
-opposite functionality to [external blocks]. Whereas external
-blocks allow Rust code to call foreign code, extern functions with bodies
-defined in Rust code _can be called by foreign code_. They are defined in the
-same way as any other Rust function, except that they have the `extern`
-qualifier.
+The `extern` function qualifier allows providing function _definitions_ that can
+be called with a particular ABI:
+
+```rust,ignore
+extern "ABI" fn foo() { ... }
+```
+
+These are often used in combination with [external block] items which provide
+function _declarations_ that can be used to call functions without providing
+their _definition_:
+
+```rust,ignore
+extern "ABI" {
+  fn foo(); /* no body */
+}
+unsafe { foo() }
+```
+
+When `"extern" Abi?*` is omitted from `FunctionQualifiers` in function items,
+the ABI `"Rust"` is assigned. For example:
 
 ```rust
-// Declares an extern fn, the ABI defaults to "C"
-extern fn new_i32() -> i32 { 0 }
+fn foo() {}
+```
 
-// Declares an extern fn with "stdcall" ABI
+is equivalent to:
+
+```rust
+extern "Rust" fn foo() {}
+```
+
+Functions in Rust can be called by foreign code, and using an ABI that
+differs from Rust allows, for example, to provide functions that can be 
+called from other programming languages like C:
+
+```rust
+// Declares a function with the "C" ABI
+extern "C" fn new_i32() -> i32 { 0 }
+
+// Declares a function with the "stdcall" ABI
 # #[cfg(target_arch = "x86_64")]
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
-Unlike normal functions, extern fns have type `extern "ABI" fn()`. This is the
-same type as the functions declared in an extern block.
+Just as with [external block], when the `extern` keyword is used and the `"ABI` 
+is omitted, the ABI used defaults to `"C"`. That is, this:
 
 ```rust
-# extern fn new_i32() -> i32 { 0 }
+extern fn new_i32() -> i32 { 0 }
+let fptr: extern fn() -> i32 = new_i32;
+```
+
+is equivalent to:
+
+```rust
+extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-As non-Rust calling conventions do not support unwinding, unwinding past the end
-of an extern function will cause the process to abort. In LLVM, this is
-implemented by executing an illegal instruction.
+Functions with an ABI that differs from `"Rust"` do not support unwinding in the
+exact same way that Rust does. Therefore, unwinding past the end of functions
+with such ABIs causes the process to abort.
+
+> **Note**: The LLVM backend of the `rustc` implementation
+aborts the process by executing an illegal instruction.
 
 ## Const functions
 
@@ -243,3 +281,4 @@ attributes macros.
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
+[external_block_abi]: external-blocks.md#abi

@@ -29,9 +29,13 @@
 > _NamedFunctionParametersWithVariadics_ :\
 > &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
 
-External blocks form the basis for Rust's foreign function interface.
-Declarations in an external block describe symbols in external, non-Rust
-libraries.
+External blocks provide _declarations_ of items that are not _defined_ in the
+current crate and are the basis of Rust's foreign function interface. These are
+akin to unchecked imports. 
+
+Two kind of item _declarations_ are allowed in external blocks: [functions] and
+[statics]. Calling functions or accessing statics that are declared in external
+blocks is only allowed in an `unsafe` context.
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
@@ -48,6 +52,8 @@ extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
 are its lifetime parameters, `A1`, ..., `An` are the declared types of its
 parameters and `R` is the declared return type.
 
+Statics within external blocks are declared in the same way as statics outside of external blocks,
+except that they do not have an expression initializing their value.
 It is `unsafe` to access a static item declared in an extern block, whether or
 not it's mutable.
 
@@ -84,13 +90,6 @@ There are also some platform-specific ABI strings:
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
 * `extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
   `__vectorcall` and clang's `__attribute__((vectorcall))`
-
-Finally, there are some rustc-specific ABI strings:
-
-* `extern "rust-intrinsic"` -- The ABI of rustc intrinsics.
-* `extern "rust-call"` -- The ABI of the Fn::call trait functions.
-* `extern "platform-intrinsic"` -- Specific platform intrinsics -- like, for
-  example, `sqrt` -- have this ABI. You should never have to deal with it.
 
 ## Variadic functions
 
@@ -165,6 +164,8 @@ extern {
 
 [IDENTIFIER]: ../identifiers.md
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
+[functions]: functions.md
+[statics]: static-items.md
 [_Abi_]: functions.md
 [_FunctionReturnType_]: functions.md
 [_Generics_]: generics.md

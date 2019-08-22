@@ -51,6 +51,6 @@ x = bo(5,7);
 [_Type_]: ../types.md#type-expressions
 [`extern`]: ../items/external-blocks.md
 [closures]: closure.md
-[extern function]: ../items/functions.md#extern-functions
+[extern function]: ../items/functions.md#extern-function-qualifier
 [function items]: function-item.md
 [unsafe function]: ../unsafe-functions.md
