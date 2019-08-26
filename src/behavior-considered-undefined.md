@@ -27,7 +27,7 @@ code.
 * Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
   [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
 * Mutating non-mutable data (that is, data reached through a shared
-  reference or data owned by a `let` binding), unless that data is contained
+  reference or data owned by an immutable binding), unless that data is contained
   within an [`UnsafeCell<U>`].
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
