@@ -42,15 +42,15 @@ code.
   * A null `fn` pointer.
   * A value in a `char` which is a surrogate or above `char::MAX`.
   * A `!` (all values are invalid for this type).
-  * A dangling or unaligned reference or `Box`, or one that points to an invalid value.
-  * Invalid metadata in a wide reference, `Box` or raw pointer:
-    * slice metadata is invalid if the slice has a total size larger than
-      `isize::MAX` bytes in memory.
-    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
-      `Trait` that matches the actual dynamic trait the reference points to.
-  * Non-UTF-8 byte sequences in a `str`.
   * [Uninitialized memory][undef] in the value of an integer (`i*`/`u*`),
     floating point value (`f*`), or raw pointer.
+  * A dangling or unaligned reference or `Box`, or one that points to an invalid value.
+  * Invalid metadata in a wide reference, `Box`, or raw pointer:
+    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
+      `Trait` that matches the actual dynamic trait the reference points to.
+    * Slice metadata is invalid if if the length is not a valid `usize`
+      (i.e., it must not be read from uninitialized memory).
+  * Non-UTF-8 byte sequences in a `str`.
   * Invalid values for a type with a custom definition of invalid values, such
     as a `NonNull` that is null. (Requesting custom invalid values is an
     unstable feature, but some stable libstd types, like `NonNull`, make use of
@@ -68,7 +68,8 @@ part of *some* allocation). The span of bytes it points to is determined by the
 pointer value and the size of the pointee type. As a consequence, if the span is
 empty, "dangling" is the same as "non-null". Note that slices point to their
 entire range, so it is very important that the length metadata is never too
-large.
+large. In particular, allocations and therefore slices cannot be bigger than
+`isize::MAX` bytes.
 
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
