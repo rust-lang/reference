@@ -34,8 +34,9 @@ code.
   does not support (see [`target_feature`]).
 * Unwinding into another language.
 * Producing an invalid value, even in private fields and locals. "Producing" a
-  value happens any time a value is assigned, passed to a function/primitive
-  operation or returned from a function/primitive operation.
+  value happens any time a value is assigned to or read from a place, passed to
+  a function/primitive operation or returned from a function/primitive
+  operation.
   The following values are invalid (at their respective type):
   * A value other than `false` (`0`) or `true` (`1`) in a `bool`.
   * A discriminant in an `enum` not included in the type definition.
@@ -45,7 +46,7 @@ code.
   * [Uninitialized memory][undef] in the value of an integer (`i*`/`u*`),
     floating point value (`f*`), or raw pointer.
   * A reference or `Box<T>` that is dangling, unaligned, or points to an invalid value.
-  * Invalid metadata in a wide reference, `Box`, or raw pointer:
+  * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
     * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
       `Trait` that matches the actual dynamic trait the pointer or reference points to.
     * Slice metadata is invalid if if the length is not a valid `usize`
