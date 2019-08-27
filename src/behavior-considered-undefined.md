@@ -32,7 +32,7 @@ code.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]).
-* Unwinding into another language.
+* Calling a function with the wrong call ABI (including unwind ABI).
 * Producing an invalid value, even in private fields and locals. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
