@@ -57,12 +57,6 @@ code.
     > **Note**: For `rustc`, those types are [`NonNull<T>`] and [`NonZero*`].
     > Requesting custom invalid types requires the unstable `rustc_layout_scalar_valid_range_*` attributes.
 
-> **Note**: Undefined behavior affects the entire program. For example, calling
-> a function in C that exhibits undefined behavior of C means your entire
-> program contains undefined behaviour that can also affect the Rust code. And
-> vice versa, undefined behavior in Rust can cause adverse affects on code
-> executed by any FFI calls to other languages.
-
 A reference/pointer is "dangling" if it is null or not all of the bytes it
 points to are part of the same allocation (so in particular they all have to be
 part of *some* allocation). The span of bytes it points to is determined by the
@@ -71,6 +65,12 @@ empty, "dangling" is the same as "non-null". Note that slices point to their
 entire range, so it is important that the length metadata is never too
 large. In particular, allocations and therefore slices cannot be bigger than
 `isize::MAX` bytes.
+
+> **Note**: Undefined behavior affects the entire program. For example, calling
+> a function in C that exhibits undefined behavior of C means your entire
+> program contains undefined behaviour that can also affect the Rust code. And
+> vice versa, undefined behavior in Rust can cause adverse affects on code
+> executed by any FFI calls to other languages.
 
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
