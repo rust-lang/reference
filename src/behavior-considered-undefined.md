@@ -52,10 +52,10 @@ code.
     * Slice metadata is invalid if if the length is not a valid `usize`
       (i.e., it must not be read from uninitialized memory).
   * Non-UTF-8 byte sequences in a `str`.
-  * Invalid values for a type with a custom definition of invalid values, such
-    as a `NonNull<T>` that is null. (Requesting custom invalid values is an
-    unstable feature, but some stable libstd types, like `NonNull`, make use of
-    it.)
+  * Invalid values for a type with a custom definition of invalid values.
+
+    > **Note**: For `rustc`, those types are [`NonNull<T>`] and [`NonZero*`].
+    > Requesting custom invalid types requires the unstable `rustc_layout_scalar_valid_range_*` attributes.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
 > a function in C that exhibits undefined behavior of C means your entire
@@ -78,3 +78,5 @@ large. In particular, allocations and therefore slices cannot be bigger than
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
 [Rustonomicon]: ../nomicon/index.html
+[`NonNull<T>`]: ../core/ptr/struct.NonNull.html
+[`NonZero*`]: ../core/num/index.html
