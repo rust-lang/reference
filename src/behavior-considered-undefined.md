@@ -55,8 +55,8 @@ code.
   * Invalid values for a type with a custom definition of invalid values.
     In the standard library, this affects [`NonNull<T>`] and [`NonZero*`].
 
-    > **Note**: For `rustc`, requesting custom invalid values requires the
-    > unstable `rustc_layout_scalar_valid_range_*` attributes.
+    > **Note**: `rustc` achieves this with the unstable
+    > `rustc_layout_scalar_valid_range_*` attributes.
 
 A reference/pointer is "dangling" if it is null or not all of the bytes it
 points to are part of the same allocation (so in particular they all have to be
