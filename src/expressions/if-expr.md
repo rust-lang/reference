@@ -53,10 +53,11 @@ assert_eq!(y, "Bigger");
 
 An `if let` expression is semantically similar to an `if` expression but in
 place of a condition expression it expects the keyword `let` followed by a
-pattern, an `=` and a [scrutinee] expression. If the value of the scrutinee
-matches the pattern, the corresponding block will execute. Otherwise, flow
-proceeds to the following `else` block if it exists. Like `if` expressions,
-`if let` expressions have a value determined by the block that is evaluated.
+refutable or irrefutable pattern, an `=` and a [scrutinee] expression. If the
+value of the scrutinee matches the pattern, the corresponding block will
+execute. Otherwise, flow proceeds to the following `else` block if it
+exists. Like `if` expressions, `if let` expressions have a value determined
+by the block that is evaluated.
 
 ```rust
 let dish = ("Ham", "Eggs");

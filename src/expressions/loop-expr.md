@@ -71,11 +71,11 @@ while i < 10 {
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
-condition expression it expects the keyword `let` followed by a pattern, an
-`=`, a [scrutinee] expression and a block expression. If the value of the
-scrutinee matches the pattern, the loop body block executes then control
-returns to the pattern matching statement. Otherwise, the while expression
-completes.
+condition expression it expects the keyword `let` followed by a refutable or
+irrefutable pattern, an `=`, a [scrutinee] expression and a block expression.
+If the value of the scrutinee matches the pattern, the loop body block executes
+then control returns to the pattern matching statement. Otherwise, the while
+expression completes.
 
 ```rust
 let mut x = vec![1, 2, 3];
@@ -130,9 +130,9 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 
 A `for` expression is a syntactic construct for looping over elements provided
 by an implementation of `std::iter::IntoIterator`. If the iterator yields a
-value, that value is given the specified name and the body of the loop is
-executed, then control returns to the head of the `for` loop. If the iterator
-is empty, the `for` expression completes.
+value, that value is assigned to the irrefutable pattern, the body of the
+loop is executed and then control returns to the head of the `for` loop. If the
+iterator is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
