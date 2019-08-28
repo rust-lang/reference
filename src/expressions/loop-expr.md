@@ -284,7 +284,7 @@ expression `()`.
 
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 [_BlockExpression_]: block-expr.md
-[_Expression_]: ../     expressions.md
+[_Expression_]: ../expressions.md
 [_MatchArmPatterns_]: match-expr.md
 [_Pattern_]: ../patterns.md
 [`match` expression]: match-expr.md
