@@ -26,7 +26,7 @@ code.
 * Dereferencing (using the `*` operator on) a dangling or unaligned raw pointer.
 * Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
   [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
-* Mutating immutable data. All data inside a `const` is immutable. Moreover, all
+* Mutating immutable data. All data inside a [`const`] item is immutable. Moreover, all
   data reached through a shared reference or data owned by an immutable binding
   is immutable, unless that data is contained within an [`UnsafeCell<U>`].
 * Invoking undefined behavior via compiler intrinsics.
@@ -73,6 +73,7 @@ large. In particular, allocations and therefore slices cannot be bigger than
 > vice versa, undefined behavior in Rust can cause adverse affects on code
 > executed by any FFI calls to other languages.
 
+[`const`]: items/constant-items.html
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
