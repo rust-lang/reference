@@ -26,9 +26,9 @@ code.
 * Dereferencing (using the `*` operator on) a dangling or unaligned raw pointer.
 * Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
   [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
-* Mutating non-mutable data (that is, data reached through a shared
-  reference or data owned by an immutable binding), unless that data is contained
-  within an [`UnsafeCell<U>`].
+* Mutating immutable data. All data inside a `const` is immutable. Moreover, all
+  data reached through a shared reference or data owned by an immutable binding
+  is immutable, unless that data is contained within an [`UnsafeCell<U>`].
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]).
