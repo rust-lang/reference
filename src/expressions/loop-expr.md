@@ -130,9 +130,9 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 
 A `for` expression is a syntactic construct for looping over elements provided
 by an implementation of `std::iter::IntoIterator`. If the iterator yields a
-value, that value is given the specified name and the body of the loop is
-executed, then control returns to the head of the `for` loop. If the iterator
-is empty, the `for` expression completes.
+value, that value is matched against the irrefutable pattern, the body of the
+loop is executed, and then control returns to the head of the `for` loop. If the
+iterator is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
