@@ -49,14 +49,6 @@ if the sets of auto traits are the same and the lifetime bounds are the same.
 For example, `dyn Trait + Send + UnwindSafe` is the same as
 `dyn Trait + Unwindsafe + Send`.
 
-<div class="warning">
-
-***Warning:*** With two trait object types, even when the complete set of traits
-is the same, if the base traits differ, the type is different. For example,
-`dyn Send + Sync` is a different type from `dyn Sync + Send`. See [issue 33140].
-
-</div>
-
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
 <abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
@@ -109,6 +101,5 @@ inferred with a sensible choice.
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
 [dynamically sized types]: ../dynamically-sized-types.md
-[issue 33140]: https://github.com/rust-lang/rust/issues/33140
 [object safe]: ../items/traits.md#object-safety
 [supertraits]: ../items/traits.md#supertraits
