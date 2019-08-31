@@ -144,7 +144,7 @@ extern "Rust" fn foo() {}
 ```
 
 Functions in Rust can be called by foreign code, and using an ABI that
-differs from Rust allows, for example, to provide functions that can be 
+differs from Rust allows, for example, to provide functions that can be
 called from other programming languages like C:
 
 ```rust
@@ -156,7 +156,7 @@ extern "C" fn new_i32() -> i32 { 0 }
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
-Just as with [external block], when the `extern` keyword is used and the `"ABI` 
+Just as with [external block], when the `extern` keyword is used and the `"ABI`
 is omitted, the ABI used defaults to `"C"`. That is, this:
 
 ```rust
@@ -306,7 +306,7 @@ async fn safe_example() {
     // An `unsafe` block is required to invoke the function initially:
     let p = 22;
     let future = unsafe { unsafe_example(&p) };
-    
+
     // But no `unsafe` block required here. This will
     // read the value of `p`:
     let q = future.await;
@@ -360,7 +360,7 @@ attributes macros.
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
 [const context]: ../const_eval.md#const-context
-[external blocks]: external-blocks.md
+[external block]: external-blocks.md
 [path]: ../paths.md
 [block]: ../expressions/block-expr.md
 [variables]: ../variables.md
