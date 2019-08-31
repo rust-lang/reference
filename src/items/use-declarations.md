@@ -129,8 +129,8 @@ fn main() {}
 > use ::foo::baz::foobaz;
 > ```
 >
-> The 2015 edition does not allow use declarations to reference the [extern
-> prelude]. Thus [`extern crate`] declarations are still required in 2015 to
+> The 2015 edition does not allow use declarations to reference the [extern prelude].
+> Thus [`extern crate`] declarations are still required in 2015 to
 > reference an external crate in a use declaration. Beginning with the 2018
 > edition, use declarations can specify an external crate dependency the same
 > way `extern crate` can.
