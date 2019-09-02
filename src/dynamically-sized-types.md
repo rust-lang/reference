@@ -20,7 +20,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
   last field, this makes the struct itself a
   <abbr title="dynamically sized type">DST</abbr>.
 
-Notably: [variables], function parameters, [const] and [static] items must be
+> **Note**: [variables], function parameters, [const] items, and [static] items must be
 `Sized`.
 
 [sized]: special-types-and-traits.md#sized

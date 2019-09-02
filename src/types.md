@@ -1,7 +1,7 @@
 {{#include types-redirect.html}}
 # Types
 
-Every variable, item and value in a Rust program has a type. The _type_ of a
+Every variable, item, and value in a Rust program has a type. The _type_ of a
 *value* defines the interpretation of the memory holding it and the operations
 that may be performed on the value.
 
@@ -94,7 +94,7 @@ type T<'a> = &'a (dyn Any + Send);
 
 ## Recursive types
 
-Nominal types &mdash; [structs], [enumerations] and [unions] &mdash; may be
+Nominal types &mdash; [structs], [enumerations], and [unions] &mdash; may be
 recursive. That is, each `enum` variant or `struct` or `union` field may
 refer, directly or indirectly, to the enclosing `enum` or `struct` type
 itself. Such recursion has restrictions:

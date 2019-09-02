@@ -210,7 +210,7 @@ Exhaustive list of permitted structures in const functions:
     * lifetimes
     * `Sized` or [`?Sized`]
 
-    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>` and `<T>`
+    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>`, and `<T>`
     are all permitted.
 
     This rule also applies to type parameters of impl blocks that

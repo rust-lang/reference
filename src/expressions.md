@@ -265,7 +265,7 @@ a few specific cases:
 
 * Before an expression used as a [statement].
 * Elements of [array expressions], [tuple expressions], [call expressions],
-  tuple-style [struct] and [enum variant] expressions.
+  and tuple-style [struct] and [enum variant] expressions.
   <!--
     These were likely stabilized inadvertently.
     See https://github.com/rust-lang/rust/issues/32796 and

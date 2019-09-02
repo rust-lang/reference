@@ -151,7 +151,7 @@ fn test() {
 }
 ```
 
-As you could see, in many aspects (except for layouts, safety and ownership)
+As you could see, in many aspects (except for layouts, safety, and ownership)
 unions behave exactly like structs, largely as a consequence of inheriting
 their syntactic shape from structs. This is also true for many unmentioned
 aspects of Rust language (such as privacy, name resolution, type inference,

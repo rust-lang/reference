@@ -65,7 +65,7 @@ Variance of types is automatically determined as follows
 | `std::marker::PhantomData<T>` |                   | covariant         |
 | `Trait<T> + 'a`               | covariant         | invariant         |
 
-The variance of other `struct`, `enum`, `union` and tuple types is decided by
+The variance of other `struct`, `enum`, `union`, and tuple types is decided by
 looking at the variance of the types of their fields. If the parameter is used
 in positions with different variances then the parameter is invariant. For
 example the following struct is covariant in `'a` and `T` and invariant in `'b`

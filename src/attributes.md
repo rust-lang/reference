@@ -16,7 +16,7 @@
 > &nbsp;&nbsp; | `=` [_LiteralExpression_]<sub>_without suffix_</sub>
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
-to name, convention, and language and compiler version. Attributes are modeled
+to name, convention, language, and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
 _Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the

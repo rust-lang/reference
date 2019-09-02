@@ -361,7 +361,7 @@ An _integer literal_ has one of four forms:
   mixture of *decimal digits* and _underscores_.
 * A _tuple index_ is either `0`, or starts with a *non-zero decimal digit* and
   continues with zero or more decimal digits. Tuple indexes are used to refer
-  to the fields of [tuples], [tuple structs] and [tuple variants].
+  to the fields of [tuples], [tuple structs], and [tuple variants].
 * A _hex literal_ starts with the character sequence `U+0030` `U+0078`
   (`0x`) and continues as any mixture (with at least one digit) of hex digits
   and underscores.
@@ -429,7 +429,7 @@ Examples of invalid integer literals:
 128_i8;
 256_u8;
 
-// bin, hex and octal literals must have at least one digit
+// bin, hex, and octal literals must have at least one digit
 
 0b_;
 0b____;

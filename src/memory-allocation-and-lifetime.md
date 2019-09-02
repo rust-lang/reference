@@ -1,6 +1,6 @@
 # Memory allocation and lifetime
 
-The _items_ of a program are those functions, modules and types that have their
+The _items_ of a program are those functions, modules, and types that have their
 value calculated at compile-time and stored uniquely in the memory image of the
 rust process. Items are neither dynamically allocated nor freed.
 
