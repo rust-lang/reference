@@ -6,7 +6,7 @@ compiler can infer a sensible default choice.
 ## Lifetime elision in functions
 
 In order to make common patterns more ergonomic, lifetime arguments can be
-*elided* in [function item], [function pointer] and [closure trait] signatures.
+*elided* in [function item], [function pointer], and [closure trait] signatures.
 The following rules are used to infer lifetime parameters for elided lifetimes.
 It is an error to elide lifetime parameters that cannot be inferred. The
 placeholder lifetime, `'_`, can also be used to have a lifetime inferred in the

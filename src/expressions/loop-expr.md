@@ -181,9 +181,9 @@ is equivalent to
 }
 ```
 
-`IntoIterator`, `Iterator` and `Option` are always the standard library items
+`IntoIterator`, `Iterator`, and `Option` are always the standard library items
 here, not whatever those names resolve to in the current scope. The variable
-names `next`, `iter` and `val` are for exposition only, they do not actually
+names `next`, `iter`, and `val` are for exposition only, they do not actually
 have names the user can type.
 
 > **Note**: that the outer `match` is used to ensure that any

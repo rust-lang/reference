@@ -20,7 +20,7 @@
 > _TypeParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER] ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 
-Functions, type aliases, structs, enumerations, unions, traits and
+Functions, type aliases, structs, enumerations, unions, traits, and
 implementations may be *parameterized* by types and lifetimes. These parameters
 are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
@@ -34,7 +34,7 @@ trait A<U> {}
 struct Ref<'a, T> where T: 'a { r: &'a T }
 ```
 
-[References], [raw pointers], [arrays], [slices][arrays], [tuples] and
+[References], [raw pointers], [arrays], [slices][arrays], [tuples], and
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
@@ -64,7 +64,7 @@ parameters.
 Bounds that don't use the item's parameters or higher-ranked lifetimes are
 checked when the item is defined. It is an error for such a bound to be false.
 
-[`Copy`], [`Clone`] and [`Sized`] bounds are also checked for certain generic
+[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic
 types when defining the item. It is an error to have `Copy` or `Clone`as a
 bound on a mutable reference, [trait object] or [slice][arrays] or `Sized` as a
 bound on a trait object or slice.

@@ -38,13 +38,13 @@ mutability aren't placed in memory marked as read only.
 ## `PhantomData<T>`
 
 [`std::marker::PhantomData<T>`] is a zero-sized, minimum alignment, type that
-is considered to own a `T` for the purposes of [variance], [drop check] and
+is considered to own a `T` for the purposes of [variance], [drop check], and
 [auto traits](#auto-traits).
 
 ## Operator Traits
 
 The traits in [`std::ops`] and [`std::cmp`] are used to overload [operators],
-[indexing expressions] and [call expressions].
+[indexing expressions], and [call expressions].
 
 ## `Deref` and `DerefMut`
 
@@ -64,7 +64,7 @@ whose type implements `Copy` are copied rather than moved upon assignment.
 fields that are not `Copy`. `Copy` is implemented by the compiler for
 
 * [Numeric types]
-* `char`, `bool` and [`!`]
+* `char`, `bool`, and [`!`]
 * [Tuples] of `Copy` types
 * [Arrays] of `Copy` types
 * [Shared references]
@@ -94,17 +94,17 @@ immutable [`static` items].
 
 ## Auto traits
 
-The [`Send`], [`Sync`], [`UnwindSafe`] and [`RefUnwindSafe`] traits are _auto
+The [`Send`], [`Sync`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto
 traits_. Auto traits have special properties.
 
 If no explicit implementation or negative implementation is written out for an
 auto trait for a given type, then the compiler implements it automatically
 according to the following rules:
 
-* `&T`, `&mut T`, `*const T`, `*mut T`, `[T; n]` and `[T]` implement the trait
+* `&T`, `&mut T`, `*const T`, `*mut T`, `[T; n]`, and `[T]` implement the trait
   if `T` does.
 * Function item types and function pointers automatically implement the trait.
-* Structs, enums, unions and tuples implement the trait if all of their fields
+* Structs, enums, unions, and tuples implement the trait if all of their fields
   do.
 * Closures implement the trait if the types of all of their captures do. A
   closure that captures a `T` by shared reference and a `U` by value implements

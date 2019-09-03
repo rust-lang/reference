@@ -29,7 +29,7 @@ crate in binary form: either an executable or some sort of
 library.[^cratesourcefile]
 
 A _crate_ is a unit of compilation and linking, as well as versioning,
-distribution and runtime loading. A crate contains a _tree_ of nested
+distribution, and runtime loading. A crate contains a _tree_ of nested
 [module] scopes. The top level of this tree is a module that is
 anonymous (from the point of view of paths within the module) and any item
 within a crate has a canonical [module path] denoting its location

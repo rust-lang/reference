@@ -5,7 +5,7 @@ provides three kinds of material:
 
   - Chapters that informally describe each language construct and their use.
   - Chapters that informally describe the memory model, concurrency model,
-    runtime services, linkage model and debugging facilities.
+    runtime services, linkage model, and debugging facilities.
   - Appendix chapters providing rationale and references to languages that
     influenced the design.
 

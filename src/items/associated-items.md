@@ -133,7 +133,7 @@ Shorthand             | Equivalent
 `&'lifetime self`     | `self: &'lifetime Self`
 `&'lifetime mut self` | `self: &'lifetime mut Self`
 
-> Note: Lifetimes can be and usually are elided with this shorthand.
+> **Note**: Lifetimes can be, and usually are, elided with this shorthand.
 
 If the `self` parameter is prefixed with `mut`, it becomes a mutable variable,
 similar to regular parameters using a `mut` [identifier pattern]. For example:

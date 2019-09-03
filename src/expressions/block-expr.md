@@ -180,7 +180,7 @@ expression in the following situations:
 * Loop bodies ([`loop`], [`while`], [`while let`], and [`for`]).
 * Block expressions used as a [statement].
 * Block expressions as elements of [array expressions], [tuple expressions],
-  [call expressions], tuple-style [struct] and [enum variant] expressions.
+  [call expressions], and tuple-style [struct] and [enum variant] expressions.
 * A block expression as the tail expression of another block expression.
 <!-- Keep list in sync with expressions.md -->
 

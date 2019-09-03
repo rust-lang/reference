@@ -25,7 +25,7 @@
 *Conditionally compiled source code* is source code that may or may not be
 considered a part of the source code depending on certain conditions. <!-- This
 definition is sort of vacuous --> Source code can be conditionally compiled
-using [attributes], [`cfg`] and [`cfg_attr`], and the built-in [`cfg` macro].
+using the [attributes] [`cfg`] and [`cfg_attr`] and the built-in [`cfg` macro].
 These conditions are based on the target architecture of the compiled crate,
 arbitrary values passed to the compiler, and a few other miscellaneous things
 further described below in detail.
