@@ -23,30 +23,49 @@ code.
 </div>
 
 * Data races.
-* Dereferencing a null or dangling raw pointer.
-* Unaligned pointer reading and writing outside of [`read_unaligned`]
-  and [`write_unaligned`].
-* Reads of [undef] \(uninitialized) memory.
-* Breaking the [pointer aliasing rules] on accesses through raw pointers;
-  a subset of the rules used by C.
-* `&mut T` and `&T` follow LLVM’s scoped [noalias] model, except if the `&T`
-  contains an [`UnsafeCell<U>`].
-* Mutating non-mutable data &mdash; that is, data reached through a shared
-  reference or data owned by a `let` binding), unless that data is contained
-  within an [`UnsafeCell<U>`].
-* Invoking undefined behavior via compiler intrinsics:
-  * Indexing outside of the bounds of an object with [`offset`] with
-    the exception of one byte past the end of the object.
-  * Using [`std::ptr::copy_nonoverlapping_memory`], a.k.a. the `memcpy32`and
-    `memcpy64` intrinsics, on overlapping buffers.
-* Invalid values in primitive types, even in private fields and locals:
-  * Dangling or null references and boxes.
-  * A value other than `false` (`0`) or `true` (`1`) in a `bool`.
-  * A discriminant in an `enum` not included in the type definition.
-  * A value in a `char` which is a surrogate or above `char::MAX`.
-  * Non-UTF-8 byte sequences in a `str`.
+* Dereferencing (using the `*` operator on) a dangling or unaligned raw pointer.
+* Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
+  [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
+* Mutating immutable data. All data inside a [`const`] item is immutable. Moreover, all
+  data reached through a shared reference or data owned by an immutable binding
+  is immutable, unless that data is contained within an [`UnsafeCell<U>`].
+* Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]).
+* Calling a function with the wrong call ABI or wrong unwind ABI.
+* Producing an invalid value, even in private fields and locals. "Producing" a
+  value happens any time a value is assigned to or read from a place, passed to
+  a function/primitive operation or returned from a function/primitive
+  operation.
+  The following values are invalid (at their respective type):
+  * A value other than `false` (`0`) or `true` (`1`) in a `bool`.
+  * A discriminant in an `enum` not included in the type definition.
+  * A null `fn` pointer.
+  * A value in a `char` which is a surrogate or above `char::MAX`.
+  * A `!` (all values are invalid for this type).
+  * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
+    from [uninitialized memory][undef].
+  * A reference or `Box<T>` that is dangling, unaligned, or points to an invalid value.
+  * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
+    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
+      `Trait` that matches the actual dynamic trait the pointer or reference points to.
+    * Slice metadata is invalid if if the length is not a valid `usize`
+      (i.e., it must not be read from uninitialized memory).
+  * Non-UTF-8 byte sequences in a `str`.
+  * Invalid values for a type with a custom definition of invalid values.
+    In the standard library, this affects [`NonNull<T>`] and [`NonZero*`].
+
+    > **Note**: `rustc` achieves this with the unstable
+    > `rustc_layout_scalar_valid_range_*` attributes.
+
+A reference/pointer is "dangling" if it is null or not all of the bytes it
+points to are part of the same allocation (so in particular they all have to be
+part of *some* allocation). The span of bytes it points to is determined by the
+pointer value and the size of the pointee type. As a consequence, if the span is
+empty, "dangling" is the same as "non-null". Note that slices point to their
+entire range, so it is important that the length metadata is never too
+large. In particular, allocations and therefore slices cannot be bigger than
+`isize::MAX` bytes.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
 > a function in C that exhibits undefined behavior of C means your entire
@@ -54,13 +73,12 @@ code.
 > vice versa, undefined behavior in Rust can cause adverse affects on code
 > executed by any FFI calls to other languages.
 
+[`const`]: items/constant-items.html
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
-[`offset`]: ../std/primitive.pointer.html#method.offset
-[`std::ptr::copy_nonoverlapping_memory`]: ../std/ptr/fn.copy_nonoverlapping.html
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
-[`read_unaligned`]: ../std/ptr/fn.read_unaligned.html
-[`write_unaligned`]: ../std/ptr/fn.write_unaligned.html
 [Rustonomicon]: ../nomicon/index.html
+[`NonNull<T>`]: ../core/ptr/struct.NonNull.html
+[`NonZero*`]: ../core/num/index.html
