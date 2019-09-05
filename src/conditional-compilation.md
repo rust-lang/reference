@@ -284,7 +284,7 @@ fn bewitched() {}
 ```
 
 > **Note**: The `cfg_attr` can expand to another `cfg_attr`. For example,
-> `#[cfg_attr(linux, cfg_attr(feature = "multithreaded", some_other_attribute))`
+> `#[cfg_attr(linux, cfg_attr(feature = "multithreaded", some_other_attribute))]`
 > is valid. This example would be equivalent to
 > `#[cfg_attr(all(linux, feature ="multithreaded"), some_other_attribute)]`.
 
