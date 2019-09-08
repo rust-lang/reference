@@ -367,16 +367,15 @@ same trait object.
         * **[NOTE: currently this will cause Undefined Behavior if the rounded
           value cannot be represented by the target integer type][float-int]**.
           This includes Inf and NaN. This is a bug and will be fixed.
-    * Casting from an integer to float will produce the floating point
-      representation of the integer, rounded if necessary (rounding strategy
-      unspecified)
+    * Casting from an integer to float will produce the closest possible float \*
+        * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
+        * on overflow, infinity (of the same sign as the input) is produced
+        * note: with the current set of numeric types, overflow can only happen
+          on `u128 as f32` for values greater or equal to `f32::MAX + (0.5 ULP)`
     * Casting from an f32 to an f64 is perfect and lossless
-    * Casting from an f64 to an f32 will produce the closest possible value
-      (rounding strategy unspecified)
-        * **[NOTE: currently this will cause Undefined Behavior if the value
-          is finite but larger or smaller than the largest or smallest finite
-          value representable by f32][float-float]**. This is a bug and will
-          be fixed.
+    * Casting from an f64 to an f32 will produce the closest possible f32 \*\*
+        * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
+        * on overflow, infinity (of the same sign as the input) is produced
 * Enum cast
     * Casts an enum to its discriminant, then uses a numeric cast if needed.
 * Primitive to integer cast
@@ -385,8 +384,19 @@ same trait object.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
 
+\* if integer-to-float casts with this rounding mode and overflow behavior are
+not supported natively by the hardware, these casts will likely be slower than
+expected.
+
+\*\* if f64-to-f32 casts with this rounding mode and overflow behavior are not
+supported natively by the hardware, these casts will likely be slower than
+expected.
+
+\*\*\* as defined in IEEE 754-2008 &sect;4.3.1: pick the nearest floating point
+number, preferring the one with an even least significant digit if exactly
+halfway between two floating point numbers.
+
 [float-int]: https://github.com/rust-lang/rust/issues/10184
-[float-float]: https://github.com/rust-lang/rust/issues/15536
 
 ## Assignment expressions
 
