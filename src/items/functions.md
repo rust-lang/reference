@@ -180,12 +180,13 @@ aborts the process by executing an illegal instruction.
 
 ## Const functions
 
-Functions qualified with the `const` keyword are const functions. _Const
-functions_  can be called from within [const context]s. When called from a const
-context, the function is interpreted by the compiler at compile time. The
-interpretation happens in the environment of the compilation target and not the
-host. So `usize` is `32` bits if you are compiling against a `32` bit system,
-irrelevant of whether you are building on a `64` bit or a `32` bit system.
+Functions qualified with the `const` keyword are const functions, as are
+[tuple struct] and [tuple variant] constructors. _Const functions_  can be
+called from within [const context]s. When called from a const context, the
+function is interpreted by the compiler at compile time. The interpretation
+happens in the environment of the compilation target and not the host. So
+`usize` is `32` bits if you are compiling against a `32` bit system, irrelevant
+of whether you are building on a `64` bit or a `32` bit system.
 
 If a const function is called outside a [const context], it is indistinguishable
 from any other function. You can freely do anything with a const function that
@@ -214,7 +215,9 @@ Exhaustive list of permitted structures in const functions:
     are all permitted.
 
     This rule also applies to type parameters of impl blocks that
-    contain const methods
+    contain const methods.
+
+    This does not apply to tuple struct and tuple variant constructors.
 
 * Arithmetic and comparison operators on integers
 * All boolean operators except for `&&` and `||` which are banned since
@@ -360,6 +363,8 @@ attributes macros.
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
 [const context]: ../const_eval.md#const-context
+[tuple struct]: structs.md
+[tuple variant]: enumerations.md
 [external block]: external-blocks.md
 [path]: ../paths.md
 [block]: ../expressions/block-expr.md
