@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
 >
 > _ClosureParam_ :\
-> &nbsp;&nbsp; [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A _closure expression_ defines a closure and denotes it as a value, in a single
 expression. A closure expression is a pipe-symbol-delimited (`|`) list of
@@ -67,12 +67,19 @@ let word = "konnichiwa".to_owned();
 ten_times(move |j| println!("{}, {}", word, j));
 ```
 
+## Attributes on closure parameters
+
+Attributes on closure parameters follow the same rules and restrictions as
+[regular function parameters].
+
 [block]: block-expr.md
 [function definitions]: ../items/functions.md
 [patterns]: ../patterns.md
+[regular function parameters]: ../items/functions.md#attributes-on-function-parameters
 
 [_Expression_]: ../expressions.md
 [_BlockExpression_]: block-expr.md
+[_OuterAttribute_]: ../attributes.md
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_Pattern_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions

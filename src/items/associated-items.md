@@ -86,8 +86,13 @@ let _: f64 = f64::from_i32(42);
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
 >
 > _SelfParam_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`\
-> &nbsp;&nbsp; | `mut`<sup>?</sup> `self` (`:` [_Type_])<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _ShorthandSelf_ | _TypedSelf_ )
+>
+> _ShorthandSelf_ :\
+> &nbsp;&nbsp;  (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`
+>
+> _TypedSelf_ :\
+> &nbsp;&nbsp; `mut`<sup>?</sup> `self` `:` [_Type_]
 
 Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
@@ -189,6 +194,11 @@ let bounding_box = circle_shape.bounding_box();
 > **Edition Differences**: In the 2015 edition, it is possible to declare trait
 > methods with anonymous parameters (e.g. `fn foo(u8)`). This is deprecated and
 > an error as of the 2018 edition. All parameters must have an argument name.
+
+#### Attributes on method parameters
+
+Attributes on method parameters follow the same rules and restrictions as
+[regular function parameters].
 
 ## Associated Types
 
@@ -330,6 +340,7 @@ fn main() {
 [_FunctionReturnType_]: functions.md
 [_Generics_]: generics.md
 [_Lifetime_]: ../trait-bounds.md
+[_OuterAttribute_]: ../attributes.md
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
 [`Arc<Self>`]: ../special-types-and-traits.md#arct
@@ -349,3 +360,4 @@ fn main() {
 [function item]: ../types/function-item.md
 [method call operator]: ../expressions/method-call-expr.md
 [path]: ../paths.md
+[regular function parameters]: functions.md#attributes-on-function-parameters
