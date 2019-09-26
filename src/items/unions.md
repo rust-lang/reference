@@ -120,7 +120,7 @@ fn is_zero(v: Value) -> bool {
     unsafe {
         match v {
             Value { tag: I, u: U { i: 0 } } => true,
-            Value { tag: F, u: U { f: 0.0 } } => true,
+            Value { tag: F, u: U { f: num } } if num == 0.0 => true,
             _ => false,
         }
     }
