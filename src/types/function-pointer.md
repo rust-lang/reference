@@ -15,10 +15,10 @@
 > &nbsp;&nbsp; _MaybeNamedParam_ ( `,` _MaybeNamedParam_ )<sup>\*</sup> `,`<sup>?</sup>
 >
 > _MaybeNamedParam_ :\
-> &nbsp;&nbsp; ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
 >
 > _MaybeNamedFunctionParametersVariadic_ :\
-> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` `...`
+> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
 
 Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time. They can be created
@@ -44,13 +44,20 @@ let bo: Binop = add;
 x = bo(5,7);
 ```
 
+## Attributes on function pointer parameters
+
+Attributes on function pointer parameters follow the same rules and
+restrictions as [regular function parameters].
+
 [IDENTIFIER]: ../identifiers.md
 [_ForLifetimes_]: ../items/generics.md#where-clauses
 [_FunctionQualifiers_]: ../items/functions.md
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_Type_]: ../types.md#type-expressions
+[_OuterAttribute_]: ../attributes.md
 [`extern`]: ../items/external-blocks.md
 [closures]: closure.md
 [extern function]: ../items/functions.md#extern-function-qualifier
 [function items]: function-item.md
 [unsafe function]: ../unsafe-functions.md
+[regular function parameters]: ../items/functions.md#attributes-on-function-parameters
