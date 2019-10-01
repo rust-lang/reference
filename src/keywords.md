@@ -60,6 +60,8 @@ be used as the names of:
 The following keywords were added beginning in the 2018 edition.
 
 > **<sup>Lexer 2018+</sup>**\
+> KW_ASYNC          : `async`\
+> KW_AWAIT          : `await`\
 > KW_DYN            : `dyn`
 
 ## Reserved keywords
@@ -86,8 +88,6 @@ them to use these keywords.
 The following keywords are reserved beginning in the 2018 edition.
 
 > **<sup>Lexer 2018+</sup>**\
-> KW_ASYNC : `async`\
-> KW_AWAIT : `await`\
 > KW_TRY   : `try`
 
 ## Weak keywords
