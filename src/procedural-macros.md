@@ -75,9 +75,7 @@ the macro invocation operator (`!`).
 These macros are defined by a [public]&#32;[function] with the `proc_macro`
 [attribute] and a signature of `(TokenStream) -> TokenStream`. The input
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
-output [`TokenStream`] replaces the entire macro invocation. It may contain an
-arbitrary number of [items]. These macros cannot expand to syntax that defines
-new `macro_rules` style macros.
+output [`TokenStream`] replaces the entire macro invocation.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -105,11 +103,12 @@ fn main() {
 }
 ```
 
-These macros are only invokable in [modules]. They cannot even be invoked to
-create [item declaration statements]. Furthermore, they must either be invoked
-with curly braces and no semicolon or a different delimiter followed by a
-semicolon. For example, `make_answer` from the previous example can be invoked
-as `make_answer!{}`, `make_answer!();` or `make_answer![];`.
+Function-like procedural macros may expand to a [type] or any number of
+[items]. They may be invoked in a [type expression], [item] position (except
+as a [statement]), including items in [`extern` blocks], inherent and trait
+[implementations], and [trait definitions]. They cannot be used in a
+[statement], [expression], or [pattern]. These macros cannot expand to syntax
+that defines new [`macro_rules`] style macros.
 
 ### Derive macros
 
@@ -192,7 +191,9 @@ struct Struct {
 
 ### Attribute macros
 
-*Attribute macros* define new [attributes] which can be attached to [items].
+*Attribute macros* define new [outer attributes][attributes] which can be
+attached to [items], including items in [`extern` blocks], inherent and trait
+[implementations], and [trait definitions].
 
 Attribute macros are defined by a [public]&#32;[function] with the
 `proc_macro_attribute` [attribute] that has a signature of `(TokenStream,
@@ -202,7 +203,7 @@ the attribute is written as a bare attribute name, the attribute
 [`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
 including other [attributes] on the [item]. The returned [`TokenStream`]
 replaces the [item] with an arbitrary number of [items]. These macros cannot
-expand to syntax that defines new `macro_rules` style macros.
+expand to syntax that defines new [`macro_rules`] style macros.
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
@@ -266,28 +267,35 @@ fn invoke4() {}
 // out: item: "fn invoke4() {}"
 ```
 
+[Attribute macros]: #attribute-macros
+[Cargo's build scripts]: ../cargo/reference/build-scripts.html
+[Derive macros]: #derive-macros
+[Function-like macros]: #function-like-procedural-macros
 [`TokenStream`]: ../proc_macro/struct.TokenStream.html
 [`TokenStream`s]: ../proc_macro/struct.TokenStream.html
 [`compile_error`]: ../std/macro.compile_error.html
 [`derive` attribute]: attributes/derive.md
+[`extern` blocks]: items/external-blocks.md
+[`macro_rules`]: macros-by-example.md
 [`proc_macro` crate]: ../proc_macro/index.html
-[Cargo's build scripts]: ../cargo/reference/build-scripts.html
-[Derive macros]: #derive-macros
-[Attribute macros]: #attribute-macros
-[Function-like macros]: #function-like-procedural-macros
 [attribute]: attributes.md
 [attributes]: attributes.md
 [block]: expressions/block-expr.md
 [crate type]: linkage.md
 [derive macro helper attributes]: #derive-macro-helper-attributes
 [enum]: items/enumerations.md
+[expression]: expressions.md
+[function]: items/functions.md
+[implementations]: items/implementations.md
 [inert]: attributes.md#active-and-inert-attributes
 [item]: items.md
-[item declaration statements]: statements.md#item-declarations
 [items]: items.md
-[function]: items/functions.md
 [module]: items/modules.md
-[modules]: items/modules.md
+[pattern]: patterns.md
 [public]: visibility-and-privacy.md
+[statement]: statements.md
 [struct]: items/structs.md
+[trait definitions]: items/traits.md
+[type expression]: types.md#type-expressions
+[type]: types.md
 [union]: items/unions.md
