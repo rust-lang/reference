@@ -37,6 +37,7 @@ following situations:
 * [Types]
 * [Items] including [associated items]
 * [`macro_rules`] transcribers
+* [External blocks]
 
 When used as an item or a statement, the _MacroInvocationSemi_ form is used
 where a semicolon is required at the end when not using curly braces.
@@ -99,3 +100,4 @@ example!();
 [statements]: statements.md
 [types]: types.md
 [visibility qualifiers]: visibility-and-privacy.md
+[External blocks]: items/external-blocks.md

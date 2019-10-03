@@ -8,9 +8,10 @@
 > &nbsp;&nbsp; `}`
 >
 > _ExternalItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; ( _ExternalStaticItem_ | _ExternalFunctionItem_ )
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( _ExternalStaticItem_ | _ExternalFunctionItem_ ) )\
+> &nbsp;&nbsp; )
 >
 > _ExternalStaticItem_ :\
 > &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_] `;`
@@ -31,7 +32,7 @@
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
-akin to unchecked imports. 
+akin to unchecked imports.
 
 Two kind of item _declarations_ are allowed in external blocks: [functions] and
 [statics]. Calling functions or accessing statics that are declared in external
@@ -170,6 +171,7 @@ extern {
 [_FunctionReturnType_]: functions.md
 [_Generics_]: generics.md
 [_InnerAttribute_]: ../attributes.md
+[_MacroInvocationSemi_]: ../macros.md#macro-invocation
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_OuterAttribute_]: ../attributes.md
