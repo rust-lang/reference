@@ -52,12 +52,13 @@ Effectively, an `<expr>.await` expression is roughly
 equivalent to the following (this desugaring is not normative):
 
 ```rust,ignore
-let future = /* <expr> */;
-loop {
-    let mut pin = unsafe { Pin::new_unchecked(&mut future) };
-    match Pin::future::poll(Pin::borrow(&mut pin), &mut current_context) {
-        Poll::Ready(r) => break r,
-        Poll::Pending => yield Poll::Pending,
+match /* <expr> */ {
+    mut pinned => loop {
+        let mut pin = unsafe { Pin::new_unchecked(&mut pinned) };
+        match Pin::future::poll(Pin::borrow(&mut pin), &mut current_context) {
+            Poll::Ready(r) => break r,
+            Poll::Pending => yield Poll::Pending,
+        }
     }
 }
 ```
