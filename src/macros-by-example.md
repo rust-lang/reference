@@ -128,7 +128,7 @@ fragment specifiers are:
   * `ident`: an [IDENTIFIER_OR_KEYWORD]
   * `path`: a [_TypePath_] style path
   * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-  * `meta`: a [_MetaItem_], the contents of an attribute
+  * `meta`: an [_Attr_], the contents of an attribute
   * `lifetime`: a [LIFETIME_TOKEN]
   * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
@@ -477,12 +477,12 @@ For more detail, see the [formal specification].
 [LIFETIME_TOKEN]: tokens.md#lifetimes-and-loop-labels
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
+[_Attr_]: attributes.md
 [_BlockExpression_]: expressions/block-expr.md
 [_DelimTokenTree_]: macros.md
 [_Expression_]: expressions.md
 [_Item_]: items.md
 [_LiteralExpression_]: expressions/literal-expr.md
-[_MetaItem_]: attributes.md#meta-item-attribute-syntax
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
 [_Pattern_]: patterns.md
 [_Statement_]: statements.md

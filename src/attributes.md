@@ -86,8 +86,7 @@ fn some_unused_variables() {
 ## Meta Item Attribute Syntax
 
 A "meta item" is the syntax used for the _Attr_ rule by most [built-in
-attributes] and the [`meta` macro fragment specifier]. It has the following
-grammar:
+attributes]. It has the following grammar:
 
 > **<sup>Syntax</sup>**\
 > _MetaItem_ :\
@@ -268,7 +267,6 @@ The following is an index of all built-in attributes.
 [`link`]: items/external-blocks.md#the-link-attribute
 [`macro_export`]: macros-by-example.md#path-based-scope
 [`macro_use`]: macros-by-example.md#the-macro_use-attribute
-[`meta` macro fragment specifier]: macros-by-example.md
 [`must_use`]: attributes/diagnostics.md#the-must_use-attribute
 [`no_builtins`]: attributes/codegen.md#the-no_builtins-attribute
 [`no_implicit_prelude`]: items/modules.md#prelude-items
