@@ -33,6 +33,7 @@ code.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]).
 * Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
+* Deallocating the storage of a value without running its destructor if it has one.
 * Producing an invalid value, even in private fields and locals. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
