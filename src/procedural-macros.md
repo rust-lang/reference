@@ -104,11 +104,11 @@ fn main() {
 ```
 
 Function-like procedural macros may expand to a [type] or any number of
-[items]. They may be invoked in a [type expression], [item] position (except
-as a [statement]), including items in [`extern` blocks], inherent and trait
-[implementations], and [trait definitions]. They cannot be used in a
-[statement], [expression], or [pattern]. These macros cannot expand to syntax
-that defines new [`macro_rules`] style macros.
+[items], including [`macro_rules`] definitions. They may be invoked in a [type
+expression], [item] position (except as a [statement]), including items in
+[`extern` blocks], inherent and trait [implementations], and [trait
+definitions]. They cannot be used in a [statement], [expression], or
+[pattern].
 
 ### Derive macros
 
@@ -202,8 +202,7 @@ tree following the attribute's name, not including the outer delimiters. If
 the attribute is written as a bare attribute name, the attribute
 [`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
 including other [attributes] on the [item]. The returned [`TokenStream`]
-replaces the [item] with an arbitrary number of [items]. These macros cannot
-expand to syntax that defines new [`macro_rules`] style macros.
+replaces the [item] with an arbitrary number of [items].
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
