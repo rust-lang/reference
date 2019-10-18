@@ -268,9 +268,13 @@ fn len(
 Inert helper attributes used by procedural macro attributes applied to items are also
 allowed but be careful to not include these inert attributes in your final `TokenStream`.
 
-```rust
-#[hi_i_am_a_proc_macro_attribute]
-fn foo_oof(#[hello_i_am_an_inert_attribute] arg: u8) {
+For example, the following code defines an inert `some_inert_attribute` attribute that
+is not formally defined anywhere and the `some_proc_macro_attribute` procedural macro is
+responsible for detecting its presence and removing it from the output token stream.
+
+```rust,ignore
+#[some_proc_macro_attribute]
+fn foo_oof(#[some_inert_attribute] arg: u8) {
 }
 ```
 
