@@ -50,6 +50,9 @@ Attributes may be applied to many things in the language:
 * [Generic lifetime or type parameter][generics] accept outer attributes.
 * Expressions accept outer attributes in limited situations, see [Expression
   Attributes] for details.
+* [Function][functions], [closure]] and [function pointer]
+  parameters accept outer attributes. This includes attributes on variadic parameters
+  denoted with `...` in function pointers and [external blocks][variadic functions].
 
 Some examples of attributes:
 
@@ -304,3 +307,6 @@ The following is an index of all built-in attributes.
 [statements]: statements.md
 [struct]: items/structs.md
 [union]: items/unions.md
+[closure]: expressions/closure-expr.md
+[function pointer]: types/function-pointer.md
+[variadic functions]: items/external-blocks.html#variadic-functions

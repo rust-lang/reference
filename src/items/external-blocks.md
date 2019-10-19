@@ -25,10 +25,10 @@
 > &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> `,`<sup>?</sup>
 >
 > _NamedFunctionParam_ :\
-> &nbsp;&nbsp; ( [IDENTIFIER] | `_` ) `:` [_Type_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( [IDENTIFIER] | `_` ) `:` [_Type_]
 >
 > _NamedFunctionParametersWithVariadics_ :\
-> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` `...`
+> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
@@ -163,6 +163,11 @@ extern {
 }
 ```
 
+### Attributes on function parameters
+
+Attributes on extern function parameters follow the same rules and
+restrictions as [regular function parameters].
+
 [IDENTIFIER]: ../identifiers.md
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [functions]: functions.md
@@ -179,3 +184,4 @@ extern {
 [_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [attributes]: ../attributes.md
+[regular function parameters]: functions.md#attributes-on-function-parameters

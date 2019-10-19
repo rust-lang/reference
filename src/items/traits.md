@@ -38,7 +38,7 @@
 > &nbsp;&nbsp; _TraitFunctionParam_ (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
 >
 > _TraitFunctionParam_<sup>[†](#parameter-patterns)</sup> :\
-> &nbsp;&nbsp; ( [_Pattern_] `:` )<sup>?</sup> [_Type_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( [_Pattern_] `:` )<sup>?</sup> [_Type_]
 >
 > _TraitConst_ :\
 > &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]&nbsp;( `=` [_Expression_] )<sup>?</sup> `;`
