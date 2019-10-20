@@ -34,22 +34,17 @@ alignment of the type respectively.
 
 The size of most primitives is given in this table.
 
-|Type | `size_of::<Type>()`|
-|--   |--                  |
-|bool | 1                  |
-|u8   | 1                  |
-|u16  | 2                  |
-|u32  | 4                  |
-|u64  | 8                  |
-|u128 | 16                 |
-|i8   | 1                  |
-|i16  | 2                  |
-|i32  | 4                  |
-|i64  | 8                  |
-|i128 | 16                 |
-|f32  | 4                  |
-|f64  | 8                  |
-|char | 4                  |
+| Type              | `size_of::<Type>()`|
+|--                 |--                  |
+| `bool`            | 1                  |
+| `u8` / `i8`       | 1                  |
+| `u16` / `i16`     | 2                  |
+| `u32` / `i32`     | 4                  |
+| `u64` / `i64`     | 8                  |
+| `u128` / `i128`   | 16                 |
+| `f32`             | 4                  |
+| `f64`             | 8                  |
+| `char`            | 4                  |
 
 `usize` and `isize` have a size big enough to contain every address on the
 target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
