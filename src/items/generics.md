@@ -92,10 +92,11 @@ attributes may give meaning to it.
 This example shows using a custom derive attribute to modify the meaning of a
 generic parameter.
 
-```ignore
+```rust,ignore
 // Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
 // an attribute it understands.
-#[derive(MyFlexibleClone)] struct Foo<#[my_flexible_clone(unbounded)] H> {
+#[derive(MyFlexibleClone)]
+struct Foo<#[my_flexible_clone(unbounded)] H> {
     a: *const H
 }
 ```
