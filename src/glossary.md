@@ -65,6 +65,12 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
 
+### Inhabited
+
+A type is inhabited if it has constructors and therefore can be instantiated. An inhabited type is
+not "empty" in the sense that there can be values of the type. Opposite of
+[Uninhabited](#uninhabited).
+
 ### Inherent implementation
 
 An [implementation] that applies to a nominal type, not to a trait-type pair.
@@ -159,6 +165,13 @@ but is not limited to: process termination or corruption; improper, incorrect,
 or unintended computation; or platform-specific results.
 [More][undefined-behavior].
 
+### Uninhabited
+
+A type is uninhabited if it has no constructors and therefore can never be instantiated. An
+uninhabited type is "empty" in the sense that there are no values of the type. The canonical
+example of an uninhabited type is the [never type] `!`, or an enum with no variants
+`enum Never { }`. Opposite of [Inhabited](#inhabited).
+
 [alignment]: type-layout.md#size-and-alignment
 [associated item]: #associated-item
 [enums]: items/enumerations.md
@@ -168,6 +181,7 @@ or unintended computation; or platform-specific results.
 [inherent implementation]: items/implementations.md#inherent-implementations
 [item]: items.md
 [method]: items/associated-items.md#methods
+[never type]: types/never.md
 [object safety]: items/traits.md#object-safety
 [structs]: items/structs.md
 [trait objects]: types/trait-object.md
