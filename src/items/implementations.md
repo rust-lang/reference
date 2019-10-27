@@ -152,29 +152,7 @@ impl Shape for Circle {
 
 ### Trait Implementation Coherence
 
-A trait implementation is considered incoherent if either the orphan check fails
-or there are overlapping implementation instances.
-
-Two trait implementations overlap when there is a non-empty intersection of the
-traits the implementation is for, the implementations can be instantiated with
-the same type. <!-- This is probably wrong? Source: No two implementations can
-be instantiable with the same set of types for the input type parameters. -->
-
-The `Orphan Check` states that every trait implementation must meet either of
-the following conditions:
-
-1.  The trait being implemented is defined in the same crate.
-
-2.  At least one of either `Self` or a generic type parameter of the trait must
-    meet the following grammar, where `C` is a nominal type defined
-    within the containing crate:
-
-    ```ignore
-     T = C
-       | &C
-       | &mut C
-       | Box<C>
-    ```
+A trait implementation must follow the [coherence] rules.
 
 ## Generic Implementations
 
@@ -224,3 +202,4 @@ attributes].
 [path]: ../paths.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [Unsafe traits]: traits.md#unsafe-traits
+[coherence]: coherence.md
