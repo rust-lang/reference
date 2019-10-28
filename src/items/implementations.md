@@ -228,5 +228,5 @@ attributes].
 [Unsafe traits]: traits.md#unsafe-traits
 [local trait]: ../glossary.md#local-trait
 [local type]: ../glossary.md#local-type
-[fundamental types]: ../glossary.md#fundamental-type
+[fundamental types]: ../glossary.md#fundamental-type-constructors
 [uncovered type]: ../glossary.md#uncovered-type

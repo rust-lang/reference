@@ -73,12 +73,23 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
 
-### Fundamental type
+### Fundamental type constructors
 
-Includes `&`, `&mut`, `Box` and `Pin`. Any time a type `T` is
-considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>` are also considered local.
-Fundamental types cannot [cover](#uncovered-type) other types. Any time the term "covered type" is
-used, the `T` in `&T`, `&mut T`, `Box<T>`, and `Pin<T>` is not considered covered.
+Fundamental type constructors are XXXX.
+
+All of
+
+- `&`
+- `&mut`
+- `Box`
+- `Pin` 
+
+are fundamental type constructors.
+
+Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>` 
+are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types. 
+Any time the term "covered type" is used, 
+the `T` in `&T`, `&mut T`, `Box<T>`, and `Pin<T>` is not considered covered.
 
 ### Inhabited
 
