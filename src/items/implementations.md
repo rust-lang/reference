@@ -162,7 +162,7 @@ be instantiable with the same set of types for the input type parameters. -->
 
 #### Orphan rules
 
-Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an impl is valid only if at
+Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
 least one of the following is true:
 
 - `Trait` is a [local trait]
@@ -172,8 +172,8 @@ least one of the following is true:
   - No [uncovered type] parameters `P1..=Pn` may appear in `T0..Ti` (excluding
     `Ti`)
 
-We only restrict the appearance of *uncovered* type parameters. Once again, it is
-important to note that for the purposes of coherence, [fundamental types] are
+Only the appearance of *uncovered* type parameters is restricted.
+Note that for the purposes of coherence, [fundamental types] are
 special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>` 
 is considered local.
 
