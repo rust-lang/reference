@@ -152,7 +152,31 @@ impl Shape for Circle {
 
 ### Trait Implementation Coherence
 
-A trait implementation must follow the [coherence] rules.
+A trait implementation is considered incoherent if either the orphan rules check fails
+or there are overlapping implementation instances.
+
+Two trait implementations overlap when there is a non-empty intersection of the
+traits the implementation is for, the implementations can be instantiated with
+the same type. <!-- This is probably wrong? Source: No two implementations can
+be instantiable with the same set of types for the input type parameters. -->
+
+#### Orphan rules
+
+Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an impl is valid only if at
+least one of the following is true:
+
+- `Trait` is a [local trait]
+- All of
+  - At least one of the types `T0..=Tn` must be a [local type]. Let `Ti` be the
+    first such type.
+  - No [uncovered type] parameters `P1..=Pn` may appear in `T0..Ti` (excluding
+    `Ti`)
+
+We only restrict the appearance of *uncovered* type parameters. Once again, it is
+important to note that for the purposes of coherence, [fundamental types] are
+special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>` 
+is considered local.
+
 
 ## Generic Implementations
 
@@ -202,4 +226,7 @@ attributes].
 [path]: ../paths.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [Unsafe traits]: traits.md#unsafe-traits
-[coherence]: coherence.md
+[local trait]: ../glossary.md#local-trait
+[local type]: ../glossary.md#local-type
+[fundamental types]: ../glossary.md#fundamental-type
+[uncovered type]: ../glossary.md#uncovered-type
