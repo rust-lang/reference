@@ -73,18 +73,15 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
 
+### Fundamental traits
+
+A fundamental trait is one where adding an impl of it for an existing type is a breaking change. 
+The `Fn` traits and `Sized` are fundamental.
+
 ### Fundamental type constructors
 
-Fundamental type constructors are XXXX.
-
-All of
-
-- `&`
-- `&mut`
-- `Box`
-- `Pin` 
-
-are fundamental type constructors.
+A fundamental type constructor is a type where implementing a [blanket implementation](#blanket-implementation) over it 
+is a breaking change. `&`, `&mut`, `Box`, and `Pin`  are fundamental. 
 
 Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>` 
 are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types. 
