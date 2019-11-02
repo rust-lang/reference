@@ -21,48 +21,48 @@ be used as the names of:
 * [Crates]
 
 > **<sup>Lexer:<sup>**\
-> KW_AS             : `as`\
-> KW_BREAK          : `break`\
-> KW_CONST          : `const`\
-> KW_CONTINUE       : `continue`\
-> KW_CRATE          : `crate`\
-> KW_ELSE           : `else`\
-> KW_ENUM           : `enum`\
-> KW_EXTERN         : `extern`\
-> KW_FALSE          : `false`\
-> KW_FN             : `fn`\
-> KW_FOR            : `for`\
-> KW_IF             : `if`\
-> KW_IMPL           : `impl`\
-> KW_IN             : `in`\
-> KW_LET            : `let`\
-> KW_LOOP           : `loop`\
-> KW_MATCH          : `match`\
-> KW_MOD            : `mod`\
-> KW_MOVE           : `move`\
-> KW_MUT            : `mut`\
-> KW_PUB            : `pub`\
-> KW_REF            : `ref`\
-> KW_RETURN         : `return`\
-> KW_SELFVALUE      : `self`\
-> KW_SELFTYPE       : `Self`\
-> KW_STATIC         : `static`\
-> KW_STRUCT         : `struct`\
-> KW_SUPER          : `super`\
-> KW_TRAIT          : `trait`\
-> KW_TRUE           : `true`\
-> KW_TYPE           : `type`\
-> KW_UNSAFE         : `unsafe`\
-> KW_USE            : `use`\
-> KW_WHERE          : `where`\
-> KW_WHILE          : `while`
+> KW_AS             : [`as`](../std/keyword.as.html)\
+> KW_BREAK          : [`break`](../std/keyword.break.html)\
+> KW_CONST          : [`const`](../std/keyword.const.html)\
+> KW_CONTINUE       : [`continue`](../std/keyword.continue.html)\
+> KW_CRATE          : [`crate`](../std/keyword.crate.html)\
+> KW_ELSE           : [`else`](../std/keyword.else.html)\
+> KW_ENUM           : [`enum`](../std/keyword.enum.html)\
+> KW_EXTERN         : [`extern`](../std/keyword.extern.html)\
+> KW_FALSE          : [`false`](../std/keyword.false.html)\
+> KW_FN             : [`fn`](../std/keyword.fn.html)\
+> KW_FOR            : [`for`](../std/keyword.for.html)\
+> KW_IF             : [`if`](../std/keyword.if.html)\
+> KW_IMPL           : [`impl`](../std/keyword.impl.html)\
+> KW_IN             : [`in`](../std/keyword.in.html)\
+> KW_LET            : [`let`](../std/keyword.let.html)\
+> KW_LOOP           : [`loop`](../std/keyword.loop.html)\
+> KW_MATCH          : [`match`](../std/keyword.match.html)\
+> KW_MOD            : [`mod`](../std/keyword.mod.html)\
+> KW_MOVE           : [`move`](../std/keyword.move.html)\
+> KW_MUT            : [`mut`](../std/keyword.mut.html)\
+> KW_PUB            : [`pub`](../std/keyword.pub.html)\
+> KW_REF            : [`ref`](../std/keyword.ref.html)\
+> KW_RETURN         : [`return`](../std/keyword.return.html)\
+> KW_SELFVALUE      : [`self`](../std/keyword.self.html)\
+> KW_SELFTYPE       : [`Self`](../std/keyword.Self.html)\
+> KW_STATIC         : [`static`](../std/keyword.static.html)\
+> KW_STRUCT         : [`struct`](../std/keyword.struct.html)\
+> KW_SUPER          : [`super`](../std/keyword.super.html)\
+> KW_TRAIT          : [`trait`](../std/keyword.trait.html)\
+> KW_TRUE           : [`true`](../std/keyword.true.html)\
+> KW_TYPE           : [`type`](../std/keyword.type.html)\
+> KW_UNSAFE         : [`unsafe`](../std/keyword.unsafe.html)\
+> KW_USE            : [`use`](../std/keyword.use.html)\
+> KW_WHERE          : [`where`](../std/keyword.where.html)\
+> KW_WHILE          : [`while`](../std/keyword.while.html)
 
 The following keywords were added beginning in the 2018 edition.
 
 > **<sup>Lexer 2018+</sup>**\
-> KW_ASYNC          : `async`\
-> KW_AWAIT          : `await`\
-> KW_DYN            : `dyn`
+> KW_ASYNC          : [`async`](../std/keyword.async.html)\
+> KW_AWAIT          : [`await`](../std/keyword.await.html)\
+> KW_DYN            : [`dyn`](../std/keyword.dyn.html)
 
 ## Reserved keywords
 
@@ -110,11 +110,11 @@ is possible to declare a variable or method with the name `union`.
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
 > **<sup>Lexer</sup>**\
-> KW_UNION          : `union`\
+> KW_UNION          : [`union`](../std/keyword.union.html)\
 > KW_STATICLIFETIME : `'static`
 >
 > **<sup>Lexer 2015</sup>**\
-> KW_DYN            : `dyn`
+> KW_DYN            : [`dyn`](../std/keyword.dyn.html)
 
 [items]: items.md
 [Variables]: variables.md
