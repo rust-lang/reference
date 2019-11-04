@@ -127,7 +127,7 @@ macros imported with [`#[macro_use]`][macro_use] on an extern crate, and by the 
 [prelude]. These names are all made of a single identifier. These names are not
 part of the module, so for example, any name `name`, `self::name` is not a
 valid path. The names added by the [prelude] can be removed by placing the
-`no_implicit_prelude` [attribute] onto the module.
+`no_implicit_prelude` [attribute] onto the module or one of its ancestor modules.
 
 ## Attributes on Modules
 
