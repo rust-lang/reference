@@ -60,8 +60,12 @@ type is to be destroyed.
 
 The [`Copy`] trait changes the semantics of a type implementing it. Values
 whose type implements `Copy` are copied rather than moved upon assignment.
-`Copy` cannot be implemented for types which implement `Drop`, or which have
-fields that are not `Copy`. `Copy` is implemented by the compiler for
+
+`Copy` can only be implemented for types which do not implement `Drop`, and whose fields are all `Copy`.
+For enums, this means all fields of all variants have to be `Copy`.
+For unions, this means all variants have to be `Copy`.
+
+`Copy` is implemented by the compiler for
 
 * [Numeric types]
 * `char`, `bool`, and [`!`]
