@@ -10,8 +10,9 @@ linking external libraries.
 ## The `used` attribute
 
 The *`used` attribute* can only be applied to [`static` items]. This [attribute] forces the
-compiler to keep the variable in the output object file (.o, .rlib, etc.) even if the variable is
-not used, or referenced, by any other item in the crate.
+compiler to keep the variable in the output object file (.o, .rlib, etc. excluding final binaries)
+even if the variable is not used, or referenced, by any other item in the crate.
+However, the linker is still free to remove such an item.
 
 Below is an example that shows under what conditions the compiler keeps a `static` item in the
 output object file.
