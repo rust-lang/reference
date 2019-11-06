@@ -63,7 +63,7 @@ This should include links to any relevant information, such as the
 stabilization PR, the RFC, the tracking issue, and anything else that would be
 helpful for writing the documentation.
 
-[issue tracker]: https://github.com/rust-lang-nursery/reference/issues
+[issue tracker]: https://github.com/rust-lang/reference/issues
 [playpen]: https://play.rust-lang.org/
 [rust-lang/rust]: https://github.com/rust-lang/rust/
 [unstable]: https://doc.rust-lang.org/nightly/unstable-book/
