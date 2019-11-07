@@ -132,9 +132,9 @@ hesitate to file an issue or ask about it in the `#docs` channels on
 attention to making those sections the best that they can be.
 
 [book]: ../book/index.html
-[github issues]: https://github.com/rust-lang-nursery/reference/issues
+[github issues]: https://github.com/rust-lang/reference/issues
 [standard library]: ../std/index.html
-[the Rust Reference repository]: https://github.com/rust-lang-nursery/reference/
+[the Rust Reference repository]: https://github.com/rust-lang/reference/
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [_Expression_]: expressions.md
 [cargo book]: ../cargo/index.html
