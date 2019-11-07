@@ -30,6 +30,14 @@ items are defined in [implementations] and declared in [traits]. Only
 functions, constants, and type aliases can be associated. Contrast to a [free
 item].
 
+### Blanket implementation
+
+Any implementation where a type appears [uncovered](#uncovered-type). `impl<T> Foo
+for T`, `impl<T> Bar<T> for T`, `impl<T> Bar<Vec<T>> for T`, and `impl<T> Bar<T>
+for Vec<T>` are considered blanket impls. However, `impl<T> Bar<Vec<T>> for
+Vec<T>` is not a blanket impl, as all instances of `T` which appear in this `impl`
+are covered by `Vec`.
+
 ### Bound
 
 Bounds are constraints on a type or trait. For example, if a bound
@@ -65,6 +73,21 @@ For example, `2 + (3 * 4)` is an expression that returns the value 14.
 An [item] that is not a member of an [implementation], such as a *free
 function* or a *free const*. Contrast to an [associated item].
 
+### Fundamental traits
+
+A fundamental trait is one where adding an impl of it for an existing type is a breaking change. 
+The `Fn` traits and `Sized` are fundamental.
+
+### Fundamental type constructors
+
+A fundamental type constructor is a type where implementing a [blanket implementation](#blanket-implementation) over it 
+is a breaking change. `&`, `&mut`, `Box`, and `Pin`  are fundamental. 
+
+Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>` 
+are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types. 
+Any time the term "covered type" is used, 
+the `T` in `&T`, `&mut T`, `Box<T>`, and `Pin<T>` is not considered covered.
+
 ### Inhabited
 
 A type is inhabited if it has constructors and therefore can be instantiated. An inhabited type is
@@ -86,6 +109,19 @@ implementation.
 A variable is initialized if it has been assigned a value and hasn't since been
 moved from. All other memory locations are assumed to be uninitialized. Only
 unsafe Rust can create such a memory without initializing it.
+
+### Local trait
+
+A `trait` which was defined in the current crate. A trait definition is local
+or not independent of applied type arguments. Given `trait Foo<T, U>`,
+`Foo` is always local, regardless of the types substituted for `T` and `U`.
+
+### Local type
+
+A `struct`, `enum`, or `union` which was defined in the current crate.
+This is not affected by applied type arguments. `struct Foo` is considered local, but
+`Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not 
+affect locality.
 
 ### Nominal types
 
@@ -157,6 +193,12 @@ A trait is a language item that is used for describing the functionalities a typ
 It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
+
+### Uncovered type
+
+A type which does not appear as an argument to another type. For example,
+`T` is uncovered, but the `T` in `Vec<T>` is covered. This is only relevant for
+type arguments.
 
 ### Undefined behavior
 
