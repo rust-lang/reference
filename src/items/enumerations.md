@@ -91,7 +91,7 @@ using a [primitive representation] or the [`C` representation].
 
 It is an error when two variants share the same discriminant.
 
-```rust,ignore
+```rust,compile_fail
 enum SharedDiscriminantError {
     SharedA = 1,
     SharedB = 1
@@ -107,7 +107,7 @@ enum SharedDiscriminantError2 {
 It is also an error to have an unspecified discriminant where the previous
 discriminant is the maximum value for the size of the discriminant.
 
-```rust,ignore
+```rust,compile_fail
 #[repr(u8)]
 enum OverflowingDiscriminantError {
     Max = 255,

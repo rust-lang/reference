@@ -414,7 +414,7 @@ let a: u64 = 123;                  // type u64
 
 Examples of invalid integer literals:
 
-```rust,ignore
+```rust,compile_fail
 // invalid suffixes
 
 0invalidSuffix;

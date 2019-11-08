@@ -51,6 +51,7 @@ context, there must be some task context available.
 Effectively, an `<expr>.await` expression is roughly
 equivalent to the following (this desugaring is not normative):
 
+<!-- ignore: example expansion -->
 ```rust,ignore
 match /* <expr> */ {
     mut pinned => loop {

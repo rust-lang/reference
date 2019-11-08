@@ -98,7 +98,7 @@ use crate::foo::baz::foobaz;    // good: foo is at the root of the crate
 
 mod foo {
 
-    mod example {
+    pub mod example {
         pub mod iter {}
     }
 
@@ -124,9 +124,14 @@ fn main() {}
 > accessing items in the crate root. Using the example above, the following
 > `use` paths work in 2015 but not 2018:
 >
-> ```rust,ignore
+> ```rust,edition2015
+> # mod foo {
+> #     pub mod example { pub mod iter {} }
+> #     pub mod baz { pub fn foobaz() {} }
+> # }
 > use foo::example::iter;
 > use ::foo::baz::foobaz;
+> # fn main() {}
 > ```
 >
 > The 2015 edition does not allow use declarations to reference the [extern prelude].

@@ -10,6 +10,7 @@ A _field expression_ consists of an expression followed by a single dot and an
 field of a [struct] or [union]. To call a function stored in a struct,
 parentheses are needed around the field expression.
 
+<!-- ignore: needs lots of support code -->
 ```rust,ignore
 mystruct.myfield;
 foo().x;

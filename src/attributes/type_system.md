@@ -66,7 +66,8 @@ Non-exhaustive types cannot be constructed outside of the defining crate:
   with a [_StructExpression_] \(including with [functional update syntax]).
 - [`enum`][enum] instances can be constructed in an [_EnumerationVariantExpression_].
 
-```rust,ignore (requires multiple crates)
+<!-- ignore: requires external crates -->
+```rust,ignore
 // `Config`, `Error`, and `Message` are types defined in an upstream crate that have been
 // annotated as `#[non_exhaustive]`.
 use upstream::{Config, Error, Message};
@@ -99,7 +100,8 @@ There are limitations when matching on non-exhaustive types outside of the defin
 - When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not
   contribute towards the exhaustiveness of the arms.
 
-```rust, ignore (requires multiple crates)
+<!-- ignore: requires external crates -->
+```rust, ignore
 // `Config`, `Error`, and `Message` are types defined in an upstream crate that have been
 // annotated as `#[non_exhaustive]`.
 use upstream::{Config, Error, Message};

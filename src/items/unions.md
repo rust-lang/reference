@@ -35,8 +35,11 @@ The expression above creates a value of type `MyUnion` and initializes the
 storage using field `f1`. The union can be accessed using the same syntax as
 struct fields:
 
-```rust,ignore
-let f = u.f1;
+```rust
+# union MyUnion { f1: u32, f2: f32 }
+#
+# let u = MyUnion { f1: 1 };
+let f = unsafe { u.f1 };
 ```
 
 ## Reading and writing union fields
@@ -135,18 +138,19 @@ have to be adjusted to account for this fact. As a result, if one field of a
 union is borrowed, all its remaining fields are borrowed as well for the same
 lifetime.
 
-```rust,ignore
+```rust,compile_fail
+# union MyUnion { f1: u32, f2: f32 }
 // ERROR: cannot borrow `u` (via `u.f2`) as mutable more than once at a time
 fn test() {
     let mut u = MyUnion { f1: 1 };
     unsafe {
         let b1 = &mut u.f1;
-                      ---- first mutable borrow occurs here (via `u.f1`)
+//                    ---- first mutable borrow occurs here (via `u.f1`)
         let b2 = &mut u.f2;
-                      ^^^^ second mutable borrow occurs here (via `u.f2`)
+//                    ^^^^ second mutable borrow occurs here (via `u.f2`)
         *b1 = 5;
     }
-    - first borrow ends here
+//  - first borrow ends here
     assert_eq!(unsafe { u.f1 }, 5);
 }
 ```

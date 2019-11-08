@@ -260,7 +260,9 @@ functions and macros in the standard library can then use that assumption
 above, these operators implicitly take shared borrows of their operands,
 evaluating them in [place expression context][place expression]:
 
-```rust,ignore
+```rust
+# let a = 1;
+# let b = 1;
 a == b;
 // is equivalent to
 ::std::cmp::PartialEq::eq(&a, &b);

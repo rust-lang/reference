@@ -264,6 +264,7 @@ When the configuration predicate is true, this attribute expands out to the
 attributes listed after the predicate. For example, the following module will
 either be found at `linux.rs` or `windows.rs` based on the target.
 
+<!-- ignore: `mod` needs multiple files -->
 ```rust,ignore
 #[cfg_attr(linux, path = "linux.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
@@ -273,6 +274,7 @@ mod os;
 Zero, one, or more attributes may be listed. Multiple attributes will each be
 expanded into separate attributes. For example:
 
+<!-- ignore: fake attributes -->
 ```rust,ignore
 #[cfg_attr(feature = "magic", sparkles, crackles)]
 fn bewitched() {}

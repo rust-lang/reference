@@ -49,7 +49,8 @@ enable code generation of that function for specific platform architecture
 features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 `enable` whose value is a string of comma-separated feature names to enable.
 
-```rust,ignore
+```rust
+# #[cfg(target_feature = "avx2")]
 #[target_feature(enable = "avx2")]
 unsafe fn foo_avx2() {}
 ```
