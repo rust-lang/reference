@@ -195,6 +195,7 @@ multiple of the struct's alignment.
 
 Here is this algorithm described in pseudocode.
 
+<!-- ignore: pseudocode -->
 ```rust,ignore
 struct.alignment = struct.fields().map(|field| field.alignment).max();
 

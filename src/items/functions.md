@@ -58,6 +58,7 @@ the body of the function will short-cut that implicit return, if reached.
 
 For example, the function above behaves as if it was written as:
 
+<!-- ignore: example expansion -->
 ```rust,ignore
 // argument_0 is the actual first argument passed from the caller
 let (value, _) = argument_0;
@@ -115,14 +116,16 @@ sufficient context to determine the type parameters. For example,
 The `extern` function qualifier allows providing function _definitions_ that can
 be called with a particular ABI:
 
++<!-- ignore: fake ABI -->
 ```rust,ignore
-extern "ABI" fn foo() { ... }
+extern "ABI" fn foo() { /* ... */ }
 ```
 
 These are often used in combination with [external block] items which provide
 function _declarations_ that can be used to call functions without providing
 their _definition_:
 
++<!-- ignore: fake ABI -->
 ```rust,ignore
 extern "ABI" {
   fn foo(); /* no body */
@@ -376,6 +379,7 @@ For example, the following code defines an inert `some_inert_attribute` attribut
 is not formally defined anywhere and the `some_proc_macro_attribute` procedural macro is
 responsible for detecting its presence and removing it from the output token stream.
 
+<!-- ignore: requires proc macro -->
 ```rust,ignore
 #[some_proc_macro_attribute]
 fn foo_oof(#[some_inert_attribute] arg: u8) {

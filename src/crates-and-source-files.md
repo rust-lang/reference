@@ -53,7 +53,7 @@ that apply to the containing module, most of which influence the behavior of
 the compiler. The anonymous crate module can have additional attributes that
 apply to the crate as a whole.
 
-```rust,no_run
+```rust
 // Specify the crate name.
 #![crate_name = "projx"]
 
@@ -75,7 +75,8 @@ essentially to treat the source file as an executable script. The shebang
 can only occur at the beginning of the file (but after the optional
 _UTF8BOM_). It is ignored by the compiler. For example:
 
-```text,ignore
+<!-- ignore: tests don't like shebang -->
+```rust,ignore
 #!/usr/bin/env rustx
 
 fn main() {
@@ -136,7 +137,7 @@ other object being linked to defines `main`.
 The *`crate_name` [attribute]* may be applied at the crate level to specify the
 name of the crate with the [_MetaNameValueStr_] syntax.
 
-```rust,ignore
+```rust
 #![crate_name = "mycrate"]
 ```
 

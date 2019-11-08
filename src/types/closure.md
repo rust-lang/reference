@@ -22,13 +22,15 @@ f(|| {
 
 generates a closure type roughly like the following:
 
+<!-- ignore: simplified, requires unboxed_closures, fn_traits -->
 ```rust,ignore
 struct Closure<'a> {
     s : String,
     t : &'a String,
 }
 
-impl<'a> (FnOnce() -> String) for Closure<'a> {
+impl<'a> FnOnce<()> for Closure<'a> {
+    type Output = String;
     fn call_once(self) -> String {
         self.s += &*self.t;
         self.s
@@ -38,6 +40,7 @@ impl<'a> (FnOnce() -> String) for Closure<'a> {
 
 so that the call to `f` works as if it were:
 
+<!-- ignore: continuation of above -->
 ```rust,ignore
 f(Closure{s: s, t: &t});
 ```

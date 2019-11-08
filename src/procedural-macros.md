@@ -80,7 +80,9 @@ output [`TokenStream`] replaces the entire macro invocation.
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
 
+<!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
+# #![crate_type = "proc-macro"]
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
@@ -92,6 +94,7 @@ pub fn make_answer(_item: TokenStream) -> TokenStream {
 
 And then we use it a binary crate to print "42" to standard output.
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 extern crate proc_macro_examples;
 use proc_macro_examples::make_answer;
@@ -127,7 +130,9 @@ then appended to the [module] or [block] that the item from the input
 The following is an example of a derive macro. Instead of doing anything
 useful with its input, it just appends a function `answer`.
 
+<!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
+# #![crate_type = "proc-macro"]
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
@@ -139,6 +144,7 @@ pub fn derive_answer_fn(_item: TokenStream) -> TokenStream {
 
 And then using said derive macro:
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 extern crate proc_macro_examples;
 use proc_macro_examples::AnswerFn;
@@ -165,8 +171,9 @@ the names of the helper attributes.
 For example, the following derive macro defines a helper attribute
 `helper`, but ultimately doesn't do anything with it.
 
+<!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
-# #[crate_type="proc-macro"]
+# #![crate_type="proc-macro"]
 # extern crate proc_macro;
 # use proc_macro::TokenStream;
 
@@ -178,11 +185,8 @@ pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
 
 And then usage on the derive macro on a struct:
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
-# #![crate_type="proc-macro"]
-# extern crate proc_macro_examples;
-# use proc_macro_examples::HelperAttr;
-
 #[derive(HelperAttr)]
 struct Struct {
     #[helper] field: ()
@@ -207,6 +211,7 @@ replaces the [item] with an arbitrary number of [items].
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
 
+<!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
 # #![crate_type = "proc-macro"]
 # extern crate proc_macro;
@@ -222,6 +227,7 @@ This following example shows the stringified [`TokenStream`s] that the attribute
 macros see. The output will show in the output of the compiler. The output is
 shown in the comments after the function prefixed with "out:".
 
+<!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
 // my-macro/src/lib.rs
 # extern crate proc_macro;
@@ -235,6 +241,7 @@ pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 ```
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 // src/lib.rs
 extern crate my_macro;

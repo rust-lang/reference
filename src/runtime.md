@@ -12,9 +12,8 @@ The *`panic_handler` attribute* can only be applied to a function with signature
 Below is shown a `panic_handler` function that logs the panic message and then halts the
 thread.
 
-<!-- NOTE(ignore) `mdbook test` doesn't support `no_std` code -->
-
-``` rust, ignore
+<!-- ignore: test infrastructure can't handle no_std -->
+```rust,ignore
 #![no_std]
 
 use core::fmt::{self, Write};
@@ -64,7 +63,7 @@ the [subsystem] when linking on a Windows target. It uses the
 `console` or `windows`. This attribute is ignored on non-Windows targets, and
 for non-`bin` [crate types].
 
-```rust,ignore
+```rust
 #![windows_subsystem = "windows"]
 ```
 

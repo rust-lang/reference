@@ -195,6 +195,7 @@ path), it is first looked up in textual scoping. If this does not yield any
 results, then it is looked up in path-based scoping. If the macro's name is
 qualified with a path, then it is only looked up in path-based scoping.
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 use lazy_static::lazy_static; // Path-based import.
 
@@ -216,6 +217,7 @@ be used recursively, since names are looked up from the invocation site), up
 until its surrounding scope, typically a module, is closed. This can enter child
 modules and even span across multiple files:
 
+<!-- ignore: requires external modules -->
 ```rust,ignore
 //// src/lib.rs
 mod has_macro {
@@ -306,6 +308,7 @@ conflict, the last macro imported wins. Optionally, a list of macros to import
 can be specified using the [_MetaListIdents_] syntax; this is not supported
 when `#[macro_use]` is applied to a module.
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 #[macro_use(lazy_static)] // Or #[macro_use] to import all macros.
 extern crate lazy_static;
@@ -351,6 +354,7 @@ refers to an item or macro which isn't in scope at the invocation site. To
 alleviate this, the `$crate` metavariable can be used at the start of a path to
 force lookup to occur inside the crate defining the macro.
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 //// Definitions in the `helper_macro` crate.
 #[macro_export]

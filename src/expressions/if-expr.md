@@ -97,6 +97,7 @@ assert_eq!(a, 3);
 
 An `if let` expression is equivalent to a [`match` expression] as follows:
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 if let PATS = EXPR {
     /* body */
@@ -107,6 +108,7 @@ if let PATS = EXPR {
 
 is equivalent to
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 match EXPR {
     PATS => { /* body */ },
@@ -135,6 +137,7 @@ of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLe
 When lazy boolean operator expression is desired, this can be achieved
 by using parenthesis as below:
 
+<!-- ignore: psuedo code -->
 ```rust,ignore
 // Before...
 if let PAT = EXPR && EXPR { .. }

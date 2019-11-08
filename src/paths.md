@@ -8,6 +8,7 @@ item.
 
 Two examples of simple paths consisting of only identifier segments:
 
+<!-- ignore: syntax fragment -->
 ```rust,ignore
 x;
 x::y::z;
@@ -135,10 +136,20 @@ and qualified paths.
 Although the `::` token is allowed before the generics arguments, it is not required
 because there is no ambiguity like there is in _PathInExpression_.
 
-```rust,ignore
+```rust
+# mod ops {
+#     pub struct Range<T> {f1: T}
+#     pub trait Index<T> {}
+#     pub struct Example<'a> {f1: &'a i32}
+# }
+# struct S;
 impl ops::Index<ops::Range<usize>> for S { /*...*/ }
-fn i() -> impl Iterator<Item = op::Example<'a>> { /*...*/ }
-type G = std::boxed::Box<std::ops::FnOnce(isize) -> isize>;
+fn i<'a>() -> impl Iterator<Item = ops::Example<'a>> {
+    // ...
+#    const EXAMPLE: Vec<ops::Example<'static>> = Vec::new();
+#    EXAMPLE.into_iter()
+}
+type G = std::boxed::Box<dyn std::ops::FnOnce(isize) -> isize>;
 ```
 
 ## Path qualifiers

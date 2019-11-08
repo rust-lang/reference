@@ -151,13 +151,13 @@ feature. These target features are typically configured from the command line
 via flags to the compiler itself. For example to enable a static runtime you
 would execute:
 
-```notrust
+```bash
 rustc -C target-feature=+crt-static foo.rs
 ```
 
 whereas to link dynamically to the C runtime you would execute:
 
-```notrust
+```bash
 rustc -C target-feature=-crt-static foo.rs
 ```
 
@@ -170,7 +170,7 @@ example, needs to be compiled differently (e.g. with `/MT` or `/MD`) depending
 on the runtime being linked. This is exported currently through the
 [`cfg` attribute `target_feature` option]:
 
-```rust,ignore
+```rust
 #[cfg(target_feature = "crt-static")]
 fn foo() {
     println!("the C runtime should be statically linked");
@@ -206,7 +206,7 @@ To use this feature locally, you typically will use the `RUSTFLAGS` environment
 variable to specify flags to the compiler through Cargo. For example to compile
 a statically linked binary on MSVC you would execute:
 
-```ignore,notrust
+```bash
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 

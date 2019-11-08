@@ -93,6 +93,7 @@ while let _ = 5 {
 A `while let` loop is equivalent to a `loop` expression containing a [`match`
 expression] as follows.
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 'label: while let PATS = EXPR {
     /* loop body */
@@ -101,6 +102,7 @@ expression] as follows.
 
 is equivalent to
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 'label: loop {
     match EXPR {
@@ -156,6 +158,7 @@ assert_eq!(sum, 55);
 
 A for loop is equivalent to the following block expression.
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 'label: for PATTERN in iter_expr {
     /* loop body */
@@ -164,6 +167,7 @@ A for loop is equivalent to the following block expression.
 
 is equivalent to
 
+<!-- ignore: expansion example -->
 ```rust,ignore
 {
     let result = match IntoIterator::into_iter(iter_expr) {

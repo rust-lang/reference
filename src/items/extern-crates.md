@@ -28,6 +28,7 @@ In this case the `as` clause must be used to specify the name to bind it to.
 
 Three examples of `extern crate` declarations:
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 extern crate pcre;
 
@@ -43,6 +44,7 @@ details).
 
 Here is an example:
 
+<!-- ignore: requires external crates -->
 ```rust,ignore
 // Importing the Cargo package hello-world
 extern crate hello_world; // hyphen replaced with an underscore

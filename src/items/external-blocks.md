@@ -64,7 +64,7 @@ By default external blocks assume that the library they are calling uses the
 standard C ABI on the specific platform. Other ABIs may be specified using an
 `abi` string, as shown here:
 
-```rust,ignore
+```rust
 // Interface to the Windows API
 extern "stdcall" { }
 ```
@@ -97,7 +97,7 @@ There are also some platform-specific ABI strings:
 Functions within external blocks may be variadic by specifying `...` after one
 or more named arguments in the argument list:
 
-```rust,ignore
+```rust
 extern {
     fn foo(x: i32, ...);
 }
@@ -128,6 +128,7 @@ name for the items within an `extern` block when importing symbols from the
 host environment. The default module name is `env` if `wasm_import_module` is
 not specified.
 
+<!-- ignore: requires extern linking -->
 ```rust,ignore
 #[link(name = "crypto")]
 extern {
@@ -156,7 +157,7 @@ The `link_name` attribute may be specified on declarations inside an `extern`
 block to indicate the symbol to import for the given function or static. It
 uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
 
-```rust,ignore
+```rust
 extern {
     #[link_name = "actual_symbol_name"]
     fn name_in_rust();

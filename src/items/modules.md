@@ -74,6 +74,7 @@ For `path` attributes on modules not inside inline module blocks, the file
 path is relative to the directory the source file is located. For example, the
 following code snippet would use the paths shown based on where it is located:
 
+<!-- ignore: requires external files -->
 ```rust,ignore
 #[path = "foo.rs"]
 mod c;
@@ -95,6 +96,7 @@ it is the same except the path starts with a directory with the name of the
 non-mod-rs module. For example, the following code snippet would use the paths
 shown based on where it is located:
 
+<!-- ignore: requires external files -->
 ```rust,ignore
 mod inline {
     #[path = "other.rs"]
@@ -110,6 +112,7 @@ Source File    | `inner`'s File Location   | `inner`'s Module Path
 An example of combining the above rules of `path` attributes on inline modules
 and nested modules within (applies to both mod-rs and non-mod-rs files):
 
+<!-- ignore: requires external files -->
 ```rust,ignore
 #[path = "thread_files"]
 mod thread {

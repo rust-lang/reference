@@ -69,7 +69,7 @@ types when defining the item. It is an error to have `Copy` or `Clone`as a
 bound on a mutable reference, [trait object] or [slice][arrays] or `Sized` as a
 bound on a trait object or slice.
 
-```rust,ignore
+```rust,compile_fail
 struct A<T>
 where
     T: Iterator,            // Could use A<T: Iterator> instead
@@ -92,6 +92,7 @@ attributes may give meaning to it.
 This example shows using a custom derive attribute to modify the meaning of a
 generic parameter.
 
+<!-- ignore: requires proc macro derive -->
 ```rust,ignore
 // Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
 // an attribute it understands.

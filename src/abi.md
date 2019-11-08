@@ -68,7 +68,8 @@ The *`link_section` attribute* specifies the section of the object file that a
 [function] or [static]'s content will be placed into. It uses the
 [_MetaNameValueStr_] syntax to specify the section name.
 
-```rust,ignore
+<!-- no_run: don't link. The format of the section name is platform-specific. -->
+```rust,no_run
 #[no_mangle]
 #[link_section = ".example_section"]
 pub static VAR1: u32 = 1;
@@ -80,7 +81,7 @@ The *`export_name` attribute* specifies the name of the symbol that will be
 exported on a [function] or [static]. It uses the [_MetaNameValueStr_] syntax
 to specify the symbol name.
 
-```rust,ignore
+```rust
 #[export_name = "exported_symbol_name"]
 pub fn name_in_rust() { }
 ```

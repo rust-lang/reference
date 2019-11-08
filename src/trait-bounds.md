@@ -104,9 +104,11 @@ Type bounds may be *higher ranked* over lifetimes. These bounds specify a bound
 is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T:
 PartialEq<i32>` would require an implementation like
 
-```rust,ignore
+```rust
+# struct T;
 impl<'a> PartialEq<i32> for &'a T {
     // ...
+#    fn eq(&self, other: &i32) -> bool {true}
 }
 ```
 
