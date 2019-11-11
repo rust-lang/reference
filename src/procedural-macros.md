@@ -273,6 +273,11 @@ fn invoke4() {}
 // out: item: "fn invoke4() {}"
 ```
 
+#### Attribute macro helper attributes
+
+Unlike for [Derive macros] helper attributes do not have to be marked explicitly.
+Since attribute macros can completely discard the input token stream filtering out custom `helper` attributes is entirely the job of the attribute macro.
+
 [Attribute macros]: #attribute-macros
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros
