@@ -10,15 +10,15 @@ The effect of this can be seen in the following example:
 
 ```rust,edition2018
 fn some_two() -> Option<u8> {
-	Some(2)
+    Some(2)
 }
 
 fn some_three() -> Option<u8> {
-	Some(3)
+    Some(3)
 }
 
 let sum: Option<u8> = try {
-	some_two()? + some_three()?
+    some_two()? + some_three()?
 };
 
 assert_eq!(sum, Some(5));
@@ -28,7 +28,7 @@ This is useful when you want to coalesce multiple potential `Err` values into a 
 
 ```rust,edition2018,ignore
 let result = try {
-	foo()?.bar()?.baz()?
+    foo()?.bar()?.baz()?
 };
 ```
 
