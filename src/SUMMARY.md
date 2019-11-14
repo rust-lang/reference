@@ -69,6 +69,7 @@
         - [Match expressions](expressions/match-expr.md)
         - [Return expressions](expressions/return-expr.md)
         - [Await expressions](expressions/await-expr.md)
+        - [Try expressions](expressions/try-expr.md)
 
 - [Patterns](patterns.md)
 

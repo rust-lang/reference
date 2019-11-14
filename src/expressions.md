@@ -40,6 +40,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfLetExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_TryExpression_]\
 > &nbsp;&nbsp; )
 
 An expression may have two roles: it always produces a *value*, and it may have
@@ -354,6 +355,7 @@ They are never allowed before:
 [_RangeExpression_]:              expressions/range-expr.md
 [_ReturnExpression_]:             expressions/return-expr.md
 [_StructExpression_]:             expressions/struct-expr.md
+[_TryExpression_]:                expressions/try-expr.md
 [_TupleExpression_]:              expressions/tuple-expr.md
 [_TupleIndexingExpression_]:      expressions/tuple-expr.md#tuple-indexing-expressions
 [_TypeCastExpression_]:           expressions/operator-expr.md#type-cast-expressions
