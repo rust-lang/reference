@@ -91,10 +91,11 @@ Every binding in each `|` separated pattern must appear in all of the patterns
 in the arm. Every binding of the same name must have the same type, and have
 the same binding mode.
 
+## Match guards
+
 Match arms can accept _match guards_ to further refine the
 criteria for matching a case. Pattern guards appear after the pattern and
-consist of a bool-typed expression following the `if` keyword. A pattern guard
-may refer to the variables bound within the pattern they follow.
+consist of a `bool`-typed expression following the `if` keyword.
 
 When the pattern matches successfully, the pattern guard expression is executed.
 If the expression evaluates to true, the pattern is successfully matched against.
@@ -124,6 +125,15 @@ let message = match maybe_digit {
 > }
 > assert_eq!(i.get(), 2);
 > ```
+
+A pattern guard may refer to the variables bound within the pattern they follow.
+When such a variable's binding mode is by-value,
+a shared reference is taken to it before evaluating the guard. 
+When accessing the variable in the guard by shared reference,
+the shared reference taken before evaluating the guard is used.
+Only when the guard expression evaluates to true is the by-value variable
+moved, or copied, into the arm's body. This allows shared borrows to be used
+inside guards without moving out of the scrutinee in case guard fails to match.
 
 ## Attributes on match arms
 
