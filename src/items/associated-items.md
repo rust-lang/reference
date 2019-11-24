@@ -18,7 +18,7 @@ Every associated item kind comes in two varieties: definitions that contain the
 actual implementation and declarations that declare signatures for
 definitions.
 
-It is the declarations that make up the contract of traits and what it available
+It is the declarations that make up the contract of traits and what is available
 on generic types.
 
 ## Associated functions and methods
