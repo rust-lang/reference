@@ -131,6 +131,15 @@ no valid values, they cannot be instantiated.
 enum ZeroVariants {}
 ```
 
+Zero-variant enums are equivalent to the [never type], but they cannot be
+coerced into other types.
+
+```rust,compile_fail
+# enum ZeroVariants {}
+let x: ZeroVariants = panic!();
+let y: u32 = x; // mismatched type error
+```
+
 [IDENTIFIER]: ../identifiers.md
 [_Generics_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
@@ -139,6 +148,7 @@ enum ZeroVariants {}
 [_StructFields_]: structs.md
 [enumerated type]: ../types/enum.md
 [`mem::discriminant`]: ../../std/mem/fn.discriminant.html
+[never type]: ../types/never.md
 [numeric cast]: ../expressions/operator-expr.md#semantics
 [constant expression]: ../const_eval.md#constant-expressions
 [default representation]: ../type-layout.md#the-default-representation
