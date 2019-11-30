@@ -127,13 +127,14 @@ let message = match maybe_digit {
 > ```
 
 A pattern guard may refer to the variables bound within the pattern they follow.
-When such a variable's binding mode is by-value,
-a shared reference is taken to it before evaluating the guard. 
-When accessing the variable in the guard by shared reference,
-the shared reference taken before evaluating the guard is used.
-Only when the guard expression evaluates to true is the by-value variable
-moved, or copied, into the arm's body. This allows shared borrows to be used
+Before evaluating the guard, a shared reference is taken to the part of the
+scrutinee the variable matches on. While evaluating the guard,
+this shared reference is then used when accessing the variable.
+Only when the guard evaluates to true is the value moved, or copied,
+from the scrutinee into the variable. This allows shared borrows to be used
 inside guards without moving out of the scrutinee in case guard fails to match.
+Moreover, by holding a shared reference while evaluating the guard,
+mutation inside guards is also prevented.
 
 ## Attributes on match arms
 
