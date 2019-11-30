@@ -109,13 +109,15 @@ following types:
 - [`Arc<Self>`]
 - [`Pin<P>`] where `P` is one of the above types except `Self`.
 
-The `Self` term can be replaced with the type being implemented.
+The `Self` term can be replaced with the type being implemented, including
+type aliases for the type, or any nested combination of the above types.
 
 ```rust
 # use std::rc::Rc;
 # use std::sync::Arc;
 # use std::pin::Pin;
 struct Example;
+type Alias = Example;
 impl Example {
     fn by_value(self: Self) {}
     fn by_ref(self: &Self) {}
@@ -126,6 +128,7 @@ impl Example {
     fn by_pin(self: Pin<&Self>) {}
     fn explicit_type(self: Arc<Example>) {}
     fn with_lifetime<'a>(self: &'a Self) {}
+    fn nested<'a>(self: &mut &'a Arc<Rc<Box<Alias>>>) {}
 }
 ```
 
@@ -360,4 +363,4 @@ fn main() {
 [function item]: ../types/function-item.md
 [method call operator]: ../expressions/method-call-expr.md
 [path]: ../paths.md
-[regular function parameters]: functions.md#attributes-on-function-parameters 
+[regular function parameters]: functions.md#attributes-on-function-parameters
