@@ -42,7 +42,7 @@ code, and writing performance-critical or low-level functions.
 
 When comparing raw pointers they are compared by their address, rather than by
 what they point to. When comparing raw pointers to [dynamically sized types] they
-also have their addition data compared.
+also have their additional data compared.
 
 ## Smart Pointers
 
