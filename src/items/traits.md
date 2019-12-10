@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; `}`
 >
 > _TraitItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Visibility_]<sup>?</sup> (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunc_\
 > &nbsp;&nbsp; &nbsp;&nbsp; | _TraitMethod_\
 > &nbsp;&nbsp; &nbsp;&nbsp; | _TraitConst_\
@@ -204,6 +204,42 @@ trait T {
 }
 ```
 
+## Item visibility
+
+Trait items syntactically allow a [_Visibility_] annotation, but this is
+rejected when the trait is validated. This allows items to be parsed with a
+unified syntax across different contexts where they are used. As an example,
+an empty `vis` macro fragment specifier can be used for trait items, where the
+macro rule may be used in other situations where visibility is allowed.
+
+```rust
+macro_rules! create_method {
+    ($vis:vis $name:ident) => {
+        $vis fn $name(&self) {}
+    };
+}
+
+trait T1 {
+    // Empty `vis` is allowed.
+    create_method! { method_of_t1 }
+}
+
+struct S;
+
+impl S {
+    // Visibility is allowed here.
+    create_method! { pub method_of_s }
+}
+
+impl T1 for S {}
+
+fn main() {
+    let s = S;
+    s.method_of_t1();
+    s.method_of_s();
+}
+```
+
 [IDENTIFIER]: ../identifiers.md
 [WildcardPattern]: ../patterns.md#wildcard-pattern
 [_BlockExpression_]: ../expressions/block-expr.md
@@ -217,6 +253,7 @@ trait T {
 [_SelfParam_]: associated-items.md#methods
 [_TypeParamBounds_]: ../trait-bounds.md
 [_Type_]: ../types.md#type-expressions
+[_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [bounds]: ../trait-bounds.md
 [trait object]: ../types/trait-object.md

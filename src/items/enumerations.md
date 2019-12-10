@@ -12,7 +12,7 @@
 > &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>
 >
 > _EnumItem_ :\
-> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup>\
+> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup> [_Visibility_]<sup>?</sup>\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_
 >                                | _EnumItemDiscriminant_ )<sup>?</sup>
 >
@@ -140,12 +140,44 @@ let x: ZeroVariants = panic!();
 let y: u32 = x; // mismatched type error
 ```
 
+## Variant visibility
+
+Enum variants syntactically allow a [_Visibility_] annotation, but this is
+rejected when the enum is validated. This allows items to be parsed with a
+unified syntax across different contexts where they are used.
+
+```rust
+macro_rules! mac_variant {
+    ($vis:vis $name:ident) => {
+        enum $name {
+            $vis Unit,
+
+            $vis Tuple(u8, u16),
+
+            $vis Struct { f: u8 },
+        }
+    }
+}
+
+// Empty `vis` is allowed.
+mac_variant! { E }
+
+// This is allowed, since it is removed before being validated.
+#[cfg(FALSE)]
+enum E {
+    pub U,
+    pub(crate) T(u8),
+    pub(super) T { f: String }
+}
+```
+
 [IDENTIFIER]: ../identifiers.md
 [_Generics_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_Expression_]: ../expressions.md
 [_TupleFields_]: structs.md
 [_StructFields_]: structs.md
+[_Visibility_]: ../visibility-and-privacy.md
 [enumerated type]: ../types/enum.md
 [`mem::discriminant`]: ../../std/mem/fn.discriminant.html
 [never type]: ../types/never.md
