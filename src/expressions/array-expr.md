@@ -12,7 +12,7 @@
 
 An _[array](../types/array.md) expression_ can be written by
 enclosing zero or more comma-separated expressions of uniform type in square
-brackets. This produces and array containing each of these values in the
+brackets. This produces an array containing each of these values in the
 order they are written.
 
 Alternatively there can be exactly two expressions inside the brackets,
