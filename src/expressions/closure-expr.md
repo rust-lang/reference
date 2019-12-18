@@ -12,13 +12,13 @@
 > _ClosureParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
-A _closure expression_ defines a closure and denotes it as a value, in a single
-expression. A closure expression is a pipe-symbol-delimited (`|`) list of
-irrefutable [patterns] followed by an expression. Type annotations may optionally be added
-for the type of the parameters or for the return type. If there is a return
-type, the expression used for the body of the closure must be a normal
-[block]. A closure expression also may begin with the
-`move` keyword before the initial `|`.
+A _closure expression_, also know as a lambda expression or a lambda, defines a 
+closure and denotes it as a value, in a single expression. A closure expression 
+is a pipe-symbol-delimited (`|`) list of irrefutable [patterns] followed by an 
+expression. Type annotations may optionally be added for the type of the 
+parameters or for the return type. If there is a return type, the expression
+used for the body of the closure must be a normal [block]. A closure expression
+also may begin with the `move` keyword before the initial `|`.
 
 A closure expression denotes a function that maps a list of parameters onto
 the expression that follows the parameters. Just like a [`let` binding], the
