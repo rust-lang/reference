@@ -172,7 +172,7 @@ compiler knows how to expand them properly:
     `=> { $( $i );* }` is correct and replaces a comma-separated list of
     identifiers with a semicolon-separated list.
 1.  Second, each repetition in the transcriber must contain at least one
-    metavariable to decide now many times to expand it. If multiple
+    metavariable to decide how many times to expand it. If multiple
     metavariables appear in the same repetition, they must be bound to the same
     number of fragments. For instance, `( $( $i:ident ),* ; $( $j:ident ),* ) =>
     ( $( ($i,$j) ),*` must bind the same number of `$i` fragments as `$j`
