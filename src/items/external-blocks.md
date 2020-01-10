@@ -57,14 +57,14 @@ parameters and `R` is the declared return type.
 
 ## Statics
 
-Statics within external blocks are declared in the same way as statics outside of external blocks,
+Statics within external blocks are declared in the same way as [statics] outside of external blocks,
 except that they do not have an expression initializing their value.
 It is `unsafe` to access a static item declared in an extern block, whether or
 not it's mutable, because there is nothing guaranteeing that the bit pattern at the static's
 memory is valid for the type it is declared with, since some arbitrary (e.g. C) code is in charge
 of initializing the static.
 
-Extern statics can be either immutable or mutable just like statics outside of external blocks.
+Extern statics can be either immutable or mutable just like [statics] outside of external blocks.
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for
 the static to be initialized before Rust code reads from it.
 
