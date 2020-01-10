@@ -38,6 +38,8 @@ Two kind of item _declarations_ are allowed in external blocks: [functions] and
 [statics]. Calling functions or accessing statics that are declared in external
 blocks is only allowed in an `unsafe` context.
 
+## Functions
+
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they may not have a body and are instead
 terminated by a semicolon. Patterns are not allowed in parameters, only
@@ -53,10 +55,18 @@ extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
 are its lifetime parameters, `A1`, ..., `An` are the declared types of its
 parameters and `R` is the declared return type.
 
-Statics within external blocks are declared in the same way as statics outside of external blocks,
+## Statics
+
+Statics within external blocks are declared in the same way as [statics] outside of external blocks,
 except that they do not have an expression initializing their value.
 It is `unsafe` to access a static item declared in an extern block, whether or
-not it's mutable.
+not it's mutable, because there is nothing guaranteeing that the bit pattern at the static's
+memory is valid for the type it is declared with, since some arbitrary (e.g. C) code is in charge
+of initializing the static.
+
+Extern statics can be either immutable or mutable just like [statics] outside of external blocks.
+An immutable static *must* be initialized before any Rust code is executed. It is not enough for
+the static to be initialized before Rust code reads from it.
 
 ## ABI
 
