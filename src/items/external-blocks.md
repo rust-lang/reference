@@ -66,8 +66,7 @@ of initializing the static.
 
 Extern statics can be either immutable or mutable just like statics outside of external blocks.
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for
-the static to be initialized before Rust code reads from it. This may change in the future, but for
-now, if you want to lazily initialize such a static, use a mutable static.
+the static to be initialized before Rust code reads from it.
 
 ## ABI
 
