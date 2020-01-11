@@ -332,9 +332,10 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 
 ### The `transparent` Representation
 
-The `transparent` representation can only be used on `struct`s that have a
-single non-zero sized field and any number of zero-sized fields, including
-[`PhantomData<T>`].
+The `transparent` representation can only be used on `struct`s that have:
+
+- a single field with non-zero size, and
+- any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]).
 
 Structs with this representation have the same layout and ABI as the single
 non-zero sized field.
