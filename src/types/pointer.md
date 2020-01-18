@@ -40,9 +40,9 @@ reference by reborrowing it (`&*` or `&mut *`). Raw pointers are generally
 discouraged in Rust code; they exist to support interoperability with foreign
 code, and writing performance-critical or low-level functions.
 
-When comparing pointers they are compared by their address, rather than by
-what they point to. When comparing pointers to [dynamically sized types] they
-also have their addition data compared.
+When comparing raw pointers they are compared by their address, rather than by
+what they point to. When comparing raw pointers to [dynamically sized types] they
+also have their additional data compared.
 
 ## Smart Pointers
 
