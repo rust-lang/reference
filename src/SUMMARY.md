@@ -122,6 +122,8 @@
 
 - [The Rust runtime](runtime.md)
 
+- [Semver for Rust](semver.md)
+
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
     - [Influences](influences.md)
