@@ -28,4 +28,4 @@ And then generate the book:
 mdbook build
 ```
 
-The generated HTML will be in the `docs` folder.
+The generated HTML will be in the `book` folder.
