@@ -139,6 +139,29 @@ compile-time; that is, it's not a [dynamically sized type]. [Type parameters]
 are `Sized` by default. `Sized` is always implemented automatically by the
 compiler, not by [implementation items].
 
+## `Termination`
+
+Types implementing the [`Termination`] trait can be returned from `main()`.
+Those types implement logic to be converted to an integer value returned
+to the operating system when the program ends.
+
+The standard library has implementations for the following types:
+
+* [`ExitCode`] represents conventional return values, depending on the
+  operating system. This includes `SUCCESS` and `FAILURE` variants, but
+  could be extanded in the future.
+* `()` returns `ExitCode::SUCCESS`
+* `Result<(), E>` returns `ExitCode::SUCCESS` for an `Ok` variant,
+  and prints an error before exiting with `ExitCode::FAILURE` for an
+  `Err` variant.
+* [`!`] cannot be constructed, thus can never be returned. Using this as a
+  return type for `main()` denotes that the program will run forever, unless
+  it is interrupted by the operating system.
+* `Result<!, E>` prints the `Err` and exits with `ExitCode::FAILURE` when
+  returned, since the `Ok` variant containts [`!`] cannot be constructed.
+  Using this as return type for `main()` denotes that the program will run forever,
+  unless it is interrupted or it encounters an error
+
 [`Arc<Self>`]: ../std/sync/struct.Arc.html
 [`Box<T>`]: ../std/boxed/struct.Box.html
 [`Clone`]: ../std/clone/trait.Clone.html
@@ -146,6 +169,7 @@ compiler, not by [implementation items].
 [`Deref`]: ../std/ops/trait.Deref.html
 [`DerefMut`]: ../std/ops/trait.DerefMut.html
 [`Drop`]: ../std/ops/trait.Drop.html
+[`ExitCode`]: ../std/process/struct.ExitCode.html
 [`Pin<P>`]: ../std/pin/struct.Pin.html
 [`Rc<Self>`]: ../std/rc/struct.Rc.html
 [`RefUnwindSafe`]: ../std/panic/trait.RefUnwindSafe.html
@@ -157,6 +181,7 @@ compiler, not by [implementation items].
 [`std::ops`]: ../std/ops/index.html
 [`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
 [`Sync`]: ../std/marker/trait.Sync.html
+[`Termination`]: ../std/process/trait.Termination.html
 
 [Arrays]: types/array.md
 [call expressions]: expressions/call-expr.md
