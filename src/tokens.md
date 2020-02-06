@@ -579,7 +579,7 @@ usages and meanings are defined in the linked pages.
 | `=>`   | FatArrow    | [Match arms][match], [Macros]
 | `#`    | Pound       | [Attributes]
 | `$`    | Dollar      | [Macros]
-| `?`    | Question    | [Question mark operator][question], [Questionably sized][sized]
+| `?`    | Question    | [Question mark operator][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
 
 ## Delimiters
 
