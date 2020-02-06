@@ -26,7 +26,7 @@ fn check_directory(dir: &Path) -> Result<(), Box<dyn Error>> {
         let path = entry.path();
 
         if path.is_dir() {
-            continue;
+            return check_directory(&path);
         }
 
         let mut file = File::open(&path)?;
@@ -34,10 +34,7 @@ fn check_directory(dir: &Path) -> Result<(), Box<dyn Error>> {
         file.read_to_string(&mut contents)?;
 
         if contents.contains("#![feature") {
-            // `attributes.md` contains this and it is legitimate.
-            if !contents.contains("#![feature(feature1, feature2, feature3)]") {
-                return Err(From::from(format!("Feature flag found in {:?}", path)));
-            }
+            return Err(From::from(format!("Feature flag found in {:?}", path)));
         }
     }
 
