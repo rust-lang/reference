@@ -126,7 +126,7 @@ trait TraitMethods {
 ```
 
 ```rust,compile_fail
-// These are object-safe, but cannot be dispatched on a trait object.
+// This trait is object-safe, but these methods cannot be dispatched on a trait object.
 trait NonDispatchable {
     // Non-methods cannot be dispatched.
     fn foo() where Self: Sized {}
@@ -135,7 +135,6 @@ trait NonDispatchable {
     // `other` may be a different concrete type of the receiver.
     fn param(&self, other: Self) where Self: Sized {}
     // Generics are not compatible with vtables.
-    // Alternate solution is to use a trait object instead.
     fn typed<T>(&self, x: T) where Self: Sized {}
 }
 
@@ -178,7 +177,7 @@ let obj: Box<dyn TraitWithSize> = Box::new(S); // ERROR
 ```
 
 ```rust,compile_fail
-// Not object safe if `Self` is a type parameter.
+// Not object safe if `Self` is a type argument.
 trait Super<A> {}
 trait WithSelf: Super<Self> where Self: Sized {}
 
