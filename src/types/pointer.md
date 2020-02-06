@@ -3,11 +3,13 @@
 All pointers in Rust are explicit first-class values. They can be moved or
 copied, stored into data structs, and returned from functions.
 
-## Shared references (`&`)
+## References (`&` and `&mut`)
 
 > **<sup>Syntax</sup>**\
 > _ReferenceType_ :\
 > &nbsp;&nbsp; `&` [_Lifetime_]<sup>?</sup> `mut`<sup>?</sup> [_TypeNoBounds_]
+
+### Shared references (`&`)
 
 These point to memory _owned by some other value_. When a shared reference to
 a value is created it prevents direct mutation of the value. [Interior
@@ -19,7 +21,7 @@ only copying the pointer itself, that is, pointers are `Copy`. Releasing a
 reference has no effect on the value it points to, but referencing of a
 [temporary value] will keep it alive during the scope of the reference itself.
 
-## Mutable references (`&mut`)
+### Mutable references (`&mut`)
 
 These also point to memory owned by some other value. A mutable reference type
 is written `&mut type` or `&'a mut type`. A mutable reference (that hasn't been
