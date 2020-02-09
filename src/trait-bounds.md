@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; _TypeParamBound_ ( `+` _TypeParamBound_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _TypeParamBound_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_
+> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeBounds_ | _TraitBound_
 >
 > _TraitBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `?`<sup>?</sup>
