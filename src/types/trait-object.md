@@ -97,7 +97,7 @@ need to be expressed as part of the trait object. This lifetime is written as
 inferred with a sensible choice.
 
 [_TraitBound_]: ../trait-bounds.md
-[_TypeParamBounds_]: ../types.md#type-expressions
+[_TypeParamBounds_]: ../trait-bounds.md
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
 [dynamically sized types]: ../dynamically-sized-types.md
