@@ -373,5 +373,5 @@ why particular matchers are legal and others are not.
  * `($($e:expr)*)` : illegal, because expr NTs are not in FOLLOW(expr NT).
 
 [Macros by Example]: macros-by-example.md
-[RFC 550]: https://github.com/rust-lang/rfcs/blob/master/text/0550-macro-future-proofing.html
+[RFC 550]: https://github.com/rust-lang/rfcs/blob/master/text/0550-macro-future-proofing.md
 [tracking issue]: https://github.com/rust-lang/rust/issues/56575
