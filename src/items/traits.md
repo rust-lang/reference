@@ -95,6 +95,98 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 * It must not have any associated constants.
 * All supertraits must also be object safe.
 
+When there isn't a `Self: Sized` bound on a method, the type of a method
+receiver must be one of the following types:
+
+* `&Self`
+* `&mut Self`
+* [`Box<Self>`]
+* [`Rc<Self>`]
+* [`Arc<Self>`]
+* [`Pin<P>`] where `P` is one of the types above
+
+```rust
+# use std::rc::Rc;
+# use std::sync::Arc;
+# use std::pin::Pin;
+// Examples of object safe methods.
+trait TraitMethods {
+    fn by_ref(self: &Self) {}
+    fn by_ref_mut(self: &mut Self) {}
+    fn by_box(self: Box<Self>) {}
+    fn by_rc(self: Rc<Self>) {}
+    fn by_arc(self: Arc<Self>) {}
+    fn by_pin(self: Pin<&Self>) {}
+    fn with_lifetime<'a>(self: &'a Self) {}
+    fn nested_pin(self: Pin<Arc<Self>>) {}
+}
+# struct S;
+# impl TraitMethods for S {}
+# let t: Box<dyn TraitMethods> = Box::new(S);
+```
+
+```rust,compile_fail
+// This trait is object-safe, but these methods cannot be dispatched on a trait object.
+trait NonDispatchable {
+    // Non-methods cannot be dispatched.
+    fn foo() where Self: Sized {}
+    // Self type isn't known until runtime.
+    fn returns(&self) -> Self where Self: Sized;
+    // `other` may be a different concrete type of the receiver.
+    fn param(&self, other: Self) where Self: Sized {}
+    // Generics are not compatible with vtables.
+    fn typed<T>(&self, x: T) where Self: Sized {}
+}
+
+struct S;
+impl NonDispatchable for S {
+    fn returns(&self) -> Self where Self: Sized { S }
+}
+let obj: Box<dyn NonDispatchable> = Box::new(S);
+obj.returns(); // ERROR: cannot call with Self return
+obj.param(S);  // ERROR: cannot call with Self parameter
+obj.typed(1);  // ERROR: cannot call with generic type
+```
+
+```rust,compile_fail
+# use std::rc::Rc;
+// Examples of non-object safe traits.
+trait NotObjectSafe {
+    const CONST: i32 = 1;  // ERROR: cannot have associated const
+
+    fn foo() {}  // ERROR: associated function without Sized
+    fn returns(&self) -> Self; // ERROR: Self in return type
+    fn typed<T>(&self, x: T) {} // ERROR: has generic type parameters
+    fn nested(self: Rc<Box<Self>>) {} // ERROR: nested receiver not yet supported
+}
+
+struct S;
+impl NotObjectSafe for S {
+    fn returns(&self) -> Self { S }
+}
+let obj: Box<dyn NotObjectSafe> = Box::new(S); // ERROR
+```
+
+```rust,compile_fail
+// Self: Sized traits are not object-safe.
+trait TraitWithSize where Self: Sized {}
+
+struct S;
+impl TraitWithSize for S {}
+let obj: Box<dyn TraitWithSize> = Box::new(S); // ERROR
+```
+
+```rust,compile_fail
+// Not object safe if `Self` is a type argument.
+trait Super<A> {}
+trait WithSelf: Super<Self> where Self: Sized {}
+
+struct S;
+impl<A> Super<A> for S {}
+impl WithSelf for S {}
+let obj: Box<dyn WithSelf> = Box::new(S); // ERROR: cannot use `Self` type parameter
+```
+
 ## Supertraits
 
 **Supertraits** are traits that are required to be implemented for a type to
@@ -268,3 +360,7 @@ fn main() {
 [trait implementation]: implementations.md#trait-implementations
 [`Send`]: ../special-types-and-traits.md#send
 [`Sync`]: ../special-types-and-traits.md#sync
+[`Arc<Self>`]: ../special-types-and-traits.md#arct
+[`Box<Self>`]: ../special-types-and-traits.md#boxt
+[`Pin<P>`]: ../special-types-and-traits.md#pinp
+[`Rc<Self>`]: ../special-types-and-traits.md#rct
