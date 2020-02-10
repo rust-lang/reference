@@ -22,7 +22,7 @@ of the block.
 
 Blocks are written as `{`, then any [inner attributes], then [statements],
 then an optional expression, and finally a `}`. Statements are usually required
-to be followed a semicolon, with two exceptions. Item declaration statements do
+to be followed by a semicolon, with two exceptions. Item declaration statements do
 not need to be followed by a semicolon. Expression statements usually require
 a following semicolon except if its outer expression is a flow control
 expression. Furthermore, extra semicolons between statements are allowed, but
