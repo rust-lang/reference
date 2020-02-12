@@ -58,7 +58,7 @@ fn main() {
 Like items, `use` declarations are private to the containing module, by
 default. Also like items, a `use` declaration can be public, if qualified by
 the `pub` keyword. Such a `use` declaration serves to _re-export_ a name. A
-public `use` declaration can therefore _redirect_ some public name to a
+public `use` declaration can therefore _redirect_ some name to a
 different target definition: even a definition with a private canonical path,
 inside a different module. If a sequence of such redirections form a cycle or
 cannot be resolved unambiguously, they represent a compile-time error.
