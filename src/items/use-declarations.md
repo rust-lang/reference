@@ -103,7 +103,7 @@ mod foo {
     }
 
     use crate::foo::example::iter; // good: foo is at crate root
-//  use example::iter;      // bad: relative paths are not allowed without `self`
+//  use example::iter;      // bad in 2015 edition: relative paths are not allowed without `self`; good in 2018 edition
     use self::baz::foobaz;  // good: self refers to module 'foo'
     use crate::foo::bar::foobar;   // good: foo is at crate root
 
