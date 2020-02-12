@@ -31,7 +31,7 @@ to be run.
     are implemented, one cannot use both short circuiting operators (`&&` and `||`) and let
     statements within the same constant.
     * [assignment expressions]
-    * [assignment operator expressions]
+    * [compound assignment expressions]
     * [expression statements]
 * [Field] expressions.
 * Index expressions, [array indexing] or [slice] with a `usize`.
@@ -63,7 +63,7 @@ A _const context_ is one of the following:
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 [array type length expressions]: types/array.md
 [assignment expressions]: expressions/operator-expr.md#assignment-expressions
-[assignment operator expressions]: expressions/operator-expr.md#compound-assignment-expressions
+[compound assignment expressions]: expressions/operator-expr.md#compound-assignment-expressions
 [block expressions]:    expressions/block-expr.md
 [borrow]:               expressions/operator-expr.md#borrow-operators
 [cast]:                 expressions/operator-expr.md#type-cast-expressions
