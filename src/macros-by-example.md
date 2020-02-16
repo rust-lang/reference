@@ -115,23 +115,60 @@ foo!(3);
 ## Metavariables
 
 In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax
-fragment of the kind specified and binds it to the metavariable `$`_name_. Valid
-fragment specifiers are:
+fragment of the kind specified and binds it to the metavariable `$`_name_.
 
-  * `item`: an [_Item_]
-  * `block`: a [_BlockExpression_]
+Note that the _fragment-specifier_ is **not** prefixed by `$`!
+
+Valid fragment specifiers are:
+
+  * `item`: an [_Item_], a component of a crate. Examples:
+    * `pub struct Foo;`
+    * `#[foo] use Bar;`
+  * `block`: a [_BlockExpression_], a control flow expression and anonymous
+    namespace scope for items and variable declarations. Examples:
+    * `{ }`
+    * `{ let foo = bar; (bar, baz) }`
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
-    statements that require semicolons)
-  * `pat`: a [_Pattern_]
-  * `expr`: an [_Expression_]
-  * `ty`: a [_Type_]
-  * `ident`: an [IDENTIFIER_OR_KEYWORD]
-  * `path`: a [_TypePath_] style path
-  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-  * `meta`: an [_Attr_], the contents of an attribute
-  * `lifetime`: a [LIFETIME_TOKEN]
-  * `vis`: a possibly empty [_Visibility_] qualifier
-  * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
+    statements that require semicolons). Examples:
+    * `foo = bar + baz`
+    * `{ let foo = bar; (bar, baz) }`
+    * `Some(Foo { bar, baz: qux })`
+  * `pat`: a [_Pattern_], used to match values against structures. Examples:
+    * `42`
+    * `foo`
+    * `Some(Foo { bar, baz: qux, .. })`
+  * `expr`: an [_Expression_], which evaluates to a value. Examples:
+    * `42 * 9001`
+    * `{ let a = 42; a * a }`
+  * `ty`: a [_Type_], such as sequence types, primitives, pointers… Examples:
+    * `i32`
+    * `foo::Bar`
+  * `ident`: an [IDENTIFIER_OR_KEYWORD], nonempty ASCII strings. Examples:
+    * `foo`
+    * `_123`
+  * `path`: a [_TypePath_] style path, used within type definitions, trait bounds,
+    type parameter bounds, and qualified paths. Examples:
+    * `Foo`
+    * `::foo::Bar`
+  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters
+    `()`, `[]`, or `{}`). Examples:
+    * `Foo`
+    * `[foo, bar]`
+    * `(foo, bar, { baz + qux })`
+  * `meta`: an [_Attr_], the contents of an attribute. Examples:
+    * `Foo`
+    * `foo::Bar(baz)`
+  * `lifetime`: a [LIFETIME_TOKEN]. Examples:
+    * `'a`
+    * `'label`
+    * `'static`
+  * `vis`: a possibly empty [_Visibility_] qualifier. Examples:
+    * `pub`
+    * `pub(crate)`
+    * `pub(in foo)`
+  * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]. Examples:
+    * `-42`
+    * `"Hello, macro!"`
 
 In the transcriber, metavariables are referred to simply by `$`_name_, since
 the fragment kind is specified in the matcher. Metavariables are replaced with
