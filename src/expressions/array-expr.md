@@ -62,7 +62,7 @@ in a _panicked state_ if it fails.
 
 ```rust,should_panic
 // lint is deny by default.
-#![warn(const_err)]
+#![warn(unconditional_panic)]
 
 ([1, 2, 3, 4])[2];        // Evaluates to 3
 
