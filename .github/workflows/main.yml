@@ -17,7 +17,7 @@ jobs:
     - name: Install mdbook
       run: |
         mkdir bin
-        curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.3.4/mdbook-v0.3.4-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+        curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.3.5/mdbook-v0.3.5-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
         echo "##[add-path]$(pwd)/bin"
     - name: Report versions
       run: |
@@ -29,4 +29,7 @@ jobs:
     - name: Check for unstable features
       run: (cd stable-check && cargo run -- ../src)
     - name: Check for broken links
-      run: tests/linkcheck.sh
+      run: |
+        curl -sSLo linkcheck.sh \
+          https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/linkcheck.sh
+        sh linkcheck.sh --all reference
