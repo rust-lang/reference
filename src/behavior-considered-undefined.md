@@ -49,7 +49,7 @@ code.
   * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
     * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
       `Trait` that matches the actual dynamic trait the pointer or reference points to.
-    * Slice metadata is invalid if if the length is not a valid `usize`
+    * Slice metadata is invalid if the length is not a valid `usize`
       (i.e., it must not be read from uninitialized memory).
   * Non-UTF-8 byte sequences in a `str`.
   * Invalid values for a type with a custom definition of invalid values.
