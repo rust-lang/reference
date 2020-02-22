@@ -205,14 +205,18 @@ for field in struct.fields_in_declaration_order() {
     // Increase the current offset so that it's a multiple of the alignment
     // of this field. For the first field, this will always be zero.
     // The skipped bytes are called padding bytes.
-    current_offset += field.alignment % current_offset;
+    //
+    // padding_needed_for() is equivalent to
+    // std::alloc::Layout::padding_needed_for(), but takes an integer rather
+    // than a Layout as the first argument.
+    current_offset += padding_needed_for(current_offset, field.alignment);
 
     struct[field].offset = current_offset;
 
     current_offset += field.size;
 }
 
-struct.size = current_offset + current_offset % struct.alignment;
+struct.size = current_offset + padding_needed_for(current_offset, struct.alignment);
 ```
 
 > Note: This algorithm can produce zero-sized structs. This differs from
