@@ -61,7 +61,7 @@ integer associated to it that is used to determine which variant it holds. An
 opaque reference to this discriminant can be obtained with the
 [`mem::discriminant`] function.
 
-## Custom Discriminant Values for Field-Less Enumerations
+## Custom Discriminant Values for Fieldless Enumerations
 
 If there is no data attached to *any* of the variants of an enumeration,
 then the discriminant can be directly chosen and accessed.

@@ -73,7 +73,7 @@ A _const context_ is one of the following:
 [constants]:            items/constant-items.md
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
-[enum discriminants]:   items/enumerations.md#custom-discriminant-values-for-field-less-enumerations
+[enum discriminants]:   items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
 [enum variant]:         expressions/enum-variant-expr.md
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
