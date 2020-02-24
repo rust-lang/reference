@@ -226,6 +226,14 @@ for field in struct.fields_in_declaration_order() {
 struct.size = current_offset + padding_needed_for(current_offset, struct.alignment);
 ```
 
+<div class="warning">
+
+Warning: This pseudocode uses a naive algorithm that ignores overflow issues for
+the sake of clarity. To perform memory layout computations in actual code, use
+[`Layout`].
+
+</div>
+
 > Note: This algorithm can produce zero-sized structs. This differs from
 > C where structs without data still have a size of one byte.
 
@@ -374,3 +382,4 @@ used with any other representation.
 [`C`]: #the-c-representation
 [primitive representations]: #primitive-representations
 [`transparent`]: #the-transparent-representation
+[`Layout`]: ../std/alloc/struct.Layout.html
