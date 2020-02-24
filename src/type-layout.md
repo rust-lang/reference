@@ -197,6 +197,17 @@ Here is this algorithm described in pseudocode.
 
 <!-- ignore: pseudocode -->
 ```rust,ignore
+fn padding_needed_for(offset: usize, alignment: usize) -> usize {
+    let misalignment = offset % alignment;
+    if misalignment > 0 {
+        // round up to next multiple of `alignment`
+        alignment - misalignment
+    } else {
+        // already a multiple of `alignment`
+        0
+    }
+}
+
 struct.alignment = struct.fields().map(|field| field.alignment).max();
 
 let current_offset = 0;
@@ -205,10 +216,6 @@ for field in struct.fields_in_declaration_order() {
     // Increase the current offset so that it's a multiple of the alignment
     // of this field. For the first field, this will always be zero.
     // The skipped bytes are called padding bytes.
-    //
-    // padding_needed_for() is equivalent to
-    // std::alloc::Layout::padding_needed_for(), but takes an integer rather
-    // than a Layout as the first argument.
     current_offset += padding_needed_for(current_offset, field.alignment);
 
     struct[field].offset = current_offset;
