@@ -197,6 +197,8 @@ Here is this algorithm described in pseudocode.
 
 <!-- ignore: pseudocode -->
 ```rust,ignore
+/// Returns the amount of padding needed after `offset` to ensure that the
+/// following address will be aligned to `alignment`.
 fn padding_needed_for(offset: usize, alignment: usize) -> usize {
     let misalignment = offset % alignment;
     if misalignment > 0 {
