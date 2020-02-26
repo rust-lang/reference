@@ -197,6 +197,19 @@ Here is this algorithm described in pseudocode.
 
 <!-- ignore: pseudocode -->
 ```rust,ignore
+/// Returns the amount of padding needed after `offset` to ensure that the
+/// following address will be aligned to `alignment`.
+fn padding_needed_for(offset: usize, alignment: usize) -> usize {
+    let misalignment = offset % alignment;
+    if misalignment > 0 {
+        // round up to next multiple of `alignment`
+        alignment - misalignment
+    } else {
+        // already a multiple of `alignment`
+        0
+    }
+}
+
 struct.alignment = struct.fields().map(|field| field.alignment).max();
 
 let current_offset = 0;
@@ -205,15 +218,23 @@ for field in struct.fields_in_declaration_order() {
     // Increase the current offset so that it's a multiple of the alignment
     // of this field. For the first field, this will always be zero.
     // The skipped bytes are called padding bytes.
-    current_offset += field.alignment % current_offset;
+    current_offset += padding_needed_for(current_offset, field.alignment);
 
     struct[field].offset = current_offset;
 
     current_offset += field.size;
 }
 
-struct.size = current_offset + current_offset % struct.alignment;
+struct.size = current_offset + padding_needed_for(current_offset, struct.alignment);
 ```
+
+<div class="warning">
+
+Warning: This pseudocode uses a naive algorithm that ignores overflow issues for
+the sake of clarity. To perform memory layout computations in actual code, use
+[`Layout`].
+
+</div>
 
 > Note: This algorithm can produce zero-sized structs. This differs from
 > C where structs without data still have a size of one byte.
@@ -363,3 +384,4 @@ used with any other representation.
 [`C`]: #the-c-representation
 [primitive representations]: #primitive-representations
 [`transparent`]: #the-transparent-representation
+[`Layout`]: ../std/alloc/struct.Layout.html
