@@ -50,7 +50,7 @@ Attributes may be applied to many things in the language:
 * [Generic lifetime or type parameter][generics] accept outer attributes.
 * Expressions accept outer attributes in limited situations, see [Expression
   Attributes] for details.
-* [Function][functions], [closure]] and [function pointer]
+* [Function][functions], [closure] and [function pointer]
   parameters accept outer attributes. This includes attributes on variadic parameters
   denoted with `...` in function pointers and [external blocks][variadic functions].
 
