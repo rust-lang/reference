@@ -1,6 +1,6 @@
 # Interior Mutability
 
-Sometimes a type needs be mutated while having multiple aliases. In Rust this
+Sometimes a type needs to be mutated while having multiple aliases. In Rust this
 is achieved using a pattern called _interior mutability_. A type has interior
 mutability if its internal state can be changed through a [shared reference] to
 it. This goes against the usual [requirement][ub] that the value pointed to by a
