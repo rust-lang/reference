@@ -123,26 +123,7 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 }
 ```
 
-The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
-Use of a lazy boolean operator is ambiguous with a planned feature change
-of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
-When lazy boolean operator expression is desired, this can be achieved
-by using parenthesis as below:
-
-<!-- ignore: psuedo code -->
-```rust,ignore
-// Before...
-while let PAT = EXPR && EXPR { .. }
-
-// After...
-while let PAT = ( EXPR && EXPR ) { .. }
-
-// Before...
-while let PAT = EXPR || EXPR { .. }
-
-// After...
-while let PAT = ( EXPR || EXPR ) { .. }
-```
+As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 
 ## Iterator loops
 
@@ -315,3 +296,5 @@ expression `()`.
 [`match` expression]: match-expr.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporary-lifetimes
+[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
+[`if let` expressions]: if-expr.md#if-let-expressions
