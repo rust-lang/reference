@@ -45,7 +45,7 @@ have type compatible with the value of the `break` expression(s).
 
 > **<sup>Syntax</sup>**\
 > _PredicateLoopExpression_ :\
-> &nbsp;&nbsp; `while` [_Expression_]<sub>except struct expression</sub> [_BlockExpression_]
+> &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
 the loop conditional expression evaluates to `true`, the loop body block
@@ -67,7 +67,7 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
@@ -123,11 +123,32 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 }
 ```
 
+The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+Use of a lazy boolean operator is ambiguous with a planned feature change
+of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
+When lazy boolean operator expression is desired, this can be achieved
+by using parenthesis as below:
+
+<!-- ignore: psuedo code -->
+```rust,ignore
+// Before...
+while let PAT = EXPR && EXPR { .. }
+
+// After...
+while let PAT = ( EXPR && EXPR ) { .. }
+
+// Before...
+while let PAT = EXPR || EXPR { .. }
+
+// After...
+while let PAT = ( EXPR || EXPR ) { .. }
+```
+
 ## Iterator loops
 
 > **<sup>Syntax</sup>**\
 > _IteratorLoopExpression_ :\
-> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>_except struct expression_</sub>
 >              [_BlockExpression_]
 
 A `for` expression is a syntactic construct for looping over elements provided
