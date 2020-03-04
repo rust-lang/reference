@@ -556,7 +556,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 
 > **<sup>Syntax</sup>**\
 > _TupleStructPattern_ :\
-> &nbsp;&nbsp; [_PathInExpression_] `(` _TupleStructItems_ `)`
+> &nbsp;&nbsp; [_PathInExpression_] `(` _TupleStructItems_<sup>?</sup> `)`
 >
 > _TupleStructItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>\
