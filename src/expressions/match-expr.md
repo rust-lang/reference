@@ -9,10 +9,10 @@
 >
 > _MatchArms_ :\
 > &nbsp;&nbsp; ( _MatchArm_ `=>`
->                             ( [_BlockExpression_] `,`<sup>?</sup>
->                             | [_Expression_] `,` )
+>                             ( [_ExpressionWithoutBlock_][_Expression_] `,`
+>                             | [_ExpressionWithBlock_][_Expression_] `,`<sup>?</sup> )
 >                           )<sup>\*</sup>\
-> &nbsp;&nbsp; _MatchArm_ `=>` ( [_BlockExpression_] | [_Expression_] ) `,`<sup>?</sup>
+> &nbsp;&nbsp; _MatchArm_ `=>` [_Expression_] `,`<sup>?</sup>
 >
 > _MatchArm_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>
@@ -146,7 +146,6 @@ expression in the same expression contexts as [attributes on block
 expressions].
 
 [_Expression_]: ../expressions.md
-[_BlockExpression_]: block-expr.md#block-expressions
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [_InnerAttribute_]: ../attributes.md

@@ -28,9 +28,6 @@ a following semicolon except if its outer expression is a flow control
 expression. Furthermore, extra semicolons between statements are allowed, but
 these semicolons do not affect semantics.
 
-> Note: The semicolon following a statement is not a part of the statement
-> itself. They are invalid when using the `stmt` macro matcher.
-
 When evaluating a block expression, each statement, except for item declaration
 statements, is executed sequentially. Then the final expression is executed,
 if given.

@@ -69,7 +69,7 @@ from the point of declaration until the end of the enclosing block scope.
 > **<sup>Syntax</sup>**\
 > _ExpressionStatement_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
-> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression]
+> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression] `;`<sup>?</sup>
 
 An *expression statement* is one that evaluates an [expression] and ignores its
 result. As a rule, an expression statement's purpose is to trigger the effects
