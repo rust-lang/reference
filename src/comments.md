@@ -2,7 +2,7 @@
 
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~[`/` `!`] | `//`) ~`\n`<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~[`/` `!` \\n] | `//`) ~\\n<sup>\*</sup>\
 > &nbsp;&nbsp; | `//`
 >
 > BLOCK_COMMENT :\
@@ -12,16 +12,16 @@
 > &nbsp;&nbsp; | `/***/`
 >
 > INNER_LINE_DOC :\
-> &nbsp;&nbsp; `//!` ~[`\n` _IsolatedCR_]<sup>\*</sup>
+> &nbsp;&nbsp; `//!` ~[\\n _IsolatedCR_]<sup>\*</sup>
 >
 > INNER_BLOCK_DOC :\
 > &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`
 >
 > OUTER_LINE_DOC :\
-> &nbsp;&nbsp; `///` (~`/` ~[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `///` (~[`/` \\n _IsolatedCR_] ~[\\n _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>
 >
 > OUTER_BLOCK_DOC :\
-> &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
+> &nbsp;&nbsp; `/**` (~[`*` _IsolatedCR_] | _BlockCommentOrDoc_ )
 >              (_BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_])<sup>\*</sup> `*/`
 >
 > _BlockCommentOrDoc_ :\
@@ -30,7 +30,7 @@
 > &nbsp;&nbsp; | INNER_BLOCK_DOC
 >
 > _IsolatedCR_ :\
-> &nbsp;&nbsp; _A `\r` not followed by a `\n`_
+> &nbsp;&nbsp; _A_ \\r _not followed by a_ \\n
 
 ## Non-doc comments
 
