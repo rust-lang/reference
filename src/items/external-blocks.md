@@ -18,17 +18,17 @@
 >
 > _ExternalFunctionItem_ :\
 > &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
-> &nbsp;&nbsp; `(` ( _NamedFunctionParameters_ | _NamedFunctionParametersWithVariadics_ )<sup>?</sup> `)`\
+> &nbsp;&nbsp; `(` _NamedFunctionParameters_ <sup>?</sup> `)`\
 > &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
 >
 > _NamedFunctionParameters_ :\
-> &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> (`,` _VariadicFunctionParam_)<sup>?</sup> `,`<sup>?</sup>
 >
 > _NamedFunctionParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( [IDENTIFIER] | `_` ) `:` [_Type_]
 >
-> _NamedFunctionParametersWithVariadics_ :\
-> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
+> _VariadicFunctionParam_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (( [IDENTIFIER] | `_` ) `:`)<sup>?</sup> `...`
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
