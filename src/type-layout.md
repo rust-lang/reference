@@ -236,8 +236,9 @@ the sake of clarity. To perform memory layout computations in actual code, use
 
 </div>
 
-> Note: This algorithm can produce zero-sized structs. This differs from
-> C where structs without data still have a size of one byte.
+> Note: This algorithm can produce zero-sized structs. In C, the size of
+> structs without data is zero. This is not the same as C++ where structs
+> without data still have a size of one byte.
 
 #### \#[repr(C)] Unions
 
