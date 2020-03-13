@@ -236,9 +236,12 @@ the sake of clarity. To perform memory layout computations in actual code, use
 
 </div>
 
-> Note: This algorithm can produce zero-sized structs. In C, the size of
-> structs without data is zero. This is not the same as C++ where structs
-> without data still have a size of one byte.
+> Note: This algorithm can produce zero-sized structs. In C, an empty struct
+> declaration like `struct Foo { }` is illegal. However, both gcc and clang
+> support options to enable such structs, and assign them size zero. C++, in
+> contrast, gives empty structs a size of 1, unless they are inherited from or
+> they are fields that have the `[[no_unique_address]]` attribute, in which
+> case they do not increase the overall size of the struct.
 
 #### \#[repr(C)] Unions
 
