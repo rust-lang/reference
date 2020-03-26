@@ -66,14 +66,17 @@ cannot be resolved unambiguously, they represent a compile-time error.
 An example of re-exporting:
 
 ```rust
-# fn main() { }
 mod quux {
-    pub use quux::foo::{bar, baz};
-
+    pub use self::foo::{bar, baz};
     pub mod foo {
-        pub fn bar() { }
-        pub fn baz() { }
+        pub fn bar() {}
+        pub fn baz() {}
     }
+}
+
+fn main() {
+    quux::bar();
+    quux::baz();
 }
 ```
 
