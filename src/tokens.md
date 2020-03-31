@@ -154,7 +154,7 @@ Line-breaks are allowed in string literals. A line-break is either a newline
 (`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`). Both
 byte sequences are normally translated to `U+000A`, but as a special exception,
 when an unescaped `U+005C` character (`\`) occurs immediately before the
-line-break, the `U+005C` character, the line-break, and all whitespace at the
+line-break, then the `U+005C` character, the line-break, and all whitespace at the
 beginning of the next line are ignored. Thus `a` and `b` are equal:
 
 ```rust
