@@ -45,7 +45,7 @@ have type compatible with the value of the `break` expression(s).
 
 > **<sup>Syntax</sup>**\
 > _PredicateLoopExpression_ :\
-> &nbsp;&nbsp; `while` [_Expression_]<sub>except struct expression</sub> [_BlockExpression_]
+> &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
 
 A `while` loop begins by evaluating the boolean loop conditional expression. If
 the loop conditional expression evaluates to `true`, the loop body block
@@ -67,7 +67,7 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
@@ -123,11 +123,13 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 }
 ```
 
+As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+
 ## Iterator loops
 
 > **<sup>Syntax</sup>**\
 > _IteratorLoopExpression_ :\
-> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>except struct expression</sub>
+> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>_except struct expression_</sub>
 >              [_BlockExpression_]
 
 A `for` expression is a syntactic construct for looping over elements provided
@@ -294,3 +296,5 @@ expression `()`.
 [`match` expression]: match-expr.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporary-lifetimes
+[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
+[`if let` expressions]: if-expr.md#if-let-expressions
