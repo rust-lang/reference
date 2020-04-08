@@ -357,13 +357,14 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 
 ### The `transparent` Representation
 
-The `transparent` representation can only be used on `struct`s that have:
+The `transparent` representation can only be used on a [`struct`][structs]
+or an [`enum`][enumerations] with a single variant that has:
 
 - a single field with non-zero size, and
 - any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]).
 
-Structs with this representation have the same layout and ABI as the single
-non-zero sized field.
+Structs and enums with this representation have the same layout and ABI
+as the single non-zero sized field.
 
 This is different than the `C` representation because
 a struct with the `C` representation will always have the ABI of a `C` `struct`
@@ -380,6 +381,7 @@ used with any other representation.
 [`Sized`]: ../std/marker/trait.Sized.html
 [dynamically sized types]: dynamically-sized-types.md
 [C-like enumerations]:  items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
+[enumerations]: items/enumerations.md
 [zero-variant enumerations]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
 [27060]: https://github.com/rust-lang/rust/issues/27060
@@ -387,5 +389,6 @@ used with any other representation.
 [Default]: #the-default-representation
 [`C`]: #the-c-representation
 [primitive representations]: #primitive-representations
+[structs]: items/structs.md
 [`transparent`]: #the-transparent-representation
 [`Layout`]: ../std/alloc/struct.Layout.html
