@@ -145,14 +145,15 @@ expressions, types, etc.
 ## `pub(in path)`, `pub(crate)`, `pub(super)`, and `pub(self)`
 
 In addition to public and private, Rust allows users to declare an item as
-visible within a given scope. The rules for `pub` restrictions are as follows:
+visible only within a given scope. The rules for `pub` restrictions are as
+follows:
 - `pub(in path)` makes an item visible within the provided `path`. `path` must
 be a parent module of the item whose visibility is being declared.
 - `pub(crate)` makes an item visible within the current crate.
 - `pub(super)` makes an item visible to the parent module. This is equivalent
   to `pub(in super)`.
 - `pub(self)` makes an item visible to the current module. This is equivalent
-to `pub(in self)`.
+to `pub(in self)` or not using `pub` at all.
 
 > **Edition Differences**: Starting with the 2018 edition, paths for
 > `pub(in path)` must start with `crate`, `self`, or `super`. The 2015 edition
@@ -177,7 +178,8 @@ pub mod outer_mod {
             inner_mod_visible_fn();
         }
 
-        // This function is visible
+        // This function is visible only within `inner_mod`,
+        // which is the same as leaving it private.
         pub(self) fn inner_mod_visible_fn() {}
     }
     pub fn foo() {
@@ -208,6 +210,11 @@ fn bar() {
 
 fn main() { bar() }
 ```
+
+> **Note:** This syntax only adds another restriction to the visibility of an
+> item. It does not guarantee that the item is visible within all parts of the
+> specified scope. To access an item, all of its parent items up to the
+> current scope must still be visible as well.
 
 ## Re-exporting and Visibility
 
