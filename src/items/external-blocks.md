@@ -145,8 +145,8 @@ not specified.
 
 <!-- ignore: requires extern linking -->
 ```rust,ignore
-// Links to `libcrypto.so` on Linux, `libcrypto.dylib` on Mac, and the
-// (`crypto.lib`, `crypto.dll`) pair on windows-msvc.
+// Links against `libcrypto.so` on Linux, `libcrypto.dylib` on Mac, and `crypto.lib`
+// on windows-msvc (resulting in a runtime dependency on `crypto.dll`).
 #[link(name = "crypto")]
 extern {
     // …
