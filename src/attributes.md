@@ -187,6 +187,8 @@ The following is an index of all built-in attributes.
   - [`should_panic`] — Indicates a test should generate a panic.
 - Derive
   - [`derive`] — Automatic trait implementations.
+  - [`automatically_derived`] — Marker for implementations created by
+    `derive`.
 - Macros
   - [`macro_export`] — Exports a `macro_rules` macro for cross-crate usage.
   - [`macro_use`] — Expands macro visibility, or imports macros from other
@@ -255,6 +257,7 @@ The following is an index of all built-in attributes.
 [_LiteralExpression_]: expressions/literal-expr.md
 [_SimplePath_]: paths.md#simple-paths
 [`allow`]: attributes/diagnostics.md#lint-check-attributes
+[`automatically_derived`]: attributes/derive.md#the-automatically_derived-attribute
 [`cfg_attr`]: conditional-compilation.md#the-cfg_attr-attribute
 [`cfg`]: conditional-compilation.md#the-cfg-attribute
 [`cold`]: attributes/codegen.md#the-cold-attribute
