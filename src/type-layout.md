@@ -357,8 +357,8 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 
 ### The `transparent` Representation
 
-The `transparent` representation can only be used on a [`struct`][structs] that has,
-or an [`enum`][enumerations] with a single variant which has:
+The `transparent` representation can only be used on a [`struct`][structs]
+or an [`enum`][enumerations] with a single variant that has:
 
 - a single field with non-zero size, and
 - any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]).
