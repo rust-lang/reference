@@ -272,7 +272,6 @@ a few specific cases:
         https://github.com/rust-lang/rust/issues/15701
   -->
 * The tail expression of [block expressions].
-* [`if`][_IfExpression_] and [`if let`][_IfLetExpression_] expressions.
 <!-- Keep list in sync with block-expr.md -->
 
 They are never allowed before:
