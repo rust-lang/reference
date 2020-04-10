@@ -275,8 +275,6 @@ a few specific cases:
 <!-- Keep list in sync with block-expr.md -->
 
 They are never allowed before:
-
-* [`if`][_IfExpression_] and [`if let`][_IfLetExpression_] expressions.
 * [Range][_RangeExpression_] expressions.
 * Binary operator expressions ([_ArithmeticOrLogicalExpression_],
   [_ComparisonExpression_], [_LazyBooleanExpression_], [_TypeCastExpression_],
