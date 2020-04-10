@@ -25,11 +25,14 @@ function where it is defined.
 
 There are three ways to use the inline attribute:
 
-* `#[inline]` suggests performing an inline expansion.
-* `#[inline(always)]` suggests that an inline expansion should always be
+* `#[inline]` *suggests* performing an inline expansion.
+* `#[inline(always)]` *suggests* that an inline expansion should always be
   performed.
-* `#[inline(never)]` suggests that an inline expansion should never be
+* `#[inline(never)]` *suggests* that an inline expansion should never be
   performed.
+
+> ***Note***: `#[inline]` in every form is a hint, with no *requirements*
+> on the language to place a copy of the attributed function in the caller.
 
 ### The `cold` attribute
 
