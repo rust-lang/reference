@@ -17,7 +17,7 @@ union MyUnion {
 ```
 
 The key property of unions is that all fields of a union share common storage.
-As a result writes to one field of a union can overwrite its other fields, and
+As a result, writes to one field of a union can overwrite its other fields, and
 size of a union is determined by the size of its largest field.
 
 ## Initialization of a union
