@@ -51,7 +51,6 @@ code.
       `Trait` that matches the actual dynamic trait the pointer or reference points to.
     * Slice metadata is invalid if the length is not a valid `usize`
       (i.e., it must not be read from uninitialized memory).
-  * Non-UTF-8 byte sequences in a `str`.
   * Invalid values for a type with a custom definition of invalid values.
     In the standard library, this affects [`NonNull<T>`] and [`NonZero*`].
 
@@ -63,8 +62,8 @@ points to are part of the same allocation (so in particular they all have to be
 part of *some* allocation). The span of bytes it points to is determined by the
 pointer value and the size of the pointee type (using `size_of_val`). As a
 consequence, if the span is empty, "dangling" is the same as "non-null". Note
-that slices point to their entire range, so it is important that the length
-metadata is never too large. In particular, allocations and therefore slices
+that slices and strings point to their entire range, so it is important that the length
+metadata is never too large. In particular, allocations and therefore slices and strings
 cannot be bigger than `isize::MAX` bytes.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
