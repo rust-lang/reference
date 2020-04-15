@@ -560,7 +560,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 >
 > _TupleStructItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>\
-> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` ( (`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup> )<sup>?</sup>
+> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` (`,` [_Pattern_])<sup>*</sup> `,`<sup>?</sup>
 
 Tuple struct patterns match tuple struct and enum values that match all criteria defined
 by its subpatterns. They are also used to [destructure](#destructuring) a tuple struct or
@@ -577,7 +577,7 @@ A tuple struct pattern is refutable when one of its subpatterns is refutable.
 > _TuplePatternItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_] `,`\
 > &nbsp;&nbsp; | [_Pattern_]&nbsp;(`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup>\
-> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` ( (`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup> )<sup>?</sup>
+> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` (`,` [_Pattern_])<sup>*</sup> `,`<sup>?</sup>
 
 Tuple patterns match tuple values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a tuple.
