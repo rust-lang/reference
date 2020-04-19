@@ -455,7 +455,7 @@ assert_eq!(x, 14);
 
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
-[temporary value]: ../expressions.md#temporary-lifetimes
+[temporary value]: ../expressions.md#temporaries
 [float-int]: https://github.com/rust-lang/rust/issues/10184
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: ../types/tuple.md
