@@ -327,20 +327,20 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 >              INTEGER_SUFFIX<sup>?</sup>
 >
 > DEC_LITERAL :\
-> &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; DEC_DIGIT ( DEC_DIGIT | `_` )<sup>\*</sup>
 >
 > TUPLE_INDEX :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `0`
+> &nbsp;&nbsp; &nbsp;&nbsp; `0`\
 > &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>
 >
 > BIN_LITERAL :\
-> &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0b` ( BIN_DIGIT | `_` )<sup>\*</sup> BIN_DIGIT ( BIN_DIGIT | `_` )<sup>\*</sup>
 >
 > OCT_LITERAL :\
-> &nbsp;&nbsp; `0o` (OCT_DIGIT|`_`)<sup>\*</sup> OCT_DIGIT (OCT_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0o` ( OCT_DIGIT | `_` )<sup>\*</sup> OCT_DIGIT ( OCT_DIGIT | `_` )<sup>\*</sup>
 >
 > HEX_LITERAL :\
-> &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0x` ( HEX_DIGIT | `_` )<sup>\*</sup> HEX_DIGIT ( HEX_DIGIT | `_` )<sup>\*</sup>
 >
 > BIN_DIGIT : [`0`-`1`]
 >
@@ -447,15 +447,15 @@ a single integer literal.
 > **<sup>Lexer</sup>**\
 > FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an [identifier]_)\
+>   _(not immediately followed by `.`, `_` or an [identifier])_\
 > &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
-> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
+> &nbsp;&nbsp; | DEC_LITERAL ( `.` DEC_LITERAL )<sup>?</sup>
 >                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
 >
 > FLOAT_EXPONENT :\
-> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
->               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; ( `e` | `E` ) ( `+` | `-` )<sup>?</sup>
+>               ( DEC_DIGIT | `_` )<sup>\*</sup> DEC_DIGIT ( DEC_DIGIT | `_` )<sup>\*</sup>
 >
 > FLOAT_SUFFIX :\
 > &nbsp;&nbsp; `f32` | `f64`

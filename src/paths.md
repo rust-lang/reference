@@ -20,7 +20,7 @@ x::y::z;
 
 > **<sup>Syntax</sup>**\
 > _SimplePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ (`::` _SimplePathSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ ( `::` _SimplePathSegment_ )<sup>\*</sup>
 >
 > _SimplePathSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
@@ -40,32 +40,30 @@ mod m {
 
 > **<sup>Syntax</sup>**\
 > _PathInExpression_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ (`::` _PathExprSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ ( `::` _PathExprSegment_ )<sup>\*</sup>
 >
 > _PathExprSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::` _GenericArgs_)<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ ( `::` _GenericArgs_ )<sup>?</sup>
 >
 > _PathIdentSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `crate` | `$crate`
 >
 > _GenericArgs_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`
+> &nbsp;&nbsp; `<` _GenericArgsParams_<sup>?</sup> `>`
+>
+> _GenericArgsParams_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _GenericArgsLifetimes_ ( `,` _GenericArgsTypes_ )<sup>?</sup> ( `,` _GenericArgsBindings_ )<sup>?</sup> `,`<sup>?</sup>\
+> &nbsp;&nbsp; | _GenericArgsTypes_ ( `,` _GenericArgsBindings_ )<sup>?</sup> `,`<sup>?</sup>\
+> &nbsp;&nbsp; | _GenericArgsBindings_ `,`<sup>?</sup>
 >
 > _GenericArgsLifetimes_ :\
-> &nbsp;&nbsp; [_Lifetime_] (`,` [_Lifetime_])<sup>\*</sup>
+> &nbsp;&nbsp; [_Lifetime_] ( `,` [_Lifetime_] )<sup>\*</sup>
 >
 > _GenericArgsTypes_ :\
-> &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup>
+> &nbsp;&nbsp; [_Type_] ( `,` [_Type_] )<sup>\*</sup>
 >
 > _GenericArgsBindings_ :\
-> &nbsp;&nbsp; _GenericArgsBinding_ (`,` _GenericArgsBinding_)<sup>\*</sup>
+> &nbsp;&nbsp; _GenericArgsBinding_ ( `,` _GenericArgsBinding_ )<sup>\*</sup>
 >
 > _GenericArgsBinding_ :\
 > &nbsp;&nbsp; [IDENTIFIER] `=` [_Type_]
@@ -85,13 +83,13 @@ Vec::<u8>::with_capacity(1024);
 
 > **<sup>Syntax</sup>**\
 > _QualifiedPathInExpression_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>+</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ ( `::` _PathExprSegment_ )<sup>+</sup>
 >
 > _QualifiedPathType_ :\
-> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>`
+> &nbsp;&nbsp; `<` [_Type_] ( `as` _TypePath_ )<sup>?</sup> `>`
 >
 > _QualifiedPathInType_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>+</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ ( `::` _TypePathSegment_ )<sup>+</sup>
 
 Fully qualified paths allow for disambiguating the path for [trait implementations] and
 for specifying [canonical paths](#canonical-paths). When used in a type specification, it
@@ -119,13 +117,13 @@ S::f();  // Calls the inherent impl.
 
 > **<sup>Syntax</sup>**\
 > _TypePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ (`::` _TypePathSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ ( `::` _TypePathSegment_ )<sup>\*</sup>
 >
 > _TypePathSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ `::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_)<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ `::`<sup>?</sup> ( [_GenericArgs_] | _TypePathFn_ )<sup>?</sup>
 >
 > _TypePathFn_ :\
-> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_Type_])<sup>?</sup>
+> `(` _TypePathFnInputs_<sup>?</sup> `)` ( `->` [_Type_] )<sup>?</sup>
 >
 > _TypePathFnInputs_ :\
 > [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>

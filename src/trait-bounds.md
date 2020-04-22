@@ -14,7 +14,7 @@
 > [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TypePath_] `)`
 >
 > _LifetimeBounds_ :\
-> &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>
+> &nbsp;&nbsp; _Lifetime_ ( `+` _Lifetime_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _Lifetime_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
