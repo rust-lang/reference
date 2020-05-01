@@ -48,7 +48,7 @@ With the notion of an item being either public or private, Rust allows item
 accesses in two cases:
 
 1. If an item is public, then it can be accessed externally from some module
-   `m` if you can access all the item's parent modules from `m`. You can
+   `m` if you can access all the item's ancestor modules from `m`. You can
    also potentially be able to name the item through re-exports. See below.
 2. If an item is private, it may be accessed by the current module and its
    descendants.
