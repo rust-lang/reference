@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ArrayType_ :\
-> &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
+> &nbsp;&nbsp; `[` [_Type_] (`;` [_Expression_])? `]`
 
 An array is a fixed-size sequence of `N` elements of type `T`. The array type
 is written as `[T; N]`. The size is an expression that evaluates to a
