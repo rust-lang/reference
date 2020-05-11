@@ -44,7 +44,7 @@ code.
   * A value in a `char` which is a surrogate or above `char::MAX`.
   * A `!` (all values are invalid for this type).
   * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
-    from [uninitialized memory][undef].
+    from [uninitialized memory][undef], or uninitialized memory in a `str`.
   * A reference or `Box<T>` that is dangling, unaligned, or points to an invalid value.
   * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
     * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
