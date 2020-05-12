@@ -9,12 +9,12 @@ or 0xE000 to 0x10FFFF range. It is immediate [Undefined Behavior] to create a
 string of length 1.
 
 A value of type `str` is a Unicode string, represented as an array of 8-bit
-unsigned bytes holding a sequence of UTF-8 code points. Note that this is a
-library-level invariant: for the compiler and core language specification, `str`
-is the same as `[u8]`, but methods working on `str` may assume that the data in
-there is valid UTF-8 and may cause Undefined Behavior otherwise. Since `str` is
-a [dynamically sized type], it can only be instantiated through a pointer type,
-such as `&str`.
+unsigned bytes holding a sequence of UTF-8 encoded Unicode code points. Note
+that this is a library-level invariant: for the compiler and core language
+specification, `str` is the same as `[u8]`, but methods working on `str` may
+assume that the data in there is valid UTF-8 and may cause Undefined Behavior
+otherwise. Since `str` is a [dynamically sized type], it can only be
+instantiated through a pointer type, such as `&str`.
 
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
 [Undefined Behavior]: ../behavior-considered-undefined.md
