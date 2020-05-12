@@ -17,5 +17,5 @@ a [dynamically sized type], it can only be instantiated through a pointer type,
 such as `&str`.
 
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
-[Undefined Behavior]: ../behavior-considered-undefined.html
+[Undefined Behavior]: ../behavior-considered-undefined.md
 [dynamically sized type]: ../dynamically-sized-types.md
