@@ -366,9 +366,11 @@ same trait object.
         * zero-extend if the source is unsigned
         * sign-extend if the source is signed
     * Casting from a float to an integer will round the float towards zero
-        * **[NOTE: currently this will cause Undefined Behavior if the rounded
-          value cannot be represented by the target integer type][float-int]**.
-          This includes Inf and NaN. This is a bug and will be fixed.
+        * `NaN` will return `0`
+        * Values larger than the maximum integer value will saturate to the
+          maximum value of the integer type.
+        * Values smaller than the minimum integer value will saturate to the
+          minimum value of the integer type.
     * Casting from an integer to float will produce the closest possible float \*
         * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
         * on overflow, infinity (of the same sign as the input) is produced
@@ -397,8 +399,6 @@ expected.
 \*\*\* as defined in IEEE 754-2008 &sect;4.3.1: pick the nearest floating point
 number, preferring the one with an even least significant digit if exactly
 halfway between two floating point numbers.
-
-[float-int]: https://github.com/rust-lang/rust/issues/10184
 
 ## Assignment expressions
 
@@ -456,7 +456,6 @@ assert_eq!(x, 14);
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
-[float-int]: https://github.com/rust-lang/rust/issues/10184
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: ../types/tuple.md
 
