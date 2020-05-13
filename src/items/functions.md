@@ -116,7 +116,7 @@ sufficient context to determine the type parameters. For example,
 The `extern` function qualifier allows providing function _definitions_ that can
 be called with a particular ABI:
 
-+<!-- ignore: fake ABI -->
+<!-- ignore: fake ABI -->
 ```rust,ignore
 extern "ABI" fn foo() { /* ... */ }
 ```
@@ -125,7 +125,7 @@ These are often used in combination with [external block] items which provide
 function _declarations_ that can be used to call functions without providing
 their _definition_:
 
-+<!-- ignore: fake ABI -->
+<!-- ignore: fake ABI -->
 ```rust,ignore
 extern "ABI" {
   fn foo(); /* no body */
