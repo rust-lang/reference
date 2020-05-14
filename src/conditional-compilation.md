@@ -266,7 +266,7 @@ either be found at `linux.rs` or `windows.rs` based on the target.
 
 <!-- ignore: `mod` needs multiple files -->
 ```rust,ignore
-#[cfg_attr(linux, path = "linux.rs")]
+#[cfg_attr(target_os = "linux", path = "linux.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
 mod os;
 ```
@@ -286,9 +286,9 @@ fn bewitched() {}
 ```
 
 > **Note**: The `cfg_attr` can expand to another `cfg_attr`. For example,
-> `#[cfg_attr(linux, cfg_attr(feature = "multithreaded", some_other_attribute))]`
+> `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]`
 > is valid. This example would be equivalent to
-> `#[cfg_attr(all(linux, feature ="multithreaded"), some_other_attribute)]`.
+> `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
 
 The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 
