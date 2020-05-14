@@ -12,7 +12,8 @@ A value of type `str` is represented the same way as `[u8]`, it is a slice of
 8-bit unsigned bytes. However, the Rust standard library makes extra assumptions
 about `str`: methods working on `str` assume and ensure that the data in there
 is valid UTF-8. Calling a `str` method with a non-UTF-8 buffer can cause
-[Undefined Behavior] now or in the future. \
+[Undefined Behavior] now or in the future.
+
 Since `str` is a [dynamically sized type], it can only be instantiated through a
 pointer type, such as `&str`.
 
