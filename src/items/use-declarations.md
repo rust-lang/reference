@@ -5,8 +5,8 @@
 > &nbsp;&nbsp; `use` _UseTree_ `;`
 >
 > _UseTree_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`\
-> &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`\
+> &nbsp;&nbsp; &nbsp;&nbsp; ( [_SimplePath_]<sup>?</sup> `::` )<sup>?</sup> `*`\
+> &nbsp;&nbsp; | ( [_SimplePath_]<sup>?</sup> `::` )<sup>?</sup> `{` ( _UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup> )<sup>?</sup> `}`\
 > &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` ( [IDENTIFIER] | `_` ) )<sup>?</sup>
 
 A _use declaration_ creates one or more local name bindings synonymous with

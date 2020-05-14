@@ -20,7 +20,7 @@ x::y::z;
 
 > **<sup>Syntax</sup>**\
 > _SimplePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ (`::` _SimplePathSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ ( `::` _SimplePathSegment_ )<sup>\*</sup>
 >
 > _SimplePathSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
@@ -40,41 +40,33 @@ mod m {
 
 > **<sup>Syntax</sup>**\
 > _PathInExpression_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ (`::` _PathExprSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ ( `::` _PathExprSegment_ )<sup>\*</sup>
 >
 > _PathExprSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::` _GenericArgs_)<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ ( `::` `<` _GenericArguments_<sup>?</sup> `>` )<sup>?</sup>
 >
 > _PathIdentSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `crate` | `$crate`
 >
-> _GenericArgs_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`
+> _GenericArguments_ :\
+> &nbsp;&nbsp; _GenericArgument_ ( `,` _GenericArgument_ )<sup>\*</sup> `,`<sup>?</sup>
 >
-> _GenericArgsLifetimes_ :\
-> &nbsp;&nbsp; [_Lifetime_] (`,` [_Lifetime_])<sup>\*</sup>
->
-> _GenericArgsTypes_ :\
-> &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup>
->
-> _GenericArgsBindings_ :\
-> &nbsp;&nbsp; _GenericArgsBinding_ (`,` _GenericArgsBinding_)<sup>\*</sup>
->
-> _GenericArgsBinding_ :\
-> &nbsp;&nbsp; [IDENTIFIER] `=` [_Type_]
+> _GenericArgument_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Lifetime_]\
+> &nbsp;&nbsp; | [_Type_]\
+> &nbsp;&nbsp; | [IDENTIFIER] `=` [_Type_]
 
 Paths in expressions allow for paths with generic arguments to be specified. They are
 used in various places in [expressions] and [patterns].
 
 The `::` token is required before the opening `<` for generic arguments to avoid
 ambiguity with the less-than operator. This is colloquially known as "turbofish" syntax.
+
+Generic arguments are passed in the order that they're declared in. In particular,
+lifetime arguments must come before type arguments. The last kind of argument,
+`Ident = Type`, is for specifying [associated types] in [trait bounds].
+These arguments are not positional (i.e. their order does not matter), and they
+must come after all the other (positional) arguments.
 
 ```rust
 (0..10).collect::<Vec<_>>();
@@ -85,13 +77,13 @@ Vec::<u8>::with_capacity(1024);
 
 > **<sup>Syntax</sup>**\
 > _QualifiedPathInExpression_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>+</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ ( `::` _PathExprSegment_ )<sup>+</sup>
 >
 > _QualifiedPathType_ :\
-> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>`
+> &nbsp;&nbsp; `<` [_Type_] ( `as` _TypePath_ )<sup>?</sup> `>`
 >
 > _QualifiedPathInType_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>+</sup>
+> &nbsp;&nbsp; _QualifiedPathType_ ( `::` _TypePathSegment_ )<sup>+</sup>
 
 Fully qualified paths allow for disambiguating the path for [trait implementations] and
 for specifying [canonical paths](#canonical-paths). When used in a type specification, it
@@ -119,13 +111,14 @@ S::f();  // Calls the inherent impl.
 
 > **<sup>Syntax</sup>**\
 > _TypePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ (`::` _TypePathSegment_)<sup>\*</sup>
+> &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ ( `::` _TypePathSegment_ )<sup>\*</sup>
 >
 > _TypePathSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ `::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_)<sup>?</sup>
+> &nbsp;&nbsp; _PathIdentSegment_ ( `::`<sup>?</sup> _TypePathArguments_ )<sup>?</sup>
 >
-> _TypePathFn_ :\
-> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_Type_])<sup>?</sup>
+> _TypePathArguments_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `<` [_GenericArguments_]<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `(` _TypePathFnInputs_<sup>?</sup> `)` [_FunctionReturnType_]<sup>?</sup>
 >
 > _TypePathFnInputs_ :\
 > [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
@@ -364,9 +357,10 @@ mod without { // ::without
 # fn main() {}
 ```
 
-[_GenericArgs_]: #paths-in-expressions
+[_GenericArguments_]: #paths-in-expressions
 [_Lifetime_]: trait-bounds.md
 [_Type_]: types.md#type-expressions
+[_FunctionReturnType_]: items/functions.md
 [item]: items.md
 [variable]: variables.md
 [implementations]: items/implementations.md
@@ -381,3 +375,5 @@ mod without { // ::without
 [trait implementations]: items/implementations.md#trait-implementations
 [traits]: items/traits.md
 [visibility]: visibility-and-privacy.md
+[associated types]: items/associated-items.md#associated-types
+[trait bounds]: trait-bounds.md

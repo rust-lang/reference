@@ -129,7 +129,7 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 [_ParenthesizedType_]: types.md#parenthesized-types
 [_QualifiedPathInType_]: paths.md#qualified-paths
 [_RawPointerType_]: types/pointer.md#raw-pointers-const-and-mut
-[_ReferenceType_]: types/pointer.md#shared-references-
+[_ReferenceType_]: types/pointer.md#references--and-mut
 [_SliceType_]: types/slice.md
 [_TraitObjectTypeOneBound_]: types/trait-object.md
 [_TraitObjectType_]: types/trait-object.md

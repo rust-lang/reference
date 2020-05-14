@@ -4,10 +4,10 @@
 > _ClosureExpression_ :\
 > &nbsp;&nbsp; `move`<sup>?</sup>\
 > &nbsp;&nbsp; ( `||` | `|` _ClosureParameters_<sup>?</sup> `|` )\
-> &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
+> &nbsp;&nbsp; ( [_Expression_] | `->` [_Type_]&nbsp;[_BlockExpression_] )
 >
 > _ClosureParameters_ :\
-> &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; _ClosureParam_ ( `,` _ClosureParam_ )<sup>\*</sup> `,`<sup>?</sup>
 >
 > _ClosureParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
@@ -79,7 +79,6 @@ Attributes on closure parameters follow the same rules and restrictions as
 
 [_Expression_]: ../expressions.md
 [_BlockExpression_]: block-expr.md
-[_TypeNoBounds_]: ../types.md#type-expressions
 [_Pattern_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [`let` binding]: ../statements.md#let-statements

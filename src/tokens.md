@@ -28,14 +28,14 @@ evaluated (primarily) at compile time.
 
 #### Characters and strings
 
-|                                              | Example         | `#` sets   | Characters  | Escapes             |
+|                                              | Example         | `#` sets    | Characters  | Escapes             |
 |----------------------------------------------|-----------------|-------------|-------------|---------------------|
 | [Character](#character-literals)             | `'H'`           | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
 | [String](#string-literals)                   | `"hello"`       | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [Raw string](#raw-string-literals)           | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                      |
-| [Byte](#byte-literals)                       | `b'H'`          | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                      |
+| [Raw string](#raw-string-literals)           | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                                           |
+| [Byte](#byte-literals)                       | `b'H'`          | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                                 |
+| [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                                 |
+| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                                           |
 
 \* The number of `#`s on each side of the same literal must be equivalent
 
@@ -121,11 +121,11 @@ and numeric literal tokens are accepted only with suffixes from the list below.
 > &nbsp;&nbsp; `\'` | `\"`
 >
 > ASCII_ESCAPE :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `\x` OCT_DIGIT HEX_DIGIT\
+> &nbsp;&nbsp; &nbsp;&nbsp; `\x` [OCT_DIGIT](#integer-literals) [HEX_DIGIT](#integer-literals)\
 > &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`
 >
 > UNICODE_ESCAPE :\
-> &nbsp;&nbsp; `\u{` ( HEX_DIGIT `_`<sup>\*</sup> )<sup>1..6</sup> `}`
+> &nbsp;&nbsp; `\u{` ( [HEX_DIGIT](#integer-literals) `_`<sup>\*</sup> )<sup>1..6</sup> `}`
 
 A _character literal_ is a single Unicode character enclosed within two
 `U+0027` (single-quote) characters, with the exception of `U+0027` itself,
@@ -136,10 +136,10 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 > **<sup>Lexer</sup>**\
 > STRING_LITERAL :\
 > &nbsp;&nbsp; `"` (\
-> &nbsp;&nbsp; &nbsp;&nbsp; ~[`"` `\` _IsolatedCR_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | QUOTE_ESCAPE\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE\
-> &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
+> &nbsp;&nbsp; &nbsp;&nbsp; ~[`"` `\` [_IsolatedCR_][comments]]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [QUOTE_ESCAPE](#character-literals)\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [ASCII_ESCAPE](#character-literals)\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [UNICODE_ESCAPE](#character-literals)\
 > &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE\
 > &nbsp;&nbsp; )<sup>\*</sup> `"`
 >
@@ -194,7 +194,7 @@ following forms:
 > &nbsp;&nbsp; `r` RAW_STRING_CONTENT
 >
 > RAW_STRING_CONTENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ [_IsolatedCR_][comments] )<sup>* (non-greedy)</sup> `"`\
 > &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
 
 Raw string literals do not process any escapes. They start with the character
@@ -234,7 +234,7 @@ r##"foo #"# bar"##;                // foo #"# bar
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t
 >
 > BYTE_ESCAPE :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
+> &nbsp;&nbsp; &nbsp;&nbsp; `\x` [HEX_DIGIT](#integer-literals) [HEX_DIGIT](#integer-literals)\
 > &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`
 
 A _byte literal_ is a single ASCII character (in the `U+0000` to `U+007F`
@@ -248,10 +248,10 @@ _number literal_.
 
 > **<sup>Lexer</sup>**\
 > BYTE_STRING_LITERAL :\
-> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"`
+> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | [BYTE_ESCAPE](#byte-literals) | [STRING_CONTINUE](#string-literals) )<sup>\*</sup> `"`
 >
 > ASCII_FOR_STRING :\
-> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_
+> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and_ [_IsolatedCR_][comments]
 
 A non-raw _byte string literal_ is a sequence of ASCII characters and _escapes_,
 preceded by the characters `U+0062` (`b`) and `U+0022` (double-quote), and
@@ -283,7 +283,7 @@ following forms:
 >
 > RAW_BYTE_STRING_CONTENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`\
-> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
+> &nbsp;&nbsp; | `#` [RAW_STRING_CONTENT](#raw-string-literals) `#`
 >
 > ASCII :\
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
@@ -327,20 +327,20 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 >              INTEGER_SUFFIX<sup>?</sup>
 >
 > DEC_LITERAL :\
-> &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; DEC_DIGIT ( DEC_DIGIT | `_` )<sup>\*</sup>
 >
 > TUPLE_INDEX :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `0`
+> &nbsp;&nbsp; &nbsp;&nbsp; `0`\
 > &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>
 >
 > BIN_LITERAL :\
-> &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0b` ( BIN_DIGIT | `_` )<sup>\*</sup> BIN_DIGIT ( BIN_DIGIT | `_` )<sup>\*</sup>
 >
 > OCT_LITERAL :\
-> &nbsp;&nbsp; `0o` (OCT_DIGIT|`_`)<sup>\*</sup> OCT_DIGIT (OCT_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0o` ( OCT_DIGIT | `_` )<sup>\*</sup> OCT_DIGIT ( OCT_DIGIT | `_` )<sup>\*</sup>
 >
 > HEX_LITERAL :\
-> &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; `0x` ( HEX_DIGIT | `_` )<sup>\*</sup> HEX_DIGIT ( HEX_DIGIT | `_` )<sup>\*</sup>
 >
 > BIN_DIGIT : [`0`-`1`]
 >
@@ -446,16 +446,16 @@ a single integer literal.
 
 > **<sup>Lexer</sup>**\
 > FLOAT_LITERAL :\
-> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an [identifier]_)\
-> &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
-> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
-> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; [DEC_LITERAL](#integer-literals) `.`
+>   _(not immediately followed by `.`, `_` or an [identifier])_\
+> &nbsp;&nbsp; | [DEC_LITERAL](#integer-literals) FLOAT_EXPONENT\
+> &nbsp;&nbsp; | [DEC_LITERAL](#integer-literals) `.` [DEC_LITERAL](#integer-literals) FLOAT_EXPONENT<sup>?</sup>\
+> &nbsp;&nbsp; | [DEC_LITERAL](#integer-literals) ( `.` [DEC_LITERAL](#integer-literals) )<sup>?</sup>
 >                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
 >
 > FLOAT_EXPONENT :\
-> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
->               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
+> &nbsp;&nbsp; ( `e` | `E` ) ( `+` | `-` )<sup>?</sup>
+>               ( [DEC_DIGIT](#integer-literals) | `_` )<sup>\*</sup> [DEC_DIGIT](#integer-literals) ( [DEC_DIGIT](#integer-literals) | `_` )<sup>\*</sup>
 >
 > FLOAT_SUFFIX :\
 > &nbsp;&nbsp; `f32` | `f64`
@@ -605,6 +605,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [attributes]: attributes.md
 [borrow]: expressions/operator-expr.md#borrow-operators
 [closures]: expressions/closure-expr.md
+[comments]: comments.md
 [comparison]: expressions/operator-expr.md#comparison-operators
 [compound]: expressions/operator-expr.md#compound-assignment-expressions
 [dereference]: expressions/operator-expr.md#the-dereference-operator
