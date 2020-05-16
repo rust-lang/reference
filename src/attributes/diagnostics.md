@@ -124,12 +124,13 @@ The `deprecated` attribute has several forms:
     deprecation and preferred alternatives.
 
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
-variant], [struct field], or [external block item]. It cannot be applied to [trait
-implementation items]. When applied to an item containing other items, such as
-a [module] or [implementation], all child items inherit the deprecation attribute.
-<!-- NOTE: Currently broken for macros, see https://github.com/rust-lang/rust/issues/49912
-Also, it is only rejected for trait impl items (AnnotationKind::Prohibited). In all
-other locations, it is silently ignored. Tuple struct fields are ignored.
+variant], [struct field], [external block item], or [macro definition]. It
+cannot be applied to [trait implementation items]. When applied to an item
+containing other items, such as a [module] or [implementation], all child
+items inherit the deprecation attribute.
+<!-- NOTE: It is only rejected for trait impl items
+(AnnotationKind::Prohibited). In all other locations, it is silently ignored.
+Tuple struct fields are ignored.
 -->
 
 Here is an example:
@@ -270,6 +271,7 @@ When used on a function in a trait implementation, the attribute does nothing.
 [implementation]: ../items/implementations.md
 [item]: ../items.md
 [let statement]: ../statements.md#let-statements
+[macro definition]: ../macros-by-example.md
 [module]: ../items/modules.md
 [rustc book]: ../../rustc/lints/index.html
 [struct field]: ../items/structs.md
