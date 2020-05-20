@@ -71,21 +71,19 @@ prelude lookups within that module.
 > Beginning in the 2018 edition, [use declarations] can reference crates in
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
-> **Note**: Additional crates that ship with `rustc`, such as [`proc_macro`],
-> [`alloc`], and [`test`], are not automatically included with the `--extern`
-> flag when using Cargo. They must be brought into scope with an `extern
-> crate` declaration, even in the 2018 edition.
+> **Note**: Additional crates that ship with `rustc`, such as [`alloc`], and
+> [`test`], are not automatically included with the `--extern` flag when using
+> Cargo. They must be brought into scope with an `extern crate` declaration,
+> even in the 2018 edition.
 >
 > ```rust
-> extern crate proc_macro;
-> use proc_macro::TokenStream;
+> extern crate alloc;
+> use alloc::rc::Rc;
 > ```
 
 <!--
-The proc_macro/alloc/test limitation may be lifted if the `--extern`
-flag is stabilized and used. See tracking issue
-https://github.com/rust-lang/rust/issues/57288 and the unstable
-`--extern` flag added in https://github.com/rust-lang/rust/pull/54116.
+See https://github.com/rust-lang/rust/issues/57288 for more about the
+alloc/test limitation.
 -->
 
 ## Underscore Imports
@@ -110,6 +108,5 @@ crate to access only its macros.
 [`alloc`]: https://doc.rust-lang.org/alloc/
 [`no_implicit_prelude`]: modules.md#prelude-items
 [`no_std`]: ../crates-and-source-files.md#preludes-and-no_std
-[`proc_macro`]: https://doc.rust-lang.org/proc_macro/
 [`test`]: https://doc.rust-lang.org/test/
 [use declarations]: use-declarations.md
