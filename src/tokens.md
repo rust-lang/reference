@@ -283,7 +283,7 @@ following forms:
 >
 > RAW_BYTE_STRING_CONTENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`\
-> &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
+> &nbsp;&nbsp; | `#` RAW_BYTE_STRING_CONTENT `#`
 >
 > ASCII :\
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
