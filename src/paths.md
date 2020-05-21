@@ -327,7 +327,7 @@ mod a { // ::a
     pub struct Struct; // ::a::Struct
 
     pub trait Trait { // ::a::Trait
-        fn f(&self); // a::Trait::f
+        fn f(&self); // ::a::Trait::f
     }
 
     impl Trait for Struct {
