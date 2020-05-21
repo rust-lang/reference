@@ -140,7 +140,7 @@ expressions].
 
 [IDENTIFIER]: ../identifiers.md
 [Inner attributes]: ../attributes.md
-[TUPLE_INDEX]: ../tokens.md#integer-literals
+[TUPLE_INDEX]: ../tokens.md#tuple-index
 [_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
 [_PathInExpression_]: ../paths.md#paths-in-expressions

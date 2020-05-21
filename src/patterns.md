@@ -481,7 +481,7 @@ Reference patterns are always irrefutable.
 > &nbsp;&nbsp; `..`
 
 [_OuterAttribute_]: attributes.md
-[TUPLE_INDEX]: tokens.md#integer-literals
+[TUPLE_INDEX]: tokens.md#tuple-index
 
 Struct patterns match struct values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a struct.

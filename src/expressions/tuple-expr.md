@@ -55,7 +55,7 @@ assert_eq!(unit_x.0, 1.0);
 ```
 
 [Inner attributes]: ../attributes.md
-[TUPLE_INDEX]: ../tokens.md#integer-literals
+[TUPLE_INDEX]: ../tokens.md#tuple-index
 [_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions

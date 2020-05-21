@@ -329,10 +329,6 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > DEC_LITERAL :\
 > &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
 >
-> TUPLE_INDEX :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `0`
-> &nbsp;&nbsp; | NON_ZERO_DEC_DIGIT DEC_DIGIT<sup>\*</sup>
->
 > BIN_LITERAL :\
 > &nbsp;&nbsp; `0b` (BIN_DIGIT|`_`)<sup>\*</sup> BIN_DIGIT (BIN_DIGIT|`_`)<sup>\*</sup>
 >
@@ -348,8 +344,6 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 >
 > DEC_DIGIT : [`0`-`9`]
 >
-> NON_ZERO_DEC_DIGIT : [`1`-`9`]
->
 > HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]
 >
 > INTEGER_SUFFIX :\
@@ -360,9 +354,6 @@ An _integer literal_ has one of four forms:
 
 * A _decimal literal_ starts with a *decimal digit* and continues with any
   mixture of *decimal digits* and _underscores_.
-* A _tuple index_ is either `0`, or starts with a *non-zero decimal digit* and
-  continues with zero or more decimal digits. Tuple indexes are used to refer
-  to the fields of [tuples], [tuple structs], and [tuple variants].
 * A _hex literal_ starts with the character sequence `U+0030` `U+0078`
   (`0x`) and continues as any mixture (with at least one digit) of hex digits
   and underscores.
@@ -441,6 +432,33 @@ operator] to an integer literal `1i8`, rather than
 a single integer literal.
 
 [unary minus operator]: expressions/operator-expr.md#negation-operators
+
+#### Tuple index
+
+> **<sup>Lexer</sup>**\
+> TUPLE_INDEX: \
+> &nbsp;&nbsp; INTEGER_LITERAL
+
+A tuple index is used to refer to the fields of [tuples], [tuple structs], and
+[tuple variants].
+
+Tuple indices are compared with the literal token directly. Tuple indices
+start with `0` and each successive index increments the value by `1` as a
+decimal value. Thus, only decimal values will match, and the value must not
+have any extra `0` prefix characters.
+
+```rust,compile_fail
+let example = ("dog", "cat", "horse");
+let dog = example.0;
+let cat = example.1;
+// The following examples are invalid.
+let cat = example.01;  // ERROR no field named `01`
+let horse = example.0b10;  // ERROR no field named `0b10`
+```
+
+> **Note**: The tuple index may include an `INTEGER_SUFFIX`, but this is not
+> intended to be valid, and may be removed in a future version. See
+> <https://github.com/rust-lang/rust/issues/60210> for more information.
 
 #### Floating-point literals
 
