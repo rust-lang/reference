@@ -106,12 +106,10 @@ fn main() {
 }
 ```
 
-Function-like procedural macros may expand to a [type] or any number of
-[items], including [`macro_rules`] definitions. They may be invoked in a [type
-expression], [item] position (except as a [statement]), including items in
-[`extern` blocks], inherent and trait [implementations], and [trait
-definitions]. They cannot be used in a [statement], [expression], or
-[pattern].
+Function-like procedural macros may be invoked in any macro invocation
+position, which includes [statements], [expressions], [patterns], [type
+expressions], [item] positions, including items in [`extern` blocks], inherent
+and trait [implementations], and [trait definitions].
 
 ### Derive macros
 
@@ -290,18 +288,18 @@ fn invoke4() {}
 [crate type]: linkage.md
 [derive macro helper attributes]: #derive-macro-helper-attributes
 [enum]: items/enumerations.md
-[expression]: expressions.md
+[expressions]: expressions.md
 [function]: items/functions.md
 [implementations]: items/implementations.md
 [inert]: attributes.md#active-and-inert-attributes
 [item]: items.md
 [items]: items.md
 [module]: items/modules.md
-[pattern]: patterns.md
+[patterns]: patterns.md
 [public]: visibility-and-privacy.md
-[statement]: statements.md
+[statements]: statements.md
 [struct]: items/structs.md
 [trait definitions]: items/traits.md
-[type expression]: types.md#type-expressions
+[type expressions]: types.md#type-expressions
 [type]: types.md
 [union]: items/unions.md
