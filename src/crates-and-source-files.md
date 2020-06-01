@@ -9,7 +9,7 @@
 
 > **<sup>Lexer</sup>**\
 > UTF8BOM : `\uFEFF`\
-> SHEBANG : `#!` ~[`[` `\n`] ~`\n`<sup>\*</sup>
+> SHEBANG : `#!` \~`\n`<sup>\+</sup>[†](#shebang)
 
 
 > Note: Although Rust, like any other language, can be implemented by an
@@ -65,9 +65,13 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
+## Byte order mark
+
 The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
 file is encoded in UTF8. It can only occur at the beginning of the file and
 is ignored by the compiler.
+
+## Shebang
 
 A source file can have a [_shebang_] (SHEBANG production), which indicates
 to the operating system what program to use to execute this file. It serves
@@ -83,6 +87,13 @@ fn main() {
     println!("Hello!");
 }
 ```
+
+There are two restrictions imposed on the shebang syntax to avoid confusion
+with an [attribute]. The shebang line must have at least one non-[whitespace]
+character anywhere after the `#!` characters. Additionally, The `#!`
+characters must not be followed by a `[` token, ignoring intervening
+[comments] or [whitespace]. If either of these restrictions fails, then it is
+not treated as a shebang, but instead as the start of an attribute.
 
 ## Preludes and `no_std`
 
@@ -166,8 +177,10 @@ or `-` (U+002D) characters.
 [`std::prelude::v1`]: ../std/prelude/index.html
 [attribute]: attributes.md
 [attributes]: attributes.md
+[comments]: comments.md
 [function]: items/functions.md
 [module]: items/modules.md
 [module path]: paths.md
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses
+[whitespace]: whitespace.md
