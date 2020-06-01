@@ -171,20 +171,20 @@ compiler knows how to expand them properly:
     `=> { $( $( $i)* )* }`, and `=> { $( $i )+ }` are all illegal, but
     `=> { $( $i );* }` is correct and replaces a comma-separated list of
     identifiers with a semicolon-separated list.
-1.  Second, each repetition in the transcriber must contain at least one
-    metavariable to decide how many times to expand it. If multiple
-    metavariables appear in the same repetition, they must be bound to the same
-    number of fragments. For instance, `( $( $i:ident ),* ; $( $j:ident ),* ) =>
-    ( $( ($i,$j) ),*` must bind the same number of `$i` fragments as `$j`
-    fragments. This means that invoking the macro with `(a, b, c; d, e, f`) is
-    legal and expands to `((a,d), (b,e), (c,f))`, but `(a, b, c; d, e)` is
-    illegal because it does not have the same number. This requirement applies
-    to every layer of nested repetitions.
+2.  Each repetition in the transcriber must contain at least one metavariable to
+    decide how many times to expand it. If multiple metavariables appear in the
+    same repetition, they must be bound to the same number of fragments. For
+    instance, `( $( $i:ident ),* ; $( $j:ident ),* ) =>( $( ($i,$j) ),*` must
+    bind the same number of `$i` fragments as `$j` fragments. This means that
+    invoking the macro with `(a, b, c; d, e, f`) is legal and expands to
+    `((a,d), (b,e), (c,f))`, but `(a, b, c; d, e)` is illegal because it does
+    not have the same number. This requirement applies to every layer of nested
+    repetitions.
 
 ## Scoping, Exporting, and Importing
 
-For historical reasons, the scoping of macros by example does not work entirely like
-items. Macros have two forms of scope: textual scope, and path-based scope.
+For historical reasons, the scoping of macros by example does not work entirely
+like items. Macros have two forms of scope: textual scope, and path-based scope.
 Textual scope is based on the order that things appear in source files, or even
 across multiple files, and is the default scoping. It is explained further below.
 Path-based scope works exactly the same way that item scoping does. The scoping,
