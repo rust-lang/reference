@@ -137,6 +137,7 @@ pub mod submodule {
         }
     }
 }
+# fn main() {}
 ```
 
 For a Rust program to pass the privacy checking pass, all paths must be valid
