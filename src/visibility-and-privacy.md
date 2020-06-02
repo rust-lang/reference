@@ -105,20 +105,20 @@ mod crate_helper_module {
 pub fn public_api(rate_limit:i32) {}
 
 //This is by default private, and it isn't available to external crates.
-const max_rate:i32 = 32;
+const MAX_RATE:i32 = 32;
 
 // Similarly to 'public_api', this module is public so external crates may look
 // inside of it.
 pub mod submodule {
     use super::crate_helper_module;
-    use super::max_rate;
+    use super::MAX_RATE;
     use super::public_api;
     
     pub fn my_method() {
         // Any item in the local crate may invoke the helper module's public
         // interface through a combination of the two rules above.
         crate_helper_module::crate_helper();
-        public_api(max_rate);
+        public_api(MAX_RATE);
     }
 
     // This function is hidden to any module which is not a descendant of
