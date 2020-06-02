@@ -107,15 +107,22 @@ mod crate_helper_module {
 // crates linking against this one.
 pub fn public_api() {}
 
+//This is by default private, and it isn't available to external crates.
+const rate_limit:i32 = 32;
+
 // Similarly to 'public_api', this module is public so external crates may look
 // inside of it.
 pub mod submodule {
-    use crate_helper_module;
-
+    use super::crate_helper_module;
+    use crate::rate_limit;
+    use super::public_api;
+    
     pub fn my_method() {
         // Any item in the local crate may invoke the helper module's public
         // interface through a combination of the two rules above.
         crate_helper_module::crate_helper();
+        public_api();
+        let doube_limit = rate_limit * 2;
     }
 
     // This function is hidden to any module which is not a descendant of
@@ -134,8 +141,7 @@ pub mod submodule {
         }
     }
 }
-
-# fn main() {}
+fn main(){};
 ```
 
 For a Rust program to pass the privacy checking pass, all paths must be valid
