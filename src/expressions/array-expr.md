@@ -16,7 +16,7 @@ brackets. This produces an array containing each of these values in the
 order they are written.
 
 Alternatively there can be exactly two expressions inside the brackets,
-separated by a semi-colon. The expression after the `;` must be a have type
+separated by a semi-colon. The expression after the `;` must have type
 `usize` and be a [constant expression],
 such as a [literal](../tokens.md#literals) or a [constant
 item](../items/constant-items.md). `[a; b]` creates an array containing `b`
