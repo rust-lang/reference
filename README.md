@@ -17,14 +17,14 @@ what we have for now.
 First, go to the repository folder and test the code snippets to catch
 compilation errors:
 
-```bash
+```sh
 cd reference
 mdbook test
 ```
 
 And then generate the book:
 
-```bash
+```sh
 mdbook build
 ```
 
