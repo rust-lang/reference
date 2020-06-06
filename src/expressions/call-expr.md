@@ -25,8 +25,8 @@ let name: &'static str = (|| "Rust")();
 
 ## Disambiguating Function Calls
 
-Rust treats all function calls as sugar for a more explicit, fully-qualified
-syntax. Upon compilation, Rust will desugar all function calls into the explicit
+Rust treats all function calls as sugar for a more explicit, [fully-qualified
+syntax]. Upon compilation, Rust will desugar all function calls into the explicit
 form. Rust may sometimes require you to qualify function calls with trait,
 depending on the ambiguity of a call in light of in-scope items.
 
@@ -42,8 +42,8 @@ referent of method or associated function calls. These situations may include:
 * Multiple in-scope traits define methods with the same name for the same types
 * Auto-`deref` is undesirable; for example, distinguishing between methods on a
   smart pointer itself and the pointer's referent
-* Methods which take no arguments, like `default()`, and return properties of a
-  type, like `size_of()`
+* Methods which take no arguments, like [`default()`], and return properties of a
+  type, like [`size_of()`]
 
 To resolve the ambiguity, the programmer may refer to their desired method or
 function using more specific paths, types, or traits.
@@ -93,9 +93,11 @@ fn main() {
 
 Refer to [RFC 132] for further details and motivations.
 
-[`std::ops::Fn`]: ../../std/ops/trait.Fn.html
+[RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
+[_Expression_]: ../expressions.md
+[`default()`]: ../../std/default/trait.Default.html#tymethod.default
+[`size_of()`]: ../../std/mem/fn.size_of.html
 [`std::ops::FnMut`]: ../../std/ops/trait.FnMut.html
 [`std::ops::FnOnce`]: ../../std/ops/trait.FnOnce.html
-[RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
-
-[_Expression_]: ../expressions.md
+[`std::ops::Fn`]: ../../std/ops/trait.Fn.html
+[fully-qualified syntax]: ../paths.md#qualified-paths
