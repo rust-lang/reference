@@ -20,13 +20,18 @@ type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
 
-A type alias to an enum type cannot be used to qualify the constructors:
+A type alias to an tuple-struct type cannot be used to qualify the constructors:
 
 ```rust
-enum E { A }
-type F = E;
-let _: F = E::A;  // OK
-// let _: F = F::A;  // Doesn't work
+pub struct MyStruct(u32);
+
+pub use self::MyStruct as PubUse;
+pub type PubType = MyStruct;
+
+fn main() {
+    let _ = PubUse(5); // OK
+    // let _ = PubType(5); // Doesn't work
+}
 ```
 
 [IDENTIFIER]: ../identifiers.md
