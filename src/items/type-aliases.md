@@ -20,9 +20,9 @@ type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
 
-A type alias to an tuple-struct type cannot be used to qualify the constructors:
+A type alias to a tuple-struct or unit-struct cannot be used to qualify that type's constructor:
 
-```rust
+```rust,edition2018,compile_fail
 pub struct MyStruct(u32);
 
 pub use self::MyStruct as PubUse;
@@ -30,7 +30,7 @@ pub type PubType = MyStruct;
 
 fn main() {
     let _ = PubUse(5); // OK
-    // let _ = PubType(5); // Doesn't work
+    let _ = PubType(5); // Doesn't work
 }
 ```
 
