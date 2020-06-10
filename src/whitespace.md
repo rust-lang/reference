@@ -1,7 +1,7 @@
 # Whitespace
 
 Whitespace is any non-empty string containing only characters that have the
-`Pattern_White_Space` Unicode property, namely:
+[`Pattern_White_Space`] Unicode property, namely:
 
 - `U+0009` (horizontal tab, `'\t'`)
 - `U+000A` (line feed, `'\n'`)
@@ -20,3 +20,5 @@ to separate _tokens_ in the grammar, and have no semantic significance.
 
 A Rust program has identical meaning if each whitespace element is replaced
 with any other legal whitespace element, such as a single space character.
+
+[`Pattern_White_Space`]: https://www.unicode.org/reports/tr31/
