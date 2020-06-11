@@ -179,7 +179,7 @@ is equivalent to
                 Option::Some(val) => next = val,
                 Option::None => break,
             };
-            let PAT = next;
+            let PATTERN = next;
             let () = { /* loop body */ };
         },
     };
