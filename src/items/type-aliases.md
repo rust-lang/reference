@@ -25,11 +25,11 @@ A type alias to a tuple-struct or unit-struct cannot be used to qualify that typ
 ```rust,edition2018,compile_fail
 struct MyStruct(u32);
 
-use self::MyStruct as PubUse;
-type PubType = MyStruct;
+use MyStruct as UseAlias;
+type TypeAlias = MyStruct;
 
-let _ = PubUse(5); // OK
-let _ = PubType(5); // Doesn't work
+let _ = UseAlias(5); // OK
+let _ = TypeAlias(5); // Doesn't work
 ```
 
 [IDENTIFIER]: ../identifiers.md
