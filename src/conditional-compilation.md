@@ -169,11 +169,13 @@ on the endianness of the target's CPU.
 
 ### `target_pointer_width`
 
-Key-value option set once with the target's pointer width in bits. For example,
-for targets with 32-bit pointers, this is set to `"32"`. Likewise, it is set
-to `"64"` for targets with 64-bit pointers.
+Key-value option set once with the target's pointer width in bits.
 
-<!-- Are there targets that have a different bit number? -->
+Example values:
+
+* `"16"`
+* `"32"`
+* `"64"`
 
 ### `target_vendor`
 
