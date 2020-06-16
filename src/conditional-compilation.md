@@ -64,6 +64,10 @@ configuration option from within the source code of the crate being compiled.
 > **Note**: For `rustc`, arbitrary-set configuration options are set using the
 > [`--cfg`] flag.
 
+> **Note**: Configuration options with the key `feature` are a convention used
+> by [Cargo][cargo-feature] for specifying compile-time options and optional
+> dependencies.
+
 <div class="warning">
 
 Warning: It is possible for arbitrarily-set configuration options to have the
@@ -326,5 +330,6 @@ println!("I'm running on a {} machine!", machine_kind);
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
 [attribute]: attributes.md
 [attributes]: attributes.md
+[cargo-feature]: ../cargo/reference/features.html
 [crate type]: linkage.md
 [static C runtime]: linkage.md#static-and-dynamic-c-runtimes
