@@ -104,7 +104,7 @@ mod crate_helper_module {
 // crates linking against this one.
 pub fn public_api(rate_limit:i32) {}
 
-//This is by default private, and it isn't available to external crates.
+// This is by default private, and it isn't available to external crates.
 const MAX_RATE: i32 = 32;
 
 // Similarly to 'public_api', this module is public so external crates may look
