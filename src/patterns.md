@@ -111,6 +111,20 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 }
 ```
 
+Using an irrefutable pattern in `match`, `if let` or `while let` expressions produces a compiler warning.
+
+Example:
+```rust
+| /     if let (x, y) = (1, 2) {
+| |         print!("an irrefutable pattern, x={}, y={}", x, y)
+| |     }
+| |_____^
+|
+= note: `#[warn(irrefutable_let_patterns)]` on by default
+```
+
+Patterns used in `let` statements, `for` expressions, *Function* and *closure* parameters are always irrefutable.
+
 ## Literal patterns
 
 > **<sup>Syntax</sup>**\
