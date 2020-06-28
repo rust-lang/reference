@@ -155,7 +155,7 @@ The following expressions can be mutable place expression contexts:
   This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that
   the value being dereferenced is evaluated is a mutable place expression context.
-* [Array indexing] of a type that implements `DerefMut`, this
+* [Array indexing] of a type that implements `IndexMut`, this
   then evaluates the value being indexed, but not the index, in mutable place
   expression context.
 
