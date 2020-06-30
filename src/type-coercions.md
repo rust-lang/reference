@@ -1,8 +1,8 @@
 # Type coercions
 
-**Type coercions** are implicit changes of the type of a value. They happen
-automatically at specific locations and are highly restricted in what types
-actually coerce.
+**Type coercions** are implicit operations that change the type of a value.
+They happen automatically at specific locations and are highly restricted in 
+what types actually coerce.
 
 Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
 
@@ -15,26 +15,26 @@ sites are:
 
 * `let` statements where an explicit type is given.
 
-   For example, `42` is coerced to have type `i8` in the following:
+   For example, `&mut 42` is coerced to have type `&i8` in the following:
 
    ```rust
-   let _: i8 = 42;
+   let _: &i8 = &mut 42;
    ```
 
-* `static` and `const` items (similar to `let` statements).
+* `static` and `const` item declarations (similar to `let` statements).
 
 * Arguments for function calls
 
   The value being coerced is the actual parameter, and it is coerced to
   the type of the formal parameter.
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `&mut 42` is coerced to have type `&i8` in the following:
 
   ```rust
-  fn bar(_: i8) { }
+  fn bar(_: &i8) { }
 
   fn main() {
-      bar(42);
+      bar(&mut 42);
   }
   ```
 
@@ -43,26 +43,30 @@ sites are:
 
 * Instantiations of struct, union, or enum variant fields
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `&mut 42` is coerced to have type `&i8` in the following:
 
   ```rust
-  struct Foo { x: i8 }
+  struct Foo { x: &i8 }
 
   fn main() {
-      Foo { x: 42 };
+      Foo { x: &mut 42 };
   }
   ```
+  
+  (Note that lifetime specifiers on `struct Foo` have been omitted for brevity.)
 
-* Function results &ndash; either the final line of a block if it is not
+* Function results&ndash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `x` is coerced to have type `&dyn Display` in the following:
 
   ```rust
-  fn foo() -> i8 {
-      42
+  fn foo(x: &u32) -> &dyn Display {
+      x
   }
   ```
+* The [as] type cast operator can also explicitly perform type coersion.
+
 
 If the expression in one of these coercion sites is a coercion-propagating
 expression, then the relevant sub-expressions in that expression are also
@@ -183,6 +187,7 @@ unsized coercion to `Foo<U>`.
 
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
-[subtype]: subtyping.html
+[subtype]: subtyping.html`
+[as]: operator-expr.html#type-cast-expressions`
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
