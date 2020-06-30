@@ -46,25 +46,25 @@ sites are:
   For example, `&mut 42` is coerced to have type `&i8` in the following:
 
   ```rust
-  struct Foo { x: &i8 }
+  struct Foo<'a> { x: &'a i8 }
 
   fn main() {
       Foo { x: &mut 42 };
   }
   ```
   
-  (Note that lifetime specifiers on `struct Foo` have been omitted for brevity.)
-
 * Function results&ndash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
   For example, `x` is coerced to have type `&dyn Display` in the following:
 
   ```rust
+  use std::fmt::Display;
   fn foo(x: &u32) -> &dyn Display {
       x
   }
   ```
+
 * The [as] type cast operator can also explicitly perform type coersion.
 
 
@@ -187,7 +187,7 @@ unsized coercion to `Foo<U>`.
 
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
-[subtype]: subtyping.html`
-[as]: operator-expr.html#type-cast-expressions`
+[subtype]: subtyping.md
+[as]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
