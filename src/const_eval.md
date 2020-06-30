@@ -27,9 +27,7 @@ to be run.
 * [Struct] expressions.
 * [Enum variant] expressions.
 * [Block expressions], including `unsafe` blocks.
-    * [let statements] and thus irrefutable [patterns], with the caveat that until `if` and `match`
-    are implemented, one cannot use both short circuiting operators (`&&` and `||`) and let
-    statements within the same constant.
+    * [let statements] and thus irrefutable [patterns], including mutable bindings
     * [assignment expressions]
     * [compound assignment expressions]
     * [expression statements]
@@ -45,6 +43,8 @@ to be run.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
 * Calls of [const functions] and const methods.
+* [loop], [while] and `while let` expressions.
+* [if], [`if let`] and [match] expressions.
 
 ## Const context
 
@@ -81,10 +81,14 @@ A _const context_ is one of the following:
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
 [interior mutability]:  interior-mutability.md
+[if]:                   expressions/if-expr.md#if-expressions
+[`if let`]:             expressions/if-expr.md#if-let-expressions
 [lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
 [let statements]:       statements.md#let-statements
 [literals]:             expressions/literal-expr.md
 [logical]:              expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[loop]:                 expressions/loop-expr.md#infinite-loops
+[match]:                expressions/match-expr.md
 [negation]:             expressions/operator-expr.md#negation-operators
 [overflow]:             expressions/operator-expr.md#overflow
 [paths]:                expressions/path-expr.md
@@ -94,3 +98,5 @@ A _const context_ is one of the following:
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
+[while]:                expressions/loop-expr.md#predicate-loops
+[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
