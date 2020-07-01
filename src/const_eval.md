@@ -43,7 +43,7 @@ to be run.
 * [Cast] expressions, except pointer to address and
   function pointer to address casts.
 * Calls of [const functions] and const methods.
-* [loop], [while] and `while let` expressions.
+* [loop], [while] and [`while let`] expressions.
 * [if], [`if let`] and [match] expressions.
 
 ## Const context
@@ -56,6 +56,12 @@ A _const context_ is one of the following:
   * [constants]
   * [statics]
   * [enum discriminants]
+
+## Const Functions
+
+A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
+`const` has no effect on any existing uses, it only restricts the types that arguments and the
+return type may use, as well as prevent various expressions from being used within it.
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
