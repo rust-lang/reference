@@ -63,6 +63,16 @@ A _const fn_ is a function that one is permitted to call from a const context. D
 `const` has no effect on any existing uses, it only restricts the types that arguments and the
 return type may use, as well as prevent various expressions from being used within it.
 
+Notable features that const contexts have, but const fn haven't are:
+
+* floating point types
+* `dyn Trait` types
+* generic bounds on generic parameters beyond `Sized`
+* dereferencing of raw pointers
+* casting raw pointers to integers
+* comparing raw pointers
+* union field access
+
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
