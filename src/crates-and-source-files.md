@@ -88,11 +88,9 @@ fn main() {
 }
 ```
 
-There are two restrictions imposed on the shebang syntax to avoid confusion
-with an [attribute]. The shebang line must have at least one non-[whitespace]
-character anywhere after the `#!` characters. Additionally, The `#!`
-characters must not be followed by a `[` token, ignoring intervening
-[comments] or [whitespace]. If either of these restrictions fails, then it is
+A restriction is imposed on the shebang syntax to avoid confusion with an
+[attribute]. The `#!` characters must not be followed by a `[` token, ignoring
+intervening [comments] or [whitespace]. If this restriction fails, then it is
 not treated as a shebang, but instead as the start of an attribute.
 
 ## Preludes and `no_std`
