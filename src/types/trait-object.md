@@ -47,7 +47,7 @@ For example, given a trait `Trait`, the following are all trait objects:
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
 For example, `dyn Trait + Send + UnwindSafe` is the same as
-`dyn Trait + Unwindsafe + Send`.
+`dyn Trait + UnwindSafe + Send`.
 
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
