@@ -53,7 +53,7 @@ sites are:
   }
   ```
   
-* Function results&ndash;either the final line of a block if it is not
+* Function results&mdash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
   For example, `x` is coerced to have type `&dyn Display` in the following:
@@ -65,7 +65,7 @@ sites are:
   }
   ```
 
-* The [as] type cast operator can also explicitly perform type coersion.
+* The [as] type cast operator can also explicitly perform type coercion.
 
 
 If the expression in one of these coercion sites is a coercion-propagating
