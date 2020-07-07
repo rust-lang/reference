@@ -52,7 +52,7 @@ sites are:
       Foo { x: &mut 42 };
   }
   ```
-  
+ 
 * Function results&mdash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
@@ -168,7 +168,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `[T; n]` to `[T]`.
 
-* `T` to `dyn U`, when `T` implements `U + Sized`
+* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
@@ -188,6 +188,7 @@ unsized coercion to `Foo<U>`.
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
+[object safe]: items/traits.md#object-safety
 [as]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
