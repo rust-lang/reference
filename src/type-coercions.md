@@ -65,7 +65,8 @@ sites are:
   }
   ```
 
-* The [as] type cast operator can also explicitly perform type coercion.
+* The [as] type cast operator&mdash;while not a coercion site&mdash;can be used to 
+  explicitly perform type coercion.
 
 
 If the expression in one of these coercion sites is a coercion-propagating
