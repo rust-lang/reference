@@ -221,6 +221,7 @@ The following is an index of all built-in attributes.
   - [`cold`] — Hint that a function is unlikely to be called.
   - [`no_builtins`] — Disables use of certain built-in functions.
   - [`target_feature`] — Configure platform-specific code generation.
+  - [`track_caller`] - Pass the parent call location to `std::panic::Location::caller()`.
 - Documentation
   - `doc` — Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
@@ -294,6 +295,7 @@ The following is an index of all built-in attributes.
 [`should_panic`]: attributes/testing.md#the-should_panic-attribute
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`test`]: attributes/testing.md#the-test-attribute
+[`track_caller`]: attributes/codegen.md#the-track_caller-attribute
 [`type_length_limit`]: attributes/limits.md#the-type_length_limit-attribute
 [`used`]: abi.md#the-used-attribute
 [`warn`]: attributes/diagnostics.md#lint-check-attributes
