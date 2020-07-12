@@ -38,10 +38,12 @@ to be run.
 * Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool`, and `char`.
 * Shared [borrow]s, except if applied to a type with [interior mutability].
-* The [dereference operator].
+* The [dereference operator] except for raw pointers.
 * [Grouped] expressions.
-* [Cast] expressions, except pointer to address and
-  function pointer to address casts.
+* [Cast] expressions, except
+  * pointer to address casts,
+  * function pointer to address casts, and
+  * unsizing casts to trait objects.
 * Calls of [const functions] and const methods.
 * [loop], [while] and [`while let`] expressions.
 * [if], [`if let`] and [match] expressions.
@@ -65,13 +67,13 @@ return type may use, as well as prevent various expressions from being used with
 
 Notable features that const contexts have, but const fn haven't are:
 
-* floating point types
+* floating point operations
+  * floating point values are treated just like generic parameters without trait bounds beyond
+  `Copy`. So you cannot do anything with them but copy/move them around.
 * `dyn Trait` types
 * generic bounds on generic parameters beyond `Sized`
-* dereferencing of raw pointers
-* casting raw pointers to integers
 * comparing raw pointers
-* union field access
+* union field access or `transmute` invocations.
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
