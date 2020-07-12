@@ -27,9 +27,7 @@ to be run.
 * [Struct] expressions.
 * [Enum variant] expressions.
 * [Block expressions], including `unsafe` blocks.
-    * [let statements] and thus irrefutable [patterns], with the caveat that until `if` and `match`
-    are implemented, one cannot use both short circuiting operators (`&&` and `||`) and let
-    statements within the same constant.
+    * [let statements] and thus irrefutable [patterns], including mutable bindings
     * [assignment expressions]
     * [compound assignment expressions]
     * [expression statements]
@@ -40,11 +38,15 @@ to be run.
 * Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool`, and `char`.
 * Shared [borrow]s, except if applied to a type with [interior mutability].
-* The [dereference operator].
+* The [dereference operator] except for raw pointers.
 * [Grouped] expressions.
-* [Cast] expressions, except pointer to address and
-  function pointer to address casts.
+* [Cast] expressions, except
+  * pointer to address casts,
+  * function pointer to address casts, and
+  * unsizing casts to trait objects.
 * Calls of [const functions] and const methods.
+* [loop], [while] and [`while let`] expressions.
+* [if], [`if let`] and [match] expressions.
 
 ## Const context
 
@@ -56,6 +58,23 @@ A _const context_ is one of the following:
   * [constants]
   * [statics]
   * [enum discriminants]
+
+## Const Functions
+
+A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
+`const` has no effect on any existing uses, it only restricts the types that arguments and the
+return type may use, as well as prevent various expressions from being used within it.
+
+Notable features that const contexts have, but const fn haven't are:
+
+* floating point operations
+  * floating point values are treated just like generic parameters without trait bounds beyond
+  `Copy`. So you cannot do anything with them but copy/move them around.
+* `dyn Trait` types
+* generic bounds on generic parameters beyond `Sized`
+* comparing raw pointers
+* union field access
+* [`transmute`] invocations.
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
@@ -81,10 +100,14 @@ A _const context_ is one of the following:
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
 [interior mutability]:  interior-mutability.md
+[if]:                   expressions/if-expr.md#if-expressions
+[`if let`]:             expressions/if-expr.md#if-let-expressions
 [lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
 [let statements]:       statements.md#let-statements
 [literals]:             expressions/literal-expr.md
 [logical]:              expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[loop]:                 expressions/loop-expr.md#infinite-loops
+[match]:                expressions/match-expr.md
 [negation]:             expressions/operator-expr.md#negation-operators
 [overflow]:             expressions/operator-expr.md#overflow
 [paths]:                expressions/path-expr.md
@@ -94,3 +117,6 @@ A _const context_ is one of the following:
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
+[`transmute`]:          ../std/mem/fn.transmute.html
+[while]:                expressions/loop-expr.md#predicate-loops
+[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
