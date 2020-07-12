@@ -73,7 +73,8 @@ Notable features that const contexts have, but const fn haven't are:
 * `dyn Trait` types
 * generic bounds on generic parameters beyond `Sized`
 * comparing raw pointers
-* union field access or `transmute` invocations.
+* union field access
+* [`transmute`] invocations.
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
@@ -116,5 +117,6 @@ Notable features that const contexts have, but const fn haven't are:
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
+[`transmute`]:          ../std/mem/fn.transmute.html
 [while]:                expressions/loop-expr.md#predicate-loops
 [`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
