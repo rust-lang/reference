@@ -92,7 +92,7 @@ pub fn make_answer(_item: TokenStream) -> TokenStream {
 }
 ```
 
-And then we use it a binary crate to print "42" to standard output.
+And then we use it in a binary crate to print "42" to standard output.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
