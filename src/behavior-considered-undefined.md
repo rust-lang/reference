@@ -57,6 +57,11 @@ code.
     > **Note**: `rustc` achieves this with the unstable
     > `rustc_layout_scalar_valid_range_*` attributes.
 
+Note that uninitialized memory is also implicitly invalid for any type that has
+a restricted set of valid values.  In other words, the only cases in which
+reading uninitialized memory is permitted is inside `union`s, and between the
+fields of a compound type (in the "padding").
+
 A reference/pointer is "dangling" if it is null or not all of the bytes it
 points to are part of the same allocation (so in particular they all have to be
 part of *some* allocation). The span of bytes it points to is determined by the
