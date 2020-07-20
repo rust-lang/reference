@@ -14,7 +14,7 @@ let mut s = String::from("foo");
 let t = String::from("bar");
 
 f(|| {
-    s += &*t;
+    s += &t;
     s
 });
 // Prints "foobar".
