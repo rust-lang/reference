@@ -98,7 +98,7 @@ immutable [`static` items].
 
 ## Auto traits
 
-The [`Send`], [`Sync`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto
+The [`Send`], [`Sync`], [`Unpin`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto
 traits_. Auto traits have special properties.
 
 If no explicit implementation or negative implementation is written out for an
@@ -157,6 +157,7 @@ compiler, not by [implementation items].
 [`std::ops`]: ../std/ops/index.html
 [`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
 [`Sync`]: ../std/marker/trait.Sync.html
+[`Unpin`]: ../std/marker/trait.Unpin.html
 
 [Arrays]: types/array.md
 [call expressions]: expressions/call-expr.md
