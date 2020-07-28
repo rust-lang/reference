@@ -5,7 +5,7 @@ editing the reference, fixing incorrect information, adding examples and
 glossary entries, and documenting new or otherwise undocumented features in
 Rust.
 
-For awhile, the Reference was basically ignored, and Rust continued gaining new
+For a while, the Reference was basically ignored, and Rust continued gaining new
 features or changing old ones. It was also basically the introduction document
 before the first edition of the Rust book, and constantly in flux from the huge
 churn of the language design before v1.0.0. So there's a lot that's wrong, too
