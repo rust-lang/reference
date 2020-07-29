@@ -131,7 +131,7 @@ more specific call traits:
 > not how it captures them.
 
 *Non-capturing closures* are closures that don't capture anything from their
-environment. They can be coerced to function pointers (`fn` or `unsafe fn`)
+environment. They can be coerced to function pointers (e.g., `fn()`)
 with the matching signature.
 
 ```rust
