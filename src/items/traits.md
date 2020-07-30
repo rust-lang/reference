@@ -6,6 +6,7 @@
 >              [_Generics_]<sup>?</sup>
 >              ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `{`\
+> &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp;&nbsp;&nbsp; _TraitItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
 >
@@ -341,6 +342,7 @@ fn main() {
 [_Generics_]: generics.md
 [_MacroInvocationSemi_]: ../macros.md#macro-invocation
 [_OuterAttribute_]: ../attributes.md
+[_InnerAttribute_]: ../attributes.md
 [_Pattern_]: ../patterns.md
 [_SelfParam_]: associated-items.md#methods
 [_TypeParamBounds_]: ../trait-bounds.md
