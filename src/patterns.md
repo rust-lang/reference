@@ -282,7 +282,7 @@ it is dereferenced and this process repeats.
 > _WildcardPattern_ :\
 > &nbsp;&nbsp; `_`
 
-The _wildcard pattern_ matches any value. It is used to ignore values when they don't
+The _wildcard pattern_ (an underscore symbol) matches any value. It is used to ignore values when they don't
 matter. Inside other patterns it matches a single data field (as opposed to the `..`
 which matches the remaining fields). Unlike identifier patterns, it does not copy, move
 or borrow the value it matches.
