@@ -555,13 +555,13 @@ usages and meanings are defined in the linked pages.
 |--------|-------------|-------|
 | `+`    | Plus        | [Addition][arith], [Trait Bounds], [Macro Kleene Matcher][macros]
 | `-`    | Minus       | [Subtraction][arith], [Negation]
-| `*`    | Star        | [Multiplication][arith], [Dereference], [Raw Pointers], [Macro Kleene Matcher][macros]
+| `*`    | Star        | [Multiplication][arith], [Dereference], [Raw Pointers], [Macro Kleene Matcher][macros], [Use wildcards]
 | `/`    | Slash       | [Division][arith]
 | `%`    | Percent     | [Remainder][arith]
 | `^`    | Caret       | [Bitwise and Logical XOR][arith]
-| `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type]
+| `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type], [Negative impls]
 | `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References], [Reference patterns]
-| <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], [Match]
+| <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], Patterns in [match], [if let], and [while let]
 | `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References], [Reference patterns]
 | <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]
 | `<<`   | Shl         | [Shift Left][arith], [Nested Generics][generics]
@@ -584,7 +584,7 @@ usages and meanings are defined in the linked pages.
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
 | `@`    | At          | [Subpattern binding]
-| `_`    | Underscore  | [Wildcard patterns], [Inferred types]
+| `_`    | Underscore  | [Wildcard patterns], [Inferred types], Unnamed items in [constants], [extern crates], and [use declarations]
 | `.`    | Dot         | [Field access][field], [Tuple index]
 | `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns]
 | `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
@@ -593,7 +593,7 @@ usages and meanings are defined in the linked pages.
 | `;`    | Semi        | Terminator for various items and statements, [Array types]
 | `:`    | Colon       | Various separators
 | `::`   | PathSep     | [Path separator][paths]
-| `->`   | RArrow      | [Function return type][functions], [Closure return type][closures]
+| `->`   | RArrow      | [Function return type][functions], [Closure return type][closures], [Function pointer type]
 | `=>`   | FatArrow    | [Match arms][match], [Macros]
 | `#`    | Pound       | [Attributes]
 | `$`    | Dollar      | [Macros]
@@ -625,17 +625,22 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [closures]: expressions/closure-expr.md
 [comparison]: expressions/operator-expr.md#comparison-operators
 [compound]: expressions/operator-expr.md#compound-assignment-expressions
+[constants]: items/constant-items.md
 [dereference]: expressions/operator-expr.md#the-dereference-operator
+[extern crates]: items/extern-crates.md
 [extern]: items/external-blocks.md
 [field]: expressions/field-expr.md
+[function pointer type]: types/function-pointer.md
 [functions]: items/functions.md
 [generics]: items/generics.md
 [identifier]: identifiers.md
+[if let]: expressions/if-expr.md#if-let-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
 [macros]: macros-by-example.md
 [match]: expressions/match-expr.md
 [negation]: expressions/operator-expr.md#negation-operators
+[negative impls]: items/implementations.md
 [never type]: types/never.md
 [paths]: paths.md
 [patterns]: patterns.md
@@ -650,3 +655,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [tuple structs]: items/structs.md
 [tuple variants]: items/enumerations.md
 [tuples]: types/tuple.md
+[use declarations]: items/use-declarations.md
+[use wildcards]: items/use-declarations.md
+[while let]: expressions/loop-expr.md#predicate-pattern-loops
