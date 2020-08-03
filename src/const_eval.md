@@ -54,7 +54,7 @@ to be run.
 A _const context_ is one of the following:
 
 * [Array type length expressions]
-* [Array repeat expressions][array expressions]
+* [Array repeat length expressions][array expressions]
 * The initializer of
   * [constants]
   * [statics]

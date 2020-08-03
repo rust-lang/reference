@@ -7,9 +7,9 @@
 A *constant item* is an optionally named _[constant value]_ which is not associated
 with a specific memory location in the program. Constants are essentially inlined
 wherever they are used, meaning that they are copied directly into the relevant
-context when used. This includes usage of constants from external crates.
-References to the same constant are not necessarily guaranteed to refer to the
-same memory address.
+context when used. This includes usage of constants from external crates, and
+non-[`Copy`] types. References to the same constant are not necessarily
+guaranteed to refer to the same memory address.
 
 Constants must be explicitly typed. The type must have a `'static` lifetime: any
 references in the initializer must have `'static` lifetimes.
@@ -95,3 +95,4 @@ m!(const _: () = (););
 [underscore imports]: use-declarations.md#underscore-imports
 [_Type_]: ../types.md#type-expressions
 [_Expression_]: ../expressions.md
+[`Copy`]: ../special-types-and-traits.md#copy
