@@ -20,8 +20,9 @@ also constant expressions and do not cause any [`Drop::drop`][destructors] calls
 to be run.
 
 * [Literals].
-* [Paths] to [functions] and constants.
+* [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
+* Paths to [statics]. These are only allowed within the initializer of a static.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
@@ -53,7 +54,7 @@ to be run.
 A _const context_ is one of the following:
 
 * [Array type length expressions]
-* Repeat expression length expressions
+* [Array repeat expressions][array expressions]
 * The initializer of
   * [constants]
   * [statics]
@@ -75,6 +76,10 @@ Notable features that const contexts have, but const fn haven't are:
 * comparing raw pointers
 * union field access
 * [`transmute`] invocations.
+
+Conversely, the following are possible in a const function, but not in a const context:
+
+* Use of generic parameters.
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md

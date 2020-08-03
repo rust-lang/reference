@@ -7,11 +7,12 @@
 A *constant item* is an optionally named _[constant value]_ which is not associated
 with a specific memory location in the program. Constants are essentially inlined
 wherever they are used, meaning that they are copied directly into the relevant
-context when used. References to the same constant are not necessarily
-guaranteed to refer to the same memory address.
+context when used. This includes usage of constants from external crates.
+References to the same constant are not necessarily guaranteed to refer to the
+same memory address.
 
 Constants must be explicitly typed. The type must have a `'static` lifetime: any
-references it contains must have `'static` lifetimes.
+references in the initializer must have `'static` lifetimes.
 
 Constants may refer to the address of other constants, in which case the
 address will have elided lifetimes where applicable, otherwise – in most cases

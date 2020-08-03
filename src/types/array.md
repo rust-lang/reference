@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
 
 An array is a fixed-size sequence of `N` elements of type `T`. The array type
-is written as `[T; N]`. The size is an expression that evaluates to a
+is written as `[T; N]`. The size is a [constant expression] that evaluates to a
 [`usize`].
 
 Examples:
@@ -28,3 +28,4 @@ always bounds-checked in safe methods and operators.
 [_Type_]: ../types.md#type-expressions
 [`Vec<T>`]: ../../std/vec/struct.Vec.html
 [`usize`]: numeric.md#machine-dependent-integer-types
+[constant expression]: ../const_eval.md#constant-expressions
