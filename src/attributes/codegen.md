@@ -145,10 +145,10 @@ feature detection on the x86 platforms.
 
 ## The `track_caller` attribute
 
-The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]. When
-applied to functions and methods in trait declarations, the attribute applies to all
-implementations. If the trait provides a default implementation with the attribute, then the
-attribute also applies to override implementations.
+The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
+with the exception of the entry point `fn main`. When applied to functions and methods in
+trait declarations, the attribute applies to all implementations. If the trait provides a
+default implementation with the attribute, then the attribute also applies to override implementations.
 
 When applied to a function in an `extern` block the attribute must also be applied to any linked
 implementations, otherwise undefined behavior results. When applied to a function which is made
