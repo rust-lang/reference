@@ -95,8 +95,8 @@ zero-sized type to have a size of 0 and an alignment of 1.
 
 Trait objects have the same layout as the value the trait object is of.
 
-> Note: This is about the raw trait object types, not pointers (`&Trait`,
-> `Box<Trait>`, etc.) to trait objects.
+> Note: This is about the raw trait object types, not pointers (`&dyn Trait`,
+> `Box<dyn Trait>`, etc.) to trait objects.
 
 ## Closure Layout
 

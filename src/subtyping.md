@@ -63,7 +63,7 @@ Variance of types is automatically determined as follows
 | `fn(T) -> ()`                 |                   | contravariant     |
 | `std::cell::UnsafeCell<T>`    |                   | invariant         |
 | `std::marker::PhantomData<T>` |                   | covariant         |
-| `Trait<T> + 'a`               | covariant         | invariant         |
+| `dyn Trait<T> + 'a`           | covariant         | invariant         |
 
 The variance of other `struct`, `enum`, `union`, and tuple types is decided by
 looking at the variance of the types of their fields. If the parameter is used
