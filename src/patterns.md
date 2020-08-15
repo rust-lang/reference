@@ -2,11 +2,15 @@
 
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
+> &nbsp;&nbsp; | [_RangePattern_]
+>
+> _PatternWithoutRange_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralPattern_]\
 > &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_WildcardPattern_]\
 > &nbsp;&nbsp; | [_RestPattern_]\
-> &nbsp;&nbsp; | [_RangePattern_]\
+> &nbsp;&nbsp; | [_ObsoleteRangePattern_]\
 > &nbsp;&nbsp; | [_ReferencePattern_]\
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
@@ -378,8 +382,10 @@ match tuple {
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp;&nbsp;&nbsp;  _RangePatternBound_ `..=` _RangePatternBound_\
-> &nbsp;&nbsp; | _RangePatternBound_ `...` _RangePatternBound_
+> &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+>
+> _ObsoleteRangePattern_ :\
+> &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
 >
 > _RangePatternBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
@@ -486,7 +492,7 @@ ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and
 
 > **<sup>Syntax</sup>**\
 > _ReferencePattern_ :\
-> &nbsp;&nbsp; (`&`|`&&`) `mut`<sup>?</sup> _Pattern_
+> &nbsp;&nbsp; (`&`|`&&`) `mut`<sup>?</sup> [_PatternWithoutRange_]
 
 Reference patterns dereference the pointers that are being matched
 and, thus, borrow them.
@@ -725,9 +731,11 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
 [_MacroInvocation_]: macros.md#macro-invocation
+[_ObsoleteRangePattern_]: #range-patterns
 [_PathInExpression_]: paths.md#paths-in-expressions
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
+[_PatternWithoutRange_]: #patterns
 [_QualifiedPathInExpression_]: paths.md#qualified-paths
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
