@@ -249,6 +249,9 @@ copying or moving what was matched.
 [Path patterns](#path-patterns) take precedence over identifier patterns. It is an error
 if `ref` or `ref mut` is specified and the identifier shadows a constant.
 
+Identifier patterns are irrefutable if the `@` subpattern is irrefutable or
+the subpattern is not specified.
+
 ### Binding modes
 
 To service better ergonomics, patterns operate in different *binding modes* in
@@ -638,7 +641,7 @@ They are also used to [destructure](#destructuring) a tuple.
 The form `(..)` with a single [_RestPattern_] is a special form that does not
 require a comma, and matches a tuple of any size.
 
-This pattern is refutable when one of its subpatterns is refutable.
+The tuple pattern is refutable when one of its subpatterns is refutable.
 
 ## Grouped patterns
 
