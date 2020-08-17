@@ -347,8 +347,11 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
-| [Function pointer](../types/function-pointer.md) | `*V` where `V: Sized` | Function pointer to pointer cast |
-| Function pointer      | Integer               | Function pointer to address cast |
+| [Function item]       | [Function pointer]    | Function item to function pointer cast |
+| [Function item]       | `*V` where `V: Sized` | Function item to pointer cast    |
+| [Function item]       | Integer               | Function item to address cast    |
+| [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast |
+| [Function pointer]    | Integer               | Function pointer to address cast |
 | Closure \*\*          | Function pointer      | Closure to function pointer cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the
@@ -458,6 +461,8 @@ assert_eq!(x, 14);
 [temporary value]: ../expressions.md#temporaries
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: ../types/tuple.md
+[Function pointer]: ../types/function-pointer.md
+[Function item]: ../types/function-item.md
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
