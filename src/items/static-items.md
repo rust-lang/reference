@@ -8,12 +8,16 @@
 A *static item* is similar to a [constant], except that it represents a precise
 memory location in the program. All references to the static refer to the same
 memory location. Static items have the `static` lifetime, which outlives all
-other lifetimes in a Rust program. Non-`mut` static items that contain a type
+other lifetimes in a Rust program.
+
+## Non-mut statics
+
+Non-`mut` static items that contain a type
 that is not [interior mutable] may be placed in read-only memory. Static items
 do not call [`drop`] at the end of the program.
 
-All access to a static is safe, but there are a number of restrictions on
-statics:
+All access to a Non-`mut` static is safe, but there are a number of restrictions on
+Non-`mut` statics:
 
 * The type must have the `Sync` trait bound to allow thread-safe access.
 * Statics allow using paths to statics in the [constant expression] used to
