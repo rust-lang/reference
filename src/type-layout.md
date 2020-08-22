@@ -361,20 +361,6 @@ struct MyDFields;
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
-<span id="c-primitive-representation">Combining the `repr(C)`
-and a primitive representation is only defined for enums with fields. The
-primitive representation modifies the `repr(C)` by changing the representation
-of the discriminant enum to have the representation of the chosen primitive
-representation. So, if you chose the `u8` representation, then the discriminant
-enum would have a size and alignment of 1 byte.</span>
-
-> Note: This representation is primarily intended for Rust code that wants to
-> interoperate with the idioms of preexisting C/C++ codebases. If you have
-> control over both the Rust and C code, such as using C as FFI glue between
-> Rust and some third language, then you should use a
-> [primitive representation](#primitive-representation-of-enums-with-fields)
-> instead.
-
 ### Primitive representations
 
 The *primitive representations* are the representations with the same names as
@@ -383,12 +369,22 @@ the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`,
 
 Primitive representations can only be applied to enumerations and have
 different behavior whether the enum has fields or no fields. It is an error
-for [zero-variant enumerations] to have a primitive representation.
+for [zero-variant enumerations] to have a primitive representation. Combining
+two primitive representations together is an error.
 
-Combining two primitive representations together is unspecified.
+<span id="c-primitive-representation">Combining the `repr(C)`
+and a primitive representation is only defined for enums with fields. The
+primitive representation modifies the `repr(C)` by changing the representation
+of the discriminant enum to have the representation of the chosen primitive
+representation. So, if you chose the `u8` representation, then the discriminant
+enum would have a size and alignment of 1 byte.</span>
 
-Combining the `C` representation and a primitive representation is described
-[above](#c-primitive-representation).
+> Note: Primitive representations are primarily intended for Rust code that
+> wants to interoperate with the idioms of preexisting C/C++ codebases. If you
+> have control over both the Rust and C code, such as using C as FFI glue
+> between Rust and some third language, then you should use a
+> [primitive representation](#primitive-representation-of-enums-with-fields)
+> instead.
 
 #### Primitive Representation of Field-less Enums
 
@@ -407,9 +403,6 @@ and the remaining fields are the fields of that variant.
 > the union, should that make manipulation more clear for you (although in C++,
 > to follow The Exact Word Of The Standard the tag member should be wrapped in
 > a `struct`).
-
-Because unions with non-`Copy` fields aren't allowed, this representation can
-only be expressed in Rust if every field is also [`Copy`].
 
 ```rust
 // This enum has the same layout as ...
@@ -451,6 +444,8 @@ struct MyVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
 #[derive(Clone, Copy)]
 struct MyVariantD(MyEnumDiscriminant);
 ```
+
+> Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
 ### The alignment modifiers
 
