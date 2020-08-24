@@ -304,11 +304,11 @@ two fields, also called a "tagged union" in C:
 - a `repr(C)` union of `repr(C)` structs for the fields of each variant that had
   them ("the payload")
 
-> Note: due to the representation of `repr(C)` structs and unions, if a variant
+> Note: Due to the representation of `repr(C)` structs and unions, if a variant
 > has a single field there is no difference between putting that field directly
 > in the union or wrapping it in a struct; any system which wishes to manipulate
 > such an `enum`'s representation may therefore use whichever form is more
-> convenient/consistent for them
+> convenient or consistent for them
 
 ```rust
 // This Enum has the same layout as ...
@@ -334,10 +334,10 @@ enum MyEnumDiscriminant { A, B, C, D }
 // This is the variant union.
 #[repr(C)]
 union MyEnumFields {
-   A: MyAFields,
-   B: MyBFields,
-   C: MyCFields,
-   D: MyDFields,
+    A: MyAFields,
+    B: MyBFields,
+    C: MyCFields,
+    D: MyDFields,
 }
 
 #[repr(C)]
@@ -372,13 +372,6 @@ different behavior whether the enum has fields or no fields. It is an error
 for [zero-variant enumerations] to have a primitive representation. Combining
 two primitive representations together is an error.
 
-<span id="c-primitive-representation">Combining the `repr(C)`
-and a primitive representation is only defined for enums with fields. The
-primitive representation modifies the `repr(C)` by changing the representation
-of the discriminant enum to have the representation of the chosen primitive
-representation. So, if you chose the `u8` representation, then the discriminant
-enum would have a size and alignment of 1 byte.</span>
-
 > Note: Primitive representations are primarily intended for Rust code that
 > wants to interoperate with the idioms of preexisting C/C++ codebases. If you
 > have control over both the Rust and C code, such as using C as FFI glue
@@ -388,21 +381,21 @@ enum would have a size and alignment of 1 byte.</span>
 
 #### Primitive Representation of Field-less Enums
 
-For [field-less enums], they set the size and alignment to be the same as
-the primitive type of the same name. For example, a field-less enum with
-a `u8` representation can only have discriminants between 0 and 255 inclusive.
+For [field-less enums], primitive representations set the size and alignment to
+be the same as the primitive type of the same name. For example, a field-less
+enum with a `u8` representation can only have discriminants between 0 and 255
+inclusive.
 
 #### Primitive Representation of Enums With Fields
 
-The representation of a `repr(int)` enum is a `repr(C)` union of `repr(C)`
-structs for each variant with a field. The first field of each struct in the
-union is a `repr(int)` version of the enum with all fields removed ("the tag")
-and the remaining fields are the fields of that variant.
+The representation of a primitive representation enum is a `repr(C)` union of
+`repr(C)` structs for each variant with a field. The first field of each struct
+in the union is the primitive representation version of the enum with all fields
+removed ("the tag") and the remaining fields are the fields of that variant.
 
-> Note: this representation is unchanged if the tag is given its own member in
-> the union, should that make manipulation more clear for you (although in C++,
-> to follow The Exact Word Of The Standard the tag member should be wrapped in
-> a `struct`).
+> Note: This representation is unchanged if the tag is given its own member in
+> the union, should that make manipulation more clear for you (although to
+> follow the C++ standard the tag member should be wrapped in a `struct`).
 
 ```rust
 // This enum has the same layout as ...
@@ -417,10 +410,10 @@ enum MyEnum {
 // ... this union.
 #[repr(C)]
 union MyEnumRepr {
-   A: MyVariantA,
-   B: MyVariantB,
-   C: MyVariantC,
-   D: MyVariantD,
+    A: MyVariantA,
+    B: MyVariantB,
+    C: MyVariantC,
+    D: MyVariantD,
 }
 
 // This is the discriminant enum.
@@ -446,6 +439,12 @@ struct MyVariantD(MyEnumDiscriminant);
 ```
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
+
+Combining the `repr(C)` and a primitive representation is only defined for enums
+with fields. The primitive representation modifies the `repr(C)` by changing the
+representation of the discriminant enum to have the representation of the chosen
+primitive representation. So, if you chose the `u8` representation, then the
+discriminant enum would have a size and alignment of 1 byte.
 
 ### The alignment modifiers
 
