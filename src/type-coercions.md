@@ -4,7 +4,11 @@
 They happen automatically at specific locations and are highly restricted in 
 what types actually coerce.
 
+The [type cast operator], `as`, is not a coersion site. However, most type
+conversions allowed by coersion can also be explicitly performed by `as`.
+
 Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
+
 
 ## Coercion sites
 
@@ -64,10 +68,6 @@ sites are:
       x
   }
   ```
-
-* The [as] type cast operator&mdash;while not a coercion site&mdash;can be used to 
-  explicitly perform type coercion.
-
 
 If the expression in one of these coercion sites is a coercion-propagating
 expression, then the relevant sub-expressions in that expression are also
@@ -190,6 +190,6 @@ unsized coercion to `Foo<U>`.
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
 [object safe]: items/traits.md#object-safety
-[as]: expressions/operator-expr.md#type-cast-expressions
+[type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
