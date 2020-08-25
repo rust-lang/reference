@@ -440,11 +440,13 @@ struct MyVariantD(MyEnumDiscriminant);
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
-Combining the `repr(C)` and a primitive representation is only defined for enums
-with fields. The primitive representation modifies the `repr(C)` by changing the
+For enums with fields, it is also possible to combining `repr(C)` and a
+primitive representation. This modifies the [`repr(C)`] by changing the
 representation of the discriminant enum to have the representation of the chosen
 primitive representation. So, if you chose the `u8` representation, then the
 discriminant enum would have a size and alignment of 1 byte.
+
+[`repr(C)`]: #reprc-enums-with-fields
 
 ### The alignment modifiers
 
