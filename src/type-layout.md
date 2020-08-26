@@ -440,11 +440,55 @@ struct MyVariantD(MyEnumDiscriminant);
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
-For enums with fields, it is also possible to combining `repr(C)` and a
-primitive representation. This modifies the [`repr(C)`] by changing the
-representation of the discriminant enum to have the representation of the chosen
-primitive representation. So, if you chose the `u8` representation, then the
+#### Combining primitive representations of enums with fields and \#[repr(C)]
+
+For enums with fields, it is also possible to combine `repr(C)` and a
+primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by
+changing the representation of the discriminant enum to have the representation
+of the chosen primitive . So, if you chose the `u8` representation, then the
 discriminant enum would have a size and alignment of 1 byte.
+
+The discriminant enum from the example [earlier][`repr(C)`] then becomes:
+
+```rust
+#[repr(u8)] // Instead of `#[repr(C)]`
+enum MyEnumDiscriminant { A, B, C, D }
+```
+
+For example, with a `repr(C, u8)` enum it is not possible to have 257 unique
+discriminants ("tags") whereas the same enum with only a `repr(C)` attribute
+will compile without any problems.
+
+Using a primitive representation in addition to `repr(C)` can change the size of
+an enum from the `repr(C)` form:
+
+```rust
+#[repr(C)]
+enum EnumC {
+    Variant0(u8),
+    Variant1,
+}
+
+#[repr(C, u8)]
+enum Enum8 {
+    Variant0(u8),
+    Variant1,
+}
+
+#[repr(C, u16)]
+enum Enum16 {
+    Variant0(u8),
+    Variant1,
+}
+
+// One byte for the discriminant and one byte for the value in Enum8::Variant0
+assert_eq!(std::mem::size_of::<EnumC>(), 8);
+// One byte for the discriminant and one byte for the value in Enum8::Variant0
+assert_eq!(std::mem::size_of::<Enum8>(), 2);
+// Two bytes for the discriminant and one byte for the value in Enum16::Variant0
+// plus one byte of padding.
+assert_eq!(std::mem::size_of::<Enum16>(), 4);
+```
 
 [`repr(C)`]: #reprc-enums-with-fields
 
