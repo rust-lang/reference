@@ -444,15 +444,27 @@ struct MyVariantD(MyEnumDiscriminant);
 
 For enums with fields, it is also possible to combine `repr(C)` and a
 primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by
-changing the representation of the discriminant enum to have the representation
-of the chosen primitive . So, if you chose the `u8` representation, then the
-discriminant enum would have a size and alignment of 1 byte.
+changing the representation of the discriminant enum to the chosen primitive
+instead. So, if you chose the `u8` representation, then the discriminant enum
+would have a size and alignment of 1 byte.
 
 The discriminant enum from the example [earlier][`repr(C)`] then becomes:
 
 ```rust
-#[repr(u8)] // Instead of `#[repr(C)]`
+#[repr(C, u8)] // `u8` was added
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+ }
+
+// ...
+
+#[repr(u8)] // So `u8` is used here instead of `C`
 enum MyEnumDiscriminant { A, B, C, D }
+
+// ...
 ```
 
 For example, with a `repr(C, u8)` enum it is not possible to have 257 unique
