@@ -66,7 +66,7 @@ Multiple match patterns may be joined with the `|` operator. Each pattern will b
 tested in left-to-right sequence until a successful match is found.
 
 ```rust
-# let x = 9;
+let x = 9;
 let message = match x {
     0 | 1  => "not many",
     2 ..= 9 => "a few",
