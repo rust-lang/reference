@@ -4,11 +4,10 @@
 They happen automatically at specific locations and are highly restricted in 
 what types actually coerce.
 
-The [type cast operator], `as`, is not a coersion site. However, most type
-conversions allowed by coersion can also be explicitly performed by `as`.
+Any conversions allowed by coercion can also be explicitly performed by the
+[type cast operator], `as`.
 
 Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
-
 
 ## Coercion sites
 
