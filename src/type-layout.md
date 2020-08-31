@@ -308,7 +308,7 @@ two fields, also called a "tagged union" in C:
 > has a single field there is no difference between putting that field directly
 > in the union or wrapping it in a struct; any system which wishes to manipulate
 > such an `enum`'s representation may therefore use whichever form is more
-> convenient or consistent for them
+> convenient or consistent for them.
 
 ```rust
 // This Enum has the same layout as ...
@@ -493,7 +493,7 @@ enum Enum16 {
     Variant1,
 }
 
-// One byte for the discriminant and one byte for the value in Enum8::Variant0
+// The C representation, with the size of the discriminant unspecified
 assert_eq!(std::mem::size_of::<EnumC>(), 8);
 // One byte for the discriminant and one byte for the value in Enum8::Variant0
 assert_eq!(std::mem::size_of::<Enum8>(), 2);
