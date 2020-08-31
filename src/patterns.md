@@ -2,10 +2,15 @@
 
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
+> &nbsp;&nbsp; | [_RangePattern_]
+>
+> _PatternWithoutRange_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralPattern_]\
 > &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_WildcardPattern_]\
-> &nbsp;&nbsp; | [_RangePattern_]\
+> &nbsp;&nbsp; | [_RestPattern_]\
+> &nbsp;&nbsp; | [_ObsoleteRangePattern_]\
 > &nbsp;&nbsp; | [_ReferencePattern_]\
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
@@ -248,6 +253,9 @@ copying or moving what was matched.
 [Path patterns](#path-patterns) take precedence over identifier patterns. It is an error
 if `ref` or `ref mut` is specified and the identifier shadows a constant.
 
+Identifier patterns are irrefutable if the `@` subpattern is irrefutable or
+the subpattern is not specified.
+
 ### Binding modes
 
 To service better ergonomics, patterns operate in different *binding modes* in
@@ -317,12 +325,67 @@ if let Some(_) = x {}
 
 The wildcard pattern is always irrefutable.
 
+## Rest patterns
+
+> **<sup>Syntax</sup>**\
+> _RestPattern_ :\
+> &nbsp;&nbsp; `..`
+
+The _rest pattern_ (the `..` token) acts as a variable-length pattern which
+matches zero or more elements that haven't been matched already before and
+after. It may only be used in [tuple](#tuple-patterns), [tuple
+struct](#tuple-struct-patterns), and [slice](#slice-patterns) patterns, and
+may only appear once as one of the elements in those patterns. It is also
+allowed in an [identifier pattern](#identifier-patterns) for [slice
+patterns](#slice-patterns) only.
+
+The rest pattern is always irrefutable.
+
+Examples:
+
+```rust
+# let words = vec!["a", "b", "c"];
+# let slice = &words[..];
+match slice {
+    [] => println!("slice is empty"),
+    [one] => println!("single element {}", one),
+    [head, tail @ ..] => println!("head={} tail={:?}", head, tail),
+}
+
+match slice {
+    // Ignore everything but the last element, which must be "!".
+    [.., "!"] => println!("!!!"),
+
+    // `start` is a slice of everything except the last element, which must be "z".
+    [start @ .., "z"] => println!("starts with: {:?}", start),
+
+    // `end` is a slice of everything but the first element, which must be "a".
+    ["a", end @ ..] => println!("ends with: {:?}", end),
+
+    rest => println!("{:?}", rest),
+}
+
+if let [.., penultimate, _] = slice {
+    println!("next to last is {}", penultimate);
+}
+
+# let tuple = (1, 2, 3, 4, 5);
+// Rest patterns may also be used in tuple and tuple struct patterns.
+match tuple {
+    (1, .., y, z) => println!("y={} z={}", y, z),
+    (.., 5) => println!("tail must be 5"),
+    (..) => println!("matches everything else"),
+}
+```
+
 ## Range patterns
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp;&nbsp;&nbsp;  _RangePatternBound_ `..=` _RangePatternBound_\
-> &nbsp;&nbsp; | _RangePatternBound_ `...` _RangePatternBound_
+> &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+>
+> _ObsoleteRangePattern_ :\
+> &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
 >
 > _RangePatternBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
@@ -429,7 +492,7 @@ ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and
 
 > **<sup>Syntax</sup>**\
 > _ReferencePattern_ :\
-> &nbsp;&nbsp; (`&`|`&&`) `mut`<sup>?</sup> _Pattern_
+> &nbsp;&nbsp; (`&`|`&&`) `mut`<sup>?</sup> [_PatternWithoutRange_]
 
 Reference patterns dereference the pointers that are being matched
 and, thus, borrow them.
@@ -559,8 +622,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 > &nbsp;&nbsp; [_PathInExpression_] `(` _TupleStructItems_<sup>?</sup> `)`
 >
 > _TupleStructItems_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>\
-> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` (`,` [_Pattern_])<sup>*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; [_Pattern_]&nbsp;( `,` [_Pattern_] )<sup>\*</sup> `,`<sup>?</sup>
 
 Tuple struct patterns match tuple struct and enum values that match all criteria defined
 by its subpatterns. They are also used to [destructure](#destructuring) a tuple struct or
@@ -576,13 +638,16 @@ A tuple struct pattern is refutable when one of its subpatterns is refutable.
 >
 > _TuplePatternItems_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Pattern_] `,`\
-> &nbsp;&nbsp; | [_Pattern_]&nbsp;(`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup>\
-> &nbsp;&nbsp; | ([_Pattern_] `,`)<sup>\*</sup> `..` (`,` [_Pattern_])<sup>*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; | [_RestPattern_]\
+> &nbsp;&nbsp; | [_Pattern_]&nbsp;(`,` [_Pattern_])<sup>+</sup> `,`<sup>?</sup>
 
 Tuple patterns match tuple values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a tuple.
 
-This pattern is refutable when one of its subpatterns is refutable.
+The form `(..)` with a single [_RestPattern_] is a special form that does not
+require a comma, and matches a tuple of any size.
+
+The tuple pattern is refutable when one of its subpatterns is refutable.
 
 ## Grouped patterns
 
@@ -607,7 +672,10 @@ match int_reference {
 
 > **<sup>Syntax</sup>**\
 > _SlicePattern_ :\
-> &nbsp;&nbsp; `[` [_Pattern_] \(`,` [_Pattern_])<sup>\*</sup> `,`<sup>?</sup> `]`
+> &nbsp;&nbsp; `[` _SlicePatternItems_<sup>?</sup> `]`
+>
+> _SlicePatternItems_ :\
+> &nbsp;&nbsp; [_Pattern_] \(`,` [_Pattern_])<sup>\*</sup> `,`<sup>?</sup>
 
 Slice patterns can match both arrays of fixed size and slices of dynamic size.
 ```rust
@@ -627,6 +695,11 @@ match v[..] {
     _ => { /* this wildcard is required, since the length is not known statically */ }
 };
 ```
+
+Slice patterns are irrefutable when matching an array as long as each element
+is irrefutable. When matching a slice, it is irrefutable only in the form with
+a single `..` [rest pattern](#rest-patterns) or [identifier
+pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
 
 ## Path patterns
 
@@ -658,12 +731,15 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
 [_MacroInvocation_]: macros.md#macro-invocation
+[_ObsoleteRangePattern_]: #range-patterns
 [_PathInExpression_]: paths.md#paths-in-expressions
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
+[_PatternWithoutRange_]: #patterns
 [_QualifiedPathInExpression_]: paths.md#qualified-paths
 [_RangePattern_]: #range-patterns
 [_ReferencePattern_]: #reference-patterns
+[_RestPattern_]: #rest-patterns
 [_SlicePattern_]: #slice-patterns
 [_StructPattern_]: #struct-patterns
 [_TuplePattern_]: #tuple-patterns
