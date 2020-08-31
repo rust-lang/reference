@@ -1,10 +1,13 @@
 # Type coercions
 
-Coercions are defined in [RFC 401]. [RFC 1558] then expanded on that.
-A coercion is implicit and has no syntax.
+**Type coercions** are implicit operations that change the type of a value.
+They happen automatically at specific locations and are highly restricted in 
+what types actually coerce.
 
-[RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
-[RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
+Any conversions allowed by coercion can also be explicitly performed by the
+[type cast operator], `as`.
+
+Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
 
 ## Coercion sites
 
@@ -15,52 +18,53 @@ sites are:
 
 * `let` statements where an explicit type is given.
 
-   For example, `42` is coerced to have type `i8` in the following:
+   For example, `&mut 42` is coerced to have type `&i8` in the following:
 
    ```rust
-   let _: i8 = 42;
+   let _: &i8 = &mut 42;
    ```
 
-* `static` and `const` statements (similar to `let` statements).
+* `static` and `const` item declarations (similar to `let` statements).
 
 * Arguments for function calls
 
   The value being coerced is the actual parameter, and it is coerced to
   the type of the formal parameter.
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `&mut 42` is coerced to have type `&i8` in the following:
 
   ```rust
-  fn bar(_: i8) { }
+  fn bar(_: &i8) { }
 
   fn main() {
-      bar(42);
+      bar(&mut 42);
   }
   ```
 
   For method calls, the receiver (`self` parameter) can only take advantage
   of [unsized coercions](#unsized-coercions).
 
-* Instantiations of struct or variant fields
+* Instantiations of struct, union, or enum variant fields
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `&mut 42` is coerced to have type `&i8` in the following:
 
   ```rust
-  struct Foo { x: i8 }
+  struct Foo<'a> { x: &'a i8 }
 
   fn main() {
-      Foo { x: 42 };
+      Foo { x: &mut 42 };
   }
   ```
-
-* Function results, either the final line of a block if it is not
+ 
+* Function results&mdash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 
-  For example, `42` is coerced to have type `i8` in the following:
+  For example, `x` is coerced to have type `&dyn Display` in the following:
 
   ```rust
-  fn foo() -> i8 {
-      42
+  use std::fmt::Display;
+  fn foo(x: &u32) -> &dyn Display {
+      x
   }
   ```
 
@@ -91,7 +95,7 @@ the block has a known type.
 
 Coercion is allowed between the following types:
 
-* `T` to `U` if `T` is a subtype of `U` (*reflexive case*)
+* `T` to `U` if `T` is a [subtype] of `U` (*reflexive case*)
 
 * `T_1` to `T_3` where `T_1` coerces to `T_2` and `T_2` coerces to `T_3`
 (*transitive case*)
@@ -164,8 +168,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `[T; n]` to `[T]`.
 
-* `T` to `U`, when `U` is a trait object type and either `T` implements `U` or
-  `T` is a trait object for a subtrait of `U`.
+* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
@@ -182,5 +185,10 @@ unsized coercion to `Foo<U>`.
 > has been stabilized, the traits themselves are not yet stable and therefore
 > can't be used directly in stable Rust.
 
+[RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
+[RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
+[subtype]: subtyping.md
+[object safe]: items/traits.md#object-safety
+[type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
