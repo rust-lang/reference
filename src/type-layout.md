@@ -373,11 +373,7 @@ for [zero-variant enumerations] to have a primitive representation. Combining
 two primitive representations together is an error.
 
 > Note: Primitive representations are primarily intended for Rust code that
-> wants to interoperate with the idioms of preexisting C/C++ codebases. If you
-> have control over both the Rust and C code, such as using C as FFI glue
-> between Rust and some third language, then you should use a
-> [primitive representation](#primitive-representation-of-enums-with-fields)
-> instead.
+> wants to interoperate with the idioms of preexisting C/C++ codebases.
 
 #### Primitive Representation of Field-less Enums
 
@@ -493,7 +489,7 @@ enum Enum16 {
     Variant1,
 }
 
-// The C representation, with the size of the discriminant unspecified
+// The size of the C representation is platform dependant
 assert_eq!(std::mem::size_of::<EnumC>(), 8);
 // One byte for the discriminant and one byte for the value in Enum8::Variant0
 assert_eq!(std::mem::size_of::<Enum8>(), 2);
