@@ -59,8 +59,8 @@ code.
 
 **Note:** Uninitialized memory is also implicitly invalid for any type that has
 a restricted set of valid values. In other words, the only cases in which
-reading uninitialized memory is permitted is inside `union`s and between the
-fields of a compound type (in the "padding").
+reading uninitialized memory is permitted is inside `union`s and in "padding"
+(the gaps between the fields/elements of a type).
 
 A reference/pointer is "dangling" if it is null or not all of the bytes it
 points to are part of the same allocation (so in particular they all have to be
