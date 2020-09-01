@@ -372,9 +372,6 @@ different behavior whether the enum has fields or no fields. It is an error
 for [zero-variant enumerations] to have a primitive representation. Combining
 two primitive representations together is an error.
 
-> Note: Primitive representations are primarily intended for Rust code that
-> wants to interoperate with the idioms of preexisting C/C++ codebases.
-
 #### Primitive Representation of Field-less Enums
 
 For [field-less enums], primitive representations set the size and alignment to
