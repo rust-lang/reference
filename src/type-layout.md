@@ -311,7 +311,7 @@ two fields, also called a "tagged union" in C:
 > convenient or consistent for them.
 
 ```rust
-// This Enum has the same layout as ...
+// This Enum has the same representation as ...
 #[repr(C)]
 enum MyEnum {
     A(u32),
@@ -391,7 +391,7 @@ removed ("the tag") and the remaining fields are the fields of that variant.
 > follow the C++ standard the tag member should be wrapped in a `struct`).
 
 ```rust
-// This enum has the same layout as ...
+// This enum has the same representation as ...
 #[repr(u8)]
 enum MyEnum {
     A(u32),
