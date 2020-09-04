@@ -174,7 +174,8 @@ layout such as reinterpreting values as a different type.
 Because of this dual purpose, it is possible to create types that are not useful
 for interfacing with the C programming language.
 
-This representation can be applied to structs, unions, and enums.
+This representation can be applied to structs, unions, and enums. The exception
+is [zero-variant enums] for which the `C` representation is an error.
 
 #### \#[repr(C)] Structs
 
@@ -273,9 +274,9 @@ assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
 assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 ```
 
-#### \#[repr(C)] Enums
+#### \#[repr(C)] Field-less Enums
 
-For [C-like enumerations], the `C` representation has the size and alignment of
+For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
 
 > Note: The enum representation in C is implementation defined, so this is
@@ -285,21 +286,80 @@ the default `enum` size and alignment for the target platform's C ABI.
 <div class="warning">
 
 Warning: There are crucial differences between an `enum` in the C language and
-Rust's C-like enumerations with this representation. An `enum` in  C is
+Rust's [field-less enums] with this representation. An `enum` in C is
 mostly a `typedef` plus some named constants; in other words, an object of an
 `enum` type can hold any integer value. For example, this is often used for
-bitflags in `C`. In contrast, Rust’s C-like enumerations can only legally hold
-the discriminant values, everything else is undefined behaviour. Therefore,
-using a C-like enumeration in FFI to model a C `enum` is often wrong.
+bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold
+the discrimnant values, everything else is [undefined behavior]. Therefore,
+using a field-less enum in FFI to model a C `enum` is often wrong.
 
 </div>
 
-It is an error for [zero-variant enumerations] to have the `C` representation.
+#### \#[repr(C)] Enums With Fields
 
-For all other enumerations, the layout is unspecified.
+The representation of a `repr(C)` enum with fields is a `repr(C)` struct with
+two fields, also called a "tagged union" in C:
 
-Likewise, combining the `C` representation with a primitive representation, the
-layout is unspecified.
+- a `repr(C)` version of the enum with all fields removed ("the tag")
+- a `repr(C)` union of `repr(C)` structs for the fields of each variant that had
+  them ("the payload")
+
+> Note: Due to the representation of `repr(C)` structs and unions, if a variant
+> has a single field there is no difference between putting that field directly
+> in the union or wrapping it in a struct; any system which wishes to manipulate
+> such an `enum`'s representation may therefore use whichever form is more
+> convenient or consistent for them.
+
+```rust
+// This Enum has the same representation as ...
+#[repr(C)]
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+ }
+
+// ... this struct.
+#[repr(C)]
+struct MyEnumRepr {
+    tag: MyEnumDiscriminant,
+    payload: MyEnumFields,
+}
+
+// This is the discriminant enum.
+#[repr(C)]
+enum MyEnumDiscriminant { A, B, C, D }
+
+// This is the variant union.
+#[repr(C)]
+union MyEnumFields {
+    A: MyAFields,
+    B: MyBFields,
+    C: MyCFields,
+    D: MyDFields,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct MyAFields(u32);
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct MyBFields(f32, u64);
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct MyCFields { x: u32, y: u8 }
+
+// This struct could be omitted (it is a zero-sized type), and it must be in
+// C/C++ headers.
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct MyDFields;
+```
+
+> Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
 ### Primitive representations
 
@@ -307,18 +367,135 @@ The *primitive representations* are the representations with the same names as
 the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`,
 `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, and `isize`.
 
-Primitive representations can only be applied to enumerations.
+Primitive representations can only be applied to enumerations and have
+different behavior whether the enum has fields or no fields. It is an error
+for [zero-variant enumerations] to have a primitive representation. Combining
+two primitive representations together is an error.
 
-For [C-like enumerations], they set the size and alignment to be the same as the
-primitive type of the same name. For example, a C-like enumeration with a `u8`
-representation can only have discriminants between 0 and 255 inclusive.
+#### Primitive Representation of Field-less Enums
 
-It is an error for [zero-variant enumerations] to have a primitive
-representation.
+For [field-less enums], primitive representations set the size and alignment to
+be the same as the primitive type of the same name. For example, a field-less
+enum with a `u8` representation can only have discriminants between 0 and 255
+inclusive.
 
-For all other enumerations, the layout is unspecified.
+#### Primitive Representation of Enums With Fields
 
-Likewise, combining two primitive representations together is unspecified.
+The representation of a primitive representation enum is a `repr(C)` union of
+`repr(C)` structs for each variant with a field. The first field of each struct
+in the union is the primitive representation version of the enum with all fields
+removed ("the tag") and the remaining fields are the fields of that variant.
+
+> Note: This representation is unchanged if the tag is given its own member in
+> the union, should that make manipulation more clear for you (although to
+> follow the C++ standard the tag member should be wrapped in a `struct`).
+
+```rust
+// This enum has the same representation as ...
+#[repr(u8)]
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+ }
+
+// ... this union.
+#[repr(C)]
+union MyEnumRepr {
+    A: MyVariantA,
+    B: MyVariantB,
+    C: MyVariantC,
+    D: MyVariantD,
+}
+
+// This is the discriminant enum.
+#[repr(u8)]
+#[derive(Copy, Clone)]
+enum MyEnumDiscriminant { A, B, C, D }
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct MyVariantA(MyEnumDiscriminant, u32);
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct MyVariantB(MyEnumDiscriminant, f32, u64);
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct MyVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct MyVariantD(MyEnumDiscriminant);
+```
+
+> Note: `union`s with non-`Copy` fields are unstable, see [55149].
+
+#### Combining primitive representations of enums with fields and \#[repr(C)]
+
+For enums with fields, it is also possible to combine `repr(C)` and a
+primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by
+changing the representation of the discriminant enum to the chosen primitive
+instead. So, if you chose the `u8` representation, then the discriminant enum
+would have a size and alignment of 1 byte.
+
+The discriminant enum from the example [earlier][`repr(C)`] then becomes:
+
+```rust
+#[repr(C, u8)] // `u8` was added
+enum MyEnum {
+    A(u32),
+    B(f32, u64),
+    C { x: u32, y: u8 },
+    D,
+ }
+
+// ...
+
+#[repr(u8)] // So `u8` is used here instead of `C`
+enum MyEnumDiscriminant { A, B, C, D }
+
+// ...
+```
+
+For example, with a `repr(C, u8)` enum it is not possible to have 257 unique
+discriminants ("tags") whereas the same enum with only a `repr(C)` attribute
+will compile without any problems.
+
+Using a primitive representation in addition to `repr(C)` can change the size of
+an enum from the `repr(C)` form:
+
+```rust
+#[repr(C)]
+enum EnumC {
+    Variant0(u8),
+    Variant1,
+}
+
+#[repr(C, u8)]
+enum Enum8 {
+    Variant0(u8),
+    Variant1,
+}
+
+#[repr(C, u16)]
+enum Enum16 {
+    Variant0(u8),
+    Variant1,
+}
+
+// The size of the C representation is platform dependant
+assert_eq!(std::mem::size_of::<EnumC>(), 8);
+// One byte for the discriminant and one byte for the value in Enum8::Variant0
+assert_eq!(std::mem::size_of::<Enum8>(), 2);
+// Two bytes for the discriminant and one byte for the value in Enum16::Variant0
+// plus one byte of padding.
+assert_eq!(std::mem::size_of::<Enum16>(), 4);
+```
+
+[`repr(C)`]: #reprc-enums-with-fields
 
 ### The alignment modifiers
 
@@ -379,12 +556,14 @@ used with any other representation.
 [`align_of`]: ../std/mem/fn.align_of.html
 [`size_of`]: ../std/mem/fn.size_of.html
 [`Sized`]: ../std/marker/trait.Sized.html
+[`Copy`]: ../std/marker/trait.Copy.html
 [dynamically sized types]: dynamically-sized-types.md
-[C-like enumerations]:  items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
+[field-less enums]: items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
 [enumerations]: items/enumerations.md
-[zero-variant enumerations]: items/enumerations.md#zero-variant-enums
+[zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
 [27060]: https://github.com/rust-lang/rust/issues/27060
+[55149]: https://github.com/rust-lang/rust/issues/55149
 [`PhantomData<T>`]: special-types-and-traits.md#phantomdatat
 [Default]: #the-default-representation
 [`C`]: #the-c-representation
