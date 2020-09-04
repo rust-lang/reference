@@ -223,15 +223,16 @@ Exhaustive list of permitted structures in const functions:
     This does not apply to tuple struct and tuple variant constructors.
 
 * Arithmetic and comparison operators on integers
-* All boolean operators except for `&&` and `||` which are banned since
-  they are short-circuiting.
+* All boolean operators including `&&` and `||`
 * Any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
 * Calls to other *safe* const functions (whether by function call or method call)
 * Index expressions on arrays and slices
 * Field accesses on structs and tuples
 * Reading from constants (but not statics, not even taking a reference to a static)
 * `&` and `*` (only dereferencing of references, not raw pointers)
-* Casts except for raw pointer to integer casts
+* `if`, `if let`, and `match`
+* `while`, `while let`, and `loop`
+* Casts except for raw pointer to integer casts and cast to slice
 * `unsafe` blocks and `const unsafe fn` are allowed, but the body/block may only do
   the following unsafe operations:
     * calls to const unsafe functions
