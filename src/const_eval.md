@@ -64,7 +64,24 @@ A _const context_ is one of the following:
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
 `const` has no effect on any existing uses, it only restricts the types that arguments and the
-return type may use, as well as prevent various expressions from being used within it.
+return type may use, as well as prevent various expressions from being used within it. You can freely do anything with a const function that
+you can do with a regular function.
+
+When called from a const context, the function is interpreted by the
+compiler at compile time. The interpretation happens in the
+environment of the compilation target and not the host. So `usize` is
+`32` bits if you are compiling against a `32` bit system, irrelevant
+of whether you are building on a `64` bit or a `32` bit system.
+
+Const functions have various restrictions to make sure that they can be
+evaluated at compile-time. It is, for example, not possible to write a random
+number generator as a const function. Calling a const function at compile-time
+will always yield the same result as calling it at runtime, even when called
+multiple times. There's one exception to this rule: if you are doing complex
+floating point operations in extreme situations, then you might get (very
+slightly) different results. It is advisable to not make array lengths and enum
+discriminants depend on floating point computations.
+
 
 Notable features that const contexts have, but const fn haven't are:
 
