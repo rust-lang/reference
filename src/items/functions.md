@@ -368,10 +368,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
 [patterns]: ../patterns.md
-[`?Sized`]: ../trait-bounds.md#sized
-[trait bounds]: ../trait-bounds.md
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
-[external_block_abi]: external-blocks.md#abi
 [built-in attributes]: ../attributes.html#built-in-attributes-index
