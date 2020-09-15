@@ -369,7 +369,7 @@ the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`,
 
 Primitive representations can only be applied to enumerations and have
 different behavior whether the enum has fields or no fields. It is an error
-for [zero-variant enumerations] to have a primitive representation. Combining
+for [zero-variant enums] to have a primitive representation. Combining
 two primitive representations together is an error.
 
 #### Primitive Representation of Field-less Enums
