@@ -166,7 +166,7 @@ smallest scope that contains the expression and is for one of the following:
 * The second operand of a [lazy boolean expression].
 
 > **Notes**:
-> 
+>
 > Temporaries that are created in the final expression of a function
 > body are dropped *after* any named variables bound in the function body, as
 > there is no smaller enclosing temporary scope.
