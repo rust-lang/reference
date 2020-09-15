@@ -37,7 +37,7 @@ evaluated (primarily) at compile time.
 | [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
 | [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                      |
 
-\* The number of `#`s on each side of the same literal must be equivalent
+\* The number of `#`s on each side of the same literal must be equal.
 
 #### ASCII escapes
 
@@ -231,7 +231,7 @@ r##"foo #"# bar"##;                // foo #"# bar
 > &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'`
 >
 > ASCII_FOR_CHAR :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r _or_ \\t
 >
 > BYTE_ESCAPE :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
