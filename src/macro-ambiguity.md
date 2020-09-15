@@ -16,8 +16,8 @@ of this text is copied, and expanded upon in subsequent RFCs.
     "match").
   - `repetition` : a fragment that follows a regular repeating pattern
   - `NT`: non-terminal, the various "meta-variables" or repetition matchers
-	that can appear in a matcher, specified in MBE syntax with a leading `$`
-	character.
+    that can appear in a matcher, specified in MBE syntax with a leading `$`
+    character.
   - `simple NT`: a "meta-variable" non-terminal (further discussion below).
   - `complex NT`: a repetition matching non-terminal, specified via repetition
     operators (`\*`, `+`, `?`).
@@ -80,9 +80,9 @@ Greek letters "α" "β" "γ" "δ"  stand for potentially empty token-tree sequen
 and does not stand for a token-tree sequence.)
 
   * This Greek letter convention is usually just employed when the presence of
-	a sequence is a technical detail; in particular, when we wish to *emphasize*
-	that we are operating on a sequence of token-trees, we will use the notation
-	"tt ..." for the sequence, not a Greek letter.
+    a sequence is a technical detail; in particular, when we wish to *emphasize*
+    that we are operating on a sequence of token-trees, we will use the notation
+    "tt ..." for the sequence, not a Greek letter.
 
 Note that a matcher is merely a token tree. A "simple NT", as mentioned above,
 is an meta-variable NT; thus it is a non-repetition. For example, `$foo:ty` is
@@ -108,7 +108,7 @@ of FIRST and FOLLOW are described later.
     tt uu ...`) with `uu ...` nonempty, we must have FOLLOW(`... tt`) ∪ {ε} ⊇
     FIRST(`uu ...`).
 1.  For any separated complex NT in a matcher, `M = ... $(tt ...) SEP OP ...`,
-	we must have `SEP` ∈ FOLLOW(`tt ...`).
+    we must have `SEP` ∈ FOLLOW(`tt ...`).
 1.  For an unseparated complex NT in a matcher, `M = ... $(tt ...) OP ...`, if
     OP = `\*` or `+`, we must have FOLLOW(`tt ...`) ⊇ FIRST(`tt ...`).
 
