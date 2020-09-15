@@ -1,5 +1,5 @@
-use std::error::Error;
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
@@ -26,15 +26,15 @@ fn check_directory(dir: &Path) -> Result<(), Box<dyn Error>> {
         let path = entry.path();
 
         if path.is_dir() {
-            return check_directory(&path);
-        }
+            check_directory(&path)?;
+        } else {
+            let mut file = File::open(&path)?;
+            let mut contents = String::new();
+            file.read_to_string(&mut contents)?;
 
-        let mut file = File::open(&path)?;
-        let mut contents = String::new();
-        file.read_to_string(&mut contents)?;
-
-        if contents.contains("#![feature") {
-            return Err(From::from(format!("Feature flag found in {:?}", path)));
+            if contents.contains("#![feature") {
+                return Err(From::from(format!("Feature flag found in {:?}", path)));
+            }
         }
     }
 
