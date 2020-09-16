@@ -194,7 +194,6 @@ LUB coercion is used and only used in the following situations:
 + To find the common type for a series of if branches.
 + To find the common type for a series of match arms.
 + To find the common type for array elements.
-+ To find the type for block targeted by multiple breaks(including loop block).
 + To find the type for the return type of a closure with multiple return statements.
 + To check the type for the return type of a function with multiple return statements.
 
@@ -212,7 +211,6 @@ expressions considered thus far have implicit coercions.)
 ### Examples:
 
 ```rust
-# #![feature(label_break_value)]
 # let (a, b, c) = (0, 1, 2);
 // For if branches
 let bar = if true {
@@ -232,17 +230,6 @@ let baw = match 42 {
 
 // For array elements
 let bax = [a, b, c];
-
-// For block targeted by multiple breaks(unstable, check #48594)
-let bay = 'out: {
-    if true {
-        break 'out a;
-    } else if false {
-        break 'out b;
-    } else {
-        break 'out c;
-    }
-};
 
 // For closure with multiple return statements
 let clo = || {
