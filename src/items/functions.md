@@ -183,58 +183,9 @@ aborts the process by executing an illegal instruction.
 
 ## Const functions
 
-Functions qualified with the `const` keyword are const functions, as are
+Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
-called from within [const context]s. When called from a const context, the
-function is interpreted by the compiler at compile time. The interpretation
-happens in the environment of the compilation target and not the host. So
-`usize` is `32` bits if you are compiling against a `32` bit system, irrelevant
-of whether you are building on a `64` bit or a `32` bit system.
-
-If a const function is called outside a [const context], it is indistinguishable
-from any other function. You can freely do anything with a const function that
-you can do with a regular function.
-
-Const functions have various restrictions to make sure that they can be
-evaluated at compile-time. It is, for example, not possible to write a random
-number generator as a const function. Calling a const function at compile-time
-will always yield the same result as calling it at runtime, even when called
-multiple times. There's one exception to this rule: if you are doing complex
-floating point operations in extreme situations, then you might get (very
-slightly) different results. It is advisable to not make array lengths and enum
-discriminants depend on floating point computations.
-
-Exhaustive list of permitted structures in const functions:
-
-> **Note**: this list is more restrictive than what you can write in
-> regular constants
-
-* Type parameters where the parameters only have any [trait bounds]
-  of the following kind:
-    * lifetimes
-    * `Sized` or [`?Sized`]
-
-    This means that `<T: 'a + ?Sized>`, `<T: 'b + Sized>`, and `<T>`
-    are all permitted.
-
-    This rule also applies to type parameters of impl blocks that
-    contain const methods.
-
-    This does not apply to tuple struct and tuple variant constructors.
-
-* Arithmetic and comparison operators on integers
-* All boolean operators except for `&&` and `||` which are banned since
-  they are short-circuiting.
-* Any kind of aggregate constructor (array, `struct`, `enum`, tuple, ...)
-* Calls to other *safe* const functions (whether by function call or method call)
-* Index expressions on arrays and slices
-* Field accesses on structs and tuples
-* Reading from constants (but not statics, not even taking a reference to a static)
-* `&` and `*` (only dereferencing of references, not raw pointers)
-* Casts except for raw pointer to integer casts
-* `unsafe` blocks and `const unsafe fn` are allowed, but the body/block may only do
-  the following unsafe operations:
-    * calls to const unsafe functions
+called from within [const context]s.
 
 ## Async functions
 
@@ -396,6 +347,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [_WhereClause_]: generics.md#where-clauses
 [_OuterAttribute_]: ../attributes.md
 [const context]: ../const_eval.md#const-context
+[const functions]: ../const_eval.md#const-functions
 [tuple struct]: structs.md
 [tuple variant]: enumerations.md
 [external block]: external-blocks.md
@@ -416,10 +368,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
 [patterns]: ../patterns.md
-[`?Sized`]: ../trait-bounds.md#sized
-[trait bounds]: ../trait-bounds.md
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
-[external_block_abi]: external-blocks.md#abi
 [built-in attributes]: ../attributes.html#built-in-attributes-index
