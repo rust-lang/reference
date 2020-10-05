@@ -185,6 +185,85 @@ unsized coercion to `Foo<U>`.
 > has been stabilized, the traits themselves are not yet stable and therefore
 > can't be used directly in stable Rust.
 
+## Least upper bound coercions
+
+In some contexts, the compiler must coerce together multiple types to try and
+find the most general type. This is called a "Least Upper Bound" coercion.
+LUB coercion is used and only used in the following situations:
+
++ To find the common type for a series of if branches.
++ To find the common type for a series of match arms.
++ To find the common type for array elements.
++ To find the type for the return type of a closure with multiple return statements.
++ To check the type for the return type of a function with multiple return statements.
+
+In each such case, there are a set of types `T0..Tn` to be mutually coerced
+to some target type `T_t`, which is unknown to start. Computing the LUB
+coercion is done iteratively. The target type `T_t` begins as the type `T0`.
+For each new type `Ti`, we consider whether
+
++ If `Ti` can be coerced to the current target type `T_t`, then no change is made.
++ Otherwise, check whether `T_t` can be coerced to `Ti`; if so, the `T_t` is
+changed to `Ti`. (This check is also conditioned on whether all of the source
+expressions considered thus far have implicit coercions.)
++ If not, try to compute a mutual supertype of `T_t` and `Ti`, which will become the new target type.
+
+### Examples:
+
+```rust
+# let (a, b, c) = (0, 1, 2);
+// For if branches
+let bar = if true {
+    a
+} else if false {
+    b
+} else {
+    c
+};
+
+// For match arms
+let baw = match 42 {
+    0 => a,
+    1 => b,
+    _ => c,
+};
+
+// For array elements
+let bax = [a, b, c];
+
+// For closure with multiple return statements
+let clo = || {
+    if true {
+        a
+    } else if false {
+        b
+    } else {
+        c
+    }
+};
+let baz = clo();
+
+// For type checking of function with multiple return statements
+fn foo() -> i32 {
+    let (a, b, c) = (0, 1, 2);
+    match 42 {
+        0 => a,
+        1 => b,
+        _ => c,
+    }
+}
+```
+
+In these examples, types of the `ba*` are found by LUB coercion. And the
+compiler checks whether LUB coercion result of `a`, `b`, `c` is `i32` in the
+processing of the function `foo`.
+
+### Caveat
+
+This description is obviously informal. Making it more precise is expected to
+proceed as part of a general effort to specify the Rust type checker more
+precisely.
+
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
