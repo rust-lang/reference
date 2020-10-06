@@ -85,6 +85,30 @@ in the order given by their associativity.
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
+## Evaluation order
+
+Most expressions include subexpressions. Unless otherwise stated on the
+expression's page, evaluation of these inner expressions is left to right as
+written in the source code.
+
+For example, the two `next` method calls will always be called in the same
+order:
+
+```rust
+# // Using vec instead of array to avoid references
+# // since there is no stable owned array iterator
+# // at the time this example was written.
+let mut one_two = vec![1, 2].into_iter();
+assert_eq!(
+    (1, 2),
+    (one_two.next().unwrap(), one_two.next().unwrap())
+);
+```
+
+> **Note**: Since this is applied recursively, expressions are also evaluated
+> from innermost to outermost, ignoring siblings until there are no inner
+> subexpressions.
+
 ## Place Expressions and Value Expressions
 
 Expressions are divided into two main categories: place expressions and
