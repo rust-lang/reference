@@ -293,7 +293,7 @@ attributes][attributes] are allowed directly after the `{` inside its [block].
 This example shows an inner attribute on a function. The function will only be
 available while running tests.
 
-```
+```rust
 fn test_only() {
     #![test]
 }

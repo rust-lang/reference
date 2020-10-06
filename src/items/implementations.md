@@ -174,7 +174,7 @@ least one of the following is true:
 
 Only the appearance of *uncovered* type parameters is restricted.
 Note that for the purposes of coherence, [fundamental types] are
-special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>` 
+special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>`
 is considered local.
 
 

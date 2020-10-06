@@ -75,17 +75,17 @@ function* or a *free const*. Contrast to an [associated item].
 
 ### Fundamental traits
 
-A fundamental trait is one where adding an impl of it for an existing type is a breaking change. 
+A fundamental trait is one where adding an impl of it for an existing type is a breaking change.
 The `Fn` traits and `Sized` are fundamental.
 
 ### Fundamental type constructors
 
-A fundamental type constructor is a type where implementing a [blanket implementation](#blanket-implementation) over it 
-is a breaking change. `&`, `&mut`, `Box`, and `Pin`  are fundamental. 
+A fundamental type constructor is a type where implementing a [blanket implementation](#blanket-implementation) over it
+is a breaking change. `&`, `&mut`, `Box`, and `Pin`  are fundamental.
 
-Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>` 
-are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types. 
-Any time the term "covered type" is used, 
+Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`, and `Pin<T>`
+are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types.
+Any time the term "covered type" is used,
 the `T` in `&T`, `&mut T`, `Box<T>`, and `Pin<T>` is not considered covered.
 
 ### Inhabited
@@ -120,7 +120,7 @@ or not independent of applied type arguments. Given `trait Foo<T, U>`,
 
 A `struct`, `enum`, or `union` which was defined in the current crate.
 This is not affected by applied type arguments. `struct Foo` is considered local, but
-`Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not 
+`Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not
 affect locality.
 
 ### Nominal types

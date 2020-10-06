@@ -1,5 +1,8 @@
 [package]
-name = "stable-check"
+name = "style-check"
 version = "0.1.0"
 authors = ["steveklabnik <steve@steveklabnik.com>"]
 edition = "2018"
+
+[dependencies]
+pulldown-cmark = "0.8"

@@ -3,6 +3,10 @@
 Some conventions and content guidelines are specified in the [introduction].
 This document serves as a guide for editors and reviewers.
 
+There is a [`style-check`](style-check/) tool which is run in CI to check some
+of these. To use it locally, run
+`cargo run --manifest-path=style-check/Cargo.toml src`.
+
 ## Markdown formatting
 
 * Use ATX-style heading with sentence case.

@@ -1,7 +1,7 @@
 # Type coercions
 
 **Type coercions** are implicit operations that change the type of a value.
-They happen automatically at specific locations and are highly restricted in 
+They happen automatically at specific locations and are highly restricted in
 what types actually coerce.
 
 Any conversions allowed by coercion can also be explicitly performed by the
@@ -55,7 +55,7 @@ sites are:
       Foo { x: &mut 42 };
   }
   ```
- 
+
 * Function results&mdash;either the final line of a block if it is not
   semicolon-terminated or any expression in a `return` statement
 

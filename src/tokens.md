@@ -115,7 +115,7 @@ and numeric literal tokens are accepted only with suffixes from the list below.
 
 > **<sup>Lexer</sup>**\
 > CHAR_LITERAL :\
-> &nbsp;&nbsp; `'` ( ~[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'`
+> &nbsp;&nbsp; `'` ( ~\[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'`
 >
 > QUOTE_ESCAPE :\
 > &nbsp;&nbsp; `\'` | `\"`
@@ -136,7 +136,7 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 > **<sup>Lexer</sup>**\
 > STRING_LITERAL :\
 > &nbsp;&nbsp; `"` (\
-> &nbsp;&nbsp; &nbsp;&nbsp; ~[`"` `\` _IsolatedCR_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` _IsolatedCR_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | QUOTE_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
@@ -338,13 +338,13 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > HEX_LITERAL :\
 > &nbsp;&nbsp; `0x` (HEX_DIGIT|`_`)<sup>\*</sup> HEX_DIGIT (HEX_DIGIT|`_`)<sup>\*</sup>
 >
-> BIN_DIGIT : [`0`-`1`]
+> BIN_DIGIT : \[`0`-`1`]
 >
-> OCT_DIGIT : [`0`-`7`]
+> OCT_DIGIT : \[`0`-`7`]
 >
-> DEC_DIGIT : [`0`-`9`]
+> DEC_DIGIT : \[`0`-`9`]
 >
-> HEX_DIGIT : [`0`-`9` `a`-`f` `A`-`F`]
+> HEX_DIGIT : \[`0`-`9` `a`-`f` `A`-`F`]
 >
 > INTEGER_SUFFIX :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`\

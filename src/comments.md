@@ -2,27 +2,27 @@
 
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~[`/` `!`] | `//`) ~`\n`<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!`] | `//`) ~`\n`<sup>\*</sup>\
 > &nbsp;&nbsp; | `//`
 >
 > BLOCK_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `/*` (~[`*` `!`] | `**` | _BlockCommentOrDoc_)
+> &nbsp;&nbsp; &nbsp;&nbsp; `/*` (~\[`*` `!`] | `**` | _BlockCommentOrDoc_)
 >      (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`\
 > &nbsp;&nbsp; | `/**/`\
 > &nbsp;&nbsp; | `/***/`
 >
 > INNER_LINE_DOC :\
-> &nbsp;&nbsp; `//!` ~[`\n` _IsolatedCR_]<sup>\*</sup>
+> &nbsp;&nbsp; `//!` ~\[`\n` _IsolatedCR_]<sup>\*</sup>
 >
 > INNER_BLOCK_DOC :\
-> &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`
+> &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~\[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`
 >
 > OUTER_LINE_DOC :\
-> &nbsp;&nbsp; `///` (~`/` ~[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `///` (~`/` ~\[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>
 >
 > OUTER_BLOCK_DOC :\
 > &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
->              (_BlockCommentOrDoc_ | ~[`*/` _IsolatedCR_])<sup>\*</sup> `*/`
+>              (_BlockCommentOrDoc_ | ~\[`*/` _IsolatedCR_])<sup>\*</sup> `*/`
 >
 > _BlockCommentOrDoc_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; BLOCK_COMMENT\

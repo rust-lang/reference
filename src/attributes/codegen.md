@@ -157,9 +157,9 @@ otherwise undefined behavior results.
 
 ### Behavior
 
-Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of 
-the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an 
-implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an 
+Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
+the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
+implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
 *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
 
 ```rust
@@ -190,7 +190,7 @@ fn calls_f() {
 ```
 
 When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in
-both `f` and `g` observes `g`'s callsite within `calls_g`: 
+both `f` and `g` observes `g`'s callsite within `calls_g`:
 
 ```rust
 # #[track_caller]

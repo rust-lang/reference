@@ -177,7 +177,7 @@ for interfacing with the C programming language.
 This representation can be applied to structs, unions, and enums. The exception
 is [zero-variant enums] for which the `C` representation is an error.
 
-#### \#[repr(C)] Structs
+#### `#[repr(C)]` Structs
 
 The alignment of the struct is the alignment of the most-aligned field in it.
 
@@ -244,7 +244,7 @@ the sake of clarity. To perform memory layout computations in actual code, use
 > they are fields that have the `[[no_unique_address]]` attribute, in which
 > case they do not increase the overall size of the struct.
 
-#### \#[repr(C)] Unions
+#### `#[repr(C)]` Unions
 
 A union declared with `#[repr(C)]` will have the same size and alignment as an
 equivalent C union declaration in the C language for the target platform.
@@ -274,7 +274,7 @@ assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
 assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 ```
 
-#### \#[repr(C)] Field-less Enums
+#### `#[repr(C)]` Field-less Enums
 
 For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
@@ -295,7 +295,7 @@ using a field-less enum in FFI to model a C `enum` is often wrong.
 
 </div>
 
-#### \#[repr(C)] Enums With Fields
+#### `#[repr(C)]` Enums With Fields
 
 The representation of a `repr(C)` enum with fields is a `repr(C)` struct with
 two fields, also called a "tagged union" in C:
@@ -369,7 +369,7 @@ the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`,
 
 Primitive representations can only be applied to enumerations and have
 different behavior whether the enum has fields or no fields. It is an error
-for [zero-variant enumerations] to have a primitive representation. Combining
+for [zero-variant enums] to have a primitive representation. Combining
 two primitive representations together is an error.
 
 #### Primitive Representation of Field-less Enums
@@ -433,7 +433,7 @@ struct MyVariantD(MyEnumDiscriminant);
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
-#### Combining primitive representations of enums with fields and \#[repr(C)]
+#### Combining primitive representations of enums with fields and `#[repr(C)]`
 
 For enums with fields, it is also possible to combine `repr(C)` and a
 primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by
