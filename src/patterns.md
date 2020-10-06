@@ -649,6 +649,16 @@ require a comma, and matches a tuple of any size.
 
 The tuple pattern is refutable when one of its subpatterns is refutable.
 
+An example of using tuple patterns:
+
+```rust
+let pair = (10, "ten");
+let (a, b) = pair;
+
+assert_eq!(a, 10);
+assert_eq!(b, "ten");
+```
+
 ## Grouped patterns
 
 > **<sup>Syntax</sup>**\
