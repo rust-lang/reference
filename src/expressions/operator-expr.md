@@ -86,7 +86,7 @@ let a = & & & & mut 10;
 
 The `*` (dereference) operator is also a unary prefix operator. When applied to
 a [pointer](../types/pointer.md) it denotes the pointed-to location. If
-the expression is of type `&mut T` and `*mut T`, and is either a local
+the expression is of type `&mut T` or `*mut T`, and is either a local
 variable, a (nested) field of a local variable or is a mutable [place
 expression], then the resulting memory location can be assigned to.
 Dereferencing a raw pointer requires `unsafe`.
