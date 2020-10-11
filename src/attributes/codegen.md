@@ -93,7 +93,7 @@ Feature     | Implicitly Enables | Description
 `sse`       |          | [SSE] — Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
 `sse2`      | `sse`    | [SSE2] — Streaming SIMD Extensions 2
 `sse3`      | `sse2`   | [SSE3] — Streaming SIMD Extensions 3
-`sse4.1`    | `sse3`   | [SSE4.1] — Streaming SIMD Extensions 4.1
+`sse4.1`    | `ssse3`  | [SSE4.1] — Streaming SIMD Extensions 4.1
 `sse4.2`    | `sse4.1` | [SSE4.2] — Streaming SIMD Extensions 4.2
 `ssse3`     | `sse3`   | [SSSE3] — Supplemental Streaming SIMD Extensions 3
 `xsave`     |          | [`xsave`] — Save processor extended states
