@@ -6,7 +6,7 @@ a [`union` item][item].
 Unions have no notion of an "active field". Instead, every union access
 transmutes parts of the content of the union to the type of the accessed
 field. Since transmutes can cause unexpected or undefined behaviour, `unsafe` is
-required to read from a union field or to write to a field that doesn't
+required to read from a union field, or to write to a field that doesn't
 implement [`Copy`]. See the [item] documentation for further details.
 
 The memory layout of a `union` is undefined by default, but the `#[repr(...)]`
