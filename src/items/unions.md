@@ -83,7 +83,7 @@ field accesses.
 
 When a union is dropped, it cannot know which of its fields needs to be dropped.
 For this reason, all union fields must either be of a `Copy` type or of the
-shape `ManuallyDrop<_>`.  This ensures that a union does not need to drop
+shape [`ManuallyDrop<_>`].  This ensures that a union does not need to drop
 anything when it goes out of scope.
 
 Like for structs and enums, it is possible to `impl Drop` for a union to
@@ -177,3 +177,4 @@ checking, etc etc etc).
 [_WhereClause_]: generics.md#where-clauses
 [_StructFields_]: structs.md
 [`transmute`]: ../../std/mem/fn.transmute.html
+[`ManuallyDrop<_>`]: ../../std/mem/struct.ManuallyDrop.html
