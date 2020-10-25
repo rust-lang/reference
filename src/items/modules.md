@@ -2,8 +2,8 @@
 
 > **<sup>Syntax:</sup>**\
 > _Module_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `mod` [IDENTIFIER] `;`\
-> &nbsp;&nbsp; | `mod` [IDENTIFIER] `{`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `unsafe`<sup>?</sup> `mod` [IDENTIFIER] `;`\
+> &nbsp;&nbsp; | `unsafe`<sup>?</sup> `mod` [IDENTIFIER] `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `}`
@@ -39,6 +39,11 @@ same name as a module in scope is forbidden: that is, a type definition, trait,
 struct, enumeration, union, type parameter or crate can't shadow the name of a
 module in scope, or vice versa. Items brought into scope with `use` also have
 this restriction.
+
+The `unsafe` keyword is syntactically allowed to appear before the `mod`
+keyword, but it is rejected at a semantic level. This allows macros to consume
+the syntax and make use of the `unsafe` keyword, before removing it from the
+token stream.
 
 ## Module Source Filenames
 
