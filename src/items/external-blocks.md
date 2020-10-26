@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ExternBlock_ :\
-> &nbsp;&nbsp; `extern` [_Abi_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> `extern` [_Abi_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -37,6 +37,11 @@ akin to unchecked imports.
 Two kind of item _declarations_ are allowed in external blocks: [functions] and
 [statics]. Calling functions or accessing statics that are declared in external
 blocks is only allowed in an `unsafe` context.
+
+The `unsafe` keyword is syntactically allowed to appear before the `extern`
+keyword, but it is rejected at a semantic level. This allows macros to consume
+the syntax and make use of the `unsafe` keyword, before removing it from the
+token stream.
 
 ## Functions
 
