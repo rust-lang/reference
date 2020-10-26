@@ -45,8 +45,8 @@
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a
 value, and has effects during *evaluation*. Many expressions contain
-sub-expressions (operands). The meaning of each kind of expression dictates
-several things:
+sub-expressions, called the *operands* of the expression. The meaning of each
+kind of expression dictates several things:
 
 * Whether or not to evaluate the sub-expressions when evaluating the expression
 * The order in which to evaluate the sub-expressions
@@ -85,11 +85,14 @@ in the order given by their associativity.
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
-## Evaluation order
+## Evaluation order of operands
 
-Most expressions include subexpressions. Unless otherwise stated on the
-expression's page, evaluation of these inner expressions is left to right as
-written in the source code.
+Unless otherwise stated on the expression's page, evaluation of the operands of
+an expression is done before applying the effect of the expression. The operands
+are executed left to right as written in the source code.
+
+> **Note**: Which subexpressions are the operands of an expression is
+> determined by expression precedence as per the previous section.
 
 For example, the two `next` method calls will always be called in the same
 order:
