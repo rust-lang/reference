@@ -30,7 +30,8 @@ Finally, the fields of a struct or a reference to a struct are treated as
 separate entities when borrowing. If the struct does not implement
 [`Drop`](../special-types-and-traits.md#drop) and is stored in a local variable,
 this also applies to moving out of each of its fields. This also does not apply
-if automatic dereferencing is done though user defined types.
+if automatic dereferencing is done though user defined types other than
+[`Box`](../special-types-and-traits.html#boxt).
 
 ```rust
 struct A { f1: String, f2: String, f3: String }
