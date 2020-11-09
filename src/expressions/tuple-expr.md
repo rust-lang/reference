@@ -29,7 +29,7 @@ Examples of tuple expressions:
 | -------------------- | ------------ |
 | `()`                 | `()` (unit)  |
 | `(0.0, 4.5)`         | `(f64, f64)` |
-| `("x".to_string(), ) | `(String, )  |
+| `("x".to_string(), )` | `(String, )`  |
 | `("a", 4usize, true)`| `(&'static str, usize, bool)` |
 
 ### Tuple expression attributes
