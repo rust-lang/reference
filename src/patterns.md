@@ -402,6 +402,8 @@ match tuple {
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
 > &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+> _RangeFromPattern_ :\
+> &nbsp;&nbsp; _RangePatternBound_ `..`
 >
 > _ObsoleteRangePattern_ :\
 > &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
@@ -414,9 +416,10 @@ match tuple {
 > &nbsp;&nbsp; | [_PathInExpression_]\
 > &nbsp;&nbsp; | [_QualifiedPathInExpression_]
 
-Range patterns match values that are within the closed range defined by its lower and
-upper bounds. For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`,
-`'o'`, and `'p'`. The bounds can be literals or paths that point to constant values.
+Range patterns match values that are within a range defined by its lower and upper bounds (if any).
+For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`. A
+pattern `1..` will match values equal to or greater than 1, but not 0 (or negative numbers, for
+signed integers). The bounds can be literals or paths that point to constant values.
 
 A pattern a `..=` b must always have a &le; b. It is an error to have a range pattern
 `10..=0`, for example.
