@@ -36,6 +36,12 @@ pages such as [linkage] that still describe how `rustc` works.
 This book also only serves as a reference to what is available in stable
 Rust. For unstable features being worked on, see the [Unstable Book].
 
+Rust compilers, including `rustc`, will perform optimizations. The reference
+does not specify what optimizations are allowed or disallowed. Instead, think of
+the compiled program as a black box. You can only probe by running it, feeding
+it input and observing its output. Everything that happens that way must conform
+to what the reference says.
+
 Finally, this book is not normative. It may include details that are
 specific to `rustc` itself, and should not be taken as a specification for
 the Rust language. We intend to produce such a book someday, and until then,
