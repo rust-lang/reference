@@ -9,23 +9,28 @@
 > _TupleElements_ :\
 > &nbsp;&nbsp; ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup>
 
-Tuples are written by enclosing zero or more comma-separated expressions in
-parentheses. They are used to create [tuple-typed](../types/tuple.md)
-values.
+Tuple expressions evaluate into [tuple values][tuple type] with the operands
+initializing the elements of the tuple.
 
-```rust
-(0.0, 4.5);
-("a", 4usize, true);
-();
-```
+Tuple expressions are written by listing the [operands] in a parenthesized,
+comma-separated list. 1-ary tuple expressions require a comma after their
+operand to be disambiguated with a [parenthetical expression].
 
-You can disambiguate a single-element tuple from a value in parentheses with a
-comma:
+The number of operands is the arity of the constructed tuple. Tuple expressions
+without operands produce the unit tuple. For other tuple expressions, the first
+written operand initializes the 0th element and subsequent operands initializes
+the next highest element. For example, in the tuple expression
+`('a', 'b', 'c')`, `'a'` initializes the value of the 0th element, `'b'` the
+1st, and `'c'` the 2nd.
 
-```rust
-(0,); // single-element tuple
-(0); // zero in parentheses
-```
+Examples of tuple expressions:
+
+| Expression           | Type         |
+| -------------------- | ------------ |
+| `()`                 | `()` (unit)  |
+| `(0.0, 4.5)`         | `(f64, f64)` |
+| `("x".to_string(), )` | `(String, )`  |
+| `("a", 4usize, true)`| `(&'static str, usize, bool)` |
 
 ### Tuple expression attributes
 
@@ -39,23 +44,40 @@ expressions].
 > _TupleIndexingExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
 
-[Tuples](../types/tuple.md) and [struct tuples](../items/structs.md) can be
-indexed using the number corresponding to the position of the field. The index
-must be written as a [decimal literal](../tokens.md#integer-literals) with no
-underscores or suffix. Tuple indexing expressions also differ from field
-expressions in that they can unambiguously be called as a function. In all
-other aspects they have the same behavior.
+Tuple indexing expressions evaluate like [field access expressions], but access
+elements of [tuples][tuple type] or [tuple structs].
+
+Tuple index expressions are written as an operand, `.`, and a tuple index. The
+index must be written as a [decimal literal] with no leading zeros, underscores,
+or suffix. The operand must have the type of a tuple or tuple struct. If the
+tuple index is not an element of the tuple or tuple struct, it is a compiler
+error.
+
+Examples of tuple indexing expressions:
 
 ```rust
-# struct Point(f32, f32);
-let pair = (1, 2);
+let pair = ("a string", 2);
 assert_eq!(pair.1, 2);
-let unit_x = Point(1.0, 0.0);
-assert_eq!(unit_x.0, 1.0);
+
+# struct Point(f32, f32);
+let point = Point(1.0, 0.0);
+assert_eq!(point.0, 1.0);
+assert_eq!(point.1, 0.0);
 ```
 
-[Inner attributes]: ../attributes.md
-[TUPLE_INDEX]: ../tokens.md#tuple-index
+> **Note**: Unlike field access expressions, tuple index expressions can be the
+> function operand of a [call expression] as it cannot be confused with a
+> method call since method names cannot be numbers.
+
 [_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
+[call expression]: ./call-expr.md
+[decimal literal]: ../tokens.md#integer-literals
+[field access expressions]: ./field-expr.html#field-access-expressions
+[Inner attributes]: ../attributes.md
+[operands]: ../expressions.md
+[parenthetical expression]: grouped-expr.md
+[tuple type]: ../types/tuple.md
+[tuple structs]: ../types/struct.md
+[TUPLE_INDEX]: ../tokens.md#tuple-index
