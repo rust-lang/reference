@@ -86,9 +86,29 @@ in the order given by their associativity.
 
 ## Evaluation order of operands
 
-Unless otherwise stated on the expression's page, evaluation of the operands of
-an expression is done before applying the effect of the expression. The operands
-are executed left to right as written in the source code.
+The following list of expressions all evaluate their operands the same way, as
+described after the list. Other expressions either don't take operands or
+evaluate them conditionally as described on their respective pages.
+
+* Operator expressions (except the Lazy boolean operators)
+* Grouped expression
+* Array expression
+* Await expression
+* Index expression
+* Tuple expression
+* Tuple index expression
+* Struct expression
+* Enumeration variant expression
+* Call expression
+* Method call expression
+* Field expression
+* Break expression
+* Range expression
+* Return expression
+
+The operands of these expressions are evaluated prior to applying the effects of
+the expression. Expressions taking multiple operands are evaluated left to right
+as written in the source code.
 
 > **Note**: Which subexpressions are the operands of an expression is
 > determined by expression precedence as per the previous section.
