@@ -127,9 +127,12 @@ We welcome contributions of all kinds.
 You can contribute to this book by opening an issue or sending a pull
 request to [the Rust Reference repository]. If this book does not answer
 your question, and you think its answer is in scope of it, please do not
-hesitate to file an issue or ask about it in the `#docs` channels on
-[Discord]. Knowing what people use this book for the most helps direct our
-attention to making those sections the best that they can be.
+hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on
+[Zulip]. Knowing what people use this book for the most helps direct our
+attention to making those sections the best that they can be. We also want
+the reference to be as normative as possible, so if you see anything that is
+wrong or is non-normative but not specifically called out, please also [file
+an issue].
 
 [book]: ../book/index.html
 [github issues]: https://github.com/rust-lang/reference/issues
@@ -140,8 +143,9 @@ attention to making those sections the best that they can be.
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
 [expressions chapter]: expressions.html
+[file an issue]: https://github.com/rust-lang/reference/issues
 [lifetime of temporaries]: expressions.html#temporaries
 [linkage]: linkage.html
 [rustc book]: ../rustc/index.html
 [Notation]: notation.md
-[Discord]: https://discord.gg/rust-lang
+[Zulip]: https://rust-lang.zulipchat.com/#narrow/stream/237824-t-lang.2Fdoc
