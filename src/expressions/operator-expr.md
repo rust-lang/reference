@@ -409,20 +409,35 @@ halfway between two floating point numbers.
 > _AssignmentExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `=` [_Expression_]
 
-An _assignment expression_ consists of a [place expression] followed by an
-equals sign (`=`) and a [value expression]. Such an expression always has
-the [`unit` type].
+An *assignment expression* moves a value into a specified place.
 
-Evaluating an assignment expression [drops](../destructors.md) the left-hand
-operand, unless it's an uninitialized local variable or field of a local variable,
-and [either copies or moves](../expressions.md#moved-and-copied-types) its
-right-hand operand to its left-hand operand. The left-hand operand must be a
-place expression: using a value expression results in a compiler error, rather
+An assignment expression consists of a [mutable] [place expression], the
+*assigned place operand*, followed by an equals sign (`=`) and a [value
+expression], the *assigned value operand*.
+
+Unlike other place operands, the assigned place operand must be a place
+expression. Attempting to use a value expression is a compiler error rather
 than promoting it to a temporary.
 
+Evaluating assignment expressions begins by evaluating its operands. The
+assigned value operand is evaluated first, followed by the assigned place
+operand.
+
+> **Note**: This is different than other expressions in that the right operand
+> is evaluated before the left one.
+
+It then has the effect of first [dropping] the value at the assigned place,
+unless the place is an uninitialized local variable or field of a local
+variable. Next it either [copies or moves] the assigned value to the assigned
+place.
+
+An assignment expression always produces [the unit value][unit].
+
+Example:
+
 ```rust
-# let mut x = 0;
-# let y = 0;
+let mut x = 0;
+let y = 0;
 x = y;
 ```
 
@@ -506,13 +521,15 @@ dependency.
 
 </div>
 
+[copies or moves]: ../expressions.md#moved-and-copied-types
+[dropping]: ../destructors.md
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[unit]: ../types/tuple.md
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
 [this test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/expr/compound-assignment/eval-order.rs
 [float-float]: https://github.com/rust-lang/rust/issues/15536
-[`unit` type]: ../types/tuple.md
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 
