@@ -90,7 +90,12 @@ The following list of expressions all evaluate their operands the same way, as
 described after the list. Other expressions either don't take operands or
 evaluate them conditionally as described on their respective pages.
 
-* Operator expressions (except the Lazy boolean operators)
+* Dereference expression
+* Error propagation expression
+* Negation expression
+* Arithmetic and logical binary operators
+* Comparison operators
+* Type cast expression
 * Grouped expression
 * Array expression
 * Await expression
@@ -127,9 +132,9 @@ assert_eq!(
 );
 ```
 
-> **Note**: Since this is applied recursively, expressions are also evaluated
-> from innermost to outermost, ignoring siblings until there are no inner
-> subexpressions.
+> **Note**: Since this is applied recursively, these expressions are also
+> evaluated from innermost to outermost, ignoring siblings until there are no
+> inner subexpressions.
 
 ## Place Expressions and Value Expressions
 
