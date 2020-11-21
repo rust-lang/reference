@@ -295,7 +295,7 @@ available while running tests.
 
 ```rust
 fn test_only() {
-    #![test]
+    #![doc("Example")]
 }
 ```
 
