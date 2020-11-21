@@ -202,18 +202,18 @@ types. Remember that signed integers are always represented using two's
 complement. The operands of all of these operators are evaluated in [value
 expression context][value expression] so are moved or copied.
 
-| Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  |
-|--------|-------------------------|-------------|----------------|--------------------|
-| `+`    | Addition                |             | Addition       | `std::ops::Add`    |
-| `-`    | Subtraction             |             | Subtraction    | `std::ops::Sub`    |
-| `*`    | Multiplication          |             | Multiplication | `std::ops::Mul`    |
-| `/`    | Division*                |             | Division       | `std::ops::Div`    |
-| `%`    | Remainder               |             | Remainder      | `std::ops::Rem`    |
-| `&`    | Bitwise AND             | Logical AND |                | `std::ops::BitAnd` |
-| <code>&#124;</code> | Bitwise OR | Logical OR  |                | `std::ops::BitOr`  |
-| `^`    | Bitwise XOR             | Logical XOR |                | `std::ops::BitXor` |
-| `<<`   | Left Shift              |             |                | `std::ops::Shl`    |
-| `>>`   | Right Shift**            |             |                | `std::ops::Shr`    |
+| Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  | Overloading Compound Assignment Trait |
+|--------|-------------------------|-------------|----------------|--------------------| ------------------------------------- |
+| `+`    | Addition                |             | Addition       | `std::ops::Add`    | `std::ops::AddAssign`                 |
+| `-`    | Subtraction             |             | Subtraction    | `std::ops::Sub`    | `std::ops::SubAssign`                 |
+| `*`    | Multiplication          |             | Multiplication | `std::ops::Mul`    | `std::ops::MulAssign`                 |
+| `/`    | Division*               |             | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
+| `%`    | Remainder               |             | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
+| `&`    | Bitwise AND             | Logical AND |                | `std::ops::BitAnd` | `std::ops::BitAndAssign`              |
+| <code>&#124;</code> | Bitwise OR | Logical OR  |                | `std::ops::BitOr`  | `std::ops::BitOrAssign`               |
+| `^`    | Bitwise XOR             | Logical XOR |                | `std::ops::BitXor` | `std::ops::BitXorAssign`              |
+| `<<`   | Left Shift              |             |                | `std::ops::Shl`    | `std::ops::ShlAssign`                 |
+| `>>`   | Right Shift**           |             |                | `std::ops::Shr`    |  `std::ops::ShrAssign`                |
 
 \* Integer division rounds towards zero.
 
@@ -441,24 +441,74 @@ x = y;
 > &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]
 
-The `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, and `>>` operators may be
-composed with the `=` operator. The expression `place_exp OP= value` is
-equivalent to `place_expr = place_expr OP val`. For example, `x = x + 1` may be
-written as `x += 1`. Any such expression always has the [`unit` type].
-These operators can all be overloaded using the trait with the same name as for
-the normal operation followed by 'Assign', for example, `std::ops::AddAssign`
-is used to overload `+=`. As with `=`, `place_expr` must be a [place
-expression].
+*Compound assignment expressions* combine arithmetic and logical binary
+operators with assignment expressions.
+
+For example:
 
 ```rust
-let mut x = 10;
-x += 4;
-assert_eq!(x, 14);
+let mut x = 5;
+x += 1;
+assert!(x == 6);
 ```
 
+The syntax of compound assignment is a [mutable] [place expression], the
+*assigned operand*, then one of the operators followed by an `=` as a single
+token (no whitespace), and then a [value expression], the *modifying operand*.
+
+Unlike other place operands, the assigned place operand must be a place
+expression. Attempting to use a value expression is a compiler error rather
+than promoting it to a temporary.
+
+Evaluation of compound assignment expressions depends on the types of the
+operators.
+
+If both types are primitives, then the modifying operand will be evaluated
+first followed by the assigned operand. It will then set the value of the
+assigned operand's place to the value of performing the operation of the
+operator with the values of the assigned operand and modifying operand.
+
+> **Note**: This is different than other expressions in that the right operand
+> is evaluated before the left one.
+
+Otherwise, this expression is syntactic sugar for calling the function of the
+overloading compound assigment trait of the operator (see the table earlier in
+this chapter). A mutable borrow of the assigned operand is automatically taken.
+
+For example, the following expression statements in `example` are equivalent:
+
+```rust
+# struct Addable;
+# use std::ops::AddAssign;
+
+impl AddAssign<Addable> for Addable {
+    /* */
+# fn add_assign(&mut self, other: Addable) {}
+}
+
+fn example() {
+# let (mut a1, a2) = (Addable, Addable);
+  a1 += a2;
+
+# let (mut a1, a2) = (Addable, Addable);
+  AddAssign::add_assign(&mut a1, a2);
+}
+```
+
+<div class="warning">
+
+Warning: The evaluation order of operands swaps depending on the types of the
+operands. Try not to write code that depends on the evaluation order of operands
+in compound assignment expressions. See [this test] for an example of using this
+dependency.
+
+</div>
+
+[mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
+[this test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/expr/compound-assignment/eval-order.rs
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [`unit` type]: ../types/tuple.md
 [Function pointer]: ../types/function-pointer.md
