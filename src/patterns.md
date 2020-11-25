@@ -231,8 +231,8 @@ the value's fields. For example, the following is not valid:
 #    name: String,
 #    age: u8,
 # }
-# let value = Person{ name: String::from("John"), age: 23 };
-if let Person{name: &person_name, age: 18..=150} = value { }
+# let value = Person { name: String::from("John"), age: 23 };
+if let Person { name: &person_name, age: 18..=150 } = value { }
 ```
 
 To make it valid, write the following:
@@ -242,8 +242,8 @@ To make it valid, write the following:
 #    name: String,
 #    age: u8,
 # }
-# let value = Person{ name: String::from("John"), age: 23 };
-if let Person{name: ref person_name, age: 18..=150} = value { }
+# let value = Person { name: String::from("John"), age: 23 };
+if let Person {name: ref person_name, age: 18..=150 } = value { }
 ```
 
 Thus, `ref` is not something that is being matched against. Its objective is
