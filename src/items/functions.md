@@ -290,12 +290,12 @@ responsibility to ensure that.
 [Outer attributes][attributes] are allowed on functions. [Inner
 attributes][attributes] are allowed directly after the `{` inside its [block].
 
-This example shows an inner attribute on a function. The function will only be
-available while running tests.
+This example shows an inner attribute on a function. The function is documented
+with just the word "Example".
 
 ```rust
-fn test_only() {
-    #![test]
+fn documented() {
+    #![doc = "Example"]
 }
 ```
 
