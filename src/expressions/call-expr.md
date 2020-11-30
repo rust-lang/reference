@@ -68,7 +68,7 @@ struct Bar;
 impl Pretty for Bar {
     fn print(&self) {}
 }
-impl Ugly for Bar{
+impl Ugly for Bar {
     fn print(&self) {}
 }
 
