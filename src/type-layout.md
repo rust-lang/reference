@@ -23,12 +23,12 @@ array with that item type including alignment padding. The size of a value is
 always a multiple of its alignment. The size of a value can be checked with the
 [`size_of_val`] function.
 
-Types where all values have the same size and alignment known at compile time
-implement the [`Sized`] trait and can be checked with the [`size_of`] and
-[`align_of`] functions. Types that are not [`Sized`] are known as [dynamically
-sized types]. Since all values of a `Sized` type share the same size and
-alignment, we refer to those shared values as the size of the type and the
-alignment of the type respectively.
+Types where all values have the same size and alignment, and both are known at
+compile time, implement the [`Sized`] trait and can be checked with the
+[`size_of`] and [`align_of`] functions. Types that are not [`Sized`] are known
+as [dynamically sized types]. Since all values of a `Sized` type share the same
+size and alignment, we refer to those shared values as the size of the type and
+the alignment of the type respectively.
 
 ## Primitive Data Layout
 
