@@ -19,7 +19,7 @@ separated by a semicolon. The expression after the `;` must have type `usize`
 and be a [constant expression], such as a [literal] or a [constant item]. `[a;
 b]` creates an array containing `b` copies of the value of `a`. If the
 expression after the semicolon has a value greater than 1 then this requires
-that the type of `a` is [`Copy`].
+that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
 
 ```rust
 [1, 2, 3, 4];
@@ -27,6 +27,8 @@ that the type of `a` is [`Copy`].
 [0; 128];              // array with 128 zeros
 [0u8, 0u8, 0u8, 0u8,];
 [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; // 2D array
+const EMPTY: Vec<i32> = Vec::new();
+[EMPTY; 2];
 ```
 
 ### Array expression attributes
