@@ -113,7 +113,7 @@ Conversely, the following are possible in a const function, but not in a const c
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [const functions]:      items/functions.md#const-functions
 [constants]:            items/constant-items.md
-[Const parameters]:    items/generics.md
+[Const parameters]:     items/generics.md
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
 [enum discriminants]:   items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
