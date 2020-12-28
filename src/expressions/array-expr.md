@@ -21,6 +21,16 @@ b]` creates an array containing `b` copies of the value of `a`. If the
 expression after the semicolon has a value greater than 1 then this requires
 that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
 
+When the repeat expression `a` is a constant item, it is evaluated `b` times.
+If `b` is 0, the constant item is not evaluated at all. For expressions that
+are not a constant item, it is evaluated exactly once, and then the result is
+copied `b` times.
+
+> **Note:** In the case where `b` is 0, and `a` is a non-constant item, there
+> is currently a bug in `rustc` where the value `a` is evaluated but not
+> dropped, thus causing a leak. See [issue
+> #74836](https://github.com/rust-lang/rust/issues/74836).
+
 ```rust
 [1, 2, 3, 4];
 ["a", "b", "c", "d"];
