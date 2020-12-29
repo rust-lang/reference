@@ -34,12 +34,6 @@ usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
 The order of generic parameters is restricted to lifetime parameters, then type parameters, and then const parameters.
 
-The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
-`i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
-Const parameters may only be be used as standalone arguments inside
-of [types] and [repeat expressions].
-They can be used freely outside of [const contexts].
-
 Some examples of items with type, const, and lifetime parameters:
 
 ```rust
@@ -47,6 +41,33 @@ fn foo<'a, T>() {}
 trait A<U> {}
 struct Ref<'a, T> where T: 'a { r: &'a T }
 struct InnerArray<T, const N: usize>([T; N]);
+```
+
+The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
+`i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
+
+Const parameters may only be be used as standalone arguments inside
+of [types] and [repeat expressions] but may be freely used elsewhere:
+
+```rust
+// ok: standalone argument
+fn foo<const N: usize>() -> [u8; N] { todo!() }
+
+// ERROR: generic const operation
+fn bar<const N: usize>() -> [u8; N + 1] { todo!() }
+```
+
+Unlike type and lifetime parameters, const parameters of types can be used without
+being mentioned inside of a parameterized type:
+
+```rust
+// ok
+struct Foo<const N: usize>;
+enum Bar<const M: usize> { A, B }
+
+// ERROR: unused parameter
+struct Baz<T>;
+struct Biz<'a>;
 ```
 
 [References], [raw pointers], [arrays], [slices][arrays], [tuples], and
