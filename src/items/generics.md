@@ -70,7 +70,7 @@ referred to with path syntax.
 > &nbsp;&nbsp; _ForLifetimes_<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
 >
 > _ForLifetimes_ :\
-> &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#type-and-lifetime-parameters) `>`
+> &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#generic-parameters) `>`
 
 *Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
@@ -130,7 +130,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [const contexts]: ../const_eval.md#const-context
 [function pointers]: ../types/function-pointer.md
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
-[references]: ../types/pointer.md#shared-references
+[references]: ../types/pointer.md#shared-references-
 [repeat expressions]: ../expressions/array-expr.md
 [`Clone`]: ../special-types-and-traits.md#clone
 [`Copy`]: ../special-types-and-traits.md#copy
