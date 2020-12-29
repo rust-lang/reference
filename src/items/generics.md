@@ -49,7 +49,7 @@ The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`
 Const parameters may only be be used as standalone arguments inside
 of [types] and [repeat expressions] but may be freely used elsewhere:
 
-```rust,should_panic
+```rust,compile_fail
 // ok: standalone argument
 fn foo<const N: usize>() -> [u8; N] { todo!() }
 
@@ -60,7 +60,7 @@ fn bar<const N: usize>() -> [u8; N + 1] { todo!() }
 Unlike type and lifetime parameters, const parameters of types can be used without
 being mentioned inside of a parameterized type:
 
-```rust
+```rust,compile_fail
 // ok
 struct Foo<const N: usize>;
 enum Bar<const M: usize> { A, B }
