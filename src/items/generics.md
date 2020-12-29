@@ -49,7 +49,7 @@ The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`
 Const parameters may only be be used as standalone arguments inside
 of [types] and [repeat expressions] but may be freely used elsewhere:
 
-```rust
+```rust,should_panic
 // ok: standalone argument
 fn foo<const N: usize>() -> [u8; N] { todo!() }
 
