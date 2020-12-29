@@ -32,7 +32,7 @@ implementations may be *parameterized* by types, constants and lifetimes. These
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
-The order of generic parameters is restricted to lifetime parameters, then type parameters and then const parameters.
+The order of generic parameters is restricted to lifetime parameters, then type parameters, and then const parameters.
 
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
