@@ -28,7 +28,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> `const` [IDENTIFIER] `:` [_Type_]
 
 Functions, type aliases, structs, enumerations, unions, traits, and
-implementations may be *parameterized* by types, constants and lifetimes. These
+implementations may be *parameterized* by types, constants, and lifetimes. These
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
