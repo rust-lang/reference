@@ -40,7 +40,7 @@ Const parameters may only be be used as standalone arguments inside
 of [types] and [repeat expressions].
 They can be used freely outside of [const contexts].
 
-Some examples of items with type, const and lifetime parameters:
+Some examples of items with type, const, and lifetime parameters:
 
 ```rust
 fn foo<'a, T>() {}
