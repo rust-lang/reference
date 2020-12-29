@@ -10,19 +10,30 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
 > &nbsp;&nbsp; | [_Expression_] `;` [_Expression_]
 
-An _[array](../types/array.md) expression_ can be written by
-enclosing zero or more comma-separated expressions of uniform type in square
-brackets. This produces an array containing each of these values in the
-order they are written.
+An _[array] expression_ can be written by enclosing zero or more
+comma-separated expressions of uniform type in square brackets. This produces
+an array containing each of these values in the order they are written.
 
 Alternatively there can be exactly two expressions inside the brackets,
-separated by a semi-colon. The expression after the `;` must have type
-`usize` and be a [constant expression],
-such as a [literal](../tokens.md#literals) or a [constant
-item](../items/constant-items.md). `[a; b]` creates an array containing `b`
-copies of the value of `a`. If the expression after the semi-colon has a value
-greater than 1 then this requires that the type of `a` is
-[`Copy`](../special-types-and-traits.md#copy).
+separated by a semicolon. The expression after the `;` must have type `usize`
+and be a [constant expression], such as a [literal] or a [constant item]. `[a;
+b]` creates an array containing `b` copies of the value of `a`. If the
+expression after the semicolon has a value greater than 1 then this requires
+that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
+
+When the repeat expression `a` is a constant item, it is evaluated `b` times.
+If `b` is 0, the constant item is not evaluated at all. For expressions that
+are not a constant item, it is evaluated exactly once, and then the result is
+copied `b` times.
+
+<div class="warning">
+
+Warning: In the case where `b` is 0, and `a` is a non-constant item, there is
+currently a bug in `rustc` where the value `a` is evaluated but not dropped,
+thus causing a leak. See [issue
+#74836](https://github.com/rust-lang/rust/issues/74836).
+
+</div>
 
 ```rust
 [1, 2, 3, 4];
@@ -30,6 +41,8 @@ greater than 1 then this requires that the type of `a` is
 [0; 128];              // array with 128 zeros
 [0u8, 0u8, 0u8, 0u8,];
 [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; // 2D array
+const EMPTY: Vec<i32> = Vec::new();
+[EMPTY; 2];
 ```
 
 ### Array expression attributes
@@ -44,10 +57,9 @@ expressions].
 > _IndexExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`
 
-[Array](../types/array.md) and [slice](../types/slice.md)-typed expressions can be
-indexed by writing a square-bracket-enclosed expression of type `usize` (the
-index) after them. When the array is mutable, the resulting [memory location]
-can be assigned to.
+[Array] and [slice]-typed expressions can be indexed by writing a
+square-bracket-enclosed expression of type `usize` (the index) after them.
+When the array is mutable, the resulting [memory location] can be assigned to.
 
 For other types an index expression `a[b]` is equivalent to
 `*std::ops::Index::index(&a, b)`, or
@@ -81,11 +93,16 @@ arr[10];                  // warning: index out of bounds
 The array index expression can be implemented for types other than arrays and slices
 by implementing the [Index] and [IndexMut] traits.
 
+[`Copy`]: ../special-types-and-traits.md#copy
 [IndexMut]: ../../std/ops/trait.IndexMut.html
 [Index]: ../../std/ops/trait.Index.html
 [Inner attributes]: ../attributes.md
 [_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
+[array]: ../types/array.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [constant expression]: ../const_eval.md#constant-expressions
+[constant item]: ../items/constant-items.md
+[literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
+[slice]: ../types/slice.md
