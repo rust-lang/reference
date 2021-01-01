@@ -70,7 +70,13 @@ mod m {
 > &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup>
 >
 > _GenericArgsConsts_ :\
-> &nbsp;&nbsp; [_Expression_] (`,` [_Expression_])<sup>\*</sup>
+> &nbsp;&nbsp; _GenericArgsConst_ (`,` _GenericArgsConst_)<sup>\*</sup>
+>
+> _GenericArgsConst_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; | [_LiteralExpression_]\
+> &nbsp;&nbsp; | `-` [_LiteralExpression_]\
+> &nbsp;&nbsp; | [_SimplePathSegment_]
 >
 > _GenericArgsBindings_ :\
 > &nbsp;&nbsp; _GenericArgsBinding_ (`,` _GenericArgsBinding_)<sup>\*</sup>
@@ -375,10 +381,13 @@ mod without { // ::without
 # fn main() {}
 ```
 
+[_BlockExpression_]: expressions/block-expr.md
+[_Expression_]: expressions.md
 [_GenericArgs_]: #paths-in-expressions
 [_Lifetime_]: trait-bounds.md
+[_LiteralExpression_]: expressions/literal-expr.md
+[_SimplePathSegment_]: #simple-paths
 [_Type_]: types.md#type-expressions
-[_Expression_]: expressions.md
 [literal]: expressions/literal-expr.md
 [item]: items.md
 [variable]: variables.md
