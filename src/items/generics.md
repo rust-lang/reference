@@ -2,30 +2,27 @@
 
 > **<sup>Syntax</sup>**\
 > _Generics_ :\
-> &nbsp;&nbsp; `<` _GenericParams_ `>`
+> &nbsp;&nbsp; `<` _GenericParams_<sup>?</sup> `>`
 >
 > _GenericParams_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeParams_\
-> &nbsp;&nbsp; | ( _LifetimeParam_ `,` )<sup>\*</sup> _TypeParams_\
-> &nbsp;&nbsp; | ( _LifetimeParam_ `,` )<sup>\*</sup> ( _TypeParam_ `,` )<sup>\*</sup> _ConstParams_
+> &nbsp;&nbsp; (_GenericParam_ `,`)<sup>\*</sup> _GenericParam_ `,`<sup>?</sup>
 >
-> _LifetimeParams_ :\
-> &nbsp;&nbsp; ( _LifetimeParam_ `,` )<sup>\*</sup> _LifetimeParam_<sup>?</sup>
+> _GenericParam_ :\
+> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
+> &nbsp;&nbsp; (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeParam_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _TypeParam_\
+> &nbsp;&nbsp; &nbsp;&nbsp; | _ConstParam_\
+> &nbsp;&nbsp; )
 >
 > _LifetimeParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
->
-> _TypeParams_:\
-> &nbsp;&nbsp; ( _TypeParam_ `,` )<sup>\*</sup> _TypeParam_<sup>?</sup>
+> &nbsp;&nbsp; [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
 >
 > _TypeParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> [IDENTIFIER]( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
->
-> _ConstParams_:\
-> &nbsp;&nbsp; ( _ConstParam_ `,` )<sup>\*</sup> _ConstParam_<sup>?</sup>
+> &nbsp;&nbsp; [IDENTIFIER]( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 >
 > _ConstParam_:\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>?</sup> `const` [IDENTIFIER] `:` [_Type_]
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]
 
 Functions, type aliases, structs, enumerations, unions, traits, and
 implementations may be *parameterized* by types, constants, and lifetimes. These
@@ -91,11 +88,14 @@ referred to with path syntax.
 > &nbsp;&nbsp; _ForLifetimes_<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
 >
 > _ForLifetimes_ :\
-> &nbsp;&nbsp; `for` `<` [_LifetimeParams_](#generic-parameters) `>`
+> &nbsp;&nbsp; `for` `<` [_GenericParams_](#generic-parameters) `>`
 
 *Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
+
+The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
+allows [_LifetimeParam_] parameters.
 
 Bounds that don't use the item's parameters or higher-ranked lifetimes are
 checked when the item is defined. It is an error for such a bound to be false.
@@ -141,6 +141,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [IDENTIFIER]: ../identifiers.md
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 
+[_LifetimeParam_]: #generic-parameters
 [_LifetimeBounds_]: ../trait-bounds.md
 [_Lifetime_]: ../trait-bounds.md
 [_OuterAttribute_]: ../attributes.md
@@ -150,6 +151,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [arrays]: ../types/array.md
 [const contexts]: ../const_eval.md#const-context
 [function pointers]: ../types/function-pointer.md
+[higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
 [references]: ../types/pointer.md#shared-references-
 [repeat expressions]: ../expressions/array-expr.md
