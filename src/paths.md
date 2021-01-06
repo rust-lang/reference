@@ -52,17 +52,31 @@ mod m {
 > &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
 > &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,`<sup>?</sup> `>`\
 > &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsConsts_ `,`<sup>?</sup> `>`\
 > &nbsp;&nbsp; | `<` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
 > &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsConsts_ `,`<sup>?</sup> `>`\
 > &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
-> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsConsts_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsConsts_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsTypes_ `,` _GenericArgsConsts_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp; | `<` _GenericArgsLifetimes_ `,` _GenericArgsTypes_ `,` _GenericArgsConsts_ `,` _GenericArgsBindings_ `,`<sup>?</sup> `>`
 >
 > _GenericArgsLifetimes_ :\
 > &nbsp;&nbsp; [_Lifetime_] (`,` [_Lifetime_])<sup>\*</sup>
 >
 > _GenericArgsTypes_ :\
 > &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup>
+>
+> _GenericArgsConsts_ :\
+> &nbsp;&nbsp; _GenericArgsConst_ (`,` _GenericArgsConst_)<sup>\*</sup>
+>
+> _GenericArgsConst_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; | [_LiteralExpression_]\
+> &nbsp;&nbsp; | `-` [_LiteralExpression_]\
+> &nbsp;&nbsp; | [_SimplePathSegment_]
 >
 > _GenericArgsBindings_ :\
 > &nbsp;&nbsp; _GenericArgsBinding_ (`,` _GenericArgsBinding_)<sup>\*</sup>
@@ -80,6 +94,9 @@ ambiguity with the less-than operator. This is colloquially known as "turbofish"
 (0..10).collect::<Vec<_>>();
 Vec::<u8>::with_capacity(1024);
 ```
+
+Const arguments must be surrounded by braces unless they are a
+[literal] or a single segment path.
 
 ## Qualified paths
 
@@ -364,9 +381,14 @@ mod without { // ::without
 # fn main() {}
 ```
 
+[_BlockExpression_]: expressions/block-expr.md
+[_Expression_]: expressions.md
 [_GenericArgs_]: #paths-in-expressions
 [_Lifetime_]: trait-bounds.md
+[_LiteralExpression_]: expressions/literal-expr.md
+[_SimplePathSegment_]: #simple-paths
 [_Type_]: types.md#type-expressions
+[literal]: expressions/literal-expr.md
 [item]: items.md
 [variable]: variables.md
 [implementations]: items/implementations.md

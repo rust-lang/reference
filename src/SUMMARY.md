@@ -35,7 +35,7 @@
     - [Traits](items/traits.md)
     - [Implementations](items/implementations.md)
     - [External blocks](items/external-blocks.md)
-    - [Type and lifetime parameters](items/generics.md)
+    - [Generic parameters](items/generics.md)
     - [Associated Items](items/associated-items.md)
     - [Visibility and Privacy](visibility-and-privacy.md)
 
