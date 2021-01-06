@@ -17,8 +17,8 @@
 > _ConstParam_:\
 > &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]
 
-Functions, type aliases, structs, enumerations, unions, traits, and
-implementations may be *parameterized* by types, constants, and lifetimes. These
+[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
+[implementations] may be *parameterized* by types, constants, and lifetimes. These
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
@@ -33,18 +33,137 @@ struct Ref<'a, T> where T: 'a { r: &'a T }
 struct InnerArray<T, const N: usize>([T; N]);
 ```
 
+The generic parameters are in scope within the item definition where they are
+declared.
+
+[References], [raw pointers], [arrays], [slices][arrays], [tuples], and
+[function pointers] have lifetime or type parameters as well, but are not
+referred to with path syntax.
+
+### Const generics
+
+Const generic parameters allow items to be generic over constant values. The
+const identifier introduces a name for the constant parameter, and all
+instances of the item must be instantiated with a value of the given type.
+
+<!-- TODO: update above to say "introduces a name in the [value namespace]"
+    once namespaces are added. -->
+
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
-Const parameters may only be be used as standalone arguments inside
-of [types] and [repeat expressions] but may be freely used elsewhere:
+Const parameters can generally be used anywhere a [const item] can be used,
+with the exception of the definition of any [item] within the body of a
+function, and can only be used as standalone expressions in [types] and
+[array repeat expressions] (described below). That is, they are allowed in the
+following places:
+
+1. As an applied const to any type which forms a part of the signature of the
+   item in question.
+2. As part of a const expression used to define an [associated const], or as a
+   parameter to an [associated type].
+3. As a value in any runtime expression in the body of any functions in the
+   item.
+4. As a parameter to any type used in the body of any functions in the item.
+5. As a part of the type of any fields in the item.
+
+```rust
+// Examples where const generic parameters can be used.
+
+// Used in the signature of the item itself.
+fn foo<const N: usize>(arr: [i32; N]) {
+    // Used as a type within a function body.
+    let x: [i32; N];
+    // Used as an expression.
+    println!("{}", N * 2);
+}
+
+// Used as a field of a struct.
+struct Foo<const N: usize>([i32; N]);
+
+impl<const N: usize> Foo<N> {
+    // Used as an associated constant.
+    const CONST: usize = N * 4;
+}
+
+trait Trait {
+    type Output;
+}
+
+impl<const N: usize> Trait for Foo<N> {
+    // Used as an associated type.
+    type Output = [i32; N];
+}
+```
 
 ```rust,compile_fail
-// ok: standalone argument
-fn foo<const N: usize>() -> [u8; N] { todo!() }
+// Examples where const generic parameters cannot be used.
+fn foo<const N: usize>() {
+    // Cannot use in item definitions within a function body.
+    const BAD_CONST: [usize; N] = [1; N];
+    static BAD_STATIC: [usize; N] = [1; N];
+    fn inner(bad_arg: [usize; N]) {
+        let bad_value = N * 2;
+    }
+    type BadAlias = [usize; N];
+    struct BadStruct([usize; N]);
+}
+```
 
-// ERROR: generic const operation
-fn bar<const N: usize>() -> [u8; N + 1] { todo!() }
+As a further restriction, const parameters may only appear as a standalone
+argument inside of [types] and [array repeat expressions]. In those contexts,
+they may only be used as a single segment [path expression], possibly inside a
+[block] (such as `N` or `{N}`). That is, they cannot be combined with other
+expressions.
+
+```rust,compile_fail
+// Examples where const parameters may not be used.
+
+// Not allowed to combine in other expressions in types, such as the
+// arithmetic expression in the return type here.
+fn bad_function<const N: usize>() -> [u8; {N + 1}] {
+    // Similarly not allowed for array repeat expressions.
+    [1; {N + 1}]
+}
+```
+
+A const argument in a [path] specifies the const value to use for that item.
+The argument must be a [const expression] of the type ascribed to the const
+parameter. The const expression must be a [block expression][block]
+(surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
+or a [literal] (with a possibly leading `-` token). This syntactic restriction
+is necessary to avoid requiring infinite lookahead when parsing an expression
+inside of a type.
+
+```rust
+fn double<const N: i32>() {
+    println!("doubled: {}", N * 2);
+}
+
+const SOME_CONST: i32 = 12;
+
+fn example() {
+    // Example usage of a const argument.
+    double::<9>();
+    double::<-123>();
+    double::<{7 + 8}>();
+    double::<SOME_CONST>();
+    double::<{ SOME_CONST + 5 }>();
+}
+```
+
+When there is ambiguity if a generic argument could be resolved as either a
+type or const argument, it is always resolved as a type. Placing the argument
+in a block expression can force it to be interpreted as a const argument.
+
+```rust,compile_fail
+type N = u32;
+struct Foo<const N: usize>;
+// The following is an error, because `N` is interpreted as the type alias `N`.
+fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
+// Can be fixed by wrapping in braces to force it to be interprted as the `N`
+// const parameter:
+fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
 Unlike type and lifetime parameters, const parameters of types can be used without
@@ -59,10 +178,6 @@ enum Bar<const M: usize> { A, B }
 struct Baz<T>;
 struct Biz<'a>;
 ```
-
-[References], [raw pointers], [arrays], [slices][arrays], [tuples], and
-[function pointers] have lifetime or type parameters as well, but are not
-referred to with path syntax.
 
 ## Where clauses
 
@@ -90,7 +205,7 @@ parameters.
 The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
 allows [_LifetimeParam_] parameters.
 
-Bounds that don't use the item's parameters or higher-ranked lifetimes are
+Bounds that don't use the item's parameters or [higher-ranked lifetimes] are
 checked when the item is defined. It is an error for such a bound to be false.
 
 [`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic
@@ -141,17 +256,33 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [_Type_]: ../types.md#type-expressions
 [_TypeParamBounds_]: ../trait-bounds.md
 
+[array repeat expressions]: ../expressions/array-expr.md
 [arrays]: ../types/array.md
+[associated const]: associated-items.md#associated-constants
+[associated type]: associated-items.md#associated-types
+[block]: ../expressions/block-expr.md
 [const contexts]: ../const_eval.md#const-context
+[const expression]: ../const_eval.md#constant-expressions
+[const item]: constant-items.md
+[enumerations]: enumerations.md
+[functions]: functions.md
 [function pointers]: ../types/function-pointer.md
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
+[implementations]: implementations.md
+[item]: ../items.md
+[literal]: ../expressions/literal-expr.md
+[path]: ../paths.md
+[path expression]: ../expressions/path-expr.md
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
 [references]: ../types/pointer.md#shared-references-
-[repeat expressions]: ../expressions/array-expr.md
 [`Clone`]: ../special-types-and-traits.md#clone
 [`Copy`]: ../special-types-and-traits.md#copy
 [`Sized`]: ../special-types-and-traits.md#sized
+[structs]: structs.md
 [tuples]: ../types/tuple.md
 [trait object]: ../types/trait-object.md
+[traits]: traits.md
+[type aliases]: type-aliases.md
 [types]: ../types.md
+[unions]: unions.md
 [attributes]: ../attributes.md
