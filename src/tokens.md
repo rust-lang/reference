@@ -349,6 +349,7 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > INTEGER_SUFFIX :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`\
 > &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `i128` | `isize`
+> &nbsp;&nbsp; | `f32` | `f64`
 
 An _integer literal_ has one of four forms:
 
@@ -368,7 +369,10 @@ Like any literal, an integer literal may be followed (immediately,
 without any spaces) by an _integer suffix_, which forcibly sets the
 type of the literal. The integer suffix must be the name of one of the
 integral types: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`,
-`u128`, `i128`, `usize`, or `isize`.
+`u128`, `i128`, `f32`,`f64`, `usize`, or `isize`.
+
+Note the suffix of `f32` and `f64` enforce that an integer literal can coerced
+into a float of repestive suffix type, which the lexer can be permissive of.
 
 The type of an _unsuffixed_ integer literal is determined by type inference:
 
