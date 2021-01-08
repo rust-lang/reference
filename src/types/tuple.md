@@ -36,6 +36,7 @@ index expression] or [pattern matching].
 
 [^1]: Structural types are always equivalent if their internal types are
     equivalent. For a nominal version of tuples, see [tuple structs].
+
 [^2]: Element is equivalent to field, except numerical indexes instead of
     identifiers
 
