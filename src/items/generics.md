@@ -33,8 +33,9 @@ struct Ref<'a, T> where T: 'a { r: &'a T }
 struct InnerArray<T, const N: usize>([T; N]);
 ```
 
-The generic parameters are in scope within the item definition where they are
-declared.
+Generic parameters are in scope within the item definition where they are
+declared. They are not in scope for items declared within the body of a
+function as described in [item declarations].
 
 [References], [raw pointers], [arrays], [slices][arrays], [tuples], and
 [function pointers] have lifetime or type parameters as well, but are not
@@ -42,7 +43,7 @@ referred to with path syntax.
 
 ### Const generics
 
-Const generic parameters allow items to be generic over constant values. The
+*Const generic parameters* allow items to be generic over constant values. The
 const identifier introduces a name for the constant parameter, and all
 instances of the item must be instantiated with a value of the given type.
 
@@ -52,11 +53,10 @@ instances of the item must be instantiated with a value of the given type.
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
-Const parameters can generally be used anywhere a [const item] can be used,
-with the exception of the definition of any [item] within the body of a
-function, and can only be used as standalone expressions in [types] and
-[array repeat expressions] (described below). That is, they are allowed in the
-following places:
+Const parameters can be used anywhere a [const item] can be used, with the
+exception that when used in a [type] or [array repeat expression], it must be
+standalone (as described below). That is, they are allowed in the following
+places:
 
 1. As an applied const to any type which forms a part of the signature of the
    item in question.
@@ -111,7 +111,7 @@ fn foo<const N: usize>() {
 ```
 
 As a further restriction, const parameters may only appear as a standalone
-argument inside of [types] and [array repeat expressions]. In those contexts,
+argument inside of a [type] or [array repeat expression]. In those contexts,
 they may only be used as a single segment [path expression], possibly inside a
 [block] (such as `N` or `{N}`). That is, they cannot be combined with other
 expressions.
@@ -131,9 +131,10 @@ A const argument in a [path] specifies the const value to use for that item.
 The argument must be a [const expression] of the type ascribed to the const
 parameter. The const expression must be a [block expression][block]
 (surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
-or a [literal] (with a possibly leading `-` token). This syntactic restriction
-is necessary to avoid requiring infinite lookahead when parsing an expression
-inside of a type.
+or a [literal] (with a possibly leading `-` token).
+
+> **Note**: This syntactic restriction is necessary to avoid requiring
+> infinite lookahead when parsing an expression inside of a type.
 
 ```rust
 fn double<const N: i32>() {
@@ -155,6 +156,10 @@ fn example() {
 When there is ambiguity if a generic argument could be resolved as either a
 type or const argument, it is always resolved as a type. Placing the argument
 in a block expression can force it to be interpreted as a const argument.
+
+<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once
+    namespaces are introduced, and it is clear which namespace each parameter
+    lives in. -->
 
 ```rust,compile_fail
 type N = u32;
@@ -178,6 +183,26 @@ enum Bar<const M: usize> { A, B }
 struct Baz<T>;
 struct Biz<'a>;
 ```
+
+When resolving a trait bound obligation, the exhaustiveness of all
+implementations of const parameters is not considered when determining if the
+bound is satisfied. For example, in the following, even though all possible
+const values for the `bool` type are implemented, it is still an error that
+the trait bound is not satisfied:
+
+```rust,compile_fail
+struct Foo<const B: bool>;
+trait Bar {}
+impl Bar for Foo<true> {}
+impl Bar for Foo<false> {}
+
+fn needs_bar(_: impl Bar) {}
+fn generic<const B: bool>() {
+    let v = Foo::<B>;
+    needs_bar(v); // ERROR: trait bound `Foo<B>: Bar` is not satisfied
+}
+```
+
 
 ## Where clauses
 
@@ -256,7 +281,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [_Type_]: ../types.md#type-expressions
 [_TypeParamBounds_]: ../trait-bounds.md
 
-[array repeat expressions]: ../expressions/array-expr.md
+[array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md
 [associated const]: associated-items.md#associated-constants
 [associated type]: associated-items.md#associated-types
@@ -269,6 +294,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [function pointers]: ../types/function-pointer.md
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
 [implementations]: implementations.md
+[item declarations]: ../statements.md#item-declarations
 [item]: ../items.md
 [literal]: ../expressions/literal-expr.md
 [path]: ../paths.md
@@ -283,6 +309,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [trait object]: ../types/trait-object.md
 [traits]: traits.md
 [type aliases]: type-aliases.md
-[types]: ../types.md
+[type]: ../types.md
 [unions]: unions.md
 [attributes]: ../attributes.md
