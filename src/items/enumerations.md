@@ -4,7 +4,7 @@
 > _Enumeration_ :\
 > &nbsp;&nbsp; `enum`
 >    [IDENTIFIER]&nbsp;
->    [_Generics_]<sup>?</sup>
+>    [_GenericParams_]<sup>?</sup>
 >    [_WhereClause_]<sup>?</sup>
 >    `{` _EnumItems_<sup>?</sup> `}`
 >
@@ -172,7 +172,7 @@ enum E {
 ```
 
 [IDENTIFIER]: ../identifiers.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_Expression_]: ../expressions.md
 [_TupleFields_]: structs.md

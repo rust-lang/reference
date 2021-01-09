@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _Union_ :\
-> &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
+> &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >   `{`[_StructFields_] `}`
 
 A union declaration uses the same syntax as a struct declaration, except with
@@ -177,7 +177,7 @@ generics, trait implementations, inherent implementations, coherence, pattern
 checking, etc etc etc).
 
 [IDENTIFIER]: ../identifiers.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_StructFields_]: structs.md
 [`transmute`]: ../../std/mem/fn.transmute.html
