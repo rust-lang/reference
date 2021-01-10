@@ -8,14 +8,14 @@
 > _StructStruct_ :\
 > &nbsp;&nbsp; `struct`
 >   [IDENTIFIER]&nbsp;
->   [_Generics_]<sup>?</sup>
+>   [_GenericParams_]<sup>?</sup>
 >   [_WhereClause_]<sup>?</sup>
 >   ( `{` _StructFields_<sup>?</sup> `}` | `;` )
 >
 > _TupleStruct_ :\
 > &nbsp;&nbsp; `struct`
 >   [IDENTIFIER]&nbsp;
->   [_Generics_]<sup>?</sup>
+>   [_GenericParams_]<sup>?</sup>
 >   `(` _TupleFields_<sup>?</sup> `)`
 >   [_WhereClause_]<sup>?</sup>
 >   `;`
@@ -82,7 +82,7 @@ particular layout using the [`repr` attribute].
 
 [_OuterAttribute_]: ../attributes.md
 [IDENTIFIER]: ../identifiers.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_Visibility_]: ../visibility-and-privacy.md
 [_Type_]: ../types.md#type-expressions

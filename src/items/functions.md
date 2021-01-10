@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _Function_ :\
-> &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _FunctionParameters_<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; _FunctionReturnType_<sup>?</sup> [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
@@ -341,7 +341,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
 [_BlockExpression_]: ../expressions/block-expr.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_Pattern_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses

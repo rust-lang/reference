@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _TypeAlias_ :\
-> &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>
+> &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `=` [_Type_] `;`
 
 A _type alias_ defines a new name for an existing [type]. Type aliases are
@@ -33,6 +33,6 @@ let _ = TypeAlias(5); // Doesn't work
 ```
 
 [IDENTIFIER]: ../identifiers.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_Type_]: ../types.md#type-expressions

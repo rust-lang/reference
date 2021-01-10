@@ -3,7 +3,7 @@
 > **<sup>Syntax</sup>**\
 > _Trait_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
->              [_Generics_]<sup>?</sup>
+>              [_GenericParams_]<sup>?</sup>
 >              ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
@@ -26,12 +26,12 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; _TraitMethodDecl_ ( `;` | [_BlockExpression_] )
 >
 > _TraitFunctionDecl_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _TraitFunctionParameters_<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >
 > _TraitMethodDecl_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` [_SelfParam_] (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
 >
@@ -339,7 +339,7 @@ fn main() {
 [_Expression_]: ../expressions.md
 [_FunctionQualifiers_]: functions.md
 [_FunctionReturnType_]: functions.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_MacroInvocationSemi_]: ../macros.md#macro-invocation
 [_OuterAttribute_]: ../attributes.md
 [_InnerAttribute_]: ../attributes.md

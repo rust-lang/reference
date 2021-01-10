@@ -17,7 +17,7 @@
 > &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_] `;`
 >
 > _ExternalFunctionItem_ :\
-> &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; `(` ( _NamedFunctionParameters_ | _NamedFunctionParametersWithVariadics_ )<sup>?</sup> `)`\
 > &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
 >
@@ -190,7 +190,7 @@ restrictions as [regular function parameters].
 [statics]: static-items.md
 [_Abi_]: functions.md
 [_FunctionReturnType_]: functions.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_InnerAttribute_]: ../attributes.md
 [_MacroInvocationSemi_]: ../macros.md#macro-invocation
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax

@@ -80,7 +80,7 @@ let _: f64 = f64::from_i32(42);
 ### Methods
 
 > _Method_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_Generics_]<sup>?</sup>\
+> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _SelfParam_ (`,` [_FunctionParam_])<sup>\*</sup> `,`<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
@@ -344,7 +344,7 @@ fn main() {
 [_FunctionParam_]: functions.md
 [_FunctionQualifiers_]: functions.md
 [_FunctionReturnType_]: functions.md
-[_Generics_]: generics.md
+[_GenericParams_]: generics.md
 [_Lifetime_]: ../trait-bounds.md
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
