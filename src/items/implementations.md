@@ -180,11 +180,11 @@ is considered local.
 
 ## Generic Implementations
 
-An implementation can take type and lifetime parameters, which can be used in
-the rest of the implementation. Type parameters declared for an implementation
-must be used at least once in either the trait or the implementing type of an
-implementation. Implementation parameters are written directly after the `impl`
-keyword.
+An implementation can take [generic parameters] which are written directly
+after the `impl` keyword. The parameters can be used in the rest of the
+implementation. Type and const parameters must be used at least once in either
+the trait or the implementing type of an implementation. Lifetime parameters
+do not need to be used unless they appear in an [associated type].
 
 ```rust
 # trait Seq<T> { fn dummy(&self, _: T) { } }
@@ -219,6 +219,7 @@ attributes].
 [trait]: traits.md
 [associated functions]: associated-items.md#associated-functions-and-methods
 [associated constants]: associated-items.md#associated-constants
+[associated type]: associated-items.md#associated-types
 [attributes]: ../attributes.md
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
@@ -230,3 +231,4 @@ attributes].
 [local type]: ../glossary.md#local-type
 [fundamental types]: ../glossary.md#fundamental-type-constructors
 [uncovered type]: ../glossary.md#uncovered-type
+[generic parameters]: generics.md

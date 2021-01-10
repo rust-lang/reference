@@ -171,8 +171,9 @@ fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
 fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
-Unlike type and lifetime parameters, const parameters of types can be used without
-being mentioned inside of a parameterized type:
+Unlike type and lifetime parameters, const parameters can be declared without
+being used inside of a parameterized item, with the exception of
+implementations as described in [generic implementations]:
 
 ```rust,compile_fail
 // ok
@@ -182,6 +183,8 @@ enum Bar<const M: usize> { A, B }
 // ERROR: unused parameter
 struct Baz<T>;
 struct Biz<'a>;
+struct Unconstrained;
+impl<const N: usize> Unconstrained {}
 ```
 
 When resolving a trait bound obligation, the exhaustiveness of all
@@ -292,6 +295,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [enumerations]: enumerations.md
 [functions]: functions.md
 [function pointers]: ../types/function-pointer.md
+[generic implementations]: implementations.md#generic-implementations
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
 [implementations]: implementations.md
 [item declarations]: ../statements.md#item-declarations
