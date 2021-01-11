@@ -3,7 +3,7 @@
 > **<sup>Syntax</sup>**\
 > _StaticItem_ :\
 > &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
->              `=` [_Expression_] `;`
+>              ( `=` [_Expression_] )<sup>?</sup> `;`
 
 A *static item* is similar to a [constant], except that it represents a precise
 memory location in the program. All references to the static refer to the same
@@ -22,6 +22,9 @@ statics:
 
 * The type must have the `Sync` trait bound to allow thread-safe access.
 * Constants cannot refer to statics.
+
+The initializer expression must be omitted in an [external block], and must be
+provided for free static items.
 
 ## Mutable statics
 
@@ -73,6 +76,7 @@ following are true:
 [constant]: constant-items.md
 [`drop`]: ../destructors.md
 [constant expression]: ../const_eval.md#constant-expressions
+[external block]: external-blocks.md
 [interior mutable]: ../interior-mutability.md
 [IDENTIFIER]: ../identifiers.md
 [_Type_]: ../types.md#type-expressions

@@ -2,8 +2,11 @@
 
 > **<sup>Syntax</sup>**\
 > _BareFunctionType_ :\
-> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_FunctionQualifiers_] `fn`\
+> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> _FunctionTypeQualifiers_ `fn`\
 > &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
+>
+> _FunctionTypeQualifiers_:\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> (`extern` [_Abi_]<sup>?</sup>)<sup>?</sup>
 >
 > _BareFunctionReturnType_:\
 > &nbsp;&nbsp; `->` [_TypeNoBounds_]
@@ -50,8 +53,8 @@ Attributes on function pointer parameters follow the same rules and
 restrictions as [regular function parameters].
 
 [IDENTIFIER]: ../identifiers.md
+[_Abi_]: ../items/functions.md
 [_ForLifetimes_]: ../items/generics.md#where-clauses
-[_FunctionQualifiers_]: ../items/functions.md
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_Type_]: ../types.md#type-expressions
 [_OuterAttribute_]: ../attributes.md

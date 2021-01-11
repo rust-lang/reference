@@ -5,25 +5,42 @@
 > &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `(` _FunctionParameters_<sup>?</sup> `)`\
 > &nbsp;&nbsp; &nbsp;&nbsp; _FunctionReturnType_<sup>?</sup> [_WhereClause_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
+> &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
 >
 > _FunctionQualifiers_ :\
-> &nbsp;&nbsp; _AsyncConstQualifiers_<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
->
-> _AsyncConstQualifiers_ :\
-> &nbsp;&nbsp; `async` | `const`
+> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
 >
 > _Abi_ :\
 > &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
 >
 > _FunctionParameters_ :\
-> &nbsp;&nbsp; _FunctionParam_ (`,` _FunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; _SelfParam_ `,`<sup>?</sup>\
+> &nbsp;&nbsp; | (_SelfParam_ `,`)<sup>?</sup> _FunctionParam_ (`,` _FunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
+>
+> _SelfParam_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _ShorthandSelf_ | _TypedSelf_ )
+>
+> _ShorthandSelf_ :\
+> &nbsp;&nbsp;  (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`
+>
+> _TypedSelf_ :\
+> &nbsp;&nbsp; `mut`<sup>?</sup> `self` `:` [_Type_]
 >
 > _FunctionParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_] `:` [_Type_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (
+>   _FunctionParamPattern_ | `...` | [_Type_] [^fn-param-2015]
+> )
+>
+> _FunctionParamPattern_ :\
+> &nbsp;&nbsp; [_Pattern_] `:` ( [_Type_] | `...` )
 >
 > _FunctionReturnType_ :\
 > &nbsp;&nbsp; `->` [_Type_]
+>
+> [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
+>
+> [^fn-param-2015]: Function parameters with only a type are only allowed
+>   in an associated function of a [trait item] in the 2015 edition.
 
 A _function_ consists of a [block], along with a name and a set of parameters.
 Other than a name, all these are optional. Functions are declared with the
@@ -43,12 +60,24 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 }
 ```
 
-As with `let` bindings, function arguments are irrefutable [patterns], so any
+## Function parameters
+
+As with `let` bindings, function parameters are irrefutable [patterns], so any
 pattern that is valid in a let binding is also valid as an argument:
 
 ```rust
 fn first((value, _): (i32, i32)) -> i32 { value }
 ```
+
+If the first parameter is a _SelfParam_, this indicates that the function is a
+[method]. Functions with a self parameter may only appear as an [associated
+function] in a [trait] or [implementation].
+
+A parameter with the `...` token indicates a [variadic function], and may only
+be used as the last parameter of a [external block] function. The variadic
+parameter may have an optional identifier, such as `args: ...`.
+
+## Function body
 
 The block of a function is conceptually wrapped in a block that binds the
 argument patterns and then `return`s the value of the function's block. This
@@ -66,6 +95,9 @@ return {
     value
 };
 ```
+
+Functions without a body block are terminated with a semicolon. This form
+may only appear in a [trait] or [external block].
 
 ## Generic functions
 
@@ -186,6 +218,9 @@ aborts the process by executing an illegal instruction.
 Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const context]s.
+
+Const functions are not allowed to be [async](#async-functions), and cannot
+use the [`extern` function qualifier](#extern-function-qualifier).
 
 ## Async functions
 
@@ -342,6 +377,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [STRING_LITERAL]: ../tokens.md#string-literals
 [_BlockExpression_]: ../expressions/block-expr.md
 [_GenericParams_]: generics.md
+[_Lifetime_]: ../trait-bounds.md
 [_Pattern_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
@@ -372,3 +408,8 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
 [built-in attributes]: ../attributes.html#built-in-attributes-index
+[trait item]: traits.md
+[method]: associated-items.md#methods
+[associated function]: associated-items.md#associated-functions-and-methods
+[implementation]: implementations.md
+[variadic function]: external-blocks.md#variadic-functions

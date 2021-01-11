@@ -10,25 +10,8 @@
 > _ExternalItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( _ExternalStaticItem_ | _ExternalFunctionItem_ ) )\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_StaticItem_] | [_Function_] ) )\
 > &nbsp;&nbsp; )
->
-> _ExternalStaticItem_ :\
-> &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_] `;`
->
-> _ExternalFunctionItem_ :\
-> &nbsp;&nbsp; `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
-> &nbsp;&nbsp; `(` ( _NamedFunctionParameters_ | _NamedFunctionParametersWithVariadics_ )<sup>?</sup> `)`\
-> &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
->
-> _NamedFunctionParameters_ :\
-> &nbsp;&nbsp; _NamedFunctionParam_ ( `,` _NamedFunctionParam_ )<sup>\*</sup> `,`<sup>?</sup>
->
-> _NamedFunctionParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( [IDENTIFIER] | `_` ) `:` [_Type_]
->
-> _NamedFunctionParametersWithVariadics_ :\
-> &nbsp;&nbsp; ( _NamedFunctionParam_ `,` )<sup>\*</sup> _NamedFunctionParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
@@ -46,9 +29,10 @@ token stream.
 ## Functions
 
 Functions within external blocks are declared in the same way as other Rust
-functions, with the exception that they may not have a body and are instead
+functions, with the exception that they must not have a body and are instead
 terminated by a semicolon. Patterns are not allowed in parameters, only
-[IDENTIFIER] or `_` may be used.
+[IDENTIFIER] or `_` may be used. Function qualifiers (`const`, `async`,
+`unsafe`, and `extern`) are not allowed.
 
 Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between
@@ -109,12 +93,15 @@ There are also some platform-specific ABI strings:
 
 ## Variadic functions
 
-Functions within external blocks may be variadic by specifying `...` after one
-or more named arguments in the argument list:
+Functions within external blocks may be variadic by specifying `...` as the
+last argument. There must be at least one parameter before the variadic
+parameter. The variadic parameter may optionally be specified with an
+identifier.
 
 ```rust
-extern {
+extern "C" {
     fn foo(x: i32, ...);
+    fn with_name(format: *const u8, args: ...);
 }
 ```
 
@@ -189,15 +176,13 @@ restrictions as [regular function parameters].
 [functions]: functions.md
 [statics]: static-items.md
 [_Abi_]: functions.md
-[_FunctionReturnType_]: functions.md
-[_GenericParams_]: generics.md
+[_Function_]: functions.md
 [_InnerAttribute_]: ../attributes.md
 [_MacroInvocationSemi_]: ../macros.md#macro-invocation
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_OuterAttribute_]: ../attributes.md
-[_Type_]: ../types.md#type-expressions
+[_StaticItem_]: static-items.md
 [_Visibility_]: ../visibility-and-privacy.md
-[_WhereClause_]: generics.md#where-clauses
 [attributes]: ../attributes.md
 [regular function parameters]: functions.md#attributes-on-function-parameters

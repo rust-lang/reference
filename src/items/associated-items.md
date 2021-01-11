@@ -1,5 +1,12 @@
 # Associated Items
 
+> **<sup>Syntax</sup>**\
+> _AssociatedItem_ :\
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] ) )\
+> &nbsp;&nbsp; )
+
 *Associated Items* are the items declared in [traits] or defined in
 [implementations]. They are called this because they are defined on an associate
 type &mdash; the type in the implementation. They are a subset of the kinds of
@@ -78,21 +85,6 @@ let _: f64 = f64::from_i32(42);
 ```
 
 ### Methods
-
-> _Method_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _SelfParam_ (`,` [_FunctionParam_])<sup>\*</sup> `,`<sup>?</sup> `)`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]
->
-> _SelfParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _ShorthandSelf_ | _TypedSelf_ )
->
-> _ShorthandSelf_ :\
-> &nbsp;&nbsp;  (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`
->
-> _TypedSelf_ :\
-> &nbsp;&nbsp; `mut`<sup>?</sup> `self` `:` [_Type_]
 
 Associated functions whose first parameter is named `self` are called *methods*
 and may be invoked using the [method call operator], for example, `x.foo()`, as
@@ -227,6 +219,8 @@ If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
 associated type definition. Furthermore, if `Item` is a type parameter, then
 `Item::Assoc` can be used in type parameters.
 
+Associated types must not include [generic parameters] or [where clauses].
+
 ```rust
 trait AssociatedType {
     // Associated type declaration
@@ -340,19 +334,16 @@ fn main() {
 }
 ```
 
-[_BlockExpression_]: ../expressions/block-expr.md
-[_FunctionParam_]: functions.md
-[_FunctionQualifiers_]: functions.md
-[_FunctionReturnType_]: functions.md
-[_GenericParams_]: generics.md
-[_Lifetime_]: ../trait-bounds.md
-[_Type_]: ../types.md#type-expressions
-[_WhereClause_]: generics.md#where-clauses
+[_ConstantItem_]: constant-items.md
+[_Function_]: functions.md
+[_MacroInvocationSemi_]: ../macros.md#macro-invocation
+[_OuterAttribute_]: ../attributes.md
+[_TypeAlias_]: type-aliases.md
+[_Visibility_]: ../visibility-and-privacy.md
 [`Arc<Self>`]: ../special-types-and-traits.md#arct
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
 [`Pin<P>`]: ../special-types-and-traits.md#pinp
 [`Rc<Self>`]: ../special-types-and-traits.md#rct
-[_OuterAttribute_]: ../attributes.md
 [traits]: traits.md
 [type aliases]: type-aliases.md
 [inherent implementations]: implementations.md#inherent-implementations
@@ -367,3 +358,5 @@ fn main() {
 [method call operator]: ../expressions/method-call-expr.md
 [path]: ../paths.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
+[generic parameters]: generics.md
+[where clauses]: generics.md#where-clauses

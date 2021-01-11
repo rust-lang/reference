@@ -7,45 +7,8 @@
 >              ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp;&nbsp;&nbsp; _TraitItem_<sup>\*</sup>\
+> &nbsp;&nbsp;&nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
->
-> _TraitItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Visibility_]<sup>?</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunc_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitMethod_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitConst_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | _TraitType_\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; )
->
-> _TraitFunc_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TraitFunctionDecl_ ( `;` | [_BlockExpression_] )
->
-> _TraitMethod_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TraitMethodDecl_ ( `;` | [_BlockExpression_] )
->
-> _TraitFunctionDecl_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _TraitFunctionParameters_<sup>?</sup> `)`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
->
-> _TraitMethodDecl_ :\
-> &nbsp;&nbsp; [_FunctionQualifiers_] `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` [_SelfParam_] (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup> `)`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_FunctionReturnType_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
->
-> _TraitFunctionParameters_ :\
-> &nbsp;&nbsp; _TraitFunctionParam_ (`,` _TraitFunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
->
-> _TraitFunctionParam_<sup>[†](#parameter-patterns)</sup> :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( [_Pattern_] `:` )<sup>?</sup> [_Type_]
->
-> _TraitConst_ :\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]&nbsp;( `=` [_Expression_] )<sup>?</sup> `;`
->
-> _TraitType_ :\
-> &nbsp;&nbsp; `type` [IDENTIFIER] ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> `;`
 
 A _trait_ describes an abstract interface that types can implement. This
 interface consists of [associated items], which come in three varieties:
@@ -61,10 +24,26 @@ other traits and so forth [as usual][generics].
 
 Traits are implemented for specific types through separate [implementations].
 
-Items associated with a trait do not need to be defined in the trait, but they
-may be. If the trait provides a definition, then this definition acts as a
-default for any implementation which does not override it. If it does not, then
-any implementation must provide a definition.
+Trait functions may omit the function body by replacing it with a semicolon.
+This indicates that the implementation must define the function. If the trait
+function defines a body, this definition acts as a default for any
+implementation which does not override it. Similarly, associated constants may
+omit the equals sign and expression to indicate implementations must define
+the constant value. Associated types must never define the type, the type may
+only be specified in an implementation.
+
+```rust
+// Examples of associated trait items with and without definitions.
+trait Example {
+    const CONST_NO_DEFAULT: i32;
+    const CONST_WITH_DEFAULT: i32 = 99;
+    type TypeNoDefault;
+    fn method_without_default(&self);
+    fn method_with_default(&self) {}
+}
+```
+
+Trait functions are are not allowed to be [`async`] or [`const`].
 
 ## Trait bounds
 
@@ -335,18 +314,10 @@ fn main() {
 
 [IDENTIFIER]: ../identifiers.md
 [WildcardPattern]: ../patterns.md#wildcard-pattern
-[_BlockExpression_]: ../expressions/block-expr.md
-[_Expression_]: ../expressions.md
-[_FunctionQualifiers_]: functions.md
-[_FunctionReturnType_]: functions.md
+[_AssociatedItem_]: associated-items.md
 [_GenericParams_]: generics.md
-[_MacroInvocationSemi_]: ../macros.md#macro-invocation
-[_OuterAttribute_]: ../attributes.md
 [_InnerAttribute_]: ../attributes.md
-[_Pattern_]: ../patterns.md
-[_SelfParam_]: associated-items.md#methods
 [_TypeParamBounds_]: ../trait-bounds.md
-[_Type_]: ../types.md#type-expressions
 [_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [bounds]: ../trait-bounds.md
@@ -366,3 +337,5 @@ fn main() {
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
 [`Pin<P>`]: ../special-types-and-traits.md#pinp
 [`Rc<Self>`]: ../special-types-and-traits.md#rct
+[`async`]: functions.md#async-functions
+[`const`]: functions.md#const-functions
