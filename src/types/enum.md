@@ -16,7 +16,7 @@ corresponding `enum` type, as well as the size needed to store a discriminant.
 Enum types cannot be denoted *structurally* as types, but must be denoted by
 named reference to an [`enum` item].
 
-[^enumtype]: ../The `enum` type is analogous to a `data` constructor declaration in
+[^enumtype]: The `enum` type is analogous to a `data` constructor declaration in
              ML, or a *pick ADT* in Limbo.
 
 [`enum` item]: ../items/enumerations.md
