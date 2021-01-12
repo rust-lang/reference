@@ -509,6 +509,7 @@ Examples of floating-point literals of various forms:
 0.1f64;          // type f64
 0.1f32;          // type f32
 12E+99_f64;      // type f64
+5f32;            // type f32
 let x: f64 = 2.; // type f64
 ```
 
@@ -517,9 +518,7 @@ syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
 
 The representation semantics of floating-point numbers are described in
-["Machine Types"].
-
-["Machine Types"]: types/numeric.md
+["Machine Types"][machine types].
 
 ### Boolean literals
 
@@ -637,6 +636,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [if let]: expressions/if-expr.md#if-let-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[machine types]: types/numeric.md
 [macros]: macros-by-example.md
 [match]: expressions/match-expr.md
 [negation]: expressions/operator-expr.md#negation-operators
