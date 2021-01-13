@@ -7,14 +7,8 @@
 > _InherentImpl_ :\
 > &nbsp;&nbsp; `impl` [_GenericParams_]<sup>?</sup>&nbsp;[_Type_]&nbsp;[_WhereClause_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _InherentImplItem_<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
->
-> _InherentImplItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_ConstantItem_] | [_Function_] | [_Method_] ) )\
-> &nbsp;&nbsp; )
 >
 > _TraitImpl_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_GenericParams_]<sup>?</sup> `!`<sup>?</sup>
@@ -22,14 +16,8 @@
 > &nbsp;&nbsp; [_WhereClause_]<sup>?</sup>\
 > &nbsp;&nbsp; `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TraitImplItem_<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
->
-> _TraitImplItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] | [_Method_] ) )\
-> &nbsp;&nbsp; )
 
 An _implementation_ is an item that associates items with an _implementing type_.
 Implementations are defined with the keyword `impl` and contain functions
@@ -52,7 +40,7 @@ the _associated items_ to the implementing type.
 
 Inherent implementations associate the contained items to the
 implementing type.  Inherent implementations can contain [associated
-functions] (including methods) and [associated constants]. They cannot
+functions] (including [methods]) and [associated constants]. They cannot
 contain associated type aliases.
 
 The [path] to an associated item is any path to the implementing type,
@@ -281,17 +269,11 @@ attributes must come before any associated items. That attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[_ConstantItem_]: constant-items.md
-[_Function_]: functions.md
+[_AssociatedItem_]: associated-items.md
 [_GenericParams_]: generics.md
 [_InnerAttribute_]: ../attributes.md
-[_MacroInvocationSemi_]: ../macros.md#macro-invocation
-[_Method_]: associated-items.md#methods
-[_OuterAttribute_]: ../attributes.md
-[_TypeAlias_]: type-aliases.md
 [_TypePath_]: ../paths.md#paths-in-types
 [_Type_]: ../types.md#type-expressions
-[_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [trait]: traits.md
 [associated constants]: associated-items.md#associated-constants
@@ -303,6 +285,7 @@ attributes].
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [generic parameters]: generics.md
+[methods]: associated-items.md#methods
 [path]: ../paths.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [Unsafe traits]: traits.md#unsafe-traits

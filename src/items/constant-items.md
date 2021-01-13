@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ConstantItem_ :\
-> &nbsp;&nbsp; `const` ( [IDENTIFIER] | `_` ) `:` [_Type_] `=` [_Expression_] `;`
+> &nbsp;&nbsp; `const` ( [IDENTIFIER] | `_` ) `:` [_Type_] ( `=` [_Expression_] )<sup>?</sup> `;`
 
 A *constant item* is an optionally named _[constant value]_ which is not associated
 with a specific memory location in the program. Constants are essentially inlined
@@ -37,6 +37,8 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
     mystring: STRING,
 };
 ```
+
+The constant expression may only be omitted in a [trait definition].
 
 ## Constants with Destructors
 
@@ -91,6 +93,7 @@ m!(const _: () = (););
 [constant value]: ../const_eval.md#constant-expressions
 [free]: ../glossary.md#free-item
 [static lifetime elision]: ../lifetime-elision.md#static-lifetime-elision
+[trait definition]: traits.md
 [IDENTIFIER]: ../identifiers.md
 [underscore imports]: use-declarations.md#underscore-imports
 [_Type_]: ../types.md#type-expressions
