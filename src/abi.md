@@ -64,7 +64,7 @@ symbol name mangling. The symbol for the item will be the identifier of the
 item's name.
 
 Additionally, the item will be publicly exported from the produced library or
-object file, similar to `#[used]`.
+object file, similar to the [`used` attribute](#the-used-attribute).
 
 ## The `link_section` attribute
 
