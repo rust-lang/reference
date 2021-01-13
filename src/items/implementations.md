@@ -180,11 +180,9 @@ is considered local.
 
 ## Generic Implementations
 
-An implementation can take [generic parameters] which are written directly
-after the `impl` keyword. The parameters can be used in the rest of the
-implementation. Type and const parameters must be used at least once in either
-the trait or the implementing type of an implementation. Lifetime parameters
-do not need to be used unless they appear in an [associated type].
+An implementation can take [generic parameters], which can be used in the rest
+of the implementation. Implementation parameters are written directly after the
+`impl` keyword.
 
 ```rust
 # trait Seq<T> { fn dummy(&self, _: T) { } }
@@ -193,6 +191,85 @@ impl<T> Seq<T> for Vec<T> {
 }
 impl Seq<bool> for u32 {
     /* Treat the integer as a sequence of bits */
+}
+```
+
+Generic parameters *constrain* an implementation if the parameter appears at
+least once in one of:
+
+* The implemented trait, if it has one
+* The implementing type
+* As an [associated type] in the [bounds] of a type that contains another
+  parameter that constrains the implementation
+
+Type and const parameters must always constrain the implementation. Lifetimes
+must constrain the implementation if the lifetime is used in an associated type.
+
+Examples of constraining situations:
+
+```rust
+# trait Trait{}
+# trait GenericTrait<T> {}
+# trait HasAssocType { type Ty; }
+# struct Struct;
+# struct GenericStruct<T>(T);
+# struct ConstGenericStruct<const N: usize>([(); N]);
+// T constrains by being an argument to GenericTrait.
+impl<T> GenericTrait<T> for i32 { /* ... */ }
+
+// T constrains by being an arguement to GenericStruct
+impl<T> Trait for GenericStruct<T> { /* ... */ }
+
+// Likewise, N constrains by being an argument to ConstGenericStruct
+impl<const N: usize> Trait for ConstGenericStruct<N> { /* ... */ }
+
+// T constrains by being in an associated type in a bound for type `U` which is
+// itself a generic parameter constraining the trait.
+impl<T, U> GenericTrait<U> for u32 where U: HasAssocType<Ty = T> { /* ... */ }
+
+// Like previous, except the type is `(U, isize)`. `U` appears inside the type
+// that includes `T`, and is not the type itself.
+impl<T, U> GenericStruct<U> where (U, isize): HasAssocType<Ty = T> { /* ... */ }
+```
+
+Examples of non-constraining situations:
+
+```rust,compile_fail
+// The rest of these are errors, since they have type or const parameters that
+// do not constrain.
+
+// T does not constrain since it does not appear at all.
+impl<T> Struct { /* ... */ }
+
+// N does not constrain for the same reason.
+impl<const N: usize> Struct { /* ... */ }
+
+// Usage of T inside the implementation does not constrain the impl.
+impl<T> Struct {
+    fn uses_t(t: &T) { /* ... */ }
+}
+
+// T is used as an associated type in the bounds for U, but U does not constrain.
+impl<T, U> Struct where U: HasAssocType<Ty = T> { /* ... */ }
+
+// T is used in the bounds, but not as an associated type, so it does not constrain.
+impl<T, U> GenericTrait<U> for u32 where U: GenericTrait<T> {}
+```
+
+Example of an allowed unconstraining lifetime parameter:
+
+```rust
+# struct Struct;
+impl<'a> Struct {}
+```
+
+Example of a disallowed unconstraining lifetime parameter:
+
+```rust,compile_fail
+# struct Struct;
+# trait HasAssocType { type Ty; }
+impl<'a> HasAssocType for Struct {
+    type Ty = &'a Struct;
 }
 ```
 
@@ -217,13 +294,15 @@ attributes].
 [_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [trait]: traits.md
-[associated functions]: associated-items.md#associated-functions-and-methods
 [associated constants]: associated-items.md#associated-constants
+[associated functions]: associated-items.md#associated-functions-and-methods
 [associated type]: associated-items.md#associated-types
 [attributes]: ../attributes.md
+[bounds]: ../trait-bounds.md
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
+[generic parameters]: generics.md
 [path]: ../paths.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [Unsafe traits]: traits.md#unsafe-traits
@@ -231,4 +310,3 @@ attributes].
 [local type]: ../glossary.md#local-type
 [fundamental types]: ../glossary.md#fundamental-type-constructors
 [uncovered type]: ../glossary.md#uncovered-type
-[generic parameters]: generics.md
