@@ -246,19 +246,18 @@ assert_eq!(-10 >> 2, -3);
 > &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]
 
-Comparison operators are also defined both for primitive types and many type in
-the standard library. Parentheses are required when chaining comparison
+Comparison operators are also defined both for primitive types and many types
+in the standard library. Parentheses are required when chaining comparison
 operators. For example, the expression `a == b == c` is invalid and may be
 written as `(a == b) == c`.
 
-Unlike arithmetic and logical operators, the traits for
-overloading the operators the traits for these operators are used more
-generally to show how a type may be compared and will likely be assumed to
-define actual comparisons by functions that use these traits as bounds. Many
-functions and macros in the standard library can then use that assumption
-(although not to ensure safety). Unlike the arithmetic and logical operators
-above, these operators implicitly take shared borrows of their operands,
-evaluating them in [place expression context][place expression]:
+Unlike arithmetic and logical operators, the traits for overloading these
+operators are used more generally to show how a type may be compared and will
+likely be assumed to define actual comparisons by functions that use these
+traits as bounds. Many functions and macros in the standard library can then
+use that assumption (although not to ensure safety). Unlike the arithmetic
+and logical operators above, these operators implicitly take shared borrows
+of their operands, evaluating them in [place expression context][place expression]:
 
 ```rust
 # let a = 1;
