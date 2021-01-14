@@ -498,8 +498,10 @@ fn example() {
 <div class="warning">
 
 Warning: The evaluation order of operands swaps depending on the types of the
-operands. Try not to write code that depends on the evaluation order of operands
-in compound assignment expressions. See [this test] for an example of using this
+operands: with primitive types the right-hand side will get evaluated first,
+while with non-primitive types the left-hand side will get evaluated first.
+Try not to write code that depends on the evaluation order of operands in
+compound assignment expressions. See [this test] for an example of using this
 dependency.
 
 </div>
