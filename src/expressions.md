@@ -45,13 +45,12 @@
 An expression may have two roles: it always produces a *value*, and it may have
 *effects* (otherwise known as "side effects"). An expression *evaluates to* a
 value, and has effects during *evaluation*. Many expressions contain
-sub-expressions (operands). The meaning of each kind of expression dictates
-several things:
+sub-expressions, called the *operands* of the expression. The meaning of each
+kind of expression dictates several things:
 
-* Whether or not to evaluate the sub-expressions when evaluating the expression
-* The order in which to evaluate the sub-expressions
-* How to combine the sub-expressions' values to obtain the value of the
-  expression
+* Whether or not to evaluate the operands when evaluating the expression
+* The order in which to evaluate the operands
+* How to combine the operands' values to obtain the value of the expression
 
 In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions,
@@ -84,6 +83,58 @@ in the order given by their associativity.
 | `..` `..=`                  | Require parentheses |
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
+
+## Evaluation order of operands
+
+The following list of expressions all evaluate their operands the same way, as
+described after the list. Other expressions either don't take operands or
+evaluate them conditionally as described on their respective pages.
+
+* Dereference expression
+* Error propagation expression
+* Negation expression
+* Arithmetic and logical binary operators
+* Comparison operators
+* Type cast expression
+* Grouped expression
+* Array expression
+* Await expression
+* Index expression
+* Tuple expression
+* Tuple index expression
+* Struct expression
+* Enumeration variant expression
+* Call expression
+* Method call expression
+* Field expression
+* Break expression
+* Range expression
+* Return expression
+
+The operands of these expressions are evaluated prior to applying the effects of
+the expression. Expressions taking multiple operands are evaluated left to right
+as written in the source code.
+
+> **Note**: Which subexpressions are the operands of an expression is
+> determined by expression precedence as per the previous section.
+
+For example, the two `next` method calls will always be called in the same
+order:
+
+```rust
+# // Using vec instead of array to avoid references
+# // since there is no stable owned array iterator
+# // at the time this example was written.
+let mut one_two = vec![1, 2].into_iter();
+assert_eq!(
+    (1, 2),
+    (one_two.next().unwrap(), one_two.next().unwrap())
+);
+```
+
+> **Note**: Since this is applied recursively, these expressions are also
+> evaluated from innermost to outermost, ignoring siblings until there are no
+> inner subexpressions.
 
 ## Place Expressions and Value Expressions
 
