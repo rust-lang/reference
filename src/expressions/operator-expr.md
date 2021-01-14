@@ -427,9 +427,9 @@ operand.
 > is evaluated before the left one.
 
 It then has the effect of first [dropping] the value at the assigned place,
-unless the place is an uninitialized local variable or field of a local
-variable. Next it either [copies or moves] the assigned value to the assigned
-place.
+unless the place is an uninitialized local variable or an uninitialized field of
+a local variable. Next it either [copies or moves] the assigned value to the
+assigned place.
 
 An assignment expression always produces [the unit value][unit].
 
