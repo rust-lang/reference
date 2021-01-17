@@ -1,11 +1,15 @@
 # Type Layout
 
-The layout of a type is its size, alignment, and the relative offsets of its
-fields. For enums, how the discriminant is laid out and interpreted is also part
-of type layout.
+The *layout* of a type is the combination of its:
 
-Type layout can be changed with each compilation. Instead of trying to document
-exactly what is done, we only document what is guaranteed today.
+* size
+* alignment
+* relative offsets of its fields or elements
+* for enums: how the discriminant is laid out and interpreted
+
+> **Note**: Type layout is allowed to change with each compilation. Instead of
+> trying to document exactly how each type is laid out, we only document the
+> properties that are guaranteed.
 
 ## Size and Alignment
 
@@ -32,7 +36,7 @@ the alignment of the type respectively.
 
 ## Primitive Data Layout
 
-The size of most primitives is given in this table.
+The size of most primitives is guaranteed and given in this table.
 
 | Type              | `size_of::<Type>()`|
 |--                 |--                  |
@@ -51,8 +55,8 @@ target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
 bit target, this is 8 bytes.
 
 Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on x86 u64 and f64 are only
-aligned to 32 bits.
+platform-specific behavior. In particular, on `x86` targets, `u64` and `f64` are
+only aligned to 32 bits.
 
 ## Pointers and References Layout
 
@@ -82,7 +86,9 @@ Slices have the same layout as the section of the array they slice.
 > etc.) to slices.
 
 ## `str` Layout
-String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
+
+String slices are a UTF-8 representation of characters that have the same layout
+as slices of type `[u8]`.
 
 ## Tuple Layout
 
