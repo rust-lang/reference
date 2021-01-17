@@ -5,11 +5,26 @@ The *layout* of a type is the combination of its:
 * size
 * alignment
 * relative offsets of its fields or elements
+* relative offsets of padding
 * for enums: how the discriminant is laid out and interpreted
 
 > **Note**: Type layout is allowed to change with each compilation. Instead of
 > trying to document exactly how each type is laid out, we only document the
 > properties that are guaranteed.
+
+## Padding
+
+Types may contain *padding*: bytes that have no semantic meaning that may take
+on any bit pattern. When a type is [moved or copied], the value of padding bytes
+may be changed.
+
+If a field can be accessed, its padding is also the padding of the containing
+type.
+
+> **Note:**: Padding is usually added to make sure that fields and the type
+> itself are properly aligned. As such, padding is usally only added to types
+> with multiple fields. As an exception, [manually setting the
+> alignment][alignment modifiers] can create padding for a type with one field.
 
 ## Size and Alignment
 
@@ -563,9 +578,11 @@ used with any other representation.
 [`size_of`]: ../std/mem/fn.size_of.html
 [`Sized`]: ../std/marker/trait.Sized.html
 [`Copy`]: ../std/marker/trait.Copy.html
+[alignment modifiers]: #the-alignment-modifiers
 [dynamically sized types]: dynamically-sized-types.md
 [field-less enums]: items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
 [enumerations]: items/enumerations.md
+[moved or copied]: expressions.md#moved-and-copied-types
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
 [27060]: https://github.com/rust-lang/rust/issues/27060
