@@ -63,8 +63,10 @@ A dynamically sized type (DST) is a type without a statically known size or alig
 
 ### Entity
 
-An [*entity*] is a [type], [item], [generic parameter], [variable binding],
-[loop label], [lifetime], [field], or [attribute].
+An [*entity*] is a language construct that can be referred to in some way
+within the source program, usually via a [path][paths]. Entities include
+[types], [items], [generic parameters], [variable bindings], [loop labels],
+[lifetimes], [fields], [attributes], and [lints].
 
 ### Expression
 
@@ -251,23 +253,24 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 
 [alignment]: type-layout.md#size-and-alignment
 [associated item]: #associated-item
-[attribute]: attributes.md
+[attributes]: attributes.md
 [*entity*]: names.md
 [enums]: items/enumerations.md
-[field]: expressions/field-expr.md
+[fields]: expressions/field-expr.md
 [free item]: #free-item
-[generic parameter]: items/generics.md
+[generic parameters]: items/generics.md
 [identifier]: identifiers.md
 [identifiers]: identifiers.md
 [implementation]: items/implementations.md
 [implementations]: items/implementations.md
 [inherent implementation]: items/implementations.md#inherent-implementations
 [item]: items.md
-[item]: items.md
+[items]: items.md
 [labels]: tokens.md#lifetimes-and-loop-labels
 [lifetime or loop label]: tokens.md#lifetimes-and-loop-labels
-[lifetime]: tokens.md#lifetimes-and-loop-labels
-[loop label]: tokens.md#lifetimes-and-loop-labels
+[lifetimes]: tokens.md#lifetimes-and-loop-labels
+[lints]: attributes/diagnostics.md#lint-check-attributes
+[loop labels]: tokens.md#lifetimes-and-loop-labels
 [method]: items/associated-items.md#methods
 [*Name resolution*]: names/name-resolution.md
 [*name*]: names.md
@@ -280,7 +283,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [structs]: items/structs.md
 [trait objects]: types/trait-object.md
 [traits]: items/traits.md
-[type]: types.md
+[types]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
 [unions]: items/unions.md
-[variable binding]: patterns.md
+[variable bindings]: patterns.md

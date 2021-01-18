@@ -1,12 +1,17 @@
 # Names
 
-Entities declare a *name* to refer to that entity. Some entities are
-[explicitly declared](#explicit-entities) in the source code, and some are
-[implicitly declared](#implicit-entities) as part of the language or compiler
-extensions.
+An *entity* is a language construct that can be referred to in some way within
+the source program, usually via a [*path*]. Entities include [types], [items],
+[generic parameters], [variable bindings], [loop labels], [lifetimes],
+[fields], [attributes], and [lints].
 
-Entity names are valid within a [*scope*] — a region of source text where that
-name may be referenced.
+A *declaration* is a syntactical construct that can introduce a *name* to
+refer to an entity. Entity names are valid within a [*scope*] — a region of
+source text where that name may be referenced.
+
+Some entities are [explicitly declared](#explicit-entities) in the source
+code, and some are [implicitly declared](#implicit-entities) as part of the
+language or compiler extensions.
 
 [*Paths*] are used to refer to an entity, possibly in another scope. Lifetimes
 and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
@@ -75,16 +80,16 @@ introduced by compiler options and extensions:
 * The [`'static`] lifetime
 
 Additionally, the crate root module does not have a name, but can be referred
-to with certain [path qualifiers].
+to with certain [path qualifiers] or aliases.
 
 
 [*Name resolution*]: names/name-resolution.md
 [*namespaces*]: names/namespaces.md
+[*path*]: paths.md
 [*paths*]: paths.md
 [*scope*]: names/scopes.md
 [*visibility*]: visibility-and-privacy.md
 [`'static`]: keywords.md#weak-keywords
-[path qualifiers]: paths.md#path-qualifiers
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-expressions
 [`let` statement]: statements.md#let-statements
@@ -105,6 +110,7 @@ to with certain [path qualifiers].
 [extern-prelude]: names/preludes.md#extern-prelude
 [External block items]: items/external-blocks.md
 [External crate declarations]: items/extern-crates.md
+[fields]: expressions/field-expr.md
 [floating-point types]: types/numeric.md#floating-point-types
 [Function declarations]: items/functions.md
 [function parameters]: items/functions.md#function-parameters
@@ -115,12 +121,14 @@ to with certain [path qualifiers].
 [Items]: items.md
 [Language prelude]: names/preludes.md#language-prelude
 [lifetimes-and-loop-labels]: tokens.md#lifetimes-and-loop-labels
+[lifetimes]: tokens.md#lifetimes-and-loop-labels
 [Lints]: attributes/diagnostics.md#lint-check-attributes
 [Loop labels]: expressions/loop-expr.md#loop-labels
 [Machine-dependent integer types]: types/numeric.md#machine-dependent-integer-types
 [macro invocations]: macros.md#macro-invocation
 [matcher metavariables]: macros-by-example.md#metavariables
 [Module declarations]: items/modules.md
+[path qualifiers]: paths.md#path-qualifiers
 [Standard library prelude]: names/preludes.md#standard-library-prelude
 [Static item declarations]: items/static-items.md
 [struct]: items/structs.md
@@ -129,5 +137,7 @@ to with certain [path qualifiers].
 [tool lint attributes]: attributes/diagnostics.md#tool-lint-attributes
 [Trait item declarations]: items/traits.md
 [Type aliases]: items/type-aliases.md
+[types]: types.md
 [union]: items/unions.md
 [Use declarations]: items/use-declarations.md
+[variable bindings]: patterns.md
