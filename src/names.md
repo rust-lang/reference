@@ -24,7 +24,7 @@ Access to certain names may be restricted based on their [*visibility*].
 
 Entities that explicitly introduce a name in the source code are:
 
-* [Items]
+* [Items]:
     * [Module declarations]
     * [External crate declarations]
     * [Use declarations]
@@ -38,7 +38,7 @@ Entities that explicitly introduce a name in the source code are:
     * [External block items]
     * [`macro_rules` declarations] and [matcher metavariables]
     * [Implementation] associated items
-* [Expressions]
+* [Expressions]:
     * [Closure] parameters
     * [`while let`] pattern bindings
     * [`for`] pattern bindings
@@ -59,7 +59,7 @@ expanding to one of the above items.
 The following entities are implicitly defined by the language, or are
 introduced by compiler options and extensions:
 
-* [Language prelude]
+* [Language prelude]:
     * [Boolean type] — `bool`
     * [Textual types] — `char` and `str`
     * [Integer types] — `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
