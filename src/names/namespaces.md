@@ -1,9 +1,13 @@
 # Namespaces
 
-Entity names are segregated into separate *namespaces* based on the kind of
-entity that declared the name. The usage of a name will look for the
-declaration of that name in different namespaces, based on the context, as
-described in the [name resolution] chapter.
+A *namespace* is a set of [names] where each name unambiguously refers to a
+specific [entity]. Namespaces are organized in a hierarchy, where each level
+of the hierarchy has its own collection of named entities.
+
+There are several different namespaces that each contain different kinds of
+entities. The usage of a name will look for the declaration of that name in
+different namespaces, based on the context, as described in the [name
+resolution] chapter.
 
 The following is a list of namespaces, with their corresponding entities:
 
@@ -121,6 +125,7 @@ imported.
 [Constant item declarations]: ../items/constant-items.md
 [Derive macro helpers]: ../procedural-macros.md#derive-macro-helper-attributes
 [Derive macros]: ../procedural-macros.md#derive-macros
+[entity]: ../glossary.md#entity
 [Enum variant constructors]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
 [External crate declarations]: ../items/extern-crates.md
@@ -135,6 +140,7 @@ imported.
 [Loop labels]: ../expressions/loop-expr.md#loop-labels
 [Module declarations]: ../items/modules.md
 [name resolution]: name-resolution.md
+[names]: ../names.md
 [numeric]: ../types/numeric.md
 [Static item declarations]: ../items/static-items.md
 [Struct constructors]: ../items/structs.md

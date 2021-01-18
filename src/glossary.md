@@ -142,9 +142,10 @@ identifiers, and labels are used to refer to an entity.
 
 ### Namespace
 
-A [*namespace*] is a collection of uniquely named [entities](#entity).
-Namespaces can be organized in a hierarchy, where each level of the hierarchy
-has its own collection of named entities.
+A [*namespace*] is a set of [names](#name) where each name unambiguously
+refers to a specific [entity](#entity). Namespaces are organized in a
+hierarchy, where each level of the hierarchy has its own collection of named
+entities.
 
 ### Nominal types
 
