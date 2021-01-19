@@ -65,7 +65,7 @@ useful for crates that only need to be linked, but are never referenced, and
 will avoid being reported as unused.
 
 The [`macro_use` attribute] works as usual and import the macro names
-into the macro-use prelude.
+into the [`macro_use` prelude].
 
 ## The `no_link` attribute
 
@@ -77,6 +77,7 @@ crate to access only its macros.
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [extern prelude]: ../names/preludes.md#extern-prelude
+[`macro_use` prelude]: ../names/preludes.md#macro_use-prelude
 
 <script>
 (function() {

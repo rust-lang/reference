@@ -59,13 +59,21 @@ alloc/test limitation.
 
 ### The `no_std` attribute
 
+By default, the standard library is automatically included in the crate root
+module. The [`std`] crate is added to the root, along with an implicit
+[`macro_use` attribute] pulling in all macros exported from `std` into the
+[`macro_use` prelude]. Both [`core`] and [`std`] are added to the [extern
+prelude]. The [standard library prelude] includes everything from the
+[`std::prelude::v1`] module.
+
 The *`no_std` [attribute]* may be applied at the crate level to prevent the
 [`std`] crate from being automatically added into scope. It does three things:
 
 * Prevents `std` from being added to the [extern prelude](#extern-prelude).
 * Uses [`core::prelude::v1`] in the [standard library prelude] instead of
   [`std::prelude::v1`].
-* Injects the [`core`] crate into the crate root instead of `std`.
+* Injects the [`core`] crate into the crate root instead of [`std`], and pulls
+  in all macros exported from `core` in the [`macro_use` prelude].
 
 > **Note**: Using the core prelude over the standard prelude is useful when
 > either the crate is targeting a platform that does not support the standard
@@ -112,7 +120,12 @@ on a module to indicate that it should not automatically bring the [standard
 library prelude], [extern prelude], or [tool prelude] into scope for that
 module or any of its descendants.
 
-This attribute does not affect the [language prelude] or [`macro_use` prelude].
+This attribute does not affect the [language prelude].
+
+> **Edition Differences**: In the 2015 edition, the `no_implicit_prelude`
+> attribute does not affect the [`macro_use` prelude], and all macros exported
+> from the standard library are still included in the `macro_use` prelude.
+> Starting in the 2018 edition, it will remove the `macro_use` prelude.
 
 [`alloc`]: ../../alloc/index.html
 [`Box`]: ../../std/boxed/struct.Box.html
