@@ -1,7 +1,7 @@
 # Names
 
 An *entity* is a language construct that can be referred to in some way within
-the source program, usually via a [*path*]. Entities include [types], [items],
+the source program, usually via a [path]. Entities include [types], [items],
 [generic parameters], [variable bindings], [loop labels], [lifetimes],
 [fields], [attributes], and [lints].
 
@@ -9,9 +9,9 @@ A *declaration* is a syntactical construct that can introduce a *name* to
 refer to an entity. Entity names are valid within a [*scope*] — a region of
 source text where that name may be referenced.
 
-Some entities are [explicitly declared](#explicit-entities) in the source
-code, and some are [implicitly declared](#implicit-entities) as part of the
-language or compiler extensions.
+Some entities are [explicitly declared](#explicitly-declared-entities) in the
+source code, and some are [implicitly declared](#implicitly-declared-entities)
+as part of the language or compiler extensions.
 
 [*Paths*] are used to refer to an entity, possibly in another scope. Lifetimes
 and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
@@ -25,7 +25,7 @@ and labels to entity declarations.
 
 Access to certain names may be restricted based on their [*visibility*].
 
-## Explicit entities
+## Explicitly declared entities
 
 Entities that explicitly introduce a name in the source code are:
 
@@ -59,7 +59,7 @@ Entities that explicitly introduce a name in the source code are:
 Additionally, [macro invocations] and [attributes] can introduce names by
 expanding to one of the above items.
 
-## Implicit entities
+## Implicitly declared entities
 
 The following entities are implicitly defined by the language, or are
 introduced by compiler options and extensions:
@@ -85,7 +85,6 @@ to with certain [path qualifiers] or aliases.
 
 [*Name resolution*]: names/name-resolution.md
 [*namespaces*]: names/namespaces.md
-[*path*]: paths.md
 [*paths*]: paths.md
 [*scope*]: names/scopes.md
 [*visibility*]: visibility-and-privacy.md
@@ -128,6 +127,7 @@ to with certain [path qualifiers] or aliases.
 [macro invocations]: macros.md#macro-invocation
 [matcher metavariables]: macros-by-example.md#metavariables
 [Module declarations]: items/modules.md
+[path]: paths.md
 [path qualifiers]: paths.md#path-qualifiers
 [Standard library prelude]: names/preludes.md#standard-library-prelude
 [Static item declarations]: items/static-items.md
