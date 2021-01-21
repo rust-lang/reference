@@ -12,8 +12,10 @@
 
 An _`extern crate` declaration_ specifies a dependency on an external crate.
 The external crate is then bound into the declaring scope as the [identifier]
-provided in the `extern crate` declaration. The `as` clause can be used to
-bind the imported crate to a different name.
+provided in the `extern crate` declaration. Additionally, if the `extern
+crate` appears in the crate root, then the crate name is also added to the
+[extern prelude], making it automatically in scope in all modules. The `as`
+clause can be used to bind the imported crate to a different name.
 
 The external crate is resolved to a specific `soname` at compile time, and a
 runtime linkage requirement to that `soname` is passed to the linker for
@@ -52,39 +54,8 @@ extern crate hello_world; // hyphen replaced with an underscore
 
 ## Extern Prelude
 
-External crates imported with `extern crate` in the root module or provided to
-the compiler (as with the `--extern` flag with `rustc`) are added to the
-"extern prelude". Crates in the extern prelude are in scope in the entire
-crate, including inner modules. If imported with `extern crate orig_name as
-new_name`, then the symbol `new_name` is instead added to the prelude.
-
-The `core` crate is always added to the extern prelude. The `std` crate
-is added as long as the [`no_std`] attribute is not specified in the crate root.
-
-The [`no_implicit_prelude`] attribute can be used on a module to disable
-prelude lookups within that module.
-
-> **Edition Differences**: In the 2015 edition, crates in the extern prelude
-> cannot be referenced via [use declarations], so it is generally standard
-> practice to include `extern crate` declarations to bring them into scope.
->
-> Beginning in the 2018 edition, [use declarations] can reference crates in
-> the extern prelude, so it is considered unidiomatic to use `extern crate`.
-
-> **Note**: Additional crates that ship with `rustc`, such as [`alloc`], and
-> [`test`], are not automatically included with the `--extern` flag when using
-> Cargo. They must be brought into scope with an `extern crate` declaration,
-> even in the 2018 edition.
->
-> ```rust
-> extern crate alloc;
-> use alloc::rc::Rc;
-> ```
-
-<!--
-See https://github.com/rust-lang/rust/issues/57288 for more about the
-alloc/test limitation.
--->
+This section has been moved to [Preludes — Extern Prelude](../names/preludes.md#extern-prelude).
+<!-- this is to appease the linkchecker, will remove once other books are updated -->
 
 ## Underscore Imports
 
@@ -94,7 +65,7 @@ useful for crates that only need to be linked, but are never referenced, and
 will avoid being reported as unused.
 
 The [`macro_use` attribute] works as usual and import the macro names
-into the macro-use prelude.
+into the [`macro_use` prelude].
 
 ## The `no_link` attribute
 
@@ -105,8 +76,19 @@ crate to access only its macros.
 [IDENTIFIER]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
-[`alloc`]: https://doc.rust-lang.org/alloc/
-[`no_implicit_prelude`]: modules.md#prelude-items
-[`no_std`]: ../crates-and-source-files.md#preludes-and-no_std
-[`test`]: https://doc.rust-lang.org/test/
-[use declarations]: use-declarations.md
+[extern prelude]: ../names/preludes.md#extern-prelude
+[`macro_use` prelude]: ../names/preludes.md#macro_use-prelude
+
+<script>
+(function() {
+    var fragments = {
+        "#extern-prelude": "../names/preludes.html#extern-prelude",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>

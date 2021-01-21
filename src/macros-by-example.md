@@ -301,7 +301,7 @@ m!();
 
 Second, it can be used to import macros from another crate, by attaching it to
 an `extern crate` declaration appearing in the crate's root module. Macros
-imported this way are imported into the prelude of the crate, not textually,
+imported this way are imported into the [`macro_use` prelude], not textually,
 which means that they can be shadowed by any other name. While macros imported
 by `#[macro_use]` can be used before the import statement, in case of a
 conflict, the last macro imported wins. Optionally, a list of macros to import
@@ -497,3 +497,4 @@ For more detail, see the [formal specification].
 [_Visibility_]: visibility-and-privacy.md
 [formal specification]: macro-ambiguity.md
 [token]: tokens.md
+[`macro_use` prelude]: names/preludes.md#macro_use-prelude

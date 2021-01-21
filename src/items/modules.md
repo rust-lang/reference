@@ -128,15 +128,6 @@ mod thread {
 }
 ```
 
-## Prelude Items
-
-Modules implicitly have some names in scope. These name are to built-in types,
-macros imported with [`#[macro_use]`][macro_use] on an extern crate, and by the crate's
-[prelude]. These names are all made of a single identifier. These names are not
-part of the module, so for example, any name `name`, `self::name` is not a
-valid path. The names added by the [prelude] can be removed by placing the
-`no_implicit_prelude` [attribute] onto the module or one of its ancestor modules.
-
 ## Attributes on Modules
 
 Modules, like all items, accept outer attributes. They also accept inner
@@ -144,18 +135,32 @@ attributes: either after `{` for a module with a body, or at the beginning of th
 source file, after the optional BOM and shebang.
 
 The built-in attributes that have meaning on a module are [`cfg`],
-[`deprecated`], [`doc`], [the lint check attributes], `path`, and
-`no_implicit_prelude`. Modules also accept macro attributes.
+[`deprecated`], [`doc`], [the lint check attributes], [`path`], and
+[`no_implicit_prelude`]. Modules also accept macro attributes.
 
 [_InnerAttribute_]: ../attributes.md
 [_Item_]: ../items.md
-[macro_use]: ../macros-by-example.md#the-macro_use-attribute
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
+[`no_implicit_prelude`]: ../names/preludes.md#the-no_implicit_prelude-attribute
+[`path`]: #the-path-attribute
 [IDENTIFIER]: ../identifiers.md
 [attribute]: ../attributes.md
 [items]: ../items.md
 [module path]: ../paths.md
-[prelude]: ../crates-and-source-files.md#preludes-and-no_std
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+
+<script>
+(function() {
+    var fragments = {
+        "#prelude-items": "../names/preludes.html",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>

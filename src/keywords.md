@@ -97,8 +97,8 @@ is possible to declare a variable or method with the name `union`.
 
 * `union` is used to declare a [union] and is only a keyword when used in a
   union declaration.
-* `'static` is used for the static lifetime and cannot be used as a generic
-  lifetime parameter
+* `'static` is used for the static lifetime and cannot be used as a [generic
+  lifetime parameter] or [loop label]
 
   ```compile_fail
   // error[E0262]: invalid lifetime parameter name: `'static`
@@ -127,3 +127,5 @@ is possible to declare a variable or method with the name `union`.
 [union]: items/unions.md
 [variants]: items/enumerations.md
 [`dyn`]: types/trait-object.md
+[loop label]: expressions/loop-expr.md#loop-labels
+[generic lifetime parameter]: items/generics.md

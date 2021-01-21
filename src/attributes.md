@@ -150,9 +150,9 @@ active. All other attributes are inert.
 ## Tool attributes
 
 The compiler may allow attributes for external tools where each tool resides
-in its own namespace. The first segment of the attribute path is the name of
-the tool, with one or more additional segments whose interpretation is up to
-the tool.
+in its own namespace in the [tool prelude]. The first segment of the attribute
+path is the name of the tool, with one or more additional segments whose
+interpretation is up to the tool.
 
 When a tool is not in use, the tool's attributes are accepted without a
 warning. When the tool is in use, the tool is responsible for processing and
@@ -279,11 +279,11 @@ The following is an index of all built-in attributes.
 [`macro_use`]: macros-by-example.md#the-macro_use-attribute
 [`must_use`]: attributes/diagnostics.md#the-must_use-attribute
 [`no_builtins`]: attributes/codegen.md#the-no_builtins-attribute
-[`no_implicit_prelude`]: items/modules.md#prelude-items
+[`no_implicit_prelude`]: names/preludes.md#the-no_implicit_prelude-attribute
 [`no_link`]: items/extern-crates.md#the-no_link-attribute
 [`no_main`]: crates-and-source-files.md#the-no_main-attribute
 [`no_mangle`]: abi.md#the-no_mangle-attribute
-[`no_std`]: crates-and-source-files.md#preludes-and-no_std
+[`no_std`]: names/preludes.md#the-no_std-attribute
 [`non_exhaustive`]: attributes/type_system.md#the-non_exhaustive-attribute
 [`panic_handler`]: runtime.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
@@ -315,6 +315,7 @@ The following is an index of all built-in attributes.
 [modules]: items/modules.md
 [statements]: statements.md
 [struct]: items/structs.md
+[tool prelude]: names/preludes.md#tool-prelude
 [union]: items/unions.md
 [closure]: expressions/closure-expr.md
 [function pointer]: types/function-pointer.md
