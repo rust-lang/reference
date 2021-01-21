@@ -47,9 +47,9 @@ have type compatible with the value of the `break` expression(s).
 > _PredicateLoopExpression_ :\
 > &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
 
-A `while` loop begins by evaluating the boolean loop conditional expression. If
-the loop conditional expression evaluates to `true`, the loop body block
-executes, then control returns to the loop conditional expression. If the loop
+A `while` loop begins by evaluating the [boolean] loop conditional operand. If
+the loop conditional operand evaluates to `true`, the loop body block
+executes, then control returns to the loop conditional operand. If the loop
 conditional expression evaluates to `false`, the `while` expression completes.
 
 An example:
@@ -294,6 +294,7 @@ expression `()`.
 [_MatchArmPatterns_]: match-expr.md
 [_Pattern_]: ../patterns.md
 [`match` expression]: match-expr.md
+[boolean]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
 [_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators

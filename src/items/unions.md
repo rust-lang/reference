@@ -47,13 +47,14 @@ let f = unsafe { u.f1 };
 Unions have no notion of an "active field". Instead, every union access just
 interprets the storage at the type of the field used for the access. Reading a
 union field reads the bits of the union at the field's type. Fields might have a
-non-zero offset (except when `#[repr(C)]` is used); in that case the bits
-starting at the offset of the fields are read. It is the programmer's
+non-zero offset (except when [the C representation] is used); in that case the
+bits starting at the offset of the fields are read. It is the programmer's
 responsibility to make sure that the data is valid at the field's type. Failing
-to do so results in undefined behavior. For example, reading the value `3` at
-type `bool` is undefined behavior. Effectively, writing to and then reading from
-a `#[repr(C)]` union is analogous to a [`transmute`] from the type used for
-writing to the type used for reading.
+to do so results in [undefined behavior]. For example, reading the value `3`
+through of a field of the [boolean type] is undefined behavior. Effectively,
+writing to and then reading from a union with [the C representation] is
+analogous to a [`transmute`] from the type used for writing to the type used for
+reading.
 
 Consequently, all reads of union fields have to be placed in `unsafe` blocks:
 
@@ -182,4 +183,7 @@ checking, etc etc etc).
 [_StructFields_]: structs.md
 [`transmute`]: ../../std/mem/fn.transmute.html
 [`Copy`]: ../../std/marker/trait.Copy.html
+[boolean type]: ../types/boolean.md
 [ManuallyDrop]: ../../std/mem/struct.ManuallyDrop.html
+[the C representation]: ../type-layout.md#reprc-unions
+[undefined behavior]: ../behavior-considered-undefined.html

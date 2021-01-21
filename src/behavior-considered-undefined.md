@@ -38,7 +38,7 @@ code.
   a function/primitive operation or returned from a function/primitive
   operation.
   The following values are invalid (at their respective type):
-  * A value other than `false` (`0`) or `true` (`1`) in a `bool`.
+  * A value other than `false` (`0`) or `true` (`1`) in a [`bool`].
   * A discriminant in an `enum` not included in the type definition.
   * A null `fn` pointer.
   * A value in a `char` which is a surrogate or above `char::MAX`.
@@ -77,7 +77,8 @@ cannot be bigger than `isize::MAX` bytes.
 > vice versa, undefined behavior in Rust can cause adverse affects on code
 > executed by any FFI calls to other languages.
 
-[`const`]: items/constant-items.html
+[`bool`]: types/boolean.md
+[`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
