@@ -2,7 +2,7 @@
 
 The functionality and syntax of Rust can be extended with custom definitions
 called macros. They are given names, and invoked through a consistent
-syntax:`some_extension!(...)`.
+syntax: `some_extension!(...)`.
 
 There are two ways to define new macros:
 
