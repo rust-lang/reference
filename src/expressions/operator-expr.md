@@ -164,10 +164,10 @@ for other types. Remember that signed integers are always represented using
 two's complement. The operands of all of these operators are evaluated in
 [value expression context][value expression] so are moved or copied.
 
-| Symbol | Integer     | `bool`      | Floating Point | Overloading Trait  |
-|--------|-------------|-------------|----------------|--------------------|
-| `-`    | Negation*   |             | Negation       | `std::ops::Neg`    |
-| `!`    | Bitwise NOT | Logical NOT |                | `std::ops::Not`    |
+| Symbol | Integer     | `bool`        | Floating Point | Overloading Trait  |
+|--------|-------------|-------------- |----------------|--------------------|
+| `-`    | Negation*   |               | Negation       | `std::ops::Neg`    |
+| `!`    | Bitwise NOT | [Logical NOT] |                | `std::ops::Not`    |
 
 \* Only for signed integer types.
 
@@ -202,18 +202,18 @@ types. Remember that signed integers are always represented using two's
 complement. The operands of all of these operators are evaluated in [value
 expression context][value expression] so are moved or copied.
 
-| Symbol | Integer                 | `bool`      | Floating Point | Overloading Trait  | Overloading Compound Assignment Trait |
-|--------|-------------------------|-------------|----------------|--------------------| ------------------------------------- |
-| `+`    | Addition                |             | Addition       | `std::ops::Add`    | `std::ops::AddAssign`                 |
-| `-`    | Subtraction             |             | Subtraction    | `std::ops::Sub`    | `std::ops::SubAssign`                 |
-| `*`    | Multiplication          |             | Multiplication | `std::ops::Mul`    | `std::ops::MulAssign`                 |
-| `/`    | Division*               |             | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
-| `%`    | Remainder               |             | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
-| `&`    | Bitwise AND             | Logical AND |                | `std::ops::BitAnd` | `std::ops::BitAndAssign`              |
-| <code>&#124;</code> | Bitwise OR | Logical OR  |                | `std::ops::BitOr`  | `std::ops::BitOrAssign`               |
-| `^`    | Bitwise XOR             | Logical XOR |                | `std::ops::BitXor` | `std::ops::BitXorAssign`              |
-| `<<`   | Left Shift              |             |                | `std::ops::Shl`    | `std::ops::ShlAssign`                 |
-| `>>`   | Right Shift**           |             |                | `std::ops::Shr`    |  `std::ops::ShrAssign`                |
+| Symbol | Integer                 | `bool`        | Floating Point | Overloading Trait  | Overloading Compound Assignment Trait |
+|--------|-------------------------|---------------|----------------|--------------------| ------------------------------------- |
+| `+`    | Addition                |               | Addition       | `std::ops::Add`    | `std::ops::AddAssign`                 |
+| `-`    | Subtraction             |               | Subtraction    | `std::ops::Sub`    | `std::ops::SubAssign`                 |
+| `*`    | Multiplication          |               | Multiplication | `std::ops::Mul`    | `std::ops::MulAssign`                 |
+| `/`    | Division*               |               | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
+| `%`    | Remainder               |               | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
+| `&`    | Bitwise AND             | [Logical AND] |                | `std::ops::BitAnd` | `std::ops::BitAndAssign`              |
+| <code>&#124;</code> | Bitwise OR | [Logical OR]  |                | `std::ops::BitOr`  | `std::ops::BitOrAssign`               |
+| `^`    | Bitwise XOR             | [Logical XOR] |                | `std::ops::BitXor` | `std::ops::BitXorAssign`              |
+| `<<`   | Left Shift              |               |                | `std::ops::Shl`    | `std::ops::ShlAssign`                 |
+| `>>`   | Right Shift**           |               |                | `std::ops::Shr`    |  `std::ops::ShrAssign`                |
 
 \* Integer division rounds towards zero.
 
@@ -522,6 +522,10 @@ dependency.
 
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
+[logical and]: ../types/boolean.md#logical-and
+[logical not]: ../types/boolean.md#logical-not
+[logical or]: ../types/boolean.md#logical-or
+[logical xor]: ../types/boolean.md#logical-xor
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [unit]: ../types/tuple.md

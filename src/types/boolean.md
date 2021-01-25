@@ -32,6 +32,67 @@ Like all primitives, the boolean type [implements][p-impl] the
 
 > **Note**: See the [standard library docs][std] for library operations.
 
+## Operations on boolean values
+
+<!-- This is washy wording --> When using certain operator expressions with a
+boolean type for its operands, they evaluate using the rules of [boolean logic].
+
+### Logical not
+
+| `b` | [`!b`][op-not] |
+|- | - |
+| `true` | `false` |
+| `false` | `true` |
+
+### Logical or
+
+| `a` | `b` | [<code>a &#124; b</code>][op-or] |
+|- | - | - |
+| `true` | `true` | `true` |
+| `true` | `false` | `true` |
+| `false` | `true` | `true` |
+| `false` | `false` | `false` |
+
+### Logical and
+
+| `a` | `b` | [`a & b`][op-and] |
+|- | - | - |
+| `true` | `true` | `true` |
+| `true` | `false` | `false` |
+| `false` | `true` | `false` |
+| `false` | `false` | `false` |
+
+### Logical xor
+
+| `a` | `b` | [`a ^ b`][op-xor] |
+|- | - | - |
+| `true` | `true` | `false` |
+| `true` | `false` | `true` |
+| `false` | `true` | `true` |
+| `false` | `false` | `false` |
+
+### Comparisons
+
+| `a` | `b` | [`a == b`][op-compare] |
+|- | - | - |
+| `true` | `true` | `true` |
+| `true` | `false` | `false` |
+| `false` | `true` | `false` |
+| `false` | `false` | `true` |
+
+| `a` | `b` | [`a > b`][op-compare] |
+|- | - | - |
+| `true` | `true` | `false` |
+| `true` | `false` | `true` |
+| `false` | `true` | `false` |
+| `false` | `false` | `false` |
+
+* `a != b` is the same as `!(a == b)`
+* `a >= b` is the same as `a == b | a > b`
+* `a < b` is the same as `!(a >= b)`
+* `a <= b` is the same as `a == b | a < b`
+
+[boolean logic]: https://en.wikipedia.org/wiki/Boolean_algebra
 [enumerated type]: enum.md
 [expressions]: ../expressions.md
 [if expressions]: ../expressions/if-expr.md#if-expressions
@@ -39,6 +100,11 @@ Like all primitives, the boolean type [implements][p-impl] the
 [lazy]: ../expressions/operator-expr.md#lazy-boolean-operators
 [literal expression]: ../expressions/literal-expr.md
 [name]: ../names.md
+[op-and]: ../expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[op-compare]: ../expressions/operator-expr.md#comparison-operators
+[op-not]: ../expressions/operator-expr.md#negation-operators
+[op-or]: ../expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[op-xor]: ../expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [p-clone]: ../special-types-and-traits.md#clone
 [p-copy]: ../special-types-and-traits.md#copy
 [p-impl]: ../items/implementations.md
