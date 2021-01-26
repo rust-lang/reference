@@ -111,7 +111,6 @@
 
 - [Memory model](memory-model.md)
     - [Memory allocation and lifetime](memory-allocation-and-lifetime.md)
-    - [Memory ownership](memory-ownership.md)
     - [Variables](variables.md)
 
 - [Linkage](linkage.md)
