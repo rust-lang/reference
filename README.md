@@ -11,6 +11,7 @@ what we have for now.
 
 - rustc (the Rust compiler).
 - mdbook (use `cargo install mdbook` to install it).
+- rust nightly (you would be required to set your Rust version to the nightly version to make sure all tests pass)
 
 ## Build steps
 
@@ -28,7 +29,22 @@ Change the directory to the downloaded repository:
 ```sh
 cd reference
 ```
-Run the following command to test the code snippets to catch compilation errors:
+
+To run the tests, you would need to set the Rust version to the nightly release. You can do this by executing the following command:
+
+```shell
+rustup override set nightly
+```
+
+This will set the nightly version only for your the current project.
+
+If you wish to set Rust nightly for all your projects, you can run the command: 
+
+```shell
+rustup default nightly
+```
+
+Now, run the following command to test the code snippets to catch compilation errors:
 
 ```shell
 mdbook test
