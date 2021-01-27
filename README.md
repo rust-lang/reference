@@ -14,15 +14,28 @@ what we have for now.
 
 ## Build steps
 
-First, go to the repository folder and test the code snippets to catch
-compilation errors:
+To build the project, follow the steps given below :
+
+Clone the project by downloading the ZIP from the [GitHub page](https://github.com/rust-lang/reference) or
+run the following command:
+
+```
+git clone https://github.com/rust-lang/reference
+```
+
+Change the directory to the downloaded repository:
 
 ```sh
 cd reference
+```
+Run the following command to test the code snippets to catch compilation errors:
+
+```shell
 mdbook test
 ```
 
-And then generate the book:
+
+To generate a local instance of the book, run:
 
 ```sh
 mdbook build
