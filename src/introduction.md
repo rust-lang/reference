@@ -15,7 +15,7 @@ See the [GitHub issues] for what is not documented in this book.
 
 </div>
 
-## Rust Releases
+## Rust releases
 
 Rust has a new language release every six weeks.
 The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on.
@@ -25,7 +25,7 @@ The latest release of this book, matching the latest Rust version, can always be
 Prior versions can be found by adding the Rust version before the "reference" directory.
 For example, the Reference for Rust 1.49.0 is located at <https://doc.rust-lang.org/1.49.0/reference/>.
 
-## What *The Reference* is Not
+## What *The Reference* is not
 
 This book does not serve as an introduction to the language.
 Background familiarity with the language is assumed.
@@ -53,7 +53,7 @@ Finally, this book is not normative.
 It may include details that are specific to `rustc` itself, and should not be taken as a specification for the Rust language.
 We intend to produce such a book someday, and until then, the reference is the closest thing we have to one.
 
-## How to Use This Book
+## How to use this book
 
 This book does not assume you are reading this book sequentially.
 Each chapter generally can be read standalone, but will cross-link to other chapters for facets of the language they refer to, but do not discuss.
