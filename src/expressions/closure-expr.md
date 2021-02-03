@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
 >
 > _ClosureParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_PatternNoTopAlt_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A _closure expression_, also know as a lambda expression or a lambda, defines a
 closure and denotes it as a value, in a single expression. A closure expression

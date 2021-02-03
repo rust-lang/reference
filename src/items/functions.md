@@ -32,7 +32,7 @@
 > )
 >
 > _FunctionParamPattern_ :\
-> &nbsp;&nbsp; [_Pattern_] `:` ( [_Type_] | `...` )
+> &nbsp;&nbsp; [_PatternNoTopAlt_] `:` ( [_Type_] | `...` )
 >
 > _FunctionReturnType_ :\
 > &nbsp;&nbsp; `->` [_Type_]
