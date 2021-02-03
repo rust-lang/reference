@@ -580,7 +580,7 @@ usages and meanings are defined in the linked pages.
 | `!=`   | Ne          | [Not Equal][comparison]
 | `>`    | Gt          | [Greater than][comparison], [Generics], [Paths]
 | `<`    | Lt          | [Less than][comparison], [Generics], [Paths]
-| `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
+| `>=`   | Ge          | [Greater than or equal to][comparison]
 | `<=`   | Le          | [Less than or equal to][comparison]
 | `@`    | At          | [Subpattern binding]
 | `_`    | Underscore  | [Wildcard patterns], [Inferred types], Unnamed items in [constants], [extern crates], and [use declarations]
