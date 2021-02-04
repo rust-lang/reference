@@ -343,7 +343,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | `bool` or `char`      | Integer type          | Primitive to integer cast        |
 | `u8`                  | `char`                | `u8` to `char` cast              |
 | `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
-| `*T` where `T: Sized` | Numeric type          | Pointer to address cast          |
+| `*T` where `T: Sized` | Integer type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
 | `&[T; n]`             | `*const T`            | Array to pointer cast            |
 | [Function item]       | [Function pointer]    | Function item to function pointer cast |
