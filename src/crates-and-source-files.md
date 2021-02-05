@@ -93,6 +93,9 @@ A restriction is imposed on the shebang syntax to avoid confusion with an
 intervening [comments] or [whitespace]. If this restriction fails, then it is
 not treated as a shebang, but instead as the start of an attribute.
 
+## Size limitation
+Source files must be less than 4 GiB in size (4294967295 bytes at most).
+
 ## Preludes and `no_std`
 
 This section has been moved to the [Preludes chapter](names/preludes.md).
