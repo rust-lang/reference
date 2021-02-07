@@ -2,19 +2,13 @@
 
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `|`<sup>?</sup> _PatternAllowTopAltInner_
+> &nbsp;&nbsp; &nbsp;&nbsp; `|`<sup>?</sup> _PatternNoTopAlt_ `|` _PatternNoTopAlt_
+> &nbsp;&nbsp; | _PatternNoTopAlt_
 >
 > _PatternNoTopAlt_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _Pattern_ `)`
-> &nbsp;&nbsp; | _PatternInner_
->
-> _PatternAllowTopAltInner_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _PatternAllowTopAltInner_ `|` _PatternAllowTopAltInner_
-> &nbsp;&nbsp; | _Pattern_
->
-> _PatternInner_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
 > &nbsp;&nbsp; | [_RangePattern_]
+> &nbsp;&nbsp; | `(` _Pattern_ `)`
 >
 > _PatternWithoutRange_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralPattern_]\
