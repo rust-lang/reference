@@ -20,11 +20,9 @@ Rust supports four loop expressions:
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
 *   A [`while let` expression](#predicate-pattern-loops) tests a pattern.
-*   A [`for` expression](#iterator-loops) extracts values from an iterator,
-    looping until the iterator is empty.
+*   A [`for` expression](#iterator-loops) extracts values from an iterator, looping until the iterator is empty.
 
-All four types of loop support [`break` expressions](#break-expressions),
-[`continue` expressions](#continue-expressions), and [labels](#loop-labels).
+All four types of loop support [`break` expressions](#break-expressions), [`continue` expressions](#continue-expressions), and [labels](#loop-labels).
 Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
 ## Infinite loops
@@ -36,10 +34,8 @@ Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 A `loop` expression repeats execution of its body continuously:
 `loop { println!("I live."); }`.
 
-A `loop` expression without an associated `break` expression is diverging and
-has type [`!`](../types/never.md). A `loop` expression containing
-associated [`break` expression(s)](#break-expressions) may terminate, and must
-have type compatible with the value of the `break` expression(s).
+A `loop` expression without an associated `break` expression is diverging and has type [`!`](../types/never.md).
+A `loop` expression containing associated [`break` expression(s)](#break-expressions) may terminate, and must have type compatible with the value of the `break` expression(s).
 
 ## Predicate loops
 
@@ -47,10 +43,9 @@ have type compatible with the value of the `break` expression(s).
 > _PredicateLoopExpression_ :\
 > &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
 
-A `while` loop begins by evaluating the [boolean] loop conditional operand. If
-the loop conditional operand evaluates to `true`, the loop body block
-executes, then control returns to the loop conditional operand. If the loop
-conditional expression evaluates to `false`, the `while` expression completes.
+A `while` loop begins by evaluating the [boolean] loop conditional operand.
+If the loop conditional operand evaluates to `true`, the loop body block executes, then control returns to the loop conditional operand.
+If the loop conditional expression evaluates to `false`, the `while` expression completes.
 
 An example:
 
@@ -70,12 +65,9 @@ while i < 10 {
 > &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]
 
-A `while let` loop is semantically similar to a `while` loop but in place of a
-condition expression it expects the keyword `let` followed by a pattern, an
-`=`, a [scrutinee] expression and a block expression. If the value of the
-scrutinee matches the pattern, the loop body block executes then control
-returns to the pattern matching statement. Otherwise, the while expression
-completes.
+A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
+If the value of the scrutinee matches the pattern, the loop body block executes then control returns to the pattern matching statement.
+Otherwise, the while expression completes.
 
 ```rust
 let mut x = vec![1, 2, 3];
@@ -90,8 +82,7 @@ while let _ = 5 {
 }
 ```
 
-A `while let` loop is equivalent to a `loop` expression containing a [`match`
-expression] as follows.
+A `while let` loop is equivalent to a `loop` expression containing a [`match` expression] as follows.
 
 <!-- ignore: expansion example -->
 ```rust,ignore
@@ -112,8 +103,8 @@ is equivalent to
 }
 ```
 
-Multiple patterns may be specified with the `|` operator. This has the same semantics
-as with `|` in `match` expressions:
+Multiple patterns may be specified with the `|` operator.
+This has the same semantics as with `|` in `match` expressions:
 
 ```rust
 let mut vals = vec![2, 3, 1, 2, 2];
@@ -132,11 +123,9 @@ As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolea
 > &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>_except struct expression_</sub>
 >              [_BlockExpression_]
 
-A `for` expression is a syntactic construct for looping over elements provided
-by an implementation of `std::iter::IntoIterator`. If the iterator yields a
-value, that value is matched against the irrefutable pattern, the body of the
-loop is executed, and then control returns to the head of the `for` loop. If the
-iterator is empty, the `for` expression completes.
+A `for` expression is a syntactic construct for looping over elements provided by an implementation of `std::iter::IntoIterator`.
+If the iterator yields a value, that value is matched against the irrefutable pattern, the body of the loop is executed, and then control returns to the head of the `for` loop.
+If the iterator is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
@@ -187,15 +176,11 @@ is equivalent to
 }
 ```
 
-`IntoIterator`, `Iterator`, and `Option` are always the standard library items
-here, not whatever those names resolve to in the current scope. The variable
-names `next`, `iter`, and `val` are for exposition only, they do not actually
-have names the user can type.
+`IntoIterator`, `Iterator`, and `Option` are always the standard library items here, not whatever those names resolve to in the current scope.
+The variable names `next`, `iter`, and `val` are for exposition only, they do not actually have names the user can type.
 
-> **Note**: that the outer `match` is used to ensure that any
-> [temporary values] in `iter_expr` don't get dropped before the loop is
-> finished. `next` is declared before being assigned because it results in
-> types being inferred correctly more often.
+> **Note**: that the outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished.
+> `next` is declared before being assigned because it results in types being inferred correctly more often.
 
 ## Loop labels
 
@@ -203,13 +188,9 @@ have names the user can type.
 > _LoopLabel_ :\
 > &nbsp;&nbsp; [LIFETIME_OR_LABEL] `:`
 
-A loop expression may optionally have a _label_. The label is written as
-a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`,
-`'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
-If a label is present, then labeled `break` and `continue` expressions nested
-within this loop may exit out of this loop or return control to its head.
-See [break expressions](#break-expressions) and [continue
-expressions](#continue-expressions).
+A loop expression may optionally have a _label_. The label is written as a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`, `'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
+If a label is present, then labeled `break` and `continue` expressions nested within this loop may exit out of this loop or return control to its head.
+See [break expressions](#break-expressions) and [continue expressions](#continue-expressions).
 
 ## `break` expressions
 
@@ -217,8 +198,7 @@ expressions](#continue-expressions).
 > _BreakExpression_ :\
 > &nbsp;&nbsp; `break` [LIFETIME_OR_LABEL]<sup>?</sup> [_Expression_]<sup>?</sup>
 
-When `break` is encountered, execution of the associated loop body is
-immediately terminated, for example:
+When `break` is encountered, execution of the associated loop body is immediately terminated, for example:
 
 ```rust
 let mut last = 0;
@@ -231,9 +211,9 @@ for x in 1..100 {
 assert_eq!(last, 12);
 ```
 
-A `break` expression is normally associated with the innermost `loop`, `for` or
-`while` loop enclosing the `break` expression, but a [label](#loop-labels) can
-be used to specify which enclosing loop is affected. Example:
+A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression,
+but a [label](#loop-labels) can be used to specify which enclosing loop is affected.
+Example:
 
 ```rust
 'outer: loop {
@@ -243,9 +223,7 @@ be used to specify which enclosing loop is affected. Example:
 }
 ```
 
-A `break` expression is only permitted in the body of a loop, and has one of
-the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
-`break EXPR` or `break 'label EXPR`.
+A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
 ## `continue` expressions
 
@@ -253,21 +231,17 @@ the forms `break`, `break 'label` or ([see below](#break-and-loop-values))
 > _ContinueExpression_ :\
 > &nbsp;&nbsp; `continue` [LIFETIME_OR_LABEL]<sup>?</sup>
 
-When `continue` is encountered, the current iteration of the associated loop
-body is immediately terminated, returning control to the loop *head*. In
-the case of a `while` loop, the head is the conditional expression controlling
-the loop. In the case of a `for` loop, the head is the call-expression
-controlling the loop.
+When `continue` is encountered, the current iteration of the associated loop body is immediately terminated, returning control to the loop *head*.
+In the case of a `while` loop, the head is the conditional expression controlling the loop.
+In the case of a `for` loop, the head is the call-expression controlling the loop.
 
-Like `break`, `continue` is normally associated with the innermost enclosing
-loop, but `continue 'label` may be used to specify the loop affected.
+Like `break`, `continue` is normally associated with the innermost enclosing loop, but `continue 'label` may be used to specify the loop affected.
 A `continue` expression is only permitted in the body of a loop.
 
 ## `break` and loop values
 
-When associated with a `loop`, a break expression may be used to return a value
-from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where
-`EXPR` is an expression whose result is returned from the `loop`. For example:
+When associated with a `loop`, a break expression may be used to return a value from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where `EXPR` is an expression whose result is returned from the `loop`.
+For example:
 
 ```rust
 let (mut a, mut b) = (1, 1);
@@ -283,10 +257,8 @@ let result = loop {
 assert_eq!(result, 13);
 ```
 
-In the case a `loop` has an associated `break`, it is not considered diverging,
-and the `loop` must have a type compatible with each `break` expression.
-`break` without an expression is considered identical to `break` with
-expression `()`.
+In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
+`break` without an expression is considered identical to `break` with expression `()`.
 
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 [_BlockExpression_]: block-expr.md

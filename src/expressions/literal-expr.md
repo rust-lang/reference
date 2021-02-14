@@ -12,9 +12,8 @@
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | [BOOLEAN_LITERAL]
 
-A _literal expression_ consists of one of the [literal](../tokens.md#literals)
-forms described earlier. It directly describes a number, character, string,
-or boolean value.
+A _literal expression_ consists of one of the [literal](../tokens.md#literals) forms described earlier.
+It directly describes a number, character, string, or boolean value.
 
 ```rust
 "hello";   // string type

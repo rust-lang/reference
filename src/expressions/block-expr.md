@@ -12,28 +12,20 @@
 > &nbsp;&nbsp; | [_Statement_]<sup>\+</sup> [_ExpressionWithoutBlock_]\
 > &nbsp;&nbsp; | [_ExpressionWithoutBlock_]
 
-A *block expression*, or *block*, is a control flow expression and anonymous
-namespace scope for items and variable declarations. As a control flow
-expression, a block sequentially executes its component non-item declaration
-statements and then its final optional expression. As an anonymous namespace
-scope, item declarations are only in scope inside the block itself and variables
-declared by `let` statements are in scope from the next statement until the end
-of the block.
+A *block expression*, or *block*, is a control flow expression and anonymous namespace scope for items and variable declarations.
+As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
+As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by `let` statements are in scope from the next statement until the end of the block.
 
-Blocks are written as `{`, then any [inner attributes], then [statements],
-then an optional expression, and finally a `}`. Statements are usually required
-to be followed by a semicolon, with two exceptions. Item declaration statements do
-not need to be followed by a semicolon. Expression statements usually require
-a following semicolon except if its outer expression is a flow control
-expression. Furthermore, extra semicolons between statements are allowed, but
-these semicolons do not affect semantics.
+Blocks are written as `{`, then any [inner attributes], then [statements], then an optional expression, and finally a `}`.
+Statements are usually required to be followed by a semicolon, with two exceptions.
+Item declaration statements do not need to be followed by a semicolon.
+Expression statements usually require a following semicolon except if its outer expression is a flow control expression.
+Furthermore, extra semicolons between statements are allowed, but these semicolons do not affect semantics.
 
-When evaluating a block expression, each statement, except for item declaration
-statements, is executed sequentially. Then the final expression is executed,
-if given.
+When evaluating a block expression, each statement, except for item declaration statements, is executed sequentially.
+Then the final expression is executed, if given.
 
-The type of a block is the type of the final expression, or `()` if the final
-expression is omitted.
+The type of a block is the type of the final expression, or `()` if the final expression is omitted.
 
 ```rust
 # fn fn_call() {}
@@ -49,14 +41,11 @@ let five: i32 = {
 assert_eq!(5, five);
 ```
 
-> Note: As a control flow expression, if a block expression is the outer
-> expression of an expression statement, the expected type is `()` unless it
-> is followed immediately by a semicolon.
+> Note: As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
-Blocks are always [value expressions] and evaluate the last expression in
-value expression context. This can be used to force moving a value if really
-needed. For example, the following example fails on the call to `consume_self`
-because the struct was moved out of `s` in the block expression.
+Blocks are always [value expressions] and evaluate the last expression in value expression context.
+This can be used to force moving a value if really needed.
+For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.
 
 ```rust,compile_fail
 struct Struct;
@@ -83,20 +72,15 @@ fn move_by_block_expression() {
 > _AsyncBlockExpression_ :\
 > &nbsp;&nbsp; `async` `move`<sup>?</sup> _BlockExpression_
 
-An *async block* is a variant of a block expression which evaluates to
-a *future*. The final expression of the block, if present, determines
-the result value of the future.
+An *async block* is a variant of a block expression which evaluates to a *future*.
+The final expression of the block, if present, determines the result value of the future.
 
 Executing an async block is similar to executing a closure expression:
 its immediate effect is to produce and return an anonymous type.
-Whereas closures return a type that implements one or more of the
-[`std::ops::Fn`] traits, however, the type returned for an async block
-implements the [`std::future::Future`] trait. The actual data format for
-this type is unspecified.
+Whereas closures return a type that implements one or more of the [`std::ops::Fn`] traits, however, the type returned for an async block implements the [`std::future::Future`] trait.
+The actual data format for this type is unspecified.
 
-> **Note:** The future type that rustc generates is roughly equivalent
-> to an enum with one variant per `await` point, where each variant
-> stores the data needed to resume from its corresponding point.
+> **Note:** The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
 
 > **Edition differences**: Async blocks are only available beginning with Rust 2018.
 
@@ -105,11 +89,9 @@ this type is unspecified.
 
 ### Capture modes
 
-Async blocks capture variables from their environment using the same
-[capture modes] as closures. Like closures, when written `async {
-.. }` the capture mode for each variable will be inferred from the
-content of the block. `async move { .. }` blocks however will move all
-referenced variables into the resulting future.
+Async blocks capture variables from their environment using the same [capture modes] as closures.
+Like closures, when written `async { .. }` the capture mode for each variable will be inferred from the content of the block.
+`async move { .. }` blocks however will move all referenced variables into the resulting future.
 
 [capture modes]: ../types/closure.md#capture-modes
 [shared references]: ../types/pointer.md#shared-references-
@@ -117,25 +99,20 @@ referenced variables into the resulting future.
 
 ### Async context
 
-Because async blocks construct a future, they define an **async
-context** which can in turn contain [`await` expressions].  Async
-contexts are established by async blocks as well as the bodies of
-async functions, whose semantics are defined in terms of async blocks.
+Because async blocks construct a future, they define an **async context** which can in turn contain [`await` expressions].
+Async contexts are established by async blocks as well as the bodies of async functions, whose semantics are defined in terms of async blocks.
 
 [`await` expressions]: await-expr.md
 
 ### Control-flow operators
 
-Async blocks act like a function boundary, much like
-closures. Therefore, the `?` operator and `return` expressions both
-affect the output of the future, not the enclosing function or other
-context. That is, `return <expr>` from within a closure will return
-the result of `<expr>` as the output of the future. Similarly, if
-`<expr>?` propagates an error, that error is propagated as the result
-of the future.
+Async blocks act like a function boundary, much like closures.
+Therefore, the `?` operator and `return` expressions both affect the output of the future, not the enclosing function or other context.
+That is, `return <expr>` from within a closure will return the result of `<expr>` as the output of the future.
+Similarly, if `<expr>?` propagates an error, that error is propagated as the result of the future.
 
-Finally, the `break` and `continue` keywords cannot be used to branch
-out from an async block. Therefore the following is illegal:
+Finally, the `break` and `continue` keywords cannot be used to branch out from an async block.
+Therefore the following is illegal:
 
 ```rust,edition2018,compile_fail
 loop {
@@ -153,8 +130,8 @@ loop {
 
 _See [`unsafe` block](../unsafe-blocks.md) for more information on when to use `unsafe`_
 
-A block of code can be prefixed with the `unsafe` keyword to permit [unsafe
-operations]. Examples:
+A block of code can be prefixed with the `unsafe` keyword to permit [unsafe operations].
+Examples:
 
 ```rust
 unsafe {
@@ -170,8 +147,7 @@ let a = unsafe { an_unsafe_fn() };
 
 ## Attributes on block expressions
 
-[Inner attributes] are allowed directly after the opening brace of a block
-expression in the following situations:
+[Inner attributes] are allowed directly after the opening brace of a block expression in the following situations:
 
 * [Function] and [method] bodies.
 * Loop bodies ([`loop`], [`while`], [`while let`], and [`for`]).
@@ -181,11 +157,9 @@ expression in the following situations:
 * A block expression as the tail expression of another block expression.
 <!-- Keep list in sync with expressions.md -->
 
-The attributes that have meaning on a block expression are [`cfg`] and [the
-lint check attributes].
+The attributes that have meaning on a block expression are [`cfg`] and [the lint check attributes].
 
-For example, this function returns `true` on unix platforms and `false` on other
-platforms.
+For example, this function returns `true` on unix platforms and `false` on other platforms.
 
 ```rust
 fn is_unix_platform() -> bool {
