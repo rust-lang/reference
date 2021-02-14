@@ -28,7 +28,7 @@
 > _StructExprUnit_ : [_PathInExpression_]
 
 A *struct expression* creates a struct, enum, or union value.
-It consists of a path to a [struct], [enum], or [union] item followed by the values for the fields of the item.
+It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
 There are three forms of struct expressions: struct, tuple, and unit.
 
 The following are examples of struct expressions:
@@ -101,8 +101,7 @@ Point3d { x, y: y_value, z };
 ## Tuple struct expression
 
 A struct expression with fields enclosed in parentheses constructs a tuple struct.
-Though it is listed here as a specific expression for completeness, it is equivalent to a [call expression] to the tuple struct's constructor. For example: <!--
-This is false. Example: Position(0, ..other_position) -->
+Though it is listed here as a specific expression for completeness, it is equivalent to a [call expression] to the tuple struct's constructor. For example:
 
 ```rust
 struct Position(i32, i32, i32);
@@ -135,7 +134,7 @@ let b = Gamma{};  // Exact same value as `a`.
 [_PathInExpression_]: ../paths.md#paths-in-expressions
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [call expression]: call-expr.md
-[enum]: ../items/enumerations.md
+[enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-expressions
 [if]: if-expr.md#if-expressions
 [loop]: loop-expr.md
