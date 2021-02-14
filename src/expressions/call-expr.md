@@ -7,15 +7,13 @@
 > _CallParams_ :\
 > &nbsp;&nbsp; [_Expression_]&nbsp;( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>
 
-A _call expression_ consists of an expression followed by a parenthesized
-expression-list. It invokes a function, providing zero or more input variables.
-If the function eventually returns, then the expression completes. For
-[non-function types](../types/function-item.md), the expression f(...) uses
-the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or
-[`std::ops::FnOnce`] traits, which differ in whether they take the type by
-reference, mutable reference, or take ownership respectively. An automatic
-borrow will be taken if needed. Rust will also automatically dereference `f` as
-required. Some examples of call expressions:
+A _call expression_ consists of an expression followed by a parenthesized expression-list.
+It invokes a function, providing zero or more input variables.
+If the function eventually returns, then the expression completes.
+For [non-function types](../types/function-item.md), the expression f(...) uses the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or [`std::ops::FnOnce`] traits, which differ in whether they take the type by reference, mutable reference, or take ownership respectively.
+An automatic borrow will be taken if needed.
+Rust will also automatically dereference `f` as required.
+Some examples of call expressions:
 
 ```rust
 # fn add(x: i32, y: i32) -> i32 { 0 }
@@ -25,28 +23,22 @@ let name: &'static str = (|| "Rust")();
 
 ## Disambiguating Function Calls
 
-Rust treats all function calls as sugar for a more explicit, [fully-qualified
-syntax]. Upon compilation, Rust will desugar all function calls into the explicit
-form. Rust may sometimes require you to qualify function calls with trait,
-depending on the ambiguity of a call in light of in-scope items.
+Rust treats all function calls as sugar for a more explicit, [fully-qualified syntax].
+Upon compilation, Rust will desugar all function calls into the explicit form.
+Rust may sometimes require you to qualify function calls with trait, depending on the ambiguity of a call in light of in-scope items.
 
-> **Note**: In the past, the Rust community used the terms "Unambiguous
-> Function Call Syntax", "Universal Function Call Syntax", or "UFCS", in
-> documentation, issues, RFCs, and other community writings. However, the term
-> lacks descriptive power and potentially confuses the issue at hand. We mention
-> it here for searchability's sake.
+> **Note**: In the past, the Rust community used the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", in documentation, issues, RFCs, and other community writings.
+> However, the term lacks descriptive power and potentially confuses the issue at hand.
+> We mention it here for searchability's sake.
 
-Several situations often occur which result in ambiguities about the receiver or
-referent of method or associated function calls. These situations may include:
+Several situations often occur which result in ambiguities about the receiver or referent of method or associated function calls.
+These situations may include:
 
 * Multiple in-scope traits define methods with the same name for the same types
-* Auto-`deref` is undesirable; for example, distinguishing between methods on a
-  smart pointer itself and the pointer's referent
-* Methods which take no arguments, like [`default()`], and return properties of a
-  type, like [`size_of()`]
+* Auto-`deref` is undesirable; for example, distinguishing between methods on a smart pointer itself and the pointer's referent
+* Methods which take no arguments, like [`default()`], and return properties of a type, like [`size_of()`]
 
-To resolve the ambiguity, the programmer may refer to their desired method or
-function using more specific paths, types, or traits.
+To resolve the ambiguity, the programmer may refer to their desired method or function using more specific paths, types, or traits.
 
 For example,
 

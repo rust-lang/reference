@@ -5,10 +5,9 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_PathInExpression_]\
 > &nbsp;&nbsp; | [_QualifiedPathInExpression_]
 
-A [path] used as an expression context denotes either a local
-variable or an item. Path expressions that resolve to local or static variables
-are [place expressions], other paths are [value expressions]. Using a
-[`static mut`] variable requires an [`unsafe` block].
+A [path] used as an expression context denotes either a local variable or an item.
+Path expressions that resolve to local or static variables are [place expressions], other paths are [value expressions].
+Using a [`static mut`] variable requires an [`unsafe` block].
 
 ```rust
 # mod globals {

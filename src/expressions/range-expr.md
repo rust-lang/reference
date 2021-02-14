@@ -27,9 +27,7 @@
 > _RangeToInclusiveExpr_ :\
 > &nbsp;&nbsp; `..=` [_Expression_]
 
-The `..` and `..=` operators will construct an object of one of the
-`std::ops::Range` (or `core::ops::Range`) variants, according to the following
-table:
+The `..` and `..=` operators will construct an object of one of the `std::ops::Range` (or `core::ops::Range`) variants, according to the following table:
 
 | Production             | Syntax        | Type                         | Range                 |
 |------------------------|---------------|------------------------------|-----------------------|

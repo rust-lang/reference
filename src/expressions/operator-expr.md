@@ -13,24 +13,19 @@
 > &nbsp;&nbsp; | [_AssignmentExpression_]\
 > &nbsp;&nbsp; | [_CompoundAssignmentExpression_]
 
-Operators are defined for built in types by the Rust language. Many of the
-following operators can also be overloaded using traits in `std::ops` or
-`std::cmp`.
+Operators are defined for built in types by the Rust language.
+Many of the following operators can also be overloaded using traits in `std::ops` or `std::cmp`.
 
 ## Overflow
 
 Integer operators will panic when they overflow when compiled in debug mode.
-The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used
-to control this more directly. The following things are considered to be
-overflow:
+The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used to control this more directly.
+The following things are considered to be overflow:
 
-* When `+`, `*` or `-` create a value greater than the maximum value, or less
-  than the minimum value that can be stored. This includes unary `-` on the
-  smallest value of any signed integer type.
-* Using `/` or `%`, where the left-hand argument is the smallest integer of a
-  signed integer type and the right-hand argument is `-1`.
-* Using `<<` or `>>` where the right-hand argument is greater than or equal to
-  the number of bits in the type of the left-hand argument, or is negative.
+* When `+`, `*` or `-` create a value greater than the maximum value, or less than the minimum value that can be stored.
+  This includes unary `-` on the smallest value of any signed integer type.
+* Using `/` or `%`, where the left-hand argument is the smallest integer of a signed integer type and the right-hand argument is `-1`.
+* Using `<<` or `>>` where the right-hand argument is greater than or equal to the number of bits in the type of the left-hand argument, or is negative.
 
 ## Borrow operators
 
@@ -39,15 +34,13 @@ overflow:
 > &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
 > &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]
 
-The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix
-operators. When applied to a [place expression], this expressions produces a
-reference (pointer) to the location that the value refers to. The memory
-location is also placed into a borrowed state for the duration of the reference.
-For a shared borrow (`&`), this implies that the place may not be mutated, but
-it may be read or shared again. For a mutable borrow (`&mut`), the place may not
-be accessed in any way until the borrow expires. `&mut` evaluates its operand in
-a mutable place expression context. If the `&` or `&mut` operators are applied
-to a [value expression], then a [temporary value] is created.
+The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix operators.
+When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
+The memory location is also placed into a borrowed state for the duration of the reference.
+For a shared borrow (`&`), this implies that the place may not be mutated, but it may be read or shared again.
+For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
+`&mut` evaluates its operand in a mutable place expression context.
+If the `&` or `&mut` operators are applied to a [value expression], then a [temporary value] is created.
 
 These operators cannot be overloaded.
 
@@ -64,8 +57,7 @@ let mut array = [-2, 3, 9];
 }
 ```
 
-Even though `&&` is a single token ([the lazy 'and' operator](#lazy-boolean-operators)),
-when used in the context of borrow expressions it works as two borrows:
+Even though `&&` is a single token ([the lazy 'and' operator](#lazy-boolean-operators)), when used in the context of borrow expressions it works as two borrows:
 
 ```rust
 // same meanings:
@@ -84,16 +76,12 @@ let a = & & & & mut 10;
 > _DereferenceExpression_ :\
 > &nbsp;&nbsp; `*` [_Expression_]
 
-The `*` (dereference) operator is also a unary prefix operator. When applied to
-a [pointer](../types/pointer.md) it denotes the pointed-to location. If
-the expression is of type `&mut T` or `*mut T`, and is either a local
-variable, a (nested) field of a local variable or is a mutable [place
-expression], then the resulting memory location can be assigned to.
+The `*` (dereference) operator is also a unary prefix operator.
+When applied to a [pointer](../types/pointer.md) it denotes the pointed-to location.
+If the expression is of type `&mut T` or `*mut T`, and is either a local variable, a (nested) field of a local variable or is a mutable [place expression], then the resulting memory location can be assigned to.
 Dereferencing a raw pointer requires `unsafe`.
 
-On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an
-[immutable place expression context](../expressions.md#mutability) and
-`*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context.
+On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an [immutable place expression context](../expressions.md#mutability) and `*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context.
 
 ```rust
 let x = &7;
@@ -109,14 +97,12 @@ assert_eq!(*y, 11);
 > _ErrorPropagationExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `?`
 
-The question mark operator (`?`) unwraps valid values or returns erroneous
-values, propagating them to the calling function. It is a unary postfix
-operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
+The question mark operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
+It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
-When applied to values of the `Result<T, E>` type, it propagates errors. If
-the value is `Err(e)`, then it will return `Err(From::from(e))` from the
-enclosing function or closure. If applied to `Ok(x)`, then it will unwrap the
-value to evaluate to `x`.
+When applied to values of the `Result<T, E>` type, it propagates errors.
+If the value is `Err(e)`, then it will return `Err(From::from(e))` from the enclosing function or closure.
+If applied to `Ok(x)`, then it will unwrap the value to evaluate to `x`.
 
 ```rust
 # use std::num::ParseIntError;
@@ -131,9 +117,9 @@ println!("{:?}", res);
 # assert!(res.is_err())
 ```
 
-When applied to values of the `Option<T>` type, it propagates `None`s. If the
-value is `None`, then it will return `None`. If applied to `Some(x)`, then it
-will unwrap the value to evaluate to `x`.
+When applied to values of the `Option<T>` type, it propagates `None`s.
+If the value is `None`, then it will return `None`.
+If applied to `Some(x)`, then it will unwrap the value to evaluate to `x`.
 
 ```rust
 fn try_option_some() -> Option<u8> {
@@ -158,11 +144,10 @@ assert_eq!(try_option_none(), None);
 > &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]\
 > &nbsp;&nbsp; | `!` [_Expression_]
 
-These are the last two unary operators. This table summarizes the behavior of
-them on primitive types and which traits are used to overload these operators
-for other types. Remember that signed integers are always represented using
-two's complement. The operands of all of these operators are evaluated in
-[value expression context][value expression] so are moved or copied.
+These are the last two unary operators.
+This table summarizes the behavior of them on primitive types and which traits are used to overload these operators for other types.
+Remember that signed integers are always represented using two's complement.
+The operands of all of these operators are evaluated in [value expression context][value expression] so are moved or copied.
 
 | Symbol | Integer     | `bool`        | Floating Point | Overloading Trait  |
 |--------|-------------|-------------- |----------------|--------------------|
@@ -195,12 +180,10 @@ assert_eq!(true, !false);
 > &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]
 
-Binary operators expressions are all written with infix notation. This table
-summarizes the behavior of arithmetic and logical binary operators on
-primitive types and which traits are used to overload these operators for other
-types. Remember that signed integers are always represented using two's
-complement. The operands of all of these operators are evaluated in [value
-expression context][value expression] so are moved or copied.
+Binary operators expressions are all written with infix notation.
+This table summarizes the behavior of arithmetic and logical binary operators on primitive types and which traits are used to overload these operators for other types.
+Remember that signed integers are always represented using two's complement.
+The operands of all of these operators are evaluated in [value expression context][value expression] so are moved or copied.
 
 | Symbol | Integer                 | `bool`        | Floating Point | Overloading Trait  | Overloading Compound Assignment Trait |
 |--------|-------------------------|---------------|----------------|--------------------| ------------------------------------- |
@@ -246,18 +229,12 @@ assert_eq!(-10 >> 2, -3);
 > &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]
 
-Comparison operators are also defined both for primitive types and many types
-in the standard library. Parentheses are required when chaining comparison
-operators. For example, the expression `a == b == c` is invalid and may be
-written as `(a == b) == c`.
+Comparison operators are also defined both for primitive types and many types in the standard library.
+Parentheses are required when chaining comparison operators. For example, the expression `a == b == c` is invalid and may be written as `(a == b) == c`.
 
-Unlike arithmetic and logical operators, the traits for overloading these
-operators are used more generally to show how a type may be compared and will
-likely be assumed to define actual comparisons by functions that use these
-traits as bounds. Many functions and macros in the standard library can then
-use that assumption (although not to ensure safety). Unlike the arithmetic
-and logical operators above, these operators implicitly take shared borrows
-of their operands, evaluating them in [place expression context][place expression]:
+Unlike arithmetic and logical operators, the traits for overloading these operators are used more generally to show how a type may be compared and will likely be assumed to define actual comparisons by functions that use these traits as bounds.
+Many functions and macros in the standard library can then use that assumption (although not to ensure safety).
+Unlike the arithmetic and logical operators above, these operators implicitly take shared borrows of their operands, evaluating them in [place expression context][place expression]:
 
 ```rust
 # let a = 1;
@@ -296,13 +273,10 @@ assert!("World" >= "Hello");
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `&&` [_Expression_]
 
-The operators `||` and `&&` may be applied to operands of boolean type. The
-`||` operator denotes logical 'or', and the `&&` operator denotes logical
-'and'. They differ from `|` and `&` in that the right-hand operand is only
-evaluated when the left-hand operand does not already determine the result of
-the expression. That is, `||` only evaluates its right-hand operand when the
-left-hand operand evaluates to `false`, and `&&` only when it evaluates to
-`true`.
+The operators `||` and `&&` may be applied to operands of boolean type.
+The `||` operator denotes logical 'or', and the `&&` operator denotes logical 'and'.
+They differ from `|` and `&` in that the right-hand operand is only evaluated when the left-hand operand does not already determine the result of the expression.
+That is, `||` only evaluates its right-hand operand when the left-hand operand evaluates to `false`, and `&&` only when it evaluates to `true`.
 
 ```rust
 let x = false || true; // true
@@ -317,8 +291,7 @@ let y = false && panic!(); // false, doesn't evaluate `panic!()`
 
 A type cast expression is denoted with the binary operator `as`.
 
-Executing an `as` expression casts the value on the left-hand side to the type
-on the right-hand side.
+Executing an `as` expression casts the value on the left-hand side to the type on the right-hand side.
 
 An example of an `as` expression:
 
@@ -332,9 +305,8 @@ fn average(values: &[f64]) -> f64 {
 }
 ```
 
-`as` can be used to explicitly perform [coercions](../type-coercions.md), as
-well as the following additional casts. Here `*T` means either `*const T` or
-`*mut T`.
+`as` can be used to explicitly perform [coercions](../type-coercions.md), as well as the following additional casts.
+Here `*T` means either `*const T` or `*mut T`.
 
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
 |-----------------------|-----------------------|----------------------------------|
@@ -353,8 +325,7 @@ well as the following additional casts. Here `*T` means either `*const T` or
 | [Function pointer]    | Integer               | Function pointer to address cast |
 | Closure \*\*          | Function pointer      | Closure to function pointer cast |
 
-\* or `T` and `V` are compatible unsized types, e.g., both slices, both the
-same trait object.
+\* or `T` and `V` are compatible unsized types, e.g., both slices, both the same trait object.
 
 \*\* only for closures that do not capture (close over) any local variables
 
@@ -410,25 +381,18 @@ halfway between two floating point numbers.
 
 An *assignment expression* moves a value into a specified place.
 
-An assignment expression consists of a [mutable] [place expression], the
-*assigned place operand*, followed by an equals sign (`=`) and a [value
-expression], the *assigned value operand*.
+An assignment expression consists of a [mutable] [place expression], the *assigned place operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
 
-Unlike other place operands, the assigned place operand must be a place
-expression. Attempting to use a value expression is a compiler error rather
-than promoting it to a temporary.
+Unlike other place operands, the assigned place operand must be a place expression.
+Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
-Evaluating assignment expressions begins by evaluating its operands. The
-assigned value operand is evaluated first, followed by the assigned place
-operand.
+Evaluating assignment expressions begins by evaluating its operands.
+The assigned value operand is evaluated first, followed by the assigned place operand.
 
-> **Note**: This is different than other expressions in that the right operand
-> is evaluated before the left one.
+> **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
-It then has the effect of first [dropping] the value at the assigned place,
-unless the place is an uninitialized local variable or an uninitialized field of
-a local variable. Next it either [copies or moves] the assigned value to the
-assigned place.
+It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
+Next it either [copies or moves] the assigned value to the assigned place.
 
 An assignment expression always produces [the unit value][unit].
 
@@ -455,8 +419,7 @@ x = y;
 > &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]
 
-*Compound assignment expressions* combine arithmetic and logical binary
-operators with assignment expressions.
+*Compound assignment expressions* combine arithmetic and logical binary operators with assignment expressions.
 
 For example:
 
@@ -466,28 +429,20 @@ x += 1;
 assert!(x == 6);
 ```
 
-The syntax of compound assignment is a [mutable] [place expression], the
-*assigned operand*, then one of the operators followed by an `=` as a single
-token (no whitespace), and then a [value expression], the *modifying operand*.
+The syntax of compound assignment is a [mutable] [place expression], the *assigned operand*, then one of the operators followed by an `=` as a single token (no whitespace), and then a [value expression], the *modifying operand*.
 
-Unlike other place operands, the assigned place operand must be a place
-expression. Attempting to use a value expression is a compiler error rather
-than promoting it to a temporary.
+Unlike other place operands, the assigned place operand must be a place expression.
+Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
-Evaluation of compound assignment expressions depends on the types of the
-operators.
+Evaluation of compound assignment expressions depends on the types of the operators.
 
-If both types are primitives, then the modifying operand will be evaluated
-first followed by the assigned operand. It will then set the value of the
-assigned operand's place to the value of performing the operation of the
-operator with the values of the assigned operand and modifying operand.
+If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
+It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
 
-> **Note**: This is different than other expressions in that the right operand
-> is evaluated before the left one.
+> **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
-Otherwise, this expression is syntactic sugar for calling the function of the
-overloading compound assigment trait of the operator (see the table earlier in
-this chapter). A mutable borrow of the assigned operand is automatically taken.
+Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assigment trait of the operator (see the table earlier in this chapter).
+A mutable borrow of the assigned operand is automatically taken.
 
 For example, the following expression statements in `example` are equivalent:
 
@@ -511,12 +466,10 @@ fn example() {
 
 <div class="warning">
 
-Warning: The evaluation order of operands swaps depending on the types of the
-operands: with primitive types the right-hand side will get evaluated first,
-while with non-primitive types the left-hand side will get evaluated first.
-Try not to write code that depends on the evaluation order of operands in
-compound assignment expressions. See [this test] for an example of using this
-dependency.
+Warning: The evaluation order of operands swaps depending on the types of the operands:
+with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
+Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
+See [this test] for an example of using this dependency.
 
 </div>
 
