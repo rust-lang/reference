@@ -234,6 +234,22 @@ It allows a type to make certain promises about its behavior.
 
 Generic functions and generic structs can use traits to constrain, or bound, the types they accept.
 
+### Turbofish
+
+Paths with generic parameters in expressions must prefix the opening brackets with a `::`.
+Combined with the angular brackets for generics, this looks like a fish `::<>`.
+As such, this syntax is colloquially referred to as turbofish syntax.
+
+Examples:
+
+```rust
+let ok_num = Ok::<_, ()>(5);
+let vec = [1, 2, 3].iter().map(|n| n * 2).collect::<Vec<_>>();
+```
+
+This `::` prefix is required to disambiguate generic paths with multiple comparisons in a comma-separate list.
+See [the bastion of the turbofish][turbofish test] for an example.
+
 ### Uncovered type
 
 A type which does not appear as an argument to another type. For example,
@@ -286,6 +302,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [structs]: items/structs.md
 [trait objects]: types/trait-object.md
 [traits]: items/traits.md
+[turbofish test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/bastion-of-the-turbofish.rs
 [types]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
 [unions]: items/unions.md
