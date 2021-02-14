@@ -7,8 +7,7 @@ An [`enum` item] declares both the type and a number of *variants*, each of
 which is independently named and has the syntax of a struct, tuple struct or
 unit-like struct.
 
-New instances of an `enum` can be constructed in an [enumeration variant
-expression].
+New instances of an `enum` can be constructed with a [struct expression].
 
 Any `enum` value consumes as much memory as the largest variant for its
 corresponding `enum` type, as well as the size needed to store a discriminant.
@@ -20,4 +19,4 @@ named reference to an [`enum` item].
              ML, or a *pick ADT* in Limbo.
 
 [`enum` item]: ../items/enumerations.md
-[enumeration variant expression]: ../expressions/enum-variant-expr.md
+[struct expression]: ../expressions/struct-expr.md

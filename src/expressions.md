@@ -18,7 +18,6 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleIndexingExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_StructExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_EnumerationVariantExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_CallExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MethodCallExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_FieldExpression_]\
@@ -103,7 +102,6 @@ evaluate them conditionally as described on their respective pages.
 * Tuple expression
 * Tuple index expression
 * Struct expression
-* Enumeration variant expression
 * Call expression
 * Method call expression
 * Field expression
@@ -259,7 +257,7 @@ a few specific cases:
 
 * Before an expression used as a [statement].
 * Elements of [array expressions], [tuple expressions], [call expressions],
-  and tuple-style [struct] and [enum variant] expressions.
+  and tuple-style [struct] expressions.
   <!--
     These were likely stabilized inadvertently.
     See https://github.com/rust-lang/rust/issues/32796 and
@@ -277,7 +275,6 @@ They are never allowed before:
 
 [block expressions]:    expressions/block-expr.md
 [call expressions]:     expressions/call-expr.md
-[enum variant]:         expressions/enum-variant-expr.md
 [field]:                expressions/field-expr.md
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
 [`if let`]:             expressions/if-expr.md#if-let-expressions
@@ -329,7 +326,6 @@ They are never allowed before:
 [_ComparisonExpression_]:         expressions/operator-expr.md#comparison-operators
 [_CompoundAssignmentExpression_]: expressions/operator-expr.md#compound-assignment-expressions
 [_ContinueExpression_]:           expressions/loop-expr.md#continue-expressions
-[_EnumerationVariantExpression_]: expressions/enum-variant-expr.md
 [_FieldExpression_]:              expressions/field-expr.md
 [_GroupedExpression_]:            expressions/grouped-expr.md
 [_IfExpression_]:                 expressions/if-expr.md#if-expressions

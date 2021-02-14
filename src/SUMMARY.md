@@ -56,7 +56,6 @@
         - [Array and index expressions](expressions/array-expr.md)
         - [Tuple and index expressions](expressions/tuple-expr.md)
         - [Struct expressions](expressions/struct-expr.md)
-        - [Enum variant expressions](expressions/enum-variant-expr.md)
         - [Call expressions](expressions/call-expr.md)
         - [Method call expressions](expressions/method-call-expr.md)
         - [Field access expressions](expressions/field-expr.md)

@@ -25,7 +25,7 @@
 > _EnumItemDiscriminant_ :\
 > &nbsp;&nbsp; `=` [_Expression_]
 
-An *enumeration*, also referred to as *enum* is a simultaneous definition of a
+An *enumeration*, also referred to as an *enum*, is a simultaneous definition of a
 nominal [enumerated type] as well as a set of *constructors*, that can be used
 to create or pattern-match values of the corresponding enumerated type.
 
