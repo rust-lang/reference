@@ -137,7 +137,7 @@ assert_eq!(
 ## Place Expressions and Value Expressions
 
 Expressions are divided into two main categories: place expressions and
-value expressions. Likewise within each expression, sub-expressions may occur
+value expressions. Likewise within each expression, operands may occur
 in either place context or value context. The evaluation of an expression
 depends both on its own category and the context it occurs within.
 

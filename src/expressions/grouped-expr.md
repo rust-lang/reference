@@ -4,8 +4,12 @@
 > _GroupedExpression_ :\
 > &nbsp;&nbsp; `(` [_InnerAttribute_]<sup>\*</sup> [_Expression_] `)`
 
-An expression enclosed in parentheses evaluates to the result of the enclosed expression.
-Parentheses can be used to explicitly specify evaluation order within an expression.
+A *parenthesized expression* wrap a single expression, evaluating to that expression.
+The syntax for a parenthesized expression is a `(`, then an operand, the *enclosed operand*, and then a `)`.
+
+An expression enclosed in parentheses evaluates to the value of the enclosed operand.
+
+Parentheses can be used to explicitly modify the precedence order of subexpressions within an expression.
 
 An example of a parenthesized expression:
 

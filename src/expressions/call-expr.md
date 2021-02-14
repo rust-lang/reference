@@ -7,12 +7,13 @@
 > _CallParams_ :\
 > &nbsp;&nbsp; [_Expression_]&nbsp;( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>
 
-A _call expression_ consists of an expression followed by a parenthesized expression-list.
-It invokes a function, providing zero or more input variables.
+A *call expression* calls a function.
+The syntax of a call expression is an operand, the *function operand*, followed by a parenthesized comma-separated list of operands, the *argument operands*.
 If the function eventually returns, then the expression completes.
 For [non-function types](../types/function-item.md), the expression f(...) uses the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or [`std::ops::FnOnce`] traits, which differ in whether they take the type by reference, mutable reference, or take ownership respectively.
 An automatic borrow will be taken if needed.
-Rust will also automatically dereference `f` as required.
+`f` will also be automatically dereferences as required.
+
 Some examples of call expressions:
 
 ```rust
@@ -23,13 +24,13 @@ let name: &'static str = (|| "Rust")();
 
 ## Disambiguating Function Calls
 
-Rust treats all function calls as sugar for a more explicit, [fully-qualified syntax].
+All function calls are sugar for a more explicit [fully-qualified syntax].
 Upon compilation, Rust will desugar all function calls into the explicit form.
 Rust may sometimes require you to qualify function calls with trait, depending on the ambiguity of a call in light of in-scope items.
 
-> **Note**: In the past, the Rust community used the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", in documentation, issues, RFCs, and other community writings.
-> However, the term lacks descriptive power and potentially confuses the issue at hand.
-> We mention it here for searchability's sake.
+> **Note**: In the past, the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", have been used in documentation, issues, RFCs, and other community writings.
+> However, these terms lack descriptive power and potentially confuse the issue at hand.
+> We mention them here for searchability's sake.
 
 Several situations often occur which result in ambiguities about the receiver or referent of method or associated function calls.
 These situations may include:

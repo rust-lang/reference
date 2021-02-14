@@ -10,15 +10,19 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
 > &nbsp;&nbsp; | [_Expression_] `;` [_Expression_]
 
-An _[array] expression_ can be written by enclosing zero or more comma-separated expressions of uniform type in square brackets.
+*Array expressions* construct [arrays][array].
+Array expressions come in two forms.
+
+The first form lists out every value in the array.
+The syntax for this form is a comma-separated list of operands of uniform type enclosed in square brackets.
 This produces an array containing each of these values in the order they are written.
 
-Alternatively there can be exactly two expressions inside the brackets, separated by a semicolon.
-The expression after the `;` must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
+The syntax for the second form is two operands separated by a semicolon (`;`) enclosed in square brackets.
+The operand after the `;` must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
 `[a; b]` creates an array containing `b` copies of the value of `a`.
-If the expression after the semicolon has a value greater than 1 then this requires that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
+If the operand after the semicolon has a value greater than 1 then this requires that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
 
-When the repeat expression `a` is a constant item, it is evaluated `b` times.
+When the repeat expression, `a`, is a constant item, it is evaluated `b` times.
 If `b` is 0, the constant item is not evaluated at all.
 For expressions that are not a constant item, it is evaluated exactly once, and then the result is copied `b` times.
 
@@ -49,7 +53,7 @@ const EMPTY: Vec<i32> = Vec::new();
 > _IndexExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`
 
-[Array] and [slice]-typed expressions can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them.
+[Array] and [slice]-typed values can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them.
 When the array is mutable, the resulting [memory location] can be assigned to.
 
 For other types an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a mutable place expression context.
