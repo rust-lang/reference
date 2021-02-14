@@ -56,7 +56,7 @@ A value of a [union] type can only be created using this syntax, and it must spe
 
 ## Functional update syntax
 
-A struct expression can terminate with the syntax `..` followed by an expression to denote a functional update.
+A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
 The expression following `..` (the base) must have the same struct type as the new struct type being formed.
 
 The entire expression uses the given values for the fields that were specified and moves or copies the remaining fields from the base expression.
