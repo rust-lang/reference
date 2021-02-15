@@ -64,7 +64,7 @@ Non-exhaustive types cannot be constructed outside of the defining crate:
 
 - Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed
   with a [_StructExpression_] \(including with [functional update syntax]).
-- [`enum`][enum] instances can be constructed in an [_EnumerationVariantExpression_].
+- [`enum`][enum] instances can be constructed.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
@@ -129,7 +129,6 @@ match message {
 
 Non-exhaustive types are always considered inhabited in downstream crates.
 
-[_EnumerationVariantExpression_]: ../expressions/enum-variant-expr.md
 [_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
 [_StructExpression_]: ../expressions/struct-expr.md
 [_StructPattern_]: ../patterns.md#struct-patterns

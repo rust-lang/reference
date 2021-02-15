@@ -153,7 +153,7 @@ let a = unsafe { an_unsafe_fn() };
 * Loop bodies ([`loop`], [`while`], [`while let`], and [`for`]).
 * Block expressions used as a [statement].
 * Block expressions as elements of [array expressions], [tuple expressions],
-  [call expressions], and tuple-style [struct] and [enum variant] expressions.
+  [call expressions], and tuple-style [struct] expressions.
 * A block expression as the tail expression of another block expression.
 <!-- Keep list in sync with expressions.md -->
 
@@ -178,7 +178,6 @@ fn is_unix_platform() -> bool {
 [`while`]: loop-expr.md#predicate-loops
 [array expressions]: array-expr.md
 [call expressions]: call-expr.md
-[enum variant]: enum-variant-expr.md
 [function]: ../items/functions.md
 [inner attributes]: ../attributes.md
 [method]: ../items/associated-items.md#methods

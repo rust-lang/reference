@@ -27,8 +27,8 @@
 >
 > _StructExprUnit_ : [_PathInExpression_]
 
-A _struct expression_ creates a struct or union value.
-It consists of a path to a [struct] or [union] item followed by the values for the fields of the item.
+A *struct expression* creates a struct, enum, or union value.
+It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
 There are three forms of struct expressions: struct, tuple, and unit.
 
 The following are examples of struct expressions:
@@ -52,11 +52,11 @@ some_fn::<Cookie>(Cookie);
 A struct expression with fields enclosed in curly braces allows you to specify the value for each individual field in any order.
 The field name is separated from its value with a colon.
 
-A value of a [union] type can also be created using this syntax, except that it must specify exactly one field.
+A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
 
 ## Functional update syntax
 
-A struct expression can terminate with the syntax `..` followed by an expression to denote a functional update.
+A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
 The expression following `..` (the base) must have the same struct type as the new struct type being formed.
 
 The entire expression uses the given values for the fields that were specified and moves or copies the remaining fields from the base expression.
@@ -134,6 +134,7 @@ let b = Gamma{};  // Exact same value as `a`.
 [_PathInExpression_]: ../paths.md#paths-in-expressions
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [call expression]: call-expr.md
+[enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-expressions
 [if]: if-expr.md#if-expressions
 [loop]: loop-expr.md

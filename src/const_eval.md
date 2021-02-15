@@ -27,7 +27,6 @@ to be run.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
-* [Enum variant] expressions.
 * [Block expressions], including `unsafe` blocks.
     * [let statements] and thus irrefutable [patterns], including mutable bindings
     * [assignment expressions]
@@ -117,7 +116,6 @@ Conversely, the following are possible in a const function, but not in a const c
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
 [enum discriminants]:   items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
-[enum variant]:         expressions/enum-variant-expr.md
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
 [field]:                expressions/field-expr.md
