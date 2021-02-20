@@ -248,7 +248,7 @@ let vec = [1, 2, 3].iter().map(|n| n * 2).collect::<Vec<_>>();
 ```
 
 This `::` prefix is required to disambiguate generic paths with multiple comparisons in a comma-separate list.
-See [the bastion of the turbofish][turbofish test] for an example.
+See [the bastion of the turbofish][turbofish test] for an example where not having the prefix would be ambiguous.
 
 ### Uncovered type
 
