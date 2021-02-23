@@ -61,6 +61,7 @@ Variance of types is automatically determined as follows
 | `[T]` and `[T; n]`            |                   | covariant         |
 | `fn() -> T`                   |                   | covariant         |
 | `fn(T) -> ()`                 |                   | contravariant     |
+| `fn(T) -> T`                  |                   | invariant         |
 | `std::cell::UnsafeCell<T>`    |                   | invariant         |
 | `std::marker::PhantomData<T>` |                   | covariant         |
 | `dyn Trait<T> + 'a`           | covariant         | invariant         |
