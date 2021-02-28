@@ -360,6 +360,10 @@ Here `*T` means either `*const T` or `*mut T`.
     * `char` casts to the value of the code point, then uses a numeric cast if needed.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
+* Pointer to address cast
+    * Casting from a valid raw pointer to `usize` will produce a numeric address representing the pointer.
+* Address to pointer cast
+    * Casting from `usize` to a raw pointer will produce a pointer with the same value as the original pointer if the `usize` was obtained through a pointer to address cast of a valid pointer of the same type.
 
 \* if integer-to-float casts with this rounding mode and overflow behavior are
 not supported natively by the hardware, these casts will likely be slower than
