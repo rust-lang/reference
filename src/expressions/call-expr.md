@@ -25,8 +25,7 @@ let name: &'static str = (|| "Rust")();
 ## Disambiguating Function Calls
 
 All function calls are sugar for a more explicit [fully-qualified syntax].
-Upon compilation, Rust will desugar all function calls into the explicit form.
-Rust may sometimes require you to qualify function calls with trait, depending on the ambiguity of a call in light of in-scope items.
+Function calls may need to be fully qualified, depending on the ambiguity of a call in light of in-scope items.
 
 > **Note**: In the past, the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", have been used in documentation, issues, RFCs, and other community writings.
 > However, these terms lack descriptive power and potentially confuse the issue at hand.

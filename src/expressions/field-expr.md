@@ -4,7 +4,7 @@
 > _FieldExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` [IDENTIFIER]
 
-A *field expression* is a [place expression] that evaluates to the location of a field of a type.
+A *field expression* is a [place expression] that evaluates to the location of a field of a [struct] or [union].
 When the operand is [mutable], the field expression is also mutable.
 
 The syntax for a field expression is an operand, then a `.`, and finally an [identifier].
@@ -38,12 +38,12 @@ foo().x;
 
 ## Automatic dereferencing
 
-Also, if the type of the operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
+If the type of the operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
 This processes is also called *autoderef* for short.
 
 ## Borrowing
 
-Finally, the fields of a struct or a reference to a struct are treated as separate entities when borrowing.
+The fields of a struct or a reference to a struct are treated as separate entities when borrowing.
 If the struct does not implement [`Drop`] and is stored in a local variable, this also applies to moving out of each of its fields.
 This also does not apply if automatic dereferencing is done though user-defined types other than [`Box`].
 
@@ -62,8 +62,8 @@ let d: String = x.f3;           // Move out of x.f3
 ```
 
 [_Expression_]: ../expressions.md
-[`Box`]: ../special-types-and-traits.html#boxt
-[`Deref`]: ../special-types-and-traits.html#deref-and-derefmut
+[`Box`]: ../special-types-and-traits.md#boxt
+[`Deref`]: ../special-types-and-traits.md#deref-and-derefmut
 [`drop`]: ../special-types-and-traits.md#drop
 [IDENTIFIER]: ../identifiers.md
 [call expression]: call-expr.md

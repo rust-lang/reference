@@ -4,7 +4,7 @@
 > _GroupedExpression_ :\
 > &nbsp;&nbsp; `(` [_InnerAttribute_]<sup>\*</sup> [_Expression_] `)`
 
-A *parenthesized expression* wrap a single expression, evaluating to that expression.
+A *parenthesized expression* wraps a single expression, evaluating to that expression.
 The syntax for a parenthesized expression is a `(`, then an operand, the *enclosed operand*, and then a `)`.
 
 An expression enclosed in parentheses evaluates to the value of the enclosed operand.
