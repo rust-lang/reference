@@ -53,7 +53,7 @@ fn outer() {
 
 > **<sup>Syntax</sup>**\
 > _LetStatement_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_Pattern_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_PatternNoTopAlt_]
 >     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
 
 A *`let` statement* introduces a new set of [variables], given by an
