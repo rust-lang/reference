@@ -8,11 +8,11 @@
 > &nbsp;&nbsp; [_Expression_]&nbsp;( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>
 
 A *call expression* calls a function.
-The syntax of a call expression is an operand, the *function operand*, followed by a parenthesized comma-separated list of operands, the *argument operands*.
+The syntax of a call expression is an expression, called the *function operand*, followed by a parenthesized comma-separated list of expression, called the *argument operands*.
 If the function eventually returns, then the expression completes.
-For [non-function types](../types/function-item.md), the expression f(...) uses the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or [`std::ops::FnOnce`] traits, which differ in whether they take the type by reference, mutable reference, or take ownership respectively.
+For [non-function types], the expression `f(...)` uses the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or [`std::ops::FnOnce`] traits, which differ in whether they take the type by reference, mutable reference, or take ownership respectively.
 An automatic borrow will be taken if needed.
-`f` will also be automatically dereferences as required.
+The function operand will also be [automatically dereferenced] as required.
 
 Some examples of call expressions:
 
@@ -92,4 +92,6 @@ Refer to [RFC 132] for further details and motivations.
 [`std::ops::FnMut`]: ../../std/ops/trait.FnMut.html
 [`std::ops::FnOnce`]: ../../std/ops/trait.FnOnce.html
 [`std::ops::Fn`]: ../../std/ops/trait.Fn.html
+[automatically dereferenced]: field-expr.md#automatic-dereferencing
 [fully-qualified syntax]: ../paths.md#qualified-paths
+[non-function types]: ../types/function-item.md

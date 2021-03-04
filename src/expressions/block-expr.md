@@ -16,7 +16,7 @@ A *block expression*, or *block*, is a control flow expression and anonymous nam
 As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
 As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by `let` statements are in scope from the next statement until the end of the block.
 
-The syntax for a block is `{`, then any [inner attributes], then [statements], then an optional operand, and finally a `}`.
+The syntax for a block is `{`, then any [inner attributes], then any number of [statements], then an optional expression, called the final operand, and finally a `}`.
 
 Statements are usually required to be followed by a semicolon, with two exceptions:
 
@@ -25,9 +25,9 @@ Statements are usually required to be followed by a semicolon, with two exceptio
 Furthermore, extra semicolons between statements are allowed, but these semicolons do not affect semantics.
 
 When evaluating a block expression, each statement, except for item declaration statements, is executed sequentially.
-Then the final expression is executed, if given.
+Then the final operand is executed, if given.
 
-The type of a block is the type of the final expression, or `()` if the final expression is omitted.
+The type of a block is the type of the final operand, or `()` if the final operand is omitted.
 
 ```rust
 # fn fn_call() {}
@@ -46,7 +46,6 @@ assert_eq!(5, five);
 > Note: As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
 Blocks are always [value expressions] and evaluate the last operand in value expression context.
-
 
 > **Note**: This can be used to force moving a value if really needed.
 > For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.

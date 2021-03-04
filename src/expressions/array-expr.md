@@ -14,21 +14,24 @@
 Array expressions come in two forms.
 
 The first form lists out every value in the array.
-The syntax for this form is a comma-separated list of operands of uniform type enclosed in square brackets.
+The syntax for this form is a comma-separated list of expressions of uniform type enclosed in square brackets.
 This produces an array containing each of these values in the order they are written.
 
-The syntax for the second form is two operands separated by a semicolon (`;`) enclosed in square brackets.
-The operand after the `;` must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
-`[a; b]` creates an array containing `b` copies of the value of `a`.
-If the operand after the semicolon has a value greater than 1 then this requires that the type of `a` is [`Copy`], or `a` must be a path to a constant item.
+The syntax for the second form is two expressions separated by a semicolon (`;`) enclosed in square brackets.
+The expression before the `;` is called the *repeat operand*.
+The expression after the `;` is called the *length operand*.
+It must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
+An array expression of this form creates an array with the length of the value of the legnth operand with each element a copy of the repeat operand.
+That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
+If the length operand has a value greater than 1 then this requires that the type of the repeat operand is [`Copy`] or that it must be a [path] to a constant item.
 
-When the repeat expression, `a`, is a constant item, it is evaluated `b` times.
-If `b` is 0, the constant item is not evaluated at all.
-For expressions that are not a constant item, it is evaluated exactly once, and then the result is copied `b` times.
+When the repeat operand is a constant item, it is evaluated the length operand's value times.
+If that value is `0`, then the constant item is not evaluated at all.
+For expressions that are not a constant item, it is evaluated exactly once, and then the result is copied the length operand's value times.
 
 <div class="warning">
 
-Warning: In the case where `b` is 0, and `a` is a non-constant item, there is currently a bug in `rustc` where the value `a` is evaluated but not dropped, thus causing a leak.
+Warning: In the case where the length operand is 0, and the repeat operand is a non-constant item, there is currently a bug in `rustc` where the value `a` is evaluated but not dropped, thus causing a leak.
 See [issue #74836](https://github.com/rust-lang/rust/issues/74836).
 
 </div>
@@ -95,4 +98,5 @@ The array index expression can be implemented for types other than arrays and sl
 [constant item]: ../items/constant-items.md
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
+[path]: path-expr.md
 [slice]: ../types/slice.md

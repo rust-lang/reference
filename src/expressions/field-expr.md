@@ -7,8 +7,8 @@
 A *field expression* is a [place expression] that evaluates to the location of a field of a [struct] or [union].
 When the operand is [mutable], the field expression is also mutable.
 
-The syntax for a field expression is an operand, then a `.`, and finally an [identifier].
-Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is parsed as a [method call expression].
+The syntax for a field expression is an expression, called the container operand*, then a `.`, and finally an [identifier].
+Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression].
 That is, they cannot be the function operand of a [call expression].
 
 > **Note**: Wrap the field expression in a [parenthesized expression] to use it in a call expression.
@@ -24,9 +24,7 @@ That is, they cannot be the function operand of a [call expression].
 > (holds_callable.callable)();
 > ```
 
-A field expression denotes a field of a [struct] or [union].
-
-To call a function stored in a struct, parentheses are needed around the field expression.
+Examples:
 
 <!-- ignore: needs lots of support code -->
 ```rust,ignore
@@ -38,7 +36,7 @@ foo().x;
 
 ## Automatic dereferencing
 
-If the type of the operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
+If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
 This processes is also called *autoderef* for short.
 
 ## Borrowing

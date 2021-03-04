@@ -55,6 +55,9 @@ In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions,
 and blocks again can recursively nest inside each other to an arbitrary depth.
 
+> **Note**: We give names to the operands of expressions so that we may discuss
+> them, but these names are not stable and may be changed.
+
 ## Expression precedence
 
 The precedence of Rust operators and expressions is ordered as follows, going

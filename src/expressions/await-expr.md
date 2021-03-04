@@ -5,12 +5,12 @@
 > &nbsp;&nbsp; [_Expression_] `.` `await`
 
 *Await expressions* suspend the current computation until the given future is ready to produce a value.
-The syntax for an await expression is an operand with a type that implements the Future trait, `.`, and then the `await` keyword.
+The syntax for an await expression is an expression with a type that implements the Future trait, called the *future operand*, then the token `.`, and then the `await` keyword.
 Await expressions are legal only within an [async context], like an [`async fn`] or an [`async` block].
 
-More specifically, an `<expr>.await` expression has the following effect.
+More specifically, an await expression has the following effect.
 
-1. Evaluate `<expr>` to a [future] `tmp`;
+1. Evaluate the future operand to a [future] `tmp`;
 2. Pin `tmp` using [`Pin::new_unchecked`];
 3. This pinned future is then polled by calling the [`Future::poll`] method and passing it the current [task context](#task-context);
 3. If the call to `poll` returns [`Poll::Pending`], then the future returns `Poll::Pending`, suspending its state so that, when the surrounding async context is re-polled,execution returns to step 2;
@@ -25,11 +25,11 @@ Because `await` expressions are only legal in an async context, there must be so
 
 ## Approximate desugaring
 
-Effectively, an `<expr>.await` expression is roughly equivalent to the following non-normative desugaring:
+Effectively, an await expression is roughly equivalent to the following non-normative desugaring:
 
 <!-- ignore: example expansion -->
 ```rust,ignore
-match /* <expr> */ {
+match future_operand {
     mut pinned => loop {
         let mut pin = unsafe { Pin::new_unchecked(&mut pinned) };
         match Pin::future::poll(Pin::borrow(&mut pin), &mut current_context) {

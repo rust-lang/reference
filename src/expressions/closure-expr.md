@@ -13,7 +13,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A *closure expression*, also know as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
-The syntax for a closure expression is an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, the *return type*, and then an operand, the *closure body*.
+The syntax for a closure expression is an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
 The optional type after each pattern is a type annotation for the pattern.
 If there is a return type, the closure body must be a [block].
 
