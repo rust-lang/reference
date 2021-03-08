@@ -22,6 +22,7 @@ Statements are usually required to be followed by a semicolon, with two exceptio
 
 1. Item declaration statements do not need to be followed by a semicolon.
 2. Expression statements usually require a following semicolon except if its outer expression is a flow control expression.
+
 Furthermore, extra semicolons between statements are allowed, but these semicolons do not affect semantics.
 
 When evaluating a block expression, each statement, except for item declaration statements, is executed sequentially.

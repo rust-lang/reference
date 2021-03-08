@@ -7,7 +7,7 @@
 A *field expression* is a [place expression] that evaluates to the location of a field of a [struct] or [union].
 When the operand is [mutable], the field expression is also mutable.
 
-The syntax for a field expression is an expression, called the container operand*, then a `.`, and finally an [identifier].
+The syntax for a field expression is an expression, called the *container operand*, then a `.`, and finally an [identifier].
 Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression].
 That is, they cannot be the function operand of a [call expression].
 

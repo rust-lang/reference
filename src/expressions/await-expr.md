@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; [_Expression_] `.` `await`
 
 *Await expressions* suspend the current computation until the given future is ready to produce a value.
-The syntax for an await expression is an expression with a type that implements the Future trait, called the *future operand*, then the token `.`, and then the `await` keyword.
+The syntax for an await expression is an expression with a type that implements the [Future] trait, called the *future operand*, then the token `.`, and then the `await` keyword.
 Await expressions are legal only within an [async context], like an [`async fn`] or an [`async` block].
 
 More specifically, an await expression has the following effect.
