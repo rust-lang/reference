@@ -361,11 +361,17 @@ Here `*T` means either `*const T` or `*mut T`.
 * `u8` to `char` cast
     * Casts to the `char` with the corresponding code point.
 * Pointer to address cast
-    * Casting from a valid raw pointer to `usize` will produce the address that is pointed to. Note that the pointer's provenance is lost in this conversion.
+    * Casting from a valid raw pointer to `usize` will produce the address that is pointed to.
+
+      The pointer's provenance is lost in this conversion.
 * Address to pointer cast
     * Casting from `usize` to a raw pointer will produce a raw pointer to the same location as the original pointer, if the `usize` was obtained through a pointer to address cast of a valid pointer.
 
-      Note that the two pointers are not equivalent. Dereferencing the pointer obtained from the address to pointer cast may be [undefined behavior] if aliasing rules are not followed.
+      <div class="warning">
+      Warning:
+      The two pointers are not equivalent.
+      Dereferencing the pointer obtained from the address to pointer cast may be <a href="../behavior-considered-undefined.md">undefined behavior</a> if aliasing rules are not followed.
+      </div>
 
 \* if integer-to-float casts with this rounding mode and overflow behavior are
 not supported natively by the hardware, these casts will likely be slower than
@@ -378,8 +384,6 @@ expected.
 \*\*\* as defined in IEEE 754-2008 &sect;4.3.1: pick the nearest floating point
 number, preferring the one with an even least significant digit if exactly
 halfway between two floating point numbers.
-
-[undefined behavior]: ../behavior-considered-undefined.md
 
 ## Assignment expressions
 
