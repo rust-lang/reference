@@ -159,7 +159,7 @@ how it is resolved.
 
 ### `::`
 
-Paths starting with `::` are considered to be "global paths" where the segments of the path
+Paths starting with `::` are considered to be *global paths* where the segments of the path
 start being resolved from a place which differs based on edition. Each identifier in
 the path must resolve to an item.
 
