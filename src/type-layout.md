@@ -290,7 +290,7 @@ Rust's [field-less enums] with this representation. An `enum` in C is
 mostly a `typedef` plus some named constants; in other words, an object of an
 `enum` type can hold any integer value. For example, this is often used for
 bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold
-the discrimnant values, everything else is [undefined behavior]. Therefore,
+the discriminant values, everything else is [undefined behavior]. Therefore,
 using a field-less enum in FFI to model a C `enum` is often wrong.
 
 </div>
