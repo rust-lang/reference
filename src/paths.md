@@ -169,7 +169,7 @@ the path must resolve to an item.
 > the crate (including `use` imports).
 >
 > Beginning with the 2018 Edition, paths starting with `::` resolve from
-> crates in the [extern prelude], i.e. they _must_ be followed by the name of a crate.
+> crates in the [extern prelude]. That is, they must be followed by the name of a crate.
 
 ```rust
 mod a {
