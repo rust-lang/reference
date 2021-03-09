@@ -159,16 +159,17 @@ how it is resolved.
 
 ### `::`
 
-Paths starting with `::` are considered to be global paths where the segments of the path
-start being resolved from the crate root. Each identifier in the path must resolve to an
-item.
+Paths starting with `::` are considered to be *global paths* where the segments of the path
+start being resolved from a place which differs based on edition. Each identifier in
+the path must resolve to an item.
 
-> **Edition Differences**: In the 2015 Edition, the crate root contains a variety of
-> different items, including external crates, default crates such as `std` or `core`, and
-> items in the top level of the crate (including `use` imports).
+> **Edition Differences**: In the 2015 Edition, identifiers resolve from the "crate root"
+> (`crate::` in the 2018 edition), which contains a variety of different items, including
+> external crates, default crates such as `std` or `core`, and items in the top level of
+> the crate (including `use` imports).
 >
-> Beginning with the 2018 Edition, paths starting with `::` can only reference
-> crates in the [extern prelude].
+> Beginning with the 2018 Edition, paths starting with `::` resolve from
+> crates in the [extern prelude]. That is, they must be followed by the name of a crate.
 
 ```rust
 mod a {
