@@ -10,7 +10,8 @@ of these. To use it locally, run
 ## Markdown formatting
 
 * Use ATX-style heading with sentence case.
-* Wrap long lines, preferably at 80-columns.
+* Use one line per sentence to make diffs nicer.
+  Do not wrap long lines.
 * Use reference links, with shortcuts if appropriate. Place the sorted link
   reference definitions at the bottom of the file, or at the bottom of a
   section if there is an unusually large number of links that are specific to
