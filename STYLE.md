@@ -47,7 +47,7 @@ Rust examples are tested via rustdoc, and should include the appropriate annotat
 * `compile_fail` — The example is expected to fail to compile.
 * `ignore` — The example shouldn't be built or tested.
   This should be avoided if possible.
-  Usually this is only necessary when the testing framework does not support it (such as external crates or modules, or a proc-macro), or it contains psuedo-code which is not valid Rust.
+  Usually this is only necessary when the testing framework does not support it (such as external crates or modules, or a proc-macro), or it contains pseudo-code which is not valid Rust.
   An HTML comment such as `<!-- ignore: requires extern crate -->` should be placed before the example to explain why it is ignored.
 
 See the [rustdoc documentation] for more detail.
