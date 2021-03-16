@@ -305,7 +305,7 @@ fn average(values: &[f64]) -> f64 {
 }
 ```
 
-`as` can be used to explicitly perform [coercions](../type-coercions.md), as well as the following additional casts.
+`as` can be used to explicitly perform [coercions](../type-coercions.md), as well as the following additional casts. Any cast that does not fit either a coercion rule or an entry in the table is a compiler error.
 Here `*T` means either `*const T` or `*mut T`.
 
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
