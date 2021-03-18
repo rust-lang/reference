@@ -1,3 +1,4 @@
+
 # Type aliases
 
 > **<sup>Syntax</sup>**\
@@ -33,6 +34,25 @@ let _ = TypeAlias(5); // Doesn't work
 A type alias without the [_Type_] specification may only appear as an
 [associated type] in a [trait].
 
+A type alias to an enum cannot refer to the enum's variants within a [use declaration]:
+
+```rust,edition2018,compile_fail
+mod my_mod {
+    pub enum MyEnum {
+        MyVariant
+    }
+
+    pub type TypeAlias = MyEnum;
+}
+
+use my_mod::MyEnum; // OK
+use my_mod::MyEnum::MyVariant; // OK
+use my_mod::TypeAlias; // OK
+use my_mod::TypeAlias::MyVariant; // Doesn't work
+
+let _ = my_mod::TypeAlias::MyVariant; // OK
+```
+
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
@@ -40,3 +60,4 @@ A type alias without the [_Type_] specification may only appear as an
 [associated type]: associated-items.md#associated-types
 [trait]: traits.md
 [type]: ../types.md
+[use declaration]: use-declarations.md
