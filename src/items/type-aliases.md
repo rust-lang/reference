@@ -36,7 +36,7 @@ A type alias without the [_Type_] specification may only appear as an
 
 A type alias to an enum cannot refer to the enum's variants within a [use declaration]:
 
-```rust,edition2018,compile_fail
+```rust,edition2018,compile_fail,E0432
 mod my_mod {
     pub enum MyEnum {
         MyVariant
