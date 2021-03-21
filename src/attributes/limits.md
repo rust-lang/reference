@@ -30,7 +30,7 @@ a!{}
 #![recursion_limit = "1"]
 
 // This fails because it requires two recursive steps to auto-derefence.
-(|_: &u8| {})(&&1);
+(|_: &u8| {})(&&&1);
 ```
 
 ## The `type_length_limit` attribute
