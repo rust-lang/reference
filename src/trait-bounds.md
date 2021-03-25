@@ -77,8 +77,8 @@ Trait and lifetime bounds are also used to name [trait objects].
 
 ## `?Sized`
 
-`?` is only used to declare that the [`Sized`] trait may not be
-implemented for a type parameter or associated type. `?Sized` may
+`?` is only used to declare that the [`Sized`] trait may be
+unimplemented for a type parameter or associated type. `?Sized` may
 not be used as a bound for other types.
 
 ## Lifetime bounds
