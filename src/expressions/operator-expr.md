@@ -307,7 +307,8 @@ fn average(values: &[f64]) -> f64 {
 
 `as` can be used to explicitly perform [coercions](../type-coercions.md), as well as the following additional casts.
 Any cast that does not fit either a coercion rule or an entry in the table is a compiler error.
-Here `*T` means either `*const T` or `*mut T`.
+Here `*T` means either `*const T` or `*mut T`. `m` stands for optional `mut` in
+reference types and `mut` or `const` in pointer types.
 
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
 |-----------------------|-----------------------|----------------------------------|
@@ -318,17 +319,21 @@ Here `*T` means either `*const T` or `*mut T`.
 | `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
 | `*T` where `T: Sized` | Integer type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
-| `&[T; n]`             | `*const T`            | Array to pointer cast            |
+| `&m₁ T`               | `*m₂ T` \*\*          | Reference to pointer cast        |
+| `&m₁ [T; n]`          | `*m₂ T` \*\*          | Array to pointer cast            |
 | [Function item]       | [Function pointer]    | Function item to function pointer cast |
 | [Function item]       | `*V` where `V: Sized` | Function item to pointer cast    |
 | [Function item]       | Integer               | Function item to address cast    |
 | [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast |
 | [Function pointer]    | Integer               | Function pointer to address cast |
-| Closure \*\*          | Function pointer      | Closure to function pointer cast |
+| Closure \*\*\*        | Function pointer      | Closure to function pointer cast |
 
 \* or `T` and `V` are compatible unsized types, e.g., both slices, both the same trait object.
 
-\*\* only for closures that do not capture (close over) any local variables
+\*\* only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference to
+`const` pointer is allowed.
+
+\*\*\* only for closures that do not capture (close over) any local variables
 
 ### Semantics
 
