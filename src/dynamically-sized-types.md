@@ -11,7 +11,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
     * Pointers to slices also store the number of elements of the slice.
     * Pointers to trait objects also store a pointer to a vtable.
 * <abbr title="dynamically sized types">DSTs</abbr> can be provided as
-  type arguments when the type parameter has the special lifetime bound [`?Sized`][sized] specified. (In other words by default any type parameter on a non-trait item
+  type arguments when the type parameter has the special lifetime bound [`?Sized`](trait-bounds.html#sized) specified. (In other words by default any type parameter on a non-trait item
   has a `Sized` bound, and specifying the `?Sized` bound removes it.)
 * Traits may be implemented for <abbr title="dynamically sized
   types">DSTs</abbr>. Unlike type parameters on other kinds of items, `Self: ?Sized` is the default in trait
