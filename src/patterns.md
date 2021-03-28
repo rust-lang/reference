@@ -6,8 +6,7 @@
 >
 > _PatternNoTopAlt_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
-> &nbsp;&nbsp; | [_RangePattern_]\
-> &nbsp;&nbsp; | `(` _Pattern_ `)`
+> &nbsp;&nbsp; | [_RangePattern_]
 >
 > _PatternWithoutRange_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralPattern_]\
