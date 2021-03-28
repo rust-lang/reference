@@ -4,8 +4,14 @@
 > _GroupedExpression_ :\
 > &nbsp;&nbsp; `(` [_InnerAttribute_]<sup>\*</sup> [_Expression_] `)`
 
-An expression enclosed in parentheses evaluates to the result of the enclosed expression.
-Parentheses can be used to explicitly specify evaluation order within an expression.
+A *parenthesized expression* wraps a single expression, evaluating to that expression.
+The syntax for a parenthesized expression is a `(`, then an expression, called the *enclosed operand*, and then a `)`.
+
+Parenthesized expressions evaluate to the value of the enclosed operand.
+Unlike other expressions, parenthesized expressions are both [place expressions and value expressions][place].
+When the enclosed operand is a place expression, it is a place expression and when the enclosed operand is a value expression, it is a value expression.
+
+Parentheses can be used to explicitly modify the precedence order of subexpressions within an expression.
 
 An example of a parenthesized expression:
 
@@ -41,3 +47,4 @@ assert_eq!((a.f)(), "The field f");
 [_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
+[place]: ../expressions.md#place-expressions-and-value-expressions
