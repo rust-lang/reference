@@ -67,7 +67,7 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_MatchArmPatterns_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 >              [_BlockExpression_]
 
 A `while let` loop is semantically similar to a `while` loop but in place of a
@@ -291,7 +291,6 @@ expression `()`.
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
-[_MatchArmPatterns_]: match-expr.md
 [_Pattern_]: ../patterns.md
 [`match` expression]: match-expr.md
 [scrutinee]: ../glossary.md#scrutinee

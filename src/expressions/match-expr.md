@@ -15,10 +15,7 @@
 > &nbsp;&nbsp; _MatchArm_ `=>` [_Expression_] `,`<sup>?</sup>
 >
 > _MatchArm_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> _MatchArmPatterns_ _MatchArmGuard_<sup>?</sup>
->
-> _MatchArmPatterns_ :\
-> &nbsp;&nbsp; `|`<sup>?</sup> [_Pattern_] ( `|` [_Pattern_] )<sup>\*</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_] _MatchArmGuard_<sup>?</sup>
 >
 > _MatchArmGuard_ :\
 > &nbsp;&nbsp; `if` [_Expression_]
