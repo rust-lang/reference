@@ -2,12 +2,11 @@
 
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `|`<sup>?</sup> _PatternNoTopAlt_ `|` _PatternNoTopAlt_
-> &nbsp;&nbsp; | _PatternNoTopAlt_
+> &nbsp;&nbsp; &nbsp;&nbsp; `|`<sup>?</sup> _PatternNoTopAlt_  ( `|` _PatternNoTopAlt_ )<sup>\*</sup>
 >
 > _PatternNoTopAlt_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
-> &nbsp;&nbsp; | [_RangePattern_]
+> &nbsp;&nbsp; | [_RangePattern_]\
 > &nbsp;&nbsp; | `(` _Pattern_ `)`
 >
 > _PatternWithoutRange_ :\
@@ -763,12 +762,11 @@ refer to refutable constants or enum variants for enums with multiple variants.
 
 ## Or-patterns
 
-_Or-patterns_ are patterns that match on either of two sub-patterns (e.g. `A |
-B`). They can nest arbitrarily. Syntactically, or-patterns are allowed in any
-of the places where other patterns are allowed (represented by the _Pattern_
-production), with the exceptions of function and closure arguments (represented
-by the _PatternNoTopAlt_ production). Additionally, the macro `:pat` matchers
-only match or-patterns in the 2021+ editions.
+_Or-patterns_ are patterns that match on one of two or more sub-patterns (e.g.
+`A | B | C`). They can nest arbitrarily. Syntactically, or-patterns are allowed
+in any of the places where other patterns are allowed (represented by the
+_Pattern_ production), with the exceptions of `let`-bindings and function and
+closure arguments (represented by the _PatternNoTopAlt_ production).
 
 ### Static semantics
 
@@ -779,8 +777,6 @@ only match or-patterns in the 2021+ editions.
    + the same set of bindings are not introduced in `p` and `q`, or
    + the type of any two bindings with the same name in `p` and `q` do not unify
      with respect to types or binding modes.
-
-   [type coercions]: https://doc.rust-lang.org/reference/type-coercions.html
 
    Unification of types is in all instances aforementioned exact and
    implicit [type coercions] do not apply.
@@ -838,3 +834,4 @@ only match or-patterns in the 2021+ editions.
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
+[type coercions]: type-coercions.md

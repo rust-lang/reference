@@ -28,7 +28,7 @@
 >
 > _MacroFragSpec_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime` | `literal`\
-> &nbsp;&nbsp; | `meta` | `pat` | `path` | `stmt` | `tt` | `ty` | `vis`
+> &nbsp;&nbsp; | `meta` | `pat` | `pat2015` | `pat2021` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
 > &nbsp;&nbsp; [_Token_]<sub>_except delimiters and repetition operators_</sub>
@@ -122,7 +122,9 @@ fragment specifiers are:
   * `block`: a [_BlockExpression_]
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
-  * `pat`: a [_Pattern_]
+  * `pat2015`: a [_PatternNoTopAlt_]
+  * `pat2021`: a [_Pattern_]
+  * `pat`: equivalent to either `pat2015` or `pat2021`, depending on edition (see note below).
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD]
@@ -132,6 +134,11 @@ fragment specifiers are:
   * `lifetime`: a [LIFETIME_TOKEN]
   * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
+
+> **Edition Differences**: In Editions 2015 and 2018, `pat` fragment-specifiers
+> do not allow top-level or-patterns (i.e. they accept [_PatternNoTopAlt_]). In
+> Edition 2021, this was changed so that top-level or-patterns are accepted by
+> `pat` (i.e. [_Pattern_]).
 
 In the transcriber, metavariables are referred to simply by `$`_name_, since
 the fragment kind is specified in the matcher. Metavariables are replaced with
@@ -489,6 +496,7 @@ For more detail, see the [formal specification].
 [_LiteralExpression_]: expressions/literal-expr.md
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
 [_Pattern_]: patterns.md
+[_PatternNoTopAlt_]: patterns.md
 [_Statement_]: statements.md
 [_TokenTree_]: macros.md#macro-invocation
 [_Token_]: tokens.md

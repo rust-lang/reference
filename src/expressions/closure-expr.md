@@ -80,7 +80,7 @@ Attributes on closure parameters follow the same rules and restrictions as
 [_Expression_]: ../expressions.md
 [_BlockExpression_]: block-expr.md
 [_TypeNoBounds_]: ../types.md#type-expressions
-[_Pattern_]: ../patterns.md
+[_PatternNoTopAlt_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [`let` binding]: ../statements.md#let-statements
 [_OuterAttribute_]: ../attributes.md
