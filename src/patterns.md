@@ -807,6 +807,15 @@ closure arguments (represented by the _PatternNoTopAlt_ production).
    potential factors in `c`, is defined as being the same as that of
    `c(p, ..rest) | c(q, ..rest)`.
 
+### Precedence with other undelimited patterns
+
+As shown elsewhere in this chapter, there are several types of patterns that
+are syntactically undelimited, including identifier patterns, reference
+patterns, and or-patterns. Or-patterns always have the lowest-precedence.  This
+allows us to reserve syntactic space for a possible future type ascription
+feature and also to reduce ambiguity. For example, `x @ A(..) | B(..)` will
+result in an error that `x` is not bound in all patterns, `&A(x) | B(x)` will
+result in a type mismatch between `x` in the different subpatterns.
 
 [_GroupedPattern_]: #grouped-patterns
 [_IdentifierPattern_]: #identifier-patterns
