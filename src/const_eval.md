@@ -59,6 +59,7 @@ A _const context_ is one of the following:
   * [constants]
   * [statics]
   * [enum discriminants]
+* A [const generic argument]
 
 ## Const Functions
 
@@ -96,7 +97,8 @@ Notable features that const contexts have, but const fn haven't are:
 
 Conversely, the following are possible in a const function, but not in a const context:
 
-* Use of generic parameters.
+* Use of generic type and lifetime parameters.
+  * Const contexts do allow limited use of [const generic parameters].
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
@@ -111,6 +113,8 @@ Conversely, the following are possible in a const function, but not in a const c
 [closure expressions]:  expressions/closure-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [const functions]:      items/functions.md#const-functions
+[const generic argument]: items/generics.md#const-generics
+[const generic parameters]: items/generics.md#const-generics
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
