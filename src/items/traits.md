@@ -68,9 +68,9 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 *object safe* if it has the following qualities (defined in [RFC 255]):
 
 * All [supertraits] must also be object safe.
-* It must not require `Self: Sized` (i.e. `Sized` must not be a [supertrait][supertraits])
+* `Sized` must not be a [supertrait][supertraits]. In other words, it must not require `Self: Sized`.
 * It must not have any associated constants.
-* All associated functions must "dispatchable from a trait object" or "explicitly non-dispatchable from a trait object":
+* All associated functions must either be dispatchable from a trait object or be explicitly non-dispatchable:
     * Dispatchable functions require:
         * Not have any type parameters (although lifetime parameters are allowed),
         * Be a [method] that does not use `Self` except in the type of the receiver.
