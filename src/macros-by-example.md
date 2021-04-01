@@ -174,9 +174,9 @@ compiler knows how to expand them properly:
 2.  Each repetition in the transcriber must contain at least one metavariable to
     decide how many times to expand it. If multiple metavariables appear in the
     same repetition, they must be bound to the same number of fragments. For
-    instance, `( $( $i:ident ),* ; $( $j:ident ),* ) =>( $( ($i,$j) ),*` must
+    instance, `( $( $i:ident ),* ; $( $j:ident ),* ) => (( $( ($i,$j) ),* ))` must
     bind the same number of `$i` fragments as `$j` fragments. This means that
-    invoking the macro with `(a, b, c; d, e, f`) is legal and expands to
+    invoking the macro with `(a, b, c; d, e, f)` is legal and expands to
     `((a,d), (b,e), (c,f))`, but `(a, b, c; d, e)` is illegal because it does
     not have the same number. This requirement applies to every layer of nested
     repetitions.
