@@ -46,10 +46,10 @@ The syntax for the *tuple index* is a [decimal literal] with no leading zeros, u
 For example `0` and `2` are valid tuple indices but not `01`, `0_`, nor `0i32`.
 
 The type of the tuple operand must be a [tuple type] or a [tuple struct].
-The tuple index must be an element of the tuple operand.
+The tuple index must be a name of a field of the type of the tuple operand.
 
 Evaluation of tuple index expressions has no side effects beyond evaluation of its tuple operand.
-As a [place expression] expression, it evaluates to the location of the element of the tuple operand with the same number as the tuple index.
+As a [place expression], it evaluates to the location of the field of the tuple operand with the same name as the tuple index.
 
 Examples of tuple indexing expressions:
 
