@@ -79,8 +79,6 @@ pub mod m3 {
 Tool lints allows using scoped lints, to `allow`, `warn`, `deny` or `forbid`
 lints of certain tools.
 
-Currently `clippy` is the only available lint tool.
-
 Tool lints only get checked when the associated tool is active. If a lint
 attribute, such as `allow`, references a nonexistent tool lint, the compiler
 will not warn about the nonexistent lint until you use the tool.
@@ -103,6 +101,8 @@ fn foo() {
     // ...
 }
 ```
+
+> Note: `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
 
 ## The `deprecated` attribute
 
@@ -274,6 +274,7 @@ When used on a function in a trait implementation, the attribute does nothing.
 [macro definition]: ../macros-by-example.md
 [module]: ../items/modules.md
 [rustc book]: ../../rustc/lints/index.html
+[rustdoc]: ../../rustdoc/lints.html
 [struct field]: ../items/structs.md
 [struct]: ../items/structs.md
 [trait declaration]: ../items/traits.md
