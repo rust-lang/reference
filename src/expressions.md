@@ -41,14 +41,17 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
 > &nbsp;&nbsp; )
 
-An expression may have two roles: it always produces a *value*, and it may have *effects* (otherwise known as "side effects").
-An expression *evaluates to* a value, and has effects during *evaluation*.
-Many expressions contain sub-expressions, called the *operands* of the expression.
+Expressions are the fundamental unit of computation.
+When evaluated, they may have *effects* and evaluates to either a value or place.
+
+Where expressions are allowed are *expression contexts*.
+Expressions commonly contain sub-expressions, called the *operands* of the expression.
+
 The meaning of each kind of expression dictates several things:
 
 * Whether or not to evaluate the operands when evaluating the expression
 * The order in which to evaluate the operands
-* How to combine the operands' values to obtain the value of the expression
+* How to combine the operands' values to obtain the value or place of the expression
 
 In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions, and blocks again can recursively nest inside each other to an arbitrary depth.
