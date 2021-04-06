@@ -135,28 +135,41 @@ assert_eq!(
 
 > **Note**: Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
-## Place Expressions and Value Expressions
+## Expression categories
 
-Expressions are divided into two main categories: place expressions and value expressions.
-Likewise within each expression, operands may occur in either place context or value context.
-The evaluation of an expression depends both on its own category and the context it occurs within.
+<!-- This section was renamed, but heavily linked to. So adding this span to keep the links working. -->
+<span id="place-expressions-and-value-expressions"></span>
 
-A *place expression* is an expression that represents a memory location.
-These expressions are [paths] which refer to local variables, [static variables], [dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized place expressions.
-All other expressions are value expressions.
+Expressions and expression contexts are divided into two *expression categories*: *place* and *value*.
+For expressions, what they evaluate into determines their categories.
+Expressions that evaluate to a value are *value expressions* while those that evaluate to a place are *place expressions*.
+For expression contexts, whether they operate on a place or value determines their context.
 
-A *value expression* is an expression that represents an actual value.
+Evaluating an expression in the opposite expression context has effects after evaluation of the expression to produce the expected place or value of the context.
+When evaluating a value expression in place expression context, a temporary place is initialized to that value.
+When evaluating a place expression in value expression context, the value at that place is read, moving or copying it.
 
-The following contexts are *place expression* contexts:
+The following lists all place expressions.
+Expressions not listed here are value expressions.
 
-* The left operand of an [assignment][assign] or [compound assignment] expression.
+* [Paths] which refer to local variables or [static variables].
+* [The dereference operator][deref]
+* [Field access expressions][field]
+* [Tuple indexing expressions]
+* [Array indexing expressions]
+* [Parenthetical expressions] when its enclosed operand is a place expression
+
+The following list all place expression contexts.
+All other contexts are value expression contexts.
+
+* The initializer of a [let statement].
+* The assigned place operand of an [assignment][assign] or [compound assignment] expression.
 * The operand of a unary [borrow] or [dereference][deref] operator.
-* The operand of a field expression.
+* The container operand of a field expression.
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
-* The initializer of a [let statement].
-* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`] expression.
-* The base of a [functional update] struct expression.
+* The [scrutinee] operand of an [`if let`], [`match`][match], or [`while let`] expression.
+* The base operand of a [functional update] struct expression.
 
 > Note: Historically, place expressions were called *lvalues* and value expressions were called *rvalues*.
 
