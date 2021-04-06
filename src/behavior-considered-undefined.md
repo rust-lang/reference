@@ -69,8 +69,6 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 > vice versa, undefined behavior in Rust can cause adverse affects on code
 > executed by any FFI calls to other languages.
 
-[place expression]: expressions.md#place-expressions-and-value-expressions
-
 ### Dangling pointers
 [dangling]: #dangling-pointers
 
@@ -93,3 +91,4 @@ cannot be bigger than `isize::MAX` bytes.
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
+[place expression]: expressions.md#place-expressions-and-value-expressions
