@@ -91,7 +91,7 @@ Expressions in this table cannot have operands that are expressions lower in the
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
-> **Note**: Wrapping an expression with a [parenthetical expression] increases its precedence.
+> **Note**: Wrapping an expression with a [parenthetical expression][paren] increases its precedence.
 
 ## Evaluation order of operands
 
@@ -160,7 +160,7 @@ Expressions not listed here are value expressions.
 * [Field access expressions][field]
 * [Tuple indexing expressions]
 * [Array indexing expressions]
-* [Parenthetical expressions] when its enclosed operand is a place expression
+* [Parenthetical expressions][paren] when its enclosed operand is a place expression
 
 The following list all place expression contexts.
 All other contexts are value expression contexts.
@@ -207,7 +207,7 @@ The following expressions can be mutable place expression contexts:
 * Dereference of a variable, or field of a variable, with type `&mut T`.
   Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`, this then requires that the value being dereferenced is evaluated is a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`, this then evaluates the value being indexed, but not the index, in mutable place expression context.
+* [Array indexing expressions] of a type that implements `IndexMut`, this then evaluates the value being indexed, but not the index, in mutable place expression context.
 
 ### Temporaries
 
@@ -237,7 +237,7 @@ Implicit borrows may be taken in the following expressions:
 * Left operand in [method-call] expressions.
 * Left operand in [field] expressions.
 * Left operand in [call expressions].
-* Left operand in [array indexing] expressions.
+* Left operand in [array indexing expressions].
 * Operand of the [dereference operator][deref] (`*`).
 * Operands of [comparison].
 * Left operands of the [compound assignment].
@@ -274,14 +274,15 @@ They are never allowed before:
 [`if let`]:             expressions/if-expr.md#if-let-expressions
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
-[parenthetical expression]: expressions/grouped-expr.md
+[paren]:                expressions/grouped-expr.md
 [paths]:                expressions/path-expr.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
+[tuple indexing expressions]: expressions/tuple-expr.md#tuple-indexing-expressions
 [`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
 
-[array expressions]:    expressions/array-expr.md
-[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
+[array expressions]: expressions/array-expr.md
+[array indexing expressions]: expressions/array-expr.md#array-and-slice-indexing-expressions
 
 [assign]:               expressions/operator-expr.md#assignment-expressions
 [borrow]:               expressions/operator-expr.md#borrow-operators
