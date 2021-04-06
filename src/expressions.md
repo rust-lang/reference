@@ -57,8 +57,14 @@ Blocks are just another kind of expression, so blocks, statements, expressions, 
 
 ## Expression precedence
 
-The precedence of Rust operators and expressions is ordered as follows, going from strong to weak.
+The grammar for expressions as presented in this book is wrong.
+It purposefully ignores that certain operands cannot be certain expressions due to precedence.
+For example, `a * b + c` is actually parsed as an addition operator expression with the multiplication operator expression as its left operand.
+The grammar, taking precedence into account, is too unweildy to read and understand.
+
+The precedence of operators and expressions is ordered as follows, going from strongest to weakest.
 Binary Operators at the same precedence level are grouped in the order given by their associativity.
+Expressions in this table cannot have operands that are expressions lower in the table.
 
 | Operator/Expression         | Associativity       |
 |-----------------------------|---------------------|
@@ -81,6 +87,8 @@ Binary Operators at the same precedence level are grouped in the order given by 
 | `..` `..=`                  | Require parentheses |
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
+
+> **Note**: Wrapping an expression with a [parenthetical expression] increases its precedence.
 
 ## Evaluation order of operands
 
@@ -250,6 +258,7 @@ They are never allowed before:
 [`if let`]:             expressions/if-expr.md#if-let-expressions
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
+[parenthetical expression]: expressions/grouped-expr.md
 [paths]:                expressions/path-expr.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
