@@ -458,6 +458,12 @@ println!("{}", match ph {
     _ => unreachable!(),
 });
 
+# let uint: u32 = 5;
+match uint {
+    0 => "zero!",
+    1.. => "positive number!",
+};
+
 // using paths to constants:
 # const TROPOSPHERE_MIN : u8 = 6;
 # const TROPOSPHERE_MAX : u8 = 20;
