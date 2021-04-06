@@ -39,6 +39,11 @@ pub mod m1 {
 }
 ```
 
+Lint attributes can override the level specified from a previous attribute, as
+long as the level does not attempt to change a forbidden lint. Previous
+attributes are those from a higher level in the syntax tree, or from a
+previous attribute on the same entity as listed in left-to-right source order.
+
 This example shows how one can use `allow` and `warn` to toggle a particular
 check on and off:
 
@@ -71,6 +76,49 @@ pub mod m3 {
     #[allow(missing_docs)]
     /// Returns 2.
     pub fn undocumented_too() -> i32 { 2 }
+}
+```
+
+> Note: `rustc` allows setting lint levels on the
+> [command-line][rustc-lint-cli], and also supports [setting
+> caps][rustc-lint-caps] on the lints that are reported.
+
+### Lint groups
+
+Lints may be organized into named groups so that the level of related lints
+can be adjusted together. Using a named group is equivalent to listing out the
+lints within that group.
+
+```rust,compile_fail
+// This allows all lints in the "unused" group.
+#[allow(unused)]
+// This overrides the "unused_must_use" lint from the "unused"
+// group to deny.
+#[deny(unused_must_use)]
+fn example() {
+    // This does not generate a warning because the "unused_variables"
+    // lint is in the "unused" group.
+    let x = 1;
+    // This generates an error because the result is unused and
+    // "unused_must_use" is marked as "deny".
+    std::fs::remove_file("some_file"); // ERROR: unused `Result` that must be used
+}
+```
+
+There is a special group named "warnings" which includes all lints at the
+"warn" level. The "warnings" group ignores attribute order and applies to all
+lints that would otherwise warn within the entity.
+
+```rust,compile_fail
+# unsafe fn an_unsafe_fn() {}
+// The order of these two attributes does not matter.
+#[deny(warnings)]
+// The unsafe_code lint is normally "allow" by default.
+#[warn(unsafe_code)]
+fn example_err() {
+    // This is an error because the `unsafe_code` warning has
+    // been lifted to "deny".
+    unsafe { an_unsafe_fn() } // ERROR: usage of `unsafe` block
 }
 ```
 
@@ -274,6 +322,8 @@ When used on a function in a trait implementation, the attribute does nothing.
 [macro definition]: ../macros-by-example.md
 [module]: ../items/modules.md
 [rustc book]: ../../rustc/lints/index.html
+[rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
+[rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
 [rustdoc]: ../../rustdoc/lints.html
 [struct field]: ../items/structs.md
 [struct]: ../items/structs.md
