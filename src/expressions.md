@@ -63,7 +63,7 @@ Blocks are just another kind of expression, so blocks, statements, expressions, 
 The grammar for expressions as presented in this book is wrong.
 It purposefully ignores that certain operands cannot be certain expressions due to precedence.
 For example, `a * b + c` is actually parsed as an addition operator expression with the multiplication operator expression as its left operand.
-The grammar, taking precedence into account, is too unweildy to read and understand.
+The grammar, taking precedence into account, is too unwieldy to easily read and understand.
 
 The precedence of operators and expressions is ordered as follows, going from strongest to weakest.
 Binary Operators at the same precedence level are grouped in the order given by their associativity.
