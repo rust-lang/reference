@@ -23,8 +23,9 @@ code.
 </div>
 
 * Data races.
-* Evaluating a dereference [place expression] (`*expr`) on a raw pointer that is
-  [dangling] or unaligned.
+* Evaluating a [dereference expression] (`*expr`) on a raw pointer that is
+  [dangling] or unaligned, even in [place expression context]
+  (e.g. `addr_of!(&*expr)`).
 * Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
   [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
 * Mutating immutable data. All data inside a [`const`] item is immutable. Moreover, all
@@ -91,4 +92,5 @@ cannot be bigger than `isize::MAX` bytes.
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
-[place expression]: expressions.md#place-expressions-and-value-expressions
+[dereference expression]: expressions/operator-expr.md#the-dereference-operator
+[place expression context]: expressions.md#place-expressions-and-value-expressions
