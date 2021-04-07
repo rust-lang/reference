@@ -62,7 +62,7 @@ There are two main ways to read this document.
 
 The first is to answer a specific question.
 If you know which chapter answers that question, you can jump to that chapter in the table of contents.
-Otherwise, you can press `s` or the click the magnifying glass on the top bar to search for keywords related to your question.
+Otherwise, you can press `s` or click the magnifying glass on the top bar to search for keywords related to your question.
 For example, say you wanted to know when a temporary value created in a let statement is dropped.
 If you didn't already know that the [lifetime of temporaries] is defined in the [expressions chapter], you could search "temporary let" and the first search result will take you to that section.
 
