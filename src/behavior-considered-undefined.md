@@ -23,7 +23,9 @@ code.
 </div>
 
 * Data races.
-* Dereferencing (using the `*` operator on) a dangling or unaligned raw pointer.
+* Evaluating a [dereference expression] (`*expr`) on a raw pointer that is
+  [dangling] or unaligned, even in [place expression context]
+  (e.g. `addr_of!(&*expr)`).
 * Breaking the [pointer aliasing rules]. `&mut T` and `&T` follow LLVM’s scoped
   [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
 * Mutating immutable data. All data inside a [`const`] item is immutable. Moreover, all
@@ -45,7 +47,7 @@ code.
   * A `!` (all values are invalid for this type).
   * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
     from [uninitialized memory][undef], or uninitialized memory in a `str`.
-  * A reference or `Box<T>` that is dangling, unaligned, or points to an invalid value.
+  * A reference or `Box<T>` that is [dangling], unaligned, or points to an invalid value.
   * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
     * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
       `Trait` that matches the actual dynamic trait the pointer or reference points to.
@@ -62,6 +64,15 @@ a restricted set of valid values. In other words, the only cases in which
 reading uninitialized memory is permitted are inside `union`s and in "padding"
 (the gaps between the fields/elements of a type).
 
+> **Note**: Undefined behavior affects the entire program. For example, calling
+> a function in C that exhibits undefined behavior of C means your entire
+> program contains undefined behaviour that can also affect the Rust code. And
+> vice versa, undefined behavior in Rust can cause adverse affects on code
+> executed by any FFI calls to other languages.
+
+### Dangling pointers
+[dangling]: #dangling-pointers
+
 A reference/pointer is "dangling" if it is null or not all of the bytes it
 points to are part of the same allocation (so in particular they all have to be
 part of *some* allocation). The span of bytes it points to is determined by the
@@ -70,12 +81,6 @@ consequence, if the span is empty, "dangling" is the same as "non-null". Note
 that slices and strings point to their entire range, so it is important that the length
 metadata is never too large. In particular, allocations and therefore slices and strings
 cannot be bigger than `isize::MAX` bytes.
-
-> **Note**: Undefined behavior affects the entire program. For example, calling
-> a function in C that exhibits undefined behavior of C means your entire
-> program contains undefined behaviour that can also affect the Rust code. And
-> vice versa, undefined behavior in Rust can cause adverse affects on code
-> executed by any FFI calls to other languages.
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
@@ -87,3 +92,5 @@ cannot be bigger than `isize::MAX` bytes.
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
+[dereference expression]: expressions/operator-expr.md#the-dereference-operator
+[place expression context]: expressions.md#place-expressions-and-value-expressions
