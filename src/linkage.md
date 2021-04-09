@@ -42,10 +42,9 @@ be ignored in favor of only building the artifacts specified by command line.
   the compiler will never attempt to link to `staticlib` outputs. The
   purpose of this output type is to create a static library containing all of
   the local crate's code along with all upstream dependencies. This output type
-  will create an `*.a` archive on Linux, macOS and Windows (MinGW), and a
-  `*.lib` file on Windows (MSVC).
-  This format is recommended for use in situations such as linking Rust code
-  into an existing non-Rust application
+  will create `*.a` files on Linux, macOS and Windows (MinGW), and `*.lib` files
+  on Windows (MSVC). This format is recommended for use in situations such as
+  linking Rust code into an existing non-Rust application
   because it will not have dynamic dependencies on other Rust code.
 
 * `--crate-type=cdylib`, `#[crate_type = "cdylib"]` - A dynamic system
