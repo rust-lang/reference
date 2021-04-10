@@ -132,12 +132,15 @@ Example values:
 
 ### `target_family`
 
-Key-value option set at most once with the target's operating system value.
+Key-value option providing a more generic description of a target, such as the family of the
+operating systems or architectures that the target generally falls into. Any number of
+`target_family` key-value pairs can be set.
 
 Example values:
 
 * `"unix"`
 * `"windows"`
+* `"wasm"`
 
 ### `unix` and `windows`
 
