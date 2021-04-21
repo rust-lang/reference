@@ -95,6 +95,7 @@ The following keywords are reserved beginning in the 2018 edition.
 These keywords have special meaning only in certain contexts. For example, it
 is possible to declare a variable or method with the name `union`.
 
+* `macro_rules` is used to create custom [macros].
 * `union` is used to declare a [union] and is only a keyword when used in a
   union declaration.
 * `'static` is used for the static lifetime and cannot be used as a [generic
