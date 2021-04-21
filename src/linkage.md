@@ -18,7 +18,8 @@ be ignored in favor of only building the artifacts specified by command line.
 * `--crate-type=bin`, `#[crate_type = "bin"]` - A runnable executable will be
   produced. This requires that there is a `main` function in the crate which
   will be run when the program begins executing. This will link in all Rust and
-  native dependencies, producing a distributable binary.
+  native dependencies, producing a single distributable binary.
+  This is the default crate type.
 
 * `--crate-type=lib`, `#[crate_type = "lib"]` - A Rust library will be produced.
   This is an ambiguous concept as to what exactly is produced because a library
@@ -33,17 +34,17 @@ be ignored in favor of only building the artifacts specified by command line.
   be produced. This is different from the `lib` output type in that this forces
   dynamic library generation. The resulting dynamic library can be used as a
   dependency for other libraries and/or executables. This output type will
-  create `*.so` files on linux, `*.dylib` files on osx, and `*.dll` files on
-  windows.
+  create `*.so` files on Linux, `*.dylib` files on macOS, and `*.dll` files on
+  Windows.
 
 * `--crate-type=staticlib`, `#[crate_type = "staticlib"]` - A static system
   library will be produced. This is different from other library outputs in that
   the compiler will never attempt to link to `staticlib` outputs. The
   purpose of this output type is to create a static library containing all of
-  the local crate's code along with all upstream dependencies. The static
-  library is actually a `*.a` archive on linux and osx and windows(MinGW), and
-  a `*.lib` file on windows(MSVC). This format is recommended for use in
-  situations such as linking Rust code into an existing non-Rust application
+  the local crate's code along with all upstream dependencies. This output type
+  will create `*.a` files on Linux, macOS and Windows (MinGW), and `*.lib` files
+  on Windows (MSVC). This format is recommended for use in situations such as
+  linking Rust code into an existing non-Rust application
   because it will not have dynamic dependencies on other Rust code.
 
 * `--crate-type=cdylib`, `#[crate_type = "cdylib"]` - A dynamic system
