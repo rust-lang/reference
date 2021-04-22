@@ -43,7 +43,7 @@ trait Example {
 }
 ```
 
-Trait functions are are not allowed to be [`async`] or [`const`].
+Trait functions are not allowed to be [`async`] or [`const`].
 
 ## Trait bounds
 
