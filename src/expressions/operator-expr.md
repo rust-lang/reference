@@ -402,7 +402,7 @@ A trivial example of sound address arithmetic:
 
 ```rust
 let mut values: [i32; 2] = [1, 2];
-let p1 = &mut values[0] as *mut i32;
+let p1: *mut i32 = values.as_mut_ptr();
 let first_address = p1 as usize;
 let second_address = first_address + 4;
 let p2 = second_address as *mut i32;
