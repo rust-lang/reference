@@ -380,19 +380,33 @@ Casts an enum to its discriminant, then uses a numeric cast if needed.
 
 #### Pointer to address cast
 
-Casting from a valid raw pointer to `usize` will produce the address that is pointed to.
-
-The pointer's provenance is lost in this conversion.
+Casting from a raw pointer to an integer produces the machine address of the referenced memory.
+If the integer type is smaller than the pointer type, the address may be truncated; using `usize` avoids this.
 
 #### Address to pointer cast
 
-Casting from `usize` to a raw pointer will produce a raw pointer to the same location as the original pointer, if the `usize` was obtained through a pointer to address cast of a valid pointer.
+Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
 <div class="warning">
 Warning:
-The two pointers are not equivalent.
-Dereferencing the pointer obtained from the address to pointer cast may be <a href="../behavior-considered-undefined.md">undefined behavior</a> if aliasing rules are not followed.
+This interacts with the Rust memory model, which is still under development.
+A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
+Dereferencing such a pointer may be <a href="../behavior-considered-undefined.md">undefined behavior</a> if aliasing rules are not followed.
 </div>
+
+A trivial example of sound address arithmetic:
+
+```rust
+let mut values: [i32; 2] = [1, 2];
+let p1 = &mut values[0] as *mut i32;
+let first_address = p1 as usize;
+let second_address = first_address + 4;
+let p2 = second_address as *mut i32;
+unsafe {
+    *p2 += 1;
+}
+assert_eq!(values[1], 3);
+```
 
 ## Assignment expressions
 
