@@ -28,7 +28,7 @@
 >
 > _MacroFragSpec_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime` | `literal`\
-> &nbsp;&nbsp; | `meta` | `pat` | `pat_param`  | `path` | `stmt` | `tt` | `ty` | `vis`
+> &nbsp;&nbsp; | `meta` | `pat` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
 > &nbsp;&nbsp; [_Token_]<sub>_except delimiters and repetition operators_</sub>
@@ -122,8 +122,7 @@ fragment specifiers are:
   * `block`: a [_BlockExpression_]
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
-  * `pat_param`: a [_PatternNoTopAlt_]
-  * `pat`: equivalent to `pat_param`
+  * `pat`: a [_PatternNoTopAlt_]
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD]
