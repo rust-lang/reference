@@ -388,10 +388,12 @@ If the integer type is smaller than the pointer type, the address may be truncat
 Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
 <div class="warning">
+
 Warning:
 This interacts with the Rust memory model, which is still under development.
 A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
 Dereferencing such a pointer may be <a href="../behavior-considered-undefined.md">undefined behavior</a> if aliasing rules are not followed.
+
 </div>
 
 A trivial example of sound address arithmetic:
