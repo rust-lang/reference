@@ -375,8 +375,10 @@ Casts an enum to its discriminant, then uses a numeric cast if needed.
 
 * `false` casts to `0`, `true` casts to `1`
 * `char` casts to the value of the code point, then uses a numeric cast if needed.
-8` to `char` cast
-* Casts to the `char` with the corresponding code point.
+
+#### `u8` to `char` cast
+
+Casts to the `char` with the corresponding code point.
 
 #### Pointer to address cast
 
