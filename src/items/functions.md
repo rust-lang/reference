@@ -32,7 +32,7 @@
 > )
 >
 > _FunctionParamPattern_ :\
-> &nbsp;&nbsp; [_Pattern_] `:` ( [_Type_] | `...` )
+> &nbsp;&nbsp; [_PatternNoTopAlt_] `:` ( [_Type_] | `...` )
 >
 > _FunctionReturnType_ :\
 > &nbsp;&nbsp; `->` [_Type_]
@@ -378,7 +378,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [_BlockExpression_]: ../expressions/block-expr.md
 [_GenericParams_]: generics.md
 [_Lifetime_]: ../trait-bounds.md
-[_Pattern_]: ../patterns.md
+[_PatternNoTopAlt_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
 [_OuterAttribute_]: ../attributes.md

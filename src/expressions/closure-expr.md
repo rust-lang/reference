@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
 >
 > _ClosureParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_]&nbsp;( `:` [_Type_] )<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_PatternNoTopAlt_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A *closure expression*, also know as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
 The syntax for a closure expression is an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
@@ -59,7 +59,7 @@ Attributes on closure parameters follow the same rules and restrictions as [regu
 [_Expression_]: ../expressions.md
 [_BlockExpression_]: block-expr.md
 [_TypeNoBounds_]: ../types.md#type-expressions
-[_Pattern_]: ../patterns.md
+[_PatternNoTopAlt_]: ../patterns.md
 [_Type_]: ../types.md#type-expressions
 [`let` binding]: ../statements.md#let-statements
 [`Send`]: ../special-types-and-traits.md#send

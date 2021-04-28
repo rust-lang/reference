@@ -53,7 +53,7 @@ fn outer() {
 
 > **<sup>Syntax</sup>**\
 > _LetStatement_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_Pattern_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_PatternNoTopAlt_]
 >     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
 
 A *`let` statement* introduces a new set of [variables], given by an
@@ -133,5 +133,5 @@ statement are [`cfg`], and [the lint check attributes].
 [_LetStatement_]: #let-statements
 [_MacroInvocationSemi_]: macros.md#macro-invocation
 [_OuterAttribute_]: attributes.md
-[_Pattern_]: patterns.md
+[_PatternNoTopAlt_]: patterns.md
 [_Type_]: types.md

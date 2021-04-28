@@ -122,7 +122,7 @@ fragment specifiers are:
   * `block`: a [_BlockExpression_]
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
-  * `pat`: a [_Pattern_]
+  * `pat`: a [_PatternNoTopAlt_]
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD]
@@ -488,7 +488,7 @@ For more detail, see the [formal specification].
 [_Item_]: items.md
 [_LiteralExpression_]: expressions/literal-expr.md
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
-[_Pattern_]: patterns.md
+[_PatternNoTopAlt_]: patterns.md
 [_Statement_]: statements.md
 [_TokenTree_]: macros.md#macro-invocation
 [_Token_]: tokens.md

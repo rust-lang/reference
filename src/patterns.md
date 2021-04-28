@@ -2,6 +2,9 @@
 
 > **<sup>Syntax</sup>**\
 > _Pattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `|`<sup>?</sup> _PatternNoTopAlt_  ( `|` _PatternNoTopAlt_ )<sup>\*</sup>
+>
+> _PatternNoTopAlt_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _PatternWithoutRange_\
 > &nbsp;&nbsp; | [_RangePattern_]
 >
@@ -756,6 +759,63 @@ Path patterns are irrefutable when they refer to structs or an enum variant when
 has only one variant or a constant whose type is irrefutable. They are refutable when they
 refer to refutable constants or enum variants for enums with multiple variants.
 
+## Or-patterns
+
+_Or-patterns_ are patterns that match on one of two or more sub-patterns (e.g.
+`A | B | C`). They can nest arbitrarily. Syntactically, or-patterns are allowed
+in any of the places where other patterns are allowed (represented by the
+_Pattern_ production), with the exceptions of `let`-bindings and function and
+closure arguments (represented by the _PatternNoTopAlt_ production).
+
+### Static semantics
+
+1. Given a pattern `p | q` at some depth for some arbitrary patterns `p` and `q`,
+   the pattern is considered ill-formed if:
+
+   + the type inferred for `p` does not unify with the type inferred for `q`, or
+   + the same set of bindings are not introduced in `p` and `q`, or
+   + the type of any two bindings with the same name in `p` and `q` do not unify
+     with respect to types or binding modes.
+
+   Unification of types is in all instances aforementioned exact and
+   implicit [type coercions] do not apply.
+
+2. When type checking an expression `match e_s { a_1 => e_1, ... a_n => e_n }`,
+   for each match arm `a_i` which contains a pattern of form `p_i | q_i`,
+   the pattern `p_i | q_i` is considered ill formed if,
+   at the depth `d` where it exists the fragment of `e_s` at depth `d`,
+   the type of the expression fragment does not unify with `p_i | q_i`.
+
+3. With respect to exhaustiveness checking, a pattern `p | q` is
+   considered to cover `p` as well as `q`. For some constructor `c(x, ..)`
+   the distributive law applies such that `c(p | q, ..rest)` covers the same
+   set of value as `c(p, ..rest) | c(q, ..rest)` does. This can be applied
+   recursively until there are no more nested patterns of form `p | q` other
+   than those that exist at the top level.
+
+   Note that by *"constructor"* we do not refer to tuple struct patterns,
+   but rather we refer to a pattern for any product type.
+   This includes enum variants, tuple structs, structs with named fields,
+   arrays, tuples, and slices.
+
+### Dynamic semantics
+
+1. The dynamic semantics of pattern matching a scrutinee expression `e_s`
+   against a pattern `c(p | q, ..rest)` at depth `d` where `c` is some constructor,
+   `p` and `q` are arbitrary patterns, and `rest` is optionally any remaining
+   potential factors in `c`, is defined as being the same as that of
+   `c(p, ..rest) | c(q, ..rest)`.
+
+### Precedence with other undelimited patterns
+
+As shown elsewhere in this chapter, there are several types of patterns that
+are syntactically undelimited, including identifier patterns, reference
+patterns, and or-patterns. Or-patterns always have the lowest-precedence.  This
+allows us to reserve syntactic space for a possible future type ascription
+feature and also to reduce ambiguity. For example, `x @ A(..) | B(..)` will
+result in an error that `x` is not bound in all patterns, `&A(x) | B(x)` will
+result in a type mismatch between `x` in the different subpatterns.
+
 [_GroupedPattern_]: #grouped-patterns
 [_IdentifierPattern_]: #identifier-patterns
 [_LiteralPattern_]: #literal-patterns
@@ -782,3 +842,4 @@ refer to refutable constants or enum variants for enums with multiple variants.
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
+[type coercions]: type-coercions.md
