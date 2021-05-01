@@ -221,10 +221,7 @@ fn generic<const B: bool>() {
 > &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]
 >
 > _TypeBoundWhereClauseItem_ :\
-> &nbsp;&nbsp; _ForLifetimes_<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
->
-> _ForLifetimes_ :\
-> &nbsp;&nbsp; `for` [_GenericParams_](#generic-parameters)
+> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
 
 *Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
@@ -277,6 +274,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [IDENTIFIER]: ../identifiers.md
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 
+[_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
 [_LifetimeParam_]: #generic-parameters
 [_LifetimeBounds_]: ../trait-bounds.md
 [_Lifetime_]: ../trait-bounds.md
