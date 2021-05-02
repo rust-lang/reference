@@ -81,9 +81,9 @@ Object safe traits can be the base trait of a [trait object]. A trait is
             * [`Rc<Self>`]
             * [`Arc<Self>`]
             * [`Pin<P>`] where `P` is one of the types above
-        * Does not have a `where Self: Sized` bound (reciever type of `Self` (i.e. `self`) implies this).
+        * Does not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
     * Explicitly non-dispatchable functions require:
-        * Have a `where Self: Sized` bound (reciever type of `Self` (i.e. `self`) implies this).
+        * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 
 ```rust
 # use std::rc::Rc;
