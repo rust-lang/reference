@@ -43,7 +43,7 @@ referred to with path syntax.
 
 ### Const generics
 
-*Const generic parameters* allow items to be generic over constant values. The
+*Const parameters* allow items to be generic over constant values. The
 const identifier introduces a name for the constant parameter, and all
 instances of the item must be instantiated with a value of the given type.
 
@@ -68,7 +68,7 @@ places:
 5. As a part of the type of any fields in the item.
 
 ```rust
-// Examples where const generic parameters can be used.
+// Examples where const parameters can be used.
 
 // Used in the signature of the item itself.
 fn foo<const N: usize>(arr: [i32; N]) {
@@ -97,7 +97,7 @@ impl<const N: usize> Trait for Foo<N> {
 ```
 
 ```rust,compile_fail
-// Examples where const generic parameters cannot be used.
+// Examples where const parameters cannot be used.
 fn foo<const N: usize>() {
     // Cannot use in item definitions within a function body.
     const BAD_CONST: [usize; N] = [1; N];
