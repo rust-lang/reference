@@ -470,6 +470,8 @@ fn example() {
 }
 ```
 
+Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
+
 <div class="warning">
 
 Warning: The evaluation order of operands swaps depending on the types of the operands:
