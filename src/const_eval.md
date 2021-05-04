@@ -59,7 +59,7 @@ A _const context_ is one of the following:
   * [constants]
   * [statics]
   * [enum discriminants]
-* A [const generic argument]
+* [Const arguments]
 
 ## Const Functions
 
@@ -113,7 +113,7 @@ Conversely, the following are possible in a const function, but not in a const c
 [closure expressions]:  expressions/closure-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [const functions]:      items/functions.md#const-functions
-[const generic argument]: items/generics.md#const-generics
+[Const arguments]:      items/generics.md#const-generics
 [const parameters]:     items/generics.md#const-generics
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
