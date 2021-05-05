@@ -140,6 +140,14 @@ This is not affected by applied type arguments. `struct Foo` is considered local
 `Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not
 affect locality.
 
+### Module
+
+A module is a container for zero or more [items]. Modules are organized in a
+tree, starting from an unnamed module at the root called the crate root or the
+root module. [Paths] may be used to refer to items outside of a module, which
+may be restricted by [visibility rules].
+[More][modules]
+
 ### Name
 
 A [*name*] is an [identifier] or [lifetime or loop label] that refers to an
@@ -320,3 +328,4 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [undefined-behavior]: behavior-considered-undefined.md
 [unions]: items/unions.md
 [variable bindings]: patterns.md
+[visibility rules]: visibility-and-privacy.md
