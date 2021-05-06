@@ -25,7 +25,7 @@ fn foo() -> impl Trait {
 > Note: This is often called "impl Trait in argument position".
 
 Functions can declare an argument to be an anonymous type parameter where the
-callee must provide a type that has the bounds declared by the anonymous type
+caller must provide a type that has the bounds declared by the anonymous type
 parameter and the function can only use the methods available by the trait
 bounds of the anonymous type parameter.
 
