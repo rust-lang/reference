@@ -61,45 +61,10 @@ Functions can use `impl Trait` to return an abstract return type.
 These types stand in for another concrete type where the caller may only use the methods declared by the specified `Trait`.
 Each possible return value from the function must resolve to the same concrete type.
 
-Prior to `impl Trait`, a function could express abstract return types by using [trait objects]:
-
-```rust
-trait Trait {}
-
-impl Trait for i32 {}
-
-fn returns_a_trait_object() -> Box<dyn Trait> {
-    Box::new(5)
-}
-```
-
-This has some drawbacks: constructing `Box<T>` involves a heap allocation, and the `dyn Trait` will use dynamic dispatch on its methods.
-However, this function only returns one possible type here: the `Box<i32>`.
-This means incurring the costs of dynamic dispatch, even though the return type cannot vary.
-
-With `impl Trait`, the code above could be written like this:
-
-```rust
-trait Trait {}
-
-impl Trait for i32 {}
-
-fn returns_a_trait_object() -> impl Trait {
-    5
-}
-```
-
-There is no `Box<T>`, no trait object, and no dynamic dispatch.
-However, the function can still can obscure the `i32` return type.
-
-With `i32`, this might not seem very useful.
-There is one major place in Rust where this is much more useful: closures.
-
-### `impl Trait` and closures
-
-In Rust, [closures] have a unique, un-writable type.
-However, they do implement the `Fn` family of traits.
-This means that previously, the only way to return a closure from a function was to use a trait object:
+`impl Trait` in return position allows a function to return an unboxed abstract type.
+This is particularly useful with [closures] and iterators.
+For example, closures have a unique, un-writable type.
+Previously, the only way to return a closure from a function was to use a [trait object]:
 
 ```rust
 fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
@@ -107,9 +72,10 @@ fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
 }
 ```
 
-It wasn't possible to fully specify the type of the closure, only use the `Fn` trait.
+This could incur performance penalties from heap allocation and dynamic dispatch.
+It wasn't possible to fully specify the type of the closure, only to use the `Fn` trait.
 That means that the trait object is necessary.
-However, with `impl Trait`:
+However, with `impl Trait`, it is possible to write this more simply:
 
 ```rust
 fn returns_closure() -> impl Fn(i32) -> i32 {
@@ -117,7 +83,10 @@ fn returns_closure() -> impl Fn(i32) -> i32 {
 }
 ```
 
-It is now possible to return closures by value, just like any other type.
+which also avoids the drawbacks of using a boxed trait object.
+
+Similarly, the concrete types of iterators could become very complex, incorporating the types of all previous iterators in a chain.
+Returning `impl Iterator` means that a function only exposes the `Iterator` trait as a bound on its return type, instead of explicitly specifying all of the other iterator types involved.
 
 ### Differences between generics and `impl Trait` in return position
 
@@ -151,5 +120,5 @@ It cannot appear inside implementations of traits, nor can it be the type of a l
 [_GenericArgs_]: ../paths.md#paths-in-expressions
 [_GenericParams_]: ../items/generics.md
 [_TraitBound_]: ../trait-bounds.md
-[trait objects]: trait-object.md
+[trait object]: trait-object.md
 [_TypeParamBounds_]: ../trait-bounds.md
