@@ -160,12 +160,10 @@ With `impl Trait`, the function asserts that the return type will implement this
 So with `impl Trait`, unlike with a generic type parameter for the return type, the caller can't choose the return type, and the function itself gets to choose.
 If we tried to define parse with `Result<impl F,...` as the return type, it wouldn't work.
 
-### Using `impl Trait` in more places
+## Limitations
 
-As previously mentioned, as a start, you will only be able to use `impl Trait` as the argument or return type of a free or inherent function.
-However, `impl Trait` can't be used inside implementations of traits, nor can it be used as the type of a let binding or inside a type alias.
-Some of these restrictions will eventually be lifted.
-For more information, see the [tracking issue on `impl Trait`](https://github.com/rust-lang/rust/issues/34511).
+`impl Trait` can only appear as the argument or return type of a free or inherent function.
+It cannot appear inside implementations of traits, nor can it be the type of a let binding or appear inside a type alias.
 
 [closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
