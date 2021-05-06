@@ -5,64 +5,63 @@
 >
 > _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
 
-`impl Trait` is the new way to specify unnamed but concrete types that
+> **Edition differences**: `impl Trait` is new in the 2018 edition.
+
+`impl Trait` provides ways to specify unnamed but concrete types that
 implement a specific trait.
-There are two places you can put it: argument position, and return position.
+It can appear in two sorts of places: argument position (where it can act as an anonymous type parameter to functions), and return position (where it can act as an abstract return type).
 
-```rust,ignore
+```rust
 trait Trait {}
+# impl Trait for () {}
 
-// argument position
+// argument position: anonymous type parameter
 fn foo(arg: impl Trait) {
 }
 
-// return position
-fn foo() -> impl Trait {
+// return position: abstract return type
+fn bar() -> impl Trait {
 }
 ```
 ## Anonymous type parameters
 
 > Note: This is often called "impl Trait in argument position".
 
-Functions can declare an argument to be an anonymous type parameter where the
-caller must provide a type that has the bounds declared by the anonymous type
-parameter and the function can only use the methods available by the trait
-bounds of the anonymous type parameter.
+Functions can use `impl` followed by a set of trait bounds to declare an argument as having an anonymous type.
+The caller must provide a type that satisfies the bounds declared by the anonymous type parameter, and the function can only use the methods available through the trait bounds of the anonymous type parameter.
 
-They are written as `impl` followed by a set of trait bounds.
-In argument position, this feature is quite simple.
-These two forms are almost the same:
+For example, these two forms are almost equivalent:
 
 ```rust,ignore
 trait Trait {}
 
+// generic type parameter
 fn foo<T: Trait>(arg: T) {
 }
 
+// impl Trait in argument position
 fn foo(arg: impl Trait) {
 }
 ```
 
-That is, it's a slightly shorter syntax for a generic type parameter.
-It means, "`arg` is an argument that takes any type that implements the `Trait` trait."
+That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [_GenericParams_] list.
 
-However, there's also an important technical difference between `T: Trait` and `impl Trait` here.
-When you write the former, you can specify the type of `T` at the call site with turbo-fish syntax as with `foo::<usize>(1)`.
-In the case of `impl Trait`, if it is used anywhere in the function definition, then you can't use turbo-fish at all.
-Therefore, you should be mindful that changing both from and to `impl Trait` can constitute a breaking change for the users of your code.
+> **Note:**
+> For function arguments, generic type parameters and `impl Trait` are not exactly equivalent.
+> With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
+> If `impl Trait` is the type of a function argument, then the caller can't ever specify the type of that argument by using a generic argument.
+>
+> Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
 
 ## Abstract return types
 
 > Note: This is often called "impl Trait in return position".
 
-Functions, except for associated trait functions, can return an abstract
-return type. These  types stand in for another concrete type where the
-use-site may only use the trait methods declared by the trait bounds of the
-type.
+Functions can use `impl Trait` to return an abstract return type.
+These types stand in for another concrete type where the caller may only use the methods declared by the specified `Trait`.
+Each possible return value from the function must resolve to the same concrete type.
 
-They are written as `impl` followed by a set of trait bounds.
-
-Before `impl Trait`, you could do this with trait objects:
+Prior to `impl Trait`, a function could express abstract return types by using [trait objects]:
 
 ```rust
 trait Trait {}
@@ -74,10 +73,9 @@ fn returns_a_trait_object() -> Box<dyn Trait> {
 }
 ```
 
-However, this has some overhead: the `Box<T>` means that there's a heap allocation here, and this will use dynamic dispatch.
-See the `dyn Trait` section for an explanation of this syntax.
-But we only ever return one possible thing here, the `Box<i32>`.
-This means that we're paying for dynamic dispatch, even though we don't use it!
+This has some drawbacks: constructing `Box<T>` involves a heap allocation, and the `dyn Trait` will use dynamic dispatch on its methods.
+However, this function only returns one possible type here: the `Box<i32>`.
+This means incurring the costs of dynamic dispatch, even though the return type cannot vary.
 
 With `impl Trait`, the code above could be written like this:
 
@@ -91,19 +89,16 @@ fn returns_a_trait_object() -> impl Trait {
 }
 ```
 
-Here, we have no `Box<T>`, no trait object, and no dynamic dispatch.
-But we still can obscure the `i32` return type.
+There is no `Box<T>`, no trait object, and no dynamic dispatch.
+However, the function can still can obscure the `i32` return type.
 
-With `i32`, this isn't super useful.
-But there's one major place in Rust where this is much more useful: closures.
+With `i32`, this might not seem very useful.
+There is one major place in Rust where this is much more useful: closures.
 
 ### `impl Trait` and closures
 
-> If you need to catch up on closures, check out [their chapter in the
-> book](https://doc.rust-lang.org/book/second-edition/ch13-01-closures.html).
-
-In Rust, closures have a unique, un-writable type.
-They do implement the `Fn` family of traits, however.
+In Rust, [closures] have a unique, un-writable type.
+However, they do implement the `Fn` family of traits.
 This means that previously, the only way to return a closure from a function was to use a trait object:
 
 ```rust
@@ -112,8 +107,9 @@ fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
 }
 ```
 
-You couldn't write the type of the closure, only use the `Fn` trait.
-That means that the trait object is necessary. However, with `impl Trait`:
+It wasn't possible to fully specify the type of the closure, only use the `Fn` trait.
+That means that the trait object is necessary.
+However, with `impl Trait`:
 
 ```rust
 fn returns_closure() -> impl Fn(i32) -> i32 {
@@ -121,7 +117,7 @@ fn returns_closure() -> impl Fn(i32) -> i32 {
 }
 ```
 
-We can now return closures by value, just like any other type!
+It is now possible to return closures by value, just like any other type.
 
 ## More details
 
@@ -132,10 +128,8 @@ Consider this function:
 fn foo<T: Trait>(x: T) {
 ```
 
-When you call it, you set the type, `T`.
-"you" being the caller here.
-This signature says "I accept any type that implements `Trait`."
-("any type" == universal in the jargon)
+The caller of this function determines the type, `T`.
+This function signature means that the function accepts any type that implements `Trait`."
 
 This version:
 
@@ -144,15 +138,15 @@ fn foo<T: Trait>() -> T {
 ```
 
 is similar, but also different.
-You, the caller, provide the type you want, `T`, and then the function returns it.
-You can see this in Rust today with things like parse or collect:
+The caller determines the return type, `T`, and the function returns it.
+Examples of this include the `.parse()` or `.collect()` methods:
 
 ```rust,ignore
 let x: i32 = "5".parse()?;
 let x: u64 = "5".parse()?;
 ```
 
-Here, `.parse` has this signature:
+Here, `.parse()` has this signature:
 
 ```rust,ignore
 pub fn parse<F>(&self) -> Result<F, <F as FromStr>::Err> where
@@ -162,8 +156,8 @@ pub fn parse<F>(&self) -> Result<F, <F as FromStr>::Err> where
 Same general idea, though with a result type and `FromStr` has an associated type... anyway, you can see how `F` is in the return position here.
 So you have the ability to choose.
 
-With `impl Trait`, you're saying "hey, some type exists that implements this trait, but I'm not gonna tell you what it is."
-So now, the caller can't choose, and the function itself gets to choose.
+With `impl Trait`, the function asserts that the return type will implement this trait, but the caller can't know exactly which type.
+So with `impl Trait`, unlike with a generic type parameter for the return type, the caller can't choose the return type, and the function itself gets to choose.
 If we tried to define parse with `Result<impl F,...` as the return type, it wouldn't work.
 
 ### Using `impl Trait` in more places
@@ -173,5 +167,9 @@ However, `impl Trait` can't be used inside implementations of traits, nor can it
 Some of these restrictions will eventually be lifted.
 For more information, see the [tracking issue on `impl Trait`](https://github.com/rust-lang/rust/issues/34511).
 
+[closures]: closure.md
+[_GenericArgs_]: ../paths.md#paths-in-expressions
+[_GenericParams_]: ../items/generics.md
 [_TraitBound_]: ../trait-bounds.md
+[trait objects]: trait-object.md
 [_TypeParamBounds_]: ../trait-bounds.md
