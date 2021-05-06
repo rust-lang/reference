@@ -119,46 +119,28 @@ fn returns_closure() -> impl Fn(i32) -> i32 {
 
 It is now possible to return closures by value, just like any other type.
 
-## More details
+### Differences between generics and `impl Trait` in return position
 
-The above is all you need to know to get going with `impl Trait`, but for some more nitty-gritty details: type parameters and `impl Trait` work slightly differently when they're in argument position versus return position.
-Consider this function:
+In argument position, `impl Trait` is very similar in semantics to a generic type parameter.
+However, there are significant differences between the two in return position.
+With `impl Trait`, unlike with a generic type parameter, the function chooses the return type, and the caller cannot choose the return type.
 
-```rust,ignore
-fn foo<T: Trait>(x: T) {
-```
-
-The caller of this function determines the type, `T`.
-This function signature means that the function accepts any type that implements `Trait`."
-
-This version:
+The function:
 
 ```rust,ignore
 fn foo<T: Trait>() -> T {
 ```
 
-is similar, but also different.
-The caller determines the return type, `T`, and the function returns it.
-Examples of this include the `.parse()` or `.collect()` methods:
+allows the caller to determine the return type, `T`, and the function returns that type.
+
+The function:
 
 ```rust,ignore
-let x: i32 = "5".parse()?;
-let x: u64 = "5".parse()?;
+fn foo() -> impl Trait {
 ```
 
-Here, `.parse()` has this signature:
-
-```rust,ignore
-pub fn parse<F>(&self) -> Result<F, <F as FromStr>::Err> where
-    F: FromStr,
-```
-
-Same general idea, though with a result type and `FromStr` has an associated type... anyway, you can see how `F` is in the return position here.
-So you have the ability to choose.
-
-With `impl Trait`, the function asserts that the return type will implement this trait, but the caller can't know exactly which type.
-So with `impl Trait`, unlike with a generic type parameter for the return type, the caller can't choose the return type, and the function itself gets to choose.
-If we tried to define parse with `Result<impl F,...` as the return type, it wouldn't work.
+doesn't allow the caller to determine the return type.
+Instead, the function chooses the return type, but only promises that it will implement `Trait`.
 
 ## Limitations
 
