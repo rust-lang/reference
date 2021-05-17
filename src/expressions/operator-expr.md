@@ -337,35 +337,29 @@ reference types and `mut` or `const` in pointer types.
 
 ### Semantics
 
-* Numeric cast
-    * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
-    * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
-      truncate
-    * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
-        * zero-extend if the source is unsigned
-        * sign-extend if the source is signed
-    * Casting from a float to an integer will round the float towards zero
-        * `NaN` will return `0`
-        * Values larger than the maximum integer value will saturate to the
-          maximum value of the integer type.
-        * Values smaller than the minimum integer value will saturate to the
-          minimum value of the integer type.
-    * Casting from an integer to float will produce the closest possible float \*
-        * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
-        * on overflow, infinity (of the same sign as the input) is produced
-        * note: with the current set of numeric types, overflow can only happen
-          on `u128 as f32` for values greater or equal to `f32::MAX + (0.5 ULP)`
-    * Casting from an f32 to an f64 is perfect and lossless
-    * Casting from an f64 to an f32 will produce the closest possible f32 \*\*
-        * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
-        * on overflow, infinity (of the same sign as the input) is produced
-* Enum cast
-    * Casts an enum to its discriminant, then uses a numeric cast if needed.
-* Primitive to integer cast
-    * `false` casts to `0`, `true` casts to `1`
-    * `char` casts to the value of the code point, then uses a numeric cast if needed.
-* `u8` to `char` cast
-    * Casts to the `char` with the corresponding code point.
+#### Numeric cast
+
+* Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
+* Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
+  truncate
+* Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
+    * zero-extend if the source is unsigned
+    * sign-extend if the source is signed
+* Casting from a float to an integer will round the float towards zero
+    * `NaN` will return `0`
+    * Values larger than the maximum integer value will saturate to the
+      maximum value of the integer type.
+    * Values smaller than the minimum integer value will saturate to the
+      minimum value of the integer type.
+* Casting from an integer to float will produce the closest possible float \*
+    * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
+    * on overflow, infinity (of the same sign as the input) is produced
+    * note: with the current set of numeric types, overflow can only happen
+      on `u128 as f32` for values greater or equal to `f32::MAX + (0.5 ULP)`
+* Casting from an f32 to an f64 is perfect and lossless
+* Casting from an f64 to an f32 will produce the closest possible f32 \*\*
+    * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
+    * on overflow, infinity (of the same sign as the input) is produced
 
 \* if integer-to-float casts with this rounding mode and overflow behavior are
 not supported natively by the hardware, these casts will likely be slower than
@@ -378,6 +372,51 @@ expected.
 \*\*\* as defined in IEEE 754-2008 &sect;4.3.1: pick the nearest floating point
 number, preferring the one with an even least significant digit if exactly
 halfway between two floating point numbers.
+
+#### Enum cast
+
+Casts an enum to its discriminant, then uses a numeric cast if needed.
+
+#### Primitive to integer cast
+
+* `false` casts to `0`, `true` casts to `1`
+* `char` casts to the value of the code point, then uses a numeric cast if needed.
+
+#### `u8` to `char` cast
+
+Casts to the `char` with the corresponding code point.
+
+#### Pointer to address cast
+
+Casting from a raw pointer to an integer produces the machine address of the referenced memory.
+If the integer type is smaller than the pointer type, the address may be truncated; using `usize` avoids this.
+
+#### Address to pointer cast
+
+Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
+
+<div class="warning">
+
+Warning:
+This interacts with the Rust memory model, which is still under development.
+A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
+Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
+
+</div>
+
+A trivial example of sound address arithmetic:
+
+```rust
+let mut values: [i32; 2] = [1, 2];
+let p1: *mut i32 = values.as_mut_ptr();
+let first_address = p1 as usize;
+let second_address = first_address + 4; // 4 == size_of::<i32>()
+let p2 = second_address as *mut i32;
+unsafe {
+    *p2 += 1;
+}
+assert_eq!(values[1], 3);
+```
 
 ## Assignment expressions
 
@@ -489,6 +528,7 @@ See [this test] for an example of using this dependency.
 [logical xor]: ../types/boolean.md#logical-xor
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
