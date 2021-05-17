@@ -42,19 +42,14 @@ to set the limit based on the number of type substitutions.
 
 > Note: The default in `rustc` is 1048576.
 
-<!-- This code should fail to compile. Unfortunately rustdoc's `compile_fail`
-     stops after analysis phase, and this error is generated after that. So
-     this needs to be `ignore` for now. -->
-
-```rust,compile_fail,ignore
-#![type_length_limit = "8"]
+```rust,compile_fail
+#![type_length_limit = "4"]
 
 fn f<T>(x: T) {}
 
 // This fails to compile because monomorphizing to
-// `f::<(i32, i32, i32, i32, i32, i32, i32, i32, i32)>>` requires more
-// than 8 type elements.
-f((1, 2, 3, 4, 5, 6, 7, 8, 9));
+// `f::<((((i32,), i32), i32), i32)>` requires more than 4 type elements.
+f(((((1,), 2), 3), 4));
 ```
 
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
