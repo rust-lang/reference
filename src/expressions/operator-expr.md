@@ -394,7 +394,7 @@ Casting from an integer to a raw pointer interprets the integer as a memory addr
 Warning:
 This interacts with the Rust memory model, which is still under development.
 A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
-Dereferencing such a pointer may be <a href="../behavior-considered-undefined.md">undefined behavior</a> if aliasing rules are not followed.
+Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
 
 </div>
 
@@ -520,6 +520,7 @@ See [this test] for an example of using this dependency.
 [logical xor]: ../types/boolean.md#logical-xor
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
