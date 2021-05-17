@@ -384,7 +384,7 @@ match slice {
     // `end` is a slice of everything but the first element, which must be "a".
     ["a", end @ ..] => println!("ends with: {:?}", end),
 
-    // 'whole' is the entire slice and `last` the the final element
+    // 'whole' is the entire slice and `last` is the final element
     whole @ [.., last] => println!("the last element of {:?} is {}", whole, last)
 
     rest => println!("{:?}", rest),
