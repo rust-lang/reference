@@ -5,8 +5,6 @@
 >
 > _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
 
-> **Edition differences**: `impl Trait` is new in the 2018 edition.
-
 `impl Trait` provides ways to specify unnamed but concrete types that
 implement a specific trait.
 It can appear in two sorts of places: argument position (where it can act as an anonymous type parameter to functions), and return position (where it can act as an abstract return type).
@@ -49,7 +47,8 @@ That is, `impl Trait` in argument position is syntactic sugar for a generic type
 > **Note:**
 > For function arguments, generic type parameters and `impl Trait` are not exactly equivalent.
 > With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
-> If `impl Trait` is the type of a function argument, then the caller can't ever specify the type of that argument by using a generic argument.
+> If `impl Trait` is the type of *any* function argument, then the caller can't ever provide any generic arguments when calling that function.
+This includes generic arguments for the return type or any const generics.
 >
 > Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
 
