@@ -24,8 +24,9 @@ fn bar() -> impl Trait {
 ## Anonymous type parameters
 
 > Note: This is often called "impl Trait in argument position".
+(The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
 
-Functions can use `impl` followed by a set of trait bounds to declare an argument as having an anonymous type.
+Functions can use `impl` followed by a set of trait bounds to declare a parameter as having an anonymous type.
 The caller must provide a type that satisfies the bounds declared by the anonymous type parameter, and the function can only use the methods available through the trait bounds of the anonymous type parameter.
 
 For example, these two forms are almost equivalent:
@@ -45,9 +46,9 @@ fn foo(arg: impl Trait) {
 That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [_GenericParams_] list.
 
 > **Note:**
-> For function arguments, generic type parameters and `impl Trait` are not exactly equivalent.
+> For function parameters, generic type parameters and `impl Trait` are not exactly equivalent.
 > With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
-> If `impl Trait` is the type of *any* function argument, then the caller can't ever provide any generic arguments when calling that function.
+> If `impl Trait` is the type of *any* function parameter, then the caller can't ever provide any generic arguments when calling that function.
 This includes generic arguments for the return type or any const generics.
 >
 > Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
@@ -112,7 +113,7 @@ Instead, the function chooses the return type, but only promises that it will im
 
 ## Limitations
 
-`impl Trait` can only appear as the argument or return type of a free or inherent function.
+`impl Trait` can only appear as a parameter or return type of a free or inherent function.
 It cannot appear inside implementations of traits, nor can it be the type of a let binding or appear inside a type alias.
 
 [closures]: closure.md
