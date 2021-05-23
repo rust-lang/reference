@@ -26,7 +26,7 @@ the bang after the hash, apply to the thing that follows the attribute.
 The attribute consists of a path to the attribute, followed by an optional
 delimited token tree whose interpretation is defined by the attribute.
 Attributes other than macro attributes also allow the input to be an equals
-sign (`=`) followed by a expression. See the [meta item
+sign (`=`) followed by an expression. See the [meta item
 syntax](#meta-item-attribute-syntax) below for more details.
 
 Attributes can be classified into the following kinds:
