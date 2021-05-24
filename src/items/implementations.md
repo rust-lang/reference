@@ -111,7 +111,7 @@ keyword.
 # struct Point {x: f64, y: f64};
 # type Surface = i32;
 # struct BoundingBox {x: f64, y: f64, width: f64, height: f64};
-# trait Shape { fn draw(&self, Surface); fn bounding_box(&self) -> BoundingBox; }
+# trait Shape { fn draw(&self, s: Surface); fn bounding_box(&self) -> BoundingBox; }
 # fn do_draw_circle(s: Surface, c: Circle) { }
 struct Circle {
     radius: f64,
