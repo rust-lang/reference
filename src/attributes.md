@@ -13,7 +13,7 @@
 >
 > _AttrInput_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
-> &nbsp;&nbsp; | `=` [_LiteralExpression_]<sub>_without suffix_</sub>
+> &nbsp;&nbsp; | `=` [_Expression_]
 
 An _attribute_ is a general, free-form metadatum that is interpreted according
 to name, convention, language, and compiler version. Attributes are modeled
@@ -26,7 +26,7 @@ the bang after the hash, apply to the thing that follows the attribute.
 The attribute consists of a path to the attribute, followed by an optional
 delimited token tree whose interpretation is defined by the attribute.
 Attributes other than macro attributes also allow the input to be an equals
-sign (`=`) followed by a literal expression. See the [meta item
+sign (`=`) followed by an expression. See the [meta item
 syntax](#meta-item-attribute-syntax) below for more details.
 
 Attributes can be classified into the following kinds:
@@ -94,7 +94,7 @@ attributes]. It has the following grammar:
 > **<sup>Syntax</sup>**\
 > _MetaItem_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
-> &nbsp;&nbsp; | [_SimplePath_] `=` [_LiteralExpression_]<sub>_without suffix_</sub>\
+> &nbsp;&nbsp; | [_SimplePath_] `=` [_Expression_]\
 > &nbsp;&nbsp; | [_SimplePath_] `(` _MetaSeq_<sup>?</sup> `)`
 >
 > _MetaSeq_ :\
@@ -102,10 +102,34 @@ attributes]. It has the following grammar:
 >
 > _MetaItemInner_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _MetaItem_\
-> &nbsp;&nbsp; | [_LiteralExpression_]<sub>_without suffix_</sub>
+> &nbsp;&nbsp; | [_Expression_]
 
-Literal expressions in meta items must not include integer or float type
-suffixes.
+Expressions in meta items must macro-expand to literal expressions, which must not
+include integer or float type suffixes. Expressions which are not literal expressions
+will be syntactically accepted (and can be passed to proc-macros), but will be rejected after parsing.
+
+Note that if the attribute appears within another macro, it will be expanded
+after that outer macro. For example, the following code will expand the
+`Serialize` proc-macro first, which must preserve the `include_str!` call in
+order for it to be expanded:
+
+```rust ignore
+#[derive(Serialize)]
+struct Foo {
+    #[doc = include_str!("x.md")]
+    x: u32
+}
+```
+
+Additionally, macros in attributes will be expanded only after all other attributes applied to the item:
+
+```rust ignore
+#[macro_attr1] // expanded first
+#[doc = mac!()] // `mac!` is expanded fourth.
+#[macro_attr2] // expanded second
+#[derive(MacroDerive1, MacroDerive2)] // expanded third
+fn foo() {}
+```
 
 Various built-in attributes use different subsets of the meta item syntax to
 specify their inputs. The following grammar rules show some commonly used
@@ -255,7 +279,7 @@ The following is an index of all built-in attributes.
 [The Rustdoc Book]: ../rustdoc/the-doc-attribute.html
 [The Unstable Book]: ../unstable-book/index.html
 [_DelimTokenTree_]: macros.md
-[_LiteralExpression_]: expressions/literal-expr.md
+[_Expression_]: expressions.md
 [_SimplePath_]: paths.md#simple-paths
 [`allow`]: attributes/diagnostics.md#lint-check-attributes
 [`automatically_derived`]: attributes/derive.md#the-automatically_derived-attribute
