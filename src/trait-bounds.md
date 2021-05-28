@@ -100,6 +100,9 @@ fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) where 'a: 'b {
 
 ## Higher-ranked trait bounds
 
+> _ForLifetimes_ :\
+> &nbsp;&nbsp; `for` [_GenericParams_]
+
 Type bounds may be *higher ranked* over lifetimes. These bounds specify a bound
 is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T:
 PartialEq<i32>` would require an implementation like
@@ -137,6 +140,7 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 ```
 
 [LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
+[_GenericParams_]: items/generics.md
 [_TypePath_]: paths.md#paths-in-types
 [`Sized`]: special-types-and-traits.md#sized
 

@@ -54,7 +54,7 @@ restrictions as [regular function parameters].
 
 [IDENTIFIER]: ../identifiers.md
 [_Abi_]: ../items/functions.md
-[_ForLifetimes_]: ../items/generics.md#where-clauses
+[_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_Type_]: ../types.md#type-expressions
 [_OuterAttribute_]: ../attributes.md
