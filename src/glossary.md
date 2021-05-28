@@ -144,7 +144,7 @@ affect locality.
 
 A module is a container for zero or more [items]. Modules are organized in a
 tree, starting from an unnamed module at the root called the crate root or the
-root module. [Paths] may be used to refer to items outside of a module, which
+root module. [Paths] may be used to refer to items from other modules, which
 may be restricted by [visibility rules].
 [More][modules]
 
