@@ -28,7 +28,7 @@
 >
 > _MacroFragSpec_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime` | `literal`\
-> &nbsp;&nbsp; | `meta` | `pat` | `path` | `stmt` | `tt` | `ty` | `vis`
+> &nbsp;&nbsp; | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
 > &nbsp;&nbsp; [_Token_]<sub>_except delimiters and repetition operators_</sub>
@@ -122,7 +122,8 @@ fragment specifiers are:
   * `block`: a [_BlockExpression_]
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
-  * `pat`: a [_PatternNoTopAlt_]
+  * `pat_param`: a [_PatternNoTopAlt_]
+  * `pat`: equivalent to `pat_param`
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD]
@@ -450,7 +451,7 @@ Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
 `;` are legal expression separators. The specific rules are:
 
   * `expr` and `stmt` may only be followed by one of: `=>`, `,`, or `;`.
-  * `pat` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
+  * `pat` and `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
   * `path` and `ty` may only be followed by one of: `=>`, `,`, `=`, `|`, `;`,
     `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
     fragment specifier.
