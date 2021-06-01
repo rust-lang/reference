@@ -50,6 +50,16 @@ Combinators are higher-order functions that apply only functions and
 earlier defined combinators to provide a result from its arguments.
 They can be used to manage control flow in a modular fashion.
 
+### Crate
+
+A crate is the unit of compilation and linking. There are different [types of
+crates], such as libraries or executables. Crates may link and refer to other
+library crates, called external crates. A crate has a self-contained tree of
+[modules], starting from an unnamed root module called the crate root. [Items]
+may be made visible to other crates by marking them as public in the crate
+root, including through [paths] of public modules.
+[More][crate].
+
 ### Dispatch
 
 Dispatch is the mechanism to determine which specific version of code is actually
@@ -129,6 +139,14 @@ A `struct`, `enum`, or `union` which was defined in the current crate.
 This is not affected by applied type arguments. `struct Foo` is considered local, but
 `Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not
 affect locality.
+
+### Module
+
+A module is a container for zero or more [items]. Modules are organized in a
+tree, starting from an unnamed module at the root called the crate root or the
+root module. [Paths] may be used to refer to items from other modules, which
+may be restricted by [visibility rules].
+[More][modules]
 
 ### Name
 
@@ -274,6 +292,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [associated item]: #associated-item
 [attributes]: attributes.md
 [*entity*]: names.md
+[crate]: crates-and-source-files.md
 [enums]: items/enumerations.md
 [fields]: expressions/field-expr.md
 [free item]: #free-item
@@ -291,6 +310,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [lints]: attributes/diagnostics.md#lint-check-attributes
 [loop labels]: tokens.md#lifetimes-and-loop-labels
 [method]: items/associated-items.md#methods
+[modules]: items/modules.md
 [*Name resolution*]: names/name-resolution.md
 [*name*]: names.md
 [*namespace*]: names/namespaces.md
@@ -303,7 +323,9 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [trait objects]: types/trait-object.md
 [traits]: items/traits.md
 [turbofish test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/bastion-of-the-turbofish.rs
+[types of crates]: linkage.md
 [types]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
 [unions]: items/unions.md
 [variable bindings]: patterns.md
+[visibility rules]: visibility-and-privacy.md
