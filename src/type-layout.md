@@ -70,9 +70,9 @@ at least equal to the size and alignment of a pointer.
 
 ## Array Layout
 
-Arrays are laid out so that the `nth` element of the array is offset from the
-start of the array by `n * the size of the type` bytes. An array of `[T; n]`
-has a size of `size_of::<T>() * n` and the same alignment of `T`.
+An array of `[T; N]` has a size of `size_of::<T>() * N` and the same alignment
+of `T`. Arrays are laid out so that the zero-based `nth` element of the array
+is offset from the start of the array by `n * size_of::<T>()` bytes.
 
 ## Slice Layout
 
