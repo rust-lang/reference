@@ -18,7 +18,7 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
   types">DSTs</abbr>.
   Unlike with generic type parameters, `Self: ?Sized` is the default in trait definitions.
 * Structs may contain a <abbr title="dynamically sized type">DST</abbr> as the
-  last field, this makes the struct itself a
+  last field; this makes the struct itself a
   <abbr title="dynamically sized type">DST</abbr>.
 
 > **Note**: [variables], function parameters, [const] items, and [static] items must be

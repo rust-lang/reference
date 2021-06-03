@@ -179,11 +179,11 @@ move the value. Only the following place expressions may be moved out of:
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
 * [Fields][field] of a place expression which can be moved out of and
-  doesn't implement [`Drop`].
+  don't implement [`Drop`].
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and
   that can also be moved out of.
 
-When moving out of a place expression that evaluates to a local variable, the
+After moving out of a place expression that evaluates to a local variable, the
 location is deinitialized and cannot be read from again until it is
 reinitialized. In all other cases, trying to use a place expression in a value
 expression context is an error.
