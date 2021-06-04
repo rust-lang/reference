@@ -109,7 +109,7 @@ Similarly, if `<expr>?` propagates an error, that error is propagated as the res
 Finally, the `break` and `continue` keywords cannot be used to branch out from an async block.
 Therefore the following is illegal:
 
-```rust,edition2018,compile_fail
+```rust,compile_fail
 loop {
     async move {
         break; // This would break out of the loop.

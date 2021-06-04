@@ -144,7 +144,7 @@ fn main() {}
 > unambiguously select the crate name. This is to retain compatibility with
 > potential future changes. <!-- uniform_paths future-proofing -->
 >
-> ```rust,edition2018
+> ```rust
 > // use std::fs; // Error, this is ambiguous.
 > use ::std::fs;  // Imports from the `std` crate, not the module below.
 > use self::std::fs as self_fs;  // Imports the module below.

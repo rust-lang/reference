@@ -172,6 +172,16 @@ the path must resolve to an item.
 > crates in the [extern prelude]. That is, they must be followed by the name of a crate.
 
 ```rust
+pub fn foo() {
+    // In the 2018 edition, this accesses `std` via the extern prelude.
+    // In the 2015 edition, this accesses `std` via the crate root.
+    let now = ::std::time::Instant::now();
+    println!("{:?}", now);
+}
+```
+
+```rust,edition2015
+// 2015 Edition
 mod a {
     pub fn foo() {}
 }
@@ -353,11 +363,11 @@ mod without { // ::without
             fn g(&self) {} // None
         }
 
-        impl OtherTrait for ::a::Struct {
+        impl OtherTrait for crate::a::Struct {
             fn g(&self) {} // None
         }
 
-        impl ::a::Trait for OtherStruct {
+        impl crate::a::Trait for OtherStruct {
             fn f(&self) {} // None
         }
     }

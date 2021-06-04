@@ -227,7 +227,7 @@ use the [`extern` function qualifier](#extern-function-qualifier).
 Functions may be qualified as async, and this can also be combined with the
 `unsafe` qualifier:
 
-```rust,edition2018
+```rust
 async fn regular_example() { }
 async unsafe fn unsafe_example() { }
 ```
@@ -240,7 +240,7 @@ An async function is roughly equivalent to a function
 that returns [`impl Future`] and with an [`async move` block][async-blocks] as
 its body:
 
-```rust,edition2018
+```rust
 // Source
 async fn example(x: &str) -> usize {
     x.len()
@@ -249,7 +249,7 @@ async fn example(x: &str) -> usize {
 
 is roughly equivalent to:
 
-```rust,edition2018
+```rust
 # use std::future::Future;
 // Desugared
 fn example<'a>(x: &'a str) -> impl Future<Output = usize> + 'a {
@@ -285,7 +285,7 @@ resulting function is unsafe to call and (like any async function)
 returns a future. This future is just an ordinary future and thus an
 `unsafe` context is not required to "await" it:
 
-```rust,edition2018
+```rust
 // Returns a future that, when awaited, dereferences `x`.
 //
 // Soundness condition: `x` must be safe to dereference until

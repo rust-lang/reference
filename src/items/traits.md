@@ -251,7 +251,8 @@ allowed, but it is deprecated and will become a hard error in the future.
 In the 2015 edition, the pattern for a trait function or method parameter is
 optional:
 
-```rust
+```rust,edition2015
+// 2015 Edition
 trait T {
     fn f(i32);  // Parameter identifiers are not required.
 }
@@ -269,7 +270,7 @@ Beginning in the 2018 edition, function or method parameter patterns are no
 longer optional. Also, all irrefutable patterns are allowed as long as there
 is a body. Without a body, the limitations listed above are still in effect.
 
-```rust,edition2018
+```rust
 trait T {
     fn f1((a, b): (i32, i32)) {}
     fn f2(_: (i32, i32));  // Cannot use tuple pattern without a body.
