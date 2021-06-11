@@ -47,7 +47,7 @@ assumed to exist.
 
 ## The `target_feature` attribute
 
-The *`target_feature` [attribute]* may be applied to an [unsafe function] to
+The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
 features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 `enable` whose value is a string of comma-separated feature names to enable.
@@ -74,6 +74,9 @@ be used with a `target_feature` attribute.
 The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
+
+This platform requires that `#[target_feature]` is only applied to [`unsafe`
+functions][unsafe function].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
@@ -127,6 +130,17 @@ Feature     | Implicitly Enables | Description
 [`xsavec`]: https://www.felixcloutier.com/x86/xsavec
 [`xsaveopt`]: https://www.felixcloutier.com/x86/xsaveopt
 [`xsaves`]: https://www.felixcloutier.com/x86/xsaves
+
+#### `wasm32` or `wasm64`
+
+This platform allows `#[target_feature]` to be applied to both safe and
+[`unsafe` functions][unsafe function].
+
+Feature     | Description
+------------|-------------------
+`simd128`   | [WebAssembly simd proposal][simd128]
+
+[simd128]: https://github.com/webassembly/simd
 
 ### Additional information
 
