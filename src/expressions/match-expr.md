@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _MatchExpression_ :\
-> &nbsp;&nbsp; `match` Scrutinee `{`\
+> &nbsp;&nbsp; `match` _Scrutinee_ `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>\
 > &nbsp;&nbsp; `}`

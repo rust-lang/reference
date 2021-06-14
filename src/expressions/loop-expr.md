@@ -62,10 +62,10 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` Scrutinee
+> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` _Scrutinee_
 >              [_BlockExpression_]
 >
-> _Scrutinee_:
+> _Scrutinee_:\
 > &nbsp;&nbsp; [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 
 
