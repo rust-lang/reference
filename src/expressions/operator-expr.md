@@ -340,6 +340,7 @@ reference types and `mut` or `const` in pointer types.
 #### Numeric cast
 
 * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
+  (Rust uses 2's complement for negative values of fixed integers)
 * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
   truncate
 * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
