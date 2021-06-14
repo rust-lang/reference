@@ -41,12 +41,15 @@ assert_eq!(y, "Bigger");
 
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` Scrutinee
 >              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
 > | _IfExpression_
 > | _IfLetExpression_ ) )<sup>\?</sup>
+>
+> _Scrutinee_:
+> &nbsp;&nbsp; [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 
 An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
 If the value of the scrutinee matches the pattern, the corresponding block will execute.
