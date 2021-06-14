@@ -62,8 +62,12 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` Scrutinee
 >              [_BlockExpression_]
+>
+> _Scrutinee_:
+> &nbsp;&nbsp; [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
+
 
 A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
 If the value of the scrutinee matches the pattern, the loop body block executes then control returns to the pattern matching statement.
