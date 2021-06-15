@@ -7,7 +7,8 @@ syntax: `some_extension!(...)`.
 There are two ways to define new macros:
 
 * [Macros by Example] define new syntax in a higher-level, declarative way.
-* [Procedural Macros] can be used to implement custom derive.
+* [Procedural Macros] define function-like macros, custom derives, and custom
+  attributes using functions that operate on input tokens.
 
 ## Macro Invocation
 
@@ -28,7 +29,7 @@ There are two ways to define new macros:
 > &nbsp;&nbsp; | [_SimplePath_] `!` `[` _TokenTree_<sup>\*</sup> `]` `;`\
 > &nbsp;&nbsp; | [_SimplePath_] `!` `{` _TokenTree_<sup>\*</sup> `}`
 
-A macro invocation executes a macro at compile time and replaces the
+A macro invocation expands a macro at compile time and replaces the
 invocation with the result of the macro. Macros may be invoked in the
 following situations:
 
