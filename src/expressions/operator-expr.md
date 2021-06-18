@@ -25,6 +25,7 @@ The following things are considered to be overflow:
 * When `+`, `*` or `-` create a value greater than the maximum value, or less than the minimum value that can be stored.
   This includes unary `-` on the smallest value of any signed integer type.
 * Using `/` or `%`, where the left-hand argument is the smallest integer of a signed integer type and the right-hand argument is `-1`.
+  These checks occur even when `-C overflow-checks` is disabled, for legacy reasons.
 * Using `<<` or `>>` where the right-hand argument is greater than or equal to the number of bits in the type of the left-hand argument, or is negative.
 
 ## Borrow operators
