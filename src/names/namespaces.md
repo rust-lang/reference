@@ -104,12 +104,25 @@ imported.
 
 <!-- TODO: describe how `use` works on the use-declarations page, and link to it here. -->
 
+## Sub-namespaces
+
+The macro namespace is split into two sub-namespaces: one for [bang-style macros] and one for [attributes].
+When an attribute is resolved, any bang-style macros in scope will be ignored.
+And conversely resolving a bang-style macro will ignore attribute macros in scope.
+This prevents one style from shadowing another.
+
+For example, the [`cfg` attribute] and the [`cfg` macro] are two different entities with the same name in the macro namespace, but they can still be used in their respective context.
+
+It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
+
 [^rustc-lifetime-shadow]: `rustc` currently warns about shadowing when using
     the same name for a label and lifetime in the same scope, but it still
     treats them independently. This is intended as a future-compatibility
     warning about a possible extension to the language. See [PR
     #24162](https://github.com/rust-lang/rust/pull/24162).
 
+[`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
+[`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
 [`for`]: ../expressions/loop-expr.md#iterator-loops
 [`if let`]: ../expressions/if-expr.md#if-let-expressions
 [`let`]: ../statements.md#let-statements
@@ -117,11 +130,14 @@ imported.
 [`match`]: ../expressions/match-expr.md
 [`Self` constructors]: ../paths.md#self-1
 [`Self` type]: ../paths.md#self-1
+[`use` import]: ../items/use-declarations.md
 [`while let`]: ../expressions/loop-expr.md#predicate-pattern-loops
 [Associated const declarations]: ../items/associated-items.md#associated-constants
 [Associated function declarations]: ../items/associated-items.md#associated-functions-and-methods
 [Associated type declarations]: ../items/associated-items.md#associated-types
 [Attribute macros]: ../procedural-macros.md#attribute-macros
+[attributes]: ../attributes.md
+[bang-style macros]: ../macros.md
 [boolean]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
 [closure parameters]: ../expressions/closure-expr.md
