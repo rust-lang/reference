@@ -110,7 +110,7 @@ pub fn public_api() {}
 // Similarly to 'public_api', this module is public so external crates may look
 // inside of it.
 pub mod submodule {
-    use crate_helper_module;
+    use crate::crate_helper_module;
 
     pub fn my_method() {
         // Any item in the local crate may invoke the helper module's public
@@ -161,7 +161,7 @@ to `pub(in self)` or not using `pub` at all.
 
 Here's an example:
 
-```rust
+```rust,edition2015
 pub mod outer_mod {
     pub mod inner_mod {
         // This function is visible within `outer_mod`

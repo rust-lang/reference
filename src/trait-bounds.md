@@ -47,7 +47,7 @@ trait is implemented for a type. For example, given `Ty: Trait`
 ```rust
 # type Surface = i32;
 trait Shape {
-    fn draw(&self, Surface);
+    fn draw(&self, surface: Surface);
     fn name() -> &'static str;
 }
 
