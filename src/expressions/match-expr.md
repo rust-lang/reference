@@ -2,10 +2,13 @@
 
 > **<sup>Syntax</sup>**\
 > _MatchExpression_ :\
-> &nbsp;&nbsp; `match` [_Expression_]<sub>_except struct expression_</sub> `{`\
+> &nbsp;&nbsp; `match` _Scrutinee_ `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>\
 > &nbsp;&nbsp; `}`
+>
+>_Scrutinee_ :\
+> &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>
 >
 > _MatchArms_ :\
 > &nbsp;&nbsp; ( _MatchArm_ `=>`
