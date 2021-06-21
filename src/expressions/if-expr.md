@@ -41,15 +41,12 @@ assert_eq!(y, "Bigger");
 
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` _Scrutinee_
+> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
 >              [_BlockExpression_]\
 > &nbsp;&nbsp; (`else` (
 >   [_BlockExpression_]
 > | _IfExpression_
 > | _IfLetExpression_ ) )<sup>\?</sup>
->
-> _Scrutinee_:\
-> &nbsp;&nbsp; [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 
 An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
 If the value of the scrutinee matches the pattern, the corresponding block will execute.
@@ -151,6 +148,7 @@ if let PAT = ( EXPR || EXPR ) { .. }
 [_Expression_]: ../expressions.md
 [_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [_Pattern_]: ../patterns.md
+[_Scrutinee_]: match-expr.md
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md

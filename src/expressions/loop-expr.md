@@ -62,11 +62,8 @@ while i < 10 {
 
 > **<sup>Syntax</sup>**\
 > [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` _Scrutinee_
+> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
 >              [_BlockExpression_]
->
-> _Scrutinee_:\
-> &nbsp;&nbsp; [_Expression_]<sub>_except struct or lazy boolean operator expression_</sub>
 
 
 A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
@@ -268,6 +265,7 @@ In the case a `loop` has an associated `break`, it is not considered diverging, 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
 [_Pattern_]: ../patterns.md
+[_Scrutinee_]: match-expr.md
 [`match` expression]: match-expr.md
 [boolean]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
