@@ -34,6 +34,9 @@ let _ = TypeAlias(5); // Doesn't work
 A type alias without the [_Type_] specification may only appear as an
 [associated type] in a [trait].
 
+A type alias with [_TypeParamBounds_] may only specified when used as
+an [associated type] in a [trait].
+
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
 [_TypeParamBounds_]: ../trait-bounds.md
