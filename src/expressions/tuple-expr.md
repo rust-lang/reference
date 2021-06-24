@@ -4,7 +4,7 @@
 
 > **<sup>Syntax</sup>**\
 > _TupleExpression_ :\
-> &nbsp;&nbsp; `(` [_InnerAttribute_]<sup>\*</sup> _TupleElements_<sup>?</sup> `)`
+> &nbsp;&nbsp; `(` _TupleElements_<sup>?</sup> `)`
 >
 > _TupleElements_ :\
 > &nbsp;&nbsp; ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup>
@@ -28,10 +28,6 @@ Examples of tuple expressions and their types:
 | `(0.0, 4.5)`         | `(f64, f64)` |
 | `("x".to_string(), )` | `(String, )`  |
 | `("a", 4usize, true)`| `(&'static str, usize, bool)` |
-
-### Tuple expression attributes
-
-[Inner attributes] are allowed directly after the opening parenthesis of a tuple expression in the same expression contexts as [attributes on block expressions].
 
 ## Tuple indexing expressions
 
@@ -70,13 +66,10 @@ assert_eq!(point.1, 0.0);
 > **Note**: Although arrays and slices also have elements, you must use an [array or slice indexing expression] or a [slice pattern] to access their elements.
 
 [_Expression_]: ../expressions.md
-[_InnerAttribute_]: ../attributes.md
 [array or slice indexing expression]: array-expr.md#array-and-slice-indexing-expressions
-[attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [call expression]: ./call-expr.md
 [decimal literal]: ../tokens.md#integer-literals
 [field access expressions]: ./field-expr.html#field-access-expressions
-[inner attributes]: ../attributes.md
 [operands]: ../expressions.md
 [parenthetical expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions

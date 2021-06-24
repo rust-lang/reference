@@ -7,7 +7,7 @@
 > &nbsp;&nbsp; | _StructExprUnit_
 >
 > _StructExprStruct_ :\
-> &nbsp;&nbsp; [_PathInExpression_] `{` [_InnerAttribute_]<sup>\*</sup> (_StructExprFields_ | _StructBase_)<sup>?</sup> `}`
+> &nbsp;&nbsp; [_PathInExpression_] `{` (_StructExprFields_ | _StructBase_)<sup>?</sup> `}`
 >
 > _StructExprFields_ :\
 > &nbsp;&nbsp; _StructExprField_ (`,` _StructExprField_)<sup>\*</sup> (`,` _StructBase_ | `,`<sup>?</sup>)
@@ -21,7 +21,6 @@
 >
 > _StructExprTuple_ :\
 > &nbsp;&nbsp; [_PathInExpression_] `(`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_Expression_] (`,` [_Expression_])<sup>\*</sup> `,`<sup>?</sup> )<sup>?</sup>\
 > &nbsp;&nbsp; `)`
 >
@@ -122,17 +121,10 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
-## Struct expression attributes
-
-[Inner attributes] are allowed directly after the opening brace or parenthesis of a struct expression in the same expression contexts as [attributes on block expressions].
-
 [IDENTIFIER]: ../identifiers.md
-[Inner attributes]: ../attributes.md
 [TUPLE_INDEX]: ../tokens.md#tuple-index
 [_Expression_]: ../expressions.md
-[_InnerAttribute_]: ../attributes.md
 [_PathInExpression_]: ../paths.md#paths-in-expressions
-[attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [call expression]: call-expr.md
 [enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-expressions
