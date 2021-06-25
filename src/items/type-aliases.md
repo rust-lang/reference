@@ -3,6 +3,7 @@
 > **<sup>Syntax</sup>**\
 > _TypeAlias_ :\
 > &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>
+>              ( `:` [_TypeParamBounds_] )<sup>?</sup>
 >              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] )<sup>?</sup> `;`
 
 A _type alias_ defines a new name for an existing [type]. Type aliases are
@@ -33,8 +34,12 @@ let _ = TypeAlias(5); // Doesn't work
 A type alias without the [_Type_] specification may only appear as an
 [associated type] in a [trait].
 
+A type alias with [_TypeParamBounds_] may only specified when used as
+an [associated type] in a [trait].
+
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
+[_TypeParamBounds_]: ../trait-bounds.md
 [_WhereClause_]: generics.md#where-clauses
 [_Type_]: ../types.md#type-expressions
 [associated type]: associated-items.md#associated-types
