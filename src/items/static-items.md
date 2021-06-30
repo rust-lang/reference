@@ -41,7 +41,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 trait Tr {
     fn default_impl() {
         static COUNTER: AtomicUsize = AtomicUsize::new(0);
-        println!("counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
+        println!("default_impl: counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
     }
 
     fn blanket_impl();
@@ -53,7 +53,7 @@ struct Ty2 {}
 impl<T> Tr for T {
     fn blanket_impl() {
         static COUNTER: AtomicUsize = AtomicUsize::new(0);
-        println!("counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
+        println!("blanket_impl: counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
     }
 }
 
