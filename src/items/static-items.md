@@ -68,10 +68,10 @@ fn main() {
 prints
 
 ```text
-counter was 0
-counter was 1
-counter was 0
-counter was 1
+default_impl: counter was 0
+default_impl: counter was 1
+blanket_impl: counter was 0
+blanket_impl: counter was 1
 ```
 
 ## Mutable statics
