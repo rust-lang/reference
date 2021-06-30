@@ -30,7 +30,7 @@ provided for free static items.
 
 A static item defined in a generic scope (for example in a blanket or default
 implementation) will result in exactly one static item being defined, as if
-the static definition was pulled out of the current scope into the module. 
+the static definition was pulled out of the current scope into the module.
 There will *not* be one item per monomorphization.
 
 This code:
