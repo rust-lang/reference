@@ -26,6 +26,54 @@ statics:
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
 
+## Statics & generics
+
+A static item defined in a generic scope (for example in a blanket or default
+implementation) will result in exactly one static item being defined, as if
+the static definition was pulled out of the current scope into the module.
+There will *not* be one item per monomorphization.
+
+This code:
+
+```rust
+use std::sync::atomic::{AtomicUsize, Ordering};
+
+trait Tr {
+    fn default_impl() {
+        static COUNTER: AtomicUsize = AtomicUsize::new(0);
+        println!("default_impl: counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
+    }
+
+    fn blanket_impl();
+}
+
+struct Ty1 {}
+struct Ty2 {}
+
+impl<T> Tr for T {
+    fn blanket_impl() {
+        static COUNTER: AtomicUsize = AtomicUsize::new(0);
+        println!("blanket_impl: counter was {}", COUNTER.fetch_add(1, Ordering::Relaxed));
+    }
+}
+
+fn main() {
+    <Ty1 as Tr>::default_impl();
+    <Ty2 as Tr>::default_impl();
+    <Ty1 as Tr>::blanket_impl();
+    <Ty2 as Tr>::blanket_impl();
+}
+```
+
+prints
+
+```text
+default_impl: counter was 0
+default_impl: counter was 1
+blanket_impl: counter was 0
+blanket_impl: counter was 1
+```
+
 ## Mutable statics
 
 If a static item is declared with the `mut` keyword, then it is allowed to be
