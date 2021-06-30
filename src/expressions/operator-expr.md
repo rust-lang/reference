@@ -476,20 +476,20 @@ x += 1;
 assert!(x == 6);
 ```
 
-The syntax of compound assignment is a [mutable] [place expression], the *assigned operand*, then one of the operators followed by an `=` as a single token (no whitespace), and then a [value expression], the *modifying operand*.
+The syntax of compound assignment is a [mutable] [place expression], the *assigned place operand*, then one of the operators followed by an `=` as a single token (no whitespace), and then a [value expression], the *modifying operand*.
 
 Unlike other place operands, the assigned place operand must be a place expression.
 Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
 Evaluation of compound assignment expressions depends on the types of the operators.
 
-If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
-It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
+If both types are primitives, then the modifying operand will be evaluated first followed by the assigned place operand.
+It will then set the value of the assigned place operand's place to the value of performing the operation of the operator with the values of the assigned place operand and modifying operand.
 
 > **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
 Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assigment trait of the operator (see the table earlier in this chapter).
-A mutable borrow of the assigned operand is automatically taken.
+A mutable borrow of the assigned place operand is automatically taken.
 
 For example, the following expression statements in `example` are equivalent:
 

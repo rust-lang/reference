@@ -41,28 +41,33 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
 > &nbsp;&nbsp; )
 
-An expression may have two roles: it always produces a *value*, and it may have
-*effects* (otherwise known as "side effects"). An expression *evaluates to* a
-value, and has effects during *evaluation*. Many expressions contain
-sub-expressions, called the *operands* of the expression. The meaning of each
-kind of expression dictates several things:
+Expressions are the fundamental unit of computation.
+When evaluated, they may have *effects* and evaluates to either a value or place.
+
+Where expressions are allowed are *expression contexts*.
+Expressions commonly contain sub-expressions, called the *operands* of the expression.
+
+The meaning of each kind of expression dictates several things:
 
 * Whether or not to evaluate the operands when evaluating the expression
 * The order in which to evaluate the operands
-* How to combine the operands' values to obtain the value of the expression
+* How to combine the operands' values to obtain the value or place of the expression
 
 In this way, the structure of expressions dictates the structure of execution.
-Blocks are just another kind of expression, so blocks, statements, expressions,
-and blocks again can recursively nest inside each other to an arbitrary depth.
+Blocks are just another kind of expression, so blocks, statements, expressions, and blocks again can recursively nest inside each other to an arbitrary depth.
 
-> **Note**: We give names to the operands of expressions so that we may discuss
-> them, but these names are not stable and may be changed.
+> **Note**: We give names to the operands of expressions so that we may discuss them, but these names are not stable and may be changed.
 
 ## Expression precedence
 
-The precedence of Rust operators and expressions is ordered as follows, going
-from strong to weak. Binary Operators at the same precedence level are grouped
-in the order given by their associativity.
+The grammar for expressions as presented in this book is wrong.
+It purposefully ignores that certain operands cannot be certain expressions due to precedence.
+For example, `a * b + c` is actually parsed as an addition operator expression with the multiplication operator expression as its left operand.
+The grammar, taking precedence into account, is too unwieldy to easily read and understand.
+
+The precedence of operators and expressions is ordered as follows, going from strongest to weakest.
+Binary Operators at the same precedence level are grouped in the order given by their associativity.
+Expressions in this table cannot have operands that are expressions lower in the table.
 
 | Operator/Expression         | Associativity       |
 |-----------------------------|---------------------|
@@ -86,11 +91,12 @@ in the order given by their associativity.
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
+> **Note**: Wrapping an expression with a [parenthetical expression][paren] increases its precedence.
+
 ## Evaluation order of operands
 
-The following list of expressions all evaluate their operands the same way, as
-described after the list. Other expressions either don't take operands or
-evaluate them conditionally as described on their respective pages.
+The following list of expressions all evaluate their operands the same way, as described after the list.
+Other expressions either don't take operands or evaluate them conditionally as described on their respective pages.
 
 * Dereference expression
 * Error propagation expression
@@ -112,15 +118,12 @@ evaluate them conditionally as described on their respective pages.
 * Range expression
 * Return expression
 
-The operands of these expressions are evaluated prior to applying the effects of
-the expression. Expressions taking multiple operands are evaluated left to right
-as written in the source code.
+The operands of these expressions are evaluated prior to applying the effects of the expression.
+Expressions taking multiple operands are evaluated left to right as written in the source code.
 
-> **Note**: Which subexpressions are the operands of an expression is
-> determined by expression precedence as per the previous section.
+> **Note**: Which subexpressions are the operands of an expression is determined by expression precedence as per the previous section.
 
-For example, the two `next` method calls will always be called in the same
-order:
+For example, the two `next` method calls will always be called in the same order:
 
 ```rust
 # // Using vec instead of array to avoid references
@@ -133,96 +136,88 @@ assert_eq!(
 );
 ```
 
-> **Note**: Since this is applied recursively, these expressions are also
-> evaluated from innermost to outermost, ignoring siblings until there are no
-> inner subexpressions.
+> **Note**: Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
-## Place Expressions and Value Expressions
+## Expression categories
 
-Expressions are divided into two main categories: place expressions and
-value expressions. Likewise within each expression, operands may occur
-in either place context or value context. The evaluation of an expression
-depends both on its own category and the context it occurs within.
+<!-- This section was renamed, but heavily linked to. So adding this span to keep the links working. -->
+<span id="place-expressions-and-value-expressions"></span>
 
-A *place expression* is an expression that represents a memory location. These
-expressions are [paths] which refer to local variables, [static variables],
-[dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`),
-[field] references (`expr.f`) and parenthesized place expressions. All other
-expressions are value expressions.
+Expressions and expression contexts are divided into two *expression categories*: *place* and *value*.
+For expressions, what they evaluate into determines their categories.
+Expressions that evaluate to a value are *value expressions* while those that evaluate to a place are *place expressions*.
+For expression contexts, whether they operate on a place or value determines their context.
 
-A *value expression* is an expression that represents an actual value.
+Evaluating an expression in the opposite expression context has effects after evaluation of the expression to produce the expected place or value of the context.
+When evaluating a value expression in place expression context, a temporary place is initialized to that value.
+When evaluating a place expression in value expression context, the value at that place is read, moving or copying it.
 
-The following contexts are *place expression* contexts:
+The following lists all place expressions.
+Expressions not listed here are value expressions.
 
-* The left operand of an [assignment][assign] or [compound assignment]
-  expression.
+* [Paths] which refer to local variables or [static variables].
+* [The dereference operator][deref]
+* [Field access expressions][field]
+* [Tuple indexing expressions]
+* [Array indexing expressions]
+* [Parenthetical expressions][paren] when its enclosed operand is a place expression
+
+The following list all place expression contexts.
+All other contexts are value expression contexts.
+
+* The initializer of a [let statement].
+* The assigned place operand of an [assignment][assign] or [compound assignment] expression.
 * The operand of a unary [borrow] or [dereference][deref] operator.
-* The operand of a field expression.
+* The container operand of a field expression.
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
-* The initializer of a [let statement].
-* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`]
-  expression.
-* The base of a [functional update] struct expression.
+* The [scrutinee] operand of an [`if let`], [`match`][match], or [`while let`] expression.
+* The base operand of a [functional update] struct expression.
 
-> Note: Historically, place expressions were called *lvalues* and value
-> expressions were called *rvalues*.
+> Note: Historically, place expressions were called *lvalues* and value expressions were called *rvalues*.
 
 ### Moved and copied types
 
-When a place expression is evaluated in a value expression context, or is bound
-by value in a pattern, it denotes the value held _in_ that memory location. If
-the type of that value implements [`Copy`], then the value will be copied. In
-the remaining situations if that type is [`Sized`], then it may be possible to
-move the value. Only the following place expressions may be moved out of:
+When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
+If the type of that value implements [`Copy`], then the value will be copied.
+In the remaining situations if that type is [`Sized`], then it may be possible to move the value.
+Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
-* [Fields][field] of a place expression which can be moved out of and
-  doesn't implement [`Drop`].
-* The result of [dereferencing][deref] an expression with type [`Box<T>`] and
-  that can also be moved out of.
+* [Fields][field] of a place expression which can be moved out of and doesn't implement [`Drop`].
+* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
 
-Moving out of a place expression that evaluates to a local variable, the
-location is deinitialized and cannot be read from again until it is
-reinitialized. In all other cases, trying to use a place expression in a value
-expression context is an error.
+Moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
+In all other cases, trying to use a place expression in a value expression context is an error.
 
 ### Mutability
 
-For a place expression to be [assigned][assign] to, mutably [borrowed][borrow],
-[implicitly mutably borrowed], or bound to a pattern containing `ref mut` it
-must be _mutable_. We call these *mutable place expressions*. In contrast,
-other place expressions are called *immutable place expressions*.
+For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut` it must be _mutable_.
+We call these *mutable place expressions*.
+In contrast, other place expressions are called *immutable place expressions*.
 
 The following expressions can be mutable place expression contexts:
 
 * Mutable [variables], which are not currently borrowed.
 * [Mutable `static` items].
 * [Temporary values].
-* [Fields][field], this evaluates the subexpression in a mutable place
-  expression context.
+* [Fields][field], this evaluates the subexpression in a mutable place expression context.
 * [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`. Note:
-  This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`, this then requires that
-  the value being dereferenced is evaluated is a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`, this
-  then evaluates the value being indexed, but not the index, in mutable place
-  expression context.
+* Dereference of a variable, or field of a variable, with type `&mut T`.
+  Note: This is an exception to the requirement of the next rule.
+* Dereferences of a type that implements `DerefMut`, this then requires that the value being dereferenced is evaluated is a mutable place expression context.
+* [Array indexing expressions] of a type that implements `IndexMut`, this then evaluates the value being indexed, but not the index, in mutable place expression context.
 
 ### Temporaries
 
-When using a value expression in most place expression contexts, a temporary
-unnamed memory location is created initialized to that value and the expression
-evaluates to that location instead, except if [promoted] to a `static`. The
-[drop scope] of the temporary is usually the end of the enclosing statement.
+When using a value expression in most place expression contexts, a temporary unnamed memory location is created initialized to that value and the expression evaluates to that location instead, except if [promoted] to a `static`.
+The [drop scope] of the temporary is usually the end of the enclosing statement.
 
 ### Implicit Borrows
 
-Certain expressions will treat an expression as a place expression by implicitly
-borrowing it. For example, it is possible to compare two unsized [slices][slice] for
-equality directly, because the `==` operator implicitly borrows it's operands:
+Certain expressions will treat an expression as a place expression by implicitly borrowing it.
+For example, it is possible to compare two unsized [slices][slice] for equality directly, because the `==` operator implicitly borrows it's operands:
 
 ```rust
 # let c = [1, 2, 3];
@@ -242,21 +237,19 @@ Implicit borrows may be taken in the following expressions:
 * Left operand in [method-call] expressions.
 * Left operand in [field] expressions.
 * Left operand in [call expressions].
-* Left operand in [array indexing] expressions.
+* Left operand in [array indexing expressions].
 * Operand of the [dereference operator][deref] (`*`).
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 
 ## Overloading Traits
 
-Many of the following operators and expressions can also be overloaded for
-other types using traits in `std::ops` or `std::cmp`. These traits also
-exist in `core::ops` and `core::cmp` with the same names.
+Many of the following operators and expressions can also be overloaded for other types using traits in `std::ops` or `std::cmp`.
+These traits also exist in `core::ops` and `core::cmp` with the same names.
 
 ## Expression Attributes
 
-[Outer attributes][_OuterAttribute_] before an expression are allowed only in
-a few specific cases:
+[Outer attributes][_OuterAttribute_] before an expression are allowed only in a few specific cases:
 
 * Before an expression used as a [statement].
 * Elements of [array expressions], [tuple expressions], [call expressions],
@@ -271,9 +264,7 @@ a few specific cases:
 
 They are never allowed before:
 * [Range][_RangeExpression_] expressions.
-* Binary operator expressions ([_ArithmeticOrLogicalExpression_],
-  [_ComparisonExpression_], [_LazyBooleanExpression_], [_TypeCastExpression_],
-  [_AssignmentExpression_], [_CompoundAssignmentExpression_]).
+* Binary operator expressions ([_ArithmeticOrLogicalExpression_], [_ComparisonExpression_], [_LazyBooleanExpression_], [_TypeCastExpression_], [_AssignmentExpression_], [_CompoundAssignmentExpression_]).
 
 
 [block expressions]:    expressions/block-expr.md
@@ -283,13 +274,15 @@ They are never allowed before:
 [`if let`]:             expressions/if-expr.md#if-let-expressions
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
+[paren]:                expressions/grouped-expr.md
 [paths]:                expressions/path-expr.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
+[tuple indexing expressions]: expressions/tuple-expr.md#tuple-indexing-expressions
 [`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
 
-[array expressions]:    expressions/array-expr.md
-[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
+[array expressions]: expressions/array-expr.md
+[array indexing expressions]: expressions/array-expr.md#array-and-slice-indexing-expressions
 
 [assign]:               expressions/operator-expr.md#assignment-expressions
 [borrow]:               expressions/operator-expr.md#borrow-operators
