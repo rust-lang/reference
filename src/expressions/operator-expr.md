@@ -349,10 +349,8 @@ reference types and `mut` or `const` in pointer types.
     * sign-extend if the source is signed
 * Casting from a float to an integer will round the float towards zero
     * `NaN` will return `0`
-    * Values larger than the maximum integer value will saturate to the
-      maximum value of the integer type.
-    * Values smaller than the minimum integer value will saturate to the
-      minimum value of the integer type.
+    * Values larger than the maximum integer value, including `INFINITY`, will saturate to the maximum value of the integer type.
+    * Values smaller than the minimum integer value, including `NEG_INFINITY`, will saturate to the minimum value of the integer type.
 * Casting from an integer to float will produce the closest possible float \*
     * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
     * on overflow, infinity (of the same sign as the input) is produced
