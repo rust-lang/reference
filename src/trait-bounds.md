@@ -77,9 +77,8 @@ Trait and lifetime bounds are also used to name [trait objects].
 
 ## `?Sized`
 
-`?` is only used to declare that the [`Sized`] trait may not be
-implemented for a type parameter or associated type. `?Sized` may
-not be used as a bound for other types.
+`?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types].
+`?Sized` may not be used as a bound for other types.
 
 ## Lifetime bounds
 
@@ -149,4 +148,5 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 [generic]: items/generics.md
 [Trait]: items/traits.md#trait-bounds
 [trait objects]: types/trait-object.md
+[type parameters]: types/parameters.md
 [where clause]: items/generics.md#where-clauses

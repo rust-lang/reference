@@ -11,11 +11,12 @@ types">DSTs</abbr>. Such types can only be used in certain cases:
     * Pointers to slices also store the number of elements of the slice.
     * Pointers to trait objects also store a pointer to a vtable.
 * <abbr title="dynamically sized types">DSTs</abbr> can be provided as
-  type arguments when a bound of `?Sized`. By default any type parameter
-  has a `Sized` bound.
+  type arguments to generic type parameters having the special `?Sized` bound.
+  They can also be used for associated type definitions when the corresponding associated type declaration has a `?Sized` bound.
+  By default, any type parameter or associated type has a `Sized` bound, unless it is relaxed using `?Sized`.
 * Traits may be implemented for <abbr title="dynamically sized
-  types">DSTs</abbr>. Unlike type parameters `Self: ?Sized` by default in trait
-  definitions.
+  types">DSTs</abbr>.
+  Unlike with generic type parameters, `Self: ?Sized` is the default in trait definitions.
 * Structs may contain a <abbr title="dynamically sized type">DST</abbr> as the
   last field, this makes the struct itself a
   <abbr title="dynamically sized type">DST</abbr>.
