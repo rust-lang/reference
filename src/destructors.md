@@ -110,7 +110,7 @@ dropped after any bindings introduced in that parameter's pattern.
 #         println!("drop({})", self.0);
 #     }
 # }
-// Drops the second parameter, then `y`, then the first parameter, then `x`
+// Drops `y`, then the second parameter, then `x`, then the first parameter
 fn patterns_in_parameters(
     (x, _): (PrintOnDrop, PrintOnDrop),
     (_, y): (PrintOnDrop, PrintOnDrop),
