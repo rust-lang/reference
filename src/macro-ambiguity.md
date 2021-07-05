@@ -20,7 +20,7 @@ of this text is copied, and expanded upon in subsequent RFCs.
     character.
   - `simple NT`: a "meta-variable" non-terminal (further discussion below).
   - `complex NT`: a repetition matching non-terminal, specified via repetition
-    operators (`\*`, `+`, `?`).
+    operators (`*`, `+`, `?`).
   - `token`: an atomic element of a matcher; i.e. identifiers, operators,
     open/close delimiters, *and* simple NT's.
   - `token tree`: a tree structure formed from tokens (the leaves), complex
@@ -46,12 +46,12 @@ macro_rules! i_am_an_mbe {
 }
 ```
 
-`(start $foo:expr $($i:ident),\* end)` is a matcher. The whole matcher is a
+`(start $foo:expr $($i:ident),* end)` is a matcher. The whole matcher is a
 delimited sequence (with open- and close-delimiters `(` and `)`), and `$foo`
 and `$i` are simple NT's with `expr` and `ident` as their respective fragment
 specifiers.
 
-`$(i:ident),\*` is *also* an NT; it is a complex NT that matches a
+`$(i:ident),*` is *also* an NT; it is a complex NT that matches a
 comma-separated repetition of identifiers. The `,` is the separator token for
 the complex NT; it occurs in between each pair of elements (if any) of the
 matched fragment.
@@ -72,7 +72,7 @@ its additional role as a fragment specifier; but it will be clear from context
 which interpretation is meant.)
 
 "SEP" will range over separator tokens, "OP" over the repetition operators
-`\*`, `+`, and `?`, "OPEN"/"CLOSE" over matching token pairs surrounding a
+`*`, `+`, and `?`, "OPEN"/"CLOSE" over matching token pairs surrounding a
 delimited sequence (e.g. `[` and `]`).
 
 Greek letters "α" "β" "γ" "δ"  stand for potentially empty token-tree sequences.
@@ -110,7 +110,7 @@ of FIRST and FOLLOW are described later.
 1.  For any separated complex NT in a matcher, `M = ... $(tt ...) SEP OP ...`,
     we must have `SEP` ∈ FOLLOW(`tt ...`).
 1.  For an unseparated complex NT in a matcher, `M = ... $(tt ...) OP ...`, if
-    OP = `\*` or `+`, we must have FOLLOW(`tt ...`) ⊇ FIRST(`tt ...`).
+    OP = `*` or `+`, we must have FOLLOW(`tt ...`) ⊇ FIRST(`tt ...`).
 
 The first invariant says that whatever actual token that comes after a matcher,
 if any, must be somewhere in the predetermined follow set.  This ensures that a
@@ -202,7 +202,7 @@ first token-tree (if any):
       * Let SEP\_SET(M) = { SEP } if SEP is present and ε ∈ FIRST(`tt ...`);
         otherwise SEP\_SET(M) = {}.
 
-  * Let ALPHA\_SET(M) = FIRST(`α`) if OP = `\*` or `?` and ALPHA\_SET(M) = {} if
+  * Let ALPHA\_SET(M) = FIRST(`α`) if OP = `*` or `?` and ALPHA\_SET(M) = {} if
     OP = `+`.
   * FIRST(M) = (FIRST(`tt ...`) \\ {ε}) ∪ SEP\_SET(M) ∪ ALPHA\_SET(M).
 
@@ -211,7 +211,7 @@ the possibility that the separator could be a valid first token for M, which
 happens when there is a separator defined and the repeated fragment could be
 empty. ALPHA\_SET(M) defines the possibility that the complex NT could be empty,
 meaning that M's valid first tokens are those of the following token-tree
-sequences `α`. This occurs when either `\*` or `?` is used, in which case there
+sequences `α`. This occurs when either `*` or `?` is used, in which case there
 could be zero repetitions. In theory, this could also occur if `+` was used with
 a potentially-empty repeating fragment, but this is forbidden by the third
 invariant.
@@ -339,7 +339,7 @@ represent simple nonterminals with the given fragment specifier.
   * FOLLOW(M), for any other M, is defined as the intersection, as t ranges over
     (LAST(M) \ {ε}), of FOLLOW(t).
 
-The tokens that can begin a type are, as of this writing, {`(`, `[`, `!`, `\*`,
+The tokens that can begin a type are, as of this writing, {`(`, `[`, `!`, `*`,
 `&`, `&&`, `?`, lifetimes, `>`, `>>`, `::`, any non-keyword identifier, `super`,
 `self`, `Self`, `extern`, `crate`, `$crate`, `_`, `for`, `impl`, `fn`, `unsafe`,
 `typeof`, `dyn`}, although this list may not be complete because people won't
@@ -347,9 +347,9 @@ always remember to update the appendix when new ones are added.
 
 Examples of FOLLOW for complex M:
 
- * FOLLOW(`$( $d:ident $e:expr )\*`) = FOLLOW(`$e:expr`)
- * FOLLOW(`$( $d:ident $e:expr )\* $(;)\*`) = FOLLOW(`$e:expr`) ∩ ANYTOKEN = FOLLOW(`$e:expr`)
- * FOLLOW(`$( $d:ident $e:expr )\* $(;)\* $( f |)+`) = ANYTOKEN
+ * FOLLOW(`$( $d:ident $e:expr )*`) = FOLLOW(`$e:expr`)
+ * FOLLOW(`$( $d:ident $e:expr )* $(;)*`) = FOLLOW(`$e:expr`) ∩ ANYTOKEN = FOLLOW(`$e:expr`)
+ * FOLLOW(`$( $d:ident $e:expr )* $(;)* $( f |)+`) = ANYTOKEN
 
 ### Examples of valid and invalid matchers
 
