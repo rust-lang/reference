@@ -140,7 +140,7 @@ assert_eq!(
 ## Place Expressions and Value Expressions
 
 Expressions are divided into two main categories: place expressions and
-value expressions. Likewise within each expression, operands may occur
+value expressions. Likewise, within each expression, operands may occur
 in either place context or value context. The evaluation of an expression
 depends both on its own category and the context it occurs within.
 
@@ -173,7 +173,7 @@ The following contexts are *place expression* contexts:
 When a place expression is evaluated in a value expression context, or is bound
 by value in a pattern, it denotes the value held _in_ that memory location. If
 the type of that value implements [`Copy`], then the value will be copied. In
-the remaining situations if that type is [`Sized`], then it may be possible to
+the remaining situations, if that type is [`Sized`], then it may be possible to
 move the value. Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
@@ -183,7 +183,7 @@ move the value. Only the following place expressions may be moved out of:
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and
   that can also be moved out of.
 
-Moving out of a place expression that evaluates to a local variable, the
+When moving out of a place expression that evaluates to a local variable, the
 location is deinitialized and cannot be read from again until it is
 reinitialized. In all other cases, trying to use a place expression in a value
 expression context is an error.
@@ -191,30 +191,30 @@ expression context is an error.
 ### Mutability
 
 For a place expression to be [assigned][assign] to, mutably [borrowed][borrow],
-[implicitly mutably borrowed], or bound to a pattern containing `ref mut` it
+[implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it
 must be _mutable_. We call these *mutable place expressions*. In contrast,
 other place expressions are called *immutable place expressions*.
 
 The following expressions can be mutable place expression contexts:
 
-* Mutable [variables], which are not currently borrowed.
+* Mutable [variables] which are not currently borrowed.
 * [Mutable `static` items].
 * [Temporary values].
-* [Fields][field], this evaluates the subexpression in a mutable place
+* [Fields][field]: this evaluates the subexpression in a mutable place
   expression context.
 * [Dereferences][deref] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
   This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`, this then requires that
+* Dereferences of a type that implements `DerefMut`: this then requires that
   the value being dereferenced is evaluated is a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`, this
+* [Array indexing] of a type that implements `IndexMut`: this
   then evaluates the value being indexed, but not the index, in mutable place
   expression context.
 
 ### Temporaries
 
 When using a value expression in most place expression contexts, a temporary
-unnamed memory location is created initialized to that value and the expression
+unnamed memory location is created and initialized to that value. The expression
 evaluates to that location instead, except if [promoted] to a `static`. The
 [drop scope] of the temporary is usually the end of the enclosing statement.
 
@@ -222,7 +222,7 @@ evaluates to that location instead, except if [promoted] to a `static`. The
 
 Certain expressions will treat an expression as a place expression by implicitly
 borrowing it. For example, it is possible to compare two unsized [slices][slice] for
-equality directly, because the `==` operator implicitly borrows it's operands:
+equality directly, because the `==` operator implicitly borrows its operands:
 
 ```rust
 # let c = [1, 2, 3];
