@@ -49,10 +49,10 @@ f(Closure{s: s, t: &t});
 
 The compiler prefers to capture a closed-over variable by immutable borrow,
 followed by unique immutable borrow (see below), by mutable borrow, and finally
-by move. It will pick the first choice of these that allows the closure to
-compile. The choice is made only with regards to the contents of the closure
-expression; the compiler does not take into account surrounding code, such as
-the lifetimes of involved variables.
+by move. It will pick the first choice of these that is compatible with how the
+captured variable is used inside the closure body. The compiler does not take
+surrounding code into account, such as the lifetimes of involved variables, or
+of the closure itself.
 
 If the `move` keyword is used, then all captures are by move or, for `Copy`
 types, by copy, regardless of whether a borrow would work. The `move` keyword is
