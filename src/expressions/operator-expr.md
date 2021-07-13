@@ -192,16 +192,18 @@ The operands of all of these operators are evaluated in [value expression contex
 | `-`    | Subtraction             |               | Subtraction    | `std::ops::Sub`    | `std::ops::SubAssign`                 |
 | `*`    | Multiplication          |               | Multiplication | `std::ops::Mul`    | `std::ops::MulAssign`                 |
 | `/`    | Division*               |               | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
-| `%`    | Remainder               |               | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
+| `%`    | Remainder**             |               | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
 | `&`    | Bitwise AND             | [Logical AND] |                | `std::ops::BitAnd` | `std::ops::BitAndAssign`              |
 | <code>&#124;</code> | Bitwise OR | [Logical OR]  |                | `std::ops::BitOr`  | `std::ops::BitOrAssign`               |
 | `^`    | Bitwise XOR             | [Logical XOR] |                | `std::ops::BitXor` | `std::ops::BitXorAssign`              |
 | `<<`   | Left Shift              |               |                | `std::ops::Shl`    | `std::ops::ShlAssign`                 |
-| `>>`   | Right Shift**           |               |                | `std::ops::Shr`    |  `std::ops::ShrAssign`                |
+| `>>`   | Right Shift***          |               |                | `std::ops::Shr`    |  `std::ops::ShrAssign`                |
 
 \* Integer division rounds towards zero.
 
-\*\* Arithmetic right shift on signed integer types, logical right shift on
+\*\* Rust uses a remainder defined with [truncating division](https://en.wikipedia.org/wiki/Modulo_operation#Variants_of_the_definition). Given `remainder = dividend % divisor`, the remainder will have the same sign as the dividend.
+
+\*\*\* Arithmetic right shift on signed integer types, logical right shift on
 unsigned integer types.
 
 Here are examples of these operators being used.
