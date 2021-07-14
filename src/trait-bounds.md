@@ -73,8 +73,8 @@ fn name_figure<U: Shape>(
 }
 ```
 
-Bounds that don't use the item's parameters or [higher-ranked lifetimes] are
-checked when the item is defined. It is an error for such a bound to be false.
+Bounds that don't use the item's parameters or [higher-ranked lifetimes] are checked when the item is defined.
+It is an error for such a bound to be false.
 
 [`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type.
 It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice][arrays].
