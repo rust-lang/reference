@@ -4,7 +4,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ArrayExpression_ :\
-> &nbsp;&nbsp; `[` [_InnerAttribute_]<sup>\*</sup> _ArrayElements_<sup>?</sup> `]`
+> &nbsp;&nbsp; `[` _ArrayElements_<sup>?</sup> `]`
 >
 > _ArrayElements_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
@@ -46,10 +46,6 @@ const EMPTY: Vec<i32> = Vec::new();
 [EMPTY; 2];
 ```
 
-### Array expression attributes
-
-[Inner attributes] are allowed directly after the opening bracket of an array expression in the same expression contexts as [attributes on block expressions].
-
 ## Array and slice indexing expressions
 
 > **<sup>Syntax</sup>**\
@@ -89,11 +85,8 @@ The array index expression can be implemented for types other than arrays and sl
 [`Copy`]: ../special-types-and-traits.md#copy
 [IndexMut]: ../../std/ops/trait.IndexMut.html
 [Index]: ../../std/ops/trait.Index.html
-[Inner attributes]: ../attributes.md
 [_Expression_]: ../expressions.md
-[_InnerAttribute_]: ../attributes.md
 [array]: ../types/array.md
-[attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
 [literal]: ../tokens.md#literals

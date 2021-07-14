@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _GroupedExpression_ :\
-> &nbsp;&nbsp; `(` [_InnerAttribute_]<sup>\*</sup> [_Expression_] `)`
+> &nbsp;&nbsp; `(` [_Expression_] `)`
 
 A *parenthesized expression* wraps a single expression, evaluating to that expression.
 The syntax for a parenthesized expression is a `(`, then an expression, called the *enclosed operand*, and then a `)`.
@@ -39,12 +39,5 @@ assert_eq!( a.f (), "The method f");
 assert_eq!((a.f)(), "The field f");
 ```
 
-## Group expression attributes
-
-[Inner attributes] are allowed directly after the opening parenthesis of a group expression in the same expression contexts as [attributes on block expressions].
-
-[Inner attributes]: ../attributes.md
 [_Expression_]: ../expressions.md
-[_InnerAttribute_]: ../attributes.md
-[attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [place]: ../expressions.md#place-expressions-and-value-expressions
