@@ -210,6 +210,7 @@ finally an optional list of trait bounds.
 
 The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
+There is an implicit [`Sized`] bound on associated types that can be relaxed using the special `?Sized` bound.
 
 An *associated type definition* defines a type alias on another type. It is
 written as `type`, then an [identifier], then an `=`, and finally a [type].
@@ -344,6 +345,7 @@ fn main() {
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
 [`Pin<P>`]: ../special-types-and-traits.md#pinp
 [`Rc<Self>`]: ../special-types-and-traits.md#rct
+[`Sized`]: ../special-types-and-traits.md#sized
 [traits]: traits.md
 [type aliases]: type-aliases.md
 [inherent implementations]: implementations.md#inherent-implementations

@@ -134,10 +134,10 @@ UnwindSafe>` is a valid type.
 
 ## `Sized`
 
-The [`Sized`] trait indicates that the size of this type is known at
-compile-time; that is, it's not a [dynamically sized type]. [Type parameters]
-are `Sized` by default. `Sized` is always implemented automatically by the
-compiler, not by [implementation items].
+The [`Sized`] trait indicates that the size of this type is known at compile-time; that is, it's not a [dynamically sized type].
+[Type parameters] are `Sized` by default, as are [associated types].
+`Sized` is always implemented automatically by the compiler, not by [implementation items].
+These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound.
 
 [`Arc<Self>`]: ../std/sync/struct.Arc.html
 [`Box<T>`]: ../std/boxed/struct.Box.html
@@ -160,6 +160,7 @@ compiler, not by [implementation items].
 [`Unpin`]: ../std/marker/trait.Unpin.html
 
 [Arrays]: types/array.md
+[associated types]: items/associated-items.md#associated-types
 [call expressions]: expressions/call-expr.md
 [deref coercions]: type-coercions.md#coercion-types
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
