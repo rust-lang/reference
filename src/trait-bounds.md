@@ -77,7 +77,7 @@ Bounds that don't use the item's parameters or [higher-ranked lifetimes] are che
 It is an error for such a bound to be false.
 
 [`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type.
-It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice][arrays].
+It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice].
 It is an error to have `Sized` as a bound on a trait object or slice.
 
 ```rust,compile_fail
@@ -171,6 +171,7 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 [supertraits]: items/traits.md#supertraits
 [generic]: items/generics.md
 [higher-ranked lifetimes]: #higher-ranked-trait-bounds
+[slice]: types/slice.md
 [Trait]: items/traits.md#trait-bounds
 [trait object]: types/trait-object.md
 [trait objects]: types/trait-object.md
