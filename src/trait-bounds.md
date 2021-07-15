@@ -73,6 +73,26 @@ fn name_figure<U: Shape>(
 }
 ```
 
+Bounds that don't use the item's parameters or [higher-ranked lifetimes] are checked when the item is defined.
+It is an error for such a bound to be false.
+
+[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type.
+It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice].
+It is an error to have `Sized` as a bound on a trait object or slice.
+
+```rust,compile_fail
+struct A<'a, T>
+where
+    i32: Default,           // Allowed, but not useful
+    i32: Iterator,          // Error: `i32` is not an iterator
+    &'a mut T: Copy,        // (at use) Error: the trait bound is not satisfied
+    [T]: Sized,             // (at use) Error: size cannot be known at compilation
+{
+    f: &'a T,
+}
+struct UsesA<'a, T>(A<'a, T>);
+```
+
 Trait and lifetime bounds are also used to name [trait objects].
 
 ## `?Sized`
@@ -142,11 +162,17 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 [LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
 [_GenericParams_]: items/generics.md
 [_TypePath_]: paths.md#paths-in-types
+[`Clone`]: special-types-and-traits.md#clone
+[`Copy`]: special-types-and-traits.md#copy
 [`Sized`]: special-types-and-traits.md#sized
 
+[arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [supertraits]: items/traits.md#supertraits
 [generic]: items/generics.md
+[higher-ranked lifetimes]: #higher-ranked-trait-bounds
+[slice]: types/slice.md
 [Trait]: items/traits.md#trait-bounds
+[trait object]: types/trait-object.md
 [trait objects]: types/trait-object.md
 [where clause]: items/generics.md#where-clauses

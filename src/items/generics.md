@@ -230,23 +230,13 @@ parameters.
 The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
 allows [_LifetimeParam_] parameters.
 
-Bounds that don't use the item's parameters or [higher-ranked lifetimes] are
-checked when the item is defined. It is an error for such a bound to be false.
-
-[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic
-types when defining the item. It is an error to have `Copy` or `Clone` as a
-bound on a mutable reference, [trait object] or [slice][arrays] or `Sized` as a
-bound on a trait object or slice.
-
-```rust,compile_fail
+```rust
 struct A<T>
 where
     T: Iterator,            // Could use A<T: Iterator> instead
-    T::Item: Copy,
-    String: PartialEq<T>,
+    T::Item: Copy,          // Bound on an associated type
+    String: PartialEq<T>,   // Bound on `String`, using the type parameter
     i32: Default,           // Allowed, but not useful
-    i32: Iterator,          // Error: the trait bound is not satisfied
-    [T]: Copy,              // Error: the trait bound is not satisfied
 {
     f: T,
 }
@@ -303,9 +293,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [path expression]: ../expressions/path-expr.md
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
 [references]: ../types/pointer.md#shared-references-
-[`Clone`]: ../special-types-and-traits.md#clone
-[`Copy`]: ../special-types-and-traits.md#copy
-[`Sized`]: ../special-types-and-traits.md#sized
 [structs]: structs.md
 [tuples]: ../types/tuple.md
 [trait object]: ../types/trait-object.md
