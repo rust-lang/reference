@@ -102,9 +102,9 @@ Trait and lifetime bounds are also used to name [trait objects].
 
 ## Lifetime bounds
 
-Lifetime bounds can be applied to types or other lifetimes. The bound `'a: 'b`
-is usually read as `'a` *outlives* `'b`. `'a: 'b` means that `'a` lasts longer
-than `'b`, so a reference `&'a ()` is valid whenever `&'b ()` is valid.
+Lifetime bounds can be applied to types or to other lifetimes.
+The bound `'a: 'b` is usually read as `'a` *outlives* `'b`.
+`'a: 'b` means that `'a` lasts at least as long as `'b`, so a reference `&'a ()` is valid whenever `&'b ()` is valid.
 
 ```rust
 fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) where 'a: 'b {
@@ -113,9 +113,8 @@ fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) where 'a: 'b {
 }
 ```
 
-`T: 'a` means that all lifetime parameters of `T` outlive `'a`. For example if
-`'a` is an unconstrained lifetime parameter then `i32: 'static` and
-`&'static str: 'a` are satisfied but `Vec<&'a ()>: 'static` is not.
+`T: 'a` means that all lifetime parameters of `T` outlive `'a`.
+For example, if `'a` is an unconstrained lifetime parameter, then `i32: 'static` and `&'static str: 'a` are satisfied, but `Vec<&'a ()>: 'static` is not.
 
 ## Higher-ranked trait bounds
 
@@ -136,8 +135,7 @@ impl<'a> PartialEq<i32> for &'a T {
 
 and could then be used to compare a `&'a T` with any lifetime to an `i32`.
 
-Only a higher-ranked bound can be used here as the lifetime of the reference is
-shorter than a lifetime parameter on the function:
+Only a higher-ranked bound can be used here, because the lifetime of the reference is shorter than any possible lifetime parameter on the function:
 
 ```rust
 fn call_on_ref_zero<F>(f: F) where for<'a> F: Fn(&'a i32) {
@@ -146,7 +144,7 @@ fn call_on_ref_zero<F>(f: F) where for<'a> F: Fn(&'a i32) {
 }
 ```
 
-Higher-ranked lifetimes may also be specified just before the trait, the only
+Higher-ranked lifetimes may also be specified just before the trait: the only
 difference is the scope of the lifetime parameter, which extends only to the
 end of the following trait instead of the whole bound. This function is
 equivalent to the last one.
