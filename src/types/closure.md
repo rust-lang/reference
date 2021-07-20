@@ -330,71 +330,77 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 ## Overall Capture analysis algorithm
 
 * Input:
-    * Analyzing the closure C yields a set of `(Mode, Place)` pairs that are accessed
+    * Analyzing the closure C yields a mapping of `Place -> Mode` that are accessed
     * Access mode is `ref`, `ref uniq`, `ref mut`, or `by-value` (ordered least to max)
+        * For a `Place` that is used in two different acess modes within the same closure, the mode reported from closure analysis is the maximum access mode.
+        * Note: `ByValue` use of a `Copy` type is seen as a `ref` access mode.
     * Closure mode is `ref` or `move`
 * Output:
-    * Minimal `(Mode, Place)` pairs that are actually captured
+    * Minimal `(Place, Mode)` pairs that are actually captured
 * Cleanup and truncation
     * Generate C' by mapping each (Mode, Place) in C:
-        * `(Mode1, Place1) = ref_opt(unsafe_check(copy_type(Mode, Place)))`
+        * `(Place1, Mode1) = ref_opt(unsafe_check(Place, Mode))`
         * if this is a ref closure:
-            * Add `ref_xform(Mode1, Place1)` to C'
+            * Add `ref_xform(Place1, Mode1)` to C'
         * else:
-            * Add `move_xform(Mode1, Place1)` to C'
+            * Add `move_xform(Place1, Mode1)` to C'
 * Minimization
     * Until no rules apply:
-        * For each two places (M1, P1), (M2, P2) where P1 is a prefix of P2:
+        * For each two places (P1, M1), (P2, M2) where P1 is a prefix of P2:
             * Remove both places from the set
-            * Add (max(M1, M2), P1) into the set
+            * Add (P1, max(M1, M2)) into the set
 * Helper functions:
-    * `copy_type(Mode, Place) -> (Mode, Place)`
-        * "By-value use of a copy type is a ref"
-        * If Mode = "by-value" and type(Place) is `Copy`:
-            * Return (ref, Place)
-        * Else
-            * Return (Mode, Place)
-    * `unsafe_check(Mode, Place) -> (Mode, Place)`
+    * `unsafe_check(Place, Mode) -> (Place, Mode)`
         * "Ensure unsafe accesses occur within the closure"
         * If Place contains a deref of a raw pointer:
             * Let Place1 = Place truncated just before the deref
-            * Return (Mode, Place1)
+            * Return (Place1, Mode)
         * If Mode is `ref *` and the place contains a field of a packed struct:
             * Let Place1 = Place truncated just before the field
-            * Return (Mode, Place1)
+            * Return (Place1, Mode)
         * Else
-            * Return (Mode, Place1)
-    * `move_xform(Mode, Place) -> (Mode, Place)` (For move closures)
+            * Return (Place, Mode)
+    * `move_xform(Place, Mode) -> (Place, Mode)` (For move closures)
         * "Take ownership if data being accessed is owned by the variable used to access it (or if closure attempts to move data that it doesn't own)."
         * "When taking ownership, only capture data found on the stack."
         * "Otherwise, reborrow the reference."
         * If Mode is `ref mut` and the place contains a deref of an `&mut`:
-            * Return (Mode, Place)
+            * Return (Place, Mode)
         * Else if Mode is `ref *` and the place contains a deref of an `&`:
-            * Return (Mode, Place)
+            * Return (Place, Mode)
         * Else if place contains a deref:
             * Let Place1 = Place truncated just before the deref
-            * Return (ByValue, Place1)
+            * Return (Place1, ByValue)
         * Else:
-            * Return (ByValue, Place)
-    * `ref_xform(Mode, Place) -> (Mode, Place)` (for ref closures)
+            * Return (Place, ByValue)
+    * `ref_xform(Place, Mode) -> (Place, Mode)` (for ref closures)
         * "If taking ownership of data, only move data from enclosing stack frame."
         * Generate C' by mapping each (Mode, Place) in C
             * If Mode is ByValue and place contains a deref:
                 * Let Place1 = Place truncated just before the deref
-                * Return (ByValue, Place1)
+                * Return (Place1, ByValue)
             * Else:
-                * Return (Mode, Place)
-    * `ref_opt(Mode, Place) -> (Mode, Place)` (for ref closures)
+                * Return (Place, Mode)
+    * `ref_opt(Place, Mode) -> (Place, Mode)`
         * "Optimization: borrow the ref, not data owned by ref."
-        * If Place contains a deref of an `&`...
-            * ...or something
+        * Disjoint capture over immutable reference doesn't add too much value because the fields can either be borrowed immutably or copied.
+        * Edge case: Field that is accessed via the referece lives longer than the reference.
+            * Resolution: Only consider the last Deref
+        * If Place is (Base, Projections), where Projections is a list of size N.
+            * For all `i, 0 <= i < N`, Projections[i] != Deref
+                * Return (Place, Mode)
+            * If `l, 0 <= l < N` is the last/rightmost Deref Projection i.e. for any `i, l < i < N` Projection[i] != Deref,
+              and `Place.type_before_projection(l) = ty::Ref(.., Mutability::Not)`
+                * Let Place1 = (Base, Projections[0..=l])
+                * Return (Place1, Ref)
 
 ## Key examples
 
 ### box-mut
 
 ```rust
+struct Foo { x: i32 }
+
 fn box_mut() {
     let mut s = Foo { x: 0 } ;
     
@@ -402,7 +408,7 @@ fn box_mut() {
     let bx = Box::new(px);
     
     
-    let c = #[rustc_capture_analysis] move || bx.x += 10;
+    let c = move || bx.x += 10;
     // Mutable reference to this place:
     //   (*(*bx)).x
     //    ^ ^
@@ -411,7 +417,8 @@ fn box_mut() {
 }
 ```
 
-```
+<!-- ignore: Omit error about unterminated string literal when representing c_prime -->
+```ignore
 Closure mode = move
 C = {
     (ref mut, (*(*bx)).x)
@@ -426,37 +433,57 @@ Output is the same: `C' = C`
 When you have a closure that both references a packed field (which is unsafe) and moves from it (which is safe) we capture the entire struct, rather than just moving the field. This is to aid in predictability, so that removing the move doesn't make the closure become unsafe:
 
 ```rust
-print(&packed.x);
-move_value(packed.x);
+#[repr(packed)]
+struct Packed { x: String }
+
+# fn use_ref<T>(_: &T) {}
+# fn move_value<T>(_: T) {}
+
+fn main() {
+    let packed = Packed { x: String::new() };
+
+    let c = || {
+        use_ref(&packed.x);
+        move_value(packed.x);
+    };
+
+    c();
+}
 ```
 
+<!-- ignore: Omit error about unterminated string literal when representing c_prime -->
+```ignore
+Closure mode = ref
+C = {
+    (ref mut, packed)
+}
+C' = C
+```
 
-```rust
-struct Point { x: i32, y: i32 }
-fn f(p: &Point) -> impl Fn() {
-    let c = move || {
-      let x = p.x; 
-    }; 
-    
-    // x.x -> ByValue
-    // after rules x -> ByValue
+### Optimization-Edge-Case
+```edition2021
+struct Int(i32);
+struct B<'a>(&'a i32);
 
+struct MyStruct<'a> {
+   a: &'static Int,
+   b: B<'a>,
+}
+
+fn foo<'a, 'b>(m: &'a MyStruct<'b>) -> impl FnMut() + 'static {
+    let c = || drop(&m.a.0);
     c
-} 
+}
 
-struct Point { x: i32, y: i32 }
-fn g(p: &mut Point) -> impl Fn() {
-    let c = move || {
-      let x = p.x; // ought to: (ref, (*p).x)
-    };
-    
-    move || {
-       p.y += 1;
-    }
-    
-    
-    // x.x -> ByValue
-   
+```
+
+<!-- ignore: Omit error about unterminated string literal when reprenting c_prime -->
+```ignore
+Closure mode = ref
+C = {
+    (ref mut, *m.a)
+}
+C' = C
 ```
 
 # Edition 2018 and before
