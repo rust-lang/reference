@@ -312,6 +312,139 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 } // tuple.1 dropped here -----------------------------+
 ```
 
+
+## Overall Capture analysis algorithm
+
+* Input:
+    * Analyzing the closure C yields a set of `(Mode, Place)` pairs that are accessed
+    * Access mode is `ref`, `ref uniq`, `ref mut`, or `by-value` (ordered least to max)
+    * Closure mode is `ref` or `move`
+* Output:
+    * Minimal `(Mode, Place)` pairs that are actually captured
+* Cleanup and truncation
+    * Generate C' by mapping each (Mode, Place) in C:
+        * `(Mode1, Place1) = ref_opt(unsafe_check(copy_type(Mode, Place)))`
+        * if this is a ref closure:
+            * Add `ref_xform(Mode1, Place1)` to C'
+        * else:
+            * Add `move_xform(Mode1, Place1)` to C'
+* Minimization
+    * Until no rules apply:
+        * For each two places (M1, P1), (M2, P2) where P1 is a prefix of P2:
+            * Remove both places from the set
+            * Add (max(M1, M2), P1) into the set
+* Helper functions:
+    * `copy_type(Mode, Place) -> (Mode, Place)`
+        * "By-value use of a copy type is a ref"
+        * If Mode = "by-value" and type(Place) is `Copy`:
+            * Return (ref, Place)
+        * Else
+            * Return (Mode, Place)
+    * `unsafe_check(Mode, Place) -> (Mode, Place)`
+        * "Ensure unsafe accesses occur within the closure"
+        * If Place contains a deref of a raw pointer:
+            * Let Place1 = Place truncated just before the deref
+            * Return (Mode, Place1)
+        * If Mode is `ref *` and the place contains a field of a packed struct:
+            * Let Place1 = Place truncated just before the field
+            * Return (Mode, Place1)
+        * Else
+            * Return (Mode, Place1)
+    * `move_xform(Mode, Place) -> (Mode, Place)` (For move closures)
+        * "Take ownership if data being accessed is owned by the variable used to access it (or if closure attempts to move data that it doesn't own)."
+        * "When taking ownership, only capture data found on the stack."
+        * "Otherwise, reborrow the reference."
+        * If Mode is `ref mut` and the place contains a deref of an `&mut`:
+            * Return (Mode, Place)
+        * Else if Mode is `ref *` and the place contains a deref of an `&`:
+            * Return (Mode, Place)
+        * Else if place contains a deref:
+            * Let Place1 = Place truncated just before the deref
+            * Return (ByValue, Place1)
+        * Else:
+            * Return (ByValue, Place)
+    * `ref_xform(Mode, Place) -> (Mode, Place)` (for ref closures)
+        * "If taking ownership of data, only move data from enclosing stack frame."
+        * Generate C' by mapping each (Mode, Place) in C
+            * If Mode is ByValue and place contains a deref:
+                * Let Place1 = Place truncated just before the deref
+                * Return (ByValue, Place1)
+            * Else:
+                * Return (Mode, Place)
+    * `ref_opt(Mode, Place) -> (Mode, Place)` (for ref closures)
+        * "Optimization: borrow the ref, not data owned by ref."
+        * If Place contains a deref of an `&`...
+            * ...or something
+
+## Key examples
+
+### box-mut
+
+```rust
+fn box_mut() {
+    let mut s = Foo { x: 0 } ;
+    
+    let px = &mut s;
+    let bx = Box::new(px);
+    
+    
+    let c = #[rustc_capture_analysis] move || bx.x += 10;
+    // Mutable reference to this place:
+    //   (*(*bx)).x
+    //    ^ ^
+    //    | a Box
+    //    a &mut
+}
+```
+
+```
+Closure mode = move
+C = {
+    (ref mut, (*(*bx)).x)
+}
+C' = C
+```
+
+Output is the same: `C' = C`
+
+### Packed-field-ref-and-move
+
+When you have a closure that both references a packed field (which is unsafe) and moves from it (which is safe) we capture the entire struct, rather than just moving the field. This is to aid in predictability, so that removing the move doesn't make the closure become unsafe:
+
+```rust
+print(&packed.x);
+move_value(packed.x);
+```
+
+
+```rust
+struct Point { x: i32, y: i32 }
+fn f(p: &Point) -> impl Fn() {
+    let c = move || {
+      let x = p.x; 
+    }; 
+    
+    // x.x -> ByValue
+    // after rules x -> ByValue
+
+    c
+} 
+
+struct Point { x: i32, y: i32 }
+fn g(p: &mut Point) -> impl Fn() {
+    let c = move || {
+      let x = p.x; // ought to: (ref, (*p).x)
+    };
+    
+    move || {
+       p.y += 1;
+    }
+    
+    
+    // x.x -> ByValue
+   
+```
+
 # Edition 2018 and before
 
 ## Closure types difference
