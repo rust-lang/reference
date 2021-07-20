@@ -62,11 +62,10 @@ r[type.closure.capture]
 r[type.closure.capture.order]
 The compiler prefers to capture a value by immutable borrow,
 followed by unique immutable borrow (see below), by mutable borrow, and finally
-by move. It will pick the first choice of these that allows the closure to
-compile. The choice is made only with regards to the contents of the closure
-expression; the compiler does not take into account surrounding code, such as
-the lifetimes of involved variables or fields.
->>>>>>> 881f305... Update closure types documentation so it includes information about RFC2229
+by move. It will pick the first choice of these that is compatible with how the
+captured value is used inside the closure body. The compiler does not take
+surrounding code into account, such as the lifetimes of involved variables or fields, or
+of the closure itself.
 
 ## Capture Precision
 
