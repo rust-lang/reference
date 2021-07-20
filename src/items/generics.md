@@ -3,19 +3,29 @@
 > **<sup>Syntax</sup>**\
 > _GenericParams_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
-> &nbsp;&nbsp;  | `<` (_GenericParam_ `,`)<sup>\*</sup> _GenericParam_ `,`<sup>?</sup> `>`
+> &nbsp;&nbsp;  | `<` _LifetimeParams_ `,` _TypeParams_ `,` _ConstParams_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp;  | `<` _TypeParams_ `,` _ConstParams_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp;  | `<` _LifetimeParams_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp;  | `<` _TypeParams_ `,`<sup>?</sup> `>`\
+> &nbsp;&nbsp;  | `<` _ConstParams_ `,`<sup>?</sup> `>`
 >
-> _GenericParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _LifetimeParam_ | _TypeParam_ | _ConstParam_ )
+> _LifetimeParams_ :\
+> (_LifetimeParam_ `,`)<sup>\*</sup> _LifetimeParam_
+>
+> _TypeParams_ :\
+> (_TypeParam_ `,`)<sup>\*</sup> _TypeParam_
+>
+> _ConstParams_ :\
+> (_ConstParam_ `,`)<sup>\*</sup> _ConstParam_
 >
 > _LifetimeParam_ :\
-> &nbsp;&nbsp; [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
 >
 > _TypeParam_ :\
-> &nbsp;&nbsp; [IDENTIFIER]( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [IDENTIFIER]( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 >
 > _ConstParam_:\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]
+> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `const` [IDENTIFIER] `:` [_Type_]
 
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
 [implementations] may be *parameterized* by types, constants, and lifetimes. These
