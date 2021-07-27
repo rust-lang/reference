@@ -150,6 +150,8 @@ Coercion is allowed between the following types:
     structs. In addition, coercions from sub-traits to super-traits will be
     added. See [RFC 401] for more details.-->
 
+* Function item types to `fn` pointers
+
 * Non capturing closures to `fn` pointers
 
 * `!` to any `T`
