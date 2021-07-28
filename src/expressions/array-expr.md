@@ -21,7 +21,7 @@ The syntax for the second form is two expressions separated by a semicolon (`;`)
 The expression before the `;` is called the *repeat operand*.
 The expression after the `;` is called the *length operand*.
 It must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
-An array expression of this form creates an array with the length of the value of the legnth operand with each element a copy of the repeat operand.
+An array expression of this form creates an array with the length of the value of the length operand with each element being a copy of the repeat operand.
 That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
 If the length operand has a value greater than 1 then this requires that the type of the repeat operand is [`Copy`] or that it must be a [path] to a constant item.
 
