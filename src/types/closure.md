@@ -337,12 +337,12 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 * Helper functions:
     * `unsafe_check(Place, Mode) -> (Place, Mode)`
         * "Ensure unsafe accesses occur within the closure"
-        * If Place contains a deref of a raw pointer:
-            * Let Place1 = Place truncated just before the deref
-            * Return (Place1, Mode)
-        * If Mode is `ref *` and the place contains a field of a packed struct:
-            * Let Place1 = Place truncated just before the field
-            * Return (Place1, Mode)
+        * If Place contains a deref (at index `i`) of a raw pointer:
+            * Let `(Place1, Mode1) = truncate_place(Place, Mode, i)`
+            * Return (Place1, Mode1)
+        * If Mode is `ref *` and the place contains a field of a packed struct at index `i`:
+            * Let `(Place1, Mode1) = truncate_place(Place, Mode, i)`
+            * Return (Place1, Mode1)
         * Else
             * Return (Place, Mode)
     * `move_xform(Place, Mode) -> (Place, Mode)` (For move closures)
@@ -353,16 +353,16 @@ If a closure captures a field of a composite types such as structs, tuples, and 
             * Return (Place, Mode)
         * Else if Mode is `ref *` and the place contains a deref of an `&`:
             * Return (Place, Mode)
-        * Else if place contains a deref:
-            * Let Place1 = Place truncated just before the deref
+        * Else if place contains a deref at index `i`:
+            * Let `(Place1, _) = truncate_place(Place, Mode, i)`
             * Return (Place1, ByValue)
         * Else:
             * Return (Place, ByValue)
     * `ref_xform(Place, Mode) -> (Place, Mode)` (for ref closures)
         * "If taking ownership of data, only move data from enclosing stack frame."
         * Generate C' by mapping each (Mode, Place) in C
-            * If Mode is ByValue and place contains a deref:
-                * Let Place1 = Place truncated just before the deref
+            * If Mode is ByValue and place contains a deref at index `i`:
+                * Let `(Place1, _) = truncate_place(Place, Mode, i)`
                 * Return (Place1, ByValue)
             * Else:
                 * Return (Place, Mode)
@@ -378,6 +378,13 @@ If a closure captures a field of a composite types such as structs, tuples, and 
               and `Place.type_before_projection(l) = ty::Ref(.., Mutability::Not)`
                 * Let Place1 = (Base, Projections[0..=l])
                 * Return (Place1, Ref)
+    * `truncate_place(Place, Mode, len) -> (Place, Mode)`
+        * "Truncate the place to length `len`, i.e. upto but not including index `len`"
+        * "If during truncation we drop Deref of a `&mut` and the place was being used by `ref mut`, the access to the truncated place must be unique"
+        * Let (Proj_before, Proj_after) = Place.split_before(len)
+            * If Mode == `ref mut` and there exists `Deref` in `Proj_after` at index `i` such that `Place.type_before_projection(len + i)` is `&mut T`
+                * Return (Place(Proj_before, ..InputPlace), `ref-uniq`)
+            * Else Return (Place(Proj_before, ..InputPlace), Mode)
 
 ## Key examples
 
