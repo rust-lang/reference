@@ -317,7 +317,7 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 * Input:
     * Analyzing the closure C yields a mapping of `Place -> Mode` that are accessed
     * Access mode is `ref`, `ref uniq`, `ref mut`, or `by-value` (ordered least to max)
-        * For a `Place` that is used in two different acess modes within the same closure, the mode reported from closure analysis is the maximum access mode.
+        * For a `Place` that is used in two different access modes within the same closure, the mode reported from closure analysis is the maximum access mode.
         * Note: `ByValue` use of a `Copy` type is seen as a `ref` access mode.
     * Closure mode is `ref` or `move`
 * Output:
@@ -383,6 +383,8 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 
 ### box-mut
 
+This test shows how a `move` closure can sometimes capture values by mutable reference, if they are reached via a `&mut` reference.
+
 ```rust
 struct Foo { x: i32 }
 
@@ -405,10 +407,10 @@ fn box_mut() {
 <!-- ignore: Omit error about unterminated string literal when representing c_prime -->
 ```ignore
 Closure mode = move
-C = {
+C_in = {
     (ref mut, (*(*bx)).x)
 }
-C' = C
+C_out = C_in
 ```
 
 Output is the same: `C' = C`
@@ -439,13 +441,16 @@ fn main() {
 <!-- ignore: Omit error about unterminated string literal when representing c_prime -->
 ```ignore
 Closure mode = ref
-C = {
+C_in = {
     (ref mut, packed)
 }
-C' = C
+C_out = C_in
 ```
 
 ### Optimization-Edge-Case
+
+This test shows an interesting edge case. Normally, when we see a borrow of something behind a shared reference (`&T`), we truncate to capture the entire reference, because that is more efficient (and we can always use that reference to reach all the data it refers to). However, in the case where we are dereferencing two shared references, we have to be sure to preserve the full path, since otherwise the resulting closure could have a shorter lifetime than is necessary.
+
 ```edition2021
 struct Int(i32);
 struct B<'a>(&'a i32);
@@ -465,10 +470,10 @@ fn foo<'a, 'b>(m: &'a MyStruct<'b>) -> impl FnMut() + 'static {
 <!-- ignore: Omit error about unterminated string literal when reprenting c_prime -->
 ```ignore
 Closure mode = ref
-C = {
+C_in = {
     (ref mut, *m.a)
 }
-C' = C
+C_out = C_in
 ```
 
 # Edition 2018 and before
