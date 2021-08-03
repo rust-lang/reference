@@ -401,8 +401,8 @@ match tuple {
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
-> &nbsp;&nbsp; _RangePatternBound_ `..`
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_\
+> &nbsp;&nbsp; | _RangePatternBound_ `..`
 >
 > _ObsoleteRangePattern_ :\
 > &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
