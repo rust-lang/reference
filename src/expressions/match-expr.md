@@ -21,7 +21,14 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_] _MatchArmGuard_<sup>?</sup>
 >
 > _MatchArmGuard_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _MatchArmIfGuard_\
+> &nbsp;&nbsp; | _MatchArmIfLetGuard_
+>
+> _MatchArmIfGuard_:\
 > &nbsp;&nbsp; `if` [_Expression_]
+>
+> _MatchArmIfLetGuard_:\
+> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` _Scrutinee_<sub>_except lazy boolean operator expression_</sub>
 
 A *`match` expression* branches on a pattern.
 The exact form of matching that occurs depends on the [pattern].
@@ -85,11 +92,13 @@ Every binding of the same name must have the same type, and have the same bindin
 ## Match guards
 
 Match arms can accept _match guards_ to further refine the criteria for matching a case.
-Pattern guards appear after the pattern and consist of a `bool`-typed expression following the `if` keyword.
-
-When the pattern matches successfully, the pattern guard expression is executed.
-If the expression evaluates to true, the pattern is successfully matched against.
+When the pattern matches, the guard is evaluated and must pass for the arm to be selected.
 Otherwise, the next pattern, including other matches with the `|` operator in the same arm, is tested.
+
+Pattern guards come in two flavors: `if` and `if let`.
+
+`if` guards consist of a `bool`-typed expression introduced by the `if` keyword.
+The guard passes if the expression evaluates to `true`.
 
 ```rust
 # let maybe_digit = Some(0);
@@ -100,6 +109,21 @@ let message = match maybe_digit {
     Some(x) => process_other(x),
     None => panic!(),
 };
+```
+
+`if let` guards are introduced by the `if let` keywords and are composed of a pattern, an `=` and a scrutinee expression.
+The guard passes if the result of the expression matches the pattern.
+Additionally, bindings introduced within the pattern are scoped to the arm's expression.
+
+```rust
+# let maybe_string = Some("42");
+# fn process_int(i: i32) { assert_eq!(i, 42) }
+# fn process_other(s: &str) { unreachable!() }
+match maybe_string {
+    Some(string) if let Ok(int) = string.parse::<i32>() => process_int(int),
+    Some(string) => process_other(string),
+    None => panic!(),
+}
 ```
 
 > Note: Multiple matches using the `|` operator can cause the pattern guard and the side effects it has to execute multiple times.
@@ -118,7 +142,7 @@ let message = match maybe_digit {
 A pattern guard may refer to the variables bound within the pattern they follow.
 Before evaluating the guard, a shared reference is taken to the part of the scrutinee the variable matches on.
 While evaluating the guard, this shared reference is then used when accessing the variable.
-Only when the guard evaluates to true is the value moved, or copied, from the scrutinee into the variable.
+Only when the guard passes is the value moved, or copied, from the scrutinee into the variable.
 This allows shared borrows to be used inside guards without moving out of the scrutinee in case guard fails to match.
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
