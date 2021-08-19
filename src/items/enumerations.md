@@ -59,7 +59,7 @@ In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant.
 
 An enum where no constructors contain fields are called a
-*<a name="field-less-enum">field-less enum</a>*.
+*<a id="field-less-enum">field-less enum</a>*.
 
 ## Discriminants
 
@@ -77,36 +77,30 @@ another means of distinguishing variants) in its actual memory layout.
 In two circumstances, the discriminant of a variant may be explicitly set by
 following the variant name with `=` and a [constant expression]:
 
-<ol>
-<li>
 
-if the enumeration is "C-like" (i.e., it has no tuple or struct variants); e.g.:
+1. if the enumeration is fieldless; e.g.:
 
-```rust
-enum Enum {
-    Foo = 3,
-    Bar = 2,
-    Baz = 1,
-}
-```
-</li>
-<li>
+   ```rust
+   enum Enum {
+       Foo = 3,
+       Bar() = 2,
+       Baz {} = 1,
+   }
+   ```
 
-if a [primitive representation] is used. For example:
+2. if a [primitive representation] is used. For example:
 
-```rust
-#[repr(u8)]
-enum Enum {
-    Unit = 3,
-    Tuple(u16),
-    Struct {
-        a: u8,
-        b: u16,
-    } = 1,
-}
-```
-</li>
-</ol>
+   ```rust
+   #[repr(u8)]
+   enum Enum {
+       Unit = 3,
+       Tuple(u16),
+       Struct {
+           a: u8,
+           b: u16,
+       } = 1,
+   }
+   ```
 
 #### Implicit Discriminants
 
