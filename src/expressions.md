@@ -206,7 +206,7 @@ The following expressions can be mutable place expression contexts:
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note:
   This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that
-  the value being dereferenced is evaluated is a mutable place expression context.
+  the value being dereferenced is evaluated in a mutable place expression context.
 * [Array indexing] of a type that implements `IndexMut`: this
   then evaluates the value being indexed, but not the index, in mutable place
   expression context.
