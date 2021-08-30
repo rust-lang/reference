@@ -119,21 +119,23 @@ loop {
 
 ### Auto traits and `async` blocks
 
-Auto trait inference for `async` blocks follow the same [rules as closures] except that [temporary values that are in scope][temporary-scopes] at an `await` expression are also considered. For example, consider the following block:
-
+Auto trait inference for `async` blocks follow the same [rules as closures] except that values that are live across an `await` expression are also considered.
+Live values are variables or temporaries that are defined before an `await` expression and potentially used afterwards.
+As an example, see below:
 ```rust
-# fn bar() -> i32 { 42 }
 # async fn foo() {}
 async {
-    match bar() {
-        _ => foo().await,
-    }
+    let x = Bar;
+    foo().await
+    drop(x);
 }
 # ;
 ```
+Here the resulting future will be `Send` if `Bar` is send, since `x` is defined before the await and used afterwards.
 
-Here the result of `bar()` is in scope during the await of `foo()`, so the result of `bar()` will impact the inferred auto traits.
-If `bar()` is not `Send`, then the future for the whole match block will also not be `Send`.
+Note that for values of types that implement `Drop`, there is an implicit use of the value at the end of its lifetime in order to run the destructor.
+
+Besides named variables, temporary values also count. For example in `foo(&bar, baz.await)`, the value `&bar` is considered live across the `await` point. This is also true of the scrutinee of the match expression, since [the scrutinee is live for the entire match block][temporary-scopes].
 
 ## `unsafe` blocks
 
