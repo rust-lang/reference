@@ -135,7 +135,9 @@ Here the resulting future will be `Send` if `Bar` is send, since `x` is defined 
 
 Note that for values of types that implement `Drop`, there is an implicit use of the value at the end of its lifetime in order to run the destructor.
 
-Besides named variables, temporary values also count. For example in `foo(&bar, baz.await)`, the value `&bar` is considered live across the `await` point. This is also true of the scrutinee of the match expression, since [the scrutinee is live for the entire match block][temporary-scopes].
+Besides named variables, temporary values also affect auto trait inference.
+For example in `foo(&bar, baz.await)`, the value `&bar` is considered live across the `await` point.
+This is also true of the scrutinee of the match expression, since [the scrutinee is live for the entire match block][temporary-scopes].
 
 ## `unsafe` blocks
 
