@@ -15,10 +15,10 @@ syntax to specify the recursion depth.
 #![recursion_limit = "4"]
 
 macro_rules! a {
-    () => { a!(1) };
-    (1) => { a!(2) };
-    (2) => { a!(3) };
-    (3) => { a!(4) };
+    () => { a!(1); };
+    (1) => { a!(2); };
+    (2) => { a!(3); };
+    (3) => { a!(4); };
     (4) => { };
 }
 
