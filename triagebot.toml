@@ -1,6 +1,7 @@
 [relabel]
 allow-unauthenticated = [
-    "S-*", "A-*", "New Content", "Language Cleanup", "Easy", "Formatting", "Enhancement", "Bug",
+    "S-*", "A-*", "I-nominated", "T-lang",
+    "New Content", "Language Cleanup", "Easy", "Formatting", "Enhancement", "Bug",
 ]
 
 [assign]
