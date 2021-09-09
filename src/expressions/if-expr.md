@@ -16,7 +16,7 @@ The condition operands must have the [boolean type].
 If a condition operand evaluates to `true`, the consequent block is executed and any subsequent `else if` or `else` block is skipped.
 If a condition operand evaluates to `false`, the consequent block is skipped and any subsequent `else if` condition is evaluated.
 If all `if` and `else if` conditions evaluate to `false` then any `else` block is executed.
-An if expression evaluates to the same value as the executed block, or `()` if no block is evaluated.
+An if expression evaluates to the same value as the executed block, or `()` if not any block's final operand expression can (possibly) be evaluated.
 An `if` expression must have the same type in all situations.
 
 ```rust
