@@ -10,7 +10,6 @@
 > &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_WildcardPattern_]\
 > &nbsp;&nbsp; | [_RestPattern_]\
-> &nbsp;&nbsp; | [_ObsoleteRangePattern_]\
 > &nbsp;&nbsp; | [_ReferencePattern_]\
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
@@ -401,7 +400,14 @@ match tuple {
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_\
+> &nbsp;&nbsp; &nbsp;&nbsp; _InclusiveRangePattern_\
+> &nbsp;&nbsp; | _HalfOpenRangePattern_\
+> &nbsp;&nbsp; | _ObsoleteRangePattern_
+>
+> _InclusiveRangePattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+>
+> _HalfOpenRangePattern_ :\
 > &nbsp;&nbsp; | _RangePatternBound_ `..`
 >
 > _ObsoleteRangePattern_ :\
@@ -421,12 +427,14 @@ it matches all the values between and including both of its bounds. A range patt
 half-open is written with a lower bound but not an upper bound, and matches any value equal to
 or greater than the specified lower bound.
 
-For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`. The
+For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`. For an integer the
 pattern `1..` will match 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but
-not 0 or negative numbers for signed integers. The bounds can be literals or paths that point
+not 0, and not negative numbers for signed integers. The bounds can be literals or paths that point
 to constant values.
 
-A pattern a `..=` b must always have a &le; b. It is an error to have a range pattern
+A half-open range pattern in the style `a..` cannot be used to match within the context of a slice.
+
+A pattern `a..=b` must always have a &le; b. It is an error to have a range pattern
 `10..=0`, for example.
 
 The `...` syntax is kept for backwards compatibility.
@@ -733,6 +741,10 @@ Slice patterns are irrefutable when matching an array as long as each element
 is irrefutable. When matching a slice, it is irrefutable only in the form with
 a single `..` [rest pattern](#rest-patterns) or [identifier
 pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
+
+Within a slice, a half-open range pattern like `a..` must be enclosed in parentheses,
+as in `(a..)`, to clarify it is intended to match a single value.
+A future version of Rust may give the non-parenthesized version an alternate meaning.
 
 ## Path patterns
 
