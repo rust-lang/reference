@@ -13,7 +13,6 @@
 > &nbsp;&nbsp; | [_IdentifierPattern_]\
 > &nbsp;&nbsp; | [_WildcardPattern_]\
 > &nbsp;&nbsp; | [_RestPattern_]\
-> &nbsp;&nbsp; | [_ObsoleteRangePattern_]\
 > &nbsp;&nbsp; | [_ReferencePattern_]\
 > &nbsp;&nbsp; | [_StructPattern_]\
 > &nbsp;&nbsp; | [_TupleStructPattern_]\
@@ -407,7 +406,15 @@ match tuple {
 
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+> &nbsp;&nbsp; &nbsp;&nbsp; _InclusiveRangePattern_\
+> &nbsp;&nbsp; | _HalfOpenRangePattern_\
+> &nbsp;&nbsp; | _ObsoleteRangePattern_
+>
+> _InclusiveRangePattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
+>
+> _HalfOpenRangePattern_ :\
+> &nbsp;&nbsp; | _RangePatternBound_ `..`
 >
 > _ObsoleteRangePattern_ :\
 > &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
@@ -420,11 +427,20 @@ match tuple {
 > &nbsp;&nbsp; | [_PathInExpression_]\
 > &nbsp;&nbsp; | [_QualifiedPathInExpression_]
 
-Range patterns match values that are within the closed range defined by its lower and
-upper bounds. For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`,
-`'o'`, and `'p'`. The bounds can be literals or paths that point to constant values.
+Range patterns match values within the range defined by their bounds. A range pattern may be
+closed or half-open. A range pattern is closed if it has both a lower and an upper bound, and
+it matches all the values between and including both of its bounds. A range pattern that is
+half-open is written with a lower bound but not an upper bound, and matches any value equal to
+or greater than the specified lower bound.
 
-A pattern a `..=` b must always have a &le; b. It is an error to have a range pattern
+For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`. For an integer the
+pattern `1..` will match 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but
+not 0, and not negative numbers for signed integers. The bounds can be literals or paths that point
+to constant values.
+
+A half-open range pattern in the style `a..` cannot be used to match within the context of a slice.
+
+A pattern `a..=b` must always have a &le; b. It is an error to have a range pattern
 `10..=0`, for example.
 
 The `...` syntax is kept for backwards compatibility.
@@ -455,6 +471,12 @@ println!("{}", match ph {
     8..=14 => "base",
     _ => unreachable!(),
 });
+
+# let uint: u32 = 5;
+match uint {
+    0 => "zero!",
+    1.. => "positive number!",
+};
 
 // using paths to constants:
 # const TROPOSPHERE_MIN : u8 = 6;
@@ -735,6 +757,10 @@ Slice patterns are irrefutable when matching an array as long as each element
 is irrefutable. When matching a slice, it is irrefutable only in the form with
 a single `..` [rest pattern](#rest-patterns) or [identifier
 pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
+
+Within a slice, a half-open range pattern like `a..` must be enclosed in parentheses,
+as in `(a..)`, to clarify it is intended to match a single value.
+A future version of Rust may give the non-parenthesized version an alternate meaning.
 
 ## Path patterns
 
