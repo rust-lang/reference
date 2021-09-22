@@ -106,14 +106,14 @@ let c = || match x {
 
 ### Capturing references in move contexts
 
-Moving fields out of references is not allowed. As a result, in the case of move closures, when values accessed through a shared references are moved into the closure body, the compiler, instead of moving the values out of the reference, would reborrow the data.
+Moving fields out of references is not allowed. As a result, in the case of move closures, when values accessed through a shared references are moved into the closure body, the compiler will truncate right before a dereference.
 
 ```rust
 struct T(String, String);
 
 let mut t = T(String::from("foo"), String::from("bar"));
 let t = &mut t;
-let c = move || t.0.truncate(0); // closure captures (&mut t.0)
+let c = move || t.0.truncate(0); // closure captures `t`
 ```
 
 ### Raw pointer dereference
@@ -325,10 +325,11 @@ If a closure captures a field of a composite types such as structs, tuples, and 
 * Cleanup and truncation
     * Generate C' by mapping each (Mode, Place) in C:
         * `(Place1, Mode1) = ref_opt(unsafe_check(Place, Mode))`
-        * if this is a ref closure:
-            * Add `ref_xform(Place1, Mode1)` to C'
+        * `(Place2, Mode2)` = if this is a ref closure:
+            * `ref_xform(Place1, Mode1)`
         * else:
-            * Add `move_xform(Place1, Mode1)` to C'
+            * `move_xform(Place1, Mode1)`
+        * Add `(Place3, Mode3) = truncate_move_through_drop(Place2, Mode2)` to C'.
 * Minimization
     * Until no rules apply:
         * For each two places (P1, M1), (P2, M2) where P1 is a prefix of P2:
@@ -346,18 +347,12 @@ If a closure captures a field of a composite types such as structs, tuples, and 
         * Else
             * Return (Place, Mode)
     * `move_xform(Place, Mode) -> (Place, Mode)` (For move closures)
-        * "Take ownership if data being accessed is owned by the variable used to access it (or if closure attempts to move data that it doesn't own)."
-        * "When taking ownership, only capture data found on the stack."
-        * "Otherwise, reborrow the reference."
-        * If Mode is `ref mut` and the place contains a deref of an `&mut`:
-            * Return (Place, Mode)
-        * Else if Mode is `ref *` and the place contains a deref of an `&`:
-            * Return (Place, Mode)
-        * Else if place contains a deref at index `i`:
+        * If place contains a deref at index `i`:
             * Let `(Place1, _) = truncate_place(Place, Mode, i)`
             * Return (Place1, ByValue)
         * Else:
             * Return (Place, ByValue)
+        * Note that initially we had considered an approach where "Take ownership if data being accessed is owned by the variable used to access it (or if closure attempts to move data that it doesn't own). That is when taking ownership only capture data that is found on the stack otherwise reborrow the reference.". This cause a bug around lifetimes, check [rust-lang/rust#88431](https://github.com/rust-lang/rust/issues/88431).
     * `ref_xform(Place, Mode) -> (Place, Mode)` (for ref closures)
         * "If taking ownership of data, only move data from enclosing stack frame."
         * Generate C' by mapping each (Mode, Place) in C
@@ -378,6 +373,16 @@ If a closure captures a field of a composite types such as structs, tuples, and 
               and `Place.type_before_projection(l) = ty::Ref(.., Mutability::Not)`
                 * Let Place1 = (Base, Projections[0..=l])
                 * Return (Place1, Ref)
+    * `truncate_move_through_drop(Place1, Mode1) -> (Place, Mode)`
+        * Rust doesn't permit moving out of a type that implements drop
+        * In the case where we do a disjoint capture in a move closure, we might end up trying to move out of drop type
+        * We truncate move of not-Copy types
+        * If Mode1 != ByBalue
+            * return (Place1, Mode1)
+        * If there exists `i` such that `Place1.before_projection(i): Drop` and `Place1.ty()` doesn't impl `Copy`
+            * then return `truncate_place(Place1, Mode1, i)`
+        * Else return (Place1, Mode1)
+        * Check [rust-lang/rust#88476](https://github.com/rust-lang/rust/issues/88476) for examples.
     * `truncate_place(Place, Mode, len) -> (Place, Mode)`
         * "Truncate the place to length `len`, i.e. upto but not including index `len`"
         * "If during truncation we drop Deref of a `&mut` and the place was being used by `ref mut`, the access to the truncated place must be unique"
@@ -397,11 +402,11 @@ struct Foo { x: i32 }
 
 fn box_mut() {
     let mut s = Foo { x: 0 } ;
-    
+
     let px = &mut s;
     let bx = Box::new(px);
-    
-    
+
+
     let c = move || bx.x += 10;
     // Mutable reference to this place:
     //   (*(*bx)).x
