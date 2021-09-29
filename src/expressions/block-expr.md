@@ -123,15 +123,17 @@ Auto trait inference for `async` blocks follow the same [rules as closures] exce
 Live values are variables or temporaries that are defined before an `await` expression and potentially used afterwards.
 As an example, see below:
 ```rust
+# struct Bar;
 # async fn foo() {}
 async {
     let x = Bar;
-    foo().await
+    foo().await;
     drop(x);
 }
 # ;
 ```
 Here the resulting future will be `Send` if `Bar` is send, since `x` is defined before the await and used afterwards.
+If the `drop(x)` line were removed, then `x` would not be considered in auto trait inference because it is not live across the await point.
 
 Note that for values of types that implement `Drop`, there is an implicit use of the value at the end of its lifetime in order to run the destructor.
 
