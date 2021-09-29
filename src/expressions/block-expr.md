@@ -122,14 +122,14 @@ loop {
 Auto trait inference for `async` blocks follow the same [rules as closures] except that [temporary values that are in scope][temporary-scopes] at an `await` expression are also considered. For example, consider the following block:
 
 ```rust
-#fn bar() -> i32 { 42 }
-#async fn foo() {}
+# fn bar() -> i32 { 42 }
+# async fn foo() {}
 async {
     match bar() {
         _ => foo().await,
     }
 }
-#;
+# ;
 ```
 
 Here the result of `bar()` is in scope during the await of `foo()`, so the result of `bar()` will impact the inferred auto traits.
