@@ -37,7 +37,7 @@ Generic parameters are in scope within the item definition where they are
 declared. They are not in scope for items declared within the body of a
 function as described in [item declarations].
 
-[References], [raw pointers], [arrays], [slices][arrays], [tuples], and
+[References], [raw pointers], [arrays], [slices], [tuples], and
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
@@ -274,6 +274,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 
 [array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md
+[slices]: ../types/slice.md
 [associated const]: associated-items.md#associated-constants
 [associated type]: associated-items.md#associated-types
 [block]: ../expressions/block-expr.md
