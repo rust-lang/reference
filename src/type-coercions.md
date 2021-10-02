@@ -147,7 +147,7 @@ Coercion is allowed between the following types:
     and where `U` can be obtained from `T` by [unsized coercion](#unsized-coercions).
 
     <!--In the future, coerce_inner will be recursively extended to tuples and
-    structs. In addition, coercions from sub-traits to super-traits will be
+    structs. In addition, coercions from subtraits to supertraits will be
     added. See [RFC 401] for more details.-->
 
 * Function item types to `fn` pointers
