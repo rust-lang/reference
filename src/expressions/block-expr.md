@@ -140,7 +140,7 @@ For a more complex example, consider the case below.
 # struct Client;
 # impl Client {
 #     fn new() -> Self { Client }
-#     fn status(&self) -> u32 { 200 }    
+#     fn status(&self) -> u32 { 200 }
 # }
 # async fn foo() {}
 async {
@@ -161,7 +161,7 @@ However, we can work around this by explicitly introducing a scope, as shown bel
 # struct Client;
 # impl Client {
 #     fn new() -> Self { Client }
-#     fn status(&self) -> u32 { 200 }    
+#     fn status(&self) -> u32 { 200 }
 # }
 # async fn foo() {}
 async {
