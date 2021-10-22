@@ -93,7 +93,6 @@ Notable features that const contexts have, but const fn haven't are:
 * generic bounds on generic parameters beyond `Sized`
 * comparing raw pointers
 * union field access
-* [`transmute`] invocations.
 
 Conversely, the following are possible in a const function, but not in a const context:
 
@@ -143,6 +142,5 @@ Conversely, the following are possible in a const function, but not in a const c
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
-[`transmute`]:          ../std/mem/fn.transmute.html
 [while]:                expressions/loop-expr.md#predicate-loops
 [`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
