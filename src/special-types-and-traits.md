@@ -68,7 +68,6 @@ For unions, this means all variants have to be `Copy`.
 `Copy` is implemented by the compiler for
 
 * [Tuples] of `Copy` types
-* [Arrays] of `Copy` types
 * [Function pointers]
 * [Function items]
 * [Closures] that capture no values or that only capture values of `Copy` types
@@ -81,7 +80,6 @@ types:
 
 * Types with a built-in `Copy` implementation (see above)
 * [Tuples] of `Clone` types
-* [Arrays] of `Clone` types
 
 ## `Send`
 
