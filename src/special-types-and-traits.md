@@ -71,7 +71,7 @@ For unions, this means all variants have to be `Copy`.
 * [Arrays] of `Copy` types
 * [Function pointers]
 * [Function items]
-* [Closures] that capture no values or that only capture values of `Copy` types.
+* [Closures] that capture no values or that only capture values of `Copy` types
 
 ## `Clone`
 
