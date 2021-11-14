@@ -67,13 +67,10 @@ For unions, this means all variants have to be `Copy`.
 
 `Copy` is implemented by the compiler for
 
-* [Numeric types]
-* `char`, `bool`, and [`!`]
 * [Tuples] of `Copy` types
-* [Arrays] of `Copy` types
-* [Shared references]
-* [Raw pointers]
-* [Function pointers] and [function item types]
+* [Function pointers]
+* [Function items]
+* [Closures] that capture no values or that only capture values of `Copy` types
 
 ## `Clone`
 
@@ -83,7 +80,6 @@ types:
 
 * Types with a built-in `Copy` implementation (see above)
 * [Tuples] of `Clone` types
-* [Arrays] of `Clone` types
 
 ## `Send`
 
@@ -168,21 +164,18 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [drop check]: ../nomicon/dropck.html
 [dynamically sized type]: dynamically-sized-types.md
 [Function pointers]: types/function-pointer.md
-[function item types]: types/function-item.md
+[Function items]: types/function-item.md
 [implementation items]: items/implementations.md
 [indexing expressions]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [interior mutability]: interior-mutability.md
-[Numeric types]: types/numeric.md
 [Methods]: items/associated-items.md#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.md
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
-[Raw pointers]: types/pointer.md#raw-pointers-const-and-mut
 [`static` items]: items/static-items.md
-[Shared references]: types/pointer.md#shared-references-
 [the standard library]: ../std/index.html
 [trait object]: types/trait-object.md
 [Tuples]: types/tuple.md
 [Type parameters]: types/parameters.md
 [variance]: subtyping.md#variance
-[`!`]: types/never.md
+[Closures]: types/closure.md
