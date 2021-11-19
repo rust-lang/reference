@@ -9,7 +9,7 @@ closure:
 
 ```rust
 #[derive(Debug)]
-struct Point { x:i32, y:i32 }
+struct Point { x: i32, y: i32 }
 struct Rectangle { left_top: Point, right_bottom: Point }
 
 fn f<F : FnOnce() -> String> (g: F) {
