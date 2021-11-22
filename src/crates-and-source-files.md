@@ -132,7 +132,7 @@ name of the crate with the [_MetaNameValueStr_] syntax.
 ```
 
 The crate name must not be empty, and must only contain [Unicode alphanumeric]
-or `-` (U+002D) characters.
+or `_` (U+005F) characters.
 
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
