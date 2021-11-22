@@ -235,7 +235,7 @@ r##"foo #"# bar"##;                // foo #"# bar
 >
 > BYTE_ESCAPE :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
-> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0`
+> &nbsp;&nbsp; | `\n` | `\r` | `\t` | `\\` | `\0` | `\'` | `\"`
 
 A _byte literal_ is a single ASCII character (in the `U+0000` to `U+007F`
 range) or a single _escape_ preceded by the characters `U+0062` (`b`) and
