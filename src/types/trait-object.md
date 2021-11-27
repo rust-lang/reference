@@ -14,15 +14,14 @@ number of [auto traits].
 Trait objects implement the base trait, its auto traits, and any [supertraits]
 of the base trait.
 
-Trait objects are written as the optional keyword `dyn` followed by a set of
-trait bounds, but with the following restrictions on the trait bounds. All
-traits except the first trait must be auto traits, there may not be more than
-one lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
+Trait objects are written as the keyword `dyn` followed by a set of trait
+bounds, but with the following restrictions on the trait bounds. All traits
+except the first trait must be auto traits, there may not be more than one
+lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
 For example, given a trait `Trait`, the following are all trait objects:
 
-* `Trait`
 * `dyn Trait`
 * `dyn Trait + Send`
 * `dyn Trait + Send + Sync`
@@ -32,6 +31,12 @@ For example, given a trait `Trait`, the following are all trait objects:
 * `dyn 'static + Trait`.
 * `dyn (Trait)`
 
+> **Edition Differences**: Before the 2021 edition, the `dyn` keyword may be
+> omitted.
+>
+> Note: For clarity, it is recommended to always use the `dyn` keyword on your
+> trait objects unless your codebase supports compiling with Rust 1.26 or lower.
+
 > **Edition Differences**: In the 2015 edition, if the first bound of the
 > trait object is a path that starts with `::`, then the `dyn` will be treated
 > as a part of the path. The first path can be put in parenthesis to get
@@ -40,9 +45,6 @@ For example, given a trait `Trait`, the following are all trait objects:
 >
 > Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in
 > paths, so the parentheses are not necessary.
-
-> Note: For clarity, it is recommended to always use the `dyn` keyword on your
-> trait objects unless your codebase supports compiling with Rust 1.26 or lower.
 
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
