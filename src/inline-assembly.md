@@ -10,7 +10,7 @@ dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "<explicit register>"
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
 reg_operand := dir_spec "(" reg_spec ")" operand_expr
-operand := reg_operand / "const" const_expr / "sym" path
+operand := reg_operand
 clobber_abi := "clobber_abi(" <abi> *["," <abi>] [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *["," option] [","] ")"
@@ -18,18 +18,11 @@ asm := "asm!(" format_string *("," format_string) *("," [ident "="] operand) *("
 global_asm := "global_asm!(" format_string *("," format_string) *("," [ident "="] operand) *("," options) [","] ")"
 ```
 
-Inline assembly is currently supported on the following architectures:
+Support for inline assembly is stable on the following architectures:
 - x86 and x86-64
 - ARM
 - AArch64
 - RISC-V
-- NVPTX
-- PowerPC
-- Hexagon
-- MIPS
-- WebAssembly
-- BPF
-- SPIR-V
 
 Support for more targets may be added in the future. The compiler will emit an error if `asm!` is used on an unsupported target.
 
@@ -86,22 +79,14 @@ Several types of operands are supported:
 * `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
   - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
-* `const <expr>`
-  - `<expr>` must be an integer constant expression.
-  - The value of the expression is formatted as a string and substituted directly into the asm template string.
-* `sym <path>`
-  - `<path>` must refer to a `fn` or `static`.
-  - A mangled symbol name referring to the item is substituted into the asm template string.
-  - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
-  - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
 
 Operand expressions are evaluated from left to right, just like function call arguments. After the `asm!` has executed, outputs are written to in left to right order. This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
 
-Since `global_asm!` exists outside a function, only `const` and `sym` operands can be used with it.
+Since `global_asm!` exists outside a function, it cannot use input/output operands.
 
 ## Register operands
 
-Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register. Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`). Using string literals for register names enables support for architectures that use special characters in register names, such as MIPS (`$0`, `$1`, etc).
+Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register. Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`).
 
 Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register. It is a compile-time error to use the same explicit register for two input operands or two output operands. Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
 
@@ -141,32 +126,14 @@ Here is the list of currently supported register classes:
 | ARM | `qreg` | `q[0-15]` | `w` |
 | ARM | `qreg_low8` | `q[0-7]` | `t` |
 | ARM | `qreg_low4` | `q[0-3]` | `x` |
-| MIPS | `reg` | `$[2-25]` | `r` |
-| MIPS | `freg` | `$f[0-31]` | `f` |
-| NVPTX | `reg16` | None\* | `h` |
-| NVPTX | `reg32` | None\* | `r` |
-| NVPTX | `reg64` | None\* | `l` |
 | RISC-V | `reg` | `x1`, `x[5-7]`, `x[9-15]`, `x[16-31]` (non-RV32E) | `r` |
 | RISC-V | `freg` | `f[0-31]` | `f` |
 | RISC-V | `vreg` | `v[0-31]` | Only clobbers |
-| Hexagon | `reg` | `r[0-28]` | `r` |
-| PowerPC | `reg` | `r[0-31]` | `r` |
-| PowerPC | `reg_nonzero` | | `r[1-31]` | `b` |
-| PowerPC | `freg` | `f[0-31]` | `f` |
-| PowerPC | `cr` | `cr[0-7]`, `cr` | Only clobbers |
-| PowerPC | `xer` | `xer` | Only clobbers |
-| wasm32 | `local` | None\* | `r` |
-| BPF | `reg` | `r[0-10]` | `r` |
-| BPF | `wreg` | `w[0-10]` | `w` |
 
 > **Notes**:
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
 >
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
->
-> - NVPTX doesn't have a fixed register set, so named registers are not supported.
->
-> - WebAssembly doesn't have registers, so named registers are not supported.
 >
 > - Some register classes are marked as "Only clobbers" which means that they cannot be used for inputs or outputs, only clobbers of the form `out("reg") _` or `lateout("reg") _`.
 
@@ -193,27 +160,11 @@ Each register class has constraints on which value types they can be used with. 
 | ARM | `sreg` | `vfp2` | `i32`, `f32` |
 | ARM | `dreg` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
 | ARM | `qreg` | `neon` | `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4` |
-| MIPS32 | `reg` | None | `i8`, `i16`, `i32`, `f32` |
-| MIPS32 | `freg` | None | `f32`, `f64` |
-| MIPS64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
-| MIPS64 | `freg` | None | `f32`, `f64` |
-| NVPTX | `reg16` | None | `i8`, `i16` |
-| NVPTX | `reg32` | None | `i8`, `i16`, `i32`, `f32` |
-| NVPTX | `reg64` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
 | RISC-V32 | `reg` | None | `i8`, `i16`, `i32`, `f32` |
 | RISC-V64 | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
 | RISC-V | `freg` | `f` | `f32` |
 | RISC-V | `freg` | `d` | `f64` |
 | RISC-V | `vreg` | N/A | Only clobbers |
-| Hexagon | `reg` | None | `i8`, `i16`, `i32`, `f32` |
-| PowerPC | `reg` | None | `i8`, `i16`, `i32` |
-| PowerPC | `reg_nonzero` | None | `i8`, `i16`, `i32` |
-| PowerPC | `freg` | None | `f32`, `f64` |
-| PowerPC | `cr` | N/A | Only clobbers |
-| PowerPC | `xer` | N/A | Only clobbers |
-| wasm32 | `local` | None | `i8` `i16` `i32` `i64` `f32` `f64` |
-| BPF | `reg` | None | `i8` `i16` `i32` `i64` |
-| BPF | `wreg` | `alu32` | `i8` `i16` `i32` |
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
@@ -270,19 +221,15 @@ Some registers have multiple names. These are all treated by the compiler as ide
 | RISC-V | `f[10-17]` | `fa[0-7]` |
 | RISC-V | `f[18-27]` | `fs[2-11]` |
 | RISC-V | `f[28-31]` | `ft[8-11]` |
-| Hexagon | `r29` | `sp` |
-| Hexagon | `r30` | `fr` |
-| Hexagon | `r31` | `lr` |
-| BPF | `r[0-10]` | `w[0-10]` |
 
 Some registers cannot be used for input or output operands:
 
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
 | All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
-| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `fr` (Hexagon), `$fp` (MIPS) | The frame pointer cannot be used as an input or output. |
+| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
-| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `r19` (Hexagon), `x9` (RISC-V) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
+| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `k0` | This is a constant zero register which can't be modified. |
 | x86 | `ip` | This is the program counter, not a real register. |
 | x86 | `mm[0-7]` | MMX registers are not currently supported (but may be in the future). |
@@ -290,14 +237,8 @@ Some registers cannot be used for input or output operands:
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
 | ARM | `pc` | This is the program counter, not a real register. |
 | ARM | `r9` | This is a reserved register on some ARM targets. |
-| MIPS | `$0` or `$zero` | This is a constant zero register which can't be modified. |
-| MIPS | `$1` or `$at` | Reserved for assembler. |
-| MIPS | `$26`/`$k0`, `$27`/`$k1` | OS-reserved registers. |
-| MIPS | `$28`/`$gp` | Global pointer cannot be used as inputs or outputs. |
-| MIPS | `$ra` | Return address cannot be used as inputs or outputs. |
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
 | RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
-| Hexagon | `lr` | This is the link register which cannot be used as an input or output. |
 
 In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified. Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers. Reserved registers are the frame pointer and base pointer
 - The frame pointer and LLVM base pointer on all architectures.
@@ -343,17 +284,8 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | ARM | `dreg` | None | `d0` | `P` |
 | ARM | `qreg` | None | `q0` | `q` |
 | ARM | `qreg` | `e` / `f` | `d0` / `d1` | `e` / `f` |
-| MIPS | `reg` | None | `$2` | None |
-| MIPS | `freg` | None | `$f0` | None |
-| NVPTX | `reg16` | None | `rs0` | None |
-| NVPTX | `reg32` | None | `r0` | None |
-| NVPTX | `reg64` | None | `rd0` | None |
 | RISC-V | `reg` | None | `x1` | None |
 | RISC-V | `freg` | None | `f0` | None |
-| Hexagon | `reg` | None | `r0` | None |
-| PowerPC | `reg` | None | `0` | None |
-| PowerPC | `reg_nonzero` | None | `3` | `b` |
-| PowerPC | `freg` | None | `0` | None |
 
 > **Notes**:
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
