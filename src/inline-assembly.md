@@ -33,23 +33,36 @@ The compiler will emit an error if `asm!` is used on an unsupported target.
 
 Inline assembly can be used in one of two ways.
 
-With the `asm!` macro, the assembly code is emitted in a function scope and integrated into the compiler-generated assembly code of a function. This assembly code must obey [strict rules](#rules-for-inline-assembly) to avoid undefined behavior. Note that in some cases the compiler may choose to emit the assembly code as a separate function and generate a call to it.
+With the `asm!` macro, the assembly code is emitted in a function scope and integrated into the compiler-generated assembly code of a function.
+This assembly code must obey [strict rules](#rules-for-inline-assembly) to avoid undefined behavior.
+Note that in some cases the compiler may choose to emit the assembly code as a separate function and generate a call to it.
 
-With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function. This can be used to hand-write entire functions using assembly code, and generally provides much more freedom to use arbitrary registers and assembler directives.
+With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function.
+This can be used to hand-write entire functions using assembly code, and generally provides much more freedom to use arbitrary registers and assembler directives.
 
 ## Template string arguments
 
-The assembler template uses the same syntax as [format strings][format-syntax] (i.e. placeholders are specified by curly braces). The corresponding arguments are accessed in order, by index, or by name. However, implicit named arguments (introduced by [RFC #2795][rfc-2795]) are not supported.
+The assembler template uses the same syntax as [format strings][format-syntax] (i.e. placeholders are specified by curly braces).
+The corresponding arguments are accessed in order, by index, or by name.
+However, implicit named arguments (introduced by [RFC #2795][rfc-2795]) are not supported.
 
-An `asm!` invocation may have one or more template string arguments; an `asm!` with multiple template string arguments is treated as if all the strings were concatenated with a `\n` between them. The expected usage is for each template string argument to correspond to a line of assembly code. All template string arguments must appear before any other arguments.
+An `asm!` invocation may have one or more template string arguments; an `asm!` with multiple template string arguments is treated as if all the strings were concatenated with a `\n` between them.
+The expected usage is for each template string argument to correspond to a line of assembly code.
+All template string arguments must appear before any other arguments.
 
-As with format strings, named arguments must appear after positional arguments. Explicit [register operands](#register-operands) must appear at the end of the operand list, after named arguments if any.
+As with format strings, named arguments must appear after positional arguments.
+Explicit [register operands](#register-operands) must appear at the end of the operand list, after named arguments if any.
 
-Explicit register operands cannot be used by placeholders in the template string. All other named and positional operands must appear at least once in the template string, otherwise a compiler error is generated.
+Explicit register operands cannot be used by placeholders in the template string.
+All other named and positional operands must appear at least once in the template string, otherwise a compiler error is generated.
 
 The exact assembly code syntax is target-specific and opaque to the compiler except for the way operands are substituted into the template string to form the code passed to the assembler.
 
-Currently, all supported targets follow the assembly code syntax used by LLVM's internal assembler which usually corresponds to that of the GNU assembler (GAS). On x86, the `.intel_syntax noprefix` mode of GAS is used by default. On ARM, the `.syntax unified` mode is used. These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string. Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
+Currently, all supported targets follow the assembly code syntax used by LLVM's internal assembler which usually corresponds to that of the GNU assembler (GAS).
+On x86, the `.intel_syntax noprefix` mode of GAS is used by default.
+On ARM, the `.syntax unified` mode is used.
+These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
+Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
 
 [format-syntax]: ../std/fmt/#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
@@ -59,11 +72,13 @@ Currently, all supported targets follow the assembly code syntax used by LLVM's 
 Several types of operands are supported:
 
 * `in(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
+  - `<reg>` can refer to a register class or an explicit register.
+    The allocated register name is substituted into the asm template string.
   - The allocated register will contain the value of `<expr>` at the start of the asm code.
   - The allocated register must contain the same value at the end of the asm code (except if a `lateout` is allocated to the same register).
 * `out(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
+  - `<reg>` can refer to a register class or an explicit register.
+    The allocated register name is substituted into the asm template string.
   - The allocated register will contain an undefined value at the start of the asm code.
   - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register is written to at the end of the asm code.
   - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
@@ -71,7 +86,8 @@ Several types of operands are supported:
   - Identical to `out` except that the register allocator can reuse a register allocated to an `in`.
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
 * `inout(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
+  - `<reg>` can refer to a register class or an explicit register.
+    The allocated register name is substituted into the asm template string.
   - The allocated register will contain the value of `<expr>` at the start of the asm code.
   - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register is written to at the end of the asm code.
 * `inout(<reg>) <in expr> => <out expr>`
@@ -83,22 +99,28 @@ Several types of operands are supported:
   - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
 
-Operand expressions are evaluated from left to right, just like function call arguments. After the `asm!` has executed, outputs are written to in left to right order. This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
+Operand expressions are evaluated from left to right, just like function call arguments.
+After the `asm!` has executed, outputs are written to in left to right order.
+This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
 
 Since `global_asm!` exists outside a function, it cannot use input/output operands.
 
 ## Register operands
 
-Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register. Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`).
+Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register.
+Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`).
 
-Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register. It is a compile-time error to use the same explicit register for two input operands or two output operands. Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
+Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register.
+It is a compile-time error to use the same explicit register for two input operands or two output operands.
+Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
 
 Only the following types are allowed as operands for inline assembly:
 - Integers (signed and unsigned)
 - Floating-point numbers
 - Pointers (thin only)
 - Function pointers
-- SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`). This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM).
+- SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`).
+This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM).
 
 Here is the list of currently supported register classes:
 
@@ -140,7 +162,10 @@ Here is the list of currently supported register classes:
 >
 > - Some register classes are marked as "Only clobbers" which means that they cannot be used for inputs or outputs, only clobbers of the form `out("reg") _` or `lateout("reg") _`.
 
-Each register class has constraints on which value types they can be used with. This is necessary because the way a value is loaded into a register depends on its type. For example, on big-endian systems, loading a `i32x4` and a `i8x16` into a SIMD register may result in different register contents even if the byte-wise memory representation of both values is identical. The availability of supported types for a particular register class may depend on what target features are currently enabled.
+Each register class has constraints on which value types they can be used with.
+This is necessary because the way a value is loaded into a register depends on its type.
+For example, on big-endian systems, loading a `i32x4` and a `i8x16` into a SIMD register may result in different register contents even if the byte-wise memory representation of both values is identical.
+The availability of supported types for a particular register class may depend on what target features are currently enabled.
 
 | Architecture | Register class | Target feature | Allowed types |
 | ------------ | -------------- | -------------- | ------------- |
@@ -169,13 +194,18 @@ Each register class has constraints on which value types they can be used with. 
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
-If a value is of a smaller size than the register it is allocated in then the upper bits of that register will have an undefined value for inputs and will be ignored for outputs. The only exception is the `freg` register class on RISC-V where `f32` values are NaN-boxed in a `f64` as required by the RISC-V architecture.
+If a value is of a smaller size than the register it is allocated in then the upper bits of that register will have an undefined value for inputs and will be ignored for outputs.
+The only exception is the `freg` register class on RISC-V where `f32` values are NaN-boxed in a `f64` as required by the RISC-V architecture.
 
-When separate input and output expressions are specified for an `inout` operand, both expressions must have the same type. The only exception is if both operands are pointers or integers, in which case they are only required to have the same size. This restriction exists because the register allocators in LLVM and GCC sometimes cannot handle tied operands with different types.
+When separate input and output expressions are specified for an `inout` operand, both expressions must have the same type.
+The only exception is if both operands are pointers or integers, in which case they are only required to have the same size.
+This restriction exists because the register allocators in LLVM and GCC sometimes cannot handle tied operands with different types.
 
 ## Register names
 
-Some registers have multiple names. These are all treated by the compiler as identical to the base register name. Here is the list of all supported register aliases:
+Some registers have multiple names.
+These are all treated by the compiler as identical to the base register name.
+Here is the list of all supported register aliases:
 
 | Architecture | Base register | Aliases |
 | ------------ | ------------- | ------- |
@@ -241,14 +271,18 @@ Some registers cannot be used for input or output operands:
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
 | RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
 
-In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified. Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers. Reserved registers are the frame pointer and base pointer
+In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified.
+Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers.
+Reserved registers are the frame pointer and base pointer
 - The frame pointer and LLVM base pointer on all architectures.
 - `r9` on ARM.
 - `x18` on AArch64.
 
 ## Template modifiers
 
-The placeholders can be augmented by modifiers which are specified after the `:` in the curly braces. These modifiers do not affect register allocation, but change the way operands are formatted when inserted into the template string. Only one modifier is allowed per template placeholder.
+The placeholders can be augmented by modifiers which are specified after the `:` in the curly braces.
+These modifiers do not affect register allocation, but change the way operands are formatted when inserted into the template string.
+Only one modifier is allowed per template placeholder.
 
 The supported modifiers are a subset of LLVM's (and GCC's) [asm template argument modifiers][llvm-argmod], but do not use the same letter codes.
 
@@ -290,18 +324,24 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 
 > **Notes**:
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
-> - on x86: our behavior for `reg` with no modifiers differs from what GCC does. GCC will infer the modifier based on the operand value type, while we default to the full register size.
+> - on x86: our behavior for `reg` with no modifiers differs from what GCC does.
+>   GCC will infer the modifier based on the operand value type, while we default to the full register size.
 > - on x86 `xmm_reg`: the `x`, `t` and `g` LLVM modifiers are not yet implemented in LLVM (they are supported by GCC only), but this should be a simple change.
 
-As stated in the previous section, passing an input value smaller than the register width will result in the upper bits of the register containing undefined values. This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the asm code (e.g. `ax` instead of `rax`). Since this an easy pitfall, the compiler will suggest a template modifier to use where appropriate given the input type. If all references to an operand already have modifiers then the warning is suppressed for that operand.
+As stated in the previous section, passing an input value smaller than the register width will result in the upper bits of the register containing undefined values.
+This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the asm code (e.g. `ax` instead of `rax`).
+Since this an easy pitfall, the compiler will suggest a template modifier to use where appropriate given the input type.
+If all references to an operand already have modifiers then the warning is suppressed for that operand.
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
 ## ABI clobbers
 
-The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block. This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then a `lateout("reg") _` is implicitly added to the operands list.
+The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
+This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then a `lateout("reg") _` is implicitly added to the operands list.
 
-Generic register class outputs are disallowed by the compiler when `clobber_abi` is used: all outputs must specify an explicit register. Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
+Generic register class outputs are disallowed by the compiler when `clobber_abi` is used: all outputs must specify an explicit register.
+Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
 The following ABIs can be used with `clobber_abi`:
 
 | Architecture | ABI name | Clobbered registers |
@@ -319,14 +359,23 @@ The list of clobbered registers for each ABI is updated in rustc as architecture
 
 Flags are used to further influence the behavior of the inline assembly block.
 Currently the following options are defined:
-- `pure`: The `asm!` block has no side effects, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set). This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
-- `nomem`: The `asm!` blocks does not read or write to any memory. This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
-- `readonly`: The `asm!` block does not write to any memory. This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
-- `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below). This allows the compiler to avoid recomputing the condition flags after the `asm!` block.
-- `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never). Behavior is undefined if execution falls through past the end of the asm code. A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
-- `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target). If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
-- `att_syntax`: This option is only valid on x86, and causes the assembler to use the `.att_syntax prefix` mode of the GNU assembler. Register operands are substituted in with a leading `%`.
-- `raw`: This causes the template string to be parsed as a raw assembly string, with no special handling for `{` and `}`. This is primarily useful when including raw assembly code from an external file using `include_str!`.
+- `pure`: The `asm!` block has no side effects, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set).
+  This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
+- `nomem`: The `asm!` blocks does not read or write to any memory.
+  This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
+- `readonly`: The `asm!` block does not write to any memory.
+  This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
+- `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below).
+  This allows the compiler to avoid recomputing the condition flags after the `asm!` block.
+- `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
+  Behavior is undefined if execution falls through past the end of the asm code.
+  A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
+- `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
+  If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
+- `att_syntax`: This option is only valid on x86, and causes the assembler to use the `.att_syntax prefix` mode of the GNU assembler.
+  Register operands are substituted in with a leading `%`.
+- `raw`: This causes the template string to be parsed as a raw assembly string, with no special handling for `{` and `}`.
+  This is primarily useful when including raw assembly code from an external file using `include_str!`.
 
 The compiler performs some additional checks on options:
 - The `nomem` and `readonly` options are mutually exclusive: it is a compile-time error to specify both.
@@ -334,17 +383,21 @@ The compiler performs some additional checks on options:
 - It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
 - It is a compile-time error to specify `noreturn` on an asm block with outputs.
 
-`global_asm!` only supports the `att_syntax` and `raw` options. The remaining options are not meaningful for global-scope inline assembly
+`global_asm!` only supports the `att_syntax` and `raw` options.
+The remaining options are not meaningful for global-scope inline assembly
 
 ## Rules for inline assembly
 
 To avoid undefined behavior, these rules must be followed when using function-scope inline assembly (`asm!`):
 
 - Any registers not specified as inputs will contain an undefined value on entry to the asm block.
-  - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture. Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
+  - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture.
+    Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
 - Any registers not specified as outputs must have the same value upon exiting the asm block as they had on entry, otherwise behavior is undefined.
-  - This only applies to registers which can be specified as an input or output. Other registers follow target-specific rules.
-  - Note that a `lateout` may be allocated to the same register as an `in`, in which case this rule does not apply. Code should not rely on this however since it depends on the results of register allocation.
+  - This only applies to registers which can be specified as an input or output.
+    Other registers follow target-specific rules.
+  - Note that a `lateout` may be allocated to the same register as an `in`, in which case this rule does not apply.
+    Code should not rely on this however since it depends on the results of register allocation.
 - Behavior is undefined if execution unwinds out of an asm block.
   - This also applies if the assembly code calls a function which then unwinds.
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
@@ -361,7 +414,8 @@ To avoid undefined behavior, these rules must be followed when using function-sc
   - You should adjust the stack pointer when allocating stack memory as required by the target ABI.
   - The stack pointer must be restored to its original value before leaving the asm block.
 - If the `noreturn` option is set then behavior is undefined if execution falls through to the end of the asm block.
-- If the `pure` option is set then behavior is undefined if the `asm!` has side-effects other than its direct outputs. Behavior is also undefined if two executions of the `asm!` code with the same inputs result in different outputs.
+- If the `pure` option is set then behavior is undefined if the `asm!` has side-effects other than its direct outputs.
+  Behavior is also undefined if two executions of the `asm!` code with the same inputs result in different outputs.
   - When used with the `nomem` option, "inputs" are just the direct inputs of the `asm!`.
   - When used with the `readonly` option, "inputs" comprise the direct inputs of the `asm!` and any memory that the `asm!` block is allowed to read.
 - These flags registers must be restored upon exiting the asm block if the `preserves_flags` option is set:
@@ -387,9 +441,11 @@ To avoid undefined behavior, these rules must be followed when using function-sc
 - The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting an `asm!` block.
   - This means that `asm!` blocks that never return (even if not marked `noreturn`) don't need to preserve these registers.
   - When returning to a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
-    - You cannot exit an `asm!` block that has not been entered. Neither can you exit an `asm!` block that has already been exited.
+    - You cannot exit an `asm!` block that has not been entered.
+      Neither can you exit an `asm!` block that has already been exited.
     - You are responsible for switching any target-specific state (e.g. thread-local storage, stack bounds).
     - The set of memory locations that you may access is the intersection of those allowed by the `asm!` blocks you entered and exited.
-- You cannot assume that an `asm!` block will appear exactly once in the output binary. The compiler is allowed to instantiate multiple copies of the `asm!` block, for example when the function containing it is inlined in multiple places.
+- You cannot assume that an `asm!` block will appear exactly once in the output binary.
+  The compiler is allowed to instantiate multiple copies of the `asm!` block, for example when the function containing it is inlined in multiple places.
 
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
