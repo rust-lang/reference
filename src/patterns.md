@@ -533,7 +533,7 @@ minimum to maximum value. The range of values for a `char` type are precisely th
 ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and
 `'\u{E000}'..='\u{10FFFF}'`.
 
-> **Edition Differences**: Before the 2021 edition, closed range patterns may be written using `...` in place of `..=`, with the same meaning.
+> **Edition Differences**: Before the 2021 edition, closed range patterns may also be written using `...` as an alternative to `..=`, with the same meaning.
 
 ## Reference patterns
 
