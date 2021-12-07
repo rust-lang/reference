@@ -101,7 +101,7 @@ Several types of operands are supported:
   - `<reg>` can refer to a register class or an explicit register.
     The allocated register name is substituted into the asm template string.
   - The allocated register will contain an undefined value at the start of the asm code.
-  - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register is written to at the end of the asm code.
+  - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
   - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
 * `lateout(<reg>) <expr>`
   - Identical to `out` except that the register allocator can reuse a register allocated to an `in`.
@@ -110,10 +110,10 @@ Several types of operands are supported:
   - `<reg>` can refer to a register class or an explicit register.
     The allocated register name is substituted into the asm template string.
   - The allocated register will contain the value of `<expr>` at the start of the asm code.
-  - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register is written to at the end of the asm code.
+  - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register are written at the end of the asm code.
 * `inout(<reg>) <in expr> => <out expr>`
   - Same as `inout` except that the initial value of the register is taken from the value of `<in expr>`.
-  - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register is written to at the end of the asm code.
+  - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
   - An underscore (`_`) may be specified instead of an expression for `<out expr>`, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
   - `<in expr>` and `<out expr>` may have different types.
 * `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
@@ -294,7 +294,8 @@ Some registers cannot be used for input or output operands:
 
 In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified.
 Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers.
-Reserved registers are the frame pointer and base pointer
+
+These reserved registers are:
 - The frame pointer and LLVM base pointer on all architectures.
 - `r9` on ARM.
 - `x18` on AArch64.
