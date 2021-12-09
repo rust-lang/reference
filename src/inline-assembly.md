@@ -42,9 +42,9 @@ reg_spec := <register class> / "<explicit register>"
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
 reg_operand := dir_spec "(" reg_spec ")" operand_expr
 operand := reg_operand
-clobber_abi := "clobber_abi(" <abi> *["," <abi>] [","] ")"
+clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
-options := "options(" option *["," option] [","] ")"
+options := "options(" option *("," option) [","] ")"
 asm := "asm!(" format_string *("," format_string) *("," [ident "="] operand) *("," clobber_abi) *("," options) [","] ")"
 global_asm := "global_asm!(" format_string *("," format_string) *("," [ident "="] operand) *("," options) [","] ")"
 ```
@@ -161,9 +161,8 @@ Here is the list of currently supported register classes:
 | AArch64 | `vreg` | `v[0-31]` | `w` |
 | AArch64 | `vreg_low16` | `v[0-15]` | `x` |
 | AArch64 | `preg` | `p[0-15]`, `ffr` | Only clobbers |
-| ARM | `reg` | `r[0-12]`, `r14` | `r` |
-| ARM (Thumb) | `reg_thumb` | `r[0-r7]` | `l` |
-| ARM (ARM) | `reg_thumb` | `r[0-r12]`, `r14` | `l` |
+| ARM (ARM/Thumb2) | `reg` | `r[0-12]`, `r14` | `r` |
+| ARM (Thumb1) | `reg` | `r[0-7]` | `r` |
 | ARM | `sreg` | `s[0-31]` | `t` |
 | ARM | `sreg_low16` | `s[0-15]` | `x` |
 | ARM | `dreg` | `d[0-31]` | `w` |
@@ -284,9 +283,8 @@ Some registers cannot be used for input or output operands:
 | All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `k0` | This is a constant zero register which can't be modified. |
 | x86 | `ip` | This is the program counter, not a real register. |
-| x86 | `mm[0-7]` | MMX registers are not currently supported (but may be in the future). |
-| x86 | `st([0-7])` | x87 registers are not currently supported (but may be in the future). |
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
+| AArch64 | `x18` | This is a reserved register on some AArch64 targets. |
 | ARM | `pc` | This is the program counter, not a real register. |
 | ARM | `r9` | This is a reserved register on some ARM targets. |
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
@@ -294,11 +292,7 @@ Some registers cannot be used for input or output operands:
 
 In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified.
 Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers.
-
-These reserved registers are:
-- The frame pointer and LLVM base pointer on all architectures.
-- `r9` on ARM.
-- `x18` on AArch64.
+Reserved registers that can sometimes be allocated are the frame pointer and base pointer in the list above.
 
 ## Template modifiers
 
@@ -362,6 +356,8 @@ If all references to an operand already have modifiers then the warning is suppr
 The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
 This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then a `lateout("reg") _` is implicitly added to the operands list.
 
+`clobber_abi` may be specified any number of times. It will insert a clobber for all unique registers in the union of all specified calling conventions.
+
 Generic register class outputs are disallowed by the compiler when `clobber_abi` is used: all outputs must specify an explicit register.
 Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
 The following ABIs can be used with `clobber_abi`:
@@ -371,9 +367,12 @@ The following ABIs can be used with `clobber_abi`:
 | x86-32 | `"C"`, `"system"`, `"efiapi"`, `"cdecl"`, `"stdcall"`, `"fastcall"` | `ax`, `cx`, `dx`, `xmm[0-7]`, `mm[0-7]`, `k[1-7]`, `st([0-7])` |
 | x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[1-7]`, `st([0-7])` |
 | x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[1-7]`, `st([0-7])` |
-| AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
+| AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
 | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
 | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
+
+> Notes:
+> - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
 
 The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
 
@@ -469,5 +468,7 @@ To avoid undefined behavior, these rules must be followed when using function-sc
     - The set of memory locations that you may access is the intersection of those allowed by the `asm!` blocks you entered and exited.
 - You cannot assume that an `asm!` block will appear exactly once in the output binary.
   The compiler is allowed to instantiate multiple copies of the `asm!` block, for example when the function containing it is inlined in multiple places.
+- On x86, inline assembly must not end with an instruction prefix (such as `LOCK`) that would apply to instructions generated by the compiler.
+  - The compiler is currently unable to detect this due to the way inline assembly is compiled, but may catch and reject this in the future.
 
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
