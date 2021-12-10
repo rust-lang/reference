@@ -284,15 +284,13 @@ Some registers cannot be used for input or output operands:
 | x86 | `k0` | This is a constant zero register which can't be modified. |
 | x86 | `ip` | This is the program counter, not a real register. |
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
-| AArch64 | `x18` | This is a reserved register on some AArch64 targets. |
+| AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
 | ARM | `pc` | This is the program counter, not a real register. |
-| ARM | `r9` | This is a reserved register on some ARM targets. |
+| ARM | `r9` | This is an OS-reserved register on some ARM targets. |
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
 | RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
 
-In some cases LLVM will allocate a "reserved register" for `reg` operands even though this register cannot be explicitly specified.
-Assembly code making use of reserved registers should be careful since `reg` operands may alias with those registers.
-Reserved registers that can sometimes be allocated are the frame pointer and base pointer in the list above.
+The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
 
 ## Template modifiers
 
