@@ -443,8 +443,6 @@ A half-open range pattern in the style `a..` cannot be used to match within the 
 A pattern `a..=b` must always have a &le; b. It is an error to have a range pattern
 `10..=0`, for example.
 
-The `...` syntax is kept for backwards compatibility.
-
 Range patterns only work on scalar types. The accepted types are:
 
 * Integer types (u8, i8, u16, i16, usize, isize, etc.).
@@ -534,6 +532,8 @@ is irrefutable. The range of values for an integer type is the closed range from
 minimum to maximum value. The range of values for a `char` type are precisely those
 ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and
 `'\u{E000}'..='\u{10FFFF}'`.
+
+> **Edition Differences**: Before the 2021 edition, closed range patterns may also be written using `...` as an alternative to `..=`, with the same meaning.
 
 ## Reference patterns
 
