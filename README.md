@@ -10,7 +10,7 @@ what we have for now.
 ## Dependencies
 
 - rustc (the Rust compiler).
-- mdbook (use `cargo install mdbook` to install it).
+- [mdbook](https://rust-lang.github.io/mdBook/) (use `cargo install mdbook` to install it).
 - rust nightly (you would be required to set your Rust version to the nightly version to make sure all tests pass)
 
 ## Build steps
