@@ -87,7 +87,7 @@ On ARM, the `.syntax unified` mode is used.
 These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
 Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
 
-[format-syntax]: ../std/fmt/#syntax
+[format-syntax]: ../std/fmt/index.html#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
 
 ## Operand type
