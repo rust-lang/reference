@@ -17,6 +17,8 @@ The compiler will emit an error if `asm!` is used on an unsupported target.
 ## Example
 
 ```rust
+use std::arch::asm;
+
 // Multiply x by 6 using shifts and adds
 let mut x: u64 = 4;
 unsafe {
