@@ -12,7 +12,7 @@ limited capabilities.
 The list of types is:
 
 * Primitive types:
-    * [Boolean] — `true` or `false`
+    * [Boolean] — `bool`
     * [Numeric] — integer and float
     * [Textual] — `char` and `str`
     * [Never] — `!` — a type with no values
