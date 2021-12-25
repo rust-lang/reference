@@ -66,7 +66,7 @@
         - [Match expressions](expressions/match-expr.md)
         - [Return expressions](expressions/return-expr.md)
         - [Await expressions](expressions/await-expr.md)
-        - [Underscore expression](expressions/underscore-expr.md)
+        - [Underscore expressions](expressions/underscore-expr.md)
 
 - [Patterns](patterns.md)
 
