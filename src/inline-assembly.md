@@ -39,6 +39,7 @@ assert_eq!(x, 4 * 6);
 The following ABNF specifies the general syntax:
 
 ```text
+format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "<explicit register>"
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
