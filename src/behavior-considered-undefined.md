@@ -58,6 +58,8 @@ code.
 
     > **Note**: `rustc` achieves this with the unstable
     > `rustc_layout_scalar_valid_range_*` attributes.
+* Incorrect use of inline assembly. For more details, refer to the [rules] to
+  follow when writing code that uses inline assembly.
 
 **Note:** Uninitialized memory is also implicitly invalid for any type that has
 a restricted set of valid values. In other words, the only cases in which
@@ -94,3 +96,4 @@ cannot be bigger than `isize::MAX` bytes.
 [`NonZero*`]: ../core/num/index.html
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
 [place expression context]: expressions.md#place-expressions-and-value-expressions
+[rules]: inline-assembly.md#rules-for-inline-assembly
