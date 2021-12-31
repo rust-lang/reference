@@ -114,6 +114,8 @@
 
 - [Linkage](linkage.md)
 
+- [Inline assembly](inline-assembly.md)
+
 - [Unsafety](unsafety.md)
     - [Unsafe functions](unsafe-functions.md)
     - [Unsafe blocks](unsafe-blocks.md)
