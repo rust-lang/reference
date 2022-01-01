@@ -460,6 +460,8 @@ To avoid undefined behavior, these rules must be followed when using function-sc
     - Vector extension state (`vtype`, `vl`, `vcsr`).
 - On x86, the direction flag (DF in `EFLAGS`) is clear on entry to an asm block and must be clear on exit.
   - Behavior is undefined if the direction flag is set on exiting an asm block.
+- On x86, the x87 floating-point register stack must remain unchanged unless all of the `st(*)` registers have been marked as clobbered.
+  - If all x87 registers are clobbered then the x87 register stack is guaranteed to be empty upon entering an `asm` block. Assembly code must ensure that the x87 register stack is also empty when exiting the asm block.
 - The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting an `asm!` block.
   - This means that `asm!` blocks that never return (even if not marked `noreturn`) don't need to preserve these registers.
   - When returning to a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
