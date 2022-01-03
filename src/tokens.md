@@ -88,8 +88,7 @@ evaluated (primarily) at compile time.
 
 #### Suffixes
 
-A suffix is a non-raw identifier immediately (without whitespace)
-following the primary part of a literal.
+A suffix is a sequence of characters following the primary part of a literal (without intervening whitespace), of the same form as a non-raw identifier or keyword.
 
 Any kind of literal (string, integer, etc) with any suffix is valid as a token,
 and can be passed to a macro without producing an error.
