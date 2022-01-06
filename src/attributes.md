@@ -182,9 +182,6 @@ When a tool is not in use, the tool's attributes are accepted without a
 warning. When the tool is in use, the tool is responsible for processing and
 interpretation of its attributes.
 
-Tool attributes are not available if the [`no_implicit_prelude`] attribute is
-used.
-
 ```rust
 // Tells the rustfmt tool to not format the following element.
 #[rustfmt::skip]
@@ -196,7 +193,18 @@ struct S {
 pub fn f() {}
 ```
 
-> Note: `rustc` currently recognizes the tools "clippy" and "rustfmt".
+### `register_tool`
+
+Out of the box, `rustc` recognizes attributes for the tools "[clippy]" and
+"[rustfmt]". Additional tools can be be registered with the crate level
+attribute `register_tool`:
+
+```rust
+#![register_tool(my_tool)]
+
+#[my_tool::my_attribute]
+fn main() {}
+```
 
 ## Built-in attributes index
 
@@ -327,6 +335,7 @@ The following is an index of all built-in attributes.
 [attribute macros]: procedural-macros.md#attribute-macros
 [block expressions]: expressions/block-expr.md
 [built-in attributes]: #built-in-attributes-index
+[clippy]: https://github.com/rust-lang/rust-clippy
 [derive macro helper attributes]: procedural-macros.md#derive-macro-helper-attributes
 [enum]: items/enumerations.md
 [expression statement]: statements.md#expression-statements
@@ -337,6 +346,7 @@ The following is an index of all built-in attributes.
 [item declarations]: items.md
 [match expressions]: expressions/match-expr.md
 [modules]: items/modules.md
+[rustfmt]: https://github.com/rust-lang/rustfmt
 [statements]: statements.md
 [struct]: items/structs.md
 [tool prelude]: names/preludes.md#tool-prelude

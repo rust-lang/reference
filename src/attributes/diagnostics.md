@@ -150,7 +150,18 @@ fn foo() {
 }
 ```
 
-> Note: `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
+### `register_tool`
+
+Out of the box, `rustc` recognizes lints for the tools "[clippy]" and
+"[rustdoc]". Additional tools can be be registered with the crate level
+attribute `register_tool`:
+
+```rust
+#![register_tool(my_tool)]
+
+#[deny(my_tool::my_lint)]
+fn main() {}
+```
 
 ## The `deprecated` attribute
 
@@ -324,7 +335,7 @@ When used on a function in a trait implementation, the attribute does nothing.
 [rustc book]: ../../rustc/lints/index.html
 [rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
 [rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
-[rustdoc]: ../../rustdoc/lints.html
+[rustdoc]: https://doc.rust-lang.org/stable/rustdoc/
 [struct field]: ../items/structs.md
 [struct]: ../items/structs.md
 [trait declaration]: ../items/traits.md
