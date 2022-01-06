@@ -23,7 +23,7 @@
 > _MacroMatch_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Token_]<sub>_except $ and delimiters_</sub>\
 > &nbsp;&nbsp; | _MacroMatcher_\
-> &nbsp;&nbsp; | `$` [IDENTIFIER] `:` _MacroFragSpec_\
+> &nbsp;&nbsp; | `$` ( [IDENTIFIER_OR_KEYWORD] <sub>_except `crate`_</sub> | [RAW_IDENTIFIER] | `_` ) `:` _MacroFragSpec_\
 > &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroRepOp_
 >
 > _MacroFragSpec_ :\
@@ -479,6 +479,7 @@ For more detail, see the [formal specification].
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
 [IDENTIFIER_OR_KEYWORD]: identifiers.md
+[RAW_IDENTIFIER]: identifiers.md
 [LIFETIME_TOKEN]: tokens.md#lifetimes-and-loop-labels
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
