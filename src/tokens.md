@@ -88,8 +88,7 @@ evaluated (primarily) at compile time.
 
 #### Suffixes
 
-A suffix is a non-raw identifier immediately (without whitespace)
-following the primary part of a literal.
+A suffix is a sequence of characters following the primary part of a literal (without intervening whitespace), of the same form as a non-raw identifier or keyword.
 
 Any kind of literal (string, integer, etc) with any suffix is valid as a token,
 and can be passed to a macro without producing an error.
@@ -659,3 +658,39 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [use declarations]: items/use-declarations.md
 [use wildcards]: items/use-declarations.md
 [while let]: expressions/loop-expr.md#predicate-pattern-loops
+
+## Reserved prefixes
+
+> **<sup>Lexer 2021+</sup>**\
+> RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b` or `r` or `br`_</sub> | `_` ) `"`\
+> RESERVED_TOKEN_SINGLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b`_</sub> | `_` ) `'`\
+> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br`_</sub> | `_` ) `#`
+
+Some lexical forms known as _reserved prefixes_ are reserved for future use.
+
+Source input which would otherwise be lexically interpreted as a non-raw identifier (or a keyword or `_`) which is immediately followed by a `#`, `'`, or `"` character (without intervening whitespace) is identified as a reserved prefix.
+
+Note that raw identifiers, raw string literals, and raw byte string literals may contain a `#` character but are not interpreted as containing a reserved prefix.
+
+Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte literals, byte string literals, and raw byte string literals are not interpreted as reserved prefixes.
+
+> **Edition Differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
+>
+> Before the 2021 edition, a reserved prefixes are accepted by the lexer and interpreted as multiple tokens (for example, one token for the identifier or keyword, followed by a `#` token).
+>
+> Examples accepted in all editions:
+> ```rust
+> macro_rules! lexes {($($_:tt)*) => {}}
+> lexes!{a #foo}
+> lexes!{continue 'foo}
+> lexes!{match "..." {}}
+> lexes!{r#let#foo}         // three tokens: r#let # foo
+> ```
+>
+> Examples accepted before the 2021 edition but rejected later:
+> ```rust,edition2018
+> macro_rules! lexes {($($_:tt)*) => {}}
+> lexes!{a#foo}
+> lexes!{continue'foo}
+> lexes!{match"..." {}}
+> ```
