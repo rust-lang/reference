@@ -126,7 +126,7 @@ fragment specifiers are:
   * `pat`: equivalent to `pat_param`
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
-  * `ident`: an [IDENTIFIER_OR_KEYWORD]
+  * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
   * `path`: a [_TypePath_] style path
   * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
   * `meta`: an [_Attr_], the contents of an attribute
@@ -479,6 +479,7 @@ For more detail, see the [formal specification].
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
 [IDENTIFIER_OR_KEYWORD]: identifiers.md
+[RAW_IDENTIFIER]: identifiers.md
 [LIFETIME_TOKEN]: tokens.md#lifetimes-and-loop-labels
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
