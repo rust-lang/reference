@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _CallExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `(` _CallParams_<sup>?</sup> `)`
+> &nbsp;&nbsp; [_ExpressionWithoutBlock_] `(` _CallParams_<sup>?</sup> `)`
 >
 > _CallParams_ :\
 > &nbsp;&nbsp; [_Expression_]&nbsp;( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>
@@ -87,6 +87,7 @@ Refer to [RFC 132] for further details and motivations.
 
 [RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 [_Expression_]: ../expressions.md
+[_ExpressionWithoutBlock_]: ../expressions.md
 [`default()`]: ../../std/default/trait.Default.html#tymethod.default
 [`size_of()`]: ../../std/mem/fn.size_of.html
 [`std::ops::FnMut`]: ../../std/ops/trait.FnMut.html
