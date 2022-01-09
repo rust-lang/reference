@@ -123,7 +123,7 @@ fragment specifiers are:
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
   * `pat_param`: a [_PatternNoTopAlt_]
-  * `pat`: equivalent to `pat_param`
+  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
   * `expr`: an [_Expression_]
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
@@ -139,6 +139,10 @@ the fragment kind is specified in the matcher. Metavariables are replaced with
 the syntax element that matched them. The keyword metavariable `$crate` can be
 used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
+
+> **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
+>
+> Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 
 ## Repetitions
 
@@ -451,7 +455,8 @@ Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
 `;` are legal expression separators. The specific rules are:
 
   * `expr` and `stmt` may only be followed by one of: `=>`, `,`, or `;`.
-  * `pat` and `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
+  * `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
+  * `pat` may only be followed by one of: `=>`, `,`, `=`, `if`, or `in`.
   * `path` and `ty` may only be followed by one of: `=>`, `,`, `=`, `|`, `;`,
     `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
     fragment specifier.
@@ -459,6 +464,8 @@ Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
     non-raw `priv`, any token that can begin a type, or a metavariable with a
     `ident`, `ty`, or `path` fragment specifier.
   * All other fragment specifiers have no restrictions.
+
+> **Edition Differences**: Before the 2021 edition, `pat` may also be followed by `|`.
 
 When repetitions are involved, then the rules apply to every possible number of
 expansions, taking separators into account. This means:
@@ -490,6 +497,7 @@ For more detail, see the [formal specification].
 [_Item_]: items.md
 [_LiteralExpression_]: expressions/literal-expr.md
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
+[_Pattern_]: patterns.md
 [_PatternNoTopAlt_]: patterns.md
 [_Statement_]: statements.md
 [_TokenTree_]: macros.md#macro-invocation
