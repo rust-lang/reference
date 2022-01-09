@@ -122,7 +122,7 @@ For example, if `'a` is an unconstrained lifetime parameter, then `i32: 'static`
 > &nbsp;&nbsp; `for` [_GenericParams_]
 
 Type bounds may be *higher ranked* over lifetimes. These bounds specify a bound
-is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T:
+that is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T:
 PartialEq<i32>` would require an implementation like
 
 ```rust
