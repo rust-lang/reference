@@ -143,6 +143,8 @@ transcribed more than once or not at all.
 > **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
+>
+> The relevant edition is the one in effect for the `macro_rules!` definition.
 
 ## Repetitions
 
