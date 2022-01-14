@@ -22,7 +22,7 @@
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
-The order of generic parameters is restricted to lifetime parameters and then type/const parameters intermixed.
+The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
 Some examples of items with type, const, and lifetime parameters:
 
@@ -31,7 +31,7 @@ fn foo<'a, T>() {}
 trait A<U> {}
 struct Ref<'a, T> where T: 'a { r: &'a T }
 struct InnerArray<T, const N: usize>([T; N]);
-struct Uwu<const N: bool, U>(U);
+struct EitherOrderWorks<const N: bool, U>(U);
 ```
 
 Generic parameters are in scope within the item definition where they are
