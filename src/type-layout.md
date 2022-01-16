@@ -543,13 +543,58 @@ or an [`enum`][enumerations] with a single variant that has:
 Structs and enums with this representation have the same layout and ABI
 as the single non-zero sized field.
 
-This is different than the `C` representation because
-a struct with the `C` representation will always have the ABI of a `C` `struct`
-while, for example, a struct with the `transparent` representation with a
-primitive field will have the ABI of the primitive field.
+This is different than the `C` representation because on some ABIs,
+structures with one field arend't handled the same way as values of
+values of the same type as this single field.
 
-Because this representation delegates type layout to another type, it cannot be
-used with any other representation.
+For example, on ARM64, functions returning a structure with a single
+`f64` field return nothing and take a pointer to be filled with the
+return values, whereas functions returning a `f64` return the
+floating-point number directly. This means that if someone wants to
+wrap a `f64` value in a struct tuple wrapper and use that wrapper as
+the return type of a FFI function tat actually returns the bare `f64`,
+the calls to this function will be compiled incorrectly by Rust and the
+execution of the program will segfault.
+
+```rust
+// The value is returned directly in a floating-point register on ARM64.
+double do_something_and_return_a_double(void);
+
+mod bogus {
+    #[repr(C)]
+    struct FancyWrapper(f64);
+
+    extern {
+        // Incorrect: the wrapped value on ARM64 is indirectly returned and the
+        // function takes a pointer to where the return value must be stored.
+        fn do_something_and_return_a_double() -> FancyWrapper;
+    }
+}
+
+mod correct {
+    #[repr(transparent)]
+    struct FancyWrapper(f64);
+
+    extern {
+        // Correct: FancyWrapper is handled exactly the same as f64 on all
+        // platforms.
+        fn do_something_and_return_a_double() -> FancyWrapper;
+    }
+}
+
+
+
+Because this representation delegates type layout to another type,
+no other `repr` attribute should be present on the type. This means that
+the following definitions are illegal:
+
+```rust
+#[repr(transparent, align = "128")]
+struct BogusAlign(f64);
+
+#[repr(transparent, packed)]
+struct BogusPacked(f64);
+```
 
 [`align_of_val`]: ../std/mem/fn.align_of_val.html
 [`size_of_val`]: ../std/mem/fn.size_of_val.html
