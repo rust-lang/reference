@@ -556,10 +556,12 @@ the return type of a FFI function tat actually returns the bare `f64`,
 the calls to this function will be compiled incorrectly by Rust and the
 execution of the program will segfault.
 
-```rust
+```C
 // The value is returned directly in a floating-point register on ARM64.
 double do_something_and_return_a_double(void);
+```
 
+```rust
 mod bogus {
     #[repr(C)]
     struct FancyWrapper(f64);
@@ -581,6 +583,7 @@ mod correct {
         fn do_something_and_return_a_double() -> FancyWrapper;
     }
 }
+```
 
 
 
@@ -589,11 +592,10 @@ no other `repr` attribute should be present on the type. This means that
 the following definitions are illegal:
 
 ```rust
-#[repr(transparent, align = "128")]
-struct BogusAlign(f64);
-
-#[repr(transparent, packed)]
-struct BogusPacked(f64);
+// The following examples contain incompatible attributes
+// #[repr(transparent, align(128))]
+// #[repr(transparent, packed)]
+struct BogusWrapper(f64);
 ```
 
 [`align_of_val`]: ../std/mem/fn.align_of_val.html
