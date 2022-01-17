@@ -582,7 +582,7 @@ usages and meanings are defined in the linked pages.
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
 | `@`    | At          | [Subpattern binding]
-| `_`    | Underscore  | [Wildcard patterns], [Inferred types], Unnamed items in [constants], [extern crates], and [use declarations]
+| `_`    | Underscore  | [Wildcard patterns], [Inferred types], Unnamed items in [constants], [extern crates], [use declarations], and [destructuring assignment]
 | `.`    | Dot         | [Field access][field], [Tuple index]
 | `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns], [Range Patterns][rangepat]
 | `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
@@ -625,6 +625,7 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 [compound]: expressions/operator-expr.md#compound-assignment-expressions
 [constants]: items/constant-items.md
 [dereference]: expressions/operator-expr.md#the-dereference-operator
+[destructuring assignment]: expressions/underscore-expr.md
 [extern crates]: items/extern-crates.md
 [extern]: items/external-blocks.md
 [field]: expressions/field-expr.md

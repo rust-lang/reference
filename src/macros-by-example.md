@@ -140,11 +140,10 @@ the syntax element that matched them. The keyword metavariable `$crate` can be
 used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
-For reasons of backwards compatibility, although `_` is a (keyword) identifier,
-it is not matched by the `ident` fragment specifier. Similarly, though `_` [is
-also an expression][_UnderscoreExpression_], a standalone underscore is not
-matched by the `expr` fragment specifier. However, `_` is matched by the `expr`
-fragment specifier when it appears as a subexpression.
+For reasons of backwards compatibility, though `_` [is also an
+expression][_UnderscoreExpression_], a standalone underscore is not matched by
+the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
+specifier when it appears as a subexpression.
 
 > **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
