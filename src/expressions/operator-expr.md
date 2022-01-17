@@ -428,13 +428,15 @@ assert_eq!(values[1], 3);
 
 An *assignment expression* moves a value into a specified place.
 
-An assignment expression consists of a [mutable] [place expression], the *assigned place operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
+An assignment expression consists of a [mutable] [assignee expression], the *assignee operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
+In its most basic form, an assignee expression is a [place expression], and we discuss this case first.
+The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
-Unlike other place operands, the assigned place operand must be a place expression.
-Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
+### Basic assignments
 
 Evaluating assignment expressions begins by evaluating its operands.
-The assigned value operand is evaluated first, followed by the assigned place operand.
+The assigned value operand is evaluated first, followed by the assignee expression.
+For destructuring assignment, subexpressions of the assignee expression are evaluated left-to-right.
 
 > **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
@@ -450,6 +452,60 @@ let mut x = 0;
 let y = 0;
 x = y;
 ```
+
+### Destructuring assignments
+
+Destructuring assignment is a counterpart to destructuring pattern matches for variable declaration, permitting assignment to complex values, such as tuples or structs.
+For instance, we may swap two mutable variables:
+
+```rust
+let (mut a, mut b) = (0, 1);
+// Swap `a` and `b` using destructuring assignment.
+(b, a) = (a, b);
+```
+
+In contrast to destructuring declarations using `let`, patterns may not appear on the left-hand side of an assignment due to syntactic ambiguities.
+Instead, a group of expressions that correspond to patterns are designated to be [assignee expressions][assignee expression], and permitted on the left-hand side of an assignment.
+Assignee expressions are then desugared to pattern matches followed by sequential assignment.
+The desugared patterns must be irrefutable: in particular, this means that only slice patterns whose length is known at compile-time, and the trivial slice `[..]`, are permitted for destructuring assignment.
+
+The desugaring method is straightforward, and is illustrated best by example.
+
+```rust
+# struct Struct { x: u32, y: u32 }
+# let (mut a, mut b) = (0, 0);
+(a, b) = (3, 4);
+
+[a, b] = [3, 4];
+
+Struct { x: a, y: b } = Struct { x: 3, y: 4};
+
+// desugars to:
+
+{
+    let (_a, _b) = (3, 4);
+    a = _a;
+    b = _b;
+}
+
+{
+    let [_a, _b] = [3, 4];
+    a = _a;
+    b = _b;
+}
+
+{
+    let Struct { x: _a, y: _b } = Struct { x: 3, y: 4};
+    a = _a;
+    b = _b;
+}
+```
+
+Identifiers are not forbidden from being used multiple times in a single assignee expression.
+
+[Underscore expressions][_UnderscoreExpression_] and empty [range expressions][_RangeExpression_] may be used to ignore certain values, without binding them.
+
+Note that default binding modes do not apply for the desugared expression.
 
 ## Compound assignment expressions
 
@@ -530,6 +586,7 @@ See [this test] for an example of using this dependency.
 [logical xor]: ../types/boolean.md#logical-xor
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[assignee expression]: ../expressions.md#place-expressions-and-value-expressions
 [undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
@@ -552,3 +609,5 @@ See [this test] for an example of using this dependency.
 
 [_Expression_]: ../expressions.md
 [_TypeNoBounds_]: ../types.md#type-expressions
+[_RangeExpression_]: ./range-expr.md
+[_UnderscoreExpression_]: ./underscore-expr.md

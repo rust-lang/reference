@@ -26,6 +26,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_BreakExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_RangeExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ReturnExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_UnderscoreExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocation_]\
 > &nbsp;&nbsp; )
 >
@@ -139,10 +140,11 @@ assert_eq!(
 
 ## Place Expressions and Value Expressions
 
-Expressions are divided into two main categories: place expressions and
-value expressions. Likewise, within each expression, operands may occur
-in either place context or value context. The evaluation of an expression
-depends both on its own category and the context it occurs within.
+Expressions are divided into two main categories: place expressions and value
+expressions; there is also a third, minor category of expressions called
+assignee expressions. Within each expression, operands may likewise occur in
+either place context or value context. The evaluation of an expression depends
+both on its own category and the context it occurs within.
 
 A *place expression* is an expression that represents a memory location. These
 expressions are [paths] which refer to local variables, [static variables],
@@ -154,8 +156,7 @@ A *value expression* is an expression that represents an actual value.
 
 The following contexts are *place expression* contexts:
 
-* The left operand of an [assignment][assign] or [compound assignment]
-  expression.
+* The left operand of a [compound assignment] expression.
 * The operand of a unary [borrow] or [dereference][deref] operator.
 * The operand of a field expression.
 * The indexed operand of an array indexing expression.
@@ -167,6 +168,20 @@ The following contexts are *place expression* contexts:
 
 > Note: Historically, place expressions were called *lvalues* and value
 > expressions were called *rvalues*.
+
+An *assignee expression* is an expression that appears in the left operand of an
+[assignment][assign] expression. Explicitly, the assignee expressions are:
+
+- Place expressions.
+- [Underscores][_UnderscoreExpression_].
+- [Tuples][_TupleExpression_] of assignee expressions.
+- [Slices][_ArrayExpression_] of assingee expressions.
+- [Tuple structs][_StructExpression_] of assignee expressions.
+- [Structs][_StructExpression_] of assignee expressions (with optionally named
+  fields).
+- [Unit structs][_StructExpression_].
+
+Arbitrary parenthesisation is permitted inside assignee expressions.
 
 ### Moved and copied types
 
@@ -349,4 +364,5 @@ They are never allowed before:
 [_TupleExpression_]:              expressions/tuple-expr.md
 [_TupleIndexingExpression_]:      expressions/tuple-expr.md#tuple-indexing-expressions
 [_TypeCastExpression_]:           expressions/operator-expr.md#type-cast-expressions
+[_UnderscoreExpression_]:         expressions/underscore-expr.md
 [_UnsafeBlockExpression_]:        expressions/block-expr.md#unsafe-blocks

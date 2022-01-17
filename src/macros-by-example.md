@@ -140,6 +140,11 @@ the syntax element that matched them. The keyword metavariable `$crate` can be
 used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
+For reasons of backwards compatibility, though `_` [is also an
+expression][_UnderscoreExpression_], a standalone underscore is not matched by
+the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
+specifier when it appears as a subexpression.
+
 > **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
@@ -506,6 +511,7 @@ For more detail, see the [formal specification].
 [_Token_]: tokens.md
 [_TypePath_]: paths.md#paths-in-types
 [_Type_]: types.md#type-expressions
+[_UnderscoreExpression_]: expressions/underscore-expr.md
 [_Visibility_]: visibility-and-privacy.md
 [formal specification]: macro-ambiguity.md
 [token]: tokens.md
