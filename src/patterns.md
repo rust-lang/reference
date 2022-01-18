@@ -424,7 +424,7 @@ match tuple {
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]\
-> &nbsp;&nbsp; | [_PathExpression_]
+> &nbsp;&nbsp; | [_PathPattern_]
 
 Range patterns match values within the range defined by their bounds. A range pattern may be
 closed or half-open. A range pattern is closed if it has both a lower and an upper bound, and
