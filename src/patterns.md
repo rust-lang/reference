@@ -424,8 +424,7 @@ match tuple {
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]\
-> &nbsp;&nbsp; | [_PathInExpression_]\
-> &nbsp;&nbsp; | [_QualifiedPathInExpression_]
+> &nbsp;&nbsp; | [_PathPattern_]
 
 Range patterns match values within the range defined by their bounds. A range pattern may be
 closed or half-open. A range pattern is closed if it has both a lower and an upper bound, and
@@ -766,8 +765,7 @@ A future version of Rust may give the non-parenthesized version an alternate mea
 
 > **<sup>Syntax</sup>**\
 > _PathPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_PathInExpression_]\
-> &nbsp;&nbsp; | [_QualifiedPathInExpression_]
+> &nbsp;&nbsp; &nbsp;&nbsp; [_PathExpression_]
 
 _Path patterns_ are patterns that refer either to constant values or
 to structs or enum variants that have no fields.
@@ -851,6 +849,7 @@ result in a type mismatch between `x` in the different subpatterns.
 [_MacroInvocation_]: macros.md#macro-invocation
 [_ObsoleteRangePattern_]: #range-patterns
 [_PathInExpression_]: paths.md#paths-in-expressions
+[_PathExpression_]: expressions/path-expr.md
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
 [_PatternWithoutRange_]: #patterns
