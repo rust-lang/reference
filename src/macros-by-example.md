@@ -21,7 +21,7 @@
 > &nbsp;&nbsp; | `{` _MacroMatch_<sup>\*</sup> `}`
 >
 > _MacroMatch_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Token_]<sub>_except $ and delimiters_</sub>\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Token_]<sub>_except $ and [delimiters]_</sub>\
 > &nbsp;&nbsp; | _MacroMatcher_\
 > &nbsp;&nbsp; | `$` ( [IDENTIFIER_OR_KEYWORD] <sub>_except `crate`_</sub> | [RAW_IDENTIFIER] | `_` ) `:` _MacroFragSpec_\
 > &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroRepOp_
@@ -31,7 +31,7 @@
 > &nbsp;&nbsp; | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
-> &nbsp;&nbsp; [_Token_]<sub>_except delimiters and repetition operators_</sub>
+> &nbsp;&nbsp; [_Token_]<sub>_except [delimiters] and MacroRepOp_</sub>
 >
 > _MacroRepOp_ :\
 > &nbsp;&nbsp; `*` | `+` | `?`
@@ -509,6 +509,7 @@ For more detail, see the [formal specification].
 [_Statement_]: statements.md
 [_TokenTree_]: macros.md#macro-invocation
 [_Token_]: tokens.md
+[delimiters]: tokens.md#delimiters
 [_TypePath_]: paths.md#paths-in-types
 [_Type_]: types.md#type-expressions
 [_UnderscoreExpression_]: expressions/underscore-expr.md
