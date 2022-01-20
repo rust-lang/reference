@@ -65,7 +65,7 @@ fn create_and_drop_zero_with_destructor() {
 
 ## Unnamed constant
 
-Unlike an [associated] constant, a [free] constant may be unnamed by using
+Unlike an [associated constant], a [free] constant may be unnamed by using
 an underscore instead of the name. For example:
 
 ```rust
@@ -89,7 +89,7 @@ m!(const _: () = (););
 // const _: () = ();
 ```
 
-[associated]: ../glossary.md#associated-item
+[associated constant]: ../items/associated-items.md#associated-constants
 [constant value]: ../const_eval.md#constant-expressions
 [free]: ../glossary.md#free-item
 [static lifetime elision]: ../lifetime-elision.md#static-lifetime-elision
