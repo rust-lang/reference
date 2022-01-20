@@ -293,6 +293,9 @@ type that the definition has to implement.
 An *associated constant definition* defines a constant associated with a
 type. It is written the same as a [constant item].
 
+Unlike [free] constants, associated constant definitions undergo
+[constant evaluation] only when referenced.
+
 ### Associated Constants Examples
 
 A basic example:
@@ -335,6 +338,24 @@ fn main() {
 }
 ```
 
+[Constant evaluation] timing:
+
+```rust
+struct Struct;
+
+impl Struct {
+    const ID: i32 = 1;
+    // Definition not immediately evaluated
+    const PANIC: () = panic!("compile-time panic");
+}
+
+fn main() {
+    assert_eq!(1, Struct::ID);
+    // Referencing Struct::PANIC causes compilation error
+    // let _ = Struct::PANIC;
+}
+```
+
 [_ConstantItem_]: constant-items.md
 [_Function_]: functions.md
 [_MacroInvocationSemi_]: ../macros.md#macro-invocation
@@ -362,3 +383,5 @@ fn main() {
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [generic parameters]: generics.md
 [where clauses]: generics.md#where-clauses
+[free]: ../glossary.md#free-item
+[constant evaluation]: ../const_eval.md
