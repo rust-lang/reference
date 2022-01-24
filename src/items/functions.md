@@ -63,7 +63,7 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 ## Function parameters
 
 As with `let` bindings, function parameters are irrefutable [patterns], so any
-pattern that is valid in a let binding is also valid as an argument:
+pattern that is valid in a let binding is also valid as a parameter:
 
 ```rust
 fn first((value, _): (i32, i32)) -> i32 { value }
