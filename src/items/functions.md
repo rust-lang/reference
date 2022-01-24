@@ -217,7 +217,7 @@ aborts the process by executing an illegal instruction.
 
 Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
-called from within [const context]s.
+called from within [const contexts].
 
 Const functions are not allowed to be [async](#async-functions), and cannot
 use the [`extern` function qualifier](#extern-function-qualifier).
@@ -382,7 +382,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [_Type_]: ../types.md#type-expressions
 [_WhereClause_]: generics.md#where-clauses
 [_OuterAttribute_]: ../attributes.md
-[const context]: ../const_eval.md#const-context
+[const contexts]: ../const_eval.md#const-context
 [const functions]: ../const_eval.md#const-functions
 [tuple struct]: structs.md
 [tuple variant]: enumerations.md
