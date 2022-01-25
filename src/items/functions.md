@@ -317,7 +317,7 @@ other unsafe function, these conditions may extend beyond the initial
 call itself -- in the snippet above, for example, the `unsafe_example`
 function took a pointer `x` as argument, and then (when awaited)
 dereferenced that pointer. This implies that `x` would have to be
-valid until the future is finished executing, and it is the callers
+valid until the future is finished executing, and it is the caller's
 responsibility to ensure that.
 
 ## Attributes on functions
