@@ -53,6 +53,45 @@ This includes generic arguments for the return type or any const generics.
 >
 > Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
 
+`impl Trait` can also be used as a generics parameter of other types in argument position, as an associated type in `impl Trait` or `dyn Trait` types in argument position and as a return type of `Fn`-like traits used as `impl Fn` or `&dyn Fn` in argument position.
+In all these cases `impl Trait` is syntactic sugar for a fresh generic type parameter:
+
+```rust,ignore
+trait Trait {}
+struct S<T>(T);
+
+fn example(
+    a: S<impl Trait>, 
+    b: (impl Trait, impl Trait),
+    c: impl Iterator<Item = impl Trait>,
+    d: &mut dyn Iterator<Item = impl Trait>,
+    e: impl FnOnce() -> impl Trait,
+    f: &dyn Fn() -> impl Trait,
+) {}
+
+// is equivalent to
+
+fn example<A, B, B2, C, C2, D, E, E2, F>(
+    a: S<A>, 
+    b: (B, B2),
+    c: C,
+    d: &dyn Iterator<Item = D>,
+    e: E,
+    f: &dyn Fn() -> F,
+) 
+where
+    A: Trait,
+    B: Trait,
+    B2: Trait,
+    C: Iterator<Item = C2>,
+    D: Trait,
+    D2: Trait,
+    E: FnOnce() -> E2,
+    E2: Trait,
+    F: Trait,
+{}
+```
+
 ## Abstract return types
 
 > Note: This is often called "impl Trait in return position".
@@ -88,6 +127,32 @@ which also avoids the drawbacks of using a boxed trait object.
 Similarly, the concrete types of iterators could become very complex, incorporating the types of all previous iterators in a chain.
 Returning `impl Iterator` means that a function only exposes the `Iterator` trait as a bound on its return type, instead of explicitly specifying all of the other iterator types involved.
 
+`impl Trait` can also be used as a generics parameter of other types in return position, as an associated type in `impl Trait` or `dyn Trait` types in return position and as a return type of `Fn`-like traits used as `impl Fn` or `&dyn Fn` in return position. In all these cases `impl Trait` introduces a new abstract type:
+
+```rust
+trait Trait {}
+impl Trait for () {}
+struct S<T>(T);
+
+fn example() -> (
+    S<impl Trait>, 
+    (impl Trait, impl Trait),
+    impl Iterator<Item = impl Trait>,
+    &'static mut dyn Iterator<Item = impl Trait>,
+    impl FnOnce() -> impl Trait,
+    &'static dyn Fn() -> impl Trait,
+) {
+    (
+        S(()),
+        ((), ()),
+        std::iter::once(()),
+        Box::leak(Box::new(std::iter::once(()))),
+        || (),
+        Box::leak(Box::new(|| {})),
+    )
+}
+```
+
 ### Differences between generics and `impl Trait` in return position
 
 In argument position, `impl Trait` is very similar in semantics to a generic type parameter.
@@ -113,7 +178,7 @@ Instead, the function chooses the return type, but only promises that it will im
 
 ## Limitations
 
-`impl Trait` can only appear as a parameter or return type of a free or inherent function.
+`impl Trait` can only appear in a parameter or return type of a free or inherent function.
 It cannot appear inside implementations of traits, nor can it be the type of a let binding or appear inside a type alias.
 
 [closures]: closure.md
