@@ -293,8 +293,8 @@ type that the definition has to implement.
 An *associated constant definition* defines a constant associated with a
 type. It is written the same as a [constant item].
 
-Unlike [free] constants, associated constant definitions undergo
-[constant evaluation] only when referenced.
+Associated constant definitions undergo [constant evaluation] only when
+referenced.
 
 ```rust
 struct Struct;
@@ -381,5 +381,4 @@ fn main() {
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [generic parameters]: generics.md
 [where clauses]: generics.md#where-clauses
-[free]: ../glossary.md#free-item
 [constant evaluation]: ../const_eval.md
