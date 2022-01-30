@@ -596,7 +596,7 @@ usages and meanings are defined in the linked pages.
 | `#`    | Pound       | [Attributes]
 | `$`    | Dollar      | [Macros]
 | `?`    | Question    | [Question mark operator][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
-| `~`    | Tilde       | The tilde operator is deprecated, but its token may still be used
+| `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used
 
 ## Delimiters
 
