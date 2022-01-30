@@ -124,7 +124,7 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
-[_OuterAttribute_]: attributes.md
+[_OuterAttribute_]: ../attributes.md
 [IDENTIFIER]: ../identifiers.md
 [TUPLE_INDEX]: ../tokens.md#tuple-index
 [_Expression_]: ../expressions.md
