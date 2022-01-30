@@ -18,7 +18,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [IDENTIFIER]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | ([IDENTIFIER] | [TUPLE_INDEX]) `:` [_Expression_]\
 > &nbsp;&nbsp; )
-> 
+>
 > _StructBase_ :\
 > &nbsp;&nbsp; `..` [_Expression_]
 >
