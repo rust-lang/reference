@@ -13,8 +13,11 @@
 > &nbsp;&nbsp; _StructExprField_ (`,` _StructExprField_)<sup>\*</sup> (`,` _StructBase_ | `,`<sup>?</sup>)
 >
 > _StructExprField_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [IDENTIFIER]\
-> &nbsp;&nbsp; | ([IDENTIFIER] | [TUPLE_INDEX]) `:` [_Expression_]
+> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
+> &nbsp;&nbsp; (\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [IDENTIFIER]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ([IDENTIFIER] | [TUPLE_INDEX]) `:` [_Expression_]\
+> &nbsp;&nbsp; )
 >
 > _StructBase_ :\
 > &nbsp;&nbsp; `..` [_Expression_]
@@ -121,6 +124,7 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
+[_OuterAttribute_]: ../attributes.md
 [IDENTIFIER]: ../identifiers.md
 [TUPLE_INDEX]: ../tokens.md#tuple-index
 [_Expression_]: ../expressions.md
