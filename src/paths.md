@@ -335,24 +335,24 @@ the crate.
 ```rust
 // Comments show the canonical path of the item.
 
-mod a { // ::a
-    pub struct Struct; // ::a::Struct
+mod a { // crate::a
+    pub struct Struct; // crate::a::Struct
 
-    pub trait Trait { // ::a::Trait
-        fn f(&self); // ::a::Trait::f
+    pub trait Trait { // crate::a::Trait
+        fn f(&self); // crate::a::Trait::f
     }
 
     impl Trait for Struct {
-        fn f(&self) {} // <::a::Struct as ::a::Trait>::f
+        fn f(&self) {} // <crate::a::Struct as crate::a::Trait>::f
     }
 
     impl Struct {
-        fn g(&self) {} // <::a::Struct>::g
+        fn g(&self) {} // <crate::a::Struct>::g
     }
 }
 
-mod without { // ::without
-    fn canonicals() { // ::without::canonicals
+mod without { // crate::without
+    fn canonicals() { // crate::without::canonicals
         struct OtherStruct; // None
 
         trait OtherTrait { // None
