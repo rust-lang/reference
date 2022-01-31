@@ -49,9 +49,83 @@ r[attributes.codegen.cold]
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
+r[attributes.codegen.naked]
+## The `naked` attribute
+
+The *`naked` [attribute]* may be applied to a function in order to prevent the compiler
+from emitting a function prologue.
+
+### Requirements
+
+Any function marked with the `naked` attribute must meet the following requirements;
+failure to do so will result in a compiler error.
+
+* The [function body] must consist of exactly one [`asm!`] macro invocation,
+  which may be enclosed within an [unsafe block].
+    * This `asm!` invocation must not contain any [operands]
+      except for `const` and `sym` operands.
+    * This `asm!` invocation must specify the `noreturn` [option],
+      and must not specify any other options except for `att_syntax`.
+* The function must not be marked with the [`inline`] attribute.
+
+### Recommendations
+
+Any function marked with the `naked` attribute should adhere to the following recommendations;
+failure to do so will result in a compiler warning.
+
+* The function should feature an [extern function qualifier] that is not `extern "Rust"`.
+* All arguments and return types of the function should be [FFI-safe].
+
+### Effects
+
+Marking a function with the `naked` attribute has the following effects:
+
+* The compiler will not generate a prologue for this function.
+  Within the function, all registers will remain precisely as they were set up
+  by its caller.
+* The compiler will suppress the [`unused_variables`] lint for this function.
+
+### Notes
+
+* The [rules for inline assembly] ordinarily consider it undefined behavior to
+  refer to registers not specified as input operands, or to modify
+  registers not specified as output operands.
+  The reason for this is because ordinarily an `asm!` invocation cannot guarantee
+  the state of the registers surrounding the assembly block.
+  However, in naked functions the state of the registers is guaranteed
+  by adherence to the specified calling convention.
+  Therefore, it is not undefined behavior for the `asm!` invocation in a naked function
+  to refer to registers without specifying them as operands.
+* A naked function that makes use of registers in a way that does not conform
+  to the specified calling convention imposes additional safety invariants on its caller,
+  and therefore must be marked as an [unsafe function].
+* Implementations may assume that naked functions never unwind.
+  Unwinding through a naked function is undefined behavior.
+* The semantics of naked functions require implementations to set up the call stack
+  according to the specified calling convention before executing a naked function,
+  even in contexts where setting up the call stack would ordinarily be unnecessary,
+  such as when the function is inlined.
+  An implementation can fulfill this requirement by guaranteeing that naked functions
+  are never inlined.
+  However, implementations are not currently required to guarantee that naked functions
+  are never inlined.
+  In the future it may become a requirement for implementations to guarantee that
+  naked functions are never inlined;
+  users must not rely on any observable behavior that may result from inlining.
+* Although implementations are prohibited from generating code for a naked function that
+  contains any instructions that precede the naked function's `asm!` block,
+  under some circumstances, implementations may generate code that contains instructions
+  *after* a naked function's `asm!` block.
+  In the future it may become a requirement for implementations to guarantee
+  the absence of any instructions following a naked function's `asm!` block;
+  users must not rely on the presence of any trailing instructions.
+  If a user of the `naked` attribute relies on the absence of trailing instructions
+  for correctness, for the time being it is the user's responsibility to ensure that
+  the instructions truly are absent,
+  for example by passing any necessary code generation flags to the compiler.
+
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
-
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
@@ -516,13 +590,24 @@ trait object whose methods are attributed.
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
+[`naked_asm!`]: ../inline-assembly.md
+[`inline`]: #the-inline-attribute
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
+[`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
 [attributes]: ../attributes.md
+[extern function qualifier]: ../items/functions.md#extern-function-qualifier
+[FFI-safe]: ../../rustc/lints/listing/warn-by-default.html#improper-ctypes-definitions
+[function body]: ../items/functions.md#function-body
 [functions]: ../items/functions.md
+[operands]: ../inline-assembly.md#operand-type
+[option]: ../inline-assembly.md#options
+[rules for inline assembly]: ../inline-assembly.md#rules-for-inline-assembly
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
+[unsafe block]: ../unsafe-blocks.md
+[unsafe function]: ../unsafe-functions.md
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
