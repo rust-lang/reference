@@ -54,16 +54,26 @@ fn outer() {
 > **<sup>Syntax</sup>**\
 > _LetStatement_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_PatternNoTopAlt_]
->     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] )<sup>?</sup> `;`
+>     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] [†](#let-else-restriction)
+>     ( `else` [_BlockExpression_]) <sup>?</sup> ) <sup>?</sup> `;`
+>
+> <span id="let-else-restriction">† When an `else` block is specified, the
+> _Expression_ must not be a [_LazyBooleanExpression_], or end with a `}`.</span>
 
-A *`let` statement* introduces a new set of [variables], given by an
-irrefutable [pattern]. The pattern is followed optionally by a type
-annotation and then optionally by an initializer expression. When no
-type annotation is given, the compiler will infer the type, or signal
+A *`let` statement* introduces a new set of [variables], given by a [pattern].
+The pattern is followed optionally by a type annotation and then either ends,
+or is followed by an initializer expression plus an optional `else` block.
+When no type annotation is given, the compiler will infer the type, or signal
 an error if insufficient type information is available for definite
 inference. Any variables introduced by a variable declaration are visible
 from the point of declaration until the end of the enclosing block scope,
 except when they are shadowed by another variable declaration.
+
+If an `else` block is not present, the pattern must be irrefutable.
+If an `else` block is present, the pattern may be refutable.
+If the pattern does not match (this requires it to be refutable), the `else`
+block is executed.
+The `else` block must always diverge (evaluate to the [never type]).
 
 ## Expression statements
 
@@ -121,6 +131,7 @@ statement are [`cfg`], and [the lint check attributes].
 [function]: items/functions.md
 [item]: items.md
 [module]: items/modules.md
+[never type]: types/never.md
 [canonical path]: paths.md#canonical-paths
 [implementations]: items/implementations.md
 [variables]: variables.md
@@ -128,9 +139,11 @@ statement are [`cfg`], and [the lint check attributes].
 [`cfg`]: conditional-compilation.md
 [the lint check attributes]: attributes/diagnostics.md#lint-check-attributes
 [pattern]: patterns.md
+[_BlockExpression_]: expressions/block-expr.md
 [_ExpressionStatement_]: #expression-statements
 [_Expression_]: expressions.md
 [_Item_]: items.md
+[_LazyBooleanExpression_]: expressions/operator-expr.md#lazy-boolean-operators
 [_LetStatement_]: #let-statements
 [_MacroInvocationSemi_]: macros.md#macro-invocation
 [_OuterAttribute_]: attributes.md
