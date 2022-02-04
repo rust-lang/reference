@@ -81,7 +81,7 @@ fn mytest() {
     assert_eq!(1, 2, "values don't match");
 }
 ```
-### Different panic strategies
+## Different panic strategies
 
 The `cfg_panic` feature makes it possible to exercise different lines of code depending on the panic strategy. 
 The possible value is either `unwind` or `abort`.
