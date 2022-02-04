@@ -88,7 +88,6 @@ The possible value is either `unwind` or `abort`.
 The following is a playful example on choosing the right beverage. 
 
 ```rust
-#![feature(cfg_panic)]
 
 #[cfg(panic = "unwind")]
 fn ah(){ println!("Spit it out!!!!");}
@@ -109,7 +108,6 @@ fn main(){
 
 Here is the same example rewritten.
 ```rust
-#![feature(cfg_panic)]
 
 fn drink(beverage: &str) {
    // You shouldn't drink too much sugary beverages.
