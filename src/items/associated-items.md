@@ -297,19 +297,31 @@ Associated constant definitions undergo [constant evaluation] only when
 referenced. Further, definitions that include [generic parameters] are
 evaluated after monomorphization.
 
-```rust
+```rust,compile_fail
 struct Struct;
+struct GenericStruct<const ID: i32>;
 
 impl Struct {
-    const ID: i32 = 1;
     // Definition not immediately evaluated
     const PANIC: () = panic!("compile-time panic");
 }
 
+impl<const ID: i32> GenericStruct<ID> {
+    // Definition not immediately evaluated
+    const NON_ZERO: () = if ID == 0 {
+        panic!("contradiction")
+    };
+}
+
 fn main() {
-    assert_eq!(1, Struct::ID);
     // Referencing Struct::PANIC causes compilation error
-    // let _ = Struct::PANIC;
+    let _ = Struct::PANIC;
+
+    // Fine, ID is not 0
+    let _ = GenericStruct::<1>::NON_ZERO;
+
+    // Compilation error from evaluating NON_ZERO with ID=0
+    let _ = GenericStruct::<0>::NON_ZERO;
 }
 ```
 
