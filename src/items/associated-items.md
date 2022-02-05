@@ -294,7 +294,8 @@ An *associated constant definition* defines a constant associated with a
 type. It is written the same as a [constant item].
 
 Associated constant definitions undergo [constant evaluation] only when
-referenced.
+referenced. Further, definitions that include [generic parameters] are
+evaluated after monomorphization.
 
 ```rust
 struct Struct;
