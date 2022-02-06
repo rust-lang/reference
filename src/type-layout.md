@@ -86,8 +86,8 @@ String slices are a UTF-8 representation of characters that have the same layout
 
 ## Tuple Layout
 
-Tuples have the same layout guarantees a struct with the same fields laid out
-according to the default struct representation.
+Tuples have the same layout guarantees as a struct with the same fields when
+laid out according to the default struct representation.
 
 The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
@@ -163,12 +163,12 @@ representation will not change the layout of `Inner`.
 Nominal types without a `repr` attribute have the default representation.
 Informally, this representation is also called the `rust` representation.
 
-There are very few data layout guarantees made by this representation. The only
-guarantees are:
+The only data layout guarantees made by this representation are those required
+for soundness. They are:
 
  1. The fields of the struct are properly aligned.
  2. The fields do not overlap.
- 3. The alignment of the struct is not less than the alignment of any of its
+ 3. The minimum alignment of the struct is at least the maximum alignment of its
     fields.
 
 Formally, the first guarantee means that the offset of any field in the struct
@@ -181,6 +181,8 @@ declaration of the struct.
 Be aware that the second guarantee does not imply that the fields have distinct
 addresses: zero-sized types may have the same address as other fields in the
 same struct.
+
+There are no other guarantees of data layout made by this representation.
 
 ### The `C` Representation
 
