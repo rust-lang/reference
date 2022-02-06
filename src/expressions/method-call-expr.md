@@ -69,6 +69,8 @@ These cases require a [disambiguating function call syntax] for method and funct
 > **Edition Differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
 > The edition used for this purpose is determined by the token representing the method name.
+>
+> This special case may be removed in the future.
 
 
 <div class="warning">
