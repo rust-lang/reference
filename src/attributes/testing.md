@@ -85,6 +85,7 @@ fn mytest() {
 
 The `cfg_panic` feature makes it possible to exercise different lines of code depending on the panic strategy. 
 The possible value is either `unwind` or `abort`.
+
 The following is a playful example on choosing the right beverage. 
 
 ```rust
@@ -123,6 +124,9 @@ fn main() {
     drink("lemonade");
 }
 ```
+
+Note that when the code is compiled with a certain panic strategy it still might do something different if a crate was compiled with a different strategy.
+For instance, if `#[cfg(panic = "unwind")]` is set to `true` and a crate is compiled with`-C panic=abort`.
 
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
