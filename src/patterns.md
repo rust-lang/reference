@@ -174,7 +174,7 @@ for i in -2..5 {
 
 > **<sup>Syntax</sup>**\
 > _IdentifierPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER] (`@` [_Pattern_] ) <sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER] (`@` [_PatternNoTopAlt_] ) <sup>?</sup>
 
 Identifier patterns bind the value they match to a variable. The identifier
 must be unique within the pattern. The variable will shadow any variables of
@@ -852,6 +852,7 @@ result in a type mismatch between `x` in the different subpatterns.
 [_PathExpression_]: expressions/path-expr.md
 [_PathPattern_]: #path-patterns
 [_Pattern_]: #patterns
+[_PatternNoTopAlt_]: #patterns
 [_PatternWithoutRange_]: #patterns
 [_QualifiedPathInExpression_]: paths.md#qualified-paths
 [_RangePattern_]: #range-patterns
