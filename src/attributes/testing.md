@@ -125,7 +125,7 @@ fn main() {
 }
 ```
 
-Note that when the code is compiled with a certain panic strategy it still might do something different if a crate was compiled with a different strategy.
+Note that when the code is compiled with a certain panic strategy it still might do something different if another crate was compiled with a different strategy.
 For instance, if `#[cfg(panic = "unwind")]` is set to `true` and a crate is compiled with`-C panic=abort`.
 
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
