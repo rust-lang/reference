@@ -5,7 +5,6 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; `;`\
 > &nbsp;&nbsp; | [_Item_]\
 > &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_ExpressionStatement_]\
 > &nbsp;&nbsp; | [_MacroInvocationSemi_]
 
 
@@ -69,7 +68,7 @@ except when they are shadowed by another variable declaration.
 
 > **<sup>Syntax</sup>**\
 > _ExpressionStatement_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression]<sub>_except [_MacroInvocation_] with curly brackets_</sub> `;`\
 > &nbsp;&nbsp; | [_ExpressionWithBlock_][expression] `;`<sup>?</sup>
 
 An *expression statement* is one that evaluates an [expression] and ignores its
@@ -132,7 +131,7 @@ statement are [`cfg`], and [the lint check attributes].
 [_Expression_]: expressions.md
 [_Item_]: items.md
 [_LetStatement_]: #let-statements
-[_MacroInvocationSemi_]: macros.md#macro-invocation
+[_MacroInvocation_]: macros.md#macro-invocation
 [_OuterAttribute_]: attributes.md
 [_PatternNoTopAlt_]: patterns.md
 [_Type_]: types.md
