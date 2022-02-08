@@ -219,7 +219,7 @@ fn generic<const B: bool>() {
 > &nbsp;&nbsp; | _TypeBoundWhereClauseItem_
 >
 > _LifetimeWhereClauseItem_ :\
-> &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]
+> &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]<sup>?</sup>
 >
 > _TypeBoundWhereClauseItem_ :\
 > &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
