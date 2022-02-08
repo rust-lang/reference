@@ -591,7 +591,7 @@ See [this test] for an example of using this dependency.
 [unit]: ../types/tuple.md
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
-[this test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/expr/compound-assignment/eval-order.rs
+[this test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
