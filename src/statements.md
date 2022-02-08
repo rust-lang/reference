@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; `;`\
 > &nbsp;&nbsp; | [_Item_]\
 > &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_MacroInvocationSemi_]
+> &nbsp;&nbsp; | [_ExpressionStatement_]
 
 
 A *statement* is a component of a [block], which is in turn a component of an
