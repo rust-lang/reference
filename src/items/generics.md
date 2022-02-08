@@ -15,14 +15,14 @@
 > &nbsp;&nbsp; [IDENTIFIER]( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 >
 > _ConstParam_:\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_]
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] ( `=` _[Block][block]_ | [IDENTIFIER] | -<sup>?</sup>[LITERAL] )<sup>?</sup>
 
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
 [implementations] may be *parameterized* by types, constants, and lifetimes. These
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
-The order of generic parameters is restricted to lifetime parameters, then type parameters, and then const parameters.
+The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
 Some examples of items with type, const, and lifetime parameters:
 
@@ -31,6 +31,7 @@ fn foo<'a, T>() {}
 trait A<U> {}
 struct Ref<'a, T> where T: 'a { r: &'a T }
 struct InnerArray<T, const N: usize>([T; N]);
+struct EitherOrderWorks<const N: bool, U>(U);
 ```
 
 Generic parameters are in scope within the item definition where they are
