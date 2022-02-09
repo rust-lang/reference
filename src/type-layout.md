@@ -515,6 +515,11 @@ For `packed`, if the specified alignment is greater than the type's alignment
 without the `packed` modifier, then the alignment and layout is unaffected.
 The alignments of each field, for the purpose of positioning fields, is the
 smaller of the specified alignment and the alignment of the field's type.
+Inter-field padding is guaranteed to be the minimum required in order to
+satisfy each field's (possibly altered) alignment (although note that, on its
+own, `packed` does not provide any guarantee about field ordering). An 
+important special case is `#[repr(packed(1))]` (or `#[repr(packed)]`), which
+guarantees that no inter-field padding will be present.
 
 The `align` and `packed` modifiers cannot be applied on the same type and a
 `packed` type cannot transitively contain another `align`ed type. `align` and
