@@ -501,7 +501,7 @@ assert_eq!(std::mem::size_of::<Enum16>(), 4);
 
 The `align` and `packed` modifiers can be used to respectively raise or lower
 the alignment of `struct`s and `union`s. `packed` may also alter the padding
-between fields.
+between fields (although it will not alter the padding inside of any field).
 
 The alignment is specified as an integer parameter in the form of
 `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a
