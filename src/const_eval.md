@@ -84,7 +84,7 @@ slightly) different results. It is advisable to not make array lengths and enum
 discriminants depend on floating point computations.
 
 
-Notable features that const contexts have, but const fn haven't are:
+Notable features that const contexts have, but const fn don't have are:
 
 * floating point operations
   * floating point values are treated just like generic parameters without trait bounds beyond
