@@ -510,6 +510,7 @@ The following directives are guaranteed to be supported by the assembler:
 .balign
 .balignl
 .balignw
+.fill
 .section
 .pushsection
 .popsection
