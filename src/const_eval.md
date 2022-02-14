@@ -89,7 +89,6 @@ Notable features that are allowed in const contexts but not in const functions i
 * floating point operations
   * floating point values are treated just like generic parameters without trait bounds beyond
   `Copy`. So you cannot do anything with them but copy/move them around.
-* `dyn Trait` types
 * comparing raw pointers
 * union field access
 
