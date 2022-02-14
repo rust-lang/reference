@@ -86,7 +86,8 @@ Currently, all supported targets follow the assembly code syntax used by LLVM's 
 On x86, the `.intel_syntax noprefix` mode of GAS is used by default.
 On ARM, the `.syntax unified` mode is used.
 These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
-Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
+Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior. 
+Further constraints on the directives used by the assembly are indicated by [Directives Support](#directives-support). 
 
 [format-syntax]: ../std/fmt/index.html#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
@@ -477,3 +478,76 @@ To avoid undefined behavior, these rules must be followed when using function-sc
   - The compiler is currently unable to detect this due to the way inline assembly is compiled, but may catch and reject this in the future.
 
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
+
+### Directives Support
+
+Inline ASM supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
+The result of using other directives is assembler-specific (and may cause an error, or may be accepted as-is).
+
+The following directives are guaranteed to be supported by the assembler:
+
+```as
+.2byte
+.4byte
+.8byte
+.byte
+.word
+.long
+.quad
+.float
+.double
+.octa
+.sleb128
+.uleb128
+.ascii
+.asciz
+.string
+.skip
+.space
+.balign
+.balignl
+.balignw
+.balign
+.balignl
+.balignw
+.section
+.pushsection
+.popsection
+.text
+.bss
+.data
+.cfi_adjust_cfa_offset
+.cfi_def_cfa
+.cfi_def_cfa_offset
+.cfi_def_cfa_register
+.cfi_endproc
+.cfi_escape
+.cfi_lsda
+.cfi_offset
+.cfi_personality
+.cfi_register
+.cfi_rel_offset
+.cfi_remember_state
+.cfi_restore
+.cfi_restore_state
+.cfi_return_column
+.cfi_same_value
+.cfi_sections
+.cfi_signal_frame
+.cfi_startproc
+.cfi_undefined
+.cfi_window_save
+.comm
+.lcomm
+```
+
+On x86, the following additional directives are guaranteed to be supported:
+```as
+.nops
+```
+
+On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
+```
+.code16
+.code32
+```
