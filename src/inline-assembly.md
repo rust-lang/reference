@@ -547,7 +547,6 @@ On x86, the following additional directives are guaranteed to be supported:
 ```
 
 On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
-
 ```as
 .code16
 .code32
