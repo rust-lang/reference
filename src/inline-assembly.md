@@ -517,6 +517,29 @@ The following directives are guaranteed to be supported by the assembler:
 .text
 .bss
 .data
+.def
+.endef
+.scl
+.comm
+.lcomm
+.option
+```
+
+The following directives are guaranteed to be supported for `global_asm` only:
+```as
+.alt_entry
+.private_extern
+.globl
+.global
+```
+
+#### Target Specific Directive Support
+
+##### Dwarf Unwinding
+
+The following directives are supported on ELF targets that support DWARF unwind info:
+
+```as
 .cfi_adjust_cfa_offset
 .cfi_def_cfa
 .cfi_def_cfa_offset
@@ -538,9 +561,22 @@ The following directives are guaranteed to be supported by the assembler:
 .cfi_startproc
 .cfi_undefined
 .cfi_window_save
-.comm
-.lcomm
 ```
+
+##### Structured Exception Handling
+
+On targets with structured exception Handling, the following additional directives are guaranteed to be supported:
+```as
+.seh_endproc
+.seh_endprologue
+.seh_proc
+.seh_pushreg
+.seh_savereg
+.seh_setframe
+.seh_stackalloc
+```
+
+##### x86
 
 On x86, the following additional directives are guaranteed to be supported:
 ```as
@@ -551,4 +587,21 @@ On x86 for `global_asm!` only, the following additional directives are guarantee
 ```as
 .code16
 .code32
+```
+
+##### ARM
+
+On ARM for `global_asm!` only, the following additional directives are guaranteed to be supported:
+```as
+.code 
+.thumb
+.thumb_func
+```
+
+On ARM, the following additional directives are guaranteed to be supported:
+```as
+.fnstart
+.fnend
+.save
+.movsp
 ```
