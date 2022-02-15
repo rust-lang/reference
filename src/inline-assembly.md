@@ -491,6 +491,7 @@ The following directives are guaranteed to be supported by the assembler:
 .4byte
 .8byte
 .byte
+.short
 .word
 .long
 .quad
@@ -523,6 +524,9 @@ The following directives are guaranteed to be supported by the assembler:
 .comm
 .lcomm
 .option
+.equ
+.set
+.align
 ```
 
 The following directives are guaranteed to be supported for `global_asm` only:
