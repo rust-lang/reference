@@ -125,6 +125,15 @@ specifies the kind of library with the following possible values:
 
 The `name` key must be included if `kind` is specified.
 
+The optional `modifiers` argument is a way to specify linking modifiers for the
+library to link.
+Modifiers are specified as a comma-delimited string with each modifier prefixed
+with either a `+` or `-` to indicate that the modifier is enabled or disabled,
+respectively.
+Specifying multiple `modifiers` arguments in a single `link` attribute,
+or multiple identical modifiers in the same `modifiers` argument is not currently supported. \
+Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")`.
+
 The `wasm_import_module` key may be used to specify the [WebAssembly module]
 name for the items within an `extern` block when importing symbols from the
 host environment. The default module name is `env` if `wasm_import_module` is
@@ -152,6 +161,16 @@ It is valid to add the `link` attribute on an empty extern block. You can use
 this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
+
+#### Linking modifiers: `whole-archive`
+
+This modifier is only compatible with the `static` linking kind.
+Using any other kind will result in a compiler error.
+
+`+whole-archive` means that the static library is linked as a whole archive
+without throwing any object files away.
+
+More implementation details about this modifier can be found in [documentation for rustc].
 
 ### The `link_name` attribute
 
@@ -186,3 +205,4 @@ restrictions as [regular function parameters].
 [_Visibility_]: ../visibility-and-privacy.md
 [attributes]: ../attributes.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
+[documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
