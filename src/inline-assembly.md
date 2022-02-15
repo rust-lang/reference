@@ -527,6 +527,7 @@ The following directives are guaranteed to be supported by the assembler:
 .equ
 .set
 .align
+.inst
 ```
 
 The following directives are guaranteed to be supported for `global_asm` only:
