@@ -191,6 +191,28 @@ Example values:
 * `"pc"`
 * `"unknown"`
 
+### `target_has_atomic`
+
+Key-value option set for each bit width that the target supports
+atomic loads, stores, and compare-and-swap operations.
+
+When this cfg is present, all of the [`core::sync::atomic`] APIs are available for
+the relevant atomic width with the exception of `from_mut` methods (currently
+unstable), which additionally require that the primitive integer and atomic have
+the same minimum alignment on the given target. No user-visible, stable cfg is
+exposed for that method at this time.
+
+[`core::sync::atomic`]: https://doc.rust-lang.org/nightly/core/sync/atomic/index.html
+
+Possible values:
+
+* `"8"`
+* `"16"`
+* `"32"`
+* `"64"`
+* `"128"`
+* `"ptr"`
+
 ### `test`
 
 Enabled when compiling the test harness. Done with `rustc` by using the
