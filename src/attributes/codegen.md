@@ -81,6 +81,7 @@ functions][unsafe function].
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
 `aes`       | `sse2`   | [AES] — Advanced Encryption Standard
+`adx`       |          | [ADX] — Multi-Precision Add-Carry Instruction Extensions
 `avx`       | `sse4.2` | [AVX] — Advanced Vector Extensions
 `avx2`      | `avx`    | [AVX2] — Advanced Vector Extensions 2
 `bmi1`      |          | [BMI1] — Bit Manipulation Instruction Sets
@@ -107,6 +108,7 @@ Feature     | Implicitly Enables | Description
 <!-- Keep links near each table to make it easier to move and update. -->
 
 [AES]: https://en.wikipedia.org/wiki/AES_instruction_set
+[ADX]: https://en.wikipedia.org/wiki/Intel_ADX
 [AVX]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
 [AVX2]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX2
 [BMI1]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets
