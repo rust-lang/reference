@@ -486,57 +486,57 @@ The result of using other directives is assembler-specific (and may cause an err
 
 The following directives are guaranteed to be supported by the assembler:
 
-```as
-.2byte
-.4byte
-.8byte
-.byte
-.short
-.word
-.long
-.quad
-.float
-.double
-.octa
-.sleb128
-.uleb128
-.ascii
-.asciz
-.string
-.skip
-.space
-.balign
-.balignl
-.balignw
-.balign
-.balignl
-.balignw
-.fill
-.section
-.pushsection
-.popsection
-.text
-.bss
-.data
-.def
-.endef
-.scl
-.comm
-.lcomm
-.option
-.equ
-.set
-.align
-.inst
-```
+
+- `.2byte`
+- `.4byte`
+- `.8byte`
+- `.byte`
+- `.short`
+- `.word`
+- `.long`
+- `.quad`
+- `.float`
+- `.double`
+- `.octa`
+- `.sleb128`
+- `.uleb128`
+- `.ascii`
+- `.asciz`
+- `.string`
+- `.skip`
+- `.space`
+- `.balign`
+- `.balignl`
+- `.balignw`
+- `.balign`
+- `.balignl`
+- `.balignw`
+- `.fill`
+- `.section`
+- `.pushsection`
+- `.popsection`
+- `.text`
+- `.bss`
+- `.data`
+- `.def`
+- `.endef`
+- `.scl`
+- `.comm`
+- `.lcomm`
+- `.option`
+- `.equ`
+- `.set`
+- `.align`
+- `.inst`
+
 
 The following directives are guaranteed to be supported for `global_asm` only:
-```as
-.alt_entry
-.private_extern
-.globl
-.global
-```
+
+- `.alt_entry`
+- `.private_extern`
+- `.globl`
+- `.global`
+
 
 #### Target Specific Directive Support
 
@@ -544,69 +544,66 @@ The following directives are guaranteed to be supported for `global_asm` only:
 
 The following directives are supported on ELF targets that support DWARF unwind info:
 
-```as
-.cfi_adjust_cfa_offset
-.cfi_def_cfa
-.cfi_def_cfa_offset
-.cfi_def_cfa_register
-.cfi_endproc
-.cfi_escape
-.cfi_lsda
-.cfi_offset
-.cfi_personality
-.cfi_register
-.cfi_rel_offset
-.cfi_remember_state
-.cfi_restore
-.cfi_restore_state
-.cfi_return_column
-.cfi_same_value
-.cfi_sections
-.cfi_signal_frame
-.cfi_startproc
-.cfi_undefined
-.cfi_window_save
-```
+
+- `.cfi_adjust_cfa_offset`
+- `.cfi_def_cfa`
+- `.cfi_def_cfa_offset`
+- `.cfi_def_cfa_register`
+- `.cfi_endproc`
+- `.cfi_escape`
+- `.cfi_lsda`
+- `.cfi_offset`
+- `.cfi_personality`
+- `.cfi_register`
+- `.cfi_rel_offset`
+- `.cfi_remember_state`
+- `.cfi_restore`
+- `.cfi_restore_state`
+- `.cfi_return_column`
+- `.cfi_same_value`
+- `.cfi_sections`
+- `.cfi_signal_frame`
+- `.cfi_startproc`
+- `.cfi_undefined`
+- `.cfi_window_save`
+
 
 ##### Structured Exception Handling
 
 On targets with structured exception Handling, the following additional directives are guaranteed to be supported:
-```as
-.seh_endproc
-.seh_endprologue
-.seh_proc
-.seh_pushreg
-.seh_savereg
-.seh_setframe
-.seh_stackalloc
-```
+
+- `.seh_endproc`
+- `.seh_endprologue`
+- `.seh_proc`
+- `.seh_pushreg`
+- `.seh_savereg`
+- `.seh_setframe`
+- `.seh_stackalloc`
+
 
 ##### x86
 
 On x86, the following additional directives are guaranteed to be supported:
-```as
-.nops
-```
+- `.nops`
 
 On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
-```as
-.code16
-.code32
-```
+
+- `.code16`
+- `.code32`
+
 
 ##### ARM
 
 On ARM for `global_asm!` only, the following additional directives are guaranteed to be supported:
-```as
-.code 
-.thumb
-.thumb_func
-```
+
+- `.code`
+- `.thumb`
+- `.thumb_func`
+
 
 On ARM, the following additional directives are guaranteed to be supported:
-```as
-.fnstart
-.fnend
-.save
-.movsp
-```
+
+- `.fnstart`
+- `.fnend`
+- `.save`
+- `.movsp`
