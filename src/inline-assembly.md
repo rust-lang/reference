@@ -528,6 +528,8 @@ The following directives are guaranteed to be supported by the assembler:
 - `.lcomm`
 - `.option`
 - `.equ`
+- `.equiv`
+- `.eqv`
 - `.set`
 - `.align`
 - `.inst`
