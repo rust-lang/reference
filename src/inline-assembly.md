@@ -534,7 +534,10 @@ The following directives are guaranteed to be supported by the assembler:
 - `.align`
 - `.inst`
 - `.p2align`
-
+- `.bundle_align_mode`
+- `.bundle_lock`
+- `.bundle_unlock`
+- `.symver`
 
 The following directives are guaranteed to be supported for `global_asm` only:
 
