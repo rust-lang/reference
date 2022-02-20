@@ -87,7 +87,7 @@ On x86, the `.intel_syntax noprefix` mode of GAS is used by default.
 On ARM, the `.syntax unified` mode is used.
 These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
 Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior. 
-Further constraints on the directives used by the assembly are indicated by [Directives Support](#directives-support). 
+Further constraints on the directives used by inline assembly are indicated by [Directives Support](#directives-support). 
 
 [format-syntax]: ../std/fmt/index.html#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
@@ -481,11 +481,12 @@ To avoid undefined behavior, these rules must be followed when using function-sc
 
 ### Directives Support
 
-Inline ASM supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
+Inline assembly supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
 The result of using other directives is assembler-specific (and may cause an error, or may be accepted as-is).
 
-The following directives are guaranteed to be supported by the assembler:
+If inline assembly includes any "stateful" directive that modifies how subsequent assembly is processed, the block must undo the effects of any such directives before the inline assembly ends.
 
+The following directives are guaranteed to be supported by the assembler:
 
 - `.2byte`
 - `.4byte`
@@ -531,8 +532,6 @@ The following directives are guaranteed to be supported by the assembler:
 - `.text`
 - `.uleb128`
 - `.word`
-
-
 
 The following directives are guaranteed to be supported for `global_asm` only:
 
@@ -587,21 +586,22 @@ On targets with structured exception Handling, the following additional directiv
 - `.seh_stackalloc`
 
 
-##### x86
+##### x86 (32-bit and 64-bit)
 
-On x86, the following additional directives are guaranteed to be supported:
+On x86 targets, both 32-bit and 64-bit, the following additional directives are guaranteed to be supported:
 - `.att_syntax`
 - `.intel_syntax`
 - `.nops`
 
 Use of the `.att_syntax` and `.intel_syntax` with no parameters is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behaviour is undefined (the output of the compiler may be corrupted as a result). Use of `.att_syntax` and `.intel_syntax` with an option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported and results in assembler-dependant behaviour. If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
 
-On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported:
+On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
+
 - `.code16`
 - `.code32`
 
 
-##### ARM (32-bit only)
+##### ARM
 
 On ARM for `global_asm!` only, the following additional directives are guaranteed to be supported:
 
@@ -615,6 +615,6 @@ On ARM, the following additional directives are guaranteed to be supported:
 - `.even`
 - `.fnstart`
 - `.fnend`
-- `.movsp`
 - `.save`
+- `.movsp`
 
