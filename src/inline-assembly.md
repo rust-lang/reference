@@ -86,8 +86,8 @@ Currently, all supported targets follow the assembly code syntax used by LLVM's 
 On x86, the `.intel_syntax noprefix` mode of GAS is used by default.
 On ARM, the `.syntax unified` mode is used.
 These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
-Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior. 
-Further constraints on the directives used by inline assembly are indicated by [Directives Support](#directives-support). 
+Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
+Further constraints on the directives used by inline assembly are indicated by [Directives Support](#directives-support).
 
 [format-syntax]: ../std/fmt/index.html#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
@@ -594,10 +594,12 @@ On x86 targets, both 32-bit and 64-bit, the following additional directives are 
 - `.code32`
 - `.code64`
 
-Use of the `.att_syntax` and `.intel_syntax` directives with no parameters (or with parameters equivalent to the defaults) is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behavior is undefined (the compiled output may be corrupted as a result). Use of `.att_syntax` and `.intel_syntax` with a non-default option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported. If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
+Use of the `.att_syntax` and `.intel_syntax` directives with no parameters (or with parameters equivalent to the defaults) is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behavior is undefined (the compiled output may be corrupted as a result).
+Use of `.att_syntax` and `.intel_syntax` with a non-default option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported.
+If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
 
 Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
-32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default. 
+32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
 
 
 ##### ARM (32-bit)
@@ -612,5 +614,3 @@ On ARM, the following additional directives are guaranteed to be supported:
 - `.code`
 - `.thumb`
 - `.thumb_func`
-
-
