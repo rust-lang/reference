@@ -593,7 +593,7 @@ On x86 targets, both 32-bit and 64-bit, the following additional directives are 
 - `.intel_syntax`
 - `.nops`
 
-Use of the `.att_syntax` and `.intel_syntax` with no parameters is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behaviour is undefined (the output of the compiler may be corrupted as a result). Use of `.att_syntax` and `.intel_syntax` with an option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported and results in assembler-dependant behaviour. If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
+Use of the `.att_syntax` and `.intel_syntax` directives with no parameters (or with parameters equivalent to the defaults) is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behavior is undefined (the compiled output may be corrupted as a result). Use of `.att_syntax` and `.intel_syntax` with a non-default option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported. If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
 
 On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
 
