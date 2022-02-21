@@ -494,6 +494,7 @@ The following directives are guaranteed to be supported by the assembler:
 - `.align`
 - `.ascii`
 - `.asciz`
+- `.alt_entry`
 - `.balign`
 - `.balignl`
 - `.balignw`
@@ -512,11 +513,14 @@ The following directives are guaranteed to be supported by the assembler:
 - `.eqv`
 - `.fill`
 - `.float`
+- `.globl`
+- `.global`
 - `.lcomm`
 - `.inst`
 - `.long`
 - `.octa`
 - `.option`
+- `.private_extern`
 - `.p2align`
 - `.pushsection`
 - `.popsection`
@@ -525,22 +529,16 @@ The following directives are guaranteed to be supported by the assembler:
 - `.section`
 - `.set`
 - `.short`
+- `.size`
 - `.skip`
 - `.sleb128`
 - `.space`
 - `.string`
 - `.text`
+- `.type`
 - `.uleb128`
 - `.word`
 
-The following directives are guaranteed to be supported for `global_asm` only:
-
-- `.alt_entry`
-- `.globl`
-- `.global`
-- `.private_extern`
-- `.size`
-- `.type`
 
 
 #### Target Specific Directive Support
@@ -592,23 +590,17 @@ On x86 targets, both 32-bit and 64-bit, the following additional directives are 
 - `.att_syntax`
 - `.intel_syntax`
 - `.nops`
+- `.code16`
+- `.code32`
+- `.code64`
 
 Use of the `.att_syntax` and `.intel_syntax` directives with no parameters (or with parameters equivalent to the defaults) is supported, but the syntax must be restored to the option at entry (`.intel_syntax` without the `att_syntax` asm option, or `.att_syntax` with that option) or the behavior is undefined (the compiled output may be corrupted as a result). Use of `.att_syntax` and `.intel_syntax` with a non-default option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported. If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
 
-On x86 for `global_asm!` only, the following additional directives are guaranteed to be supported (it is unspecified whether `.code16` or `.code32` are supported for `asm!()`):
-
-- `.code16`
-- `.code32`
+Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
+32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default. 
 
 
 ##### ARM (32-bit)
-
-On ARM for `global_asm!` only, the following additional directives are guaranteed to be supported:
-
-- `.code`
-- `.thumb`
-- `.thumb_func`
-
 
 On ARM, the following additional directives are guaranteed to be supported:
 
@@ -617,4 +609,8 @@ On ARM, the following additional directives are guaranteed to be supported:
 - `.fnend`
 - `.save`
 - `.movsp`
+- `.code`
+- `.thumb`
+- `.thumb_func`
+
 
