@@ -601,7 +601,7 @@ On x86 for `global_asm!` only, the following additional directives are guarantee
 - `.code32`
 
 
-##### ARM
+##### ARM (32-bit)
 
 On ARM for `global_asm!` only, the following additional directives are guaranteed to be supported:
 
