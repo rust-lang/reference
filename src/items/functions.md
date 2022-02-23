@@ -191,7 +191,7 @@ extern "C" fn new_i32() -> i32 { 0 }
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
-Just as with [external block], when the `extern` keyword is used and the `"ABI`
+Just as with [external block], when the `extern` keyword is used and the `"ABI"`
 is omitted, the ABI used defaults to `"C"`. That is, this:
 
 ```rust
