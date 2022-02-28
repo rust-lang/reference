@@ -73,9 +73,9 @@ let a = & & & & mut 10;
 
 ### Raw address-of operators
 
-Related to the borrow operators are the *raw address-of operators*, which do not have first-class syntax, but are exposed via the macros `ptr::addr_of!(expr)` and `ptr::addr_of_mut!(expr)`.
+Related to the borrow operators are the *raw address-of operators*, which do not have first-class syntax, but are exposed via the macros [`ptr::addr_of!(expr)`][addr_of] and [`ptr::addr_of_mut!(expr)`][addr_of_mut].
 The expression `expr` is evaluated in place expression context.
-`ptr::addr_of!(expr)` then creates a (const) raw pointer of type `*const T` to the given place, and `ptr::addr_of_mut!(expr)` creates a mutable raw pointer of type `*mut T`.
+`ptr::addr_of!(expr)` then creates a const raw pointer of type `*const T` to the given place, and `ptr::addr_of_mut!(expr)` creates a mutable raw pointer of type `*mut T`.
 
 The raw address-of operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
 In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed using an address-of operator.
@@ -640,6 +640,8 @@ See [this test] for an example of using this dependency.
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [undefined behavior]: ../behavior-considered-undefined.md
+[addr_of]: ../../std/ptr/macro.addr_of.html
+[addr_of_mut]: ../../std/ptr/macro.addr_of_mut.html
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
