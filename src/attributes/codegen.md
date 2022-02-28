@@ -75,7 +75,7 @@ The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
 
-Executing code with unsupported features is UB on this platform.
+Executing code with unsupported features is undefined behavior on this platform.
 Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
 
