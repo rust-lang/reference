@@ -90,7 +90,6 @@ Notable features that are allowed in const contexts but not in const functions i
   * floating point values are treated just like generic parameters without trait bounds beyond
   `Copy`. So you cannot do anything with them but copy/move them around.
 * comparing raw pointers
-* union field access
 
 Conversely, the following are possible in a const function, but not in a const context:
 
