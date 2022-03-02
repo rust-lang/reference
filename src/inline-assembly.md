@@ -587,19 +587,15 @@ On targets with structured exception Handling, the following additional directiv
 ##### x86 (32-bit and 64-bit)
 
 On x86 targets, both 32-bit and 64-bit, the following additional directives are guaranteed to be supported:
-- `.att_syntax`
-- `.intel_syntax`
 - `.nops`
 - `.code16`
 - `.code32`
 - `.code64`
 
-Use of the `.att_syntax` and `.intel_syntax` directives with the default parameters (`prefix` for `.att_syntax`, `noprefix` for `.intel_syntax`) is supported, but the syntax must be restored to the option at entry (`.intel_syntax noprefix` without the `att_syntax` asm option, or `.att_syntax prefix` with that option) or the behavior is undefined (the compiled output may be corrupted as a result).
-Use of `.att_syntax` and `.intel_syntax` with a non-default option or without an option (such as `.intel_syntax prefix` or `.att_syntax noprefix`) is unsupported, and has assembler specific behaviour.
-If operand interpolations are used between setting the syntax mode with one of these directives, and restoring it to the block's default, the behaviour is undefined.
 
 Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
 32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
+
 
 
 ##### ARM (32-bit)
