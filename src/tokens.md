@@ -430,8 +430,6 @@ Note that the Rust syntax considers `-1i8` as an application of the [unary minus
 operator] to an integer literal `1i8`, rather than
 a single integer literal.
 
-[unary minus operator]: expressions/operator-expr.md#negation-operators
-
 #### Tuple index
 
 > **<sup>Lexer</sup>**\
@@ -542,8 +540,6 @@ Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
 macros.
 
-[loop labels]: expressions/loop-expr.md
-
 ## Punctuation
 
 Punctuation symbol tokens are listed here for completeness. Their individual
@@ -609,57 +605,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `[` `]` | Square brackets |
 | `(` `)` | Parentheses     |
 
-
-[Inferred types]: types/inferred.md
-[Range patterns]: patterns.md#range-patterns
-[Reference patterns]: patterns.md#reference-patterns
-[Subpattern binding]: patterns.md#identifier-patterns
-[Wildcard patterns]: patterns.md#wildcard-pattern
-[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
-[array types]: types/array.md
-[assignment]: expressions/operator-expr.md#assignment-expressions
-[attributes]: attributes.md
-[borrow]: expressions/operator-expr.md#borrow-operators
-[closures]: expressions/closure-expr.md
-[comparison]: expressions/operator-expr.md#comparison-operators
-[compound]: expressions/operator-expr.md#compound-assignment-expressions
-[constants]: items/constant-items.md
-[dereference]: expressions/operator-expr.md#the-dereference-operator
-[destructuring assignment]: expressions/underscore-expr.md
-[extern crates]: items/extern-crates.md
-[extern]: items/external-blocks.md
-[field]: expressions/field-expr.md
-[function pointer type]: types/function-pointer.md
-[functions]: items/functions.md
-[generics]: items/generics.md
-[identifier]: identifiers.md
-[if let]: expressions/if-expr.md#if-let-expressions
-[keywords]: keywords.md
-[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
-[machine types]: types/numeric.md
-[macros]: macros-by-example.md
-[match]: expressions/match-expr.md
-[negation]: expressions/operator-expr.md#negation-operators
-[negative impls]: items/implementations.md
-[never type]: types/never.md
-[paths]: paths.md
-[patterns]: patterns.md
-[question]: expressions/operator-expr.md#the-question-mark-operator
-[range]: expressions/range-expr.md
-[rangepat]: patterns.md#range-patterns
-[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
-[references]: types/pointer.md
-[sized]: trait-bounds.md#sized
-[struct expressions]: expressions/struct-expr.md
-[trait bounds]: trait-bounds.md
-[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
-[tuple structs]: items/structs.md
-[tuple variants]: items/enumerations.md
-[tuples]: types/tuple.md
-[use declarations]: items/use-declarations.md
-[use wildcards]: items/use-declarations.md
-[while let]: expressions/loop-expr.md#predicate-pattern-loops
-
 ## Reserved prefixes
 
 > **<sup>Lexer 2021+</sup>**\
@@ -695,3 +640,55 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 > lexes!{continue'foo}
 > lexes!{match"..." {}}
 > ```
+
+[Inferred types]: types/inferred.md
+[Range patterns]: patterns.md#range-patterns
+[Reference patterns]: patterns.md#reference-patterns
+[Subpattern binding]: patterns.md#identifier-patterns
+[Wildcard patterns]: patterns.md#wildcard-pattern
+[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[array types]: types/array.md
+[assignment]: expressions/operator-expr.md#assignment-expressions
+[attributes]: attributes.md
+[borrow]: expressions/operator-expr.md#borrow-operators
+[closures]: expressions/closure-expr.md
+[comparison]: expressions/operator-expr.md#comparison-operators
+[compound]: expressions/operator-expr.md#compound-assignment-expressions
+[constants]: items/constant-items.md
+[dereference]: expressions/operator-expr.md#the-dereference-operator
+[destructuring assignment]: expressions/underscore-expr.md
+[extern crates]: items/extern-crates.md
+[extern]: items/external-blocks.md
+[field]: expressions/field-expr.md
+[function pointer type]: types/function-pointer.md
+[functions]: items/functions.md
+[generics]: items/generics.md
+[identifier]: identifiers.md
+[if let]: expressions/if-expr.md#if-let-expressions
+[keywords]: keywords.md
+[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[loop labels]: expressions/loop-expr.md
+[machine types]: types/numeric.md
+[macros]: macros-by-example.md
+[match]: expressions/match-expr.md
+[negation]: expressions/operator-expr.md#negation-operators
+[negative impls]: items/implementations.md
+[never type]: types/never.md
+[paths]: paths.md
+[patterns]: patterns.md
+[question]: expressions/operator-expr.md#the-question-mark-operator
+[range]: expressions/range-expr.md
+[rangepat]: patterns.md#range-patterns
+[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[references]: types/pointer.md
+[sized]: trait-bounds.md#sized
+[struct expressions]: expressions/struct-expr.md
+[trait bounds]: trait-bounds.md
+[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
+[tuple structs]: items/structs.md
+[tuple variants]: items/enumerations.md
+[tuples]: types/tuple.md
+[unary minus operator]: expressions/operator-expr.md#negation-operators
+[use declarations]: items/use-declarations.md
+[use wildcards]: items/use-declarations.md
+[while let]: expressions/loop-expr.md#predicate-pattern-loops
