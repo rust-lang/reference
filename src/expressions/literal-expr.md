@@ -59,7 +59,33 @@ let a: u64 = 123;                  // type u64
 0usize;                            // type usize
 ```
 
+## Floating-point literal expressions
+
+A floating-point literal expression consists of a single [FLOAT_LITERAL] token.
+
+If the token has a [suffix], the suffix will be the name of one of the [primitive floating-point types][floating-point types]: `f32` or `f64`, and the expression has that type.
+
+If the token has no suffix, the expression's type is determined by type inference:
+
+* If a floating-point type can be _uniquely_ determined from the surrounding program context, the expression has that type.
+
+* If the program context under-constrains the type, it defaults to `f64`.
+
+* If the program context over-constrains the type, it is considered a static type error.
+
+Examples of floating-point literal expressions:
+
+```rust
+123.0f64;        // type f64
+0.1f64;          // type f64
+0.1f32;          // type f32
+12E+99_f64;      // type f64
+5f32;            // type f32
+let x: f64 = 2.; // type f64
+```
+
 [constant expression]: ../const_eval.md#constant-expressions
+[floating-point types]: ../types/numeric.md#floating-point-types
 [literal tokens]: ../tokens.md#literals
 [numeric types]: ../types/numeric.md
 [suffix]: ../tokens.md#suffixes

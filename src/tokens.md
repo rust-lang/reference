@@ -465,39 +465,23 @@ A _floating-point literal_ has one of two forms:
 
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
-The suffix forcibly sets the type of the literal. There are two valid
-_floating-point suffixes_, `f32` and `f64` (the 32-bit and 64-bit floating point
-types), which explicitly determine the type of the literal.
-
-The type of an _unsuffixed_ floating-point literal is determined by
-type inference:
-
-* If a floating-point type can be _uniquely_ determined from the
-  surrounding program context, the unsuffixed floating-point literal
-  has that type.
-
-* If the program context under-constrains the type, it defaults to `f64`.
-
-* If the program context over-constrains the type, it is considered a
-  static type error.
+There are two valid _floating-point suffixes_: `f32` and `f64` (the names of the 32-bit and 64-bit [primitive floating-point types][floating-point types]).
+See [literal expressions] for the effect of these suffixes.
 
 Examples of floating-point literals of various forms:
 
 ```rust
-123.0f64;        // type f64
-0.1f64;          // type f64
-0.1f32;          // type f32
-12E+99_f64;      // type f64
-5f32;            // type f32
-let x: f64 = 2.; // type f64
+123.0f64;
+0.1f64;
+0.1f32;
+12E+99_f64;
+5f32;
+let x: f64 = 2.;
 ```
 
 This last example is different because it is not possible to use the suffix
 syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
-
-The representation semantics of floating-point numbers are described in
-["Machine Types"][machine types].
 
 ### Boolean literals
 
@@ -642,6 +626,7 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 [extern crates]: items/extern-crates.md
 [extern]: items/external-blocks.md
 [field]: expressions/field-expr.md
+[floating-point types]: types/numeric.md#floating-point-types
 [function pointer type]: types/function-pointer.md
 [functions]: items/functions.md
 [generics]: items/generics.md
@@ -651,7 +636,6 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
 [literal expressions]: expressions/literal-expr.md
 [loop labels]: expressions/loop-expr.md
-[machine types]: types/numeric.md
 [macros]: macros-by-example.md
 [match]: expressions/match-expr.md
 [negation]: expressions/operator-expr.md#negation-operators
