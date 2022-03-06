@@ -8,9 +8,11 @@
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
 > &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
-> &nbsp;&nbsp; | [INTEGER_LITERAL]\
+> &nbsp;&nbsp; | [INTEGER_LITERAL][^out-of-range]\
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | [BOOLEAN_LITERAL]
+>
+> [^out-of-range]: A value ≥ 2<sup>128</sup> is not allowed.
 
 A _literal expression_ is an expression consisting of a single token, rather than a sequence of tokens, that immediately and directly denotes the value it evaluates to, rather than referring to it by name or some other evaluation rule.
 
@@ -68,6 +70,7 @@ The value of the expression is determined from the string representation of the 
 * Any underscores are removed from the string.
 
 * The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
+If the value does not fit in `u128`, the expression is rejected by the parser.
 
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
