@@ -374,6 +374,8 @@ Examples of integer literals of various forms:
 
 0xff;
 0xff_u8;
+0x01_f32; // integer 7986, not floating-point 1.0
+0x01_e3;  // integer 483, not floating-point 1000.0
 
 0o70;
 0o70_i16;
