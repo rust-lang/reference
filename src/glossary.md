@@ -322,7 +322,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [structs]: items/structs.md
 [trait objects]: types/trait-object.md
 [traits]: items/traits.md
-[turbofish test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/parser/bastion-of-the-turbofish.rs
+[turbofish test]: https://github.com/rust-lang/rust/blob/master/src/test/ui/parser/bastion-of-the-turbofish.rs
 [types of crates]: linkage.md
 [types]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
