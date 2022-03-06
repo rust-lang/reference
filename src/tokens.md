@@ -515,8 +515,8 @@ Examples of such tokens:
 
 > **<sup>Lexer</sup>**\
 > RESERVED_NUMBER :\
-> &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`]\
-> &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`]\
+> &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`&ZeroWidthSpace;]\
+> &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an [identifier] or [keyword][keywords]_)\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) `e`\
