@@ -59,6 +59,18 @@ let a: u64 = 123;                  // type u64
 0usize;                            // type usize
 ```
 
+The value of the expression is determined from the string representation of the token as follows:
+
+* An integer radix is chosen by inspecting the first two characters of the string: `0b` indicates radix 2, `0o` indicates radix 8, `0x` indicates radix 16; otherwise the radix is 10.
+
+* If the radix is not 10, the first two characters are removed from the string.
+
+* Any underscores are removed from the string.
+
+* The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
+
+* The `u128` value is converted to the expression's type via a [numeric cast].
+
 ## Floating-point literal expressions
 
 A floating-point literal expression consists of a single [FLOAT_LITERAL] token.
@@ -87,8 +99,10 @@ let x: f64 = 2.; // type f64
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
 [literal tokens]: ../tokens.md#literals
+[numeric cast]: operator-expr.md#numeric-cast
 [numeric types]: ../types/numeric.md
 [suffix]: ../tokens.md#suffixes
+[`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
 [RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
