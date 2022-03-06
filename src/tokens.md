@@ -497,7 +497,7 @@ Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 > NUMBER_PSEUDOLITERAL_SUFFIX_NO_E :\
 > &nbsp;&nbsp; NUMBER_PSEUDOLITERAL_SUFFIX <sub>_not beginning with `e` or `E`_</sub>
 
-As described [above](#suffixes), tokens with the same form as numeric literals other than in the content of their suffix are accepted by the lexer, with the exception of some cases in which the suffix begins with `e` or `E`.
+As described [above](#suffixes), tokens with the same form as numeric literals other than in the content of their suffix are accepted by the lexer (with the exception of some reserved forms described below).
 
 Examples of such tokens:
 ```rust,compile_fail
@@ -509,14 +509,49 @@ Examples of such tokens:
 2e5f80;
 2e5e6;
 2.0e5e6;
+```
 
-// Lexer errors:
-2e;
-2.0e;
-0b101e;
-2em;
-2.0em;
-0b101em;
+#### Reserved forms similar to number literals
+
+> **<sup>Lexer</sup>**\
+> RESERVED_NUMBER :\
+> &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`]\
+> &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`]\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an [identifier] or [keyword][keywords]_)\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) `e`\
+> &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
+> &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
+> &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
+> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)? (`e`|`E`) (`+`|`-`)? _end of input or not DEC_DIGIT_
+
+The following lexical forms similar to number literals are _reserved forms_:
+
+* An unsuffixed binary or octal literal followed, without intervening whitespace, by a decimal digit out of the range for its radix.
+
+* An unsuffixed binary, octal, or hexadecimal literal followed, without intervening whitespace, by a period character (with the same restrictions on what follows the period as for floating-point literals).
+
+* An unsuffixed binary or octal literal followed, without intervening whitespace, by the character `e`.
+
+* Input which begins with one of the radix prefixes but is not a valid binary, octal, or hexadecimal literal (because it contains no digits).
+
+* Input which has the form of a floating-point literal with no digits in the exponent.
+
+Any input containing one of these reserved forms is reported as an error by the lexer.
+
+Examples of reserved forms:
+
+```rust,compile_fail
+0b0102;  // this is not `0b010` followed by `2`
+0o1279;  // this is not `0o127` followed by `9`
+0x80.0;  // this is not `0x80` followed by `.` and `0`
+0b101e;  // this is not a pseudoliteral, or `0b101` followed by `e`
+0b;      // this is not a pseudoliteral, or `0` followed by  `b`
+0b_;     // this is not a pseudoliteral, or `0` followed by  `b_`
+2e;      // this is not a pseudoliteral, or `2` followed by `e`
+2.0e;    // this is not a pseudoliteral, or `2.0` followed by `e`
+2em;     // this is not a pseudoliteral, or `2` followed by `em`
+2.0em;   // this is not a pseudoliteral, or `2.0` followed by `em`
 ```
 
 ### Boolean literals
