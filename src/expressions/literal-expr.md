@@ -108,6 +108,10 @@ The value of the expression is determined from the string representation of the 
 
 * The string is converted to the expression's type as if by [`f32::from_str`] or [`f64::from_str`].
 
+> **Note**: `inf` and `NaN` are not literal tokens.
+> The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
+> A literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
+
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
@@ -116,7 +120,11 @@ The value of the expression is determined from the string representation of the 
 [numeric types]: ../types/numeric.md
 [suffix]: ../tokens.md#suffixes
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
+[`f32::INFINITY`]: ../../core/primitive.f32.md#associatedconstant.INFINITY
+[`f32::NAN`]: ../../core/primitive.f32.md#associatedconstant.NAN
 [`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
+[`f64::INFINITY`]: ../../core/primitive.f64.md#associatedconstant.INFINITY
+[`f64::NAN`]: ../../core/primitive.f64.md#associatedconstant.NAN
 [`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
