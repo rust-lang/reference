@@ -457,11 +457,12 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > FLOAT_SUFFIX :\
 > &nbsp;&nbsp; `f32` | `f64`
 
-A _floating-point literal_ has one of two forms:
+A _floating-point literal_ has one of three forms:
 
 * A _decimal literal_ followed by a period character `U+002E` (`.`). This is
   optionally followed by another decimal literal, with an optional _exponent_.
 * A single _decimal literal_ followed by an _exponent_.
+* A single _decimal literal_ (in which case a suffix is required).
 
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
