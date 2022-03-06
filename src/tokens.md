@@ -384,6 +384,8 @@ Examples of integer literals of various forms:
 0usize;
 ```
 
+Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
+
 Examples of invalid integer literals:
 
 ```rust,compile_fail
@@ -407,10 +409,6 @@ Examples of invalid integer literals:
 0b_;
 0b____;
 ```
-
-Note that the Rust syntax considers `-1i8` as an application of the [unary minus
-operator] to an integer literal `1i8`, rather than
-a single integer literal.
 
 #### Tuple index
 
@@ -482,6 +480,8 @@ let x: f64 = 2.;
 This last example is different because it is not possible to use the suffix
 syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
+
+Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 
 ### Boolean literals
 
