@@ -366,6 +366,7 @@ See [literal expressions] for the effect of these suffixes.
 Examples of integer literals of various forms:
 
 ```rust
+# #![allow(overflowing_literals)]
 123;
 123i32;
 123u32;
@@ -382,6 +383,12 @@ Examples of integer literals of various forms:
 0b________1;
 
 0usize;
+
+// These are too big for their type, but are still valid tokens
+
+128_i8;
+256_u8;
+
 ```
 
 Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
@@ -398,11 +405,6 @@ Examples of invalid integer literals:
 123AFB43;
 0b0102;
 0o0581;
-
-// integers too big for their type (they overflow)
-
-128_i8;
-256_u8;
 
 // bin, hex, and octal literals must have at least one digit
 
