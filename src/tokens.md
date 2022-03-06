@@ -18,11 +18,7 @@ table production] form, and appear in `monospace` font.
 
 ## Literals
 
-A literal is an expression consisting of a single token, rather than a sequence
-of tokens, that immediately and directly denotes the value it evaluates to,
-rather than referring to it by name or some other evaluation rule. A literal is
-a form of [constant expression](const_eval.md#constant-expressions), so is
-evaluated (primarily) at compile time.
+Literals are tokens used in [literal expressions].
 
 ### Examples
 
@@ -667,6 +663,7 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 [if let]: expressions/if-expr.md#if-let-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[literal expressions]: expressions/literal-expr.md
 [loop labels]: expressions/loop-expr.md
 [machine types]: types/numeric.md
 [macros]: macros-by-example.md

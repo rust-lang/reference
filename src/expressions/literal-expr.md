@@ -12,8 +12,11 @@
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | [BOOLEAN_LITERAL]
 
-A _literal expression_ consists of one of the [literal](../tokens.md#literals) forms described earlier.
-It directly describes a number, character, string, or boolean value.
+A _literal expression_ is an expression consisting of a single token, rather than a sequence of tokens, that immediately and directly denotes the value it evaluates to, rather than referring to it by name or some other evaluation rule.
+
+A literal is a form of [constant expression], so is evaluated (primarily) at compile time.
+
+Each of the lexical [literal][literal tokens] forms described earlier can make up a literal expression.
 
 ```rust
 "hello";   // string type
@@ -21,6 +24,8 @@ It directly describes a number, character, string, or boolean value.
 5;         // integer type
 ```
 
+[constant expression]: ../const_eval.md#constant-expressions
+[literal tokens]: ../tokens.md#literals
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
 [RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
