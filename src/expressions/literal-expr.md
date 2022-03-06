@@ -102,6 +102,12 @@ Examples of floating-point literal expressions:
 let x: f64 = 2.; // type f64
 ```
 
+The value of the expression is determined from the string representation of the token as follows:
+
+* Any underscores are removed from the string.
+
+* The string is converted to the expression's type as if by [`f32::from_str`] or [`f64::from_str`].
+
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
@@ -109,6 +115,8 @@ let x: f64 = 2.; // type f64
 [numeric cast]: operator-expr.md#numeric-cast
 [numeric types]: ../types/numeric.md
 [suffix]: ../tokens.md#suffixes
+[`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
+[`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
 [`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
