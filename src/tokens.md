@@ -398,13 +398,8 @@ Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
 Examples of invalid integer literals:
 
 ```rust,compile_fail
-// invalid suffixes
-
-0invalidSuffix;
-
 // uses numbers of the wrong base
 
-123AFB43;
 0b0102;
 0o0581;
 
@@ -487,6 +482,42 @@ syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
 
 Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
+
+#### Number pseudoliterals
+
+> **<sup>Lexer</sup>**\
+> NUMBER_PSEUDOLITERAL :\
+> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL ( . DEC_LITERAL)? FLOAT_EXPONENT NUMBER_PSEUDOLITERAL_SUFFIX\
+> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)? NUMBER_PSEUDOLITERAL_SUFFIX_NO_E\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) NUMBER_PSEUDOLITERAL_SUFFIX_NO_E
+>
+> NUMBER_PSEUDOLITERAL_SUFFIX :\
+> &nbsp;&nbsp; IDENTIFIER_OR_KEYWORD <sub>_not matching INTEGER_SUFFIX or FLOAT_SUFFIX_</sub>
+>
+> NUMBER_PSEUDOLITERAL_SUFFIX_NO_E :\
+> &nbsp;&nbsp; NUMBER_PSEUDOLITERAL_SUFFIX <sub>_not beginning with `e` or `E`_</sub>
+
+As described [above](#suffixes), tokens with the same form as numeric literals other than in the content of their suffix are accepted by the lexer, with the exception of some cases in which the suffix begins with `e` or `E`.
+
+Examples of such tokens:
+```rust,compile_fail
+0invalidSuffix;
+123AFB43;
+0b010a;
+0xAB_CD_EF_GH;
+2.0f80;
+2e5f80;
+2e5e6;
+2.0e5e6;
+
+// Lexer errors:
+2e;
+2.0e;
+0b101e;
+2em;
+2.0em;
+0b101em;
+```
 
 ### Boolean literals
 
