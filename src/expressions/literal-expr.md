@@ -24,8 +24,45 @@ Each of the lexical [literal][literal tokens] forms described earlier can make u
 5;         // integer type
 ```
 
+## Integer literal expressions
+
+An integer literal expression consists of a single [INTEGER_LITERAL] token.
+
+If the token has a [suffix], the suffix will be the name of one of the [primitive integer types][numeric types]: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`, and the expression has that type.
+
+If the token has no suffix, the expression's type is determined by type inference:
+
+* If an integer type can be _uniquely_ determined from the surrounding program context, the expression has that type.
+
+* If the program context under-constrains the type, it defaults to the signed 32-bit integer `i32`.
+
+* If the program context over-constrains the type, it is considered a static type error.
+
+Examples of integer literal expressions:
+
+```rust
+123;                               // type i32
+123i32;                            // type i32
+123u32;                            // type u32
+123_u32;                           // type u32
+let a: u64 = 123;                  // type u64
+
+0xff;                              // type i32
+0xff_u8;                           // type u8
+
+0o70;                              // type i32
+0o70_i16;                          // type i16
+
+0b1111_1111_1001_0000;             // type i32
+0b1111_1111_1001_0000i64;          // type i64
+
+0usize;                            // type usize
+```
+
 [constant expression]: ../const_eval.md#constant-expressions
 [literal tokens]: ../tokens.md#literals
+[numeric types]: ../types/numeric.md
+[suffix]: ../tokens.md#suffixes
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
 [RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals

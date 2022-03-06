@@ -359,43 +359,29 @@ An _integer literal_ has one of four forms:
   (`0b`) and continues as any mixture (with at least one digit) of binary digits
   and underscores.
 
-Like any literal, an integer literal may be followed (immediately,
-without any spaces) by an _integer suffix_, which forcibly sets the
-type of the literal. The integer suffix must be the name of one of the
-integral types: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`,
-`u128`, `i128`, `usize`, or `isize`.
-
-The type of an _unsuffixed_ integer literal is determined by type inference:
-
-* If an integer type can be _uniquely_ determined from the surrounding
-  program context, the unsuffixed integer literal has that type.
-
-* If the program context under-constrains the type, it defaults to the
-  signed 32-bit integer `i32`.
-
-* If the program context over-constrains the type, it is considered a
-  static type error.
+Like any literal, an integer literal may be followed (immediately, without any spaces) by an _integer suffix_, which must be the name of one of the [primitive integer types][numeric types]:
+`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`.
+See [literal expressions] for the effect of these suffixes.
 
 Examples of integer literals of various forms:
 
 ```rust
-123;                               // type i32
-123i32;                            // type i32
-123u32;                            // type u32
-123_u32;                           // type u32
-let a: u64 = 123;                  // type u64
+123;
+123i32;
+123u32;
+123_u32;
 
-0xff;                              // type i32
-0xff_u8;                           // type u8
+0xff;
+0xff_u8;
 
-0o70;                              // type i32
-0o70_i16;                          // type i16
+0o70;
+0o70_i16;
 
-0b1111_1111_1001_0000;             // type i32
-0b1111_1111_1001_0000i64;          // type i64
-0b________1;                       // type i32
+0b1111_1111_1001_0000;
+0b1111_1111_1001_0000i64;
+0b________1;
 
-0usize;                            // type usize
+0usize;
 ```
 
 Examples of invalid integer literals:
@@ -671,6 +657,7 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 [negation]: expressions/operator-expr.md#negation-operators
 [negative impls]: items/implementations.md
 [never type]: types/never.md
+[numeric types]: types/numeric.md
 [paths]: paths.md
 [patterns]: patterns.md
 [question]: expressions/operator-expr.md#the-question-mark-operator
