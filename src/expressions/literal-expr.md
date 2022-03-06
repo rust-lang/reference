@@ -74,6 +74,9 @@ If the value does not fit in `u128`, the expression is rejected by the parser.
 
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
+> **Note**: The final cast will truncate the value of the literal if it does not fit in the expression's type.
+> There is a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
+
 ## Floating-point literal expressions
 
 A floating-point literal expression consists of a single [FLOAT_LITERAL] token.
@@ -101,6 +104,7 @@ let x: f64 = 2.; // type f64
 
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
+[lint check]: ../attributes/diagnostics.md#lint-check-attributes
 [literal tokens]: ../tokens.md#literals
 [numeric cast]: operator-expr.md#numeric-cast
 [numeric types]: ../types/numeric.md
