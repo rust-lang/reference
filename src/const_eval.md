@@ -65,8 +65,8 @@ A _const context_ is one of the following:
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
 `const` has no effect on any existing uses, it only restricts the types that arguments and the
-return type may use, as well as prevent various expressions from being used within it. You can freely do anything with a const function that
-you can do with a regular function.
+return type may use, as well as prevent various expressions from being used within it. You can freely
+do anything with a const function that you can do with a regular function.
 
 When called from a const context, the function is interpreted by the
 compiler at compile time. The interpretation happens in the
@@ -84,15 +84,11 @@ slightly) different results. It is advisable to not make array lengths and enum
 discriminants depend on floating point computations.
 
 
-Notable features that const contexts have, but const fn haven't are:
+Notable features that are allowed in const contexts but not in const functions include:
 
 * floating point operations
   * floating point values are treated just like generic parameters without trait bounds beyond
   `Copy`. So you cannot do anything with them but copy/move them around.
-* `dyn Trait` types
-* generic bounds on generic parameters beyond `Sized`
-* comparing raw pointers
-* union field access
 
 Conversely, the following are possible in a const function, but not in a const context:
 
