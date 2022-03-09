@@ -63,7 +63,8 @@ error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
 It is [undefined behavior] to call a function that is compiled with a feature
-that is not supported on the current platform the code is running on.
+that is not supported on the current platform the code is running on, *except*
+if the platform explicitly documents this to be safe.
 
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
@@ -75,7 +76,8 @@ The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
 
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
+Executing code with unsupported features is undefined behavior on this platform.
+Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
 
 Feature     | Implicitly Enables | Description
@@ -133,8 +135,12 @@ Feature     | Implicitly Enables | Description
 
 #### `wasm32` or `wasm64`
 
-This platform allows `#[target_feature]` to be applied to both safe and
-[`unsafe` functions][unsafe function].
+`#[target_feature]` may be used with both safe and
+[`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
+cause undefined behavior via the `#[target_feature]` attribute because
+attempting to use instructions unsupported by the Wasm engine will fail at load
+time without the risk of being interpreted in a way different from what the
+compiler expected.
 
 Feature     | Description
 ------------|-------------------
