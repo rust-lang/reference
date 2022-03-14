@@ -345,9 +345,12 @@ let x = (&temp()).use_temp();  // ERROR
 
 ## Not running destructors
 
-Not running destructors in Rust is safe even if it has a type that isn't
-`'static`. [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
+[`std::mem::forget`] can be used to prevent the destructor of a variable from being run,
+and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
 variable or field from being dropped automatically.
+
+> Note: Preventing a destructor from being run via [`std::mem::forget`] or other means is safe even if it has a type that isn't `'static`.
+> Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.
 
 [Assignment]: expressions/operator-expr.md#assignment-expressions
 [binding modes]: patterns.md#binding-modes
@@ -395,4 +398,5 @@ variable or field from being dropped automatically.
 
 [`<T as std::ops::Drop>::drop`]: ../std/ops/trait.Drop.html#tymethod.drop
 [`std::ptr::drop_in_place`]: ../std/ptr/fn.drop_in_place.html
+[`std::mem::forget`]: ../std/mem/fn.forget.html
 [`std::mem::ManuallyDrop`]: ../std/mem/struct.ManuallyDrop.html
