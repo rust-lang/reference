@@ -253,6 +253,19 @@ fn on_32bit_unix() {
 fn needs_not_foo() {
   // ...
 }
+
+// This function is only included when the panic strategy is set to unwind
+#[cfg(panic = "unwind")]
+fn when_unwinding() {
+  // ...
+}
+
+// This function is only included when the panic strategy is not set to unwind
+#[cfg(not(panic="unwind"))]
+fn when_aborting() {
+  // ...
+}
+
 ```
 
 The `cfg` attribute is allowed anywhere attributes are allowed.
