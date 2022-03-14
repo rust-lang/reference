@@ -81,52 +81,6 @@ fn mytest() {
     assert_eq!(1, 2, "values don't match");
 }
 ```
-## Different panic strategies
-
-The `cfg_panic` feature makes it possible to exercise different lines of code depending on the panic strategy. 
-The possible value is either `unwind` or `abort`.
-
-The following is a playful example on choosing the right beverage. 
-
-```rust
-
-#[cfg(panic = "unwind")]
-fn ah(){ println!("Spit it out!!!!");}
-
-#[cfg(not(panic="unwind"))]
-fn ah(){ println!("This is not your party. Run!!!!");}
-
-fn drink(beverage: &str){
-    if beverage == "lemonade"{ ah();}
-    else{println!("Some refreshing {} is all I need.", beverage);}
-}
-
-fn main(){
-    drink("water");
-    drink("lemonade");
-}
-```
-
-Here is the same example rewritten.
-```rust
-
-fn drink(beverage: &str) {
-   // You shouldn't drink too much sugary beverages.
-    if beverage == "lemonade" {
-        if cfg!(panic="abort"){ println!("This is not your party. Run!!!!");}
-        else{ println!("Spit it out!!!!");}
-    }
-    else{ println!("Some refreshing {} is all I need.", beverage); }
-}
-
-fn main() {
-    drink("water");
-    drink("lemonade");
-}
-```
-
-Note that when the code is compiled with a certain panic strategy it still might do something different if another crate was compiled with a different strategy.
-For instance, if `#[cfg(panic = "unwind")]` is set to `true` and a crate is compiled with`-C panic=abort`.
 
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
