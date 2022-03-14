@@ -208,6 +208,15 @@ production.  For example, it controls the behavior of the standard library's
 Set when the crate being compiled is being compiled with the `proc_macro`
 [crate type].
 
+### `panic`
+
+Key-value option set depending on the panic strategy. Note that more values may be added in the future.
+
+Example values:
+
+* `"abort"`
+* `"unwind"`
+
 ## Forms of conditional compilation
 
 ### The `cfg` attribute
@@ -257,12 +266,6 @@ fn needs_not_foo() {
 // This function is only included when the panic strategy is set to unwind
 #[cfg(panic = "unwind")]
 fn when_unwinding() {
-  // ...
-}
-
-// This function is only included when the panic strategy is not set to unwind
-#[cfg(not(panic="unwind"))]
-fn when_aborting() {
   // ...
 }
 
