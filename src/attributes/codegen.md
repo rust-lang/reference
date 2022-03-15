@@ -133,6 +133,71 @@ Feature     | Implicitly Enables | Description
 [`xsaveopt`]: https://www.felixcloutier.com/x86/xsaveopt
 [`xsaves`]: https://www.felixcloutier.com/x86/xsaves
 
+#### `aarch64`
+
+This platform requires that `#[target_feature]` is only applied to [`unsafe`
+functions][unsafe function].
+
+Further documentation on these features can be found in the [ARM Architecture
+Reference Manual], or elsewhere on [developer.arm.com].
+
+[ARM Architecture Reference Manual]: https://developer.arm.com/documentation/ddi0487/latest
+[developer.arm.com]: https://developer.arm.com
+
+> ***Note***: The following pairs of features should both be marked as enabled
+> or disabled together if used:
+> - `fp` and `neon`, in order facilitate inlining in more places, among other reasons.
+> - `paca` and `pacg`, which LLVM currently implements as one feature.
+
+
+Feature        | Implicitly Enables | Feature Name
+---------------|--------------------|-------------------
+`aes`          | `neon`         | FEAT_AES - Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES instructions
+`bf16`         |                | FEAT_BF16 - BFloat16 instructions
+`bti`          |                | FEAT_BTI - Branch Target Identification
+`crc`          |                | FEAT_CRC - CRC32 checksum instructions
+`dit`          |                | FEAT_DIT - Data Independent Timing instructions
+`dotprod`      |                | FEAT_DotProd - Advanced SIMD Int8 dot product instructions
+`dpb`          |                | FEAT_DPB - Data cache clean to point of persistence
+`dpb2`         |                | FEAT_DPB2 - Data cache clean to point of deep persistence
+`f32mm`        | `sve`          | FEAT_F32MM - SVE single-precision FP matrix multiply instruction
+`f64mm`        | `sve`          | FEAT_F64MM - SVE double-precision FP matrix multiply instruction
+`fcma`         | `neon`         | FEAT_FCMA - Floating point complex number support
+`fhm`          | `fp16`         | FEAT_FHM - Half-precision FP FMLAL instructions
+`flagm`        |                | FEAT_FlagM - Conditional flag manipulation
+`fp`           |                | FEAT_FP - Floating point extension
+`fp16`         | `fp`, `neon`   | FEAT_FP16 - Half-precision FP data processing
+`frintts`      |                | FEAT_FRINTTS - Floating-point to int helper instructions
+`i8mm`         |                | FEAT_I8MM - Int8 Matrix Multiplication
+`jsconv`       | `fp`, `neon`   | FEAT_JSCVT - JavaScript conversion instruction
+`lse`          |                | FEAT_LSE - Large System Extension
+`lor`          |                | FEAT_LOR - Limited Ordering Regions extension
+`mte`          |                | FEAT_MTE - Memory Tagging Extension
+`neon`         | `fp`           | FEAT_AdvSIMD - Advanced SIMD extension
+`pan`          |                | FEAT_PAN - Privileged Access-Never extension
+`paca`         |                | FEAT_PAuth - Pointer Authentication (address authentication)
+`pacg`         |                | FEAT_PAuth - Pointer Authentication (generic authentication)
+`pmuv3`        |                | FEAT_PMUv3 - Performance Monitors extension (v3)
+`rand`         |                | FEAT_RNG - Random Number Generator
+`ras`          |                | FEAT_RAS - Reliability, Availability and Serviceability extension
+`rcpc`         |                | FEAT_LRCPC - Release consistent Processor Consistent
+`rcpc2`        | `rcpc`         | FEAT_LRCPC2 - RcPc with immediate offsets
+`rdm`          |                | FEAT_RDM - Rounding Double Multiply accumulate
+`sb`           |                | FEAT_SB - Speculation Barrier
+`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 - Advanced SIMD SHA instructions
+`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 - Advanced SIMD SHA instructions
+`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 - Advanced SIMD SM3/4 instructions
+`spe`          |                | FEAT_SPE - Statistical Profiling Extension
+`ssbs`         |                | FEAT_SSBS - Speculative Store Bypass Safe
+`sve`          | `fp16`         | FEAT_SVE - Scalable Vector Extension
+`sve2`         | `sve`          | FEAT_SVE2 - Scalable Vector Extension 2
+`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES - SVE AES instructions
+`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 - SVE SM4 instructions
+`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 - SVE SHA3 instructions
+`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm - SVE Bit Permute
+`tme`          |                | FEAT_TME - Transactional Memory Extension
+`vh`           |                | FEAT_VHE - Virtualization Host Extensions
+
 #### `wasm32` or `wasm64`
 
 `#[target_feature]` may be used with both safe and
