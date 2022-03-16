@@ -28,16 +28,16 @@ evaluated (primarily) at compile time.
 
 #### Characters and strings
 
-|                                              | Example         | `#` sets          | Characters  | Escapes             |
-|----------------------------------------------|-----------------|-------------------|-------------|---------------------|
-| [Character](#character-literals)             | `'H'`           | 0                 | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [String](#string-literals)                   | `"hello"`       | 0                 | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [Raw string](#raw-string-literals)           | `r#"hello"#`    | <2<sup>16</sup>\* | All Unicode | `N/A`                                                      |
-| [Byte](#byte-literals)                       | `b'H'`          | 0                 | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Byte string](#byte-string-literals)         | `b"hello"`      | 0                 | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | <2<sup>16</sup>\* | All ASCII   | `N/A`                                                      |
+|                                              | Example         | `#` sets\*      | Characters  | Escapes             |
+|----------------------------------------------|-----------------|-----------------|-------------|---------------------|
+| [Character](#character-literals)             | `'H'`           | 0               | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [String](#string-literals)                   | `"hello"`       | 0               | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [Raw string](#raw-string-literals)           | `r#"hello"#`    | <2<sup>16</sup> | All Unicode | `N/A`                                                      |
+| [Byte](#byte-literals)                       | `b'H'`          | 0               | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Byte string](#byte-string-literals)         | `b"hello"`      | 0               | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | <2<sup>16</sup> | All ASCII   | `N/A`                                                      |
 
-\* The number of `#`s on each side of the same literal must be equivalent
+\* The number of `#`s on each side of the same literal must be equivalent.
 
 #### ASCII escapes
 
