@@ -487,9 +487,13 @@ Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 
 > **<sup>Lexer</sup>**\
 > NUMBER_PSEUDOLITERAL :\
-> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL ( . DEC_LITERAL)? FLOAT_EXPONENT NUMBER_PSEUDOLITERAL_SUFFIX\
-> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)? NUMBER_PSEUDOLITERAL_SUFFIX_NO_E\
-> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) NUMBER_PSEUDOLITERAL_SUFFIX_NO_E
+> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL ( . DEC_LITERAL )<sup>?</sup> FLOAT_EXPONENT\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX | INTEGER_SUFFIX )\
+> &nbsp;&nbsp; | DEC_LITERAL . DEC_LITERAL\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | INTEGER SUFFIX )\
+> &nbsp;&nbsp; | DEC_LITERAL NUMBER_PSEUDOLITERAL_SUFFIX_NO_E\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | FLOAT_SUFFIX )
 >
 > NUMBER_PSEUDOLITERAL_SUFFIX :\
 > &nbsp;&nbsp; IDENTIFIER_OR_KEYWORD <sub>_not matching INTEGER_SUFFIX or FLOAT_SUFFIX_</sub>
@@ -509,6 +513,8 @@ Examples of such tokens:
 2e5f80;
 2e5e6;
 2.0e5e6;
+1.3e10u64;
+0b1111_f32;
 ```
 
 #### Reserved forms similar to number literals
