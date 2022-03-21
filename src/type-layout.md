@@ -517,9 +517,9 @@ The alignments of each field, for the purpose of positioning fields, is the
 smaller of the specified alignment and the alignment of the field's type.
 Inter-field padding is guaranteed to be the minimum required in order to
 satisfy each field's (possibly altered) alignment (although note that, on its
-own, `packed` does not provide any guarantee about field ordering). An 
-important special case is `#[repr(packed(1))]` (or `#[repr(packed)]`), which
-guarantees that no inter-field padding will be present.
+own, `packed` does not provide any guarantee about field ordering). An
+important consequence of these rules is that a type with `#[repr(packed(1))]`
+(or `#[repr(packed)]`) will have no inter-field padding.
 
 The `align` and `packed` modifiers cannot be applied on the same type and a
 `packed` type cannot transitively contain another `align`ed type. `align` and
