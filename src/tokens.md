@@ -448,7 +448,7 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 >                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
 >
 > FLOAT_EXPONENT :\
-> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
+> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)<sup>?</sup>
 >               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
 >
 > FLOAT_SUFFIX :\
@@ -529,7 +529,7 @@ Examples of such tokens:
 > &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
 > &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
 > &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
-> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)? (`e`|`E`) (`+`|`-`)? _end of input or not DEC_DIGIT_
+> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)<sup>?</sup> (`e`|`E`) (`+`|`-`)<sup>?</sup> _end of input or not DEC_DIGIT_
 
 The following lexical forms similar to number literals are _reserved forms_:
 
