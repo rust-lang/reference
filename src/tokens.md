@@ -501,7 +501,8 @@ Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 > NUMBER_PSEUDOLITERAL_SUFFIX_NO_E :\
 > &nbsp;&nbsp; NUMBER_PSEUDOLITERAL_SUFFIX <sub>_not beginning with `e` or `E`_</sub>
 
-As described [above](#suffixes), tokens with the same form as numeric literals other than in the content of their suffix are accepted by the lexer (with the exception of some reserved forms described below).
+Tokenization of numeric literals allows arbitrary suffixes as described in the grammar above.
+These values generate valid tokens, but are not valid [literal expressions], so are usually an error except as macro arguments.
 
 Examples of such tokens:
 ```rust,compile_fail
@@ -531,7 +532,8 @@ Examples of such tokens:
 > &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
 > &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)<sup>?</sup> (`e`|`E`) (`+`|`-`)<sup>?</sup> _end of input or not DEC_DIGIT_
 
-The following lexical forms similar to number literals are _reserved forms_:
+The following lexical forms similar to number literals are _reserved forms_.
+Due to the possible ambiguity these raise, they are rejected by the tokenizer instead of being interpreted as separate tokens.
 
 * An unsuffixed binary or octal literal followed, without intervening whitespace, by a decimal digit out of the range for its radix.
 
@@ -542,8 +544,6 @@ The following lexical forms similar to number literals are _reserved forms_:
 * Input which begins with one of the radix prefixes but is not a valid binary, octal, or hexadecimal literal (because it contains no digits).
 
 * Input which has the form of a floating-point literal with no digits in the exponent.
-
-Any input containing one of these reserved forms is reported as an error by the lexer.
 
 Examples of reserved forms:
 
