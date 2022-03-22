@@ -441,7 +441,7 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > **<sup>Lexer</sup>**\
 > FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an [identifier] or [keyword][keywords]_)\
+>   _(not immediately followed by `.`, `_` or an XID_Start character)_\
 > &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
 > &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
@@ -524,7 +524,7 @@ Examples of such tokens:
 > &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an [identifier] or [keyword][keywords]_)\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an XID_Start character)_\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) `e`\
 > &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
 > &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
