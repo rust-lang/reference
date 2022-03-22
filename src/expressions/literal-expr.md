@@ -75,7 +75,7 @@ If the value does not fit in `u128`, the expression is rejected by the parser.
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
 > **Note**: The final cast will truncate the value of the literal if it does not fit in the expression's type.
-> There is a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
+> `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
 
 > **Note**: `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
 
@@ -114,7 +114,7 @@ The value of the expression is determined from the string representation of the 
 
 > **Note**: `inf` and `NaN` are not literal tokens.
 > The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
-> A literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
+> In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
 
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
