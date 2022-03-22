@@ -175,7 +175,7 @@ Formally, the first guarantee means that the offset of any field in the struct
 is divisible by that field's alignment. The second guarantee means that the
 fields can be ordered such that the offset plus the size of any field is less
 than or equal to the offset of the next field in the ordering. The ordering does
-not have to be the same as the order in which the field are specified in the
+not have to be the same as the order in which the fields are specified in the
 declaration of the struct.
 
 Be aware that the second guarantee does not imply that the fields have distinct
