@@ -26,6 +26,30 @@ Each of the lexical [literal][literal tokens] forms described earlier can make u
 5;         // integer type
 ```
 
+## Character literal expressions
+
+A character literal expression consists of a single [CHAR_LITERAL] token.
+
+> **Note**: This section is incomplete.
+
+## String literal expressions
+
+A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
+
+> **Note**: This section is incomplete.
+
+## Byte literal expressions
+
+A byte literal expression consists of a single [BYTE_LITERAL] token.
+
+> **Note**: This section is incomplete.
+
+## Byte string literal expressions
+
+A string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
+
+> **Note**: This section is incomplete.
+
 ## Integer literal expressions
 
 An integer literal expression consists of a single [INTEGER_LITERAL] token.
@@ -120,6 +144,12 @@ The value of the expression is determined from the string representation of the 
 > **Note**: `inf` and `NaN` are not literal tokens.
 > The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
 > In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
+
+## Boolean literal expressions
+
+A boolean literal expression consists of a single [BOOLEAN_LITERAL] token.
+
+> **Note**: This section is incomplete.
 
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
