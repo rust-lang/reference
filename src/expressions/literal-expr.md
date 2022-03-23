@@ -63,7 +63,12 @@ let a: u64 = 123;                  // type u64
 
 The value of the expression is determined from the string representation of the token as follows:
 
-* An integer radix is chosen by inspecting the first two characters of the string: `0b` indicates radix 2, `0o` indicates radix 8, `0x` indicates radix 16; otherwise the radix is 10.
+* An integer radix is chosen by inspecting the first two characters of the string, as follows:
+
+    * `0b` indicates radix 2
+    * `0o` indicates radix 8
+    * `0x` indicates radix 16
+    * otherwise the radix is 10.
 
 * If the radix is not 10, the first two characters are removed from the string.
 
