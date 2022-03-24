@@ -148,7 +148,6 @@ Reference Manual], or elsewhere on [developer.arm.com].
 
 > ***Note***: The following pairs of features should both be marked as enabled
 > or disabled together if used:
-> - `fp` and `neon`, in order facilitate inlining in more places, among other reasons.
 > - `paca` and `pacg`, which LLVM currently implements as one feature.
 
 
@@ -167,15 +166,14 @@ Feature        | Implicitly Enables | Feature Name
 `fcma`         | `neon`         | FEAT_FCMA - Floating point complex number support
 `fhm`          | `fp16`         | FEAT_FHM - Half-precision FP FMLAL instructions
 `flagm`        |                | FEAT_FlagM - Conditional flag manipulation
-`fp`           |                | FEAT_FP - Floating point extension
-`fp16`         | `fp`, `neon`   | FEAT_FP16 - Half-precision FP data processing
+`fp16`         | `neon`         | FEAT_FP16 - Half-precision FP data processing
 `frintts`      |                | FEAT_FRINTTS - Floating-point to int helper instructions
 `i8mm`         |                | FEAT_I8MM - Int8 Matrix Multiplication
-`jsconv`       | `fp`, `neon`   | FEAT_JSCVT - JavaScript conversion instruction
+`jsconv`       | `neon`         | FEAT_JSCVT - JavaScript conversion instruction
 `lse`          |                | FEAT_LSE - Large System Extension
 `lor`          |                | FEAT_LOR - Limited Ordering Regions extension
 `mte`          |                | FEAT_MTE - Memory Tagging Extension
-`neon`         | `fp`           | FEAT_AdvSIMD - Advanced SIMD extension
+`neon`         |                | FEAT_FP & FEAT_AdvSIMD - Floating Point and Advanced SIMD extension
 `pan`          |                | FEAT_PAN - Privileged Access-Never extension
 `paca`         |                | FEAT_PAuth - Pointer Authentication (address authentication)
 `pacg`         |                | FEAT_PAuth - Pointer Authentication (generic authentication)
