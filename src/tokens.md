@@ -216,6 +216,7 @@ a context-free language can't because the only way to express "counting" is
 as a destructive operation which forces you to forget the count. This allows
 for the "comparison" of two counts (such (as (balanced) (parens))) but not 3+.
 
+See [the proof for more formal details](https://github.com/rust-lang/rust/blob/5187be620c76a313a19b9b596e1bce3a80a345dd/src/grammar/raw-string-literal-ambiguity.md).
 Examples for string literals:
 
 ```rust
