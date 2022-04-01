@@ -197,7 +197,7 @@ following forms:
 > &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
 
 Raw string literals do not process any escapes. They start with the character
-`U+0072` (`r`), followed by zero or more of the character `U+0023` (`#`) and a
+`U+0072` (`r`), followed by fewer than 256 of the character `U+0023` (`#`) and a
 `U+0022` (double-quote) character. The _raw string body_ can contain any sequence
 of Unicode characters and is terminated only by another `U+0022` (double-quote)
 character, followed by the same number of `U+0023` (`#`) characters that preceded
@@ -288,7 +288,7 @@ following forms:
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
 
 Raw byte string literals do not process any escapes. They start with the
-character `U+0062` (`b`), followed by `U+0072` (`r`), followed by zero or more
+character `U+0062` (`b`), followed by `U+0072` (`r`), followed by fewer than 256
 of the character `U+0023` (`#`), and a `U+0022` (double-quote) character. The
 _raw string body_ can contain any sequence of ASCII characters and is terminated
 only by another `U+0022` (double-quote) character, followed by the same number of
