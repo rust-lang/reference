@@ -18,11 +18,7 @@ table production] form, and appear in `monospace` font.
 
 ## Literals
 
-A literal is an expression consisting of a single token, rather than a sequence
-of tokens, that immediately and directly denotes the value it evaluates to,
-rather than referring to it by name or some other evaluation rule. A literal is
-a form of [constant expression](const_eval.md#constant-expressions), so is
-evaluated (primarily) at compile time.
+Literals are tokens used in [literal expressions].
 
 ### Examples
 
@@ -363,74 +359,55 @@ An _integer literal_ has one of four forms:
   (`0b`) and continues as any mixture (with at least one digit) of binary digits
   and underscores.
 
-Like any literal, an integer literal may be followed (immediately,
-without any spaces) by an _integer suffix_, which forcibly sets the
-type of the literal. The integer suffix must be the name of one of the
-integral types: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`,
-`u128`, `i128`, `usize`, or `isize`.
-
-The type of an _unsuffixed_ integer literal is determined by type inference:
-
-* If an integer type can be _uniquely_ determined from the surrounding
-  program context, the unsuffixed integer literal has that type.
-
-* If the program context under-constrains the type, it defaults to the
-  signed 32-bit integer `i32`.
-
-* If the program context over-constrains the type, it is considered a
-  static type error.
+Like any literal, an integer literal may be followed (immediately, without any spaces) by an _integer suffix_, which must be the name of one of the [primitive integer types][numeric types]:
+`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`.
+See [literal expressions] for the effect of these suffixes.
 
 Examples of integer literals of various forms:
 
 ```rust
-123;                               // type i32
-123i32;                            // type i32
-123u32;                            // type u32
-123_u32;                           // type u32
-let a: u64 = 123;                  // type u64
+# #![allow(overflowing_literals)]
+123;
+123i32;
+123u32;
+123_u32;
 
-0xff;                              // type i32
-0xff_u8;                           // type u8
+0xff;
+0xff_u8;
+0x01_f32; // integer 7986, not floating-point 1.0
+0x01_e3;  // integer 483, not floating-point 1000.0
 
-0o70;                              // type i32
-0o70_i16;                          // type i16
+0o70;
+0o70_i16;
 
-0b1111_1111_1001_0000;             // type i32
-0b1111_1111_1001_0000i64;          // type i64
-0b________1;                       // type i32
+0b1111_1111_1001_0000;
+0b1111_1111_1001_0000i64;
+0b________1;
 
-0usize;                            // type usize
+0usize;
+
+// These are too big for their type, but are still valid tokens
+
+128_i8;
+256_u8;
+
 ```
+
+Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
 
 Examples of invalid integer literals:
 
 ```rust,compile_fail
-// invalid suffixes
-
-0invalidSuffix;
-
 // uses numbers of the wrong base
 
-123AFB43;
 0b0102;
 0o0581;
-
-// integers too big for their type (they overflow)
-
-128_i8;
-256_u8;
 
 // bin, hex, and octal literals must have at least one digit
 
 0b_;
 0b____;
 ```
-
-Note that the Rust syntax considers `-1i8` as an application of the [unary minus
-operator] to an integer literal `1i8`, rather than
-a single integer literal.
-
-[unary minus operator]: expressions/operator-expr.md#negation-operators
 
 #### Tuple index
 
@@ -464,60 +441,124 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > **<sup>Lexer</sup>**\
 > FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an [identifier]_)\
+>   _(not immediately followed by `.`, `_` or an XID_Start character)_\
 > &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
 > &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
 >                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
 >
 > FLOAT_EXPONENT :\
-> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)?
+> &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)<sup>?</sup>
 >               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
 >
 > FLOAT_SUFFIX :\
 > &nbsp;&nbsp; `f32` | `f64`
 
-A _floating-point literal_ has one of two forms:
+A _floating-point literal_ has one of three forms:
 
 * A _decimal literal_ followed by a period character `U+002E` (`.`). This is
   optionally followed by another decimal literal, with an optional _exponent_.
 * A single _decimal literal_ followed by an _exponent_.
+* A single _decimal literal_ (in which case a suffix is required).
 
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
-The suffix forcibly sets the type of the literal. There are two valid
-_floating-point suffixes_, `f32` and `f64` (the 32-bit and 64-bit floating point
-types), which explicitly determine the type of the literal.
-
-The type of an _unsuffixed_ floating-point literal is determined by
-type inference:
-
-* If a floating-point type can be _uniquely_ determined from the
-  surrounding program context, the unsuffixed floating-point literal
-  has that type.
-
-* If the program context under-constrains the type, it defaults to `f64`.
-
-* If the program context over-constrains the type, it is considered a
-  static type error.
+There are two valid _floating-point suffixes_: `f32` and `f64` (the names of the 32-bit and 64-bit [primitive floating-point types][floating-point types]).
+See [literal expressions] for the effect of these suffixes.
 
 Examples of floating-point literals of various forms:
 
 ```rust
-123.0f64;        // type f64
-0.1f64;          // type f64
-0.1f32;          // type f32
-12E+99_f64;      // type f64
-5f32;            // type f32
-let x: f64 = 2.; // type f64
+123.0f64;
+0.1f64;
+0.1f32;
+12E+99_f64;
+5f32;
+let x: f64 = 2.;
 ```
 
 This last example is different because it is not possible to use the suffix
 syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
 
-The representation semantics of floating-point numbers are described in
-["Machine Types"][machine types].
+Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
+
+#### Number pseudoliterals
+
+> **<sup>Lexer</sup>**\
+> NUMBER_PSEUDOLITERAL :\
+> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL ( . DEC_LITERAL )<sup>?</sup> FLOAT_EXPONENT\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX | INTEGER_SUFFIX )\
+> &nbsp;&nbsp; | DEC_LITERAL . DEC_LITERAL\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | INTEGER SUFFIX )\
+> &nbsp;&nbsp; | DEC_LITERAL NUMBER_PSEUDOLITERAL_SUFFIX_NO_E\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | FLOAT_SUFFIX )
+>
+> NUMBER_PSEUDOLITERAL_SUFFIX :\
+> &nbsp;&nbsp; IDENTIFIER_OR_KEYWORD <sub>_not matching INTEGER_SUFFIX or FLOAT_SUFFIX_</sub>
+>
+> NUMBER_PSEUDOLITERAL_SUFFIX_NO_E :\
+> &nbsp;&nbsp; NUMBER_PSEUDOLITERAL_SUFFIX <sub>_not beginning with `e` or `E`_</sub>
+
+Tokenization of numeric literals allows arbitrary suffixes as described in the grammar above.
+These values generate valid tokens, but are not valid [literal expressions], so are usually an error except as macro arguments.
+
+Examples of such tokens:
+```rust,compile_fail
+0invalidSuffix;
+123AFB43;
+0b010a;
+0xAB_CD_EF_GH;
+2.0f80;
+2e5f80;
+2e5e6;
+2.0e5e6;
+1.3e10u64;
+0b1111_f32;
+```
+
+#### Reserved forms similar to number literals
+
+> **<sup>Lexer</sup>**\
+> RESERVED_NUMBER :\
+> &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`&ZeroWidthSpace;]\
+> &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`&ZeroWidthSpace;]\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an XID_Start character)_\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) `e`\
+> &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
+> &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
+> &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
+> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)<sup>?</sup> (`e`|`E`) (`+`|`-`)<sup>?</sup> _end of input or not DEC_DIGIT_
+
+The following lexical forms similar to number literals are _reserved forms_.
+Due to the possible ambiguity these raise, they are rejected by the tokenizer instead of being interpreted as separate tokens.
+
+* An unsuffixed binary or octal literal followed, without intervening whitespace, by a decimal digit out of the range for its radix.
+
+* An unsuffixed binary, octal, or hexadecimal literal followed, without intervening whitespace, by a period character (with the same restrictions on what follows the period as for floating-point literals).
+
+* An unsuffixed binary or octal literal followed, without intervening whitespace, by the character `e`.
+
+* Input which begins with one of the radix prefixes but is not a valid binary, octal, or hexadecimal literal (because it contains no digits).
+
+* Input which has the form of a floating-point literal with no digits in the exponent.
+
+Examples of reserved forms:
+
+```rust,compile_fail
+0b0102;  // this is not `0b010` followed by `2`
+0o1279;  // this is not `0o127` followed by `9`
+0x80.0;  // this is not `0x80` followed by `.` and `0`
+0b101e;  // this is not a pseudoliteral, or `0b101` followed by `e`
+0b;      // this is not a pseudoliteral, or `0` followed by  `b`
+0b_;     // this is not a pseudoliteral, or `0` followed by  `b_`
+2e;      // this is not a pseudoliteral, or `2` followed by `e`
+2.0e;    // this is not a pseudoliteral, or `2.0` followed by `e`
+2em;     // this is not a pseudoliteral, or `2` followed by `em`
+2.0em;   // this is not a pseudoliteral, or `2.0` followed by `em`
+```
 
 ### Boolean literals
 
@@ -541,8 +582,6 @@ The two values of the boolean type are written `true` and `false`.
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
 macros.
-
-[loop labels]: expressions/loop-expr.md
 
 ## Punctuation
 
@@ -610,57 +649,6 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `[` `]` | Square brackets |
 | `(` `)` | Parentheses     |
 
-
-[Inferred types]: types/inferred.md
-[Range patterns]: patterns.md#range-patterns
-[Reference patterns]: patterns.md#reference-patterns
-[Subpattern binding]: patterns.md#identifier-patterns
-[Wildcard patterns]: patterns.md#wildcard-pattern
-[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
-[array types]: types/array.md
-[assignment]: expressions/operator-expr.md#assignment-expressions
-[attributes]: attributes.md
-[borrow]: expressions/operator-expr.md#borrow-operators
-[closures]: expressions/closure-expr.md
-[comparison]: expressions/operator-expr.md#comparison-operators
-[compound]: expressions/operator-expr.md#compound-assignment-expressions
-[constants]: items/constant-items.md
-[dereference]: expressions/operator-expr.md#the-dereference-operator
-[destructuring assignment]: expressions/underscore-expr.md
-[extern crates]: items/extern-crates.md
-[extern]: items/external-blocks.md
-[field]: expressions/field-expr.md
-[function pointer type]: types/function-pointer.md
-[functions]: items/functions.md
-[generics]: items/generics.md
-[identifier]: identifiers.md
-[if let]: expressions/if-expr.md#if-let-expressions
-[keywords]: keywords.md
-[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
-[machine types]: types/numeric.md
-[macros]: macros-by-example.md
-[match]: expressions/match-expr.md
-[negation]: expressions/operator-expr.md#negation-operators
-[negative impls]: items/implementations.md
-[never type]: types/never.md
-[paths]: paths.md
-[patterns]: patterns.md
-[question]: expressions/operator-expr.md#the-question-mark-operator
-[range]: expressions/range-expr.md
-[rangepat]: patterns.md#range-patterns
-[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
-[references]: types/pointer.md
-[sized]: trait-bounds.md#sized
-[struct expressions]: expressions/struct-expr.md
-[trait bounds]: trait-bounds.md
-[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
-[tuple structs]: items/structs.md
-[tuple variants]: items/enumerations.md
-[tuples]: types/tuple.md
-[use declarations]: items/use-declarations.md
-[use wildcards]: items/use-declarations.md
-[while let]: expressions/loop-expr.md#predicate-pattern-loops
-
 ## Reserved prefixes
 
 > **<sup>Lexer 2021+</sup>**\
@@ -696,3 +684,57 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 > lexes!{continue'foo}
 > lexes!{match"..." {}}
 > ```
+
+[Inferred types]: types/inferred.md
+[Range patterns]: patterns.md#range-patterns
+[Reference patterns]: patterns.md#reference-patterns
+[Subpattern binding]: patterns.md#identifier-patterns
+[Wildcard patterns]: patterns.md#wildcard-pattern
+[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[array types]: types/array.md
+[assignment]: expressions/operator-expr.md#assignment-expressions
+[attributes]: attributes.md
+[borrow]: expressions/operator-expr.md#borrow-operators
+[closures]: expressions/closure-expr.md
+[comparison]: expressions/operator-expr.md#comparison-operators
+[compound]: expressions/operator-expr.md#compound-assignment-expressions
+[constants]: items/constant-items.md
+[dereference]: expressions/operator-expr.md#the-dereference-operator
+[destructuring assignment]: expressions/underscore-expr.md
+[extern crates]: items/extern-crates.md
+[extern]: items/external-blocks.md
+[field]: expressions/field-expr.md
+[floating-point types]: types/numeric.md#floating-point-types
+[function pointer type]: types/function-pointer.md
+[functions]: items/functions.md
+[generics]: items/generics.md
+[identifier]: identifiers.md
+[if let]: expressions/if-expr.md#if-let-expressions
+[keywords]: keywords.md
+[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[literal expressions]: expressions/literal-expr.md
+[loop labels]: expressions/loop-expr.md
+[macros]: macros-by-example.md
+[match]: expressions/match-expr.md
+[negation]: expressions/operator-expr.md#negation-operators
+[negative impls]: items/implementations.md
+[never type]: types/never.md
+[numeric types]: types/numeric.md
+[paths]: paths.md
+[patterns]: patterns.md
+[question]: expressions/operator-expr.md#the-question-mark-operator
+[range]: expressions/range-expr.md
+[rangepat]: patterns.md#range-patterns
+[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[references]: types/pointer.md
+[sized]: trait-bounds.md#sized
+[struct expressions]: expressions/struct-expr.md
+[trait bounds]: trait-bounds.md
+[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
+[tuple structs]: items/structs.md
+[tuple variants]: items/enumerations.md
+[tuples]: types/tuple.md
+[unary minus operator]: expressions/operator-expr.md#negation-operators
+[use declarations]: items/use-declarations.md
+[use wildcards]: items/use-declarations.md
+[while let]: expressions/loop-expr.md#predicate-pattern-loops
