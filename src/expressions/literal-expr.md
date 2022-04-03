@@ -107,6 +107,7 @@ If the value does not fit in `u128`, the expression is rejected by the parser.
 > `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
 
 > **Note**: `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
+> See [Overflow] for notes on representing the most negative value for a signed type.
 
 ## Floating-point literal expressions
 
@@ -159,6 +160,7 @@ A boolean literal expression consists of a single [BOOLEAN_LITERAL] token.
 [numeric types]: ../types/numeric.md
 [suffix]: ../tokens.md#suffixes
 [negation operator]: operator-expr.md#negation-operators
+[overflow]: operator-expr.md#overflow
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
 [`f32::INFINITY`]: ../../core/primitive.f32.md#associatedconstant.INFINITY
 [`f32::NAN`]: ../../core/primitive.f32.md#associatedconstant.NAN

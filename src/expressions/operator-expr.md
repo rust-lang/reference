@@ -22,11 +22,19 @@ Integer operators will panic when they overflow when compiled in debug mode.
 The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used to control this more directly.
 The following things are considered to be overflow:
 
-* When `+`, `*` or `-` create a value greater than the maximum value, or less than the minimum value that can be stored.
-  This includes unary `-` on the smallest value of any signed integer type.
+* When `+`, `*` or binary `-` create a value greater than the maximum value, or less than the minimum value that can be stored.
+* Applying unary `-` to the most negative value of any signed integer type, unless the operand is a [literal expression] (or a literal expression standing alone inside one or more [grouped expressions][grouped expression]).
 * Using `/` or `%`, where the left-hand argument is the smallest integer of a signed integer type and the right-hand argument is `-1`.
   These checks occur even when `-C overflow-checks` is disabled, for legacy reasons.
 * Using `<<` or `>>` where the right-hand argument is greater than or equal to the number of bits in the type of the left-hand argument, or is negative.
+
+> **Note**: The exception for literal expressions behind unary `-` means that forms such as `-128_i8` or `let j: i8 = -(128)` never cause a panic and have the expected value of -128.
+>
+> In these cases, the literal expression already has the most negative value for its type (for example, `128_i8` has the value -128) because integer literals are truncated to their type per the description in [Integer literal expressions][literal expression].
+>
+> Negation of these most negative values leaves the value unchanged due to two's complement overflow conventions.
+>
+> In `rustc`, these most negative expressions are also ignored by the `overflowing_literals` lint check.
 
 ## Borrow operators
 
@@ -580,6 +588,8 @@ See [this test] for an example of using this dependency.
 
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
+[grouped expression]: grouped-expr.md
+[literal expression]: literal-expr.md#integer-literal-expressions
 [logical and]: ../types/boolean.md#logical-and
 [logical not]: ../types/boolean.md#logical-not
 [logical or]: ../types/boolean.md#logical-or
