@@ -150,8 +150,12 @@ The value of the expression is determined from the string representation of the 
 
 A boolean literal expression consists of one of the keywords `true` or `false`.
 
-> **Note**: This section is incomplete.
+The expression's type is the primitive [boolean type], and its value is:
+ * true if the keyword is `true`
+ * false if the keyword is `false`
 
+
+[boolean type]: ../types/boolean.md
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
