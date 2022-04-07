@@ -122,7 +122,7 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 
 > **<sup>Syntax</sup>**\
 > _LiteralPattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [BOOLEAN_LITERAL]\
+> &nbsp;&nbsp; &nbsp;&nbsp; `true` | `false`\
 > &nbsp;&nbsp; | [CHAR_LITERAL]\
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | [STRING_LITERAL]\
@@ -132,7 +132,6 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]
 
-[BOOLEAN_LITERAL]: tokens.md#boolean-literals
 [CHAR_LITERAL]: tokens.md#character-literals
 [BYTE_LITERAL]: tokens.md#byte-literals
 [STRING_LITERAL]: tokens.md#string-literals

@@ -10,7 +10,7 @@
 > &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
 > &nbsp;&nbsp; | [INTEGER_LITERAL][^out-of-range]\
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
-> &nbsp;&nbsp; | [BOOLEAN_LITERAL]
+> &nbsp;&nbsp; | `true` | `false`
 >
 > [^out-of-range]: A value ≥ 2<sup>128</sup> is not allowed.
 
@@ -18,7 +18,7 @@ A _literal expression_ is an expression consisting of a single token, rather tha
 
 A literal is a form of [constant expression], so is evaluated (primarily) at compile time.
 
-Each of the lexical [literal][literal tokens] forms described earlier can make up a literal expression.
+Each of the lexical [literal][literal tokens] forms described earlier can make up a literal expression, as can the keywords `true` and `false`.
 
 ```rust
 "hello";   // string type
@@ -148,7 +148,7 @@ The value of the expression is determined from the string representation of the 
 
 ## Boolean literal expressions
 
-A boolean literal expression consists of a single [BOOLEAN_LITERAL] token.
+A boolean literal expression consists of one of the keywords `true` or `false`.
 
 > **Note**: This section is incomplete.
 
@@ -176,4 +176,3 @@ A boolean literal expression consists of a single [BOOLEAN_LITERAL] token.
 [RAW_BYTE_STRING_LITERAL]: ../tokens.md#raw-byte-string-literals
 [INTEGER_LITERAL]: ../tokens.md#integer-literals
 [FLOAT_LITERAL]: ../tokens.md#floating-point-literals
-[BOOLEAN_LITERAL]: ../tokens.md#boolean-literals
