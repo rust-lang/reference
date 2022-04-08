@@ -560,15 +560,6 @@ Examples of reserved forms:
 2.0em;   // this is not a pseudoliteral, or `2.0` followed by `em`
 ```
 
-### Boolean literals
-
-> **<sup>Lexer</sup>**\
-> BOOLEAN_LITERAL :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `true`\
-> &nbsp;&nbsp; | `false`
-
-The two values of the boolean type are written `true` and `false`.
-
 ## Lifetimes and loop labels
 
 > **<sup>Lexer</sup>**\
