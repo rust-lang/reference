@@ -204,7 +204,7 @@ The availability of supported types for a particular register class may depend o
 | x86 | `mmx_reg` | N/A | Only clobbers |
 | x86 | `x87_reg` | N/A | Only clobbers |
 | AArch64 | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
-| AArch64 | `vreg` | `fp` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+| AArch64 | `vreg` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
 | AArch64 | `preg` | N/A | Only clobbers |
 | ARM | `reg` | None | `i8`, `i16`, `i32`, `f32` |
 | ARM | `sreg` | `vfp2` | `i32`, `f32` |
