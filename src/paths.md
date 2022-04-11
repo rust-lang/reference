@@ -88,7 +88,7 @@ Const arguments must be surrounded by braces unless they are a
 > &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>+</sup>
 >
 > _QualifiedPathType_ :\
-> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)? `>`
+> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)<sup>?</sup> `>`
 >
 > _QualifiedPathInType_ :\
 > &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>+</sup>
