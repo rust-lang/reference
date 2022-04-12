@@ -41,7 +41,7 @@ The following ABNF specifies the general syntax:
 ```text
 format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
-reg_spec := <register class> / "<explicit register>"
+reg_spec := <register class> / "\"" <explicit register> "\""
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
 reg_operand := dir_spec "(" reg_spec ")" operand_expr
 operand := reg_operand
@@ -184,7 +184,7 @@ Here is the list of currently supported register classes:
 >
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 >
-> - Some register classes are marked as "Only clobbers" which means that they cannot be used for inputs or outputs, only clobbers of the form `out("reg") _` or `lateout("reg") _`.
+> - Some register classes are marked as "Only clobbers" which means that they cannot be used for inputs or outputs, only clobbers of the form `out(<register class>) _` or `lateout(<register class>) _`.
 
 Each register class has constraints on which value types they can be used with.
 This is necessary because the way a value is loaded into a register depends on its type.
@@ -356,7 +356,7 @@ If all references to an operand already have modifiers then the warning is suppr
 ## ABI clobbers
 
 The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
-This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then a `lateout("reg") _` is implicitly added to the operands list.
+This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then `lateout("...") _` is implicitly added to the operands list (where the `...` is replaced by the register's name).
 
 `clobber_abi` may be specified any number of times. It will insert a clobber for all unique registers in the union of all specified calling conventions.
 
