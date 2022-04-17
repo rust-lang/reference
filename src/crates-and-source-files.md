@@ -103,15 +103,30 @@ This section has been moved to the [Preludes chapter](names/preludes.md).
 A crate that contains a `main` [function] can be compiled to an executable. If a
 `main` function is present, it must take no arguments, must not declare any
 [trait or lifetime bounds], must not have any [where clauses], and its return
-type must  be one of the following:
+type must implement the [`Termination`] trait.
 
-* `()`
-* `Result<(), E> where E: Error`
-<!-- * `!` -->
-<!-- * Result<!, E> where E: Error` -->
+```rust
+fn main() {}
+```
+```rust
+fn main() -> ! {
+    std::process::exit(0);
+}
+```
+```rust
+fn main() -> impl std::process::Termination {
+    std::process::ExitCode::SUCCESS
+}
+```
 
-> Note: The implementation of which return types are allowed is determined by
-> the unstable [`Termination`] trait.
+> **Note**: Types with implementations of [`Termination`] in the standard library include:
+>
+> * `()`
+> * [`!`]
+> * [`ExitCode`]
+> * `Result<(), E> where E: Debug`
+> * `Result<Infallible, E> where E: Debug`
+<!-- > * Result<!, E> where E: Debug` -->
 
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the testing.md file -->
@@ -143,11 +158,13 @@ or `_` (U+005F) characters.
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
 [Unicode alphanumeric]: ../std/primitive.char.html#method.is_alphanumeric
+[`!`]: types/never.md
 [_InnerAttribute_]: attributes.md
 [_Item_]: items.md
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
+[`ExitCode`]: ../std/process/struct.ExitCode.html
 [`Termination`]: ../std/process/trait.Termination.html
 [attribute]: attributes.md
 [attributes]: attributes.md

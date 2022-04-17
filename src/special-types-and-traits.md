@@ -92,6 +92,10 @@ The [`Sync`] trait indicates that a value of this type is safe to share between
 multiple threads. This trait must be implemented for all types used in
 immutable [`static` items].
 
+## `Termination`
+
+The [`Termination`] trait indicates the acceptable return types for the [main function] and [test functions].
+
 ## Auto traits
 
 The [`Send`], [`Sync`], [`Unpin`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto
@@ -151,6 +155,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`std::cmp`]: ../std/cmp/index.html
 [`std::marker::PhantomData<T>`]: ../std/marker/struct.PhantomData.html
 [`std::ops`]: ../std/ops/index.html
+[`Termination`]: ../std/process/trait.Termination.html
 [`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
 [`Sync`]: ../std/marker/trait.Sync.html
 [`Unpin`]: ../std/marker/trait.Unpin.html
@@ -168,11 +173,13 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [implementation items]: items/implementations.md
 [indexing expressions]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [interior mutability]: interior-mutability.md
+[main function]: crates-and-source-files.md#main-functions
 [Methods]: items/associated-items.md#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.md
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
 [`static` items]: items/static-items.md
+[test functions]: attributes/testing.md#the-test-attribute
 [the standard library]: ../std/index.html
 [trait object]: types/trait-object.md
 [Tuples]: types/tuple.md

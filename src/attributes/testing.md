@@ -9,16 +9,12 @@ enables the [`test` conditional compilation option].
 
 The *`test` attribute* marks a function to be executed as a test. These
 functions are only compiled when in test mode. Test functions must be free,
-monomorphic functions that take no arguments, and the return type must be one
-of the following:
+monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
 
 * `()`
-* `Result<(), E> where E: Error`
-<!-- * `!` -->
-<!-- * Result<!, E> where E: Error` -->
-
-> Note: The implementation of which return types are allowed is determined by
-> the unstable [`Termination`] trait.
+* `Result<(), E> where E: Debug`
+* `!`
+<!-- * Result<!, E> where E: Debug` -->
 
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the crates-and-source-files.md file -->
@@ -26,9 +22,12 @@ of the following:
 > Note: The test mode is enabled by passing the `--test` argument to `rustc`
 > or using `cargo test`.
 
-Tests that return `()` pass as long as they terminate and do not panic. Tests
-that return a `Result<(), E>` pass as long as they return `Ok(())`. Tests that
-do not terminate neither pass nor fail.
+The test harness calls the returned value's [`report`] method, and classifies the test as passed or failed depending on whether the resulting [`ExitCode`] represents successful termination.
+In particular:
+* Tests that return `()` pass as long as they terminate and do not panic.
+* Tests that return a `Result<(), E>` pass as long as they return `Ok(())`.
+* Tests that return `ExitCode::SUCCESS` pass, and tests that return `ExitCode::FAILURE` fail.
+* Tests that do not terminate neither pass nor fail.
 
 ```rust
 # use std::io;
@@ -85,5 +84,7 @@ fn mytest() {
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`Termination`]: ../../std/process/trait.Termination.html
+[`report`]: ../../std/process/trait.Termination.html#tymethod.report
 [`test` conditional compilation option]: ../conditional-compilation.md#test
 [attributes]: ../attributes.md
+[`ExitCode`]: ../../std/process/struct.ExitCode.html
