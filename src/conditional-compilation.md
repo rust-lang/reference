@@ -341,7 +341,9 @@ println!("I'm running on a {} machine!", machine_kind);
 
 Conditional compilation, be it features or targets, require an exponential number of configurations and test cases to be properly covered. By default, testing, linting, MIRI, docs and others will only run on the default set of features and for the current platform.
 
-CI jobs for different targets can help with linting, testing and building on different platforms, and there are certain tools like [cargo-hack](https://github.com/taiki-e/cargo-hack) and [cargo-all-features](https://github.com/frewsxcv/cargo-all-features) that allow you to test all combinations of features which can help reduce the amount of configuraton needed.
+Having a CI job per target an help with linting, testing and building for all targets. There are also some tools that accept a `--target` flag for cross compilation.
+
+For feature coverage, there are certain tools like [cargo-hack](https://github.com/taiki-e/cargo-hack) and [cargo-all-features](https://github.com/frewsxcv/cargo-all-features) that allow you to test all combinations of features which can help reduce the amount of configuraton needed.
 
 [IDENTIFIER]: identifiers.md
 [RAW_STRING_LITERAL]: tokens.md#raw-string-literals
