@@ -343,8 +343,6 @@ Conditional compilation, be it features or targets, require an exponential numbe
 
 CI jobs for different targets can help with linting, testing and building on different platforms, and there are certain tools like [cargo-hack](https://github.com/taiki-e/cargo-hack) and [cargo-all-features](https://github.com/frewsxcv/cargo-all-features) that allow you to test all combinations of features which can help reduce the amount of configuraton needed.
 
-Certain tools, like `rustfmt`, are an exception to this rule.
-
 [IDENTIFIER]: identifiers.md
 [RAW_STRING_LITERAL]: tokens.md#raw-string-literals
 [STRING_LITERAL]: tokens.md#string-literals
