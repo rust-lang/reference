@@ -339,7 +339,7 @@ println!("I'm running on a {} machine!", machine_kind);
 
 ## Caveats
 
-Conditional compilation, be it features or targets, require an exponential number of configurations and test cases to be properly covered. By default, testing, linting, MIRI, docs and others will only run on the default set of features and for the current platform.
+Conditional compilation, be it features or targets, require an exponential number of configurations and test cases to be properly covered. By default, testing, linting, Miri, docs and others will only run on the default set of features and for the current platform.
 
 Having a CI job per target can help with linting, testing and building for all targets. There are also some tools that accept a `--target` flag for cross compilation.
 
