@@ -202,7 +202,7 @@ unstable), which additionally require that the primitive integer and atomic have
 the same minimum alignment on the given target. No user-visible, stable cfg is
 exposed for that method at this time.
 
-[`core::sync::atomic`]: https://doc.rust-lang.org/nightly/core/sync/atomic/index.html
+[`core::sync::atomic`]: ../core/sync/atomic/index.html
 
 Possible values:
 
