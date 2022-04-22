@@ -26,6 +26,11 @@ These also point to memory owned by some other value.
 A mutable reference type is written `&mut type` or `&'a mut type`.
 A mutable reference (that hasn't been borrowed) is the only way to access the value it points to, so is not `Copy`.
 
+While a mutable reference is alive, it is the only reference pointing to the referent; no other reference,
+mutable or shared, point to the same value. For the safe subset of the language, this constraint is
+verified by the compiler. For code that use `unsafe`, it's up to the programmer to follow this constraint to avoid
+[undefined behavior] for correctness.
+
 ## Raw pointers (`*const` and `*mut`)
 
 > **<sup>Syntax</sup>**\
@@ -58,3 +63,4 @@ The standard library contains additional 'smart pointer' types beyond references
 [`unsafe` operation]: ../unsafety.md
 [dynamically sized types]: ../dynamically-sized-types.md
 [temporary value]: ../expressions.md#temporaries
+[undefined behavior]: ../behavior-considered-undefined.md
