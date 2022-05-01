@@ -43,15 +43,11 @@
 >   in an associated function of a [trait item] in the 2015 edition.
 
 A _function_ consists of a [block], along with a name and a set of parameters.
-Other than a name, all these are optional. Functions are declared with the
-keyword `fn`. Functions may declare a set of *input* [*variables*][variables]
-as parameters, through which the caller passes arguments into the function, and
-the *output* [*type*][type] of the value the function will return to its caller
-on completion.
+Other than a name, all these are optional.
+Functions are declared with the keyword `fn`.
+Functions may declare a set of *input* [*variables*][variables] as parameters, through which the caller passes arguments into the function, and the *output* [*type*][type] of the value the function will return to its caller on completion.
 
-When referred to, a _function_ yields a first-class *value* of the
-corresponding zero-sized [*function item type*], which
-when called evaluates to a direct call to the function.
+When referred to, a _function_ yields a first-class *value* of the corresponding zero-sized [*function item type*], which when called evaluates to a direct call to the function.
 
 For example, this is a simple function:
 ```rust
