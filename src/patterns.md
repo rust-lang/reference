@@ -585,7 +585,6 @@ Reference patterns are always irrefutable.
 > &nbsp;&nbsp; )
 >
 > _StructPatternEtCetera_ :\
-> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; `..`
 
 [_OuterAttribute_]: attributes.md
