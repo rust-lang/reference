@@ -501,7 +501,7 @@ assert_eq!(std::mem::size_of::<Enum16>(), 4);
 
 The `align` and `packed` modifiers can be used to respectively raise or lower
 the alignment of `struct`s and `union`s. `packed` may also alter the padding
-between fields.
+between fields (although it will not alter the padding inside of any field).
 
 The alignment is specified as an integer parameter in the form of
 `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a
@@ -515,6 +515,11 @@ For `packed`, if the specified alignment is greater than the type's alignment
 without the `packed` modifier, then the alignment and layout is unaffected.
 The alignments of each field, for the purpose of positioning fields, is the
 smaller of the specified alignment and the alignment of the field's type.
+Inter-field padding is guaranteed to be the minimum required in order to
+satisfy each field's (possibly altered) alignment (although note that, on its
+own, `packed` does not provide any guarantee about field ordering). An
+important consequence of these rules is that a type with `#[repr(packed(1))]`
+(or `#[repr(packed)]`) will have no inter-field padding.
 
 The `align` and `packed` modifiers cannot be applied on the same type and a
 `packed` type cannot transitively contain another `align`ed type. `align` and
