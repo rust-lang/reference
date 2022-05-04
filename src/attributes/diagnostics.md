@@ -291,14 +291,14 @@ When used on a function in a trait implementation, the attribute does nothing.
 > ```
 
 > Note: It is idiomatic to use a [let statement] with a pattern of `_`
-> when a must-used value is purposely discarded.
+> when a must-used value is purposely discarded. It is good practice to explicitely set the expected return type, so that in case of refactoring you need to validate discarding the new return type.
 >
 > ```rust
 > #[must_use]
 > fn five() -> i32 { 5i32 }
 >
 > // Does not violate the unused_must_use lint.
-> let _ = five();
+> let _: i32 = five();
 > ```
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
