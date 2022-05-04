@@ -236,7 +236,7 @@ five();
 ```
 
 When used on a [trait declaration], a [call expression] of an [expression
-statement] to a function that returns an [impl trait] of that trait violates
+statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates
 the `unused_must_use` lint.
 
 ```rust
@@ -309,6 +309,7 @@ When used on a function in a trait implementation, the attribute does nothing.
 [attributes]: ../attributes.md
 [block expression]: ../expressions/block-expr.md
 [call expression]: ../expressions/call-expr.md
+[dyn trait]: ../types/trait-object.md
 [enum variant]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
 [expression statement]: ../statements.md#expression-statements
