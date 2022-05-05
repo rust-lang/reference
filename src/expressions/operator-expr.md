@@ -440,6 +440,27 @@ Casts an enum to its discriminant, then uses a numeric cast if needed.
 
 Casts to the `char` with the corresponding code point.
 
+#### Pointer to pointer cast
+
+Casting from a pointer to unsized type to pointer to sized type discards the pointer metadata, resulting in just a pointer to the referenced memory.
+Casting between pointers to unsized type preserves the pointer metadata unchanged (e.g. the slice element length remains the same).
+
+To illustrate:
+
+```rust
+#![feature(ptr_metadata)]
+use std::ptr;
+
+let u8_slice_ptr = ptr::slice_from_raw_parts::<u8>(ptr::null(), 4);
+assert_eq!((ptr::null(), 4), u8_slice_ptr.to_raw_parts());
+
+let u8_ptr = u8_slice_ptr as *const u8;
+assert_eq!((ptr::null(), ()), u8_ptr.to_raw_parts());
+
+let u16_slice_ptr = u8_slice_ptr as *const [u16];
+assert_eq!((ptr::null(), 4), u16_slice_ptr.to_raw_parts());
+```
+
 #### Pointer to address cast
 
 Casting from a raw pointer to an integer produces the machine address of the referenced memory.
