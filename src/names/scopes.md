@@ -3,7 +3,7 @@
 A *scope* is the region of source text where a named [entity] may be referenced with that name.
 The following sections provide details on the scoping rules and behavior, which depend on the kind of entity and where it is declared.
 The process of how names are resolved to entities is described in the [name resolution] chapter.
-More information on "drop scopes" used for the purpose of running destructors maybe be found in the [destructors] chapter.
+More information on "drop scopes" used for the purpose of running destructors may be found in the [destructors] chapter.
 
 ## Item scopes
 
@@ -20,10 +20,10 @@ A [path] may be used to refer to an item in another module.
 
 ### Associated item scopes
 
-[Associated items] are not scoped and can only be referred to by using a [path] leading from the type they are associated with.
+[Associated items] are not scoped and can only be referred to by using a [path] leading from the type or trait they are associated with.
 [Methods] can also be referred to via [call expressions].
 
-Similar to items within a module or block, it is an error to introduce an item within a trait or implementation that is a duplicate of another item in the trait or impl in the same namespace.
+Similar to items within a module or block,  it is an error to introduce an item within a trait or implementation that is a duplicate of another item in the trait or impl in the same namespace.
 
 ## Pattern binding scopes
 
@@ -90,24 +90,33 @@ fn where_scope<'a, T, U>()
 {}
 ```
 
-Generic scopes do not extend into [items] declared inside a function.
+It is an error for [items] declared inside a function to refer to a generic parameter from their outer scope.
+
+```rust,compile_fail
+fn example<T>() {
+    fn inner(x: T) {} // ERROR: can't use generic parameters from outer function
+}
+```
 
 ### Generic parameter shadowing
 
-It is an error to shadow a generic parameter.
-Items declared within functions are allowed to reuse generic parameter names from the function because generic scopes do not extend to inner items.
+It is an error to shadow a generic parameter with the exception that items declared within functions are allowed to shadow generic parameter names from the function.
 
 ```rust
-fn example<'a>() {
-    // Items within functions are allowed to reuse generic parameter in scope
-    // because all generics are not in scope within inner items.
-    fn inner<'a>() {} // OK
+fn example<'a, T, const N: usize>() {
+    // Items within functions are allowed to shadow generic parameter in scope.
+    fn inner_lifetime<'a>() {} // OK
+    fn inner_type<T>() {} // OK
+    fn inner_const<const N: usize>() {} // OK
 }
 ```
 
 ```rust,compile_fail
-trait SomeTrait<'a> {
-    fn example<'a>() {} // ERROR: 'a is already in scope
+trait SomeTrait<'a, T, const N: usize> {
+    fn example_lifetime<'a>() {} // ERROR: 'a is already in use
+    fn example_type<T>() {} // ERROR: T is already in use
+    fn example_const<const N: usize>() {} // ERROR: N is already in use
+    fn example_mixed<const T: usize>() {} // ERROR: T is already in use
 }
 ```
 
@@ -262,10 +271,26 @@ Helper attributes shadow other attributes of the same name in scope.
 Although [`Self`] is a keyword with special meaning, it interacts with name resolution in a way similar to normal names.
 
 The implicit `Self` type in the definition of a [struct], [enum], [union], [trait], or [implementation] is treated similarly to a [generic parameter](#generic-parameter-scopes), and is in scope in the same way as a generic type parameter.
-For structs, enums, and unions, it is in scope starting after the generic parameters.
-For traits and implementations, it is in scope starting just before the generic parameters.
 
 The implicit `Self` constructor in the value [namespace] of an [implementation] is in scope within the body of the implementation (the implementation's [associated items]).
+
+```rust
+// Self type within struct definition.
+struct Recursive {
+    f1: Option<Box<Self>>
+}
+
+// Self type within generic parameters.
+struct SelfGeneric<T: Into<Self>>(T);
+
+// Self value constructor within an implementation.
+struct ImplExample();
+impl ImplExample {
+    fn example() -> Self { // Self type
+        Self() // Self value constructor
+    }
+}
+```
 
 [_BareFunctionType_]: ../types/function-pointer.md
 [_GenericParams_]: ../items/generics.md

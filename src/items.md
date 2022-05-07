@@ -53,8 +53,9 @@ There are several kinds of items:
 * [implementations]
 * [`extern` blocks]
 
-Items may be declared in the [root of the crate], a [module][modules], or a [statement].
-Additionally, a subset of items, called [associated items], may be declared in [traits] and [implementations].
+Items may be declared in the [root of the crate], a [module][modules], or a [block expression].
+A subset of items, called [associated items], may be declared in [traits] and [implementations].
+A subset of items, called external items, may be declared in [`extern` blocks].
 
 Items may be defined in any order, with the exception of [`macro_rules`] which has its own scoping behavior.
 [Name resolution] of item names allows items to be defined before or after where the item is referred to in the module or block.
@@ -83,6 +84,7 @@ See [item scopes] for information on the scoping rules of items.
 [`macro_rules`]: macros-by-example.md
 [`use` declarations]: items/use-declarations.md
 [associated items]: items/associated-items.md
+[block expression]: expressions/block-expr.md
 [constant items]: items/constant-items.md
 [enumeration definitions]: items/enumerations.md
 [function definitions]: items/functions.md
