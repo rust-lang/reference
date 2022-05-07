@@ -216,8 +216,7 @@ Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
 
-Const functions are not allowed to be [async](#async-functions), and cannot
-use the [`extern` function qualifier](#extern-function-qualifier).
+Const functions are not allowed to be [async](#async-functions).
 
 ## Async functions
 
