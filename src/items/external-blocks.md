@@ -162,6 +162,29 @@ this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
 
+#### Linking modifiers: `bundle`
+
+This modifier is only compatible with the `static` linking kind.
+Using any other kind will result in a compiler error.
+
+When building a rlib or staticlib `+bundle` means that all object files from the native static
+library will be added to the rlib or staticlib archive, and then used from it during linking of
+the final binary.
+
+When building a rlib `-bundle` means that the native static library is registered as a dependency
+of that rlib "by name", and object files from it are included only during linking of the final
+binary, the file search by that name is also performed during final linking. \
+When building a staticlib `-bundle` means that the native static library is simply not included
+into the archive and some higher level build system will need to add it later during linking of
+the final binary.
+
+This modifier has no effect when building other targets like executables or dynamic libraries.
+
+The default for this modifier is `+bundle`.
+
+More implementation details about this modifier can be found in
+[`bundle` documentation for rustc].
+
 #### Linking modifiers: `whole-archive`
 
 This modifier is only compatible with the `static` linking kind.
@@ -170,7 +193,10 @@ Using any other kind will result in a compiler error.
 `+whole-archive` means that the static library is linked as a whole archive
 without throwing any object files away.
 
-More implementation details about this modifier can be found in [documentation for rustc].
+The default for this modifier is `-whole-archive`.
+
+More implementation details about this modifier can be found in
+[`whole-archive` documentation for rustc].
 
 ### The `link_name` attribute
 
@@ -205,4 +231,5 @@ restrictions as [regular function parameters].
 [_Visibility_]: ../visibility-and-privacy.md
 [attributes]: ../attributes.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
-[documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
+[`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
+[`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
