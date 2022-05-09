@@ -35,13 +35,15 @@ Use declarations support a number of convenient shortcuts:
 An example of `use` declarations:
 
 ```rust
-use std::option::Option::{Some, None};
 use std::collections::hash_map::{self, HashMap};
 
 fn foo<T>(_: T){}
 fn bar(map1: HashMap<String, usize>, map2: hash_map::HashMap<String, usize>){}
 
 fn main() {
+    // use declarations can also exist inside of functions
+    use std::option::Option::{Some, None};
+
     // Equivalent to 'foo(vec![std::option::Option::Some(1.0f64),
     // std::option::Option::None]);'
     foo(vec![Some(1.0f64), None]);
