@@ -167,8 +167,7 @@ for soundness. They are:
 
  1. The fields are properly aligned.
  2. The fields do not overlap.
- 3. The minimum alignment of the type is at least the maximum alignment of its
-    fields.
+ 3. The alignment of the type is at least the maximum alignment of its fields.
 
 Formally, the first guarantee means that the offset of any field is divisible by
 that field's alignment. The second guarantee means that the fields can be
