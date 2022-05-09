@@ -86,8 +86,7 @@ String slices are a UTF-8 representation of characters that have the same layout
 
 ## Tuple Layout
 
-Tuples have the same layout guarantees as a struct with the same fields when
-laid out according to the default struct representation.
+Tuples are laid out according to the default representation.
 
 The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
