@@ -216,6 +216,8 @@ Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
 
+Const functions may use the [`extern`] function qualifier, but only with the `"Rust"` and `"C"` ABIs.
+
 Const functions are not allowed to be [async](#async-functions).
 
 ## Async functions
@@ -382,6 +384,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [const functions]: ../const_eval.md#const-functions
 [tuple struct]: structs.md
 [tuple variant]: enumerations.md
+[`extern`]: #extern-function-qualifier
 [external block]: external-blocks.md
 [path]: ../paths.md
 [block]: ../expressions/block-expr.md
