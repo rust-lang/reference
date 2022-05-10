@@ -50,7 +50,7 @@ The following is a list of namespaces, with their corresponding entities:
     * [Attribute macros]
 * Lifetime Namespace
     * [Generic lifetime parameters]
-* Label Namespace[^rustc-lifetime-shadow]
+* Label Namespace
     * [Loop labels]
 
 An example of how overlapping names in different namespaces can be used unambiguously:
@@ -114,12 +114,6 @@ This prevents one style from shadowing another.
 For example, the [`cfg` attribute] and the [`cfg` macro] are two different entities with the same name in the macro namespace, but they can still be used in their respective context.
 
 It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
-
-[^rustc-lifetime-shadow]: `rustc` currently warns about shadowing when using
-    the same name for a label and lifetime in the same scope, but it still
-    treats them independently. This is intended as a future-compatibility
-    warning about a possible extension to the language. See [PR
-    #24162](https://github.com/rust-lang/rust/pull/24162).
 
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
