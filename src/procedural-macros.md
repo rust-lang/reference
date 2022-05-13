@@ -51,7 +51,7 @@ token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
 type, unlike `Vec<TokenTree>`, is cheap to clone.
 
 All tokens have an associated `Span`. A `Span` is an opaque value that cannot
-be modified but can be manufactured. `Span`s represent an extent of source
+be modified but can be manufactured. `Spans` represent an extent of source
 code within a program and are primarily used for error reporting. You can modify
 the `Span` of any token.
 
