@@ -125,7 +125,7 @@ Moreover, by holding a shared reference while evaluating the guard, mutation ins
 ## Attributes on match arms
 
 Outer attributes are allowed on match arms.
-The only attributes that have meaning on match arms are [`cfg`], [`cold`], and the [lint check attributes].
+The only attributes that have meaning on match arms are [`cfg`] and the [lint check attributes].
 
 [Inner attributes] are allowed directly after the opening brace of the match expression in the same expression contexts as [attributes on block expressions].
 
@@ -135,7 +135,6 @@ The only attributes that have meaning on match arms are [`cfg`], [`cold`], and t
 [_InnerAttribute_]: ../attributes.md
 [_OuterAttribute_]: ../attributes.md
 [`cfg`]: ../conditional-compilation.md
-[`cold`]: ../attributes/codegen.md#the-cold-attribute
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [Range Expression]: range-expr.md
 
