@@ -52,8 +52,9 @@ type, unlike `Vec<TokenTree>`, is cheap to clone.
 
 All tokens have an associated `Span`. A `Span` is an opaque value that cannot
 be modified but can be manufactured. `Span`s represent an extent of source
-code within a program and are primarily used for error reporting. You can modify
-the `Span` of any token.
+code within a program and are primarily used for error reporting. While you
+cannot modify a `Span` itself, you can always change the `Span` *associated*
+with any token, such as through getting a `Span` from another token.
 
 ### Procedural macro hygiene
 
