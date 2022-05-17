@@ -24,16 +24,16 @@ Literals are tokens used in [literal expressions].
 
 #### Characters and strings
 
-|                                              | Example         | `#` sets   | Characters  | Escapes             |
-|----------------------------------------------|-----------------|-------------|-------------|---------------------|
-| [Character](#character-literals)             | `'H'`           | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [String](#string-literals)                   | `"hello"`       | 0           | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
-| [Raw string](#raw-string-literals)           | `r#"hello"#`    | 0 or more\* | All Unicode | `N/A`                                                      |
-| [Byte](#byte-literals)                       | `b'H'`          | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Byte string](#byte-string-literals)         | `b"hello"`      | 0           | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
-| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | 0 or more\* | All ASCII   | `N/A`                                                      |
+|                                              | Example         | `#` sets\* | Characters  | Escapes             |
+|----------------------------------------------|-----------------|------------|-------------|---------------------|
+| [Character](#character-literals)             | `'H'`           | 0          | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [String](#string-literals)                   | `"hello"`       | 0          | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
+| [Raw string](#raw-string-literals)           | `r#"hello"#`    | <256       | All Unicode | `N/A`                                                      |
+| [Byte](#byte-literals)                       | `b'H'`          | 0          | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Byte string](#byte-string-literals)         | `b"hello"`      | 0          | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
+| [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | <256       | All ASCII   | `N/A`                                                      |
 
-\* The number of `#`s on each side of the same literal must be equivalent
+\* The number of `#`s on each side of the same literal must be equivalent.
 
 #### ASCII escapes
 
@@ -193,7 +193,7 @@ following forms:
 > &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
 
 Raw string literals do not process any escapes. They start with the character
-`U+0072` (`r`), followed by zero or more of the character `U+0023` (`#`) and a
+`U+0072` (`r`), followed by fewer than 256 of the character `U+0023` (`#`) and a
 `U+0022` (double-quote) character. The _raw string body_ can contain any sequence
 of Unicode characters and is terminated only by another `U+0022` (double-quote)
 character, followed by the same number of `U+0023` (`#`) characters that preceded
@@ -284,7 +284,7 @@ following forms:
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
 
 Raw byte string literals do not process any escapes. They start with the
-character `U+0062` (`b`), followed by `U+0072` (`r`), followed by zero or more
+character `U+0062` (`b`), followed by `U+0072` (`r`), followed by fewer than 256
 of the character `U+0023` (`#`), and a `U+0022` (double-quote) character. The
 _raw string body_ can contain any sequence of ASCII characters and is terminated
 only by another `U+0022` (double-quote) character, followed by the same number of
