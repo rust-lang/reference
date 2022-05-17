@@ -204,9 +204,21 @@ extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-Functions with an ABI that differs from `"Rust"` do not support unwinding in the
-exact same way that Rust does. Therefore, unwinding past the end of functions
-with such ABIs causes the process to abort.
+<!-- draft...
+The choice of ABIs, together with the [panic mode] (add link!), determines the behavior when unwinding out of a function.
+
+(write table, double check against RFC)
+
+| ABI | panic mode | behavior |
+| --- | ---------- | -------- |
+| `"Rust"`, `"C-unwind"`, `"<other>-unwind"` | unwind | unwinds "normally" |
+| `"C"`, others | unwind | UB, I think? |
+| `"Rust"`, `"C-unwind"`, `"<other>-unwind"` | abort | aborts process (see note) |
+| `"C"`, others | unwind | pretty sure this is UB |
+
+Do we want to mention the "mixed panic types" issue here?
+
+-->
 
 > **Note**: The LLVM backend of the `rustc` implementation
 aborts the process by executing an illegal instruction.
