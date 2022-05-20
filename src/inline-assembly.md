@@ -184,7 +184,7 @@ Here is the list of currently supported register classes:
 >
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 >
-> - Some register classes are marked as "Only clobbers" which means that they cannot be used for inputs or outputs, only clobbers of the form `out(<register class>) _` or `lateout(<register class>) _`.
+> - Some register classes are marked as "Only clobbers" which means that registers in these classes cannot be used for inputs or outputs, only clobbers of the form `out(<explicit register>) _` or `lateout(<explicit register>) _`.
 
 Each register class has constraints on which value types they can be used with.
 This is necessary because the way a value is loaded into a register depends on its type.
