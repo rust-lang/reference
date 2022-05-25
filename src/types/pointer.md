@@ -11,8 +11,8 @@ They can be moved or copied, stored into data structs, and returned from functio
 
 ### Shared references (`&`)
 
-These point to memory _owned by some other value_.
-When a shared reference to a value is created it prevents direct mutation of the value.
+Shared references point to memory which is owned by some other value.
+When a shared reference to a value is created, it prevents direct mutation of the value.
 [Interior mutability] provides an exception for this in certain circumstances.
 As the name suggests, any number of shared references to a value may exist.
 A shared reference type is written `&type`, or `&'a type` when you need to specify an explicit lifetime.
@@ -22,7 +22,7 @@ Releasing a reference has no effect on the value it points to, but referencing o
 
 ### Mutable references (`&mut`)
 
-These also point to memory owned by some other value.
+Mutable references point to memory which is owned by some other value.
 A mutable reference type is written `&mut type` or `&'a mut type`.
 A mutable reference (that hasn't been borrowed) is the only way to access the value it points to, so is not `Copy`.
 
