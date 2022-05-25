@@ -11,8 +11,8 @@ They can be moved or copied, stored into data structs, and returned from functio
 
 ### Shared references (`&`)
 
-These point to memory _owned by some other value_.
-When a shared reference to a value is created it prevents direct mutation of the value.
+Shared references points to a memory which is _owned by some other value_.
+When a shared reference to a value is created, it prevents direct mutation of the value.
 [Interior mutability] provides an exception for this in certain circumstances.
 As the name suggests, any number of shared references to a value may exist.
 A shared reference type is written `&type`, or `&'a type` when you need to specify an explicit lifetime.
