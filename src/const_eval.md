@@ -42,9 +42,8 @@ to be run.
 * The [dereference operator] except for raw pointers.
 * [Grouped] expressions.
 * [Cast] expressions, except
-  * pointer to address casts,
-  * function pointer to address casts, and
-  * unsizing casts to trait objects.
+  * pointer to address casts and
+  * function pointer to address casts.
 * Calls of [const functions] and const methods.
 * [loop], [while] and [`while let`] expressions.
 * [if], [`if let`] and [match] expressions.
