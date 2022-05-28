@@ -64,7 +64,9 @@ symbol name mangling. The symbol for the item will be the identifier of the
 item's name.
 
 Additionally, the item will be publicly exported from the produced library or
-object file, similar to the [`used` attribute](#the-used-attribute).
+object file, similar to the [`used` attribute](#the-used-attribute). When applied
+to a function, this attribute also implies the C representation. In other words,
+marking a function with `no_mangle`,  implies `pub extern "C"`.
 
 ## The `link_section` attribute
 
