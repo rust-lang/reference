@@ -221,6 +221,8 @@ scope of the expression with that operand. Since the temporaries are moved from
 once the expression is evaluated, dropping them has no effect unless one of the
 operands to an expression breaks out of the expression, returns, or panics.
 
+<!-- XXX note about panic=abort here? -->
+
 ```rust
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {

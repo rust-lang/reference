@@ -224,8 +224,8 @@ both of the following characteristics:
 * It contains a call to an `-unwind` foreign function or function pointer
 * It was compiled with `panic=unwind`
 
-Note: `cargo` will automatically unify all crates to use the same `panic`
-runtime, so this prohibition does not apply to projects compiled with `cargo`.
+Note: Cargo will automatically unify all crates to use the same `panic`
+runtime, so this prohibition does not apply to projects compiled with Cargo.
 
 <!-- TODO: edit the above to indicate that this prohibition is enforced by
 `rustc` once https://github.com/rust-lang/rust/pull/97235 has been merged -->
