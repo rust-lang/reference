@@ -203,24 +203,30 @@ extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-<!-- draft...
-The choice of ABIs, together with the [panic mode] (add link!), determines the behavior when unwinding out of a function.
+### Unwinding
 
-(write table, double check against RFC)
+Each non-`Rust` ABI string has a corresponding ABI with `-unwind` appended.
 
-| ABI | panic mode | behavior |
-| --- | ---------- | -------- |
-| `"Rust"`, `"C-unwind"`, `"<other>-unwind"` | unwind | unwinds "normally" |
-| `"C"`, others | unwind | UB, I think? |
-| `"Rust"`, `"C-unwind"`, `"<other>-unwind"` | abort | aborts process (see note) |
-| `"C"`, others | unwind | pretty sure this is UB |
+The choice of ABI, together with the [panic mode][panic-modes], determines the
+behavior when unwinding out of a function.
 
-Do we want to mention the "mixed panic types" issue here?
+In the table below, "Unforced foreign unwind" refers to something like a C++
+exception; the table indicates the behavior when entering a Rust stackframe via
+an function or function pointer declared with the specified ABI string.
+Additionally, `C` in the ABI strings may be substituted with `stdcall` or any
+other ABI supported by the language implementation.
 
--->
+| panic runtime  | ABI          | `panic`-unwind                        | Unforced foreign unwind |
+| -------------- | ------------ | ------------------------------------- | ----------------------- |
+| `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
+| `panic=unwind` | `"C"`        | abort                                 | UB                      |
+| `panic=abort`  | `"C-unwind"` | `panic!` aborts                       | abort                   |
+| `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | UB                      |
 
 > **Note**: The LLVM backend of the `rustc` implementation
-aborts the process by executing an illegal instruction.
+> aborts the process by executing an illegal instruction.
+
+[panic-modes]: ../panic-runtime.md
 
 ## Const functions
 
