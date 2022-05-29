@@ -211,6 +211,10 @@ a statically linked binary on MSVC you would execute:
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 
+## Prohibited linkage scenarios
+
+<!-- XXX currently just https://github.com/rust-lang/rust/pull/97235 -->
+
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [configuration option]: conditional-compilation.md
 [procedural macros]: procedural-macros.md
