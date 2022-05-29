@@ -213,8 +213,8 @@ RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows
 
 ## Prohibited linkage scenarios
 
-No crate may be linked with the `panic=abort` runtime if it has both of the
-following characteristics:
+No crate may be linked with [the `panic=abort` runtime][panic-modes] if it has
+both of the following characteristics:
 
 * It contains a call to an `-unwind` foreign function or function pointer
 * It was compiled with `panic=unwind`
@@ -228,3 +228,4 @@ runtime, so this prohibition does not apply to projects compiled with `cargo`.
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [configuration option]: conditional-compilation.md
 [procedural macros]: procedural-macros.md
+[panic-modes]: panic-runtime.md
