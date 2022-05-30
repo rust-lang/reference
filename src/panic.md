@@ -16,43 +16,33 @@ language features; for instance, out-of-bounds array indexing using the
 
 ## Unwinding
 
-By default, the `panic!` macro unwinds Rust frames, just as C++'s `throw`
-unwinds C++ frames. This means that as the panic traverses Rust frames, live
-objects in those frames that implement `Drop` will have their `drop` methods
-called. It also enables the runtime to recover from the panic rather than
-terminating execution.
+Panicking may either be recoverable or non-recoverable, though its behavior
+must be homogenous throughout program execution. A recoverable panic "unwinds"
+Rust frames, just as C++'s `throw` unwinds C++ frames. This means that as the
+panic traverses Rust frames, live objects in those frames that implement `Drop`
+will have their `drop` methods called. Thus, if panic recovery does occur (for
+instance at a thread boundary), the objects will have been "cleaned up" just as
+if the stack frames had returned normally.
+
+> As long as this guarantee of resource-cleanup is preserved, "unwinding" may
+> be implemented without actually using the mechanism used by C++ for the
+> target platform.
 
 > The Standard Library provides two mechanisms for recovering from a panic,
-> [`catch_unwind`][fn-catch-unwind] (which enables a thread to recover) and
-> [`JoinHandle::join`][join] (which enables a process to recover without
-> recovering the thread state).
+> [`catch_unwind`][fn-catch-unwind] (which enables recovery within the
+> panicking thread) and [`JoinHandle::join`][join] (which enables a process to
+> continue execution without recovering the panicked thread).
 
 ## Panic runtimes
 [top]: #panic-runtimes
 
-The actual behavior of `panic!` is controlled by the _panic runtime_. The Rust
-standard library provides two panic runtimes: `panic_unwind` (the default) and
-`panic_abort`, which immediately aborts the process.  When compiling code that
-is guaranteed (via a [compiler option][rustc-codegen]), the optimizer may
-assume that unwinding across Rust frames is impossible, which can result in
-both code-size and runtime speed improvements.
+The actual behavior and implementation of `panic!` is controlled by the _panic
+runtime_.
 
-### `rustc` codegen and linking
-[rustc-codegen]: #rustc-codegen
+> The Rust standard library provides two panic runtimes: `panic_unwind` (the
+> default) and `panic_abort`, which immediately aborts the process (which is
+> non-recoverable).
 
-`rustc` provides two supported runtime strategies:
-
-* `-C panic=unwind` - this links against `panic_unwind` and ensures that
-  unwinding across the compiled frames will perform all appropriate clean-up.
-  In particular, `drop` will be called for live `Drop` objects.
-* `-C panic=abort` - this links against `panic_abort`, and optimizes with the
-  assumption that frames cannot be unwound. Since unwinding does not occur with
-  this runtime, it is impossible to catch a `panic!` using `catch_unwind`.
-
-This codegen option will default to `unwind` if not specified, and the value is
-encoded into the crate metadata.
-
-Linking against the actual panic runtime is performed lazily, so that if
-different crates specify different runtimes, the `panic_abort` runtime is
-preferred. This ensures that `panic!` cannot cause a soundness hole by
-unwinding across Rust frames compiled with `panic=abort`.
+When compiling code that is guaranteed (via a [compiler option][rustc-codegen])
+not to unwind, the optimizer may assume that unwinding across Rust frames is
+impossible, which can result in both code-size and runtime speed improvements.
