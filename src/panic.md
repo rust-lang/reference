@@ -39,8 +39,8 @@ runtime_.
 > default) and `panic_abort`, which immediately aborts the process (which is
 > non-recoverable).
 
-When compiling code that is guaranteed (via a [compiler option][rustc-codegen])
-not to unwind, the optimizer may assume that unwinding across Rust frames is
+When compiling code that is guaranteed to be linked to a non-recoverable panic
+runtime, the optimizer may assume that unwinding across Rust frames is
 impossible, which can result in both code-size and runtime speed improvements.
 
 [destructors]: destructors.md
