@@ -10,19 +10,15 @@ Although it is not part of the core language, panics interact with several core
 language features; for instance, out-of-bounds array indexing using the
 `array[index]` syntax will automatically panic.
 
-[macro-panic]: ../std/macro.panic.html
-[fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
-[join]: ../std/thread/struct.JoinHandle.html#method.join
-
 ## Unwinding
 
 Panicking may either be recoverable or non-recoverable, though its behavior
 must be homogenous throughout program execution. A recoverable panic "unwinds"
 Rust frames, just as C++'s `throw` unwinds C++ frames. This means that as the
-panic traverses Rust frames, live objects in those frames that implement `Drop`
-will have their `drop` methods called. Thus, if panic recovery does occur (for
-instance at a thread boundary), the objects will have been "cleaned up" just as
-if the stack frames had returned normally.
+panic traverses Rust frames, live objects in those frames that [implement
+`Drop`][destructors] will have their `drop` methods called. Thus, if panic
+recovery does occur (for instance at a thread boundary), the objects will have
+been "cleaned up" just as if they had gone out of scope normally.
 
 > As long as this guarantee of resource-cleanup is preserved, "unwinding" may
 > be implemented without actually using the mechanism used by C++ for the
@@ -30,7 +26,7 @@ if the stack frames had returned normally.
 
 > The Standard Library provides two mechanisms for recovering from a panic,
 > [`catch_unwind`][fn-catch-unwind] (which enables recovery within the
-> panicking thread) and [`JoinHandle::join`][join] (which enables a process to
+> panicking thread) and [`JoinHandle::join`][thread-join] (which enables a process to
 > continue execution without recovering the panicked thread).
 
 ## Panic runtimes
@@ -46,3 +42,8 @@ runtime_.
 When compiling code that is guaranteed (via a [compiler option][rustc-codegen])
 not to unwind, the optimizer may assume that unwinding across Rust frames is
 impossible, which can result in both code-size and runtime speed improvements.
+
+[destructors]: destructors.md
+[fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
+[macro-panic]: ../std/macro.panic.html
+[thread-join]: ../std/thread/struct.JoinHandle.html#method.join
