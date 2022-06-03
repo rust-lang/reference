@@ -236,10 +236,6 @@ References to a label refer to the closest definition.
 }
 ```
 
-> **Note**: `rustc` currently warns about defining the same loop label multiple times in the same function, or if the label has the same name as an in-scope lifetime.
-> This is intended as a future-compatibility warning about a possible extension to the language.
-> See [PR #24162](https://github.com/rust-lang/rust/pull/24162).
-
 ## Prelude scopes
 
 [Preludes] bring entities into scope of every module.
