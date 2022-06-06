@@ -228,4 +228,4 @@ runtime, so this prohibition does not apply to projects compiled with Cargo.
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [configuration option]: conditional-compilation.md
 [procedural macros]: procedural-macros.md
-[panic-runtime]: panic.md#panic-runtime
+[panic-runtime]: panic.md#panic-runtimes

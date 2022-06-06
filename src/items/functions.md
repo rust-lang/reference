@@ -226,7 +226,7 @@ other ABI supported by the language implementation.
 > **Note**: The LLVM backend of the `rustc` implementation
 > aborts the process by executing an illegal instruction.
 
-[panic-modes]: ../panic.md#panic-runtime
+[panic-modes]: ../panic.md#panic-runtimes
 
 ## Const functions
 
