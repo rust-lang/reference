@@ -83,7 +83,7 @@ struct Variance<'a, 'b, T, U: 'a> {
 }
 ```
 
-To debug variance of custom struct, see `src/test/ui/variance/variance-regions-direct.rs`.
+To debug variance of custom struct, see `src/test/ui/variance/variance-types.rs`.
 
 [function pointers]: types/function-pointer.md
 [Higher-ranked]: ../nomicon/hrtb.html
