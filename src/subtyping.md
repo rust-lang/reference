@@ -61,25 +61,51 @@ Variance of types is automatically determined as follows
 | `[T]` and `[T; n]`            |                   | covariant         |
 | `fn() -> T`                   |                   | covariant         |
 | `fn(T) -> ()`                 |                   | contravariant     |
-| `fn(T) -> T`                  |                   | invariant         |
 | `std::cell::UnsafeCell<T>`    |                   | invariant         |
 | `std::marker::PhantomData<T>` |                   | covariant         |
 | `dyn Trait<T> + 'a`           | covariant         | invariant         |
 
-The variance of other `struct`, `enum`, `union`, and tuple types is decided by
+The variance of other `struct`, `enum`, and `union` types is decided by
 looking at the variance of the types of their fields. If the parameter is used
 in positions with different variances then the parameter is invariant. For
-example the following struct is covariant in `'a` and `T` and invariant in `'b`
+example the following struct is covariant in `'a` and `T` and invariant in `'b`, `'c`,
 and `U`.
 
 ```rust
 use std::cell::UnsafeCell;
-struct Variance<'a, 'b, T, U: 'a> {
+struct Variance<'a, 'b, 'c, T, U: 'a> {
     x: &'a U,               // This makes `Variance` covariant in 'a, and would
                             // make it covariant in U, but U is used later
     y: *const T,            // Covariant in T
     z: UnsafeCell<&'b f64>, // Invariant in 'b
     w: *mut U,              // Invariant in U, makes the whole struct invariant
+
+    f: fn(&'c ()) -> &'c () // Both co- and contravariant, makes 'c invariant
+                            // in the struct.
+}
+```
+
+When used outside of an `struct`, `enum`, or `union`, the variance for parameters is checked at each location separately.
+
+```rust
+# use std::cell::UnsafeCell;
+fn generic_tuple<'short, 'long: 'short>(
+    // 'long is used inside of a tuple in both a co- and invariant position.
+    x: (&'long u32, UnsafeCell<&'long u32>),
+) {
+    // As the variance at these positions is computed separately,
+    // we can freely shrink 'long in the covariant position.
+    let _: (&'short u32, UnsafeCell<&'long u32>) = x;
+}
+
+fn takes_fn_ptr<'short, 'middle: 'short>(
+    // 'middle is used in both a co- and contravariant position.
+    f: fn(&'middle ()) -> &'middle (),
+) {
+    // As the variance at these positions is computed separately,
+    // we can freely shrink 'middle in the covariant position
+    // and extend it in the contravariant position.
+    let _: fn(&'static ()) -> &'short () = f;
 }
 ```
 
