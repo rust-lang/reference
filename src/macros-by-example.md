@@ -193,6 +193,53 @@ compiler knows how to expand them properly:
     not have the same number. This requirement applies to every layer of nested
     repetitions.
 
+## Dollar-dollar ($$)
+
+`$$` expands to a single `$`.
+
+Since metavariable expressions always apply during the expansion of a macro, they cannot be used in recursive macro definitions and this is where `$$` expressions comes into play, i.e., `$$` can be used to resolve ambiguities in nested macros.
+
+The following example illustrates a macro that fails to compile due to the ambiguity of the repetition in a nested macro:
+
+```rust,compile_fail
+macro_rules! foo_error {
+    () => {
+        macro_rules! bar_error {
+            ( $( $any:tt )* ) => { $( $any )* };
+            // ^^^^^^^^^^^ error: attempted to repeat an expression containing no syntax variables matched as repeating at this depth
+        }
+    };
+}
+
+foo_error!();
+```
+
+The following resolves the problem by escaping the `$` in the repetition with `$$`:
+
+```rust
+macro_rules! foo_ok {
+    () => {
+        macro_rules! bar_ok {
+            ( $$( $any:tt )* ) => { $$( $any )* };
+        }
+    };
+}
+
+foo_ok!();
+```
+
+One consequence of such expansion is that deeper nested levels make dollar-dollar declarations grown linearly, starting at `$$`, then `$$$$`, then `$$$$$` and so on. This is also necessary to be fully featured so that it is possible to specify names of metavariables using other metavariables at each nesting level.
+
+```
+$foo          => bar      => bar    // Evaluate foo at level 1
+$$foo         => $foo     => bar    // Evaluate foo at level 2
+$$$foo        => $bar     => baz    // Evaluate foo at level 1, and use that as a name at level 2
+$$$$foo       => $$foo    => $foo   // Evaluate foo at level 3
+$$$$$foo      => $$bar    => $bar   // Evaluate foo at level 1, and use that as a name at level 3
+$$$$$$foo     => $$$foo   => $bar   // Evaluate foo at level 2, and use that as a name at level 3
+$$$$$$$foo    => $$$bar   => $baz   // Evaluate foo at level 1, use that at level 2, and then use *that* at level 3
+```
+
 ## Scoping, Exporting, and Importing
 
 For historical reasons, the scoping of macros by example does not work entirely
