@@ -230,7 +230,7 @@ foo_ok!();
 
 One consequence of such expansion is that deeper nested levels make dollar-dollar declarations grown linearly, starting at `$$`, then `$$$$`, then `$$$$$` and so on. This is also necessary to be fully featured so that it is possible to specify names of metavariables using other metavariables at each nesting level.
 
-```
+```ignore
 $foo          => bar      => bar    // Evaluate foo at level 1
 $$foo         => $foo     => bar    // Evaluate foo at level 2
 $$$foo        => $bar     => baz    // Evaluate foo at level 1, and use that as a name at level 2
