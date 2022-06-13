@@ -170,6 +170,11 @@ assert_eq!(a, b);
 assert_eq!(b, c);
 ```
 
+> Note: Rust skipping additional newlines (like in example `c`) is potentially confusing and
+> unexpected. This behavior may be adjusted in the future. Until a decision is made, it is
+> recommended to avoid relying on this, i.e. skipping multiple newlines with line continuations.
+> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
+
 #### Character escapes
 
 Some additional _escapes_ are available in either character or non-raw string
