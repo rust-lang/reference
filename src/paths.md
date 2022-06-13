@@ -81,6 +81,9 @@ arguments, then const arguments, then equality constraints.
 Const arguments must be surrounded by braces unless they are a
 [literal] or a single segment path.
 
+The synthetic type parameters corresponding to `impl Trait` types are implicit,
+and these cannot be explicitly specified.
+
 ## Qualified paths
 
 > **<sup>Syntax</sup>**\
