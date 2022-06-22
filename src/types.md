@@ -104,9 +104,6 @@ itself. Such recursion has restrictions:
   Rec = &'static [Rec]` is not allowed.
 * The size of a recursive type must be finite; in other words the recursive
   fields of the type must be [pointer types].
-* Recursive type definitions can cross module boundaries, but not module
-  *visibility* boundaries, or crate boundaries (in order to simplify the module
-  system and type checker).
 
 An example of a *recursive* type and its use:
 
