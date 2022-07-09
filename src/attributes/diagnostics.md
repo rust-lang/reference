@@ -7,17 +7,19 @@ messages during compilation.
 
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation. The lint attributes `allow`,
-`warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax to specify a
-list of lint names to change the lint level for the entity to which the
-attribute applies.
+`expect`, `warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax
+to specify a list of lint names to change the lint level for the entity
+to which the attribute applies.
 
 For any lint check `C`:
 
-* `allow(C)` overrides the check for `C` so that violations will go
+* `#[allow(C)]` overrides the check for `C` so that violations will go
    unreported,
-* `warn(C)` warns about violations of `C` but continues compilation.
-* `deny(C)` signals an error after encountering a violation of `C`,
-* `forbid(C)` is the same as `deny(C)`, but also forbids changing the lint
+* `#[expect(c)]` suppresses all lint emissions of `C`, but will issue
+   a warning, if the lint wasn't emitted in the expected scope.
+* `#[warn(C)]` warns about violations of `C` but continues compilation.
+* `#[deny(C)]` signals an error after encountering a violation of `C`,
+* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
 
 > Note: The lint checks supported by `rustc` can be found via `rustc -W help`,
@@ -82,6 +84,56 @@ pub mod m3 {
 > Note: `rustc` allows setting lint levels on the
 > [command-line][rustc-lint-cli], and also supports [setting
 > caps][rustc-lint-caps] on the lints that are reported.
+
+All lint attributes support an additional `reason` parameter, to give context why
+a certain attribute was added. This reason will be displayed as part of the lint
+message, if the lint is emitted at the defined level.
+
+```rust
+use std::path::PathBuf;
+
+pub fn get_path() -> PathBuf {
+    #[allow(unused_mut, reason = "this is only modified on some platforms")]
+    let mut file_name = PathBuf::from("git");
+
+    #[cfg(target_os = "windows")]
+    file_name.set_extension("exe");
+
+    file_name
+}
+```
+
+### Lint expectations
+
+With the `#[expect]` attributes lints can be expected in a certain scope. If
+this expectation is not fulfilled a new warning is emitted to the user. The
+lint levels can be overridden with other lint attributes as usual.
+
+```rust
+#[warn(missing_docs)]
+pub mod m2{
+    #[expect(missing_docs)]
+    pub mod nested {
+        // This missing documentation fulfills the expectation above
+        pub fn undocumented_one() -> i32 { 1 }
+
+        // Missing documentation signals a warning here, despite the expectation
+        // above. This emission would not fulfill the expectation
+        #[warn(missing_docs)]
+        pub fn undocumented_two() -> i32 { 2 }
+    }
+
+    #[expect(missing_docs)]
+    /// This comment explains something cool about the function. The
+    /// expectation will not be fulfilled and in turn issue a warning.
+    pub fn undocumented_too() -> i32 { 3 }
+}
+```
+
+> Note: Lint expectations have been proposed in [RFC 2383]. It was not defined
+> how expectations of the expectation lint should be handled. The rustc
+> implementation currently doesn't allow the expextation of the
+> `unfulfilled_lint_expectation` lint. This can change in the future.
 
 ### Lint groups
 
@@ -392,6 +444,7 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 [let statement]: ../statements.md#let-statements
 [macro definition]: ../macros-by-example.md
 [module]: ../items/modules.md
+[RFC 2383]: https://rust-lang.github.io/rfcs/2383-lint-reasons.html
 [rustc book]: ../../rustc/lints/index.html
 [rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
 [rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
