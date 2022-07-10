@@ -15,8 +15,8 @@ For any lint check `C`:
 
 * `#[allow(C)]` overrides the check for `C` so that violations will go
    unreported,
-* `#[expect(c)]` suppresses all lint emissions of `C`, but will issue
-   a warning, if the lint wasn't emitted in the expected scope.
+* `#[expect(C)]` suppresses all lint emissions of `C`, but will issue
+   a warning if the lint wasn't emitted in the expected scope.
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
@@ -68,8 +68,8 @@ pub mod m2 {
 }
 ```
 
-This example shows how one can use `forbid` to disallow uses of `allow` for
-that lint check:
+This example shows how one can use `forbid` to disallow uses of `allow` or 
+`expect` for that lint check:
 
 ```rust,compile_fail
 #[forbid(missing_docs)]
@@ -85,14 +85,33 @@ pub mod m3 {
 > [command-line][rustc-lint-cli], and also supports [setting
 > caps][rustc-lint-caps] on the lints that are reported.
 
+### Lint Reasons
+
 All lint attributes support an additional `reason` parameter, to give context why
 a certain attribute was added. This reason will be displayed as part of the lint
-message, if the lint is emitted at the defined level.
+message if the lint is emitted at the defined level.
+
+```rust,edition2015
+// `keyword_idents` is allowed by default. Here we deny it to
+// avoid migration of identifies when we update the edition.
+#![deny(
+    keyword_idents,
+    reason = "we want to avoid these idents to be future compatible"
+)]
+
+// This name was allowed in Rust's 2015 edition. We still aim to avoid
+// this to be future compatible and not confuse end users.
+fn dyn() {}
+```
+
+Here we have another example, where the lint is allowed with a reason:
 
 ```rust
 use std::path::PathBuf;
 
 pub fn get_path() -> PathBuf {
+    // Using `reason` with an `allow` attribute has no effect other than to
+    // provide documentation to the reader.
     #[allow(unused_mut, reason = "this is only modified on some platforms")]
     let mut file_name = PathBuf::from("git");
 
@@ -103,37 +122,86 @@ pub fn get_path() -> PathBuf {
 }
 ```
 
-### Lint expectations
+### The `expect` attribute
 
-With the `#[expect]` attributes lints can be expected in a certain scope. If
-this expectation is not fulfilled a new warning is emitted to the user. The
-lint levels can be overridden with other lint attributes as usual.
+The *`expect` attribute* is used to mark that a particular lint must be triggered
+within its scope. If this expectation is not fulfilled a new warning is emitted to
+the user.
 
 ```rust
-#[warn(missing_docs)]
-pub mod m2{
-    #[expect(missing_docs)]
-    pub mod nested {
-        // This missing documentation fulfills the expectation above
-        pub fn undocumented_one() -> i32 { 1 }
+fn main() {
+    // This `expect` attribute creates an expectation, that the `unused_variables`
+    // will be triggered by the following statement. This expectation will not be
+    // fulfilled, since the `question` variable is used by the `println!` macro.
+    #[expect(unused_variables)]
+    let question = "who lives in a pineapple under the sea?";
+    println!("{question}");
 
-        // Missing documentation signals a warning here, despite the expectation
-        // above. This emission would not fulfill the expectation
-        #[warn(missing_docs)]
-        pub fn undocumented_two() -> i32 { 2 }
-    }
-
-    #[expect(missing_docs)]
-    /// This comment explains something cool about the function. The
-    /// expectation will not be fulfilled and in turn issue a warning.
-    pub fn undocumented_too() -> i32 { 3 }
+    // This `expect` attribute creates an expectation that will be fulfilled, since
+    // the `answer` variable is never used. It will therefore trigger the 
+    // `unused_variables` lint which will be suppressed by the expectation and fullfil
+    // it as well.
+    #[expect(unused_variables)]
+    let answer = "SpongeBob SquarePants!";
 }
 ```
 
-> Note: Lint expectations have been proposed in [RFC 2383]. It was not defined
-> how expectations of the expectation lint should be handled. The rustc
-> implementation currently doesn't allow the expextation of the
-> `unfulfilled_lint_expectation` lint. This can change in the future.
+The lint expectation is only fulfilled by lint emissions which have been suppressed by
+the `expect` attribute. If the lint level is modified in the scope with other level
+attributes like `warn` or `deny`, the lint will be emitted at the defined level and not
+satisdy the expectation. Lint suppressions via `allow` or `expect` attributes inside the
+scope will also not fulfill the expectation.
+
+```rust
+#[expect(unused_variables)]
+fn select_song() {
+    // This will emit the `unused_variables` lint at the warn level
+    // as defined by the `warn` attribute. This will not fulfill the
+    // expectation above the function.
+    #[warn(unused_variables)]
+    let song_name = "Crab Rave";
+
+    // The `allow` attribute suppresses the lint emission. This will not
+    // fulfill the expectation as it has been suppressed by the `allow`
+    // attribute and not the `expect` attribute above the function.
+    #[allow(unused_variables)]
+    let song_creator = "Noisestorm";
+
+    // This `expect` attribute will suppress the `unused_variables` lint emission
+    // at the variable. The `expect` attribute above the function will still not
+    // be fulfilled, since this lint emission has been suppressed by the local
+    // expect attribute.
+    #[expect(unused_variables)]
+    let song_version = "Monstercat Release";
+}
+```
+
+If the `expect` attribute contains several lints, each one is expected separatly. For a
+lint group it's enough if one lint inside the group has been emitted:
+
+```rust
+// This expectation will be fulfilled by the unused value inside the function
+// since the emitted `unused_variables` lint is inside the `unused` lint group.
+#[expect(unused)]
+pub fn thoughts() {
+    let unused = "I'm running out of examples";
+}
+
+pub fn another_example() {
+    // This attribute creates two lint expectations. The `unused_mut` lint will be
+    // suppressed and with that fulfill the first expectation. The `unused_variables`
+    // won't be emitted, since the variable is used. That expectation will therefore
+    // not be satisfied, and a warning will be emitted.
+    #[expect(unused_mut, unused_variables)]
+    let mut link = "https://www.rust-lang.org/";
+
+    println!("Welcome to our community: {link}");
+}
+```
+
+> Note: The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
+> defined to always generate the `unfulfilled_lint_expectations` lint. This may
+> change in the future.
 
 ### Lint groups
 
