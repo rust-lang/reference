@@ -76,9 +76,13 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [dangling]: #dangling-pointers
 
 A reference/pointer is "dangling" if it is null or not all of the bytes it
-points to are part of the same allocation (so in particular they all have to be
+points to are part of the same live allocation (so in particular they all have to be
 part of *some* allocation). The span of bytes it points to is determined by the
 pointer value and the size of the pointee type (using `size_of_val`).
+
+If the size is 0, then the pointer must either point inside of a live allocation
+(including pointing just after the last byte of the allocation), or it must be
+directly constructed from a non-zero integer literal.
 
 Note that dynamically sized types (such as slices and strings) point to their
 entire range, so it is important that the length metadata is never too large. In
