@@ -63,6 +63,13 @@ the [subsystem] when linking on a Windows target. It uses the
 `console` or `windows`. This attribute is ignored on non-Windows targets, and
 for non-`bin` [crate types].
 
+The "console" subsystem is the default. If a console process is run from an
+existing console then it will be attached to that console, otherwise a new
+console window will be created.
+
+The "windows" subsystem is commonly used by GUI applications that do not want to
+display a console window on startup. It will run detached from any existing console.
+
 ```rust
 #![windows_subsystem = "windows"]
 ```
