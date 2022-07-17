@@ -20,6 +20,16 @@ The key property of unions is that all fields of a union share common storage.
 As a result, writes to one field of a union can overwrite its other fields, and
 size of a union is determined by the size of its largest field.
 
+Union field types are restricted to the following subset of types:
+- `Copy` types
+- References (`&T` and `&mut T` for arbitrary `T`)
+- `ManuallyDrop<T>` (for arbitrary `T`)
+- Tuples and arrays containing only allowed union field types
+
+This restriction ensures, in particular, that union fields never need to be
+dropped. Like for structs and enums, it is possible to `impl Drop` for a union
+to manually define what happens when it gets dropped.
+
 ## Initialization of a union
 
 A value of a union type can be created using the same syntax that is used for
@@ -67,32 +77,13 @@ unsafe {
 }
 ```
 
-Writes to [`Copy`] or [`ManuallyDrop`][ManuallyDrop] union fields do not
-require reads for running destructors, so these writes don't have to be placed
-in `unsafe` blocks
-
-```rust
-# use std::mem::ManuallyDrop;
-union MyUnion { f1: u32, f2: ManuallyDrop<String> }
-let mut u = MyUnion { f1: 1 };
-
-// These do not require `unsafe`.
-u.f1 = 2;
-u.f2 = ManuallyDrop::new(String::from("example"));
-```
-
 Commonly, code using unions will provide safe wrappers around unsafe union
 field accesses.
 
-## Unions and `Drop`
-
-When a union is dropped, it cannot know which of its fields needs to be dropped.
-For this reason, all union fields must either be of a [`Copy`] type or of the
-shape [`ManuallyDrop<_>`][ManuallyDrop].  This ensures that a union does not
-need to drop anything when it goes out of scope.
-
-Like for structs and enums, it is possible to `impl Drop` for a union to
-manually define what happens when it gets dropped.
+In contrast, writes to union fields are safe, since they just overwrite
+arbitrary data, but cannot cause undefined behavior. (Note that union field
+types can never have drop glue, so a union field write will never implicitly
+drop anything.)
 
 ## Pattern matching on unions
 
