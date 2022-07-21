@@ -1,6 +1,6 @@
 # Pointer types
 
-All pointers in Rust are explicit first-class values.
+All pointers are explicit first-class values.
 They can be moved or copied, stored into data structs, and returned from functions.
 
 ## References (`&` and `&mut`)
@@ -38,7 +38,7 @@ For example `*const i32` means a raw pointer to a 32-bit integer.
 Copying or dropping a raw pointer has no effect on the lifecycle of any other value.
 Dereferencing a raw pointer is an [`unsafe` operation].
 This can also be used to convert a raw pointer to a reference by reborrowing it (`&*` or `&mut *`).
-Raw pointers are generally discouraged in Rust code;
+Raw pointers are generally discouraged;
 they exist to support interoperability with foreign code, and writing performance-critical or low-level functions.
 
 When comparing raw pointers they are compared by their address, rather than by what they point to.

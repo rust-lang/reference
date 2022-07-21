@@ -7,5 +7,5 @@ each other kind of expression, and rules for evaluation of expressions involve
 specifying both the value produced by the expression and the order in which its
 sub-expressions are themselves evaluated.
 
-In contrast, statements in Rust serve _mostly_ to contain and explicitly
+In contrast, statements serve _mostly_ to contain and explicitly
 sequence expression evaluation.

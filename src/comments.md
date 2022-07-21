@@ -34,7 +34,7 @@
 
 ## Non-doc comments
 
-Comments in Rust code follow the general C++ style of line (`//`) and
+Comments follow the general C++ style of line (`//`) and
 block (`/* ... */`) comment forms. Nested block comments are supported.
 
 Non-doc comments are interpreted as a form of whitespace.

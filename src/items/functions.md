@@ -175,7 +175,7 @@ is equivalent to:
 extern "Rust" fn foo() {}
 ```
 
-Functions in Rust can be called by foreign code, and using an ABI that
+Functions can be called by foreign code, and using an ABI that
 differs from Rust allows, for example, to provide functions that can be
 called from other programming languages like C:
 
