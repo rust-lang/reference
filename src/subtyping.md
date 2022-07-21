@@ -1,8 +1,8 @@
 # Subtyping and Variance
 
 Subtyping is implicit and can occur at any stage in type checking or
-inference. Subtyping in Rust is very restricted and occurs only due to
-variance with respect to lifetimes and between types with higher ranked
+inference. Subtyping is restricted to two cases:
+variance with respect to lifetimes, and between types with higher ranked
 lifetimes. If we were to erase lifetimes from types, then the only subtyping
 would be due to type equality.
 
