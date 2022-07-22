@@ -22,7 +22,7 @@ of an item to see whether it should be allowed or not. This is where privacy
 warnings are generated, or otherwise "you used a private item of another module
 and weren't allowed to."
 
-By default, everything in Rust is *private*, with two exceptions: Associated
+By default, everything is *private*, with two exceptions: Associated
 items in a `pub` Trait are public by default; Enum variants
 in a `pub` enum are also public by default. When an item is declared as `pub`,
 it can be thought of as being accessible to the outside world. For example:
