@@ -5,14 +5,12 @@
 > &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]\
 > &nbsp;&nbsp; )
 
 [_LoopLabel_]: #loop-labels
 [_InfiniteLoopExpression_]: #infinite-loops
 [_PredicateLoopExpression_]: #predicate-loops
-[_PredicatePatternLoopExpression_]: #predicate-pattern-loops
 [_IteratorLoopExpression_]: #iterator-loops
 
 Rust supports four loop expressions:
@@ -39,9 +37,23 @@ A `loop` expression containing associated [`break` expression(s)](#break-express
 
 ## Predicate loops
 
+### Syntax
+
+The same syntax is used by `while`, `while let` and chains of expressions.
+
 > **<sup>Syntax</sup>**\
-> _PredicateLoopExpression_ :\
-> &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
+> [_PredicateLoopExpression_] :\
+> _WhileExpression_ :\
+> &nbsp;&nbsp; `while` _WhileLetList_ [_BlockExpression_]
+>
+> _WhileLet_ :\
+>  &nbsp;&nbsp; ( [_Expression_]<sub>_except struct expression_</sub>
+> | `let` [_Pattern_] `=` [_Expression_]<sub>_except struct expression_</sub> )
+>
+> _WhileLetList_ :\
+> &nbsp;&nbsp; _WhileLet_ ( && _WhileLet_ )*
+
+### `while`
 
 A `while` loop begins by evaluating the [boolean] loop conditional operand.
 If the loop conditional operand evaluates to `true`, the loop body block executes, then control returns to the loop conditional operand.
@@ -58,13 +70,7 @@ while i < 10 {
 }
 ```
 
-## Predicate pattern loops
-
-> **<sup>Syntax</sup>**\
-> [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
->              [_BlockExpression_]
-
+### `while let`
 
 A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
 If the value of the scrutinee matches the pattern, the loop body block executes then control returns to the pattern matching statement.
@@ -116,6 +122,26 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 ```
 
 As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+
+### Chains of expressions
+
+The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
+
+```rust
+fn main() {
+    let outer_opt = Some(Some(1i32));
+
+    while let Some(inner_opt) = outer_opt
+        && let Some(number) = inner_opt
+        && number == 1
+    {
+        println!("Peek a boo");
+        break;
+    }
+}
+```
+
+The only remark is the fact that parenthesis (`while (let Some(a) = opt && (let Some(b) = a)) && b == 1`) and `||` operators (`while let A(x) = e1 || let B(x) = e2`) are not currently supported.
 
 ## Iterator loops
 

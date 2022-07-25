@@ -1,14 +1,22 @@
-# `if` and `if let` expressions
+# `if` expressions
 
-## `if` expressions
+## Syntax
+
+The same syntax is used by `if`, `if let` and chains of expressions.
 
 > **<sup>Syntax</sup>**\
 > _IfExpression_ :\
-> &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]\
-> &nbsp;&nbsp; (`else` (
->   [_BlockExpression_]
-> | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>
+> &nbsp;&nbsp; `if` _IfLetList_ [_BlockExpression_]\
+> &nbsp;&nbsp; ( `else` _IfLetList_ [_BlockExpression_] )<sup>\?</sup>
+>
+> _IfLet_ :\
+>  &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>
+> | `let` [_Pattern_] `=` [_Expression_]<sub>_except struct expression_</sub>
+>
+> _IfLetList_ :\
+> &nbsp;&nbsp; _IfLet_ ( && _IfLet_ )*
+
+## `if`
 
 An `if` expression is a conditional branch in program control.
 The syntax of an `if` expression is a condition operand, followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
@@ -37,16 +45,7 @@ let y = if 12 * 15 > 150 {
 assert_eq!(y, "Bigger");
 ```
 
-## `if let` expressions
-
-> **<sup>Syntax</sup>**\
-> _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
->              [_BlockExpression_]\
-> &nbsp;&nbsp; (`else` (
->   [_BlockExpression_]
-> | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>
+## `if let`
 
 An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
 If the value of the scrutinee matches the pattern, the corresponding block will execute.
@@ -90,27 +89,6 @@ let a = if let Some(1) = x {
 assert_eq!(a, 3);
 ```
 
-An `if let` expression is equivalent to a [`match` expression] as follows:
-
-<!-- ignore: expansion example -->
-```rust,ignore
-if let PATS = EXPR {
-    /* body */
-} else {
-    /*else */
-}
-```
-
-is equivalent to
-
-<!-- ignore: expansion example -->
-```rust,ignore
-match EXPR {
-    PATS => { /* body */ },
-    _ => { /* else */ },    // () if there is no else
-}
-```
-
 Multiple patterns may be specified with the `|` operator. This has the same semantics as with `|` in `match` expressions:
 
 ```rust
@@ -126,30 +104,72 @@ if let E::X(n) | E::Y(n) = v {
 ```
 
 The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
-Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
-When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:
+Scrutinee expressions also cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with [chains of expressions][_ChainsOfExpressions_].
 
-<!-- ignore: psuedo code -->
+## Chains of expressions
+
+The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
+
+```rust
+fn single() {
+    let outer_opt = Some(Some(1i32));
+
+    if let Some(inner_opt) = outer_opt
+        && let Some(number) = inner_opt
+        && number == 1
+    {
+        println!("Peek a boo");
+    }
+}
+
+The above is equivalent to the following without using expression chains:
+
+fn nested() {
+    let outer_opt = Some(Some(1i32));
+
+    if let Some(inner_opt) = outer_opt {
+        if let Some(number) = inner_opt {
+            if number == 1 {
+                println!("Peek a boo");
+            }
+        }
+    }
+}
+```
+
+In other words, chains are equivalent to nested [`if let` expressions]:
+
+<!-- ignore: expansion example -->
 ```rust,ignore
-// Before...
-if let PAT = EXPR && EXPR { .. }
+if let PAT0 = EXPR0 && let PAT1 = EXPR1 {
+    /* body */
+} else {
+    /* else */
+}
+```
 
-// After...
-if let PAT = ( EXPR && EXPR ) { .. }
+is equivalent to
 
-// Before...
-if let PAT = EXPR || EXPR { .. }
-
-// After...
-if let PAT = ( EXPR || EXPR ) { .. }
+<!-- ignore: expansion example -->
+```rust,ignore
+if let PAT0 = EXPR0 {
+    if let PAT1 = EXPR1 {
+        /* body */
+    }
+    else {
+        /* else */
+    }
+} else {
+    /* else */
+}
 ```
 
 [_BlockExpression_]: block-expr.md
+[_ChainsOfExpressions_]: #chains-of-expressions
 [_Expression_]: ../expressions.md
 [_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [_Pattern_]: ../patterns.md
 [_Scrutinee_]: match-expr.md
-[_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
