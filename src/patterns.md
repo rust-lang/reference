@@ -69,7 +69,7 @@ Patterns are used in:
   parameters
 * [`match` expressions](expressions/match-expr.md)
 * [`if let` expressions](expressions/if-expr.md)
-* [`while let` expressions](expressions/loop-expr.md#predicate-pattern-loops)
+* [`while let` expressions](expressions/loop-expr.md#while-let-patterns)
 * [`for` expressions](expressions/loop-expr.md#iterator-loops)
 
 ## Destructuring

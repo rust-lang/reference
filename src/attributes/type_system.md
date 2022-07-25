@@ -133,7 +133,6 @@ Non-exhaustive types are always considered inhabited in downstream crates.
 [_StructExpression_]: ../expressions/struct-expr.md
 [_StructPattern_]: ../patterns.md#struct-patterns
 [_TupleStructPattern_]: ../patterns.md#tuple-struct-patterns
-[`if let`]: ../expressions/if-expr.md#if-let-expressions
 [`match`]: ../expressions/match-expr.md
 [attributes]: ../attributes.md
 [enum]: ../items/enumerations.md

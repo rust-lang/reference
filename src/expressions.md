@@ -38,7 +38,6 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IfLetExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
 > &nbsp;&nbsp; )
 
@@ -295,13 +294,13 @@ They are never allowed before:
 [call expressions]:     expressions/call-expr.md
 [field]:                expressions/field-expr.md
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
-[`if let`]:             expressions/if-expr.md#if-let-expressions
+[`if let`]:             expressions/if-expr.md#if-let-patterns
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
 [paths]:                expressions/path-expr.md
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
-[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]:          expressions/loop-expr.md#while-let-patterns
 
 [array expressions]:    expressions/array-expr.md
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
@@ -348,7 +347,6 @@ They are never allowed before:
 [_FieldExpression_]:              expressions/field-expr.md
 [_GroupedExpression_]:            expressions/grouped-expr.md
 [_IfExpression_]:                 expressions/if-expr.md#if-expressions
-[_IfLetExpression_]:              expressions/if-expr.md#if-let-expressions
 [_IndexExpression_]:              expressions/array-expr.md#array-and-slice-indexing-expressions
 [_LazyBooleanExpression_]:        expressions/operator-expr.md#lazy-boolean-operators
 [_LiteralExpression_]:            expressions/literal-expr.md

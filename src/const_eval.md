@@ -45,8 +45,8 @@ to be run.
   * pointer to address casts and
   * function pointer to address casts.
 * Calls of [const functions] and const methods.
-* [loop], [while] and [`while let`] expressions.
-* [if], [`if let`] and [match] expressions.
+* [loop] and [while] expressions.
+* [if] and [match] expressions.
 
 ## Const context
 
@@ -121,7 +121,6 @@ Conversely, the following are possible in a const function, but not in a const c
 [grouped]:              expressions/grouped-expr.md
 [interior mutability]:  interior-mutability.md
 [if]:                   expressions/if-expr.md#if-expressions
-[`if let`]:             expressions/if-expr.md#if-let-expressions
 [lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
 [let statements]:       statements.md#let-statements
 [literals]:             expressions/literal-expr.md
@@ -138,4 +137,3 @@ Conversely, the following are possible in a const function, but not in a const c
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
 [while]:                expressions/loop-expr.md#predicate-loops
-[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
