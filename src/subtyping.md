@@ -2,7 +2,7 @@
 
 Subtyping is implicit and can occur at any stage in type checking or
 inference. Subtyping is restricted to two cases:
-variance with respect to lifetimes, and between types with higher ranked
+variance with respect to lifetimes and between types with higher ranked
 lifetimes. If we were to erase lifetimes from types, then the only subtyping
 would be due to type equality.
 
