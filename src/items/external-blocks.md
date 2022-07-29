@@ -122,6 +122,9 @@ specifies the kind of library with the following possible values:
 - `static` — Indicates a static library.
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
+- `raw-dylib` - Indicates a dynamic library where the compiler will generate
+  an import library to link against (see [`dylib` versus `raw-dylib`] below
+  for details). This is only valid for Windows targets.
 
 The `name` key must be included if `kind` is specified.
 
@@ -198,9 +201,26 @@ The default for this modifier is `-whole-archive`.
 More implementation details about this modifier can be found in
 [`whole-archive` documentation for rustc].
 
+#### `dylib` versus `raw-dylib`
+
+On Windows, linking against a dynamic library requires that an import library
+is provided to the linker: this is a special static library that declares all
+of the symbols exported by the dynamic library in such a way that the linker
+knows that they have to be dynamically loaded at runtime.
+
+Specifying `kind = "dylib"` instructs the Rust compiler to link an import
+library based on the `name` key, the linker will then use its normal library
+resolution logic to find that import library. Alternatively, specifying
+`kind = "raw-dylib"` instructs the compiler to generate an import library
+during compilation and provide that to the linker instead.
+
+`raw-dylib` is only supported on Windows and not supported on x86
+(`target_arch="x86"`), see [58713]. Using it when targeting other platforms or
+x86 on Windows will result in a compiler error.
+
 ### The `link_name` attribute
 
-The `link_name` attribute may be specified on declarations inside an `extern`
+The *`link_name` attribute* may be specified on declarations inside an `extern`
 block to indicate the symbol to import for the given function or static. It
 uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
 
@@ -210,6 +230,41 @@ extern {
     fn name_in_rust();
 }
 ```
+
+Using this attribute with the `link_ordinal` attribute will result in a
+compiler error.
+
+### The `link_ordinal` attribute
+
+The *`link_ordinal` attribute* can be applied on declarations inside an `extern`
+block to indicate the numeric ordinal to use when generating the import library
+to link against. An ordinal is a unique number per symbol exported by a dynamic
+library on Windows and can be used when the library is being loaded to find
+that symbol rather than having to look it up by name.
+
+<div class="warning">
+
+Warning: `link_ordinal` should only be used in cases where the ordinal of the
+symbol is known to be stable: if the ordinal of a symbol is not explicitly set
+when its containing binary is built then one will be automatically assigned to
+it, and that assigned ordinal may change between builds of the binary.
+
+</div>
+
+<!-- ignore: Only works on x86 Windows -->
+```rust,ignore
+#[link(name = "exporter", kind = "raw-dylib")]
+extern "stdcall" {
+    #[link_ordinal(15)]
+    fn imported_function_stdcall(i: i32);
+}
+```
+
+This attribute is only used with the `raw-dylib` linking kind.
+Using any other kind will result in a compiler error.
+
+Using this attribute with the `link_name` attribute will result in a
+compiler error.
 
 ### Attributes on function parameters
 
@@ -233,3 +288,5 @@ restrictions as [regular function parameters].
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
+[`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
+[58713]: https://github.com/rust-lang/rust/issues/58713
