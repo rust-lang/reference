@@ -145,7 +145,7 @@ let a = unsafe { an_unsafe_fn() };
 [Inner attributes] are allowed directly after the opening brace of a block expression in the following situations:
 
 * [Function] and [method] bodies.
-* Loop bodies ([`loop`], [`while`], [`while let`], and [`for`]).
+* Loop bodies ([`loop`], [`while`], and [`for`]).
 * Block expressions used as a [statement].
 * Block expressions as elements of [array expressions], [tuple expressions],
   [call expressions], and tuple-style [struct] expressions.
@@ -172,7 +172,6 @@ fn is_unix_platform() -> bool {
 [`loop`]: loop-expr.md#infinite-loops
 [`std::ops::Fn`]: ../../std/ops/trait.Fn.html
 [`std::future::Future`]: ../../std/future/trait.Future.html
-[`while let`]: loop-expr.md#predicate-pattern-loops
 [`while`]: loop-expr.md#predicate-loops
 [array expressions]: array-expr.md
 [call expressions]: call-expr.md

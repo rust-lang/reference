@@ -5,24 +5,21 @@
 > &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]\
 > &nbsp;&nbsp; )
 
 [_LoopLabel_]: #loop-labels
 [_InfiniteLoopExpression_]: #infinite-loops
 [_PredicateLoopExpression_]: #predicate-loops
-[_PredicatePatternLoopExpression_]: #predicate-pattern-loops
 [_IteratorLoopExpression_]: #iterator-loops
 
-Rust supports four loop expressions:
+Rust supports three loop expressions:
 
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
-*   A [`while let` expression](#predicate-pattern-loops) tests a pattern.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator, looping until the iterator is empty.
 
-All four types of loop support [`break` expressions](#break-expressions), [`continue` expressions](#continue-expressions), and [labels](#loop-labels).
+All three types of loop support [`break` expressions](#break-expressions), [`continue` expressions](#continue-expressions), and [labels](#loop-labels).
 Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
 
 ## Infinite loops
@@ -40,12 +37,28 @@ A `loop` expression containing associated [`break` expression(s)](#break-express
 ## Predicate loops
 
 > **<sup>Syntax</sup>**\
-> _PredicateLoopExpression_ :\
-> &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
+> [_PredicateLoopExpression_] :\
+> &nbsp;&nbsp; `while` _WhileConditions_ [_BlockExpression_]
+>
+> _WhileConditions_ :\
+> &nbsp;&nbsp; _WhileCondition_ ( && _WhileCondition_ )*
+>
+> _WhileCondition_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>\
+> &nbsp;&nbsp; | `let` [_Pattern_] `=` [_Scrutinee_]
 
-A `while` loop begins by evaluating the [boolean] loop conditional operand.
-If the loop conditional operand evaluates to `true`, the loop body block executes, then control returns to the loop conditional operand.
-If the loop conditional expression evaluates to `false`, the `while` expression completes.
+A `while` loop expression allows repeating the evaluation of a block while a set of conditions remain true.
+The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`,
+followed by a [_BlockExpression_].
+
+Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
+If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
+then the loop body block executes.
+After the loop body successfully executes, the condition operands are re-evaluated to determine if the body should be executed again.
+If any condition operand evaluates to `false` or any `let` pattern does not match its scrutinee,
+the body is not executed and execution continues after the `while` expression.
+
+A `while` expression evaluates to `()`.
 
 An example:
 
@@ -58,17 +71,10 @@ while i < 10 {
 }
 ```
 
-## Predicate pattern loops
+### `while let` patterns
 
-> **<sup>Syntax</sup>**\
-> [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
->              [_BlockExpression_]
-
-
-A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
-If the value of the scrutinee matches the pattern, the loop body block executes then control returns to the pattern matching statement.
-Otherwise, the while expression completes.
+`let` patterns in a `while` condition allow binding new variables into scope when the pattern matches successfully.
+The following examples illustrate bindings using `let` patterns:
 
 ```rust
 let mut x = vec![1, 2, 3];
@@ -115,7 +121,28 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 }
 ```
 
-As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+As is the case in [`if` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+
+### `while` condition chains
+
+Multiple condition operands can be separated with `&&`.
+These have the same semantics and restrictions as [`if` condition chains].
+
+The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
+
+```rust
+fn main() {
+    let outer_opt = Some(Some(1i32));
+
+    while let Some(inner_opt) = outer_opt
+        && let Some(number) = inner_opt
+        && number == 1
+    {
+        println!("Peek a boo");
+        break;
+    }
+}
+```
 
 ## Iterator loops
 
@@ -233,7 +260,7 @@ A `break` expression is only permitted in the body of a loop, and has one of the
 > &nbsp;&nbsp; `continue` [LIFETIME_OR_LABEL]<sup>?</sup>
 
 When `continue` is encountered, the current iteration of the associated loop body is immediately terminated, returning control to the loop *head*.
-In the case of a `while` loop, the head is the conditional expression controlling the loop.
+In the case of a `while` loop, the head is the conditional operands controlling the loop.
 In the case of a `for` loop, the head is the call-expression controlling the loop.
 
 Like `break`, `continue` is normally associated with the innermost enclosing loop, but `continue 'label` may be used to specify the loop affected.
@@ -264,11 +291,12 @@ In the case a `loop` has an associated `break`, it is not considered diverging, 
 [LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
+[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [_Pattern_]: ../patterns.md
 [_Scrutinee_]: match-expr.md
+[`if` condition chains]: if-expr.md#chains-of-conditions
+[`if` expressions]: if-expr.md
 [`match` expression]: match-expr.md
-[boolean]: ../types/boolean.md
+[boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
-[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
-[`if let` expressions]: if-expr.md#if-let-expressions
