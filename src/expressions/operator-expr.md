@@ -450,8 +450,8 @@ To illustrate:
 ```rust
 let u32_slice: &[u16] = &[0, 1, 2, 3][..];
 
-let u32_slice_ptr = u16_slice as *const [u32];
-let u16_slice_ptr = u8_slice as *const [u16];
+let u32_slice_ptr = u32_slice as *const [u32];
+let u16_slice_ptr = u32_slice_ptr as *const [u16];
 
 assert_eq!(u16_slice_ptr as *const (), u32_slice_ptr as *const ());
 
