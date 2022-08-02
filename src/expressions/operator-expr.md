@@ -448,7 +448,7 @@ Casting between pointers to unsized type preserves the pointer metadata unchange
 To illustrate:
 
 ```rust
-let u32_slice: &[u16] = &[0, 1, 2, 3][..];
+let u32_slice: &[u32] = &[0, 1, 2, 3][..];
 
 let u32_slice_ptr = u32_slice as *const [u32];
 let u16_slice_ptr = u32_slice_ptr as *const [u16];
