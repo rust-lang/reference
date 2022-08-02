@@ -448,17 +448,18 @@ Casting between pointers to unsized type preserves the pointer metadata unchange
 To illustrate:
 
 ```rust
-#![feature(ptr_metadata)]
-use std::ptr;
+let u32_slice: &[u16] = &[0, 1, 2, 3][..];
 
-let u8_slice_ptr = ptr::slice_from_raw_parts::<u8>(ptr::null(), 4);
-assert_eq!((ptr::null(), 4), u8_slice_ptr.to_raw_parts());
+let u32_slice_ptr = u16_slice as *const [u32];
+let u16_slice_ptr = u8_slice as *const [u16];
 
-let u8_ptr = u8_slice_ptr as *const u8;
-assert_eq!((ptr::null(), ()), u8_ptr.to_raw_parts());
+assert_eq!(u16_slice_ptr as *const (), u32_slice_ptr as *const ());
 
-let u16_slice_ptr = u8_slice_ptr as *const [u16];
-assert_eq!((ptr::null(), 4), u16_slice_ptr.to_raw_parts());
+assert_eq!(unsafe { (&*u16_slice_ptr).len() }, 4);
+assert_eq!(unsafe { (&*u32_slice_ptr).len() }, 4);
+
+assert_eq!(unsafe { std::mem::size_of_val(&*u16_slice_ptr) }, 4 * 2);
+assert_eq!(unsafe { std::mem::size_of_val(&*u32_slice_ptr) }, 4 * 4);
 ```
 
 #### Pointer to address cast
