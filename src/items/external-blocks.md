@@ -167,9 +167,9 @@ block.
 This modifier is only compatible with the `static` linking kind.
 Using any other kind will result in a compiler error.
 
-When building a rlib or staticlib `+bundle` means that all object files from the native static
-library will be added to the rlib or staticlib archive, and then used from it during linking of
-the final binary.
+When building a rlib or staticlib `+bundle` means that the native static library
+will be packed into the rlib or staticlib archive, and then retrieved from there
+during linking of the final binary.
 
 When building a rlib `-bundle` means that the native static library is registered as a dependency
 of that rlib "by name", and object files from it are included only during linking of the final
