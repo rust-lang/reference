@@ -444,6 +444,7 @@ Casts to the `char` with the corresponding code point.
 
 Casting from a pointer to unsized type to pointer to sized type discards the pointer metadata, resulting in just a pointer to the referenced memory.
 Casting between pointers to unsized type preserves the pointer metadata unchanged (e.g. the slice element length remains the same).
+If the pointer metadata type does not match (e.g. casting between slice and vtable pointers), a compile error is produced.
 
 To illustrate:
 
@@ -460,6 +461,9 @@ assert_eq!(unsafe { (&*u32_slice_ptr).len() }, 4);
 
 assert_eq!(unsafe { std::mem::size_of_val(&*u16_slice_ptr) }, 4 * 2);
 assert_eq!(unsafe { std::mem::size_of_val(&*u32_slice_ptr) }, 4 * 4);
+
+// ERROR:
+// u32_slice_ptr as *const dyn Sized;
 ```
 
 #### Pointer to address cast
