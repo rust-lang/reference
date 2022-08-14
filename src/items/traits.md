@@ -76,7 +76,7 @@ Object safe traits can be the base trait of a [trait object]. A trait is
         * Be a [method] that does not use `Self` except in the type of the receiver.
         * Have a receiver with one of the following types:
             * `Self` (i.e. `self`)
-                * But unstable feature `unsized_fn_params` is required to dispatch it on a trait object.
+                * However, it is currently not possible to dispatch it on a trait object.
             * `&Self` (i.e. `&self`)
             * `&mut Self` (i.e `&mut self`)
             * [`Box<Self>`]
