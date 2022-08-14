@@ -115,7 +115,7 @@ trait TraitMethods {
 trait NonDispatchable {
     // Non-methods cannot be dispatched.
     fn foo() where Self: Sized {}
-    // Requires unstable `unsized_fn_params` feature.
+    // Self as receiver can't be dispatched on a trait object.
     fn by_value(self);
     // Self type isn't known until runtime.
     fn returns(&self) -> Self where Self: Sized;
