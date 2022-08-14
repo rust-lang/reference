@@ -127,6 +127,14 @@ match message {
 }
 ```
 
+It's also impossible to cast non-exhaustive types from foreign crates.
+```rust, ignore
+use othercrate::NonExhaustiveEnum;
+
+// Cannot cast a non-exhaustive enum outside of its defining crate.
+let _ = NonExhaustiveEnum::default() as u8;
+```
+
 Non-exhaustive types are always considered inhabited in downstream crates.
 
 [_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
