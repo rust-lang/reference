@@ -127,7 +127,7 @@ match message {
 }
 ```
 
-It's also impossible to cast non-exhaustive types from foreign crates.
+It's also not allowed to cast non-exhaustive types from foreign crates.
 ```rust, ignore
 use othercrate::NonExhaustiveEnum;
 
