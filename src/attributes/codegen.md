@@ -358,7 +358,7 @@ trait object whose methods are attributed.
 The `instruction_set` attribute may be applied to a function to enable code generation for a specific
 instruction set supported by the target architecture. Currently, this is only available for `ARMv4T`
 devices where the architecture has "ARM code" and "Thumb code" available and a single program may
-utilise both of these. If not specified the default instruction set for the target will be used.
+utilize both of these. If not specified the default instruction set for the target will be used.
 
 ```rust
 #[instruction_set(arm::a32)]
