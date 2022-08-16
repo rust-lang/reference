@@ -352,3 +352,18 @@ trait object whose methods are attributed.
 [`core::intrinsics::caller_location`]: ../../core/intrinsics/fn.caller_location.html
 [`core::panic::Location::caller`]: ../../core/panic/struct.Location.html#method.caller
 [`Location`]: ../../core/panic/struct.Location.html
+
+## The `instruction_set` attribute
+
+The `instruction_set` attribute may be applied to a function to enable code generation for a specific
+instruction set supported by the target architecture. Currently, this is only available for `ARMv4T`
+devices where the architecture has "ARM code" and "Thumb code" available and a single program may
+utilise both of these. If not specified the default instruction set for the target will be used.
+
+```rust
+#[instruction_set(arm::a32)]
+fn foo_arm_code() {}
+
+#[instruction_set(arm::t32)]
+fn bar_thumb_code() {}
+```
