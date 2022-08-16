@@ -355,11 +355,17 @@ trait object whose methods are attributed.
 
 ## The `instruction_set` attribute
 
-The `instruction_set` attribute may be applied to a function to enable code generation for a specific
-instruction set supported by the target architecture. Currently, this is only available for `ARMv4T`
-devices where the architecture has "ARM code" and "Thumb code" available and a single program may
-utilize both of these. If not specified the default instruction set for the target will be used.
+The *`instruction_set` attribute* may be applied to a function to enable code generation for a specific
+instruction set supported by the target architecture. It uses the [_MetaListPath_] syntax and a path
+comprised of the architecture and instruction set to specify how to generate the code for
+architectures where a single program may utilize multiple instruction sets. 
 
+The following values are available on targets for the `ARMv4` architecture:
+
+* `arm::a32` - Uses ARM code.
+* `arm::t32` - Uses Thumb code.
+
+<!-- ignore: arm-only -->
 ```rust
 #[instruction_set(arm::a32)]
 fn foo_arm_code() {}
@@ -367,3 +373,5 @@ fn foo_arm_code() {}
 #[instruction_set(arm::t32)]
 fn bar_thumb_code() {}
 ```
+
+[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax

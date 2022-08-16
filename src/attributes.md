@@ -246,6 +246,7 @@ The following is an index of all built-in attributes.
   - [`no_builtins`] — Disables use of certain built-in functions.
   - [`target_feature`] — Configure platform-specific code generation.
   - [`track_caller`] - Pass the parent call location to `std::panic::Location::caller()`.
+  - [`instruction_set`] - Specify the instruction set used to generate a functions code
 - Documentation
   - `doc` — Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
