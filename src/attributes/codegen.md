@@ -366,7 +366,7 @@ The following values are available on targets for the `ARMv4` and ARMv5te` archi
 * `arm::t32` - Uses Thumb code.
 
 <!-- ignore: arm-only -->
-```rust
+```rust,ignore
 #[instruction_set(arm::a32)]
 fn foo_arm_code() {}
 
