@@ -358,7 +358,7 @@ trait object whose methods are attributed.
 The *`instruction_set` attribute* may be applied to a function to enable code generation for a specific
 instruction set supported by the target architecture. It uses the [_MetaListPath_] syntax and a path
 comprised of the architecture and instruction set to specify how to generate the code for
-architectures where a single program may utilize multiple instruction sets. 
+architectures where a single program may utilize multiple instruction sets.
 
 The following values are available on targets for the `ARMv4` and ARMv5te` architectures:
 
