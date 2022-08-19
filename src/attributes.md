@@ -297,7 +297,7 @@ The following is an index of all built-in attributes.
 [`global_allocator`]: runtime.md#the-global_allocator-attribute
 [`ignore`]: attributes/testing.md#the-ignore-attribute
 [`inline`]: attributes/codegen.md#the-inline-attribute
-[`instruction_set`]: attributes/codegen.md#the-instruction-set-attribute
+[`instruction_set`]: attributes/codegen.md#the-instruction_set-attribute
 [`link_name`]: items/external-blocks.md#the-link_name-attribute
 [`link_section`]: abi.md#the-link_section-attribute
 [`link`]: items/external-blocks.md#the-link-attribute
