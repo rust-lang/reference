@@ -12,9 +12,8 @@ functions are only compiled when in test mode. Test functions must be free,
 monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
 
 * `()`
-* `Result<(), E> where E: Debug`
+* `Result<T, E> where T: Termination, E: Debug`
 * `!`
-<!-- * Result<!, E> where E: Debug` -->
 
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the crates-and-source-files.md file -->
