@@ -123,10 +123,9 @@ fn main() -> impl std::process::Termination {
 >
 > * `()`
 > * [`!`]
+> * [`Infallible`]
 > * [`ExitCode`]
-> * `Result<(), E> where E: Debug`
-> * `Result<Infallible, E> where E: Debug`
-<!-- > * Result<!, E> where E: Debug` -->
+> * `Result<T, E> where T: Termination, E: Debug`
 
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the testing.md file -->
@@ -165,6 +164,7 @@ or `_` (U+005F) characters.
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`ExitCode`]: ../std/process/struct.ExitCode.html
+[`Infallible`]: ../std/convert/enum.Infallible.html
 [`Termination`]: ../std/process/trait.Termination.html
 [attribute]: attributes.md
 [attributes]: attributes.md
