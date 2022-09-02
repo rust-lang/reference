@@ -34,6 +34,7 @@ code.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
+* Performing non-nop coercion on a dangling or unaligned raw pointer.
 * Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
 * Producing an invalid value, even in private fields and locals. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to

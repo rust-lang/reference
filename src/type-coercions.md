@@ -159,7 +159,7 @@ Coercion is allowed between the following types:
 ### Unsized Coercions
 
 The following coercions are called `unsized coercions`, since they
-relate to converting sized types to unsized types, and are permitted in a few
+relate to converting types to unsized types, and are permitted in a few
 cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
@@ -171,6 +171,8 @@ an implementation of `Unsize<U>` for `T` will be provided:
 * `[T; n]` to `[T]`.
 
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
+
+* `dyn T` to `dyn U`, when `T` has `U` as one of its ancestor trait.
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
