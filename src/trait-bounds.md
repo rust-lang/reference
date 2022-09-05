@@ -156,6 +156,35 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 }
 ```
 
+## Implied bounds
+
+Rust sometimes infers some bounds the user would have otherwise been required to write.
+
+```rust
+fn requires_t_outlives_a<'a, T>(x: &'a T) {}
+```
+While this function requires `t` to outlive `'a`, this is inferred as the function signature
+contains the type `&'a T` which is only valid if `T: 'a` holds.
+
+Rust adds implied bounds for all inputs and outputs of functions. Inside of `requires_t_outlives_a`
+you can assume `T: 'a` to hold even if you don't explicitly specify this:
+```rust
+fn requires_t_outlives_a<'a, T>(x: &'a T) {
+    requires_t_outlives_a_not_implied::<'a, T>();
+}
+
+fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
+```
+
+Only lifetime bounds are implied, trait bounds still have to be explicitly added.
+This behavior may change in the future however. The following example still causes an error:
+```rust,compile_fail
+use std::fmt::Debug;
+struct IsDebug<T: Debug>(T);
+// error[E0277]: `T` doesn't implement `Debug`
+fn doesnt_specify_t_debug<T>(x: IsDebug<T>) {}
+```
+
 [LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
 [_GenericParams_]: items/generics.md
 [_TypePath_]: paths.md#paths-in-types
