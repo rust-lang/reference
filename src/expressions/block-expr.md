@@ -103,7 +103,7 @@ Async contexts are established by async blocks as well as the bodies of async fu
 
 Async blocks act like a function boundary, much like closures.
 Therefore, the `?` operator and `return` expressions both affect the output of the future, not the enclosing function or other context.
-That is, `return <expr>` from within a closure will return the result of `<expr>` as the output of the future.
+That is, `return <expr>` from within an async block will return the result of `<expr>` as the output of the future.
 Similarly, if `<expr>?` propagates an error, that error is propagated as the result of the future.
 
 Finally, the `break` and `continue` keywords cannot be used to branch out from an async block.
@@ -112,7 +112,7 @@ Therefore the following is illegal:
 ```rust,compile_fail
 loop {
     async move {
-        break; // This would break out of the loop.
+        break; // error[E0267]: `break` inside of an `async` block
     }
 }
 ```
