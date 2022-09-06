@@ -26,7 +26,7 @@ impl<T: PartialEq> PartialEq for Foo<T> {
     }
 
     fn ne(&self, other: &Foo<T>) -> bool {
-        self.a != other.a || self.b != other.b
+        !self.eq(other)
     }
 }
 ```
