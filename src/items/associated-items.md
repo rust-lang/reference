@@ -221,7 +221,7 @@ associated type definition. Furthermore, if `Item` is a type parameter, then
 `Item::Assoc` can be used in type parameters.
 
 Associated types may include [generic parameters] or [where clauses]; these may
-be referred to generic associated types, or GATs. If the type `Thing` has an
+be referred to as generic associated types, or GATs. If the type `Thing` has an
 associated type `Item` from a trait `Trait` with the generics `<'a>` , the type
 can be named like `<Thing as Trait>::Item<'x>`, where `'x` is some lifetime in
 scope. In this case, `'x` will be used wherever `'a` appears in the associated
