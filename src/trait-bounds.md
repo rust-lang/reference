@@ -163,13 +163,21 @@ Rust sometimes infers some bounds the user would have otherwise been required to
 ```rust
 fn requires_t_outlives_a<'a, T>(x: &'a T) {}
 ```
-While this function requires `t` to outlive `'a`, this is inferred as the function signature
+While this function requires `T` to outlive `'a`, this is inferred because the function signature
 contains the type `&'a T` which is only valid if `T: 'a` holds.
 
 Rust adds implied bounds for all inputs and outputs of functions. Inside of `requires_t_outlives_a`
 you can assume `T: 'a` to hold even if you don't explicitly specify this:
-```rust
+```rust,compile_fail
 fn requires_t_outlives_a<'a, T>(x: &'a T) {
+    // This compiles, because `T: 'a` is implied by
+    // the reference type `&'a T`.
+    requires_t_outlives_a_not_implied::<'a, T>();
+}
+
+fn not_implied<'a, T>() {
+    // This errors, because `T: 'a` is not implied by
+    // the function signature.
     requires_t_outlives_a_not_implied::<'a, T>();
 }
 
