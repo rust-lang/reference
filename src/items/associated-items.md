@@ -220,7 +220,12 @@ If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
 associated type definition. Furthermore, if `Item` is a type parameter, then
 `Item::Assoc` can be used in type parameters.
 
-Associated types must not include [generic parameters] or [where clauses].
+Associated types may include [generic parameters] or [where clauses]; these may
+be referred to generic associated types, or GATs. If the type `Thing` has an
+associated type `Item` from a trait `Trait` with the generics `<'a>` , the type
+can be named like `<Thing as Trait>::Item<'x>`, where `'x` is some lifetime in
+scope. In this case, `'x` will be used wherever `'a` appears in the associated
+type definitions on impls.
 
 ```rust
 trait AssociatedType {
@@ -246,6 +251,37 @@ impl OtherStruct {
 fn main() {
     // Usage of the associated type to refer to OtherStruct as <Struct as AssociatedType>::Assoc
     let _other_struct: OtherStruct = <Struct as AssociatedType>::Assoc::new();
+}
+```
+
+An example of associated types with generics and where clauses:
+
+```rust
+struct ArrayLender<'a, T>(&'a mut [T; 16]);
+
+trait Lend {
+    // Generic associated type declaration
+    type Lender<'a> where Self: 'a;
+    fn lend<'a>(&'a mut self) -> Self::Lender<'a>;
+}
+
+impl<T> Lend for [T; 16] {
+    // Generic associated type definition
+    type Lender<'a> = ArrayLender<'a, T> where Self: 'a;
+
+    fn lend<'a>(&'a mut self) -> Self::Lender<'a> {
+        ArrayLender(self)
+    }
+}
+
+fn borrow<'a, T: Lend>(array: &'a mut T) -> <T as Lend>::Lender<'a> {
+    array.lend()
+}
+
+
+fn main() {
+    let mut array = [0usize; 16];
+    let lender = borrow(&mut array);
 }
 ```
 

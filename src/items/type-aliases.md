@@ -4,7 +4,7 @@
 > _TypeAlias_ :\
 > &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>
 >              ( `:` [_TypeParamBounds_] )<sup>?</sup>
->              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] )<sup>?</sup> `;`
+>              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] )<sup>?</sup> [_WhereClause_]<sup>?</sup> `;`
 
 A _type alias_ defines a new name for an existing [type]. Type aliases are
 declared with the keyword `type`. Every value has a single, specific type, but
@@ -37,6 +37,9 @@ A type alias without the [_Type_] specification may only appear as an
 A type alias with [_TypeParamBounds_] may only specified when used as
 an [associated type] in a [trait].
 
+A type alias with where clauses after the equals sign may only appear as an
+[associated type] in a [trait] or a [trait impl].
+
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
 [_TypeParamBounds_]: ../trait-bounds.md
@@ -45,3 +48,4 @@ an [associated type] in a [trait].
 [associated type]: associated-items.md#associated-types
 [trait]: traits.md
 [type]: ../types.md
+[trait impl]: implementations.md#trait-implementations
