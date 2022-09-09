@@ -205,26 +205,46 @@ types cannot be defined in [inherent implementations] nor can they be given a
 default implementation in traits.
 
 An *associated type declaration* declares a signature for associated type
-definitions. It is written as `type`, then an [identifier], and
-finally an optional list of trait bounds.
+definitions. It is written in one of the following forms, where `Assoc` is the
+name of the associated type, `Params` is a comma-separated list of type,
+lifetime or const parameters, `Bounds` is a plus-separated list of trait bounds
+on the associated type, and `WhereBounds` is a comma-separated list of bounds on
+parameters:
+
+```rust,ignore
+type Assoc;
+type Assoc: Bounds;
+type Assoc<Params>;
+type Assoc<Params>: Bounds;
+type Assoc<Params> where WhereBounds;
+type Assoc<Params>: Bounds where WhereBounds;
+```
 
 The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
 There is an implicit [`Sized`] bound on associated types that can be relaxed using the special `?Sized` bound.
 
-An *associated type definition* defines a type alias on another type. It is
-written as `type`, then an [identifier], then an `=`, and finally a [type].
+An *associated type definition* defines a type alias on for the implementation
+of a trait on a type. They are written similarly to an *associated type declaration*,
+but cannot contain `Bounds`, but instead must contain a `Type`:
+
+```rust,ignore
+type Assoc = Type;
+type Assoc<Params> = Type<Params>;
+type Assoc<Params> where WhereBounds = Type;
+type Assoc<Params> = Type where WhereBounds;
+```
 
 If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
 `<Item as Trait>::Assoc` is a type that is an alias of the type specified in the
 associated type definition. Furthermore, if `Item` is a type parameter, then
 `Item::Assoc` can be used in type parameters.
 
-Associated types may include [generic parameters] or [where clauses]; these may
-be referred to as generic associated types, or GATs. If the type `Thing` has an
-associated type `Item` from a trait `Trait` with the generics `<'a>` , the type
-can be named like `<Thing as Trait>::Item<'x>`, where `'x` is some lifetime in
-scope. In this case, `'x` will be used wherever `'a` appears in the associated
+Associated types may include [generic parameters] and [where clauses]; these are
+often referred to as *generic associated types*, or *GATs*. If the type `Thing`
+has an associated type `Item` from a trait `Trait` with the generics `<'a>` , the
+type can be named like `<Thing as Trait>::Item<'x>`, where `'x` is some lifetime
+in scope. In this case, `'x` will be used wherever `'a` appears in the associated
 type definitions on impls.
 
 ```rust
