@@ -335,6 +335,68 @@ impl<T> Container for Vec<T> {
 }
 ```
 
+### Required where clauses on generic associated types
+
+Generic associated type declarations on traits currently may require a list of
+where clauses, dependent on functions in the trait and how the GAT is used.
+
+In a few words, these where clauses are required in order to maximize the allowed
+definitions of the associated type in impls. To do this, any clauses that *can be
+proven to hold* on functions (using the parameters of the function or trait)
+where a GAT appears as an input or output must also be written on the GAT itself.
+
+```rust
+trait LendingIterator {
+    type Item<'x> where Self: 'x;
+    fn next<'a>(&'a mut self) -> Self::Item<'a>;
+}
+```
+
+In the above, on the `next` function, we can prove that `Self: 'a`, because of
+the implied bounds from `&'a mut self`; therefore, we must write the equivalent
+bound on the GAT itself: `where Self: 'x`.
+
+When there are multiple functions in a trait that use the GAT, then the
+*intersection* of the bounds from the different functions are used, rather than
+the union.
+
+```rust
+trait Check<T> {
+    type Checker<'x>;
+    fn create_checker<'a>(item: &'a T) -> Self::Checker<'a>;
+    fn do_check(checker: Self::Checker<'a>);
+}
+```
+
+In this example, no bounds are required on the `type Checker<'a>;`. While we
+know that `T: 'a` on `create_checker`, we do not know that on `do_check`. However,
+if `do_check` was commented out, then the `where T: 'x` bound would be required
+on `Checker`.
+
+The bounds on associated types also propagate required where clauses.
+
+```rust
+trait Iterable {
+    type Item<'a> where Self: 'a;
+    type Iterator<'a>: Iterator<Item = Self::Item<'a>> where Self: 'a;
+    fn iter<'a>(&'a self) -> Self::Iterator<'a>;
+}
+```
+
+Here, `where Self: 'a` is required on `Item` because of `iter`. However, `Item`
+is used in the bounds of `Iterator`, the `where Self: 'a` clause is also required
+there.
+
+Finally, any explicit uses of `'static` on GATs in the trait do not count towards
+the required bounds.
+
+```rust
+trait StaticReturn {
+    type Y<'a>;
+    fn foo(&self) -> Self::Y<'static>;
+}
+```
+
 ## Associated Constants
 
 *Associated constants* are [constants] associated with a type.
