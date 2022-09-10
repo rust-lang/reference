@@ -42,7 +42,7 @@ an [associated type] in a [trait].
 
 Where clauses before the equals sign on a type alias in a [trait impl] (like 
 `type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after
-the equals sign (like `type TypeAlias<T> where T: Foo = Bar<T>`) are preferred.
+the equals sign (like `type TypeAlias<T> = Bar<T> where T: Foo`) are preferred.
 
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
