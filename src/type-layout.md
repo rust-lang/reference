@@ -20,8 +20,10 @@ The alignment of a value can be checked with the [`align_of_val`] function.
 
 The *size* of a value is the offset in bytes between successive elements in an
 array with that item type including alignment padding. The size of a value is
-always a multiple of its alignment. The size of a value can be checked with the
-[`size_of_val`] function.
+always a multiple of its alignment. Note that some types are zero-sized; 0 is
+considered a multiple of any alignment (for example, on some platforms, the type
+`[u16; 0]` has size 0 and alignment 2). The size of a value can be checked with
+the [`size_of_val`] function.
 
 Types where all values have the same size and alignment, and both are known at
 compile time, implement the [`Sized`] trait and can be checked with the
