@@ -389,6 +389,7 @@ match tuple {
 >
 > _HalfOpenRangePattern_ :\
 > &nbsp;&nbsp; | _RangePatternBound_ `..`
+> &nbsp;&nbsp; | `..=` _RangePatternBound_
 >
 > _ObsoleteRangePattern_ :\
 > &nbsp;&nbsp; _RangePatternBound_ `...` _RangePatternBound_
@@ -400,26 +401,51 @@ match tuple {
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | [_PathExpression_]
 
-Range patterns match values within the range defined by their bounds.
+*Range patterns* match scalar values within the range defined by their bounds.
+A bound on the left of its sigils is a *lower bound*.
+A bound on the right is an *upper bound*.
 A range pattern may be closed or half-open.
-A range pattern is closed if it has both a lower and an upper bound, and it matches all the values between and including both of its bounds.
-A range pattern that is half-open is written with a lower bound but not an upper bound, and matches any value equal to or greater than the specified lower bound.
+
+A range pattern is *closed* if it has both a lower and an upper bound.
+The only closed ranged pattern is the inclusive range pattern.
+
+*Inclusive range patterns* match all the values between and including both of its bounds.
+It is written as its lower bounds, followed by `..=`, followed by its upper bounds.
+The type of it is the type unification of its upper and lower bounds.
 
 For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`.
+
+The lower bound cannot be greater than the upper bound.
+That is, in `a..=b`, a &le; b must be the case.
+For example, it is an error to have a range pattern `10..=0`.
+
+Range patterns are *half-open* if they have only an upper or lower bound.
+They have the same type as their upper or lower bound.
+
+A half open range with only a lower bound is written as its lower bound followed by `..`.
+These range patterns will match on any value greater than or equal to the lower bound.
+For example, `1..` will match 1, 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
 For an integer the pattern `1..` will match 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
 The bounds can be literals or paths that point to constant values.
 
-A half-open range pattern in the style `a..` cannot be used to match within the context of a slice.
+A half open range with only an upper bound is written as `..=` followed by its upper bound.
+These range patterns will match on any value less than or equal to the upper bound.
+For example, `..=10` will match 10, 1, 0, and for signed interger types, all negative values.
 
-A pattern `a..=b` must always have a &le; b.
-It is an error to have a range pattern `10..=0`, for example.
+Half-open range patterns cannot be used as the top-level pattern for subpatterns in [slice patterns](#slice-patterns).
 
-Range patterns only work on scalar types. The accepted types are:
+The bounds is written as one of:
 
-* Integer types (u8, i8, u16, i16, usize, isize, etc.).
-* Character types (char).
-* Floating point types (f32 and f64).
-  This is being deprecated and will not be available in a future version of Rust (see [issue #41620](https://github.com/rust-lang/rust/issues/41620)).
+* A character, byte, integer, or float literal.
+* A `-` followed by an integer or float literal.
+* A [path]
+
+If the bounds is written as a path, after macro resolution, the path must resolve to a constant item of the type `char`, an integer type, or a float type.
+
+The type and value of the bounds is dependent upon how it is written out.
+If the bounds is a [path], the pattern has the type and value of the [constant] the path resolves to.
+If it is a literal, it has the type and value of the corresponding [literal expression].
+If is a literal preceded by a `-`, it has the same type as the corresponding [literal expression] and the value of [negating] the value of the corresponding literal expression.
 
 Examples:
 
@@ -496,12 +522,18 @@ println!("{}", match 0xfacade {
 });
 ```
 
-Range patterns for (non-`usize` and -`isize`) integer and `char` types are irrefutable when they span the entire set of possible values of a type.
+Range patterns for fix-width integer and `char` types are irrefutable when they span the entire set of possible values of a type.
 For example, `0u8..=255u8` is irrefutable.
 The range of values for an integer type is the closed range from its minimum to maximum value.
 The range of values for a `char` type are precisely those ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and `'\u{E000}'..='\u{10FFFF}'`.
 
+Floating point range patterns are deprecated and may be removed in a future Rust release.
+See [issue #41620](https://github.com/rust-lang/rust/issues/41620) for more information.
+
 > **Edition Differences**: Before the 2021 edition, closed range patterns may also be written using `...` as an alternative to `..=`, with the same meaning.
+
+> **Note**: Although range patterns use the same syntax as [range expressions], there are no exclusive range patterns.
+> That is, neither `x .. y` nor `.. x` are valid range patterns.
 
 ## Reference patterns
 
@@ -809,8 +841,13 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 
 [`Copy`]: special-types-and-traits.md#copy
 [IDENTIFIER]: identifiers.md
+[constant]: items/constant-items.md
 [enums]: items/enumerations.md
 [literals]: expressions/literal-expr.md
+[literal expression]: expressions/literal-expr.md
+[negating]: expressions/operator-expr.md#negation-operators
+[path]: expressions/path-expr.md
+[range expressions]: expressions/range-expr.md
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
