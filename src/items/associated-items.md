@@ -364,7 +364,7 @@ the union.
 trait Check<T> {
     type Checker<'x>;
     fn create_checker<'a>(item: &'a T) -> Self::Checker<'a>;
-    fn do_check(checker: Self::Checker<'a>);
+    fn do_check(checker: Self::Checker<'_>);
 }
 ```
 
