@@ -230,7 +230,7 @@ but cannot contain `Bounds`, but instead must contain a `Type`:
 
 ```rust,ignore
 type Assoc = Type;
-type Assoc<Params> = Type<Params>;
+type Assoc<Params> = Type; // the type `Type` here may reference `Params`
 type Assoc<Params> where WhereBounds = Type;
 type Assoc<Params> = Type where WhereBounds;
 ```
@@ -338,7 +338,9 @@ impl<T> Container for Vec<T> {
 ### Required where clauses on generic associated types
 
 Generic associated type declarations on traits currently may require a list of
-where clauses, dependent on functions in the trait and how the GAT is used.
+where clauses, dependent on functions in the trait and how the GAT is used. These
+rules may be loosened in the future; updates can be found [on the generic
+associated types initiative repository](https://rust-lang.github.io/generic-associated-types-initiative/explainer/required_bounds.html).
 
 In a few words, these where clauses are required in order to maximize the allowed
 definitions of the associated type in impls. To do this, any clauses that *can be
