@@ -40,7 +40,7 @@ A type alias with the [_Type_] specification may only appear as an
 A type alias with [_TypeParamBounds_] may only specified when used as
 an [associated type] in a [trait].
 
-Where clauses before the equals sign on a type alias in a [trait impl] (like 
+Where clauses before the equals sign on a type alias in a [trait impl] (like
 `type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after
 the equals sign (like `type TypeAlias<T> = Bar<T> where T: Foo`) are preferred.
 
