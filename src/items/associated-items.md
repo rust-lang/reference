@@ -224,7 +224,7 @@ The identifier is the name of the declared type alias. The optional trait bounds
 must be fulfilled by the implementations of the type alias.
 There is an implicit [`Sized`] bound on associated types that can be relaxed using the special `?Sized` bound.
 
-An *associated type definition* defines a type alias on for the implementation
+An *associated type definition* defines a type alias for the implementation
 of a trait on a type. They are written similarly to an *associated type declaration*,
 but cannot contain `Bounds`, but instead must contain a `Type`:
 
