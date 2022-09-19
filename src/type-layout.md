@@ -86,7 +86,7 @@ String slices are a UTF-8 representation of characters that have the same layout
 
 ## Tuple Layout
 
-Tuples are laid out according to the default representation.
+Tuples are laid out according to the [default representation][Default].
 
 The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
