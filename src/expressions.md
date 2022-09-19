@@ -22,6 +22,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_MethodCallExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_FieldExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ClosureExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_AsyncBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_ContinueExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_BreakExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_RangeExpression_]\
@@ -34,7 +35,6 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_AsyncBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
