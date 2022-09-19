@@ -122,7 +122,7 @@ specifies the kind of library with the following possible values:
 - `static` — Indicates a static library.
 - `framework` — Indicates a macOS framework. This is only valid for macOS
   targets.
-- `raw-dylib` - Indicates a dynamic library where the compiler will generate
+- `raw-dylib` — Indicates a dynamic library where the compiler will generate
   an import library to link against (see [`dylib` versus `raw-dylib`] below
   for details). This is only valid for Windows targets.
 
@@ -209,13 +209,13 @@ of the symbols exported by the dynamic library in such a way that the linker
 knows that they have to be dynamically loaded at runtime.
 
 Specifying `kind = "dylib"` instructs the Rust compiler to link an import
-library based on the `name` key, the linker will then use its normal library
+library based on the `name` key. The linker will then use its normal library
 resolution logic to find that import library. Alternatively, specifying
 `kind = "raw-dylib"` instructs the compiler to generate an import library
 during compilation and provide that to the linker instead.
 
-`raw-dylib` is only supported on Windows and not supported on x86
-(`target_arch="x86"`), see [58713]. Using it when targeting other platforms or
+`raw-dylib` is only supported on Windows and not supported on 32-bit x86
+(`target_arch="x86"`). Using it when targeting other platforms or
 x86 on Windows will result in a compiler error.
 
 ### The `link_name` attribute
@@ -289,4 +289,3 @@ restrictions as [regular function parameters].
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
-[58713]: https://github.com/rust-lang/rust/issues/58713
