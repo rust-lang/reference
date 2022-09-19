@@ -228,6 +228,8 @@ The following is an index of all built-in attributes.
   - [`link`] — Specifies a native library to link with an `extern` block.
   - [`link_name`] — Specifies the name of the symbol for functions or statics
     in an `extern` block.
+  - [`link_ordinal`] — Specifies the ordinal of the symbol for functions or
+    statics in an `extern` block.
   - [`no_link`] — Prevents linking an extern crate.
   - [`repr`] — Controls type layout.
   - [`crate_type`] — Specifies the type of crate (library, executable, etc.).
@@ -297,6 +299,7 @@ The following is an index of all built-in attributes.
 [`ignore`]: attributes/testing.md#the-ignore-attribute
 [`inline`]: attributes/codegen.md#the-inline-attribute
 [`link_name`]: items/external-blocks.md#the-link_name-attribute
+[`link_ordinal`]: items/external-blocks.md#the-link_ordinal-attribute
 [`link_section`]: abi.md#the-link_section-attribute
 [`link`]: items/external-blocks.md#the-link-attribute
 [`macro_export`]: macros-by-example.md#path-based-scope
