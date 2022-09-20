@@ -13,7 +13,7 @@
 > NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
 
 <!-- When updating the version, update the UAX links, too. -->
-Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for Unicode version 13.0, with the additions described below. Some examples of identifiers:
+Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for Unicode version 15.0, with the additions described below. Some examples of identifiers:
 
 * `foo`
 * `_identifier`
@@ -68,5 +68,5 @@ keyword except the ones listed above for `RAW_IDENTIFIER`.
 [proc-macro]: procedural-macros.md
 [reserved]: keywords.md#reserved-keywords
 [strict]: keywords.md#strict-keywords
-[UAX15]: https://www.unicode.org/reports/tr15/tr15-50.html
-[UAX31]: https://www.unicode.org/reports/tr31/tr31-33.html
+[UAX15]: https://www.unicode.org/reports/tr15/tr15-53.html
+[UAX31]: https://www.unicode.org/reports/tr31/tr31-37.html
