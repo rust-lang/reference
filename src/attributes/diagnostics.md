@@ -184,7 +184,7 @@ Tuple struct fields are ignored.
 Here is an example:
 
 ```rust
-#[deprecated(since = "5.2", note = "foo was rarely used. Users should instead use bar")]
+#[deprecated(since = "5.2.0", note = "foo was rarely used. Users should instead use bar")]
 pub fn foo() {}
 
 pub fn bar() {}
