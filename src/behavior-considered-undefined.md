@@ -60,6 +60,11 @@ code.
     > `rustc_layout_scalar_valid_range_*` attributes.
 * Incorrect use of inline assembly. For more details, refer to the [rules] to
   follow when writing code that uses inline assembly.
+* **In [const context](const_eval.md#const-context)**: transmuting or otherwise
+  reinterpreting a pointer (reference, raw pointer, or function pointer) into
+  some allocated object as a non-pointer type (such as integers).
+  'Reinterpreting' refers to loading the pointer value at integer type without a
+  cast, e.g. by doing raw pointer casts or using a union.
 
 **Note:** Uninitialized memory is also implicitly invalid for any type that has
 a restricted set of valid values. In other words, the only cases in which
