@@ -1,4 +1,4 @@
-# Loops
+# Loops and other breakable expressions
 
 > **<sup>Syntax</sup>**\
 > _LoopExpression_ :\
