@@ -388,7 +388,7 @@ match tuple {
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
 >
 > _HalfOpenRangePattern_ :\
-> &nbsp;&nbsp; | _RangePatternBound_ `..`
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..`
 > &nbsp;&nbsp; | `..=` _RangePatternBound_
 >
 > _ObsoleteRangePattern_ :\
@@ -425,7 +425,6 @@ They have the same type as their upper or lower bound.
 A half open range with only a lower bound is written as its lower bound followed by `..`.
 These range patterns will match on any value greater than or equal to the lower bound.
 For example, `1..` will match 1, 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
-For an integer the pattern `1..` will match 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
 The bounds can be literals or paths that point to constant values.
 
 A half open range with only an upper bound is written as `..=` followed by its upper bound.
