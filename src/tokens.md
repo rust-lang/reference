@@ -667,7 +667,7 @@ Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte lite
 
 > **Edition Differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
 >
-> Before the 2021 edition, a reserved prefixes are accepted by the lexer and interpreted as multiple tokens (for example, one token for the identifier or keyword, followed by a `#` token).
+> Before the 2021 edition, reserved prefixes are accepted by the lexer and interpreted as multiple tokens (for example, one token for the identifier or keyword, followed by a `#` token).
 >
 > Examples accepted in all editions:
 > ```rust
