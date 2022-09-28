@@ -1,4 +1,12 @@
-# Unsafe blocks
+# The `unsafe` keyword
+
+## Unsafe functions
+
+Unsafe functions are functions that are not safe in all contexts and/or for all
+possible inputs. Such a function must be prefixed with the keyword `unsafe` and
+can only be called from an `unsafe` block or another `unsafe` function.
+
+## Unsafe blocks
 
 A block of code can be prefixed with the `unsafe` keyword, to permit calling
 `unsafe` functions or dereferencing raw pointers within a safe function.

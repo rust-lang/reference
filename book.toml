@@ -10,6 +10,8 @@ edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
 
 [output.html.redirect]
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
+"/unsafe-blocks.html" = "unsafe-keyword.html"
+"/unsafe-functions.html" = "unsafe-keyword.html"
 
 [rust]
 edition = "2021"
