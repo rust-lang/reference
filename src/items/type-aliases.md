@@ -31,14 +31,14 @@ let _ = UseAlias(5); // OK
 let _ = TypeAlias(5); // Doesn't work
 ```
 
-A type alias without the [_Type_] specification may only appear as an
-[associated type] in a [trait].
+A type alias, when not used as an associated type, must include a [_Type_] and
+may not include [_TypeParamBounds_].
 
-A type alias with the [_Type_] specification may only appear as an
-[associated type] in a [trait impl].
+A type alias, when used as an [associated type] in a [trait], must not include a
+[_Type_] specification but may include [_TypeParamBounds_].
 
-A type alias with [_TypeParamBounds_] may only specified when used as
-an [associated type] in a [trait].
+A type alias, when used as an [associated type] in a [trait impl], must include
+a [_Type_] specification and may not include [_TypeParamBounds_].
 
 Where clauses before the equals sign on a type alias in a [trait impl] (like
 `type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after

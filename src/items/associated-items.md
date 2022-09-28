@@ -211,6 +211,7 @@ lifetime or const parameters, `Bounds` is a plus-separated list of trait bounds
 on the associated type, and `WhereBounds` is a comma-separated list of bounds on
 parameters:
 
+<!-- ignore: illustrative example forms -->
 ```rust,ignore
 type Assoc;
 type Assoc: Bounds;
@@ -228,11 +229,12 @@ An *associated type definition* defines a type alias for the implementation
 of a trait on a type. They are written similarly to an *associated type declaration*,
 but cannot contain `Bounds`, but instead must contain a `Type`:
 
+<!-- ignore: illustrative example forms -->
 ```rust,ignore
 type Assoc = Type;
 type Assoc<Params> = Type; // the type `Type` here may reference `Params`
-type Assoc<Params> where WhereBounds = Type;
 type Assoc<Params> = Type where WhereBounds;
+type Assoc<Params> where WhereBounds = Type; // deprecated, prefer the form above
 ```
 
 If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
