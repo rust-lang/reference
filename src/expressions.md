@@ -129,6 +129,15 @@ assert_eq!(
 
 > **Note**: Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
+## Early Termination
+
+Expressions may be *terminated* early, whether by a jump expression or unwinding.
+When terminated, evaluation of the expression stops.
+If the expression is the target of termination by a jump expression, then it evaluates to the value specified by the jump expression.
+Otherwise, it evaluates to the never type.
+
+**Note**: Destructors are still executed for the expression after being terminated.
+
 ## Place Expressions and Value Expressions
 
 Expressions are divided into two main categories: place expressions and value expressions;
