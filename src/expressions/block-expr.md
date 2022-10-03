@@ -117,6 +117,66 @@ loop {
 }
 ```
 
+### Auto traits and `async` blocks
+
+Auto trait inference for `async` blocks follow the same [rules as closures] except that [temporary values that are in scope][temporary-scopes] at an `await` expression are also considered. For example, consider the following block:
+
+```rust
+# fn bar() -> i32 { 42 }
+# async fn foo() {}
+async {
+    match bar() {
+        _ => foo().await,
+    }
+}
+# ;
+```
+
+Here the result of `bar()` is in scope for the await of `foo()`, so the result of `bar()` will impact the inferred auto traits.
+If `bar()` is not `Send`, then the future for the whole match block will also not be `Send`.
+
+For a more complex example, consider the case below.
+```rust
+# struct Client;
+# impl Client {
+#     fn new() -> Self { Client }
+#     fn status(&self) -> u32 { 200 }
+# }
+# async fn foo() {}
+async {
+    let client = Client::new();
+    match client.status() {
+        _ => foo().await,
+    }
+}
+# ;
+```
+Here, `status()` is declared as `fn status(&self) -> u32`.
+Because there is an implicit borrow of `client` in the `client.status()` call, a value of type `&Client` will be in scope for the `await` expression.
+If `&Client` is `Send`, then the whole future will be `Send`.
+If `&Client` is not `Send`, then the future will also not be `Send`.
+The borrow of `client` remains in scope for the `match` body because the scrutineee of a `match` expression [does not introduce a temporary scope].
+However, we can work around this by explicitly introducing a scope, as shown below.
+```rust
+# struct Client;
+# impl Client {
+#     fn new() -> Self { Client }
+#     fn status(&self) -> u32 { 200 }
+# }
+# async fn foo() {}
+async {
+    let client = Client::new();
+    match { let status = client.status(); status } {
+        _ => foo().await,
+    }
+}
+# ;
+```
+Explicitly introducing a block means that the borrow of `client` will be released when the block exits, and therefore `&Client` will not be considered in determining auto traits for the overall future.
+In this case, only the `u32` returned from `status` would be relevant.
+
+[does not introduce a temporary scope]: ../destructors.md#temporary-scopes
+
 ## `unsafe` blocks
 
 > **<sup>Syntax</sup>**\
@@ -189,3 +249,5 @@ fn is_unix_platform() -> bool {
 [tuple expressions]: tuple-expr.md
 [unsafe operations]: ../unsafety.md
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
+[rules as closures]: ../special-types-and-traits.md#auto-traits
+[temporary-scopes]: ../destructors.md#temporary-scopes
