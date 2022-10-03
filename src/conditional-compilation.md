@@ -196,11 +196,8 @@ Example values:
 Key-value option set for each bit width that the target supports
 atomic loads, stores, and compare-and-swap operations.
 
-When this cfg is present, all of the [`core::sync::atomic`] APIs are available for
-the relevant atomic width with the exception of `from_mut` methods (currently
-unstable), which additionally require that the primitive integer and atomic have
-the same minimum alignment on the given target. No user-visible, stable cfg is
-exposed for that method at this time.
+When this cfg is present, all of the stable [`core::sync::atomic`] APIs are available for
+the relevant atomic width.
 
 [`core::sync::atomic`]: ../core/sync/atomic/index.html
 
