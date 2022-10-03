@@ -118,8 +118,7 @@
 - [Inline assembly](inline-assembly.md)
 
 - [Unsafety](unsafety.md)
-    - [Unsafe functions](unsafe-functions.md)
-    - [Unsafe blocks](unsafe-blocks.md)
+    - [The `unsafe` keyword](unsafe-keyword.md)
     - [Behavior considered undefined](behavior-considered-undefined.md)
     - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
 

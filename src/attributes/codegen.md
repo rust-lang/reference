@@ -347,7 +347,7 @@ trait object whose methods are attributed.
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[unsafe function]: ../unsafe-functions.md
+[unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
 [`core::intrinsics::caller_location`]: ../../core/intrinsics/fn.caller_location.html
 [`core::panic::Location::caller`]: ../../core/panic/struct.Location.html#method.caller

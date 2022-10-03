@@ -62,5 +62,5 @@ restrictions as [regular function parameters].
 [closures]: closure.md
 [extern function]: ../items/functions.md#extern-function-qualifier
 [function items]: function-item.md
-[unsafe function]: ../unsafe-functions.md
+[unsafe function]: ../unsafe-keyword.md
 [regular function parameters]: ../items/functions.md#attributes-on-function-parameters
