@@ -191,6 +191,25 @@ Example values:
 * `"pc"`
 * `"unknown"`
 
+### `target_has_atomic`
+
+Key-value option set for each bit width that the target supports
+atomic loads, stores, and compare-and-swap operations.
+
+When this cfg is present, all of the stable [`core::sync::atomic`] APIs are available for
+the relevant atomic width.
+
+[`core::sync::atomic`]: ../core/sync/atomic/index.html
+
+Possible values:
+
+* `"8"`
+* `"16"`
+* `"32"`
+* `"64"`
+* `"128"`
+* `"ptr"`
+
 ### `test`
 
 Enabled when compiling the test harness. Done with `rustc` by using the
