@@ -1,4 +1,4 @@
-# Loops
+# Loops and other breakable expressions
 
 > **<sup>Syntax</sup>**\
 > _LoopExpression_ :\
@@ -7,6 +7,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_LabelBlockExpression_]\
 > &nbsp;&nbsp; )
 
 [_LoopLabel_]: #loop-labels
@@ -14,16 +15,19 @@
 [_PredicateLoopExpression_]: #predicate-loops
 [_PredicatePatternLoopExpression_]: #predicate-pattern-loops
 [_IteratorLoopExpression_]: #iterator-loops
+[_LabelBlockExpression_]: #labelled-block-expressions
 
-Rust supports four loop expressions:
+Rust supports five loop expressions:
 
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
 *   A [`while let` expression](#predicate-pattern-loops) tests a pattern.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator, looping until the iterator is empty.
+*   A [labelled block expression](#labelled-block-expressions) runs a loop exactly once, but allows exiting the loop early with `break`.
 
-All four types of loop support [`break` expressions](#break-expressions), [`continue` expressions](#continue-expressions), and [labels](#loop-labels).
-Only `loop` supports [evaluation to non-trivial values](#break-and-loop-values).
+All five types of loop support [`break` expressions](#break-expressions), and [labels](#loop-labels).
+All except labelled block expressions support [`continue` expressions](#continue-expressions).
+Only `loop` and labelled block expressions support [evaluation to non-trivial values](#break-and-loop-values).
 
 ## Infinite loops
 
@@ -193,6 +197,18 @@ A loop expression may optionally have a _label_. The label is written as a lifet
 If a label is present, then labeled `break` and `continue` expressions nested within this loop may exit out of this loop or return control to its head.
 See [break expressions](#break-expressions) and [continue expressions](#continue-expressions).
 
+Labels follow the hygiene and shadowing rules of local variables. For example, this code will print "outer loop":
+
+```rust
+'a: loop {
+    'a: loop {
+        break 'a;
+    }
+    print!("outer loop");
+    break 'a;
+}
+```
+
 ## `break` expressions
 
 > **<sup>Syntax</sup>**\
@@ -225,6 +241,16 @@ Example:
 ```
 
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
+
+## Labelled block expressions
+
+> **<sup>Syntax</sup>**\
+> _LabelBlockExpression_ :\
+> &nbsp;&nbsp; [_BlockExpression_]
+
+Labelled block expressions are exactly like block expressions, except that they allow using `break` expressions within the block.
+Unlike other loops, `break` expressions within a label expression *must* have a label (i.e. the label is not optional).
+Unlike other loops, labelled block expressions *must* begin with a label.
 
 ## `continue` expressions
 
