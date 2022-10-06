@@ -196,7 +196,7 @@ struct IsDebug<T: Debug>(T);
 fn doesnt_specify_t_debug<T>(x: IsDebug<T>) {}
 ```
 
-Lifetime bounds are also inferred in type definitions and impl blocks.
+Lifetime bounds are also inferred for type definitions and impl blocks for any type
 
 ```rust
 struct Struct<'a, T> {
@@ -221,7 +221,7 @@ trait Trait<'a, T: 'a> {}
 // in the impl header.
 //     impl<'a, T> Trait<'a, T> for () {}
 
-// This compiles as `T: 'a` is implied by the self type `&'a ()`. 
+// This compiles as `T: 'a` is implied by the self type `&'a ()`.
 impl<'a, T> Trait<'a, T> for &'a T {}
 ```
 
