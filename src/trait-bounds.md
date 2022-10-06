@@ -158,40 +158,73 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 
 ## Implied bounds
 
-Rust sometimes infers some bounds the user would have otherwise been required to write.
+Lifetime bounds required for types to be well-formed are sometimes inferred by the compiler.
 
 ```rust
 fn requires_t_outlives_a<'a, T>(x: &'a T) {}
 ```
-While this function requires `T` to outlive `'a`, this is inferred because the function signature
-contains the type `&'a T` which is only valid if `T: 'a` holds.
+The type parameter `T` is required to outlive `'a` for the type `&'a T` to be well-formed.
+This is inferred because the function signature contains the type `&'a T` which is
+only valid if `T: 'a` holds.
 
 Rust adds implied bounds for all inputs and outputs of functions. Inside of `requires_t_outlives_a`
 you can assume `T: 'a` to hold even if you don't explicitly specify this:
-```rust,compile_fail
+```rust
+fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
+
 fn requires_t_outlives_a<'a, T>(x: &'a T) {
     // This compiles, because `T: 'a` is implied by
     // the reference type `&'a T`.
     requires_t_outlives_a_not_implied::<'a, T>();
 }
+```
 
+```rust,compile_fail
+# fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
 fn not_implied<'a, T>() {
     // This errors, because `T: 'a` is not implied by
     // the function signature.
     requires_t_outlives_a_not_implied::<'a, T>();
 }
-
-fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
 ```
 
-Only lifetime bounds are implied, trait bounds still have to be explicitly added.
-This behavior may change in the future however. The following example still causes an error:
+Only lifetime bounds are implied, trait bounds still have to be explicitly added. The following example therefore causes an error:
 ```rust,compile_fail
 use std::fmt::Debug;
 struct IsDebug<T: Debug>(T);
 // error[E0277]: `T` doesn't implement `Debug`
 fn doesnt_specify_t_debug<T>(x: IsDebug<T>) {}
 ```
+
+Lifetime bounds are also inferred in type definitions and impl blocks.
+
+```rust
+struct Struct<'a, T> {
+    // This requires `T: 'a` to be well-formed
+    // which is inferred by the compiler.
+    field: &'a T,
+}
+
+enum Enum<'a, T> {
+    // This requires `T: 'a` to be well-formed,
+    // which is inferred by the compiler.
+    //
+    // Note that `T: 'a` is required even when only
+    // using `Enum::OtherVariant`.
+    SomeVariant(&'a T),
+    OtherVariant,
+}
+
+trait Trait<'a, T: 'a> {}
+
+// This would error because `T: 'a` is not implied by any type
+// in the impl header.
+//     impl<'a, T> Trait<'a, T> for () {}
+
+// This compiles as `T: 'a` is implied by the self type `&'a ()`. 
+impl<'a, T> Trait<'a, T> for &'a T {}
+```
+
 
 [LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
 [_GenericParams_]: items/generics.md
