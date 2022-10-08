@@ -158,7 +158,7 @@ smallest scope that contains the expression and is one of the following:
 
 * The entire function body.
 * A statement.
-* The body of a [`if`], [`while`] or [`loop`] expression.
+* The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
 * The condition expression of an `if` or `while` expression, or a `match`
   guard.
