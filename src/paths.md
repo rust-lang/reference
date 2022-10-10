@@ -128,7 +128,7 @@ S::f();  // Calls the inherent impl.
 > &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_))<sup>?</sup>
 >
 > _TypePathFn_ :\
-> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_Type_])<sup>?</sup>
+> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_TypeNoBounds_])<sup>?</sup>
 >
 > _TypePathFnInputs_ :\
 > [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
@@ -395,6 +395,7 @@ mod without { // crate::without
 [_LiteralExpression_]: expressions/literal-expr.md
 [_SimplePathSegment_]: #simple-paths
 [_Type_]: types.md#type-expressions
+[_TypeNoBounds_]: types.md#type-expressions
 [literal]: expressions/literal-expr.md
 [item]: items.md
 [variable]: variables.md
