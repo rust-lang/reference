@@ -18,7 +18,7 @@ Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for 
 * `foo`
 * `_identifier`
 * `r#true`
-* `Москва`
+* `Київ`
 * `東京`
 
 The profile used from UAX #31 is:
