@@ -562,11 +562,11 @@ Like all ways to create undefined behavior in safe Rust, this is a bug.
 The `transparent` representation can only be used on a [`struct`][structs]
 or an [`enum`][enumerations] with a single variant that has:
 
-- a single field with non-zero size, and
+- a single field with non-zero size, and/or
 - any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]).
 
 Structs and enums with this representation have the same layout and ABI
-as the single non-zero sized field.
+as the single non-zero sized field, or size 0 and alignment 1 if not present.
 
 This is different than the `C` representation because
 a struct with the `C` representation will always have the ABI of a `C` `struct`
