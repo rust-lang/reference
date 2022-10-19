@@ -208,8 +208,8 @@ An *associated type declaration* declares a signature for associated type
 definitions. It is written in one of the following forms, where `Assoc` is the
 name of the associated type, `Params` is a comma-separated list of type,
 lifetime or const parameters, `Bounds` is a plus-separated list of trait bounds
-on the associated type, and `WhereBounds` is a comma-separated list of bounds on
-parameters:
+that the associated type must meet, and `WhereBounds` is a comma-separated list
+of bounds that the parameters must meet:
 
 <!-- ignore: illustrative example forms -->
 ```rust,ignore
@@ -336,6 +336,19 @@ impl<T> Container for Vec<T> {
     fn insert(&mut self, x: T) { self.push(x); }
 }
 ```
+
+### Relationship between `Bounds` and `WhereBounds`
+
+In this example:
+
+```rust
+# use std::fmt::Debug;
+trait Example {
+    type Output<T>: Ord where T: Debug;
+}
+```
+
+Given a reference to the associated type like `<X as Example>::Output<Y>`, the associated type itself must be `Ord`, and the type `Y` must be `Debug`.
 
 ### Required where clauses on generic associated types
 
