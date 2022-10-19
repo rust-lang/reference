@@ -4,7 +4,7 @@
 > _TypeAlias_ :\
 > &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>
 >              ( `:` [_TypeParamBounds_] )<sup>?</sup>
->              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] )<sup>?</sup> `;`
+>              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] [_WhereClause_]<sup>?</sup>)<sup>?</sup> `;`
 
 A _type alias_ defines a new name for an existing [type]. Type aliases are
 declared with the keyword `type`. Every value has a single, specific type, but
@@ -31,11 +31,18 @@ let _ = UseAlias(5); // OK
 let _ = TypeAlias(5); // Doesn't work
 ```
 
-A type alias without the [_Type_] specification may only appear as an
-[associated type] in a [trait].
+A type alias, when not used as an associated type, must include a [_Type_] and
+may not include [_TypeParamBounds_].
 
-A type alias with [_TypeParamBounds_] may only specified when used as
-an [associated type] in a [trait].
+A type alias, when used as an [associated type] in a [trait], must not include a
+[_Type_] specification but may include [_TypeParamBounds_].
+
+A type alias, when used as an [associated type] in a [trait impl], must include
+a [_Type_] specification and may not include [_TypeParamBounds_].
+
+Where clauses before the equals sign on a type alias in a [trait impl] (like
+`type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after
+the equals sign (like `type TypeAlias<T> = Bar<T> where T: Foo`) are preferred.
 
 [IDENTIFIER]: ../identifiers.md
 [_GenericParams_]: generics.md
@@ -45,3 +52,4 @@ an [associated type] in a [trait].
 [associated type]: associated-items.md#associated-types
 [trait]: traits.md
 [type]: ../types.md
+[trait impl]: implementations.md#trait-implementations
