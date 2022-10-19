@@ -13,7 +13,7 @@ When the enclosed operand is a place expression, it is a place expression and wh
 
 Parentheses can be used to explicitly modify the precedence order of subexpressions within an expression.
 
-An example of a parenthesized expression:
+Examples of parenthesized expressions:
 
 ```rust
 let x: i32 = 2 + 3 * 4;
