@@ -123,12 +123,17 @@ Several types of operands are supported:
 * `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
   - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
+* `sym <path>`
+  - `<path>` must refer to a `fn` or `static`.
+  - A mangled symbol name referring to the item is substituted into the asm template string.
+  - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
+  - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
 
 Operand expressions are evaluated from left to right, just like function call arguments.
 After the `asm!` has executed, outputs are written to in left to right order.
 This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
 
-Since `global_asm!` exists outside a function, it cannot use input/output operands.
+Since `global_asm!` exists outside a function, it can only use `sym` operands.
 
 ## Register operands
 
