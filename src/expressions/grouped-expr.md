@@ -16,8 +16,8 @@ Parentheses can be used to explicitly modify the precedence order of subexpressi
 An example of a parenthesized expression:
 
 ```rust
-let x: i32 = 2 + 3 * 4;
-let y: i32 = (2 + 3) * 4;
+let x: i32 = 2 + 3 * 4; // not parenthesized
+let y: i32 = (2 + 3) * 4; // parenthesized
 assert_eq!(x, 14);
 assert_eq!(y, 20);
 ```
