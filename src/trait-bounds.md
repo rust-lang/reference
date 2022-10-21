@@ -167,7 +167,7 @@ The type parameter `T` is required to outlive `'a` for the type `&'a T` to be we
 This is inferred because the function signature contains the type `&'a T` which is
 only valid if `T: 'a` holds.
 
-Rust adds implied bounds for all inputs and outputs of functions. Inside of `requires_t_outlives_a`
+Rust adds implied bounds for all parameters and outputs of functions. Inside of `requires_t_outlives_a`
 you can assume `T: 'a` to hold even if you don't explicitly specify this:
 ```rust
 fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
