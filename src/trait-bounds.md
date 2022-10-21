@@ -158,7 +158,7 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 
 ## Implied bounds
 
-Lifetime bounds required for types to be well-formed are sometimes inferred by the compiler.
+Lifetime bounds required for types to be well-formed are sometimes inferred.
 
 ```rust
 fn requires_t_outlives_a<'a, T>(x: &'a T) {}
