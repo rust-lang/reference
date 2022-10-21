@@ -221,7 +221,7 @@ trait Trait<'a, T: 'a> {}
 // in the impl header.
 //     impl<'a, T> Trait<'a, T> for () {}
 
-// This compiles as `T: 'a` is implied by the self type `&'a ()`.
+// This compiles as `T: 'a` is implied by the self type `&'a T`.
 impl<'a, T> Trait<'a, T> for &'a T {}
 ```
 
