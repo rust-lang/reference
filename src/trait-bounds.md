@@ -167,7 +167,7 @@ The type parameter `T` is required to outlive `'a` for the type `&'a T` to be we
 This is inferred because the function signature contains the type `&'a T` which is
 only valid if `T: 'a` holds.
 
-Rust adds implied bounds for all parameters and outputs of functions. Inside of `requires_t_outlives_a`
+Implied bounds are added for all parameters and outputs of functions. Inside of `requires_t_outlives_a`
 you can assume `T: 'a` to hold even if you don't explicitly specify this:
 ```rust
 fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
@@ -188,7 +188,8 @@ fn not_implied<'a, T>() {
 }
 ```
 
-Only lifetime bounds are implied, trait bounds still have to be explicitly added. The following example therefore causes an error:
+Only lifetime bounds are implied, trait bounds still have to be explicitly added.
+The following example therefore causes an error:
 ```rust,compile_fail
 use std::fmt::Debug;
 struct IsDebug<T: Debug>(T);
