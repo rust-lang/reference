@@ -59,7 +59,26 @@ In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant.
 
 An enum where no constructors contain fields are called a
-*<a id="field-less-enum">field-less enum</a>*.
+*<a id="field-less-enum">field-less enum</a>*. For example, this is a fieldless enum:
+
+```rust
+enum Fieldless {
+    Tuple(),
+    Struct{},
+    Unit,
+}
+```
+
+If a field-less enum only contains unit variants, the enum is called an
+*<a id="unit-only-enum">unit-only enum</a>*. For example:
+
+```rust
+enum Enum {
+    Foo = 3,
+    Bar = 2,
+    Baz = 1,
+}
+```
 
 ## Discriminants
 
@@ -78,15 +97,8 @@ In two circumstances, the discriminant of a variant may be explicitly set by
 following the variant name with `=` and a [constant expression]:
 
 
-1. if the enumeration is fieldless; e.g.:
+1. if the enumeration is "[unit-only]".
 
-   ```rust
-   enum Enum {
-       Foo = 3,
-       Bar() = 2,
-       Baz {} = 1,
-   }
-   ```
 
 2. if a [primitive representation] is used. For example:
 
@@ -161,23 +173,23 @@ enum OverflowingDiscriminantError2 {
 
 [`mem::discriminant`] returns an opaque reference to the discriminant of
 an enum value which can be compared. This cannot be used to get the value
-of the discriminant. 
+of the discriminant.
 
 #### Casting
 
-If an enumeration is fieldless, then its discriminant can be directly
-accessed with a [numeric cast]; e.g.:
+If an enumeration is [unit-only] (with no tuple and struct variants), then its
+discriminant can be directly accessed with a [numeric cast]; e.g.:
 
 ```rust
 enum Enum {
-    Unit,
-    Tuple(),
-    Struct{},
+    Foo,
+    Bar,
+    Baz,
 }
 
-assert_eq!(0, Enum::Unit as isize);
-assert_eq!(1, Enum::Tuple() as isize);
-assert_eq!(2, Enum::Struct{} as isize);
+assert_eq!(0, Enum::Foo as isize);
+assert_eq!(1, Enum::Bar as isize);
+assert_eq!(2, Enum::Baz as isize);
 ```
 
 #### Pointer Casting
@@ -267,6 +279,7 @@ enum E {
 [enumerated type]: ../types/enum.md
 [`mem::discriminant`]: ../../std/mem/fn.discriminant.html
 [never type]: ../types/never.md
+[unit-only]: #unit-only-enum
 [numeric cast]: ../expressions/operator-expr.md#semantics
 [constant expression]: ../const_eval.md#constant-expressions
 [default representation]: ../type-layout.md#the-default-representation
