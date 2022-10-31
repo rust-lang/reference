@@ -51,7 +51,7 @@ instances of the item must be instantiated with a value of the given type.
 <!-- TODO: update above to say "introduces a name in the [value namespace]"
     once namespaces are added. -->
 
-The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`
+The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
 Const parameters can be used anywhere a [const item] can be used, with the
