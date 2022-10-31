@@ -27,7 +27,7 @@ code.
   [dangling] or unaligned, even in [place expression context]
   (e.g. `addr_of!(&*expr)`).
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow LLVM’s
-  scoped noalias model, except if the `&T` contains an [`UnsafeCell<U>`].
+  scoped [noalias] model, except if the `&T` contains an [`UnsafeCell<U>`].
   References must not be dangling while they are live. (The exact liveness
   duration is not specified, but it is certainly upper-bounded by the syntactic
   lifetime assigned by the borrow checker. When a reference is passed to a
