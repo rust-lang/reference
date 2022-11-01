@@ -31,7 +31,8 @@ code.
   [`UnsafeCell<U>`]. References and boxes must not be dangling while they are
   live. The exact liveness duration is not specified, but some bounds exist:
   * For references, the liveness duration is upper-bounded by the syntactic
-    lifetime assigned by the borrow checker.
+    lifetime assigned by the borrow checker; it cannot be live any *longer* than
+    that lifetime.
   * Each time a reference or box is passed to or returned from a function, it is
     considered live.
   * When a reference (but not a `Box`!) is passed to a function, it is live at
