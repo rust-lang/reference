@@ -28,7 +28,7 @@ code.
   (e.g. `addr_of!(&*expr)`).
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow
   LLVM’s scoped [noalias] model, except if the `&T` contains an
-  [`UnsafeCell<U>`]. References and boxes must not be dangling while they are
+  [`UnsafeCell<U>`]. References and boxes must not be [dangling] while they are
   live. The exact liveness duration is not specified, but some bounds exist:
   * For references, the liveness duration is upper-bounded by the syntactic
     lifetime assigned by the borrow checker; it cannot be live any *longer* than
