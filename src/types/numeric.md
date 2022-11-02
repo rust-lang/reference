@@ -45,3 +45,11 @@ within an object along with one byte past the end.
 > `isize` are either 32-bit or 64-bit. As a consequence, 16-bit
 > pointer support is limited and may require explicit care and acknowledgment
 > from a library to support.
+
+## Bit validity and padding
+
+For each primitive integer and floating-point type, `T`:
+- Any sequence of `size_of::<T>()` bytes is a valid instance of `T` (in other
+  words, `transmute::<[u8; size_of::<T>()], T>(...)` is guaranteed to be sound).
+- `T` contains no padding or otherwise uninitialized bytes (in other words,
+  `transmute::<T, [u8; size_of::<T>()]>(...)` is guaranteed to be sound).
