@@ -53,8 +53,18 @@ target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
 bit target, this is 8 bytes.
 
 Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on x86 u64 and f64 are only
+platform-specific behavior. In particular, on x86, `u64` and `f64` are only
 aligned to 32 bits.
+
+### Primitive Bit Validity and Padding
+
+For each primitive type, `T`, in the preceding table, any sequence of
+`size_of::<T>()` bytes is a valid instance of `T`. In other words,
+`transmute::<[u8; size_of::<T>()], T>(...)` is guaranteed to be sound.
+
+Similarly, for each primitive type, `T`, in the preceding table, `T` contains
+no padding or otherwise uninitialized bytes. In other words,
+`transmute::<T, [u8; size_of::<T>()]>(...)` is guaranteed to be sound.
 
 ## Pointers and References Layout
 
