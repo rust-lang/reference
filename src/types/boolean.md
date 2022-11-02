@@ -17,6 +17,9 @@ value false has the bit pattern `0x00` and the value true has the bit pattern
 `0x01`. It is [undefined behavior] for an object with the boolean type to have
 any other bit pattern.
 
+The boolean type contains no padding or otherwise uninitialized bytes. In other
+words, `transmute::<bool, u8>(...)` is guaranteed to be sound.
+
 The boolean type is the type of many operands in various [expressions]:
 
 * The condition operand in [if expressions] and [while expressions]
