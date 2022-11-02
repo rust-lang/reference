@@ -8,8 +8,8 @@ or 0xE000 to 0x10FFFF range. It is immediate [Undefined Behavior] to create a
 `char` that falls outside this range. A `[char]` is effectively a UCS-4 / UTF-32
 string of length 1.
 
-The `char` type has no padding or otherwise uninitialized bytes. In other words,
-`transmute::<char, [u8; 4]>(...)` is guaranteed to be sound.
+The `char` type contains no padding or otherwise uninitialized bytes. In other
+words, `transmute::<char, [u8; 4]>(...)` is guaranteed to be sound.
 
 A value of type `str` is represented the same way as `[u8]`: it is a slice of
 8-bit unsigned bytes. However, the Rust standard library makes extra assumptions
