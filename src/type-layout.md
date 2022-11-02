@@ -58,13 +58,19 @@ aligned to 32 bits.
 
 ### Primitive Bit Validity and Padding
 
-For each primitive type, `T`, in the preceding table, any sequence of
-`size_of::<T>()` bytes is a valid instance of `T`. In other words,
+For each primitive type, `T`, in the preceding table other than `char`, any
+sequence of `size_of::<T>()` bytes is a valid instance of `T`. In other words,
 `transmute::<[u8; size_of::<T>()], T>(...)` is guaranteed to be sound.
 
-Similarly, for each primitive type, `T`, in the preceding table, `T` contains
-no padding or otherwise uninitialized bytes. In other words,
-`transmute::<T, [u8; size_of::<T>()]>(...)` is guaranteed to be sound.
+Similarly, for each primitive type, `T`, in the preceding table (including
+`char`), `T` contains no padding or otherwise uninitialized bytes. In other
+words, `transmute::<T, [u8; size_of::<T>()]>(...)` is guaranteed to be sound.
+
+#### `char` Bit Validity
+
+A `char`'s numerical value is guaranteed to be in the range 0 to 0x10FFFF,
+inclusive. It is undefined behavior to construct a `char` with a value outside
+this range. See the [`char` docs][char-docs] for more information.
 
 ## Pointers and References Layout
 
@@ -593,6 +599,7 @@ used with any other representation.
 [`Sized`]: ../std/marker/trait.Sized.html
 [`Copy`]: ../std/marker/trait.Copy.html
 [dynamically sized types]: dynamically-sized-types.md
+[char-docs]: ../std/primitive.char.html
 [field-less enums]: items/enumerations.md#custom-discriminant-values-for-fieldless-enumerations
 [enumerations]: items/enumerations.md
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
