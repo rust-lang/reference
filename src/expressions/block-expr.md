@@ -117,6 +117,37 @@ loop {
 }
 ```
 
+## `const` blocks
+
+> **<sup>Syntax</sup>**\
+> _ConstBlockExpression_ :\
+> &nbsp;&nbsp; `const` _BlockExpression_
+
+A *const block* is a variant of a block expression which evaluates in the compile time instead of in the run time.
+
+A `const` block allows you to define a constant value without having to define a new `const` item, and thus is also sometimes called as inline `const` or anonymous `const`.
+
+For example, this code:
+
+```rust
+# fn foo(x: i32) -> i32 { x }
+fn main() {
+    let x = foo(const { 1 + 1 });
+}
+```
+
+is equivalent to:
+
+```rust
+# fn foo(x: i32) -> i32 { x }
+fn main() {
+    const FOO: i32 = 1 + 1;
+    let x = foo(FOO);
+}
+```
+
+A `const` block supports type inference so you do not have to write the type of the constant value like a `const` item. `const` blocks are allowed to reference general parameters in their scope.
+
 ## `unsafe` blocks
 
 > **<sup>Syntax</sup>**\
