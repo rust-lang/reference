@@ -35,6 +35,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ConstBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
@@ -311,6 +312,7 @@ They are never allowed before:
 [_ClosureExpression_]:            expressions/closure-expr.md
 [_ComparisonExpression_]:         expressions/operator-expr.md#comparison-operators
 [_CompoundAssignmentExpression_]: expressions/operator-expr.md#compound-assignment-expressions
+[_ConstBlockExpression_]:         expressions/block-expr.md#const-blocks
 [_ContinueExpression_]:           expressions/loop-expr.md#continue-expressions
 [_FieldExpression_]:              expressions/field-expr.md
 [_GroupedExpression_]:            expressions/grouped-expr.md

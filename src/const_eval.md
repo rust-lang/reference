@@ -27,7 +27,7 @@ to be run.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
-* [Block expressions], including `unsafe` blocks.
+* [Block expressions], including `unsafe` and `const` blocks.
     * [let statements] and thus irrefutable [patterns], including mutable bindings
     * [assignment expressions]
     * [compound assignment expressions]
@@ -59,6 +59,7 @@ A _const context_ is one of the following:
   * [statics]
   * [enum discriminants]
 * A [const generic argument]
+* A [const block]
 
 ## Const Functions
 
@@ -106,6 +107,7 @@ Conversely, the following are possible in a const function, but not in a const c
 [cast]:                 expressions/operator-expr.md#type-cast-expressions
 [closure expressions]:  expressions/closure-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
+[const block]:          expressions/block-expr.md#const-blocks
 [const functions]:      items/functions.md#const-functions
 [const generic argument]: items/generics.md#const-generics
 [const generic parameters]: items/generics.md#const-generics

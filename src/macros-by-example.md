@@ -146,6 +146,7 @@ For reasons of backwards compatibility, though `_` [is also an
 expression][_UnderscoreExpression_], a standalone underscore is not matched by
 the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
 specifier when it appears as a subexpression.
+For the same reason, a standalone [const block] is not matched but it is matched when appearing as a subexpression.
 
 > **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
@@ -492,6 +493,7 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[const block]: expressions/block-expr.md#const-blocks
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
 [IDENTIFIER_OR_KEYWORD]: identifiers.md
