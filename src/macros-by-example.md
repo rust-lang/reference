@@ -76,6 +76,8 @@ delimiters for the matcher will match any pair of delimiters. Thus, for
 instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
 `$` cannot be matched or transcribed literally.
 
+### Forwarding a matched fragment
+
 When forwarding a matched fragment to another macro-by-example, matchers in
 the second macro will see an opaque AST of the fragment type. The second macro
 can't use literal tokens to match the fragments in the matcher, only a
