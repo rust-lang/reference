@@ -2,7 +2,7 @@
 
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!`] | `//`) ~`\n`<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\
 > &nbsp;&nbsp; | `//`
 >
 > BLOCK_COMMENT :\
