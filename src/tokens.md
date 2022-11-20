@@ -536,7 +536,7 @@ Examples of such tokens:
 > &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an XID_Start character)_\
-> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) `e`\
+> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) (`e`|`E`)\
 > &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
 > &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
 > &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
@@ -549,7 +549,7 @@ Due to the possible ambiguity these raise, they are rejected by the tokenizer in
 
 * An unsuffixed binary, octal, or hexadecimal literal followed, without intervening whitespace, by a period character (with the same restrictions on what follows the period as for floating-point literals).
 
-* An unsuffixed binary or octal literal followed, without intervening whitespace, by the character `e`.
+* An unsuffixed binary or octal literal followed, without intervening whitespace, by the character `e` or `E`.
 
 * Input which begins with one of the radix prefixes but is not a valid binary, octal, or hexadecimal literal (because it contains no digits).
 
