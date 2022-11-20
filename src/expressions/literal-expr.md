@@ -96,6 +96,8 @@ The value of the expression is determined from the string representation of the 
 
 * If the radix is not 10, the first two characters are removed from the string.
 
+* Any suffix is removed from the string.
+
 * Any underscores are removed from the string.
 
 * The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
@@ -135,6 +137,8 @@ let x: f64 = 2.; // type f64
 ```
 
 The value of the expression is determined from the string representation of the token as follows:
+
+* Any suffix is removed from the string.
 
 * Any underscores are removed from the string.
 
