@@ -72,13 +72,13 @@ Literals are tokens used in [literal expressions].
 
 #### Numbers
 
-| [Number literals](#number-literals)`*` | Example | Exponentiation | Suffixes |
-|----------------------------------------|---------|----------------|----------|
-| Decimal integer | `98_222` | `N/A` | Integer suffixes |
-| Hex integer | `0xff` | `N/A` | Integer suffixes |
-| Octal integer | `0o77` | `N/A` | Integer suffixes |
-| Binary integer | `0b1111_0000` | `N/A` | Integer suffixes |
-| Floating-point | `123.0E+77` | `Optional` | Floating-point suffixes |
+| [Number literals](#number-literals)`*` | Example | Exponentiation |
+|----------------------------------------|---------|----------------|
+| Decimal integer | `98_222` | `N/A` |
+| Hex integer | `0xff` | `N/A` |
+| Octal integer | `0o77` | `N/A` |
+| Binary integer | `0b1111_0000` | `N/A` |
+| Floating-point | `123.0E+77` | `Optional` |
 
 `*` All number literals allow `_` as a visual separator: `1_234.0E+18f64`
 
@@ -86,17 +86,26 @@ Literals are tokens used in [literal expressions].
 
 A suffix is a sequence of characters following the primary part of a literal (without intervening whitespace), of the same form as a non-raw identifier or keyword.
 
-Any kind of literal (string, integer, etc) with any suffix is valid as a token,
-and can be passed to a macro without producing an error.
+
+> **<sup>Lexer</sup>**\
+> SUFFIX : IDENTIFIER_OR_KEYWORD\
+> SUFFIX_NO_E : SUFFIX <sub>_not beginning with `e` or `E`_</sub>
+
+Any kind of literal (string, integer, etc) with any suffix is valid as a token.
+
+A literal token with any suffix can be passed to a macro without producing an error.
 The macro itself will decide how to interpret such a token and whether to produce an error or not.
+In particular, the `literal` fragment specifier for by-example macros matches literal tokens with arbitrary suffixes.
 
 ```rust
 macro_rules! blackhole { ($tt:tt) => () }
+macro_rules! blackhole_lit { ($l:literal) => () }
 
 blackhole!("string"suffix); // OK
+blackhole_lit!(1suffix); // OK
 ```
 
-However, suffixes on literal tokens parsed as Rust code are restricted.
+However, suffixes on literal tokens which are interpreted as literal expressions or patterns are restricted.
 Any suffixes are rejected on non-numeric literal tokens,
 and numeric literal tokens are accepted only with suffixes from the list below.
 
@@ -329,7 +338,7 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > **<sup>Lexer</sup>**\
 > INTEGER_LITERAL :\
 > &nbsp;&nbsp; ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )
->              INTEGER_SUFFIX<sup>?</sup>
+>              SUFFIX_NO_E<sup>?</sup>
 >
 > DEC_LITERAL :\
 > &nbsp;&nbsp; DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
@@ -350,10 +359,6 @@ literal_. The grammar for recognizing the two kinds of literals is mixed.
 > DEC_DIGIT : \[`0`-`9`]
 >
 > HEX_DIGIT : \[`0`-`9` `a`-`f` `A`-`F`]
->
-> INTEGER_SUFFIX :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `u8` | `u16` | `u32` | `u64` | `u128` | `usize`\
-> &nbsp;&nbsp; | `i8` | `i16` | `i32` | `i64` | `i128` | `isize`
 
 An _integer literal_ has one of four forms:
 
@@ -369,11 +374,11 @@ An _integer literal_ has one of four forms:
   (`0b`) and continues as any mixture (with at least one digit) of binary digits
   and underscores.
 
-Like any literal, an integer literal may be followed (immediately, without any spaces) by an _integer suffix_, which must be the name of one of the [primitive integer types][numeric types]:
-`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`.
+Like any literal, an integer literal may be followed (immediately, without any spaces) by a suffix as described above.
+The suffix may not begin with `e` or `E`, as that would be interpreted as the exponent of a floating-point literal.
 See [literal expressions] for the effect of these suffixes.
 
-Examples of integer literals of various forms:
+Examples of integer literals which are accepted as literal expressions:
 
 ```rust
 # #![allow(overflowing_literals)]
@@ -396,14 +401,28 @@ Examples of integer literals of various forms:
 
 0usize;
 
-// These are too big for their type, but are still valid tokens
-
+// These are too big for their type, but are accepted as literal expressions.
 128_i8;
 256_u8;
 
+// This is an integer literal, accepted as a floating-point literal expression.
+5f32;
 ```
 
 Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
+
+
+Examples of integer literals which are not accepted as literal expressions:
+
+```rust
+# #[cfg(FALSE)] {
+0invalidSuffix;
+123AFB43;
+0b010a;
+0xAB_CD_EF_GH;
+0b1111_f32;
+# }
+```
 
 #### Tuple index
 
@@ -428,9 +447,8 @@ let cat = example.01;  // ERROR no field named `01`
 let horse = example.0b10;  // ERROR no field named `0b10`
 ```
 
-> **Note**: The tuple index may include an `INTEGER_SUFFIX`, but this is not
-> intended to be valid, and may be removed in a future version. See
-> <https://github.com/rust-lang/rust/issues/60210> for more information.
+> **Note**: Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version.
+> See <https://github.com/rust-lang/rust/issues/60210> for more information.
 
 #### Floating-point literals
 
@@ -438,38 +456,32 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
 >   _(not immediately followed by `.`, `_` or an XID_Start character)_\
-> &nbsp;&nbsp; | DEC_LITERAL FLOAT_EXPONENT\
-> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL FLOAT_EXPONENT<sup>?</sup>\
-> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup>
->                    FLOAT_EXPONENT<sup>?</sup> FLOAT_SUFFIX
+> &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL SUFFIX_NO_E<sup>?</sup>\
+> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup> FLOAT_EXPONENT SUFFIX<sup>?</sup>\
 >
 > FLOAT_EXPONENT :\
 > &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)<sup>?</sup>
 >               (DEC_DIGIT|`_`)<sup>\*</sup> DEC_DIGIT (DEC_DIGIT|`_`)<sup>\*</sup>
 >
-> FLOAT_SUFFIX :\
-> &nbsp;&nbsp; `f32` | `f64`
 
-A _floating-point literal_ has one of three forms:
+A _floating-point literal_ has one of two forms:
 
 * A _decimal literal_ followed by a period character `U+002E` (`.`). This is
   optionally followed by another decimal literal, with an optional _exponent_.
 * A single _decimal literal_ followed by an _exponent_.
-* A single _decimal literal_ (in which case a suffix is required).
 
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
-There are two valid _floating-point suffixes_: `f32` and `f64` (the names of the 32-bit and 64-bit [primitive floating-point types][floating-point types]).
+The suffix may not begin with `e` or `E` if the literal does not include an exponent.
 See [literal expressions] for the effect of these suffixes.
 
-Examples of floating-point literals of various forms:
+Examples of floating-point literals which are accepted as literal expressions:
 
 ```rust
 123.0f64;
 0.1f64;
 0.1f32;
 12E+99_f64;
-5f32;
 let x: f64 = 2.;
 ```
 
@@ -479,39 +491,16 @@ to call a method named `f64` on `2`.
 
 Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 
-#### Number pseudoliterals
+Examples of floating-point literals which are not accepted as literal expressions:
 
-> **<sup>Lexer</sup>**\
-> NUMBER_PSEUDOLITERAL :\
-> &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL ( . DEC_LITERAL )<sup>?</sup> FLOAT_EXPONENT\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX | INTEGER_SUFFIX )\
-> &nbsp;&nbsp; | DEC_LITERAL . DEC_LITERAL\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | INTEGER SUFFIX )\
-> &nbsp;&nbsp; | DEC_LITERAL NUMBER_PSEUDOLITERAL_SUFFIX_NO_E\
-> &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL )\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ( NUMBER_PSEUDOLITERAL_SUFFIX_NO_E | FLOAT_SUFFIX )
->
-> NUMBER_PSEUDOLITERAL_SUFFIX :\
-> &nbsp;&nbsp; IDENTIFIER_OR_KEYWORD <sub>_not matching INTEGER_SUFFIX or FLOAT_SUFFIX_</sub>
->
-> NUMBER_PSEUDOLITERAL_SUFFIX_NO_E :\
-> &nbsp;&nbsp; NUMBER_PSEUDOLITERAL_SUFFIX <sub>_not beginning with `e` or `E`_</sub>
-
-Tokenization of numeric literals allows arbitrary suffixes as described in the grammar above.
-These values generate valid tokens, but are not valid [literal expressions], so are usually an error except as macro arguments.
-
-Examples of such tokens:
-```rust,compile_fail
-0invalidSuffix;
-123AFB43;
-0b010a;
-0xAB_CD_EF_GH;
+```rust
+# #[cfg(FALSE)] {
 2.0f80;
 2e5f80;
 2e5e6;
 2.0e5e6;
 1.3e10u64;
-0b1111_f32;
+# }
 ```
 
 #### Reserved forms similar to number literals
@@ -547,13 +536,13 @@ Examples of reserved forms:
 0b0102;  // this is not `0b010` followed by `2`
 0o1279;  // this is not `0o127` followed by `9`
 0x80.0;  // this is not `0x80` followed by `.` and `0`
-0b101e;  // this is not a pseudoliteral, or `0b101` followed by `e`
-0b;      // this is not a pseudoliteral, or `0` followed by  `b`
-0b_;     // this is not a pseudoliteral, or `0` followed by  `b_`
-2e;      // this is not a pseudoliteral, or `2` followed by `e`
-2.0e;    // this is not a pseudoliteral, or `2.0` followed by `e`
-2em;     // this is not a pseudoliteral, or `2` followed by `em`
-2.0em;   // this is not a pseudoliteral, or `2.0` followed by `em`
+0b101e;  // this is not a suffixed literal, or `0b101` followed by `e`
+0b;      // this is not an integer literal, or `0` followed by `b`
+0b_;     // this is not an integer literal, or `0` followed by `b_`
+2e;      // this is not a floating-point literal, or `2` followed by `e`
+2.0e;    // this is not a floating-point literal, or `2.0` followed by `e`
+2em;     // this is not a suffixed literal, or `2` followed by `em`
+2.0em;   // this is not a suffixed literal, or `2.0` followed by `em`
 ```
 
 ## Lifetimes and loop labels

@@ -8,11 +8,9 @@
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
 > &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
-> &nbsp;&nbsp; | [INTEGER_LITERAL][^out-of-range]\
+> &nbsp;&nbsp; | [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | `true` | `false`
->
-> [^out-of-range]: A value ≥ 2<sup>128</sup> is not allowed.
 
 A _literal expression_ is an expression consisting of a single token, rather than a sequence of tokens, that immediately and directly denotes the value it evaluates to, rather than referring to it by name or some other evaluation rule.
 
@@ -54,7 +52,7 @@ A string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_B
 
 An integer literal expression consists of a single [INTEGER_LITERAL] token.
 
-If the token has a [suffix], the suffix will be the name of one of the [primitive integer types][numeric types]: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`, and the expression has that type.
+If the token has a [suffix], the suffix must be the name of one of the [primitive integer types][numeric types]: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`, and the expression has that type.
 
 If the token has no suffix, the expression's type is determined by type inference:
 
@@ -101,7 +99,7 @@ The value of the expression is determined from the string representation of the 
 * Any underscores are removed from the string.
 
 * The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
-If the value does not fit in `u128`, the expression is rejected by the parser.
+If the value does not fit in `u128`, it is a compiler error.
 
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
@@ -113,9 +111,11 @@ If the value does not fit in `u128`, the expression is rejected by the parser.
 
 ## Floating-point literal expressions
 
-A floating-point literal expression consists of a single [FLOAT_LITERAL] token.
+A floating-point literal expression has one of two forms:
+ * a single [FLOAT_LITERAL] token
+ * a single [INTEGER_LITERAL] token which has a suffix and no radix indicator
 
-If the token has a [suffix], the suffix will be the name of one of the [primitive floating-point types][floating-point types]: `f32` or `f64`, and the expression has that type.
+If the token has a [suffix], the suffix must be the name of one of the [primitive floating-point types][floating-point types]: `f32` or `f64`, and the expression has that type.
 
 If the token has no suffix, the expression's type is determined by type inference:
 
