@@ -119,7 +119,7 @@ and numeric literal tokens are accepted only with suffixes from the list below.
 
 > **<sup>Lexer</sup>**\
 > CHAR_LITERAL :\
-> &nbsp;&nbsp; `'` ( ~\[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'`
+> &nbsp;&nbsp; `'` ( ~\[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'` SUFFIX<sup>?</sup>
 >
 > QUOTE_ESCAPE :\
 > &nbsp;&nbsp; `\'` | `\"`
@@ -145,7 +145,7 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 > &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE\
-> &nbsp;&nbsp; )<sup>\*</sup> `"`
+> &nbsp;&nbsp; )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > STRING_CONTINUE :\
 > &nbsp;&nbsp; `\` _followed by_ \\n
@@ -205,7 +205,7 @@ following forms:
 
 > **<sup>Lexer</sup>**\
 > RAW_STRING_LITERAL :\
-> &nbsp;&nbsp; `r` RAW_STRING_CONTENT
+> &nbsp;&nbsp; `r` RAW_STRING_CONTENT SUFFIX<sup>?</sup>
 >
 > RAW_STRING_CONTENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`\
@@ -242,7 +242,7 @@ r##"foo #"# bar"##;                // foo #"# bar
 
 > **<sup>Lexer</sup>**\
 > BYTE_LITERAL :\
-> &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'`
+> &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_CHAR :\
 > &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t
@@ -262,7 +262,7 @@ _number literal_.
 
 > **<sup>Lexer</sup>**\
 > BYTE_STRING_LITERAL :\
-> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"`
+> &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_STRING :\
 > &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_
@@ -293,7 +293,7 @@ following forms:
 
 > **<sup>Lexer</sup>**\
 > RAW_BYTE_STRING_LITERAL :\
-> &nbsp;&nbsp; `br` RAW_BYTE_STRING_CONTENT
+> &nbsp;&nbsp; `br` RAW_BYTE_STRING_CONTENT SUFFIX<sup>?</sup>
 >
 > RAW_BYTE_STRING_CONTENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`\
