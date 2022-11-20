@@ -405,20 +405,6 @@ Examples of integer literals of various forms:
 
 Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
 
-Examples of invalid integer literals:
-
-```rust,compile_fail
-// uses numbers of the wrong base
-
-0b0102;
-0o0581;
-
-// bin, hex, and octal literals must have at least one digit
-
-0b_;
-0b____;
-```
-
 #### Tuple index
 
 > **<sup>Lexer</sup>**\
