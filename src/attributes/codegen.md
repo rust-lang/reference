@@ -355,15 +355,16 @@ trait object whose methods are attributed.
 
 ## The `instruction_set` attribute
 
-The *`instruction_set` attribute* may be applied to a function to enable code generation for a specific
-instruction set supported by the target architecture. It uses the [_MetaListPath_] syntax and a path
-comprised of the architecture and instruction set to specify how to generate the code for
-architectures where a single program may utilize multiple instruction sets.
+On some CPU architectures it is possible to mix more than one instruction set into a single program.
+The `instruction_set` attribute lets you control which instruction set a particular function will be generated for.
+It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
-The following values are available on targets for the `ARMv4` and `ARMv5te` architectures:
+[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
 
-* `arm::a32` - Uses ARM code.
-* `arm::t32` - Uses Thumb code.
+For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
+
+* `arm::a32` - Generate the function as A32 "ARM" code.
+* `arm::t32` - Generate the function as T32 "Thumb" code.
 
 <!-- ignore: arm-only -->
 ```rust,ignore
@@ -374,4 +375,8 @@ fn foo_arm_code() {}
 fn bar_thumb_code() {}
 ```
 
-[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
+The rules for inlining functions using the `instruction_set` attribute are slightly more strict than normal:
+
+* If a function has an `instruction_set` attribute, then the function is assumed to require the given instruction set and it won't inline into a function of another instruction set.
+* If a function does not have an `instruction_set` attribute but *does* contain inline assembly, then the inline assembly is assumed to require the default instruction set of the build target and so inlining between instruction sets won't happen.
+* Otherwise, a function is assumed to not rely on a particular instruction set and the function *may* be inlined into any calling function (all other restrictions on inlining still apply).
