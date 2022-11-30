@@ -20,9 +20,9 @@ clause can be used to bind the imported crate to a different name.
 The external crate is resolved to a specific `soname` at compile time, and a
 runtime linkage requirement to that `soname` is passed to the linker for
 loading at runtime. The `soname` is resolved at compile time by scanning the
-compiler's library path and matching the optional `crateid` provided against
-the `crateid` attributes that were declared on the external crate when it was
-compiled. If no `crateid` is provided, a default `name` attribute is assumed,
+compiler's library path and matching the optional `crate_name` provided against
+the [`crate_name` attributes] that were declared on the external crate when it was
+compiled. If no `crate_name` is provided, a default `name` attribute is assumed,
 equal to the [identifier] given in the `extern crate` declaration.
 
 The `self` crate may be imported which creates a binding to the current crate.
@@ -78,6 +78,7 @@ crate to access only its macros.
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [extern prelude]: ../names/preludes.md#extern-prelude
 [`macro_use` prelude]: ../names/preludes.md#macro_use-prelude
+[`crate_name` attributes]: ../crates-and-source-files.md#the-crate_name-attribute
 
 <script>
 (function() {
