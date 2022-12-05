@@ -135,7 +135,7 @@ UnwindSafe>` is a valid type.
 ## `Sized`
 
 The [`Sized`] trait indicates that the size of this type is known at compile-time; that is, it's not a [dynamically sized type].
-[Type parameters] are `Sized` by default, as are [associated types].
+[Type parameters] (except `Self` in traits) are `Sized` by default, as are [associated types].
 `Sized` is always implemented automatically by the compiler, not by [implementation items].
 These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound.
 
