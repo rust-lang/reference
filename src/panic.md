@@ -30,7 +30,6 @@ been "cleaned up" just as if they had gone out of scope normally.
 > continue execution without recovering the panicked thread).
 
 ## Panic runtimes
-[top]: #panic-runtimes
 
 The actual behavior and implementation of `panic!` is controlled by the _panic
 runtime_.
@@ -43,7 +42,10 @@ When compiling code that is guaranteed to be linked to a non-recoverable panic
 runtime, the optimizer may assume that unwinding across Rust frames is
 impossible, which can result in both code-size and runtime speed improvements.
 
+See also ["The Rust runtime"][runtime].
+
 [destructors]: destructors.md
 [fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
 [macro-panic]: ../std/macro.panic.html
 [thread-join]: ../std/thread/struct.JoinHandle.html#method.join
+[runtime]: runtime.md
