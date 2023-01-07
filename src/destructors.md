@@ -271,8 +271,9 @@ let x = &mut 0;
 println!("{}", x);
 ```
 
-If a borrow, dereference, field, or tuple indexing expression has an extended
-temporary scope then so does its operand. If an indexing expression has an
+If a [borrow][borrow expression], [dereference][dereference expression],
+[field][field expression], or [tuple indexing expression] has an extended
+temporary scope then so does its operand. If an [indexing expression] has an
 extended temporary scope then the indexed expression also has an extended
 temporary scope.
 
@@ -384,8 +385,12 @@ variable or field from being dropped automatically.
 [block expression]: expressions/block-expr.md
 [borrow expression]: expressions/operator-expr.md#borrow-operators
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
+[dereference expression]: expressions/operator-expr.md#the-dereference-operator
+[field expression]: expressions/field-expr.md
+[indexing expression]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [struct expression]: expressions/struct-expr.md
 [tuple expression]: expressions/tuple-expr.md#tuple-expressions
+[tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
 
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-expressions
