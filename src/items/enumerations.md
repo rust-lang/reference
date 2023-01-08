@@ -59,7 +59,7 @@ In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant.
 
 An enum where no constructors contain fields are called a
-*<a id="field-less-enum">field-less enum</a>*. For example, this is a fieldless enum:
+*<span id="field-less-enum">field-less enum</span>*. For example, this is a fieldless enum:
 
 ```rust
 enum Fieldless {
@@ -70,7 +70,7 @@ enum Fieldless {
 ```
 
 If a field-less enum only contains unit variants, the enum is called an
-*<a id="unit-only-enum">unit-only enum</a>*. For example:
+*<span id="unit-only-enum">unit-only enum</span>*. For example:
 
 ```rust
 enum Enum {
