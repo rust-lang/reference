@@ -13,8 +13,8 @@
 >
 > _EnumItem_ :\
 > &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup> [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_
->                                | _EnumItemDiscriminant_ )<sup>?</sup>
+> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_ )<sup>?</sup>
+>                                _EnumItemDiscriminant_<sup>?</sup>
 >
 > _EnumItemTuple_ :\
 > &nbsp;&nbsp; `(` [_TupleFields_]<sup>?</sup> `)`
@@ -56,22 +56,71 @@ a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 ```
 
 In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
-called an enum variant. Each enum instance has a _discriminant_ which is an
-integer associated to it that is used to determine which variant it holds. An
-opaque reference to this discriminant can be obtained with the
-[`mem::discriminant`] function.
+called an enum variant.
 
-## Custom Discriminant Values for Fieldless Enumerations
+An enum where no constructors contain fields are called a
+*<span id="field-less-enum">field-less enum</span>*. For example, this is a fieldless enum:
 
-If there is no data attached to *any* of the variants of an enumeration,
-then the discriminant can be directly chosen and accessed.
+```rust
+enum Fieldless {
+    Tuple(),
+    Struct{},
+    Unit,
+}
+```
 
-These enumerations can be cast to integer types with the `as` operator by a
-[numeric cast]. The enumeration can optionally specify which integer each
-discriminant gets by following the variant name with `=` followed by a [constant
-expression]. If the first variant in the declaration is unspecified, then it is
-set to zero. For every other unspecified discriminant, it is set to one higher
-than the previous variant in the declaration.
+If a field-less enum only contains unit variants, the enum is called an
+*<span id="unit-only-enum">unit-only enum</span>*. For example:
+
+```rust
+enum Enum {
+    Foo = 3,
+    Bar = 2,
+    Baz = 1,
+}
+```
+
+<span id="custom-discriminant-values-for-fieldless-enumerations"></span>
+## Discriminants
+
+Each enum instance has a _discriminant_: an integer logically associated to it
+that is used to determine which variant it holds.
+
+Under the [default representation], the discriminant is interpreted as
+an `isize` value. However, the compiler is allowed to use a smaller type (or
+another means of distinguishing variants) in its actual memory layout.
+
+### Assigning discriminant values
+
+#### Explicit discriminants
+
+In two circumstances, the discriminant of a variant may be explicitly set by
+following the variant name with `=` and a [constant expression]:
+
+
+1. if the enumeration is "[unit-only]".
+
+
+2. if a [primitive representation] is used. For example:
+
+   ```rust
+   #[repr(u8)]
+   enum Enum {
+       Unit = 3,
+       Tuple(u16),
+       Struct {
+           a: u8,
+           b: u16,
+       } = 1,
+   }
+   ```
+
+#### Implicit discriminants
+
+If a discriminant for a variant is not specified, then it is set to one higher
+than the discriminant of the previous variant in the declaration. If the
+discriminant of the first variant in the declaration is unspecified, then
+it is set to zero.
 
 ```rust
 enum Foo {
@@ -84,10 +133,7 @@ let baz_discriminant = Foo::Baz as u32;
 assert_eq!(baz_discriminant, 123);
 ```
 
-Under the [default representation], the specified discriminant is interpreted as
-an `isize` value although the compiler is allowed to use a smaller type in the
-actual memory layout. The size and thus acceptable values can be changed by
-using a [primitive representation] or the [`C` representation].
+#### Restrictions
 
 It is an error when two variants share the same discriminant.
 
@@ -122,7 +168,89 @@ enum OverflowingDiscriminantError2 {
 }
 ```
 
-## Zero-variant Enums
+### Accessing discriminant
+
+#### Via `mem::discriminant`
+
+[`mem::discriminant`] returns an opaque reference to the discriminant of
+an enum value which can be compared. This cannot be used to get the value
+of the discriminant.
+
+#### Casting
+
+If an enumeration is [unit-only] (with no tuple and struct variants), then its
+discriminant can be directly accessed with a [numeric cast]; e.g.:
+
+```rust
+enum Enum {
+    Foo,
+    Bar,
+    Baz,
+}
+
+assert_eq!(0, Enum::Foo as isize);
+assert_eq!(1, Enum::Bar as isize);
+assert_eq!(2, Enum::Baz as isize);
+```
+
+[Field-less enums] can be casted if they do not have explicit discriminants, or where only unit variants are explicit.
+
+```rust
+enum Fieldless {
+    Tuple(),
+    Struct{},
+    Unit,
+}
+
+assert_eq!(0, Fieldless::Tuple() as isize);
+assert_eq!(1, Fieldless::Struct{} as isize);
+assert_eq!(2, Fieldless::Unit as isize);
+
+#[repr(u8)]
+enum FieldlessWithDiscrimants {
+    First = 10,
+    Tuple(),
+    Second = 20,
+    Struct{},
+    Unit,
+}
+
+assert_eq!(10, FieldlessWithDiscrimants::First as u8);
+assert_eq!(11, FieldlessWithDiscrimants::Tuple() as u8);
+assert_eq!(20, FieldlessWithDiscrimants::Second as u8);
+assert_eq!(21, FieldlessWithDiscrimants::Struct{} as u8);
+assert_eq!(22, FieldlessWithDiscrimants::Unit as u8);
+```
+
+#### Pointer casting
+
+If the enumeration specifies a [primitive representation], then the
+discriminant may be reliably accessed via unsafe pointer casting:
+
+```rust
+#[repr(u8)]
+enum Enum {
+    Unit,
+    Tuple(bool),
+    Struct{a: bool},
+}
+
+impl Enum {
+    fn discriminant(&self) -> u8 {
+        unsafe { *(self as *const Self as *const u8) }
+    }
+}
+
+let unit_like = Enum::Unit;
+let tuple_like = Enum::Tuple(true);
+let struct_like = Enum::Struct{a: false};
+
+assert_eq!(0, unit_like.discriminant());
+assert_eq!(1, tuple_like.discriminant());
+assert_eq!(2, struct_like.discriminant());
+```
+
+## Zero-variant enums
 
 Enums with zero variants are known as *zero-variant enums*. As they have
 no valid values, they cannot be instantiated.
@@ -181,8 +309,10 @@ enum E {
 [enumerated type]: ../types/enum.md
 [`mem::discriminant`]: ../../std/mem/fn.discriminant.html
 [never type]: ../types/never.md
+[unit-only]: #unit-only-enum
 [numeric cast]: ../expressions/operator-expr.md#semantics
 [constant expression]: ../const_eval.md#constant-expressions
 [default representation]: ../type-layout.md#the-default-representation
 [primitive representation]: ../type-layout.md#primitive-representations
 [`C` representation]: ../type-layout.md#the-c-representation
+[Field-less enums]: #field-less-enum
