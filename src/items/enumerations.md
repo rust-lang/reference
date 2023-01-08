@@ -89,9 +89,9 @@ Under the [default representation], the discriminant is interpreted as
 an `isize` value. However, the compiler is allowed to use a smaller type (or
 another means of distinguishing variants) in its actual memory layout.
 
-### Assigning Discriminant Values
+### Assigning discriminant values
 
-#### Explicit Discriminants
+#### Explicit discriminants
 
 In two circumstances, the discriminant of a variant may be explicitly set by
 following the variant name with `=` and a [constant expression]:
@@ -114,7 +114,7 @@ following the variant name with `=` and a [constant expression]:
    }
    ```
 
-#### Implicit Discriminants
+#### Implicit discriminants
 
 If a discriminant for a variant is not specified, then it is set to one higher
 than the discriminant of the previous variant in the declaration. If the
@@ -167,7 +167,7 @@ enum OverflowingDiscriminantError2 {
 }
 ```
 
-### Accessing Discriminant
+### Accessing discriminant
 
 #### Via `mem::discriminant`
 
@@ -221,7 +221,7 @@ assert_eq!(21, FieldlessWithDiscrimants::Struct{} as u8);
 assert_eq!(22, FieldlessWithDiscrimants::Unit as u8);
 ```
 
-#### Pointer Casting
+#### Pointer casting
 
 If the enumeration specifies a [primitive representation], then the
 discriminant may be reliably accessed via unsafe pointer casting:
@@ -249,7 +249,7 @@ assert_eq!(1, tuple_like.discriminant());
 assert_eq!(2, struct_like.discriminant());
 ```
 
-## Zero-variant Enums
+## Zero-variant enums
 
 Enums with zero variants are known as *zero-variant enums*. As they have
 no valid values, they cannot be instantiated.
