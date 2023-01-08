@@ -192,6 +192,35 @@ assert_eq!(1, Enum::Bar as isize);
 assert_eq!(2, Enum::Baz as isize);
 ```
 
+[Field-less enums] can be casted if they do not have explicit discriminants, or where only unit variants are explicit.
+
+```rust
+enum Fieldless {
+    Tuple(),
+    Struct{},
+    Unit,
+}
+
+assert_eq!(0, Fieldless::Tuple() as isize);
+assert_eq!(1, Fieldless::Struct{} as isize);
+assert_eq!(2, Fieldless::Unit as isize);
+
+#[repr(u8)]
+enum FieldlessWithDiscrimants {
+    First = 10,
+    Tuple(),
+    Second = 20,
+    Struct{},
+    Unit,
+}
+
+assert_eq!(10, FieldlessWithDiscrimants::First as u8);
+assert_eq!(11, FieldlessWithDiscrimants::Tuple() as u8);
+assert_eq!(20, FieldlessWithDiscrimants::Second as u8);
+assert_eq!(21, FieldlessWithDiscrimants::Struct{} as u8);
+assert_eq!(22, FieldlessWithDiscrimants::Unit as u8);
+```
+
 #### Pointer Casting
 
 If the enumeration specifies a [primitive representation], then the
@@ -285,3 +314,4 @@ enum E {
 [default representation]: ../type-layout.md#the-default-representation
 [primitive representation]: ../type-layout.md#primitive-representations
 [`C` representation]: ../type-layout.md#the-c-representation
+[Field-less enums]: #field-less-enum

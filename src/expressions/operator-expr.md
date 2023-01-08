@@ -368,7 +368,7 @@ reference types and `mut` or `const` in pointer types.
 | Type of `e`           | `U`                   | Cast performed by `e as U`       |
 |-----------------------|-----------------------|----------------------------------|
 | Integer or Float type | Integer or Float type | Numeric cast                     |
-| [Unit-only enum]      | Integer type          | Enum cast                        |
+| Enumeration           | Integer type          | Enum cast                        |
 | `bool` or `char`      | Integer type          | Primitive to integer cast        |
 | `u8`                  | `char`                | `u8` to `char` cast              |
 | `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
@@ -430,6 +430,10 @@ halfway between two floating point numbers.
 #### Enum cast
 
 Casts an enum to its discriminant, then uses a numeric cast if needed.
+Casting is limited to the following kinds of enumerations:
+
+* [Unit-only enums]
+* [Field-less enums] without [explicit discriminants], or where only unit-variants have explicit discriminants
 
 #### Primitive to integer cast
 
@@ -632,6 +636,8 @@ See [this test] for an example of using this dependency.
 
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
+[explicit discriminants]: ../items/enumerations.md#explicit-discriminants
+[field-less enums]: ../items/enumerations.md#field-less-enum
 [grouped expression]: grouped-expr.md
 [literal expression]: literal-expr.md#integer-literal-expressions
 [logical and]: ../types/boolean.md#logical-and
@@ -643,7 +649,7 @@ See [this test] for an example of using this dependency.
 [assignee expression]: ../expressions.md#place-expressions-and-value-expressions
 [undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
-[Unit-only enum]: ../items/enumerations.md#unit-only-enum
+[Unit-only enums]: ../items/enumerations.md#unit-only-enum
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
 [this test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
