@@ -80,6 +80,7 @@ enum Enum {
 }
 ```
 
+<span id="custom-discriminant-values-for-fieldless-enumerations"></span>
 ## Discriminants
 
 Each enum instance has a _discriminant_: an integer logically associated to it
