@@ -7,9 +7,15 @@
 
 `impl Trait` provides ways to specify unnamed but concrete types that
 implement a specific trait.
-It can appear in two sorts of places: argument position (where it can act as an anonymous type parameter to functions), and return position (where it can act as an abstract return type).
+It can appear in a few places:
+
+* argument position (where it can act as an anonymous type parameter to functions),
+* return position (where it can act as an abstract return type),
+* in type aliases (where it acts as an abstract type), and
+* in associated types (where it acts as an abstract type).
 
 ```rust
+#![feature(type_alias_impl_trait)]
 trait Trait {}
 # impl Trait for () {}
 
@@ -19,6 +25,12 @@ fn foo(arg: impl Trait) {
 
 // return position: abstract return type
 fn bar() -> impl Trait {
+}
+
+// type alias: abstract type
+type Foo = impl Trait;
+fn baz() -> Foo {
+    let x: Foo = ();
 }
 ```
 ## Anonymous type parameters
@@ -111,10 +123,189 @@ fn foo() -> impl Trait {
 doesn't allow the caller to determine the return type.
 Instead, the function chooses the return type, but only promises that it will implement `Trait`.
 
+
+### Type Alias Impl Trait
+
+In contrast to `impl Trait`s in function return types, type aliases can be used in more places than just return types and the same type alias can be used multiple times.
+
+```rust,ignore
+fn foo() -> impl Trait {
+    value_of_type_that_implements_Trait
+}
+
+// The above function can be changed to the
+// following without a change in behaviour for callers.
+
+type Foo = impl Trait;
+fn foo() -> Foo {
+    value_of_type_that_implements_Trait
+}
+```
+
+When such a type alias is used as the return type of multiple functions, all functions must use the same hidden type.
+This is similar to how all code paths in a function with a return-position-impl-trait must return the same type:
+
+```rust,ignore
+fn foo() -> impl Debug {
+    if true {
+        return 42;
+    }
+    "42" // ERROR: another return site returns an `i32`
+}
+
+type Bar = impl Debug;
+fn bar() -> Bar {
+    42
+}
+fn boo() -> Bar {
+    "42" // ERROR: another function uses `i32` for `Bar`
+}
+```
+
+#### Argument position
+
+Without knowing the hidden type, we can still use the opaque type and use its trait bounds. In this case we can use the `Debug` trait to render it:
+
+```rust,ignore
+fn bop(x: Bar) {
+    println!("{x:?}");
+}
+```
+
+Note that this is very different from using `impl Trait` in argument position, as there is no anonymous generic parameter introduced.
+
+Binding a hidden type works in both directions, not just assigning a hidden type value to the opaque type, but also reading an opaque type into a hidden type value:
+
+```rust,ignore
+fn bup(x: Bar) {
+    let x: i32 = x;
+}
+```
+
+This does not "reveal" the hidden type. It binds an explicitly known `i32` type as the hidden type of `Bar` and will error if that's not the hidden type everywhere else, too.
+
+As a last usage, you can avoid binding any hidden types and just use the type-alias-impl-trait by just forwarding it elsewhere:
+
+```rust,ignore
+fn burp(x: Bar) -> Bar {
+    x
+}
+```
+
+#### Binding types
+
+You can also use type-alias-impl-trait for the type
+of local variables, constants, statics, ...
+
+```rust,ignore
+let x: Bar = 42;
+const X: Bar = 42;
+static Y: Bar = 42;
+```
+
+#### Nested in other types
+
+You can use type-alias-impl-trait in other types:
+
+```rust,ignore
+struct MyStruct {
+    bar: Bar,
+}
+```
+
+and use it just like other uses of `Bar`:
+
+```rust,ignore
+fn foo(my_struct: &MyStruct) {
+    println!("{:?}", my_struct.bar);
+}
+fn new() -> MyStruct {
+    MyStruct {
+        bar: 42
+    }
+}
+```
+
+#### Usage in trait impls
+
+Since type-alias-impl-trait can be referenced anywhere a type alias could be, this also means you can use them in `impl` blocks:
+
+```rust,ignore
+type Foo = impl Trait;
+
+impl Bar for Foo {}
+```
+
+There's a huge caveat though: now it's possible for there to be an impl for an opaque type *and* its hidden type:
+
+```rust,ignore
+type Foo = impl Trait;
+fn foo() -> Foo {}
+
+impl Bar for Foo {}
+impl Bar for () {} // ERROR conflicts with `impl Bar for Foo`
+```
+
+This check is *not* done by revealing the hidden type, but by checking whether a type could be a hidden type for that specific opaque type. So the following program is legal:
+
+```rust
+#![feature(type_alias_impl_trait)]
+trait Trait {}
+impl Trait for () {}
+type Foo = impl Trait;
+fn foo() -> Foo {}
+
+trait Bar {}
+impl Bar for Foo {}
+impl Bar for i32 {}
+```
+
+This is legal, because `i32` could not possibly be a hidden type of `Foo`, because it doesn't implement `Trait` wich is a requirement for all hypothetical hidden types of `Foo`.
+
+#### Associated types
+
+Associated types can also use `impl Trait`:
+
+```rust,ignore
+impl Deref for MyType {
+    type Target = impl Trait;
+    fn deref(&self) -> &Self::Target {
+        &self.field
+    }
+}
+```
+
+While this example is fairly artificial, the real benefit is when you have unnameable types like `async` blocks:
+
+```rust,ignore
+impl IntoFuture for MyType {
+    type Output = ();
+    type Future = impl Future<Output = ()>;
+    fn into_future(self) -> Self::Future {
+        async move {
+            // do stuff here
+        }
+    }
+}
+```
+
+This way you do not need to write burdensome `Future` impls yourself. Similarly with complex `Iterator` implementations.
+
+#### Defining scope
+
+Similar to return-position-impl-trait, you can only bind a hidden type of a type-alias-impl-trait within a specific "scope" (henceforth called "defining scope").
+The defining scope of a return-position-impl-trait is the function's body, excluding other items nested within that function's body (we may want to relax that restriction on return-position-impl-trait in the future).
+
+The defining scope of a type-alias-impl-trait is the scope in which it was defined. So usually a module and all its child items, but it can also be a function body, const initializer and similar scopes that can define items.
+
+Any use of the type-alias-impl-trait within the defining scope will become a **defining use** (meaning it binds a hidden type), if the type is coerced to or from, equated with, or subtyped with any other concrete type.
+Usages that rely solely on the trait bounds of the type are not considered defining.
+Similarly, usages that just pass a value of a type-alias-impl-trait around into other places of the type-alias-impl-trait type are not considered defining.
+
 ## Limitations
 
-`impl Trait` can only appear as a parameter or return type of a free or inherent function.
-It cannot appear inside implementations of traits, nor can it be the type of a let binding or appear inside a type alias.
+`impl Trait` can only appear as a parameter or return type of a free or inherent function, within a type alias or within an associated type.
+It cannot appear inside implementations of traits, nor can it be the type of a let binding.
 
 [closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
