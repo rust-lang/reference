@@ -65,6 +65,16 @@ This includes generic arguments for the return type or any const generics.
 >
 > Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
 
+## Abstract types
+
+> Note: these are also called "existential types" or "opaque types".
+
+Abstract types are backed by a "hidden type", but only expose certain traits of that hidden type.
+Every abstract type has exactly one hidden type, and the hidden type is inaccessible (it could even be a private
+type or an unnameable type like a closure). It is required that every abstract type gets a hidden type
+assigned/constrained/bound within its "defining scope" (more to that later). It may get constrained multiple times,
+but each such constraining site must be using the exact same type (to ensure the abstract type has exactly one hidden type).
+
 ## Abstract return types
 
 > Note: This is often called "impl Trait in return position".
@@ -174,7 +184,7 @@ fn bop(x: Bar) {
 
 Note that this is very different from using `impl Trait` in argument position, as there is no anonymous generic parameter introduced.
 
-Binding a hidden type works in both directions, not just assigning a hidden type value to the opaque type, but also reading an opaque type into a hidden type value:
+Defining a hidden type works in both directions, not just assigning a hidden type value to the opaque type, but also reading an opaque type into a hidden type value:
 
 ```rust,ignore
 fn bup(x: Bar) {
@@ -182,9 +192,10 @@ fn bup(x: Bar) {
 }
 ```
 
-This does not "reveal" the hidden type. It binds an explicitly known `i32` type as the hidden type of `Bar` and will error if that's not the hidden type everywhere else, too.
+This does not "reveal" the hidden type. It binds an explicitly known `i32` type as the hidden type of `Bar` and
+will error if any of the hidden type defining sites use a different type.
 
-As a last usage, you can avoid binding any hidden types and just use the type-alias-impl-trait by just forwarding it elsewhere:
+As a last usage, you can avoid defining any hidden types and just use the type-alias-impl-trait by just forwarding it elsewhere:
 
 ```rust,ignore
 fn burp(x: Bar) -> Bar {
@@ -260,7 +271,10 @@ impl Bar for Foo {}
 impl Bar for i32 {}
 ```
 
-This is legal, because `i32` could not possibly be a hidden type of `Foo`, because it doesn't implement `Trait` wich is a requirement for all hypothetical hidden types of `Foo`.
+This is legal, because `i32` could not possibly be a hidden type of `Foo`, because it doesn't implement `Trait` which is a requirement for all hypothetical hidden types of `Foo`.
+
+> Note that this only works within the crate that defined the trait and the hidden type, as otherwise adding any trait impl would become a semver breaking change,
+> as a dependent crate could have implemented the trait for one of its own type-alias-impl-trait whose hidden type could have gotten an impl in the crate defining the trait.
 
 ### Associated types
 
@@ -294,7 +308,7 @@ This way you do not need to write burdensome `Future` impls yourself. Similarly 
 ### Defining scope
 
 Similar to return-position-impl-trait, you can only bind a hidden type of a type-alias-impl-trait within a specific "scope" (henceforth called "defining scope").
-The defining scope of a return-position-impl-trait is the function's body, excluding other items nested within that function's body (we may want to relax that restriction on return-position-impl-trait in the future).
+The defining scope of a return-position-impl-trait is the function's body, excluding other items nested within that function's body.
 
 The defining scope of a type-alias-impl-trait is the scope in which it was defined. So usually a module and all its child items, but it can also be a function body, const initializer and similar scopes that can define items.
 
@@ -305,7 +319,7 @@ Similarly, usages that just pass a value of a type-alias-impl-trait around into 
 ## Limitations
 
 `impl Trait` can only appear as a parameter or return type of a free or inherent function, within a type alias or within an associated type.
-It cannot appear inside implementations of traits, nor can it be the type of a let binding.
+It cannot appear inside return types of methods in implementations of traits, nor can it be the type of a let binding.
 
 [closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
