@@ -124,7 +124,7 @@ doesn't allow the caller to determine the return type.
 Instead, the function chooses the return type, but only promises that it will implement `Trait`.
 
 
-### Type Alias Impl Trait
+## Type Alias Impl Trait
 
 In contrast to `impl Trait`s in function return types, type aliases can be used in more places than just return types and the same type alias can be used multiple times.
 
@@ -162,7 +162,7 @@ fn boo() -> Bar {
 }
 ```
 
-#### Argument position
+### Argument position
 
 Without knowing the hidden type, we can still use the opaque type and use its trait bounds. In this case we can use the `Debug` trait to render it:
 
@@ -192,7 +192,7 @@ fn burp(x: Bar) -> Bar {
 }
 ```
 
-#### Binding types
+### Binding types
 
 You can also use type-alias-impl-trait for the type
 of local variables, constants, statics, ...
@@ -203,7 +203,7 @@ const X: Bar = 42;
 static Y: Bar = 42;
 ```
 
-#### Nested in other types
+### Nested in other types
 
 You can use type-alias-impl-trait in other types:
 
@@ -226,7 +226,7 @@ fn new() -> MyStruct {
 }
 ```
 
-#### Usage in trait impls
+### Usage in trait impls
 
 Since type-alias-impl-trait can be referenced anywhere a type alias could be, this also means you can use them in `impl` blocks:
 
@@ -262,7 +262,7 @@ impl Bar for i32 {}
 
 This is legal, because `i32` could not possibly be a hidden type of `Foo`, because it doesn't implement `Trait` wich is a requirement for all hypothetical hidden types of `Foo`.
 
-#### Associated types
+### Associated types
 
 Associated types can also use `impl Trait`:
 
@@ -291,7 +291,7 @@ impl IntoFuture for MyType {
 
 This way you do not need to write burdensome `Future` impls yourself. Similarly with complex `Iterator` implementations.
 
-#### Defining scope
+### Defining scope
 
 Similar to return-position-impl-trait, you can only bind a hidden type of a type-alias-impl-trait within a specific "scope" (henceforth called "defining scope").
 The defining scope of a return-position-impl-trait is the function's body, excluding other items nested within that function's body (we may want to relax that restriction on return-position-impl-trait in the future).
