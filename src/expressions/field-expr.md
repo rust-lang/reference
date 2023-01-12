@@ -37,7 +37,7 @@ foo().x;
 ## Automatic dereferencing
 
 If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
-This processes is also called *autoderef* for short.
+This process is also called *autoderef* for short.
 
 ## Borrowing
 
