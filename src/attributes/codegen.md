@@ -375,8 +375,9 @@ fn foo_arm_code() {}
 fn bar_thumb_code() {}
 ```
 
-The rules for inlining functions using the `instruction_set` attribute are slightly more strict than normal:
+If your function has neither the instruction_set attribute nor inline assembly, then the code you write within that function should not presume any particular instruction set.
+This ends up creating a limitation to how often code is inlined:
 
-* If a function has an `instruction_set` attribute, then the function is assumed to require the given instruction set and it won't inline into a function of another instruction set.
-* If a function does not have an `instruction_set` attribute but *does* contain inline assembly, then the inline assembly is assumed to require the default instruction set of the build target and so inlining between instruction sets won't happen.
-* Otherwise, a function is assumed to not rely on a particular instruction set and the function *may* be inlined into any calling function (all other restrictions on inlining still apply).
+* If a function has an `instruction_set` attribute it won't inline into a function of another instruction set.
+* If a function does not have an `instruction_set` attribute but *does* contain inline assembly, then the inline assembly is assumed to require the default instruction set of the build target, and so inlining between different instruction sets won't happen.
+* Otherwise, inlining happens normally.
