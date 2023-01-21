@@ -306,7 +306,7 @@ configuration predicate.
 
 When the configuration predicate is true, this attribute expands out to the
 attributes listed after the predicate. For example, the following module will
-either be found at `linux.rs` or `windows.rs` based on the target.
+either be found at `linux.rs` or `windows.rs`, based on the target.
 
 <!-- ignore: `mod` needs multiple files -->
 ```rust,ignore
