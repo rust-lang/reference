@@ -600,7 +600,7 @@ It will then set the value of the assigned operand's place to the value of perfo
 
 > **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
-Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assigment trait of the operator (see the table earlier in this chapter).
+Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assignment trait of the operator (see the table earlier in this chapter).
 A mutable borrow of the assigned operand is automatically taken.
 
 For example, the following expression statements in `example` are equivalent:
