@@ -129,7 +129,7 @@ The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperat
 Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
 When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:
 
-<!-- ignore: psuedo code -->
+<!-- ignore: pseudo code -->
 ```rust,ignore
 // Before...
 if let PAT = EXPR && EXPR { .. }

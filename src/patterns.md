@@ -429,7 +429,7 @@ The bounds can be literals or paths that point to constant values.
 
 A half open range with only an upper bound is written as `..=` followed by its upper bound.
 These range patterns will match on any value less than or equal to the upper bound.
-For example, `..=10` will match 10, 1, 0, and for signed interger types, all negative values.
+For example, `..=10` will match 10, 1, 0, and for signed integer types, all negative values.
 
 Half-open range patterns cannot be used as the top-level pattern for subpatterns in [slice patterns](#slice-patterns).
 
