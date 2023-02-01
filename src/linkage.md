@@ -73,7 +73,7 @@ be ignored in favor of only building the artifacts specified by command line.
   being built for a different target.
 
 Note that these outputs are stackable in the sense that if multiple are
-specified, then the compiler will produce each form of output at once without
+specified, then the compiler will produce each form of output without
 having to recompile. However, this only applies for outputs specified by the
 same method. If only `crate_type` attributes are specified, then they will all
 be built, but if one or more `--crate-type` command line flags are specified,
