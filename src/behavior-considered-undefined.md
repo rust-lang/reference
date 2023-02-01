@@ -61,6 +61,9 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
 * Calling a foreign (e.g. C++) function that unwinds (`throw`s) via a function
   declaration or pointer declared with a non-unwinding ABI such as `"C"`
+* Deallocating a Rust stack frame without executing destructors
+  for local variables owned by the stack frame. This can occur
+  with C functions like `longjmp`.
 * Producing an invalid value, even in private fields and locals. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
