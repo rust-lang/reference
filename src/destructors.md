@@ -162,7 +162,7 @@ smallest scope that contains the expression and is one of the following:
 * The `else` block of an `if` expression.
 * The condition expression of an `if` or `while` expression, or a `match`
   guard.
-* The expression for a match arm.
+* The body expression for a match arm.
 * The second operand of a [lazy boolean expression].
 
 > **Notes**:
