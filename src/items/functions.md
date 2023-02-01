@@ -211,10 +211,12 @@ The choice of ABI, together with the [panic mode][panic-modes], determines the
 behavior when unwinding out of a function.
 
 In the table below, "Unforced foreign unwind" refers to something like a C++
-exception; the table indicates the behavior when entering a Rust stackframe via
-an function or function pointer declared with the specified ABI string.
-Additionally, `C` in the ABI strings may be substituted with `stdcall` or any
-other ABI supported by the language implementation.
+exception; the table indicates the behavior of an unwinding
+operation reaching each type of ABI boundary (function
+declaration or definition using the corresponding ABI string).
+Additionally, `C` in the ABI strings may be substituted with
+`stdcall` or any other ABI supported by the language
+implementation.
 
 | panic runtime  | ABI          | `panic`-unwind                        | Unforced foreign unwind |
 | -------------- | ------------ | ------------------------------------- | ----------------------- |

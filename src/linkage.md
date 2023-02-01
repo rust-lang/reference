@@ -219,11 +219,13 @@ both of the following characteristics:
 * It contains a call to an `-unwind` foreign function or function pointer
 * It was compiled with `panic=unwind`
 
+`rustc` enforces this restriction at link-time. To guarantee that
+a library will be linkable regardless of the panic mode used at
+link-time, the `ffi_unwind_calls` may be used. The lint flags any
+calls to `-unwind` foreign functions or function pointers.
+
 Note: Cargo will automatically unify all crates to use the same `panic`
 runtime, so this prohibition does not apply to projects compiled with Cargo.
-
-<!-- TODO: edit the above to indicate that this prohibition is enforced by
-`rustc` once https://github.com/rust-lang/rust/pull/97235 has been merged -->
 
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [configuration option]: conditional-compilation.md
