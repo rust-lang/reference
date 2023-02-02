@@ -25,7 +25,7 @@ code.
 * Data races.
 * Evaluating a [dereference expression] (`*expr`) on a raw pointer that is
   [dangling] or unaligned, even in [place expression context]
-  (e.g. `addr_of!(&*expr)`).
+  (e.g. `addr_of!(*expr)`).
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow
   LLVM’s scoped [noalias] model, except if the `&T` contains an
   [`UnsafeCell<U>`]. References and boxes must not be [dangling] while they are
