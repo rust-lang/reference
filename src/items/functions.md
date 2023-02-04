@@ -223,7 +223,7 @@ implementation.
 | -------------- | ------------ | ------------------------------------- | ----------------------- |
 | `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
 | `panic=unwind` | `"C"`        | abort                                 | UB                      |
-| `panic=abort`  | `"C-unwind"` | `panic!` aborts                       | abort                   |
+| `panic=abort`  | `"C-unwind"` | `panic!` aborts (no unwinding occurs) | abort                   |
 | `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | UB                      |
 
 > **Note**: The LLVM backend of the `rustc` implementation
