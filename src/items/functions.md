@@ -211,7 +211,7 @@ Each non-`Rust` ABI string has a corresponding ABI with the suffix `-unwind`.
 The choice of ABI, together with the [panic mode][panic-modes], determines the
 behavior when unwinding out of a function.
 
-In the table below, "Unforced foreign unwind" refers to something like a C++
+In the table below, "Foreign unwind (unforced)" refers to something like a C++
 exception; the table indicates the behavior of an unwinding
 operation reaching each type of ABI boundary (function
 declaration or definition using the corresponding ABI string).
@@ -219,7 +219,7 @@ Additionally, `C` in the ABI strings may be substituted with
 `stdcall` or any other ABI supported by the language
 implementation.
 
-| panic runtime  | ABI          | `panic`-unwind                        | Unforced foreign unwind |
+| panic runtime  | ABI          | `panic`-unwind                        | Foreign unwind (unforced) |
 | -------------- | ------------ | ------------------------------------- | ----------------------- |
 | `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
 | `panic=unwind` | `"C"`        | abort                                 | UB                      |
