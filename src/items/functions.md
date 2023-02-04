@@ -206,7 +206,8 @@ let fptr: extern "C" fn() -> i32 = new_i32;
 
 ### Unwinding
 
-Each non-`Rust` ABI string has a corresponding ABI with the suffix `-unwind`.
+Most ABI strings come in two variants, one with an `-unwind` suffix and one without.
+The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI.
 
 The choice of ABI, together with the [panic mode][panic-modes], determines the
 behavior when unwinding out of a function.
