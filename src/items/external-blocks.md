@@ -90,6 +90,7 @@ There are also some platform-specific ABI strings:
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
 * `extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
   `__vectorcall` and clang's `__attribute__((vectorcall))`
+* `extern "efiapi"` -- The ABI used for [UEFI] functions.
 
 ## Variadic functions
 
@@ -288,6 +289,7 @@ Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].
 
 [IDENTIFIER]: ../identifiers.md
+[UEFI]: https://uefi.org/specifications
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [functions]: functions.md
 [statics]: static-items.md
