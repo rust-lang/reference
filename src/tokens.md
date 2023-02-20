@@ -148,7 +148,7 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 > &nbsp;&nbsp; )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > STRING_CONTINUE :\
-> &nbsp;&nbsp; `\` _followed by_ \\n
+> &nbsp;&nbsp; `\` _followed by_ \\n _or_ \\r\\n
 
 A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
