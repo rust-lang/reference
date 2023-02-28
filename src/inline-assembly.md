@@ -17,6 +17,7 @@ The compiler will emit an error if `asm!` is used on an unsupported target.
 ## Example
 
 ```rust
+# #[cfg(target_arch = "x86_64")] {
 use std::arch::asm;
 
 // Multiply x by 6 using shifts and adds
@@ -32,6 +33,7 @@ unsafe {
     );
 }
 assert_eq!(x, 4 * 6);
+# }
 ```
 
 ## Syntax
