@@ -224,7 +224,6 @@ The following is an index of all built-in attributes.
   - [`allow`], [`warn`], [`deny`], [`forbid`] — Alters the default lint level.
   - [`deprecated`] — Generates deprecation notices.
   - [`must_use`] — Generates a lint for unused values.
-  - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type
 - ABI, linking, symbols, and FFI
   - [`link`] — Specifies a native library to link with an `extern` block.
   - [`link_name`] — Specifies the name of the symbol for functions or statics
@@ -272,6 +271,8 @@ The following is an index of all built-in attributes.
 - Type System
   - [`non_exhaustive`] — Indicate that a type will have more fields/variants
     added in future.
+- Debugger
+  - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type
 
 [Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
@@ -292,7 +293,7 @@ The following is an index of all built-in attributes.
 [`cold`]: attributes/codegen.md#the-cold-attribute
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
 [`crate_type`]: linkage.md
-[`debugger_visualizer`]: attributes/diagnostics.md#the-debugger_visualizer-attribute
+[`debugger_visualizer`]: attributes/debugger.md#the-debugger_visualizer-attribute
 [`deny`]: attributes/diagnostics.md#lint-check-attributes
 [`deprecated`]: attributes/diagnostics.md#the-deprecated-attribute
 [`derive`]: attributes/derive.md
