@@ -88,6 +88,7 @@ Feature     | Implicitly Enables | Description
 `avx2`      | `avx`    | [AVX2] — Advanced Vector Extensions 2
 `bmi1`      |          | [BMI1] — Bit Manipulation Instruction Sets
 `bmi2`      |          | [BMI2] — Bit Manipulation Instruction Sets 2
+`cmpxchg16b`|          | [`cmpxchg16b`] - Compares and exchange 16 bytes (128 bits) of data atomically
 `fma`       | `avx`    | [FMA3] — Three-operand fused multiply-add
 `fxsr`      |          | [`fxsave`] and [`fxrstor`] — Save and restore x87 FPU, MMX Technology, and SSE State
 `lzcnt`     |          | [`lzcnt`] — Leading zeros count
@@ -115,6 +116,7 @@ Feature     | Implicitly Enables | Description
 [AVX2]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX2
 [BMI1]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets
 [BMI2]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#BMI2
+[`cmpxchg16b`]: https://www.felixcloutier.com/x86/cmpxchg8b:cmpxchg16b
 [FMA3]: https://en.wikipedia.org/wiki/FMA_instruction_set
 [`fxsave`]: https://www.felixcloutier.com/x86/fxsave
 [`fxrstor`]: https://www.felixcloutier.com/x86/fxrstor
