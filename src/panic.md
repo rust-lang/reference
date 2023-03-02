@@ -20,9 +20,9 @@ panic traverses Rust frames, live objects in those frames that [implement
 recovery does occur (for instance at a thread boundary), the objects will have
 been "cleaned up" just as if they had gone out of scope normally.
 
-> **Note**: As long as this guarantee of resource-cleanup is preserved, "unwinding" may
-> be implemented without actually using the mechanism used by C++ for the
-> target platform.
+> **Note**: As long as this guarantee of resource-cleanup is preserved,
+> "unwinding" may be implemented without actually using the mechanism used by
+> C++ for the target platform.
 
 > **Note**: The Standard Library provides two mechanisms for recovering from a panic,
 > [`catch_unwind`][fn-catch-unwind] (which enables recovery within the
@@ -34,9 +34,11 @@ been "cleaned up" just as if they had gone out of scope normally.
 The actual behavior and implementation of `panic!` is controlled by the _panic
 runtime_.
 
-> **Note**: The Rust standard library provides two panic runtimes: `panic_unwind` (the
-> default) and `panic_abort`, which immediately aborts the process (which is
-> non-recoverable).
+> **Note**: The Rust standard library provides two panic runtimes:
+> `panic_unwind` (which unwinds the stack and is potentially recoverable) and
+> `panic_abort` (which aborts the process and is non-recoverable). The default
+> runtime depends on the target platform, but is generally `panic_unwind` on
+> platforms with native support for C++ exceptions.
 
 When compiling code that is guaranteed to be linked to a non-recoverable panic
 runtime, the optimizer may assume that unwinding across Rust frames is
