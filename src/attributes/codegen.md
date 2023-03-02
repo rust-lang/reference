@@ -53,6 +53,7 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 `enable` whose value is a string of comma-separated feature names to enable.
 
 ```rust
+# #[cfg(target_feature = "avx2")]
 #[target_feature(enable = "avx2")]
 fn foo_avx2() {}
 ```
@@ -65,31 +66,57 @@ It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
-For this reason, a function marked with `target_feature` is unsafe, except in
-a context that supports the given features. For example:
+For this reason, a function marked with `target_feature` is unsafe to call,
+except inside a function that has at least the exact same `target_feature`
+enabled. For example:
 
 ```rust
-# #[target_feature(enable = "avx2")]
-# fn foo_avx2() {}
+# #[cfg(target_feature = "avx2")] {
+#[target_feature(enable = "avx")]
+fn foo_avx() {}
 
 fn bar() {
-    // Calling `foo_avx2` here is unsafe, as we must ensure
-    // that AVX is available first.
+    // Calling `foo_avx` here is unsafe, as we must ensure that AVX is
+    // available first, even if `avx` is enabled by default on the target
+    // platform or manually enabled as compiler flags.
     unsafe {
-        foo_avx2();
+        foo_avx();
     }
+}
+
+#[target_feature(enable = "avx")]
+fn bar_avx() {
+    // Calling `foo_avx` here is safe.
+    foo_avx();
+    || foo_avx();
 }
 
 #[target_feature(enable = "avx2")]
 fn bar_avx2() {
-    // Calling `foo_avx2` here is safe.
-    foo_avx2();
-    || foo_avx2();
+    // Calling `foo_avx` here is unsafe because `bar_avx2` doesn't enable `avx`
+    // specifically, even though in practice `avx2` implies `avx`.
+    unsafe {
+        foo_avx();
+    }
 }
+# }
 ```
 
 Like unsafe functions, functions marked with `target_feature` cannot be
-assigned to a safe function pointer and do not implement `FnOnce`.
+assigned to a safe function pointer and do not implement `FnOnce`. They can
+however be assigned to unsafe function pointers:
+
+```rust
+# #[cfg(target_feature = "avx2")] {
+# #[target_feature(enable = "avx2")]
+# fn foo_avx2() {}
+
+// `unsafe` is required here.
+static MY_FN_PTR: unsafe fn () -> () = foo_avx2;
+# }
+```
+
+`#[target_feature]` may not be applied to safe trait method implementations.
 
 Functions marked with `target_feature` are not inlined into a context unless
 it supports the given features. The `#[inline(always)]` attribute may not
