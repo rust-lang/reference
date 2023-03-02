@@ -222,9 +222,9 @@ implementation.
 | panic runtime  | ABI          | `panic`-unwind                        | Foreign unwind (unforced) |
 | -------------- | ------------ | ------------------------------------- | ----------------------- |
 | `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
-| `panic=unwind` | `"C"`        | abort                                 | UB                      |
+| `panic=unwind` | `"C"`        | abort                                 | [Undefined Behavior]    |
 | `panic=abort`  | `"C-unwind"` | `panic!` aborts (no unwinding occurs) | abort                   |
-| `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | UB                      |
+| `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | [Undefined Behavior]    |
 
 > **Note**: The LLVM backend of the `rustc` implementation
 > aborts the process by executing an illegal instruction.
