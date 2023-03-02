@@ -236,3 +236,4 @@ runtime, so this prohibition does not apply to projects compiled with Cargo.
 [configuration option]: conditional-compilation.md
 [procedural macros]: procedural-macros.md
 [panic-runtime]: panic.md#panic-runtimes
+[`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls

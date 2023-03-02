@@ -4,7 +4,7 @@ Rust provides the ability to "panic" upon encountering a runtime error that is
 not part of a function's signature; such an error is typically not expected to
 be recoverable within the context in which the error is encountered.
 
-> The Standard Library provides this capability via the [`panic!` macro][macro-panic].
+> **Note**: The Standard Library provides this capability via the [`panic!` macro][macro-panic].
 
 Although it is not part of the core language, panics interact with several core
 language features; for instance, out-of-bounds array indexing using the
