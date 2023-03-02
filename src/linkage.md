@@ -226,7 +226,7 @@ both of the following characteristics:
 
 `rustc` enforces this restriction at link-time. To guarantee that
 a library will be linkable regardless of the panic mode used at
-link-time, the `ffi_unwind_calls` may be used. The lint flags any
+link-time, the [`ffi_unwind_calls` lint] may be used. The lint flags any
 calls to `-unwind` foreign functions or function pointers.
 
 Note: Cargo will automatically unify all crates to use the same `panic`
