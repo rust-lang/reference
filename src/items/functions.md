@@ -230,6 +230,7 @@ implementation.
 > aborts the process by executing an illegal instruction.
 
 [panic-modes]: ../panic.md#panic-runtimes
+[Undefined Behavior]: ../behavior-considered-undefined.md
 
 ## Const functions
 
