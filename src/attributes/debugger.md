@@ -28,7 +28,7 @@ Consider a crate with this directory structure:
 
 Where `main.rs` contains:
 
-```rust
+```rust ignore
 #![debugger_visualizer(natvis_file = "../Rectangle.natvis")]
 struct FancyRect {
     pub x: f32,
@@ -39,7 +39,7 @@ struct FancyRect {
 
 fn main() {
     let fancy_rect = FancyRect::new(10.0, 10.0, 5.0, 5.0);
-    Ok(())
+    Ok(());
 }
 ```
 
@@ -101,7 +101,7 @@ Consider a crate called `foobar` with this directory structure:
 
 Where `main.rs` contains:
 
-```rust
+```rust ignore
 #![debugger_visualizer(gdb_script_file = "../bar.py")]
 mod person {
     pub struct Person {
@@ -114,7 +114,7 @@ use person::Person;
 
 fn main() {
     let bob = Person::new(String::from("Bob"), 10);
-    Ok(())
+    Ok(());
 }
 ```
 
