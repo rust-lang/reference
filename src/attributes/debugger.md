@@ -38,7 +38,8 @@ struct FancyRect {
 }
 
 fn main() {
-    let mut fancy_rect = FancyRect::new(10.0, 10.0, 5.0, 5.0);
+    let fancy_rect = FancyRect::new(10.0, 10.0, 5.0, 5.0);
+    Ok(())
 }
 ```
 
@@ -84,7 +85,12 @@ GDB supports the use of a structured Python script, called a *pretty printer*, t
 These scripts are embedded using the `gdb_script_file` meta item. 
 For detailed information on pretty printers, refer to GDB's [pretty print documentation].
 
-Consider a crate with this directory structure:
+Embedded pretty printers are not automatically loaded when debugging a binary under GDB.
+There are two ways to enable auto-loading embedded pretty printers:
+1. Launch GDB with extra arguments to explicitly add a directory or binary to the auto-load safe path: `gdb -iex "set auto-load safe-path path/to/binary" path/to/binary` (For more information, see GDB's [auto-loading documentation])
+1. Create a file named `gdbinit` under `$HOME/.config/gdb` (you may need to create the directory if it doesn't already exist). Add the following line to that file: `add-auto-load-safe-path path/to/binary`. 
+
+Consider a crate called `foobar` with this directory structure:
 
 ```text
 /Cargo.toml
@@ -107,7 +113,8 @@ mod person {
 use person::Person;
 
 fn main() {
-    let person = Person::new(String::from("Bob"), 10);
+    let bob = Person::new(String::from("Bob"), 10);
+    Ok(())
 }
 ```
 
@@ -131,7 +138,7 @@ def lookup(val):
     lookup_tag = val.type.tag
     if lookup_tag is None:
         return None
-    if "person::Person" == lookup_tag:
+    if "foobar::person::Person" == lookup_tag:
         return PersonPrinter(val)
 
     return None
@@ -139,12 +146,13 @@ def lookup(val):
 gdb.current_objfile().pretty_printers.append(lookup)
 ```
 
-When the crate's debug executable is passed into GDB, `print person` will display:
+When the crate's debug executable is passed into GDB, `print bob` will display:
 
 ```
 "Bob" is 10 years old.
 ```
 
+[auto-loading documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
 [attributes]: ../attributes.md
 [Natvis documentation]: https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects
 [pretty print documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Pretty-Printing.html
