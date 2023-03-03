@@ -92,6 +92,7 @@ Feature     | Implicitly Enables | Description
 `fma`       | `avx`    | [FMA3] — Three-operand fused multiply-add
 `fxsr`      |          | [`fxsave`] and [`fxrstor`] — Save and restore x87 FPU, MMX Technology, and SSE State
 `lzcnt`     |          | [`lzcnt`] — Leading zeros count
+`movbe`     |          | [`movbe`] - Move data after swapping bytes
 `pclmulqdq` | `sse2`   | [`pclmulqdq`] — Packed carry-less multiplication quadword
 `popcnt`    |          | [`popcnt`] — Count of bits set to 1
 `rdrand`    |          | [`rdrand`] — Read random number
@@ -121,6 +122,7 @@ Feature     | Implicitly Enables | Description
 [`fxsave`]: https://www.felixcloutier.com/x86/fxsave
 [`fxrstor`]: https://www.felixcloutier.com/x86/fxrstor
 [`lzcnt`]: https://www.felixcloutier.com/x86/lzcnt
+[`movbe`]: https://www.felixcloutier.com/x86/movbe
 [`pclmulqdq`]: https://www.felixcloutier.com/x86/pclmulqdq
 [`popcnt`]: https://www.felixcloutier.com/x86/popcnt
 [`rdrand`]: https://en.wikipedia.org/wiki/RdRand
