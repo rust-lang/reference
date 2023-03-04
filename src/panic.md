@@ -48,7 +48,7 @@ When compiling code that is guaranteed to be linked to a non-recoverable panic
 runtime, the optimizer may assume that unwinding across Rust frames is
 impossible, which can result in both code-size and runtime speed improvements.
 
-See also ["The Rust runtime"][runtime].
+See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
 
 [array-indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [destructors]: destructors.md
