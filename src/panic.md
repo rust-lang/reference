@@ -50,7 +50,7 @@ impossible, which can result in both code-size and runtime speed improvements.
 
 See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
 
-[array-indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
+[array indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [destructors]: destructors.md
 [fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
 [macro-panic]: ../std/macro.panic.html
