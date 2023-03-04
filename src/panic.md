@@ -1,19 +1,23 @@
 # Panic
 
-Rust provides the ability to "panic" upon encountering a runtime error that is
-not part of a function's signature; such an error is typically not expected to
-be recoverable within the context in which the error is encountered.
+Rust provides the ability to "panic" upon encountering an error that is not
+part of a function's signature; such an error is typically not expected to be
+recoverable within the context in which the error is encountered.
 
-> **Note**: The Standard Library provides this capability via the [`panic!` macro][macro-panic].
+Some language constructs, such as out-of-bounds [array indexing], panic
+automatically. There are also language features that provide a level of control
+over panic behavior:
+* A [_panic runtime_](#panic-runtimes) defined how a panic is handled during
+  runtime.
+* [FFI ABIs](items/functions.md#unwinding) may alter how panics behave.
 
-Although it is not part of the core language, panics interact with several core
-language features; for instance, out-of-bounds array indexing using the
-`array[index]` syntax will automatically panic.
+> **Note**: The Standard Library provides the capability to explicitly panic
+> via the [`panic!` macro][macro-panic].
 
 ## Unwinding
 
 Panicking may either be recoverable or non-recoverable, though its behavior
-must be homogenous throughout program execution. A recoverable panic "unwinds"
+must be uniform throughout program execution. A recoverable panic "unwinds"
 Rust frames, just as C++'s `throw` unwinds C++ frames. This means that as the
 panic traverses Rust frames, live objects in those frames that [implement
 `Drop`][destructors] will have their `drop` methods called. Thus, if panic
@@ -46,6 +50,7 @@ impossible, which can result in both code-size and runtime speed improvements.
 
 See also ["The Rust runtime"][runtime].
 
+[array-indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [destructors]: destructors.md
 [fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
 [macro-panic]: ../std/macro.panic.html
