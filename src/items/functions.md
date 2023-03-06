@@ -226,9 +226,6 @@ implementation.
 | `panic=abort`  | `"C-unwind"` | `panic!` aborts (no unwinding occurs) | abort                   |
 | `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | [Undefined Behavior]    |
 
-> **Note**: The LLVM backend of the `rustc` implementation
-> aborts the process by executing an illegal instruction.
-
 [panic-modes]: ../panic.md#panic-runtimes
 [Undefined Behavior]: ../behavior-considered-undefined.md
 
