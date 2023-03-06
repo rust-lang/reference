@@ -1,6 +1,6 @@
 # Debugger attributes
 
-he following [attributes] are used for enhancing the debugging experience when using third-party debuggers like GDB or LLDB.
+The following [attributes] are used for enhancing the debugging experience when using third-party debuggers like GDB or LLDB.
 
 ## The `debugger_visualizer` attribute
 
@@ -9,7 +9,7 @@ This enables an improved debugger experience for types outside of Rust's standar
 
 ### Using `debugger_visualizer` with Natvis
 
-Natvis is an XML-based framework for Microsoft debuggers (such as Visual Studio and WinDbg that uses declarative rules to customize the display of types.
+Natvis is an XML-based framework for Microsoft debuggers (such as Visual Studio and WinDbg) that uses declarative rules to customize the display of types.
 A Natvis file is embedded using the `natvis-file` meta item.
 For detailed information on the Natvis format, refer to Microsoft's [Natvis documentation].
 
@@ -90,11 +90,11 @@ There are two ways to enable auto-loading embedded pretty printers:
 1. Launch GDB with extra arguments to explicitly add a directory or binary to the auto-load safe path: `gdb -iex "set auto-load safe-path path/to/binary" path/to/binary` (For more information, see GDB's [auto-loading documentation])
 1. Create a file named `gdbinit` under `$HOME/.config/gdb` (you may need to create the directory if it doesn't already exist). Add the following line to that file: `add-auto-load-safe-path path/to/binary`.
 
-Consider a crate called `foobar` with this directory structure:
+Consider a crate called `PersonPrinter` with this directory structure:
 
 ```text
 /Cargo.toml
-/person_printer.py
+/printer.py
   +-- src
       +-- main.rs
 ```
@@ -102,7 +102,7 @@ Consider a crate called `foobar` with this directory structure:
 Where `main.rs` contains:
 
 ```rust ignore
-#![debugger_visualizer(gdb_script_file = "../bar.py")]
+#![debugger_visualizer(gdb_script_file = "../printer.py")]
 mod person {
     pub struct Person {
         pub name: String,
@@ -118,7 +118,7 @@ fn main() {
 }
 ```
 
-and `person_printer.py` contains:
+and `printer.py` contains:
 
 ```python
 import gdb
@@ -138,7 +138,7 @@ def lookup(val):
     lookup_tag = val.type.tag
     if lookup_tag is None:
         return None
-    if "foobar::person::Person" == lookup_tag:
+    if "PersonPrinter::person::Person" == lookup_tag:
         return PersonPrinter(val)
 
     return None
