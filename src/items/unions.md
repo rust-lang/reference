@@ -55,7 +55,7 @@ let f = unsafe { u.f1 };
 ## Reading and writing union fields
 
 Unions have no notion of an "active field". Instead, every union access just
-interprets the storage at the type of the field used for the access. Reading a
+interprets the storage as the type of the field used for the access. Reading a
 union field reads the bits of the union at the field's type. Fields might have a
 non-zero offset (except when [the C representation] is used); in that case the
 bits starting at the offset of the fields are read. It is the programmer's
