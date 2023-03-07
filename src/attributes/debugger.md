@@ -30,16 +30,26 @@ Where `main.rs` contains:
 
 ```rust ignore
 #![debugger_visualizer(natvis_file = "../Rectangle.natvis")]
-struct FancyRect {
+mod fancy_rect {
+  pub struct FancyRect {
     pub x: f32,
     pub y: f32,
     pub dx: f32,
     pub dy: f32,
+  }
+
+  impl FancyRect {
+    pub fn new(x: f32, y: f32, dx: f32, dy: f32) -> Self {
+        FancyRect { x, y, dx, dy }
+    }
+  }
 }
+
+use fancy_rect::FancyRect;
 
 fn main() {
     let fancy_rect = FancyRect::new(10.0, 10.0, 5.0, 5.0);
-    Ok(());
+    ()
 }
 ```
 
@@ -108,13 +118,19 @@ mod person {
         pub name: String,
         pub age: i32,
     }
+
+    impl Person {
+        pub fn new(name: String, age: i32) -> Self {
+            Person { name, age }
+        }
+    }
 }
 
 use person::Person;
 
 fn main() {
     let bob = Person::new(String::from("Bob"), 10);
-    Ok(());
+    ()
 }
 ```
 
