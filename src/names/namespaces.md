@@ -52,6 +52,7 @@ The following is a list of namespaces, with their corresponding entities:
     * [Generic lifetime parameters]
 * Label Namespace
     * [Loop labels]
+    * [Block labels]
 
 An example of how overlapping names in different namespaces can be used unambiguously:
 
@@ -132,6 +133,7 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [Attribute macros]: ../procedural-macros.md#attribute-macros
 [attributes]: ../attributes.md
 [bang-style macros]: ../macros.md
+[Block labels]: ../expressions/loop-expr.md#labelled-block-expressions
 [boolean]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
 [closure parameters]: ../expressions/closure-expr.md
