@@ -43,13 +43,13 @@ format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "\"" <explicit register> "\""
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
-reg_operand := dir_spec "(" reg_spec ")" operand_expr
-operand := reg_operand
+reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr
 clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *("," option) [","] ")"
-asm := "asm!(" format_string *("," format_string) *("," [ident "="] operand) *("," clobber_abi) *("," options) [","] ")"
-global_asm := "global_asm!(" format_string *("," format_string) *("," [ident "="] operand) *("," options) [","] ")"
+operand := reg_operand / clobber_abi / options
+asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
+global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 ```
 
 
@@ -74,8 +74,7 @@ An `asm!` invocation may have one or more template string arguments; an `asm!` w
 The expected usage is for each template string argument to correspond to a line of assembly code.
 All template string arguments must appear before any other arguments.
 
-As with format strings, named arguments must appear after positional arguments.
-Explicit [register operands](#register-operands) must appear at the end of the operand list, after named arguments if any.
+As with format strings, positional arguments must appear before named arguments and explicit [register operands](#register-operands).
 
 Explicit register operands cannot be used by placeholders in the template string.
 All other named and positional operands must appear at least once in the template string, otherwise a compiler error is generated.
