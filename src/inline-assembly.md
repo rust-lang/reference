@@ -52,6 +52,16 @@ asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
 global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 ```
 
+## Correctness and Validity
+
+In addition to all of the rules that follow, the string argument to `asm!` must ultimately become; after all other arguments are evaluated, formatting is performed, and operands are translated; assembly that is both syntactically correct and semantically valid for the target architecture. The formatting rules allow Rust to generate assembly with correct syntax. Rules concerning operands permit valid translation of Rust operands into and out of `asm!`. Adherence to these rules is necessary, but not sufficient, for the final assembly to be correct and valid. For instance:
+
+- arguments may be placed in positions which are syntactically incorrect after formatting
+- an instruction may be correctly written, but given architecturally invalid operands
+- an architecturally unspecified instruction may be assembled into unspecified code
+- a set of instructions, each correct and valid in isolation, may cause undefined behavior when placed in sequence
+
+As a result, the following rules are _non-exhaustive_. Rust is not required to check the correctness and validity of the initial string nor the final assembly that is generated. The assembler may check for correctness and validity but is not required to do so. When using `asm!`, a typographical error may be sufficient to make a program unsound, and the rules for assembly may include thousands of pages architectural reference manuals. Programmers should exercise appropriate care.
 
 ## Scope
 
