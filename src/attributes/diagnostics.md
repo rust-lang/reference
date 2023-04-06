@@ -49,7 +49,7 @@ check on and off:
 
 ```rust
 #[warn(missing_docs)]
-pub mod m2{
+pub mod m2 {
     #[allow(missing_docs)]
     pub mod nested {
         // Missing documentation is ignored here
