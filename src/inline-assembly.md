@@ -52,7 +52,6 @@ asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
 global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 ```
 
-
 ## Scope
 
 Inline assembly can be used in one of two ways.
@@ -484,6 +483,29 @@ To avoid undefined behavior, these rules must be followed when using function-sc
   - The compiler is currently unable to detect this due to the way inline assembly is compiled, but may catch and reject this in the future.
 
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
+
+### Correctness and Validity
+
+In addition to all of the previous rules, the string argument to `asm!` must ultimately become—
+after all other arguments are evaluated, formatting is performed, and operands are translated—
+assembly that is both syntactically correct and semantically valid for the target architecture.
+The formatting rules allow the compiler to generate assembly with correct syntax.
+Rules concerning operands permit valid translation of Rust operands into and out of `asm!`.
+Adherence to these rules is necessary, but not sufficient, for the final expanded assembly to be
+both correct and valid. For instance:
+
+- arguments may be placed in positions which are syntactically incorrect after formatting
+- an instruction may be correctly written, but given architecturally invalid operands
+- an architecturally unspecified instruction may be assembled into unspecified code
+- a set of instructions, each correct and valid, may cause undefined behavior if placed in immediate succession
+
+As a result, these rules are _non-exhaustive_. The compiler is not required to check the
+correctness and validity of the initial string nor the final assembly that is generated.
+The assembler may check for correctness and validity but is not required to do so.
+When using `asm!`, a typographical error may be sufficient to make a program unsound,
+and the rules for assembly may include thousands of pages of architectural reference manuals.
+Programmers should exercise appropriate care, as invoking this `unsafe` capability comes with
+assuming the responsibility of not violating rules of both the compiler or the architecture.
 
 ### Directives Support
 
