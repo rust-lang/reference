@@ -111,6 +111,7 @@ is possible to declare a variable or method with the name `union`.
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
 > **<sup>Lexer</sup>**\
+> KW_MACRO_RULES    : `macro_rules`\
 > KW_UNION          : `union`\
 > KW_STATICLIFETIME : `'static`
 >
