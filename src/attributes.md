@@ -272,7 +272,7 @@ The following is an index of all built-in attributes.
   - [`non_exhaustive`] — Indicate that a type will have more fields/variants
     added in future.
 - Debugger
-  - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type
+  - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type.
 
 [Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
