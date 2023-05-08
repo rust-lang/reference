@@ -11,6 +11,7 @@ Support for inline assembly is stable on the following architectures:
 - ARM
 - AArch64
 - RISC-V
+- LoongArch
 
 The compiler will emit an error if `asm!` is used on an unsupported target.
 
@@ -185,6 +186,8 @@ Here is the list of currently supported register classes:
 | RISC-V | `reg` | `x1`, `x[5-7]`, `x[9-15]`, `x[16-31]` (non-RV32E) | `r` |
 | RISC-V | `freg` | `f[0-31]` | `f` |
 | RISC-V | `vreg` | `v[0-31]` | Only clobbers |
+| LoongArch | `reg` | `$r1`, `$r[4-20]`, `$r[23,30]` | `r` |
+| LoongArch | `freg` | `$f[0-31]` | `f` |
 
 > **Notes**:
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
@@ -223,6 +226,8 @@ The availability of supported types for a particular register class may depend o
 | RISC-V | `freg` | `f` | `f32` |
 | RISC-V | `freg` | `d` | `f64` |
 | RISC-V | `vreg` | N/A | Only clobbers |
+| LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
+| LoongArch64 | `freg` | None | `f32`, `f64` |
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
@@ -284,15 +289,27 @@ Here is the list of all supported register aliases:
 | RISC-V | `f[10-17]` | `fa[0-7]` |
 | RISC-V | `f[18-27]` | `fs[2-11]` |
 | RISC-V | `f[28-31]` | `ft[8-11]` |
+| LoongArch | `$r0` | `$zero` |
+| LoongArch | `$r1` | `$ra` |
+| LoongArch | `$r2` | `$tp` |
+| LoongArch | `$r3` | `$sp` |
+| LoongArch | `$r[4-11]` | `$a[0-7]` |
+| LoongArch | `$r[12-20]` | `$t[0-8]` |
+| LoongArch | `$r21` | |
+| LoongArch | `$r22` | `$fp`, `$s9` |
+| LoongArch | `$r[23-31]` | `$s[0-8]` |
+| LoongArch | `$f[0-7]` | `$fa[0-7]` |
+| LoongArch | `$f[8-23]` | `$ft[0-15]` |
+| LoongArch | `$f[24-31]` | `$fs[0-7]` |
 
 Some registers cannot be used for input or output operands:
 
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
 | All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
-| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V) | The frame pointer cannot be used as an input or output. |
+| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
-| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
+| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `ip` | This is the program counter, not a real register. |
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
 | AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
@@ -300,6 +317,9 @@ Some registers cannot be used for input or output operands:
 | ARM | `r9` | This is an OS-reserved register on some ARM targets. |
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
 | RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
+| LoongArch | `$r0` or `$zero` | This is a constant zero register which can't be modified. |
+| LoongArch | `$r2` or `$tp` | This is reserved for TLS. |
+| LoongArch | `$r21` | This is reserved by the ABI. |
 
 The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
 
@@ -346,6 +366,8 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | ARM | `qreg` | `e` / `f` | `d0` / `d1` | `e` / `f` |
 | RISC-V | `reg` | None | `x1` | None |
 | RISC-V | `freg` | None | `f0` | None |
+| LoongArch | `reg` | None | `$r1` | None |
+| LoongArch | `freg` | None | `$f0` | None |
 
 > **Notes**:
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
@@ -379,6 +401,7 @@ The following ABIs can be used with `clobber_abi`:
 | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
 | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
 | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
+| LoongArch | `"C"`, `"system"`, `"efiapi"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
 
 > Notes:
 > - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
@@ -466,6 +489,8 @@ To avoid undefined behavior, these rules must be followed when using function-sc
   - RISC-V
     - Floating-point exception flags in `fcsr` (`fflags`).
     - Vector extension state (`vtype`, `vl`, `vcsr`).
+  - LoongArch
+    - Floating-point condition flags in `$fcc[0-7]`.
 - On x86, the direction flag (DF in `EFLAGS`) is clear on entry to an asm block and must be clear on exit.
   - Behavior is undefined if the direction flag is set on exiting an asm block.
 - On x86, the x87 floating-point register stack must remain unchanged unless all of the `st([0-7])` registers have been marked as clobbered with `out("st(0)") _, out("st(1)") _, ...`.
