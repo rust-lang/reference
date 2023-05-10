@@ -251,7 +251,7 @@ use my_macro::show_streams;
 #[show_streams]
 fn invoke1() {}
 // out: attr: ""
-// out: item: "fn invoke1() { }"
+// out: item: "fn invoke1() {}"
 
 // Example: Attribute with input
 #[show_streams(bar)]
