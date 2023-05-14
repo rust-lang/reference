@@ -231,9 +231,38 @@ resolution logic to find that import library. Alternatively, specifying
 `kind = "raw-dylib"` instructs the compiler to generate an import library
 during compilation and provide that to the linker instead.
 
-`raw-dylib` is only supported on Windows and not supported on 32-bit x86
-(`target_arch="x86"`). Using it when targeting other platforms or
-x86 on Windows will result in a compiler error.
+`raw-dylib` is only supported on Windows. Using it when targeting other
+platforms will result in a compiler error.
+
+#### The `import_name_type` key
+
+On x86 Windows, names of functions are "decorated" (i.e., have a specific prefix
+and/or suffix added) to indicate their calling convention. For example, a
+`stdcall` calling convention function with the name `fn1` that has no arguments
+would be decorated as `_fn1@0`. However, the [PE Format] does also permit names
+to have no prefix or be undecorated. Additionally, the MSVC and GNU toolchains
+use different decorations for the same calling conventions which means, by
+default, some Win32 functions cannot be called using the `raw-dylib` link kind
+via the GNU toolchain.
+
+To allow for these differences, when using the `raw-dylib` link kind you may
+also specify the `import_name_type` key with one of the following values to
+change how functions are named in the generated import library:
+
+* `decorated`: The function name will be fully-decorated using the MSVC
+  toolchain format.
+* `noprefix`: The function name will be decorated using the MSVC toolchain
+  format, but skipping the leading `?`, `@`, or optionally `_`.
+* `undecorated`: The function name will not be decorated.
+
+If the `import_name_type` key is not specified, then the function name will be
+fully-decorated using the target toolchain's format.
+
+Variables are never decorated and so the `import_name_type` key has no effect on
+how they are named in the generated import library.
+
+The `import_name_type` key is only supported on x86 Windows. Using it when
+targeting other platforms will result in a compiler error.
 
 ### The `link_name` attribute
 
@@ -308,3 +337,4 @@ restrictions as [regular function parameters].
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
+[PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
