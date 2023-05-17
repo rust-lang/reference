@@ -98,6 +98,7 @@ The function:
 
 ```rust,ignore
 fn foo<T: Trait>() -> T {
+}
 ```
 
 allows the caller to determine the return type, `T`, and the function returns that type.
@@ -106,6 +107,7 @@ The function:
 
 ```rust,ignore
 fn foo() -> impl Trait {
+}
 ```
 
 doesn't allow the caller to determine the return type.
