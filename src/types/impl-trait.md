@@ -31,15 +31,15 @@ The caller must provide a type that satisfies the bounds declared by the anonymo
 
 For example, these two forms are almost equivalent:
 
-```rust,ignore
+```rust
 trait Trait {}
 
 // generic type parameter
-fn foo<T: Trait>(arg: T) {
+fn with_generic_type<T: Trait>(arg: T) {
 }
 
 // impl Trait in argument position
-fn foo(arg: impl Trait) {
+fn with_impl_trait(arg: impl Trait) {
 }
 ```
 
@@ -96,16 +96,24 @@ With `impl Trait`, unlike with a generic type parameter, the function chooses th
 
 The function:
 
-```rust,ignore
+```rust
+# trait Trait {}
 fn foo<T: Trait>() -> T {
+    // ...
+# panic!()
+}
 ```
 
 allows the caller to determine the return type, `T`, and the function returns that type.
 
 The function:
 
-```rust,ignore
+```rust
+# trait Trait {}
+# impl Trait for () {}
 fn foo() -> impl Trait {
+    // ...
+}
 ```
 
 doesn't allow the caller to determine the return type.
