@@ -42,7 +42,7 @@ Non-doc comments are interpreted as a form of whitespace.
 ## Doc comments
 
 Line doc comments beginning with exactly _three_ slashes (`///`), and block
-doc comments (`/** ... */`), both inner doc comments, are interpreted as a
+doc comments (`/** ... */`), both outer doc comments, are interpreted as a
 special syntax for [`doc` attributes]. That is, they are equivalent to writing
 `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into
 `#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`.
