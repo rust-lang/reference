@@ -355,8 +355,8 @@ trait object whose methods are attributed.
 
 ## The `instruction_set` attribute
 
-On some CPU architectures it is possible to mix more than one instruction set into a single program.
-The `instruction_set` attribute lets you control which instruction set a particular function will be generated for.
+The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
+This allows mixing more than one instruction set in a single program on CPU architectures that support it.
 It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
 [_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
