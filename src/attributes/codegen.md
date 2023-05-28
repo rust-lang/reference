@@ -375,7 +375,7 @@ fn foo_arm_code() {}
 fn bar_thumb_code() {}
 ```
 
-If your function has neither the instruction_set attribute nor inline assembly, then the code you write within that function should not presume any particular instruction set.
+If your function has neither the `instruction_set` attribute nor inline assembly, then the code you write within that function should not presume any particular instruction set.
 This ends up creating a limitation to how often code is inlined:
 
 * If a function has an `instruction_set` attribute it won't inline into a function of another instruction set.
