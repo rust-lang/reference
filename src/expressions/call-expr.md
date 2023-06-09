@@ -48,7 +48,7 @@ trait Pretty {
 }
 
 trait Ugly {
-  fn print(&self);
+    fn print(&self);
 }
 
 struct Foo;
