@@ -549,13 +549,7 @@ The `align` modifier can also be applied on an `enum`.
 When it is, the effect on the `enum`'s alignment is the same as if the `enum`
 was wrapped in a newtype `struct` with the same `align` modifier.
 
-<div class="warning">
-
-***Warning:*** Dereferencing an unaligned pointer is [undefined behavior] and
-it is possible to [safely create unaligned pointers to `packed` fields][27060].
-Like all ways to create undefined behavior in safe Rust, this is a bug.
-
-</div>
+Dereferencing an unaligned pointer is [undefined behavior].
 
 ### The `transparent` Representation
 
