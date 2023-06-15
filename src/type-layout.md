@@ -549,7 +549,28 @@ The `align` modifier can also be applied on an `enum`.
 When it is, the effect on the `enum`'s alignment is the same as if the `enum`
 was wrapped in a newtype `struct` with the same `align` modifier.
 
-Dereferencing an unaligned pointer is [undefined behavior].
+> Note: References to unaligned fields are not allowed because it is [undefined behavior].
+> When fields are unaligned due to an alignment modifier, consider the following options for using references and dereferences:
+> 
+> ```rust
+> #[repr(packed)]
+> struct Packed {
+>     f1: u8,
+>     f2: u16,
+> }
+> let mut e = Packed { f1: 1, f2: 2 };
+> // Instead of creating a reference to a field, copy the value to a local variable.
+> let x = e.f2;
+> // Or in situations like `println!` which creates a reference, use braces
+> // to change it to a copy of the value.
+> println!("{}", {e.f2});
+> // Or if you need a pointer, use the unaligned methods for reading and writing
+> // instead of dereferencing the pointer directly.
+> let ptr: *const u16 = std::ptr::addr_of!(e.f2);
+> let value = unsafe { ptr.read_unaligned() };
+> let mut_ptr: *mut u16 = std::ptr::addr_of_mut!(e.f2);
+> unsafe { mut_ptr.write_unaligned(3) }
+> ```
 
 ### The `transparent` Representation
 
@@ -581,7 +602,6 @@ used with any other representation.
 [enumerations]: items/enumerations.md
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
-[27060]: https://github.com/rust-lang/rust/issues/27060
 [55149]: https://github.com/rust-lang/rust/issues/55149
 [`PhantomData<T>`]: special-types-and-traits.md#phantomdatat
 [Default]: #the-default-representation
