@@ -551,7 +551,7 @@ was wrapped in a newtype `struct` with the same `align` modifier.
 
 > Note: References to unaligned fields are not allowed because it is [undefined behavior].
 > When fields are unaligned due to an alignment modifier, consider the following options for using references and dereferences:
-> 
+>
 > ```rust
 > #[repr(packed)]
 > struct Packed {
