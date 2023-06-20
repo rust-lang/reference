@@ -254,6 +254,12 @@ It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
 If the predicate is true, the thing is rewritten to not have the `cfg` attribute
 on it. If the predicate is false, the thing is removed from the source code.
 
+When a crate-level `cfg` has a false predicate, the behavior is slightly
+different: any crate attributes preceding the `cfg` are kept, and any crate
+attributes following the `cfg` are removed. This allows `#![no_std]` and
+`#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has
+removed the entire crate.
+
 Some examples on functions:
 
 ```rust
