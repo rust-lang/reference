@@ -361,6 +361,10 @@ It uses the [_MetaListPath_] syntax, and a path comprised of the architecture fa
 
 [_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
 
+It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
+
+### On ARM
+
 For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 
 * `arm::a32` - Generate the function as A32 "ARM" code.
@@ -375,9 +379,7 @@ fn foo_arm_code() {}
 fn bar_thumb_code() {}
 ```
 
-If your function has neither the `instruction_set` attribute nor inline assembly, then the code you write within that function should not presume any particular instruction set.
-This ends up creating a limitation to how often code is inlined:
+Using the `instruction_set` attribute has the following effects:
 
-* If a function has an `instruction_set` attribute it won't inline into a function of another instruction set.
-* If a function does not have an `instruction_set` attribute but *does* contain inline assembly, then the inline assembly is assumed to require the default instruction set of the build target, and so inlining between different instruction sets won't happen.
-* Otherwise, inlining happens normally.
+* If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
+* Any inline assembly in the function must use the specified instruction set instead of the target default.
