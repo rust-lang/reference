@@ -162,7 +162,7 @@ Explicitly, the assignee expressions are:
 - Place expressions.
 - [Underscores][_UnderscoreExpression_].
 - [Tuples][_TupleExpression_] of assignee expressions.
-- [Slices][_ArrayExpression_] of assingee expressions.
+- [Slices][_ArrayExpression_] of assignee expressions.
 - [Tuple structs][_StructExpression_] of assignee expressions.
 - [Structs][_StructExpression_] of assignee expressions (with optionally named
   fields).
