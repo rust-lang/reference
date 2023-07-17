@@ -243,8 +243,8 @@ The operands of all of these operators are evaluated in [value expression contex
 | `+`    | Addition                |               | Addition       | `std::ops::Add`    | `std::ops::AddAssign`                 |
 | `-`    | Subtraction             |               | Subtraction    | `std::ops::Sub`    | `std::ops::SubAssign`                 |
 | `*`    | Multiplication          |               | Multiplication | `std::ops::Mul`    | `std::ops::MulAssign`                 |
-| `/`    | Division*               |               | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
-| `%`    | Remainder**             |               | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
+| `/`    | Division*†              |               | Division       | `std::ops::Div`    | `std::ops::DivAssign`                 |
+| `%`    | Remainder**†            |               | Remainder      | `std::ops::Rem`    | `std::ops::RemAssign`                 |
 | `&`    | Bitwise AND             | [Logical AND] |                | `std::ops::BitAnd` | `std::ops::BitAndAssign`              |
 | <code>&#124;</code> | Bitwise OR | [Logical OR]  |                | `std::ops::BitOr`  | `std::ops::BitOrAssign`               |
 | `^`    | Bitwise XOR             | [Logical XOR] |                | `std::ops::BitXor` | `std::ops::BitXorAssign`              |
@@ -257,6 +257,8 @@ The operands of all of these operators are evaluated in [value expression contex
 
 \*\*\* Arithmetic right shift on signed integer types, logical right shift on
 unsigned integer types.
+
+† Division by zero panics.
 
 Here are examples of these operators being used.
 
