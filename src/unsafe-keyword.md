@@ -27,9 +27,9 @@ this can be changed by enabling the [`unsafe_op_in_unsafe_fn`] lint.
 By putting operations into an unsafe block, the programmer states that they have taken care of satisfying the extra safety conditions of all operations inside that block.
 
 Unsafe blocks are the logical dual to unsafe functions:
-where unsafe functions define a proof obligation that callers must uphold, unsafe blocks state that all relevant proof obligations have been discharged.
+where unsafe functions define a proof obligation that callers must uphold, unsafe blocks state that all relevant proof obligations of functions or operations called inside the block have been discharged.
 There are many ways to discharge proof obligations;
-for example, there could be run-time checks or data structure invariants that guarantee that certain properties are definitely true, or the unsafe block could be inside an `unsafe fn` and use its own proof obligations to discharge the proof obligations of its callees.
+for example, there could be run-time checks or data structure invariants that guarantee that certain properties are definitely true, or the unsafe block could be inside an `unsafe fn`, in which case the block can use the proof obligations of that function to discharge the proof obligations arising inside the block.
 
 Unsafe blocks are used to wrap foreign libraries, make direct use of hardware or implement features not directly present in the language.
 For example, Rust provides the language features necessary to implement memory-safe concurrency in the language but the implementation of threads and message passing in the standard library uses unsafe blocks.
