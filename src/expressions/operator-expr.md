@@ -258,7 +258,7 @@ The operands of all of these operators are evaluated in [value expression contex
 \*\*\* Arithmetic right shift on signed integer types, logical right shift on
 unsigned integer types.
 
-† Division by zero panics.
+† For integer types, division by zero panics.
 
 Here are examples of these operators being used.
 
