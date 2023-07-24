@@ -42,9 +42,12 @@ code.
   All this also applies when values of these
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
-* Mutating immutable data. All data inside a [`const`] item is immutable. Moreover, all
-  data reached through a shared reference or data owned by an immutable binding
-  is immutable, unless that data is contained within an [`UnsafeCell<U>`].
+* Mutating immutable data. All bytes inside a [`const`] item are immutable.
+  Moreover, the bytes of a value pointed to by a shared reference, or bytes owned by an immutable binding are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
+  Immutability also affects bytes which are not reachable from safe code, such as padding; it also affects uninitialized bytes.
+
+  A mutation is any write of more than 0 bytes which overlaps with any of the relevant bytes.
+  Writes which do not modify the byte contents (i.e. writes of a byte's value to that byte) are still mutations.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
