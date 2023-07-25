@@ -45,11 +45,9 @@ code.
 * Mutating immutable bytes. All bytes inside a [`const`] item are immutable.
   The bytes owned by an immutable binding are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
-  Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable: transitivity includes those references stored in fields of compound types.
+  Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
 
-  A mutation is any write of more than 0 bytes which overlaps with any of the relevant bytes.
-
-  > **Note**: Writes which do not modify the byte contents (i.e. writes of a byte's value to that byte) are still mutations.
+  A mutation is any write of more than 0 bytes which overlaps with any of the relevant bytes (even if that write does not change the memory contents).
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
