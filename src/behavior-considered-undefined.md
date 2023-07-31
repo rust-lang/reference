@@ -23,9 +23,11 @@ code.
 </div>
 
 * Data races.
-* Evaluating a [dereference expression] (`*expr`) on a raw pointer that is
-  [dangling] or unaligned, even in [place expression context]
-  (e.g. `addr_of!(*expr)`).
+* Accessing (loading from or storing to) a place that is [dangling] or unaligned.
+* Performing a place projection that violates the requirements of [in-bounds
+  pointer arithmetic][offset]. A place projection is a [field
+  expression][project-field], a [tuple index expression][project-tuple], or an
+  [array/slice index expression][project-slice].
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow
   LLVM’s scoped [noalias] model, except if the `&T` contains an
   [`UnsafeCell<U>`]. References and boxes must not be [dangling] while they are
@@ -124,8 +126,11 @@ must never exceed `isize::MAX`.
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
-[dereference expression]: expressions/operator-expr.md#the-dereference-operator
 [place expression context]: expressions.md#place-expressions-and-value-expressions
 [rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
 [pointed to]: #pointed-to-bytes
+[offset]: ../std/primitive.pointer.html#method.offset
+[project-field]: expressions/field-expr.md
+[project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
+[project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
