@@ -361,15 +361,20 @@ trait object whose methods are attributed.
 
 ## The `instruction_set` attribute
 
-The *`instruction_set` attribute* may be applied to a function to enable code generation for a specific
-instruction set supported by the target architecture. It uses the [_MetaListPath_] syntax and a path
-comprised of the architecture and instruction set to specify how to generate the code for
-architectures where a single program may utilize multiple instruction sets.
+The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
+This allows mixing more than one instruction set in a single program on CPU architectures that support it.
+It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
-The following values are available on targets for the `ARMv4` and `ARMv5te` architectures:
+[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
 
-* `arm::a32` - Uses ARM code.
-* `arm::t32` - Uses Thumb code.
+It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
+
+### On ARM
+
+For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
+
+* `arm::a32` - Generate the function as A32 "ARM" code.
+* `arm::t32` - Generate the function as T32 "Thumb" code.
 
 <!-- ignore: arm-only -->
 ```rust,ignore
@@ -380,4 +385,7 @@ fn foo_arm_code() {}
 fn bar_thumb_code() {}
 ```
 
-[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
+Using the `instruction_set` attribute has the following effects:
+
+* If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
+* Any inline assembly in the function must use the specified instruction set instead of the target default.
