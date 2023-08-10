@@ -169,6 +169,7 @@ only valid if `T: 'a` holds.
 
 Implied bounds are added for all parameters and outputs of functions. Inside of `requires_t_outlives_a`
 you can assume `T: 'a` to hold even if you don't explicitly specify this:
+
 ```rust
 fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
 
@@ -179,7 +180,7 @@ fn requires_t_outlives_a<'a, T>(x: &'a T) {
 }
 ```
 
-```rust,compile_fail
+```rust,compile_fail,E0309
 # fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
 fn not_implied<'a, T>() {
     // This errors, because `T: 'a` is not implied by
@@ -190,14 +191,15 @@ fn not_implied<'a, T>() {
 
 Only lifetime bounds are implied, trait bounds still have to be explicitly added.
 The following example therefore causes an error:
-```rust,compile_fail
+
+```rust,compile_fail,E0277
 use std::fmt::Debug;
 struct IsDebug<T: Debug>(T);
 // error[E0277]: `T` doesn't implement `Debug`
 fn doesnt_specify_t_debug<T>(x: IsDebug<T>) {}
 ```
 
-Lifetime bounds are also inferred for type definitions and impl blocks for any type
+Lifetime bounds are also inferred for type definitions and impl blocks for any type:
 
 ```rust
 struct Struct<'a, T> {
