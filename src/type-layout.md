@@ -61,7 +61,7 @@ For the primitive numeric types (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
 represents a valid instance of the type (in other words,
 `transmute::<[u8; size_of::<T>()], T>(...)` is always sound). For the primitive
 numeric types and also for `bool` and `char`, every byte is guaranteed to be
-initialized (in other words, `transmute::<T, [u8; size_of::<T>()]>(...) is always
+initialized (in other words, `transmute::<T, [u8; size_of::<T>()]>(...)` is always
 sound).
 
 ## Pointers and References Layout
