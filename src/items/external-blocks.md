@@ -90,6 +90,8 @@ There are also some platform-specific ABI strings:
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
 * `extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
   `__vectorcall` and clang's `__attribute__((vectorcall))`
+* `extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
+  `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 * `extern "efiapi"` -- The ABI used for [UEFI] functions.
 
 ## Variadic functions
