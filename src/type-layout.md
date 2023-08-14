@@ -58,11 +58,11 @@ aligned to 32 bits.
 
 For the primitive numeric types (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
 `i64`, `u128`, `i128`, `usize`, `isize`, `f32`, and `f64`), every bit pattern
-represents a valid instance of the type (in other words,
-`transmute::<[u8; size_of::<T>()], T>(...)` is always sound). For the primitive
-numeric types and also for `bool` and `char`, every byte is guaranteed to be
-initialized (in other words, `transmute::<T, [u8; size_of::<T>()]>(...)` is always
-sound).
+represents a valid instance of the type (in other words, for every primitive numeric
+type, `T`, `transmute::<[u8; size_of::<T>()], T>(...)` is always sound). For the
+primitive numeric types and also for `bool` and `char`, every byte is guaranteed to be
+initialized (in other words, for every such type, `T`,
+`transmute::<T, [u8; size_of::<T>()]>(...)` is always sound).
 
 ## Pointers and References Layout
 
