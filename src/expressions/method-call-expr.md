@@ -19,7 +19,7 @@ The following procedure is used:
 
 The first step is to build a list of candidate receiver types.
 Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
-Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
+Then, for each candidate `T`, add `&T` and `&mut T` to the ordered list immediately after `T`.
 
 For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
 
@@ -29,6 +29,8 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
 1. Any of the methods provided by a [visible] trait implemented by `T`.
    If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first.
    Then all remaining methods in scope are looked up.
+
+As soon as one candidate type yielded a fitting method, the search process is stopped.
 
 > Note: the lookup is done for each type in order, which can occasionally lead to surprising results.
 > The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
@@ -58,7 +60,7 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
 > }
 > ```
 
-If this results in multiple possible candidates, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
+If any candidate type results in multiple possible methods, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
 
 This process does not take into account the mutability or lifetime of the receiver, or whether a method is `unsafe`.
 Once a method is looked up, if it can't be called for one (or more) of those reasons, the result is a compiler error.
