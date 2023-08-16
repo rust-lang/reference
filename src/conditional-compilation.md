@@ -129,6 +129,7 @@ Example values:
 * `"dragonfly"`
 * `"openbsd"`
 * `"netbsd"`
+* `"none"` (typical for embedded targets)
 
 ### `target_family`
 
