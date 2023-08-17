@@ -159,7 +159,7 @@ not change the layout of the fields themselves. For example, a struct with a
 `C` representation that contains a struct `Inner` with the default
 representation will not change the layout of `Inner`.
 
-### The `Rust` Representation
+### <a id="the-default-representation"></a> The `Rust` Representation
 
 The `Rust` representation is the default representation for nominal types
 without a `repr` attribute. Using this representation explicitly through a
