@@ -16,9 +16,9 @@ undefined behavior, it is *unsound*.
 
 ***Warning:*** The following list is not exhaustive. There is no formal model of
 Rust's semantics for what is and is not allowed in unsafe code, so there may be
-more behavior considered unsafe. The following list is just what we know for
-sure is undefined behavior. Please read the [Rustonomicon] before writing unsafe
-code.
+more behavior considered unsafe. We also reserve the right to make some of the
+behavior in that list defined in the future.
+Please read the [Rustonomicon] before writing unsafe code.
 
 </div>
 
