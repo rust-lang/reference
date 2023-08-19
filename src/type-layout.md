@@ -60,9 +60,9 @@ For every primitive numeric type (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
 `i64`, `u128`, `i128`, `usize`, `isize`, `f32`, and `f64`), `T`, the bit validity
 of `T` is equivalent to the bit validity of `[u8; size_of::<T>()]`. `u8` has 256
 valid representations (namely, every 8-bit sequence). An uninitialized byte is not
-a valid u8. A byte at any offset in a reference or pointer type may not be a valid
-u8 (the semantics of transmuting a reference or pointer to a non-pointer type is
-currently undecided).
+a valid `u8`. A byte at any offset in a reference or pointer type may not be a
+valid `u8` (the semantics of transmuting a reference or pointer to a non-pointer
+type is currently undecided).
 
 For the primitive numeric types and also for `bool` and `char`, every byte is
 guaranteed to be initialized (in other words, for every such type, `T`,
