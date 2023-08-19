@@ -56,12 +56,16 @@ Most primitives are generally aligned to their size, although this is
 platform-specific behavior. In particular, on x86 u64 and f64 are only
 aligned to 32 bits.
 
-For the primitive numeric types (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
-`i64`, `u128`, `i128`, `usize`, `isize`, `f32`, and `f64`), every bit pattern
-represents a valid instance of the type (in other words, for every primitive numeric
-type, `T`, `transmute::<[u8; size_of::<T>()], T>(...)` is always sound). For the
-primitive numeric types and also for `bool` and `char`, every byte is guaranteed to be
-initialized (in other words, for every such type, `T`,
+For every primitive numeric type (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
+`i64`, `u128`, `i128`, `usize`, `isize`, `f32`, and `f64`), `T`, the bit validity
+of `T` is equivalent to the bit validity of `[u8; size_of::<T>()]`. `u8` has 256
+valid representations (namely, every 8-bit sequence). An uninitialized byte is not
+a valid u8. A byte at any offset in a reference or pointer type may not be a valid
+u8 (the semantics of transmuting a reference or pointer to a non-pointer type is
+currently undecided).
+
+For the primitive numeric types and also for `bool` and `char`, every byte is
+guaranteed to be initialized (in other words, for every such type, `T`,
 `transmute::<T, [u8; size_of::<T>()]>(...)` is always sound).
 
 ## Pointers and References Layout
@@ -69,10 +73,7 @@ initialized (in other words, for every such type, `T`,
 Pointers and references have the same layout. Mutability of the pointer or
 reference does not change the layout.
 
-Pointers to sized types have the same size and alignment as `usize`. Every
-byte of a pointer to a sized type and of a reference to a sized type is
-initialized (in other words, for such a pointer or reference type, `P`,
-`transmute::<P, [u8; size_of::<P>()]>(...)` is always sound).
+Pointers to sized types have the same size and alignment as `usize`.
 
 Pointers to unsized types are sized. The size and alignment is guaranteed to be
 at least equal to the size and alignment of a pointer.
