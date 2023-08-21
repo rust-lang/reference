@@ -64,9 +64,9 @@ a valid `u8`. A byte at any offset in a reference or pointer type may not be a
 valid `u8` (the semantics of transmuting a reference or pointer to a non-pointer
 type is currently undecided).
 
-For the primitive numeric types and also for `bool` and `char`, every byte is
+For `bool` and `char`, every byte is
 guaranteed to be initialized (in other words, for every such type, `T`,
-`transmute::<T, [u8; size_of::<T>()]>(...)` is always sound).
+`transmute::<T, [u8; size_of::<T>()]>(...)` is always sound -- but the inverse is not).
 
 ## Pointers and References Layout
 
