@@ -88,7 +88,7 @@ String slices are a UTF-8 representation of characters that have the same layout
 
 ## Tuple Layout
 
-Tuples are laid out according to the [default representation][Default].
+Tuples are laid out according to the [`Rust` representation][`Rust`].
 
 The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
@@ -110,7 +110,7 @@ All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
 *representation* that specifies what the layout is for the type. The possible
 representations for a type are:
 
-- [Default]
+- [`Rust`] (default)
 - [`C`]
 - The [primitive representations]
 - [`transparent`]
@@ -159,10 +159,12 @@ not change the layout of the fields themselves. For example, a struct with a
 `C` representation that contains a struct `Inner` with the default
 representation will not change the layout of `Inner`.
 
-### The Default Representation
+### <a id="the-default-representation"></a> The `Rust` Representation
 
-Nominal types without a `repr` attribute have the default representation.
-Informally, this representation is also called the `rust` representation.
+The `Rust` representation is the default representation for nominal types
+without a `repr` attribute. Using this representation explicitly through a
+`repr` attribute is guaranteed to be the same as omitting the attribute
+entirely.
 
 The only data layout guarantees made by this representation are those required
 for soundness. They are:
@@ -543,7 +545,7 @@ important consequence of these rules is that a type with `#[repr(packed(1))]`
 
 The `align` and `packed` modifiers cannot be applied on the same type and a
 `packed` type cannot transitively contain another `align`ed type. `align` and
-`packed` may only be applied to the [default] and [`C`] representations.
+`packed` may only be applied to the [`Rust`] and [`C`] representations.
 
 The `align` modifier can also be applied on an `enum`.
 When it is, the effect on the `enum`'s alignment is the same as if the `enum`
@@ -604,7 +606,7 @@ used with any other representation.
 [undefined behavior]: behavior-considered-undefined.md
 [55149]: https://github.com/rust-lang/rust/issues/55149
 [`PhantomData<T>`]: special-types-and-traits.md#phantomdatat
-[Default]: #the-default-representation
+[`Rust`]: #the-rust-representation
 [`C`]: #the-c-representation
 [primitive representations]: #primitive-representations
 [structs]: items/structs.md
