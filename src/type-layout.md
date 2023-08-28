@@ -56,17 +56,6 @@ Most primitives are generally aligned to their size, although this is
 platform-specific behavior. In particular, on x86 u64 and f64 are only
 aligned to 32 bits.
 
-For every primitive numeric type (`u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`,
-`i64`, `u128`, `i128`, `usize`, `isize`, `f32`, and `f64`), `T`, the bit validity
-of `T` is equivalent to the bit validity of `[u8; size_of::<T>()]`. An
-uninitialized byte is not a valid `u8`. A byte at any offset in a reference or
-pointer type may not be a valid `u8` (the semantics of transmuting a reference or
-pointer to a non-pointer type is currently undecided).
-
-For `bool` and `char`, every byte is
-guaranteed to be initialized (in other words, for every such type, `T`,
-`transmute::<T, [u8; size_of::<T>()]>(...)` is always sound -- but the inverse is not).
-
 ## Pointers and References Layout
 
 Pointers and references have the same layout. Mutability of the pointer or
