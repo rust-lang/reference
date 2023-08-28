@@ -45,3 +45,8 @@ within an object along with one byte past the end.
 > `isize` are either 32-bit or 64-bit. As a consequence, 16-bit
 > pointer support is limited and may require explicit care and acknowledgment
 > from a library to support.
+
+## Bit validity
+
+For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
+validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
