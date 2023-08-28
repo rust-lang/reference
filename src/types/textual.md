@@ -17,6 +17,12 @@ is valid UTF-8. Calling a `str` method with a non-UTF-8 buffer can cause
 Since `str` is a [dynamically sized type], it can only be instantiated through a
 pointer type, such as `&str`.
 
+## Bit validity
+
+Every byte of a `char` is guaranteed to be initialized (in other words,
+`transmute::<char, [u8; size_of::<char>()]>(...)` is always sound -- but since
+some bit patterns are invalid `char`s, the inverse is not always sound).
+
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
 [Undefined Behavior]: ../behavior-considered-undefined.md
 [dynamically sized type]: ../dynamically-sized-types.md
