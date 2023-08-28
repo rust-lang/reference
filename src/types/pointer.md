@@ -50,6 +50,12 @@ Raw pointers can be created directly using [`core::ptr::addr_of!`] for `*const` 
 
 The standard library contains additional 'smart pointer' types beyond references and raw pointers.
 
+## Bit validity
+
+Despite pointers and references being similar to `usize`s in the machine code emitted on most platforms,
+the semantics of transmuting a reference or pointer type to a non-pointer type is currently undecided.
+Thus, it may not be valid to transmute a pointer or reference type, `P`, to a `[u8; size_of::<P>()]`.
+
 [`core::ptr::addr_of!`]: ../../core/ptr/macro.addr_of.html
 [`core::ptr::addr_of_mut!`]: ../../core/ptr/macro.addr_of_mut.html
 [Interior mutability]: ../interior-mutability.md
