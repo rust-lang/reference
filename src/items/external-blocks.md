@@ -97,7 +97,18 @@ There are also some platform-specific ABI strings:
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 * `extern "efiapi"` -- The ABI used for [UEFI] functions.
 
-Most platform-specific ABI strings also have a corresponding `-unwind` variant.
+Like `"C"` and `"system"`, most platform-specific ABI strings also have a
+[corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
+
+* `"cdecl-unwind"`
+* `"stdcall-unwind"`
+* `"fastcall-unwind"`
+* `"vectorcall-unwind"`
+* `"thiscall-unwind"`
+* `"aapcs-unwind"`
+* `"win64-unwind"`
+* `"sysv64-unwind"`
+* `"system-unwind"`
 
 ## Variadic functions
 
