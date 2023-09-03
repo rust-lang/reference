@@ -68,7 +68,7 @@ standard C ABI on the specific platform. Other ABIs may be specified using an
 extern "stdcall" { }
 ```
 
-There are three ABI strings which are cross-platform, and which all compilers
+There are five ABI strings which are cross-platform, and which all compilers
 are guaranteed to support:
 
 * `extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
@@ -78,6 +78,9 @@ are guaranteed to support:
 * `extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
   which case it's `"stdcall"`, or what you should use to link to the Windows
   API itself
+* `extern "C-unwind"` and `extern "system-unwind"` -- identical to `"C"` and
+  `"system"`, respectively, but with [different behavior][unwind-behavior] when
+  the callee unwinds (by panicking or throwing a C++ style exception).
 
 There are also some platform-specific ABI strings:
 
@@ -93,6 +96,8 @@ There are also some platform-specific ABI strings:
 * `extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 * `extern "efiapi"` -- The ABI used for [UEFI] functions.
+
+Most platform-specific ABI strings also have a corresponding `-unwind` variant.
 
 ## Variadic functions
 
@@ -333,6 +338,7 @@ restrictions as [regular function parameters].
 [_OuterAttribute_]: ../attributes.md
 [_StaticItem_]: static-items.md
 [_Visibility_]: ../visibility-and-privacy.md
+[unwind-behavior]: functions.md#unwinding
 [attributes]: ../attributes.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
