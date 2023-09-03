@@ -57,6 +57,8 @@ code.
 * Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
   another ABI that permits unwinding) from a runtime that does not support
   unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
+* Catching a Rust `panic` in non Rust code (for instance `catch (...)` in C++)
+* Catching a non-Rust unwind (such as a C++ exception) with `catch_unwind`
 * Deallocating a Rust stack frame without executing destructors
   for local variables owned by the stack frame. This can occur
   with C functions like `longjmp`.
