@@ -56,7 +56,7 @@ Despite pointers and references being similar to `usize`s in the machine code em
 the semantics of transmuting a reference or pointer type to a non-pointer type is currently undecided.
 Thus, it may not be valid to transmute a pointer or reference type, `P`, to a `[u8; size_of::<P>()]`.
 
-For thin raw pointers (i.e., for `<T as Pointee>::Metadata == ()` and `P = *const T` or `P = *mut T`),
+For thin raw pointers (i.e., for `P = *const T` or `P = *mut T` for `T: Sized`),
 the inverse direction (transmuting from an integer or array of integers to `P`) is always valid.
 However, the pointer produced via such a transmutation may not be dereferenced (not even if `T` has size zero).
 
