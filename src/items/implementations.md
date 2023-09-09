@@ -205,7 +205,7 @@ Examples of constraining situations:
 // T constrains by being an argument to GenericTrait.
 impl<T> GenericTrait<T> for i32 { /* ... */ }
 
-// T constrains by being an arguement to GenericStruct
+// T constrains by being an argument to GenericStruct
 impl<T> Trait for GenericStruct<T> { /* ... */ }
 
 // Likewise, N constrains by being an argument to ConstGenericStruct
