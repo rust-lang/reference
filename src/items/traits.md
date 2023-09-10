@@ -116,7 +116,7 @@ trait NonDispatchable {
     // `other` may be a different concrete type of the receiver.
     fn param(&self, other: Self) where Self: Sized {}
     // Generics are not compatible with vtables.
-    fn typed<T>(&self, x: T) where Self: Sized {}
+    fn typed<T>(&self, x: T) {}
 }
 
 struct S;
