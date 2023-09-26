@@ -275,8 +275,8 @@ The following is an index of all built-in attributes.
   - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type.
 
 [Doc comments]: comments.md#doc-comments
-[ECMA-334]: https://www.ecma-international.org/publications/standards/Ecma-334.htm
-[ECMA-335]: https://www.ecma-international.org/publications/standards/Ecma-335.htm
+[ECMA-334]: https://www.ecma-international.org/publications-and-standards/standards/ecma-334/
+[ECMA-335]: https://www.ecma-international.org/publications-and-standards/standards/ecma-335/
 [Expression Attributes]: expressions.md#expression-attributes
 [IDENTIFIER]: identifiers.md
 [RAW_STRING_LITERAL]: tokens.md#raw-string-literals
