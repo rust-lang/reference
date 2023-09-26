@@ -88,6 +88,12 @@ which also avoids the drawbacks of using a boxed trait object.
 Similarly, the concrete types of iterators could become very complex, incorporating the types of all previous iterators in a chain.
 Returning `impl Iterator` means that a function only exposes the `Iterator` trait as a bound on its return type, instead of explicitly specifying all of the other iterator types involved.
 
+## Return-position `impl Trait` in traits and trait implementations
+
+Functions in traits may also use `impl Trait` as a syntax for an anonymous associated type.
+
+Every `impl Trait` in the return type of an associated function in a trait is desugared to an anonymous associated type. The return type that appears in the implementation's function signature is used to determine the value of the associated type.
+
 ### Differences between generics and `impl Trait` in return position
 
 In argument position, `impl Trait` is very similar in semantics to a generic type parameter.
@@ -121,8 +127,8 @@ Instead, the function chooses the return type, but only promises that it will im
 
 ## Limitations
 
-`impl Trait` can only appear as a parameter or return type of a free or inherent function.
-It cannot appear inside implementations of traits, nor can it be the type of a let binding or appear inside a type alias.
+`impl Trait` can only appear as a parameter or return type of a non-`extern` function.
+It cannot be the type of a `let` binding, field type, or appear inside a type alias.
 
 [closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
