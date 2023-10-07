@@ -27,9 +27,12 @@ Please read the [Rustonomicon] before writing unsafe code.
 </div>
 
 * Data races.
-* Evaluating a [dereference expression] (`*expr`) on a raw pointer that is
-  [dangling] or unaligned, even in [place expression context]
-  (e.g. `addr_of!(*expr)`).
+* Accessing (loading from or storing to) a place that is [dangling] or [based on
+  a misaligned pointer].
+* Performing a place projection that violates the requirements of [in-bounds
+  pointer arithmetic][offset]. A place projection is a [field
+  expression][project-field], a [tuple index expression][project-tuple], or an
+  [array/slice index expression][project-slice].
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow
   LLVM’s scoped [noalias] model, except if the `&T` contains an
   [`UnsafeCell<U>`]. References and boxes must not be [dangling] while they are
@@ -68,7 +71,7 @@ Please read the [Rustonomicon] before writing unsafe code.
   * A `!` (all values are invalid for this type).
   * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
     from [uninitialized memory][undef], or uninitialized memory in a `str`.
-  * A reference or `Box<T>` that is [dangling], unaligned, or points to an invalid value.
+  * A reference or `Box<T>` that is [dangling], misaligned, or points to an invalid value.
   * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
     * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
       `Trait` that matches the actual dynamic trait the pointer or reference points to.
@@ -102,6 +105,36 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 
 The span of bytes a pointer or reference "points to" is determined by the pointer value and the size of the pointee type (using `size_of_val`).
 
+### Places based on misaligned pointers
+[based on a misaligned pointer]: #places-based-on-misaligned-pointers
+
+A place is said to be "based on a misaligned pointer" if the last `*` projection
+during place computation was performed on a pointer that was not aligned for its
+type. (If there is no `*` projection in the place expression, then this is
+accessing the field of a local and rustc will guarantee proper alignment. If
+there are multiple `*` projection, then each of them incurs a load of the
+pointer-to-be-dereferenced itself from memory, and each of these loads is
+subject to the alignment constraint. Note that some `*` projections can be
+omitted in surface Rust syntax due to automatic dereferencing; we are
+considering the fully expanded place expression here.)
+
+For instance, if `ptr` has type `*const S` where `S` has an alignment of 8, then
+`ptr` must be 8-aligned or else `(*ptr).f` is "based on an misaligned pointer".
+This is true even if the type of the field `f` is `u8` (i.e., a type with
+alignment 1). In other words, the alignment requirement derives from the type of
+the pointer that was dereferenced, *not* the type of the field that is being
+accessed.
+
+Note that a place based on a misaligned pointer only leads to Undefined Behavior
+when it is loaded from or stored to. `addr_of!`/`addr_of_mut!` on such a place
+is allowed. `&`/`&mut` on a place requires the alignment of the field type (or
+else the program would be "producing an invalid value"), which generally is a
+less restrictive requirement than being based on an aligned pointer. Taking a
+reference will lead to a compiler error in cases where the field type might be
+more aligned than the type that contains it, i.e., `repr(packed)`. This means
+that being based on an aligned pointer is always sufficient to ensure that the
+new reference is aligned, but it is not always necessary.
+
 ### Dangling pointers
 [dangling]: #dangling-pointers
 
@@ -128,8 +161,11 @@ must never exceed `isize::MAX`.
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
-[dereference expression]: expressions/operator-expr.md#the-dereference-operator
 [place expression context]: expressions.md#place-expressions-and-value-expressions
 [rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
 [pointed to]: #pointed-to-bytes
+[offset]: ../std/primitive.pointer.html#method.offset
+[project-field]: expressions/field-expr.md
+[project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
+[project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
