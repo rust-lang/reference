@@ -416,8 +416,10 @@ Currently the following options are defined:
   This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
 - `nomem`: The `asm!` blocks does not read or write to any memory.
   This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
+  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 - `readonly`: The `asm!` block does not write to any memory.
   This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
+  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 - `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below).
   This allows the compiler to avoid recomputing the condition flags after the `asm!` block.
 - `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
