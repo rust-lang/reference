@@ -4,13 +4,8 @@
 > _BlockExpression_ :\
 > &nbsp;&nbsp; `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Statements_<sup>?</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; ([_Statement_]<sup>\*</sup> ([_StatementNotExpression_] | [_Expression_]))<sup>?</sup>\
 > &nbsp;&nbsp; `}`
->
-> _Statements_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\+</sup>\
-> &nbsp;&nbsp; | [_Statement_]<sup>\+</sup> [_ExpressionWithoutBlock_]\
-> &nbsp;&nbsp; | [_ExpressionWithoutBlock_]
 
 A *block expression*, or *block*, is a control flow expression and anonymous namespace scope for items and variable declarations.
 As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
@@ -20,10 +15,8 @@ The syntax for a block is `{`, then any [inner attributes], then any number of [
 
 Statements are usually required to be followed by a semicolon, with two exceptions:
 
-1. Item declaration statements do not need to be followed by a semicolon.
-2. Expression statements usually require a following semicolon except if its outer expression is a flow control expression.
-
-Furthermore, extra semicolons between statements are allowed, but these semicolons do not affect semantics.
+1. Item declaration statements.
+2. Expression statements that end with a `}` and are not at the end of the block.
 
 When evaluating a block expression, each statement, except for item declaration statements, is executed sequentially.
 Then the final operand is executed, if given.
@@ -167,9 +160,10 @@ fn is_unix_platform() -> bool {
 }
 ```
 
-[_ExpressionWithoutBlock_]: ../expressions.md
+[_Expression_]: ../expressions.md
 [_InnerAttribute_]: ../attributes.md
 [_Statement_]: ../statements.md
+[_StatementNotExpression_]: ../statements.md
 [`await` expressions]: await-expr.md
 [`cfg`]: ../conditional-compilation.md
 [`for`]: loop-expr.md#iterator-loops
