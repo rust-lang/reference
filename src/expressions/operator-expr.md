@@ -478,6 +478,16 @@ unsafe {
 assert_eq!(values[1], 3);
 ```
 
+#### Slice DST pointer to pointer cast
+
+When `T` and `U` are both "slice DSTs" - ie, slice types or types whose trailing field
+is a slice type - the raw pointer types `*const T`, `*mut T`, `*const U`, and `*mut U`
+encode the number of elements in this slice. Casts between these raw pointer types
+preserve the number of elements. Note that, as a consequence, such casts do *not*
+necessarily preserve the size of the pointer's referent (e.g., casting `*const [u16]`
+to `*const [u8]` will result in a raw pointer which refers to an object of half the size
+of the original).
+
 ## Assignment expressions
 
 > **<sup>Syntax</sup>**\
