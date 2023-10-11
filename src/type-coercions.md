@@ -156,6 +156,16 @@ Coercion is allowed between the following types:
 
 * `!` to any `T`
 
+#### Slice DST raw pointer conversions
+
+When `T` and `U` are both "slice DSTs" - ie, slice types or types whose trailing field
+is a slice type - the raw pointer types `*const T`, `*mut T`, `*const U`, and `*mut U`
+encode the number of elements in this slice. Coercions between these raw pointer types
+preserve the number of elements. Note that, as a consequence, such coercions do *not*
+necessarily preserve the size of the pointer's referent (e.g., coercing `*const [u16]`
+to `*const [u8]` will result in a raw pointer which refers to an object of half the size
+of the original).
+
 ### Unsized Coercions
 
 The following coercions are called `unsized coercions`, since they
