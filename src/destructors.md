@@ -156,7 +156,7 @@ temporary variable that holds the result of that expression when used in a
 Apart from lifetime extension, the temporary scope of an expression is the
 smallest scope that contains the expression and is one of the following:
 
-* The entire function body.
+* The entire function.
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
@@ -168,8 +168,8 @@ smallest scope that contains the expression and is one of the following:
 > **Notes**:
 >
 > Temporaries that are created in the final expression of a function
-> body are dropped *after* any named variables bound in the function body, as
-> there is no smaller enclosing temporary scope.
+> body are dropped *after* any named variables bound in the function body.
+> Their drop scope is the entire function, as there is no smaller enclosing temporary scope.
 >
 > The [scrutinee] of a `match` expression is not a temporary scope, so
 > temporaries in the scrutinee can be dropped after the `match` expression. For
