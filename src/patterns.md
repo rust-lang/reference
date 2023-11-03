@@ -123,6 +123,8 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 > &nbsp;&nbsp; | [RAW_STRING_LITERAL]\
 > &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
 > &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
+> &nbsp;&nbsp; | [C_STRING_LITERAL]\
+> &nbsp;&nbsp; | [RAW_C_STRING_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]
 
@@ -132,6 +134,8 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 [RAW_STRING_LITERAL]: tokens.md#raw-string-literals
 [BYTE_STRING_LITERAL]: tokens.md#byte-string-literals
 [RAW_BYTE_STRING_LITERAL]: tokens.md#raw-byte-string-literals
+[C_STRING_LITERAL]: tokens.md#c-string-literals
+[RAW_C_STRING_LITERAL]: tokens.md#raw-c-string-literals
 [INTEGER_LITERAL]: tokens.md#integer-literals
 [FLOAT_LITERAL]: tokens.md#floating-point-literals
 
@@ -141,6 +145,14 @@ Since negative numbers are not [literals], literal patterns also accept an optio
 <div class="warning">
 
 Floating-point literals are currently accepted, but due to the complexity of comparing them, they are going to be forbidden on literal patterns in a future version of Rust (see [issue #41620](https://github.com/rust-lang/rust/issues/41620)).
+
+</div>
+
+<div class="warning">
+
+C string and raw C string literals are accepted in literal patterns, but `&CStr`
+doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore
+any such `match` on a `&CStr` will be rejected with a type error.
 
 </div>
 
