@@ -488,8 +488,6 @@ casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refer
 object of half the size of the original). The same holds for `str` and any compound type
 whose unsized tail is a slice type, such as struct `Foo(i32, [u8])` or `(u64, Foo)`.
 
-
-
 ## Assignment expressions
 
 > **<sup>Syntax</sup>**\
