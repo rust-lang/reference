@@ -414,10 +414,13 @@ Flags are used to further influence the behavior of the inline assembly block.
 Currently the following options are defined:
 - `pure`: The `asm!` block has no side effects, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set).
   This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
+  The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 - `nomem`: The `asm!` blocks does not read or write to any memory.
   This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
+  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 - `readonly`: The `asm!` block does not write to any memory.
   This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
+  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 - `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below).
   This allows the compiler to avoid recomputing the condition flags after the `asm!` block.
 - `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
@@ -432,7 +435,6 @@ Currently the following options are defined:
 
 The compiler performs some additional checks on options:
 - The `nomem` and `readonly` options are mutually exclusive: it is a compile-time error to specify both.
-- The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 - It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
 - It is a compile-time error to specify `noreturn` on an asm block with outputs.
 
