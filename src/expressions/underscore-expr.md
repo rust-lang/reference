@@ -8,6 +8,8 @@ Underscore expressions, denoted with the symbol `_`, are used to signify a
 placeholder in a destructuring assignment. They may only appear in the left-hand
 side of an assignment.
 
+Note that this is distinct from the [wildcard pattern](../patterns.md#wildcard-pattern).
+
 An example of an `_` expression:
 
 ```rust
