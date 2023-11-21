@@ -202,10 +202,19 @@ mod b {
 `self` resolves the path relative to the current module. `self` can only be used as the
 first segment, without a preceding `::`.
 
+In a method body, a path which consists of a single `self` segment resolves to the method's self parameter.
+
+
 ```rust
 fn foo() {}
 fn bar() {
     self::foo();
+}
+struct S(bool);
+impl S {
+  fn baz(self) {
+        self.0;
+    }
 }
 # fn main() {}
 ```
