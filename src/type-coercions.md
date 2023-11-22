@@ -172,7 +172,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
 
-* `dyn T` to `dyn U`, when `T` has `U` as one of its ancestor trait.
+* `dyn T` to `dyn U`, when `U` is one of `T`'s supertraits.
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
