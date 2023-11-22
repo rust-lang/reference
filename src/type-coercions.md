@@ -212,7 +212,7 @@ r[coerce.unsize.trait-object]
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
 
 r[coerce.unsize.trait-upcast]
-* `dyn T` to `dyn U`, when `T` has `U` as one of its ancestor trait.
+* `dyn T` to `dyn U`, when `U` is one of `T`'s supertraits.
 
 r[coerce.unsized.composite]
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
