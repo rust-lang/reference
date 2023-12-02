@@ -76,15 +76,17 @@ Object safe traits can be the base trait of a [trait object]. A trait is
         * Not have any type parameters (although lifetime parameters are allowed),
         * Be a [method] that does not use `Self` except in the type of the receiver.
         * Have a receiver with one of the following types:
+            * `Self` (i.e. `self`)
+                * However, it is currently not possible to dispatch it on a trait object.
             * `&Self` (i.e. `&self`)
             * `&mut Self` (i.e `&mut self`)
             * [`Box<Self>`]
             * [`Rc<Self>`]
             * [`Arc<Self>`]
             * [`Pin<P>`] where `P` is one of the types above
-        * Does not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
+        * Does not have a `where Self: Sized` bound
     * Explicitly non-dispatchable functions require:
-        * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
+        * Have a `where Self: Sized` bound
 
 ```rust
 # use std::rc::Rc;
@@ -92,6 +94,7 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 # use std::pin::Pin;
 // Examples of object safe methods.
 trait TraitMethods {
+    fn by_value(self: Self);
     fn by_ref(self: &Self) {}
     fn by_ref_mut(self: &mut Self) {}
     fn by_box(self: Box<Self>) {}
@@ -102,7 +105,9 @@ trait TraitMethods {
     fn nested_pin(self: Pin<Arc<Self>>) {}
 }
 # struct S;
-# impl TraitMethods for S {}
+# impl TraitMethods for S {
+#     fn by_value(self) {}
+# }
 # let t: Box<dyn TraitMethods> = Box::new(S);
 ```
 
@@ -111,6 +116,8 @@ trait TraitMethods {
 trait NonDispatchable {
     // Non-methods cannot be dispatched.
     fn foo() where Self: Sized {}
+    // Self as receiver can't be dispatched on a trait object.
+    fn by_value(self);
     // Self type isn't known until runtime.
     fn returns(&self) -> Self where Self: Sized;
     // `other` may be a different concrete type of the receiver.
@@ -121,12 +128,14 @@ trait NonDispatchable {
 
 struct S;
 impl NonDispatchable for S {
+    fn by_value(self) {}
     fn returns(&self) -> Self where Self: Sized { S }
 }
 let obj: Box<dyn NonDispatchable> = Box::new(S);
-obj.returns(); // ERROR: cannot call with Self return
-obj.param(S);  // ERROR: cannot call with Self parameter
-obj.typed(1);  // ERROR: cannot call with generic type
+obj.by_value(); // ERROR: cannot call with Self as receiver
+obj.returns();  // ERROR: cannot call with Self return
+obj.param(S);   // ERROR: cannot call with Self parameter
+obj.typed(1);   // ERROR: cannot call with generic type
 ```
 
 ```rust,compile_fail
