@@ -15,20 +15,81 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 
 When looking up a method call, the receiver may be automatically dereferenced or borrowed in order to call a method.
 This requires a more complex lookup process than for other functions, since there may be a number of possible methods to call.
-The following procedure is used:
+The following procedure (described in pseudo-rust) is used:
 
-The first step is to build a list of candidate receiver types.
-Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
-Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
+```rust,ignore
+fn lookup_method(mut T: Type, method_name: &str) -> Method {
+  // The first step is to build a list of candidate receiver types.
+  let mut candidate_receiver_types = vec![T];
 
-For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
+  // Obtain these by repeatedly dereferencing the receiver expression's
+  // type, adding each type encountered to the list,
+  while let Some(U) = <T as Deref>::Target {
+    T = U;
+    candidate_receiver_types.push(T);
+  }
 
-Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:
+  // then finally attempting an unsized coercion at the end, and adding the
+  // result type if that is successful.
+  if let Some(U) = T::UnsizedCoercion {
+    candidate_receiver_types.push(U);
+  }
 
-1. `T`'s inherent methods (methods implemented directly on `T`).
-1. Any of the methods provided by a [visible] trait implemented by `T`.
-   If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first.
-   Then all remaining methods in scope are looked up.
+  // Then, for each candidate `T`, add `&T` and `&mut T` to the list
+  // immediately after `T`.
+  let candidate_receiver_types = candidate_receiver_types.map(|T| [T, &T, &mut T]).flatten();
+
+  // Then, for each candidate type `T`,
+  for T in candidate_receiver_types {
+    // search for a visible method with a receiver of that type
+    let find_method = |methods: Map<&str, Method>| {
+      methods.get(method_name).filter(|m| m.is_visible() && m.receiver == T)
+    };
+
+    // in the following places:
+
+    // 1. `T`'s inherent methods (methods implemented directly on `T`).
+    if let Some(method) = find_method(T.inherent_impl.methods) {
+      return method;
+    }
+
+    // 2. Any of the methods provided by a visible trait implemented by
+    //    `T`. If `T` is a type parameter, methods provided by trait
+    //    bounds on `T` are looked up first. Then all remaining methods in
+    //    scope are looked up.
+    let mut prioritized_candidate_methods = vec![];
+    let mut candidate_methods = vec![];
+    for Trait in TRAITS.visible() {
+      if let Some(TraitImpl) = T.implements(Trait) {
+        if let Some(method) = find_method(TraitImpl.methods) {
+          if T.is_type_parameter() && T.has_bounds_of(Trait) {
+            prioritized_candidate_methods.push(method);
+          } else {
+            candidate_methods.push(method);
+          }
+        }
+      }
+    }
+    //    If this results in multiple possible candidates, then it is an error,
+    //    and the receiver must be [converted][disambiguate call] to an
+    //    appropriate receiver type to make the method call.
+    match prioritized_candidate_methods {
+      [] => {}, // Continue
+      [method] => return method,
+      _ => panic!("multiple applicable items in scope"),
+    }
+    match candidate_methods {
+      [] => {}, // Continue
+      [method] => return method,
+      _ => panic!("multiple applicable items in scope"),
+    }
+  }
+
+  panic!("no method named `{method_name}` found in the current scope")
+}
+```
+
+As an example, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
 
 > Note: the lookup is done for each type in order, which can occasionally lead to surprising results.
 > The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
@@ -57,8 +118,6 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
 >   f.bar();
 > }
 > ```
-
-If this results in multiple possible candidates, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
 
 This process does not take into account the mutability or lifetime of the receiver, or whether a method is `unsafe`.
 Once a method is looked up, if it can't be called for one (or more) of those reasons, the result is a compiler error.
