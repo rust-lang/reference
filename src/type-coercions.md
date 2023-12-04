@@ -41,8 +41,8 @@ sites are:
   }
   ```
 
-  For method calls, the receiver (`self` parameter) can only take advantage
-  of [unsized coercions](#unsized-coercions).
+  For method calls, the receiver (`self` parameter) type is coerced
+  differently, see the documentation on [method-call expressions] for details.
 
 * Instantiations of struct, union, or enum variant fields
 
@@ -273,3 +273,4 @@ precisely.
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
+[method-call expressions]: expressions/method-call-expr.md
