@@ -111,7 +111,7 @@ modify a value. So a unique immutable borrow is used: it borrows `x` immutably,
 but like a mutable borrow, it must be unique. In the above example, uncommenting
 the declaration of `y` will produce an error because it would violate the
 uniqueness of the closure's borrow of `x`; the declaration of `z` is valid because
-the closure's lifetime has expired, i.e. there are no `c` calls after `z`, 
+the closure's lifetime has expired, i.e. there are no `c` calls after `z`,
 releasing the borrow.
 
 ## Call traits and coercions
