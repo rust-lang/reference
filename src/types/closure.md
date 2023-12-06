@@ -95,12 +95,12 @@ reference, as in the following example:
 ```rust
 let mut b = false;
 let x = &mut b;
-{
-    let mut c = || { *x = true; };
-    // The following line is an error:
-    // let y = &x;
-    c();
-}
+
+let mut c = || { *x = true; };
+// The following line is an error:
+// let y = &x;
+c();
+
 let z = &x;
 ```
 
@@ -110,8 +110,9 @@ because a `& &mut` reference might not be unique, so it cannot safely be used to
 modify a value. So a unique immutable borrow is used: it borrows `x` immutably,
 but like a mutable borrow, it must be unique. In the above example, uncommenting
 the declaration of `y` will produce an error because it would violate the
-uniqueness of the closure's borrow of `x`; the declaration of z is valid because
-the closure's lifetime has expired at the end of the block, releasing the borrow.
+uniqueness of the closure's borrow of `x`; the declaration of `z` is valid because
+the closure's lifetime has expired, i.e. there are no `c` calls after `z`, 
+releasing the borrow.
 
 ## Call traits and coercions
 
