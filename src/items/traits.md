@@ -72,8 +72,8 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 * It must not have any associated constants.
 * It must not have any associated types with generics.
 * All associated functions must either be dispatchable from a trait object or be explicitly non-dispatchable:
-    * Dispatchable functions require:
-        * Not have any type parameters (although lifetime parameters are allowed),
+    * Dispatchable functions must:
+        * Not have any type parameters (although lifetime parameters are allowed).
         * Be a [method] that does not use `Self` except in the type of the receiver.
         * Have a receiver with one of the following types:
             * `&Self` (i.e. `&self`)
@@ -82,7 +82,10 @@ Object safe traits can be the base trait of a [trait object]. A trait is
             * [`Rc<Self>`]
             * [`Arc<Self>`]
             * [`Pin<P>`] where `P` is one of the types above
-        * Does not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
+        * Not have an opaque return type; that is,
+            * Not be an `async fn` (which has a hidden `Future` type).
+            * Not have a return position `impl Trait` type (`fn example(&self) -> impl Trait`).
+        * Not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
     * Explicitly non-dispatchable functions require:
         * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 
