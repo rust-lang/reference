@@ -74,7 +74,7 @@ Literals are tokens used in [literal expressions].
 
 #### Numbers
 
-| [Number literals](#number-literals)`*` | Example | Exponentiation |
+| [Number literals](#number-literals)[^nl] | Example | Exponentiation |
 |----------------------------------------|---------|----------------|
 | Decimal integer | `98_222` | `N/A` |
 | Hex integer | `0xff` | `N/A` |
@@ -82,7 +82,7 @@ Literals are tokens used in [literal expressions].
 | Binary integer | `0b1111_0000` | `N/A` |
 | Floating-point | `123.0E+77` | `Optional` |
 
-`*` All number literals allow `_` as a visual separator: `1_234.0E+18f64`
+[^nl]: All number literals allow `_` as a visual separator: `1_234.0E+18f64`
 
 #### Suffixes
 
