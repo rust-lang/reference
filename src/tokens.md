@@ -24,7 +24,7 @@ Literals are tokens used in [literal expressions].
 
 #### Characters and strings
 
-|                                              | Example         | `#` sets\* | Characters  | Escapes             |
+|                                              | Example         | `#`&nbsp;sets[^nsets] | Characters  | Escapes             |
 |----------------------------------------------|-----------------|------------|-------------|---------------------|
 | [Character](#character-literals)             | `'H'`           | 0          | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
 | [String](#string-literals)                   | `"hello"`       | 0          | All Unicode | [Quote](#quote-escapes) & [ASCII](#ascii-escapes) & [Unicode](#unicode-escapes) |
@@ -35,7 +35,7 @@ Literals are tokens used in [literal expressions].
 | [C string](#c-string-literals)               | `c"hello"`      | 0          | All Unicode | [Quote](#quote-escapes) & [Byte](#byte-escapes) & [Unicode](#unicode-escapes)   |
 | [Raw C string](#raw-c-string-literals)       | `cr#"hello"#`   | <256       | All Unicode | `N/A`                                                                           |
 
-\* The number of `#`s on each side of the same literal must be equivalent.
+[^nsets]: The number of `#`s on each side of the same literal must be equivalent.
 
 #### ASCII escapes
 
@@ -74,7 +74,7 @@ Literals are tokens used in [literal expressions].
 
 #### Numbers
 
-| [Number literals](#number-literals)`*` | Example | Exponentiation |
+| [Number literals](#number-literals)[^nl] | Example | Exponentiation |
 |----------------------------------------|---------|----------------|
 | Decimal integer | `98_222` | `N/A` |
 | Hex integer | `0xff` | `N/A` |
@@ -82,7 +82,7 @@ Literals are tokens used in [literal expressions].
 | Binary integer | `0b1111_0000` | `N/A` |
 | Floating-point | `123.0E+77` | `Optional` |
 
-`*` All number literals allow `_` as a visual separator: `1_234.0E+18f64`
+[^nl]: All number literals allow `_` as a visual separator: `1_234.0E+18f64`
 
 #### Suffixes
 
