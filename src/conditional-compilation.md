@@ -166,6 +166,21 @@ Example values:
 * `"musl"`
 * `"sgx"`
 
+### `target_abi`
+
+Key-value option set to further disambiguate the `target_env` with information
+about the target ABI. For historical reasons,
+this value is only defined as not the empty-string when actually needed for
+disambiguation. Thus, for example, on many GNU platforms, this value will be
+empty.
+
+Example values:
+
+* `""`
+* `"llvm"`
+* `"eabihf"`
+* `"abi64"`
+
 ### `target_endian`
 
 Key-value option set once with either a value of "little" or "big" depending
