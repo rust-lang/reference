@@ -224,7 +224,7 @@ production.  For example, it controls the behavior of the standard library's
 
 ### `overflow_checks`
 
-Enabled when program compiled with [overflow checks] enabled, e.g. in development builds.
+Enabled when compiling with [overflow checks] enabled, e.g. in development builds.
 
 [overflow checks]: expressions/operator-expr.md#overflow
 
