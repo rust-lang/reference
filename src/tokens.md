@@ -711,6 +711,7 @@ usages and meanings are defined in the linked pages.
 | `::`   | PathSep     | [Path separator][paths]
 | `->`   | RArrow      | [Function return type][functions], [Closure return type][closures], [Function pointer type]
 | `=>`   | FatArrow    | [Match arms][match], [Macros]
+| `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token
 | `#`    | Pound       | [Attributes]
 | `$`    | Dollar      | [Macros]
 | `?`    | Question    | [Question mark operator][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
