@@ -8,8 +8,6 @@
 > &nbsp;&nbsp; | [BYTE_LITERAL]\
 > &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
 > &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
-> &nbsp;&nbsp; | [C_STRING_LITERAL]\
-> &nbsp;&nbsp; | [RAW_C_STRING_LITERAL]\
 > &nbsp;&nbsp; | [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | `true` | `false`
@@ -47,12 +45,6 @@ A byte literal expression consists of a single [BYTE_LITERAL] token.
 ## Byte string literal expressions
 
 A string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
-
-> **Note**: This section is incomplete.
-
-## C string literal expressions
-
-A C string literal expression consists of a single [C_STRING_LITERAL] or [RAW_C_STRING_LITERAL] token.
 
 > **Note**: This section is incomplete.
 
@@ -190,7 +182,5 @@ The expression's type is the primitive [boolean type], and its value is:
 [BYTE_LITERAL]: ../tokens.md#byte-literals
 [BYTE_STRING_LITERAL]: ../tokens.md#byte-string-literals
 [RAW_BYTE_STRING_LITERAL]: ../tokens.md#raw-byte-string-literals
-[C_STRING_LITERAL]: ../tokens.md#c-string-literals
-[RAW_C_STRING_LITERAL]: ../tokens.md#raw-c-string-literals
 [INTEGER_LITERAL]: ../tokens.md#integer-literals
 [FLOAT_LITERAL]: ../tokens.md#floating-point-literals

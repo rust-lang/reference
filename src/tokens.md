@@ -32,8 +32,6 @@ Literals are tokens used in [literal expressions].
 | [Byte](#byte-literals)                       | `b'H'`          | 0          | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
 | [Byte string](#byte-string-literals)         | `b"hello"`      | 0          | All ASCII   | [Quote](#quote-escapes) & [Byte](#byte-escapes)                               |
 | [Raw byte string](#raw-byte-string-literals) | `br#"hello"#`   | <256       | All ASCII   | `N/A`                                                      |
-| [C string](#c-string-literals)               | `c"hello"`      | 0          | All Unicode | [Quote](#quote-escapes) & [Byte](#byte-escapes) & [Unicode](#unicode-escapes)   |
-| [Raw C string](#raw-c-string-literals)       | `cr#"hello"#`   | <256       | All Unicode | `N/A`                                                                           |
 
 \* The number of `#`s on each side of the same literal must be equivalent.
 
@@ -328,107 +326,6 @@ br##"foo #"# bar"##;                 // foo #"# bar
 
 b"\x52"; b"R"; br"R";                // R
 b"\\x52"; br"\x52";                  // \x52
-```
-
-### C string and raw C string literals
-
-#### C string literals
-
-> **<sup>Lexer</sup>**\
-> C_STRING_LITERAL :\
-> &nbsp;&nbsp; `c"` (\
-> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` _IsolatedCR_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | BYTE_ESCAPE\
-> &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
-> &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE\
-> &nbsp;&nbsp; )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
-
-A _C string literal_ is a sequence of Unicode characters and _escapes_,
-preceded by the characters `U+0063` (`c`) and `U+0022` (double-quote), and
-followed by the character `U+0022`. If the character `U+0022` is present within
-the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
-Alternatively, a C string literal can be a _raw C string literal_, defined
-below. The type of a C string literal is [`&core::ffi::CStr`][CStr].
-
-[CStr]: ../core/ffi/struct.CStr.html
-
-C strings are implicitly terminated by byte `0x00`, so the C string literal
-`c""` is equivalent to manually constructing a `&CStr` from the byte string
-literal `b"\x00"`. Other than the implicit terminator, byte `0x00` is not
-permitted within a C string.
-
-Some additional _escapes_ are available in non-raw C string literals. An escape
-starts with a `U+005C` (`\`) and continues with one of the following forms:
-
-* A _byte escape_ escape starts with `U+0078` (`x`) and is followed by exactly
-  two _hex digits_. It denotes the byte equal to the provided hex value.
-* A _24-bit code point escape_ starts with `U+0075` (`u`) and is followed
-  by up to six _hex digits_ surrounded by braces `U+007B` (`{`) and `U+007D`
-  (`}`). It denotes the Unicode code point equal to the provided hex value,
-  encoded as UTF-8.
-* A _whitespace escape_ is one of the characters `U+006E` (`n`), `U+0072`
-  (`r`), or `U+0074` (`t`), denoting the bytes values `0x0A` (ASCII LF),
-  `0x0D` (ASCII CR) or `0x09` (ASCII HT) respectively.
-* The _backslash escape_ is the character `U+005C` (`\`) which must be
-  escaped in order to denote its ASCII encoding `0x5C`.
-
-The escape sequences `\0`, `\x00`, and `\u{0000}` are permitted within the token
-but will be rejected as invalid, as C strings may not contain byte `0x00` except
-as the implicit terminator.
-
-A C string represents bytes with no defined encoding, but a C string literal
-may contain Unicode characters above `U+007F`. Such characters will be replaced
-with the bytes of that character's UTF-8 representation.
-
-The following C string literals are equivalent:
-
-```rust
-c"æ";        // LATIN SMALL LETTER AE (U+00E6)
-c"\u{00E6}";
-c"\xC3\xA6";
-```
-
-> **Edition Differences**: C string literals are accepted in the 2021 edition or
-> later. In earlier additions the token `c""` is lexed as `c ""`.
-
-#### Raw C string literals
-
-> **<sup>Lexer</sup>**\
-> RAW_C_STRING_LITERAL :\
-> &nbsp;&nbsp; `cr` RAW_C_STRING_CONTENT SUFFIX<sup>?</sup>
->
-> RAW_C_STRING_CONTENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`\
-> &nbsp;&nbsp; | `#` RAW_C_STRING_CONTENT `#`
-
-Raw C string literals do not process any escapes. They start with the
-character `U+0063` (`c`), followed by `U+0072` (`r`), followed by fewer than 256
-of the character `U+0023` (`#`), and a `U+0022` (double-quote) character. The
-_raw C string body_ can contain any sequence of Unicode characters and is
-terminated only by another `U+0022` (double-quote) character, followed by the
-same number of `U+0023` (`#`) characters that preceded the opening `U+0022`
-(double-quote) character.
-
-All characters contained in the raw C string body represent themselves in UTF-8
-encoding. The characters `U+0022` (double-quote) (except when followed by at
-least as many `U+0023` (`#`) characters as were used to start the raw C string
-literal) or `U+005C` (`\`) do not have any special meaning.
-
-> **Edition Differences**: Raw C string literals are accepted in the 2021
-> edition or later. In earlier additions the token `cr""` is lexed as `cr ""`,
-> and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
-
-#### Examples for C string and raw C string literals
-
-```rust
-c"foo"; cr"foo";                     // foo
-c"\"foo\""; cr#""foo""#;             // "foo"
-
-c"foo #\"# bar";
-cr##"foo #"# bar"##;                 // foo #"# bar
-
-c"\x52"; c"R"; cr"R";                // R
-c"\\x52"; cr"\x52";                  // \x52
 ```
 
 ### Number literals
@@ -731,9 +628,9 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 ## Reserved prefixes
 
 > **<sup>Lexer 2021+</sup>**\
-> RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b` or `c` or `r` or `br` or `cr`_</sub> | `_` ) `"`\
+> RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b` or `r` or `br`_</sub> | `_` ) `"`\
 > RESERVED_TOKEN_SINGLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b`_</sub> | `_` ) `'`\
-> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br` or `cr`_</sub> | `_` ) `#`
+> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br`_</sub> | `_` ) `#`
 
 Some lexical forms known as _reserved prefixes_ are reserved for future use.
 
@@ -741,7 +638,7 @@ Source input which would otherwise be lexically interpreted as a non-raw identif
 
 Note that raw identifiers, raw string literals, and raw byte string literals may contain a `#` character but are not interpreted as containing a reserved prefix.
 
-Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals, byte literals, byte string literals, raw byte string literals, C string literals, and raw C string literals are not interpreted as reserved prefixes.
+Similarly the `r`, `b`, and `br` prefixes used in raw string literals, byte literals, byte string literals, and raw byte string literals are not interpreted as reserved prefixes.
 
 > **Edition Differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
 >
