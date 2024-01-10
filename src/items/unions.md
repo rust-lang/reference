@@ -52,6 +52,27 @@ struct fields:
 let f = unsafe { u.f1 };
 ```
 
+## Uninitialized bytes in initialized union
+
+Initialized union may contain uninitialized bytes,
+if its initialized field does not cover all bytes of union:
+
+```rust
+#[repr(C)]
+union Foo {
+    int32: i32,
+    int64: i64,
+}
+
+unsafe {
+    let foo = Foo { int32: 1 };
+    // Low 4 bytes are initialized,
+    // but high 4 bytes are not,
+    // so each execution may print different result.
+    println!("{}", foo.int64);
+}
+```
+
 ## Reading and writing union fields
 
 Unions have no notion of an "active field". Instead, every union access just
