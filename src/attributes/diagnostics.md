@@ -301,6 +301,60 @@ When used on a function in a trait implementation, the attribute does nothing.
 > let _ = five();
 > ```
 
+## The `diagnostic` tool attribute namespace
+
+The `#[diagnostic]` attribute namespace is meant to provide a home for attribute that allow users to influence error messages emitted by the compiler. The compiler is not guaranteed to use any of this hints, however it should accept any (non-)existing attribute in this namespace and potentially emit lint-warnings for unused attributes and options. This is meant to allow discarding certain attributes/options in the future to allow fundamental changes to the compiler without the need to keep then non-meaningful options working.
+
+### The `diagnostic::on_unimplemented` attribute
+
+The `#[diagnostic::on_unimplemented]` attribute is allowed to appear on trait definitions. This allows crate authors to hint the compiler to emit a specific worded error message if a certain trait is not implemented. The hinted message is supposed to replace the otherwise emitted error message. For the `#[diagnostic::on_unimplemented]` attribute the following options are implemented:
+
+* `message` which provides the text for the top level error message
+* `label` which provides the text for the label shown inline in the broken code in the error message
+* `note` which provides additional notes.
+
+The `note` option can appear several times, which results in several note messages being emitted. If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Any other occurrence generates an lint warning. For any other non-existing option a lint-warning is generated.
+
+All three options accept a text as argument. This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax. For any non-existing argument a lint warning is generated.
+
+This allows to have a trait definition like:
+
+```rust
+#[diagnostic::on_unimplemented(
+    message = "My Message for `ImportantTrait<{A}>` implemented for `{Self}`",
+    label = "My Label",
+    note = "Note 1",
+    note = "Note 2"
+)]
+trait ImportantTrait<A> {}
+```
+
+which then generates the for the following code
+
+```rust
+fn use_my_trait(_: impl ImportantTrait<i32>) {}
+
+fn main() {
+    use_my_trait(String::new());
+}
+```
+
+this error message:
+
+```
+error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
+  --> src/main.rs:14:18
+   |
+14 |     use_my_trait(String::new());
+   |     ------------ ^^^^^^^^^^^^^ My Label
+   |     |
+   |     required by a bound introduced by this call
+   |
+   = help: the trait `ImportantTrait<i32>` is not implemented for `String`
+   = note: Note 1
+   = note: Note 2
+```
+
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
