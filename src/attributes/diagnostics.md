@@ -303,19 +303,29 @@ When used on a function in a trait implementation, the attribute does nothing.
 
 ## The `diagnostic` tool attribute namespace
 
-The `#[diagnostic]` attribute namespace is meant to provide a home for attribute that allow users to influence error messages emitted by the compiler. The compiler is not guaranteed to use any of this hints, however it should accept any (non-)existing attribute in this namespace and potentially emit lint-warnings for unused attributes and options. This is meant to allow discarding certain attributes/options in the future to allow fundamental changes to the compiler without the need to keep then non-meaningful options working.
+The `#[diagnostic]` attribute namespace is meant to provide a home for attributes to influence compile-time error messages. 
+The hints provides by these attributes are not guaranteed to be used.
+Unknown attributes in this namespace are accepted, though tey may emit warings for unused attributes. 
+Additionally, invalid input to known attributes will typically be a warning (see the attribute definitions for details). 
+This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
 ### The `diagnostic::on_unimplemented` attribute
 
-The `#[diagnostic::on_unimplemented]` attribute is allowed to appear on trait definitions. This allows crate authors to hint the compiler to emit a specific worded error message if a certain trait is not implemented. The hinted message is supposed to replace the otherwise emitted error message. For the `#[diagnostic::on_unimplemented]` attribute the following options are implemented:
+The `#[diagnostic::on_unimplemented]` attribute is designed to appear on trait definitions.
+This attribute hints to hint the compiler to supplement a specific worded error message that would normally be generated in scenarios where the trait is required but not implemented on a type
+The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility. The following keys have the given meaning:
 
 * `message` which provides the text for the top level error message
 * `label` which provides the text for the label shown inline in the broken code in the error message
 * `note` which provides additional notes.
 
-The `note` option can appear several times, which results in several note messages being emitted. If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Any other occurrence generates an lint warning. For any other non-existing option a lint-warning is generated.
+The `note` option can appear several times, which results in several note messages being emitted. 
+If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Any other occurrence generates an lint warning. 
+For any other non-existing option a lint-warning is generated.
 
-All three options accept a text as argument. This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax. Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
+All three options accept a text as argument. 
+This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax, where `{Self}` is resolved to the name of the type implementing the trait and `{NameOfGenericArgument}` is resolved to the relevant type name that replaces the `{NameOfGenericArgument}` argument if the error message is emitted.
+Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 
 This allows to have a trait definition like:
 
@@ -327,11 +337,7 @@ This allows to have a trait definition like:
     note = "Note 2"
 )]
 trait ImportantTrait<A> {}
-```
 
-which then generates the for the following code
-
-```rust
 fn use_my_trait(_: impl ImportantTrait<i32>) {}
 
 fn main() {
@@ -339,7 +345,7 @@ fn main() {
 }
 ```
 
-this error message:
+which might generate this error message:
 
 ```
 error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
