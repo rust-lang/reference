@@ -315,7 +315,7 @@ The `#[diagnostic::on_unimplemented]` attribute is allowed to appear on trait de
 
 The `note` option can appear several times, which results in several note messages being emitted. If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Any other occurrence generates an lint warning. For any other non-existing option a lint-warning is generated.
 
-All three options accept a text as argument. This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax. For any non-existing argument a lint warning is generated.
+All three options accept a text as argument. This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax. Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 
 This allows to have a trait definition like:
 

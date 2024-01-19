@@ -196,7 +196,7 @@ struct S {
 pub fn f() {}
 ```
 
-> Note: `rustc` currently recognizes the tools "clippy", "rustfmt" and "diagnostics".
+> Note: `rustc` currently recognizes the tools "clippy", "rustfmt" and "diagnostic".
 
 ## Built-in attributes index
 
@@ -224,7 +224,7 @@ The following is an index of all built-in attributes.
   - [`allow`], [`warn`], [`deny`], [`forbid`] — Alters the default lint level.
   - [`deprecated`] — Generates deprecation notices.
   - [`must_use`] — Generates a lint for unused values.
-  - [`diagnostic::on_unimplemented`] - Hints the compiler to emit a certain error
+  - [`diagnostic::on_unimplemented`] — Hints the compiler to emit a certain error
     message if a trait is not implemented.
 - ABI, linking, symbols, and FFI
   - [`link`] — Specifies a native library to link with an `extern` block.
