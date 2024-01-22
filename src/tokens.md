@@ -462,7 +462,7 @@ An _integer literal_ has one of four forms:
 
 Like any literal, an integer literal may be followed (immediately, without any spaces) by a suffix as described above.
 The suffix may not begin with `e` or `E`, as that would be interpreted as the exponent of a floating-point literal.
-See [literal expressions] for the effect of these suffixes.
+See [Integer literal expressions] for the effect of these suffixes.
 
 Examples of integer literals which are accepted as literal expressions:
 
@@ -559,7 +559,7 @@ A _floating-point literal_ has one of two forms:
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
 The suffix may not begin with `e` or `E` if the literal does not include an exponent.
-See [literal expressions] for the effect of these suffixes.
+See [Floating-point literal expressions] for the effect of these suffixes.
 
 Examples of floating-point literals which are accepted as literal expressions:
 
@@ -767,12 +767,14 @@ Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals
 [extern crates]: items/extern-crates.md
 [extern]: items/external-blocks.md
 [field]: expressions/field-expr.md
+[Floating-point literal expressions]: expressions/literal-expr.md#floating-point-literal-expressions
 [floating-point types]: types/numeric.md#floating-point-types
 [function pointer type]: types/function-pointer.md
 [functions]: items/functions.md
 [generics]: items/generics.md
 [identifier]: identifiers.md
 [if let]: expressions/if-expr.md#if-let-expressions
+[Integer literal expressions]: expressions/literal-expr.md#integer-literal-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
 [literal expressions]: expressions/literal-expr.md
