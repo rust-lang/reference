@@ -87,6 +87,25 @@ For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U
 
 The escaped value is an empty sequence of characters.
 
+> **Note**: The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines.
+> Thus `a`, `b` and `c` are equal:
+> ```rust
+> let a = "foobar";
+> let b = "foo\
+>          bar";
+> let c = "foo\
+>
+>      bar";
+>
+> assert_eq!(a, b);
+> assert_eq!(b, c);
+> ```
+>
+> Skipping additional newlines (as in example c) is potentially confusing and unexpected.
+> This behavior may be adjusted in the future.
+> Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
+> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
+
 ## Character literal expressions
 
 A character literal expression consists of a single [CHAR_LITERAL] token.

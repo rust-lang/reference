@@ -156,30 +156,13 @@ A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
 which must be _escaped_ by a preceding `U+005C` character (`\`).
 
-Line-breaks are allowed in string literals. A line-break is either a newline
-(`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`). Both
-byte sequences are normally translated to `U+000A`, but as a special exception,
-when an unescaped `U+005C` character (`\`) occurs immediately before a line
-break, then the line break character(s), and all immediately following
-` ` (`U+0020`), `\t` (`U+0009`), `\n` (`U+000A`) and `\r` (`U+0000D`) characters
-are ignored. Thus `a`, `b` and `c` are equal:
+Line-breaks are allowed in string literals.
+A line-break is either a newline (`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`).
+Both byte sequences are translated to `U+000A`.
 
-```rust
-let a = "foobar";
-let b = "foo\
-         bar";
-let c = "foo\
+When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
+See [String continuation escapes] for details.
 
-     bar";
-
-assert_eq!(a, b);
-assert_eq!(b, c);
-```
-
-> Note: Rust skipping additional newlines (like in example `c`) is potentially confusing and
-> unexpected. This behavior may be adjusted in the future. Until a decision is made, it is
-> recommended to avoid relying on this, i.e. skipping multiple newlines with line continuations.
-> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
 #### Character escapes
 
@@ -808,6 +791,7 @@ Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals
 [raw pointers]: types/pointer.md#raw-pointers-const-and-mut
 [references]: types/pointer.md
 [sized]: trait-bounds.md#sized
+[String continuation escapes]: expressions/literal-expr.md#string-continuation-escapes
 [struct expressions]: expressions/struct-expr.md
 [trait bounds]: trait-bounds.md
 [tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
