@@ -569,7 +569,7 @@ The following directives are guaranteed to be supported by the assembler:
 - `.float`
 - `.global`
 - `.globl`
-- `.inst`
+- `.insn`
 - `.lcomm`
 - `.long`
 - `.octa`
