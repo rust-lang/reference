@@ -71,7 +71,8 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 * `Sized` must not be a [supertrait][supertraits]. In other words, it must not require `Self: Sized`.
 * It must not have any associated constants.
 * It must not have any associated types with generics.
-* All associated functions must either be dispatchable from a trait object or be explicitly non-dispatchable:
+* All associated functions must either be dispatchable from a trait object,
+  or be explicitly or implicitly non-dispatchable
     * Dispatchable functions must:
         * Not have any type parameters (although lifetime parameters are allowed).
         * Be a [method] that does not use `Self` except in the type of the receiver.
@@ -81,13 +82,26 @@ Object safe traits can be the base trait of a [trait object]. A trait is
             * [`Box<Self>`]
             * [`Rc<Self>`]
             * [`Arc<Self>`]
-            * [`Pin<P>`] where `P` is one of the types above
+            * [`Pin<P>`] where `P` is one of the types in this list (this also applies recursively)
         * Not have an opaque return type; that is,
             * Not be an `async fn` (which has a hidden `Future` type).
             * Not have a return position `impl Trait` type (`fn example(&self) -> impl Trait`).
-        * Not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
-    * Explicitly non-dispatchable functions require:
-        * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
+        * Not have a `where Self: Sized` bound.
+    * Explicitly non-dispatchable functions must:
+        * Have a `where Self: Sized` bound.
+    * Implicitly non-dispatchable functions must:
+        * Have the receiver type `Self` (i.e. `self`)
+        * Fulfill all the conditions of dispatchable functions, except for the receiver type.
+
+Methods with `Self` receiver type are implicitly non-dispatchable
+(“non-dispatchable” means that they cannot be called on trait object types), but
+[might become dispatchable in future versions of Rust](https://github.com/rust-lang/rust/issues/48055).
+Currently, unsized function arguments are not supported in Rust, so such methods cannot be
+implemented for unsized types, which means providing a function body as default implementation
+for the method is not possible, nor are (manual) implementations of the trait for unsized types
+possible. Implicitly non-dispatchable methods serve the future-compatibility of your trait,
+if unsized function arguments become supported in future versions of Rust,
+as removing an explicit `Self: Sized` bound later would constitute a semver-breaking API change.
 
 ```rust
 # use std::rc::Rc;
@@ -120,16 +134,23 @@ trait NonDispatchable {
     fn param(&self, other: Self) where Self: Sized {}
     // Generics are not compatible with vtables.
     fn typed<T>(&self, x: T) where Self: Sized {}
+    // `self: Self` functions cannot be dispatched,
+    // but this mighty change in the future
+    fn by_value(self); // default implementation is not supported
 }
 
 struct S;
 impl NonDispatchable for S {
     fn returns(&self) -> Self where Self: Sized { S }
+    fn by_value(self) {}
 }
 let obj: Box<dyn NonDispatchable> = Box::new(S);
-obj.returns(); // ERROR: cannot call with Self return
-obj.param(S);  // ERROR: cannot call with Self parameter
-obj.typed(1);  // ERROR: cannot call with generic type
+// `dyn NonDispatchable` is a dynamically sized type
+// and does not implement the `Sized` trait
+obj.returns(); // ERROR: cannot call the function due to its `Self: Sized` bound
+obj.param(S);  // ERROR: cannot call the function due to its `Self: Sized` bound
+obj.typed(1);  // ERROR: cannot call the function due to its `Self: Sized` bound
+obj.by_value(); // ERROR: cannot call functions with dynamically sized arguments
 ```
 
 ```rust,compile_fail
@@ -162,8 +183,8 @@ let obj: Box<dyn TraitWithSize> = Box::new(S); // ERROR
 
 ```rust,compile_fail
 // Not object safe if `Self` is a type argument.
-trait Super<A> {}
-trait WithSelf: Super<Self> where Self: Sized {}
+trait Super<A: ?Sized> {}
+trait WithSelf: Super<Self> {}
 
 struct S;
 impl<A> Super<A> for S {}
