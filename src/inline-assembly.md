@@ -412,7 +412,7 @@ The list of clobbered registers for each ABI is updated in rustc as architecture
 
 Flags are used to further influence the behavior of the inline assembly block.
 Currently the following options are defined:
-- `pure`: The `asm!` block has no side effects, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set).
+- `pure`: The `asm!` block has no side effects, must eventually return, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set).
   This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
   The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 - `nomem`: The `asm!` blocks does not read or write to any memory.
