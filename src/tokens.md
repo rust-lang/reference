@@ -156,30 +156,13 @@ A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
 which must be _escaped_ by a preceding `U+005C` character (`\`).
 
-Line-breaks are allowed in string literals. A line-break is either a newline
-(`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`). Both
-byte sequences are normally translated to `U+000A`, but as a special exception,
-when an unescaped `U+005C` character (`\`) occurs immediately before a line
-break, then the line break character(s), and all immediately following
-` ` (`U+0020`), `\t` (`U+0009`), `\n` (`U+000A`) and `\r` (`U+0000D`) characters
-are ignored. Thus `a`, `b` and `c` are equal:
+Line-breaks are allowed in string literals.
+A line-break is either a newline (`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`).
+Both byte sequences are translated to `U+000A`.
 
-```rust
-let a = "foobar";
-let b = "foo\
-         bar";
-let c = "foo\
+When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
+See [String continuation escapes] for details.
 
-     bar";
-
-assert_eq!(a, b);
-assert_eq!(b, c);
-```
-
-> Note: Rust skipping additional newlines (like in example `c`) is potentially confusing and
-> unexpected. This behavior may be adjusted in the future. Until a decision is made, it is
-> recommended to avoid relying on this, i.e. skipping multiple newlines with line continuations.
-> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
 #### Character escapes
 
@@ -274,7 +257,7 @@ preceded by the characters `U+0062` (`b`) and `U+0022` (double-quote), and
 followed by the character `U+0022`. If the character `U+0022` is present within
 the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
 Alternatively, a byte string literal can be a _raw byte string literal_, defined
-below. The type of a byte string literal of length `n` is `&'static [u8; n]`.
+below.
 
 Some additional _escapes_ are available in either byte or non-raw byte string
 literals. An escape starts with a `U+005C` (`\`) and continues with one of the
@@ -479,7 +462,7 @@ An _integer literal_ has one of four forms:
 
 Like any literal, an integer literal may be followed (immediately, without any spaces) by a suffix as described above.
 The suffix may not begin with `e` or `E`, as that would be interpreted as the exponent of a floating-point literal.
-See [literal expressions] for the effect of these suffixes.
+See [Integer literal expressions] for the effect of these suffixes.
 
 Examples of integer literals which are accepted as literal expressions:
 
@@ -576,7 +559,7 @@ A _floating-point literal_ has one of two forms:
 Like integer literals, a floating-point literal may be followed by a
 suffix, so long as the pre-suffix part does not end with `U+002E` (`.`).
 The suffix may not begin with `e` or `E` if the literal does not include an exponent.
-See [literal expressions] for the effect of these suffixes.
+See [Floating-point literal expressions] for the effect of these suffixes.
 
 Examples of floating-point literals which are accepted as literal expressions:
 
@@ -784,12 +767,14 @@ Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals
 [extern crates]: items/extern-crates.md
 [extern]: items/external-blocks.md
 [field]: expressions/field-expr.md
+[Floating-point literal expressions]: expressions/literal-expr.md#floating-point-literal-expressions
 [floating-point types]: types/numeric.md#floating-point-types
 [function pointer type]: types/function-pointer.md
 [functions]: items/functions.md
 [generics]: items/generics.md
 [identifier]: identifiers.md
 [if let]: expressions/if-expr.md#if-let-expressions
+[Integer literal expressions]: expressions/literal-expr.md#integer-literal-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
 [literal expressions]: expressions/literal-expr.md
@@ -808,6 +793,7 @@ Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals
 [raw pointers]: types/pointer.md#raw-pointers-const-and-mut
 [references]: types/pointer.md
 [sized]: trait-bounds.md#sized
+[String continuation escapes]: expressions/literal-expr.md#string-continuation-escapes
 [struct expressions]: expressions/struct-expr.md
 [trait bounds]: trait-bounds.md
 [tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions

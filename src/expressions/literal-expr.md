@@ -26,29 +26,227 @@ Each of the lexical [literal][literal tokens] forms described earlier can make u
 5;         // integer type
 ```
 
+In the descriptions below, the _string representation_ of a token is the sequence of characters from the input which matched the token's production in a *Lexer* grammar snippet.
+
+> **Note**: this string representation never includes a character `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
+
+## Escapes
+
+The descriptions of textual literal expressions below make use of several forms of _escape_.
+
+Each form of escape is characterised by:
+ * an _escape sequence_: a sequence of characters, which always begins with `U+005C` (`\`)
+ * an _escaped value_: either a single character or an empty sequence of characters
+
+In the definitions of escapes below:
+ * An _octal digit_ is any of the characters in the range \[`0`-`7`].
+ * A _hexadecimal digit_ is any of the characters in the ranges \[`0`-`9`], \[`a`-`f`], or \[`A`-`F`].
+
+### Simple escapes
+
+Each sequence of characters occurring in the first column of the following table is an escape sequence.
+
+In each case, the escaped value is the character given in the corresponding entry in the second column.
+
+| Escape sequence | Escaped value            |
+|-----------------|--------------------------|
+| `\0`            | U+0000 (NUL)             |
+| `\t`            | U+0009 (HT)              |
+| `\n`            | U+000A (LF)              |
+| `\r`            | U+000D (CR)              |
+| `\"`            | U+0022 (QUOTATION MARK)  |
+| `\'`            | U+0027 (APOSTROPHE)      |
+| `\\`            | U+005C (REVERSE SOLIDUS) |
+
+### 8-bit escapes
+
+The escape sequence consists of `\x` followed by two hexadecimal digits.
+
+The escaped value is the character whose [Unicode scalar value] is the result of interpreting the final two characters in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
+
+> **Note**: the escaped value therefore has a [Unicode scalar value] in the range of [`u8`][numeric types].
+
+### 7-bit escapes
+
+The escape sequence consists of `\x` followed by an octal digit then a hexadecimal digit.
+
+The escaped value is the character whose [Unicode scalar value] is the result of interpreting the final two characters in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
+
+### Unicode escapes
+
+The escape sequence consists of `\u{`, followed by a sequence of characters each of which is a hexadecimal digit or `_`, followed by `}`.
+
+The escaped value is the character whose [Unicode scalar value] is the result of interpreting the hexadecimal digits contained in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
+
+> **Note**: the permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
+
+### String continuation escapes
+
+The escape sequence consists of `\` followed immediately by `U+000A` (LF), and all following whitespace characters before the next non-whitespace character.
+For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U+000D` (CR), and `U+0020` (SPACE).
+
+The escaped value is an empty sequence of characters.
+
+> **Note**: The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines.
+> Thus `a`, `b` and `c` are equal:
+> ```rust
+> let a = "foobar";
+> let b = "foo\
+>          bar";
+> let c = "foo\
+>
+>      bar";
+>
+> assert_eq!(a, b);
+> assert_eq!(b, c);
+> ```
+>
+> Skipping additional newlines (as in example c) is potentially confusing and unexpected.
+> This behavior may be adjusted in the future.
+> Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
+> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
+
 ## Character literal expressions
 
 A character literal expression consists of a single [CHAR_LITERAL] token.
 
-> **Note**: This section is incomplete.
+The expression's type is the primitive [`char`][textual types] type.
+
+The token must not have a suffix.
+
+The token's _literal content_ is the sequence of characters following the first `U+0027` (`'`) and preceding the last `U+0027` (`'`) in the string representation of the token.
+
+The literal expression's _represented character_ is derived from the literal content as follows:
+
+* If the literal content is one of the following forms of escape sequence, the represented character is the escape sequence's escaped value:
+    * [Simple escapes]
+    * [7-bit escapes]
+    * [Unicode escapes]
+
+* Otherwise the represented character is the single character that makes up the literal content.
+
+The expression's value is the [`char`][textual types] corresponding to the represented character's [Unicode scalar value].
+
+> **Note**: the permitted forms of a [CHAR_LITERAL] token ensure that these rules always produce a single character.
+
+Examples of character literal expressions:
+
+```rust
+'R';                               // R
+'\'';                              // '
+'\x52';                            // R
+'\u{00E6}';                        // LATIN SMALL LETTER AE (U+00E6)
+```
 
 ## String literal expressions
 
 A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
 
-> **Note**: This section is incomplete.
+The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type.
+That is, the type is `&'static str`.
+
+The token must not have a suffix.
+
+The token's _literal content_ is the sequence of characters following the first `U+0022` (`"`) and preceding the last `U+0022` (`"`) in the string representation of the token.
+
+The literal expression's _represented string_ is a sequence of characters derived from the literal content as follows:
+
+* If the token is a [STRING_LITERAL], each escape sequence of any of the following forms occurring in the literal content is replaced by the escape sequence's escaped value.
+    * [Simple escapes]
+    * [7-bit escapes]
+    * [Unicode escapes]
+    * [String continuation escapes]
+
+  These replacements take place in left-to-right order.
+  For example, the token `"\\x41"` is converted to the characters `\` `x` `4` `1`.
+
+* If the token is a [RAW_STRING_LITERAL], the represented string is identical to the literal content.
+
+The expression's value is a reference to a statically allocated [`str`][textual types] containing the UTF-8 encoding of the represented string.
+
+Examples of string literal expressions:
+
+```rust
+"foo"; r"foo";                     // foo
+"\"foo\""; r#""foo""#;             // "foo"
+
+"foo #\"# bar";
+r##"foo #"# bar"##;                // foo #"# bar
+
+"\x52"; "R"; r"R";                 // R
+"\\x52"; r"\x52";                  // \x52
+```
 
 ## Byte literal expressions
 
 A byte literal expression consists of a single [BYTE_LITERAL] token.
 
-> **Note**: This section is incomplete.
+The expression's type is the primitive [`u8`][numeric types] type.
+
+The token must not have a suffix.
+
+The token's _literal content_ is the sequence of characters following the first `U+0027` (`'`) and preceding the last `U+0027` (`'`) in the string representation of the token.
+
+The literal expression's _represented character_ is derived from the literal content as follows:
+
+* If the literal content is one of the following forms of escape sequence, the represented character is the escape sequence's escaped value:
+    * [Simple escapes]
+    * [8-bit escapes]
+
+* Otherwise the represented character is the single character that makes up the literal content.
+
+The expression's value is the represented character's [Unicode scalar value].
+
+> **Note**: the permitted forms of a [BYTE_LITERAL] token ensure that these rules always produce a single character, whose Unicode scalar value is in the range of [`u8`][numeric types].
+
+Examples of byte literal expressions:
+
+```rust
+b'R';                              // 82
+b'\'';                             // 39
+b'\x52';                           // 82
+b'\xA0';                           // 160
+```
 
 ## Byte string literal expressions
 
-A string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
+A byte string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
 
-> **Note**: This section is incomplete.
+The expression's type is a shared reference (with `static` lifetime) to an array whose element type is [`u8`][numeric types].
+That is, the type is `&'static [u8; N]`, where `N` is the number of bytes in the represented string described below.
+
+The token must not have a suffix.
+
+The token's _literal content_ is the sequence of characters following the first `U+0022` (`"`) and preceding the last `U+0022` (`"`) in the string representation of the token.
+
+The literal expression's _represented string_ is a sequence of characters derived from the literal content as follows:
+
+* If the token is a [BYTE_STRING_LITERAL], each escape sequence of any of the following forms occurring in the literal content is replaced by the escape sequence's escaped value.
+    * [Simple escapes]
+    * [8-bit escapes]
+    * [String continuation escapes]
+
+  These replacements take place in left-to-right order.
+  For example, the token `b"\\x41"` is converted to the characters `\` `x` `4` `1`.
+
+* If the token is a [RAW_BYTE_STRING_LITERAL], the represented string is identical to the literal content.
+
+The expression's value is a reference to a statically allocated array containing the [Unicode scalar values] of the characters in the represented string, in the same order.
+
+> **Note**: the permitted forms of [BYTE_STRING_LITERAL] and [RAW_BYTE_STRING_LITERAL] tokens ensure that these rules always produce array element values in the range of [`u8`][numeric types].
+
+Examples of byte string literal expressions:
+
+```rust
+b"foo"; br"foo";                     // foo
+b"\"foo\""; br#""foo""#;             // "foo"
+
+b"foo #\"# bar";
+br##"foo #"# bar"##;                 // foo #"# bar
+
+b"\x52"; b"R"; br"R";                // R
+b"\\x52"; br"\x52";                  // \x52
+```
 
 ## C string literal expressions
 
@@ -167,6 +365,11 @@ The expression's type is the primitive [boolean type], and its value is:
  * false if the keyword is `false`
 
 
+[Simple escapes]: #simple-escapes
+[8-bit escapes]: #8-bit-escapes
+[7-bit escapes]: #7-bit-escapes
+[Unicode escapes]: #unicode-escapes
+[String continuation escapes]: #string-continuation-escapes
 [boolean type]: ../types/boolean.md
 [constant expression]: ../const_eval.md#constant-expressions
 [floating-point types]: ../types/numeric.md#floating-point-types
@@ -177,12 +380,16 @@ The expression's type is the primitive [boolean type], and its value is:
 [suffix]: ../tokens.md#suffixes
 [negation operator]: operator-expr.md#negation-operators
 [overflow]: operator-expr.md#overflow
+[textual types]: ../types/textual.md
+[Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
+[Unicode scalar values]: http://www.unicode.org/glossary/#unicode_scalar_value
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
 [`f32::INFINITY`]: ../../core/primitive.f32.md#associatedconstant.INFINITY
 [`f32::NAN`]: ../../core/primitive.f32.md#associatedconstant.NAN
 [`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
 [`f64::INFINITY`]: ../../core/primitive.f64.md#associatedconstant.INFINITY
 [`f64::NAN`]: ../../core/primitive.f64.md#associatedconstant.NAN
+[`u8::from_str_radix`]: ../../core/primitive.u8.md#method.from_str_radix
 [`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
