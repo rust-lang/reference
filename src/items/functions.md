@@ -63,7 +63,10 @@ Function parameters are irrefutable [patterns], so any pattern that is valid in
 an else-less `let` binding is also valid as a parameter:
 
 ```rust
-fn first((value, _): (i32, i32)) -> i32 { value }
+fn vector_len_squared((x, y): (i32, i32)) -> i32 {
+    let sum = x + y;
+    sum * sum
+}
 ```
 
 If the first parameter is a _SelfParam_, this indicates that the function is a
@@ -84,13 +87,14 @@ the body of the function will short-cut that implicit return, if reached.
 
 For example, the function above behaves as if it was written as:
 
-<!-- ignore: example expansion -->
-```rust,ignore
-// argument_0 is the actual first argument passed from the caller
-let (value, _) = argument_0;
-return {
-    value
-};
+```rust
+fn vector_len_squared(argument: (i32, i32)) -> i32 {
+    let (x, y) = argument;
+    return {
+        let sum = x + y;
+        sum * sum
+    };
+}
 ```
 
 Functions without a body block are terminated with a semicolon. This form
