@@ -2,13 +2,11 @@
 
 > **<sup>Syntax</sup>**\
 > _Crate_ :\
-> &nbsp;&nbsp; UTF8BOM<sup>?</sup>\
 > &nbsp;&nbsp; SHEBANG<sup>?</sup>\
 > &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Item_]<sup>\*</sup>
 
 > **<sup>Lexer</sup>**\
-> UTF8BOM : `\uFEFF`\
 > SHEBANG : `#!` \~`\n`<sup>\+</sup>[†](#shebang)
 
 
@@ -65,19 +63,13 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-## Byte order mark
-
-The optional [_UTF8 byte order mark_] (UTF8BOM production) indicates that the
-file is encoded in UTF8. It can only occur at the beginning of the file and
-is ignored by the compiler.
-
 ## Shebang
 
 A source file can have a [_shebang_] (SHEBANG production), which indicates
 to the operating system what program to use to execute this file. It serves
 essentially to treat the source file as an executable script. The shebang
-can only occur at the beginning of the file (but after the optional
-_UTF8BOM_). It is ignored by the compiler. For example:
+can only occur at the beginning of the file.
+It is ignored by the compiler. For example:
 
 <!-- ignore: tests don't like shebang -->
 ```rust,ignore
@@ -162,7 +154,6 @@ or `_` (U+005F) characters.
 [_Item_]: items.md
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
-[_utf8 byte order mark_]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [`ExitCode`]: ../std/process/struct.ExitCode.html
 [`Infallible`]: ../std/convert/enum.Infallible.html
 [`Termination`]: ../std/process/trait.Termination.html
