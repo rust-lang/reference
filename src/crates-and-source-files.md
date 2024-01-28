@@ -2,13 +2,8 @@
 
 > **<sup>Syntax</sup>**\
 > _Crate_ :\
-> &nbsp;&nbsp; SHEBANG<sup>?</sup>\
 > &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Item_]<sup>\*</sup>
-
-> **<sup>Lexer</sup>**\
-> SHEBANG : `#!` \~`\n`<sup>\+</sup>[†](#shebang)
-
 
 > Note: Although Rust, like any other language, can be implemented by an
 > interpreter as well as a compiler, the only existing implementation is a
@@ -51,6 +46,8 @@ that apply to the containing module, most of which influence the behavior of
 the compiler. The anonymous crate module can have additional attributes that
 apply to the crate as a whole.
 
+> **Note**: The file's contents may be preceded by a [shebang].
+
 ```rust
 // Specify the crate name.
 #![crate_name = "projx"]
@@ -62,28 +59,6 @@ apply to the crate as a whole.
 // This can be done in any module, not just the anonymous crate module.
 #![warn(non_camel_case_types)]
 ```
-
-## Shebang
-
-A source file can have a [_shebang_] (SHEBANG production), which indicates
-to the operating system what program to use to execute this file. It serves
-essentially to treat the source file as an executable script. The shebang
-can only occur at the beginning of the file.
-It is ignored by the compiler. For example:
-
-<!-- ignore: tests don't like shebang -->
-```rust,ignore
-#!/usr/bin/env rustx
-
-fn main() {
-    println!("Hello!");
-}
-```
-
-A restriction is imposed on the shebang syntax to avoid confusion with an
-[attribute]. The `#!` characters must not be followed by a `[` token, ignoring
-intervening [comments] or [whitespace]. If this restriction fails, then it is
-not treated as a shebang, but instead as the start of an attribute.
 
 ## Preludes and `no_std`
 
@@ -153,19 +128,17 @@ or `_` (U+005F) characters.
 [_InnerAttribute_]: attributes.md
 [_Item_]: items.md
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
-[_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [`ExitCode`]: ../std/process/struct.ExitCode.html
 [`Infallible`]: ../std/convert/enum.Infallible.html
 [`Termination`]: ../std/process/trait.Termination.html
 [attribute]: attributes.md
 [attributes]: attributes.md
-[comments]: comments.md
 [function]: items/functions.md
 [module]: items/modules.md
 [module path]: paths.md
+[shebang]: input-format.md#shebang-removal
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses
-[whitespace]: whitespace.md
 
 <script>
 (function() {
