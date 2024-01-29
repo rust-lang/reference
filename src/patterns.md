@@ -688,7 +688,7 @@ A struct pattern is refutable if the _PathInExpression_ resolves to a constructo
 Tuple struct patterns match tuple struct and enum values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a tuple struct or enum value.
 
-A tuple struct pattern is refutable when one of its subpatterns is refutable.
+A tuple struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple patterns
 
