@@ -597,8 +597,8 @@ Reference patterns are always irrefutable.
 [_OuterAttribute_]: attributes.md
 [TUPLE_INDEX]: tokens.md#tuple-index
 
-Struct patterns match struct values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a struct.
+Struct patterns match struct and enum values that match all criteria defined by its subpatterns.
+They are also used to [destructure](#destructuring) a struct or enum value.
 
 On a struct pattern, the fields are referenced by name, index (in the case of tuple structs) or ignored by use of `..`:
 
@@ -627,6 +627,18 @@ match t {
     PointTuple {1: 10, 0: 20} => (),   // order doesn't matter
     PointTuple {0: 10, ..} => (),
     PointTuple {..} => (),
+}
+
+# enum Message {
+#     Quit,
+#     Move { x: i32, y: i32 },
+# }
+# let m = Message::Quit;
+#
+match m {
+    Message::Quit => (),
+    Message::Move {x: 10, y: 20} => (),
+    Message::Move {..} => (),
 }
 ```
 
@@ -662,7 +674,7 @@ The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a v
 let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 ```
 
-A struct pattern is refutable when one of its subpatterns is refutable.
+A struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple struct patterns
 
