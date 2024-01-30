@@ -252,7 +252,48 @@ b"\\x52"; br"\x52";                  // \x52
 
 A C string literal expression consists of a single [C_STRING_LITERAL] or [RAW_C_STRING_LITERAL] token.
 
-> **Note**: This section is incomplete.
+The expression's type is a shared reference (with `static` lifetime) to the standard library [CStr] type.
+That is, the type is `&'static core::ffi::CStr`.
+
+The token must not have a suffix.
+
+The token's _literal content_ is the sequence of characters following the first `"` and preceding the last `"` in the string representation of the token.
+
+The literal expression's _represented bytes_ are a sequence of bytes derived from the literal content as follows:
+
+* If the token is a [C_STRING_LITERAL], the literal content is treated as a sequence of items, each of which is either a single Unicode character other than `\` or an [escape].
+The sequence of items is converted to a sequence of bytes as follows:
+  * Each single Unicode character contributes its UTF-8 representation.
+  * Each [simple escape] contributes the [Unicode scalar value] of its escaped value.
+  * Each [8-bit escape] contributes a single byte containing the [Unicode scalar value] of its escaped value.
+  * Each [unicode escape] contributes the UTF-8 representation of its escaped value.
+  * Each [string continuation escape] contributes no bytes.
+
+* If the token is a [RAW_C_STRING_LITERAL], the represented bytes are the UTF-8 encoding of the literal content.
+
+> **Note**: the permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a null byte.
+
+The expression's value is a reference to a statically allocated [CStr] whose array of bytes contains the represented bytes followed by a null byte.
+
+Examples of C string literal expressions:
+
+```rust
+c"foo"; cr"foo";                     // foo
+c"\"foo\""; cr#""foo""#;             // "foo"
+
+c"foo #\"# bar";
+cr##"foo #"# bar"##;                 // foo #"# bar
+
+c"\x52"; c"R"; cr"R";                // R
+c"\\x52"; cr"\x52";                  // \x52
+
+c"æ";                                // LATIN SMALL LETTER AE (U+00E6)
+c"\u{00E6}";                         // LATIN SMALL LETTER AE (U+00E6)
+c"\xC3\xA6";                         // LATIN SMALL LETTER AE (U+00E6)
+
+c"\xE6".to_bytes();                  // [230]
+c"\u{00E6}".to_bytes();              // [195, 166]
+```
 
 ## Integer literal expressions
 
@@ -365,13 +406,20 @@ The expression's type is the primitive [boolean type], and its value is:
  * false if the keyword is `false`
 
 
+[Escape]: #escapes
+[Simple escape]: #simple-escapes
 [Simple escapes]: #simple-escapes
+[8-bit escape]: #8-bit-escapes
 [8-bit escapes]: #8-bit-escapes
+[7-bit escape]: #7-bit-escapes
 [7-bit escapes]: #7-bit-escapes
+[Unicode escape]: #unicode-escapes
 [Unicode escapes]: #unicode-escapes
+[String continuation escape]: #string-continuation-escapes
 [String continuation escapes]: #string-continuation-escapes
 [boolean type]: ../types/boolean.md
 [constant expression]: ../const_eval.md#constant-expressions
+[CStr]: ../../core/ffi/struct.CStr.html
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
 [literal tokens]: ../tokens.md#literals

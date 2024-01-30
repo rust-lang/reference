@@ -330,8 +330,7 @@ A _C string literal_ is a sequence of Unicode characters and _escapes_,
 preceded by the characters `U+0063` (`c`) and `U+0022` (double-quote), and
 followed by the character `U+0022`. If the character `U+0022` is present within
 the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
-Alternatively, a C string literal can be a _raw C string literal_, defined
-below. The type of a C string literal is [`&core::ffi::CStr`][CStr].
+Alternatively, a C string literal can be a _raw C string literal_, defined below.
 
 [CStr]: ../core/ffi/struct.CStr.html
 
