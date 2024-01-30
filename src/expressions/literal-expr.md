@@ -271,9 +271,9 @@ The sequence of items is converted to a sequence of bytes as follows:
 
 * If the token is a [RAW_C_STRING_LITERAL], the represented bytes are the UTF-8 encoding of the literal content.
 
-> **Note**: the permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a zero byte.
+> **Note**: the permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a null byte.
 
-The expression's value is a reference to a statically allocated [Cstr] whose array of bytes contains the represented bytes followed by a zero byte.
+The expression's value is a reference to a statically allocated [CStr] whose array of bytes contains the represented bytes followed by a null byte.
 
 Examples of C string literal expressions:
 
