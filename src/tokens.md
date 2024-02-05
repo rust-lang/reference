@@ -538,7 +538,7 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
 >   _(not immediately followed by `.`, `_` or an XID_Start character)_\
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL SUFFIX_NO_E<sup>?</sup>\
-> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup> FLOAT_EXPONENT SUFFIX<sup>?</sup>\
+> &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup> FLOAT_EXPONENT SUFFIX<sup>?</sup>
 >
 > FLOAT_EXPONENT :\
 > &nbsp;&nbsp; (`e`|`E`) (`+`|`-`)<sup>?</sup>
