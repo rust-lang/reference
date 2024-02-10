@@ -14,9 +14,10 @@ to which the attribute applies.
 For any lint check `C`:
 
 * `#[allow(C)]` overrides the check for `C` so that violations will go
-   unreported,
-* `#[expect(C)]` suppresses all lint emissions of `C`, but will issue
-   a warning if the lint wasn't emitted in the expected scope.
+   unreported.
+* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
+  attribute will suppres the emission of `C` or issue a warning, if the
+  expectation is unfillfilled.
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
@@ -104,14 +105,13 @@ message if the lint is emitted at the defined level.
 fn dyn() {}
 ```
 
-Here we have another example, where the lint is allowed with a reason:
+Here is another example, where the lint is allowed with a reason:
 
 ```rust
 use std::path::PathBuf;
 
 pub fn get_path() -> PathBuf {
-    // Using `reason` with an `allow` attribute has no effect other than to
-    // provide documentation to the reader.
+    // The `reason` parameter on `allow` attributes acts as documentation for the reader.
     #[allow(unused_mut, reason = "this is only modified on some platforms")]
     let mut file_name = PathBuf::from("git");
 
@@ -122,25 +122,28 @@ pub fn get_path() -> PathBuf {
 }
 ```
 
-### The `expect` attribute
+### The `#[expect]` attribute
 
-The *`expect` attribute* is used to mark that a particular lint must be triggered
-within its scope. If this expectation is not fulfilled a new warning is emitted to
-the user.
+The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
+expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
+would result in a lint emission. If the expectation is unfulfilled, because
+lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will
+be emitted at the attribute.
 
 ```rust
 fn main() {
-    // This `expect` attribute creates an expectation, that the `unused_variables`
-    // will be triggered by the following statement. This expectation will not be
-    // fulfilled, since the `question` variable is used by the `println!` macro.
+    // This `#[expect]` attribute creates a lint expectation, that the `unused_variables`
+    // lint would be emitted by the following statement. This expectation is
+    // unfulfilled, since the `question` variable is used by the `println!` macro.
+    // Therefore, the `unfulfilled_lint_expectations` lint will be emitted at the
+    // attribute.
     #[expect(unused_variables)]
     let question = "who lives in a pineapple under the sea?";
     println!("{question}");
 
-    // This `expect` attribute creates an expectation that will be fulfilled, since
-    // the `answer` variable is never used. It will therefore trigger the 
-    // `unused_variables` lint which will be suppressed by the expectation and fullfil
-    // it as well.
+    // This `#[expect]` attribute creates a lint expectation that will be fulfilled, since
+    // the `answer` variable is never used. The `unused_variables` lint, that would usually
+    // be emitted, is supressed. No warning will be issued for the statement or attribute.
     #[expect(unused_variables)]
     let answer = "SpongeBob SquarePants!";
 }
@@ -148,9 +151,8 @@ fn main() {
 
 The lint expectation is only fulfilled by lint emissions which have been suppressed by
 the `expect` attribute. If the lint level is modified in the scope with other level
-attributes like `warn` or `deny`, the lint will be emitted at the defined level and not
-satisdy the expectation. Lint suppressions via `allow` or `expect` attributes inside the
-scope will also not fulfill the expectation.
+attributes like `allow` or `warn`, the lint emission will be handled accordingly and the
+expectation will remain unfulfilled.
 
 ```rust
 #[expect(unused_variables)]
@@ -190,8 +192,8 @@ pub fn thoughts() {
 pub fn another_example() {
     // This attribute creates two lint expectations. The `unused_mut` lint will be
     // suppressed and with that fulfill the first expectation. The `unused_variables`
-    // won't be emitted, since the variable is used. That expectation will therefore
-    // not be satisfied, and a warning will be emitted.
+    // wouldn't be emitted, since the variable is used. That expectation will therefore
+    // be unsatified, and a warning will be emitted.
     #[expect(unused_mut, unused_variables)]
     let mut link = "https://www.rust-lang.org/";
 
