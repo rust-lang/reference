@@ -138,7 +138,7 @@ with either a `+` or `-` to indicate that the modifier is enabled or disabled,
 respectively.
 Specifying multiple `modifiers` arguments in a single `link` attribute,
 or multiple identical modifiers in the same `modifiers` argument is not currently supported. \
-Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")`.
+Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]`.
 
 The `wasm_import_module` key may be used to specify the [WebAssembly module]
 name for the items within an `extern` block when importing symbols from the
