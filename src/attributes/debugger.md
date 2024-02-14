@@ -158,8 +158,7 @@ Accepted options:
 The `external` behavior is the default for macros that don't have this attribute, unless they are
 built-in macros. For built-in macros the default is `yes`.
 
-Both the default collapsing behavior and `#[collapse_debuginfo]` attributes can be overridden from
-command line using the `-C collapse-macro-debuginfo` option.
+> **Note**: `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
 
 [attribute]: ../attributes.md
 [_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax
