@@ -142,7 +142,7 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 
 ## The `collapse_debuginfo` attribute
 
-This attribute controls whether code locations from this macro definition are collapsed into a
+The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a
 single location associated with the macro's call site, when generating debuginfo for code calling
 this macro.
 
@@ -161,4 +161,5 @@ built-in macros. For built-in macros the default is `yes`.
 Both the default collapsing behavior and `#[collapse_debuginfo]` attributes can be overridden from
 command line using the `-C collapse-macro-debuginfo` option.
 
+[attribute]: ../attributes.md
 [_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax
