@@ -104,6 +104,25 @@ dropped last when evaluating the function. Each actual function parameter is
 dropped after any bindings introduced in that parameter's pattern.
 
 ```rust
+// entire function scope begins
+fn fun(a: A)
+{ // function body block begins
+    let b: A;
+} // function body block ends. `b` is dropped here.
+// entire function scope ends. `a` is dropped here.
+
+// entire function begins.
+fn fun(a:A) // `a` associated to entire function.
+{ // function body block begins.
+    match &A(2) { // match expression begins. temporary associated to match expression.
+        v => {}
+    } // match expression ends. temporary is dropped here.
+    { // inner block begins.
+        let b = A(3); // `b` associated to inner block.
+    } // inner block ends. `b` is dropped here.
+}
+// entire function ends. `a` is dropped here.
+
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
@@ -131,6 +150,13 @@ the block that contains the `let` statement. Local variables declared in a
 are declared in.
 
 ```rust
+{ // outer scope begins.
+    let a; // `a` is associated to the outer scope.
+    { // inner scope begins.
+        let b; // `b` associated to the inner scope.
+    } // inner scope ends. `b` is dropped here.
+} // outer scope ends. `a` is dropped here.
+
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
