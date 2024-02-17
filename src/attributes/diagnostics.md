@@ -16,8 +16,8 @@ For any lint check `C`:
 * `#[allow(C)]` overrides the check for `C` so that violations will go
    unreported.
 * `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
-  attribute will suppres the emission of `C` or issue a warning, if the
-  expectation is unfillfilled.
+  attribute will suppress the emission of `C` or issue a warning, if the
+  expectation is unfulfilled.
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
@@ -69,7 +69,7 @@ pub mod m2 {
 }
 ```
 
-This example shows how one can use `forbid` to disallow uses of `allow` or 
+This example shows how one can use `forbid` to disallow uses of `allow` or
 `expect` for that lint check:
 
 ```rust,compile_fail
@@ -92,7 +92,7 @@ All lint attributes support an additional `reason` parameter, to give context wh
 a certain attribute was added. This reason will be displayed as part of the lint
 message if the lint is emitted at the defined level.
 
-```rust,edition2015
+```edition2015,fail
 // `keyword_idents` is allowed by default. Here we deny it to
 // avoid migration of identifies when we update the edition.
 #![deny(
@@ -143,7 +143,7 @@ fn main() {
 
     // This `#[expect]` attribute creates a lint expectation that will be fulfilled, since
     // the `answer` variable is never used. The `unused_variables` lint, that would usually
-    // be emitted, is supressed. No warning will be issued for the statement or attribute.
+    // be emitted, is suppressed. No warning will be issued for the statement or attribute.
     #[expect(unused_variables)]
     let answer = "SpongeBob SquarePants!";
 }
@@ -178,7 +178,7 @@ fn select_song() {
 }
 ```
 
-If the `expect` attribute contains several lints, each one is expected separatly. For a
+If the `expect` attribute contains several lints, each one is expected separately. For a
 lint group it's enough if one lint inside the group has been emitted:
 
 ```rust
@@ -193,7 +193,7 @@ pub fn another_example() {
     // This attribute creates two lint expectations. The `unused_mut` lint will be
     // suppressed and with that fulfill the first expectation. The `unused_variables`
     // wouldn't be emitted, since the variable is used. That expectation will therefore
-    // be unsatified, and a warning will be emitted.
+    // be unsatisfied, and a warning will be emitted.
     #[expect(unused_mut, unused_variables)]
     let mut link = "https://www.rust-lang.org/";
 
@@ -202,8 +202,7 @@ pub fn another_example() {
 ```
 
 > Note: The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
-> defined to always generate the `unfulfilled_lint_expectations` lint. This may
-> change in the future.
+> defined to always generate the `unfulfilled_lint_expectations` lint.
 
 ### Lint groups
 
@@ -514,7 +513,6 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 [let statement]: ../statements.md#let-statements
 [macro definition]: ../macros-by-example.md
 [module]: ../items/modules.md
-[RFC 2383]: https://rust-lang.github.io/rfcs/2383-lint-reasons.html
 [rustc book]: ../../rustc/lints/index.html
 [rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
 [rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
