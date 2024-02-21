@@ -695,3 +695,17 @@ See [this test] for an example of using this dependency.
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_RangeExpression_]: ./range-expr.md
 [_UnderscoreExpression_]: ./underscore-expr.md
+
+<script>
+(function() {
+    var fragments = {
+        "#slice-dst-pointer-to-pointer-cast": "operator-expr.html#pointer-to-pointer-cast",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
