@@ -12,7 +12,7 @@
 > &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>
 >
 > _EnumItem_ :\
-> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup> [_Visibility_]<sup>?</sup>\
+> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup>\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_ )<sup>?</sup>
 >                                _EnumItemDiscriminant_<sup>?</sup>
 >
