@@ -597,8 +597,8 @@ Reference patterns are always irrefutable.
 [_OuterAttribute_]: attributes.md
 [TUPLE_INDEX]: tokens.md#tuple-index
 
-Struct patterns match struct and enum values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a struct or enum value.
+Struct patterns match struct, enum, and union values that match all criteria defined by its subpatterns.
+They are also used to [destructure](#destructuring) a struct, enum, or union value.
 
 On a struct pattern, the fields are referenced by name, index (in the case of tuple structs) or ignored by use of `..`:
 
@@ -642,7 +642,7 @@ match m {
 }
 ```
 
-If `..` is not used, it is required to match all fields:
+If `..` is not used, a struct pattern used to match a struct is required to specify all fields:
 
 ```rust
 # struct Struct {
@@ -660,6 +660,8 @@ match struct_value {
     Struct{a: _, b: _, c: _} => (),
 }
 ```
+
+A struct pattern used to match a union must specify exactly one field (see [Pattern matching on unions]).
 
 The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a variable with the same name as the given field.
 
@@ -867,6 +869,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [literal expression]: expressions/literal-expr.md
 [negating]: expressions/operator-expr.md#negation-operators
 [path]: expressions/path-expr.md
+[pattern matching on unions]: items/unions.md#pattern-matching-on-unions
 [range expressions]: expressions/range-expr.md
 [structs]: items/structs.md
 [tuples]: types/tuple.md
