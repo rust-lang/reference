@@ -273,10 +273,12 @@ attempting to use instructions unsupported by the Wasm engine will fail at load
 time without the risk of being interpreted in a way different from what the
 compiler expected.
 
-Feature     | Description
-------------|-------------------
-`simd128`   | [WebAssembly simd proposal][simd128]
+Feature        | Description
+---------------|-------------------
+`relaxed-simd` | [WebAssembly relaxed simd proposal][relaxed-simd]
+`simd128`      | [WebAssembly simd proposal][simd128]
 
+[relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
 [simd128]: https://github.com/webassembly/simd
 
 ### Additional information
