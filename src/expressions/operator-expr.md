@@ -446,6 +446,32 @@ Casting is limited to the following kinds of enumerations:
 
 Casts to the `char` with the corresponding code point.
 
+#### Pointer to pointer cast
+
+Casting from a pointer to unsized type to pointer to sized type discards the pointer metadata, resulting in just a pointer to the referenced memory.
+Casting between pointers to unsized type preserves the pointer metadata unchanged (e.g. the slice element length remains the same).
+If the pointer metadata type does not match (e.g. casting between slice and vtable pointers), a compile error is produced.
+
+To illustrate:
+
+```rust
+let u32_slice: &[u32] = &[0, 1, 2, 3][..];
+
+let u32_slice_ptr = u32_slice as *const [u32];
+let u16_slice_ptr = u32_slice_ptr as *const [u16];
+
+assert_eq!(u16_slice_ptr as *const (), u32_slice_ptr as *const ());
+
+assert_eq!(unsafe { (&*u16_slice_ptr).len() }, 4);
+assert_eq!(unsafe { (&*u32_slice_ptr).len() }, 4);
+
+assert_eq!(unsafe { std::mem::size_of_val(&*u16_slice_ptr) }, 4 * 2);
+assert_eq!(unsafe { std::mem::size_of_val(&*u32_slice_ptr) }, 4 * 4);
+
+// ERROR:
+// u32_slice_ptr as *const dyn Sized;
+```
+
 #### Pointer to address cast
 
 Casting from a raw pointer to an integer produces the machine address of the referenced memory.
