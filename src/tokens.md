@@ -630,11 +630,14 @@ Examples of reserved forms:
 
 > **<sup>Lexer</sup>**\
 > LIFETIME_TOKEN :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]\
+> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]
+>   _(not immediately followed by `'`)_\
 > &nbsp;&nbsp; | `'_`
+>   _(not immediately followed by `'`)_
 >
 > LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [NON_KEYWORD_IDENTIFIER][identifier]
+>   _(not immediately followed by `'`)_
 
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
