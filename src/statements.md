@@ -2,10 +2,14 @@
 
 > **<sup>Syntax</sup>**\
 > _Statement_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _StatementNotExpression_\
+> &nbsp;&nbsp; | [_ExpressionWithBlock_]
+>
+> _StatementNotExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `;`\
 > &nbsp;&nbsp; | [_Item_]\
 > &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_ExpressionStatement_]\
+> &nbsp;&nbsp; | [_Expression_] `;`\
 > &nbsp;&nbsp; | [_MacroInvocationSemi_]
 
 
@@ -75,18 +79,13 @@ let [u, v] = [v[0], v[1]] else { // This pattern is irrefutable, so the compiler
 
 ## Expression statements
 
-> **<sup>Syntax</sup>**\
-> _ExpressionStatement_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
-> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression] `;`<sup>?</sup>
-
 An *expression statement* is one that evaluates an [expression] and ignores its result.
 As a rule, an expression statement's purpose is to trigger the effects of evaluating its expression.
 
 An expression that consists of only a [block expression][block] or control flow expression, if used in a context where a statement is permitted, can omit the trailing semicolon.
 This can cause an ambiguity between it being parsed as a standalone statement and as a part of another expression;
 in this case, it is parsed as a statement.
-The type of [_ExpressionWithBlock_][expression] expressions when used as statements must be the unit type.
+The type of [_ExpressionWithBlock_] expressions when used as statements must be the unit type.
 
 ```rust
 # let mut v = vec![1, 2, 3];
@@ -135,8 +134,8 @@ The attributes that have meaning on a statement are [`cfg`], and [the lint check
 [the lint check attributes]: attributes/diagnostics.md#lint-check-attributes
 [pattern]: patterns.md
 [_BlockExpression_]: expressions/block-expr.md
-[_ExpressionStatement_]: #expression-statements
 [_Expression_]: expressions.md
+[_ExpressionWithBlock_]: expressions.md
 [_Item_]: items.md
 [_LazyBooleanExpression_]: expressions/operator-expr.md#lazy-boolean-operators
 [_LetStatement_]: #let-statements
