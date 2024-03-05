@@ -5,9 +5,7 @@
 > &nbsp;&nbsp; `macro_rules` `!` [IDENTIFIER] _MacroRulesDef_
 >
 > _MacroRulesDef_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MacroRules_ `)` `;`\
-> &nbsp;&nbsp; | `[` _MacroRules_ `]` `;`\
-> &nbsp;&nbsp; | `{` _MacroRules_ `}`
+> &nbsp;&nbsp; `{` _MacroRules_ `}`
 >
 > _MacroRules_ :\
 > &nbsp;&nbsp; _MacroRule_ ( `;` _MacroRule_ )<sup>\*</sup> `;`<sup>?</sup>
