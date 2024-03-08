@@ -62,7 +62,7 @@ mod m {
 > &nbsp;&nbsp; | [_SimplePathSegment_]
 >
 > _GenericArgsBinding_ :\
-> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `=` [_TYPE_]
+> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `=` [_Type_]
 >
 > _GenericArgsBounds_ :\
 > &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `:` [_TypeParamBounds_]
