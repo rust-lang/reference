@@ -5,9 +5,11 @@ use mdbook::BookItem;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
 use std::collections::BTreeMap;
-use std::io;
+use std::fmt::Write as _;
+use std::fs;
+use std::io::{self, Write as _};
 use std::path::PathBuf;
-use std::process;
+use std::process::{self, Command};
 
 fn main() {
     let mut args = std::env::args().skip(1);
@@ -57,15 +59,36 @@ struct Spec {
     deny_warnings: bool,
     rule_re: Regex,
     admonition_re: Regex,
+    std_link_re: Regex,
+    std_link_extract_re: Regex,
 }
 
 impl Spec {
     pub fn new() -> Spec {
+        // This is roughly a rustdoc intra-doc link definition.
+        let std_link = r"(?: [a-z]+@ )?
+                         (?: std|core|alloc|proc_macro|test )
+                         (?: ::[A-Za-z_!:<>{}()\[\]]+ )?";
         Spec {
             deny_warnings: std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1"),
             rule_re: Regex::new(r"(?m)^r\[([^]]+)]$").unwrap(),
             admonition_re: Regex::new(
                 r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *> .*\n)+)",
+            )
+            .unwrap(),
+            std_link_re: Regex::new(&format!(
+                r"(?x)
+                    (?:
+                        ( \[`[^`]+`\] ) \( ({std_link}) \)
+                    )
+                    | (?:
+                        ( \[`{std_link}`\] )
+                    )
+                 "
+            ))
+            .unwrap(),
+            std_link_extract_re: Regex::new(
+                r#"<li><a [^>]*href="(https://doc.rust-lang.org/[^"]+)""#,
             )
             .unwrap(),
         }
@@ -152,6 +175,122 @@ impl Spec {
             })
             .to_string()
     }
+
+    /// Converts links to the standard library to the online documentation in
+    /// a fashion similar to rustdoc intra-doc links.
+    fn std_links(&self, chapter: &Chapter) -> String {
+        // This is very hacky, but should work well enough.
+        //
+        // Collect all standard library links.
+        //
+        // links are tuples of ("[`std::foo`]", None) for links without dest,
+        // or ("[`foo`]", "std::foo") with a dest.
+        let mut links: Vec<_> = self
+            .std_link_re
+            .captures_iter(&chapter.content)
+            .map(|cap| {
+                if let Some(no_dest) = cap.get(3) {
+                    (no_dest.as_str(), None)
+                } else {
+                    (
+                        cap.get(1).unwrap().as_str(),
+                        Some(cap.get(2).unwrap().as_str()),
+                    )
+                }
+            })
+            .collect();
+        if links.is_empty() {
+            return chapter.content.clone();
+        }
+        links.sort();
+        links.dedup();
+
+        // Write a Rust source file to use with rustdoc to generate intra-doc links.
+        let tmp = tempfile::TempDir::with_prefix("mdbook-spec-").unwrap();
+        let src_path = tmp.path().join("a.rs");
+        // Allow redundant since there could some in-scope things that are
+        // technically not necessary, but we don't care about (like
+        // [`Option`](std::option::Option)).
+        let mut src = format!(
+            "#![deny(rustdoc::broken_intra_doc_links)]\n\
+             #![allow(rustdoc::redundant_explicit_links)]\n"
+        );
+        for (link, dest) in &links {
+            write!(src, "//! - {link}").unwrap();
+            if let Some(dest) = dest {
+                write!(src, "({})", dest).unwrap();
+            }
+            src.push('\n');
+        }
+        writeln!(
+            src,
+            "extern crate alloc;\n\
+             extern crate proc_macro;\n\
+             extern crate test;\n"
+        )
+        .unwrap();
+        fs::write(&src_path, &src).unwrap();
+        let output = Command::new("rustdoc")
+            .arg("--edition=2021")
+            .arg(&src_path)
+            .current_dir(tmp.path())
+            .output()
+            .expect("rustdoc installed");
+        if !output.status.success() {
+            eprintln!(
+                "error: failed to extract std links ({:?}) in chapter {} ({:?})\n",
+                output.status,
+                chapter.name,
+                chapter.source_path.as_ref().unwrap()
+            );
+            io::stderr().write_all(&output.stderr).unwrap();
+            process::exit(1);
+        }
+
+        // Extract the links from the generated html.
+        let generated =
+            fs::read_to_string(tmp.path().join("doc/a/index.html")).expect("index.html generated");
+        let urls: Vec<_> = self
+            .std_link_extract_re
+            .captures_iter(&generated)
+            .map(|cap| cap.get(1).unwrap().as_str())
+            .collect();
+        if urls.len() != links.len() {
+            eprintln!(
+                "error: expected rustdoc to generate {} links, but found {} in chapter {} ({:?})",
+                links.len(),
+                urls.len(),
+                chapter.name,
+                chapter.source_path.as_ref().unwrap()
+            );
+            process::exit(1);
+        }
+
+        // Replace any disambiguated links with just the disambiguation.
+        let mut output = self
+            .std_link_re
+            .replace_all(&chapter.content, |caps: &Captures| {
+                if let Some(dest) = caps.get(2) {
+                    // Replace destination parenthesis with a link definition (square brackets).
+                    format!("{}[{}]", &caps[1], dest.as_str())
+                } else {
+                    caps[0].to_string()
+                }
+            })
+            .to_string();
+
+        // Append the link definitions to the bottom of the chapter.
+        write!(output, "\n").unwrap();
+        for ((link, dest), url) in links.iter().zip(urls) {
+            if let Some(dest) = dest {
+                write!(output, "[{dest}]: {url}\n").unwrap();
+            } else {
+                write!(output, "{link}: {url}\n").unwrap();
+            }
+        }
+
+        output
+    }
 }
 
 impl Preprocessor for Spec {
@@ -170,6 +309,7 @@ impl Preprocessor for Spec {
             }
             ch.content = self.rule_definitions(&ch, &mut found_rules);
             ch.content = self.admonitions(&ch);
+            ch.content = self.std_links(&ch);
         }
         for section in &mut book.sections {
             let BookItem::Chapter(ch) = section else {
