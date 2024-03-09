@@ -105,20 +105,21 @@ dropped after any bindings introduced in that parameter's pattern.
 
 ```rust
 // entire function scope begins
-fn fun(a: A)
+fn fun(a:i8) -> i8
 { // function body block begins
-    let b: A;
+    let b:i8 = 0;
+    return b;
 } // function body block ends. `b` is dropped here.
 // entire function scope ends. `a` is dropped here.
 
 // entire function begins.
-fn fun(a:A) // `a` associated to entire function.
+fn fun1(a:i8) // `a` associated to entire function.
 { // function body block begins.
-    match &A(2) { // match expression begins. temporary associated to match expression.
+    match &fun(2) { // match expression begins. temporary associated to match expression.
         v => {}
     } // match expression ends. temporary is dropped here.
     { // inner block begins.
-        let b = A(3); // `b` associated to inner block.
+        let b:i8 = fun(3); // `b` associated to inner block.
     } // inner block ends. `b` is dropped here.
 }
 // entire function ends. `a` is dropped here.
@@ -151,9 +152,9 @@ are declared in.
 
 ```rust
 { // outer scope begins.
-    let a; // `a` is associated to the outer scope.
+    let a:i8; // `a` is associated to the outer scope.
     { // inner scope begins.
-        let b; // `b` associated to the inner scope.
+        let b:i8; // `b` associated to the inner scope.
     } // inner scope ends. `b` is dropped here.
 } // outer scope ends. `a` is dropped here.
 
