@@ -30,7 +30,7 @@
 > &nbsp;&nbsp; | INNER_BLOCK_DOC
 >
 > _IsolatedCR_ :\
-> &nbsp;&nbsp; _A `\r` not followed by a `\n`_
+> &nbsp;&nbsp; \\r
 
 ## Non-doc comments
 
@@ -53,8 +53,9 @@ that follows.  That is, they are equivalent to writing `#![doc="..."]` around
 the body of the comment. `//!` comments are usually used to document
 modules that occupy a source file.
 
-Isolated CRs (`\r`), i.e. not followed by LF (`\n`), are not allowed in doc
-comments.
+The character `U+000D` (CR) is not allowed in doc comments.
+
+> **Note**:  The sequence `U+000D` (CR) immediately followed by `U+000A` (LF) would have been previously transformed into a single `U+000A` (LF).
 
 ## Examples
 

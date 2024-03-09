@@ -597,8 +597,8 @@ Reference patterns are always irrefutable.
 [_OuterAttribute_]: attributes.md
 [TUPLE_INDEX]: tokens.md#tuple-index
 
-Struct patterns match struct values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a struct.
+Struct patterns match struct, enum, and union values that match all criteria defined by its subpatterns.
+They are also used to [destructure](#destructuring) a struct, enum, or union value.
 
 On a struct pattern, the fields are referenced by name, index (in the case of tuple structs) or ignored by use of `..`:
 
@@ -628,9 +628,21 @@ match t {
     PointTuple {0: 10, ..} => (),
     PointTuple {..} => (),
 }
+
+# enum Message {
+#     Quit,
+#     Move { x: i32, y: i32 },
+# }
+# let m = Message::Quit;
+#
+match m {
+    Message::Quit => (),
+    Message::Move {x: 10, y: 20} => (),
+    Message::Move {..} => (),
+}
 ```
 
-If `..` is not used, it is required to match all fields:
+If `..` is not used, a struct pattern used to match a struct is required to specify all fields:
 
 ```rust
 # struct Struct {
@@ -649,6 +661,8 @@ match struct_value {
 }
 ```
 
+A struct pattern used to match a union must specify exactly one field (see [Pattern matching on unions]).
+
 The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a variable with the same name as the given field.
 
 ```rust
@@ -662,7 +676,7 @@ The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a v
 let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 ```
 
-A struct pattern is refutable when one of its subpatterns is refutable.
+A struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple struct patterns
 
@@ -676,7 +690,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 Tuple struct patterns match tuple struct and enum values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a tuple struct or enum value.
 
-A tuple struct pattern is refutable when one of its subpatterns is refutable.
+A tuple struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple patterns
 
@@ -855,6 +869,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [literal expression]: expressions/literal-expr.md
 [negating]: expressions/operator-expr.md#negation-operators
 [path]: expressions/path-expr.md
+[pattern matching on unions]: items/unions.md#pattern-matching-on-unions
 [range expressions]: expressions/range-expr.md
 [structs]: items/structs.md
 [tuples]: types/tuple.md

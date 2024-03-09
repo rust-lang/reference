@@ -159,7 +159,7 @@ Reference Manual], or elsewhere on [developer.arm.com].
 
 Feature        | Implicitly Enables | Feature Name
 ---------------|--------------------|-------------------
-`aes`          | `neon`         | FEAT_AES - Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES instructions
+`aes`          | `neon`         | FEAT_AES & FEAT_PMULL - Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
 `bf16`         |                | FEAT_BF16 - BFloat16 instructions
 `bti`          |                | FEAT_BTI - Branch Target Identification
 `crc`          |                | FEAT_CRC - CRC32 checksum instructions
@@ -178,14 +178,14 @@ Feature        | Implicitly Enables | Feature Name
 `jsconv`       | `neon`         | FEAT_JSCVT - JavaScript conversion instruction
 `lse`          |                | FEAT_LSE - Large System Extension
 `lor`          |                | FEAT_LOR - Limited Ordering Regions extension
-`mte`          |                | FEAT_MTE - Memory Tagging Extension
+`mte`          |                | FEAT_MTE & FEAT_MTE2 - Memory Tagging Extension
 `neon`         |                | FEAT_FP & FEAT_AdvSIMD - Floating Point and Advanced SIMD extension
 `pan`          |                | FEAT_PAN - Privileged Access-Never extension
 `paca`         |                | FEAT_PAuth - Pointer Authentication (address authentication)
 `pacg`         |                | FEAT_PAuth - Pointer Authentication (generic authentication)
 `pmuv3`        |                | FEAT_PMUv3 - Performance Monitors extension (v3)
 `rand`         |                | FEAT_RNG - Random Number Generator
-`ras`          |                | FEAT_RAS - Reliability, Availability and Serviceability extension
+`ras`          |                | FEAT_RAS & FEAT_RASv1p1 - Reliability, Availability and Serviceability extension
 `rcpc`         |                | FEAT_LRCPC - Release consistent Processor Consistent
 `rcpc2`        | `rcpc`         | FEAT_LRCPC2 - RcPc with immediate offsets
 `rdm`          |                | FEAT_RDM - Rounding Double Multiply accumulate
@@ -194,7 +194,7 @@ Feature        | Implicitly Enables | Feature Name
 `sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 - Advanced SIMD SHA instructions
 `sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 - Advanced SIMD SM3/4 instructions
 `spe`          |                | FEAT_SPE - Statistical Profiling Extension
-`ssbs`         |                | FEAT_SSBS - Speculative Store Bypass Safe
+`ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 - Speculative Store Bypass Safe
 `sve`          | `fp16`         | FEAT_SVE - Scalable Vector Extension
 `sve2`         | `sve`          | FEAT_SVE2 - Scalable Vector Extension 2
 `sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES - SVE AES instructions

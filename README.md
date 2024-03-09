@@ -1,6 +1,7 @@
 # The Rust Language Reference
 
-This document is the primary reference for the Rust programming language.
+This document is the primary reference for the Rust programming
+language.
 
 This document is not normative. It may include details that are specific
 to `rustc` itself, and should not be taken as a specification for the
@@ -9,52 +10,54 @@ what we have for now.
 
 ## Dependencies
 
-- rustc (the Rust compiler).
-- [mdbook](https://rust-lang.github.io/mdBook/) (use `cargo install mdbook` to install it).
-- rust nightly (you would be required to set your Rust version to the nightly version to make sure all tests pass)
+- Nightly Rust
+- [mdbook](https://rust-lang.github.io/mdBook/)
 
-## Build steps
+## Installing dependencies
 
-To build the project, follow the steps given below :
+First, ensure that you have a recent copy of the nightly Rust compiler
+installed, as this is needed in order to run the tests:
 
-Clone the project by downloading the ZIP from the [GitHub page](https://github.com/rust-lang/reference) or
-run the following command:
-
-```
-git clone https://github.com/rust-lang/reference
+```sh
+rustup toolchain install nightly
 ```
 
-Change the directory to the downloaded repository:
+Now, ensure you have `mdbook` installed, as this is needed in order to
+build the Reference:
+
+```sh
+cargo install --locked mdbook
+```
+
+## Building
+
+To build the Reference, first clone the project:
+
+```sh
+git clone https://github.com/rust-lang/reference.git
+```
+
+(Alternatively, if you don't want to use `git`, [download][] a ZIP file
+of the project, extract it using your preferred tool, and rename the
+top-level directory to `reference`.)
+
+[download]: https://github.com/rust-lang/reference/archive/refs/heads/master.zip
+
+Now change your current directory to the working directory:
 
 ```sh
 cd reference
 ```
 
-To run the tests, you would need to set the Rust version to the nightly release. You can do this by executing the following command:
+To test all of the code examples in the Reference, run:
 
-```shell
-rustup override set nightly
-```
-
-This will set the nightly version only for your the current project.
-
-If you wish to set Rust nightly for all your projects, you can run the command: 
-
-```shell
-rustup default nightly
-```
-
-Now, run the following command to test the code snippets to catch compilation errors:
-
-```shell
+```sh
 mdbook test
 ```
 
-
-To generate a local instance of the book, run:
+To build the Reference locally (in `build/`) and open it in a web
+browser, run:
 
 ```sh
-mdbook build
+mdbook build --open
 ```
-
-The generated HTML will be in the `book` folder.

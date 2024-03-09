@@ -37,6 +37,8 @@ Literals are tokens used in [literal expressions].
 
 [^nsets]: The number of `#`s on each side of the same literal must be equivalent.
 
+> **Note**:  Character and string literal tokens never include the sequence of `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
+
 #### ASCII escapes
 
 |   | Name |
@@ -156,13 +158,10 @@ A _string literal_ is a sequence of any Unicode characters enclosed within two
 `U+0022` (double-quote) characters, with the exception of `U+0022` itself,
 which must be _escaped_ by a preceding `U+005C` character (`\`).
 
-Line-breaks are allowed in string literals.
-A line-break is either a newline (`U+000A`) or a pair of carriage return and newline (`U+000D`, `U+000A`).
-Both byte sequences are translated to `U+000A`.
-
+Line-breaks, represented by the  character `U+000A` (LF), are allowed in string literals.
 When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
 See [String continuation escapes] for details.
-
+The character `U+000D` (CR) may not appear in a string literal other than as part of such a string continuation escape.
 
 #### Character escapes
 
@@ -198,10 +197,10 @@ following forms:
 
 Raw string literals do not process any escapes. They start with the character
 `U+0072` (`r`), followed by fewer than 256 of the character `U+0023` (`#`) and a
-`U+0022` (double-quote) character. The _raw string body_ can contain any sequence
-of Unicode characters and is terminated only by another `U+0022` (double-quote)
-character, followed by the same number of `U+0023` (`#`) characters that preceded
-the opening `U+0022` (double-quote) character.
+`U+0022` (double-quote) character.
+
+The _raw string body_ can contain any sequence of Unicode characters other than `U+000D` (CR).
+It is terminated only by another `U+0022` (double-quote) character, followed by the same number of `U+0023` (`#`) characters that preceded the opening `U+0022` (double-quote) character.
 
 All Unicode characters contained in the raw string body represent themselves,
 the characters `U+0022` (double-quote) (except when followed by at least as
@@ -259,6 +258,11 @@ the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
 Alternatively, a byte string literal can be a _raw byte string literal_, defined
 below.
 
+Line-breaks, represented by the  character `U+000A` (LF), are allowed in byte string literals.
+When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
+See [String continuation escapes] for details.
+The character `U+000D` (CR) may not appear in a byte string literal other than as part of such a string continuation escape.
+
 Some additional _escapes_ are available in either byte or non-raw byte string
 literals. An escape starts with a `U+005C` (`\`) and continues with one of the
 following forms:
@@ -281,19 +285,19 @@ following forms:
 > &nbsp;&nbsp; `br` RAW_BYTE_STRING_CONTENT SUFFIX<sup>?</sup>
 >
 > RAW_BYTE_STRING_CONTENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ASCII_FOR_RAW<sup>* (non-greedy)</sup> `"`\
 > &nbsp;&nbsp; | `#` RAW_BYTE_STRING_CONTENT `#`
 >
-> ASCII :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F)_
+> ASCII_FOR_RAW :\
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except IsolatedCR_
 
 Raw byte string literals do not process any escapes. They start with the
 character `U+0062` (`b`), followed by `U+0072` (`r`), followed by fewer than 256
-of the character `U+0023` (`#`), and a `U+0022` (double-quote) character. The
-_raw string body_ can contain any sequence of ASCII characters and is terminated
-only by another `U+0022` (double-quote) character, followed by the same number of
-`U+0023` (`#`) characters that preceded the opening `U+0022` (double-quote)
-character. A raw byte string literal can not contain any non-ASCII byte.
+of the character `U+0023` (`#`), and a `U+0022` (double-quote) character.
+
+The _raw string body_ can contain any sequence of ASCII characters other than `U+000D` (CR).
+It is terminated only by another `U+0022` (double-quote) character, followed by the same number of `U+0023` (`#`) characters that preceded the opening `U+0022` (double-quote) character.
+A raw byte string literal can not contain any non-ASCII byte.
 
 All characters contained in the raw string body represent their ASCII encoding,
 the characters `U+0022` (double-quote) (except when followed by at least as
@@ -339,6 +343,11 @@ C strings are implicitly terminated by byte `0x00`, so the C string literal
 literal `b"\x00"`. Other than the implicit terminator, byte `0x00` is not
 permitted within a C string.
 
+Line-breaks, represented by the  character `U+000A` (LF), are allowed in C string literals.
+When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
+See [String continuation escapes] for details.
+The character `U+000D` (CR) may not appear in a C string literal other than as part of such a string continuation escape.
+
 Some additional _escapes_ are available in non-raw C string literals. An escape
 starts with a `U+005C` (`\`) and continues with one of the following forms:
 
@@ -381,11 +390,10 @@ c"\xC3\xA6";
 
 Raw C string literals do not process any escapes. They start with the
 character `U+0063` (`c`), followed by `U+0072` (`r`), followed by fewer than 256
-of the character `U+0023` (`#`), and a `U+0022` (double-quote) character. The
-_raw C string body_ can contain any sequence of Unicode characters (other than
-`U+0000`) and is terminated only by another `U+0022` (double-quote) character,
-followed by the same number of `U+0023` (`#`) characters that preceded the
-opening `U+0022` (double-quote) character.
+of the character `U+0023` (`#`), and a `U+0022` (double-quote) character.
+
+The _raw C string body_ can contain any sequence of Unicode characters other than `U+0000` (NUL) and `U+000D` (CR).
+It is terminated only by another `U+0022` (double-quote) character, followed by the same number of `U+0023` (`#`) characters that preceded the opening `U+0022` (double-quote) character.
 
 All characters contained in the raw C string body represent themselves in UTF-8
 encoding. The characters `U+0022` (double-quote) (except when followed by at
@@ -630,11 +638,14 @@ Examples of reserved forms:
 
 > **<sup>Lexer</sup>**\
 > LIFETIME_TOKEN :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]\
+> &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]
+>   _(not immediately followed by `'`)_\
 > &nbsp;&nbsp; | `'_`
+>   _(not immediately followed by `'`)_
 >
 > LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [NON_KEYWORD_IDENTIFIER][identifier]
+>   _(not immediately followed by `'`)_
 
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
