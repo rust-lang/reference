@@ -39,9 +39,9 @@ alignment." Every value of a type must have a size at least as large as the type
 minimum size and an alignment at least as large as the type's minimum alignment.
 Some notable cases of minimum size and alignment are:
 - For [`Sized`] types, the type's minimum size and minimum alignment
-  are always equal to the type's size and alignment
+  are always equal to the type's size and alignment, respectively
 - For a [slice type](#slice-layout), `[T]`, the minimum size is 0 bytes (corresponding
-  a slice with 0 elements), and the minimum alignment is the alignment of `T`
+  to a slice with 0 elements), and the minimum alignment is the alignment of `T`
 - For a [trait object](#trait-object-layout), the minimum size is 0 and the minimum
   alignment is 1
 - For a struct type with a dynamically-sized field, the minimum size is taken to be
