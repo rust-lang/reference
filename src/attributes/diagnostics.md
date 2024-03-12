@@ -303,33 +303,39 @@ When used on a function in a trait implementation, the attribute does nothing.
 
 ## The `diagnostic` tool attribute namespace
 
-The `#[diagnostic]` attribute namespace is meant to provide a home for attributes to influence compile-time error messages. 
-The hints provides by these attributes are not guaranteed to be used.
-Unknown attributes in this namespace are accepted, though tey may emit warings for unused attributes. 
-Additionally, invalid input to known attributes will typically be a warning (see the attribute definitions for details). 
+The `#[diagnostic]` attribute namespace is a home for attributes to influence compile-time error messages.
+The hints provided by these attributes are not guaranteed to be used.
+Unknown attributes in this namespace are accepted, though they may emit warnings for unused attributes.
+Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
 This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
 ### The `diagnostic::on_unimplemented` attribute
 
-The `#[diagnostic::on_unimplemented]` attribute is designed to appear on trait definitions.
-This attribute hints to hint the compiler to supplement a specific worded error message that would normally be generated in scenarios where the trait is required but not implemented on a type
-The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility. The following keys have the given meaning:
+The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
+The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
+The following keys have the given meaning:
 
-* `message` which provides the text for the top level error message
-* `label` which provides the text for the label shown inline in the broken code in the error message
-* `note` which provides additional notes.
+* `message` — The text for the top level error message.
+* `label` — The text for the label shown inline in the broken code in the error message.
+* `note` — Provides additional notes.
 
-The `note` option can appear several times, which results in several note messages being emitted. 
-If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Any other occurrence generates an lint warning. 
+The `note` option can appear several times, which results in several note messages being emitted.
+If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
+Any other occurrence generates an lint warning.
 For any other non-existing option a lint-warning is generated.
 
-All three options accept a text as argument. 
-This text is allowed to contain format parameters referring to generic argument or `Self` by name via the `{Self}` or `{NameOfGenericArgument}` syntax, where `{Self}` is resolved to the name of the type implementing the trait and `{NameOfGenericArgument}` is resolved to the relevant type name that replaces the `{NameOfGenericArgument}` argument if the error message is emitted.
+All three options accept a string as an argument.
+The text in the string may contain the following format parameters which provide substitutions in the generated message:
+
+* `{Self}` — The name of the type implementing the trait.
+* `{` *GenericParameterName* `}` — The name of the generic argument's type for the given generic parameter.
+
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 
-This allows to have a trait definition like:
+In this example:
 
-```rust
+```rust,compile_fail,E0277
 #[diagnostic::on_unimplemented(
     message = "My Message for `ImportantTrait<{A}>` implemented for `{Self}`",
     label = "My Label",
@@ -345,9 +351,9 @@ fn main() {
 }
 ```
 
-which might generate this error message:
+the compiler may generate an error message which looks like this:
 
-```
+```text
 error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
   --> src/main.rs:14:18
    |
