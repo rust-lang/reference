@@ -76,7 +76,7 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 
 The escape sequence consists of `\u{`, followed by a sequence of characters each of which is a hexadecimal digit or `_`, followed by `}`.
 
-The escaped value is the character whose [Unicode scalar value] is the result of interpreting the hexadecimal digits contained in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
+The escaped value is the character whose [Unicode scalar value] is the result of interpreting the hexadecimal digits contained in the escape sequence as a hexadecimal integer, as if by [`u32::from_str_radix`] with radix 16.
 
 > **Note**: the permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
 
@@ -438,6 +438,7 @@ The expression's type is the primitive [boolean type], and its value is:
 [`f64::INFINITY`]: ../../core/primitive.f64.md#associatedconstant.INFINITY
 [`f64::NAN`]: ../../core/primitive.f64.md#associatedconstant.NAN
 [`u8::from_str_radix`]: ../../core/primitive.u8.md#method.from_str_radix
+[`u32::from_str_radix`]: ../../core/primitive.u32.md#method.from_str_radix
 [`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
