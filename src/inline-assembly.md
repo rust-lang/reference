@@ -463,6 +463,7 @@ To avoid undefined behavior, these rules must be followed when using function-sc
 - The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
   - This effectively means that the compiler must treat the `asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
+  - However there is no guarantee that each `asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate `asm!` blocks.
 - Unless the `nostack` option is set, asm code is allowed to use stack space below the stack pointer.
   - On entry to the asm block the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
   - You are responsible for making sure you don't overflow the stack (e.g. use stack probing to ensure you hit a guard page).
