@@ -53,7 +53,7 @@ mod m {
 > &nbsp;&nbsp; | `<` ( _GenericArg_ `,` )<sup>\*</sup> _GenericArg_ `,`<sup>?</sup> `>`
 >
 > _GenericArg_ :\
-> &nbsp;&nbsp; [_Lifetime_] | [_Type_] | _GenericArgsConst_ | _GenericArgsBinding_
+> &nbsp;&nbsp; [_Lifetime_] | [_Type_] | _GenericArgsConst_ | _GenericArgsBinding_ | _GenericArgsBounds_
 >
 > _GenericArgsConst_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
@@ -62,7 +62,10 @@ mod m {
 > &nbsp;&nbsp; | [_SimplePathSegment_]
 >
 > _GenericArgsBinding_ :\
-> &nbsp;&nbsp; [IDENTIFIER] `=` [_Type_]
+> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `=` [_Type_]
+>
+> _GenericArgsBounds_ :\
+> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `:` [_TypeParamBounds_]
 
 Paths in expressions allow for paths with generic arguments to be specified. They are
 used in various places in [expressions] and [patterns].
@@ -396,6 +399,7 @@ mod without { // crate::without
 [_SimplePathSegment_]: #simple-paths
 [_Type_]: types.md#type-expressions
 [_TypeNoBounds_]: types.md#type-expressions
+[_TypeParamBounds_]: trait-bounds.md
 [literal]: expressions/literal-expr.md
 [item]: items.md
 [variable]: variables.md
