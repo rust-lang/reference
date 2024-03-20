@@ -86,6 +86,17 @@ fn main() -> impl std::process::Termination {
 }
 ```
 
+The `main` function may be an import, e.g. from an external crate or from the current one.
+
+```rust
+mod foo {
+    pub fn bar() {
+        println!("Hello, world!");
+    }
+}
+use foo::bar as main;
+```
+
 > **Note**: Types with implementations of [`Termination`] in the standard library include:
 >
 > * `()`
