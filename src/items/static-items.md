@@ -101,8 +101,9 @@ unsafe fn bump_levels_unsafe1() -> u32 {
 }
 
 // Assuming that we have an atomic_add function which returns the old value,
-// this function is "safe" but the meaning of the return value may not be what
-// callers expect, so it's still marked as `unsafe`
+// this function is "safe" but the the function does not ensure no non-atomic operations
+// (the plain adding in bump_levels_unsafe1, for example) running cocurrently, 
+// so it's still marked as `unsafe`
 unsafe fn bump_levels_unsafe2() -> u32 {
     return atomic_add(&mut LEVELS, 1);
 }
