@@ -304,6 +304,11 @@ the default `enum` size and alignment for the target platform's C ABI.
 > Note: The enum representation in C is implementation defined, so this is
 > really a "best guess". In particular, this may be incorrect when the C code
 > of interest is compiled with certain flags.
+>
+> However, it is guaranteed that, for any two `repr(C)` enum types, their
+> discriminants will have the same size and alignment *within a given
+> compilation of the program.* This is true for both field-less enums and
+> for enums with fields.
 
 <div class="warning">
 
