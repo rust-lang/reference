@@ -195,6 +195,220 @@ compiler knows how to expand them properly:
     not have the same number. This requirement applies to every layer of nested
     repetitions.
 
+## Meta variable expressions
+
+Give access to additional metadata about meta variables that otherwise would be difficult or even impossible to get through elements such as `count` or `index`.
+
+### count($ident, depth)
+
+Expands to an unsuffixed integer literal representing the number of times a ***meta variable*** repeats in total.
+
+The output of `count` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+macro_rules! count_idents {
+    ( $( $i:ident ),* ) => {
+        ${count($i)}
+    };
+}
+
+fn main() {
+    assert_eq!(count_idents!(a, b, c), 3);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to limit the number of nested repetitions that are counted.
+
+```rust
+macro_rules! no_repetition0 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [${count($b)}]
+    };
+}
+
+macro_rules! no_repetition1 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [${count($b, 1)}]
+    };
+}
+
+macro_rules! outermost {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( ${ignore($a)} ${count($b)}, )+]
+    };
+}
+
+fn main() {
+    // 1 2 3 4 5 = 5 elements
+    assert_eq!(no_repetition0!(a: 1, 2, 3; b: 4, 5), [5]);
+    
+    // a b = 2 elements
+    assert_eq!(no_repetition1!(a: 1, 2, 3; b: 4, 5), [2]);
+    
+    // 1 2 3 = 3 elements
+    // 4 5 = 2 elements
+    assert_eq!(outermost!(a: 1, 2, 3; b: 4, 5), [3, 2]);
+}
+```
+
+`count` can not be placed inside the innermost repetition.
+
+### ignore($ident)
+
+Binds a meta variable for repetition, but expands to nothing.
+
+```rust
+macro_rules! count {
+    ( $( $i:stmt ),* ) => {{
+        0 $( + 1 ${ignore($i)} )*
+    }};
+}
+
+fn main() {
+    assert_eq!(count!(if true {} else {}, let _: () = (), || false), 3);
+}
+```
+
+Sometimes it is desired to repeat an expansion the same number of times as a meta variable repeats but without actually expanding the meta variable. It may be possible to work around this by expanding the meta variable in an expression like `{ let _ = $x; 1 }`, where the expanded value of `$x` is ignored, but this is only possible if what `$x` expands to is valid in this kind of expression.
+
+The `ignore` meta variable acts as if ident was used for the purposes of repetition, but expands to nothing.
+
+### index(depth)
+
+Expands to an unsuffixed integer literal representing the current iteration index of a ***repetition*** at the given depth.
+
+The output of `index` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+trait Length {
+    fn length(&self) -> usize;
+}
+
+macro_rules! impl_tuple {
+    ( $( $name:ident ),* ) => {
+        impl<$( $name, )*> Length for ($( $name, )*)
+        where
+            $( $name: AsRef<[u8]>, )*
+        {
+            fn length(&self) -> usize {
+                let mut sum: usize = 0;
+                $({
+                    ${ignore($name)}
+                    sum = sum.wrapping_add(self.${index()}.as_ref().len());
+                })*
+                sum
+            }
+        }
+    };
+}
+
+impl_tuple!(A, B);
+
+fn main() {
+    assert_eq!((&[1, 2, 3][..], &[4, 5][..]).length(), 5);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to limit the number of nested repetitions that are counted.
+
+```rust
+macro_rules! innermost0 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${index()}, )* )+]
+    };
+}
+
+macro_rules! innermost1 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${index(1)}, )* )+]
+    };
+}
+
+macro_rules! outermost {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( ${ignore($a)} ${index()}, )+]
+    };
+}
+
+fn main() {
+    // 1 2 3 = 3 elements
+    // 4 5 = 2 elements
+    //
+    // Increasing list from the innermost loop refering innermost indexes
+    assert_eq!(innermost0!(a: 1, 2, 3; b: 4, 5), [0, 1, 2, 0, 1]);
+    
+    // a b = 2 elements
+    //
+    // Increasing list from the innermost loop refering outermost indexes
+    assert_eq!(innermost1!(a: 1, 2, 3; b: 4, 5), [0, 0, 0, 1, 1]);
+    
+    // a b = 2 elements
+    //
+    // Increasing list from the outermost loop refering outermost indexes
+    assert_eq!(outermost!(a: 1, 2, 3; b: 4, 5), [0, 1]);
+}
+```
+
+### length(depth)
+
+Expands to an unsuffixed integer literal representing the sum or length of a ***repetition*** at a given depth.
+
+The output of `length` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+macro_rules! array {
+    ( $( $i:ident ),* ) => {
+        [${length()}, )*]
+    };
+}
+
+fn main() {
+    assert_eq!(array!(A, B, C), [3, 3, 3]);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to limit the number of nested repetitions that are counted.
+
+```rust
+macro_rules! innermost0 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${length()}, )* )+]
+    };
+}
+
+macro_rules! innermost1 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${length(1)}, )* )+]
+    };
+}
+
+macro_rules! outermost {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( ${ignore($a)} ${length()}, )+]
+    };
+}
+
+fn main() {
+    // 1 2 3 = 3 elements
+    // 4 5 = 2 elements
+    //
+    // 3 and 2 elements repeating 3 and 2 times in the innermost loop
+    assert_eq!(innermost0!(a: 1, 2, 3; b: 4, 5), [3, 3, 3, 2, 2]);
+    
+    // a b = 2 elements
+    //
+    // 2 elements repeating 5 times in the innermost loop
+    assert_eq!(innermost1!(a: 1, 2, 3; b: 4, 5), [2, 2, 2, 2, 2]);
+    
+    // a b = 2 elements
+    //
+    // 2 elements repeating 2 times in the outermost loop
+    assert_eq!(outermost!(a: 1, 2, 3; b: 4, 5), [2, 2]);
+}
+```
+
+Contrary to `count`, `length` must be placed inside a repetition.
+
 ## Scoping, Exporting, and Importing
 
 For historical reasons, the scoping of macros by example does not work entirely
