@@ -21,7 +21,7 @@ Other occurrences of the character `U+000D` (CR) are left in place (they are tre
 
 ## Shebang removal
 
-If the remaining sequence begins with the characters `!#`, the characters up to and including the first `U+000A` (LF) are removed from the sequence.
+If the remaining sequence begins with the characters `#!`, the characters up to and including the first `U+000A` (LF) are removed from the sequence.
 
 For example, the first line of the following file would be ignored:
 
