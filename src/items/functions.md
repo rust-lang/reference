@@ -203,12 +203,31 @@ extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-Functions with an ABI that differs from `"Rust"` do not support unwinding in the
-exact same way that Rust does. Therefore, unwinding past the end of functions
-with such ABIs causes the process to abort.
+### Unwinding
 
-> **Note**: The LLVM backend of the `rustc` implementation
-aborts the process by executing an illegal instruction.
+Most ABI strings come in two variants, one with an `-unwind` suffix and one without.
+The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI.
+
+The choice of ABI, together with the [panic mode][panic-modes], determines the
+behavior when unwinding out of a function.
+
+In the table below, "Foreign unwind (unforced)" refers to something like a C++
+exception; the table indicates the behavior of an unwinding
+operation reaching each type of ABI boundary (function
+declaration or definition using the corresponding ABI string).
+Additionally, `C` in the ABI strings may be substituted with
+`stdcall` or any other ABI supported by the language
+implementation.
+
+| panic runtime  | ABI          | `panic`-unwind                        | Foreign unwind (unforced) |
+| -------------- | ------------ | ------------------------------------- | ----------------------- |
+| `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
+| `panic=unwind` | `"C"`        | abort                                 | [Undefined Behavior]    |
+| `panic=abort`  | `"C-unwind"` | `panic!` aborts (no unwinding occurs) | abort                   |
+| `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | [Undefined Behavior]    |
+
+[panic-modes]: ../panic.md#panic-runtimes
+[Undefined Behavior]: ../behavior-considered-undefined.md
 
 ## Const functions
 

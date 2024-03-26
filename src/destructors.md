@@ -219,7 +219,8 @@ Temporaries are also created to hold the result of operands to an expression
 while the other operands are evaluated. The temporaries are associated to the
 scope of the expression with that operand. Since the temporaries are moved from
 once the expression is evaluated, dropping them has no effect unless one of the
-operands to an expression breaks out of the expression, returns, or panics.
+operands to an expression breaks out of the expression, returns, or
+[panics][panic].
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -362,6 +363,7 @@ variable or field from being dropped automatically.
 [initialized]: glossary.md#initialized
 [interior mutability]: interior-mutability.md
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
+[panic]: panic.md
 [place context]: expressions.md#place-expressions-and-value-expressions
 [promoted]: destructors.md#constant-promotion
 [scrutinee]: glossary.md#scrutinee
