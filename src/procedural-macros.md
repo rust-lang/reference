@@ -234,8 +234,8 @@ shown in the comments after the function prefixed with "out:".
 
 #[proc_macro_attribute]
 pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
-    println!("attr: \"{}\"", attr.to_string());
-    println!("item: \"{}\"", item.to_string());
+    println!("attr: \"{attr}\"");
+    println!("item: \"{item}\"");
     item
 }
 ```
