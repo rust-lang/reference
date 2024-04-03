@@ -325,13 +325,16 @@ If any of the other options appears several times the first occurrence of the re
 Any other occurrence generates an lint warning.
 For any other non-existing option a lint-warning is generated.
 
-All three options accept a string as an argument.
-The text in the string may contain the following format parameters which provide substitutions in the generated message:
+All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
+Format parameters with the given named parameter will be replaced with the following text:
 
 * `{Self}` — The name of the type implementing the trait.
 * `{` *GenericParameterName* `}` — The name of the generic argument's type for the given generic parameter.
 
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
+
+Invalid format strings may generate a warning, but are otherwise allowed, but may not display as intended.
+Format specifiers may generate a warning, but are otherwise ignored.
 
 In this example:
 
@@ -367,6 +370,7 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
    = note: Note 2
 ```
 
+[`std::fmt`]: ../../std/fmt/index.html
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
