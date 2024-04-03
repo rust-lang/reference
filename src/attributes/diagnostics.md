@@ -301,6 +301,76 @@ When used on a function in a trait implementation, the attribute does nothing.
 > let _ = five();
 > ```
 
+## The `diagnostic` tool attribute namespace
+
+The `#[diagnostic]` attribute namespace is a home for attributes to influence compile-time error messages.
+The hints provided by these attributes are not guaranteed to be used.
+Unknown attributes in this namespace are accepted, though they may emit warnings for unused attributes.
+Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
+This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
+
+### The `diagnostic::on_unimplemented` attribute
+
+The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
+The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
+The following keys have the given meaning:
+
+* `message` — The text for the top level error message.
+* `label` — The text for the label shown inline in the broken code in the error message.
+* `note` — Provides additional notes.
+
+The `note` option can appear several times, which results in several note messages being emitted.
+If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
+Any other occurrence generates an lint warning.
+For any other non-existing option a lint-warning is generated.
+
+All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
+Format parameters with the given named parameter will be replaced with the following text:
+
+* `{Self}` — The name of the type implementing the trait.
+* `{` *GenericParameterName* `}` — The name of the generic argument's type for the given generic parameter.
+
+Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
+
+Invalid format strings may generate a warning, but are otherwise allowed, but may not display as intended.
+Format specifiers may generate a warning, but are otherwise ignored.
+
+In this example:
+
+```rust,compile_fail,E0277
+#[diagnostic::on_unimplemented(
+    message = "My Message for `ImportantTrait<{A}>` implemented for `{Self}`",
+    label = "My Label",
+    note = "Note 1",
+    note = "Note 2"
+)]
+trait ImportantTrait<A> {}
+
+fn use_my_trait(_: impl ImportantTrait<i32>) {}
+
+fn main() {
+    use_my_trait(String::new());
+}
+```
+
+the compiler may generate an error message which looks like this:
+
+```text
+error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
+  --> src/main.rs:14:18
+   |
+14 |     use_my_trait(String::new());
+   |     ------------ ^^^^^^^^^^^^^ My Label
+   |     |
+   |     required by a bound introduced by this call
+   |
+   = help: the trait `ImportantTrait<i32>` is not implemented for `String`
+   = note: Note 1
+   = note: Note 2
+```
+
+[`std::fmt`]: ../../std/fmt/index.html
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
