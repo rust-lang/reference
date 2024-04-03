@@ -53,8 +53,8 @@ target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
 bit target, this is 8 bytes.
 
 Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on x86 u64 and f64 are only
-aligned to 32 bits.
+platform-specific behavior. In particular, on many 32-bit platforms `u64`
+and `f64` are only aligned to 32 bits.
 
 ## Pointers and References Layout
 
