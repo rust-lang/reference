@@ -207,6 +207,16 @@ the characters `U+0022` (double-quote) (except when followed by at least as
 many `U+0023` (`#`) characters as were used to start the raw string literal) or
 `U+005C` (`\`) do not have any special meaning.
 
+**Note that this is a _context-sensitive_ grammar, as opposed to _context-free_.**
+This is because strings like `r###"I contain only 2 "##s so I'm ok"###` require
+a parser to properly count the number of opening #'s and compare that count to two
+different values. In practical terms this is very easy for a parser to do, but
+a context-free language can't because the only way to express "counting" is
+as a destructive operation which forces you to forget the count. This allows
+for the "comparison" of two counts (such (as (balanced) (parens))) but not 3+.
+
+See [the proof for more formal details](https://github.com/rust-lang/rust/blob/5187be620c76a313a19b9b596e1bce3a80a345dd/src/grammar/raw-string-literal-ambiguity.md).
+
 Examples for string literals:
 
 ```rust
