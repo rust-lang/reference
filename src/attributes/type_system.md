@@ -72,10 +72,12 @@ Non-exhaustive types cannot be constructed outside of the defining crate:
 
 - Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed
   with a [_StructExpression_] \(including with [functional update syntax]).
-- The visibility of the same-named constant of a [unit-like struct][struct]
-  is lowered to `min($vis, pub(crate))`.
-- The visibility of the same-named constructor function of a [tuple struct][struct]
-  is lowered to `min($vis, pub(crate))`.
+- The implicitly defined same-named constant of a [unit-like struct][struct],
+  or the same-named constructor function of a [tuple struct][struct],
+  has a [visibility] no greater than `pub(crate)`.
+  That is, if the struct’s visibility is `pub`, then the constant or constructor’s visibility
+  is `pub(crate)`, and otherwise the visibility of the two items is the same
+  (as is the case without `#[non_exhaustive]`).
 - [`enum`][enum] instances can be constructed.
 
 The following examples of construction do not compile when outside the defining crate:
@@ -120,8 +122,8 @@ let message = Message::Quit;
 There are limitations when matching on non-exhaustive types outside of the defining crate:
 
 - When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]),
-  a [_StructPattern_] must be used which must include a `..`. Tuple variant constructor visibility
-  is lowered to `min($vis, pub(crate))`.
+  a [_StructPattern_] must be used which must include a `..`. A tuple variant's constructor's
+  [visibility] is reduced to be no greater than `pub(crate)`.
 - When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not
   contribute towards the exhaustiveness of the arms.
 
@@ -181,3 +183,4 @@ Non-exhaustive types are always considered inhabited in downstream crates.
 [enum]: ../items/enumerations.md
 [functional update syntax]: ../expressions/struct-expr.md#functional-update-syntax
 [struct]: ../items/structs.md
+[visibility]: ../visibility-and-privacy.md
