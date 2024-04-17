@@ -80,6 +80,7 @@ types:
 
 * Types with a built-in `Copy` implementation (see above)
 * [Tuples] of `Clone` types
+* [Closures] that only capture values of `Clone` types or capture no values from the environment
 
 ## `Send`
 
