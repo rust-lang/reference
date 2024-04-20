@@ -44,17 +44,20 @@ The size of most primitives is given in this table.
 | `u32` / `i32`     | 4                  |
 | `u64` / `i64`     | 8                  |
 | `u128` / `i128`   | 16                 |
+| `usize` / `isize` | See below          |
 | `f32`             | 4                  |
 | `f64`             | 8                  |
 | `char`            | 4                  |
 
 `usize` and `isize` have a size big enough to contain every address on the
-target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
+target platform. For example, on a 32 bit target, this is 4 bytes, and on a 64
 bit target, this is 8 bytes.
 
-Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on many 32-bit platforms `u64`
-and `f64` are only aligned to 32 bits.
+The alignment of primitives is platform-specific.
+In most cases, their alignment is equal to their size, but it may be less.
+In particular, `i128` and `u128` are often aligned to 4 or 8 bytes even though
+their size is 16, and on many 32-bit platforms, `i64`, `u64`, and `f64` are only
+aligned to 4 bytes, not 8.
 
 ## Pointers and References Layout
 
