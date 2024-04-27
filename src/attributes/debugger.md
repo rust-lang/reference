@@ -157,5 +157,14 @@ For built-in macros the default is `yes`.
 
 > **Note**: `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
 
+```rust
+#[collapse_debuginfo(yes)]
+macro_rules! example {
+    () => {
+        println!("hello!");
+    };
+}
+```
+
 [attribute]: ../attributes.md
 [_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax
