@@ -139,3 +139,32 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 [Natvis documentation]: https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects
 [pretty printing documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Pretty-Printing.html
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
+
+## The `collapse_debuginfo` attribute
+
+The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site,
+when generating debuginfo for code calling this macro.
+
+The attribute uses the [_MetaListIdents_] syntax to specify its inputs, and can only be applied to macro definitions.
+
+Accepted options:
+- `#[collapse_debuginfo(yes)]` — code locations in debuginfo are collapsed.
+- `#[collapse_debuginfo(no)]` — code locations in debuginfo are not collapsed.
+- `#[collapse_debuginfo(external)]` — code locations in debuginfo are collapsed only if the macro comes from a different crate.
+
+The `external` behavior is the default for macros that don't have this attribute, unless they are built-in macros.
+For built-in macros the default is `yes`.
+
+> **Note**: `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
+
+```rust
+#[collapse_debuginfo(yes)]
+macro_rules! example {
+    () => {
+        println!("hello!");
+    };
+}
+```
+
+[attribute]: ../attributes.md
+[_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax

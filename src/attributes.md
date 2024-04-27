@@ -275,6 +275,7 @@ The following is an index of all built-in attributes.
     added in future.
 - Debugger
   - [`debugger_visualizer`] — Embeds a file that specifies debugger output for a type.
+  - [`collapse_debuginfo`] — Controls how macro invocations are encoded in debuginfo.
 
 [Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications-and-standards/standards/ecma-334/
@@ -293,6 +294,7 @@ The following is an index of all built-in attributes.
 [`cfg_attr`]: conditional-compilation.md#the-cfg_attr-attribute
 [`cfg`]: conditional-compilation.md#the-cfg-attribute
 [`cold`]: attributes/codegen.md#the-cold-attribute
+[`collapse_debuginfo`]: attributes/debugger.md#the-collapse_debuginfo-attribute
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
 [`crate_type`]: linkage.md
 [`debugger_visualizer`]: attributes/debugger.md#the-debugger_visualizer-attribute
