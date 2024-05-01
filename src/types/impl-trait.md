@@ -48,10 +48,7 @@ That is, `impl Trait` in argument position is syntactic sugar for a generic type
 > **Note:**
 > For function parameters, generic type parameters and `impl Trait` are not exactly equivalent.
 > With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
-> If `impl Trait` is the type of *any* function parameter, then the caller can't ever provide any generic arguments when calling that function.
-This includes generic arguments for the return type or any const generics.
->
-> Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
+> Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
 
 ## Abstract return types
 
