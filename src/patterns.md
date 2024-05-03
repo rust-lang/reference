@@ -787,6 +787,7 @@ Furthermore we require that the value of `C` *has (recursive) structural equalit
 - Nothing else has structural equality.
 
 In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
+This means that associated consts cannot be used as patterns.
 
 After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
 In particular, it fully participates in exhaustiveness checking.
