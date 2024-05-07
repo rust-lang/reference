@@ -397,6 +397,9 @@ match tuple {
 > &nbsp;&nbsp; | _RangeToInclusivePattern_\
 > &nbsp;&nbsp; | _ObsoleteRangePattern_
 >
+> _RangeExclusivePattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..` _RangePatternBound_
+>
 > _RangeInclusivePattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
 >
@@ -422,10 +425,11 @@ A bound on the left of the sigil is a *lower bound*.
 A bound on the right is an *upper bound*.
 
 A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
-It is written as its lower bound, followed by `..=`, followed by its upper bound.
+It is written as its lower bound, followed by `..` for end-exclusive or `..=` for end-inclusive, followed by its upper bound.
 The type of the range pattern is the type unification of its upper and lower bounds.
 
 For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`.
+Similarly, `'m'..'p'` will match only `'m'`, `'n'` and `'o'`, specifically **not** including `'p'`.
 
 The lower bound cannot be greater than the upper bound.
 That is, in `a..=b`, a &le; b must be the case.
@@ -467,7 +471,7 @@ let valid_variable = match c {
 
 # let ph = 10;
 println!("{}", match ph {
-    0..=6 => "acid",
+    0..7 => "acid",
     7 => "neutral",
     8..=14 => "base",
     _ => unreachable!(),
@@ -538,9 +542,6 @@ Floating point range patterns are deprecated and may be removed in a future Rust
 See [issue #41620](https://github.com/rust-lang/rust/issues/41620) for more information.
 
 > **Edition Differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
-
-> **Note**: Although range patterns use the same syntax as [range expressions], there are no exclusive range patterns.
-> That is, neither `x .. y` nor `.. x` are valid range patterns.
 
 ## Reference patterns
 
