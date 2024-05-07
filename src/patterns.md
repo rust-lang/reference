@@ -776,7 +776,7 @@ They are refutable when they refer to refutable constants or enum variants for e
 When a constant `C` of type `T` is used as a pattern, we first check that `T: PartialEq`.
 Furthermore we require that the value of `C` *has (recursive) structural equality*, which is defined recursively as follows:
 
-- Integers as well as `bool` and `char` values always have structural equality.
+- Integers as well as `str`, `bool` and `char` values always have structural equality.
 - Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
   (In particular, `()` and `[]` always have structural equality.)
 - References have structural equality if the value they point to has structural equality.
@@ -787,7 +787,7 @@ Furthermore we require that the value of `C` *has (recursive) structural equalit
 - Nothing else has structural equality.
 
 In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
-This means that associated consts cannot be used as patterns.
+This means that associated consts that involve generic parameters cannot be used as patterns.
 
 After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
 In particular, it fully participates in exhaustiveness checking.
