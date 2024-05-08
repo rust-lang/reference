@@ -123,12 +123,12 @@ loop {
 > _ConstBlockExpression_ :\
 > &nbsp;&nbsp; `const` _BlockExpression_
 
-A *const block* is a variant of a block expression which evaluates in the compile time instead of in the run time.
+A *const block* is a variant of a block expression which evaluates at compile-time instead of at runtime.
 
 Const blocks allows you to define a constant value without having to define new [constant items], and thus they are also sometimes referred as *inline consts*.
 It also supports type inference so there is no need to specify the type, unlike [constant items].
 
-Const blocks have ability to reference generic parameters in scope, unlike [free][free item] constant items.
+Const blocks have the ability to reference generic parameters in scope, unlike [free][free item] constant items.
 They are desugared to associated constant items with generic parameters in scope.
 For example, this code:
 
