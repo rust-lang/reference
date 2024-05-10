@@ -117,6 +117,44 @@ loop {
 }
 ```
 
+## `const` blocks
+
+> **<sup>Syntax</sup>**\
+> _ConstBlockExpression_ :\
+> &nbsp;&nbsp; `const` _BlockExpression_
+
+A *const block* is a variant of a block expression which evaluates at compile-time instead of at runtime.
+
+Const blocks allows you to define a constant value without having to define new [constant items], and thus they are also sometimes referred as *inline consts*.
+It also supports type inference so there is no need to specify the type, unlike [constant items].
+
+Const blocks have the ability to reference generic parameters in scope, unlike [free][free item] constant items.
+They are desugared to associated constant items with generic parameters in scope.
+For example, this code:
+
+```rust
+fn foo<T>() -> usize {
+    const { std::mem::size_of::<T>() + 1 }
+}
+```
+
+is equivalent to:
+
+```rust
+fn foo<T>() -> usize {
+    {
+        struct Const<T>(T);
+        impl<T> Const<T> {
+            const CONST: usize = std::mem::size_of::<T>() + 1;
+        }
+        Const::<T>::CONST
+    }
+}
+```
+
+This also means that const blocks are treated similarly to associated constants.
+For example, they are not guaranteed to be evaluated when the enclosing function is unused.
+
 ## `unsafe` blocks
 
 > **<sup>Syntax</sup>**\
@@ -181,6 +219,8 @@ fn is_unix_platform() -> bool {
 [array expressions]: array-expr.md
 [call expressions]: call-expr.md
 [capture modes]: ../types/closure.md#capture-modes
+[constant items]: ../items/constant-items.md
+[free item]: ../glossary.md#free-item
 [function]: ../items/functions.md
 [inner attributes]: ../attributes.md
 [method]: ../items/associated-items.md#methods
