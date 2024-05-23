@@ -134,7 +134,7 @@ When applied to a [pointer](../types/pointer.md) it denotes the pointed-to locat
 If the expression is of type `&mut T` or `*mut T`, and is either a local variable, a (nested) field of a local variable or is a mutable [place expression], then the resulting memory location can be assigned to.
 Dereferencing a raw pointer requires `unsafe`.
 
-On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an [immutable place expression context](../expressions.md#mutability) and `*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context.
+On non-pointer types `*x` is almost equivalent to `*std::ops::Deref::deref(&x)` in an [immutable place expression context](../expressions.md#mutability) and `*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context, except for the [temporary lifetime extension].
 
 ```rust
 let x = &7;
@@ -676,6 +676,7 @@ See [this test] for an example of using this dependency.
 [undefined behavior]: ../behavior-considered-undefined.md
 [addr_of]: ../../std/ptr/macro.addr_of.html
 [addr_of_mut]: ../../std/ptr/macro.addr_of_mut.html
+[temporary lifetime extension]: ../destructors.md#temporary-lifetime-extension
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
