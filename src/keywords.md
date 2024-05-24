@@ -90,6 +90,11 @@ The following keywords are reserved beginning in the 2018 edition.
 > **<sup>Lexer 2018+</sup>**\
 > KW_TRY   : `try`
 
+The following keywords are reserved beginning in the 2024 edition.
+
+> **<sup>Lexer 2024+</sup>**\
+> KW_GEN   : `gen`
+
 ## Weak keywords
 
 These keywords have special meaning only in certain contexts. For example, it
