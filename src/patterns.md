@@ -144,12 +144,6 @@ Since negative numbers are not [literals], literal patterns also accept an optio
 
 <div class="warning">
 
-Floating-point literals are currently accepted, but due to the complexity of comparing them, they are going to be forbidden on literal patterns in a future version of Rust (see [issue #41620](https://github.com/rust-lang/rust/issues/41620)).
-
-</div>
-
-<div class="warning">
-
 C string and raw C string literals are accepted in literal patterns, but `&CStr`
 doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore
 any such `match` on a `&CStr` will be rejected with a type error.
@@ -455,6 +449,7 @@ If the bounds is written as a path, after macro resolution, the path must resolv
 
 The type and value of the bounds is dependent upon how it is written out.
 If the bounds is a [path], the pattern has the type and value of the [constant] the path resolves to.
+For float range patterns, the constant may not be a `NaN`.
 If it is a literal, it has the type and value of the corresponding [literal expression].
 If is a literal preceded by a `-`, it has the same type as the corresponding [literal expression] and the value of [negating] the value of the corresponding literal expression.
 
@@ -537,9 +532,6 @@ Range patterns for fix-width integer and `char` types are irrefutable when they 
 For example, `0u8..=255u8` is irrefutable.
 The range of values for an integer type is the closed range from its minimum to maximum value.
 The range of values for a `char` type are precisely those ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and `'\u{E000}'..='\u{10FFFF}'`.
-
-Floating point range patterns are deprecated and may be removed in a future Rust release.
-See [issue #41620](https://github.com/rust-lang/rust/issues/41620) for more information.
 
 > **Edition Differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
 
@@ -791,11 +783,30 @@ Unqualified path patterns can refer to:
 
 Qualified path patterns can only refer to associated constants.
 
-Constants cannot be a union type.
-Struct and enum constants must have `#[derive(PartialEq, Eq)]` (not merely implemented).
-
 Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
 They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.
+
+### Constant patterns
+
+When a constant `C` of type `T` is used as a pattern, we first check that `T: PartialEq`.
+Furthermore we require that the value of `C` *has (recursive) structural equality*, which is defined recursively as follows:
+
+- Integers as well as `str`, `bool` and `char` values always have structural equality.
+- Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
+  (In particular, `()` and `[]` always have structural equality.)
+- References have structural equality if the value they point to has structural equality.
+- A value of `struct` or `enum` type has structural equality if its `PartialEq` instance is derived via `#[derive(PartialEq)]`,
+  and all fields (for enums: of the active variant) have structural equality.
+- A raw pointer has structural equality if it was defined as a constant integer (and then cast/transmuted).
+- A float value has structural equality if it is not a `NaN`.
+- Nothing else has structural equality.
+
+In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
+This means that associated consts that involve generic parameters cannot be used as patterns.
+
+After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
+In particular, it fully participates in exhaustiveness checking.
+(For raw pointers, constants are the only way to write such patterns. Only `_` is ever considered exhaustive for these types.)
 
 ## Or-patterns
 
