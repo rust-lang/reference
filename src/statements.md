@@ -23,7 +23,7 @@ The two kinds of declaration statements are item declarations and `let` statemen
 ### Item declarations
 
 An *item declaration statement* has a syntactic form identical to an [item declaration][item] within a [module].
-Declaring an item within a statement block restricts its scope to the block containing the statement.
+Declaring an item within a statement block restricts its [scope] to the block containing the statement.
 The item is not given a [canonical path] nor are any sub-items it may declare.
 The exception to this is that associated items defined by [implementations] are still accessible in outer scopes as long as the item and, if applicable, trait are accessible.
 It is otherwise identical in meaning to declaring the item inside a module.
@@ -134,6 +134,7 @@ The attributes that have meaning on a statement are [`cfg`], and [the lint check
 [`cfg`]: conditional-compilation.md
 [the lint check attributes]: attributes/diagnostics.md#lint-check-attributes
 [pattern]: patterns.md
+[scope]: names/scopes.md
 [_BlockExpression_]: expressions/block-expr.md
 [_ExpressionStatement_]: #expression-statements
 [_Expression_]: expressions.md

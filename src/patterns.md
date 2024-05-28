@@ -174,7 +174,7 @@ for i in -2..5 {
 Identifier patterns bind the value they match to a variable.
 The identifier must be unique within the pattern.
 The variable will shadow any variables of the same name in scope.
-The scope of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
+The [scope] of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
 
 Patterns that consist of only an identifier, possibly with a `mut`, match any value and bind it to that identifier.
 This is the most commonly used pattern in variable declarations and parameters for functions and closures.
@@ -883,6 +883,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [path]: expressions/path-expr.md
 [pattern matching on unions]: items/unions.md#pattern-matching-on-unions
 [range expressions]: expressions/range-expr.md
+[scope]: names/scopes.md
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
