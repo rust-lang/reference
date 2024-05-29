@@ -59,8 +59,10 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
 * Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI
-* Calling a foreign (e.g. C++) function that unwinds (`throw`s) via a function
-  declaration or pointer declared with a non-unwinding ABI such as `"C"`
+* Causing an unwind into Rust code from a foreign function that was called via a
+  function declaration or pointer declared with a non-unwinding ABI, such as `"C"`,
+  `"system"`, etc. (For example, this case occurs when such a function written in
+  C++ throws an exception that is uncaught and propagates to Rust.)
 * Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
   another ABI that permits unwinding) from a runtime that does not support
   unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
