@@ -21,7 +21,7 @@ Procedural macros must be defined in a crate with the [crate type] of
 > [lib]
 > proc-macro = true
 > ```
-> 
+>
 > This will automatically links to the compiler-provided [proc_macro](https://doc.rust-lang.org/proc_macro/index.html) crate.
 > `extern crate proc_macro;` would be needed if you want to support releases
 > older than Rust 2018, or if using another build tool that does not pass the
