@@ -97,13 +97,13 @@ There are also some platform-specific ABI strings:
 ## Variadic functions
 
 Functions within external blocks may be variadic by specifying `...` as the
-last argument. There must be at least one parameter before the variadic
-parameter. The variadic parameter may optionally be specified with an
+last argument. The variadic parameter may optionally be specified with an
 identifier.
 
 ```rust
 extern "C" {
-    fn foo(x: i32, ...);
+    fn foo(...);
+    fn bar(x: i32, ...);
     fn with_name(format: *const u8, args: ...);
 }
 ```
