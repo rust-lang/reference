@@ -196,8 +196,8 @@ creating types that are interoperable with the C Language. The second purpose is
 to create types that you can soundly perform operations on that rely on data
 layout such as reinterpreting values as a different type.
 
-Because of this dual purpose, it is possible to create types that are not useful
-for interfacing with the C programming language.
+Because of this dual purpose, it is possible to create types that are not only
+useful for interfacing with the C programming language.
 
 This representation can be applied to structs, unions, and enums. The exception
 is [zero-variant enums] for which the `C` representation is an error.
