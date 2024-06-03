@@ -180,6 +180,8 @@ Example values:
 * `"llvm"`
 * `"eabihf"`
 * `"abi64"`
+* `"sim"`
+* `"macabi"`
 
 ### `target_endian`
 
