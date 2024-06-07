@@ -3,7 +3,7 @@
 > **<sup>Syntax</sup>**\
 > _Union_ :\
 > &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
->   `{`[_StructFields_] `}`
+>   `{`[_StructFields_]<sup>?</sup> `}`
 
 A union declaration uses the same syntax as a struct declaration, except with
 `union` in place of `struct`.
@@ -29,6 +29,8 @@ Union field types are restricted to the following subset of types:
 This restriction ensures, in particular, that union fields never need to be
 dropped. Like for structs and enums, it is possible to `impl Drop` for a union
 to manually define what happens when it gets dropped.
+
+Unions without any fields are not accepted by the compiler, but can be accepted by macros.
 
 ## Initialization of a union
 
