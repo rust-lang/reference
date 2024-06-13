@@ -18,14 +18,14 @@ This requires a more complex lookup process than for other functions, since ther
 The following procedure is used:
 
 The first step is to build a list of candidate receiver types.
-Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
+Obtain these by repeatedly adding each type encountered in the receiver expression's type's [`Receiver::Target`] to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
 Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
 
 For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
 
 Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:
 
-1. `T`'s inherent methods (methods implemented directly on `T`).
+1. `T`'s inherent methods, or receivers to `T`'s inherent methods (methods implemented directly on `T`, or on receivers to `T`).
 1. Any of the methods provided by a [visible] trait implemented by `T`.
    If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first.
    Then all remaining methods in scope are looked up.
@@ -94,3 +94,4 @@ Just don't define inherent methods on trait objects with the same name as a trai
 [methods]: ../items/associated-items.md#methods
 [unsized coercion]: ../type-coercions.md#unsized-coercions
 [`IntoIterator`]: ../../std/iter/trait.IntoIterator.html
+[`Receiver::Target`]: ../../std/ops/trait.Receiver.html#associatedtype.Target
