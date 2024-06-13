@@ -19,6 +19,8 @@ fn bar<'a>() {
 Since `'static` outlives the lifetime parameter `'a`, `&'static str` is a
 subtype of `&'a str`.
 
+Subtyping on lifetimes is in terms of that relationship: if `'a: 'b` ("`'a` outlives `'b`" or "`'a >= 'b`" or `'a` contains `'b`"), then `'a` is a subtype of `'b`. This is a large source of confusion, because it seems intuitively backwards to many: the bigger scope is a subtype of the smaller scope. This does in fact make sense, though. The intuitive reason for this is that if you expect an `&'a u8` (for some concrete 'a that you have already chosen), then it's totally fine for me to hand you an `&'static u8` even if `'static != 'a`, in the same way that if you expect an Animal trait, it's totally fine to hand you a Cat. Cats are just Animals and more, just as `'static` is just `'a` and more.
+
 [Higher-ranked]&#32;[function pointers] and [trait objects] have another
 subtype relation. They are subtypes of types that are given by substitutions of
 the higher-ranked lifetimes. Some examples:
