@@ -62,7 +62,7 @@ trait Seq<T> {
 }
 ```
 
-## Trait-Object Safety {#object-safety}
+## Trait-Object Safety <a id="object-safety"></a>
 
 An object-safe trait can be used in a `dyn Trait` type, and be the base trait of a [trait object].
 A trait is *object safe* if it has the following qualities (defined in [RFC 255]):
