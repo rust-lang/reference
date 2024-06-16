@@ -175,10 +175,13 @@ the hierarchy has its own collection of named entities.
 Types that can be referred to by a path directly. Specifically [enums],
 [structs], [unions], and [trait objects].
 
-### Object safe traits
+### Trait-object-safe traits
 
-[Traits] that can be used as [trait objects]. Only traits that follow specific
-[rules][object safety] are object safe.
+[Traits] that can be used in `dyn Trait` types, and allow creation of
+[trait objects]. Only traits that follow specific [rules][object safety] are
+trait-object safe.
+
+This is also called *object safety*.
 
 ### Path
 

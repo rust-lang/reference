@@ -62,12 +62,12 @@ trait Seq<T> {
 }
 ```
 
-## Object Safety
+## Trait-Object Safety {#object-safety}
 
-Object safe traits can be the base trait of a [trait object]. A trait is
-*object safe* if it has the following qualities (defined in [RFC 255]):
+An object-safe trait can be used in a `dyn Trait` type, and be the base trait of a [trait object].
+A trait is *object safe* if it has the following qualities (defined in [RFC 255]):
 
-* All [supertraits] must also be object safe.
+* All [supertraits] must also be trait-object safe.
 * `Sized` must not be a [supertrait][supertraits]. In other words, it must not require `Self: Sized`.
 * It must not have any associated constants.
 * It must not have any associated types with generics.
@@ -93,7 +93,7 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 # use std::rc::Rc;
 # use std::sync::Arc;
 # use std::pin::Pin;
-// Examples of object safe methods.
+// Examples of trait-object safe methods.
 trait TraitMethods {
     fn by_ref(self: &Self) {}
     fn by_ref_mut(self: &mut Self) {}
@@ -110,7 +110,7 @@ trait TraitMethods {
 ```
 
 ```rust,compile_fail
-// This trait is object-safe, but these methods cannot be dispatched on a trait object.
+// This trait is object-safe, but these methods cannot be dispatched on a trait object (such as `&dyn NonDispatchable`).
 trait NonDispatchable {
     // Non-methods cannot be dispatched.
     fn foo() where Self: Sized {}
@@ -135,7 +135,7 @@ obj.typed(1);  // ERROR: cannot call with generic type
 ```rust,compile_fail
 # use std::rc::Rc;
 // Examples of non-object safe traits.
-trait NotObjectSafe {
+trait NotDynCompatible {
     const CONST: i32 = 1;  // ERROR: cannot have associated const
 
     fn foo() {}  // ERROR: associated function without Sized
@@ -145,14 +145,14 @@ trait NotObjectSafe {
 }
 
 struct S;
-impl NotObjectSafe for S {
+impl NotDynCompatible for S {
     fn returns(&self) -> Self { S }
 }
-let obj: Box<dyn NotObjectSafe> = Box::new(S); // ERROR
+let obj: Box<dyn NotDynCompatible> = Box::new(S); // ERROR
 ```
 
 ```rust,compile_fail
-// Self: Sized traits are not object-safe.
+// Self: Sized traits are not trait-object-safe.
 trait TraitWithSize where Self: Sized {}
 
 struct S;
@@ -161,7 +161,7 @@ let obj: Box<dyn TraitWithSize> = Box::new(S); // ERROR
 ```
 
 ```rust,compile_fail
-// Not object safe if `Self` is a type argument.
+// Not trait-object safe if `Self` is a type argument.
 trait Super<A> {}
 trait WithSelf: Super<Self> where Self: Sized {}
 
