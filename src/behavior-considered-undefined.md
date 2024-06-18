@@ -119,7 +119,7 @@ omitted in surface Rust syntax due to automatic dereferencing; we are
 considering the fully expanded place expression here.)
 
 For instance, if `ptr` has type `*const S` where `S` has an alignment of 8, then
-`ptr` must be 8-aligned or else `(*ptr).f` is "based on an misaligned pointer".
+`*ptr` must be 8-aligned or else `(*ptr).f` is "based on an misaligned pointer".
 This is true even if the type of the field `f` is `u8` (i.e., a type with
 alignment 1). In other words, the alignment requirement derives from the type of
 the pointer that was dereferenced, *not* the type of the field that is being
