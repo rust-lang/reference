@@ -55,7 +55,7 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 ```rust
 # #[cfg(target_feature = "avx2")]
 #[target_feature(enable = "avx2")]
-unsafe fn foo_avx2() {}
+fn foo_avx2() {}
 ```
 
 Each [target architecture] has a set of features that may be enabled. It is an
@@ -66,19 +66,67 @@ It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
-Functions marked with `target_feature` are not inlined into a context that
-does not support the given features. The `#[inline(always)]` attribute may not
-be used with a `target_feature` attribute.
+For this reason, a function marked with `target_feature` is unsafe to call,
+except inside a function that has at least the exact same `target_feature`
+enabled. For example:
+
+```rust
+# #[cfg(target_feature = "avx2")] {
+#[target_feature(enable = "avx")]
+fn foo_avx() {}
+
+fn bar() {
+    // Calling `foo_avx` here is unsafe, as we must ensure that AVX is
+    // available first, even if `avx` is enabled by default on the target
+    // platform or manually enabled as compiler flags.
+    unsafe {
+        foo_avx();
+    }
+}
+
+#[target_feature(enable = "avx")]
+fn bar_avx() {
+    // Calling `foo_avx` here is safe.
+    foo_avx();
+    || foo_avx();
+}
+
+#[target_feature(enable = "avx2")]
+fn bar_avx2() {
+    // Calling `foo_avx` here is unsafe because `bar_avx2` doesn't enable `avx`
+    // specifically, even though in practice `avx2` implies `avx`.
+    unsafe {
+        foo_avx();
+    }
+}
+# }
+```
+
+Like unsafe functions, functions marked with `target_feature` cannot be
+assigned to a safe function pointer and do not implement `FnOnce`. They can
+however be assigned to unsafe function pointers:
+
+```rust
+# #[cfg(target_feature = "avx2")] {
+# #[target_feature(enable = "avx2")]
+# fn foo_avx2() {}
+
+// `unsafe` is required here.
+static MY_FN_PTR: unsafe fn () -> () = foo_avx2;
+# }
+```
+
+`#[target_feature]` may not be applied to safe trait method implementations.
+
+Functions marked with `target_feature` are not inlined into a context unless
+it supports the given features. The `#[inline(always)]` attribute may not
+be used with `target_feature`.
 
 ### Available features
 
 The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
-
-Executing code with unsupported features is undefined behavior on this platform.
-Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
@@ -142,9 +190,6 @@ Feature     | Implicitly Enables | Description
 [`xsaves`]: https://www.felixcloutier.com/x86/xsaves
 
 #### `aarch64`
-
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
 
 Further documentation on these features can be found in the [ARM Architecture
 Reference Manual], or elsewhere on [developer.arm.com].
@@ -266,9 +311,8 @@ Feature     | Implicitly Enables  | Description
 
 #### `wasm32` or `wasm64`
 
-`#[target_feature]` may be used with both safe and
-[`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
-cause undefined behavior via the `#[target_feature]` attribute because
+`#[target_feature]` may be called from a safe context on Wasm platforms. It is
+impossible to cause undefined behavior via the `#[target_feature]` attribute because
 attempting to use instructions unsupported by the Wasm engine will fail at load
 time without the risk of being interpreted in a way different from what the
 compiler expected.
