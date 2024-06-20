@@ -47,6 +47,16 @@ be ignored in favor of only building the artifacts specified by command line.
   linking Rust code into an existing non-Rust application
   because it will not have dynamic dependencies on other Rust code.
 
+  Note that, because the resulting static library contains all of the
+  dependencies, including the standard library, and also exports all public
+  symbols of them, linking the static library into an executable or shared
+  library will need special care. In case of a shared library the list of
+  exported symbols will have to be limited via e.g. a linker or symbol version
+  script, exported symbols list (macOS) or module definition file (Windows).
+  Additionally, unused sections can be removed to remove all code of
+  dependencies that is not actually used (e.g. `--gc-sections` or
+  `-dead_strip` for macOS).
+
 * `--crate-type=cdylib`, `#![crate_type = "cdylib"]` - A dynamic system
   library will be produced.  This is used when compiling
   a dynamic library to be loaded from another language.  This output type will
