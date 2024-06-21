@@ -42,13 +42,17 @@
 > [^fn-param-2015]: Function parameters with only a type are only allowed
 >   in an associated function of a [trait item] in the 2015 edition.
 
-A _function_ consists of a [block], along with a name, a set of parameters, and an output type.
+A _function_ consists of a [block] (that's the _body_ of the function),
+along with a name, a set of parameters, and an output type.
 Other than a name, all these are optional.
 Functions are declared with the keyword `fn`.
-Functions may declare a set of *input* [*variables*][variables] as parameters, through which the caller passes arguments into the function, and the *output* [*type*][type] of the value the function will return to its caller on completion.
+Functions may declare a set of *input* [*variables*][variables] as parameters,
+through which the caller passes arguments into the function, and the *output*
+[*type*][type] of the value the function will return to its caller on completion.
 If the output type is not explicitly stated, it is the [unit type].
 
-When referred to, a _function_ yields a first-class *value* of the corresponding zero-sized [*function item type*], which when called evaluates to a direct call to the function.
+When referred to, a _function_ yields a first-class *value* of the corresponding
+zero-sized [*function item type*], which when called evaluates to a direct call to the function.
 
 For example, this is a simple function:
 ```rust
@@ -63,7 +67,10 @@ Function parameters are irrefutable [patterns], so any pattern that is valid in
 an else-less `let` binding is also valid as a parameter:
 
 ```rust
-fn first((value, _): (i32, i32)) -> i32 { value }
+fn vector_len_squared((x, y): (i32, i32)) -> i32 {
+    let sum = x + y;
+    sum * sum
+}
 ```
 
 If the first parameter is a _SelfParam_, this indicates that the function is a
@@ -76,21 +83,22 @@ parameter may have an optional identifier, such as `args: ...`.
 
 ## Function body
 
-The block of a function is conceptually wrapped in a block that binds the
-argument patterns and then `return`s the value of the function's block. This
+The body block of a function is conceptually wrapped in another block that first binds the
+argument patterns and then `return`s the value of the function's body. This
 means that the tail expression of the block, if evaluated, ends up being
 returned to the caller. As usual, an explicit return expression within
 the body of the function will short-cut that implicit return, if reached.
 
 For example, the function above behaves as if it was written as:
 
-<!-- ignore: example expansion -->
-```rust,ignore
-// argument_0 is the actual first argument passed from the caller
-let (value, _) = argument_0;
-return {
-    value
-};
+```rust
+fn vector_len_squared(argument: (i32, i32)) -> i32 {
+    let (x, y) = argument;
+    return {
+        let sum = x + y;
+        sum * sum
+    };
+}
 ```
 
 Functions without a body block are terminated with a semicolon. This form
@@ -321,7 +329,7 @@ responsibility to ensure that.
 ## Attributes on functions
 
 [Outer attributes][attributes] are allowed on functions. [Inner
-attributes][attributes] are allowed directly after the `{` inside its [block].
+attributes][attributes] are allowed directly after the `{` inside its body [block].
 
 This example shows an inner attribute on a function. The function is documented
 with just the word "Example".
