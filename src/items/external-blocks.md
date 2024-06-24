@@ -120,12 +120,12 @@ compiler should link with for the items within an `extern` block. It uses the
 name of the native library to link. The `kind` key is an optional value which
 specifies the kind of library with the following possible values:
 
-- `dylib` — Indicates a dynamic library. This is the default if `kind` is not
+- `dylib` --- Indicates a dynamic library. This is the default if `kind` is not
   specified.
-- `static` — Indicates a static library.
-- `framework` — Indicates a macOS framework. This is only valid for macOS
+- `static` --- Indicates a static library.
+- `framework` --- Indicates a macOS framework. This is only valid for macOS
   targets.
-- `raw-dylib` — Indicates a dynamic library where the compiler will generate
+- `raw-dylib` --- Indicates a dynamic library where the compiler will generate
   an import library to link against (see [`dylib` versus `raw-dylib`] below
   for details). This is only valid for Windows targets.
 

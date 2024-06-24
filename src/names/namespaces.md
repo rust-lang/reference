@@ -37,7 +37,7 @@ The following is a list of namespaces, with their corresponding entities:
     * [Generic const parameters]
     * [Associated const declarations]
     * [Associated function declarations]
-    * Local bindings — [`let`], [`if let`], [`while let`], [`for`], [`match`]
+    * Local bindings --- [`let`], [`if let`], [`while let`], [`for`], [`match`]
       arms, [function parameters], [closure parameters]
     * Captured [closure] variables
 * Macro Namespace

@@ -515,8 +515,8 @@ To avoid undefined behavior, these rules must be followed when using function-sc
 
 ### Correctness and Validity
 
-In addition to all of the previous rules, the string argument to `asm!` must ultimately become—
-after all other arguments are evaluated, formatting is performed, and operands are translated—
+In addition to all of the previous rules, the string argument to `asm!` must ultimately become---
+after all other arguments are evaluated, formatting is performed, and operands are translated---
 assembly that is both syntactically correct and semantically valid for the target architecture.
 The formatting rules allow the compiler to generate assembly with correct syntax.
 Rules concerning operands permit valid translation of Rust operands into and out of `asm!`.
