@@ -60,11 +60,6 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-## Preludes and `no_std`
-
-This section has been moved to the [Preludes chapter](names/preludes.md).
-<!-- this is to appease the linkchecker, will remove once other books are updated -->
-
 ## Main Functions
 
 A crate that contains a `main` [function] can be compiled to an executable. If a
