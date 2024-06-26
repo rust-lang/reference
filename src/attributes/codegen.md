@@ -279,6 +279,7 @@ Feature               | Description
 `extended-const`      | [WebAssembly extended const expressions proposal][extended-const]
 `mutable-globals`     | [WebAssembly mutable global proposal][mutable-globals]
 `nontrapping-fptoint` | [WebAssembly non-trapping float-to-int conversion proposal][nontrapping-fptoint]
+`relaxed-simd`        | [WebAssembly relaxed simd proposal][relaxed-simd]
 `sign-ext`            | [WebAssembly sign extension operators Proposal][sign-ext]
 `simd128`             | [WebAssembly simd proposal][simd128]
 
@@ -286,6 +287,7 @@ Feature               | Description
 [extended-const]: https://github.com/WebAssembly/extended-const
 [mutable-globals]: https://github.com/WebAssembly/mutable-global
 [nontrapping-fptoint]: https://github.com/WebAssembly/nontrapping-float-to-int-conversions
+[relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
 [sign-ext]: https://github.com/WebAssembly/sign-extension-ops
 [simd128]: https://github.com/webassembly/simd
 
