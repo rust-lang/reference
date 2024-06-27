@@ -1,7 +1,10 @@
 [package]
 name = "mdbook-spec"
+version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
+description = "An mdBook preprocessor to help with the Rust specification."
+repository = "https://github.com/rust-lang/spec/"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
