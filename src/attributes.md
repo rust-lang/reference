@@ -222,7 +222,7 @@ The following is an index of all built-in attributes.
   - [`proc_macro_derive`] — Defines a derive macro.
   - [`proc_macro_attribute`] — Defines an attribute macro.
 - Diagnostics
-  - [`allow`], [`warn`], [`deny`], [`forbid`] — Alters the default lint level.
+  - [`allow`], [`expect`], [`warn`], [`deny`], [`forbid`] — Alters the default lint level.
   - [`deprecated`] — Generates deprecation notices.
   - [`must_use`] — Generates a lint for unused values.
   - [`diagnostic::on_unimplemented`] — Hints the compiler to emit a certain error
@@ -303,6 +303,7 @@ The following is an index of all built-in attributes.
 [`deprecated`]: attributes/diagnostics.md#the-deprecated-attribute
 [`derive`]: attributes/derive.md
 [`export_name`]: abi.md#the-export_name-attribute
+[`expect`]: attributes/diagnostics.md#lint-check-attributes
 [`forbid`]: attributes/diagnostics.md#lint-check-attributes
 [`global_allocator`]: runtime.md#the-global_allocator-attribute
 [`ignore`]: attributes/testing.md#the-ignore-attribute
