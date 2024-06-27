@@ -16,3 +16,5 @@ smart-punctuation = true
 
 [rust]
 edition = "2021"
+
+[preprocessor.spec]
