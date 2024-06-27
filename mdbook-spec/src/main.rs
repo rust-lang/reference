@@ -168,27 +168,28 @@ impl Preprocessor for Spec {
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
         let mut found_rules = BTreeMap::new();
-        for section in &mut book.sections {
-            let BookItem::Chapter(ch) = section else {
-                continue;
+        book.for_each_mut(|item| {
+            let BookItem::Chapter(ch) = item else {
+                return;
             };
             if ch.is_draft_chapter() {
-                continue;
+                return;
             }
             ch.content = self.rule_definitions(&ch, &mut found_rules);
             ch.content = self.admonitions(&ch);
             ch.content = std_links::std_links(&ch);
-        }
-        for section in &mut book.sections {
-            let BookItem::Chapter(ch) = section else {
-                continue;
+        });
+        // This is a separate pass because it relies on the modifications of
+        // the previous passes.
+        book.for_each_mut(|item| {
+            let BookItem::Chapter(ch) = item else {
+                return;
             };
             if ch.is_draft_chapter() {
-                continue;
+                return;
             }
             ch.content = self.auto_link_references(&ch, &found_rules);
-        }
-
+        });
         Ok(book)
     }
 }
