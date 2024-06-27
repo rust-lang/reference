@@ -92,9 +92,9 @@ All lint attributes support an additional `reason` parameter, to give context wh
 a certain attribute was added. This reason will be displayed as part of the lint
 message if the lint is emitted at the defined level.
 
-```edition2015,fail
+```rust,edition2015,compile_fail
 // `keyword_idents` is allowed by default. Here we deny it to
-// avoid migration of identifies when we update the edition.
+// avoid migration of identifiers when we update the edition.
 #![deny(
     keyword_idents,
     reason = "we want to avoid these idents to be future compatible"
