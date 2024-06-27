@@ -5,6 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::io::{self, Write as _};
 use std::process::{self, Command};
+use tempfile::TempDir;
 
 /// A markdown link (without the brackets) that might possibly be a link to
 /// the standard library using rustdoc's intra-doc notation.
@@ -34,72 +35,14 @@ static STD_LINK_EXTRACT_RE: Lazy<Regex> =
 /// Converts links to the standard library to the online documentation in a
 /// fashion similar to rustdoc intra-doc links.
 pub fn std_links(chapter: &Chapter) -> String {
-    // This is very hacky, but should work well enough.
-    //
-    // Collect all standard library links.
-    //
-    // links are tuples of ("[`std::foo`]", None) for links without dest,
-    // or ("[`foo`]", "std::foo") with a dest.
-    let mut links: Vec<_> = STD_LINK_RE
-        .captures_iter(&chapter.content)
-        .map(|cap| {
-            if let Some(no_dest) = cap.get(3) {
-                (no_dest.as_str(), None)
-            } else {
-                (
-                    cap.get(1).unwrap().as_str(),
-                    Some(cap.get(2).unwrap().as_str()),
-                )
-            }
-        })
-        .collect();
+    let links = collect_markdown_links(chapter);
     if links.is_empty() {
         return chapter.content.clone();
     }
-    links.sort();
-    links.dedup();
 
     // Write a Rust source file to use with rustdoc to generate intra-doc links.
-    let tmp = tempfile::TempDir::with_prefix("mdbook-spec-").unwrap();
-    let src_path = tmp.path().join("a.rs");
-    // Allow redundant since there could some in-scope things that are
-    // technically not necessary, but we don't care about (like
-    // [`Option`](std::option::Option)).
-    let mut src = format!(
-        "#![deny(rustdoc::broken_intra_doc_links)]\n\
-         #![allow(rustdoc::redundant_explicit_links)]\n"
-    );
-    for (link, dest) in &links {
-        write!(src, "//! - {link}").unwrap();
-        if let Some(dest) = dest {
-            write!(src, "({})", dest).unwrap();
-        }
-        src.push('\n');
-    }
-    writeln!(
-        src,
-        "extern crate alloc;\n\
-         extern crate proc_macro;\n\
-         extern crate test;\n"
-    )
-    .unwrap();
-    fs::write(&src_path, &src).unwrap();
-    let output = Command::new("rustdoc")
-        .arg("--edition=2021")
-        .arg(&src_path)
-        .current_dir(tmp.path())
-        .output()
-        .expect("rustdoc installed");
-    if !output.status.success() {
-        eprintln!(
-            "error: failed to extract std links ({:?}) in chapter {} ({:?})\n",
-            output.status,
-            chapter.name,
-            chapter.source_path.as_ref().unwrap()
-        );
-        io::stderr().write_all(&output.stderr).unwrap();
-        process::exit(1);
-    }
+    let tmp = TempDir::with_prefix("mdbook-spec-").unwrap();
+    run_rustdoc(&tmp, &links, &chapter);
 
     // Extract the links from the generated html.
     let generated =
@@ -142,4 +85,81 @@ pub fn std_links(chapter: &Chapter) -> String {
     }
 
     output
+}
+
+/// Collects all markdown links.
+///
+/// Returns a `Vec` of `(link, Option<dest>)` where markdown text like
+/// ``[`std::fmt`]`` would return that as a link. The dest is optional, for
+/// example ``[`Option`](std::option::Option)`` would have the part in
+/// parentheses as the dest.
+fn collect_markdown_links(chapter: &Chapter) -> Vec<(&str, Option<&str>)> {
+    let mut links: Vec<_> = STD_LINK_RE
+        .captures_iter(&chapter.content)
+        .map(|cap| {
+            if let Some(no_dest) = cap.get(3) {
+                (no_dest.as_str(), None)
+            } else {
+                (
+                    cap.get(1).unwrap().as_str(),
+                    Some(cap.get(2).unwrap().as_str()),
+                )
+            }
+        })
+        .collect();
+    if links.is_empty() {
+        return vec![];
+    }
+    links.sort();
+    links.dedup();
+    links
+}
+
+/// Generates links using rustdoc.
+///
+/// This takes the given links and creates a temporary Rust source file
+/// containing those links within doc-comments, and then runs rustdoc to
+/// generate intra-doc links on them.
+///
+/// The output will be in the given `tmp` directory.
+fn run_rustdoc(tmp: &TempDir, links: &[(&str, Option<&str>)], chapter: &Chapter) {
+    let src_path = tmp.path().join("a.rs");
+    // Allow redundant since there could some in-scope things that are
+    // technically not necessary, but we don't care about (like
+    // [`Option`](std::option::Option)).
+    let mut src = format!(
+        "#![deny(rustdoc::broken_intra_doc_links)]\n\
+         #![allow(rustdoc::redundant_explicit_links)]\n"
+    );
+    for (link, dest) in links {
+        write!(src, "//! - {link}").unwrap();
+        if let Some(dest) = dest {
+            write!(src, "({})", dest).unwrap();
+        }
+        src.push('\n');
+    }
+    writeln!(
+        src,
+        "extern crate alloc;\n\
+         extern crate proc_macro;\n\
+         extern crate test;\n"
+    )
+    .unwrap();
+    fs::write(&src_path, &src).unwrap();
+    let output = Command::new("rustdoc")
+        .arg("--edition=2021")
+        .arg(&src_path)
+        .current_dir(tmp.path())
+        .output()
+        .expect("rustdoc installed");
+    if !output.status.success() {
+        eprintln!(
+            "error: failed to extract std links ({:?}) in chapter {} ({:?})\n",
+            output.status,
+            chapter.name,
+            chapter.source_path.as_ref().unwrap()
+        );
+        io::stderr().write_all(&output.stderr).unwrap();
+        process::exit(1);
+    }
 }
