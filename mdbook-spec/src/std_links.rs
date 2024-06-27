@@ -87,6 +87,9 @@ pub fn std_links(chapter: &Chapter) -> String {
     // Append the link definitions to the bottom of the chapter.
     write!(output, "\n").unwrap();
     for ((link, dest), url) in links.iter().zip(urls) {
+        // Convert links to be relative so that links work offline and
+        // with the linkchecker.
+        let url = relative_url(url, chapter);
         if let Some(dest) = dest {
             write!(output, "[{dest}]: {url}\n").unwrap();
         } else {
@@ -186,5 +189,26 @@ fn run_rustdoc(tmp: &TempDir, links: &[(&str, Option<&str>)], chapter: &Chapter)
         );
         io::stderr().write_all(&output.stderr).unwrap();
         process::exit(1);
+    }
+}
+
+static DOC_URL: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"^https://doc.rust-lang.org/(?:nightly|beta|stable|dev|1\.[0-9]+\.[0-9]+)").unwrap()
+});
+
+/// Converts a URL to doc.rust-lang.org to be relative.
+fn relative_url(url: &str, chapter: &Chapter) -> String {
+    // Set SPEC_RELATIVE=0 to disable this, which can be useful for working locally.
+    if std::env::var("SPEC_RELATIVE").as_deref() != Ok("0") {
+        let Some(url_start) = DOC_URL.shortest_match(url) else {
+            eprintln!("expected rustdoc URL to start with {DOC_URL:?}, got {url}");
+            std::process::exit(1);
+        };
+        let url_path = &url[url_start..];
+        let num_dots = chapter.path.as_ref().unwrap().components().count();
+        let dots = vec![".."; num_dots].join("/");
+        format!("{dots}{url_path}")
+    } else {
+        url.to_string()
     }
 }
