@@ -142,6 +142,7 @@ Example values:
 * `"unix"`
 * `"windows"`
 * `"wasm"`
+* Both `"unix"` and `"wasm"`
 
 ### `unix` and `windows`
 
