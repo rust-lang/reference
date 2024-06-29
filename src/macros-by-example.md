@@ -196,6 +196,276 @@ compiler knows how to expand them properly:
     not have the same number. This requirement applies to every layer of nested
     repetitions.
 
+## Metavariable expressions
+
+Metavariable expressions live within a special braced syntax `${...}` and are function-like operators used to access "meta" information about how macros get matched and expanded, such as how many items get matched in a repetition group. This information is typically difficult or even
+impossible to otherwise obtain.
+
+### count($ident, depth=0)
+
+Expands to an unsuffixed integer literal representing the number of times a ***repetition*** repeats in total. That is, this will be the number of times that a repetition would be expanded.
+
+The output of `count` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+macro_rules! count_idents {
+    ( $( $i:ident ),* ) => {
+        ${count($i)}
+    };
+}
+
+fn main() {
+    assert_eq!(count_idents!(a, b, c), 3);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to
+count the repetitions of a parent repetition group.
+
+Let `M` be the number of repetition groups in the matcher, `T` the depth placement in the transcriber and `C` the written depth in `count`, then it is possible to infer that `M > T + C`.
+
+We are counting how often the repetition group `C` up from a metavariable in the matcher occurs inside the current iteration of the `T` outer repetitions in the transcriber, effectively making the metavariable a reference or starting point.
+
+```rust
+macro_rules! count_value {
+    ( $( $name:ident: $( $value:literal ),* );+ ) => {
+        // Count the total number of times that the (innermost) group
+        // containing `$value` gets matched.
+        ${count($value)}
+        // This is the same as `${count($value, 0)}`
+    };
+}
+macro_rules! count_name1 {
+    ( $( $name:ident: $( $value:literal ),* );+ ) => {
+        // This is one way to get the number of times that the group
+        // containing `$name` gets matched. Alternatively...
+        ${count($name)}
+    };
+}
+macro_rules! count_name2 {
+    ( $( $name:ident: $( $value:literal ),* );+ ) => {
+        // ...`$value` can be used again with a depth specifier of 1,
+        // indicating that repetitions of the 1st parent group of
+        // `$value` should be counted, rather than `$value`'s innermost group.
+        //
+        // `1` is the maximum value here since `$value`'s group has a single
+        // parent.
+        ${count($value, 1)}
+    };
+}
+macro_rules! count_value_nested {
+    ( $( $name:ident: $( $value:literal ),* );+ ) => {
+        [ $(
+            // using `count` within a repetition group will return the number
+            // of times `$value` is matched _within that group_.
+            ${count($value)},
+        )+ ]
+    };
+}
+fn main() {
+    // all instances of `$value` counted: count(1, 2, 3, 4, 5) = 5
+    assert_eq!(count_value!(a: 1, 2, 3; b: 4, 5), 5);
+    // count(1, 2, 3, ... 11) = 11
+    assert_eq!(
+        count_value!(a: 1, 2, 3; b: 4, 5; c: 6, 7; d: 8, 9, 10, 11),
+        11
+    );
+    // `$value` is never matched; count() = 0
+    assert_eq!(count_value!(a:), 0);
+    // count(a, b) = 2 matches
+    assert_eq!(count_name1!(a: 1, 2, 3; b: 4, 5), 2);
+    // count(a, b, c, d) = 4 matches
+    assert_eq!(
+        count_name1!(a: 1, 2, 3; b: 4, 5; c: 6, 7; d: 8, 9, 10, 11),
+        4
+    );
+    // count(a) = 1 match
+    assert_eq!(count_name1!(a:), 1);
+    // These have the same results as the above
+    assert_eq!(count_name2!(a: 1, 2, 3; b: 4, 5), 2);
+    assert_eq!(
+        count_name2!(a: 1, 2, 3; b: 4, 5; c: 6, 7; d: 8, 9, 10, 11),
+        4
+    );
+    assert_eq!(count_name2!(a:), 1);
+    // first match: count(1, 2, 3) = 3. second match: count(4, 5) = 2.
+    assert_eq!(count_value_nested!(a: 1, 2, 3; b: 4, 5), [3, 2]);
+    // first match: count(1, 2, 3) = 3. second match: count(4, 5) = 2.
+    // third match: count(6, 7) = 4. fourth match: count(8, 9, 10, 11) = 4.
+    assert_eq!(
+        count_value_nested!(a: 1, 2, 3; b: 4, 5; c: 6, 7; d: 8, 9, 10, 11),
+        [3, 2, 2, 4]
+    );
+    // `$value` is never matched; count() = 0
+    assert_eq!(count_value_nested!(a:), [0]);
+}
+```
+
+`count` can not be placed inside the repetition depth of its referenced metavariable, otherwise the output would always be 1.
+
+### ignore($ident)
+
+Sometimes it is desired to repeat an expansion the same number of times as a metavariable repeats but without actually expanding the metavariable.
+
+```rust
+macro_rules! count {
+    ( $( $i:ident ),* ) => {{
+        0 $( + 1 ${ignore($i)} )*
+    }};
+}
+fn main() {
+    assert_eq!(count!(a, b, c), 3);
+}
+```
+
+The `ignore` metavariable acts as if the ident was used for the purposes of repetition, but expands to nothing.
+
+### index(depth=0)
+
+Expands to an unsuffixed integer literal representing the current iteration index of a ***repetition*** at a given depth.
+
+The output of `index` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+/// The length of all items within a tuple
+trait TotalLen {
+    fn total_len(&self) -> usize;
+}
+/// Implement `TotalLen` for a n-length tuple
+macro_rules! impl_tuple {
+    ( $( $generic:ident ),* ) => {
+        impl<$( $generic, )*> TotalLen for ($( $generic, )*)
+        where
+            $( $generic: AsRef<[u8]>, )*
+        {
+            fn total_len(&self) -> usize {
+                let mut sum: usize = 0;
+                $({ // repetition
+                    ${ignore($generic)}
+                    // `${index()}` will expand to 0, 1, 2... for each tuple element
+                    sum = sum.wrapping_add(self.${index()}.as_ref().len());
+                })* // end repetition
+                sum
+            }
+        }
+    };
+}
+// Implement for length 2 tuple
+impl_tuple!(T1, T2);
+// Implement for length 3 tuple
+impl_tuple!(T1, T2, T3);
+
+fn main() {
+    assert_eq!(([1, 2, 3], [4, 5]).total_len(), 5);
+    assert_eq!(([1].as_slice(), vec![2, 3]).total_len(), 3);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to
+count the repetitions of a parent repetition group.
+
+```rust
+macro_rules! innermost0 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        // Count the index of `$b`'s group
+        [$( $( ${ignore($b)} ${index()}, )* )+]
+    };
+}
+
+macro_rules! innermost1 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        // Count the index of `$b`'s parent repetition group, i.e. `$a`'s group
+        [$( $( ${ignore($b)} ${index(1)}, )* )+]
+    };
+}
+
+macro_rules! outermost {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        // // Count the index of `$a`'s group directly
+        [$( ${ignore($a)} ${index()}, )+]
+    };
+}
+
+fn main() {
+    // 1 2 3 = 3 elements
+    // 4 5 = 2 elements
+    //
+    // Increasing list from the innermost loop referring innermost indexes
+    assert_eq!(innermost0!(a: 1, 2, 3; b: 4, 5), [0, 1, 2, 0, 1]);
+    
+    // a b = 2 elements
+    //
+    // Increasing list from the innermost loop referring outermost indexes
+    assert_eq!(innermost1!(a: 1, 2, 3; b: 4, 5), [0, 0, 0, 1, 1]);
+    
+    // a b = 2 elements
+    //
+    // Increasing list from the outermost loop referring outermost indexes
+    assert_eq!(outermost!(a: 1, 2, 3; b: 4, 5), [0, 1]);
+}
+```
+
+### len(depth=0)
+
+Expands to an unsuffixed integer literal representing the sum or length of a ***repetition*** at a given depth.
+
+The output of `len` depends on where it is placed as well the provided index. If no index is provided, then it will always start at the innermost level.
+
+```rust
+macro_rules! array {
+    ( $( $i:ident ),* ) => {
+        [$( ${len()}, )*]
+    };
+}
+
+fn main() {
+    assert_eq!(array!(A, B, C), [3, 3, 3]);
+}
+```
+
+If repetitions are nested, then the optional depth parameter can be used to
+count the repetitions of a parent repetition group.
+
+```rust
+macro_rules! innermost0 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${len()}, )* )+]
+    };
+}
+
+macro_rules! innermost1 {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( $( ${ignore($b)} ${len(1)}, )* )+]
+    };
+}
+
+macro_rules! outermost {
+    ( $( $a:ident: $( $b:literal ),* );+ ) => {
+        [$( ${ignore($a)} ${len()}, )+]
+    };
+}
+
+fn main() {
+    // 1 2 3 = 3 elements
+    // 4 5 = 2 elements
+    //
+    // 3 and 2 elements repeating 3 and 2 times in the innermost loop
+    assert_eq!(innermost0!(a: 1, 2, 3; b: 4, 5), [3, 3, 3, 2, 2]);
+    
+    // a b = 2 elements
+    //
+    // 2 elements repeating 5 times in the innermost loop
+    assert_eq!(innermost1!(a: 1, 2, 3; b: 4, 5), [2, 2, 2, 2, 2]);
+    
+    // a b = 2 elements
+    //
+    // 2 elements repeating 2 times in the outermost loop
+    assert_eq!(outermost!(a: 1, 2, 3; b: 4, 5), [2, 2]);
+}
+```
+
+Unlike `count`, `len` must be placed inside a repetition.
+
 ## Scoping, Exporting, and Importing
 
 For historical reasons, the scoping of macros by example does not work entirely
