@@ -170,7 +170,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `[T; n]` to `[T]`.
 
-* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
+* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [trait-object safe].
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
@@ -269,7 +269,7 @@ precisely.
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
-[object safe]: items/traits.md#object-safety
+[trait-object safe]: items/traits.md#object-safety
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: ../std/marker/trait.Unsize.html
 [`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
