@@ -380,18 +380,6 @@ pub use bar::*;
 # fn main() {}
 ```
 
-If an in-scope item has the same name as a crate name in the [extern prelude], then `use` of that crate name requires a leading `::` to unambiguously select the crate name or `crate::` to use the item from the crate root.
-
-```rust,compile_fail
-use std::fs; // Error, this is ambiguous.
-
-mod std {
-    pub mod fs {}
-}
-# fn main() {}
-```
-
-
 [_SimplePath_]: ../paths.md#simple-paths
 [`extern crate`]: extern-crates.md
 [`macro_rules`]: ../macros-by-example.md
