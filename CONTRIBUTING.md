@@ -16,7 +16,7 @@ enough that we can remove the warning.
 
 It is encouraged for you to read the [introduction] to familiarize yourself
 with the kind of content the reference is expected to contain and the
-conventions it uses. Also, the [style guide] provides more detailed guidelines
+conventions it uses. Also, the [Authoring Guide] provides more detailed guidelines
 for formatting and content.
 
 ## Critiquing the Reference
@@ -72,5 +72,5 @@ helpful for writing the documentation.
 [issue tracker]: https://github.com/rust-lang/reference/issues
 [playpen]: https://play.rust-lang.org/
 [rust-lang/rust]: https://github.com/rust-lang/rust/
-[style guide]: STYLE.md
+[Authoring Guide]: docs/authoring.md
 [unstable]: https://doc.rust-lang.org/nightly/unstable-book/

@@ -15,3 +15,5 @@ edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
 
 [rust]
 edition = "2021"
+
+[preprocessor.spec]
