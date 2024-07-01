@@ -51,7 +51,7 @@ fn check_directory(dir: &Path, bad: &mut bool) -> Result<(), Box<dyn Error>> {
         if contents.contains("#![feature") {
             style_error!(bad, path, "#![feature] attributes are not allowed");
         }
-        if contents.contains('\r') {
+        if !cfg!(windows) && contents.contains('\r') {
             style_error!(
                 bad,
                 path,
@@ -63,6 +63,15 @@ fn check_directory(dir: &Path, bad: &mut bool) -> Result<(), Box<dyn Error>> {
         }
         if !contents.ends_with('\n') {
             style_error!(bad, path, "file must end with a newline");
+        }
+        if contents.contains('\u{2013}') {
+            style_error!(bad, path, "en-dash not allowed, use two dashes like --");
+        }
+        if contents.contains('\u{2014}') {
+            style_error!(bad, path, "em-dash not allowed, use three dashes like ---");
+        }
+        if contents.contains('\u{a0}') {
+            style_error!(bad, path, "don't use 0xa0 no-break-space, use &nbsp; instead");
         }
         for line in contents.lines() {
             if line.ends_with(' ') {
