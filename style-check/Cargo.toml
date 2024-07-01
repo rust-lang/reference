@@ -5,4 +5,4 @@ authors = ["steveklabnik <steve@steveklabnik.com>"]
 edition = "2021"
 
 [dependencies]
-pulldown-cmark = "0.8"
+pulldown-cmark = "0.10.0"
