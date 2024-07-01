@@ -93,7 +93,7 @@ A suffix is a sequence of characters following the primary part of a literal (wi
 
 > **<sup>Lexer</sup>**\
 > SUFFIX : IDENTIFIER_OR_KEYWORD\
-> SUFFIX_NO_E : SUFFIX <sub>_not beginning with `e` or `E`_</sub>
+> SUFFIX_NO_E : SUFFIX <sub>_not beginning with `e` or `E`_</sub>
 
 Any kind of literal (string, integer, etc) with any suffix is valid as a token.
 

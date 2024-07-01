@@ -148,9 +148,9 @@ when generating debuginfo for code calling this macro.
 The attribute uses the [_MetaListIdents_] syntax to specify its inputs, and can only be applied to macro definitions.
 
 Accepted options:
-- `#[collapse_debuginfo(yes)]` — code locations in debuginfo are collapsed.
-- `#[collapse_debuginfo(no)]` — code locations in debuginfo are not collapsed.
-- `#[collapse_debuginfo(external)]` — code locations in debuginfo are collapsed only if the macro comes from a different crate.
+- `#[collapse_debuginfo(yes)]` --- code locations in debuginfo are collapsed.
+- `#[collapse_debuginfo(no)]` --- code locations in debuginfo are not collapsed.
+- `#[collapse_debuginfo(external)]` --- code locations in debuginfo are collapsed only if the macro comes from a different crate.
 
 The `external` behavior is the default for macros that don't have this attribute, unless they are built-in macros.
 For built-in macros the default is `yes`.

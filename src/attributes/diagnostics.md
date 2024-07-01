@@ -281,14 +281,14 @@ deprecation, including the `since` version and `note`, if available.
 
 The `deprecated` attribute has several forms:
 
-- `deprecated` — Issues a generic message.
-- `deprecated = "message"` — Includes the given string in the deprecation
+- `deprecated` --- Issues a generic message.
+- `deprecated = "message"` --- Includes the given string in the deprecation
   message.
 - [_MetaListNameValueStr_] syntax with two optional fields:
-  - `since` — Specifies a version number when the item was deprecated. `rustc`
+  - `since` --- Specifies a version number when the item was deprecated. `rustc`
     does not currently interpret the string, but external tools like [Clippy]
     may check the validity of the value.
-  - `note` — Specifies a string that should be included in the deprecation
+  - `note` --- Specifies a string that should be included in the deprecation
     message. This is typically used to provide an explanation about the
     deprecation and preferred alternatives.
 
@@ -437,9 +437,9 @@ The attribute should be placed on a [trait declaration], though it is not an err
 The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
 The following keys have the given meaning:
 
-* `message` — The text for the top level error message.
-* `label` — The text for the label shown inline in the broken code in the error message.
-* `note` — Provides additional notes.
+* `message` --- The text for the top level error message.
+* `label` --- The text for the label shown inline in the broken code in the error message.
+* `note` --- Provides additional notes.
 
 The `note` option can appear several times, which results in several note messages being emitted.
 If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
@@ -449,8 +449,8 @@ For any other non-existing option a lint-warning is generated.
 All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
 Format parameters with the given named parameter will be replaced with the following text:
 
-* `{Self}` — The name of the type implementing the trait.
-* `{` *GenericParameterName* `}` — The name of the generic argument's type for the given generic parameter.
+* `{Self}` --- The name of the type implementing the trait.
+* `{` *GenericParameterName* `}` --- The name of the generic argument's type for the given generic parameter.
 
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 

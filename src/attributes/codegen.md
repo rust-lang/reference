@@ -82,33 +82,33 @@ functions][unsafe function].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
-`adx`       |          | [ADX] — Multi-Precision Add-Carry Instruction Extensions
-`aes`       | `sse2`   | [AES] — Advanced Encryption Standard
-`avx`       | `sse4.2` | [AVX] — Advanced Vector Extensions
-`avx2`      | `avx`    | [AVX2] — Advanced Vector Extensions 2
-`bmi1`      |          | [BMI1] — Bit Manipulation Instruction Sets
-`bmi2`      |          | [BMI2] — Bit Manipulation Instruction Sets 2
-`cmpxchg16b`|          | [`cmpxchg16b`] - Compares and exchange 16 bytes (128 bits) of data atomically
-`f16c`      | `avx`    | [F16C] — 16-bit floating point conversion instructions
-`fma`       | `avx`    | [FMA3] — Three-operand fused multiply-add
-`fxsr`      |          | [`fxsave`] and [`fxrstor`] — Save and restore x87 FPU, MMX Technology, and SSE State
-`lzcnt`     |          | [`lzcnt`] — Leading zeros count
-`movbe`     |          | [`movbe`] - Move data after swapping bytes
-`pclmulqdq` | `sse2`   | [`pclmulqdq`] — Packed carry-less multiplication quadword
-`popcnt`    |          | [`popcnt`] — Count of bits set to 1
-`rdrand`    |          | [`rdrand`] — Read random number
-`rdseed`    |          | [`rdseed`] — Read random seed
-`sha`       | `sse2`   | [SHA] — Secure Hash Algorithm
-`sse`       |          | [SSE] — Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
-`sse2`      | `sse`    | [SSE2] — Streaming SIMD Extensions 2
-`sse3`      | `sse2`   | [SSE3] — Streaming SIMD Extensions 3
-`sse4.1`    | `ssse3`  | [SSE4.1] — Streaming SIMD Extensions 4.1
-`sse4.2`    | `sse4.1` | [SSE4.2] — Streaming SIMD Extensions 4.2
-`ssse3`     | `sse3`   | [SSSE3] — Supplemental Streaming SIMD Extensions 3
-`xsave`     |          | [`xsave`] — Save processor extended states
-`xsavec`    |          | [`xsavec`] — Save processor extended states with compaction
-`xsaveopt`  |          | [`xsaveopt`] — Save processor extended states optimized
-`xsaves`    |          | [`xsaves`] — Save processor extended states supervisor
+`adx`       |          | [ADX] --- Multi-Precision Add-Carry Instruction Extensions
+`aes`       | `sse2`   | [AES] --- Advanced Encryption Standard
+`avx`       | `sse4.2` | [AVX] --- Advanced Vector Extensions
+`avx2`      | `avx`    | [AVX2] --- Advanced Vector Extensions 2
+`bmi1`      |          | [BMI1] --- Bit Manipulation Instruction Sets
+`bmi2`      |          | [BMI2] --- Bit Manipulation Instruction Sets 2
+`cmpxchg16b`|          | [`cmpxchg16b`] --- Compares and exchange 16 bytes (128 bits) of data atomically
+`f16c`      | `avx`    | [F16C] --- 16-bit floating point conversion instructions
+`fma`       | `avx`    | [FMA3] --- Three-operand fused multiply-add
+`fxsr`      |          | [`fxsave`] and [`fxrstor`] --- Save and restore x87 FPU, MMX Technology, and SSE State
+`lzcnt`     |          | [`lzcnt`] --- Leading zeros count
+`movbe`     |          | [`movbe`] --- Move data after swapping bytes
+`pclmulqdq` | `sse2`   | [`pclmulqdq`] --- Packed carry-less multiplication quadword
+`popcnt`    |          | [`popcnt`] --- Count of bits set to 1
+`rdrand`    |          | [`rdrand`] --- Read random number
+`rdseed`    |          | [`rdseed`] --- Read random seed
+`sha`       | `sse2`   | [SHA] --- Secure Hash Algorithm
+`sse`       |          | [SSE] --- Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
+`sse2`      | `sse`    | [SSE2] --- Streaming SIMD Extensions 2
+`sse3`      | `sse2`   | [SSE3] --- Streaming SIMD Extensions 3
+`sse4.1`    | `ssse3`  | [SSE4.1] --- Streaming SIMD Extensions 4.1
+`sse4.2`    | `sse4.1` | [SSE4.2] --- Streaming SIMD Extensions 4.2
+`ssse3`     | `sse3`   | [SSSE3] --- Supplemental Streaming SIMD Extensions 3
+`xsave`     |          | [`xsave`] --- Save processor extended states
+`xsavec`    |          | [`xsavec`] --- Save processor extended states with compaction
+`xsaveopt`  |          | [`xsaveopt`] --- Save processor extended states optimized
+`xsaves`    |          | [`xsaves`] --- Save processor extended states supervisor
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
@@ -159,50 +159,50 @@ Reference Manual], or elsewhere on [developer.arm.com].
 
 Feature        | Implicitly Enables | Feature Name
 ---------------|--------------------|-------------------
-`aes`          | `neon`         | FEAT_AES & FEAT_PMULL - Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
-`bf16`         |                | FEAT_BF16 - BFloat16 instructions
-`bti`          |                | FEAT_BTI - Branch Target Identification
-`crc`          |                | FEAT_CRC - CRC32 checksum instructions
-`dit`          |                | FEAT_DIT - Data Independent Timing instructions
-`dotprod`      |                | FEAT_DotProd - Advanced SIMD Int8 dot product instructions
-`dpb`          |                | FEAT_DPB - Data cache clean to point of persistence
-`dpb2`         |                | FEAT_DPB2 - Data cache clean to point of deep persistence
-`f32mm`        | `sve`          | FEAT_F32MM - SVE single-precision FP matrix multiply instruction
-`f64mm`        | `sve`          | FEAT_F64MM - SVE double-precision FP matrix multiply instruction
-`fcma`         | `neon`         | FEAT_FCMA - Floating point complex number support
-`fhm`          | `fp16`         | FEAT_FHM - Half-precision FP FMLAL instructions
-`flagm`        |                | FEAT_FlagM - Conditional flag manipulation
-`fp16`         | `neon`         | FEAT_FP16 - Half-precision FP data processing
-`frintts`      |                | FEAT_FRINTTS - Floating-point to int helper instructions
-`i8mm`         |                | FEAT_I8MM - Int8 Matrix Multiplication
-`jsconv`       | `neon`         | FEAT_JSCVT - JavaScript conversion instruction
-`lse`          |                | FEAT_LSE - Large System Extension
-`lor`          |                | FEAT_LOR - Limited Ordering Regions extension
-`mte`          |                | FEAT_MTE & FEAT_MTE2 - Memory Tagging Extension
-`neon`         |                | FEAT_FP & FEAT_AdvSIMD - Floating Point and Advanced SIMD extension
-`pan`          |                | FEAT_PAN - Privileged Access-Never extension
-`paca`         |                | FEAT_PAuth - Pointer Authentication (address authentication)
-`pacg`         |                | FEAT_PAuth - Pointer Authentication (generic authentication)
-`pmuv3`        |                | FEAT_PMUv3 - Performance Monitors extension (v3)
-`rand`         |                | FEAT_RNG - Random Number Generator
-`ras`          |                | FEAT_RAS & FEAT_RASv1p1 - Reliability, Availability and Serviceability extension
-`rcpc`         |                | FEAT_LRCPC - Release consistent Processor Consistent
-`rcpc2`        | `rcpc`         | FEAT_LRCPC2 - RcPc with immediate offsets
-`rdm`          |                | FEAT_RDM - Rounding Double Multiply accumulate
-`sb`           |                | FEAT_SB - Speculation Barrier
-`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 - Advanced SIMD SHA instructions
-`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 - Advanced SIMD SHA instructions
-`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 - Advanced SIMD SM3/4 instructions
-`spe`          |                | FEAT_SPE - Statistical Profiling Extension
-`ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 - Speculative Store Bypass Safe
-`sve`          | `fp16`         | FEAT_SVE - Scalable Vector Extension
-`sve2`         | `sve`          | FEAT_SVE2 - Scalable Vector Extension 2
-`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES - SVE AES instructions
-`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 - SVE SM4 instructions
-`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 - SVE SHA3 instructions
-`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm - SVE Bit Permute
-`tme`          |                | FEAT_TME - Transactional Memory Extension
-`vh`           |                | FEAT_VHE - Virtualization Host Extensions
+`aes`          | `neon`         | FEAT_AES & FEAT_PMULL --- Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
+`bf16`         |                | FEAT_BF16 --- BFloat16 instructions
+`bti`          |                | FEAT_BTI --- Branch Target Identification
+`crc`          |                | FEAT_CRC --- CRC32 checksum instructions
+`dit`          |                | FEAT_DIT --- Data Independent Timing instructions
+`dotprod`      |                | FEAT_DotProd --- Advanced SIMD Int8 dot product instructions
+`dpb`          |                | FEAT_DPB --- Data cache clean to point of persistence
+`dpb2`         |                | FEAT_DPB2 --- Data cache clean to point of deep persistence
+`f32mm`        | `sve`          | FEAT_F32MM --- SVE single-precision FP matrix multiply instruction
+`f64mm`        | `sve`          | FEAT_F64MM --- SVE double-precision FP matrix multiply instruction
+`fcma`         | `neon`         | FEAT_FCMA --- Floating point complex number support
+`fhm`          | `fp16`         | FEAT_FHM --- Half-precision FP FMLAL instructions
+`flagm`        |                | FEAT_FlagM --- Conditional flag manipulation
+`fp16`         | `neon`         | FEAT_FP16 --- Half-precision FP data processing
+`frintts`      |                | FEAT_FRINTTS --- Floating-point to int helper instructions
+`i8mm`         |                | FEAT_I8MM --- Int8 Matrix Multiplication
+`jsconv`       | `neon`         | FEAT_JSCVT --- JavaScript conversion instruction
+`lse`          |                | FEAT_LSE --- Large System Extension
+`lor`          |                | FEAT_LOR --- Limited Ordering Regions extension
+`mte`          |                | FEAT_MTE & FEAT_MTE2 --- Memory Tagging Extension
+`neon`         |                | FEAT_FP & FEAT_AdvSIMD --- Floating Point and Advanced SIMD extension
+`pan`          |                | FEAT_PAN --- Privileged Access-Never extension
+`paca`         |                | FEAT_PAuth --- Pointer Authentication (address authentication)
+`pacg`         |                | FEAT_PAuth --- Pointer Authentication (generic authentication)
+`pmuv3`        |                | FEAT_PMUv3 --- Performance Monitors extension (v3)
+`rand`         |                | FEAT_RNG --- Random Number Generator
+`ras`          |                | FEAT_RAS & FEAT_RASv1p1 --- Reliability, Availability and Serviceability extension
+`rcpc`         |                | FEAT_LRCPC --- Release consistent Processor Consistent
+`rcpc2`        | `rcpc`         | FEAT_LRCPC2 --- RcPc with immediate offsets
+`rdm`          |                | FEAT_RDM --- Rounding Double Multiply accumulate
+`sb`           |                | FEAT_SB --- Speculation Barrier
+`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 --- Advanced SIMD SHA instructions
+`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 --- Advanced SIMD SHA instructions
+`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
+`spe`          |                | FEAT_SPE --- Statistical Profiling Extension
+`ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
+`sve`          | `fp16`         | FEAT_SVE --- Scalable Vector Extension
+`sve2`         | `sve`          | FEAT_SVE2 --- Scalable Vector Extension 2
+`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES --- SVE AES instructions
+`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 --- SVE SM4 instructions
+`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 --- SVE SHA3 instructions
+`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm --- SVE Bit Permute
+`tme`          |                | FEAT_TME --- Transactional Memory Extension
+`vh`           |                | FEAT_VHE --- Virtualization Host Extensions
 
 #### `riscv32` or `riscv64`
 
@@ -218,27 +218,27 @@ in another manual hosted on the [RISC-V GitHub Account].
 
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
-`a`         |                     | [A][rv-a] — Atomic instructions
-`c`         |                     | [C][rv-c] — Compressed instructions
-`m`         |                     | [M][rv-m] — Integer Multiplication and Division instructions
-`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] — Bit Manipulation instructions
-`zba`       |                     | [Zba][rv-zb-zba] — Address Generation instructions
-`zbb`       |                     | [Zbb][rv-zb-zbb] — Basic bit-manipulation
-`zbc`       |                     | [Zbc][rv-zb-zbc] — Carry-less multiplication
-`zbkb`      |                     | [Zbkb][rv-zb-zbkb] — Bit Manipulation Instructions for Cryptography
-`zbkc`      |                     | [Zbkc][rv-zb-zbc] — Carry-less multiplication for Cryptography
-`zbkx`      |                     | [Zbkx][rv-zb-zbkx] — Crossbar permutations
-`zbs`       |                     | [Zbs][rv-zb-zbs] — Single-bit instructions
-`zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] — Scalar Cryptography
-`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] — NIST Algorithm suite extension
-`zknd`      |                                                    | [Zknd][rv-zknd] — NIST Suite: AES Decryption
-`zkne`      |                                                    | [Zkne][rv-zkne] — NIST Suite: AES Encryption
-`zknh`      |                                                    | [Zknh][rv-zknh] — NIST Suite: Hash Function Instructions
-`zkr`       |                                                    | [Zkr][rv-zkr] — Entropy Source Extension
-`zks`       | `zksed`, `zksh`, `zbkb`, `zbkc`, `zkbx`            | [Zks][rv-zks] — ShangMi Algorithm Suite
-`zksed`     |                                                    | [Zksed][rv-zksed] — ShangMi Suite: SM4 Block Cipher Instructions
-`zksh`      |                                                    | [Zksh][rv-zksh] — ShangMi Suite: SM3 Hash Function Instructions
-`zkt`       |                                                    | [Zkt][rv-zkt] — Data Independent Execution Latency Subset
+`a`         |                     | [A][rv-a] --- Atomic instructions
+`c`         |                     | [C][rv-c] --- Compressed instructions
+`m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
+`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] --- Bit Manipulation instructions
+`zba`       |                     | [Zba][rv-zb-zba] --- Address Generation instructions
+`zbb`       |                     | [Zbb][rv-zb-zbb] --- Basic bit-manipulation
+`zbc`       |                     | [Zbc][rv-zb-zbc] --- Carry-less multiplication
+`zbkb`      |                     | [Zbkb][rv-zb-zbkb] --- Bit Manipulation Instructions for Cryptography
+`zbkc`      |                     | [Zbkc][rv-zb-zbc] --- Carry-less multiplication for Cryptography
+`zbkx`      |                     | [Zbkx][rv-zb-zbkx] --- Crossbar permutations
+`zbs`       |                     | [Zbs][rv-zb-zbs] --- Single-bit instructions
+`zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
+`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
+`zknd`      |                                                    | [Zknd][rv-zknd] --- NIST Suite: AES Decryption
+`zkne`      |                                                    | [Zkne][rv-zkne] --- NIST Suite: AES Encryption
+`zknh`      |                                                    | [Zknh][rv-zknh] --- NIST Suite: Hash Function Instructions
+`zkr`       |                                                    | [Zkr][rv-zkr] --- Entropy Source Extension
+`zks`       | `zksed`, `zksh`, `zbkb`, `zbkc`, `zkbx`            | [Zks][rv-zks] --- ShangMi Algorithm Suite
+`zksed`     |                                                    | [Zksed][rv-zksed] --- ShangMi Suite: SM4 Block Cipher Instructions
+`zksh`      |                                                    | [Zksh][rv-zksh] --- ShangMi Suite: SM3 Hash Function Instructions
+`zkt`       |                                                    | [Zkt][rv-zkt] --- Data Independent Execution Latency Subset
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
@@ -443,8 +443,8 @@ It is a compilation error to use the `instruction_set` attribute on a target tha
 
 For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 
-* `arm::a32` - Generate the function as A32 "ARM" code.
-* `arm::t32` - Generate the function as T32 "Thumb" code.
+* `arm::a32` --- Generate the function as A32 "ARM" code.
+* `arm::t32` --- Generate the function as T32 "Thumb" code.
 
 <!-- ignore: arm-only -->
 ```rust,ignore

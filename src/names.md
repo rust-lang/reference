@@ -6,7 +6,7 @@ the source program, usually via a [path]. Entities include [types], [items],
 [fields], [attributes], and [lints].
 
 A *declaration* is a syntactical construct that can introduce a *name* to
-refer to an entity. Entity names are valid within a [*scope*] — a region of
+refer to an entity. Entity names are valid within a [*scope*] --- a region of
 source text where that name may be referenced.
 
 Some entities are [explicitly declared](#explicitly-declared-entities) in the
@@ -65,11 +65,11 @@ The following entities are implicitly defined by the language, or are
 introduced by compiler options and extensions:
 
 * [Language prelude]:
-    * [Boolean type] — `bool`
-    * [Textual types] — `char` and `str`
-    * [Integer types] — `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
-    * [Machine-dependent integer types] — `usize` and `isize`
-    * [floating-point types] — `f32` and `f64`
+    * [Boolean type] --- `bool`
+    * [Textual types] --- `char` and `str`
+    * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
+    * [Machine-dependent integer types] --- `usize` and `isize`
+    * [floating-point types] --- `f32` and `f64`
 * [Built-in attributes]
 * [Standard library prelude] items, attributes, and macros
 * [Standard library][extern-prelude] crates in the root module
