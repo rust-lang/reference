@@ -12,10 +12,10 @@ limited capabilities.
 The list of types is:
 
 * Primitive types:
-    * [Boolean] — `bool`
-    * [Numeric] — integer and float
-    * [Textual] — `char` and `str`
-    * [Never] — `!` — a type with no values
+    * [Boolean] --- `bool`
+    * [Numeric] --- integer and float
+    * [Textual] --- `char` and `str`
+    * [Never] --- `!` --- a type with no values
 * Sequence types:
     * [Tuple]
     * [Array]

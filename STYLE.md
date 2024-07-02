@@ -41,11 +41,11 @@ See https://highlightjs.org/ for a list of supported languages.
 
 Rust examples are tested via rustdoc, and should include the appropriate annotations when tests are expected to fail:
 
-* `edition2015` or `edition2018` — If it is edition-specific (see `book.toml` for the default).
-* `no_run` — The example should compile successfully, but should not be executed.
-* `should_panic` — The example should compile and run, but produce a panic.
-* `compile_fail` — The example is expected to fail to compile.
-* `ignore` — The example shouldn't be built or tested.
+* `edition2015` or `edition2018` --- If it is edition-specific (see `book.toml` for the default).
+* `no_run` --- The example should compile successfully, but should not be executed.
+* `should_panic` --- The example should compile and run, but produce a panic.
+* `compile_fail` --- The example is expected to fail to compile.
+* `ignore` --- The example shouldn't be built or tested.
   This should be avoided if possible.
   Usually this is only necessary when the testing framework does not support it (such as external crates or modules, or a proc-macro), or it contains pseudo-code which is not valid Rust.
   An HTML comment such as `<!-- ignore: requires extern crate -->` should be placed before the example to explain why it is ignored.
