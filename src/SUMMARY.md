@@ -114,6 +114,8 @@
     - [Memory allocation and lifetime](memory-allocation-and-lifetime.md)
     - [Variables](variables.md)
 
+- [Panic](panic.md)
+
 - [Linkage](linkage.md)
 
 - [Inline assembly](inline-assembly.md)
