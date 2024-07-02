@@ -1,4 +1,4 @@
-# Inline assembly r[dynamic.asm]
+# Inline assembly [dynamic.asm]
 
 r[dynamic.asm.syntax] 
 The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] expand to inline assembly syntax when used in the expression position and item position respectively. The macros shall not be expanded in any other context.
@@ -38,7 +38,7 @@ assert_eq!(x, 4 * 6);
 # }
 ```
 
-## Syntax r[dynamic.asm.syntax]
+## Syntax [dynamic.asm.syntax]
 
 ```abnf
 format_string := STRING_LITERAL / RAW_STRING_LITERAL
@@ -55,7 +55,7 @@ asm := "asm!(" asm_inner ")"
 global_asm := "global_asm!(" asm_inner ")"
 ```
 
-## Scope r[dynamic.asm.invocation]
+## Scope [dynamic.asm.invocation]
 
 r[dynamic.asm.invocation.asm] The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
 
