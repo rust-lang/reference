@@ -207,6 +207,19 @@ Feature        | Implicitly Enables | Feature Name
 `sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 --- Advanced SIMD SHA instructions
 `sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 --- Advanced SIMD SHA instructions
 `sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
+`sme`          | `bf16`         | FEAT_SME --- Scalable Matrix Extension
+`sme-i16i64`   | `sme`          | FEAT_SME_I16I64 --- 16-bit to 64-bit integer widening outer product instructions
+`sme-f64f64`   | `sme`          | FEAT_SME_F64F64 --- Double-precision floating-point outer product instructions
+`sme-fa64`     | `sme`, `sve2`  | FEAT_SME_FA64 --- Full A64 instruction set support in Streaming SVE mode
+`sme2`         | `sme`          | FEAT_SME2 --- SME Version 2
+`sme2p1`       | `sme2`         | FEAT_SME2p1 --- SME Version 2.1
+`sme-f16f16`   | `sme2`         | FEAT_SME_F16F16 --- Non-widening half-precision FP16 to FP16 arithmetic for SME2
+`sme-lutv2`    |                | FEAT_SME_LUTv2 --- LUTI4 instruction
+`sme-f8f16`    | `sme-f8f32`    | FEAT_SME_F8F16 --- SME F8F16 instructions
+`sme-f8f32`    | `sme2`, `fp8`  | FEAT_SME_F8F32 --- SME F8F32 instructions
+`ssve-fp8fma`  | `sme2`, `fp8`  | FEAT_SSVE_FP8FMA --- SVE2 fp8 multiply-add instructions
+`ssve-fp8dot4` | `ssve-fp8fma`  | FEAT_SSVE_FP8DOT4 --- SVE2 fp8 4-way dot product instructions
+`ssve-fp8dot2` | `ssve-fp8dot4` | FEAT_SSVE_FP8DOT2 --- SVE2 fp8 2-way dot product instructions
 `spe`          |                | FEAT_SPE --- Statistical Profiling Extension
 `ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
 `sve`          | `fp16`         | FEAT_SVE --- Scalable Vector Extension
