@@ -44,8 +44,13 @@ be ignored in favor of only building the artifacts specified by command line.
   the local crate's code along with all upstream dependencies. This output type
   will create `*.a` files on Linux, macOS and Windows (MinGW), and `*.lib` files
   on Windows (MSVC). This format is recommended for use in situations such as
-  linking Rust code into an existing non-Rust application
-  because it will not have dynamic dependencies on other Rust code.
+  linking Rust code into an existing non-Rust application because it will not
+  have dynamic dependencies on other Rust code.
+
+  Note that any dynamic dependencies that the static library may have (such as
+  dependencies on system libraries, or dependencies on Rust libraries that are
+  compiled as dynamic libraries) will have to be specified manually when
+  linking that static library from somewhere. The `--print=native-static-libs` flag may help with this.
 
 * `--crate-type=cdylib`, `#![crate_type = "cdylib"]` - A dynamic system
   library will be produced.  This is used when compiling
