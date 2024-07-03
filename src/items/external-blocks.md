@@ -57,7 +57,7 @@ Extern statics can be either immutable or mutable just like [statics] outside of
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for
 the static to be initialized before Rust code reads from it.
 Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB,
-except if the mutation happens inside an `UnsafeCell`.
+except if the mutation happens to bytes inside of an `UnsafeCell`.
 
 ## ABI
 
