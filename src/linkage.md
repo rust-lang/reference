@@ -50,7 +50,7 @@ be ignored in favor of only building the artifacts specified by command line.
   Note that any dynamic dependencies that the static library may have (such as
   dependencies on system libraries, or dependencies on Rust libraries that are
   compiled as dynamic libraries) will have to be specified manually when
-  linking. The `--print=native-static-libs` flag may help with this.
+  linking that static library from somewhere. The `--print=native-static-libs` flag may help with this.
 
 * `--crate-type=cdylib`, `#![crate_type = "cdylib"]` - A dynamic system
   library will be produced.  This is used when compiling
