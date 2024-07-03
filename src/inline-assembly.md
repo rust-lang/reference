@@ -44,92 +44,139 @@ assert_eq!(x, 4 * 6);
 format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "\"" <explicit register> "\""
-operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
+input_expr := expr
+output_expr := expr / "_"
+inout_expr := input_expr ["=>" output_expr]
+operand_expr := input_expr / output_expr / inout_expr
+sym_expr := path
 reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr
+sym_operand := [ident "="] "sym" sym_expr
 clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *("," option) [","] ")"
-operand := reg_operand / clobber_abi / options
+operand := reg_operand / sym_operand / clobber_abi / options
 asm_inner := format_string *("," format_string) *("," operand) [","]
 asm := "asm!(" asm_inner ")"
 global_asm := "global_asm!(" asm_inner ")"
+
+non_format_char := ANY_CHAR // except "{" and "}"
+operand_specifier := ident / DEC_LITERAL
+expansion_specifier := *non_format_char
+format_specifier := "{" [operand_specifier] [":" *expansion_specifier]  "}"
+format_escape := "{{" / "}}"
+asm_string_piece := non_format_char / format_specifier / format_escape
+asm_string_content := [*asm_string_piece]
 ```
 
 ## Scope [dynamic.asm.invocation]
 
-r[dynamic.asm.invocation.asm] The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
+r[dynamic.asm.invocation.asm]
+The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
 
-r[dynamic.asm.invocation.global_asm] The [`core::arch::global_asm!`] macro shall be expanded in an item context only. The input tokens shall match the `asm_inner` production. If the macro is expanded in a function, the program is ill-formed. 
 
-## Template string arguments
+r[dynamic.asm.invocation.global_asm]
+The [`core::arch::global_asm!`] macro shall be expanded in an item context only. The input tokens shall match the `asm_inner` production. If the macro is expanded in a function, the program is ill-formed. 
 
-The assembler template uses the same syntax as [format strings][format-syntax] (i.e. placeholders are specified by curly braces).
-The corresponding arguments are accessed in order, by index, or by name.
-However, implicit named arguments (introduced by [RFC #2795][rfc-2795]) are not supported.
+## Template string arguments [dynamic.asm.template]
 
-An `asm!` invocation may have one or more template string arguments; an `asm!` with multiple template string arguments is treated as if all the strings were concatenated with a `\n` between them.
-The expected usage is for each template string argument to correspond to a line of assembly code.
-All template string arguments must appear before any other arguments.
+r[dynamic.asm.invocation.format-string]
+Each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
 
-As with format strings, positional arguments must appear before named arguments and explicit [register operands](#register-operands).
+>[!NOTE]
+> an expanded string literal is a string literal (after expanding macros like [`core::concat!`]) that has had every unicode escape sequence replaced with the (appropriately escaped as needed) matching character, and which has been normalized from a raw string literal.
 
-Explicit register operands cannot be used by placeholders in the template string.
-All other named and positional operands must appear at least once in the template string, otherwise a compiler error is generated.
 
-The exact assembly code syntax is target-specific and opaque to the compiler except for the way operands are substituted into the template string to form the code passed to the assembler.
+r[dynamic.asm.invocation.concat]
+If multiple `format_string` inputs are provided, then they are concatenated as though by the [`core::concat!`] macro, separating each `format_string` with a string containing a single newline character. If any `format_string` begins a `format_specifier` that is not terminated before the end of the `format_string`, the program is ill-formed. The resulting string is known as the *joined asm-string*
 
-Currently, all supported targets follow the assembly code syntax used by LLVM's internal assembler which usually corresponds to that of the GNU assembler (GAS).
-On x86, the `.intel_syntax noprefix` mode of GAS is used by default.
-On ARM, the `.syntax unified` mode is used.
-These targets impose an additional restriction on the assembly code: any assembler state (e.g. the current section which can be changed with `.section`) must be restored to its original value at the end of the asm string.
-Assembly code that does not conform to the GAS syntax will result in assembler-specific behavior.
-Further constraints on the directives used by inline assembly are indicated by [Directives Support](#directives-support).
+r[dynamic.asm.invocation.operands]
+Each operand, other than an explicit register operand ([dynamic.asm.operands.register]) shall be mentioned by at least one format_specifier in the *joined asm-string*. Explicit registers may not be referred to be a format_specifier.
 
-[format-syntax]: ../std/fmt/index.html#syntax
-[rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
+r[dynamic.asm.invocation.positional]
+A `format_specifier` that does not specify an `operand_specifier` is called a positional specifier, and refers to the `nth` successive positional operand, where `n` is `0` for the first positional specifier in the *joined asm-string* and increases by 1 for each successive positional specifier in the *joined asm-string*.
 
-## Operand type
+r[dynamic.asm.invocation.explicit-positional]
+A `format_specifier` that has an `operand_specifier` which is a DEC_LITERAL is called an explicit positional specifier, and refers to the `nth` successive positional operand, where `n` is the value of the DEC_LITERAL.
 
-Several types of operands are supported:
+r[dynamic.asm.invocation.named]
+A `format_specifier` that has an `operand_specifier` which is an ident is called a named specifier, and refers to the named operand with the specified name.
 
-* `in(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register.
-    The allocated register name is substituted into the asm template string.
-  - The allocated register will contain the value of `<expr>` at the start of the asm code.
-  - The allocated register must contain the same value at the end of the asm code (except if a `lateout` is allocated to the same register).
-* `out(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register.
-    The allocated register name is substituted into the asm template string.
-  - The allocated register will contain an undefined value at the start of the asm code.
-  - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
-  - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
-* `lateout(<reg>) <expr>`
-  - Identical to `out` except that the register allocator can reuse a register allocated to an `in`.
-  - You should only write to the register after all inputs are read, otherwise you may clobber an input.
-* `inout(<reg>) <expr>`
-  - `<reg>` can refer to a register class or an explicit register.
-    The allocated register name is substituted into the asm template string.
-  - The allocated register will contain the value of `<expr>` at the start of the asm code.
-  - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register are written at the end of the asm code.
-* `inout(<reg>) <in expr> => <out expr>`
-  - Same as `inout` except that the initial value of the register is taken from the value of `<in expr>`.
-  - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
-  - An underscore (`_`) may be specified instead of an expression for `<out expr>`, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
-  - `<in expr>` and `<out expr>` may have different types.
-* `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
-  - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
-  - You should only write to the register after all inputs are read, otherwise you may clobber an input.
-* `sym <path>`
-  - `<path>` must refer to a `fn` or `static`.
-  - A mangled symbol name referring to the item is substituted into the asm template string.
-  - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
-  - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
+r[dynamic.asm.invocation.expansion]
+The *joined asm-string* is expanded as defined in [dynamic.asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*.
 
-Operand expressions are evaluated from left to right, just like function call arguments.
-After the `asm!` has executed, outputs are written to in left to right order.
-This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
+r[dynamic.asm.invocation.syntax]
+The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behaviour*. Invoking a directive that is not specified by [dynamic.asm.directives] is *conditionally supported* and has *assembler dependent behaviour*.
 
-Since `global_asm!` exists outside a function, it can only use `sym` operands.
+>[TARGET-SPECIFIC]
+> On x86 and x86_64 targets, the syntax of the *expanded asm-string* acts as though the directive `.intel_syntax noprefix` is issued before parsing the *expanded asm-string*, except that the `option(att_syntax)` causes the syntax to act as though the directive `.att_syntax prefix` is issued before parsing the *expanded asm-string* instead.
+> On ARM and Aarch64 targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
+
+
+## Operand type [dynamic.asm.operands]
+
+r[dynamic.asm.operands.positional]
+Operands that do not specify an ident and are not explicit register operands are known as positional operands. Positional operands may be referred to only by positional operand specifiers and explicit positional operand specifiers, and each Positional operand must be specified before Named Operands or Explicit Register Operands.
+
+r[dynamic.asm.operands.named]
+Operands that specify an ident are named operands. A named operand shall not specify an explicit register `reg_spec`. Named operand specifiers may be referred to only by named operand specifiers.
+
+r[dynamic.asm.operands.registers]
+Operands that specify an explicit register `reg_spec` are explicit register operands. 
+
+>[!NOTE]
+> Explicit Register Operands have no `ident` name and cannot be referred to by an operand specifier
+
+r[dynamic.asm.operands.types]
+Each operand, other than a placeholder expression shall be of an integer type, floating-point type, function pointer type, pointer type, or target-specific vector type. These types are collectively called *asm operand types*. A pointer type is an *asm operand type* only if the pointee type has no metadata-type.
+
+>[!TARGET-SPECIFIC]
+> On x86 platforms, the types [`core::arch::x86::__m128`], [`core::arch::x86::__m256`], and variants of those types are *asm operand types*.
+
+r[dynamic.asm.operands.in-expr]
+An `input_expr` shall be a value expression of an *asm operand type*.
+
+r[dynamic.asm.operands.out-expr]
+An `output_expr` shall be the placeholder expression `_` or a (potentially unitialized) place expression of an *asm operand type*.
+
+r[dynamic.asm.operands.inout-expr]
+An `inout_expr` shall either be an (initialized) place expression of an *asm operand type*, or shall specify both an `input_expr` and an `output_expr`. If only a single expression is specified, it is treated as both the `input_expr` and `output_expr` of the operand.
+
+r[dynamic.asm.operands.in]
+An `in` operand is an reg_operand with the `in` dir_spec. The `operand_expr` of the operand shall be an `input_expr`. The `input_expr` initializes the value of the register before entering the asm block.
+
+r[dynamic.asm.operands.out]
+An `out` operand is a reg_operand with the `out` dir_spec, and a `lateout` operand is a reg_operand with the `lateout` dir_spec. The `operand_expr` of an `out` operand or `lateout` operand shall be an `output_expr`. The value of the register at the exit of the asm block is written to the `output_expr` place if it is not a placeholder expression
+
+>[!NOTE]
+> A `lateout` operand differs from an `out` operand only in that the implementation may assume that no `in`, `inout`, or `inlateout` operands are read after a `lateout` operand is modified by the *expanded asm-string*.
+
+r[dynamic.asm.operands.inout]
+An `inout` operand is a reg_operand with the `inout` dir_spec, and a `inlateout` operand is a reg_operand with the `inlateout` dir_spec. The `operand_expr` of an `inout` operand or an `inlateout` operand shall be an `inout_expr`. The `input_expr` and `output_expr` of an `inout` or `inlateout` operand is used as though the `inout` operand is replaced with a separate `in` and `out` operand, and the `inlateout` operand is replaced with a separate `in` and `lateout` operand, except that both have the same position if they are positional, or the same name if they are named operands, and both refer to the same register.
+
+>[!NOTE]
+> An `inlateout` operand differs from an `inout` operand only in that implementation may assume that no other `in`, `inout`, or `inlateout` operands are read after an `inlateout` operand is modified by the *expanded asm-string*. 
+
+
+r[dynamic.asm.operands.clobbers]
+An `output_expr` that is the placeholder expression `_` is a clobber output. The resulting value of the register is discarded.
+
+>[!NOTE]
+> Some registers and register classes cannot be used as an operand, other than as a clobber operand.
+
+r[dynamic.asm.operands.sym-expr]
+A sym-expr is a path-expr. If the `path-expr` does not refer to a `static` item or a `fn` item, the program is ill-formed.
+
+>[!NOTE]
+> the path-expr may have any type, including a type that isn't an *asm operand type*, and may be either mutable or immutable.
+
+r[dynamic.asm.operands.expansion]
+Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym-expr expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item. 
+
+>[!NOTE]
+> The name given to an item used by a sym-expr that does not have a linkage name may be known as the "mangled" name of the item.
+
+>[!TARGET-SPECIFIC]
+> On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
 
 ## Register operands
 
@@ -139,14 +186,6 @@ Explicit registers are specified as string literals (e.g. `"eax"`) while registe
 Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register.
 It is a compile-time error to use the same explicit register for two input operands or two output operands.
 Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
-
-Only the following types are allowed as operands for inline assembly:
-- Integers (signed and unsigned)
-- Floating-point numbers
-- Pointers (thin only)
-- Function pointers
-- SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`).
-This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM).
 
 Here is the list of currently supported register classes:
 
