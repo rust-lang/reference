@@ -157,82 +157,82 @@ Reference Manual], or elsewhere on [developer.arm.com].
 > - `paca` and `pacg`, which LLVM currently implements as one feature.
 
 
-Feature        | Implicitly Enables | Feature Name
----------------|--------------------|-------------------
-`aes`          | `neon`         | FEAT_AES & FEAT_PMULL --- Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
-`bf16`         |                | FEAT_BF16 --- BFloat16 instructions
-`bti`          |                | FEAT_BTI --- Branch Target Identification
-`crc`          |                | FEAT_CRC --- CRC32 checksum instructions
-`cssc`         |                | FEAT_CSSC --- Common Short Sequence Compression (CSSC) instructions
-`dit`          |                | FEAT_DIT --- Data Independent Timing instructions
-`dotprod`      |                | FEAT_DotProd --- Advanced SIMD Int8 dot product instructions
-`dpb`          |                | FEAT_DPB --- Data cache clean to point of persistence
-`dpb2`         |                | FEAT_DPB2 --- Data cache clean to point of deep persistence
-`ecv`          |                | FEAT_ECV --- Enhanced counter virtualization extension
-`faminmax`     |                | FEAT_FAMINMAX --- Enable FAMIN and FAMAX instructions
-`f32mm`        | `sve`          | FEAT_F32MM --- SVE single-precision FP matrix multiply instruction
-`f64mm`        | `sve`          | FEAT_F64MM --- SVE double-precision FP matrix multiply instruction
-`fcma`         | `neon`         | FEAT_FCMA --- Floating point complex number support
-`fhm`          | `fp16`         | FEAT_FHM --- Half-precision FP FMLAL instructions
-`flagm`        |                | FEAT_FlagM --- Conditional flag manipulation
-`flagm2`       |                | FEAT_FlagM2 --- Enhancements to flag manipulation instructions
-`fp16`         | `neon`         | FEAT_FP16 --- Half-precision FP data processing
-`fp8`          |                | FEAT_FP8 --- FP8 (F8CVT Instructions)
-`fp8fma`       |                | FEAT_FP8FMA --- FP8 multiply-add instructions
-`fp8dot2`      |                | FEAT_FP8DOT2 --- FP8 2-way dot product instructions
-`fp8dot4`      |                | FEAT_FP8DOT4 --- FP8 4-way dot product instructions
-`frintts`      |                | FEAT_FRINTTS --- Floating-point to int helper instructions
-`hbc`          |                | FEAT_HBC --- Hinted conditional branches
-`i8mm`         |                | FEAT_I8MM --- Int8 Matrix Multiplication
-`jsconv`       | `neon`         | FEAT_JSCVT --- JavaScript conversion instruction
-`lse`          |                | FEAT_LSE --- Large System Extensions
-`lse2`         |                | FEAT_LSE2 --- Large System Extensions version 2
-`lse128`       | `lse`          | FEAT_LSE128 --- 128-bit Atomics
-`lut`          |                | FEAT_LUT --- Lookup Table instructions
-`lor`          |                | FEAT_LOR --- Limited Ordering Regions extension
-`mops`         |                | FEAT_MOPS --- memcpy and memset acceleration instructions
-`mte`          |                | FEAT_MTE & FEAT_MTE2 --- Memory Tagging Extension
-`neon`         |                | FEAT_FP & FEAT_AdvSIMD --- Floating Point and Advanced SIMD extension
-`pan`          |                | FEAT_PAN --- Privileged Access-Never extension
-`paca`         |                | FEAT_PAuth --- Pointer Authentication (address authentication)
-`pacg`         |                | FEAT_PAuth --- Pointer Authentication (generic authentication)
-`pmuv3`        |                | FEAT_PMUv3 --- Performance Monitors extension (v3)
-`rand`         |                | FEAT_RNG --- Random Number Generator
-`ras`          |                | FEAT_RAS & FEAT_RASv1p1 --- Reliability, Availability and Serviceability extension
-`rcpc`         |                | FEAT_LRCPC --- Release consistent Processor Consistent
-`rcpc2`        | `rcpc`         | FEAT_LRCPC2 --- RcPc with immediate offsets
-`rcpc3`        | `rcpc2`        | FEAT_LRCPC3 --- RcPc instructions version 3
-`rdm`          |                | FEAT_RDM --- Rounding Double Multiply accumulate
-`sb`           |                | FEAT_SB --- Speculation Barrier
-`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 --- Advanced SIMD SHA instructions
-`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 --- Advanced SIMD SHA instructions
-`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
-`sme`          | `bf16`         | FEAT_SME --- Scalable Matrix Extension
-`sme-i16i64`   | `sme`          | FEAT_SME_I16I64 --- 16-bit to 64-bit integer widening outer product instructions
-`sme-f64f64`   | `sme`          | FEAT_SME_F64F64 --- Double-precision floating-point outer product instructions
-`sme-fa64`     | `sme`, `sve2`  | FEAT_SME_FA64 --- Full A64 instruction set support in Streaming SVE mode
-`sme2`         | `sme`          | FEAT_SME2 --- SME Version 2
-`sme2p1`       | `sme2`         | FEAT_SME2p1 --- SME Version 2.1
-`sme-f16f16`   | `sme2`         | FEAT_SME_F16F16 --- Non-widening half-precision FP16 to FP16 arithmetic for SME2
-`sme-lutv2`    |                | FEAT_SME_LUTv2 --- LUTI4 instruction
-`sme-f8f16`    | `sme-f8f32`    | FEAT_SME_F8F16 --- SME F8F16 instructions
-`sme-f8f32`    | `sme2`, `fp8`  | FEAT_SME_F8F32 --- SME F8F32 instructions
-`ssve-fp8fma`  | `sme2`, `fp8`  | FEAT_SSVE_FP8FMA --- SVE2 fp8 multiply-add instructions
-`ssve-fp8dot4` | `ssve-fp8fma`  | FEAT_SSVE_FP8DOT4 --- SVE2 fp8 4-way dot product instructions
-`ssve-fp8dot2` | `ssve-fp8dot4` | FEAT_SSVE_FP8DOT2 --- SVE2 fp8 2-way dot product instructions
-`spe`          |                | FEAT_SPE --- Statistical Profiling Extension
-`ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
-`sve`          | `fp16`         | FEAT_SVE --- Scalable Vector Extension
-`sve-b16b16`   | `bf16`         | FEAT_SVE_B16B16 --- Non-widening BFloat16 to BFloat16 arithmetic for SVE2 and SME2
-`sve2`         | `sve`          | FEAT_SVE2 --- Scalable Vector Extension 2
-`sve2p1`       | `sve2`         | FEAT_SVE2p1 --- Scalable Vector Extension 2.1
-`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES & FEAT_SVE_PMULL128 --- SVE AES instructions
-`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 --- SVE SM4 instructions
-`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 --- SVE SHA3 instructions
-`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm --- SVE Bit Permute
-`tme`          |                | FEAT_TME --- Transactional Memory Extension
-`vh`           |                | FEAT_VHE --- Virtualization Host Extensions
-`wfxt`         |                | FEAT_WFxT --- WFET and WFIT instructions
+Feature        | Implicitly Enables        | Feature Name
+---------------|---------------------------|-------------------
+`aes`          | `neon`                    | FEAT_AES & FEAT_PMULL --- Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
+`bf16`         |                           | FEAT_BF16 --- BFloat16 instructions
+`bti`          |                           | FEAT_BTI --- Branch Target Identification
+`crc`          |                           | FEAT_CRC --- CRC32 checksum instructions
+`cssc`         |                           | FEAT_CSSC --- Common Short Sequence Compression (CSSC) instructions
+`dit`          |                           | FEAT_DIT --- Data Independent Timing instructions
+`dotprod`      |                           | FEAT_DotProd --- Advanced SIMD Int8 dot product instructions
+`dpb`          |                           | FEAT_DPB --- Data cache clean to point of persistence
+`dpb2`         |                           | FEAT_DPB2 --- Data cache clean to point of deep persistence
+`ecv`          |                           | FEAT_ECV --- Enhanced counter virtualization extension
+`faminmax`     |                           | FEAT_FAMINMAX --- Enable FAMIN and FAMAX instructions
+`f32mm`        | `sve`                     | FEAT_F32MM --- SVE single-precision FP matrix multiply instruction
+`f64mm`        | `sve`                     | FEAT_F64MM --- SVE double-precision FP matrix multiply instruction
+`fcma`         | `neon`                    | FEAT_FCMA --- Floating point complex number support
+`fhm`          | `fp16`                    | FEAT_FHM --- Half-precision FP FMLAL instructions
+`flagm`        |                           | FEAT_FlagM --- Conditional flag manipulation
+`flagm2`       |                           | FEAT_FlagM2 --- Enhancements to flag manipulation instructions
+`fp16`         | `neon`                    | FEAT_FP16 --- Half-precision FP data processing
+`fp8`          | `bf16`, `lut`, `faminmax` | FEAT_FP8 --- FP8 (F8CVT Instructions)
+`fp8fma`       | `fp8`                     | FEAT_FP8FMA --- FP8 multiply-add instructions
+`fp8dot2`      | `fp8dot4`                 | FEAT_FP8DOT2 --- FP8 2-way dot product instructions
+`fp8dot4`      | `fp8fma`                  | FEAT_FP8DOT4 --- FP8 4-way dot product instructions
+`frintts`      |                           | FEAT_FRINTTS --- Floating-point to int helper instructions
+`hbc`          |                           | FEAT_HBC --- Hinted conditional branches
+`i8mm`         |                           | FEAT_I8MM --- Int8 Matrix Multiplication
+`jsconv`       | `neon`                    | FEAT_JSCVT --- JavaScript conversion instruction
+`lse`          |                           | FEAT_LSE --- Large System Extensions
+`lse2`         |                           | FEAT_LSE2 --- Large System Extensions version 2
+`lse128`       | `lse`                     | FEAT_LSE128 --- 128-bit Atomics
+`lut`          |                           | FEAT_LUT --- Lookup Table instructions
+`lor`          |                           | FEAT_LOR --- Limited Ordering Regions extension
+`mops`         |                           | FEAT_MOPS --- memcpy and memset acceleration instructions
+`mte`          |                           | FEAT_MTE & FEAT_MTE2 --- Memory Tagging Extension
+`neon`         |                           | FEAT_FP & FEAT_AdvSIMD --- Floating Point and Advanced SIMD extension
+`pan`          |                           | FEAT_PAN --- Privileged Access-Never extension
+`paca`         |                           | FEAT_PAuth --- Pointer Authentication (address authentication)
+`pacg`         |                           | FEAT_PAuth --- Pointer Authentication (generic authentication)
+`pmuv3`        |                           | FEAT_PMUv3 --- Performance Monitors extension (v3)
+`rand`         |                           | FEAT_RNG --- Random Number Generator
+`ras`          |                           | FEAT_RAS & FEAT_RASv1p1 --- Reliability, Availability and Serviceability extension
+`rcpc`         |                           | FEAT_LRCPC --- Release consistent Processor Consistent
+`rcpc2`        | `rcpc`                    | FEAT_LRCPC2 --- RcPc with immediate offsets
+`rcpc3`        | `rcpc2`                   | FEAT_LRCPC3 --- RcPc instructions version 3
+`rdm`          |                           | FEAT_RDM --- Rounding Double Multiply accumulate
+`sb`           |                           | FEAT_SB --- Speculation Barrier
+`sha2`         | `neon`                    | FEAT_SHA1 & FEAT_SHA256 --- Advanced SIMD SHA instructions
+`sha3`         | `sha2`                    | FEAT_SHA512 & FEAT_SHA3 --- Advanced SIMD SHA instructions
+`sm4`          | `neon`                    | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
+`sme`          | `bf16`                    | FEAT_SME --- Scalable Matrix Extension
+`sme-i16i64`   | `sme`                     | FEAT_SME_I16I64 --- 16-bit to 64-bit integer widening outer product instructions
+`sme-f64f64`   | `sme`                     | FEAT_SME_F64F64 --- Double-precision floating-point outer product instructions
+`sme-fa64`     | `sme`, `sve2`             | FEAT_SME_FA64 --- Full A64 instruction set support in Streaming SVE mode
+`sme2`         | `sme`                     | FEAT_SME2 --- SME Version 2
+`sme2p1`       | `sme2`                    | FEAT_SME2p1 --- SME Version 2.1
+`sme-f16f16`   | `sme2`                    | FEAT_SME_F16F16 --- Non-widening half-precision FP16 to FP16 arithmetic for SME2
+`sme-lutv2`    |                           | FEAT_SME_LUTv2 --- LUTI4 instruction
+`sme-f8f16`    | `sme-f8f32`               | FEAT_SME_F8F16 --- SME F8F16 instructions
+`sme-f8f32`    | `sme2`, `fp8`             | FEAT_SME_F8F32 --- SME F8F32 instructions
+`ssve-fp8fma`  | `sme2`, `fp8`             | FEAT_SSVE_FP8FMA --- SVE2 fp8 multiply-add instructions
+`ssve-fp8dot4` | `ssve-fp8fma`             | FEAT_SSVE_FP8DOT4 --- SVE2 fp8 4-way dot product instructions
+`ssve-fp8dot2` | `ssve-fp8dot4`            | FEAT_SSVE_FP8DOT2 --- SVE2 fp8 2-way dot product instructions
+`spe`          |                           | FEAT_SPE --- Statistical Profiling Extension
+`ssbs`         |                           | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
+`sve`          | `fp16`                    | FEAT_SVE --- Scalable Vector Extension
+`sve-b16b16`   | `bf16`                    | FEAT_SVE_B16B16 --- Non-widening BFloat16 to BFloat16 arithmetic for SVE2 and SME2
+`sve2`         | `sve`                     | FEAT_SVE2 --- Scalable Vector Extension 2
+`sve2p1`       | `sve2`                    | FEAT_SVE2p1 --- Scalable Vector Extension 2.1
+`sve2-aes`     | `sve2`, `aes`             | FEAT_SVE_AES & FEAT_SVE_PMULL128 --- SVE AES instructions
+`sve2-sm4`     | `sve2`, `sm4`             | FEAT_SVE_SM4 --- SVE SM4 instructions
+`sve2-sha3`    | `sve2`, `sha3`            | FEAT_SVE_SHA3 --- SVE SHA3 instructions
+`sve2-bitperm` | `sve2`                    | FEAT_SVE_BitPerm --- SVE Bit Permute
+`tme`          |                           | FEAT_TME --- Transactional Memory Extension
+`vh`           |                           | FEAT_VHE --- Virtualization Host Extensions
+`wfxt`         |                           | FEAT_WFxT --- WFET and WFIT instructions
 
 #### `riscv32` or `riscv64`
 
