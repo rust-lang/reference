@@ -14,10 +14,10 @@ for the Reference. As such, we have the warning saying there's work that needs
 to be done. Eventually, we plan to make sure everything is well documented
 enough that we can remove the warning.
 
-It is encouraged for you to read the [introduction] to familiarize yourself
-with the kind of content the reference is expected to contain and the
-conventions it uses. Also, the [Authoring Guide] provides more detailed guidelines
-for formatting and content.
+It is encouraged for you to read the [introduction] to familiarize yourself with
+the kind of content the reference is expected to contain and the conventions it
+uses. Also, the [Authoring Guide] provides more detailed guidelines for
+formatting and content.
 
 ## Critiquing the Reference
 
