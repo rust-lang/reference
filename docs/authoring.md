@@ -126,6 +126,8 @@ All this does is apply a CSS class to the blockquote. You should define the colo
 
 Idioms and styling to avoid:
 
+* Use American English spelling.
+* Use Oxford commas.
 * Avoid slashes for alternatives ("program/binary"); use conjunctions or rewrite it ("program or binary").
 * Avoid qualifying something as "in Rust"; the entire reference is about Rust.
 
