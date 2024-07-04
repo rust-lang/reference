@@ -166,17 +166,28 @@ An `output_expr` that is the placeholder expression `_` is a clobber output. The
 r[dynamic.asm.operands.sym-expr]
 A sym-expr is a path-expr. If the `path-expr` does not refer to a `static` item or a `fn` item, the program is ill-formed.
 
+
 >[!NOTE]
 > the path-expr may have any type, including a type that isn't an *asm operand type*, and may be either mutable or immutable.
 
+r[dynamic.asm.operand.sym]
+A sym operand is an operand that uses the `sym` keyword. The operand contains a `sym-expr` that specifies the item the symbol refers to.
+
+
 r[dynamic.asm.operands.expansion]
-Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym-expr expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item. 
+Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym operand expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item. 
 
 >[!NOTE]
 > The name given to an item used by a sym-expr that does not have a linkage name may be known as the "mangled" name of the item.
 
+>[!NOTE]
+> A sym operand does not include any relocation modifeirs such as `@plt` or `@tpoff`. The *joined asm-string* is responsible for including these as necessary.
+
 >[!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
+
+r[dynamic.asm.operands.global]
+The program shall not use an operand, other than a sym operand in the expansion of the [`core::arch::global_asm!`] macro.
 
 ## Register operands
 
@@ -442,38 +453,80 @@ The following ABIs can be used with `clobber_abi`:
 
 The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
 
-## Options
+## Behaviour of an asm block [dynamic.asm.evaluation]
 
-Flags are used to further influence the behavior of the inline assembly block.
-Currently the following options are defined:
-- `pure`: The `asm!` block has no side effects, must eventually return, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set).
-  This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
-  The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
-- `nomem`: The `asm!` blocks does not read or write to any memory.
-  This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
-  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
-- `readonly`: The `asm!` block does not write to any memory.
-  This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
-  The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
-- `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below).
-  This allows the compiler to avoid recomputing the condition flags after the `asm!` block.
-- `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
-  Behavior is undefined if execution falls through past the end of the asm code.
-  A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
-- `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
-  If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
-- `att_syntax`: This option is only valid on x86, and causes the assembler to use the `.att_syntax prefix` mode of the GNU assembler.
-  Register operands are substituted in with a leading `%`.
-- `raw`: This causes the template string to be parsed as a raw assembly string, with no special handling for `{` and `}`.
-  This is primarily useful when including raw assembly code from an external file using `include_str!`.
+r[dynamic.asm.evaluation.general]
+Each evaluation of an assembly block shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine.
 
-The compiler performs some additional checks on options:
-- The `nomem` and `readonly` options are mutually exclusive: it is a compile-time error to specify both.
-- It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
-- It is a compile-time error to specify `noreturn` on an asm block with outputs.
+>[!NOTE]
+> The operation the assembly block performs may differ between evaluations of the same assembly block.
 
-`global_asm!` only supports the `att_syntax` and `raw` options.
-The remaining options are not meaningful for global-scope inline assembly
+>[!TARGET-SPECIFIC]
+> The correspondance between the operation performed by the assembly block is target-dependant and implementation-dependant, subject to the rules set in [dynamic.asm.operands].
+
+r[dynamic.asm.evaluation.constraints]
+Certain constraints may be placed on the asm block, by default or 
+
+## Options [dynamic.asm.options]
+
+r[dynamic.asm.options.general]
+An options-spec provided in the asm invocation places constraints on the assembly block. 
+
+r[dynamic.asm.options.att_syntax]
+The `att_syntax` option may be specfied on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
+
+>[!TARGET-SPECIFIC]
+> The `att_syntax` option modifies the syntax used to parse the *expanded asm-string* as though the `.att_syntax prefix` directive was issued before parsing the *expanded asm-string*, and modifies the expansion of register operands to include a `%` prefix.
+
+r[dynamic.asm.options.nomem]
+The `nomem` option may be specified. The behaviour is undefined if the assembly block modifies any allocation, disables or activates any tag, *synchronizes-with* any other thread of execution or signal handler, and the implementation may assume that the behaviour or outputs of the assembly block does not depend on the contents of any allocation.
+
+r[dynamic.asm.options.readonly]
+The `readonly` option may be specified. The behaviour is undefined if the assembly block modifies any allocation or activates any tag. 
+
+r[dynamic.asm.options.exclusive]
+The program shall not specify both the `nomem` and `readonly` options.
+
+r[dynamic.asm.options.pure]
+The `pure` option may be specfied. The evaluation of the assembly block shall not produce any observable behaviour or consume input, and the implementation may assume that the outputs of the assembly block depends only on the inputs and the contents of any allocation. If the program specifies the `pure` option, it shall specify either the `nomem` or `readonly` option.
+
+r[dynamic.asm.options.nostack]
+The `nostack` option may be specified. The implementation may assume that the assembly block does not modify or access the stack, except an allocation placed in that region by the implementation.
+
+>[!TARGET-SPECIFIC]
+> The stack is defined by an target-specific register and is a target-specific memory region. It may include a "red zone".
+> On x86 and x86-64 targets, if the `nostack` option is not specified, the `rsp` register will be aligned to 16 bytes.
+
+r[dynamic.asm.options.preserve_flags]
+The `preserves_flags` option may be specified. The implementation may assume that the value of the status flags are preserved by the assembly block.
+
+>[!TARGET-SPECFIC]
+> - These flags registers must be restored upon exiting the asm block if the `preserves_flags` option is set:
+> - x86
+>   - Status flags in `EFLAGS` (CF, PF, AF, ZF, SF, OF).
+>   - Floating-point status word (all).
+>   - Floating-point exception flags in `MXCSR` (PE, UE, OE, ZE, DE, IE).
+> - ARM
+>   - Condition flags in `CPSR` (N, Z, C, V)
+>   - Saturation flag in `CPSR` (Q)
+>   - Greater than or equal flags in `CPSR` (GE).
+>   - Condition flags in `FPSCR` (N, Z, C, V)
+>   - Saturation flag in `FPSCR` (QC)
+>   - Floating-point exception flags in `FPSCR` (IDC, IXC, UFC, OFC, DZC, IOC).
+> - AArch64
+>   - Condition flags (`NZCV` register).
+>   - Floating-point status (`FPSR` register).
+> - RISC-V
+>   - Floating-point exception flags in `fcsr` (`fflags`).
+>   - Vector extension state (`vtype`, `vl`, `vcsr`).
+> - LoongArch
+>   - Floating-point condition flags in `$fcc[0-7]`.
+
+r[dynamic.asm.options.noreturn]
+The `noreturn` option may be specifed. An invocation of the [`core::arch::asm!`] macro that specifies the `noreturn` option expands to an expression of type `!`. The behaviour is undefined if an evaluation of the assembly block exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand. 
+
+r[dynamic.asm.options.global]
+A program shall not specify an option, other than the `att_syntax` option, in an invocation of the [`core::arch::global_asm!`] macro.
 
 ## Rules for inline assembly
 
@@ -507,26 +560,6 @@ To avoid undefined behavior, these rules must be followed when using function-sc
   Behavior is also undefined if two executions of the `asm!` code with the same inputs result in different outputs.
   - When used with the `nomem` option, "inputs" are just the direct inputs of the `asm!`.
   - When used with the `readonly` option, "inputs" comprise the direct inputs of the `asm!` and any memory that the `asm!` block is allowed to read.
-- These flags registers must be restored upon exiting the asm block if the `preserves_flags` option is set:
-  - x86
-    - Status flags in `EFLAGS` (CF, PF, AF, ZF, SF, OF).
-    - Floating-point status word (all).
-    - Floating-point exception flags in `MXCSR` (PE, UE, OE, ZE, DE, IE).
-  - ARM
-    - Condition flags in `CPSR` (N, Z, C, V)
-    - Saturation flag in `CPSR` (Q)
-    - Greater than or equal flags in `CPSR` (GE).
-    - Condition flags in `FPSCR` (N, Z, C, V)
-    - Saturation flag in `FPSCR` (QC)
-    - Floating-point exception flags in `FPSCR` (IDC, IXC, UFC, OFC, DZC, IOC).
-  - AArch64
-    - Condition flags (`NZCV` register).
-    - Floating-point status (`FPSR` register).
-  - RISC-V
-    - Floating-point exception flags in `fcsr` (`fflags`).
-    - Vector extension state (`vtype`, `vl`, `vcsr`).
-  - LoongArch
-    - Floating-point condition flags in `$fcc[0-7]`.
 - On x86, the direction flag (DF in `EFLAGS`) is clear on entry to an asm block and must be clear on exit.
   - Behavior is undefined if the direction flag is set on exiting an asm block.
 - On x86, the x87 floating-point register stack must remain unchanged unless all of the `st([0-7])` registers have been marked as clobbered with `out("st(0)") _, out("st(1)") _, ...`.
