@@ -8,7 +8,6 @@ use semver::{Version, VersionReq};
 use std::collections::BTreeMap;
 use std::io;
 use std::path::PathBuf;
-use std::process;
 
 mod std_links;
 
@@ -21,29 +20,7 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *> .*\n)+)").unwrap()
 });
 
-fn main() {
-    let mut args = std::env::args().skip(1);
-    match args.next().as_deref() {
-        Some("supports") => {
-            // Supports all renderers.
-            return;
-        }
-        Some(arg) => {
-            eprintln!("unknown argument: {arg}");
-            std::process::exit(1);
-        }
-        None => {}
-    }
-
-    let preprocessor = Spec::new();
-
-    if let Err(e) = handle_preprocessing(&preprocessor) {
-        eprintln!("{}", e);
-        process::exit(1);
-    }
-}
-
-fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
+pub fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
     let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
@@ -65,7 +42,7 @@ fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
     Ok(())
 }
 
-struct Spec {
+pub struct Spec {
     /// Whether or not warnings should be errors (set by SPEC_DENY_WARNINGS
     /// environment variable).
     deny_warnings: bool,
