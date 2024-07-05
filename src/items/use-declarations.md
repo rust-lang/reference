@@ -364,7 +364,7 @@ fn main() {
 }
 ```
 
-Multiple glob imports are allowed to import the same name if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports. Example:
+Multiple glob imports are allowed to import the same name, and that name is allowed to be used, if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports. Example:
 
 ```rust
 mod foo {
@@ -375,12 +375,15 @@ mod bar {
     pub use super::foo::Qux;
 }
 
-// These both import the same `Qux`.
-// The visibility of `Qux` is `pub` because that is the maximum
-// visibility between these two `use` declarations.
-use foo::*;
+// These both import the same `Qux`. The visibility of `Qux`
+// is `pub` because that is the maximum visibility between
+// these two `use` declarations.
 pub use bar::*;
-# fn main() {}
+use foo::*;
+
+fn main() {
+    let _: Qux = Qux;
+}
 ```
 
 [_SimplePath_]: ../paths.md#simple-paths
