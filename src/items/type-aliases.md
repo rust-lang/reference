@@ -8,7 +8,7 @@
 
 A _type alias_ defines a new name for an existing [type] in the [type namespace] of the module or block where it is located.
 Type aliases are declared with the keyword `type`.
-Every value has a single, specific type, but may implement several different traits, or be compatible with several different type constraints.
+Every value has a single, specific type, but may implement several different traits, and may be compatible with several different type constraints.
 
 For example, the following defines the type `Point` as a synonym for the type
 `(u8, u8)`, the type of pairs of unsigned 8 bit integers:

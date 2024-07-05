@@ -47,7 +47,7 @@ let p = Point {x: 10, y: 11};
 let px: i32 = p.x;
 ```
 
-A _tuple struct_ is a nominal [tuple type], also defined with the keyword `struct`.
+A _tuple struct_ is a nominal [tuple type], and is also defined with the keyword `struct`.
 In addition to defining a type, it also defines a constructor of the same name in the [value namespace].
 The constructor is a function which can be called to create a new instance of the struct.
 For example:

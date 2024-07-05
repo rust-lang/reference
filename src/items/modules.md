@@ -34,7 +34,7 @@ mod math {
 }
 ```
 
-Modules are defined in the [type namespace] of the module or block where it is located.
+Modules are defined in the [type namespace] of the module or block where they are located.
 It is an error to define multiple items with the same name in the same namespace within a module.
 See the [scopes chapter] for more details on restrictions and shadowing behavior.
 

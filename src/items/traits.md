@@ -17,8 +17,8 @@ interface consists of [associated items], which come in three varieties:
 - [types](associated-items.md#associated-types)
 - [constants](associated-items.md#associated-constants)
 
-The trait declaration defines the trait in the [type namespace] of the module or block where it is located.
-Associated items are defined as members of the trait within their respective namespaces: type namespace for associated types, and value namespace for constants and functions.
+The trait declaration defines a trait in the [type namespace] of the module or block where it is located.
+Associated items are defined as members of the trait within their respective namespaces. Associated types are defined in the type namespace. Associated constants and associated functions are defined in the value namespace.
 
 All traits define an implicit type parameter `Self` that refers to "the type
 that is implementing this interface". Traits may also contain additional type

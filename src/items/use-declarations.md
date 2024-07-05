@@ -13,7 +13,7 @@ A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
 required to refer to a module item. These declarations may appear in [modules]
 and [blocks], usually at the top.
-A `use` declaration is also sometimes called an _import_ or if it is public it is a _re-export_.
+A `use` declaration is also sometimes called an _import_, or, if it is public, a _re-export_.
 
 [path]: ../paths.md
 [modules]: modules.md
@@ -99,7 +99,7 @@ They may create bindings for:
 
 They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
 
-`use` will create bindings for all [namespaces] from the imported entities, with the exception of a `self` import (described below) which only imports the type namespace.
+`use` will create bindings for all [namespaces] from the imported entities, with the exception that a `self` import will only import from the type namespace (as described below).
 For example, the following illustrates creating bindings for the same name in two namespaces:
 
 ```rust
@@ -111,12 +111,12 @@ mod stuff {
 use stuff::Foo;
 
 fn example() {
-    let ctor = Foo;  // From value namespace
-    let x: Foo = ctor(123);
+    let ctor = Foo; // Uses `Foo` from the value namespace.
+    let x: Foo = ctor(123); // Uses `Foo` From the type namespace.
 }
 ```
 
-> **Edition Differences**: In the 2015 edition, `use` paths are relative from the crate root.
+> **Edition differences**: In the 2015 edition, `use` paths are relative to the crate root.
 > For example:
 >
 > ```rust,edition2015
@@ -127,7 +127,8 @@ fn example() {
 > mod bar {
 >     // Resolves `foo` from the crate root.
 >     use foo::example::iter;
->     // :: prefix explicitly resolves `foo` from the crate root.
+>     // The `::` prefix explicitly resolves `foo`
+>     // from the crate root.
 >     use ::foo::baz::foobaz;
 > }
 >
@@ -154,25 +155,25 @@ mod inner {
 
 ## Brace syntax
 
-Braces can be used in the last segment of the path to import multiple entities from the previous segment or the current scope if there are no previous segments.
+Braces can be used in the last segment of the path to import multiple entities from the previous segment, or, if there are no previous segments, from the current scope.
 Braces can be nested, creating a tree of paths, where each grouping of segments is logically combined with its parent to create a full path.
 
 ```rust
 // Creates bindings to:
-// std::collections::BTreeSet
-// std::collections::hash_map
-// std::collections::hash_map::HashMap
+// - `std::collections::BTreeSet`
+// - `std::collections::hash_map`
+// - `std::collections::hash_map::HashMap`
 use std::collections::{BTreeSet, hash_map::{self, HashMap}};
 ```
 
 An empty brace does not import anything, though the leading path is validated that it is accessible.
-<!-- This is slightly wrong, see https://github.com/rust-lang/rust/issues/61826 -->
+<!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
 
-> **Edition Differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018 those names are relative to the current scope.
+> **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018, those names are relative to the current scope.
 
 ## `self` imports
 
-The keyword `self` may be used in the [brace syntax](#brace-syntax) to create a binding of the parent entity under its own name.
+The keyword `self` may be used within [brace syntax](#brace-syntax) to create a binding of the parent entity under its own name.
 
 ```rust
 mod stuff {
@@ -204,7 +205,7 @@ mod bar {
 use bar::foo::{self};
 
 fn main() {
-    foo(); // Error, `foo` is a module
+    foo(); //~ ERROR `foo` is a module
 }
 ```
 
@@ -228,7 +229,8 @@ mod foo {
         V2,
     }
     pub fn bar() {
-        // Creates local aliases to V1 and V2 of the Example enum.
+        // Creates local aliases to `V1` and `V2`
+        // of the `Example` enum.
         use Example::*;
         let x = V1;
     }
@@ -240,9 +242,9 @@ That is, if there is a name already defined by another item in the same namespac
 For example:
 
 ```rust
-// This creates a binding to the `clashing::Foo` tuple struct constructor, but
-// does not import its type because that would conflict with the `Foo` struct
-// defined here.
+// This creates a binding to the `clashing::Foo` tuple struct
+// constructor, but does not import its type because that would
+// conflict with the `Foo` struct defined here.
 //
 // Note that the order of definition here is unimportant.
 use clashing::*;
@@ -251,11 +253,12 @@ struct Foo {
 }
 
 fn do_stuff() {
-    // Uses the constructor from clashing::Foo
+    // Uses the constructor from `clashing::Foo`.
     let f1 = Foo(123);
-    // The struct expression uses the type from the Foo struct defined above.
+    // The struct expression uses the type from
+    // the `Foo` struct defined above.
     let f2 = Foo { field: 1.0 };
-    // Also imported from the glob import.
+    // `Bar` is also in scope due to the glob import.
     let z = Bar {};
 }
 
@@ -268,7 +271,7 @@ mod clashing {
 `*` cannot be used as the first or intermediate segments.
 `*` cannot be used to import a module's contents into itself (such as `use self::*;`).
 
-> **Edition Differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
+> **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
 > This cannot be used in the crate root itself.
 
 ## Underscore Imports
@@ -317,10 +320,10 @@ m!(use std as _;);
 
 ## Restrictions
 
-The following are restrictions for valid `use` declarations.
+The following are restrictions for valid `use` declarations:
 
-* `use crate;` must use `as` to define the name to bind the crate root to.
-* `use {self};` is an error, there must be a leading segment when using `self`.
+* `use crate;` must use `as` to define the name to which to bind the crate root.
+* `use {self};` is an error; there must be a leading segment when using `self`.
 * As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 * `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
 * `use` paths cannot refer to enum variants through a [type alias]. Example:
@@ -330,17 +333,17 @@ The following are restrictions for valid `use` declarations.
   }
   type TypeAlias = MyEnum;
 
-  use MyEnum::MyVariant; // OK
-  use TypeAlias::MyVariant; // ERROR
+  use MyEnum::MyVariant; //~ OK
+  use TypeAlias::MyVariant; //~ ERROR
   ```
 
 ## Ambiguities
 
 > **Note**: This section is incomplete.
 
-Some situations are an error when there is an ambiguity as to which name a `use` declaration refers to, when there are two name candidates that do not resolve to the same entity.
+Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
-Glob imports are allowed to import conflicting names in the same namespaces as long as the name is not used or shadowed.
+Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used or shadowed.
 Example:
 
 ```rust
@@ -353,11 +356,11 @@ mod bar {
 }
 
 use foo::*;
-use bar::*; // Ok, no name conflict.
+use bar::*; //~ OK, no name conflict.
 
 fn main() {
     // This would be an error, due to the ambiguity.
-    // let x = Qux;
+    //let x = Qux;
 }
 ```
 

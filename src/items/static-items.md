@@ -11,7 +11,7 @@ memory location. Static items have the `static` lifetime, which outlives all
 other lifetimes in a Rust program. Static items do not call [`drop`] at the
 end of the program.
 
-The static declaration defines the static value in the [value namespace] of the module or block where it is located.
+The static declaration defines a static value in the [value namespace] of the module or block where it is located.
 
 The static initializer is a [constant expression] evaluated at compile time.
 Static initializers may refer to other statics.
