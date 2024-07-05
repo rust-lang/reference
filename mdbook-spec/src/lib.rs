@@ -116,7 +116,7 @@ impl Spec {
     ///
     /// The blockquote should look something like:
     ///
-    /// ```
+    /// ```markdown
     /// > [!WARNING]
     /// > ...
     /// ```
