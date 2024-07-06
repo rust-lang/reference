@@ -343,7 +343,7 @@ The following are restrictions for valid `use` declarations:
 
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
-Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used or shadowed.
+Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
 Example:
 
 ```rust
