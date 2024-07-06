@@ -326,7 +326,7 @@ The following are restrictions for valid `use` declarations:
 * `use {self};` is an error; there must be a leading segment when using `self`.
 * As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 * `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
-* `use` paths cannot refer to enum variants through a [type alias]. Example:
+* `use` paths cannot refer to enum variants through a [type alias]. For example:
   ```rust,compile_fail
   enum MyEnum {
       MyVariant
@@ -344,7 +344,7 @@ The following are restrictions for valid `use` declarations:
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
 Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
-Example:
+For example:
 
 ```rust
 mod foo {
@@ -364,7 +364,7 @@ fn main() {
 }
 ```
 
-Multiple glob imports are allowed to import the same name, and that name is allowed to be used, if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports. Example:
+Multiple glob imports are allowed to import the same name, and that name is allowed to be used, if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports. For example:
 
 ```rust
 mod foo {

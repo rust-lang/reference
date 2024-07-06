@@ -23,7 +23,7 @@ x::y::z;
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
 
 Simple paths are used in [visibility] markers, [attributes], [macros][mbe], and [`use`] items.
-Examples:
+For example:
 
 ```rust
 use std::io::{self, Write};
