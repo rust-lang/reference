@@ -110,7 +110,6 @@ Like `"C"` and `"system"`, most platform-specific ABI strings also have a
 * `"aapcs-unwind"`
 * `"win64-unwind"`
 * `"sysv64-unwind"`
-* `"system-unwind"`
 
 ## Variadic functions
 
