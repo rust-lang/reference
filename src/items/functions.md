@@ -212,15 +212,20 @@ The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI.
 The choice of ABI, together with the [panic mode][panic-modes], determines the
 behavior when unwinding out of a function.
 
-In the table below, "Foreign unwind (unforced)" refers to something like a C++
-exception; the table indicates the behavior of an unwinding
-operation reaching each type of ABI boundary (function
-declaration or definition using the corresponding ABI string).
-Additionally, `C` in the ABI strings may be substituted with
-`stdcall` or any other ABI supported by the language
+The table below indicates the behavior of an unwinding operation reaching each
+type of ABI boundary (function declaration or definition using the
+corresponding ABI string). Additionally, `C` in the ABI strings may be
+substituted with `stdcall` or any other ABI supported by the language
 implementation.
 
-| panic runtime  | ABI          | `panic`-unwind                        | Foreign unwind (unforced) |
+Native unwinding is defined per-target. On targets that support throwing and
+catching C++ exceptions, it refers to the mechanism used to implement this
+feature. Some platforms implement a form of unwinding referred to as ["forced
+unwinding"][forced-unwinding]; `longjmp` on Windows and `pthread_exit` in
+`glibc` are implemented this way. Forced unwinding is explicitly excluded
+from the "Native unwind" column in the table.
+
+| panic runtime  | ABI          | `panic`-unwind                        | Native unwind (unforced) |
 | -------------- | ------------ | ------------------------------------- | ----------------------- |
 | `panic=unwind` | `"C-unwind"` | unwind                                | unwind                  |
 | `panic=unwind` | `"C"`        | abort                                 | [Undefined Behavior]    |
@@ -228,6 +233,7 @@ implementation.
 | `panic=abort`  | `"C"`        | `panic!` aborts (no unwinding occurs) | [Undefined Behavior]    |
 
 [panic-modes]: ../panic.md#panic-runtimes
+[forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
 [Undefined Behavior]: ../behavior-considered-undefined.md
 
 ## Const functions
