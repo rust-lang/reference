@@ -215,8 +215,8 @@ behavior when unwinding out of a function.
 The table below indicates the behavior of an unwinding operation reaching each
 type of ABI boundary (function declaration or definition using the
 corresponding ABI string). Additionally, `C` in the ABI strings may be
-substituted with `stdcall` or any other ABI supported by the language
-implementation.
+substituted with `stdcall` or any other ABI (other than `Rust`)
+supported by the language implementation.
 
 Native unwinding is defined per-target. On targets that support throwing and
 catching C++ exceptions, it refers to the mechanism used to implement this
