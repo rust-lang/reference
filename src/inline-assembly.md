@@ -395,62 +395,67 @@ Certain registers are reserved registers. Reserved Registers shall not be named 
 
 
 
-## Template modifiers
+## Template modifiers r[dynamic.asm.template]
 
-The placeholders can be augmented by modifiers which are specified after the `:` in the curly braces.
-These modifiers do not affect register allocation, but change the way operands are formatted when inserted into the template string.
-Only one modifier is allowed per template placeholder.
+r[dynamic.asm.template.modifier]
+An operand spec that refers to a register operand may specify a modifier as part of the format specifier. 
 
-The supported modifiers are a subset of LLVM's (and GCC's) [asm template argument modifiers][llvm-argmod], but do not use the same letter codes.
+r[dynamic.asm.template.class]
+A format specifier shall only use a modifier that is supported for the register class specified by the register opernd.
 
-| Architecture | Register class | Modifier | Example output | LLVM modifier |
-| ------------ | -------------- | -------- | -------------- | ------------- |
-| x86-32 | `reg` | None | `eax` | `k` |
-| x86-64 | `reg` | None | `rax` | `q` |
-| x86-32 | `reg_abcd` | `l` | `al` | `b` |
-| x86-64 | `reg` | `l` | `al` | `b` |
-| x86 | `reg_abcd` | `h` | `ah` | `h` |
-| x86 | `reg` | `x` | `ax` | `w` |
-| x86 | `reg` | `e` | `eax` | `k` |
-| x86-64 | `reg` | `r` | `rax` | `q` |
-| x86 | `reg_byte` | None | `al` / `ah` | None |
-| x86 | `xmm_reg` | None | `xmm0` | `x` |
-| x86 | `ymm_reg` | None | `ymm0` | `t` |
-| x86 | `zmm_reg` | None | `zmm0` | `g` |
-| x86 | `*mm_reg` | `x` | `xmm0` | `x` |
-| x86 | `*mm_reg` | `y` | `ymm0` | `t` |
-| x86 | `*mm_reg` | `z` | `zmm0` | `g` |
-| x86 | `kreg` | None | `k1` | None |
-| AArch64 | `reg` | None | `x0` | `x` |
-| AArch64 | `reg` | `w` | `w0` | `w` |
-| AArch64 | `reg` | `x` | `x0` | `x` |
-| AArch64 | `vreg` | None | `v0` | None |
-| AArch64 | `vreg` | `v` | `v0` | None |
-| AArch64 | `vreg` | `b` | `b0` | `b` |
-| AArch64 | `vreg` | `h` | `h0` | `h` |
-| AArch64 | `vreg` | `s` | `s0` | `s` |
-| AArch64 | `vreg` | `d` | `d0` | `d` |
-| AArch64 | `vreg` | `q` | `q0` | `q` |
-| ARM | `reg` | None | `r0` | None |
-| ARM | `sreg` | None | `s0` | None |
-| ARM | `dreg` | None | `d0` | `P` |
-| ARM | `qreg` | None | `q0` | `q` |
-| ARM | `qreg` | `e` / `f` | `d0` / `d1` | `e` / `f` |
-| RISC-V | `reg` | None | `x1` | None |
-| RISC-V | `freg` | None | `f0` | None |
-| LoongArch | `reg` | None | `$r1` | None |
-| LoongArch | `freg` | None | `$f0` | None |
 
-> **Notes**:
+>[!TARGET-SPECIFIC]
+> The list of supported modifiers for each register class is as follows
+> | Architecture | Register class | Modifier | Example output | LLVM modifier |
+> | ------------ | -------------- | -------- | -------------- | ------------- |
+> | x86-32 | `reg` | None | `eax` | `k` |
+> | x86-64 | `reg` | None | `rax` | `q` |
+> | x86-32 | `reg_abcd` | `l` | `al` | `b` |
+> | x86-64 | `reg` | `l` | `al` | `b` |
+> | x86 | `reg_abcd` | `h` | `ah` | `h` |
+> | x86 | `reg` | `x` | `ax` | `w` |
+> | x86 | `reg` | `e` | `eax` | `k` |
+> | x86-64 | `reg` | `r` | `rax` | `q` |
+> | x86 | `reg_byte` | None | `al` / `ah` | None |
+> | x86 | `xmm_reg` | None | `xmm0` | `x` |
+> | x86 | `ymm_reg` | None | `ymm0` | `t` |
+> | x86 | `zmm_reg` | None | `zmm0` | `g` |
+> | x86 | `*mm_reg` | `x` | `xmm0` | `x` |
+> | x86 | `*mm_reg` | `y` | `ymm0` | `t` |
+> | x86 | `*mm_reg` | `z` | `zmm0` | `g` |
+> | x86 | `kreg` | None | `k1` | None |
+> | AArch64 | `reg` | None | `x0` | `x` |
+> | AArch64 | `reg` | `w` | `w0` | `w` |
+> | AArch64 | `reg` | `x` | `x0` | `x` |
+> | AArch64 | `vreg` | None | `v0` | None |
+> | AArch64 | `vreg` | `v` | `v0` | None |
+> | AArch64 | `vreg` | `b` | `b0` | `b` |
+> | AArch64 | `vreg` | `h` | `h0` | `h` |
+> | AArch64 | `vreg` | `s` | `s0` | `s` |
+> | AArch64 | `vreg` | `d` | `d0` | `d` |
+> | AArch64 | `vreg` | `q` | `q0` | `q` |
+> | ARM | `reg` | None | `r0` | None |
+> | ARM | `sreg` | None | `s0` | None |
+> | ARM | `dreg` | None | `d0` | `P` |
+> | ARM | `qreg` | None | `q0` | `q` |
+> | ARM | `qreg` | `e` / `f` | `d0` / `d1` | `e` / `f` |
+> | RISC-V | `reg` | None | `x1` | None |
+> | RISC-V | `freg` | None | `f0` | None |
+> | LoongArch | `reg` | None | `$r1` | None |
+> | LoongArch | `freg` | None | `$f0` | None |
+
+
+>[!NOTE]
+> The supported modifiers are a subset of LLVM's (and GCC's) [asm template argument modifiers][llvm-argmod], but do not use the same letter codes.
+
+>[!NOTE]
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
 > - on x86: our behavior for `reg` with no modifiers differs from what GCC does.
 >   GCC will infer the modifier based on the operand value type, while we default to the full register size.
 > - on x86 `xmm_reg`: the `x`, `t` and `g` LLVM modifiers are not yet implemented in LLVM (they are supported by GCC only), but this should be a simple change.
 
-As stated in the previous section, passing an input value smaller than the register width will result in the upper bits of the register containing undefined values.
-This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the asm code (e.g. `ax` instead of `rax`).
-Since this an easy pitfall, the compiler will suggest a template modifier to use where appropriate given the input type.
-If all references to an operand already have modifiers then the warning is suppressed for that operand.
+r[dynamic.asm.template.diagnostic]
+A lint diagnostic should be emitted if a modifier is omitted, or a modifier is used such that the modified expanded register is of an inappropriate width for the type used to initialize the operand
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
