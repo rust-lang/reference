@@ -68,7 +68,7 @@ asm_string_piece := non_format_char / format_specifier / format_escape
 asm_string_content := [*asm_string_piece]
 ```
 
-## Scope [dynamic.asm.invocation]
+## Invocation [dynamic.asm.invocation]
 
 r[dynamic.asm.invocation.asm]
 The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
@@ -76,8 +76,6 @@ The [`core::arch::asm!`] macro shall be expanded in an expression context only. 
 
 r[dynamic.asm.invocation.global_asm]
 The [`core::arch::global_asm!`] macro shall be expanded in an item context only. The input tokens shall match the `asm_inner` production. If the macro is expanded in a function, the program is ill-formed. 
-
-## Template string arguments [dynamic.asm.template]
 
 r[dynamic.asm.invocation.format-string]
 Each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
@@ -111,6 +109,22 @@ The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the
 > On x86 and x86_64 targets, the syntax of the *expanded asm-string* acts as though the directive `.intel_syntax noprefix` is issued before parsing the *expanded asm-string*, except that the `option(att_syntax)` causes the syntax to act as though the directive `.att_syntax prefix` is issued before parsing the *expanded asm-string* instead.
 > On ARM and Aarch64 targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
 
+r[dynamic.asm.invocation.duplication]
+The number of times, locations, and the order in which a given invocation of [`core::arch::asm!`] is expanded is unspecified.
+
+>[!NOTE]
+> In particular, an asm block may be duplicated, for example if the containing function is inlined, or omitted from the output entirely.
+> As a consequence, asm blocks should not use directives that have non-idempotent non-local effects, or named labels and symbol definitions. 
+> Additionally, two asm blocks may not rely upon being adjacent in executable memory, even if they are adjacent in the source.
+
+r[dynamic.asm.invocation.global-order]
+The order in which invocations of [`core::arch::global_asm!`] are expanded is unspecified.
+
+r[dynamic.asm.invocation.directive-state]
+The *expanded asm-string* shall not issue a directive that modifies the global state of the assembler for processing inputs unless it issues a directive to restore that state it had upon entering the block. No diagnostic is required.
+
+>[!NOTE]
+> This include state such as the current section of the assembler, the syntax mode, or the kind of assembly output being generated.
 
 ## Operand type [dynamic.asm.operands]
 
@@ -187,7 +201,7 @@ Each operand_spec is expanded in the *joined asm-string* according to the modifi
 > On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
 
 r[dynamic.asm.operands.global]
-The program shall not use an operand, other than a sym operand in the expansion of the [`core::arch::global_asm!`] macro.
+The program shall not use an operand, other than a sym operand, in the expansion of the [`core::arch::global_asm!`] macro.
 
 ## Register operands
 
@@ -438,17 +452,18 @@ Generic register class outputs are disallowed by the compiler when `clobber_abi`
 Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
 The following ABIs can be used with `clobber_abi`:
 
-| Architecture | ABI name | Clobbered registers |
-| ------------ | -------- | ------------------- |
-| x86-32 | `"C"`, `"system"`, `"efiapi"`, `"cdecl"`, `"stdcall"`, `"fastcall"` | `ax`, `cx`, `dx`, `xmm[0-7]`, `mm[0-7]`, `k[0-7]`, `st([0-7])` |
-| x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
-| x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
-| AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
-| ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
-| RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
-| LoongArch | `"C"`, `"system"`, `"efiapi"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
+>[!TARGET-SPECIFIC]
+> | Architecture | ABI name | Clobbered registers |
+> | ------------ | -------- | ------------------- |
+> | x86-32 | `"C"`, `"system"`, `"efiapi"`, `"cdecl"`, `"stdcall"`, `"fastcall"` | `ax`, `cx`, `dx`, `xmm[0-7]`, `mm[0-7]`, `k[0-7]`, `st([0-7])` |
+> | x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
+> | x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
+> | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
+> | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
+> | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
+> | LoongArch | `"C"`, `"system"`, `"efiapi"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
 
-> Notes:
+>[!NOTE]
 > - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
 
 The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
@@ -456,16 +471,35 @@ The list of clobbered registers for each ABI is updated in rustc as architecture
 ## Behaviour of an asm block [dynamic.asm.evaluation]
 
 r[dynamic.asm.evaluation.general]
-Each evaluation of an assembly block shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine.
+Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine.
 
 >[!NOTE]
-> The operation the assembly block performs may differ between evaluations of the same assembly block.
+> The operation the asm block performs may differ between evaluations of the same asm block.
 
 >[!TARGET-SPECIFIC]
-> The correspondance between the operation performed by the assembly block is target-dependant and implementation-dependant, subject to the rules set in [dynamic.asm.operands].
+> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [dynamic.asm.operands].
 
 r[dynamic.asm.evaluation.constraints]
-Certain constraints may be placed on the asm block, by default or 
+Certain constraints may be placed on the asm block, and on the requirements of the correspondance, by default or by an option explicitly specified on the asm block. The behaviour is undefined if any such constraint is violated.
+
+r[dynamic.asm.evaluation.unwind]
+The behaviour is undefined if an inline assembly block exits by unwinding from a panic or a foreign exception.
+
+r[dynamic.asm.evaluation.prefix-instr]
+The behaviour is undefined if the inline assembly block ends by evaluating an instruction considered a prefix instruction on the target. Such errors may be diagnosed when statically detected.
+
+>[!TARGET-SPECIFIC]
+> On x86 and x86-64, the `lock`, `repnz`, `rep`, `repz`, as well as GNU AS specific address-size, data-size, and explicit rex, vex, and evex prefixes.
+> It is assembler- and implementation-dependent whether or not use of these prefixes before the end of the asm string is diagnosed.
+
+r[dynamic.asm.evaluation.register-value]
+The behaviour is undefined upon exiting an asm block unless the stack pointer register and each operand-usable register not mentioned by an `out` , `lateout`, `inout`, or `inlateout` operand has the value the register held upon entry to the asm block.
+
+>[!TARGET-SPECIFIC]
+> In addition to operand-usable registers, certain other registers on a target may require being preserved, or have specific rules regarding the value at exit.
+> On x86 and x86-64 targets:
+> * The Direction flag (`flags.DF`) is clear upon entry and must be clear upon exit
+> * The x87 Stack (that is the `TOP` field of the floating-point status word, and each bit in the floating-point tag word) must be preserved and restored upon exit. If all x87 `st` registers are marked as clobbered, the stack is guaranteed to be empty on entry to the asm block (that is, `TOP` is set to `0x7` and the `ftw` is set to `0xFFFF`).
 
 ## Options [dynamic.asm.options]
 
@@ -528,90 +562,12 @@ The `noreturn` option may be specifed. An invocation of the [`core::arch::asm!`]
 r[dynamic.asm.options.global]
 A program shall not specify an option, other than the `att_syntax` option, in an invocation of the [`core::arch::global_asm!`] macro.
 
-## Rules for inline assembly
 
-To avoid undefined behavior, these rules must be followed when using function-scope inline assembly (`asm!`):
 
-- Any registers not specified as inputs will contain an undefined value on entry to the asm block.
-  - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture.
-    Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
-- Any registers not specified as outputs must have the same value upon exiting the asm block as they had on entry, otherwise behavior is undefined.
-  - This only applies to registers which can be specified as an input or output.
-    Other registers follow target-specific rules.
-  - Note that a `lateout` may be allocated to the same register as an `in`, in which case this rule does not apply.
-    Code should not rely on this however since it depends on the results of register allocation.
-- Behavior is undefined if execution unwinds out of an asm block.
-  - This also applies if the assembly code calls a function which then unwinds.
-- The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
-  - Refer to the unsafe code guidelines for the exact rules.
-  - If the `readonly` option is set, then only memory reads are allowed.
-  - If the `nomem` option is set then no reads or writes to memory are allowed.
-  - These rules do not apply to memory which is private to the asm code, such as stack space allocated within the asm block.
-- The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
-  - This effectively means that the compiler must treat the `asm!` as a black box and only take the interface specification into account, not the instructions themselves.
-  - Runtime code patching is allowed, via target-specific mechanisms.
-- Unless the `nostack` option is set, asm code is allowed to use stack space below the stack pointer.
-  - On entry to the asm block the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
-  - You are responsible for making sure you don't overflow the stack (e.g. use stack probing to ensure you hit a guard page).
-  - You should adjust the stack pointer when allocating stack memory as required by the target ABI.
-  - The stack pointer must be restored to its original value before leaving the asm block.
-- If the `noreturn` option is set then behavior is undefined if execution falls through to the end of the asm block.
-- If the `pure` option is set then behavior is undefined if the `asm!` has side-effects other than its direct outputs.
-  Behavior is also undefined if two executions of the `asm!` code with the same inputs result in different outputs.
-  - When used with the `nomem` option, "inputs" are just the direct inputs of the `asm!`.
-  - When used with the `readonly` option, "inputs" comprise the direct inputs of the `asm!` and any memory that the `asm!` block is allowed to read.
-- On x86, the direction flag (DF in `EFLAGS`) is clear on entry to an asm block and must be clear on exit.
-  - Behavior is undefined if the direction flag is set on exiting an asm block.
-- On x86, the x87 floating-point register stack must remain unchanged unless all of the `st([0-7])` registers have been marked as clobbered with `out("st(0)") _, out("st(1)") _, ...`.
-  - If all x87 registers are clobbered then the x87 register stack is guaranteed to be empty upon entering an `asm` block. Assembly code must ensure that the x87 register stack is also empty when exiting the asm block.
-- The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting an `asm!` block.
-  - This means that `asm!` blocks that never return (even if not marked `noreturn`) don't need to preserve these registers.
-  - When returning to a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
-    - You cannot exit an `asm!` block that has not been entered.
-      Neither can you exit an `asm!` block that has already been exited (without first entering it again).
-    - You are responsible for switching any target-specific state (e.g. thread-local storage, stack bounds).
-    - You cannot jump from an address in one `asm!` block to an address in another, even within the same function or block, without treating their contexts as potentially different and requiring context switching. You cannot assume that any particular value in those contexts (e.g. current stack pointer or temporary values below the stack pointer) will remain unchanged between the two `asm!` blocks.
-    - The set of memory locations that you may access is the intersection of those allowed by the `asm!` blocks you entered and exited.
-- You cannot assume that two `asm!` blocks adjacent in source code, even without any other code between them, will end up in successive addresses in the binary without any other instructions between them.
-- You cannot assume that an `asm!` block will appear exactly once in the output binary.
-  The compiler is allowed to instantiate multiple copies of the `asm!` block, for example when the function containing it is inlined in multiple places.
-- On x86, inline assembly must not end with an instruction prefix (such as `LOCK`) that would apply to instructions generated by the compiler.
-  - The compiler is currently unable to detect this due to the way inline assembly is compiled, but may catch and reject this in the future.
+## Directives Support [dynamic.asm.directives]
 
-> **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
-
-### Correctness and Validity
-
-In addition to all of the previous rules, the string argument to `asm!` must ultimately become---
-after all other arguments are evaluated, formatting is performed, and operands are translated---
-assembly that is both syntactically correct and semantically valid for the target architecture.
-The formatting rules allow the compiler to generate assembly with correct syntax.
-Rules concerning operands permit valid translation of Rust operands into and out of `asm!`.
-Adherence to these rules is necessary, but not sufficient, for the final expanded assembly to be
-both correct and valid. For instance:
-
-- arguments may be placed in positions which are syntactically incorrect after formatting
-- an instruction may be correctly written, but given architecturally invalid operands
-- an architecturally unspecified instruction may be assembled into unspecified code
-- a set of instructions, each correct and valid, may cause undefined behavior if placed in immediate succession
-
-As a result, these rules are _non-exhaustive_. The compiler is not required to check the
-correctness and validity of the initial string nor the final assembly that is generated.
-The assembler may check for correctness and validity but is not required to do so.
-When using `asm!`, a typographical error may be sufficient to make a program unsound,
-and the rules for assembly may include thousands of pages of architectural reference manuals.
-Programmers should exercise appropriate care, as invoking this `unsafe` capability comes with
-assuming the responsibility of not violating rules of both the compiler or the architecture.
-
-### Directives Support
-
-Inline assembly supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
-The result of using other directives is assembler-specific (and may cause an error, or may be accepted as-is).
-
-If inline assembly includes any "stateful" directive that modifies how subsequent assembly is processed, the block must undo the effects of any such directives before the inline assembly ends.
-
-The following directives are guaranteed to be supported by the assembler:
-
+r[dynamic.asm.directives]
+The common subset of the LLVM and GNU AS Assembly Syntax used for the *expanded asm-string* is guaranteed to support the following directives
 - `.2byte`
 - `.4byte`
 - `.8byte`
@@ -660,74 +616,67 @@ The following directives are guaranteed to be supported by the assembler:
 - `.uleb128`
 - `.word`
 
+>[!NOTE]
+> These directives are generally ones that solely emit sequences of bytes, or that modify the property of symbols.
+
+r[dynamic.asm.directives.dwarf]
+
+>[!TARGET-SPECIFIC]
+> The following Directives are guaranteed to be supported on ELF Targets that use DWARF Debug Information and DWARF Unwind Tables
+> - `.cfi_adjust_cfa_offset`
+> - `.cfi_def_cfa`
+> - `.cfi_def_cfa_offset`
+> - `.cfi_def_cfa_register`
+> - `.cfi_endproc`
+> - `.cfi_escape`
+> - `.cfi_lsda`
+> - `.cfi_offset`
+> - `.cfi_personality`
+> - `.cfi_register`
+> - `.cfi_rel_offset`
+> - `.cfi_remember_state`
+> - `.cfi_restore`
+> - `.cfi_restore_state`
+> - `.cfi_return_column`
+> - `.cfi_same_value`
+> - `.cfi_sections`
+> - `.cfi_signal_frame`
+> - `.cfi_startproc`
+> - `.cfi_undefined`
+> - `.cfi_window_save`
+
+r[dynamic.asm.directives.seh]
+
+>[!TARGET-SPECIFIC]
+> The following directives are guaranteed to be supported on platforms that use Structured Exception Handling
+> - `.seh_endproc`
+> - `.seh_endprologue`
+> - `.seh_proc`
+> - `.seh_pushreg`
+> - `.seh_savereg`
+> - `.seh_setframe`
+> - `.seh_stackalloc`
 
 
-#### Target Specific Directive Support
+r[dynamic.asm.directives.x86]
 
-##### Dwarf Unwinding
+>[!TARGET-SPECIFIC]
+> The following directives are guaranteed to be supported on x86 and x86-64 platforms
+> - `.nops`
+> - `.code16`
+> - `.code32`
+> - `.code64`
+> Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
+> 32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
 
-The following directives are supported on ELF targets that support DWARF unwind info:
+r[dynamic.asm.directives.arm]
 
-
-- `.cfi_adjust_cfa_offset`
-- `.cfi_def_cfa`
-- `.cfi_def_cfa_offset`
-- `.cfi_def_cfa_register`
-- `.cfi_endproc`
-- `.cfi_escape`
-- `.cfi_lsda`
-- `.cfi_offset`
-- `.cfi_personality`
-- `.cfi_register`
-- `.cfi_rel_offset`
-- `.cfi_remember_state`
-- `.cfi_restore`
-- `.cfi_restore_state`
-- `.cfi_return_column`
-- `.cfi_same_value`
-- `.cfi_sections`
-- `.cfi_signal_frame`
-- `.cfi_startproc`
-- `.cfi_undefined`
-- `.cfi_window_save`
-
-
-##### Structured Exception Handling
-
-On targets with structured exception Handling, the following additional directives are guaranteed to be supported:
-
-- `.seh_endproc`
-- `.seh_endprologue`
-- `.seh_proc`
-- `.seh_pushreg`
-- `.seh_savereg`
-- `.seh_setframe`
-- `.seh_stackalloc`
-
-
-##### x86 (32-bit and 64-bit)
-
-On x86 targets, both 32-bit and 64-bit, the following additional directives are guaranteed to be supported:
-- `.nops`
-- `.code16`
-- `.code32`
-- `.code64`
-
-
-Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
-32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
-
-
-
-##### ARM (32-bit)
-
-On ARM, the following additional directives are guaranteed to be supported:
-
-- `.even`
-- `.fnstart`
-- `.fnend`
-- `.save`
-- `.movsp`
-- `.code`
-- `.thumb`
-- `.thumb_func`
+> The following directives are guaranteed to be supported on 32-bit ARM platforms
+> - `.even`
+> - `.fnstart`
+> - `.fnend`
+> - `.save`
+> - `.movsp`
+> - `.code`
+> - `.thumb`
+> - `.thumb_func`
