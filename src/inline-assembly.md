@@ -195,7 +195,7 @@ Each operand_spec is expanded in the *joined asm-string* according to the modifi
 > The name given to an item used by a sym-expr that does not have a linkage name may be known as the "mangled" name of the item.
 
 >[!NOTE]
-> A sym operand does not include any relocation modifeirs such as `@plt` or `@tpoff`. The *joined asm-string* is responsible for including these as necessary.
+> A sym operand does not include any relocation modifiers such as `@plt` or `@tpoff`. The *joined asm-string* is responsible for including these as required.
 
 >[!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
@@ -203,184 +203,197 @@ Each operand_spec is expanded in the *joined asm-string* according to the modifi
 r[dynamic.asm.operands.global]
 The program shall not use an operand, other than a sym operand, in the expansion of the [`core::arch::global_asm!`] macro.
 
-## Register operands
+r[dynamic.asm.operands.clobbers_abi]
+A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, the no reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call.
 
-Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register.
-Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`).
+>[!NOTE]
+> Multiple `clobbers_abi` operands may be specified. If a register is considered clobbered by multiple `clobbers_abi` operands, it acts as though only one of those `clobbers_abi` operands specifies that register.
 
-Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register.
-It is a compile-time error to use the same explicit register for two input operands or two output operands.
-Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
+>[!TARGET-SPECIFIC]
+> The list of supported ABI strings and current list of clobbered registers are
+> | Architecture | ABI name | Clobbered registers |
+> | ------------ | -------- | ------------------- |
+> | x86-32 | `"C"`, `"system"`, `"efiapi"`, `"cdecl"`, `"stdcall"`, `"fastcall"` | `ax`, `cx`, `dx`, `xmm[0-7]`, `mm[0-7]`, `k[0-7]`, `st([0-7])` |
+> | x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
+> | x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
+> | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
+> | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
+> | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
+> | LoongArch | `"C"`, `"system"`, `"efiapi"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
 
-Here is the list of currently supported register classes:
+>[!NOTE]
+> - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
 
-| Architecture | Register class | Registers | LLVM constraint code |
-| ------------ | -------------- | --------- | -------------------- |
-| x86 | `reg` | `ax`, `bx`, `cx`, `dx`, `si`, `di`, `bp`, `r[8-15]` (x86-64 only) | `r` |
-| x86 | `reg_abcd` | `ax`, `bx`, `cx`, `dx` | `Q` |
-| x86-32 | `reg_byte` | `al`, `bl`, `cl`, `dl`, `ah`, `bh`, `ch`, `dh` | `q` |
-| x86-64 | `reg_byte`\* | `al`, `bl`, `cl`, `dl`, `sil`, `dil`, `bpl`, `r[8-15]b` | `q` |
-| x86 | `xmm_reg` | `xmm[0-7]` (x86) `xmm[0-15]` (x86-64) | `x` |
-| x86 | `ymm_reg` | `ymm[0-7]` (x86) `ymm[0-15]` (x86-64) | `x` |
-| x86 | `zmm_reg` | `zmm[0-7]` (x86) `zmm[0-31]` (x86-64) | `v` |
-| x86 | `kreg` | `k[1-7]` | `Yk` |
-| x86 | `kreg0` | `k0` | Only clobbers |
-| x86 | `x87_reg` | `st([0-7])` | Only clobbers |
-| x86 | `mmx_reg` | `mm[0-7]` | Only clobbers |
-| x86-64 | `tmm_reg` | `tmm[0-7]` | Only clobbers |
-| AArch64 | `reg` | `x[0-30]` | `r` |
-| AArch64 | `vreg` | `v[0-31]` | `w` |
-| AArch64 | `vreg_low16` | `v[0-15]` | `x` |
-| AArch64 | `preg` | `p[0-15]`, `ffr` | Only clobbers |
-| ARM (ARM/Thumb2) | `reg` | `r[0-12]`, `r14` | `r` |
-| ARM (Thumb1) | `reg` | `r[0-7]` | `r` |
-| ARM | `sreg` | `s[0-31]` | `t` |
-| ARM | `sreg_low16` | `s[0-15]` | `x` |
-| ARM | `dreg` | `d[0-31]` | `w` |
-| ARM | `dreg_low16` | `d[0-15]` | `t` |
-| ARM | `dreg_low8` | `d[0-8]` | `x` |
-| ARM | `qreg` | `q[0-15]` | `w` |
-| ARM | `qreg_low8` | `q[0-7]` | `t` |
-| ARM | `qreg_low4` | `q[0-3]` | `x` |
-| RISC-V | `reg` | `x1`, `x[5-7]`, `x[9-15]`, `x[16-31]` (non-RV32E) | `r` |
-| RISC-V | `freg` | `f[0-31]` | `f` |
-| RISC-V | `vreg` | `v[0-31]` | Only clobbers |
-| LoongArch | `reg` | `$r1`, `$r[4-20]`, `$r[23,30]` | `r` |
-| LoongArch | `freg` | `$f[0-31]` | `f` |
+## Register operands [dynamic.asm.registers]
+
+r[dynamic.asm.registers.explicit]
+An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
+
+r[dynamic.asm.registers.class]
+A register operand that is not an explicit register operand specifies the name of a register class as an identifier. When a register class is specified, the implementation assigns an unspecified register belonging to that class to the operand.
+
+r[dynamic.asm.registers.valid-types]
+Each register class, and the explicit registers within those classes, may restrict the set of types allowed for operands referring to that class or those registers. 
+
+>[!NOTE]
+> When an integer type which is as wide as `isize` is valid for a given register class, `isize` is also considered valid, and the same for function pointers.
+> When a signed integer is considered valid for a given register class, the corresponding unsigned integer is also considered valid.
+
+r[dynamic.asm.registers.target-feature]
+Each register class, and the explicit registers within that class may require that a specified target_feature is enabled in the ambient target_feature set, or by using the `target_feature` function attribute. The program shall not specify such registers or register classes, except as clobber output, when the feature is not enabled. Additionally specific types may be valid only if certain additional features are enabled.
+
+>[!NOTE]
+> The set of features in the ambient target_feature set are implementation-defined, and may be queried by [parse.macros.cfg].
+
+r[dynamic.asm.registers.class-list]
+
+>[!TARGET-SPECIFIC]
+> The list of valid register classes, the constituent registers, the required target feature (if any), and the valid types for those classes are:
+> | Architecture | Register class | Registers | Target feature | Allowed types |
+> | ------------ | -------------- | --------- | -------------- | ------------- |
+> | x86 | `reg` | `ax`, `bx`, `cx`, `dx`, `si`, `di`, `bp`, `r[8-15]` (x86-64 only) | None | `i16`, `i32`, `f32` |
+> | x86 | `reg_abcd` | `ax`, `bx`, `cx`, `dx` | None | `i16`, `i32`, `f32`, `i64`, `f64` |
+> | x86-32 | `reg_byte` | `al`, `bl`, `cl`, `dl`, `ah`, `bh`, `ch`, `dh` | None | `i8` |
+> | x86-64 | `reg_byte`\* | `al`, `bl`, `cl`, `dl`, `sil`, `dil`, `bpl`, `r[8-15]b` | None | `i8` |
+> | x86 | `xmm_reg` | `xmm[0-7]` (x86) `xmm[0-15]` (x86-64) | `sse` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+> | x86 | `ymm_reg` | `ymm[0-7]` (x86) `ymm[0-15]` (x86-64) | `avx` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` |
+> | x86 | `zmm_reg` | `zmm[0-7]` (x86) `zmm[0-31]` (x86-64) | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` <br> `i8x64`, `i16x32`, `i32x16`, `i64x8`, `f32x16`, `f64x8` |
+> | x86 | `kreg` | `k[1-7]` | `avx512f` | `i8`, `i16`, `i32` (requires `avx512bw`), `i64` (requires `avx512bw`) |
+> | x86 | `kreg0` | `k0` | N/A | Only clobbers |
+> | x86 | `x87_reg` | `st([0-7])` | N/A | Only clobbers |
+> | x86 | `mmx_reg` | `mm[0-7]` | N/A | Only clobbers |
+> | x86-64 | `tmm_reg` | `tmm[0-7]` | N/A | Only clobbers |
+> | AArch64 | `reg` | `x[0-30]` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
+> | AArch64 | `vreg` | `v[0-31]` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+> | AArch64 | `vreg_low16` | `v[0-15]` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+> | AArch64 | `preg` | `p[0-15]`, `ffr` | N/A | Only clobbers |
+> | ARM (ARM/Thumb2) | `reg` | `r[0-12]`, `r14` | None | `i8`, `i16`, `i32`, `f32` |
+> | ARM (Thumb1) | `reg` | `r[0-7]` | None | `i8`, `i16`, `i32`, `f32` |
+> | ARM | `sreg` | `s[0-31]` | `vfp2` | `i32`, `f32` |
+> | ARM | `sreg_low16` | `s[0-15]` | `vfp2` | `i32`, `f32` |
+> | ARM | `dreg` | `d[0-31]` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
+> | ARM | `dreg_low16` | `d[0-15]` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
+> | ARM | `dreg_low8` | `d[0-8]` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
+> | ARM | `qreg` | `q[0-15]` | `neon` | `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4` |
+> | ARM | `qreg_low8` | `q[0-7]` | `neon` | `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4` |
+> | ARM | `qreg_low4` | `q[0-3]` | `neon` | `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4` |
+> | RISC-V32 | `reg` | `x1`, `x[5-7]`, `x[9-15]`, `x[16-31]` (non-RV32E) | None | `i8`, `i16`, `i32`, `f32` |
+> | RISC-V64 | `reg` | `x1`, `x[5-7]`, `x[9-15]`, `x[16-31]`  | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
+> | RISC-V | `freg` | `f[0-31]` | `f` | `f32`, `f64` (requires `d`) |
+> | RISC-V | `vreg` | `v[0-31]` | N/A | Only clobbers |
+> | LoongArch | `reg` | `$r1`, `$r[4-20]`, `$r[23,30]` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
+> | LoongArch | `freg` | `$f[0-31]` | None | `f32`, `f64` |
 
 > **Notes**:
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
 >
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 >
-> - Some register classes are marked as "Only clobbers" which means that registers in these classes cannot be used for inputs or outputs, only clobbers of the form `out(<explicit register>) _` or `lateout(<explicit register>) _`.
 
-Each register class has constraints on which value types they can be used with.
-This is necessary because the way a value is loaded into a register depends on its type.
-For example, on big-endian systems, loading a `i32x4` and a `i8x16` into a SIMD register may result in different register contents even if the byte-wise memory representation of both values is identical.
-The availability of supported types for a particular register class may depend on what target features are currently enabled.
+r[dynamic.asm.register.clobbers_only]
+Certain registers and register classes are *clobbers only*. Such register names or register classes shall not be specified by an operand, other than a clobbers output.
 
-| Architecture | Register class | Target feature | Allowed types |
-| ------------ | -------------- | -------------- | ------------- |
-| x86-32 | `reg` | None | `i16`, `i32`, `f32` |
-| x86-64 | `reg` | None | `i16`, `i32`, `f32`, `i64`, `f64` |
-| x86 | `reg_byte` | None | `i8` |
-| x86 | `xmm_reg` | `sse` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
-| x86 | `ymm_reg` | `avx` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` |
-| x86 | `zmm_reg` | `avx512f` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` <br> `i8x64`, `i16x32`, `i32x16`, `i64x8`, `f32x16`, `f64x8` |
-| x86 | `kreg` | `avx512f` | `i8`, `i16` |
-| x86 | `kreg` | `avx512bw` | `i32`, `i64` |
-| x86 | `mmx_reg` | N/A | Only clobbers |
-| x86 | `x87_reg` | N/A | Only clobbers |
-| x86 | `tmm_reg` | N/A | Only clobbers |
-| AArch64 | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
-| AArch64 | `vreg` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
-| AArch64 | `preg` | N/A | Only clobbers |
-| ARM | `reg` | None | `i8`, `i16`, `i32`, `f32` |
-| ARM | `sreg` | `vfp2` | `i32`, `f32` |
-| ARM | `dreg` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
-| ARM | `qreg` | `neon` | `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4` |
-| RISC-V32 | `reg` | None | `i8`, `i16`, `i32`, `f32` |
-| RISC-V64 | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
-| RISC-V | `freg` | `f` | `f32` |
-| RISC-V | `freg` | `d` | `f64` |
-| RISC-V | `vreg` | N/A | Only clobbers |
-| LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
-| LoongArch64 | `freg` | None | `f32`, `f64` |
+>[!TARGET-SPECIFIC]
+> The list of such classes and registers are:
+> * On x86 and x86-64: the `kreg0`, `x87_reg`, `mmx_reg`, and `tmm_reg` classes, as well as the registers belonging to these classes
+> * On AArch64: the `preg` class, and the registers belonging to that class
+> * On RISC-V: The `vreg` class, and the registers belonging to that class.
 
-> **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
-If a value is of a smaller size than the register it is allocated in then the upper bits of that register will have an undefined value for inputs and will be ignored for outputs.
-The only exception is the `freg` register class on RISC-V where `f32` values are NaN-boxed in a `f64` as required by the RISC-V architecture.
+r[dynamic.asm.register.small-values]
+If a register input is specified with a type that has a smaller width than the register class according to the target, the remaining bits of the register are set to an unspecified value.
 
-When separate input and output expressions are specified for an `inout` operand, both expressions must have the same type.
-The only exception is if both operands are pointers or integers, in which case they are only required to have the same size.
-This restriction exists because the register allocators in LLVM and GCC sometimes cannot handle tied operands with different types.
+>[!TARGET-SPECIFIC]
+> On RISC-V, in the case of an `freg` input of type `f32`, the upper bits are instead set to all 1s according to the `D` extension of the RISC-V specification.
 
-## Register names
+r[dynamic.asm.register.aliases]
+Certain explicit register names have defined aliases. These register names are considered identical to canonical register name and may be specified in place of the canonical name in an explicit register operand
 
-Some registers have multiple names.
-These are all treated by the compiler as identical to the base register name.
-Here is the list of all supported register aliases:
+>[!TARGET-SPECIFIC]
+> The List of register alias names is:
+> | Architecture | Base register | Aliases |
+> | ------------ | ------------- | ------- |
+> | x86 | `ax` | `eax`, `rax` |
+> | x86 | `bx` | `ebx`, `rbx` |
+> | x86 | `cx` | `ecx`, `rcx` |
+> | x86 | `dx` | `edx`, `rdx` |
+> | x86 | `si` | `esi`, `rsi` |
+> | x86 | `di` | `edi`, `rdi` |
+> | x86 | `bp` | `bpl`, `ebp`, `rbp` |
+> | x86 | `sp` | `spl`, `esp`, `rsp` |
+> | x86 | `ip` | `eip`, `rip` |
+> | x86 | `st(0)` | `st` |
+> | x86 | `r[8-15]` | `r[8-15]b`, `r[8-15]w`, `r[8-15]d` |
+> | x86 | `xmm[0-31]` | `ymm[0-31]`, `zmm[0-31]` |
+> | AArch64 | `x[0-30]` | `w[0-30]` |
+> | AArch64 | `x29` | `fp` |
+> | AArch64 | `x30` | `lr` |
+> | AArch64 | `sp` | `wsp` |
+> | AArch64 | `xzr` | `wzr` |
+> | AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]` |
+> | ARM | `r[0-3]` | `a[1-4]` |
+> | ARM | `r[4-9]` | `v[1-6]` |
+> | ARM | `r9` | `rfp` |
+> | ARM | `r10` | `sl` |
+> | ARM | `r11` | `fp` |
+> | ARM | `r12` | `ip` |
+> | ARM | `r13` | `sp` |
+> | ARM | `r14` | `lr` |
+> | ARM | `r15` | `pc` |
+> | RISC-V | `x0` | `zero` |
+> | RISC-V | `x1` | `ra` |
+> | RISC-V | `x2` | `sp` |
+> | RISC-V | `x3` | `gp` |
+> | RISC-V | `x4` | `tp` |
+> | RISC-V | `x[5-7]` | `t[0-2]` |
+> | RISC-V | `x8` | `fp`, `s0` |
+> | RISC-V | `x9` | `s1` |
+> | RISC-V | `x[10-17]` | `a[0-7]` |
+> | RISC-V | `x[18-27]` | `s[2-11]` |
+> | RISC-V | `x[28-31]` | `t[3-6]` |
+> | RISC-V | `f[0-7]` | `ft[0-7]` |
+> | RISC-V | `f[8-9]` | `fs[0-1]` |
+> | RISC-V | `f[10-17]` | `fa[0-7]` |
+> | RISC-V | `f[18-27]` | `fs[2-11]` |
+> | RISC-V | `f[28-31]` | `ft[8-11]` |
+> | LoongArch | `$r0` | `$zero` |
+> | LoongArch | `$r1` | `$ra` |
+> | LoongArch | `$r2` | `$tp` |
+> | LoongArch | `$r3` | `$sp` |
+> | LoongArch | `$r[4-11]` | `$a[0-7]` |
+> | LoongArch | `$r[12-20]` | `$t[0-8]` |
+> | LoongArch | `$r21` | |
+> | LoongArch | `$r22` | `$fp`, `$s9` |
+> | LoongArch | `$r[23-31]` | `$s[0-8]` |
+> | LoongArch | `$f[0-7]` | `$fa[0-7]` |
+> | LoongArch | `$f[8-23]` | `$ft[0-15]` |
+> | LoongArch | `$f[24-31]` | `$fs[0-7]` |
 
-| Architecture | Base register | Aliases |
-| ------------ | ------------- | ------- |
-| x86 | `ax` | `eax`, `rax` |
-| x86 | `bx` | `ebx`, `rbx` |
-| x86 | `cx` | `ecx`, `rcx` |
-| x86 | `dx` | `edx`, `rdx` |
-| x86 | `si` | `esi`, `rsi` |
-| x86 | `di` | `edi`, `rdi` |
-| x86 | `bp` | `bpl`, `ebp`, `rbp` |
-| x86 | `sp` | `spl`, `esp`, `rsp` |
-| x86 | `ip` | `eip`, `rip` |
-| x86 | `st(0)` | `st` |
-| x86 | `r[8-15]` | `r[8-15]b`, `r[8-15]w`, `r[8-15]d` |
-| x86 | `xmm[0-31]` | `ymm[0-31]`, `zmm[0-31]` |
-| AArch64 | `x[0-30]` | `w[0-30]` |
-| AArch64 | `x29` | `fp` |
-| AArch64 | `x30` | `lr` |
-| AArch64 | `sp` | `wsp` |
-| AArch64 | `xzr` | `wzr` |
-| AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]` |
-| ARM | `r[0-3]` | `a[1-4]` |
-| ARM | `r[4-9]` | `v[1-6]` |
-| ARM | `r9` | `rfp` |
-| ARM | `r10` | `sl` |
-| ARM | `r11` | `fp` |
-| ARM | `r12` | `ip` |
-| ARM | `r13` | `sp` |
-| ARM | `r14` | `lr` |
-| ARM | `r15` | `pc` |
-| RISC-V | `x0` | `zero` |
-| RISC-V | `x1` | `ra` |
-| RISC-V | `x2` | `sp` |
-| RISC-V | `x3` | `gp` |
-| RISC-V | `x4` | `tp` |
-| RISC-V | `x[5-7]` | `t[0-2]` |
-| RISC-V | `x8` | `fp`, `s0` |
-| RISC-V | `x9` | `s1` |
-| RISC-V | `x[10-17]` | `a[0-7]` |
-| RISC-V | `x[18-27]` | `s[2-11]` |
-| RISC-V | `x[28-31]` | `t[3-6]` |
-| RISC-V | `f[0-7]` | `ft[0-7]` |
-| RISC-V | `f[8-9]` | `fs[0-1]` |
-| RISC-V | `f[10-17]` | `fa[0-7]` |
-| RISC-V | `f[18-27]` | `fs[2-11]` |
-| RISC-V | `f[28-31]` | `ft[8-11]` |
-| LoongArch | `$r0` | `$zero` |
-| LoongArch | `$r1` | `$ra` |
-| LoongArch | `$r2` | `$tp` |
-| LoongArch | `$r3` | `$sp` |
-| LoongArch | `$r[4-11]` | `$a[0-7]` |
-| LoongArch | `$r[12-20]` | `$t[0-8]` |
-| LoongArch | `$r21` | |
-| LoongArch | `$r22` | `$fp`, `$s9` |
-| LoongArch | `$r[23-31]` | `$s[0-8]` |
-| LoongArch | `$f[0-7]` | `$fa[0-7]` |
-| LoongArch | `$f[8-23]` | `$ft[0-15]` |
-| LoongArch | `$f[24-31]` | `$fs[0-7]` |
+r[dynamic.asm.register.reserved]
+Certain registers are reserved registers. Reserved Registers shall not be named by an explicit register operand.
 
-Some registers cannot be used for input or output operands:
+>[!NOTE]
+> Reserved Registers that belong to a register class may still be assigned to register operands regardless
 
-| Architecture | Unsupported register | Reason |
-| ------------ | -------------------- | ------ |
-| All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
-| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
-| ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
-| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
-| x86 | `ip` | This is the program counter, not a real register. |
-| AArch64 | `xzr` | This is a constant zero register which can't be modified. |
-| AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
-| ARM | `pc` | This is the program counter, not a real register. |
-| ARM | `r9` | This is an OS-reserved register on some ARM targets. |
-| RISC-V | `x0` | This is a constant zero register which can't be modified. |
-| RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
-| LoongArch | `$r0` or `$zero` | This is a constant zero register which can't be modified. |
-| LoongArch | `$r2` or `$tp` | This is reserved for TLS. |
-| LoongArch | `$r21` | This is reserved by the ABI. |
+>[!TARGET-SPECIFIC]
+> | Architecture | Unsupported register | Reason |
+> | ------------ | -------------------- | ------ |
+> | All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
+> | All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
+> | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
+> | All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
+> | x86 | `ip` | This is the program counter, not a real register. |
+> | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
+> | AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
+> | ARM | `pc` | This is the program counter, not a real register. |
+> | ARM | `r9` | This is an OS-reserved register on some ARM targets. |
+> | RISC-V | `x0` | This is a constant zero register which can't be modified. |
+> | RISC-V | `gp`, `tp` | These registers are reserved and cannot be used as inputs or outputs. |
+> | LoongArch | `$r0` or `$zero` | This is a constant zero register which can't be modified. |
+> | LoongArch | `$r2` or `$tp` | This is reserved for TLS. |
+> | LoongArch | `$r21` | This is reserved by the ABI. |
 
-The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
+
 
 ## Template modifiers
 
@@ -440,33 +453,6 @@ Since this an easy pitfall, the compiler will suggest a template modifier to use
 If all references to an operand already have modifiers then the warning is suppressed for that operand.
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
-
-## ABI clobbers
-
-The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
-This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then `lateout("...") _` is implicitly added to the operands list (where the `...` is replaced by the register's name).
-
-`clobber_abi` may be specified any number of times. It will insert a clobber for all unique registers in the union of all specified calling conventions.
-
-Generic register class outputs are disallowed by the compiler when `clobber_abi` is used: all outputs must specify an explicit register.
-Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
-The following ABIs can be used with `clobber_abi`:
-
->[!TARGET-SPECIFIC]
-> | Architecture | ABI name | Clobbered registers |
-> | ------------ | -------- | ------------------- |
-> | x86-32 | `"C"`, `"system"`, `"efiapi"`, `"cdecl"`, `"stdcall"`, `"fastcall"` | `ax`, `cx`, `dx`, `xmm[0-7]`, `mm[0-7]`, `k[0-7]`, `st([0-7])` |
-> | x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
-> | x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
-> | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
-> | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
-> | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
-> | LoongArch | `"C"`, `"system"`, `"efiapi"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
-
->[!NOTE]
-> - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
-
-The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
 
 ## Behaviour of an asm block [dynamic.asm.evaluation]
 
