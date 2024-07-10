@@ -54,6 +54,12 @@ main .warning p::before {
     color: #80d0d0;
 }
 
+.coal main .target-specific p,
+.navy main .target-specific p,
+.ayu main .target-specific p {
+    background: #005f10;
+}
+
 /* <kbd> tags can be used to highlight specific character elements. */
 kbd {
     border: 1px solid #999;
@@ -143,6 +149,8 @@ span.version {
     font-size: 0.9em;
 }
 
+
+
 /* <dfn> tags are used to indicate a specific word or phrase is being defined. */
 dfn {
     font-style: italic;
@@ -185,6 +193,25 @@ blockquote {
 blockquote > p {
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.target-specific blockquote {
+    margin-left: 1em;
+    margin-bottom: 1em;
+    margin-right: 6vw;
+    background: #00f82e;
+    padding: 0.2ex 0.5ex;
+    border-radius: 5px;
+    display: block;
+    box-shadow: inset -1px -1px 0 #06a430;
+    font-size: 0.9em;
+}
+
+.ayu  .target-specific blockquote,
+.navy .target-specific blockquote,
+.coal  .target-specific blockquote {
+    background: #008f2e;
+    box-shadow: inset -1px -1px 0 #03a430;
 }
 
 /* When the sidebar is visible, reduce the spacing of rules so that the
