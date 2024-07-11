@@ -1,12 +1,12 @@
-# Inline assembly [dynamic.asm]
+# Inline assembly [asm]
 
-r[dynamic.asm.macros]
+r[asm.macros]
 The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] expand to inline assembly syntax when used in the expression position and item position respectively. The macros shall not be expanded in any other context.
 
 > [!NOTE]
 > The expansion of the macros has no stable syntax equivalent. This section will refer to the expansion of the macro, rather than the surface syntax.
 
-r[dynamic.asm.safety]
+r[asm.safety]
 The macro [`core::arch::asm!`] shall be expanded only within an `unsafe` block.
 
 > [!NOTE]
@@ -21,7 +21,7 @@ The macro [`core::arch::asm!`] shall be expanded only within an `unsafe` block.
 # }
 ```
 
-r[dynamic.asm.support]
+r[asm.support]
 Inline assembly is supported only when compiling for a target using one of the following architectures. A program that contains inline assembly is ill-formed on any other target:
 - x86 and x86-64
 - ARM
@@ -50,7 +50,7 @@ assert_eq!(x, 4 * 6);
 # }
 ```
 
-## Syntax [dynamic.asm.syntax]
+## Syntax [asm.syntax]
 
 ```abnf
 format_string := STRING_LITERAL / RAW_STRING_LITERAL
@@ -80,9 +80,9 @@ asm_string_piece := non_format_char / format_specifier / format_escape
 asm_string_content := [*asm_string_piece]
 ```
 
-## Invocation [dynamic.asm.invocation]
+## Invocation [asm.invocation]
 
-r[dynamic.asm.invocation.asm]
+r[asm.invocation.asm]
 The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
 
 ```rust
@@ -94,7 +94,7 @@ pub fn main(){
 }
 ```
 
-r[dynamic.asm.invocation.global_asm]
+r[asm.invocation.global_asm]
 The [`core::arch::global_asm!`] macro shall be expanded in an item context only. The input tokens shall match the `asm_inner` production. If the macro is expanded in a function, the program is ill-formed. 
 
 <!--TODO: Test `global_asm!`-->
@@ -111,14 +111,14 @@ pub fn main(){
 }
 ```
 
-r[dynamic.asm.invocation.format-string]
+r[asm.invocation.format-string]
 Each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
 
 > [!NOTE]
 > an expanded string literal is a string literal (after expanding macros like [`core::concat!`]) that has had every unicode escape sequence replaced with the (appropriately escaped as needed) matching character, and which has been normalized from a raw string literal.
 
 
-r[dynamic.asm.invocation.concat]
+r[asm.invocation.concat]
 If multiple `format_string` inputs are provided, then they are concatenated as though by the [`core::concat!`] macro, separating each `format_string` with a string containing a single newline character. If any `format_string` begins a `format_specifier` that is not terminated before the end of the `format_string`, the program is ill-formed. The resulting string is known as the *joined asm-string*
 
 ```rust
@@ -130,8 +130,8 @@ core::arch::asm!("mov rax, 5\nmov rcx, rax", out("rax") x, out("rcx") _);
 # }}
 ```
 
-r[dynamic.asm.invocation.operands]
-Each operand, other than an explicit register operand ([dynamic.asm.operands.register]) shall be mentioned by at least one format_specifier in the *joined asm-string*. Explicit registers may not be referred to be a format_specifier.
+r[asm.invocation.operands]
+Each operand, other than an explicit register operand ([asm.operands.register]) shall be mentioned by at least one format_specifier in the *joined asm-string*. Explicit registers may not be referred to be a format_specifier.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -139,7 +139,7 @@ core::arch::asm!("", in(reg) 5i64);
 # }}
 ```
 
-r[dynamic.asm.invocation.positional]
+r[asm.invocation.positional]
 A `format_specifier` that does not specify an `operand_specifier` is called a positional specifier, and refers to the `nth` successive positional operand, where `n` is `0` for the first positional specifier in the *joined asm-string* and increases by 1 for each successive positional specifier in the *joined asm-string*.
 
 ```rust
@@ -149,7 +149,7 @@ core::arch::asm!("mov rax, {}", in(reg) 5i64, out("eax") x);
 # }}
 ```
 
-r[dynamic.asm.invocation.explicit-positional]
+r[asm.invocation.explicit-positional]
 A `format_specifier` that has an `operand_specifier` which is a DEC_LITERAL is called an explicit positional specifier, and refers to the `nth` successive positional operand, where `n` is the value of the DEC_LITERAL.
 
 ```rust
@@ -159,7 +159,7 @@ core::arch::asm!("mov {1}, {0}", in(reg) 5i64, out(reg) x);
 # }}
 ```
 
-r[dynamic.asm.invocation.named]
+r[asm.invocation.named]
 A `format_specifier` that has an `operand_specifier` which is an ident is called a named specifier, and refers to the named operand with the specified name.
 
 ```rust
@@ -169,17 +169,17 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, output = out(reg
 # }}
 ```
 
-r[dynamic.asm.invocation.expansion]
-The *joined asm-string* is expanded as defined in [dynamic.asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*.
+r[asm.invocation.expansion]
+The *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*.
 
-r[dynamic.asm.invocation.syntax]
-The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behaviour*. Invoking a directive that is not specified by [dynamic.asm.directives] is *conditionally supported* and has *assembler dependent behaviour*.
+r[asm.invocation.syntax]
+The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behaviour*. Invoking a directive that is not specified by [asm.directives] is *conditionally supported* and has *assembler dependent behaviour*.
 
 > [!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the syntax of the *expanded asm-string* acts as though the directive `.intel_syntax noprefix` is issued before parsing the *expanded asm-string*, except that the `option(att_syntax)` causes the syntax to act as though the directive `.att_syntax prefix` is issued before parsing the *expanded asm-string* instead.
 > On ARM and Aarch64 targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
 
-r[dynamic.asm.invocation.duplication]
+r[asm.invocation.duplication]
 The number of times, locations, and the order in which a given invocation of [`core::arch::asm!`] is expanded is unspecified.
 
 ```rust,ignore
@@ -208,24 +208,24 @@ core::arch::asm!("2: jmp 2b");
 # }}
 ```
 
-r[dynamic.asm.invocation.global-order]
+r[asm.invocation.global-order]
 The order in which invocations of [`core::arch::global_asm!`] are expanded is unspecified.
 
-r[dynamic.asm.invocation.directive-state]
+r[asm.invocation.directive-state]
 The *expanded asm-string* shall not issue a directive that modifies the global state of the assembler for processing inputs unless it issues a directive to restore that state it had upon entering the block. No diagnostic is required.
 
 > [!NOTE]
 > This include state such as the current section of the assembler, the syntax mode, or the kind of assembly output being generated.
 > Failing to obey this requirement can have significant impact on code generation, including code unrelated to the asm block. For example, an asm block that issues a `.data` directive without resetting to the appropriate section for the function can cause the following code in the function to be generated in the `.data` section, and for execution to fall off the asm block into improper memory.
 
-r[dynamic.asm.invocation.global-section]
+r[asm.invocation.global-section]
 The *expanded asm-string* of a [`core::arch::global_asm!`] invocation acts as though a `.section` directive is issued before the *expanded asm-string*  which causes code to be generated in the default section on the target for executable code.
 
 > [!NOTE]
 > This section is typically named `.text`. 
 
 
-r[dynamic.asm.invocation.prefix-instr]
+r[asm.invocation.prefix-instr]
 An *expanded asm-string* shall not end with an instruction that is interpreted as a prefix on the architecture. No Diagnostic is required
 
 > [!TARGET-SPECIFIC]
@@ -239,9 +239,9 @@ core::arch::asm!("lock");
 # }}
 ```
 
-## Operand types [dynamic.asm.operands]
+## Operand types [asm.operands]
 
-r[dynamic.asm.operands.positional]
+r[asm.operands.positional]
 Operands that do not specify an ident and are not explicit register operands are known as positional operands. Positional operands may be referred to only by positional operand specifiers and explicit positional operand specifiers, and each Positional operand must be specified before Named Operands or Explicit Register Operands.
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -252,7 +252,7 @@ core::arch::asm!("mov {1}, {0}", in(reg) 5i64, out(reg) x);
 ```
 
 
-r[dynamic.asm.operands.named]
+r[asm.operands.named]
 Operands that specify an ident are named operands. A named operand shall not specify an explicit register `reg_spec`. Named operand specifiers may be referred to only by named operand specifiers.
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -261,7 +261,7 @@ core::arch::asm!("mov rax, {input}", input = in(reg) 5i64, out("eax") x);
 # }}
 ```
 
-r[dynamic.asm.operands.registers]
+r[asm.operands.registers]
 Operands that specify an explicit register `reg_spec` are explicit register operands. 
 
 ```rust
@@ -274,7 +274,7 @@ core::arch::asm!("mov eax, ecx", in("rcx") 5i64, out("eax") x);
 > [!NOTE]
 > Explicit Register Operands have no `ident` name and cannot be referred to by an operand specifier
 
-r[dynamic.asm.operands.types]
+r[asm.operands.types]
 Each operand, other than a placeholder expression shall be of an integer type, floating-point type, function pointer type, pointer type, or target-specific vector type. These types are collectively called *asm operand types*. A pointer type is an *asm operand type* only if the pointee type has no metadata-type.
 
 ```rust,compile_fail
@@ -307,10 +307,10 @@ core::arch::asm!("xorps xmm0, xmm0", out("xmm0") x);
 # }}
 ```
 
-r[dynamic.asm.operands.in-expr]
+r[asm.operands.in-expr]
 An `input_expr` shall be a value expression of an *asm operand type*.
 
-r[dynamic.asm.operands.out-expr]
+r[asm.operands.out-expr]
 An `output_expr` shall be the placeholder expression `_` or a (potentially unitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
 
 ```rust,compile_fail
@@ -320,29 +320,29 @@ core::arch::asm!("", out("eax") x);
 # }}
 ```
 
-r[dynamic.asm.operands.inout-expr]
+r[asm.operands.inout-expr]
 An `inout_expr` shall either be an (initialized) place expression of an *asm operand type*, or shall specify both an `input_expr` and an `output_expr`. If only a single expression is specified, it is treated as both the `input_expr` and `output_expr` of the operand.
 
 > [!NOTE]
 > When a single expression is specified, it must be an initialized mutable place expression.
 
-r[dynamic.asm.operands.in]
+r[asm.operands.in]
 An `in` operand is an reg_operand with the `in` dir_spec. The `operand_expr` of the operand shall be an `input_expr`. The `input_expr` initializes the value of the register before entering the asm block.
 
-r[dynamic.asm.operands.out]
+r[asm.operands.out]
 An `out` operand is a reg_operand with the `out` dir_spec, and a `lateout` operand is a reg_operand with the `lateout` dir_spec. The `operand_expr` of an `out` operand or `lateout` operand shall be an `output_expr`. The value of the register at the exit of the asm block is written to the `output_expr` place if it is not a placeholder expression
 
 > [!NOTE]
 > A `lateout` operand differs from an `out` operand only in that the implementation may assume that no `in`, `inout`, or `inlateout` operands are read after a `lateout` operand is modified by the *expanded asm-string*.
 
-r[dynamic.asm.operands.inout]
+r[asm.operands.inout]
 An `inout` operand is a reg_operand with the `inout` dir_spec, and a `inlateout` operand is a reg_operand with the `inlateout` dir_spec. The `operand_expr` of an `inout` operand or an `inlateout` operand shall be an `inout_expr`. The `input_expr` and `output_expr` of an `inout` or `inlateout` operand is used as though the `inout` operand is replaced with a separate `in` and `out` operand, and the `inlateout` operand is replaced with a separate `in` and `lateout` operand, except that both have the same position if they are positional, or the same name if they are named operands, and both refer to the same register.
 
 > [!NOTE]
 > An `inlateout` operand differs from an `inout` operand only in that implementation may assume that no other `in`, `inout`, or `inlateout` operands are read after an `inlateout` operand is modified by the *expanded asm-string*. 
 
 
-r[dynamic.asm.operands.clobbers]
+r[asm.operands.clobbers]
 An `output_expr` that is the placeholder expression `_` is a clobber output. The resulting value of the register is discarded.
 
 > [!NOTE]
@@ -355,13 +355,13 @@ core::arch::asm!("mov eax, 5", out("eax") _);
 # }}
 ```
 
-r[dynamic.asm.operands.sym-expr]
+r[asm.operands.sym-expr]
 A sym-expr is a path-expr. If the `path-expr` does not refer to a `static` item or a `fn` item, the program is ill-formed.
 
 > [!NOTE]
 > the path-expr may have any type, including a type that isn't an *asm operand type*, and may be either mutable or immutable.
 
-r[dynamic.asm.operand.sym]
+r[asm.operand.sym]
 A sym operand is an operand that uses the `sym` keyword. The operand contains a `sym-expr` that specifies the item the symbol refers to.
 
 ```rust
@@ -373,7 +373,7 @@ core::arch::asm!("mov eax, dword ptr [{}+rip]", sym FOO, out("eax") x);
 # }}
 ```
 
-r[dynamic.asm.operands.expansion]
+r[asm.operands.expansion]
 Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym operand expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item. 
 
 > [!NOTE]
@@ -385,7 +385,7 @@ Each operand_spec is expanded in the *joined asm-string* according to the modifi
 > [!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
 
-r[dynamic.asm.operands.global]
+r[asm.operands.global]
 The program shall not use an operand, other than a sym operand, in the expansion of the [`core::arch::global_asm!`] macro.
 
 <!--TODO: Test `global_asm!`-->
@@ -401,7 +401,7 @@ static FOO: () = ();
 core::arch::global_asm!("/*{}*/", sym FOO);
 ```
 
-r[dynamic.asm.operands.clobbers_abi]
+r[asm.operands.clobbers_abi]
 A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, the no reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
 
 
@@ -429,12 +429,12 @@ core::arch::asm!("", clobber_abi("C"));
 # }}
 ```
 
-r[dynamic.asm.operands.clobbers_abi_ref]
+r[asm.operands.clobbers_abi_ref]
 A `clobbers_abi` special operand shall be specified after each positional operand, and shall not be a named operand. A `clobbers_abi` special operand cannot be referred to by an operand_specifier
 
-## Register operands [dynamic.asm.registers]
+## Register operands [asm.registers]
 
-r[dynamic.asm.registers.explicit]
+r[asm.registers.explicit]
 An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
 
 ```rust
@@ -444,7 +444,7 @@ core::arch::asm!("mov eax, 5", out("eax") x);
 # }}
 ```
 
-r[dynamic.asm.registers.class]
+r[asm.registers.class]
 A register operand that is not an explicit register operand specifies the name of a register class as an identifier. When a register class is specified, the implementation assigns an unspecified register belonging to that class to the operand.
 
 ```rust
@@ -454,20 +454,20 @@ core::arch::asm!("mov {}, 5", out(reg) x);
 # }}
 ```
 
-r[dynamic.asm.registers.valid-types]
+r[asm.registers.valid-types]
 Each register class, and the explicit registers within those classes, may restrict the set of types allowed for operands referring to that class or those registers. 
 
 > [!NOTE]
 > When an integer type which is as wide as `isize` is valid for a given register class, `isize` is also considered valid, and the same for function pointers.
 > When a signed integer is considered valid for a given register class, the corresponding unsigned integer is also considered valid.
 
-r[dynamic.asm.registers.target-feature]
+r[asm.registers.target-feature]
 Each register class, and the explicit registers within that class may require that a specified target_feature is enabled in the ambient target_feature set, or by using the `target_feature` function attribute. The program shall not specify such registers or register classes, except as clobber output, when the feature is not enabled. Additionally specific types may be valid only if certain additional features are enabled.
 
 > [!NOTE]
 > The set of features in the ambient target_feature set are implementation-defined, and may be queried by [parse.macros.cfg].
 
-r[dynamic.asm.registers.class-list]
+r[asm.registers.class-list]
 
 > [!TARGET-SPECIFIC]
 > The list of valid register classes, the constituent registers, the required target feature (if any), and the valid types for those classes are:
@@ -514,7 +514,7 @@ r[dynamic.asm.registers.class-list]
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 >
 
-r[dynamic.asm.register.clobbers_only]
+r[asm.register.clobbers_only]
 Certain registers and register classes are *clobbers only*. Such register names or register classes shall not be specified by an operand, other than a clobbers output.
 
 > [!TARGET-SPECIFIC]
@@ -530,7 +530,7 @@ core::arch::asm!("mov {}, 5", out("k0") x);
 # }}
 ```
 
-r[dynamic.asm.register.small-values]
+r[asm.register.small-values]
 If a register input is specified with a type that has a smaller width than the register class according to the target, the remaining bits of the register are set to an unspecified value.
 
 > [!TARGET-SPECIFIC]
@@ -546,7 +546,7 @@ println!("{y}");
 # }}
 ```
 
-r[dynamic.asm.register.aliases]
+r[asm.register.aliases]
 Certain explicit register names have defined aliases. These register names are considered identical to canonical register name and may be specified in place of the canonical name in an explicit register operand
 
 > [!TARGET-SPECIFIC]
@@ -616,7 +616,7 @@ core::arch::asm!("mov eax, 5", out("rax") x);
 # }}
 ```
 
-r[dynamic.asm.register.reserved]
+r[asm.register.reserved]
 Certain registers are reserved registers. Reserved Registers shall not be named by an explicit register operand.
 
 > [!NOTE]
@@ -646,12 +646,12 @@ core::arch::asm!("mov rsp, 5", out("rsp") x);
 # }}
 ```
 
-## Template modifiers r[dynamic.asm.template]
+## Template modifiers r[asm.template]
 
-r[dynamic.asm.template.modifier]
+r[asm.template.modifier]
 An operand spec that refers to a register operand may specify a modifier as part of the format specifier. 
 
-r[dynamic.asm.template.class]
+r[asm.template.class]
 A format specifier shall only use a modifier that is supported for the register class specified by the register opernd.
 
 > [!TARGET-SPECIFIC]
@@ -711,39 +711,39 @@ core::arch::asm!("mov {:e}, {:e}", out(reg) y, in(reg) x);
 >   GCC will infer the modifier based on the operand value type, while we default to the full register size.
 > - on x86 `xmm_reg`: the `x`, `t` and `g` LLVM modifiers are not yet implemented in LLVM (they are supported by GCC only), but this should be a simple change.
 
-r[dynamic.asm.template.diagnostic]
+r[asm.template.diagnostic]
 A lint diagnostic should be emitted if a modifier is omitted, or a modifier is used such that the modified expanded register is of an inappropriate width for the type used to initialize the operand
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
-## Behaviour of an asm block [dynamic.asm.evaluation]
+## Behaviour of an asm block [asm.evaluation]
 
-r[dynamic.asm.evaluation.general]
+r[asm.evaluation.general]
 Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine.
 
 > [!NOTE]
 > The operation the asm block performs may differ between evaluations of the same asm block.
 
 > [!TARGET-SPECIFIC]
-> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [dynamic.asm.operands].
+> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [asm.operands].
 
-r[dynamic.asm.evaluation.reg-values]
-The value of each register mentioned in an input operand is set according to [dynamic.asm.operands] before evaluating any instructions in the asm block. The value of each other *operand-usable register* is unspecified. The value of all other registers is target-dependant.
+r[asm.evaluation.reg-values]
+The value of each register mentioned in an input operand is set according to [asm.operands] before evaluating any instructions in the asm block. The value of each other *operand-usable register* is unspecified. The value of all other registers is target-dependant.
 
 > [!NOTE]
 > The target may define that the register value (or some portion thereof) is undefined.
 
-r[dynamic.asm.evaluation.constraints]
+r[asm.evaluation.constraints]
 Certain constraints may be placed on the asm block, and on the requirements of the correspondance, by default or by an option explicitly specified on the asm block. The behaviour is undefined if any such constraint is violated.
 
-r[dynamic.asm.evaluation.memory]
+r[asm.evaluation.memory]
 The behaviour is undefined if the asm block accesses any allocation, or disables, freezes, or activates any tags, except via:
 * An access to a static item which is declared with the `#[no_mangle]` attribute, the `#[export_name]` attribute, or which is visible to an expression within the function in which the asm block is expanded,
 * A pointer tag which has been exposed, 
 * A pointer tag which was passed as an input operand, or
 * A pointer tag which is accessible by reading any memory the asm block can read under this clause, recursively.
 
-r[dynamic.asm.evaluation.unwind]
+r[asm.evaluation.unwind]
 The behaviour is undefined if an inline assembly block exits by unwinding from a panic or a foreign exception.
 
 ```rust,ignore
@@ -755,8 +755,7 @@ core::arch::asm!("call {}", sym panics);
 ```
 
 
-
-r[dynamic.asm.evaluation.register-value]
+r[asm.evaluation.register-value]
 The behaviour is undefined upon exiting an asm block unless the stack pointer register and each operand-usable register not mentioned by an `out` , `lateout`, `inout`, or `inlateout` operand has the value the register held upon entry to the asm block.
 
 > [!TARGET-SPECIFIC]
@@ -765,12 +764,12 @@ The behaviour is undefined upon exiting an asm block unless the stack pointer re
 > * The Direction flag (`flags.DF`) is clear upon entry and must be clear upon exit
 > * The x87 Stack (that is the `TOP` field of the floating-point status word, and each bit in the floating-point tag word) must be preserved and restored upon exit. If all x87 `st` registers are marked as clobbered, the stack is guaranteed to be empty on entry to the asm block (that is, `TOP` is set to `0x7` and the `ftw` is set to `0xFFFF`).
 
-## Options [dynamic.asm.options]
+## Options [asm.options]
 
-r[dynamic.asm.options.general]
+r[asm.options.general]
 An options-spec provided in the asm invocation places constraints on the assembly block. 
 
-r[dynamic.asm.options.att_syntax]
+r[asm.options.att_syntax]
 The `att_syntax` option may be specfied on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
 
 > [!TARGET-SPECIFIC]
@@ -783,7 +782,7 @@ core::arch::asm!("mov {:e}, %eax", in(reg) 5, out("eax") x, options(att_syntax))
 # }}
 ```
 
-r[dynamic.asm.options.nomem]
+r[asm.options.nomem]
 The `nomem` option may be specified. The behaviour is undefined if the assembly block modifies any allocation, disables, freezes, or activates any tag, *synchronizes-with* any other thread of execution or signal handler, and the implementation may assume that the behaviour or outputs of the assembly block does not depend on the contents of any allocation.
 
 
@@ -804,7 +803,7 @@ core::arch::asm!("mov {:e}, dword ptr [{}+rip]", out(reg) x, sym FOO, options(no
 # }}
 ```
 
-r[dynamic.asm.options.readonly]
+r[asm.options.readonly]
 The `readonly` option may be specified. The behaviour is undefined if the assembly block modifies any allocation or activates any tag. 
 
 ```rust,ignore
@@ -815,7 +814,7 @@ core::arch::asm!("mov dword ptr [{}+rip], 3", sym FOO, options(readonly));
 # }}
 ```
 
-r[dynamic.asm.options.exclusive]
+r[asm.options.exclusive]
 The program shall not specify both the `nomem` and `readonly` options.
 
 ```rust,compile_fail
@@ -824,7 +823,7 @@ core::arch::asm!("mov dword ptr [FOO+rip], 3", options(readonly, nomem));
 # }}
 ```
 
-r[dynamic.asm.options.pure]
+r[asm.options.pure]
 The `pure` option may be specfied. The evaluation of the assembly block shall not produce any observable behaviour, consume input, or terminate execution, and the implementation may assume that the outputs of the assembly block depends only on the inputs and the contents of any allocation. If the program specifies the `pure` option, it shall specify either the `nomem` or `readonly` option.
 
 ```rust,ignore
@@ -836,7 +835,7 @@ core::arch::asm!("xor edi, edi","call exit@plt", options(pure, readonly));
 ```
 
 
-r[dynamic.asm.options.nostack]
+r[asm.options.nostack]
 The `nostack` option may be specified. The implementation may assume that the assembly block does not modify or access the stack, except an allocation placed in that region by the implementation.
 
 > [!TARGET-SPECIFIC]
@@ -851,7 +850,7 @@ core::arch::asm!("push 5", "pop rax", out("eax") x, options(nostack));
 # }}
 ```
 
-r[dynamic.asm.options.preserve_flags]
+r[asm.options.preserve_flags]
 The `preserves_flags` option may be specified. The implementation may assume that the value of the status flags are preserved by the assembly block.
 
 > [!TARGET-SPECFIC]
@@ -882,7 +881,7 @@ core::arch::asm!("cmp eax, eax", in("eax") 5, options(preserve_flags));
 # }}
 ```
 
-r[dynamic.asm.options.noreturn]
+r[asm.options.noreturn]
 The `noreturn` option may be specifed. An invocation of the [`core::arch::asm!`] macro that specifies the `noreturn` option expands to an expression of type `!`. The behaviour is undefined if an evaluation of the assembly block exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand. 
 
 ```rust
@@ -908,7 +907,7 @@ core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn
 # }}
 ```
 
-r[dynamic.asm.options.global]
+r[asm.options.global]
 A program shall not specify an option, other than the `att_syntax` option, in an invocation of the [`core::arch::global_asm!`] macro.
 
 ```rust,compile_fail
@@ -916,9 +915,9 @@ A program shall not specify an option, other than the `att_syntax` option, in an
 core::arch::global_asm!("", options(noreturn));
 ```
 
-## Directives Support [dynamic.asm.directives]
+## Directives Support [asm.directives]
 
-r[dynamic.asm.directives.gen]
+r[asm.directives.gen]
 The common subset of the LLVM and GNU AS Assembly Syntax used for the *expanded asm-string* is guaranteed to support the following directives
 - `.2byte`
 - `.4byte`
@@ -971,7 +970,7 @@ The common subset of the LLVM and GNU AS Assembly Syntax used for the *expanded 
 > [!NOTE]
 > These directives are generally ones that solely emit sequences of bytes, or that modify the property of symbols.
 
-r[dynamic.asm.directives.dwarf]
+r[asm.directives.dwarf]
 
 > [!TARGET-SPECIFIC]
 > The following Directives are guaranteed to be supported on ELF Targets that use DWARF Debug Information and DWARF Unwind Tables
@@ -997,7 +996,7 @@ r[dynamic.asm.directives.dwarf]
 > - `.cfi_undefined`
 > - `.cfi_window_save`
 
-r[dynamic.asm.directives.seh]
+r[asm.directives.seh]
 
 > [!TARGET-SPECIFIC]
 > The following directives are guaranteed to be supported on platforms that use Structured Exception Handling
@@ -1010,7 +1009,7 @@ r[dynamic.asm.directives.seh]
 > - `.seh_stackalloc`
 
 
-r[dynamic.asm.directives.x86]
+r[asm.directives.x86]
 
 > [!TARGET-SPECIFIC]
 > The following directives are guaranteed to be supported on x86 and x86-64 platforms
@@ -1021,7 +1020,7 @@ r[dynamic.asm.directives.x86]
 > Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
 > 32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
 
-r[dynamic.asm.directives.arm]
+r[asm.directives.arm]
 
 > The following directives are guaranteed to be supported on 32-bit ARM platforms
 > - `.even`
