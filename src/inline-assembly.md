@@ -296,7 +296,10 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 
 
 > [!TARGET-SPECIFIC]
-> On x86 platforms, the types [`__m128`](core::arch::x86_64::__m128), [`__m256`](core::arch::x86_64::__m256), and variants of those types are *asm operand types*.
+> On x86 platforms, the types [`__m128`], [`__m256`], and variants of those types are *asm operand types*.
+
+[`__m128`]: https://doc.rust-lang.org/core/arch/x86_64/struct.__m128.html
+[`__m256`]: https://doc.rust-lang.org/core/arch/x86_64/struct.__m256.html
 
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
