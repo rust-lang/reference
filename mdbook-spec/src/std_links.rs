@@ -74,7 +74,7 @@ pub fn std_links(chapter: &Chapter) -> String {
 
     // Replace any disambiguated links with just the disambiguation.
     let mut output = STD_LINK_RE
-        .replace_all(&chapter.content, |caps: &Captures| {
+        .replace_all(&chapter.content, |caps: &Captures<'_>| {
             if let Some(dest) = caps.get(2) {
                 // Replace destination parenthesis with a link definition (square brackets).
                 format!("{}[{}]", &caps[1], dest.as_str())
@@ -174,7 +174,8 @@ fn run_rustdoc(tmp: &TempDir, links: &[(&str, Option<&str>)], chapter: &Chapter)
     )
     .unwrap();
     fs::write(&src_path, &src).unwrap();
-    let output = Command::new("rustdoc")
+    let rustdoc = std::env::var("RUSTDOC").unwrap_or_else(|_| "rustdoc".into());
+    let output = Command::new(rustdoc)
         .arg("--edition=2021")
         .arg(&src_path)
         .current_dir(tmp.path())

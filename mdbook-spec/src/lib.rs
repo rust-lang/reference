@@ -65,7 +65,7 @@ impl Spec {
         let source_path = chapter.source_path.clone().unwrap_or_default();
         let path = chapter.path.clone().unwrap_or_default();
         RULE_RE
-            .replace_all(&chapter.content, |caps: &Captures| {
+            .replace_all(&chapter.content, |caps: &Captures<'_>| {
                 let rule_id = &caps[1];
                 if let Some((old, _)) =
                     found_rules.insert(rule_id.to_string(), (source_path.clone(), path.clone()))
@@ -127,7 +127,7 @@ impl Spec {
     /// file.
     fn admonitions(&self, chapter: &Chapter) -> String {
         ADMONITION_RE
-            .replace_all(&chapter.content, |caps: &Captures| {
+            .replace_all(&chapter.content, |caps: &Captures<'_>| {
                 let lower = caps["admon"].to_lowercase();
                 format!(
                     "<div class=\"{lower}\">\n\n{}\n\n</div>\n",
@@ -140,7 +140,7 @@ impl Spec {
 
 impl Preprocessor for Spec {
     fn name(&self) -> &str {
-        "nop-preprocessor"
+        "spec"
     }
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
