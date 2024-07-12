@@ -72,7 +72,7 @@ Object safe traits can be the base trait of a [trait object]. A trait is
 * It must not have any associated constants.
 * It must not have any associated types with generics.
 * All associated functions must either be dispatchable from a trait object,
-  or be explicitly or implicitly non-dispatchable
+  or be explicitly or implicitly non-dispatchable.
     * Dispatchable functions must:
         * Not have any type parameters (although lifetime parameters are allowed).
         * Be a [method] that does not use `Self` except in the type of the receiver.
