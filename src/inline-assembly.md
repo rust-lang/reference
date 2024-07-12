@@ -571,6 +571,7 @@ The following directives are guaranteed to be supported by the assembler:
 - `.global`
 - `.globl`
 - `.inst`
+- `.insn`
 - `.lcomm`
 - `.long`
 - `.octa`
