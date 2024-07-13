@@ -58,16 +58,8 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
-* Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI
-* Causing an unwind into Rust code from a foreign function that was called via a
-  function declaration or pointer declared with a non-unwinding ABI, such as `"C"`,
-  `"system"`, etc. (For example, this case occurs when such a function written in
-  C++ throws an exception that is uncaught and propagates to Rust.)
-* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
-  another ABI that permits unwinding) from a runtime that does not support
-  unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
-* Catching a Rust `panic` in non Rust code (for instance `catch (...)` in C++)
-* Catching a non-Rust unwind (such as a C++ exception) with `catch_unwind`
+* Calling a function with the wrong [call ABI][abi].
+* Unwinding, or catching an unwind, [inappropriately][unwinding].
 * Deallocating a Rust stack frame without executing destructors
   for local variables owned by the stack frame. This can occur
   with C functions like `longjmp`.
@@ -163,10 +155,30 @@ entire range, so it is important that the length metadata is never too large. In
 particular, the dynamic size of a Rust value (as determined by `size_of_val`)
 must never exceed `isize::MAX`.
 
+### Unwinding inappropriately
+[unwinding]: #unwinding-inappropriately
+
+Unwinding with the wrong [ABI][abi] is undefined behavior:
+
+* Causing an unwind into Rust code from a foreign function that was called via a
+  function declaration or pointer declared with a non-unwinding ABI, such as `"C"`,
+  `"system"`, etc. (For example, this case occurs when such a function written in
+  C++ throws an exception that is uncaught and propagates to Rust.)
+* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
+  another ABI that permits unwinding) from a runtime that does not support.
+  unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
+
+Catching an unwinding operation in a different runtime than the one in which it
+initiated is also undefined behavior:
+
+* Catching a Rust `panic` in non Rust code (for instance `catch (...)` in C++).
+* Catching a non-Rust unwind (such as a C++ exception) in Rust (that is, with `catch_unwind`).
+
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
+[abi]: abi.md
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
