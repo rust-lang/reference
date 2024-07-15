@@ -71,7 +71,11 @@ fn check_directory(dir: &Path, bad: &mut bool) -> Result<(), Box<dyn Error>> {
             style_error!(bad, path, "em-dash not allowed, use three dashes like ---");
         }
         if contents.contains('\u{a0}') {
-            style_error!(bad, path, "don't use 0xa0 no-break-space, use &nbsp; instead");
+            style_error!(
+                bad,
+                path,
+                "don't use 0xa0 no-break-space, use &nbsp; instead"
+            );
         }
         for line in contents.lines() {
             if line.ends_with(' ') {
