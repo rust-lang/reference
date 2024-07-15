@@ -35,9 +35,7 @@ a!{}
 
 ## The `type_length_limit` attribute
 
-> [!NOTE]
-> This limit is only enforced when the nightly `-Zenforce-type-length-limit`
-> flag is active.
+> **Note**: This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
 >
 > For more information, see <https://github.com/rust-lang/rust/pull/127670>.
 
