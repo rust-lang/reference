@@ -99,6 +99,10 @@ fn cmark_check(path: &Path, bad: &mut bool, contents: &str) -> Result<(), Box<dy
     // Can't use `bad` because it would get captured in closure.
     let mut link_err = false;
     let mut cb = |link: BrokenLink<'_>| {
+        // Ignore the [!FOO] admonition extension from mdbook-spec.
+        if link.reference.starts_with('!') {
+            return None;
+        }
         cmark_error!(
             &mut link_err,
             path,
