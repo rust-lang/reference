@@ -86,8 +86,8 @@ r[asm.invocation.asm]
 The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
 
 ```rust
-# #[cfg(target_arch = "x86_64")] 
 pub fn main(){
+  # #[cfg(target_arch = "x86_64")] 
   unsafe{
     core::arch::asm!("")
   }
@@ -105,10 +105,14 @@ core::arch::global_asm!(".rodata", "FOO:", ".ascii \"Hello World\"");
 ```
 
 ```rust,compile_fail
-# #[cfg(target_arch = "x86_64")] 
 pub fn main(){
+# #[cfg(target_arch = "x86_64")] 
+# {
     core::arch::global_asm!("FOO:", ".ascii \"Hello World\"");
+# }
 }
+# #[cfg(not(target_arch = "x86_64"))]
+# core::compile_error!("asm tests are not yet available off of x86_64"); 
 ```
 
 r[asm.invocation.format-string]
@@ -284,6 +288,7 @@ struct Foo{x: i32}
 let x: Foo;
 core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ```rust,compile_fail
@@ -292,6 +297,7 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 let x: *mut [i32];
 core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 
@@ -321,6 +327,7 @@ An `output_expr` shall be the placeholder expression `_` or a (potentially uniti
 let x: i32 = 0;
 core::arch::asm!("", out("eax") x);
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.operands.inout-expr]
@@ -396,6 +403,7 @@ The program shall not use an operand, other than a sym operand, in the expansion
 ```rust,compile_fail,ignore
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", in("eax") 5);
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ```rust,ignore
@@ -531,6 +539,7 @@ Certain registers and register classes are *clobbers only*. Such register names 
 let x: i64;
 core::arch::asm!("mov {}, 5", out("k0") x);
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.register.small-values]
@@ -647,6 +656,7 @@ Certain registers are reserved registers. Reserved Registers shall not be named 
 # #[cfg(target_arch = "x86_64")] { unsafe{
 core::arch::asm!("mov rsp, 5", out("rsp") x);
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ## Template modifiers r[asm.template]
@@ -824,6 +834,7 @@ The program shall not specify both the `nomem` and `readonly` options.
 # #[cfg(target_arch = "x86_64")] { unsafe{
 core::arch::asm!("mov dword ptr [FOO+rip], 3", options(readonly, nomem));
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.options.pure]
@@ -908,14 +919,17 @@ core::arch::asm!("", options(noreturn));
 let x: i32;
 core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn));
 # }}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.options.global]
 A program shall not specify an option, other than the `att_syntax` option, in an invocation of the [`core::arch::global_asm!`] macro.
 
-```rust,compile_fail
+```rust,compile_fail,ignore
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", options(noreturn));
+
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ## Directives Support [asm.directives]
