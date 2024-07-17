@@ -1,4 +1,6 @@
-# Inline assembly [asm]
+# Inline assembly
+
+r[asm]
 
 r[asm.macros]
 The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] expand to inline assembly syntax when used in the expression position and item position respectively. The macros shall not be expanded in any other context.
@@ -50,7 +52,9 @@ assert_eq!(x, 4 * 6);
 # }
 ```
 
-## Syntax [asm.syntax]
+## Syntax 
+
+r[asm.syntax]
 
 ```abnf
 format_string := STRING_LITERAL / RAW_STRING_LITERAL
@@ -80,7 +84,9 @@ asm_string_piece := non_format_char / format_specifier / format_escape
 asm_string_content := [*asm_string_piece]
 ```
 
-## Invocation [asm.invocation]
+## Invocation 
+
+r[asm.invocation]
 
 r[asm.invocation.asm]
 The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
@@ -245,7 +251,9 @@ core::arch::asm!("lock");
 # }}
 ```
 
-## Operand types [asm.operands]
+## Operand types 
+
+r[asm.operands]
 
 r[asm.operands.positional]
 Operands that do not specify an ident and are not explicit register operands are known as positional operands. Positional operands may be referred to only by positional operand specifiers and explicit positional operand specifiers, and each Positional operand must be specified before Named Operands or Explicit Register Operands.
@@ -281,7 +289,7 @@ core::arch::asm!("mov eax, ecx", in("rcx") 5i64, out("eax") x);
 > Explicit Register Operands have no `ident` name and cannot be referred to by an operand specifier
 
 r[asm.operands.types]
-Each operand, other than a placeholder expression shall be of an integer type, floating-point type, function pointer type, pointer type, or target-specific vector type. These types are collectively called *asm operand types*. A pointer type is an *asm operand type* only if the pointee type has no metadata-type.
+Each operand, other than a placeholder expression shall be of an integer type, floating-point type, function pointer type, pointer type, target-specific vector type, or [`MaybeUninit<T>`][core::mem::MaybeUninit] where `T` is an *asm operand type* other than [`MaybeUninit`][core::mem::MaybeUninit]. These types are collectively called *asm operand types*. A pointer type is an *asm operand type* only if the pointee type has no metadata-type.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -318,8 +326,28 @@ core::arch::asm!("xorps xmm0, xmm0", out("xmm0") x);
 # }}
 ```
 
+r[asm.operands.input-coerceable-types]
+Each reference type, where the pointee type has no metadata-type, and each function item type are collectively called *input coerceable types*.
+
+```rust
+# #[cfg(target_arch = "x86_64")] { unsafe{
+let x = 5;
+let y: i32;
+core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); // equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y); 
+#}}
+```
+
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] { unsafe{
+let y: &mut i32;
+core::arch::asm!("mov {}, 0", out(reg) 5); 
+#}}
+# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+```
+
+
 r[asm.operands.in-expr]
-An `input_expr` shall be a value expression that coerces to an *asm operand type*.
+An `input_expr` shall be a value expression of an *asm operand type* or an *input coerceable type*. If the expression is of an *input coerceable type*, it is coerced to an *asm operand type*. 
 
 r[asm.operands.out-expr]
 An `output_expr` shall be the placeholder expression `_` or a (potentially unitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
@@ -445,7 +473,9 @@ core::arch::asm!("", clobber_abi("C"));
 r[asm.operands.clobbers_abi_ref]
 A `clobbers_abi` special operand shall be specified after all positional operands, and shall not be a named operand. A `clobbers_abi` special operand cannot be referred to by an operand_specifier
 
-## Register operands [asm.registers]
+## Register operands 
+
+r[asm.registers]
 
 r[asm.registers.explicit]
 An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name of a valid operand register. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
@@ -661,7 +691,9 @@ core::arch::asm!("mov rsp, 5", out("rsp") x);
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
-## Template modifiers r[asm.template]
+## Template modifiers r
+
+r[asm.template]
 
 r[asm.template.modifier]
 An operand spec that refers to a register operand may specify a modifier as part of the format specifier. 
@@ -731,7 +763,9 @@ A lint diagnostic should be emitted if a modifier is omitted, or a modifier is u
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
-## Behaviour of an asm block [asm.evaluation]
+## Behaviour of an asm block 
+
+r[asm.evaluation]
 
 r[asm.evaluation.general]
 Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of Minirust operations.
@@ -779,7 +813,9 @@ The behaviour is undefined upon exiting an asm block unless the stack pointer re
 > * The Direction flag (`flags.DF`) is clear upon entry and must be clear upon exit
 > * The x87 Stack (that is the `TOP` field of the floating-point status word, and each bit in the floating-point tag word) must be preserved and restored upon exit. If all x87 `st` registers are marked as clobbered, the stack is guaranteed to be empty on entry to the asm block (that is, `TOP` is set to `0x7` and the `ftw` is set to `0xFFFF`).
 
-## Options [asm.options]
+## Options 
+
+r[asm.options]
 
 r[asm.options.general]
 An options-spec provided in the asm invocation places constraints on the assembly block. 
@@ -941,7 +977,9 @@ core::arch::global_asm!("", options(noreturn));
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
-## Directives Support [asm.directives]
+## Directives Support 
+
+r[asm.directives]
 
 r[asm.directives.gen]
 The common subset of the LLVM and GNU AS Assembly Syntax used for the *expanded asm-string* is guaranteed to support the following directives
