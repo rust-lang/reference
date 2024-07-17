@@ -415,7 +415,7 @@ core::arch::global_asm!("/*{}*/", sym FOO);
 ```
 
 r[asm.operands.clobbers_abi]
-A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, the no `out`, `lateout`, `inout`, or `inlateout` reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
+A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, then no `out`, `lateout`, `inout`, or `inlateout` reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
 
 
 > [!NOTE]
@@ -448,7 +448,7 @@ A `clobbers_abi` special operand shall be specified after all positional operand
 ## Register operands [asm.registers]
 
 r[asm.registers.explicit]
-An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
+An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name of a valid operand register. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
 
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
