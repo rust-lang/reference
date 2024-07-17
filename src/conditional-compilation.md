@@ -27,15 +27,14 @@
 Each form of conditional compilation takes a _configuration predicate_ that
 evaluates to true or false. The predicate is one of the following:
 
-* A configuration option. The predicate is true if the option is set, and false if it is
-  unset.
-* `all()` with a comma-separated list of configuration predicates. It is true precisely if all of the given predicates are true.
-* `any()` with a comma-separated list of configuration predicates. It is true precisely if at least one of the given predicates is true.
-* `not()` with a configuration predicate. It is true precisely if the given predicate is false.
+* A configuration option. The predicate is true if the option is set, and false if it is unset.
+* `all()` with a comma-separated list of configuration predicates. It is true if all of the given predicates are true, or if the list is empty.
+* `any()` with a comma-separated list of configuration predicates. It is true if at least one of the given predicates is true. If there are no predicates, it is false.
+* `not()` with a configuration predicate. It is true if its predicate is false and false if its predicate is true.
 
-_Configuration options_ are either names or key-value pairs, and are either set or
-unset. Configuration options that are names, such as `unix`, are specified by simply writing them.
-Configuration options that are key-value pairs are written in the form `key = "value"`, such as `target_arch = "x86_64"`.
+_Configuration options_ are either names or key-value pairs, and are either set or unset.
+Names are written as a single identifier, such as `unix`.
+Key-value pairs are written as an identifier, `=`, and then a string, such as `target_arch = "x86_64"`.
 
 > **Note**: Whitespace around the `=` is ignored, so `foo="bar"` and `foo = "bar"` are equivalent.
 
@@ -46,7 +45,7 @@ Keys do not need to be unique. For example, both `feature = "std"` and `feature 
 Which configuration options are set is determined statically during the
 compilation of the crate. Some options are _compiler-set_ based on data
 about the compilation. Other options are _arbitrarily-set_ based on input
-passed to the compiler outside of the code. It is impossible to set a
+passed to the compiler outside of the code. It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
 > **Note**: For `rustc`, arbitrary-set configuration options are set using the
@@ -250,7 +249,9 @@ Example values:
 <!-- should we say they're active attributes here? -->
 
 The `cfg` [attribute] conditionally includes the thing it is attached to based
-on the given configuration predicate (_ConfigurationPredicate_ in the syntax above).
+on a configuration predicate.
+
+It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
 
 If the predicate is true, the thing is rewritten to not have the `cfg` attribute
 on it. If the predicate is false, the thing is removed from the source code.
