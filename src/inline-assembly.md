@@ -86,7 +86,7 @@ r[asm.invocation.asm]
 The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
 
 ```rust
-pub fn main(){
+pub fn main() {
   # #[cfg(target_arch = "x86_64")] 
   unsafe{
     core::arch::asm!("")
@@ -105,7 +105,7 @@ core::arch::global_asm!(".rodata", "FOO:", ".ascii \"Hello World\"");
 ```
 
 ```rust,compile_fail
-pub fn main(){
+pub fn main() {
 # #[cfg(target_arch = "x86_64")] 
 # {
     core::arch::global_asm!("FOO:", ".ascii \"Hello World\"");
@@ -116,7 +116,7 @@ pub fn main(){
 ```
 
 r[asm.invocation.format-string]
-Each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
+Unless the `raw` option is specified, each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
 
 > [!NOTE]
 > an expanded string literal is a string literal (after expanding macros like [`core::concat!`]) that has had every unicode escape sequence replaced with the (appropriately escaped as needed) matching character, and which has been normalized from a raw string literal.
@@ -141,6 +141,8 @@ Each operand, other than an explicit register operand ([asm.operands.register]) 
 # #[cfg(target_arch = "x86_64")] { unsafe{
 core::arch::asm!("", in(reg) 5i64);
 # }}
+# #[cfg(not(target_arch = "x86_64"))]
+# core::compile_error!("asm tests are not yet available off of x86_64"); 
 ```
 
 r[asm.invocation.positional]
@@ -174,14 +176,14 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, output = out(reg
 ```
 
 r[asm.invocation.expansion]
-The *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*.
+If the `raw` option is not specified, the *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*. If the `raw` option is specified, the *expanded asm-string* is the *joined asm-string* verbatim. 
 
 r[asm.invocation.syntax]
 The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behaviour*. Invoking a directive that is not specified by [asm.directives] is *conditionally supported* and has *assembler dependent behaviour*.
 
 > [!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the syntax of the *expanded asm-string* acts as though the directive `.intel_syntax noprefix` is issued before parsing the *expanded asm-string*, except that the `option(att_syntax)` causes the syntax to act as though the directive `.att_syntax prefix` is issued before parsing the *expanded asm-string* instead.
-> On ARM and Aarch64 targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
+> On ARM targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
 
 r[asm.invocation.duplication]
 The number of times, locations, and the order in which a given invocation of [`core::arch::asm!`] is expanded is unspecified.
@@ -201,7 +203,7 @@ core::arch::asm!("foo: jmp foo");
 > Additionally, two asm blocks may not rely upon being adjacent in executable memory, even if they are adjacent in the source.
 
 > [!NOTE]
-> Local Labels (a decimal literal that doesn't solely consist of 0s and 1s) may be used freely if the asm block needs to define a label.
+> Local Labels (a decimal literal) may be used freely if the asm block needs to define a label. Due to a bug, literals that solely consist of 1s and 0s are not valid local labels.
 > See [The GNU AS Manual on Local Labels](https://sourceware.org/binutils/docs/as/Symbol-Names.html) for details on local labels.
 > It is not guaranteed that a local label defined in one asm block will be accessible from an adjacent asm block.
 
@@ -317,7 +319,7 @@ core::arch::asm!("xorps xmm0, xmm0", out("xmm0") x);
 ```
 
 r[asm.operands.in-expr]
-An `input_expr` shall be a value expression of an *asm operand type*.
+An `input_expr` shall be a value expression that coerces to an *asm operand type*.
 
 r[asm.operands.out-expr]
 An `output_expr` shall be the placeholder expression `_` or a (potentially unitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
@@ -353,7 +355,7 @@ An `inout` operand is a reg_operand with the `inout` dir_spec, and a `inlateout`
 
 
 r[asm.operands.clobbers]
-An `output_expr` that is the placeholder expression `_` is a clobber output. The resulting value of the register is discarded.
+An `output_expr` that is the placeholder expression `_` is a clobbers output. The resulting value of the register is discarded. An `out` operand that is a clobbers output shall be an *explicit register operand*. 
 
 > [!NOTE]
 > Some registers and register classes cannot be used as an operand, other than as a clobber operand.
@@ -413,7 +415,7 @@ core::arch::global_asm!("/*{}*/", sym FOO);
 ```
 
 r[asm.operands.clobbers_abi]
-A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, the no reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
+A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, the no `out`, `lateout`, `inout`, or `inlateout` reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
 
 
 > [!NOTE]
@@ -441,7 +443,7 @@ core::arch::asm!("", clobber_abi("C"));
 ```
 
 r[asm.operands.clobbers_abi_ref]
-A `clobbers_abi` special operand shall be specified after each positional operand, and shall not be a named operand. A `clobbers_abi` special operand cannot be referred to by an operand_specifier
+A `clobbers_abi` special operand shall be specified after all positional operands, and shall not be a named operand. A `clobbers_abi` special operand cannot be referred to by an operand_specifier
 
 ## Register operands [asm.registers]
 
@@ -469,7 +471,7 @@ r[asm.registers.valid-types]
 Each register class, and the explicit registers within those classes, may restrict the set of types allowed for operands referring to that class or those registers. 
 
 > [!NOTE]
-> When an integer type which is as wide as `isize` is valid for a given register class, `isize` is also considered valid, and the same for function pointers.
+> The types `isize`, `usize`, and function pointer types are considered valid for a given register class if and only if an integer type of the same width is considered valid.
 > When a signed integer is considered valid for a given register class, the corresponding unsigned integer is also considered valid.
 
 r[asm.registers.target-feature]
@@ -732,13 +734,13 @@ A lint diagnostic should be emitted if a modifier is omitted, or a modifier is u
 ## Behaviour of an asm block [asm.evaluation]
 
 r[asm.evaluation.general]
-Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine.
+Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of Minirust operations.
 
 > [!NOTE]
 > The operation the asm block performs may differ between evaluations of the same asm block.
 
 > [!TARGET-SPECIFIC]
-> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [asm.operands].
+> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [asm.operands]. Unless the program modifies the execution state, the basic operation performed by the asm block is the one performed by executing the sequence of instructions specified in the *expanded asm-string* starting with the first instruction.
 
 r[asm.evaluation.reg-values]
 The value of each register mentioned in an input operand is set according to [asm.operands] before evaluating any instructions in the asm block. The value of each other *operand-usable register* is unspecified. The value of all other registers is target-dependant.
@@ -794,6 +796,13 @@ let x: i32;
 core::arch::asm!("mov {:e}, %eax", in(reg) 5, out("eax") x, options(att_syntax));
 # }}
 ```
+
+r[asm.options.raw]
+The `raw` option may be specified. If the `raw` option is specified, the asm block shall not have any operands, other than explicit register operands, and the `clobbers_abi` special operand. 
+
+> [!NOTE]
+> The `raw` option causes the *joined asm-string* to be handled verbatim without being interpreted as a format string and expanded. 
+
 
 r[asm.options.nomem]
 The `nomem` option may be specified. The behaviour is undefined if the assembly block modifies any allocation, disables, freezes, or activates any tag, *synchronizes-with* any other thread of execution or signal handler, and the implementation may assume that the behaviour or outputs of the assembly block does not depend on the contents of any allocation.
@@ -923,7 +932,7 @@ core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn
 ```
 
 r[asm.options.global]
-A program shall not specify an option, other than the `att_syntax` option, in an invocation of the [`core::arch::global_asm!`] macro.
+A program shall not specify an option, other than the `att_syntax` or `raw` options, in an invocation of the [`core::arch::global_asm!`] macro.
 
 ```rust,compile_fail,ignore
 # #[cfg(target_arch = "x86_64")]
