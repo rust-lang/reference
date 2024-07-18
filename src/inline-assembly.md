@@ -105,9 +105,11 @@ The [`core::arch::global_asm!`] macro shall be expanded in an item context only.
 
 <!--TODO: Test `global_asm!`-->
 
-```rust,ignore
+```rust
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!(".rodata", "FOO:", ".ascii \"Hello World\"");
+
+# fn main(){}
 ```
 
 ```rust,compile_fail
@@ -334,14 +336,14 @@ Each reference type, where the pointee type has no metadata-type, and each funct
 let x = 5;
 let y: i32;
 core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); // equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y); 
-#}}
+# }}
 ```
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
 let y: &mut i32;
 core::arch::asm!("mov {}, 0", out(reg) 5); 
-#}}
+# }}
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
@@ -430,16 +432,20 @@ The program shall not use an operand, other than a sym operand, in the expansion
 
 <!--TODO: Test `global_asm!`-->
 
-```rust,compile_fail,ignore
+```rust,compile_fail
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", in("eax") 5);
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+
+# fn main(){}
 ```
 
-```rust,ignore
+```rust
 static FOO: () = ();
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("/*{}*/", sym FOO);
+
+# fn main(){}
 ```
 
 r[asm.operands.clobbers_abi]
@@ -799,7 +805,7 @@ The behaviour is undefined if an inline assembly block exits by unwinding from a
 // The following snippet has undefined behaviour
 extern "C-unwind" fn panics(){panic!("unwind through asm")}
 # #[cfg(target_arch = "x86_64")] { unsafe{
-core::arch::asm!("call {}", sym panics);
+core::arch::asm!("call {}", sym panics, clobber_abi("C"));
 # }}
 ```
 
@@ -970,11 +976,13 @@ core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn
 r[asm.options.global]
 A program shall not specify an option, other than the `att_syntax` or `raw` options, in an invocation of the [`core::arch::global_asm!`] macro.
 
-```rust,compile_fail,ignore
+```rust,compile_fail
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", options(noreturn));
 
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+
+# fn main(){}
 ```
 
 ## Directives Support 
