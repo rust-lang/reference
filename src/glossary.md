@@ -1,5 +1,30 @@
 # Glossary
 
+## Terms used in the Specification
+
+### Ill-formed Program
+
+A Rust Program is ill-formed if it violates a statically set constraint placed on it by the language. 
+Unless otherwise statement explicitly an implementation shall issue an appropriate diagnostic for an ill-formed program and shall not translate such a program.
+
+#### No Diagnostic Required
+
+When No Diagnostic is Required for a static constraint, the implementation may issue a diagnostic for the violation, and may translate the program.
+If such a program is succesfully translated, no constraints are placed on the result of executing the program.
+
+> [!NOTE]
+> The constraint which is modified by the phrase "No Diagnostic Required" may be defined implicitly, such as with the term "shall", rather than explicitly stating that the program is ill-formed.
+
+> [!NOTE]
+> Such constraints are used only when it may be unreasonable or impossible to check the constraints statically, and where the result of violating the constraints makes it impossible to ensure the required behaviour of the program 
+
+### Shall
+
+The word "shall" is a static constraint placed upon the program. A program that violates a constraint that uses "shall" is ill-formed.
+
+
+## Rust Specific Terms
+
 ### Abstract syntax tree
 
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of
@@ -104,6 +129,7 @@ Any time a type `T` is considered [local](#local-type), `&T`, `&mut T`, `Box<T>`
 are also considered local. Fundamental type constructors cannot [cover](#uncovered-type) other types.
 Any time the term "covered type" is used,
 the `T` in `&T`, `&mut T`, `Box<T>`, and `Pin<T>` is not considered covered.
+
 
 ### Inhabited
 
