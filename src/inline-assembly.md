@@ -701,7 +701,7 @@ core::arch::asm!("mov rsp, 5", out("rsp") x);
 # #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
-## Template modifiers r
+## Template modifiers 
 
 r[asm.template]
 
