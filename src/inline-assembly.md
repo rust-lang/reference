@@ -3,7 +3,7 @@
 r[asm]
 
 r[asm.macros]
-The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] expand to inline assembly syntax when used in the expression position and item position respectively. The macros shall not be expanded in any other context.
+The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] are defined to supply inline assembly to a Rust program. They expand to *exposition-only* syntax defined 
 
 > [!NOTE]
 > The expansion of the macros has no stable syntax equivalent. This section will refer to the expansion of the macro, rather than the surface syntax.
@@ -82,6 +82,9 @@ format_specifier := "{" [operand_specifier] [":" *expansion_specifier]  "}"
 format_escape := "{{" / "}}"
 asm_string_piece := non_format_char / format_specifier / format_escape
 asm_string_content := [*asm_string_piece]
+
+exposition-only_asm = /*asm-block*/ "(" asm_inner ")" // Exposition Only
+exposition-only_global_asm = /*global-asm*/ "(" asm_inner ")" // Exposition Only
 ```
 
 ## Invocation 
@@ -89,7 +92,10 @@ asm_string_content := [*asm_string_piece]
 r[asm.invocation]
 
 r[asm.invocation.asm]
-The [`core::arch::asm!`] macro shall be expanded in an expression context only. The input tokens shall match the `asm_inner` production. The expansion is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`.
+The [`core::arch::asm!`] macro expands to an `/*asm-block*/` when expanded in an expression context. The input tokens shall match the `asm_inner` production, and the expansion contains the same `asm_inner`. The `/*asm-block*/` is [`unsafe`][static.expr.safety] and has type `()`, unless the option `noreturn` is specified, in which case it has type `!`. The [`core::arch::asm!`] macro shall not be expanded in any other context. The expansion of the [`core::arch::asm!`] macro is referred to as an *asm-block*.
+
+> [!NOTE]
+> `/*asm-block*/` is an exposition-only construct used to define the expansion of the [`core::arch::asm!`] macro. It has no equivalent in stable rule syntax except for the [`core::arch::asm!`] macro.
 
 ```rust
 pub fn main() {
@@ -101,9 +107,7 @@ pub fn main() {
 ```
 
 r[asm.invocation.global_asm]
-The [`core::arch::global_asm!`] macro shall be expanded in an item context only. The input tokens shall match the `asm_inner` production. If the macro is expanded in a function, the program is ill-formed. 
-
-<!--TODO: Test `global_asm!`-->
+The [`core::arch::global_asm!`] macro expands to a `/*global-asm*/` when expanded in an item context. The input tokens shall match the `asm_inner` production, and the expansion contains the same `asm_inner`. The [`core::arch::global_asm!`] macro shall not be expanded in any other context. The expansion of the [`core::arch::global_asm!`] block is referred to as a *global-asm-block*.
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
@@ -194,7 +198,7 @@ The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the
 > On ARM targets, the syntax of the *expanded asm-string* acts as though the directive `.syntax unified` is issued before parsing the *expanded asm-string*.
 
 r[asm.invocation.duplication]
-The number of times, locations, and the order in which a given invocation of [`core::arch::asm!`] is expanded is unspecified.
+The number of times, locations, and the order in which a given *asm block* appears in the binary is unspecified.
 
 ```rust,ignore
 // The following code may have suprising results, and may fail to compile or link. 
@@ -207,7 +211,7 @@ core::arch::asm!("foo: jmp foo");
 
 > [!NOTE]
 > In particular, an asm block may be duplicated, for example if the containing function is inlined, or omitted from the output entirely.
-> As a consequence, asm blocks should not use directives that have non-idempotent non-local effects, or named labels and symbol definitions. 
+> As a consequence, asm blocks should not use directives that have non-idempotent non-local effects, or named labels and symbol definitions, and should not rely on the non-local effects of other asm blocks. 
 > Additionally, two asm blocks may not rely upon being adjacent in executable memory, even if they are adjacent in the source.
 
 > [!NOTE]
@@ -223,7 +227,7 @@ core::arch::asm!("2: jmp 2b");
 ```
 
 r[asm.invocation.global-order]
-The order in which invocations of [`core::arch::global_asm!`] are expanded is unspecified.
+The order in which each *global-asm-block* appears in the program is unspecified.
 
 r[asm.invocation.directive-state]
 The *expanded asm-string* shall not issue a directive that modifies the global state of the assembler for processing inputs unless it issues a directive to restore that state it had upon entering the block. No diagnostic is required.
@@ -233,7 +237,7 @@ The *expanded asm-string* shall not issue a directive that modifies the global s
 > Failing to obey this requirement can have significant impact on code generation, including code unrelated to the asm block. For example, an asm block that issues a `.data` directive without resetting to the appropriate section for the function can cause the following code in the function to be generated in the `.data` section, and for execution to fall off the asm block into improper memory.
 
 r[asm.invocation.global-section]
-The *expanded asm-string* of a [`core::arch::global_asm!`] invocation acts as though a `.section` directive is issued before the *expanded asm-string*  which causes code to be generated in the default section on the target for executable code.
+The *expanded asm-string* of *global-asm-block* invocation acts as though a `.section` directive is issued before the *expanded asm-string*  which causes code to be generated in the default section on the target for executable code.
 
 > [!NOTE]
 > This section is typically named `.text`. 
@@ -774,13 +778,13 @@ A lint diagnostic should be emitted if a modifier is omitted, or a modifier is u
 r[asm.evaluation]
 
 r[asm.evaluation.general]
-Each evaluation of an asm block (invocation of [`core::arch::asm!`]) shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of Minirust operations.
+Each evaluation of an *asm block* shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of Minirust operations.
 
 > [!NOTE]
 > The operation the asm block performs may differ between evaluations of the same asm block.
 
 > [!TARGET-SPECIFIC]
-> The correspondance between the operation performed by the asm block is target-dependant and implementation-dependant, subject to the rules set in [asm.operands]. Unless the program modifies the execution state, the basic operation performed by the asm block is the one performed by executing the sequence of instructions specified in the *expanded asm-string* starting with the first instruction.
+> The correspondance between the operation performed by the *asm block* is target-dependant and implementation-dependant, subject to the rules set in [asm.operands]. Unless the program modifies the execution state, the basic operation performed by the asm block is the one performed by executing the sequence of instructions specified in the *expanded asm-string* starting with the first instruction.
 
 r[asm.evaluation.reg-values]
 The value of each register mentioned in an input operand is set according to [asm.operands] before evaluating any instructions in the asm block. The value of each other *operand-usable register* is unspecified. The value of all other registers is target-dependant.
@@ -789,17 +793,17 @@ The value of each register mentioned in an input operand is set according to [as
 > The target may define that the register value (or some portion thereof) is undefined.
 
 r[asm.evaluation.constraints]
-Certain constraints may be placed on the asm block, and on the requirements of the correspondance, by default or by an option explicitly specified on the asm block. The behaviour is undefined if any such constraint is violated.
+Certain constraints may be placed on the *asm block*, and on the requirements of the correspondance, by default or by an option explicitly specified on the asm block. The behaviour is undefined if any such constraint is violated, or the correspondance does not hold.
 
 r[asm.evaluation.memory]
-The behaviour is undefined if the asm block accesses any allocation, or disables, freezes, or activates any tags, except via:
+The behaviour is undefined if the *asm block* accesses any allocation, disables, freezes, activates any tags, or *synchronizes-with* a store to a given memory location, except via:
 * An access to a static item which is declared with the `#[no_mangle]` attribute, the `#[export_name]` attribute, or which is visible to an expression within the function in which the asm block is expanded,
 * A pointer tag which has been exposed, 
 * A pointer tag which was passed as an input operand, or
 * A pointer tag which is accessible by reading any memory the asm block can read under this clause, recursively.
 
 r[asm.evaluation.unwind]
-The behaviour is undefined if an inline assembly block exits by unwinding from a panic or a foreign exception.
+The behaviour is undefined if an *asm block* exits by unwinding from a panic or a foreign exception.
 
 ```rust,ignore
 // The following snippet has undefined behaviour
@@ -811,7 +815,7 @@ core::arch::asm!("call {}", sym panics, clobber_abi("C"));
 
 
 r[asm.evaluation.register-value]
-The behaviour is undefined upon exiting an asm block unless the stack pointer register and each operand-usable register not mentioned by an `out` , `lateout`, `inout`, or `inlateout` operand has the value the register held upon entry to the asm block.
+The behaviour is undefined upon exiting an *asm block* unless the stack pointer register and each operand-usable register not mentioned by an `out` , `lateout`, `inout`, or `inlateout` operand has the value the register held upon entry to the *asm block*.
 
 > [!TARGET-SPECIFIC]
 > In addition to operand-usable registers, certain other registers on a target may require being preserved, or have specific rules regarding the value at exit.
@@ -824,7 +828,7 @@ The behaviour is undefined upon exiting an asm block unless the stack pointer re
 r[asm.options]
 
 r[asm.options.general]
-An options-spec provided in the asm invocation places constraints on the assembly block. 
+An options-spec provided in the *asm block* places constraints on the *asm block*. 
 
 r[asm.options.att_syntax]
 The `att_syntax` option may be specfied on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
@@ -840,14 +844,14 @@ core::arch::asm!("mov {:e}, %eax", in(reg) 5, out("eax") x, options(att_syntax))
 ```
 
 r[asm.options.raw]
-The `raw` option may be specified. If the `raw` option is specified, the asm block shall not have any operands, other than explicit register operands, and the `clobbers_abi` special operand. 
+The `raw` option may be specified. If the `raw` option is specified, the *asm block* or *global asm block* shall not have any operands, other than explicit register operands, and the `clobbers_abi` special operand. 
 
 > [!NOTE]
 > The `raw` option causes the *joined asm-string* to be handled verbatim without being interpreted as a format string and expanded. 
 
 
 r[asm.options.nomem]
-The `nomem` option may be specified. The behaviour is undefined if the assembly block modifies any allocation, disables, freezes, or activates any tag, *synchronizes-with* any other thread of execution or signal handler, and the implementation may assume that the behaviour or outputs of the assembly block does not depend on the contents of any allocation.
+The `nomem` option may be specified. The behaviour is undefined if the *asm block* modifies any allocation, disables, freezes, or activates any tag, *synchronizes-with* any other thread of execution or signal handler, and the implementation may assume that the behaviour or outputs of the *asm block* does not depend on the contents of any allocation.
 
 
 ```rust,ignore
@@ -868,7 +872,7 @@ core::arch::asm!("mov {:e}, dword ptr [{}+rip]", out(reg) x, sym FOO, options(no
 ```
 
 r[asm.options.readonly]
-The `readonly` option may be specified. The behaviour is undefined if the assembly block modifies any allocation or activates any tag. 
+The `readonly` option may be specified. The behaviour is undefined if the *asm block* modifies any allocation or activates any tag. 
 
 ```rust,ignore
 // The following snippet has undefined behaviour
@@ -879,7 +883,7 @@ core::arch::asm!("mov dword ptr [{}+rip], 3", sym FOO, options(readonly));
 ```
 
 r[asm.options.exclusive]
-The program shall not specify both the `nomem` and `readonly` options.
+An *asm block* shall not specify both the `nomem` and `readonly` options.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -889,7 +893,7 @@ core::arch::asm!("mov dword ptr [FOO+rip], 3", options(readonly, nomem));
 ```
 
 r[asm.options.pure]
-The `pure` option may be specfied. The evaluation of the assembly block shall not produce any observable behaviour, consume input, or terminate execution, and the implementation may assume that the outputs of the assembly block depends only on the inputs and the contents of any allocation. If the program specifies the `pure` option, it shall specify either the `nomem` or `readonly` option.
+The `pure` option may be specfied. The evaluation of the *asm* shall not produce any observable behaviour, consume input, or terminate execution, and the implementation may assume that the outputs of the *asm block* depends only on the inputs and the contents of any allocation. If the program specifies the `pure` option, it shall specify either the `nomem` or `readonly` option.
 
 ```rust,ignore
 // The following snippet has undefined behaviour
@@ -901,7 +905,7 @@ core::arch::asm!("xor edi, edi","call exit@plt", options(pure, readonly));
 
 
 r[asm.options.nostack]
-The `nostack` option may be specified. The implementation may assume that the assembly block does not modify or access the stack, except an allocation placed in that region by the implementation.
+The `nostack` option may be specified. The implementation may assume that the *asm block* does not modify or access the stack, except an allocation placed in that region by the implementation.
 
 > [!TARGET-SPECIFIC]
 > The stack is defined by an target-specific register and is a target-specific memory region. It may include a "red zone".
@@ -916,7 +920,7 @@ core::arch::asm!("push 5", "pop rax", out("eax") x, options(nostack));
 ```
 
 r[asm.options.preserve_flags]
-The `preserves_flags` option may be specified. The implementation may assume that the value of the status flags are preserved by the assembly block.
+The `preserves_flags` option may be specified. The implementation may assume that the value of the status flags are preserved by the *asm block*.
 
 > [!TARGET-SPECFIC]
 > - These flags registers must be restored upon exiting the asm block if the `preserves_flags` option is set:
@@ -947,7 +951,7 @@ core::arch::asm!("cmp eax, eax", in("eax") 5, options(preserve_flags));
 ```
 
 r[asm.options.noreturn]
-The `noreturn` option may be specifed. An invocation of the [`core::arch::asm!`] macro that specifies the `noreturn` option expands to an expression of type `!`. The behaviour is undefined if an evaluation of the assembly block exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand. 
+The `noreturn` option may be specifed. An *asm block* that specifies the `noreturn` option is an expression of type `!`. The behaviour is undefined if an evaluation of the *asm block* exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand. 
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
@@ -974,7 +978,7 @@ core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn
 ```
 
 r[asm.options.global]
-A program shall not specify an option, other than the `att_syntax` or `raw` options, in an invocation of the [`core::arch::global_asm!`] macro.
+A program shall not specify an option, other than the `att_syntax` or `raw` options, in a *global asm block*.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")]
