@@ -15,8 +15,8 @@ Constants must be explicitly typed. The type must have a `'static` lifetime: any
 references in the initializer must have `'static` lifetimes.
 
 Constants may refer to the address of other constants, in which case the
-address will have elided lifetimes where applicable, otherwise – in most cases
-– defaulting to the `static` lifetime. (See [static lifetime
+address will have elided lifetimes where applicable, otherwise -- in most cases
+-- defaulting to the `static` lifetime. (See [static lifetime
 elision].) The compiler is, however, still at liberty to translate the constant
 many times, so the address referred to may not be stable.
 

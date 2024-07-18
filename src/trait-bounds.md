@@ -18,8 +18,7 @@
 >
 > _Lifetime_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
-> &nbsp;&nbsp; | `'static`\
-> &nbsp;&nbsp; | `'_`
+> &nbsp;&nbsp; | `'static`
 
 [Trait] and lifetime bounds provide a way for [generic items][generic] to
 restrict which types and lifetimes are used as their parameters. Bounds can be

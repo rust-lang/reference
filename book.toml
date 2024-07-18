@@ -7,6 +7,7 @@ author = "The Rust Project Developers"
 additional-css = ["theme/reference.css"]
 git-repository-url = "https://github.com/rust-lang/reference/"
 edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
+smart-punctuation = true
 
 [output.html.redirect]
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
@@ -15,3 +16,5 @@ edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
 
 [rust]
 edition = "2021"
+
+[preprocessor.spec]

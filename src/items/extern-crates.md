@@ -52,11 +52,6 @@ Here is an example:
 extern crate hello_world; // hyphen replaced with an underscore
 ```
 
-## Extern Prelude
-
-This section has been moved to [Preludes — Extern Prelude](../names/preludes.md#extern-prelude).
-<!-- this is to appease the linkchecker, will remove once other books are updated -->
-
 ## Underscore Imports
 
 An external crate dependency can be declared without binding its name in scope

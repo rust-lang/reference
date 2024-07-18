@@ -7,17 +7,20 @@ messages during compilation.
 
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation. The lint attributes `allow`,
-`warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax to specify a
-list of lint names to change the lint level for the entity to which the
-attribute applies.
+`expect`, `warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax
+to specify a list of lint names to change the lint level for the entity
+to which the attribute applies.
 
 For any lint check `C`:
 
-* `allow(C)` overrides the check for `C` so that violations will go
-   unreported,
-* `warn(C)` warns about violations of `C` but continues compilation.
-* `deny(C)` signals an error after encountering a violation of `C`,
-* `forbid(C)` is the same as `deny(C)`, but also forbids changing the lint
+* `#[allow(C)]` overrides the check for `C` so that violations will go
+   unreported.
+* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
+  attribute will suppress the emission of `C` or issue a warning, if the
+  expectation is unfulfilled.
+* `#[warn(C)]` warns about violations of `C` but continues compilation.
+* `#[deny(C)]` signals an error after encountering a violation of `C`,
+* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
 
 > Note: The lint checks supported by `rustc` can be found via `rustc -W help`,
@@ -66,8 +69,8 @@ pub mod m2 {
 }
 ```
 
-This example shows how one can use `forbid` to disallow uses of `allow` for
-that lint check:
+This example shows how one can use `forbid` to disallow uses of `allow` or
+`expect` for that lint check:
 
 ```rust,compile_fail
 #[forbid(missing_docs)]
@@ -82,6 +85,124 @@ pub mod m3 {
 > Note: `rustc` allows setting lint levels on the
 > [command-line][rustc-lint-cli], and also supports [setting
 > caps][rustc-lint-caps] on the lints that are reported.
+
+### Lint Reasons
+
+All lint attributes support an additional `reason` parameter, to give context why
+a certain attribute was added. This reason will be displayed as part of the lint
+message if the lint is emitted at the defined level.
+
+```rust,edition2015,compile_fail
+// `keyword_idents` is allowed by default. Here we deny it to
+// avoid migration of identifiers when we update the edition.
+#![deny(
+    keyword_idents,
+    reason = "we want to avoid these idents to be future compatible"
+)]
+
+// This name was allowed in Rust's 2015 edition. We still aim to avoid
+// this to be future compatible and not confuse end users.
+fn dyn() {}
+```
+
+Here is another example, where the lint is allowed with a reason:
+
+```rust
+use std::path::PathBuf;
+
+pub fn get_path() -> PathBuf {
+    // The `reason` parameter on `allow` attributes acts as documentation for the reader.
+    #[allow(unused_mut, reason = "this is only modified on some platforms")]
+    let mut file_name = PathBuf::from("git");
+
+    #[cfg(target_os = "windows")]
+    file_name.set_extension("exe");
+
+    file_name
+}
+```
+
+### The `#[expect]` attribute
+
+The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
+expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
+would result in a lint emission. If the expectation is unfulfilled, because
+lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will
+be emitted at the attribute.
+
+```rust
+fn main() {
+    // This `#[expect]` attribute creates a lint expectation, that the `unused_variables`
+    // lint would be emitted by the following statement. This expectation is
+    // unfulfilled, since the `question` variable is used by the `println!` macro.
+    // Therefore, the `unfulfilled_lint_expectations` lint will be emitted at the
+    // attribute.
+    #[expect(unused_variables)]
+    let question = "who lives in a pineapple under the sea?";
+    println!("{question}");
+
+    // This `#[expect]` attribute creates a lint expectation that will be fulfilled, since
+    // the `answer` variable is never used. The `unused_variables` lint, that would usually
+    // be emitted, is suppressed. No warning will be issued for the statement or attribute.
+    #[expect(unused_variables)]
+    let answer = "SpongeBob SquarePants!";
+}
+```
+
+The lint expectation is only fulfilled by lint emissions which have been suppressed by
+the `expect` attribute. If the lint level is modified in the scope with other level
+attributes like `allow` or `warn`, the lint emission will be handled accordingly and the
+expectation will remain unfulfilled.
+
+```rust
+#[expect(unused_variables)]
+fn select_song() {
+    // This will emit the `unused_variables` lint at the warn level
+    // as defined by the `warn` attribute. This will not fulfill the
+    // expectation above the function.
+    #[warn(unused_variables)]
+    let song_name = "Crab Rave";
+
+    // The `allow` attribute suppresses the lint emission. This will not
+    // fulfill the expectation as it has been suppressed by the `allow`
+    // attribute and not the `expect` attribute above the function.
+    #[allow(unused_variables)]
+    let song_creator = "Noisestorm";
+
+    // This `expect` attribute will suppress the `unused_variables` lint emission
+    // at the variable. The `expect` attribute above the function will still not
+    // be fulfilled, since this lint emission has been suppressed by the local
+    // expect attribute.
+    #[expect(unused_variables)]
+    let song_version = "Monstercat Release";
+}
+```
+
+If the `expect` attribute contains several lints, each one is expected separately. For a
+lint group it's enough if one lint inside the group has been emitted:
+
+```rust
+// This expectation will be fulfilled by the unused value inside the function
+// since the emitted `unused_variables` lint is inside the `unused` lint group.
+#[expect(unused)]
+pub fn thoughts() {
+    let unused = "I'm running out of examples";
+}
+
+pub fn another_example() {
+    // This attribute creates two lint expectations. The `unused_mut` lint will be
+    // suppressed and with that fulfill the first expectation. The `unused_variables`
+    // wouldn't be emitted, since the variable is used. That expectation will therefore
+    // be unsatisfied, and a warning will be emitted.
+    #[expect(unused_mut, unused_variables)]
+    let mut link = "https://www.rust-lang.org/";
+
+    println!("Welcome to our community: {link}");
+}
+```
+
+> Note: The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
+> defined to always generate the `unfulfilled_lint_expectations` lint.
 
 ### Lint groups
 
@@ -160,14 +281,14 @@ deprecation, including the `since` version and `note`, if available.
 
 The `deprecated` attribute has several forms:
 
-- `deprecated` — Issues a generic message.
-- `deprecated = "message"` — Includes the given string in the deprecation
+- `deprecated` --- Issues a generic message.
+- `deprecated = "message"` --- Includes the given string in the deprecation
   message.
 - [_MetaListNameValueStr_] syntax with two optional fields:
-  - `since` — Specifies a version number when the item was deprecated. `rustc`
+  - `since` --- Specifies a version number when the item was deprecated. `rustc`
     does not currently interpret the string, but external tools like [Clippy]
     may check the validity of the value.
-  - `note` — Specifies a string that should be included in the deprecation
+  - `note` --- Specifies a string that should be included in the deprecation
     message. This is typically used to provide an explanation about the
     deprecation and preferred alternatives.
 
@@ -316,9 +437,9 @@ The attribute should be placed on a [trait declaration], though it is not an err
 The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
 The following keys have the given meaning:
 
-* `message` — The text for the top level error message.
-* `label` — The text for the label shown inline in the broken code in the error message.
-* `note` — Provides additional notes.
+* `message` --- The text for the top level error message.
+* `label` --- The text for the label shown inline in the broken code in the error message.
+* `note` --- Provides additional notes.
 
 The `note` option can appear several times, which results in several note messages being emitted.
 If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
@@ -328,8 +449,8 @@ For any other non-existing option a lint-warning is generated.
 All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
 Format parameters with the given named parameter will be replaced with the following text:
 
-* `{Self}` — The name of the type implementing the trait.
-* `{` *GenericParameterName* `}` — The name of the generic argument's type for the given generic parameter.
+* `{Self}` --- The name of the type implementing the trait.
+* `{` *GenericParameterName* `}` --- The name of the generic argument's type for the given generic parameter.
 
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 

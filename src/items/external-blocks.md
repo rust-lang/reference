@@ -56,6 +56,8 @@ of initializing the static.
 Extern statics can be either immutable or mutable just like [statics] outside of external blocks.
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for
 the static to be initialized before Rust code reads from it.
+Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB,
+except if the mutation happens to bytes inside of an `UnsafeCell`.
 
 ## ABI
 
@@ -120,12 +122,12 @@ compiler should link with for the items within an `extern` block. It uses the
 name of the native library to link. The `kind` key is an optional value which
 specifies the kind of library with the following possible values:
 
-- `dylib` — Indicates a dynamic library. This is the default if `kind` is not
+- `dylib` --- Indicates a dynamic library. This is the default if `kind` is not
   specified.
-- `static` — Indicates a static library.
-- `framework` — Indicates a macOS framework. This is only valid for macOS
+- `static` --- Indicates a static library.
+- `framework` --- Indicates a macOS framework. This is only valid for macOS
   targets.
-- `raw-dylib` — Indicates a dynamic library where the compiler will generate
+- `raw-dylib` --- Indicates a dynamic library where the compiler will generate
   an import library to link against (see [`dylib` versus `raw-dylib`] below
   for details). This is only valid for Windows targets.
 

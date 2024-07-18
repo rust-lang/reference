@@ -105,11 +105,11 @@ The language prelude includes names of types and attributes that are built-in
 to the language. The language prelude is always in scope. It includes the following:
 
 * [Type namespace]
-    * [Boolean type] — `bool`
-    * [Textual types] — `char` and `str`
-    * [Integer types] — `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
-    * [Machine-dependent integer types] — `usize` and `isize`
-    * [floating-point types] — `f32` and `f64`
+    * [Boolean type] --- `bool`
+    * [Textual types] --- `char` and `str`
+    * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
+    * [Machine-dependent integer types] --- `usize` and `isize`
+    * [floating-point types] --- `f32` and `f64`
 * [Macro namespace]
     * [Built-in attributes]
 

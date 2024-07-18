@@ -165,9 +165,9 @@ identifiers separated by commas. Nested repetitions are permitted.
 
 The repetition operators are:
 
-- `*` — indicates any number of repetitions.
-- `+` — indicates any number but at least one.
-- `?` — indicates an optional fragment with zero or one occurrence.
+- `*` --- indicates any number of repetitions.
+- `+` --- indicates any number but at least one.
+- `?` --- indicates an optional fragment with zero or one occurrence.
 
 Since `?` represents at most one occurrence, it cannot be used with a
 separator.

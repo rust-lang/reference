@@ -27,6 +27,7 @@ Its one value is also called *unit* or *the unit value*.
 Some examples of tuple types:
 
 * `()` (unit)
+* `(i32,)` (1-ary tuple)
 * `(f64, f64)`
 * `(String, i32)`
 * `(i32, String)` (different type from the previous example)

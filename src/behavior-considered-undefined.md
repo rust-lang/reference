@@ -50,7 +50,7 @@ Please read the [Rustonomicon] before writing unsafe code.
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
 * Mutating immutable bytes. All bytes inside a [`const`] item are immutable.
-  The bytes owned by an immutable binding are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
+  The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
   Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
 
@@ -71,12 +71,16 @@ Please read the [Rustonomicon] before writing unsafe code.
   * A `!` (all values are invalid for this type).
   * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
     from [uninitialized memory][undef], or uninitialized memory in a `str`.
-  * A reference or `Box<T>` that is [dangling], misaligned, or points to an invalid value.
-  * Invalid metadata in a wide reference, `Box<T>`, or raw pointer:
-    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for
-      `Trait` that matches the actual dynamic trait the pointer or reference points to.
-    * Slice metadata is invalid if the length is not a valid `usize`
+  * A reference or `Box<T>` that is [dangling], misaligned, or points to an invalid value
+    (in case of dynamically sized types, using the actual dynamic type of the
+    pointee as determined by the metadata).
+  * Invalid metadata in a wide reference, `Box<T>`, or raw pointer. The requirement
+    for the metadata is determined by the type of the unsized tail:
+    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for `Trait`.
+    * Slice (`[T]`) metadata is invalid if the length is not a valid `usize`
       (i.e., it must not be read from uninitialized memory).
+      Furthermore, for wide references and `Box<T>`, slice metadata is invalid
+      if it makes the total size of the pointed-to value bigger than `isize::MAX`.
   * Invalid values for a type with a custom definition of invalid values.
     In the standard library, this affects [`NonNull<T>`] and [`NonZero*`].
 
