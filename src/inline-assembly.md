@@ -3,7 +3,7 @@
 r[asm]
 
 r[asm.macros]
-The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] are defined to supply inline assembly to a Rust program. They expand to *exposition-only* syntax defined 
+The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] are defined to supply inline assembly to a Rust program. They expand to *exposition-only* syntax defined
 
 > [!NOTE]
 > The expansion of the macros has no stable syntax equivalent. This section will refer to the expansion of the macro, rather than the surface syntax.
@@ -52,7 +52,7 @@ assert_eq!(x, 4 * 6);
 # }
 ```
 
-## Syntax 
+## Syntax
 
 r[asm.syntax]
 
@@ -89,7 +89,7 @@ asm-block = /*asm-block*/ "(" asm_inner ")"
 global-asm-block = /*global-asm*/ "(" asm_inner ")" 
 ```
 
-## Invocation 
+## Invocation
 
 r[asm.invocation]
 
@@ -260,7 +260,7 @@ core::arch::asm!("lock");
 # }}
 ```
 
-## Operand types 
+## Operand types
 
 r[asm.operands]
 
@@ -428,7 +428,7 @@ core::arch::asm!("mov eax, dword ptr [{}+rip]", sym FOO, out("eax") x);
 ```
 
 r[asm.operands.expansion]
-Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym operand expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item. 
+Each operand_spec is expanded in the *joined asm-string* according to the modifiers in `modifier_spec` and the operand. Each reg_operand is assigned to a register according to the reg_spec, and expands to the appropriate version of the `reg_operand`, in the format expected by the asm syntax in effect to specify the appropriate register. A sym operand expand to the linkage name ([dynamic.linkage.name]) of the item referred to by the `path-expr`, if it has either the `#[no_mangle]` or `#[export_name]` attribute, or is defined in an `extern` block, and otherwise, it expands to an unspecified string that can be used within the *expanded asm-string* to refer to the item.
 
 > [!NOTE]
 > The name given to an item used by a sym-expr that does not have a linkage name may be known as the "mangled" name of the item.
@@ -492,7 +492,7 @@ core::arch::asm!("", clobber_abi("C"));
 r[asm.operands.clobbers_abi_ref]
 A `clobbers_abi` special operand shall be specified after all positional operands, and shall not be a named operand. A `clobbers_abi` special operand cannot be referred to by an operand_specifier
 
-## Register operands 
+## Register operands
 
 r[asm.registers]
 
@@ -712,7 +712,7 @@ core::arch::asm!("mov rsp, 5", out("rsp") x);
 # compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
-## Template modifiers 
+## Template modifiers
 
 r[asm.template]
 
@@ -784,7 +784,7 @@ A lint diagnostic should be emitted if a modifier is omitted, or a modifier is u
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
-## Behaviour of an asm block 
+## Behaviour of an asm block
 
 r[asm.evaluation]
 
@@ -834,7 +834,7 @@ The behaviour is undefined upon exiting an *asm block* unless the stack pointer 
 > * The Direction flag (`flags.DF`) is clear upon entry and must be clear upon exit
 > * The x87 Stack (that is the `TOP` field of the floating-point status word, and each bit in the floating-point tag word) must be preserved and restored upon exit. If all x87 `st` registers are marked as clobbered, the stack is guaranteed to be empty on entry to the asm block (that is, `TOP` is set to `0x7` and the `ftw` is set to `0xFFFF`).
 
-## Options 
+## Options
 
 r[asm.options]
 
@@ -1003,7 +1003,7 @@ core::arch::global_asm!("", options(noreturn));
 # fn main(){}
 ```
 
-## Directives Support 
+## Directives Support
 
 r[asm.directives]
 
