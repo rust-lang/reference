@@ -157,7 +157,7 @@ their _definition_:
 
 <!-- ignore: fake ABI -->
 ```rust,ignore
-extern "ABI" {
+unsafe extern "ABI" {
   fn foo(); /* no body */
 }
 unsafe { foo() }

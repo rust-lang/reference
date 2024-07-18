@@ -17,7 +17,7 @@ fn foo() -> ! {
 ```
 
 ```rust
-extern "C" {
+unsafe extern "C" {
     pub fn no_return_extern_func() -> !;
 }
 ```
