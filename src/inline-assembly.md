@@ -13,7 +13,7 @@ The macro [`core::arch::asm!`] shall be expanded only within an `unsafe` block.
 
 > [!NOTE]
 > Inline assembly is inherently unsafe.
-> It requires asserting that various constraints are satisfied that the compiler cannot check, and can perform operations equivalent to calling a foreign function.
+> It requires asserting that various constraints are satisfied, which the compiler cannot check, and can perform operations equivalent to calling a foreign function.
 
 
 ```rust,compile_fail
