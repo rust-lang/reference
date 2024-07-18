@@ -9,7 +9,7 @@ The macros [`core::arch::asm!`] and [`core::arch::global_asm!`] are defined to s
 > The expansion of the macros has no stable syntax equivalent. This section will refer to the expansion of the macro, rather than the surface syntax.
 
 r[asm.safety]
-The macro [`core::arch::asm!`] shall be expanded only within an `unsafe` block.
+The macro [`core::arch::asm!`] shall be invoked only within an `unsafe` block.
 
 > [!NOTE]
 > Inline assembly is inherently unsafe.
@@ -18,13 +18,13 @@ The macro [`core::arch::asm!`] shall be expanded only within an `unsafe` block.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-    use core::arch::asm;
-    asm!("/*inline assembly is inherently unsafe*/");
+use core::arch::asm;
+asm!("/*inline assembly is inherently unsafe*/");
 # }
 ```
 
 r[asm.support]
-Inline assembly is supported only when compiling for a target using one of the following architectures. A program that contains inline assembly is ill-formed on any other target:
+Inline assembly is supported only when compiling for a target using one of the following architectures. A program that contains inline assembly fails to compile on any other target:
 - x86 and x86-64
 - ARM
 - AArch64
@@ -83,8 +83,10 @@ format_escape := "{{" / "}}"
 asm_string_piece := non_format_char / format_specifier / format_escape
 asm_string_content := [*asm_string_piece]
 
-exposition-only_asm = /*asm-block*/ "(" asm_inner ")" // Exposition Only
-exposition-only_global_asm = /*global-asm*/ "(" asm_inner ")" // Exposition Only
+ // Exposition Only, not valid in rust code
+asm-block = /*asm-block*/ "(" asm_inner ")"
+// Exposition Only, not valid in rust code
+global-asm-block = /*global-asm*/ "(" asm_inner ")" 
 ```
 
 ## Invocation 
@@ -135,14 +137,14 @@ Unless the `raw` option is specified, each `format_string` input to the [`core::
 
 
 r[asm.invocation.concat]
-If multiple `format_string` inputs are provided, then they are concatenated as though by the [`core::concat!`] macro, separating each `format_string` with a string containing a single newline character. If any `format_string` begins a `format_specifier` that is not terminated before the end of the `format_string`, the program is ill-formed. The resulting string is known as the *joined asm-string*
+If multiple `format_string` inputs are provided, then they are concatenated as though by the [`core::concat!`] macro, separating each `format_string` with a string containing a single newline character. If any `format_string` begins a `format_specifier` that is not terminated before the end of the `format_string`, the program fails to compile. The resulting string is known as the *joined asm-string*
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {unsafe{
 let mut x: i32;
 // The following lines are equivalent
-core::arch::asm!("mov rax, 5", "mov rcx, rax", out("rax") x, out("rcx") _); 
-core::arch::asm!("mov rax, 5\nmov rcx, rax", out("rax") x, out("rcx") _);  
+core::arch::asm!("mov rax, 5", "mov rcx, rax", out("rax") x, out("rcx") _);
+core::arch::asm!("mov rax, 5\nmov rcx, rax", out("rax") x, out("rcx") _); 
 # }}
 ```
 
@@ -154,7 +156,7 @@ Each operand, other than an explicit register operand ([asm.operands.register]) 
 core::arch::asm!("", in(reg) 5i64);
 # }}
 # #[cfg(not(target_arch = "x86_64"))]
-# core::compile_error!("asm tests are not yet available off of x86_64"); 
+# core::compile_error!("asm tests are not yet available off of x86_64");
 ```
 
 r[asm.invocation.positional]
@@ -305,7 +307,8 @@ struct Foo{x: i32}
 let x: Foo;
 core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ```rust,compile_fail
@@ -314,7 +317,8 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 let x: *mut [i32];
 core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, out("eax") x);
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 
@@ -340,7 +344,8 @@ Each reference type, where the pointee type has no metadata-type, and each funct
 # #[cfg(target_arch = "x86_64")] { unsafe{
 let x = 5;
 let y: i32;
-core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); // equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y); 
+core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); 
+// equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y); 
 # }}
 ```
 
@@ -349,7 +354,8 @@ core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); // equiva
 let y: &mut i32;
 core::arch::asm!("mov {}, 0", out(reg) 5); 
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 
@@ -364,7 +370,8 @@ An `output_expr` shall be the placeholder expression `_` or a (potentially unini
 let x: i32 = 0;
 core::arch::asm!("", out("eax") x);
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.operands.inout-expr]
@@ -403,7 +410,7 @@ core::arch::asm!("mov eax, 5", out("eax") _);
 ```
 
 r[asm.operands.sym-expr]
-A sym-expr is a path-expr. If the `path-expr` does not refer to a `static` item or a `fn` item, the program is ill-formed.
+A sym-expr is a path-expr. If the `path-expr` does not refer to a `static` item or a `fn` item, the program fails to compile.
 
 > [!NOTE]
 > the path-expr may have any type, including a type that isn't an *asm operand type*, and may be either mutable or immutable.
@@ -440,7 +447,8 @@ The program shall not use an operand, other than a sym operand, in the expansion
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", in("eax") 5);
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 
 # fn main(){}
 ```
@@ -582,7 +590,8 @@ Certain registers and register classes are *clobbers only*. Such register names 
 let x: i64;
 core::arch::asm!("mov {}, 5", out("k0") x);
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.register.small-values]
@@ -699,7 +708,8 @@ Certain registers are reserved registers. Reserved Registers shall not be named 
 # #[cfg(target_arch = "x86_64")] { unsafe{
 core::arch::asm!("mov rsp, 5", out("rsp") x);
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 ## Template modifiers 
@@ -890,7 +900,8 @@ An *asm block* shall not specify both the `nomem` and `readonly` options.
 # #[cfg(target_arch = "x86_64")] { unsafe{
 core::arch::asm!("mov dword ptr [FOO+rip], 3", options(readonly, nomem));
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.options.pure]
@@ -975,7 +986,8 @@ core::arch::asm!("", options(noreturn));
 let x: i32;
 core::arch::asm!("xor edi, edi", "call exit@plt", out("edi") x, options(noreturn));
 # }}
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 ```
 
 r[asm.options.global]
@@ -985,7 +997,8 @@ A program shall not specify an option, other than the `att_syntax` or `raw` opti
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", options(noreturn));
 
-# #[cfg(not(target_arch = "x86_64"))] compile_error!("Inline Assembly Tests are not supported off of x86_64");
+# #[cfg(not(target_arch = "x86_64"))]
+# compile_error!("Inline Assembly Tests are not supported off of x86_64");
 
 # fn main(){}
 ```
@@ -1099,6 +1112,7 @@ r[asm.directives.x86]
 
 r[asm.directives.arm]
 
+> [!TARGET-SPECIFIC]
 > The following directives are guaranteed to be supported on 32-bit ARM platforms
 > - `.even`
 > - `.fnstart`
