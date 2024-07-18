@@ -260,6 +260,9 @@ core::arch::asm!("lock");
 # }}
 ```
 
+
+[static.expr.safety]: unsafety.md
+
 ## Operand types
 
 r[asm.operands]
