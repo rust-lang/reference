@@ -4,7 +4,7 @@
 
 ### Ill-formed Program
 
-A Rust Program is ill-formed if it violates a statically set constraint placed on it by the language. 
+A Rust Program is ill-formed if it violates a statically set constraint placed on it by the language.
 Unless otherwise statement explicitly an implementation shall issue an appropriate diagnostic for an ill-formed program and shall not translate such a program.
 
 #### No Diagnostic Required
@@ -16,12 +16,11 @@ If such a program is succesfully translated, no constraints are placed on the re
 > The constraint which is modified by the phrase "No Diagnostic Required" may be defined implicitly, such as with the term "shall", rather than explicitly stating that the program is ill-formed.
 
 > [!NOTE]
-> Such constraints are used only when it may be unreasonable or impossible to check the constraints statically, and where the result of violating the constraints makes it impossible to ensure the required behaviour of the program 
+> Such constraints are used only when it may be unreasonable or impossible to check the constraints statically, and where the result of violating the constraints makes it impossible to ensure the required behaviour of the program
 
 ### Shall
 
 The word "shall" is a static constraint placed upon the program. A program that violates a constraint that uses "shall" is ill-formed.
-
 
 ## Rust Specific Terms
 
