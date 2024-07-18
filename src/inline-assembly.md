@@ -131,7 +131,7 @@ r[asm.invocation.format-string]
 Unless the `raw` option is specified, each `format_string` input to the [`core::arch::asm!`] and [`core::arch::global_asm!`] macros shall be an expanded string literal for which the content matches the `asm_string_piece` production.
 
 > [!NOTE]
-> an expanded string literal is a string literal (after expanding macros like [`core::concat!`]) that has had every unicode escape sequence replaced with the (appropriately escaped as needed) matching character, and which has been normalized from a raw string literal.
+> An expanded string literal is a string literal (after expanding macros like [`core::concat!`]) that has had every unicode escape sequence replaced with the (appropriately escaped as needed) matching character, and which has been normalized from a raw string literal.
 
 
 r[asm.invocation.concat]
@@ -191,7 +191,7 @@ r[asm.invocation.expansion]
 If the `raw` option is not specified, the *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*. If the `raw` option is specified, the *expanded asm-string* is the *joined asm-string* verbatim. 
 
 r[asm.invocation.syntax]
-The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behaviour*. Invoking a directive that is not specified by [asm.directives] is *conditionally supported* and has *assembler dependent behaviour*.
+The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behavior*. Invoking a directive that is not specified by [asm.directives] is *conditionally supported* and has *assembler dependent behavior*.
 
 > [!TARGET-SPECIFIC]
 > On x86 and x86_64 targets, the syntax of the *expanded asm-string* acts as though the directive `.intel_syntax noprefix` is issued before parsing the *expanded asm-string*, except that the `option(att_syntax)` causes the syntax to act as though the directive `.att_syntax prefix` is issued before parsing the *expanded asm-string* instead.
@@ -201,8 +201,9 @@ r[asm.invocation.duplication]
 The number of times, locations, and the order in which a given *asm block* appears in the binary is unspecified.
 
 ```rust,ignore
-// The following code may have suprising results, and may fail to compile or link. 
-// The results, including whether it succesfully compiles, may depend on non-local use sites of the function, and on optimization settings.
+// The following code may have surprising results, and may fail to compile or
+// link. The results, including whether it successfully compiles, may depend on
+// non-local use sites of the function, and on optimization settings.
 # #[cfg(target_arch = "x86_64")] { unsafe{
 let x: i32;
 core::arch::asm!("foo: jmp foo");
@@ -244,7 +245,7 @@ The *expanded asm-string* of *global-asm-block* invocation acts as though a `.se
 
 
 r[asm.invocation.prefix-instr]
-An *expanded asm-string* shall not end with an instruction that is interpreted as a prefix on the architecture. No Diagnostic is required
+An *expanded asm-string* shall not end with an instruction that is interpreted as a prefix on the architecture. No diagnostic is required.
 
 > [!TARGET-SPECIFIC]
 > On x86 and x86-64, the `lock`, `repnz`, `rep`, `repz`, as well as GNU AS specific address-size, data-size, and explicit rex, vex, and evex prefixes.
@@ -356,7 +357,7 @@ r[asm.operands.in-expr]
 An `input_expr` shall be a value expression of an *asm operand type* or an *input coerceable type*. If the expression is of an *input coerceable type*, it is coerced to an *asm operand type*. 
 
 r[asm.operands.out-expr]
-An `output_expr` shall be the placeholder expression `_` or a (potentially unitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
+An `output_expr` shall be the placeholder expression `_` or a (potentially uninitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -831,7 +832,7 @@ r[asm.options.general]
 An options-spec provided in the *asm block* places constraints on the *asm block*. 
 
 r[asm.options.att_syntax]
-The `att_syntax` option may be specfied on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
+The `att_syntax` option may be specified on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
 
 > [!TARGET-SPECIFIC]
 > The `att_syntax` option modifies the syntax used to parse the *expanded asm-string* as though the `.att_syntax prefix` directive was issued before parsing the *expanded asm-string*, and modifies the expansion of register operands to include a `%` prefix.
