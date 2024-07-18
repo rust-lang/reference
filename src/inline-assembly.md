@@ -86,7 +86,7 @@ asm_string_content := [*asm_string_piece]
  // Exposition Only, not valid in rust code
 asm-block = /*asm-block*/ "(" asm_inner ")"
 // Exposition Only, not valid in rust code
-global-asm-block = /*global-asm*/ "(" asm_inner ")" 
+global-asm-block = /*global-asm*/ "(" asm_inner ")"
 ```
 
 ## Invocation
@@ -101,7 +101,7 @@ The [`core::arch::asm!`] macro expands to an `/*asm-block*/` when expanded in an
 
 ```rust
 pub fn main() {
-  # #[cfg(target_arch = "x86_64")] 
+  # #[cfg(target_arch = "x86_64")]
   unsafe{
     core::arch::asm!("")
   }
@@ -120,13 +120,13 @@ core::arch::global_asm!(".rodata", "FOO:", ".ascii \"Hello World\"");
 
 ```rust,compile_fail
 pub fn main() {
-# #[cfg(target_arch = "x86_64")] 
+# #[cfg(target_arch = "x86_64")]
 # {
     core::arch::global_asm!("FOO:", ".ascii \"Hello World\"");
 # }
 }
 # #[cfg(not(target_arch = "x86_64"))]
-# core::compile_error!("asm tests are not yet available off of x86_64"); 
+# core::compile_error!("asm tests are not yet available off of x86_64");
 ```
 
 r[asm.invocation.format-string]
@@ -144,7 +144,7 @@ If multiple `format_string` inputs are provided, then they are concatenated as t
 let mut x: i32;
 // The following lines are equivalent
 core::arch::asm!("mov rax, 5", "mov rcx, rax", out("rax") x, out("rcx") _);
-core::arch::asm!("mov rax, 5\nmov rcx, rax", out("rax") x, out("rcx") _); 
+core::arch::asm!("mov rax, 5\nmov rcx, rax", out("rax") x, out("rcx") _);
 # }}
 ```
 
@@ -190,7 +190,7 @@ core::arch::asm!("mov {output}, {input}", input = in(reg) 5i64, output = out(reg
 ```
 
 r[asm.invocation.expansion]
-If the `raw` option is not specified, the *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*. If the `raw` option is specified, the *expanded asm-string* is the *joined asm-string* verbatim. 
+If the `raw` option is not specified, the *joined asm-string* is expanded as defined in [asm.operands.expansion], replacing each `format_specifier` with the appropriate expansion for the operand. The resulting string is called the *expanded asm-string*. If the `raw` option is specified, the *expanded asm-string* is the *joined asm-string* verbatim.
 
 r[asm.invocation.syntax]
 The syntax of the *expanded asm-string* is a subset of the GNU AS syntax for the target. Invoking the macro with a *expanded asm-string* that does not match syntax requirements is *conditionally supported* and has *assembler dependent behavior*. Invoking a directive that is not specified by [asm.directives] is *conditionally supported* and has *assembler dependent behavior*.
@@ -214,7 +214,7 @@ core::arch::asm!("foo: jmp foo");
 
 > [!NOTE]
 > In particular, an asm block may be duplicated, for example if the containing function is inlined, or omitted from the output entirely.
-> As a consequence, asm blocks should not use directives that have non-idempotent non-local effects, or named labels and symbol definitions, and should not rely on the non-local effects of other asm blocks. 
+> As a consequence, asm blocks should not use directives that have non-idempotent non-local effects, or named labels and symbol definitions, and should not rely on the non-local effects of other asm blocks.
 > Additionally, two asm blocks may not rely upon being adjacent in executable memory, even if they are adjacent in the source.
 
 > [!NOTE]
@@ -243,7 +243,7 @@ r[asm.invocation.global-section]
 The *expanded asm-string* of *global-asm-block* invocation acts as though a `.section` directive is issued before the *expanded asm-string*  which causes code to be generated in the default section on the target for executable code.
 
 > [!NOTE]
-> This section is typically named `.text`. 
+> This section is typically named `.text`.
 
 
 r[asm.invocation.prefix-instr]
@@ -288,7 +288,7 @@ core::arch::asm!("mov rax, {input}", input = in(reg) 5i64, out("eax") x);
 ```
 
 r[asm.operands.registers]
-Operands that specify an explicit register `reg_spec` are explicit register operands. 
+Operands that specify an explicit register `reg_spec` are explicit register operands.
 
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -347,15 +347,15 @@ Each reference type, where the pointee type has no metadata-type, and each funct
 # #[cfg(target_arch = "x86_64")] { unsafe{
 let x = 5;
 let y: i32;
-core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y); 
-// equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y); 
+core::arch::asm!("mov eax, dword ptr [{}]", in(reg) &x, out("eax") y);
+// equivalent to asm!("mov eax, dword ptr [{}]", in(reg) (&x) as *const i32, out("eax") y);
 # }}
 ```
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] { unsafe{
 let y: &mut i32;
-core::arch::asm!("mov {}, 0", out(reg) 5); 
+core::arch::asm!("mov {}, 0", out(reg) 5);
 # }}
 # #[cfg(not(target_arch = "x86_64"))]
 # compile_error!("Inline Assembly Tests are not supported off of x86_64");
@@ -363,7 +363,7 @@ core::arch::asm!("mov {}, 0", out(reg) 5);
 
 
 r[asm.operands.in-expr]
-An `input_expr` shall be a value expression of an *asm operand type* or an *input coerceable type*. If the expression is of an *input coerceable type*, it is coerced to an *asm operand type*. 
+An `input_expr` shall be a value expression of an *asm operand type* or an *input coerceable type*. If the expression is of an *input coerceable type*, it is coerced to an *asm operand type*.
 
 r[asm.operands.out-expr]
 An `output_expr` shall be the placeholder expression `_` or a (potentially uninitialized) place expression of an *asm operand type*. If the place expression is initialized, it shall be a mutable place.
@@ -396,11 +396,11 @@ r[asm.operands.inout]
 An `inout` operand is a reg_operand with the `inout` dir_spec, and a `inlateout` operand is a reg_operand with the `inlateout` dir_spec. The `operand_expr` of an `inout` operand or an `inlateout` operand shall be an `inout_expr`. The `input_expr` and `output_expr` of an `inout` or `inlateout` operand is used as though the `inout` operand is replaced with a separate `in` and `out` operand, and the `inlateout` operand is replaced with a separate `in` and `lateout` operand, except that both have the same position if they are positional, or the same name if they are named operands, and both refer to the same register.
 
 > [!NOTE]
-> An `inlateout` operand differs from an `inout` operand only in that implementation may assume that no other `in`, `inout`, or `inlateout` operands are read after an `inlateout` operand is modified by the *expanded asm-string*. 
+> An `inlateout` operand differs from an `inout` operand only in that implementation may assume that no other `in`, `inout`, or `inlateout` operands are read after an `inlateout` operand is modified by the *expanded asm-string*.
 
 
 r[asm.operands.clobbers]
-An `output_expr` that is the placeholder expression `_` is a clobbers output. The resulting value of the register is discarded. An `out` operand that is a clobbers output shall be an *explicit register operand*. 
+An `output_expr` that is the placeholder expression `_` is a clobbers output. The resulting value of the register is discarded. An `out` operand that is a clobbers output shall be an *explicit register operand*.
 
 > [!NOTE]
 > Some registers and register classes cannot be used as an operand, other than as a clobber operand.
@@ -440,7 +440,7 @@ Each operand_spec is expanded in the *joined asm-string* according to the modifi
 > A sym operand does not include any relocation modifiers such as `@plt` or `@tpoff`. The *joined asm-string* is responsible for including these as required.
 
 > [!TARGET-SPECIFIC]
-> On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used. 
+> On x86 and x86_64 targets, the register name is expanded as-is if the `options(att_syntax)` is not used, and with the `%` prefix if `options(att_syntax)` is used.
 
 r[asm.operands.global]
 The program shall not use an operand, other than a sym operand, in the expansion of the [`core::arch::global_asm!`] macro.
@@ -465,7 +465,7 @@ core::arch::global_asm!("/*{}*/", sym FOO);
 ```
 
 r[asm.operands.clobbers_abi]
-A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, then no `out`, `lateout`, `inout`, or `inlateout` reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call. 
+A special operand `clobbers_abi` may be specified. If the `clobers_abi` operand is specified, then no `out`, `lateout`, `inout`, or `inlateout` reg_operand, other than an *explicit register operand*, shall be specified. When specified, it accepts a string literal which shall belong to a subset of the string literals accepted for an `extern` calling convention specification. The `clobbers_abi` special operand acts as though it is replaced by a `lateout` operand with an out-expr of `_` for each register considered by the specified calling convention to not be preserved by a function call.
 
 
 > [!NOTE]
@@ -500,7 +500,7 @@ A `clobbers_abi` special operand shall be specified after all positional operand
 r[asm.registers]
 
 r[asm.registers.explicit]
-An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name of a valid operand register. Multiple explicit register operands shall not specify the same register or aliases of the same register. 
+An explicit register operand specifies the name of a valid operand register that is not a reserved register, or an alias name of a valid operand register. Multiple explicit register operands shall not specify the same register or aliases of the same register.
 
 ```rust
 # #[cfg(target_arch = "x86_64")] { unsafe{
@@ -520,7 +520,7 @@ core::arch::asm!("mov {}, 5", out(reg) x);
 ```
 
 r[asm.registers.valid-types]
-Each register class, and the explicit registers within those classes, may restrict the set of types allowed for operands referring to that class or those registers. 
+Each register class, and the explicit registers within those classes, may restrict the set of types allowed for operands referring to that class or those registers.
 
 > [!NOTE]
 > The types `isize`, `usize`, and function pointer types are considered valid for a given register class if and only if an integer type of the same width is considered valid.
@@ -720,7 +720,7 @@ core::arch::asm!("mov rsp, 5", out("rsp") x);
 r[asm.template]
 
 r[asm.template.modifier]
-An operand spec that refers to a register operand may specify a modifier as part of the format specifier. 
+An operand spec that refers to a register operand may specify a modifier as part of the format specifier.
 
 r[asm.template.class]
 A format specifier shall only use a modifier that is supported for the register class specified by the register opernd.
@@ -812,7 +812,7 @@ Certain constraints may be placed on the *asm block*, and on the requirements of
 r[asm.evaluation.memory]
 The behaviour is undefined if the *asm block* accesses any allocation, disables, freezes, activates any tags, or *synchronizes-with* a store to a given memory location, except via:
 * An access to a static item which is declared with the `#[no_mangle]` attribute, the `#[export_name]` attribute, or which is visible to an expression within the function in which the asm block is expanded,
-* A pointer tag which has been exposed, 
+* A pointer tag which has been exposed,
 * A pointer tag which was passed as an input operand, or
 * A pointer tag which is accessible by reading any memory the asm block can read under this clause, recursively.
 
@@ -842,7 +842,7 @@ The behaviour is undefined upon exiting an *asm block* unless the stack pointer 
 r[asm.options]
 
 r[asm.options.general]
-An options-spec provided in the *asm block* places constraints on the *asm block*. 
+An options-spec provided in the *asm block* places constraints on the *asm block*.
 
 r[asm.options.att_syntax]
 The `att_syntax` option may be specified on the x86 and x86_64 target. The program shall not specify the `att_syntax` option on any other target.
@@ -858,10 +858,10 @@ core::arch::asm!("mov {:e}, %eax", in(reg) 5, out("eax") x, options(att_syntax))
 ```
 
 r[asm.options.raw]
-The `raw` option may be specified. If the `raw` option is specified, the *asm block* or *global asm block* shall not have any operands, other than explicit register operands, and the `clobbers_abi` special operand. 
+The `raw` option may be specified. If the `raw` option is specified, the *asm block* or *global asm block* shall not have any operands, other than explicit register operands, and the `clobbers_abi` special operand.
 
 > [!NOTE]
-> The `raw` option causes the *joined asm-string* to be handled verbatim without being interpreted as a format string and expanded. 
+> The `raw` option causes the *joined asm-string* to be handled verbatim without being interpreted as a format string and expanded.
 
 
 r[asm.options.nomem]
@@ -886,7 +886,7 @@ core::arch::asm!("mov {:e}, dword ptr [{}+rip]", out(reg) x, sym FOO, options(no
 ```
 
 r[asm.options.readonly]
-The `readonly` option may be specified. The behaviour is undefined if the *asm block* modifies any allocation or activates any tag. 
+The `readonly` option may be specified. The behaviour is undefined if the *asm block* modifies any allocation or activates any tag.
 
 ```rust,ignore
 // The following snippet has undefined behaviour
@@ -966,7 +966,7 @@ core::arch::asm!("cmp eax, eax", in("eax") 5, options(preserve_flags));
 ```
 
 r[asm.options.noreturn]
-The `noreturn` option may be specifed. An *asm block* that specifies the `noreturn` option is an expression of type `!`. The behaviour is undefined if an evaluation of the *asm block* exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand. 
+The `noreturn` option may be specifed. An *asm block* that specifies the `noreturn` option is an expression of type `!`. The behaviour is undefined if an evaluation of the *asm block* exits. The program shall not specify the `clobber_abi` specification, or an operand that is an `out`, `lateout`, `inout`, or `inlateout` operand.
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
