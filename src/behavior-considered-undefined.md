@@ -82,8 +82,7 @@ Please read the [Rustonomicon] before writing unsafe code.
 
     > **Note**: `rustc` achieves this with the unstable
     > `rustc_layout_scalar_valid_range_*` attributes.
-* Incorrect use of inline assembly. For more details, refer to the [rules] to
-  follow when writing code that uses inline assembly.
+* Incorrect use of inline assembly. For more details, refer to [asm.evaluation] for the requirements that an inline assembly block must uphold
 * **In [const context](const_eval.md#const-context)**: transmuting or otherwise
   reinterpreting a pointer (reference, raw pointer, or function pointer) into
   some allocated object as a non-pointer type (such as integers).
@@ -162,7 +161,6 @@ must never exceed `isize::MAX`.
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
 [`NonZero*`]: ../core/num/index.html
 [place expression context]: expressions.md#place-expressions-and-value-expressions
-[rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
 [pointed to]: #pointed-to-bytes
 [offset]: ../std/primitive.pointer.html#method.offset
