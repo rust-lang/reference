@@ -62,9 +62,21 @@ To test all of the code examples in the Reference, run:
 mdbook test
 ```
 
+For authors, consider using the server functionality which supports automatic reload.
+
 To build the Reference locally (in `build/`) and open it in a web
 browser, run:
 
 ```sh
 mdbook build --open
 ```
+
+This will open a browser with a websocket live-link to automatically reload whenever the source is updated.
+
+You can also open any current build of the reference by running:
+
+```sh
+mdbook serve --open
+```
+
+
