@@ -8,7 +8,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
 >
 > _FunctionQualifiers_ :\
-> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> (`safe`[^extern-safe] | `unsafe`)<sup>?</sup>[^extern-qualifiers] (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
 >
 > _Abi_ :\
 > &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
@@ -38,6 +38,13 @@
 > &nbsp;&nbsp; `->` [_Type_]
 >
 > [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
+>
+> [^extern-safe]: The `safe` function qualifier is only allowed within
+>   `extern` blocks.
+>
+> [^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within
+>   `extern` blocks, the `safe` or `unsafe` function qualifier is only allowed
+>   when the `extern` is qualified as `unsafe`.
 >
 > [^fn-param-2015]: Function parameters with only a type are only allowed
 >   in an associated function of a [trait item] in the 2015 edition.
