@@ -23,38 +23,39 @@ blocks is only allowed in an `unsafe` context.
 
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
 
-Starting in edition 2024, the `unsafe` keyword is required to appear before the
-`extern` keyword. In previous editions is accepted but not required.
+**Edition differences**: Starting in the 2024 edition, the `unsafe` keyword is
+required to appear before the `extern` keyword on external blocks. In previous
+editions, it is accepted but not required.
 
 ## Functions
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they must not have a body and are instead
 terminated by a semicolon. Patterns are not allowed in parameters, only
-[IDENTIFIER] or `_` may be used. Only safety funcion qualifiers are allowed
-(`unsafe`, `safe`), other function qualifiers (`const`, `async`, and `extern`)
-are not allowed.
+[IDENTIFIER] or `_` may be used. The `safe` and `unsafe` function qualifiers are
+allowed, but other function qualifiers (e.g. `const`, `async`, `extern`) are
+not.
 
 Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between
 the Rust ABI and the foreign ABI.
 
-A function declared with an explicit safety qualifier (`unsafe`, `safe`) would
-take such safety qualification, if no qualifier is present is implicitly
-`unsafe`. When coerced to a function pointer, a function declared in an extern
-block has type `unsafe extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`,
-where `'l1`, ... `'lm` are its lifetime parameters, `A1`, ..., `An` are the
-declared types of its parameters and `R` is the declared return type.
+A function declared in an extern block is implicitly `unsafe` unless the `safe`
+function qualifier is present.
+
+When coerced to a function pointer, a function declared in an extern block has
+type `extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`,
+... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of
+its parameters, `R` is the declared return type.
 
 ## Statics
 
 Statics within external blocks are declared in the same way as [statics] outside of external blocks,
 except that they do not have an expression initializing their value.
-It is `unsafe` by default or if the item is declared as `unsafe` to access a static item declared in
-an extern block, unless the item was explicitly declared as `safe`.
-It does not matter if it's mutable, because there is nothing guaranteeing that the bit pattern at
-the static's memory is valid for the type it is declared with, since some arbitrary (e.g. C) code is
-in charge of initializing the static.
+Unless a static item declared in an extern block is qualified as `safe`, it is `unsafe` to access that item, whether or
+not it's mutable, because there is nothing guaranteeing that the bit pattern at the static's
+memory is valid for the type it is declared with, since some arbitrary (e.g. C) code is in charge
+of initializing the static.
 
 Extern statics can be either immutable or mutable just like [statics] outside of external blocks.
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for
@@ -107,9 +108,9 @@ identifier.
 
 ```rust
 unsafe extern "C" {
-    fn foo(...);
-    fn bar(x: i32, ...);
-    fn with_name(format: *const u8, args: ...);
+    safe fn foo(...);
+    unsafe fn bar(x: i32, ...);
+    unsafe fn with_name(format: *const u8, args: ...);
 }
 ```
 
@@ -280,7 +281,7 @@ uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
 ```rust
 unsafe extern {
     #[link_name = "actual_symbol_name"]
-    fn name_in_rust();
+    safe fn name_in_rust();
 }
 ```
 
@@ -309,7 +310,7 @@ it, and that assigned ordinal may change between builds of the binary.
 #[link(name = "exporter", kind = "raw-dylib")]
 unsafe extern "stdcall" {
     #[link_ordinal(15)]
-    fn imported_function_stdcall(i: i32);
+    safe fn imported_function_stdcall(i: i32);
 }
 ```
 

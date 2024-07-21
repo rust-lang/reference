@@ -158,9 +158,11 @@ their _definition_:
 <!-- ignore: fake ABI -->
 ```rust,ignore
 unsafe extern "ABI" {
-  fn foo(); /* no body */
+  unsafe fn foo(); /* no body */
+  safe fn bar(); /* no body */
 }
-unsafe { foo() }
+unsafe { foo() };
+bar();
 ```
 
 When `"extern" Abi?*` is omitted from `FunctionQualifiers` in function items,
