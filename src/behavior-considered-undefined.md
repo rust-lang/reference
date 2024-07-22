@@ -143,15 +143,18 @@ Whether a value is valid depends on the type:
 * A `str` value is treated like `[u8]`, i.e. it must be initialized.
 * An `enum` must have a valid discriminant, and all fields of the variant indicated by that discriminant must be valid at their respective type.
 * A `struct`, tuple, and array requires all fields/elements to be valid at their respective type.
-* For a `union`, the exact validity requirements are not decided yet. The following is certain:
-  * If the `union` has a zero-sized field, then all values are valid.
-  * If a value is valid for a particular `union` field, then it is valid for the union.
+* For a `union`, the exact validity requirements are not decided yet.
+  Obviously, all values that can be created entirely in safe code are valid.
+  If the union has a zero-sized field, then every possible value is valid.
+  Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
 * A reference or [`Box<T>`] must be aligned, it cannot be [dangling], and it must point to a valid value
   (in case of dynamically sized types, using the actual dynamic type of the
   pointee as determined by the metadata).
+  Note that the last point (about pointing to a valid value) is still subject of debate.
 * The metadata of a wide reference, [`Box<T>`], or raw pointer must match
   the type of the unsized tail:
   * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`.
+    (For raw pointers, this requirement is still subject of debate.)
   * Slice (`[T]`) metadata must be a valid `usize`.
     Furthermore, for wide references and [`Box<T>`], slice metadata is invalid
     if it makes the total size of the pointed-to value bigger than `isize::MAX`.
