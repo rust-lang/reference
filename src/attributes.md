@@ -33,9 +33,10 @@ Attributes other than macro attributes also allow the input to be an equals
 sign (`=`) followed by an expression. See the [meta item
 syntax](#meta-item-attribute-syntax) below for more details.
 
-An attribute may be considered unsafe. Unsafe attributes must *satisfy* extra
-safety conditions that cannot be checked by the compiler, and are specified
-as the attribute wrapped in `unsafe(...)`, for instance, `#[unsafe(no_mangle)]`.
+An attribute may be unsafe to apply. To avoid undefined behavior when using
+these attributes, certain obligations that cannot be checked by the compiler
+must be met.  To assert these have been, the attribute is wrapped in
+`unsafe(..)`, e.g. `#[unsafe(no_mangle)]`.
 
 The following attributes are unsafe:
 
