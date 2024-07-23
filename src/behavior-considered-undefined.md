@@ -142,18 +142,18 @@ new reference is aligned, but it is not always necessary.
 ### Dangling pointers
 [dangling]: #dangling-pointers
 
-A reference/pointer is "dangling" if it is null or not all of the bytes it
+A reference/pointer is "dangling" if not all of the bytes it
 [points to] are part of the same live allocation (so in particular they all have to be
 part of *some* allocation).
 
-If the size is 0, then the pointer must either point inside of a live allocation
-(including pointing just after the last byte of the allocation), or it must be
-directly constructed from a non-zero integer literal.
+If the size is 0, then the pointer is trivially never "dangling"
+(even if it is a null pointer).
 
 Note that dynamically sized types (such as slices and strings) point to their
 entire range, so it is important that the length metadata is never too large. In
 particular, the dynamic size of a Rust value (as determined by `size_of_val`)
-must never exceed `isize::MAX`.
+must never exceed `isize::MAX`, since it is impossible for a single allocation
+to be larger than `isize::MAX`.
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
