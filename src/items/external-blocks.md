@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ExternBlock_ :\
-> &nbsp;&nbsp; `unsafe`[^unsafe-2024] `extern` [_Abi_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup>[^unsafe-2024] `extern` [_Abi_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -13,7 +13,7 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( (`safe` | `unsafe`)<sup>?</sup>[^static-qualifiers] [_StaticItem_] | [_Function_] ) )\
 > &nbsp;&nbsp; )
 >
-> [^unsafe-2024]: Prior to the 2024 edition, the `unsafe` keyword is optional.
+> [^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
 >
 > [^static-qualifiers]: *Relevant to editions earlier than Rust 2024*: The `safe` or `unsafe` qualifier is only allowed when the `extern` is qualified as `unsafe`.
 
