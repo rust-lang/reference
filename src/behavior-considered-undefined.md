@@ -59,33 +59,10 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
 * Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
-* Producing an invalid value, even in private fields and locals. "Producing" a
+* Producing an [invalid value][invalid-values]. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
   operation.
-  The following values are invalid (at their respective type):
-  * A value other than `false` (`0`) or `true` (`1`) in a [`bool`].
-  * A discriminant in an `enum` not included in the type definition.
-  * A null `fn` pointer.
-  * A value in a `char` which is a surrogate or above `char::MAX`.
-  * A `!` (all values are invalid for this type).
-  * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer obtained
-    from [uninitialized memory][undef], or uninitialized memory in a `str`.
-  * A reference or `Box<T>` that is [dangling], misaligned, or points to an invalid value
-    (in case of dynamically sized types, using the actual dynamic type of the
-    pointee as determined by the metadata).
-  * Invalid metadata in a wide reference, `Box<T>`, or raw pointer. The requirement
-    for the metadata is determined by the type of the unsized tail:
-    * `dyn Trait` metadata is invalid if it is not a pointer to a vtable for `Trait`.
-    * Slice (`[T]`) metadata is invalid if the length is not a valid `usize`
-      (i.e., it must not be read from uninitialized memory).
-      Furthermore, for wide references and `Box<T>`, slice metadata is invalid
-      if it makes the total size of the pointed-to value bigger than `isize::MAX`.
-  * Invalid values for a type with a custom definition of invalid values.
-    In the standard library, this affects [`NonNull<T>`] and [`NonZero*`].
-
-    > **Note**: `rustc` achieves this with the unstable
-    > `rustc_layout_scalar_valid_range_*` attributes.
 * Incorrect use of inline assembly. For more details, refer to the [rules] to
   follow when writing code that uses inline assembly.
 * **In [const context](const_eval.md#const-context)**: transmuting or otherwise
@@ -93,11 +70,6 @@ Please read the [Rustonomicon] before writing unsafe code.
   some allocated object as a non-pointer type (such as integers).
   'Reinterpreting' refers to loading the pointer value at integer type without a
   cast, e.g. by doing raw pointer casts or using a union.
-
-**Note:** Uninitialized memory is also implicitly invalid for any type that has
-a restricted set of valid values. In other words, the only cases in which
-reading uninitialized memory is permitted are inside `union`s and in "padding"
-(the gaps between the fields/elements of a type).
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
 > a function in C that exhibits undefined behavior of C means your entire
@@ -155,6 +127,49 @@ particular, the dynamic size of a Rust value (as determined by `size_of_val`)
 must never exceed `isize::MAX`, since it is impossible for a single allocation
 to be larger than `isize::MAX`.
 
+### Invalid values
+[invalid-values]: #invalid-values
+
+The Rust compiler assumes that all values produced during program execution are
+"valid", and producing an invalid value is hence immediate UB.
+
+Whether a value is valid depends on the type:
+* A [`bool`] value must be `false` (`0`) or `true` (`1`).
+* A `fn` pointer value must be non-null.
+* A `char` value must not be a surrogate (i.e., must not be in the range `0xD800..=0xDFFF`) and must be equal to or less than `char::MAX`.
+* A `!` value must never exist.
+* An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer must be
+  initialized, i.e., must not be obtained from [uninitialized memory][undef].
+* A `str` value is treated like `[u8]`, i.e. it must be initialized.
+* An `enum` must have a valid discriminant, and all fields of the variant indicated by that discriminant must be valid at their respective type.
+* A `struct`, tuple, and array requires all fields/elements to be valid at their respective type.
+* For a `union`, the exact validity requirements are not decided yet.
+  Obviously, all values that can be created entirely in safe code are valid.
+  If the union has a zero-sized field, then every possible value is valid.
+  Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
+* A reference or [`Box<T>`] must be aligned, it cannot be [dangling], and it must point to a valid value
+  (in case of dynamically sized types, using the actual dynamic type of the
+  pointee as determined by the metadata).
+  Note that the last point (about pointing to a valid value) remains a subject of some debate.
+* The metadata of a wide reference, [`Box<T>`], or raw pointer must match
+  the type of the unsized tail:
+  * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`.
+    (For raw pointers, this requirement remains a subject of some debate.)
+  * Slice (`[T]`) metadata must be a valid `usize`.
+    Furthermore, for wide references and [`Box<T>`], slice metadata is invalid
+    if it makes the total size of the pointed-to value bigger than `isize::MAX`.
+* If a type has a custom range of a valid values, then a valid value must be in that range.
+  In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
+
+  > **Note**: `rustc` achieves this with the unstable
+  > `rustc_layout_scalar_valid_range_*` attributes.
+
+**Note:** Uninitialized memory is also implicitly invalid for any type that has
+a restricted set of valid values. In other words, the only cases in which
+reading uninitialized memory is permitted are inside `union`s and in "padding"
+(the gaps between the fields of a type).
+
+
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
@@ -164,7 +179,8 @@ to be larger than `isize::MAX`.
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
 [Rustonomicon]: ../nomicon/index.html
 [`NonNull<T>`]: ../core/ptr/struct.NonNull.html
-[`NonZero*`]: ../core/num/index.html
+[`NonZero<T>`]: ../core/num/struct.NonZero.html
+[`Box<T>`]: ../alloc/boxed/struct.Box.html
 [place expression context]: expressions.md#place-expressions-and-value-expressions
 [rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
