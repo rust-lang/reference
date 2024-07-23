@@ -150,11 +150,11 @@ Whether a value is valid depends on the type:
 * A reference or [`Box<T>`] must be aligned, it cannot be [dangling], and it must point to a valid value
   (in case of dynamically sized types, using the actual dynamic type of the
   pointee as determined by the metadata).
-  Note that the last point (about pointing to a valid value) is still subject of debate.
+  Note that the last point (about pointing to a valid value) remains a subject of some debate.
 * The metadata of a wide reference, [`Box<T>`], or raw pointer must match
   the type of the unsized tail:
   * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`.
-    (For raw pointers, this requirement is still subject of debate.)
+    (For raw pointers, this requirement remains a subject of some debate.)
   * Slice (`[T]`) metadata must be a valid `usize`.
     Furthermore, for wide references and [`Box<T>`], slice metadata is invalid
     if it makes the total size of the pointed-to value bigger than `isize::MAX`.
