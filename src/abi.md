@@ -74,16 +74,23 @@ A type has *simd abi requirements* if:
 * It is a aggregate type, which has a type with *simd abi requirements* as a field.
 
 r[abi.compatibility.simd-target-feature]
-A type with *simd abi requirements* may have one or more *salient target features* . In the case of an aggregate type, the set of *salient target features* is the union of the set of *salient target features* of each field with *simd abi requirements*.
+A type with *simd abi requirements* may have one or more [*salient target features*][target_feature] . In the case of an aggregate type, the set of [*salient target features*][target_feature] is the union of the set of [*salient target features*][target_feature] of each field with *simd abi requirements*.
 
 > [!TARGET-SPECIFIC]
-> On x86 and x86-64, the *salient target features* of the `simd` types are:
+> On x86 and x86-64, the [*salient target features*][target_feature] of the `simd` types are:
 > * [`__m128`], [`__m128i`], [`__m128f`], and [`__m128d`]: `sse`
 > * [`__m256`], [`__m256i`], [`__m256f`], and [`__m256d`]: `avx`
 > * [`__m512`], [`__m512i`], [`__m512f`], and [`__m512d`]: `avx512f` and `avx512vl`
 
 r[abi.compatibility.call]
-A call to a function `f` via a function item or function pointer with a given signature `S` is valid only if the signature of `f` is *compatible* with the signature `S`, and, if the type of any parameter, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each *salient target feature* of that type is either set at both the definition site of the function, and at the call site, or is set at neither site. The behaviour a call that is not valid is undefined.
+A call to a function `f` via a function item or function pointer with a given signature `S` is valid only if the signature of `f` is *compatible* with the signature `S`, and:
+* The ABI tag of the function is `extern "Rust"`, or
+* If the type of any parameter, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature]of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
+
+The behaviour a call that is not valid is undefined.
+
+> [!NOTE]
+> the ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
 
 
 [`__m128`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128.html
@@ -100,7 +107,6 @@ A call to a function `f` via a function item or function pointer with a given si
 [`__m512d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512d.html
 
 ## The `used` attribute
-
 
 r[abi.used]
 
@@ -231,6 +237,8 @@ pub static VAR1: u32 = 1;
 > 
 > 
 
+
+
 [_MetaWord_]: attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md
@@ -240,3 +248,4 @@ pub static VAR1: u32 = 1;
 [function]: items/functions.md
 [item]: items.md
 [static]: items/static-items.md
+[target_feature]: attributes/codegen.md#the-target_feature-attribute
