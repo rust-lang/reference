@@ -25,8 +25,39 @@ Two [integer types] are *abi compatible* if they have the same size and the same
 > In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width. 
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
+```rust
+#[cfg(target_pointer_width="32")]
+fn foo(x: u32) -> u32{
+    x
+}
+#[cfg(target_pointer_width="64")]
+fn foo(x: u64) -> u64{
+    x
+}
+
+fn main(){
+    let f: fn(usize)->usize = unsafe{core::mem::transmute(foo as fn(_)->_)};
+    let x = 0usize;
+    let y = f(x);
+    assert_eq!(x,y);
+}
+```
+
 r[abi.compatibility.char]
 The type [`char`] is *abi compatible* with the type [`u32`][integer types]. 
+
+```rust
+fn foo(x: char) -> u32{
+    x as u32
+}
+
+fn main(){
+    let f: fn(u32)->char = unsafe{core::mem::transmute(foo as fn(_)->_)};
+    let x = b'A' as u32; // ascii character indecies are the same as Unicode character indecies
+    let y = f(x);
+    assert_eq!(y, 'A');
+}
+```
 
 r[abi.compatibility.pointer]
 Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type. 
@@ -37,11 +68,39 @@ Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metad
 > [!NOTE]
 > With transitivity, this applies regardless of the mutability of either pointer type
 
+```rust
+unsafe fn foo(x: *mut i32){
+   unsafe{x.write(5);} 
+}
+
+fn main(){
+    let f: unsafe fn(*mut ()) = unsafe{core::mem::transmute(foo as unsafe fn(_))}; // Type Erase the function
+    let mut val = 0;
+    let ptr = core::ptr::addr_of_mut!(val).cast::<()>(); // Get Opaque Userdata from somewhere
+    unsafe{f(ptr);}
+    assert_eq!(val, 5);
+}
+```
+
 r[abi.compatibility.reference-box]
 The types [`&T`], [`&mut T`], [`alloc::boxed::Box<T>`], and [`core::ptr::NonNull<T>`], are *abi compatible* with `*const T`
 
 > [!NOTE]
 > With transitivity, they are also *abi compatible* with each other, and with `*mut T`, as well as references/`Box` to different types that have the same *metadata type*.
+
+```rust
+fn foo(x: &mut i32){
+   *x = 5; 
+}
+
+fn main(){
+    let f: unsafe fn(*mut ()) = unsafe{core::mem::transmute(foo as fn(_))}; // Type Erase the function
+    let mut val = 0;
+    let ptr = core::ptr::addr_of_mut!(val).cast::<()>(); // Get Opaque Userdata from somewhere
+    unsafe{f(ptr);}
+    assert_eq!(val, 5);
+}
+```
 
 r[abi.compatibility.core]
 The types [`core::mem::MaybeUninit<T>`], [`core::cell::UnsafeCell<T>`], and [`core::num::NonZero<T>`], are *abi compatible* with `T`.
@@ -54,6 +113,7 @@ Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1
 
 r[abi.compatibility.option]
 If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable/core/option/index.html#representation), then given `S` is a type with size 0 and alignment 1, `T` is *abi compatible* with the types [`core::option::Option<T>`], [`core::result::Result<T,S>`], and [`core::result::Result<S,T>`].
+
 
 r[abi.compatibility.fn-ptr]
 An [`fn`-ptr type] `T` is compatible with an [`fn`-ptr type] `U` if `T` and `U` have *abi compatible* tags.
@@ -98,6 +158,9 @@ A call to a function `f` via a function item or function pointer with a given si
 The behaviour a call that is not valid is undefined.
 
 > [!NOTE]
+> When parameter/return types do not exactly match, they are converted as though by calling [`core::mem::transmute`]. The representation and validity requirements of the type in the definition/return site still apply, for example, passing `0` to a function pointer `fn(u32)` that points to a function declared as `fn foo(x: NonZeroU32)` is undefined behaviour.
+
+> [!NOTE]
 > the ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
 
 [^1]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
@@ -128,6 +191,11 @@ The *`used` attribute* may be specified as a built-in attribute, using the [_Met
 
 r[abi.used.restriction]
 The `used` attribute shall only be applied to a `static` item. It shall not be applied to a `static` item declared within an [`extern` block].
+
+```rust
+#[used]
+static FOO: u32 = 0;
+```
 
 r[abi.used.application]
 A `static` item with the `used` attribute is an *exported item*. 
@@ -189,8 +257,28 @@ MetaItemExportName := "export_name" "=" ([STRING_LITERAL] | [RAW_STRING_LITERAL]
 r[abi.symbol-name.names]
 The *`no_mangle` attribute* and the *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block]. 
 
+```rust
+#[no_mangle]
+extern "C" fn foo(x: i32) -> i32 {
+    x + 1
+}
+
+#[export_name = "bar"]
+extern "C" fn baz(x: i32) -> i32 {
+    x + 2
+}
+```
+
+```rust,compile_fail
+extern "C" {
+    #[export_name = "foo"]
+    fn __foo(x: i32) -> i32;
+}
+```
+
 > [!NOTE]
 > They may be applied to an associated `fn` of an `impl` block.
+
 
 r[abi.symbol-name.exported]
 An item with either the *`no_mangle` attrbute* or the *`export_name` attribute* is an *exported item*.
@@ -198,8 +286,51 @@ An item with either the *`no_mangle` attrbute* or the *`export_name` attribute* 
 r[abi.symbol-name.no_mangle]
 The *`no_mangle` attribute* may be specified as a built-in attribute, using the [_MetaWord_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the declaration name of the item.
 
+```rust
+extern "C" {
+    fn bar() -> i32;
+}
+mod inner{
+    #[no_mangle]
+    extern "C" fn bar() -> i32 {
+        0
+    }
+}
+
+fn main() {
+    let y = unsafe {bar()};
+    assert_eq!(y,0);
+}
+```
+
 r[abi.symbol-name.export_name]
 The *`export_name` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the content of `STRING_LITERAL`. 
+
+```rust
+extern "C" {
+    fn bar() -> i32;
+}
+mod inner{
+    #[export_name = "bar"]
+    extern "C" fn __some_other_item_name() -> i32 {
+        0
+    }
+}
+
+fn main(){
+    let y = unsafe {bar()};
+    assert_eq!(y,0);
+}
+```
+
+r[abi.symbol-name.safety]
+These attributes are unsafe as an unmangled symbol may collide with another symbol
+with the same name (or with a well-known symbol), leading to undefined behavior.
+
+```rust
+#[unsafe(no_mangle)]
+extern "C" fn foo() {}
+```
 
 ## The `link_section` attribute
 
@@ -212,8 +343,9 @@ MetaItemLinkSection := "link_section" "=" ([STRING_LITERAL] | [RAW_STRING_LITERA
 r[abi.link_section.syntax]
 The *`link_section` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. 
 
-r[abi.link_section.restriction]
-The *`link_section` attribute* shall be aplied to a `static` or `fn` item.
+r[abi.link_section.application]
+The *`link_section` attribute* shall be applied to a `static` or `fn` item.
+
 
 r[abi.link_section.def]
 An item with the *`link_section` attribute* is placed in the specified section when linking. The section specified shall not violate the constraints on section names on the target, and shall not be invalid for the item type, no diagnostic is required.
@@ -223,6 +355,9 @@ An item with the *`link_section` attribute* is placed in the specified section w
 > The required format and any restrictions on section names are target-specific.
 >
 > The result of using an invalid section name may be that the section is placed into the section but cannot be used as applicable, or that the section is given additional attributes that may be incompatible when linking.
+
+r[abi.link_section.safety]
+This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
 <!-- no_run: don't link. The format of the section name is platform-specific. -->
 ```rust,no_run
@@ -241,6 +376,7 @@ pub static VAR1: u32 = 1;
 > * `.tbss`: Readable and Writable - Uninitialized and Thread-local.
 > 
 > This is not an exhaustive list, and generally extended versions of these section names such as `.text.foo`, are also defined with the same properties as the base section.
+
 
 [_MetaWord_]: attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
