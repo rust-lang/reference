@@ -26,10 +26,13 @@ Two integer types are *abi compatible* if they have the same size and the same s
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
 r[abi.compatibility.char]
-The type `char`is *abi compatible* with the type `u32`. 
+The type `char` is *abi compatible* with the type `u32`. 
 
 r[abi.compatibility.pointer]
 Two pointer types, `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type. 
+
+> [!NOTE]
+> [`Sized`] types have a *metadata type* of `()`. 
 
 > [!NOTE]
 > With transitivity, this applies regardless of the mutability of either pointer type
@@ -38,14 +41,13 @@ r[abi.compatibility.reference-box]
 The types `&T`, `&mut T`, [`Box<T>`][core::boxed::Box], and [`NonNull<T>`][core::ptr::NonNull], are *abi compatible* with `*const T`
 
 > [!NOTE]
-> With transitivity,t hey are also *abi compatible** with each other, and with `*mut T`, as well as references/`Box` to different types that have the same *metadata type*.
-
+> With transitivity, they are also *abi compatible* with each other, and with `*mut T`, as well as references/`Box` to different types that have the same *metadata type*.
 
 r[abi.compatibility.core]
 The types [`MaybeUninit<T>`][core::mem::MaybeUninit], [`UnsafeCell<T>`][core::cell::UnsafeCell], and [`NonZero<T>`][core::num::NonZero], are *abi compatible* with `T`.
 
 r[abi.compatibility.transparent]
-A `struct` declared with the `transparent` representation is *abi compatible* with its field that does not have size 0 and alignment 1, if such a field exists
+A `struct` declared with the `transparent` representation is *abi compatible* with its field that does not have size 0 and alignment 1, if such a field exists.
 
 r[abi.compatibilty.zst]
 Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1.
@@ -68,30 +70,35 @@ Two function signatures are compatible if:
 * Each parameter of both signatures, in order, are *abi compatible*, and
 * Either both signatures have C-varargs, or neither signature does.
 
+> [!NOTE]
+> A signature is compatible with itself.
+
 r[abi.compatibility.simd-abi]
 A type has *simd abi requirements* if:
 * It is a type declared with the standard-library repr-attrbute `simd`,
 * It is a aggregate type, which has a type with *simd abi requirements* as a field.
+
+> [!NOTE]
+> The `repr(simd)` attribute cannot be used by Rust code, only by the standard library.
 
 r[abi.compatibility.simd-target-feature]
 A type with *simd abi requirements* may have one or more [*salient target features*][target_feature] . In the case of an aggregate type, the set of [*salient target features*][target_feature] is the union of the set of [*salient target features*][target_feature] of each field with *simd abi requirements*.
 
 > [!TARGET-SPECIFIC]
 > On x86 and x86-64, the [*salient target features*][target_feature] of the `simd` types are:
-> * [`__m128`], [`__m128i`], [`__m128f`], and [`__m128d`]: `sse`
-> * [`__m256`], [`__m256i`], [`__m256f`], and [`__m256d`]: `avx`
-> * [`__m512`], [`__m512i`], [`__m512f`], and [`__m512d`]: `avx512f` and `avx512vl`
+> * [`__m128`], [`__m128i`], [`__m128f`], and [`__m128d`] (128-bit vector types): `sse`
+> * [`__m256`], [`__m256i`], [`__m256f`], and [`__m256d`] (256-bit vector types): `avx`
+> * [`__m512`], [`__m512i`], [`__m512f`], and [`__m512d`] (512-bit vector types): `avx512f` and `avx512vl`
 
 r[abi.compatibility.call]
-A call to a function `f` via a function item or function pointer with a given signature `S` is valid only if the signature of `f` is *compatible* with the signature `S`, and:
-* The ABI tag of the function is `extern "Rust"`, or
-* If the type of any parameter, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature]of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
+A call to a function `f` via a function item or function pointer with a given signature `S` is valid if and only if the signature of the definition `f` is *compatible* with the signature `S`, and:
+* The ABI tag of the signature is `extern "Rust"`, or
+* If any parameter type, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature] of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
 
 The behaviour a call that is not valid is undefined.
 
 > [!NOTE]
 > the ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
-
 
 [`__m128`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128.html
 [`__m128i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128i.html
@@ -192,8 +199,6 @@ The *`no_mangle` attribute* may be specified as a built-in attribute, using the 
 r[abi.symbol-name.export_name]
 The *`export_name` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the content of `STRING_LITERAL`. 
 
-
-
 ## The `link_section` attribute
 
 r[abi.link_section]
@@ -234,10 +239,6 @@ pub static VAR1: u32 = 1;
 > * `.tbss`: Readable and Writable - Uninitialized and Thread-local.
 > 
 > This is not an exhaustive list, and generally extended versions of these section names such as `.text.foo`, are also defined with the same properties as the base section.
-> 
-> 
-
-
 
 [_MetaWord_]: attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
