@@ -19,53 +19,53 @@ Two types `T` and `U` are *abi compatible* if:
 > These properties ensure that *abi compatibility* is an equivalence relation.
 
 r[abi.compatibility.integer]
-Two integer types are *abi compatible* if they have the same size and the same signednes
+Two [integer types] are *abi compatible* if they have the same size and the same signednes
 
 > [!NOTE]
 > In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width. 
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
 r[abi.compatibility.char]
-The type `char` is *abi compatible* with the type `u32`. 
+The type [`char`] is *abi compatible* with the type [`u32`][integer types]. 
 
 r[abi.compatibility.pointer]
-Two pointer types, `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type. 
+Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type. 
 
 > [!NOTE]
-> [`Sized`] types have a *metadata type* of `()`. 
+> [`core::marker::Sized`] types have a *metadata type* of `()`. 
 
 > [!NOTE]
 > With transitivity, this applies regardless of the mutability of either pointer type
 
 r[abi.compatibility.reference-box]
-The types `&T`, `&mut T`, [`Box<T>`][core::boxed::Box], and [`NonNull<T>`][core::ptr::NonNull], are *abi compatible* with `*const T`
+The types [`&T`], [`&mut T`], [`alloc::boxed::Box<T>`], and [`core::ptr::NonNull<T>`], are *abi compatible* with `*const T`
 
 > [!NOTE]
 > With transitivity, they are also *abi compatible* with each other, and with `*mut T`, as well as references/`Box` to different types that have the same *metadata type*.
 
 r[abi.compatibility.core]
-The types [`MaybeUninit<T>`][core::mem::MaybeUninit], [`UnsafeCell<T>`][core::cell::UnsafeCell], and [`NonZero<T>`][core::num::NonZero], are *abi compatible* with `T`.
+The types [`core::mem::MaybeUninit<T>`], [`core::cell::UnsafeCell<T>`], and [`core::num::NonZero<T>`], are *abi compatible* with `T`.
 
 r[abi.compatibility.transparent]
-A `struct` declared with the `transparent` representation is *abi compatible* with its field that does not have size 0 and alignment 1, if such a field exists.
+A [`struct`] declared with the `transparent` representation is *abi compatible* with its field that does not have size 0 and alignment 1, if such a field exists.
 
 r[abi.compatibilty.zst]
 Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1.
 
 r[abi.compatibility.option]
-If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable/core/option/index.html#representation), then given `S` is a type with size 0 and alignment 1, `T` is *abi compatible* with the types [`Option<T>`], [`Result<T,S>`], and [`Result<S,T>`].
+If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable/core/option/index.html#representation), then given `S` is a type with size 0 and alignment 1, `T` is *abi compatible* with the types [`core::option::Option<T>`], [`core::result::Result<T,S>`], and [`core::result::Result<S,T>`].
 
 r[abi.compatibility.fn-ptr]
-An `fn`-ptr type `T` is compatible with an `fn`-ptr type `U` if `T` and `U` have *abi compatible* tags.
+An [`fn`-ptr type] `T` is compatible with an [`fn`-ptr type] `U` if `T` and `U` have *abi compatible* tags.
 
 r[abi.compatibility.extern-tag]
-Two [abi tags][abi] are *abi compatible* if:
+Two [abi tags][abi tag] are *abi compatible* if:
 * They are the same string, or
 * One tag is `"X"`, and the other is `"X-unwind"`
 
 r[abi.compatibility.signature]
 Two function signatures are compatible if:
-* The [abi tags][abi] of both signatures are *abi compatible*,
+* The [abi tags][abi tag] of both signatures are *abi compatible*,
 * They have the same number of parameters, excluding C-varargs,
 * Each parameter of both signatures, in order, are *abi compatible*, and
 * Either both signatures have C-varargs, or neither signature does.
@@ -76,7 +76,7 @@ Two function signatures are compatible if:
 r[abi.compatibility.simd-abi]
 A type has *simd abi requirements* if:
 * It is a type declared with the standard-library repr-attrbute `simd`,
-* It is a aggregate type, which has a type with *simd abi requirements* as a field.
+* It is a aggregate type[^1], which has a type with *simd abi requirements* as a field.
 
 > [!NOTE]
 > The `repr(simd)` attribute cannot be used by Rust code, only by the standard library.
@@ -99,6 +99,8 @@ The behaviour a call that is not valid is undefined.
 
 > [!NOTE]
 > the ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
+
+[^1]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
 
 [`__m128`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128.html
 [`__m128i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128i.html
@@ -246,8 +248,18 @@ pub static VAR1: u32 = 1;
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
 [`extern` block]: items/external-blocks.md
-[abi]: items/external-blocks.md#abi
+[abi tag]: items/external-blocks.md#abi
 [function]: items/functions.md
+[`fn`-ptr type]: types/function-pointer.md
+[integer types]: types/numeric.md#integer-types
+[`char`]: types/textual.md
+[pointer types]: types/pointer.md#raw-pointers-const-and-mut
+[`&T`]: types/pointer.md#shared-references-
+[`&mut T`]: types/pointer.md#mutable-references-mut
+[`struct`]: types/struct.md
+[`enum`]: types/enum.md
+[`union`]: types/union.md
+[array]: types/array.md
 [item]: items.md
 [static]: items/static-items.md
 [target_feature]: attributes/codegen.md#the-target_feature-attribute
