@@ -59,13 +59,13 @@ r[abi.compatibility.fn-ptr]
 An `fn`-ptr type `T` is compatible with an `fn`-ptr type `U` if `T` and `U` have *abi compatible* tags.
 
 r[abi.compatibility.extern-tag]
-Two abi tags are *abi compatible* if:
+Two [abi tags][abi] are *abi compatible* if:
 * They are the same string, or
 * One tag is `"X"`, and the other is `"X-unwind"`
 
 r[abi.compatibility.signature]
 Two function signatures are compatible if:
-* The abi tags of both signatures are *abi compatible*,
+* The [abi tags][abi] of both signatures are *abi compatible*,
 * They have the same number of parameters, excluding C-varargs,
 * Each parameter of both signatures, in order, are *abi compatible*, and
 * Either both signatures have C-varargs, or neither signature does.
@@ -246,6 +246,7 @@ pub static VAR1: u32 = 1;
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
 [`extern` block]: items/external-blocks.md
+[abi]: items/external-blocks.md#abi
 [function]: items/functions.md
 [item]: items.md
 [static]: items/static-items.md
