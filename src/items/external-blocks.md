@@ -27,7 +27,8 @@ The external block defines its functions and statics in the [value namespace] of
 
 **Edition differences**: Starting in the 2024 edition, the `unsafe` keyword is
 required to appear before the `extern` keyword on external blocks. In previous
-editions, it is accepted but not required.
+editions, it is accepted but not required. The `safe` and `unsafe` item qualifiers
+are only allowed if the external block itself is marked as `unsafe`.
 
 ## Functions
 
