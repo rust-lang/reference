@@ -22,7 +22,7 @@ r[abi.compatibility.integer]
 Two [integer types] are *abi compatible* if they have the same size and the same signednes
 
 > [!NOTE]
-> In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width. 
+> In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width.
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
 ```rust
@@ -44,7 +44,7 @@ fn main(){
 ```
 
 r[abi.compatibility.char]
-The type [`char`] is *abi compatible* with the type [`u32`][integer types]. 
+The type [`char`] is *abi compatible* with the type [`u32`][integer types].
 
 ```rust
 fn foo(x: char) -> u32{
@@ -60,17 +60,17 @@ fn main(){
 ```
 
 r[abi.compatibility.pointer]
-Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type. 
+Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metadata type*s of `T` and `U` are the same type.
 
 > [!NOTE]
-> [`core::marker::Sized`] types have a *metadata type* of `()`. 
+> [`core::marker::Sized`] types have a *metadata type* of `()`.
 
 > [!NOTE]
 > With transitivity, this applies regardless of the mutability of either pointer type
 
 ```rust
 unsafe fn foo(x: *mut i32){
-   unsafe{x.write(5);} 
+   unsafe{x.write(5);}
 }
 
 fn main(){
@@ -90,7 +90,7 @@ The types [`&T`], [`&mut T`], [`alloc::boxed::Box<T>`], and [`core::ptr::NonNull
 
 ```rust
 fn foo(x: &mut i32){
-   *x = 5; 
+   *x = 5;
 }
 
 fn main(){
@@ -198,12 +198,12 @@ static FOO: u32 = 0;
 ```
 
 r[abi.used.application]
-A `static` item with the `used` attribute is an *exported item*. 
+A `static` item with the `used` attribute is an *exported item*.
 
 > [!NOTE]
 > *exported items* will generally appear in the output when linking a library crate, and will generally be available when linking a binary crate as a global symbol.
 > The `used` attribute does not give the `static` item a *linkage name*, and thus does not disable name mangling. It may be used to place data into a given section that is referenced by the linker via the input section, without regard to the name of the symbol.
-> Due to toolchain limitations, it is not guaranteed that a `#[used]` static will appear in the final output when linking a binary, or when linking an rlib/staticlib crate into a `dylib` or `cdylib`. 
+> Due to toolchain limitations, it is not guaranteed that a `#[used]` static will appear in the final output when linking a binary, or when linking an rlib/staticlib crate into a `dylib` or `cdylib`.
 
 ``` rust
 // foo.rs
@@ -245,7 +245,7 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
-## Symbol naming 
+## Symbol naming
 
 r[abi.symbol-name]
 
@@ -255,7 +255,7 @@ MetaItemExportName := "export_name" "=" ([STRING_LITERAL] | [RAW_STRING_LITERAL]
 ```
 
 r[abi.symbol-name.names]
-The *`no_mangle` attribute* and the *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block]. 
+The *`no_mangle` attribute* and the *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block].
 
 ```rust
 #[no_mangle]
@@ -304,7 +304,7 @@ fn main() {
 ```
 
 r[abi.symbol-name.export_name]
-The *`export_name` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the content of `STRING_LITERAL`. 
+The *`export_name` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the content of `STRING_LITERAL`.
 
 ```rust
 extern "C" {
@@ -341,7 +341,7 @@ MetaItemLinkSection := "link_section" "=" ([STRING_LITERAL] | [RAW_STRING_LITERA
 ```
 
 r[abi.link_section.syntax]
-The *`link_section` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. 
+The *`link_section` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax.
 
 r[abi.link_section.application]
 The *`link_section` attribute* shall be applied to a `static` or `fn` item.
@@ -374,7 +374,7 @@ pub static VAR1: u32 = 1;
 > * `.bss`: Readable and Writable - Uninitialized data,
 > * `.tdata`: Readable and Writable - Thread-local,
 > * `.tbss`: Readable and Writable - Uninitialized and Thread-local.
-> 
+>
 > This is not an exhaustive list, and generally extended versions of these section names such as `.text.foo`, are also defined with the same properties as the base section.
 
 
