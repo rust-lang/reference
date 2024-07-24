@@ -347,7 +347,7 @@ fn documented() {
 > function items.
 
 The attributes that have meaning on a function are [`cfg`], [`cfg_attr`], [`deprecated`],
-[`doc`], [`export_name`], [`link_section`], [`no_mangle`], [the lint check
+[`doc`], [`export_name`][abi.symbol-name.export_name], [`link_section`][abi.link_section], [`no_mangle`][abi.symbol-name.no_mangle], [the lint check
 attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
