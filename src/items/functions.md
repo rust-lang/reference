@@ -8,7 +8,10 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
 >
 > _FunctionQualifiers_ :\
-> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> (`safe`[^extern-safe] | `unsafe`)<sup>?</sup>[^extern-qualifiers] (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> _ItemSafety_<sup>?</sup>[^extern-qualifiers] (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+>
+> _ItemSafety_ :\
+> &nbsp;&nbsp; `safe`[^extern-safe] | `unsafe`
 >
 > _Abi_ :\
 > &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
@@ -39,7 +42,7 @@
 >
 > [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 >
-> [^extern-safe]: The `safe` function qualifier is only allowed within
+> [^extern-safe]: The `safe` function qualifier is only allowed semantically within
 >   `extern` blocks.
 >
 > [^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within
@@ -64,6 +67,8 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
     return 42;
 }
 ```
+
+The `safe` function is semantically only allowed when used in an [`extern` block].
 
 ## Function parameters
 
@@ -424,3 +429,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
 [variadic function]: external-blocks.md#variadic-functions
+[`extern` block]: external-blocks.md

@@ -10,12 +10,10 @@
 > _ExternalItem_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( (`safe` | `unsafe`)<sup>?</sup>[^static-qualifiers] [_StaticItem_] | [_Function_] ) )\
+> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_StaticItem_] | [_Function_] ) )\
 > &nbsp;&nbsp; )
 >
 > [^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
->
-> [^static-qualifiers]: *Relevant to editions earlier than Rust 2024*: The `safe` or `unsafe` qualifier is only allowed when the `extern` is qualified as `unsafe`.
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
