@@ -2,14 +2,19 @@
 
 ## Terms used in the Specification
 
-### Ill-formed Program
+### Ill-formed program
 
-A Rust Program is ill-formed if it violates a statically set constraint placed on it by the language.
-Unless otherwise statement explicitly an implementation shall issue an appropriate diagnostic for an ill-formed program and shall not translate such a program.
+r[requirement.error]
 
-#### No Diagnostic Required
+A Rust program is ill-formed if it violates a static constraint of the language.
+Unless otherwise stated (See ["no diagnostic required"][requirement.ndr]), it is an error to have an ill-formed program.
 
-When No Diagnostic is Required for a static constraint, the implementation may issue a diagnostic for the violation, and may translate the program.
+#### No diagnostic required
+
+r[requirement.ndr]
+
+When No diagnostic is required for a static constraint, the implementation may (but is not required to) issue an compile-time error or other diagnostic, and may translate the program.
+
 If such a program is succesfully translated, no constraints are placed on the result of executing the program.
 
 > [!NOTE]
