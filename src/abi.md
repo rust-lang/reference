@@ -13,13 +13,13 @@ r[abi.compatibility.equivalence]
 Two types `T` and `U` are *abi compatible* if:
 * They are the same type,
 * `U` is *abi compatible* with `T`, or
-* There exists a type `V`, such that `T` is *abi compatible* with `V` an `V` is *abi compatuble* with `U`,
+* There exists a type `V`, such that `T` is *abi compatible* with `V` an `V` is *abi compatible* with `U`,
 
 > [!NOTE]
 > These properties ensure that *abi compatibility* is an equivalence relation.
 
 r[abi.compatibility.integer]
-Two [integer types] are *abi compatible* if they have the same size and the same signednes
+Two [integer types] are *abi compatible* if they have the same size and the same signedness
 
 > [!NOTE]
 > In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width.
