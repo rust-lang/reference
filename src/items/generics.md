@@ -44,6 +44,8 @@ See [generic parameter scopes] for more details.
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
+`'_` is not a valid lifetime parameter.
+
 ### Const generics
 
 *Const generic parameters* allow items to be generic over constant values. The

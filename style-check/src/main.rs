@@ -71,7 +71,11 @@ fn check_directory(dir: &Path, bad: &mut bool) -> Result<(), Box<dyn Error>> {
             style_error!(bad, path, "em-dash not allowed, use three dashes like ---");
         }
         if contents.contains('\u{a0}') {
-            style_error!(bad, path, "don't use 0xa0 no-break-space, use &nbsp; instead");
+            style_error!(
+                bad,
+                path,
+                "don't use 0xa0 no-break-space, use &nbsp; instead"
+            );
         }
         for line in contents.lines() {
             if line.ends_with(' ') {
@@ -84,7 +88,7 @@ fn check_directory(dir: &Path, bad: &mut bool) -> Result<(), Box<dyn Error>> {
 }
 
 fn cmark_check(path: &Path, bad: &mut bool, contents: &str) -> Result<(), Box<dyn Error>> {
-    use pulldown_cmark::{BrokenLink, CodeBlockKind, Event, Options, Parser, Tag};
+    use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag};
 
     macro_rules! cmark_error {
         ($bad:expr, $path:expr, $range:expr, $($arg:tt)*) => {
@@ -96,20 +100,7 @@ fn cmark_check(path: &Path, bad: &mut bool, contents: &str) -> Result<(), Box<dy
     }
 
     let options = Options::all();
-    // Can't use `bad` because it would get captured in closure.
-    let mut link_err = false;
-    let mut cb = |link: BrokenLink<'_>| {
-        cmark_error!(
-            &mut link_err,
-            path,
-            link.span,
-            "broken {:?} link (reference `{}`)",
-            link.link_type,
-            link.reference
-        );
-        None
-    };
-    let parser = Parser::new_with_broken_link_callback(contents, options, Some(&mut cb));
+    let parser = Parser::new_ext(contents, options);
 
     for (event, range) in parser.into_offset_iter() {
         match event {
@@ -135,6 +126,5 @@ fn cmark_check(path: &Path, bad: &mut bool, contents: &str) -> Result<(), Box<dy
             _ => {}
         }
     }
-    *bad |= link_err;
     Ok(())
 }

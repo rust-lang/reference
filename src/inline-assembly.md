@@ -1037,6 +1037,7 @@ The common subset of the LLVM and GNU AS Assembly Syntax used for the *expanded 
 - `.global`
 - `.globl`
 - `.inst`
+- `.insn`
 - `.lcomm`
 - `.long`
 - `.octa`
