@@ -3,15 +3,14 @@
 
 > **<sup>Syntax</sup>**\
 > _InnerAttribute_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `#` `!` `[` _Attr_ `]`\
-> &nbsp;&nbsp; | `#` `!` `[` `unsafe` `(` _Attr_ `)` `]`
+> &nbsp;&nbsp; `#` `!` `[` _Attr_ `]`
 >
 > _OuterAttribute_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `#` `[` _Attr_ `]`\
-> &nbsp;&nbsp; | `#` `[` `unsafe` `(` _Attr_ `)` `]`
+> &nbsp;&nbsp; `#` `[` _Attr_ `]`
 >
 > _Attr_ :\
-> &nbsp;&nbsp; [_SimplePath_] _AttrInput_<sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_] _AttrInput_<sup>?</sup>\
+> &nbsp;&nbsp; | `unsafe` `(` [_SimplePath_] _AttrInput_<sup>?</sup> `)`
 >
 > _AttrInput_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
