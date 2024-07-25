@@ -12,7 +12,6 @@ what we have for now.
 
 - Nightly Rust
 - [mdbook](https://rust-lang.github.io/mdBook/)
-- [`mdbook-spec`](https://github.com/rust-lang/spec/tree/main/mdbook-spec)
 
 ## Installing dependencies
 
@@ -28,12 +27,6 @@ build the Reference:
 
 ```sh
 cargo install --locked mdbook
-```
-
-Also install `mdbook-spec` which is a preprocessor which adds some Markdown extensions:
-
-```sh
-cargo install --locked mdbook-spec
 ```
 
 ## Building
@@ -78,5 +71,3 @@ You can also open any current build of the reference by running:
 ```sh
 mdbook serve --open
 ```
-
-
