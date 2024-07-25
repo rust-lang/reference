@@ -250,7 +250,7 @@ r[asm.invocation.prefix-instr]
 An *expanded asm-string* shall not end with an instruction that is interpreted as a prefix on the architecture. No diagnostic is required.
 
 > [!TARGET-SPECIFIC]
-> On x86 and x86-64, the `lock`, `repnz`, `rep`, `repz`, as well as GNU AS specific address-size, data-size, and explicit rex, vex, and evex prefixes.
+> On x86 and x86-64, prefix instructions include `lock`, `repnz`, `rep`, `repz`, as well as GNU AS specific address-size, data-size, and explicit rex, vex, and evex prefixes.
 
 
 ```rust,ignore
