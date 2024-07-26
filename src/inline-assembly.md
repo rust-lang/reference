@@ -229,8 +229,6 @@ core::arch::asm!("2: jmp 2b");
 # }}
 ```
 
-r[asm.invocation.global-order]
-The order in which each *global-asm-block* appears in the program is unspecified.
 
 r[asm.invocation.directive-state]
 The *expanded asm-string* shall not issue a directive that modifies the global state of the assembler for processing inputs unless it issues a directive to restore that state it had upon entering the block. No diagnostic is required.
@@ -238,12 +236,6 @@ The *expanded asm-string* shall not issue a directive that modifies the global s
 > [!NOTE]
 > This include state such as the current section of the assembler, the syntax mode, or the kind of assembly output being generated.
 > Failing to obey this requirement can have significant impact on code generation, including code unrelated to the asm block. For example, an asm block that issues a `.data` directive without resetting to the appropriate section for the function can cause the following code in the function to be generated in the `.data` section, and for execution to fall off the asm block into improper memory.
-
-r[asm.invocation.global-section]
-The *expanded asm-string* of *global-asm-block* invocation acts as though a `.section` directive is issued before the *expanded asm-string*  which causes code to be generated in the default section on the target for executable code.
-
-> [!NOTE]
-> This section is typically named `.text`.
 
 
 r[asm.invocation.prefix-instr]
@@ -792,7 +784,7 @@ A lint diagnostic should be emitted if a modifier is omitted, or a modifier is u
 r[asm.evaluation]
 
 r[asm.evaluation.general]
-Each evaluation of an *asm block* shall perform an operation that correpsonds to the result of a valid sequence of operations on the Minirust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of Minirust operations.
+Each evaluation of an *asm block* performs an operation that correpsonds to the result of a valid sequence of operations on the Rust Abstract Machine. The behaviour is undefined if the operations performed by the asm block do not validly correspond to a valid sequence of operations on the Abstract Machine.
 
 > [!NOTE]
 > The operation the asm block performs may differ between evaluations of the same asm block.
