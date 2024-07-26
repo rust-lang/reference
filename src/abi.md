@@ -2,12 +2,22 @@
 
 r[abi]
 
+This section documents features that affect the ABI of the compiled output of
+a crate.
+
+See *[extern functions]* for information on specifying the ABI for exporting
+functions. See *[`extern` block]s* for information on specifying the ABI for
+linking external libraries.
+
 ## ABI compatibility
 
 r[abi.compatibility]
 
 r[abi.compatibility.type]
 Two types, `T` and `U`, can be *abi compatible*.
+
+> [!NOTE]
+> *abi compatible* types can be used in place of each other in signatures when calling via [function pointer] at runtime (via pointer, or [`extern` block]). 
 
 r[abi.compatibility.equivalence]
 Two types `T` and `U` are *abi compatible* if:
@@ -116,7 +126,7 @@ If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable
 
 
 r[abi.compatibility.fn-ptr]
-An [`fn`-ptr type] `T` is *abi compatible* with an [`fn`-ptr type] `U` if `T` and `U` have *abi compatible* tags.
+An [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
 
 r[abi.compatibility.extern-tag]
 Two [abi tags][abi tag] are *abi compatible* if:
@@ -139,7 +149,13 @@ Two function signatures are compatible if:
 r[abi.compatibility.simd-abi]
 A type has *simd abi requirements* if:
 * It is a type declared with the standard-library repr-attribute `simd`, or
-* It is a aggregate type[^1], which has a type with *simd abi requirements* as a field.
+* It is a aggregate type[^aggregate], which has a type with *simd abi requirements* as a field.
+
+> [!NOTE]
+> Types with *simd abi requirements* may be passed using special registers that aren't always available to code.
+
+> [!NOTE]
+> Notably References and pointers to types with *simd abi requirements* do not have *simd abi requirements*. 
 
 > [!NOTE]
 > The `repr(simd)` attribute cannot be used by Rust code, only by the standard library.
@@ -166,7 +182,7 @@ The behavior of a call that is not valid is undefined.
 > [!NOTE]
 > The ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
 
-[^1]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
+[^aggregate]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
 
 [`__m128`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128.html
 [`__m128i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128i.html
@@ -349,16 +365,6 @@ The *`link_section` attribute* may be specified as a built-in attribute, using t
 r[abi.link_section.application]
 The *`link_section` attribute* shall be applied to a `static` or `fn` item.
 
-
-r[abi.link_section.def]
-An item with the *`link_section` attribute* is placed in the specified section when linking. The section specified shall not violate the constraints on section names on the target, and shall not be invalid for the item type, no diagnostic is required.
-
-> [!NOTE]
-> A section name may be invalid if it violates the requirements for the item type, for example, an `fn` item must be placed in an executable section, and a mutable static item (`static mut` or one containing an `UnsafeCell`) must be placed in a writable section.
-> The required format and any restrictions on section names are target-specific.
->
-> The result of using an invalid section name may be that the section is placed into the section but cannot be used as applicable, or that the section is given additional attributes that may be incompatible when linking.
-
 r[abi.link_section.safety]
 This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
@@ -369,18 +375,6 @@ This attribute is unsafe as it allows users to place data and code into sections
 pub static VAR1: u32 = 1;
 ```
 
-> [!TARGET-SPECIFIC]
-> On ELF Platforms, the standard section names, and their attributes are:
-> * `.text`: Readable and Executable,
-> * `.rodata`: Readable,
-> * `.data`: Readable and Writable,
-> * `.bss`: Readable and Writable - Uninitialized data,
-> * `.tdata`: Readable and Writable - Thread-local,
-> * `.tbss`: Readable and Writable - Uninitialized and Thread-local.
->
-> This is not an exhaustive list, and generally extended versions of these section names such as `.text.foo`, are also defined with the same properties as the base section.
-
-
 [_MetaWord_]: attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md
@@ -389,7 +383,7 @@ pub static VAR1: u32 = 1;
 [`extern` block]: items/external-blocks.md
 [abi tag]: items/external-blocks.md#abi
 [function]: items/functions.md
-[`fn`-ptr type]: types/function-pointer.md
+[function pointer]: types/function-pointer.md
 [integer types]: types/numeric.md#integer-types
 [`char`]: types/textual.md
 [pointer types]: types/pointer.md#raw-pointers-const-and-mut
