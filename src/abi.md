@@ -2,11 +2,11 @@
 
 r[abi]
 
-## ABI Compatibility
+## ABI compatibility
 
 r[abi.compatibility]
 
-r[abi.compatibilty.type]
+r[abi.compatibility.type]
 Two types, `T` and `U`, can be *abi compatible*.
 
 r[abi.compatibility.equivalence]
@@ -19,27 +19,27 @@ Two types `T` and `U` are *abi compatible* if:
 > These properties are respectively called "reflexivity", "symmetry", and "transitivity". They ensure that *abi compatibility* is an equivalence relation.
 
 r[abi.compatibility.integer]
-Two [integer types] are *abi compatible* if they have the same size and the same signedness
+Two [integer types] are *abi compatible* if they have the same size and the same signedness.
 
 > [!NOTE]
 > In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width.
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
 ```rust
-#[cfg(target_pointer_width="32")]
-fn foo(x: u32) -> u32{
+#[cfg(target_pointer_width = "32")]
+fn foo(x: u32) -> u32 {
     x
 }
-#[cfg(target_pointer_width="64")]
-fn foo(x: u64) -> u64{
+#[cfg(target_pointer_width = "64")]
+fn foo(x: u64) -> u64 {
     x
 }
 
-fn main(){
-    let f: fn(usize)->usize = unsafe{core::mem::transmute(foo as fn(_)->_)};
+fn main() {
+    let f: fn(usize) -> usize = unsafe { core::mem::transmute(foo as fn(_) -> _) };
     let x = 0usize;
     let y = f(x);
-    assert_eq!(x,y);
+    assert_eq!(x, y);
 }
 ```
 
@@ -53,7 +53,7 @@ fn foo(x: char) -> u32{
 
 fn main(){
     let f: fn(u32)->char = unsafe{core::mem::transmute(foo as fn(_)->_)};
-    let x = b'A' as u32; // ascii character indecies are the same as Unicode character indecies
+    let x = b'A' as u32; // ascii character indices are the same as Unicode character indices
     let y = f(x);
     assert_eq!(y, 'A');
 }
@@ -108,7 +108,7 @@ The types [`core::mem::MaybeUninit<T>`], [`core::cell::UnsafeCell<T>`], and [`co
 r[abi.compatibility.transparent]
 A [`struct`] declared with the `transparent` representation is *abi compatible* with its field that does not have size 0 and alignment 1, if such a field exists.
 
-r[abi.compatibilty.zst]
+r[abi.compatibility.zst]
 Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1.
 
 r[abi.compatibility.option]
@@ -138,7 +138,7 @@ Two function signatures are compatible if:
 
 r[abi.compatibility.simd-abi]
 A type has *simd abi requirements* if:
-* It is a type declared with the standard-library repr-attrbute `simd`,
+* It is a type declared with the standard-library repr-attribute `simd`, or
 * It is a aggregate type[^1], which has a type with *simd abi requirements* as a field.
 
 > [!NOTE]
@@ -158,13 +158,13 @@ A call to a function `f` via a function item or function pointer with a given si
 * The ABI tag of the signature is `extern "Rust"`, or
 * If any parameter type, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature] of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
 
-The behaviour a call that is not valid is undefined.
+The behavior of a call that is not valid is undefined.
 
 > [!NOTE]
-> When parameter/return types do not exactly match, they are converted as though by calling [`core::mem::transmute`]. The representation and validity requirements of the type in the definition/return site still apply, for example, passing `0` to a function pointer `fn(u32)` that points to a function declared as `fn foo(x: NonZeroU32)` is undefined behaviour.
+> When parameter or return types do not exactly match, they are converted as though by calling [`core::mem::transmute`]. The representation and validity requirements of the type in the definition or return site still apply. For example, passing `0` to a function pointer `fn(u32)` that points to a function declared as `fn foo(x: NonZeroU32)` is undefined behavior.
 
 > [!NOTE]
-> the ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
+> The ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
 
 [^1]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
 
@@ -185,9 +185,9 @@ The behaviour a call that is not valid is undefined.
 
 r[abi.used]
 
-```abnf
-MetaItemUsed := "used"
-```
+> **<sup>Attribute Syntax</sup>**\
+> _MetaItemUsed_ :\
+> &nbsp;&nbsp; `used`
 
 r[abi.used.syntax]
 The *`used` attribute* may be specified as a built-in attribute, using the [_MetaWord_] syntax.
@@ -275,7 +275,7 @@ extern "C" fn baz(x: i32) -> i32 {
 ```rust,compile_fail
 extern "C" {
     #[export_name = "foo"]
-    fn __foo(x: i32) -> i32;
+    fn __foo(x: i32) -> i32;  // error: not a free function, impl method, or static
 }
 ```
 
@@ -284,7 +284,7 @@ extern "C" {
 
 
 r[abi.symbol-name.exported]
-An item with either the *`no_mangle` attrbute* or the *`export_name` attribute* is an *exported item*.
+An item with either the *`no_mangle` attribute* or the *`export_name` attribute* is an *exported item*.
 
 r[abi.symbol-name.no_mangle]
 The *`no_mangle` attribute* may be specified as a built-in attribute, using the [_MetaWord_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the declaration name of the item.
