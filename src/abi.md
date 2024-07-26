@@ -16,7 +16,7 @@ Two types `T` and `U` are *abi compatible* if:
 * There exists a type `V`, such that `T` is *abi compatible* with `V` an `V` is *abi compatible* with `U`,
 
 > [!NOTE]
-> These properties ensure that *abi compatibility* is an equivalence relation.
+> These properties are respectively called "reflexivity", "symmetry", and "transitivity". They ensure that *abi compatibility* is an equivalence relation.
 
 r[abi.compatibility.integer]
 Two [integer types] are *abi compatible* if they have the same size and the same signedness
@@ -69,13 +69,13 @@ Two [pointer types], `*mut T` and `*const U`, are *abi compatible* if the *metad
 > With transitivity, this applies regardless of the mutability of either pointer type
 
 ```rust
-unsafe fn foo(x: *mut i32){
+unsafe fn foo(x: *mut u32){
    unsafe{x.write(5);}
 }
 
 fn main(){
     let f: unsafe fn(*mut ()) = unsafe{core::mem::transmute(foo as unsafe fn(_))}; // Type Erase the function
-    let mut val = 0;
+    let mut val: u32 = 0;
     let ptr = core::ptr::addr_of_mut!(val).cast::<()>(); // Get Opaque Userdata from somewhere
     unsafe{f(ptr);}
     assert_eq!(val, 5);
@@ -116,12 +116,15 @@ If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable
 
 
 r[abi.compatibility.fn-ptr]
-An [`fn`-ptr type] `T` is compatible with an [`fn`-ptr type] `U` if `T` and `U` have *abi compatible* tags.
+An [`fn`-ptr type] `T` is *abi compatible* with an [`fn`-ptr type] `U` if `T` and `U` have *abi compatible* tags.
 
 r[abi.compatibility.extern-tag]
 Two [abi tags][abi tag] are *abi compatible* if:
 * They are the same string, or
 * One tag is `"X"`, and the other is `"X-unwind"`
+
+> [!NOTE]
+> e.g. `extern "C"` and `extern "C-unwind"` are compatible with each other.
 
 r[abi.compatibility.signature]
 Two function signatures are compatible if:
