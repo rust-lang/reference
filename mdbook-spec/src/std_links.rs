@@ -12,7 +12,7 @@ use tempfile::TempDir;
 /// the standard library using rustdoc's intra-doc notation.
 const STD_LINK: &str = r"(?: [a-z]+@ )?
                          (?: std|core|alloc|proc_macro|test )
-                         (?: ::[A-Za-z0-9_!:<>{}()\[\]]+ )?";
+                         (?: ::[A-Za-z0-9_!,:<>{}()\[\]]+ )?";
 
 /// The Regex for a markdown link that might be a link to the standard library.
 static STD_LINK_RE: Lazy<Regex> = Lazy::new(|| {
