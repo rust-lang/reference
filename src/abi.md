@@ -201,6 +201,8 @@ The behavior of a call that is not valid is undefined.
 
 r[abi.used]
 
+The `#[used]` attribute allows indicating that a `static` item should be considered to be used by the program from outside of Rust and not discarded by the compiler.
+
 > **<sup>Attribute Syntax</sup>**\
 > _MetaItemUsed_ :\
 > &nbsp;&nbsp; `used`
@@ -268,13 +270,17 @@ $ nm -C foo.o
 
 r[abi.symbol-name]
 
-```abnf
-MetaItemNoMangle := "no_mangle"
-MetaItemExportName := "export_name" "=" ([STRING_LITERAL] | [RAW_STRING_LITERAL])
-```
+
+The `no_mangle` and `export_name` attributes allow you to control which symbols are exported from rust code under provided symbol names. 
+
+> **<sup>Attribute Syntax</sup>**\
+> _MetaItemNoMangle_ :\
+> &nbsp;&nbsp; `no_mangle`
+> _MetaItemExportName_ :\
+> &nbsp;&nbsp; `export_name` `=` (_STRING_LITERAL | _RAW_STRING_LITERAL_)
 
 r[abi.symbol-name.names]
-The *`no_mangle` attribute* and the *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block].
+The *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block].
 
 ```rust
 #[no_mangle]
@@ -355,9 +361,11 @@ extern "C" fn foo() {}
 
 r[abi.link_section]
 
-```abnf
-MetaItemLinkSection := "link_section" "=" ([STRING_LITERAL] | [RAW_STRING_LITERAL])
-```
+The `link_section` attribute allows a program to control the section that certain items are placed into. 
+
+> **<sup>Attribute Syntax</sup>**\
+> _MetaItemLinkSection_ :\
+> &nbsp;&nbsp; `link_section` `=` (_STRING_LITERAL_ | _RAW_STRING_LITERAL_)
 
 r[abi.link_section.syntax]
 The *`link_section` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax.
