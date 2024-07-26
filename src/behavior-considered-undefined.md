@@ -63,8 +63,7 @@ Please read the [Rustonomicon] before writing unsafe code.
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
   operation.
-* Incorrect use of inline assembly. For more details, refer to the [rules] to
-  follow when writing code that uses inline assembly.
+* Incorrect use of inline assembly. For more details, refer to [asm.evaluation] for the requirements that an inline assembly block must uphold
 * **In [const context](const_eval.md#const-context)**: transmuting or otherwise
   reinterpreting a pointer (reference, raw pointer, or function pointer) into
   some allocated object as a non-pointer type (such as integers).
@@ -182,7 +181,6 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [`NonZero<T>`]: ../core/num/struct.NonZero.html
 [`Box<T>`]: ../alloc/boxed/struct.Box.html
 [place expression context]: expressions.md#place-expressions-and-value-expressions
-[rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
 [pointed to]: #pointed-to-bytes
 [offset]: ../std/primitive.pointer.html#method.offset
