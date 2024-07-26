@@ -83,7 +83,7 @@ enum Enum {
 
 Variant constructors are similar to [struct] definitions, and can be referenced by a path from the enumeration name, including in [use declarations].
 Each variant defines its type in the [type namespace], though that type cannot be used as a type specifier.
-Each variant also defines a constructor in the [value namespace].
+Tuple-like and unit-like variants also define a constructor in the [value namespace].
 
 A struct-like variant can be instantiated with a [struct expression].
 A tuple-like variant can be instantiated with a [call expression] or a [struct expression].
