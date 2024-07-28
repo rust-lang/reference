@@ -106,7 +106,8 @@ is possible to declare a variable or method with the name `union`.
   fn invalid_lifetime_parameter<'static>(s: &'static str) -> &'static str { s }
   ```
 * In the 2015 edition, [`dyn`] is a keyword when used in a type position
-  followed by a path that does not start with `::`.
+  followed by a path that does not start with `::` or `<`, a lifetime, a question mark, a `for`
+  keyword or an opening parenthesis.
 
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 

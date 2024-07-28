@@ -35,6 +35,10 @@ a!{}
 
 ## The `type_length_limit` attribute
 
+> **Note**: This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
+>
+> For more information, see <https://github.com/rust-lang/rust/pull/127670>.
+
 The *`type_length_limit` attribute* limits the maximum number of type
 substitutions made when constructing a concrete type during monomorphization.
 It is applied at the [crate] level, and uses the [_MetaNameValueStr_] syntax
@@ -42,7 +46,7 @@ to set the limit based on the number of type substitutions.
 
 > Note: The default in `rustc` is 1048576.
 
-```rust,compile_fail
+```rust,ignore
 #![type_length_limit = "4"]
 
 fn f<T>(x: T) {}

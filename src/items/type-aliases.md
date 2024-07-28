@@ -31,7 +31,7 @@ let _ = UseAlias(5); // OK
 let _ = TypeAlias(5); // Doesn't work
 ```
 
-A type alias, when not used as an associated type, must include a [_Type_] and
+A type alias, when not used as an [associated type], must include a [_Type_] and
 may not include [_TypeParamBounds_].
 
 A type alias, when used as an [associated type] in a [trait], must not include a

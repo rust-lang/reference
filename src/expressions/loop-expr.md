@@ -209,6 +209,8 @@ Labels follow the hygiene and shadowing rules of local variables. For example, t
 }
 ```
 
+`'_` is not a valid loop label.
+
 ## `break` expressions
 
 > **<sup>Syntax</sup>**\

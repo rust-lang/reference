@@ -22,42 +22,29 @@
 > _ConfigurationPredicateList_\
 > &nbsp;&nbsp; _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup>
 
-*Conditionally compiled source code* is source code that may or may not be
-considered a part of the source code depending on certain conditions. <!-- This
-definition is sort of vacuous --> Source code can be conditionally compiled
-using the [attributes] [`cfg`] and [`cfg_attr`] and the built-in [`cfg` macro].
-These conditions are based on the target architecture of the compiled crate,
-arbitrary values passed to the compiler, and a few other miscellaneous things
-further described below in detail.
+*Conditionally compiled source code* is source code that is compiled only under certain conditions. Source code can be made conditionally compiled using the [`cfg`] and [`cfg_attr`] [attributes] and the built-in [`cfg` macro]. Whether to compile can depend on the target architecture of the compiled crate, arbitrary values passed to the compiler, and other things further described below.
 
 Each form of conditional compilation takes a _configuration predicate_ that
 evaluates to true or false. The predicate is one of the following:
 
-* A configuration option. It is true if the option is set and false if it is
-  unset.
-* `all()` with a comma separated list of configuration predicates. It is false
-  if at least one predicate is false. If there are no predicates, it is true.
-* `any()` with a comma separated list of configuration predicates. It is true
-  if at least one predicate is true. If there are no predicates, it is false.
-* `not()` with a configuration predicate. It is true if its predicate is false
-  and false if its predicate is true.
+* A configuration option. The predicate is true if the option is set, and false if it is unset.
+* `all()` with a comma-separated list of configuration predicates. It is true if all of the given predicates are true, or if the list is empty.
+* `any()` with a comma-separated list of configuration predicates. It is true if at least one of the given predicates is true. If there are no predicates, it is false.
+* `not()` with a configuration predicate. It is true if its predicate is false and false if its predicate is true.
 
-_Configuration options_ are names and key-value pairs that are either set or
-unset. Names are written as a single identifier such as, for example, `unix`.
-Key-value pairs are written as an identifier, `=`, and then a string. For
-example, `target_arch = "x86_64"` is a configuration option.
+_Configuration options_ are either names or key-value pairs, and are either set or unset.
+Names are written as a single identifier, such as `unix`.
+Key-value pairs are written as an identifier, `=`, and then a string, such as `target_arch = "x86_64"`.
 
-> **Note**: Whitespace around the `=` is ignored. `foo="bar"` and `foo = "bar"`
-> are equivalent configuration options.
+> **Note**: Whitespace around the `=` is ignored, so `foo="bar"` and `foo = "bar"` are equivalent.
 
-Keys are not unique in the set of key-value configuration options. For example,
-both `feature = "std"` and `feature = "serde"` can be set at the same time.
+Keys do not need to be unique. For example, both `feature = "std"` and `feature = "serde"` can be set at the same time.
 
 ## Set Configuration Options
 
 Which configuration options are set is determined statically during the
-compilation of the crate. Certain options are _compiler-set_ based on data
-about the compilation. Other options are _arbitrarily-set_, set based on input
+compilation of the crate. Some options are _compiler-set_ based on data
+about the compilation. Other options are _arbitrarily-set_ based on input
 passed to the compiler outside of the code. It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
@@ -70,11 +57,7 @@ configuration option from within the source code of the crate being compiled.
 
 <div class="warning">
 
-Warning: It is possible for arbitrarily-set configuration options to have the
-same value as compiler-set configuration options. For example, it is possible
-to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and
-have both `unix` and `windows` configuration options set at the same time. It
-is unwise to actually do this.
+Warning: Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
 
 </div>
 
