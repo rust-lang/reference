@@ -188,10 +188,9 @@ Unwinding with the wrong [ABI][abi] is undefined behavior:
   unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
 
 Catching an unwinding operation in a different runtime than the one in which it
-initiated is also undefined behavior:
-
-* Catching a Rust `panic` in non Rust code (for instance `catch (...)` in C++).
-* Catching a non-Rust unwind (such as a C++ exception) in Rust (that is, with `catch_unwind`).
+initiated is also undefined behavior. For example, catching a Rust `panic` in
+non Rust code (for instance `catch (...)` in C++), or in Rust code compiled or
+linked with a different runtime, is undefined bheavior.
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
