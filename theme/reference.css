@@ -170,23 +170,6 @@ dfn {
     margin-top: 0px;
 }
 
-/* Change the default styling of blockquotes. */
-blockquote {
-    padding: 1ex 1em;
-    margin: 1ex;
-    margin-left: 2em;
-    /* vw units allow this to be adaptive to the screen size so it isn't too small on mobile. */
-    margin-right: 12vw;
-}
-
-/* mdbook will wrap the blockquote content in a <p> tag, with a margin. However,
-   that adds too much space, so remove it.
-*/
-blockquote > p {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
 /* When the sidebar is visible, reduce the spacing of rules so that the
    content doesn't get shifted too far, and make the text too narrow.
 */
