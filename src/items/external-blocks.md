@@ -97,6 +97,8 @@ There are also some platform-specific ABI strings:
 * `extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 * `extern "efiapi"` -- The ABI used for [UEFI] functions.
+* `extern "C-cmse-nonsecure-call"` -- The ABI used for calling nonsecure ARM TrustZone functions -- corresponds to
+    GCC and Clang's `__attribute__((cmse_nonsecure_call))`
 
 ## Variadic functions
 
