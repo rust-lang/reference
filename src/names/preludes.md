@@ -26,6 +26,7 @@ Edition | `no_std` not applied        | `no_std` applied
 2015    | [`std::prelude::rust_2015`] | [`core::prelude::rust_2015`]
 2018    | [`std::prelude::rust_2018`] | [`core::prelude::rust_2018`]
 2021    | [`std::prelude::rust_2021`] | [`core::prelude::rust_2021`]
+2024    | [`std::prelude::rust_2024`] | [`core::prelude::rust_2024`]
 
 
 > **Note**:
@@ -143,6 +144,7 @@ This attribute does not affect the [language prelude].
 [`core::prelude::rust_2015`]: ../../core/prelude/rust_2015/index.html
 [`core::prelude::rust_2018`]: ../../core/prelude/rust_2018/index.html
 [`core::prelude::rust_2021`]: ../../core/prelude/rust_2021/index.html
+[`core::prelude::rust_2024`]: ../../core/prelude/rust_2024/index.html
 [`core`]: ../../core/index.html
 [`extern crate`]: ../items/extern-crates.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
@@ -153,6 +155,7 @@ This attribute does not affect the [language prelude].
 [`std::prelude::rust_2015`]: ../../std/prelude/rust_2015/index.html
 [`std::prelude::rust_2018`]: ../../std/prelude/rust_2018/index.html
 [`std::prelude::rust_2021`]: ../../std/prelude/rust_2021/index.html
+[`std::prelude::rust_2024`]: ../../std/prelude/rust_2024/index.html
 [`std`]: ../../std/index.html
 [`test`]: ../../test/index.html
 [attribute]: ../attributes.md
