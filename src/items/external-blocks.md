@@ -21,6 +21,8 @@ Two kinds of item _declarations_ are allowed in external blocks: [functions] and
 [statics]. Calling functions or accessing statics that are declared in external
 blocks is only allowed in an `unsafe` context.
 
+The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
+
 The `unsafe` keyword is syntactically allowed to appear before the `extern`
 keyword, but it is rejected at a semantic level. This allows macros to consume
 the syntax and make use of the `unsafe` keyword, before removing it from the
@@ -342,3 +344,4 @@ restrictions as [regular function parameters].
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
 [PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
+[value namespace]: ../names/namespaces.md
