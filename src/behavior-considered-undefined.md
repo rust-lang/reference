@@ -49,10 +49,11 @@ Please read the [Rustonomicon] before writing unsafe code.
   All this also applies when values of these
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
-* Mutating immutable bytes. All bytes inside a [`const`] item are immutable.
+* Mutating immutable bytes. All bytes inside a [`const`] item are immutable, including implicitly [const-promoted] expressions.
   The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
-  Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
+  Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable;
+  transitivity includes those references stored in fields of compound types.
 
   A mutation is any write of more than 0 bytes which overlaps with any of the relevant bytes (even if that write does not change the memory contents).
 * Invoking undefined behavior via compiler intrinsics.
@@ -189,3 +190,4 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [project-field]: expressions/field-expr.md
 [project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
 [project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
+[const-promoted]: destructors.md#constant-promotion
