@@ -58,7 +58,11 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
-* Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
+* Calling a function with the wrong [call ABI][abi].
+* Unwinding, or catching an unwind, [inappropriately][unwinding].
+* Deallocating a Rust stack frame without executing destructors
+  for local variables owned by the stack frame. This can occur
+  with C functions like `longjmp`.
 * Producing an [invalid value][invalid-values]. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
@@ -170,10 +174,29 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 (the gaps between the fields of a type).
 
 
+### Unwinding inappropriately
+[unwinding]: #unwinding-inappropriately
+
+Unwinding with the wrong [ABI][abi] is undefined behavior:
+
+* Causing an unwind into Rust code from a foreign function that was called via a
+  function declaration or pointer declared with a non-unwinding ABI, such as `"C"`,
+  `"system"`, etc. (For example, this case occurs when such a function written in
+  C++ throws an exception that is uncaught and propagates to Rust.)
+* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
+  another ABI that permits unwinding) from a runtime that does not support.
+  unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
+
+Catching an unwinding operation in a different runtime than the one in which it
+initiated is also undefined behavior. For example, catching a Rust `panic` in
+non Rust code (for instance `catch (...)` in C++), or in Rust code compiled or
+linked with a different runtime, is undefined bheavior.
+
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
+[abi]: abi.md
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
