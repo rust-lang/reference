@@ -187,10 +187,24 @@ Unwinding with the wrong [ABI][abi] is undefined behavior:
   another ABI that permits unwinding) from a runtime that does not support.
   unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
 
-Catching an unwinding operation in a different runtime than the one in which it
-initiated is also undefined behavior. For example, catching a Rust `panic` in
-non Rust code (for instance `catch (...)` in C++), or in Rust code compiled or
-linked with a different runtime, is undefined bheavior.
+Catching a foreign unwinding operation (such as a C++ exception) using
+`catch_unwind`, `JoinHandle::join`, or by letting it propagate all the way to a
+Rust `main()` function will have one of two behaviors, and it is unspecified
+which will occur:
+* The process aborts.
+* The function returns a `Result::Err` containing an opaque type.
+
+Note that Rust code compiled or linked with a different runtime counts as a
+"foreign exception" for the purpose of this guarantee. Thus, a library that
+uses `panic!` and is linked against one version of the Rust standard library,
+invoked from an application that uses a different version of the standard
+library, may cause the entire application to crash even if the library is only
+used within a child thread.
+
+There are currently no guarantees about the behavior that occurs when a foreign
+runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other
+words, an unwind originated from a Rust runtime must either lead to termination
+of the process or be caught by the same runtime.
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
