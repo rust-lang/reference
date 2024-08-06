@@ -1,6 +1,10 @@
 {{#include attributes-redirect.html}}
 # Attributes
 
+r[attributes]
+
+
+r[attributes.syntax]
 > **<sup>Syntax</sup>**\
 > _InnerAttribute_ :\
 > &nbsp;&nbsp; `#` `!` `[` _Attr_ `]`
@@ -16,20 +20,24 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
 > &nbsp;&nbsp; | `=` [_Expression_]
 
+r[attributes.general]
 An _attribute_ is a general, free-form metadatum that is interpreted according
 to name, convention, language, and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
+r[attributes.inner]
 _Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the
 item that the attribute is declared within. _Outer attributes_, written without
 the bang after the hash, apply to the thing that follows the attribute.
 
+r[attributes.input]
 The attribute consists of a path to the attribute, followed by an optional
 delimited token tree whose interpretation is defined by the attribute.
 Attributes other than macro attributes also allow the input to be an equals
 sign (`=`) followed by an expression. See the [meta item
 syntax](#meta-item-attribute-syntax) below for more details.
 
+r[attributes.safety]
 An attribute may be unsafe to apply. To avoid undefined behavior when using
 these attributes, certain obligations that cannot be checked by the compiler
 must be met.  To assert these have been, the attribute is wrapped in
@@ -41,15 +49,15 @@ The following attributes are unsafe:
 * [`link_section`]
 * [`no_mangle`]
 
+r[attributes.kind]
 Attributes can be classified into the following kinds:
-
 * [Built-in attributes]
 * [Macro attributes][attribute macros]
 * [Derive macro helper attributes]
 * [Tool attributes](#tool-attributes)
 
+r[attributes.application]
 Attributes may be applied to many things in the language:
-
 * All [item declarations] accept outer attributes while [external blocks],
   [functions], [implementations], and [modules] accept inner attributes.
 * Most [statements] accept outer attributes (see [Expression Attributes] for
@@ -100,9 +108,14 @@ fn some_unused_variables() {
 
 ## Meta Item Attribute Syntax
 
+r[attributes.meta]
+
+
+r[attributes.meta.general]
 A "meta item" is the syntax used for the _Attr_ rule by most [built-in
 attributes]. It has the following grammar:
 
+r[attributes.meta.syntax]
 > **<sup>Syntax</sup>**\
 > _MetaItem_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_]\
@@ -116,10 +129,12 @@ attributes]. It has the following grammar:
 > &nbsp;&nbsp; &nbsp;&nbsp; _MetaItem_\
 > &nbsp;&nbsp; | [_Expression_]
 
+r[attributes.meta.literal-expr]
 Expressions in meta items must macro-expand to literal expressions, which must not
 include integer or float type suffixes. Expressions which are not literal expressions
 will be syntactically accepted (and can be passed to proc-macros), but will be rejected after parsing.
 
+r[attributes.meta.order]
 Note that if the attribute appears within another macro, it will be expanded
 after that outer macro. For example, the following code will expand the
 `Serialize` proc-macro first, which must preserve the `include_str!` call in
@@ -133,6 +148,7 @@ struct Foo {
 }
 ```
 
+r[attributes.meta.order-macro]
 Additionally, macros in attributes will be expanded only after all other attributes applied to the item:
 
 ```rust ignore
@@ -143,6 +159,7 @@ Additionally, macros in attributes will be expanded only after all other attribu
 fn foo() {}
 ```
 
+r[attributes.meta.builtin]
 Various built-in attributes use different subsets of the meta item syntax to
 specify their inputs. The following grammar rules show some commonly used
 forms:
@@ -175,6 +192,9 @@ _MetaListNameValueStr_ | `link(name = "CoreFoundation", kind = "framework")`
 
 ## Active and inert attributes
 
+r[attributes.activity]
+
+r[attributes.activity.general]
 An attribute is either active or inert. During attribute processing, *active
 attributes* remove themselves from the thing they are on while *inert attributes*
 stay on.
@@ -185,15 +205,20 @@ active. All other attributes are inert.
 
 ## Tool attributes
 
+r[attributes.tool]
+
+r[attributes.tool.general]
 The compiler may allow attributes for external tools where each tool resides
 in its own module in the [tool prelude]. The first segment of the attribute
 path is the name of the tool, with one or more additional segments whose
 interpretation is up to the tool.
 
+r[attributes.tool.ignored]
 When a tool is not in use, the tool's attributes are accepted without a
 warning. When the tool is in use, the tool is responsible for processing and
 interpretation of its attributes.
 
+r[attributes.tool.prelude]
 Tool attributes are not available if the [`no_implicit_prelude`] attribute is
 used.
 
@@ -213,19 +238,28 @@ pub fn f() {}
 
 ## Built-in attributes index
 
+r[attributes.builtin]
+
 The following is an index of all built-in attributes.
 
+r[attributes.builtin.cfg]
 - Conditional compilation
   - [`cfg`] --- Controls conditional compilation.
   - [`cfg_attr`] --- Conditionally includes attributes.
+
+r[attributes.builtin.testing]
 - Testing
   - [`test`] --- Marks a function as a test.
   - [`ignore`] --- Disables a test function.
   - [`should_panic`] --- Indicates a test should generate a panic.
+
+r[attributes.builtin.derive]
 - Derive
   - [`derive`] --- Automatic trait implementations.
   - [`automatically_derived`] --- Marker for implementations created by
     `derive`.
+
+r[attributes.builtin.macros]
 - Macros
   - [`macro_export`] --- Exports a `macro_rules` macro for cross-crate usage.
   - [`macro_use`] --- Expands macro visibility, or imports macros from other
@@ -233,12 +267,16 @@ The following is an index of all built-in attributes.
   - [`proc_macro`] --- Defines a function-like macro.
   - [`proc_macro_derive`] --- Defines a derive macro.
   - [`proc_macro_attribute`] --- Defines an attribute macro.
+
+r[attributes.builtin.diagnostic]
 - Diagnostics
   - [`allow`], [`expect`], [`warn`], [`deny`], [`forbid`] --- Alters the default lint level.
   - [`deprecated`] --- Generates deprecation notices.
   - [`must_use`] --- Generates a lint for unused values.
   - [`diagnostic::on_unimplemented`] --- Hints the compiler to emit a certain error
     message if a trait is not implemented.
+
+r[attributes.builtin.linkage]
 - ABI, linking, symbols, and FFI
   - [`link`] --- Specifies a native library to link with an `extern` block.
   - [`link_name`] --- Specifies the name of the symbol for functions or statics
@@ -257,6 +295,8 @@ The following is an index of all built-in attributes.
   - [`used`] --- Forces the compiler to keep a static item in the output
     object file.
   - [`crate_name`] --- Specifies the crate name.
+
+r[attributes.builtin.codegen]
 - Code generation
   - [`inline`] --- Hint to inline code.
   - [`cold`] --- Hint that a function is unlikely to be called.
@@ -264,28 +304,44 @@ The following is an index of all built-in attributes.
   - [`target_feature`] --- Configure platform-specific code generation.
   - [`track_caller`] - Pass the parent call location to `std::panic::Location::caller()`.
   - [`instruction_set`] - Specify the instruction set used to generate a functions code
+
+r[attributes.builtin.doc]
 - Documentation
   - `doc` --- Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
+
+r[attributes.builtin.prelude]
 - Preludes
   - [`no_std`] --- Removes std from the prelude.
   - [`no_implicit_prelude`] --- Disables prelude lookups within a module.
+
+r[attributes.builtin.module]
 - Modules
   - [`path`] --- Specifies the filename for a module.
+
+r[attributes.builtin.limits]
 - Limits
   - [`recursion_limit`] --- Sets the maximum recursion limit for certain
     compile-time operations.
   - [`type_length_limit`] --- Sets the maximum size of a polymorphic type.
+
+r[attributes.builtin.rt]
 - Runtime
   - [`panic_handler`] --- Sets the function to handle panics.
   - [`global_allocator`] --- Sets the global memory allocator.
   - [`windows_subsystem`] --- Specifies the windows subsystem to link with.
+
+r[attributes.builtin.unstable]
 - Features
   - `feature` --- Used to enable unstable or experimental compiler features. See
     [The Unstable Book] for features implemented in `rustc`.
+
+r[attributes.builtin.typesystem]
 - Type System
   - [`non_exhaustive`] --- Indicate that a type will have more fields/variants
     added in future.
+
+r[attributes.builtin.debugging]
 - Debugger
   - [`debugger_visualizer`] --- Embeds a file that specifies debugger output for a type.
   - [`collapse_debuginfo`] --- Controls how macro invocations are encoded in debuginfo.
