@@ -2,8 +2,11 @@
 
 > **<sup>Syntax</sup>**\
 > _StaticItem_ :\
-> &nbsp;&nbsp; `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
+> &nbsp;&nbsp; [_ItemSafety_]<sup>?</sup>[^extern-safety] `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
 >              ( `=` [_Expression_] )<sup>?</sup> `;`
+>
+> [^extern-safety]: The `safe` and `unsafe` function qualifiers are only
+>   allowed semantically within `extern` blocks.
 
 A *static item* is similar to a [constant], except that it represents a precise
 memory location in the program. All references to the static refer to the same
@@ -27,6 +30,8 @@ statics:
 
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
+
+The `safe` and `unsafe` qualifiers are semantically only allowed when used in an [external block].
 
 ## Statics & generics
 
@@ -139,3 +144,4 @@ following are true:
 [_Type_]: ../types.md#type-expressions
 [_Expression_]: ../expressions.md
 [value namespace]: ../names/namespaces.md
+[_ItemSafety_]: functions.md

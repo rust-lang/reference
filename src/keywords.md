@@ -118,6 +118,7 @@ is possible to declare a variable or method with the name `union`.
 >
 > **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
+* `safe` is used for functions and statics, which has meaning in [external blocks].
 
 [items]: items.md
 [Variables]: variables.md
@@ -132,3 +133,4 @@ is possible to declare a variable or method with the name `union`.
 [`dyn`]: types/trait-object.md
 [loop label]: expressions/loop-expr.md#loop-labels
 [generic lifetime parameter]: items/generics.md
+[external blocks]: items/external-blocks.md
