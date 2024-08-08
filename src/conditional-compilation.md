@@ -420,7 +420,7 @@ r[cfg.cfg_attr.syntax]
 > &nbsp;&nbsp; [_Attr_]&nbsp;(`,` [_Attr_])<sup>\*</sup> `,`<sup>?</sup>
 
 
-r[cfg.cfg_attr.syntax]
+r[cfg.cfg_attr.general]
 The `cfg_attr` [attribute] conditionally includes [attributes] based on a
 configuration predicate.
 
