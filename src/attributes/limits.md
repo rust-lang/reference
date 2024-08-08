@@ -11,7 +11,7 @@ r[attributes.limits.recursion_limits]
 r[attributes.limits.recursion_limits.application]
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 maximum depth for potentially infinitely-recursive compile-time operations
-like macro expansion or auto-dereference. 
+like macro expansion or auto-dereference.
 
 r[attributes.limits.recursion_limits.syntax]
 It uses the [_MetaNameValueStr_]
