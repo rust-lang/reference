@@ -1,9 +1,6 @@
 {{#include attributes-redirect.html}}
 # Attributes
 
-r[attributes]
-
-
 r[attributes.syntax]
 > **<sup>Syntax</sup>**\
 > _InnerAttribute_ :\
