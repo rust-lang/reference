@@ -195,7 +195,7 @@ r[cfg.target_family.windows]
 
 r[cfg.target_env]
 
-r[cfg.target_env.values]
+r[cfg.target_env.general]
 Key-value option set with further disambiguating information about the target
 platform with information about the ABI or `libc` used. For historical reasons,
 this value is only defined as not the empty-string when actually needed for
