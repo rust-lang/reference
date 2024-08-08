@@ -337,7 +337,7 @@ fn documented() {
 > function items.
 
 The attributes that have meaning on a function are [`cfg`], [`cfg_attr`], [`deprecated`],
-[`doc`], [`export_name`], [`link_section`], [`no_mangle`], [the lint check
+[`doc`], [`export_name`][abi.symbol-name.export_name], [`link_section`][abi.link_section], [`no_mangle`][abi.symbol-name.no_mangle], [the lint check
 attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
@@ -405,9 +405,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
 [patterns]: ../patterns.md
-[`export_name`]: ../abi.md#the-export_name-attribute
-[`link_section`]: ../abi.md#the-link_section-attribute
-[`no_mangle`]: ../abi.md#the-no_mangle-attribute
 [built-in attributes]: ../attributes.html#built-in-attributes-index
 [trait item]: traits.md
 [method]: associated-items.md#methods
