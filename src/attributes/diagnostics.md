@@ -10,7 +10,7 @@ messages during compilation.
 r[attributes.diagnostics.lints]
 
 A lint check names a potentially undesirable coding pattern, such as
-unreachable code or omitted documentation. 
+unreachable code or omitted documentation.
 
 r[attributes.diagnostics.lints.level]
 The lint attributes `allow`,

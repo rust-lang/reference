@@ -347,7 +347,7 @@ r[attributes.codegen.track_caller]
 
 r[attributes.codegen.track_caller.restriction]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
-with the exception of the entry point `fn main`. 
+with the exception of the entry point `fn main`.
 
 r[attributes.codegen.track_caller.traits]
 When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a

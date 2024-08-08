@@ -5,7 +5,7 @@ r[attributes.derive]
 
 r[attributes.derived.general]
 The *`derive` attribute* allows new [items] to be automatically generated for
-data structures. 
+data structures.
 
 r[attributes.derive.syntax]
 It uses the [_MetaListPaths_] syntax to specify a list of

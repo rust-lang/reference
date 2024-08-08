@@ -13,10 +13,10 @@ r[attributes.testing.test]
 
 
 r[attributes.testing.test.general]
-The *`test` attribute* marks a function to be executed as a test. 
+The *`test` attribute* marks a function to be executed as a test.
 
 r[attributes.testing.test.enabled]
-These functions are only compiled when in test mode. 
+These functions are only compiled when in test mode.
 
 r[attributes.testing.test.restriction]
 Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
@@ -82,7 +82,7 @@ r[attributes.testing.should_panic]
 
 r[attributes.testing.should_panic.restriction]
 A function annotated with the `test` attribute that returns `()` can also be
-annotated with the `should_panic` attribute. 
+annotated with the `should_panic` attribute.
 
 r[attributes.testing.should_panic.behaviour]
 The *`should_panic` attribute*
