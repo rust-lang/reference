@@ -218,16 +218,16 @@ Example values:
 r[cfg.target_abi]
 
 
-r[cfg.target_env.general]
+r[cfg.target_abi.general]
 Key-value option set to further disambiguate the `target_env` with information
 about the target ABI.
 
-r[cfg.target_env.disambiguation]
+r[cfg.target_abi.disambiguation]
 For historical reasons, this value is only defined as not the empty-string when actually
  needed for disambiguation. Thus, for example, on many GNU platforms, this value will be
 empty.
 
-r[cfg.target_env.values]
+r[cfg.target_abi.values]
 Example values:
 
 * `""`
