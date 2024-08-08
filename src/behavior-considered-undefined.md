@@ -58,7 +58,11 @@ Please read the [Rustonomicon] before writing unsafe code.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
-* Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
+* Calling a function with the wrong [call ABI][abi].
+* Unwinding, or catching an unwind, [inappropriately][unwinding].
+* Deallocating a Rust stack frame without executing destructors
+  for local variables owned by the stack frame. This can occur
+  with C functions like `longjmp`.
 * Producing an [invalid value][invalid-values]. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
@@ -170,10 +174,43 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 (the gaps between the fields of a type).
 
 
+### Unwinding inappropriately
+[unwinding]: #unwinding-inappropriately
+
+Unwinding with the wrong [ABI][abi] is undefined behavior:
+
+* Causing an unwind into Rust code from a foreign function that was called via a
+  function declaration or pointer declared with a non-unwinding ABI, such as `"C"`,
+  `"system"`, etc. (For example, this case occurs when such a function written in
+  C++ throws an exception that is uncaught and propagates to Rust.)
+* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or
+  another ABI that permits unwinding) from a runtime that does not support.
+  unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
+
+Catching a foreign unwinding operation (such as a C++ exception) using
+`catch_unwind`, `JoinHandle::join`, or by letting it propagate all the way to a
+Rust `main()` function will have one of two behaviors, and it is unspecified
+which will occur:
+* The process aborts.
+* The function returns a `Result::Err` containing an opaque type.
+
+Note that Rust code compiled or linked with a different runtime counts as a
+"foreign exception" for the purpose of this guarantee. Thus, a library that
+uses `panic!` and is linked against one version of the Rust standard library,
+invoked from an application that uses a different version of the standard
+library, may cause the entire application to crash even if the library is only
+used within a child thread.
+
+There are currently no guarantees about the behavior that occurs when a foreign
+runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other
+words, an unwind originated from a Rust runtime must either lead to termination
+of the process or be caught by the same runtime.
+
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
+[abi]: abi.md
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
