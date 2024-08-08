@@ -1,5 +1,8 @@
 # Comments
 
+
+r[comments.lexical]
+
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\
@@ -34,25 +37,39 @@
 
 ## Non-doc comments
 
+r[comments.normal]
+
 Comments follow the general C++ style of line (`//`) and
 block (`/* ... */`) comment forms. Nested block comments are supported.
 
+r[comments.normal.tokenization]
 Non-doc comments are interpreted as a form of whitespace.
 
 ## Doc comments
 
+r[comments.doc]
+
+r[comments.doc.syntax]
 Line doc comments beginning with exactly _three_ slashes (`///`), and block
 doc comments (`/** ... */`), both outer doc comments, are interpreted as a
-special syntax for [`doc` attributes]. That is, they are equivalent to writing
+special syntax for [`doc` attributes].
+
+r[comments.doc.attribute]
+That is, they are equivalent to writing
 `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into
 `#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`.
 
+r[comments.doc.inner-syntax]
 Line comments beginning with `//!` and block comments `/*! ... */` are
 doc comments that apply to the parent of the comment, rather than the item
-that follows.  That is, they are equivalent to writing `#![doc="..."]` around
+that follows.
+
+r[comments.doc.inner-attribute]
+That is, they are equivalent to writing `#![doc="..."]` around
 the body of the comment. `//!` comments are usually used to document
 modules that occupy a source file.
 
+r[comments.doc.bare-cr]
 The character `U+000D` (CR) is not allowed in doc comments.
 
 > **Note**:  The sequence `U+000D` (CR) immediately followed by `U+000A` (LF) would have been previously transformed into a single `U+000A` (LF).
