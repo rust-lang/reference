@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ExternBlock_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup>[^unsafe-2024] `extern` [_Abi_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup> `extern` [_Abi_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -12,8 +12,6 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_StaticItem_] | [_Function_] ) )\
 > &nbsp;&nbsp; )
->
-> [^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
 
 External blocks provide _declarations_ of items that are not _defined_ in the
 current crate and are the basis of Rust's foreign function interface. These are
@@ -24,11 +22,6 @@ Two kinds of item _declarations_ are allowed in external blocks: [functions] and
 blocks is only allowed in an `unsafe` context.
 
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
-
-**Edition differences**: Starting in the 2024 edition, the `unsafe` keyword is
-required to appear before the `extern` keyword on external blocks. In previous
-editions, it is accepted but not required. The `safe` and `unsafe` item qualifiers
-are only allowed if the external block itself is marked as `unsafe`.
 
 ## Functions
 

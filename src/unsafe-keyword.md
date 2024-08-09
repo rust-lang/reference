@@ -61,6 +61,4 @@ Unsafe trait implementations are the logical dual to unsafe traits: where unsafe
 
 The programmer who declares an [external block] must assure that the signatures of the items contained within are correct. Failing to do so may lead to undefined behavior.  That this obligation has been met is indicated by writing `unsafe extern`.
 
-**Edition differences**: Prior to edition 2024, `extern` blocks were allowed without being qualified as `unsafe`.
-
 [external block]: items/external-blocks.md
