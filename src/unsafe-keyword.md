@@ -1,10 +1,10 @@
 # The `unsafe` keyword
 
 The `unsafe` keyword can occur in several different contexts:
-unsafe functions (`unsafe fn`), unsafe blocks (`unsafe {}`), unsafe traits (`unsafe trait`), and unsafe trait implementations (`unsafe impl`).
+unsafe functions (`unsafe fn`), unsafe blocks (`unsafe {}`), unsafe traits (`unsafe trait`), unsafe trait implementations (`unsafe impl`), and unsafe external blocks (`unsafe extern`).
 It plays several different roles, depending on where it is used and whether the `unsafe_op_in_unsafe_fn` lint is enabled:
 - it is used to mark code that *defines* extra safety conditions (`unsafe fn`, `unsafe trait`)
-- it is used to mark code that needs to *satisfy* extra safety conditions (`unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`])
+- it is used to mark code that needs to *satisfy* extra safety conditions (`unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`], `unsafe extern`)
 
 The following discusses each of these cases.
 See the [keyword documentation][keyword] for some illustrative examples.
@@ -56,3 +56,9 @@ Unsafe trait implementations are the logical dual to unsafe traits: where unsafe
 [keyword]: ../std/keyword.unsafe.html
 [`get_unchecked`]: ../std/primitive.slice.html#method.get_unchecked
 [`unsafe_op_in_unsafe_fn`]: ../rustc/lints/listing/allowed-by-default.html#unsafe-op-in-unsafe-fn
+
+## Unsafe external blocks (`unsafe extern`)
+
+The programmer who declares an [external block] must assure that the signatures of the items contained within are correct. Failing to do so may lead to undefined behavior.  That this obligation has been met is indicated by writing `unsafe extern`.
+
+[external block]: items/external-blocks.md

@@ -11,7 +11,9 @@ Rust:
 - Accessing a field of a [`union`], other than to assign to it.
 - Calling an unsafe function (including an intrinsic or foreign function).
 - Implementing an [unsafe trait].
+- Declaring an [`extern`] block.
 
+[`extern`]: items/external-blocks.md
 [`union`]: items/unions.md
 [mutable]: items/static-items.md#mutable-statics
 [external]: items/external-blocks.md

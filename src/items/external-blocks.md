@@ -23,34 +23,32 @@ blocks is only allowed in an `unsafe` context.
 
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
 
-The `unsafe` keyword is syntactically allowed to appear before the `extern`
-keyword, but it is rejected at a semantic level. This allows macros to consume
-the syntax and make use of the `unsafe` keyword, before removing it from the
-token stream.
-
 ## Functions
 
 Functions within external blocks are declared in the same way as other Rust
 functions, with the exception that they must not have a body and are instead
 terminated by a semicolon. Patterns are not allowed in parameters, only
-[IDENTIFIER] or `_` may be used. Function qualifiers (`const`, `async`,
-`unsafe`, and `extern`) are not allowed.
+[IDENTIFIER] or `_` may be used. The `safe` and `unsafe` function qualifiers are
+allowed, but other function qualifiers (e.g. `const`, `async`, `extern`) are
+not.
 
 Functions within external blocks may be called by Rust code, just like
 functions defined in Rust. The Rust compiler automatically translates between
 the Rust ABI and the foreign ABI.
 
-A function declared in an extern block is implicitly `unsafe`. When coerced to
-a function pointer, a function declared in an extern block has type `unsafe
-extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm`
-are its lifetime parameters, `A1`, ..., `An` are the declared types of its
-parameters and `R` is the declared return type.
+A function declared in an extern block is implicitly `unsafe` unless the `safe`
+function qualifier is present.
+
+When coerced to a function pointer, a function declared in an extern block has
+type `extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`,
+... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of
+its parameters, `R` is the declared return type.
 
 ## Statics
 
 Statics within external blocks are declared in the same way as [statics] outside of external blocks,
 except that they do not have an expression initializing their value.
-It is `unsafe` to access a static item declared in an extern block, whether or
+Unless a static item declared in an extern block is qualified as `safe`, it is `unsafe` to access that item, whether or
 not it's mutable, because there is nothing guaranteeing that the bit pattern at the static's
 memory is valid for the type it is declared with, since some arbitrary (e.g. C) code is in charge
 of initializing the static.
@@ -69,34 +67,34 @@ standard C ABI on the specific platform. Other ABIs may be specified using an
 
 ```rust
 // Interface to the Windows API
-extern "stdcall" { }
+unsafe extern "stdcall" { }
 ```
 
 There are three ABI strings which are cross-platform, and which all compilers
 are guaranteed to support:
 
-* `extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
+* `unsafe extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
   Rust code.
-* `extern "C"` -- This is the same as `extern fn foo()`; whatever the default
+* `unsafe extern "C"` -- This is the same as `extern fn foo()`; whatever the default
   your C compiler supports.
-* `extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
+* `unsafe extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
   which case it's `"stdcall"`, or what you should use to link to the Windows
   API itself
 
 There are also some platform-specific ABI strings:
 
-* `extern "cdecl"` -- The default for x86\_32 C code.
-* `extern "stdcall"` -- The default for the Win32 API on x86\_32.
-* `extern "win64"` -- The default for C code on x86\_64 Windows.
-* `extern "sysv64"` -- The default for C code on non-Windows x86\_64.
-* `extern "aapcs"` -- The default for ARM.
-* `extern "fastcall"` -- The `fastcall` ABI -- corresponds to MSVC's
+* `unsafe extern "cdecl"` -- The default for x86\_32 C code.
+* `unsafe extern "stdcall"` -- The default for the Win32 API on x86\_32.
+* `unsafe extern "win64"` -- The default for C code on x86\_64 Windows.
+* `unsafe extern "sysv64"` -- The default for C code on non-Windows x86\_64.
+* `unsafe extern "aapcs"` -- The default for ARM.
+* `unsafe extern "fastcall"` -- The `fastcall` ABI -- corresponds to MSVC's
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
-* `extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
+* `unsafe extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
   `__vectorcall` and clang's `__attribute__((vectorcall))`
-* `extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
+* `unsafe extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
-* `extern "efiapi"` -- The ABI used for [UEFI] functions.
+* `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
 
 ## Variadic functions
 
@@ -105,10 +103,10 @@ last argument. The variadic parameter may optionally be specified with an
 identifier.
 
 ```rust
-extern "C" {
-    fn foo(...);
-    fn bar(x: i32, ...);
-    fn with_name(format: *const u8, args: ...);
+unsafe extern "C" {
+    safe fn foo(...);
+    unsafe fn bar(x: i32, ...);
+    unsafe fn with_name(format: *const u8, args: ...);
 }
 ```
 
@@ -152,17 +150,17 @@ not specified.
 <!-- ignore: requires extern linking -->
 ```rust,ignore
 #[link(name = "crypto")]
-extern {
+unsafe extern {
     // …
 }
 
 #[link(name = "CoreFoundation", kind = "framework")]
-extern {
+unsafe extern {
     // …
 }
 
 #[link(wasm_import_module = "foo")]
-extern {
+unsafe extern {
     // …
 }
 ```
@@ -277,9 +275,9 @@ block to indicate the symbol to import for the given function or static. It
 uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
 
 ```rust
-extern {
+unsafe extern {
     #[link_name = "actual_symbol_name"]
-    fn name_in_rust();
+    safe fn name_in_rust();
 }
 ```
 
@@ -306,9 +304,9 @@ it, and that assigned ordinal may change between builds of the binary.
 <!-- ignore: Only works on x86 Windows -->
 ```rust,ignore
 #[link(name = "exporter", kind = "raw-dylib")]
-extern "stdcall" {
+unsafe extern "stdcall" {
     #[link_ordinal(15)]
-    fn imported_function_stdcall(i: i32);
+    safe fn imported_function_stdcall(i: i32);
 }
 ```
 

@@ -8,7 +8,10 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
 >
 > _FunctionQualifiers_ :\
-> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> _ItemSafety_<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+>
+> _ItemSafety_ :\
+> &nbsp;&nbsp; `safe`[^extern-safe] | `unsafe`
 >
 > _Abi_ :\
 > &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
@@ -39,6 +42,9 @@
 >
 > [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 >
+> [^extern-safe]: The `safe` function qualifier is only allowed semantically within
+>   `extern` blocks.
+>
 > [^fn-param-2015]: Function parameters with only a type are only allowed
 >   in an associated function of a [trait item] in the 2015 edition.
 
@@ -57,6 +63,8 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
     return 42;
 }
 ```
+
+The `safe` function is semantically only allowed when used in an [`extern` block].
 
 ## Function parameters
 
@@ -157,10 +165,12 @@ their _definition_:
 
 <!-- ignore: fake ABI -->
 ```rust,ignore
-extern "ABI" {
-  fn foo(); /* no body */
+unsafe extern "ABI" {
+  unsafe fn foo(); /* no body */
+  safe fn bar(); /* no body */
 }
-unsafe { foo() }
+unsafe { foo() };
+bar();
 ```
 
 When `"extern" Abi?*` is omitted from `FunctionQualifiers` in function items,
@@ -415,3 +425,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
 [variadic function]: external-blocks.md#variadic-functions
+[`extern` block]: external-blocks.md
