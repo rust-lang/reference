@@ -41,7 +41,9 @@ The following things are considered to be overflow:
 > **<sup>Syntax</sup>**\
 > _BorrowExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
-> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]
+> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]\
+> &nbsp;&nbsp; | (`&`|`&&`) `raw` `const` [_Expression_]\
+> &nbsp;&nbsp; | (`&`|`&&`) `raw` `mut` [_Expression_]
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix operators.
 When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
@@ -79,20 +81,18 @@ let a = && && mut 10;
 let a = & & & & mut 10;
 ```
 
-### Raw address-of operators
+### Raw borrow operators
 
-Related to the borrow operators are the *raw address-of operators*, which do not have first-class syntax, but are exposed via the macros [`ptr::addr_of!(expr)`][addr_of] and [`ptr::addr_of_mut!(expr)`][addr_of_mut].
-The expression `expr` is evaluated in place expression context.
-`ptr::addr_of!(expr)` then creates a const raw pointer of type `*const T` to the given place, and `ptr::addr_of_mut!(expr)` creates a mutable raw pointer of type `*mut T`.
+`&raw const` and `&raw mut` are the *raw borrow operators*.
+The operand expression of these operators is evaluated in place expression context.
+`&raw const expr` then creates a const raw pointer of type `*const T` to the given place, and `&raw mut expr` creates a mutable raw pointer of type `*mut T`.
 
-The raw address-of operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
-In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed using an address-of operator.
+The raw borrow operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
+In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed.
 
 The following is an example of creating a raw pointer to an unaligned place through a `packed` struct:
 
 ```rust
-use std::ptr;
-
 #[repr(packed)]
 struct Packed {
     f1: u8,
@@ -101,14 +101,14 @@ struct Packed {
 
 let packed = Packed { f1: 1, f2: 2 };
 // `&packed.f2` would create an unaligned reference, and thus be undefined behavior!
-let raw_f2 = ptr::addr_of!(packed.f2);
+let raw_f2 = &raw const packed.f2;
 assert_eq!(unsafe { raw_f2.read_unaligned() }, 2);
 ```
 
 The following is an example of creating a raw pointer to a place that does not contain a valid value:
 
 ```rust
-use std::{ptr, mem::MaybeUninit};
+use std::mem::MaybeUninit;
 
 struct Demo {
     field: bool,
@@ -117,7 +117,7 @@ struct Demo {
 let mut uninit = MaybeUninit::<Demo>::uninit();
 // `&uninit.as_mut().field` would create a reference to an uninitialized `bool`,
 // and thus be undefined behavior!
-let f1_ptr = unsafe { ptr::addr_of_mut!((*uninit.as_mut_ptr()).field) };
+let f1_ptr = unsafe { &raw mut (*uninit.as_mut_ptr()).field };
 unsafe { f1_ptr.write(true); }
 let init = unsafe { uninit.assume_init() };
 ```
@@ -674,8 +674,6 @@ See [this test] for an example of using this dependency.
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[addr_of]: std::ptr::addr_of
-[addr_of_mut]: std::ptr::addr_of_mut
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
