@@ -575,9 +575,9 @@ was wrapped in a newtype `struct` with the same `align` modifier.
 > println!("{}", {e.f2});
 > // Or if you need a pointer, use the unaligned methods for reading and writing
 > // instead of dereferencing the pointer directly.
-> let ptr: *const u16 = std::ptr::addr_of!(e.f2);
+> let ptr: *const u16 = &raw const e.f2;
 > let value = unsafe { ptr.read_unaligned() };
-> let mut_ptr: *mut u16 = std::ptr::addr_of_mut!(e.f2);
+> let mut_ptr: *mut u16 = &raw mut e.f2;
 > unsafe { mut_ptr.write_unaligned(3) }
 > ```
 

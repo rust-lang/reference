@@ -44,7 +44,7 @@ they exist to support interoperability with foreign code, and writing performanc
 When comparing raw pointers they are compared by their address, rather than by what they point to.
 When comparing raw pointers to [dynamically sized types] they also have their additional data compared.
 
-Raw pointers can be created directly using [`core::ptr::addr_of!`] for `*const` pointers and [`core::ptr::addr_of_mut!`] for `*mut` pointers.
+Raw pointers can be created directly using `&raw const` for `*const` pointers and `&raw mut` for `*mut` pointers.
 
 ## Smart Pointers
 
