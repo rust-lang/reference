@@ -44,7 +44,7 @@ r[crate.module-def]
 A Rust source file describes a module, the name and location of which &mdash;
 in the module tree of the current crate &mdash; are defined from outside the
 source file: either by an explicit [_Module_][module] item in a referencing
-source file, or by the name of the crate itself. 
+source file, or by the name of the crate itself.
 
 r[crate.inline-module]
 Every source file is a
@@ -55,7 +55,7 @@ r[crate.items]
 Each source file contains a sequence of zero or more [_Item_] definitions, and
 may optionally begin with any number of [attributes]
 that apply to the containing module, most of which influence the behavior of
-the compiler. 
+the compiler.
 
 r[crate.attributes]
 The anonymous crate module can have additional attributes that
@@ -80,7 +80,7 @@ apply to the crate as a whole.
 r[crate.main]
 
 r[crate.main.general]
-A crate that contains a `main` [function] can be compiled to an executable. 
+A crate that contains a `main` [function] can be compiled to an executable.
 
 r[crate.main.restriction]
 If a `main` function is present, it must take no arguments, must not declare any
