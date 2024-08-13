@@ -585,12 +585,11 @@ was wrapped in a newtype `struct` with the same `align` modifier.
 
 The `transparent` representation can only be used on a [`struct`][structs]
 or an [`enum`][enumerations] with a single variant that has:
-
-- a single field with non-zero size, and
-- any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]).
+- any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]), and
+- at most one other field.
 
 Structs and enums with this representation have the same layout and ABI
-as the single non-zero sized field.
+as the only non-size 0 non-alignment 1 field, if present, or unit otherwise.
 
 This is different than the `C` representation because
 a struct with the `C` representation will always have the ABI of a `C` `struct`
