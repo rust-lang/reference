@@ -180,7 +180,7 @@ an implementation of `Unsize<U>` for `T` will be provided:
     * T is not part of the type of any other fields.
 
 Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T`
-implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide a
+implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide an
 unsized coercion to `Foo<U>`.
 
 > Note: While the definition of the unsized coercions and their implementation
