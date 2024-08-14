@@ -54,7 +54,7 @@ format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "\"" <explicit register> "\""
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
-reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr
+reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr>
 clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *("," option) [","] ")"
@@ -174,6 +174,10 @@ r[asm.operand-type.supported-operands.sym]
   - A mangled symbol name referring to the item is substituted into the asm template string.
   - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
   - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
+* `const <expr>`
+  - `<expr>` must be an integer constant expression. This expression follows the same rules as inline `const` blocks.
+  - The type of the expression may be any integer type, but defaults to `i32` just like integer literals.
+  - The value of the expression is formatted as a string and substituted directly into the asm template string.
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
@@ -181,7 +185,7 @@ After the `asm!` has executed, outputs are written to in left to right order.
 This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
 
 r[asm.operand-type.global_asm-restriction]
-Since `global_asm!` exists outside a function, it can only use `sym` operands.
+Since `global_asm!` exists outside a function, it can only use `sym` and `const` operands.
 
 ## Register operands
 
