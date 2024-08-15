@@ -101,7 +101,7 @@ alignment 1). In other words, the alignment requirement derives from the type of
 the pointer that was dereferenced, *not* the type of the field that is being
 accessed.
 
-Note that a place based on a misaligned pointer only leads to Undefined Behavior
+Note that a place based on a misaligned pointer only leads to undefined behavior
 when it is loaded from or stored to. `addr_of!`/`addr_of_mut!` on such a place
 is allowed. `&`/`&mut` on a place requires the alignment of the field type (or
 else the program would be "producing an invalid value"), which generally is a
