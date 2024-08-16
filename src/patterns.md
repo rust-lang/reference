@@ -300,35 +300,53 @@ It is used to ignore values when they don't matter.
 Inside other patterns it matches a single data field (as opposed to the `..` which matches the remaining fields).
 Unlike identifier patterns, it does not copy, move or borrow the value it matches.
 
+The wildcard pattern is always irrefutable.
+
 Examples:
 
 ```rust
-# let x = 20;
-let (a, _) = (10, x);   // the x is always matched by _
+let x = String::from("Hello");
+let _ = x;
+
+let y = (10, String::from("World"));
+let (a, _) = y;
+
+println!("{} {}", x, y.1); //x and y.1 were NOT moved
 # assert_eq!(a, 10);
 
-// ignore a function/closure param
-let real_part = |a: f64, _: f64| { a };
-
+struct Person {
+    name: String,
+    age: u8,
+}
+let person = Person {
+    name: String::from("John"),
+    age: 23,
+};
 // ignore a field from a struct
-# struct RGBA {
-#    r: f32,
-#    g: f32,
-#    b: f32,
-#    a: f32,
-# }
-# let color = RGBA{r: 0.4, g: 0.1, b: 0.9, a: 0.5};
-let RGBA{r: red, g: green, b: blue, a: _} = color;
-# assert_eq!(color.r, red);
-# assert_eq!(color.g, green);
-# assert_eq!(color.b, blue);
+let Person { name: _, age: a } = person;
+println!("{}", person.name); //person.name was NOT moved
+# assert_eq!(a, 23);
 
+let x = Some(String::from("Value"));
 // accept any Some, with any value
-# let x = Some(10);
 if let Some(_) = x {}
+println!("{}", x.unwrap()); //the String in x was NOT moved
 ```
 
-The wildcard pattern is always irrefutable.
+Note, however, that `_` in function or closure parameters is _not_ a part of the wildcard pattern and _does_ move the value it matches:
+
+```rust,compile_fail
+let s = String::from("Hello");
+// you can use the toilet closure to cause a value to be dropped
+let toilet = |_| ();
+toilet(s);
+println!("{}", s); //ERROR--- s was moved when we called the closure
+
+let t = String::from("World");
+fn f(_: String) {}
+f(t);
+println!("{}", t); //ERROR--- t was moved when we called the function
+```
 
 ## Rest patterns
 
