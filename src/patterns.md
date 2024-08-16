@@ -309,15 +309,16 @@ let x = String::from("Hello");
 let _ = x;
 
 let y = (10, String::from("World"));
+// ignore a field from a tuple
 let (a, _) = y;
 
 println!("{} {}", x, y.1); //x and y.1 were NOT moved
 # assert_eq!(a, 10);
 
-struct Person {
-    name: String,
-    age: u8,
-}
+# struct Person {
+#    name: String,
+#    age: u8,
+# }
 let person = Person {
     name: String::from("John"),
     age: 23,
