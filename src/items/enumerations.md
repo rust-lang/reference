@@ -197,7 +197,7 @@ enum OverflowingDiscriminantError2 {
 
 #### Via `mem::discriminant`
 
-[`mem::discriminant`] returns an opaque reference to the discriminant of
+[`std::mem::discriminant`] returns an opaque reference to the discriminant of
 an enum value which can be compared. This cannot be used to get the value
 of the discriminant.
 
@@ -331,7 +331,6 @@ enum E {
 [_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
 [`C` representation]: ../type-layout.md#the-c-representation
-[`mem::discriminant`]: ../../std/mem/fn.discriminant.html
 [call expression]: ../expressions/call-expr.md
 [constant expression]: ../const_eval.md#constant-expressions
 [default representation]: ../type-layout.md#the-default-representation

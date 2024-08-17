@@ -336,7 +336,7 @@ followed by the character `U+0022`. If the character `U+0022` is present within
 the literal, it must be _escaped_ by a preceding `U+005C` (`\`) character.
 Alternatively, a C string literal can be a _raw C string literal_, defined below.
 
-[CStr]: ../core/ffi/struct.CStr.html
+[CStr]: core::ffi::CStr
 
 C strings are implicitly terminated by byte `0x00`, so the C string literal
 `c""` is equivalent to manually constructing a `&CStr` from the byte string

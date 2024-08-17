@@ -427,9 +427,7 @@ trait object whose methods are attributed.
 [undefined behavior]: ../behavior-considered-undefined.md
 [unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
-[`core::intrinsics::caller_location`]: ../../core/intrinsics/fn.caller_location.html
-[`core::panic::Location::caller`]: ../../core/panic/struct.Location.html#method.caller
-[`Location`]: ../../core/panic/struct.Location.html
+[`Location`]: core::panic::Location
 
 ## The `instruction_set` attribute
 

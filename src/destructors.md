@@ -8,7 +8,7 @@ dropped.
 
 The destructor of a type `T` consists of:
 
-1. If `T: Drop`, calling [`<T as std::ops::Drop>::drop`]
+1. If `T: Drop`, calling [`<T as std::ops::Drop>::drop`](std::ops::Drop::drop)
 2. Recursively running the destructor of all of its fields.
     * The fields of a [struct] are dropped in declaration order.
     * The fields of the active [enum variant] are dropped in declaration order.
@@ -400,8 +400,3 @@ variable or field from being dropped automatically.
 [`match`]: expressions/match-expr.md
 [`while let`]: expressions/loop-expr.md#predicate-pattern-loops
 [`while`]: expressions/loop-expr.md#predicate-loops
-
-[`<T as std::ops::Drop>::drop`]: ../std/ops/trait.Drop.html#tymethod.drop
-[`std::ptr::drop_in_place`]: ../std/ptr/fn.drop_in_place.html
-[`std::mem::forget`]: ../std/mem/fn.forget.html
-[`std::mem::ManuallyDrop`]: ../std/mem/struct.ManuallyDrop.html

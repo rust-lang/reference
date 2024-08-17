@@ -60,8 +60,6 @@ For thin raw pointers (i.e., for `P = *const T` or `P = *mut T` for `T: Sized`),
 the inverse direction (transmuting from an integer or array of integers to `P`) is always valid.
 However, the pointer produced via such a transmutation may not be dereferenced (not even if `T` has size zero).
 
-[`core::ptr::addr_of!`]: ../../core/ptr/macro.addr_of.html
-[`core::ptr::addr_of_mut!`]: ../../core/ptr/macro.addr_of_mut.html
 [Interior mutability]: ../interior-mutability.md
 [_Lifetime_]: ../trait-bounds.md
 [_TypeNoBounds_]: ../types.md#type-expressions

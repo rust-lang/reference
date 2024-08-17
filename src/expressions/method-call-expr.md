@@ -93,4 +93,4 @@ Just don't define inherent methods on trait objects with the same name as a trai
 [dereference]: operator-expr.md#the-dereference-operator
 [methods]: ../items/associated-items.md#methods
 [unsized coercion]: ../type-coercions.md#unsized-coercions
-[`IntoIterator`]: ../../std/iter/trait.IntoIterator.html
+[`IntoIterator`]: std::iter::IntoIterator

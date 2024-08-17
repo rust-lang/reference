@@ -338,16 +338,15 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros
 [Function-like macros]: #function-like-procedural-macros
-[`Delimiter::None`]: ../proc_macro/enum.Delimiter.html#variant.None
-[`Group`]: ../proc_macro/struct.Group.html
-[`TokenStream`]: ../proc_macro/struct.TokenStream.html
-[`TokenStream`s]: ../proc_macro/struct.TokenStream.html
-[`TokenTree`s]: ../proc_macro/enum.TokenTree.html
-[`compile_error`]: ../std/macro.compile_error.html
+[`Delimiter::None`]: proc_macro::Delimiter::None
+[`Group`]: proc_macro::Group
+[`TokenStream`]: proc_macro::TokenStream
+[`TokenStream`s]: proc_macro::TokenStream
+[`TokenTree`s]: proc_macro::TokenTree
 [`derive` attribute]: attributes/derive.md
 [`extern` blocks]: items/external-blocks.md
 [`macro_rules`]: macros-by-example.md
-[`proc_macro` crate]: ../proc_macro/index.html
+[`proc_macro` crate]: proc_macro
 [attribute]: attributes.md
 [attributes]: attributes.md
 [block]: expressions/block-expr.md

@@ -170,9 +170,6 @@ Because captures are often by reference, the following general rules arise:
 
 [`Clone`]: ../special-types-and-traits.md#clone
 [`Copy`]: ../special-types-and-traits.md#copy
-[`FnMut`]: ../../std/ops/trait.FnMut.html
-[`FnOnce`]: ../../std/ops/trait.FnOnce.html
-[`Fn`]: ../../std/ops/trait.Fn.html
 [`Send`]: ../special-types-and-traits.md#send
 [`Sized`]: ../special-types-and-traits.md#sized
 [`Sync`]: ../special-types-and-traits.md#sync

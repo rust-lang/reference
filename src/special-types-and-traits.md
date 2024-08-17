@@ -140,26 +140,15 @@ The [`Sized`] trait indicates that the size of this type is known at compile-tim
 `Sized` is always implemented automatically by the compiler, not by [implementation items].
 These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound.
 
-[`Arc<Self>`]: ../std/sync/struct.Arc.html
-[`Box<T>`]: ../std/boxed/struct.Box.html
-[`Clone`]: ../std/clone/trait.Clone.html
-[`Copy`]: ../std/marker/trait.Copy.html
-[`Deref`]: ../std/ops/trait.Deref.html
-[`DerefMut`]: ../std/ops/trait.DerefMut.html
-[`Drop`]: ../std/ops/trait.Drop.html
-[`Pin<P>`]: ../std/pin/struct.Pin.html
-[`Rc<Self>`]: ../std/rc/struct.Rc.html
-[`RefUnwindSafe`]: ../std/panic/trait.RefUnwindSafe.html
-[`Send`]: ../std/marker/trait.Send.html
-[`Sized`]: ../std/marker/trait.Sized.html
-[`std::cell::UnsafeCell<T>`]: ../std/cell/struct.UnsafeCell.html
-[`std::cmp`]: ../std/cmp/index.html
-[`std::marker::PhantomData<T>`]: ../std/marker/struct.PhantomData.html
-[`std::ops`]: ../std/ops/index.html
-[`Termination`]: ../std/process/trait.Termination.html
-[`UnwindSafe`]: ../std/panic/trait.UnwindSafe.html
-[`Sync`]: ../std/marker/trait.Sync.html
-[`Unpin`]: ../std/marker/trait.Unpin.html
+[`Arc<Self>`]: std::sync::Arc
+[`Deref`]: std::ops::Deref
+[`DerefMut`]: std::ops::DerefMut
+[`Pin<P>`]: std::pin::Pin
+[`Rc<Self>`]: std::rc::Rc
+[`RefUnwindSafe`]: std::panic::RefUnwindSafe
+[`Termination`]: std::process::Termination
+[`UnwindSafe`]: std::panic::UnwindSafe
+[`Unpin`]: std::marker::Unpin
 
 [Arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
@@ -181,7 +170,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [orphan rules]: items/implementations.md#trait-implementation-coherence
 [`static` items]: items/static-items.md
 [test functions]: attributes/testing.md#the-test-attribute
-[the standard library]: ../std/index.html
+[the standard library]: std
 [trait object]: types/trait-object.md
 [Tuples]: types/tuple.md
 [Type parameters]: types/parameters.md
