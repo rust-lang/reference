@@ -154,7 +154,6 @@ impl Preprocessor for Spec {
             }
             ch.content = self.rule_definitions(&ch, &mut found_rules);
             ch.content = self.admonitions(&ch);
-            ch.content = std_links::std_links(&ch);
         });
         // This is a separate pass because it relies on the modifications of
         // the previous passes.
@@ -167,6 +166,10 @@ impl Preprocessor for Spec {
             }
             ch.content = self.auto_link_references(&ch, &found_rules);
         });
+        // Final pass will resolve everything as a std link (or error if the
+        // link is unknown).
+        std_links::std_links(&mut book);
+
         Ok(book)
     }
 }
