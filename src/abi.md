@@ -66,16 +66,27 @@ item's name.
 Additionally, the item will be publicly exported from the produced library or
 object file, similar to the [`used` attribute](#the-used-attribute).
 
+This attribute is unsafe as an unmangled symbol may collide with another symbol
+with the same name (or with a well-known symbol), leading to undefined behavior.
+
+```rust
+#[unsafe(no_mangle)]
+extern "C" fn foo() {}
+```
+
 ## The `link_section` attribute
 
 The *`link_section` attribute* specifies the section of the object file that a
 [function] or [static]'s content will be placed into. It uses the
 [_MetaNameValueStr_] syntax to specify the section name.
 
+This attribute is unsafe as it allows users to place data and code into sections
+of memory not expecting them, such as mutable data into read-only areas.
+
 <!-- no_run: don't link. The format of the section name is platform-specific. -->
 ```rust,no_run
-#[no_mangle]
-#[link_section = ".example_section"]
+#[unsafe(no_mangle)]
+#[unsafe(link_section = ".example_section")]
 pub static VAR1: u32 = 1;
 ```
 
@@ -85,8 +96,12 @@ The *`export_name` attribute* specifies the name of the symbol that will be
 exported on a [function] or [static]. It uses the [_MetaNameValueStr_] syntax
 to specify the symbol name.
 
+This attribute is unsafe as a symbol with a custom name may collide with another
+symbol with the same name (or with a well-known symbol), leading to undefined
+behavior.
+
 ```rust
-#[export_name = "exported_symbol_name"]
+#[unsafe(export_name = "exported_symbol_name")]
 pub fn name_in_rust() { }
 ```
 
