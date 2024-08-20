@@ -74,7 +74,7 @@ with the same name (or with a well-known symbol), leading to undefined behavior.
 extern "C" fn foo() {}
 ```
 
-> **Edition Differences**: Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
+> **Edition differences**: Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
 
 ## The `link_section` attribute
 
@@ -92,7 +92,7 @@ of memory not expecting them, such as mutable data into read-only areas.
 pub static VAR1: u32 = 1;
 ```
 
-> **Edition Differences**: Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
+> **Edition differences**: Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
 ## The `export_name` attribute
 
@@ -109,7 +109,7 @@ behavior.
 pub fn name_in_rust() { }
 ```
 
-> **Edition Differences**: Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
+> **Edition differences**: Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
 
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md
