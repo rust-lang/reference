@@ -600,12 +600,12 @@ primitive field will have the ABI of the primitive field.
 Because this representation delegates type layout to another type, it cannot be
 used with any other representation.
 
-[`align_of_val`]: ../std/mem/fn.align_of_val.html
-[`size_of_val`]: ../std/mem/fn.size_of_val.html
-[`align_of`]: ../std/mem/fn.align_of.html
-[`size_of`]: ../std/mem/fn.size_of.html
-[`Sized`]: ../std/marker/trait.Sized.html
-[`Copy`]: ../std/marker/trait.Copy.html
+[`align_of_val`]: std::mem::align_of_val
+[`size_of_val`]: std::mem::size_of_val
+[`align_of`]: std::mem::align_of
+[`size_of`]: std::mem::size_of
+[`Sized`]: std::marker::Sized
+[`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
 [field-less enums]: items/enumerations.md#field-less-enum
 [enumerations]: items/enumerations.md
@@ -618,4 +618,4 @@ used with any other representation.
 [primitive representations]: #primitive-representations
 [structs]: items/structs.md
 [`transparent`]: #the-transparent-representation
-[`Layout`]: ../std/alloc/struct.Layout.html
+[`Layout`]: std::alloc::Layout

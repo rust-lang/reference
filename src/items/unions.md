@@ -175,10 +175,8 @@ checking, etc etc etc).
 [_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_StructFields_]: structs.md
-[`transmute`]: ../../std/mem/fn.transmute.html
-[`Copy`]: ../../std/marker/trait.Copy.html
+[`transmute`]: std::mem::transmute
 [boolean type]: ../types/boolean.md
-[ManuallyDrop]: ../../std/mem/struct.ManuallyDrop.html
 [the C representation]: ../type-layout.md#reprc-unions
 [type namespace]: ../names/namespaces.md
-[undefined behavior]: ../behavior-considered-undefined.html
+[undefined behavior]: ../behavior-considered-undefined.md

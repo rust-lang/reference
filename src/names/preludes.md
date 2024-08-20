@@ -52,7 +52,7 @@ added as long as the [`no_std` attribute] is not specified in the crate root.
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
 > **Note**: Additional crates that ship with `rustc`, such as [`alloc`], and
-> [`test`], are not automatically included with the `--extern` flag when using
+> [`test`](mod@test), are not automatically included with the `--extern` flag when using
 > Cargo. They must be brought into scope with an `extern crate` declaration,
 > even in the 2018 edition.
 >
@@ -137,24 +137,11 @@ This attribute does not affect the [language prelude].
 > from the standard library are still included in the `macro_use` prelude.
 > Starting in the 2018 edition, it will remove the `macro_use` prelude.
 
-[`alloc`]: ../../alloc/index.html
-[`Box`]: ../../std/boxed/struct.Box.html
-[`core::prelude::v1`]: ../../core/prelude/v1/index.html
-[`core::prelude::rust_2015`]: ../../core/prelude/rust_2015/index.html
-[`core::prelude::rust_2018`]: ../../core/prelude/rust_2018/index.html
-[`core::prelude::rust_2021`]: ../../core/prelude/rust_2021/index.html
-[`core`]: ../../core/index.html
 [`extern crate`]: ../items/extern-crates.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
 [`no_std` attribute]: #the-no_std-attribute
-[`std::prelude::v1`]: ../../std/prelude/v1/index.html
-[`std::prelude::rust_2015`]: ../../std/prelude/rust_2015/index.html
-[`std::prelude::rust_2018`]: ../../std/prelude/rust_2018/index.html
-[`std::prelude::rust_2021`]: ../../std/prelude/rust_2021/index.html
-[`std`]: ../../std/index.html
-[`test`]: ../../test/index.html
 [attribute]: ../attributes.md
 [Boolean type]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index

@@ -284,7 +284,6 @@ They are never allowed before:
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 
-[`Box<T>`]:             ../std/boxed/struct.Box.html
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`Sized`]:              special-types-and-traits.md#sized

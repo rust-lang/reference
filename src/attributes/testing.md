@@ -82,8 +82,8 @@ fn mytest() {
 
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
-[`Termination`]: ../../std/process/trait.Termination.html
-[`report`]: ../../std/process/trait.Termination.html#tymethod.report
+[`Termination`]: std::process::Termination
+[`report`]: std::process::Termination::report
 [`test` conditional compilation option]: ../conditional-compilation.md#test
 [attributes]: ../attributes.md
-[`ExitCode`]: ../../std/process/struct.ExitCode.html
+[`ExitCode`]: std::process::ExitCode

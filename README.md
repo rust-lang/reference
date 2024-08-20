@@ -61,13 +61,15 @@ To build the Reference locally (in `build/`) and open it in a web
 browser, run:
 
 ```sh
-mdbook build --open
+SPEC_RELATIVE=0 mdbook build --open
 ```
 
 This will open a browser with a websocket live-link to automatically reload whenever the source is updated.
 
-You can also open any current build of the reference by running:
+The `SPEC_RELATIVE=0` environment variable makes links to the standard library go to <https://doc.rust-lang.org/> instead of being relative, which is useful when viewing locally since you normally don't have a copy of the standard library.
+
+You can also use mdbook's live webserver option, which will automatically rebuild the book and reload your web browser whenever a source file is modified:
 
 ```sh
-mdbook serve --open
+SPEC_RELATIVE=0 mdbook serve --open
 ```

@@ -54,7 +54,7 @@ By writing `unsafe impl`, the programmer states that they have taken care of sat
 Unsafe trait implementations are the logical dual to unsafe traits: where unsafe traits define a proof obligation that implementations must uphold, unsafe implementations state that all relevant proof obligations have been discharged.
 
 [keyword]: ../std/keyword.unsafe.html
-[`get_unchecked`]: ../std/primitive.slice.html#method.get_unchecked
+[`get_unchecked`]: slice::get_unchecked
 [`unsafe_op_in_unsafe_fn`]: ../rustc/lints/listing/allowed-by-default.html#unsafe-op-in-unsafe-fn
 
 ## Unsafe external blocks (`unsafe extern`)

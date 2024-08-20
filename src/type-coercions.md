@@ -271,6 +271,6 @@ precisely.
 [subtype]: subtyping.md
 [object safe]: items/traits.md#object-safety
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
-[`Unsize`]: ../std/marker/trait.Unsize.html
-[`CoerceUnsized`]: ../std/ops/trait.CoerceUnsized.html
+[`Unsize`]: std::marker::Unsize
+[`CoerceUnsized`]: std::ops::CoerceUnsized
 [method-call expressions]: expressions/method-call-expr.md

@@ -674,8 +674,8 @@ See [this test] for an example of using this dependency.
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[addr_of]: ../../std/ptr/macro.addr_of.html
-[addr_of_mut]: ../../std/ptr/macro.addr_of_mut.html
+[addr_of]: std::ptr::addr_of
+[addr_of_mut]: std::ptr::addr_of_mut
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator

@@ -37,8 +37,6 @@ has no direct effect, but it may be used by tools and diagnostic lints to
 detect these automatically generated implementations.
 
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
-[`Clone`]: ../../std/clone/trait.Clone.html
-[`PartialEq`]: ../../std/cmp/trait.PartialEq.html
 [`impl` item]: ../items/implementations.md
 [items]: ../items.md
 [derive macros]: ../procedural-macros.md#derive-macros

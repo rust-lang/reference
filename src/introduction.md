@@ -131,7 +131,7 @@ We also want the reference to be as normative as possible, so if you see anythin
 
 [book]: ../book/index.html
 [github issues]: https://github.com/rust-lang/reference/issues
-[standard library]: ../std/index.html
+[standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [_Expression_]: expressions.md
