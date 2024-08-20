@@ -55,6 +55,7 @@ pub fn std_links(book: &mut Book) {
         .captures_iter(&generated)
         .map(|cap| cap.get(1).unwrap().as_str())
         .collect();
+    let mut urls = &mut urls[..];
     let expected_len: usize = chapter_links.values().map(|l| l.len()).sum();
     if urls.len() != expected_len {
         eprintln!(
@@ -67,9 +68,9 @@ pub fn std_links(book: &mut Book) {
     // Unflatten the urls list so that it is split back by chapter.
     let mut ch_urls: HashMap<&PathBuf, Vec<_>> = HashMap::new();
     for (ch_path, links) in &chapter_links {
-        let rest = urls.split_off(links.len());
-        ch_urls.insert(ch_path, urls);
-        urls = rest;
+        let xs;
+        (xs, urls) = urls.split_at_mut(links.len());
+        ch_urls.insert(ch_path, xs.into());
     }
 
     // Do this in two passes to deal with lifetimes.
