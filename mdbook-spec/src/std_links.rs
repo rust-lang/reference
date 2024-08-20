@@ -86,7 +86,7 @@ pub fn std_links(book: &mut Book) {
         // Create a list of replacements to make in the raw markdown to point to the new url.
         let replacements = compute_replacements(&ch.content, &chapter_links[key], &ch_urls[key]);
 
-        let mut new_contents = ch.content.to_string();
+        let mut new_contents = ch.content.clone();
         for (md_link, url, range) in replacements {
             // Convert links to be relative so that links work offline and
             // with the linkchecker.
@@ -130,7 +130,7 @@ struct Link<'a> {
 }
 
 /// Collects all markdown links that look like they might be standard library links.
-fn collect_markdown_links<'a>(chapter: &'a Chapter) -> Vec<Link<'a>> {
+fn collect_markdown_links(chapter: &Chapter) -> Vec<Link<'_>> {
     let mut opts = Options::empty();
     opts.insert(Options::ENABLE_TABLES);
     opts.insert(Options::ENABLE_FOOTNOTES);
@@ -294,7 +294,7 @@ fn compute_replacements<'a>(
 ) -> Vec<(&'a str, &'a str, Range<usize>)> {
     let mut replacements = Vec::new();
 
-    for (url, link) in urls.into_iter().zip(links) {
+    for (url, link) in urls.iter().zip(links) {
         let Some(cap) = ANCHOR_URL.captures(url) else {
             eprintln!("error: could not find anchor in:\n{url}\nlink={link:#?}");
             process::exit(1);
