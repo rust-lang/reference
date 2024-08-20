@@ -117,7 +117,7 @@ unsafe fn bump_levels_unsafe() -> u32 {
 // must still guard against concurrent access.
 fn bump_levels_safe() -> u32 {
     unsafe {
-        return atomic_add(std::ptr::addr_of_mut!(LEVELS), 1);
+        return atomic_add(&raw mut LEVELS, 1);
     }
 }
 ```
