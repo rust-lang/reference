@@ -2,7 +2,6 @@
 
 r[cfg]
 
-
 r[cfg.syntax]
 > **<sup>Syntax</sup>**\
 > _ConfigurationPredicate_ :\
@@ -69,7 +68,6 @@ Keys do not need to be unique. For example, both `feature = "std"` and `feature 
 
 r[cfg.options.set]
 
-
 r[cfg.options.general]
 Which configuration options are set is determined statically during the
 compilation of the crate.
@@ -98,7 +96,6 @@ configuration option from within the source code of the crate being compiled.
 
 r[cfg.target_arch]
 
-
 r[cfg.target_arch.gen]
 Key-value option set once with the target's CPU architecture. The value is
 similar to the first element of the platform's target triple, but not
@@ -118,7 +115,6 @@ Example values:
 ### `target_feature`
 
 r[cfg.target_feature]
-
 
 r[cfg.target_feature.general]
 Key-value option set for each platform feature available for the current
@@ -146,7 +142,6 @@ An additional feature of `crt-static` is available to the
 
 r[cfg.target_os]
 
-
 r[cfg.target_os.general]
 Key-value option set once with the target's operating system. This value is
 similar to the second and third element of the platform's target triple.
@@ -168,7 +163,6 @@ Example values:
 ### `target_family`
 
 r[cfg.target_family]
-
 
 r[cfg.target_family.general]
 Key-value option providing a more generic description of a target, such as the family of the
@@ -217,7 +211,6 @@ Example values:
 
 r[cfg.target_abi]
 
-
 r[cfg.target_abi.general]
 Key-value option set to further disambiguate the `target_env` with information
 about the target ABI.
@@ -247,7 +240,6 @@ on the endianness of the target's CPU.
 
 r[cfg.target_poitner_width]
 
-
 r[cfg.target_pointer_width.general]
 Key-value option set once with the target's pointer width in bits.
 
@@ -261,7 +253,6 @@ Example values:
 ### `target_vendor`
 
 r[cfg.target_vendor]
-
 
 r[cfg.target_vendor.general]
 Key-value option set once with the vendor of the target.
@@ -277,7 +268,6 @@ Example values:
 ### `target_has_atomic`
 
 r[cfg.target_has_atomic]
-
 
 r[cfg.target_has_atomic.general]
 Key-value option set for each bit width that the target supports
@@ -325,7 +315,6 @@ Set when the crate being compiled is being compiled with the `proc_macro`
 
 r[cfg.panic]
 
-
 r[cfg.panic.general]
 Key-value option set depending on the panic strategy. Note that more values may be added in the future.
 
@@ -340,7 +329,6 @@ Example values:
 ### The `cfg` attribute
 
 r[cfg.attr]
-
 
 r[cfg.attr.syntax]
 > **<sup>Syntax</sup>**\
@@ -410,7 +398,6 @@ The `cfg` attribute is allowed anywhere attributes are allowed.
 
 r[cfg.cfg_attr]
 
-
 r[cfg.cfg_attr.syntax]
 > **<sup>Syntax</sup>**\
 > _CfgAttrAttribute_ :\
@@ -418,7 +405,6 @@ r[cfg.cfg_attr.syntax]
 >
 > _CfgAttrs_ :\
 > &nbsp;&nbsp; [_Attr_]&nbsp;(`,` [_Attr_])<sup>\*</sup> `,`<sup>?</sup>
-
 
 r[cfg.cfg_attr.general]
 The `cfg_attr` [attribute] conditionally includes [attributes] based on a
