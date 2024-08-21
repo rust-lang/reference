@@ -63,7 +63,9 @@ A _const context_ is one of the following:
 
 Const contexts that are used as parts of types (array type and repeat length
 expressions as well as const generic arguments) can only make restricted use of
-surrounding generic type and lifetime parameters.
+surrounding generic parameters: such an expression must either be a single bare
+const generic parameter, or an arbitrary expression not making use of any
+generics.
 
 ## Const Functions
 
