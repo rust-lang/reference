@@ -26,7 +26,6 @@ Behaviors such as out of bounds [array indexing] or [overflow] are compiler erro
 must be evaluated at compile time (i.e. in const contexts). Otherwise, these
 behaviors are warnings, but will likely panic at run-time.
 
-
 r[const-eval.const-expr.list]
 The following expressions are constant expressions, so long as any operands are
 also constant expressions and do not cause any [`Drop::drop`][destructors] calls
@@ -108,7 +107,6 @@ r[const-eval.const-expr.if-match]
 [const context]: #const-context
 
 r[const-eval.const-context]
-
 
 r[const-eval.const-context.general]
 A _const context_ is one of the following:
