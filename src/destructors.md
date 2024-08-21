@@ -1,8 +1,6 @@
 # Destructors
-r[destructors]
 
-
-r[destructors.general]
+r[destructors.intro]
 When an [initialized]&#32;[variable] or [temporary] goes out of
 [scope](#drop-scopes), its *destructor* is run, or it is *dropped*. [Assignment]
 also runs the destructor of its left-hand operand, if it's initialized. If a
@@ -62,78 +60,77 @@ core::mem::forget(partial_move.1);
 
 ## Drop scopes
 
-r[destructor.scope]
+r[destructors.scope]
 
-
-r[destructor.scope.general]
+r[destructors.scope.intro]
 Each variable or temporary is associated to a *drop scope*. When control flow
 leaves a drop scope all variables associated to that scope are dropped in
 reverse order of declaration (for variables) or creation (for temporaries).
 
-r[destructor.scope.desugaring]
+r[destructors.scope.desugaring]
 Drop scopes are determined after replacing [`for`], [`if let`], and
 [`while let`] expressions with the equivalent expressions using [`match`].
 
-r[destructor.scope.operators]
+r[destructors.scope.operators]
 Overloaded operators are not distinguished from built-in operators and [binding
 modes] are not considered.
 
-r[destructor.scope.list]
+r[destructors.scope.list]
 Given a function, or closure, there are drop scopes for:
 
-r[destructor.scope.function]
+r[destructors.scope.function]
 * The entire function
 
-r[destructor.scope.statement]
+r[destructors.scope.statement]
 * Each [statement]
 
-r[destructor.scope.expression]
+r[destructors.scope.expression]
 * Each [expression]
 
-r[destructor.scope.block]
+r[destructors.scope.block]
 * Each block, including the function body
     * In the case of a [block expression], the scope for the block and the
       expression are the same scope.
 
-r[destructor.scope.match-arm]
+r[destructors.scope.match-arm]
 * Each arm of a `match` expression
 
-r[destructor.scope.nesting]
+r[destructors.scope.nesting]
 Drop scopes are nested within one another as follows. When multiple scopes are
 left at once, such as when returning from a function, variables are dropped
 from the inside outwards.
 
-r[destructor.scope.nesting.function]
+r[destructors.scope.nesting.function]
 * The entire function scope is the outer most scope.
 
-r[destructor.scope.nesting.function-body]
+r[destructors.scope.nesting.function-body]
 * The function body block is contained within the scope of the entire function.
 
-r[destructor.scope.nesting.expr-statement]
+r[destructors.scope.nesting.expr-statement]
 * The parent of the expression in an expression statement is the scope of the
   statement.
 
-r[destructor.scope.nesting.let-initializer]
+r[destructors.scope.nesting.let-initializer]
 * The parent of the initializer of a [`let` statement] is the `let` statement's
   scope.
 
-r[destructor.scope.nesting.statement]
+r[destructors.scope.nesting.statement]
 * The parent of a statement scope is the scope of the block that contains the
   statement.
 
-r[destructor.scope.nesting.match-guard]
+r[destructors.scope.nesting.match-guard]
 * The parent of the expression for a `match` guard is the scope of the arm that
   the guard is for.
 
-r[destructor.scope.nesting.match-arm]
+r[destructors.scope.nesting.match-arm]
 * The parent of the expression after the `=>` in a `match` expression is the
   scope of the arm that it's in.
 
-r[destructor.scope.nesting.match]
+r[destructors.scope.nesting.match]
 * The parent of the arm scope is the scope of the `match` expression that it
   belongs to.
 
-r[destructor.scope.nesting.other]
+r[destructors.scope.nesting.other]
 * The parent of all other scopes is the scope of the immediately enclosing
   expression.
 
@@ -167,9 +164,9 @@ patterns_in_parameters(
 
 ### Scopes of local variables
 
-r[destructor.scope.bindings]
+r[destructors.scope.bindings]
 
-r[destructor.scope.bindings.general]
+r[destructors.scope.bindings.intro]
 Local variables declared in a `let` statement are associated to the scope of
 the block that contains the `let` statement. Local variables declared in a
 `match` expression are associated to the arm scope of the `match` arm that they
@@ -197,13 +194,12 @@ unspecified pattern will be used to determine the drop order.
 
 r[destructors.scope.temporary]
 
-
-r[destructor.scope.temporary.general]
+r[destructors.scope.temporary.intro]
 The *temporary scope* of an expression is the scope that is used for the
 temporary variable that holds the result of that expression when used in a
 [place context], unless it is [promoted].
 
-r[destructor.scope.temporary.enclosing]
+r[destructors.scope.temporary.enclosing]
 Apart from lifetime extension, the temporary scope of an expression is the
 smallest scope that contains the expression and is one of the following:
 
@@ -340,7 +336,6 @@ temporary scope.
 #### Extending based on patterns
 
 r[destructors.scope.lifetime-extension.patterns]
-
 
 r[destructors.scope.lifetime-extension.patterns.extending]
 An *extending pattern* is either
