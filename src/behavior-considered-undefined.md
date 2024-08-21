@@ -177,7 +177,6 @@ to be larger than `isize::MAX`.
 
 r[undefined.validity]
 
-
 r[undefined.validity.general]
 The Rust compiler assumes that all values produced during program execution are
 "valid", and producing an invalid value is hence immediate UB.
@@ -199,7 +198,6 @@ r[undefined.validity.never]
 r[undefined.validity.scalar]
 * An integer (`i*`/`u*`), floating point value (`f*`), or raw pointer must be
   initialized, i.e., must not be obtained from [uninitialized memory][undef].
-
 
 r[undefined.validity.str]
 * A `str` value is treated like `[u8]`, i.e. it must be initialized.
@@ -243,7 +241,6 @@ r[undefined.validity.undef]
 a restricted set of valid values. In other words, the only cases in which
 reading uninitialized memory is permitted are inside `union`s and in "padding"
 (the gaps between the fields of a type).
-
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
