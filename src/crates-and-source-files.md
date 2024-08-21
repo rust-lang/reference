@@ -136,7 +136,6 @@ other object being linked to defines `main`.
 
 r[crate.crate_name]
 
-
 r[crate.crate_name.general]
 The *`crate_name` [attribute]* may be applied at the crate level to specify the
 name of the crate with the [_MetaNameValueStr_] syntax.
