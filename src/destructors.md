@@ -313,7 +313,6 @@ r[destructors.scope.lifetime-extension]
 > change. This is describing the current behavior only.
 
 r[destructors.scope.lifetime-extension.let]
-
 The temporary scopes for expressions in `let` statements are sometimes
 *extended* to the scope of the block containing the `let` statement. This is
 done when the usual temporary scope would be too small, based on certain
