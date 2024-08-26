@@ -650,11 +650,8 @@ r[asm.rules.not-exactly-once]
 - You cannot assume that an `asm!` block will appear exactly once in the output binary.
   The compiler is allowed to instantiate multiple copies of the `asm!` block, for example when the function containing it is inlined in multiple places.
 
-
-
 r[asm.rules.preserves_flags]
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
-
 
 ### Correctness and Validity
 
@@ -698,8 +695,6 @@ r[asm.directives]
 r[asm.directives.subset-supported]
 Inline assembly supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
 The result of using other directives is assembler-specific (and may cause an error, or may be accepted as-is).
-
-
 
 r[asm.directives.supported-directives]
 The following directives are guaranteed to be supported by the assembler:
