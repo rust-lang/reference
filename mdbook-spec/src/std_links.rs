@@ -145,7 +145,7 @@ fn collect_markdown_links(chapter: &Chapter) -> Vec<Link<'_>> {
     // Broken links are collected so that you can write something like
     // `[std::option::Option]` which in pulldown_cmark's eyes is a broken
     // link. However, that is the normal syntax for rustdoc.
-    let broken_link = |broken_link: BrokenLink| {
+    let broken_link = |broken_link: BrokenLink<'_>| {
         broken_links.push(Link {
             link_type: broken_link.link_type,
             // Necessary due to lifetime issues.
@@ -205,7 +205,7 @@ fn collect_markdown_links(chapter: &Chapter) -> Vec<Link<'_>> {
 /// generate intra-doc links on them.
 ///
 /// The output will be in the given `tmp` directory.
-fn run_rustdoc(tmp: &TempDir, chapter_links: &HashMap<&PathBuf, Vec<Link>>) {
+fn run_rustdoc(tmp: &TempDir, chapter_links: &HashMap<&PathBuf, Vec<Link<'_>>>) {
     let src_path = tmp.path().join("a.rs");
     // Allow redundant since there could some in-scope things that are
     // technically not necessary, but we don't care about (like

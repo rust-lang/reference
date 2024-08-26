@@ -1,3 +1,5 @@
+#![deny(rust_2018_idioms, unused_lifetimes)]
+
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
