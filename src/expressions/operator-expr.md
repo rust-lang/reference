@@ -158,7 +158,6 @@ unsafe { f1_ptr.write(true); }
 let init = unsafe { uninit.assume_init() };
 ```
 
-
 ## The dereference operator
 
 r[expr.deref]
@@ -194,7 +193,6 @@ assert_eq!(*y, 11);
 ## The question mark operator
 
 r[expr.try]
-
 
 r[expr.try.syntax]
 > **<sup>Syntax</sup>**\
@@ -386,7 +384,6 @@ a == b;
 // is equivalent to
 ::std::cmp::PartialEq::eq(&a, &b);
 ```
-
 
 This means that the operands don't have to be moved out of.
 
