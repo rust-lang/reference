@@ -1,5 +1,8 @@
 # Operator expressions
 
+r[expr.operator]
+
+r[expr.operator.syntax]
 > **<sup>Syntax</sup>**\
 > _OperatorExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_BorrowExpression_]\
@@ -13,19 +16,32 @@
 > &nbsp;&nbsp; | [_AssignmentExpression_]\
 > &nbsp;&nbsp; | [_CompoundAssignmentExpression_]
 
+r[expr.operator.intro]
 Operators are defined for built in types by the Rust language.
+
+r[expr.operator.trait]
 Many of the following operators can also be overloaded using traits in `std::ops` or `std::cmp`.
 
 ## Overflow
 
+r[expr.operator.int-overflow]
+
+r[expr.operator.int-overflow.intro]
 Integer operators will panic when they overflow when compiled in debug mode.
 The `-C debug-assertions` and `-C overflow-checks` compiler flags can be used to control this more directly.
 The following things are considered to be overflow:
 
+r[expr.operator.int-overflow.binary-arith]
 * When `+`, `*` or binary `-` create a value greater than the maximum value, or less than the minimum value that can be stored.
+
+r[expr.operator.int-overflow.unary-neg]
 * Applying unary `-` to the most negative value of any signed integer type, unless the operand is a [literal expression] (or a literal expression standing alone inside one or more [grouped expressions][grouped expression]).
+
+r[expr.operator.int-overflow.div]
 * Using `/` or `%`, where the left-hand argument is the smallest integer of a signed integer type and the right-hand argument is `-1`.
   These checks occur even when `-C overflow-checks` is disabled, for legacy reasons.
+
+r[expr.operator.int-overflow.shift]
 * Using `<<` or `>>` where the right-hand argument is greater than or equal to the number of bits in the type of the left-hand argument, or is negative.
 
 > **Note**: The exception for literal expressions behind unary `-` means that forms such as `-128_i8` or `let j: i8 = -(128)` never cause a panic and have the expected value of -128.
@@ -38,6 +54,8 @@ The following things are considered to be overflow:
 
 ## Borrow operators
 
+r[expr.operator.borrow]
+
 > **<sup>Syntax</sup>**\
 > _BorrowExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
@@ -45,12 +63,21 @@ The following things are considered to be overflow:
 > &nbsp;&nbsp; | (`&`|`&&`) `raw` `const` [_Expression_]\
 > &nbsp;&nbsp; | (`&`|`&&`) `raw` `mut` [_Expression_]
 
+r[expr.operator.borrow.intro]
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix operators.
+
+r[expr.operator.borrow.result]
 When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
+
+r[expr.operator.borrow.lifetime]
 The memory location is also placed into a borrowed state for the duration of the reference.
 For a shared borrow (`&`), this implies that the place may not be mutated, but it may be read or shared again.
 For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
+
+r[expr.operator.borrow.mut]
 `&mut` evaluates its operand in a mutable place expression context.
+
+r[expr.operator.borrow.temporary]
 If the `&` or `&mut` operators are applied to a [value expression], then a [temporary value] is created.
 
 These operators cannot be overloaded.
@@ -68,6 +95,7 @@ let mut array = [-2, 3, 9];
 }
 ```
 
+r[expr.borrow.and-and-syntax]
 Even though `&&` is a single token ([the lazy 'and' operator](#lazy-boolean-operators)), when used in the context of borrow expressions it works as two borrows:
 
 ```rust
@@ -83,10 +111,18 @@ let a = & & & & mut 10;
 
 ### Raw borrow operators
 
+r[expr.borrow.raw]
+
+r[expr.borrow.raw.intro]
 `&raw const` and `&raw mut` are the *raw borrow operators*.
+
+r[expr.borrow.raw.place]
 The operand expression of these operators is evaluated in place expression context.
+
+r[expr.borrow.raw.result]
 `&raw const expr` then creates a const raw pointer of type `*const T` to the given place, and `&raw mut expr` creates a mutable raw pointer of type `*mut T`.
 
+r[expr.borrow.raw.invalid-ref]
 The raw borrow operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
 In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed.
 
@@ -125,15 +161,26 @@ let init = unsafe { uninit.assume_init() };
 
 ## The dereference operator
 
+r[expr.deref]
+
+r[expr.deref.syntax]
 > **<sup>Syntax</sup>**\
 > _DereferenceExpression_ :\
 > &nbsp;&nbsp; `*` [_Expression_]
 
+r[expr.deref.intro]
 The `*` (dereference) operator is also a unary prefix operator.
+
+r[expr.deref.result]
 When applied to a [pointer](../types/pointer.md) it denotes the pointed-to location.
+
+r[expr.deref.mut]
 If the expression is of type `&mut T` or `*mut T`, and is either a local variable, a (nested) field of a local variable or is a mutable [place expression], then the resulting memory location can be assigned to.
+
+r[expr.deref.safety]
 Dereferencing a raw pointer requires `unsafe`.
 
+r[expr.deref.traits]
 On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an [immutable place expression context](../expressions.md#mutability) and `*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context.
 
 ```rust
@@ -146,15 +193,27 @@ assert_eq!(*y, 11);
 
 ## The question mark operator
 
+r[expr.try]
+
+
+r[expr.try.syntax]
 > **<sup>Syntax</sup>**\
 > _ErrorPropagationExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `?`
 
+r[expr.try.intro]
 The question mark operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
+
+r[expr.try.constraint]
 It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
+r[expr.try.behaviour-std-result]
 When applied to values of the `Result<T, E>` type, it propagates errors.
+
+r[expr.try.effects-err]
 If the value is `Err(e)`, then it will return `Err(From::from(e))` from the enclosing function or closure.
+
+r[expr.try.result-ok]
 If applied to `Ok(x)`, then it will unwrap the value to evaluate to `x`.
 
 ```rust
@@ -170,8 +229,13 @@ println!("{:?}", res);
 # assert!(res.is_err())
 ```
 
+r[expr.try.behaviour-std-option]
 When applied to values of the `Option<T>` type, it propagates `None`s.
+
+r[expr.try.effects-none]
 If the value is `None`, then it will return `None`.
+
+r[expr.try.result-ok]
 If applied to `Some(x)`, then it will unwrap the value to evaluate to `x`.
 
 ```rust
@@ -188,16 +252,23 @@ fn try_option_none() -> Option<u8> {
 assert_eq!(try_option_none(), None);
 ```
 
+r[expr.try.trait]
 `?` cannot be overloaded.
 
 ## Negation operators
 
+r[expr.negate]
+
+r[expr.negate.syntax]
 > **<sup>Syntax</sup>**\
 > _NegationExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]\
 > &nbsp;&nbsp; | `!` [_Expression_]
 
+r[expr.negate.intro]
 These are the last two unary operators.
+
+r[expr.negate.results]
 This table summarizes the behavior of them on primitive types and which traits are used to overload these operators for other types.
 Remember that signed integers are always represented using two's complement.
 The operands of all of these operators are evaluated in [value expression context][value expression] so are moved or copied.
@@ -220,6 +291,9 @@ assert_eq!(true, !false);
 
 ## Arithmetic and Logical Binary Operators
 
+r[expr.arith-logic]
+
+r[expr.arith-logic.syntax]
 > **<sup>Syntax</sup>**\
 > _ArithmeticOrLogicalExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+` [_Expression_]\
@@ -233,7 +307,10 @@ assert_eq!(true, !false);
 > &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]
 
+r[expr.arith-logic.syntax]
 Binary operators expressions are all written with infix notation.
+
+r[expr.arith-logic.behaviour]
 This table summarizes the behavior of arithmetic and logical binary operators on primitive types and which traits are used to overload these operators for other types.
 Remember that signed integers are always represented using two's complement.
 The operands of all of these operators are evaluated in [value expression context][value expression] so are moved or copied.
@@ -277,6 +354,9 @@ assert_eq!(-10 >> 2, -3);
 
 ## Comparison Operators
 
+r[expr.cmp]
+
+r[expr.cmp.syntax]
 > **<sup>Syntax</sup>**\
 > _ComparisonExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `==` [_Expression_]\
@@ -286,11 +366,17 @@ assert_eq!(-10 >> 2, -3);
 > &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]
 
+r[expr.cmp.intro]
 Comparison operators are also defined both for primitive types and many types in the standard library.
+
+r[expr.cmp.restriction]
 Parentheses are required when chaining comparison operators. For example, the expression `a == b == c` is invalid and may be written as `(a == b) == c`.
 
+r[expr.cmp.trait]
 Unlike arithmetic and logical operators, the traits for overloading these operators are used more generally to show how a type may be compared and will likely be assumed to define actual comparisons by functions that use these traits as bounds.
 Many functions and macros in the standard library can then use that assumption (although not to ensure safety).
+
+r[expr.cmp.place]
 Unlike the arithmetic and logical operators above, these operators implicitly take shared borrows of their operands, evaluating them in [place expression context][place expression]:
 
 ```rust
@@ -301,7 +387,10 @@ a == b;
 ::std::cmp::PartialEq::eq(&a, &b);
 ```
 
+
 This means that the operands don't have to be moved out of.
+
+r[expr.cmp.behaviour]
 
 | Symbol | Meaning                  | Overloading method         |
 |--------|--------------------------|----------------------------|
@@ -325,13 +414,19 @@ assert!("World" >= "Hello");
 
 ## Lazy boolean operators
 
+r[expr.bool-logic]
+
+r[expr.bool-logic.syntax]
 > **<sup>Syntax</sup>**\
 > _LazyBooleanExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `&&` [_Expression_]
 
+r[expr.bool-logic.intro]
 The operators `||` and `&&` may be applied to operands of boolean type.
 The `||` operator denotes logical 'or', and the `&&` operator denotes logical 'and'.
+
+r[expr.bool-logic.conditional-evaluation]
 They differ from `|` and `&` in that the right-hand operand is only evaluated when the left-hand operand does not already determine the result of the expression.
 That is, `||` only evaluates its right-hand operand when the left-hand operand evaluates to `false`, and `&&` only when it evaluates to `true`.
 
@@ -342,12 +437,17 @@ let y = false && panic!(); // false, doesn't evaluate `panic!()`
 
 ## Type cast expressions
 
+r[expr.as]
+
+r[expr.as.syntax]
 > **<sup>Syntax</sup>**\
 > _TypeCastExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `as` [_TypeNoBounds_]
 
+r[expr.as.intro]
 A type cast expression is denoted with the binary operator `as`.
 
+r[expr.as.result]
 Executing an `as` expression casts the value on the left-hand side to the type on the right-hand side.
 
 An example of an `as` expression:
@@ -362,6 +462,7 @@ fn average(values: &[f64]) -> f64 {
 }
 ```
 
+r[expr.as.coercions]
 `as` can be used to explicitly perform [coercions](../type-coercions.md), as well as the following additional casts.
 Any cast that does not fit either a coercion rule or an entry in the table is a compiler error.
 Here `*T` means either `*const T` or `*mut T`. `m` stands for optional `mut` in
@@ -396,6 +497,9 @@ reference types and `mut` or `const` in pointer types.
 
 #### Numeric cast
 
+r[expr.as.numeric]
+
+r[expr.as.numeric.int-same-size]
 * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
   (Rust uses 2's complement for negative values of fixed integers)
 
@@ -406,6 +510,7 @@ reference types and `mut` or `const` in pointer types.
   assert_eq!(-1i16 as u16, 65535u16);
   ```
 
+r[expr.as.numeric.int-truncation]
 * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
   truncate
 
@@ -419,6 +524,7 @@ reference types and `mut` or `const` in pointer types.
   assert_eq!(0xabcdi32 as i8, -51i8);
   ```
 
+r[expr.as.numeric.int-extension]
 * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
     * zero-extend if the source is unsigned
     * sign-extend if the source is signed
@@ -431,6 +537,7 @@ reference types and `mut` or `const` in pointer types.
   assert_eq!(0b1000_1010u8 as i8 as i16, 0b1111_1111_1000_1010u16 as i16, "Sign-extend 1");
   ```
 
+r[expr.as.numeric.float-as-int]
 * Casting from a float to an integer will round the float towards zero
     * `NaN` will return `0`
     * Values larger than the maximum integer value, including `INFINITY`, will saturate to the maximum value of the integer type.
@@ -445,6 +552,7 @@ reference types and `mut` or `const` in pointer types.
   assert_eq!(std::f32::NEG_INFINITY as i32, -0x80000000i32);
   ```
 
+r[expr.as.numeric.int-as-float]
 * Casting from an integer to float will produce the closest possible float \*
     * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
     * on overflow, infinity (of the same sign as the input) is produced
@@ -457,6 +565,7 @@ reference types and `mut` or `const` in pointer types.
   assert_eq!(0xffffffff_ffffffff_ffffffff_ffffffff_u128 as f32, std::f32::INFINITY);
   ```
 
+r[expr.as.numeric.float-widening]
 * Casting from an f32 to an f64 is perfect and lossless
 
   ```rust
@@ -465,6 +574,7 @@ reference types and `mut` or `const` in pointer types.
   assert!((std::f32::NAN as f64).is_nan());
   ```
 
+r[expr.as.numeric.float-narrowing]
 * Casting from an f64 to an f32 will produce the closest possible f32 \*\*
     * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
     * on overflow, infinity (of the same sign as the input) is produced
@@ -490,6 +600,8 @@ halfway between two floating point numbers.
 
 #### Enum cast
 
+r[expr.as.enum]
+
 Casts an enum to its discriminant, then uses a numeric cast if needed.
 Casting is limited to the following kinds of enumerations:
 
@@ -505,6 +617,8 @@ assert_eq!(Enum::C as i32, 2);
 
 #### Primitive to integer cast
 
+r[expr.as.bool-char-as-int]
+
 * `false` casts to `0`, `true` casts to `1`
 * `char` casts to the value of the code point, then uses a numeric cast if needed.
 
@@ -517,6 +631,7 @@ assert_eq!('Ö' as i32, 214);
 
 #### `u8` to `char` cast
 
+r[expr.as.u8-as-char]
 Casts to the `char` with the corresponding code point.
 
 ```rust
@@ -526,10 +641,14 @@ assert_eq!(214u8 as char, 'Ö');
 
 #### Pointer to address cast
 
+r[expr.as.pointer-as-int]
+
 Casting from a raw pointer to an integer produces the machine address of the referenced memory.
 If the integer type is smaller than the pointer type, the address may be truncated; using `usize` avoids this.
 
 #### Address to pointer cast
+
+r[expr.as.int-as-pointer]
 
 Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
@@ -554,9 +673,15 @@ assert_eq!(values[1], 3);
 
 #### Pointer-to-pointer cast
 
+r[expr.as.pointer]
+
+r[expr.as.pointer.behaviour]
 `*const T` / `*mut T` can be cast to `*const U` / `*mut U` with the following behavior:
 
+r[expr.as.pointer.sized]
 - If `T` and `U` are both sized, the pointer is returned unchanged.
+
+r[expr.as.pointer.unsized]
 - If `T` and `U` are both unsized, the pointer is also returned unchanged.
   In particular, the metadata is preserved exactly.
 
@@ -565,31 +690,51 @@ assert_eq!(values[1], 3);
   (e.g., casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refers to an object of half the size of the original).
   The same holds for `str` and any compound type whose unsized tail is a slice type,
   such as `struct Foo(i32, [u8])` or `(u64, Foo)`.
+
+r[expr.as.pointer.discard-metadata]
 - If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
 
 ## Assignment expressions
 
+r[expr.assign]
+
+r[expr.assign.syntax]
 > **<sup>Syntax</sup>**\
 > _AssignmentExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `=` [_Expression_]
 
+r[expr.assign.intro]
 An *assignment expression* moves a value into a specified place.
 
+r[expr.assign.assignee]
 An assignment expression consists of a [mutable] [assignee expression], the *assignee operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
+
+r[expr.assign.behaviour-basic]
 In its most basic form, an assignee expression is a [place expression], and we discuss this case first.
+
+r[expr.assign.behaviour-destructring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
 ### Basic assignments
 
+r[expr.assign.basic]
+
+r[expr.assign.evaluation-order]
 Evaluating assignment expressions begins by evaluating its operands.
 The assigned value operand is evaluated first, followed by the assignee expression.
+
+r[expr.assign.destructring-order]
 For destructuring assignment, subexpressions of the assignee expression are evaluated left-to-right.
 
 > **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
+r[expr.assign.drop-target]
 It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
+
+r[expr.assign.behaviour]
 Next it either [copies or moves] the assigned value to the assigned place.
 
+r[expr.assign.result]
 An assignment expression always produces [the unit value][unit].
 
 Example:
@@ -602,6 +747,9 @@ x = y;
 
 ### Destructuring assignments
 
+r[expr.assign.destructure]
+
+r[expr.assign.destructure.intro]
 Destructuring assignment is a counterpart to destructuring pattern matches for variable declaration, permitting assignment to complex values, such as tuples or structs.
 For instance, we may swap two mutable variables:
 
@@ -611,9 +759,12 @@ let (mut a, mut b) = (0, 1);
 (b, a) = (a, b);
 ```
 
+r[expr.assign.destructure.restriction]
 In contrast to destructuring declarations using `let`, patterns may not appear on the left-hand side of an assignment due to syntactic ambiguities.
 Instead, a group of expressions that correspond to patterns are designated to be [assignee expressions][assignee expression], and permitted on the left-hand side of an assignment.
 Assignee expressions are then desugared to pattern matches followed by sequential assignment.
+
+r[expr.assign.destructure.constraint]
 The desugared patterns must be irrefutable: in particular, this means that only slice patterns whose length is known at compile-time, and the trivial slice `[..]`, are permitted for destructuring assignment.
 
 The desugaring method is straightforward, and is illustrated best by example.
@@ -648,14 +799,20 @@ Struct { x: a, y: b } = Struct { x: 3, y: 4};
 }
 ```
 
+r[expr.assign.destructure.repeat-ident]
 Identifiers are not forbidden from being used multiple times in a single assignee expression.
 
+r[expr.assign.destructure.discard-value]
 [Underscore expressions][_UnderscoreExpression_] and empty [range expressions][_RangeExpression_] may be used to ignore certain values, without binding them.
 
+r[expr.assign.destructure.default-binding]
 Note that default binding modes do not apply for the desugared expression.
 
 ## Compound assignment expressions
 
+r[expr.compound-assign]
+
+r[expr.compound-assign.syntax]
 > **<sup>Syntax</sup>**\
 > _CompoundAssignmentExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+=` [_Expression_]\
@@ -669,6 +826,7 @@ Note that default binding modes do not apply for the desugared expression.
 > &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]
 
+r[expr.compound-assign.intro]
 *Compound assignment expressions* combine arithmetic and logical binary operators with assignment expressions.
 
 For example:
@@ -681,16 +839,22 @@ assert!(x == 6);
 
 The syntax of compound assignment is a [mutable] [place expression], the *assigned operand*, then one of the operators followed by an `=` as a single token (no whitespace), and then a [value expression], the *modifying operand*.
 
+r[expr.compound-assign.place]
 Unlike other place operands, the assigned place operand must be a place expression.
+
+r[expr.compound-assign.constraint]
 Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
+r[expr.compound-assign.operand-order]
 Evaluation of compound assignment expressions depends on the types of the operators.
 
+r[expr.compound-assign.primitive-order]
 If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
 It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
 
 > **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
 
+r[expr.compound-assign.trait]
 Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assignment trait of the operator (see the table earlier in this chapter).
 A mutable borrow of the assigned operand is automatically taken.
 
@@ -714,6 +878,7 @@ fn example() {
 }
 ```
 
+r[expr.compound-assign.result]
 Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
 
 > [!WARNING]
