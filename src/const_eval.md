@@ -38,8 +38,11 @@ to be run.
 * [Closure expressions] which don't capture variables from the environment.
 * Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool`, and `char`.
-* Shared [borrow]s, except if applied to a type with [interior mutability].
-* The [dereference operator] except for raw pointers.
+* All forms of [borrow]s, including raw borrows, with one limitation:
+  mutable borrows and shared borrows to values with interior mutability
+  are only allowed to refer to *transient* places. A place is *transient*
+  if it will be deallocated before the end of evaluating the current constant item.
+* The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except
   * pointer to address casts and
