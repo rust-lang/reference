@@ -86,7 +86,6 @@ These cases require a [disambiguating function call syntax] for method and funct
 >
 > This special case may be removed in the future.
 
-
 > [!WARNING]
 > For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression.
 > Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method.
