@@ -507,7 +507,6 @@ The expression's type is the primitive [boolean type], and its value is:
  * true if the keyword is `true`
  * false if the keyword is `false`
 
-
 [Escape]: #escapes
 [Simple escape]: #simple-escapes
 [Simple escapes]: #simple-escapes
