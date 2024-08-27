@@ -189,7 +189,7 @@ let circle_shape = Circle::new();
 let bounding_box = circle_shape.bounding_box();
 ```
 
-> **Edition Differences**: In the 2015 edition, it is possible to declare trait
+> **Edition differences**: In the 2015 edition, it is possible to declare trait
 > methods with anonymous parameters (e.g. `fn foo(u8)`). This is deprecated and
 > an error as of the 2018 edition. All parameters must have an argument name.
 

@@ -375,7 +375,7 @@ c"\u{00E6}";
 c"\xC3\xA6";
 ```
 
-> **Edition Differences**: C string literals are accepted in the 2021 edition or
+> **Edition differences**: C string literals are accepted in the 2021 edition or
 > later. In earlier additions the token `c""` is lexed as `c ""`.
 
 #### Raw C string literals
@@ -400,7 +400,7 @@ encoding. The characters `U+0022` (double-quote) (except when followed by at
 least as many `U+0023` (`#`) characters as were used to start the raw C string
 literal) or `U+005C` (`\`) do not have any special meaning.
 
-> **Edition Differences**: Raw C string literals are accepted in the 2021
+> **Edition differences**: Raw C string literals are accepted in the 2021
 > edition or later. In earlier additions the token `cr""` is lexed as `cr ""`,
 > and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
 
@@ -735,7 +735,7 @@ Note that raw identifiers, raw string literals, and raw byte string literals may
 
 Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals, byte literals, byte string literals, raw byte string literals, C string literals, and raw C string literals are not interpreted as reserved prefixes.
 
-> **Edition Differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
+> **Edition differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
 >
 > Before the 2021 edition, reserved prefixes are accepted by the lexer and interpreted as multiple tokens (for example, one token for the identifier or keyword, followed by a `#` token).
 >

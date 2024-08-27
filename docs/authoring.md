@@ -154,4 +154,4 @@ The reference does not document which targets exist, or the properties of specif
 
 ### Editions
 
-The main text and flow should document only the current edition. Whenever there is a difference between editions, the differences should be called out with an "Edition Differences" block.
+The main text and flow should document only the current edition. Whenever there is a difference between editions, the differences should be called out with an "Edition differences" block.

@@ -156,7 +156,7 @@ follows:
 - `pub(self)` makes an item visible to the current module. This is equivalent
 to `pub(in self)` or not using `pub` at all.
 
-> **Edition Differences**: Starting with the 2018 edition, paths for
+> **Edition differences**: Starting with the 2018 edition, paths for
 > `pub(in path)` must start with `crate`, `self`, or `super`. The 2015 edition
 > may also use paths starting with `::` or modules from the crate root.
 
