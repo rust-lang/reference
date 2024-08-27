@@ -233,7 +233,7 @@ When applied to values of the `Option<T>` type, it propagates `None`s.
 r[expr.try.effects-none]
 If the value is `None`, then it will return `None`.
 
-r[expr.try.result-ok]
+r[expr.try.result-some]
 If applied to `Some(x)`, then it will unwrap the value to evaluate to `x`.
 
 ```rust
