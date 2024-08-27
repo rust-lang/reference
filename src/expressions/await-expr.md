@@ -1,15 +1,24 @@
 # Await expressions
 
+r[expr.await]
+
+r[expr.await.syntax]
 > **<sup>Syntax</sup>**\
 > _AwaitExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `.` `await`
 
+r[expr.await.intro]
 An `await` expression is a syntactic construct for suspending a computation
 provided by an implementation of `std::future::IntoFuture` until the given
 future is ready to produce a value.
+
+r[expr.await.construct]
 The syntax for an await expression is an expression with a type that implements the [`IntoFuture`] trait, called the *future operand*, then the token `.`, and then the `await` keyword.
+
+r[expr.await.constraints]
 Await expressions are legal only within an [async context], like an [`async fn`], [`async` closure], or [`async` block].
 
+r[expr.await.effects]
 More specifically, an await expression has the following effect.
 
 1. Create a future by calling [`IntoFuture::into_future`] on the future operand.
@@ -23,10 +32,14 @@ More specifically, an await expression has the following effect.
 
 ## Task context
 
+r[expr.await.task]
+
 The task context refers to the [`Context`] which was supplied to the current [async context] when the async context itself was polled.
 Because `await` expressions are only legal in an async context, there must be some task context available.
 
 ## Approximate desugaring
+
+r[expr.await.desugar]
 
 Effectively, an await expression is roughly equivalent to the following non-normative desugaring:
 
