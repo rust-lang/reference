@@ -55,7 +55,7 @@ An expression *evaluates to* a value, and has effects during *evaluation*.
 r[expr.operands]
 Many expressions contain sub-expressions, called the *operands* of the expression.
 
-r[expr.behaviour]
+r[expr.behavior]
 The meaning of each kind of expression dictates several things:
 
 * Whether or not to evaluate the operands when evaluating the expression
