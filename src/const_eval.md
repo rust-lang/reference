@@ -41,7 +41,7 @@ to be run.
 * All forms of [borrow]s, including raw borrows, with one limitation:
   mutable borrows and shared borrows to values with interior mutability
   are only allowed to refer to *transient* places. A place is *transient*
-  if it will be deallocated before the end of evaluating the current constant item.
+  if its lifetime is strictly contained inside the current [const context].
 * The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except
@@ -52,6 +52,7 @@ to be run.
 * [if], [`if let`] and [match] expressions.
 
 ## Const context
+[const context]: #const-context
 
 A _const context_ is one of the following:
 
