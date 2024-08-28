@@ -4,8 +4,6 @@ r[expr.tuple]
 
 ## Tuple expressions
 
-r[expr.tuple]
-
 r[expr.tuple.syntax]
 > **<sup>Syntax</sup>**\
 > _TupleExpression_ :\

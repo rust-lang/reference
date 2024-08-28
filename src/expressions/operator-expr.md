@@ -305,7 +305,7 @@ r[expr.arith-logic.syntax]
 > &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]\
 > &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]
 
-r[expr.arith-logic.syntax]
+r[expr.arith-logic.intro]
 Binary operators expressions are all written with infix notation.
 
 r[expr.arith-logic.behavior]
