@@ -1,6 +1,6 @@
 # Loops and other breakable expressions
 
-r[expr.block]
+r[expr.loop]
 
 r[expr.loop.syntax]
 > **<sup>Syntax</sup>**\
@@ -32,7 +32,7 @@ Rust supports five loop expressions:
 r[expr.loop.break-label]
 All five types of loop support [`break` expressions](#break-expressions), and [labels](#loop-labels).
 
-r[expr.loop.continue]
+r[expr.loop.continue-label]
 All except labelled block expressions support [`continue` expressions](#continue-expressions).
 
 r[expr.loop.explicit-result]
