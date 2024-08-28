@@ -23,7 +23,7 @@ The first form lists out every value in the array.
 r[expr.array.array-syntax]
 The syntax for this form is a comma-separated list of expressions of uniform type enclosed in square brackets.
 
-r[expr.array.array-behaviour]
+r[expr.array.array-behavior]
 This produces an array containing each of these values in the order they are written.
 
 r[expr.array.repeat]
@@ -38,7 +38,7 @@ The expression after the `;` is called the *length operand*.
 r[expr.array.length-restriction]
 It must have type `usize` and be a [constant expression], such as a [literal] or a [constant item].
 
-r[expr.array.repeat-behaviour]
+r[expr.array.repeat-behavior]
 An array expression of this form creates an array with the length of the value of the length operand with each element being a copy of the repeat operand.
 That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
 

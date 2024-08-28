@@ -36,7 +36,7 @@ A `match` expression has a *[scrutinee] expression*, which is the value to compa
 r[expr.match.scrutinee-constraint]
 The scrutinee expression and the patterns must have the same type.
 
-r[expr.match.scrutinee-behaviour]
+r[expr.match.scrutinee-behavior]
 A `match` behaves differently depending on whether or not the scrutinee expression is a [place expression or value expression][place expression].
 
 r[expr.match.scrutinee-value]
@@ -111,7 +111,7 @@ Match arms can accept _match guards_ to further refine the criteria for matching
 r[expr.match.guard.type]
 Pattern guards appear after the pattern and consist of a `bool`-typed expression following the `if` keyword.
 
-r[expr.match.guard.behaviour]
+r[expr.match.guard.behavior]
 When the pattern matches successfully, the pattern guard expression is executed.
 If the expression evaluates to true, the pattern is successfully matched against.
 

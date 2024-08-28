@@ -30,7 +30,7 @@ r[expr.range.syntax]
 > _RangeToInclusiveExpr_ :\
 > &nbsp;&nbsp; `..=` [_Expression_]
 
-r[expr.range.behaviour]
+r[expr.range.behavior]
 The `..` and `..=` operators will construct an object of one of the `std::ops::Range` (or `core::ops::Range`) variants, according to the following table:
 
 | Production             | Syntax        | Type                         | Range                 |

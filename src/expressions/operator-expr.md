@@ -205,7 +205,7 @@ The question mark operator (`?`) unwraps valid values or returns erroneous value
 r[expr.try.constraint]
 It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
-r[expr.try.behaviour-std-result]
+r[expr.try.behavior-std-result]
 When applied to values of the `Result<T, E>` type, it propagates errors.
 
 r[expr.try.effects-err]
@@ -227,7 +227,7 @@ println!("{:?}", res);
 # assert!(res.is_err())
 ```
 
-r[expr.try.behaviour-std-option]
+r[expr.try.behavior-std-option]
 When applied to values of the `Option<T>` type, it propagates `None`s.
 
 r[expr.try.effects-none]
@@ -308,7 +308,7 @@ r[expr.arith-logic.syntax]
 r[expr.arith-logic.syntax]
 Binary operators expressions are all written with infix notation.
 
-r[expr.arith-logic.behaviour]
+r[expr.arith-logic.behavior]
 This table summarizes the behavior of arithmetic and logical binary operators on primitive types and which traits are used to overload these operators for other types.
 Remember that signed integers are always represented using two's complement.
 The operands of all of these operators are evaluated in [value expression context][value expression] so are moved or copied.
@@ -387,7 +387,7 @@ a == b;
 
 This means that the operands don't have to be moved out of.
 
-r[expr.cmp.behaviour]
+r[expr.cmp.behavior]
 
 | Symbol | Meaning                  | Overloading method         |
 |--------|--------------------------|----------------------------|
@@ -672,7 +672,7 @@ assert_eq!(values[1], 3);
 
 r[expr.as.pointer]
 
-r[expr.as.pointer.behaviour]
+r[expr.as.pointer.behavior]
 `*const T` / `*mut T` can be cast to `*const U` / `*mut U` with the following behavior:
 
 r[expr.as.pointer.sized]
@@ -706,10 +706,10 @@ An *assignment expression* moves a value into a specified place.
 r[expr.assign.assignee]
 An assignment expression consists of a [mutable] [assignee expression], the *assignee operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
 
-r[expr.assign.behaviour-basic]
+r[expr.assign.behavior-basic]
 In its most basic form, an assignee expression is a [place expression], and we discuss this case first.
 
-r[expr.assign.behaviour-destructring]
+r[expr.assign.behavior-destructring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
 ### Basic assignments
@@ -728,7 +728,7 @@ For destructuring assignment, subexpressions of the assignee expression are eval
 r[expr.assign.drop-target]
 It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
 
-r[expr.assign.behaviour]
+r[expr.assign.behavior]
 Next it either [copies or moves] the assigned value to the assigned place.
 
 r[expr.assign.result]
