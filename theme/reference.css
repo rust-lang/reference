@@ -11,15 +11,11 @@ the parenthetical. So for this example, you'd use
 }
 
 /*
-Warnings and notes:
+Warnings are defined using admonitions in blockquotes:
 
-Write the <div>s on their own line. E.g.
+> [!WARNING]
+> This is bad!
 
-<div class="warning">
-
-Warning: This is bad!
-
-</div>
 */
 main .warning p {
     padding: 10px 20px;
