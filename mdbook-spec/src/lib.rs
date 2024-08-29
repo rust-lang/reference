@@ -19,7 +19,7 @@ static RULE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?m)^r\[([^]]+)]$").unwr
 /// The Regex for the syntax for blockquotes that have a specific CSS class,
 /// like `> [!WARNING]`.
 static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *> .*\n)+)").unwrap()
+    Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
 
 pub fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
