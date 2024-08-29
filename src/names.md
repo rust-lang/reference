@@ -1,34 +1,49 @@
 # Names
 
+r[name]
+
+r[name.intro]
 An *entity* is a language construct that can be referred to in some way within
 the source program, usually via a [path]. Entities include [types], [items],
 [generic parameters], [variable bindings], [loop labels], [lifetimes],
 [fields], [attributes], and [lints].
 
+r[name.decl]
 A *declaration* is a syntactical construct that can introduce a *name* to
 refer to an entity. Entity names are valid within a [*scope*] --- a region of
 source text where that name may be referenced.
 
+r[name.explicit-decl]
 Some entities are [explicitly declared](#explicitly-declared-entities) in the
 source code, and some are [implicitly declared](#implicitly-declared-entities)
 as part of the language or compiler extensions.
 
-[*Paths*] are used to refer to an entity, possibly in another module or type. Lifetimes
-and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
+r[name.path]
+[*Paths*] are used to refer to an entity, possibly in another module or type.
+
+r[name.lifetime]
+Lifetimes and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
 leading quote.
 
+r[name.namespace]
 Names are segregated into different [*namespaces*], allowing entities in
 different namespaces to share the same name without conflict.
 
+r[name.resolution]
 [*Name resolution*] is the compile-time process of tying paths, identifiers,
 and labels to entity declarations.
 
+r[name.visibility]
 Access to certain names may be restricted based on their [*visibility*].
 
 ## Explicitly declared entities
 
+r[name.explicit]
+
+r[name.explicit.list]
 Entities that explicitly introduce a name in the source code are:
 
+r[name.explicit.item-decl]
 * [Items]:
     * [Module declarations]
     * [External crate declarations]
@@ -43,6 +58,8 @@ Entities that explicitly introduce a name in the source code are:
     * [External block items]
     * [`macro_rules` declarations] and [matcher metavariables]
     * [Implementation] associated items
+
+r[name.explicit.expr]
 * [Expressions]:
     * [Closure] parameters
     * [`while let`] pattern bindings
@@ -50,35 +67,67 @@ Entities that explicitly introduce a name in the source code are:
     * [`if let`] pattern bindings
     * [`match`] pattern bindings
     * [Loop labels]
+
+r[name.explicit.generics]
 * [Generic parameters]
+
+r[name.explicit.higher-ranked-bounds]
 * [Higher ranked trait bounds]
+
+r[name.explicit.binding]
 * [`let` statement] pattern bindings
+
+r[name.explicit.macro_use]
 * The [`macro_use` attribute] can introduce macro names from another crate
+
+r[name.explicit.macro_export]
 * The [`macro_export` attribute] can introduce an alias for the macro into the crate root
 
+r[name.explicit.macro-invocation]
 Additionally, [macro invocations] and [attributes] can introduce names by
 expanding to one of the above items.
 
 ## Implicitly declared entities
 
+r[name.implicit]
+
+r[name.implicit.list]
 The following entities are implicitly defined by the language, or are
 introduced by compiler options and extensions:
 
+r[name.implicit.primitive-types]
 * [Language prelude]:
     * [Boolean type] --- `bool`
     * [Textual types] --- `char` and `str`
     * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
     * [Machine-dependent integer types] --- `usize` and `isize`
     * [floating-point types] --- `f32` and `f64`
+
+r[name.implicit.builtin-attributes]
 * [Built-in attributes]
+
+r[name.implicit.prelude]
 * [Standard library prelude] items, attributes, and macros
+
+r[name.implicit.stdlib]
 * [Standard library][extern-prelude] crates in the root module
+
+r[name.implicit.extern-prelude]
 * [External crates][extern-prelude] linked by the compiler
+
+r[name.implicit.tool-attributes]
 * [Tool attributes]
+
+r[name.implicit.lints]
 * [Lints] and [tool lint attributes]
+
+r[name.implicit.derive-helpers]
 * [Derive helper attributes] are valid within an item without being explicitly imported
+
+r[name.implicit.lifetime-static]
 * The [`'static`] lifetime
 
+r[name.implicit.root]
 Additionally, the crate root module does not have a name, but can be referred
 to with certain [path qualifiers] or aliases.
 
