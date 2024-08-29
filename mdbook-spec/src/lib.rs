@@ -133,13 +133,15 @@ impl Spec {
                 let lower = caps["admon"].to_lowercase();
                 let term = to_initial_case(&caps["admon"]);
                 let blockquote = &caps["blockquote"];
+                let initial_spaces = blockquote.chars().position(|ch| ch != ' ').unwrap_or(0);
+                let space = &blockquote[..initial_spaces];
                 format!(
-                    "<div class=\"{lower}\">\n\
+                    "{space}<div class=\"{lower}\">\n\
                     \n\
-                    > ***{term}:***\n\
+                    {space}> ***{term}:***\n\
                     {blockquote}\n\
                     \n\
-                    </div>\n",
+                    {space}</div>\n",
                 )
             })
             .to_string()
