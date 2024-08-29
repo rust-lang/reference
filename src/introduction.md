@@ -7,13 +7,9 @@ It provides three kinds of material:
   - Chapters that informally describe the memory model, concurrency model, runtime services, linkage model, and debugging facilities.
   - Appendix chapters providing rationale and references to languages that influenced the design.
 
-<div class="warning">
-
-Warning:
-This book is incomplete. Documenting everything takes a while.
-See the [GitHub issues] for what is not documented in this book.
-
-</div>
+> [!WARNING]
+> This book is incomplete. Documenting everything takes a while.
+> See the [GitHub issues] for what is not documented in this book.
 
 ## Rust releases
 
@@ -92,11 +88,8 @@ These conventions are documented here.
 
 * Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
 
-  <div class="warning">
-
-  Warning: This is an example warning.
-
-  </div>
+  > [!WARNING]
+  > This is an example warning.
 
 * Code snippets inline in the text are inside `<code>` tags.
 

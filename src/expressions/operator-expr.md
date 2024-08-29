@@ -455,14 +455,10 @@ If the integer type is smaller than the pointer type, the address may be truncat
 
 Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
-<div class="warning">
-
-Warning:
-This interacts with the Rust memory model, which is still under development.
-A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
-Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
-
-</div>
+> [!WARNING]
+> This interacts with the Rust memory model, which is still under development.
+> A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
+> Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
 
 A trivial example of sound address arithmetic:
 
@@ -642,14 +638,11 @@ fn example() {
 
 Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
 
-<div class="warning">
-
-Warning: The evaluation order of operands swaps depending on the types of the operands:
-with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
-Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
-See [this test] for an example of using this dependency.
-
-</div>
+> [!WARNING]
+> The evaluation order of operands swaps depending on the types of the operands:
+> with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
+> Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
+> See [this test] for an example of using this dependency.
 
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
