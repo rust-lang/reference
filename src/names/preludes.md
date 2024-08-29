@@ -93,9 +93,7 @@ The *`no_std` [attribute]* may be applied at the crate level to prevent the
 
 <div class="warning">
 
-Warning: Using `no_std` does not prevent the standard library from being
-linked in. It is still valid to put `extern crate std;` into the crate and
-dependencies can also link it in.
+Warning: Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 </div>
 

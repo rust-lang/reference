@@ -144,9 +144,7 @@ Since negative numbers are not [literals], literal patterns also accept an optio
 
 <div class="warning">
 
-C string and raw C string literals are accepted in literal patterns, but `&CStr`
-doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore
-any such `match` on a `&CStr` will be rejected with a type error.
+C string and raw C string literals are accepted in literal patterns, but `&CStr` doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore any such `match` on a `&CStr` will be rejected with a type error.
 
 </div>
 

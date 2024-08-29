@@ -256,9 +256,7 @@ struct.size = current_offset + padding_needed_for(current_offset, struct.alignme
 
 <div class="warning">
 
-Warning: This pseudocode uses a naive algorithm that ignores overflow issues for
-the sake of clarity. To perform memory layout computations in actual code, use
-[`Layout`].
+Warning: This pseudocode uses a naive algorithm that ignores overflow issues for the sake of clarity. To perform memory layout computations in actual code, use [`Layout`].
 
 </div>
 
@@ -310,13 +308,7 @@ the default `enum` size and alignment for the target platform's C ABI.
 
 <div class="warning">
 
-Warning: There are crucial differences between an `enum` in the C language and
-Rust's [field-less enums] with this representation. An `enum` in C is
-mostly a `typedef` plus some named constants; in other words, an object of an
-`enum` type can hold any integer value. For example, this is often used for
-bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold
-the discriminant values, everything else is [undefined behavior]. Therefore,
-using a field-less enum in FFI to model a C `enum` is often wrong.
+Warning: There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
 
 </div>
 
