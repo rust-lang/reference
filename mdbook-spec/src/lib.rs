@@ -131,13 +131,26 @@ impl Spec {
         ADMONITION_RE
             .replace_all(&chapter.content, |caps: &Captures<'_>| {
                 let lower = caps["admon"].to_lowercase();
+                let term = to_initial_case(&caps["admon"]);
+                let blockquote = &caps["blockquote"];
                 format!(
-                    "<div class=\"{lower}\">\n\n{}\n\n</div>\n",
-                    &caps["blockquote"]
+                    "<div class=\"{lower}\">\n\
+                    \n\
+                    > ***{term}:***\n\
+                    {blockquote}\n\
+                    \n\
+                    </div>\n",
                 )
             })
             .to_string()
     }
+}
+
+fn to_initial_case(s: &str) -> String {
+    let mut chars = s.chars();
+    let first = chars.next().expect("not empty").to_uppercase();
+    let rest = chars.as_str().to_lowercase();
+    format!("{first}{rest}")
 }
 
 impl Preprocessor for Spec {
