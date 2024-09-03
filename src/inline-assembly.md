@@ -505,12 +505,12 @@ r[asm.options.supported-options.pure]
   The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 
 r[asm.options.supported-options.nomem]
-- `nomem`: The `asm!` blocks does not read or write to any memory.
+- `nomem`: The `asm!` block does not read from or write to any memory accessible outside of the `asm!` block.
   This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
   The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 
 r[asm.options.supported-options.readonly]
-- `readonly`: The `asm!` block does not write to any memory.
+- `readonly`: The `asm!` block does not write to any memory accessible outside of the `asm!` block.
   This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
   The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 
