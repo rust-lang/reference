@@ -195,7 +195,7 @@ called from other programming languages like C:
 extern "C" fn new_i32() -> i32 { 0 }
 
 // Declares a function with the "stdcall" ABI
-# #[cfg(target_arch = "x86_64")]
+# #[cfg(any(windows, target_arch = "x86"))]
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
