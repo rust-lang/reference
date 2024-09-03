@@ -166,7 +166,7 @@ Paths starting with `::` are considered to be *global paths* where the segments 
 start being resolved from a place which differs based on edition. Each identifier in
 the path must resolve to an item.
 
-> **Edition Differences**: In the 2015 Edition, identifiers resolve from the "crate root"
+> **Edition differences**: In the 2015 Edition, identifiers resolve from the "crate root"
 > (`crate::` in the 2018 edition), which contains a variety of different items, including
 > external crates, default crates such as `std` or `core`, and items in the top level of
 > the crate (including `use` imports).

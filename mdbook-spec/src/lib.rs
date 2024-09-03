@@ -1,3 +1,5 @@
+#![deny(rust_2018_idioms, unused_lifetimes)]
+
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
@@ -82,8 +84,8 @@ impl Spec {
                     }
                 }
                 format!(
-                    "<div class=\"rule\" id=\"{rule_id}\">\
-                     <a class=\"rule-link\" href=\"#{rule_id}\">[{rule_id}]</a>\
+                    "<div class=\"rule\" id=\"r-{rule_id}\">\
+                     <a class=\"rule-link\" href=\"#r-{rule_id}\">[{rule_id}]</a>\
                      </div>\n"
                 )
             })
@@ -102,7 +104,7 @@ impl Spec {
             .iter()
             .map(|(rule_id, (_, path))| {
                 let relative = pathdiff::diff_paths(path, current_path).unwrap();
-                format!("[{rule_id}]: {}#{rule_id}\n", relative.display())
+                format!("[{rule_id}]: {}#r-{rule_id}\n", relative.display())
             })
             .collect();
         format!(

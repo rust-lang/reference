@@ -82,9 +82,9 @@ These conventions are documented here.
 
   An *example term* is an example of a term being defined.
 
-* Differences in the language by which edition the crate is compiled under are in a blockquote that start with the words "Edition Differences:" in **bold**.
+* Differences in the language by which edition the crate is compiled under are in a blockquote that start with the words "Edition differences:" in **bold**.
 
-  > **Edition Differences**: In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
+  > **Edition differences**: In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
 
 * Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in blockquotes that start with the word "Note:" in **bold**.
 
@@ -119,6 +119,15 @@ These conventions are documented here.
   > &nbsp;&nbsp; | `box` [_Expression_]
 
   See [Notation] for more detail.
+
+* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to a specific rule in the language. The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example).
+
+  The rule name can be clicked to link to that rule.
+
+r[example.rule.label]
+
+  > [!WARNING]
+  > The organization of the rules is currently in flux. For the time being, these identifier names are not stable between releases, and links to these rules may fail if they are changed. We intend to stabilize these once the organization has settled so that links to the rule names will not break between releases.
 
 ## Contributing
 

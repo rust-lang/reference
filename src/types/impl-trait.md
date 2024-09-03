@@ -91,7 +91,33 @@ Functions in traits may also use `impl Trait` as a syntax for an anonymous assoc
 
 Every `impl Trait` in the return type of an associated function in a trait is desugared to an anonymous associated type. The return type that appears in the implementation's function signature is used to determine the value of the associated type.
 
-### Differences between generics and `impl Trait` in return position
+## Capturing
+
+Behind each return-position `impl Trait` abstract type is some hidden concrete type.  For this concrete type to use a generic parameter, that generic parameter must be *captured* by the abstract type.
+
+## Automatic capturing
+
+Return-position `impl Trait` abstract types automatically capture certain of the in-scope generic parameters.  Everywhere, these automatically capture all in-scope type and const generic parameters.
+
+On items of trait impls and trait definitions, these types additionally automatically capture all in-scope generic lifetime parameters, including higher-ranked ones.  On free functions and on associated functions and methods of inherent impls, only the generic lifetime parameters that appear in the bounds of abstract return type are captured.
+
+## Precise capturing
+
+The set of generic parameters captured by a return-position `impl Trait` abstract type may be explicitly controlled with a [`use<..>` bound].  If present, only the generic parameters listed in the `use<..>` bound will be captured.  E.g.:
+
+```rust
+fn capture<'a, 'b, T>(x: &'a (), y: T) -> impl Sized + use<'a, T> {
+  //                                      ~~~~~~~~~~~~~~~~~~~~~~~
+  //                                     Captures `'a` and `T` only.
+  (x, y)
+}
+```
+
+Currently, only one `use<..>` bound may be present in a bounds list, such bounds are not allowed in the signature of items of a trait definition, all in-scope type and const generic parameters must be included, and all lifetime parameters that appear in other bounds of the abstract type must be included.  Within the `use<..>` bound, any lifetime parameters present must appear before all type and const generic parameters, and the elided lifetime (`'_`) may be present if it is otherwise allowed to appear within the `impl Trait` return type.
+
+Because all in-scope type parameters must be included by name, a `use<..>` bound may not be used in the signature of items that use argument-position `impl Trait`, as those items have anonymous type parameters in scope.
+
+## Differences between generics and `impl Trait` in return position
 
 In argument position, `impl Trait` is very similar in semantics to a generic type parameter.
 However, there are significant differences between the two in return position.
@@ -127,9 +153,10 @@ Instead, the function chooses the return type, but only promises that it will im
 `impl Trait` can only appear as a parameter or return type of a non-`extern` function.
 It cannot be the type of a `let` binding, field type, or appear inside a type alias.
 
-[closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
 [_GenericParams_]: ../items/generics.md
 [_TraitBound_]: ../trait-bounds.md
-[trait object]: trait-object.md
 [_TypeParamBounds_]: ../trait-bounds.md
+[`use<..>` bound]: ../trait-bounds.md#use-bounds
+[closures]: closure.md
+[trait object]: trait-object.md

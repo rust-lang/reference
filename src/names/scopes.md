@@ -184,7 +184,7 @@ type FnExample = for<'a> fn(x: Example<'a>) -> Example<'a>;
 #
 // The `impl Trait2` here is not allowed to refer to 'b but it is allowed to
 // refer to 'a.
-fn foo<'a>() -> impl for<'b> Trait1<Item = impl Trait2<'a>> {
+fn foo<'a>() -> impl for<'b> Trait1<Item = impl Trait2<'a> + use<'a>> {
     // ...
 #    Example
 }
