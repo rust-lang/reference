@@ -292,14 +292,8 @@ to link against. An ordinal is a unique number per symbol exported by a dynamic
 library on Windows and can be used when the library is being loaded to find
 that symbol rather than having to look it up by name.
 
-<div class="warning">
-
-Warning: `link_ordinal` should only be used in cases where the ordinal of the
-symbol is known to be stable: if the ordinal of a symbol is not explicitly set
-when its containing binary is built then one will be automatically assigned to
-it, and that assigned ordinal may change between builds of the binary.
-
-</div>
+> [!WARNING]
+> `link_ordinal` should only be used in cases where the ordinal of the symbol is known to be stable: if the ordinal of a symbol is not explicitly set when its containing binary is built then one will be automatically assigned to it, and that assigned ordinal may change between builds of the binary.
 
 <!-- ignore: Only works on x86 Windows -->
 ```rust,ignore

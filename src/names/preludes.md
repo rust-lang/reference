@@ -91,13 +91,8 @@ The *`no_std` [attribute]* may be applied at the crate level to prevent the
 > library. Those capabilities are mainly dynamic memory allocation (e.g. `Box`
 > and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
-<div class="warning">
-
-Warning: Using `no_std` does not prevent the standard library from being
-linked in. It is still valid to put `extern crate std;` into the crate and
-dependencies can also link it in.
-
-</div>
+> [!WARNING]
+> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 ## Language prelude
 

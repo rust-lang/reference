@@ -142,13 +142,8 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 _Literal patterns_ match exactly the same value as what is created by the literal.
 Since negative numbers are not [literals], literal patterns also accept an optional minus sign before the literal, which acts like the negation operator.
 
-<div class="warning">
-
-C string and raw C string literals are accepted in literal patterns, but `&CStr`
-doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore
-any such `match` on a `&CStr` will be rejected with a type error.
-
-</div>
+> [!WARNING]
+> C string and raw C string literals are accepted in literal patterns, but `&CStr` doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore any such `match` on a `&CStr` will be rejected with a type error.
 
 Literal patterns are always refutable.
 
