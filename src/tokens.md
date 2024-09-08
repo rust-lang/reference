@@ -653,6 +653,7 @@ Examples of reserved forms:
 >
 > RAW_LIFETIME :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier]
+>   _(not immediately followed by `'`)_
 
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
