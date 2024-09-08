@@ -768,6 +768,7 @@ r[lex.token.life.syntax]
 >
 > RAW_LIFETIME :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier]
+>   _(not immediately followed by `'`)_
 
 r[lex.token.life.intro]
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
