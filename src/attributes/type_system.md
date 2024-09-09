@@ -163,7 +163,7 @@ match message {
 }
 ```
 
-However, casting non-exhaustive types from foreign crates is generally disallowed, except when dealing with enums that have no non-exhaustive variants.
+It's also not allowed to use numeric casts (`as`) on enums that contain any non-exhaustive variants.
 
 For example, the following enum can be cast because it doesn't contain any non-exhaustive variants:
 ```rust, ignore
