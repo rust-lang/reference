@@ -163,7 +163,7 @@ match message {
 }
 ```
 
-In Rust, casting non-exhaustive types from foreign crates is generally disallowed, except when dealing with enums that have no non-exhaustive variants.
+However, casting non-exhaustive types from foreign crates is generally disallowed, except when dealing with enums that have no non-exhaustive variants.
 
 For example, the following enum can be cast because it doesn't contain any non-exhaustive variants:
 ```rust, ignore
@@ -186,10 +186,10 @@ pub enum Example {
 ```
 
 ```rust, ignore
-use othercrate::NonExhaustiveEnumVariants;
+use othercrate::EnumWithNonExhaustiveEnumVariants;
 
-// cannot cast an enum with a non-exhaustive variant when it's defined in another crate
-let _ = NonExhaustiveEnum::default() as u8;
+// Error: cannot cast an enum with a non-exhaustive variant when it's defined in another crate
+let _ = EnumWithNonExhaustiveEnumVariants::default() as u8;
 ```
 
 Non-exhaustive types are always considered inhabited in downstream crates.
