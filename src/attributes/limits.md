@@ -6,14 +6,14 @@ The following [attributes] affect compile-time limits.
 
 ## The `recursion_limit` attribute
 
-r[attributes.limits.recursion_limits]
+r[attributes.limits.recursion_limit]
 
-r[attributes.limits.recursion_limits.application]
+r[attributes.limits.recursion_limit.application]
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 maximum depth for potentially infinitely-recursive compile-time operations
 like macro expansion or auto-dereference.
 
-r[attributes.limits.recursion_limits.syntax]
+r[attributes.limits.recursion_limit.syntax]
 It uses the [_MetaNameValueStr_]
 syntax to specify the recursion depth.
 
@@ -49,7 +49,7 @@ r[attributes.limits.type_length_limit]
 >
 > For more information, see <https://github.com/rust-lang/rust/pull/127670>.
 
-r[attributes.limits.type_length_limit.general]
+r[attributes.limits.type_length_limit.intro]
 The *`type_length_limit` attribute* limits the maximum number of type
 substitutions made when constructing a concrete type during monomorphization.
 
