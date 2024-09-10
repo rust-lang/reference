@@ -166,7 +166,8 @@ match message {
 It's also not allowed to use numeric casts (`as`) on enums that contain any non-exhaustive variants.
 
 For example, the following enum can be cast because it doesn't contain any non-exhaustive variants:
-```rust, ignore
+
+```rust
 #[non_exhaustive]
 pub enum Example {
     First,
@@ -176,20 +177,21 @@ pub enum Example {
 
 However, if the enum contains even a single non-exhaustive variant, casting will result in an error. Consider this modified version of the same enum:
 
-```rust, ignore
+```rust
 #[non_exhaustive]
-pub enum Example {
+pub enum EnumWithNonExhaustiveVariants {
     First,
     #[non_exhaustive]
     Second
 }
 ```
 
-```rust, ignore
-use othercrate::EnumWithNonExhaustiveEnumVariants;
+<!-- ignore: needs multiple crates -->
+```rust,ignore
+use othercrate::EnumWithNonExhaustiveVariants;
 
 // Error: cannot cast an enum with a non-exhaustive variant when it's defined in another crate
-let _ = EnumWithNonExhaustiveEnumVariants::default() as u8;
+let _ = EnumWithNonExhaustiveVariants::First as u8;
 ```
 
 Non-exhaustive types are always considered inhabited in downstream crates.
