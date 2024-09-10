@@ -30,6 +30,7 @@ nominal [enumerated type] as well as a set of *constructors*, that can be used
 to create or pattern-match values of the corresponding enumerated type.
 
 Enumerations are declared with the keyword `enum`.
+The `enum` declaration defines the enumeration type in the [type namespace] of the module or block where it is located.
 
 An example of an `enum` item and its use:
 
@@ -78,6 +79,30 @@ enum Enum {
     Bar = 2,
     Baz = 1,
 }
+```
+
+Variant constructors are similar to [struct] definitions, and can be referenced by a path from the enumeration name, including in [use declarations].
+Each variant defines its type in the [type namespace], though that type cannot be used as a type specifier.
+Tuple-like and unit-like variants also define a constructor in the [value namespace].
+
+A struct-like variant can be instantiated with a [struct expression].
+A tuple-like variant can be instantiated with a [call expression] or a [struct expression].
+A unit-like variant can be instantiated with a [path expression] or a [struct expression].
+For example:
+
+```rust
+enum Examples {
+    UnitLike,
+    TupleLike(i32),
+    StructLike { value: i32 },
+}
+
+use Examples::*; // Creates aliases to all variants.
+let x = UnitLike; // Path expression of the const item.
+let x = UnitLike {}; // Struct expression.
+let y = TupleLike(123); // Call expression.
+let y = TupleLike { 0: 123 }; // Struct expression using integer field names.
+let z = StructLike { value: 123 }; // Struct expression.
 ```
 
 <span id="custom-discriminant-values-for-fieldless-enumerations"></span>
@@ -172,7 +197,7 @@ enum OverflowingDiscriminantError2 {
 
 #### Via `mem::discriminant`
 
-[`mem::discriminant`] returns an opaque reference to the discriminant of
+[`std::mem::discriminant`] returns an opaque reference to the discriminant of
 an enum value which can be compared. This cannot be used to get the value
 of the discriminant.
 
@@ -299,20 +324,26 @@ enum E {
 }
 ```
 
-[IDENTIFIER]: ../identifiers.md
-[_GenericParams_]: generics.md
-[_WhereClause_]: generics.md#where-clauses
 [_Expression_]: ../expressions.md
-[_TupleFields_]: structs.md
+[_GenericParams_]: generics.md
 [_StructFields_]: structs.md
+[_TupleFields_]: structs.md
 [_Visibility_]: ../visibility-and-privacy.md
-[enumerated type]: ../types/enum.md
-[`mem::discriminant`]: ../../std/mem/fn.discriminant.html
-[never type]: ../types/never.md
-[unit-only]: #unit-only-enum
-[numeric cast]: ../expressions/operator-expr.md#semantics
+[_WhereClause_]: generics.md#where-clauses
+[`C` representation]: ../type-layout.md#the-c-representation
+[call expression]: ../expressions/call-expr.md
 [constant expression]: ../const_eval.md#constant-expressions
 [default representation]: ../type-layout.md#the-default-representation
-[primitive representation]: ../type-layout.md#primitive-representations
-[`C` representation]: ../type-layout.md#the-c-representation
+[enumerated type]: ../types/enum.md
 [Field-less enums]: #field-less-enum
+[IDENTIFIER]: ../identifiers.md
+[never type]: ../types/never.md
+[numeric cast]: ../expressions/operator-expr.md#semantics
+[path expression]: ../expressions/path-expr.md
+[primitive representation]: ../type-layout.md#primitive-representations
+[struct expression]: ../expressions/struct-expr.md
+[struct]: structs.md
+[type namespace]: ../names/namespaces.md
+[unit-only]: #unit-only-enum
+[use declarations]: use-declarations.md
+[value namespace]: ../names/namespaces.md

@@ -44,9 +44,6 @@ This prevents an [inner attribute] at the start of a source file being removed.
 The resulting sequence of characters is then converted into tokens as described in the remainder of this chapter.
 
 
-[`include!`]: ../std/macro.include.md
-[`include_bytes!`]: ../std/macro.include_bytes.md
-[`include_str!`]: ../std/macro.include_str.md
 [inner attribute]: attributes.md
 [BYTE ORDER MARK]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [comments]: comments.md

@@ -147,15 +147,16 @@ expressions, types, etc.
 In addition to public and private, Rust allows users to declare an item as
 visible only within a given scope. The rules for `pub` restrictions are as
 follows:
-- `pub(in path)` makes an item visible within the provided `path`. `path` must
-be an ancestor module of the item whose visibility is being declared.
+- `pub(in path)` makes an item visible within the provided `path`.
+  `path` must be a simple path which resolves to an ancestor module of the item whose visibility is being declared.
+  Each identifier in `path` must refer directly to a module (not to a name introduced by a `use` statement).
 - `pub(crate)` makes an item visible within the current crate.
 - `pub(super)` makes an item visible to the parent module. This is equivalent
   to `pub(in super)`.
 - `pub(self)` makes an item visible to the current module. This is equivalent
 to `pub(in self)` or not using `pub` at all.
 
-> **Edition Differences**: Starting with the 2018 edition, paths for
+> **Edition differences**: Starting with the 2018 edition, paths for
 > `pub(in path)` must start with `crate`, `self`, or `super`. The 2015 edition
 > may also use paths starting with `::` or modules from the crate root.
 

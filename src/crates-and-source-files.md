@@ -129,14 +129,14 @@ or `_` (U+005F) characters.
     ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
     in the Owens and Flatt module system, or a *configuration* in Mesa.
 
-[Unicode alphanumeric]: ../std/primitive.char.html#method.is_alphanumeric
+[Unicode alphanumeric]: char::is_alphanumeric
 [`!`]: types/never.md
 [_InnerAttribute_]: attributes.md
 [_Item_]: items.md
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
-[`ExitCode`]: ../std/process/struct.ExitCode.html
-[`Infallible`]: ../std/convert/enum.Infallible.html
-[`Termination`]: ../std/process/trait.Termination.html
+[`ExitCode`]: std::process::ExitCode
+[`Infallible`]: std::convert::Infallible
+[`Termination`]: std::process::Termination
 [attribute]: attributes.md
 [attributes]: attributes.md
 [function]: items/functions.md

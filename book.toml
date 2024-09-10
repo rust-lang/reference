@@ -18,3 +18,7 @@ smart-punctuation = true
 edition = "2021"
 
 [preprocessor.spec]
+command = "cargo run --release --manifest-path mdbook-spec/Cargo.toml"
+
+[build]
+extra-watch-dirs = ["mdbook-spec/src"]

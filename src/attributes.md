@@ -10,7 +10,8 @@ r[attributes.syntax]
 > &nbsp;&nbsp; `#` `[` _Attr_ `]`
 >
 > _Attr_ :\
-> &nbsp;&nbsp; [_SimplePath_] _AttrInput_<sup>?</sup>
+> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_] _AttrInput_<sup>?</sup>\
+> &nbsp;&nbsp; | `unsafe` `(` [_SimplePath_] _AttrInput_<sup>?</sup> `)`
 >
 > _AttrInput_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
@@ -32,6 +33,19 @@ delimited token tree whose interpretation is defined by the attribute.
 Attributes other than macro attributes also allow the input to be an equals
 sign (`=`) followed by an expression. See the [meta item
 syntax](#meta-item-attribute-syntax) below for more details.
+
+r[attributes.safety]
+An attribute may be unsafe to apply. To avoid undefined behavior when using
+these attributes, certain obligations that cannot be checked by the compiler
+must be met.  To assert these have been, the attribute is wrapped in
+`unsafe(..)`, e.g. `#[unsafe(no_mangle)]`.
+
+r[attributes.unsafe]
+The following attributes are unsafe:
+
+* [`export_name`]
+* [`link_section`]
+* [`no_mangle`]
 
 r[attributes.kind]
 Attributes can be classified into the following kinds:
@@ -193,7 +207,7 @@ r[attributes.tool]
 
 r[attributes.tool.general]
 The compiler may allow attributes for external tools where each tool resides
-in its own namespace in the [tool prelude]. The first segment of the attribute
+in its own module in the [tool prelude]. The first segment of the attribute
 path is the name of the tool, with one or more additional segments whose
 interpretation is up to the tool.
 

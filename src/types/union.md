@@ -15,5 +15,4 @@ The memory layout of a `union` is undefined by default (in particular, fields do
 fix a layout.
 
 [`Copy`]: ../special-types-and-traits.md#copy
-[`ManuallyDrop`]: ../../std/mem/struct.ManuallyDrop.html
 [item]: ../items/unions.md

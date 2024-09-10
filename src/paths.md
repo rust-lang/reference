@@ -1,10 +1,7 @@
 # Paths
 
-A *path* is a sequence of one or more path segments _logically_ separated by
-a namespace <span class="parenthetical">qualifier (`::`)</span>. If a path
-consists of only one segment, it refers to either an [item] or a [variable] in
-a local control scope. If a path has multiple segments, it always refers to an
-item.
+A *path* is a sequence of one or more path segments separated by `::` tokens.
+Paths are used to refer to [items], values, [types], [macros], and [attributes].
 
 Two examples of simple paths consisting of only identifier segments:
 
@@ -25,8 +22,8 @@ x::y::z;
 > _SimplePathSegment_ :\
 > &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
 
-Simple paths are used in [visibility] markers, [attributes], [macros], and [`use`] items.
-Examples:
+Simple paths are used in [visibility] markers, [attributes], [macros][mbe], and [`use`] items.
+For example:
 
 ```rust
 use std::io::{self, Write};
@@ -169,7 +166,7 @@ Paths starting with `::` are considered to be *global paths* where the segments 
 start being resolved from a place which differs based on edition. Each identifier in
 the path must resolve to an item.
 
-> **Edition Differences**: In the 2015 Edition, identifiers resolve from the "crate root"
+> **Edition differences**: In the 2015 Edition, identifiers resolve from the "crate root"
 > (`crate::` in the 2018 edition), which contains a variety of different items, including
 > external crates, default crates such as `std` or `core`, and items in the top level of
 > the crate (including `use` imports).
@@ -224,10 +221,18 @@ impl S {
 
 ### `Self`
 
-`Self`, with a capital "S", is used to refer to the implementing type within
-[traits] and [implementations].
+`Self`, with a capital "S", is used to refer to the current type being implemented or defined. It may be used in the following situations:
+
+* In a [trait] definition, it refers to the type implementing the trait.
+* In an [implementation], it refers to the type being implemented.
+  When implementing a tuple or unit [struct], it also refers to the constructor in the [value namespace].
+* In the definition of a [struct], [enumeration], or [union], it refers to the type being defined.
+  The definition is not allowed to be infinitely recursive (there must be an indirection).
+
+The scope of `Self` behaves similarly to a generic parameter; see the [`Self` scope] section for more details.
 
 `Self` can only be used as the first segment, without a preceding `::`.
+The `Self` path cannot include generic arguments (as in `Self::<i32>`).
 
 ```rust
 trait T {
@@ -248,6 +253,22 @@ impl T for S {
     fn f(&self) -> Self::Item {  // `Self::Item` is the type `i32`.
         Self::C                  // `Self::C` is the constant value `9`.
     }
+}
+
+// `Self` is in scope within the generics of a trait definition,
+// to refer to the type being defined.
+trait Add<Rhs = Self> {
+    type Output;
+    // `Self` can also reference associated items of the
+    // type being implemented.
+    fn add(self, rhs: Rhs) -> Self::Output;
+}
+
+struct NonEmptyList<T> {
+    head: T,
+    // A struct can reference itself (as long as it is not
+    // infinitely recursive).
+    tail: Option<Box<Self>>,
 }
 ```
 
@@ -400,19 +421,27 @@ mod without { // crate::without
 [_Type_]: types.md#type-expressions
 [_TypeNoBounds_]: types.md#type-expressions
 [_TypeParamBounds_]: trait-bounds.md
-[literal]: expressions/literal-expr.md
-[item]: items.md
-[variable]: variables.md
 [implementations]: items/implementations.md
+[items]: items.md
+[literal]: expressions/literal-expr.md
 [use declarations]: items/use-declarations.md
 [IDENTIFIER]: identifiers.md
+[`Self` scope]: names/scopes.md#self-scope
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md
+[enumeration]: items/enumerations.md
 [expressions]: expressions.md
 [extern prelude]: names/preludes.md#extern-prelude
+[implementation]: items/implementations.md
 [macro transcribers]: macros-by-example.md
-[macros]: macros-by-example.md
+[macros]: macros.md
+[mbe]: macros-by-example.md
 [patterns]: patterns.md
+[struct]: items/structs.md
 [trait implementations]: items/implementations.md#trait-implementations
+[trait]: items/traits.md
 [traits]: items/traits.md
+[types]: types.md
+[union]: items/unions.md
+[value namespace]: names/namespaces.md
 [visibility]: visibility-and-privacy.md

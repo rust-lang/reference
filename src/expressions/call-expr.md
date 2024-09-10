@@ -87,11 +87,8 @@ Refer to [RFC 132] for further details and motivations.
 
 [RFC 132]: https://github.com/rust-lang/rfcs/blob/master/text/0132-ufcs.md
 [_Expression_]: ../expressions.md
-[`default()`]: ../../std/default/trait.Default.html#tymethod.default
-[`size_of()`]: ../../std/mem/fn.size_of.html
-[`std::ops::FnMut`]: ../../std/ops/trait.FnMut.html
-[`std::ops::FnOnce`]: ../../std/ops/trait.FnOnce.html
-[`std::ops::Fn`]: ../../std/ops/trait.Fn.html
+[`default()`]: std::default::Default::default
+[`size_of()`]: std::mem::size_of
 [automatically dereferenced]: field-expr.md#automatic-dereferencing
 [fully-qualified syntax]: ../paths.md#qualified-paths
 [non-function types]: ../types/function-item.md

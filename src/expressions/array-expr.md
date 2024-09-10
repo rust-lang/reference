@@ -76,8 +76,8 @@ arr[10];                  // warning: index out of bounds
 The array index expression can be implemented for types other than arrays and slices by implementing the [Index] and [IndexMut] traits.
 
 [`Copy`]: ../special-types-and-traits.md#copy
-[IndexMut]: ../../std/ops/trait.IndexMut.html
-[Index]: ../../std/ops/trait.Index.html
+[IndexMut]: std::ops::IndexMut
+[Index]: std::ops::Index
 [_Expression_]: ../expressions.md
 [array]: ../types/array.md
 [constant expression]: ../const_eval.md#constant-expressions

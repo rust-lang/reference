@@ -30,7 +30,7 @@ Like all primitives, the boolean type [implements][p-impl] the
 [traits][p-traits] [`Clone`][p-clone], [`Copy`][p-copy], [`Sized`][p-sized],
 [`Send`][p-send], and [`Sync`][p-sync].
 
-> **Note**: See the [standard library docs][std] for library operations.
+> **Note**: See the [standard library docs](bool) for library operations.
 
 ## Operations on boolean values
 
@@ -119,6 +119,5 @@ are invalid `bool`s, the inverse is not always sound).
 [p-sync]: ../special-types-and-traits.md#sync
 [p-traits]: ../items/traits.md
 [size and alignment]: ../type-layout.md#size-and-alignment
-[std]: ../../std/primitive.bool.html
 [undefined behavior]: ../behavior-considered-undefined.md
 [while expressions]: ../expressions/loop-expr.md#predicate-loops

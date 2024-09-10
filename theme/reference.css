@@ -11,46 +11,46 @@ the parenthetical. So for this example, you'd use
 }
 
 /*
-Warnings and notes:
+Warnings are defined using admonitions in blockquotes:
 
-Write the <div>s on their own line. E.g.
+> [!WARNING]
+> This is bad!
 
-<div class="warning">
-
-Warning: This is bad!
-
-</div>
 */
-main .warning p {
-    padding: 10px 20px;
-    margin: 20px 0;
+main .warning blockquote {
+    padding: 0px;
 }
 
-main .warning p::before {
+main .warning blockquote p {
+    padding: 0px 20px;
+    margin: 10px 0;
+}
+
+main .warning blockquote p:first-child::before {
     content: "⚠️ ";
 }
 
-.light main .warning p,
-.rust main .warning p {
+.light main .warning blockquote,
+.rust main .warning blockquote {
     border: 2px solid red;
     background: #ffcece;
 }
 
-.rust main .warning p {
+.rust main .warning blockquote {
     /* overrides previous declaration */
     border-color: #961717;
 }
 
-.coal main .warning p,
-.navy main .warning p,
-.ayu main .warning p {
+.coal main .warning blockquote,
+.navy main .warning blockquote,
+.ayu main .warning blockquote {
     background: #542626;
 }
 
 /* Make the links higher contrast on dark themes */
-.coal main .warning p a,
-.navy main .warning p a,
-.ayu main .warning p a {
+.coal main .warning blockquote p a,
+.navy main .warning blockquote p a,
+.ayu main .warning blockquote p a {
     color: #80d0d0;
 }
 
@@ -168,23 +168,6 @@ dfn {
 */
 .rule ~ p {
     margin-top: 0px;
-}
-
-/* Change the default styling of blockquotes. */
-blockquote {
-    padding: 1ex 1em;
-    margin: 1ex;
-    margin-left: 2em;
-    /* vw units allow this to be adaptive to the screen size so it isn't too small on mobile. */
-    margin-right: 12vw;
-}
-
-/* mdbook will wrap the blockquote content in a <p> tag, with a margin. However,
-   that adds too much space, so remove it.
-*/
-blockquote > p {
-    margin-top: 0px;
-    margin-bottom: 0px;
 }
 
 /* When the sidebar is visible, reduce the spacing of rules so that the

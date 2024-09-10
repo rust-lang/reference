@@ -231,8 +231,6 @@ fn is_unix_platform() -> bool {
 [`cfg`]: ../conditional-compilation.md
 [`for`]: loop-expr.md#iterator-loops
 [`loop`]: loop-expr.md#infinite-loops
-[`std::ops::Fn`]: ../../std/ops/trait.Fn.html
-[`std::future::Future`]: ../../std/future/trait.Future.html
 [`unsafe` blocks]: ../unsafe-keyword.md#unsafe-blocks-unsafe-
 [`while let`]: loop-expr.md#predicate-pattern-loops
 [`while`]: loop-expr.md#predicate-loops

@@ -26,6 +26,5 @@ always bounds-checked in safe methods and operators.
 
 [_Expression_]: ../expressions.md
 [_Type_]: ../types.md#type-expressions
-[`Vec<T>`]: ../../std/vec/struct.Vec.html
 [`usize`]: numeric.md#machine-dependent-integer-types
 [constant expression]: ../const_eval.md#constant-expressions

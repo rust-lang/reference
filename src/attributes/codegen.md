@@ -304,19 +304,21 @@ attempting to use instructions unsupported by the Wasm engine will fail at load
 time without the risk of being interpreted in a way different from what the
 compiler expected.
 
-Feature               | Description
-----------------------|-------------------
-`bulk-memory`         | [WebAssembly bulk memory operations proposal][bulk-memory]
-`extended-const`      | [WebAssembly extended const expressions proposal][extended-const]
-`mutable-globals`     | [WebAssembly mutable global proposal][mutable-globals]
-`nontrapping-fptoint` | [WebAssembly non-trapping float-to-int conversion proposal][nontrapping-fptoint]
-`sign-ext`            | [WebAssembly sign extension operators Proposal][sign-ext]
-`simd128`             | [WebAssembly simd proposal][simd128]
+Feature               | Implicitly Enables  | Description
+----------------------|---------------------|-------------------
+`bulk-memory`         |                     | [WebAssembly bulk memory operations proposal][bulk-memory]
+`extended-const`      |                     | [WebAssembly extended const expressions proposal][extended-const]
+`mutable-globals`     |                     | [WebAssembly mutable global proposal][mutable-globals]
+`nontrapping-fptoint` |                     | [WebAssembly non-trapping float-to-int conversion proposal][nontrapping-fptoint]
+`relaxed-simd`        | `simd128`           | [WebAssembly relaxed simd proposal][relaxed-simd]
+`sign-ext`            |                     | [WebAssembly sign extension operators Proposal][sign-ext]
+`simd128`             |                     | [WebAssembly simd proposal][simd128]
 
 [bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
 [extended-const]: https://github.com/WebAssembly/extended-const
 [mutable-globals]: https://github.com/WebAssembly/mutable-global
 [nontrapping-fptoint]: https://github.com/WebAssembly/nontrapping-float-to-int-conversions
+[relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
 [sign-ext]: https://github.com/WebAssembly/sign-extension-ops
 [simd128]: https://github.com/webassembly/simd
 
@@ -471,9 +473,7 @@ trait object whose methods are attributed.
 [undefined behavior]: ../behavior-considered-undefined.md
 [unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
-[`core::intrinsics::caller_location`]: ../../core/intrinsics/fn.caller_location.html
-[`core::panic::Location::caller`]: ../../core/panic/struct.Location.html#method.caller
-[`Location`]: ../../core/panic/struct.Location.html
+[`Location`]: core::panic::Location
 
 ## The `instruction_set` attribute
 

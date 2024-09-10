@@ -5,7 +5,7 @@
 > &nbsp;&nbsp; _TypeParamBound_ ( `+` _TypeParamBound_ )<sup>\*</sup> `+`<sup>?</sup>
 >
 > _TypeParamBound_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_
+> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_ | _UseBound_
 >
 > _TraitBound_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `?`<sup>?</sup>
@@ -19,6 +19,21 @@
 > _Lifetime_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
 > &nbsp;&nbsp; | `'static`
+>
+> _UseBound_ :\
+> &nbsp;&nbsp; `use` _UseBoundGenericArgs_
+>
+> _UseBoundGenericArgs_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>` \
+> &nbsp;&nbsp; | `<` \
+> &nbsp;&nbsp; &nbsp;&nbsp; ( _UseBoundGenericArg_ `,`)<sup>\*</sup> \
+> &nbsp;&nbsp; &nbsp;&nbsp; _UseBoundGenericArg_ `,`<sup>?</sup> \
+> &nbsp;&nbsp; &nbsp;&nbsp; `>`
+>
+> _UseBoundGenericArg_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ \
+> &nbsp;&nbsp; | [IDENTIFIER][] \
+> &nbsp;&nbsp; | `Self`
 
 [Trait] and lifetime bounds provide a way for [generic items][generic] to
 restrict which types and lifetimes are used as their parameters. Bounds can be
@@ -227,7 +242,11 @@ trait Trait<'a, T: 'a> {}
 impl<'a, T> Trait<'a, T> for &'a T {}
 ```
 
+## Use bounds
 
+Certain bounds lists may include a `use<..>` bound to control which generic parameters are captured by the `impl Trait` [abstract return type].  See [precise capturing] for more details.
+
+[IDENTIFIER]: identifiers.html
 [LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
 [_GenericParams_]: items/generics.md
 [_TypePath_]: paths.md#paths-in-types
@@ -235,12 +254,14 @@ impl<'a, T> Trait<'a, T> for &'a T {}
 [`Copy`]: special-types-and-traits.md#copy
 [`Sized`]: special-types-and-traits.md#sized
 
+[abstract return type]: types/impl-trait.md#abstract-return-types
 [arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [hrtb-scopes]: names/scopes.md#higher-ranked-trait-bound-scopes
 [supertraits]: items/traits.md#supertraits
 [generic]: items/generics.md
 [higher-ranked lifetimes]: #higher-ranked-trait-bounds
+[precise capturing]: types/impl-trait.md#precise-capturing
 [slice]: types/slice.md
 [Trait]: items/traits.md#trait-bounds
 [trait object]: types/trait-object.md

@@ -11,8 +11,9 @@ Procedural macros allow you to run code at compile time that operates over Rust
 syntax, both consuming and producing Rust syntax. You can sort of think of
 procedural macros as functions from an AST to another AST.
 
-Procedural macros must be defined in a crate with the [crate type] of
+Procedural macros must be defined in the root of a crate with the [crate type] of
 `proc-macro`.
+The macros may not be used from the crate where they are defined, and can only be used when imported in another crate.
 
 > **Note**: When using Cargo, Procedural macro crates are defined with the
 > `proc-macro` key in your manifest:
@@ -77,6 +78,7 @@ These macros are defined by a [public]&#32;[function] with the `proc_macro`
 [attribute] and a signature of `(TokenStream) -> TokenStream`. The input
 [`TokenStream`] is what is inside the delimiters of the macro invocation and the
 output [`TokenStream`] replaces the entire macro invocation.
+The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -120,6 +122,7 @@ They can also define [derive macro helper attributes].
 
 Custom derive macros are defined by a [public]&#32;[function] with the
 `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
+The `proc_macro_derive` attribute defines the custom derive in the [macro namespace] in the root of the crate.
 
 The input [`TokenStream`] is the token stream of the item that has the `derive`
 attribute on it. The output [`TokenStream`] must be a set of items that are
@@ -206,6 +209,7 @@ the attribute is written as a bare attribute name, the attribute
 [`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
 including other [attributes] on the [item]. The returned [`TokenStream`]
 replaces the [item] with an arbitrary number of [items].
+The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate.
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
@@ -334,16 +338,15 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros
 [Function-like macros]: #function-like-procedural-macros
-[`Delimiter::None`]: ../proc_macro/enum.Delimiter.html#variant.None
-[`Group`]: ../proc_macro/struct.Group.html
-[`TokenStream`]: ../proc_macro/struct.TokenStream.html
-[`TokenStream`s]: ../proc_macro/struct.TokenStream.html
-[`TokenTree`s]: ../proc_macro/enum.TokenTree.html
-[`compile_error`]: ../std/macro.compile_error.html
+[`Delimiter::None`]: proc_macro::Delimiter::None
+[`Group`]: proc_macro::Group
+[`TokenStream`]: proc_macro::TokenStream
+[`TokenStream`s]: proc_macro::TokenStream
+[`TokenTree`s]: proc_macro::TokenTree
 [`derive` attribute]: attributes/derive.md
 [`extern` blocks]: items/external-blocks.md
 [`macro_rules`]: macros-by-example.md
-[`proc_macro` crate]: ../proc_macro/index.html
+[`proc_macro` crate]: proc_macro
 [attribute]: attributes.md
 [attributes]: attributes.md
 [block]: expressions/block-expr.md
@@ -356,6 +359,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [inert]: attributes.md#active-and-inert-attributes
 [item]: items.md
 [items]: items.md
+[macro namespace]: names/namespaces.md
 [module]: items/modules.md
 [patterns]: patterns.md
 [public]: visibility-and-privacy.md

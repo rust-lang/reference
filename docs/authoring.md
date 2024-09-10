@@ -109,6 +109,15 @@ Explicit namespace disambiguation is also supported:
 [`std::vec`](mod@std::vec)
 ```
 
+Beware there are some limitations, for example:
+
+- Links to rexports from `std_arch` don't work due to <https://github.com/rust-lang/rust/issues/96506>.
+- Links to keywords aren't supported.
+- Links to trait impls where the trait is not in the prelude doesn't work. Traits must be in scope, and there currently isn't a way to add those.
+- If there are multiple generic implementations, it will link to one randomly (see <https://github.com/rust-lang/rust/issues/76895>).
+
+When running into a rustdoc limitation, consider manually linking to the correct page using a relative link. For example, `../std/arch/macro.is_x86_feature_detected.html`.
+
 [intra]: https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html
 
 ### Admonitions
@@ -145,4 +154,4 @@ The reference does not document which targets exist, or the properties of specif
 
 ### Editions
 
-The main text and flow should document only the current edition. Whenever there is a difference between editions, the differences should be called out with an "Edition Differences" block.
+The main text and flow should document only the current edition. Whenever there is a difference between editions, the differences should be called out with an "Edition differences" block.

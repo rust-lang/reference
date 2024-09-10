@@ -146,7 +146,7 @@ A *value expression* is an expression that represents an actual value.
 The following contexts are *place expression* contexts:
 
 * The left operand of a [compound assignment] expression.
-* The operand of a unary [borrow], [address-of][addr-of] or [dereference][deref] operator.
+* The operand of a unary [borrow], [raw borrow] or [dereference][deref] operator.
 * The operand of a field expression.
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
@@ -276,7 +276,6 @@ They are never allowed before:
 
 [assign]:               expressions/operator-expr.md#assignment-expressions
 [borrow]:               expressions/operator-expr.md#borrow-operators
-[addr-of]:              expressions/operator-expr.md#raw-address-of-operators
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
@@ -284,7 +283,6 @@ They are never allowed before:
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 
-[`Box<T>`]:             ../std/boxed/struct.Box.html
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`Sized`]:              special-types-and-traits.md#sized
@@ -295,6 +293,7 @@ They are never allowed before:
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [scrutinee]:            glossary.md#scrutinee
 [promoted]:             destructors.md#constant-promotion
+[raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
 [slice]:                types/slice.md
 [statement]:            statements.md
 [static variables]:     items/static-items.md

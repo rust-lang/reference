@@ -7,6 +7,7 @@
 
 A union declaration uses the same syntax as a struct declaration, except with
 `union` in place of `struct`.
+A union declaration defines the given name in the [type namespace] of the module or block where it is located.
 
 ```rust
 #[repr(C)]
@@ -174,9 +175,8 @@ checking, etc etc etc).
 [_GenericParams_]: generics.md
 [_WhereClause_]: generics.md#where-clauses
 [_StructFields_]: structs.md
-[`transmute`]: ../../std/mem/fn.transmute.html
-[`Copy`]: ../../std/marker/trait.Copy.html
+[`transmute`]: std::mem::transmute
 [boolean type]: ../types/boolean.md
-[ManuallyDrop]: ../../std/mem/struct.ManuallyDrop.html
 [the C representation]: ../type-layout.md#reprc-unions
-[undefined behavior]: ../behavior-considered-undefined.html
+[type namespace]: ../names/namespaces.md
+[undefined behavior]: ../behavior-considered-undefined.md

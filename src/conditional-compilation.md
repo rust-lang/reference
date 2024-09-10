@@ -55,11 +55,8 @@ configuration option from within the source code of the crate being compiled.
 > by [Cargo][cargo-feature] for specifying compile-time options and optional
 > dependencies.
 
-<div class="warning">
-
-Warning: Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
-
-</div>
+> [!WARNING]
+> Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
 
 ### `target_arch`
 
@@ -200,8 +197,6 @@ atomic loads, stores, and compare-and-swap operations.
 
 When this cfg is present, all of the stable [`core::sync::atomic`] APIs are available for
 the relevant atomic width.
-
-[`core::sync::atomic`]: ../core/sync/atomic/index.html
 
 Possible values:
 
@@ -374,7 +369,6 @@ println!("I'm running on a {} machine!", machine_kind);
 [`cfg`]: #the-cfg-attribute
 [`cfg` macro]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
-[`debug_assert!`]: ../std/macro.debug_assert.html
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
 [attribute]: attributes.md
 [attributes]: attributes.md

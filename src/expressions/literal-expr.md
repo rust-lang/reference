@@ -419,7 +419,7 @@ The expression's type is the primitive [boolean type], and its value is:
 [String continuation escapes]: #string-continuation-escapes
 [boolean type]: ../types/boolean.md
 [constant expression]: ../const_eval.md#constant-expressions
-[CStr]: ../../core/ffi/struct.CStr.html
+[CStr]: core::ffi::CStr
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
 [literal tokens]: ../tokens.md#literals
@@ -432,14 +432,7 @@ The expression's type is the primitive [boolean type], and its value is:
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
 [Unicode scalar values]: http://www.unicode.org/glossary/#unicode_scalar_value
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
-[`f32::INFINITY`]: ../../core/primitive.f32.md#associatedconstant.INFINITY
-[`f32::NAN`]: ../../core/primitive.f32.md#associatedconstant.NAN
 [`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
-[`f64::INFINITY`]: ../../core/primitive.f64.md#associatedconstant.INFINITY
-[`f64::NAN`]: ../../core/primitive.f64.md#associatedconstant.NAN
-[`u8::from_str_radix`]: ../../core/primitive.u8.md#method.from_str_radix
-[`u32::from_str_radix`]: ../../core/primitive.u32.md#method.from_str_radix
-[`u128::from_str_radix`]: ../../core/primitive.u128.md#method.from_str_radix
 [CHAR_LITERAL]: ../tokens.md#character-literals
 [STRING_LITERAL]: ../tokens.md#string-literals
 [RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals

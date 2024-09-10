@@ -12,25 +12,16 @@ behaviors. `unsafe` code that satisfies this property for any safe client is
 called *sound*; if `unsafe` code can be misused by safe code to exhibit
 undefined behavior, it is *unsound*.
 
-<div class="warning">
-
-***Warning:*** The following list is not exhaustive; it may grow or shrink.
-There is no formal model of Rust's semantics for what is and is not allowed in
-unsafe code, so there may be more behavior considered unsafe. We also reserve
-the right to make some of the behavior in that list defined in the future. In
-other words, this list does not say that anything will *definitely* always be
-undefined in all future Rust version (but we might make such commitments for
-some list items in the future).
-
-Please read the [Rustonomicon] before writing unsafe code.
-
-</div>
+> [!WARNING]
+> The following list is not exhaustive; it may grow or shrink. There is no formal model of Rust's semantics for what is and is not allowed in unsafe code, so there may be more behavior considered unsafe. We also reserve the right to make some of the behavior in that list defined in the future. In other words, this list does not say that anything will *definitely* always be undefined in all future Rust version (but we might make such commitments for some list items in the future).
+>
+> Please read the [Rustonomicon] before writing unsafe code.
 
 * Data races.
 * Accessing (loading from or storing to) a place that is [dangling] or [based on
   a misaligned pointer].
 * Performing a place projection that violates the requirements of [in-bounds
-  pointer arithmetic][offset]. A place projection is a [field
+  pointer arithmetic](pointer#method.offset). A place projection is a [field
   expression][project-field], a [tuple index expression][project-tuple], or an
   [array/slice index expression][project-slice].
 * Breaking the [pointer aliasing rules]. `Box<T>`, `&mut T` and `&T` follow
@@ -49,7 +40,7 @@ Please read the [Rustonomicon] before writing unsafe code.
   All this also applies when values of these
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
-* Mutating immutable bytes. All bytes inside a [`const`] item are immutable.
+* Mutating immutable bytes. All bytes inside a [`const`] item or within an implicitly [const-promoted] expression are immutable.
   The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
   Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
@@ -101,8 +92,8 @@ alignment 1). In other words, the alignment requirement derives from the type of
 the pointer that was dereferenced, *not* the type of the field that is being
 accessed.
 
-Note that a place based on a misaligned pointer only leads to Undefined Behavior
-when it is loaded from or stored to. `addr_of!`/`addr_of_mut!` on such a place
+Note that a place based on a misaligned pointer only leads to undefined behavior
+when it is loaded from or stored to. `&raw const`/`&raw mut` on such a place
 is allowed. `&`/`&mut` on a place requires the alignment of the field type (or
 else the program would be "producing an invalid value"), which generally is a
 less restrictive requirement than being based on an aligned pointer. Taking a
@@ -176,16 +167,15 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
-[`UnsafeCell<U>`]: ../std/cell/struct.UnsafeCell.html
+[`UnsafeCell<U>`]: std::cell::UnsafeCell
 [Rustonomicon]: ../nomicon/index.html
-[`NonNull<T>`]: ../core/ptr/struct.NonNull.html
-[`NonZero<T>`]: ../core/num/struct.NonZero.html
-[`Box<T>`]: ../alloc/boxed/struct.Box.html
+[`NonNull<T>`]: core::ptr::NonNull
+[`NonZero<T>`]: core::num::NonZero
 [place expression context]: expressions.md#place-expressions-and-value-expressions
 [rules]: inline-assembly.md#rules-for-inline-assembly
 [points to]: #pointed-to-bytes
 [pointed to]: #pointed-to-bytes
-[offset]: ../std/primitive.pointer.html#method.offset
 [project-field]: expressions/field-expr.md
 [project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
 [project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
+[const-promoted]: destructors.md#constant-promotion
