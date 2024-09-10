@@ -12,7 +12,7 @@ enables the [`test` conditional compilation option].
 r[attributes.testing.test]
 
 
-r[attributes.testing.test.general]
+r[attributes.testing.test.intro]
 The *`test` attribute* marks a function to be executed as a test.
 
 r[attributes.testing.test.enabled]
@@ -56,7 +56,7 @@ fn test_the_thing() -> io::Result<()> {
 r[attributes.testing.ignore]
 
 
-r[attributes.testing.ignore.general]
+r[attributes.testing.ignore.intro]
 A function annotated with the `test` attribute can also be annotated with the
 `ignore` attribute. The *`ignore` attribute* tells the test harness to not
 execute that function as a test. It will still be compiled when in test mode.

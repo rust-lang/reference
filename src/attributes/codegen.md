@@ -23,7 +23,7 @@ have no effect on a trait function without a body.
 
 r[attributes.codgen.inline]
 
-r[attributes.codegen.inline.general]
+r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function
 should be placed in the caller, rather than generating code to call the
 function where it is defined.
@@ -64,7 +64,7 @@ assumed to exist.
 r[attributes.codegen.target_feature]
 
 
-r[attributes.codegen.target_feature.general]
+r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
 features. It uses the [_MetaListNameValueStr_] syntax with a single key of
@@ -76,17 +76,17 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 unsafe fn foo_avx2() {}
 ```
 
-r[attributes.codegen.target_features.arch]
+r[attributes.codegen.target_feature.arch]
 Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
-r[attributes.codegen.target_features.precondition]
+r[attributes.codegen.target_feature.precondition]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
-r[attributes.codegen.target_features.restriction]
+r[attributes.codegen.target_feature.restriction-inline]
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
 be used with a `target_feature` attribute.
@@ -361,7 +361,7 @@ otherwise undefined behavior results.
 
 ### Behavior
 
-r[attributes.codegen.track_caller.behaviour]
+r[attributes.codegen.track_caller.behavior]
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
 the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
 implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
@@ -443,7 +443,7 @@ And so on.
 
 r[attributes.codegen.track_caller.limits]
 
-r[attributes.codegent.track_caller.hint]
+r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
 
 r[attributes.codegen.track_caller.decay]

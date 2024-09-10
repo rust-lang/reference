@@ -3,7 +3,7 @@
 r[attributes.derive]
 
 
-r[attributes.derived.general]
+r[attributes.derive.intro]
 The *`derive` attribute* allows new [items] to be automatically generated for
 data structures.
 

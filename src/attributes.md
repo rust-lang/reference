@@ -17,7 +17,7 @@ r[attributes.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; [_DelimTokenTree_]\
 > &nbsp;&nbsp; | `=` [_Expression_]
 
-r[attributes.general]
+r[attributes.intro]
 An _attribute_ is a general, free-form metadatum that is interpreted according
 to name, convention, language, and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
@@ -108,7 +108,7 @@ fn some_unused_variables() {
 r[attributes.meta]
 
 
-r[attributes.meta.general]
+r[attributes.meta.intro]
 A "meta item" is the syntax used for the _Attr_ rule by most [built-in
 attributes]. It has the following grammar:
 
@@ -191,7 +191,7 @@ _MetaListNameValueStr_ | `link(name = "CoreFoundation", kind = "framework")`
 
 r[attributes.activity]
 
-r[attributes.activity.general]
+r[attributes.activity.intro]
 An attribute is either active or inert. During attribute processing, *active
 attributes* remove themselves from the thing they are on while *inert attributes*
 stay on.
@@ -204,7 +204,7 @@ active. All other attributes are inert.
 
 r[attributes.tool]
 
-r[attributes.tool.general]
+r[attributes.tool.intro]
 The compiler may allow attributes for external tools where each tool resides
 in its own module in the [tool prelude]. The first segment of the attribute
 path is the name of the tool, with one or more additional segments whose
