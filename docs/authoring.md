@@ -75,6 +75,36 @@ Rules can be linked to by their ID using markdown such as `[foo.bar]`. There are
 
 In the HTML, the rules are clickable just like headers.
 
+When assigning rules to new paragraphs, or when modifying rule names, use the following guidelines:
+1. A rule applies to one core idea, which should be easily determined when reading the paragraph it is applied to,
+2. Other than the "intro" paragraph, purely explanatory, expository, or exemplary content does not need a rule. If the expository paragraph isn't directly related to the previous, separate it with a hard (rendered) line break
+3. Rust Code examples and tests do not need their own rules
+4. Notes do not need rules. For other admonition types, use the following guidelines:
+    * Warning: Omit the rule if and only if the warning follows from the previous paragraph.
+    * Target Specific Behaviour: Always include the rule
+    * Edition Differences: Always include the rule
+    * Version History: Omit the rule if the present behaviour is explained in the immediately preceeding rule.
+4. The following keywords should be used to identify paragraphs when unambiguous:
+    * `intro`: The beginning paragraph of each section - should explain the construct being defined overall.
+    * `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used
+    * `restriction`: Syntactic (parsing) requirements on the construct
+    * `constraint`: Semantic (type checking) requirements on the construct
+    * `safety` (instead of restriction): Stating that an operation is `unsafe` or the conditions under which it is `unsafe`
+    * `behavior`: Runtime effects of evaluating the construct in a well-defined manner
+    * `panics`: Conditions under which evaluating the construct causes a runtime panic
+    * `preconditions`: Conditions which must be satisfied for the evaluation of the construct to be well-defined
+    * `namespace`: For items only, specifies the namespace(s) the item introduces a name in. May also be used elsewhere when defining a namespace (e.g. `r[attribute.diagnostic.namespace]`)
+5. When a rule doesn't fall under the above keywords. or for section rule ids, name the subrule as follows:
+    * If the rule is naming a specific Rust language construct (IE. an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s)
+    * Other than rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule"
+    * Whenever possible, do not repeat previous components of the rule
+    * Prefer using singular forms of words over plural unless the rule applies to a list or the construct is named as plural in the language (e.g. `r[attribute.diagnostic.lint.group])
+    * Whenever possible, don't use a name that conflicts with one of the above keywords, even if this violates the first bullet. 
+    * Use an appropriately discriptive, but short, name if the language does not provide one.
+6. When a keyword applies, but multiple different rules in the same section would use the same keyword, prefix or suffix the rule with a descriptive id given above, separated with a `-`
+    * When the paragraph modifies a specific named construct or applies to a specific named construct only, prefix the rule with the name of the construct (e.g. `r[items.fn.params.self-constraint]`).
+    * When the paragraph refers to a specific named construct that applies the particular keyword behaviour, suffix the rule with the name of the construct
+
 ### Standard library links
 
 You should link to the standard library without specifying a URL in a fashion similar to [rustdoc intra-doc links][intra]. Some examples:
