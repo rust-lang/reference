@@ -354,7 +354,7 @@ let Person { name, ref age } = person;
 
 r[pattern.wildcard]
 
-r[pattern.wildcard]
+r[pattern.wildcard.syntax]
 > **<sup>Syntax</sup>**\
 > _WildcardPattern_ :\
 > &nbsp;&nbsp; `_`
