@@ -1,21 +1,30 @@
 # Constant items
 
+r[items.const]
+
+r[items.const.syntax]
 > **<sup>Syntax</sup>**\
 > _ConstantItem_ :\
 > &nbsp;&nbsp; `const` ( [IDENTIFIER] | `_` ) `:` [_Type_] ( `=` [_Expression_] )<sup>?</sup> `;`
 
+r[items.const.intro]
 A *constant item* is an optionally named _[constant value]_ which is not associated
-with a specific memory location in the program. Constants are essentially inlined
-wherever they are used, meaning that they are copied directly into the relevant
+with a specific memory location in the program.
+
+r[items.const.behaviour]
+Constants are essentially inlined wherever they are used, meaning that they are copied directly into the relevant
 context when used. This includes usage of constants from external crates, and
 non-[`Copy`] types. References to the same constant are not necessarily
 guaranteed to refer to the same memory address.
 
+r[items.const.namespace]
 The constant declaration defines the constant value in the [value namespace] of the module or block where it is located.
 
+r[items.const.static]
 Constants must be explicitly typed. The type must have a `'static` lifetime: any
 references in the initializer must have `'static` lifetimes.
 
+r[items.const.addr-of]
 Constants may refer to the address of other constants, in which case the
 address will have elided lifetimes where applicable, otherwise -- in most cases
 -- defaulting to the `static` lifetime. (See [static lifetime
@@ -40,9 +49,12 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 };
 ```
 
+r[items.const.restriction]
 The constant expression may only be omitted in a [trait definition].
 
 ## Constants with Destructors
+
+r[items.const.destructor]
 
 Constants can contain destructors. Destructors are run when the value goes out
 of scope.
@@ -67,6 +79,9 @@ fn create_and_drop_zero_with_destructor() {
 
 ## Unnamed constant
 
+r[items.const.unnamed]
+
+r[items.const.unnamed.intro]
 Unlike an [associated constant], a [free] constant may be unnamed by using
 an underscore instead of the name. For example:
 
@@ -77,6 +92,7 @@ const _: () =  { struct _SameNameTwice; };
 const _: () =  { struct _SameNameTwice; };
 ```
 
+r[items.const.unnamed.repetition]
 As with [underscore imports], macros may safely emit the same unnamed constant in
 the same scope more than once. For example, the following should not produce an error:
 
@@ -92,6 +108,8 @@ m!(const _: () = (););
 ```
 
 ## Evaluation
+
+r[items.const.eval]
 
 [Free][free] constants are always [evaluated][const_eval] at compile-time to surface
 panics. This happens even within an unused function:
