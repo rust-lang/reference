@@ -20,7 +20,7 @@ be used as the names of:
 * [Macro placeholders]
 * [Crates]
 
-> **<sup>Lexer:<sup>**\
+> **<sup>Lexer:</sup>**\
 > KW_AS             : `as`\
 > KW_BREAK          : `break`\
 > KW_CONST          : `const`\
