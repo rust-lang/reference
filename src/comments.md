@@ -45,7 +45,8 @@ Line doc comments beginning with exactly _three_ slashes (`///`), and block
 doc comments (`/** ... */`), both outer doc comments, are interpreted as a
 special syntax for [`doc` attributes]. That is, they are equivalent to writing
 `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into
-`#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`.
+`#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`. They must therefore
+appear before something that accepts an outer attribute.
 
 Line comments beginning with `//!` and block comments `/*! ... */` are
 doc comments that apply to the parent of the comment, rather than the item
@@ -54,6 +55,12 @@ the body of the comment. `//!` comments are usually used to document
 modules that occupy a source file.
 
 The character `U+000D` (CR) is not allowed in doc comments.
+
+> **Note**: It is conventional for doc comments to contain Markdown, as expected by
+> `rustdoc`. However, the comment syntax does not respect any internal Markdown.
+> ``/** `glob = "*/*.rs";` */`` terminates the comment at the first `*/`, and the
+> remaining code would cause a syntax error. This slightly limits the content of
+> block doc comments compared to line doc comments.
 
 > **Note**:  The sequence `U+000D` (CR) immediately followed by `U+000A` (LF) would have been previously transformed into a single `U+000A` (LF).
 
