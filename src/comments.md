@@ -56,11 +56,11 @@ modules that occupy a source file.
 
 The character `U+000D` (CR) is not allowed in doc comments.
 
-It is conventional for doc comments to contain Markdown, as expected by
-`rustdoc`. However, the comment syntax does not respect any internal Markdown.
-``/** `glob = "*/*.rs";` */`` terminates the comment at the first `*/`, and the
-remaining code would cause a syntax error. This slightly limits the content of
-block doc comments compared to line doc comments.
+> **Note**: It is conventional for doc comments to contain Markdown, as expected by
+> `rustdoc`. However, the comment syntax does not respect any internal Markdown.
+> ``/** `glob = "*/*.rs";` */`` terminates the comment at the first `*/`, and the
+> remaining code would cause a syntax error. This slightly limits the content of
+> block doc comments compared to line doc comments.
 
 > **Note**:  The sequence `U+000D` (CR) immediately followed by `U+000A` (LF) would have been previously transformed into a single `U+000A` (LF).
 
