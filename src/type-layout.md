@@ -7,6 +7,10 @@ of type layout.
 Type layout can be changed with each compilation. Instead of trying to document
 exactly what is done, we only document what is guaranteed today.
 
+Note that even types with the same layout can still differ in how they are passed
+across function boundaries. For function call ABI compatibility of types,
+see [here][fn-abi-compatibility].
+
 ## Size and Alignment
 
 All values have an alignment and size.
@@ -593,6 +597,7 @@ used with any other representation.
 [`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
 [field-less enums]: items/enumerations.md#field-less-enum
+[fn-abi-compatibility]: ../core/primitive.fn.md#abi-compatibility
 [enumerations]: items/enumerations.md
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
