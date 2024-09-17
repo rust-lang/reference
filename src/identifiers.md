@@ -62,7 +62,7 @@ r[ident.ascii-extern-item]
 
 ## Normalization
 
-r[ident.normalize]
+r[ident.normalization]
 
 Identifiers are normalized using Normalization Form C (NFC) as defined in [Unicode Standard Annex #15][UAX15]. Two identifiers are equal if their NFC forms are equal.
 
