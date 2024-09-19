@@ -1,14 +1,21 @@
 {{#include types-redirect.html}}
 # Types
 
+r[type]
+
+r[type.intro]
 Every variable, item, and value in a Rust program has a type. The _type_ of a
 *value* defines the interpretation of the memory holding it and the operations
 that may be performed on the value.
 
+r[type.builtin]
 Built-in types are tightly integrated into the language, in nontrivial ways
-that are not possible to emulate in user-defined types. User-defined types have
-limited capabilities.
+that are not possible to emulate in user-defined types.
 
+r[type.user-defined]
+User-defined types have limited capabilities.
+
+r[type.kinds]
 The list of types is:
 
 * Primitive types:
@@ -37,6 +44,9 @@ The list of types is:
 
 ## Type expressions
 
+r[type.name]
+
+r[type.name.syntax]
 > **<sup>Syntax</sup>**\
 > _Type_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _TypeNoBounds_\
@@ -59,27 +69,47 @@ The list of types is:
 > &nbsp;&nbsp; | [_BareFunctionType_]\
 > &nbsp;&nbsp; | [_MacroInvocation_]
 
+r[type.name.intro]
 A _type expression_ as defined in the _Type_ grammar rule above is the syntax
 for referring to a type. It may refer to:
 
+r[type.name.sequence]
 * Sequence types ([tuple], [array], [slice]).
+
+r[type.name.path]
 * [Type paths] which can reference:
     * Primitive types ([boolean], [numeric], [textual]).
     * Paths to an [item] ([struct], [enum], [union], [type alias], [trait]).
     * [`Self` path] where `Self` is the implementing type.
     * Generic [type parameters].
+
+r[type.name.pointer]
 * Pointer types ([reference], [raw pointer], [function pointer]).
+
+r[type.name.inference]
 * The [inferred type] which asks the compiler to determine the type.
+
+r[type.name.grouped]
 * [Parentheses] which are used for disambiguation.
+
+r[type.name.trait]
 * Trait types: [Trait objects] and [impl trait].
+
+r[type.name.never]
 * The [never] type.
+
+r[type.name.macro-expansion]
 * [Macros] which expand to a type expression.
 
 ### Parenthesized types
 
+r[type.name.parenthesized]
+
+r[type.name.parenthesized.syntax]
 > _ParenthesizedType_ :\
 > &nbsp;&nbsp; `(` [_Type_] `)`
 
+r[type.name.parenthesized.intro]
 In some situations the combination of types may be ambiguous. Use parentheses
 around a type to avoid ambiguity. For example, the `+` operator for [type
 boundaries] within a [reference type] is unclear where the
@@ -94,10 +124,16 @@ type T<'a> = &'a (dyn Any + Send);
 
 ## Recursive types
 
+r[type.recursive]
+
+r[type.recursive.intro]
 Nominal types &mdash; [structs], [enumerations], and [unions] &mdash; may be
 recursive. That is, each `enum` variant or `struct` or `union` field may
 refer, directly or indirectly, to the enclosing `enum` or `struct` type
-itself. Such recursion has restrictions:
+itself.
+
+r[type.recursive.constraint]
+Such recursion has restrictions:
 
 * Recursive types must include a nominal type in the recursion (not mere [type
   aliases], or other structural types such as [arrays] or [tuples]). So `type

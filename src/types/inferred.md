@@ -1,11 +1,19 @@
 # Inferred type
 
+r[type.inferred]
+
+r[type.inferred.syntax]
 > **<sup>Syntax</sup>**\
 > _InferredType_ : `_`
 
+r[type.inferred.intro]
 The inferred type asks the compiler to infer the type if possible based on the
-surrounding information available. It cannot be used in item signatures. It is
-often used in generic arguments:
+surrounding information available.
+
+r[type.inferred.constraint]
+It cannot be used in item signatures.
+
+It is often used in generic arguments:
 
 ```rust
 let x: Vec<_> = (0..10).collect();
