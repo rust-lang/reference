@@ -4,7 +4,7 @@ r[type.fn-item]
 
 r[type.fn-item.intro]
 When referred to, a function item, or the constructor of a tuple-like struct or
-enum variant, yields a zero-sized value of its _function item type_. 
+enum variant, yields a zero-sized value of its _function item type_\1
 
 r[type.fn-item.unique]
 That type explicitly identifies the function - its name, its type arguments, and its
