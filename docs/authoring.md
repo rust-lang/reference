@@ -78,12 +78,12 @@ In the HTML, the rules are clickable just like headers.
 When assigning rules to new paragraphs, or when modifying rule names, use the following guidelines:
 1. A rule applies to one core idea, which should be easily determined when reading the paragraph it is applied to,
 2. Other than the "intro" paragraph, purely explanatory, expository, or exemplary content does not need a rule. If the expository paragraph isn't directly related to the previous, separate it with a hard (rendered) line break
-3. Rust Code examples and tests do not need their own rules
+3. Rust code examples and tests do not need their own rules
 4. Notes do not need rules. For other admonition types, use the following guidelines:
     * Warning: Omit the rule if and only if the warning follows from the previous paragraph.
-    * Target Specific Behaviour: Always include the rule
-    * Edition Differences: Always include the rule
-    * Version History: Omit the rule if the present behaviour is explained in the immediately preceeding rule.
+    * Target specific behaviour: Always include the rule
+    * Edition differences: Always include the rule
+    * Version history: Omit the rule if the present behaviour is explained in the immediately preceeding rule.
 4. The following keywords should be used to identify paragraphs when unambiguous:
     * `intro`: The beginning paragraph of each section - should explain the construct being defined overall.
     * `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used
@@ -95,7 +95,7 @@ When assigning rules to new paragraphs, or when modifying rule names, use the fo
     * `preconditions`: Conditions which must be satisfied for the evaluation of the construct to be well-defined
     * `namespace`: For items only, specifies the namespace(s) the item introduces a name in. May also be used elsewhere when defining a namespace (e.g. `r[attribute.diagnostic.namespace]`)
 5. When a rule doesn't fall under the above keywords. or for section rule ids, name the subrule as follows:
-    * If the rule is naming a specific Rust language construct (IE. an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s)
+    * If the rule is naming a specific Rust language construct (e.g. an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s)
     * Other than rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule"
     * Whenever possible, do not repeat previous components of the rule
     * Prefer using singular forms of words over plural unless the rule applies to a list or the construct is named as plural in the language (e.g. `r[attribute.diagnostic.lint.group])
