@@ -65,10 +65,11 @@ types, by copy, regardless of whether a borrow would work. The `move` keyword is
 usually used to allow the closure to outlive the captured values, such as if the
 closure is being returned or used to spawn a new thread.
 
-r[type.closure.capture.composite] <!-- editor note, not true in Edition 2021 -->
+r[type.closure.capture.composite] 
 Composite types such as structs, tuples, and enums are always captured entirely,
 not by individual fields. It may be necessary to borrow into a local variable in
 order to capture a single field:
+<!-- editor note, not true in Edition 2021 -->
 
 ```rust
 # use std::collections::HashSet;

@@ -7,7 +7,7 @@ r[type.array.syntax]
 > _ArrayType_ :\
 > &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
 
-r[type.array.index]
+r[type.array.intro]
 An array is a fixed-size sequence of `N` elements of type `T`. The array type
 is written as `[T; N]`.
 
