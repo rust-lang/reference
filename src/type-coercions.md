@@ -208,7 +208,8 @@ r[coerce.unsize.trait-object]
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
 
 r[coerce.unsize.trait-upcast]
-* `dyn T` to `dyn U`, when `T` has `U` as one of its ancestor trait.
+* `dyn T` to `dyn U`, when `U` is one of `T`'s [supertraits].
+    * This allows dropping auto traits, i.e. `dyn T + Auto` to `dyn U` is allowed.
 
 r[coerce.unsized.composite]
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
@@ -325,3 +326,4 @@ precisely.
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
 [method-call expressions]: expressions/method-call-expr.md
+[supertraits]: items/traits.md#supertraits
