@@ -385,7 +385,11 @@ reference types and `mut` or `const` in pointer types.
 | [Function pointer]    | Integer               | Function pointer to address cast |
 | Closure \*\*\*        | Function pointer      | Closure to function pointer cast |
 
-\* or `T` and `V` are compatible unsized types, e.g., both slices, both the same trait object.
+\* or `T` and `V` are unsized types with compatible metadata:
+* both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`).
+* both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`).
+    * **Note**: *adding* auto traits is not allowed (`*dyn Debug` -> `*dyn Debug + Send` is invalid).
+    * **Note**: generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`).
 
 \*\* only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference to
 `const` pointer is allowed.
