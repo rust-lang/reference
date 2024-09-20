@@ -163,6 +163,9 @@ relate to converting types to unsized types, and are permitted in a few
 cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
+> Note: "unsizing" is a bit of a misnomer,
+> since this covers unsized->unsized coercions too.
+
 Two traits, [`Unsize`] and [`CoerceUnsized`], are used
 to assist in this process and expose it for library use. The following
 coercions are built-ins and, if `T` can be coerced to `U` with one of them, then
@@ -172,7 +175,8 @@ an implementation of `Unsize<U>` for `T` will be provided:
 
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
 
-* `dyn T` to `dyn U`, when `U` is one of `T`'s supertraits.
+* `dyn T` to `dyn U` when `U` is one of `T`'s [supertraits].
+    * This allows dropping auto traits, i.e. `dyn T + Auto` to `dyn U` is allowed.
 
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
     * `Foo` is a struct.
@@ -276,3 +280,4 @@ precisely.
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
 [method-call expressions]: expressions/method-call-expr.md
+[supertraits]: items/traits.md#supertraits
