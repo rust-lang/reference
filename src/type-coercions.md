@@ -210,6 +210,7 @@ r[coerce.unsize.trait-object]
 r[coerce.unsize.trait-upcast]
 * `dyn T` to `dyn U`, when `U` is one of `T`'s [supertraits].
     * This allows dropping auto traits, i.e. `dyn T + Auto` to `dyn U` is allowed.
+    * This allows adding auto traits if the principal trait has the auto trait as a super trait, i.e. given `trait T: U + Send {}`, `dyn T` to `dyn T + Send` or to `dyn U + Send` coercions are allowed.
 
 r[coerce.unsized.composite]
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
