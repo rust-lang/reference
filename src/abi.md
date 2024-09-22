@@ -22,7 +22,7 @@ Function calls pass parameters and return values between the caller and the call
 > These are not fully documented here currently.
 
 > [!WARNING]
-> Two types that are ABI Compatible may not allow the same set of values (e.g. [`*const T`] and [`core::ptr::NonNull<T>`]). 
+> Two types that are ABI Compatible may not allow the same set of values (e.g. [`*const T`] and [`core::ptr::NonNull<T>`]).
 > If an invalid value is passed as a parameter or returned from a function, the result is immediate undefined behaviour, even if the parameter or return value is never used.
 > For example, passing a null pointer to a function that accepts a `NonNull<i32>` parameter via `fn(*const i32)` function pointer caused undefined behaviour.
 
@@ -187,7 +187,6 @@ A call to a function `f` via a function item or function pointer with a given si
 * If any parameter type, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature] of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
 
 The behavior of a call that is not valid is undefined.
-
 
 > [!NOTE]
 > The ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
