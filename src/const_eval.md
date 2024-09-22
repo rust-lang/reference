@@ -23,7 +23,7 @@ to be run.
 * [Const parameters].
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
-* Paths to [statics]. These are only allowed within the initializer of a static.
+* Paths to immutable [statics].
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
