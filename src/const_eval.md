@@ -71,6 +71,30 @@ surrounding generic parameters: such an expression must either be a single bare
 const generic parameter, or an arbitrary expression not making use of any
 generics.
 
+## Permitted use of `static`s
+
+Within the constant evaluation context, items that ultimately contain no mutable memory or data that is
+capable of interior mutability can be used, borrowed or taken address of.
+Among those are the `static` items as long as they are not actually `mut` items.
+
+```rust
+const fn allowed() -> &'static u32 {
+    static VALUE: u32 = 0;
+    &VALUE
+}
+const A_CONST: &'static u32 = allowed();
+```
+
+On the contrary, for example, `static mut` and types embedding an `UnsafeCell` is not allowed.
+
+```rust,edition2021,compile_fail
+const fn not_allowed() -> &'static u32 {
+    static mut VALUE: u32 = 0;
+    &VALUE
+}
+const WILL_FAIL: &'static u32 = not_allowed();
+```
+
 ## Const Functions
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
