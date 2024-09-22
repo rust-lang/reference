@@ -275,6 +275,9 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
+<a id="the-no_mangle-attribute"></a>
+<a id="the-export_name-attribute"></a>
+
 ## Symbol naming
 
 r[abi.symbol-name]
