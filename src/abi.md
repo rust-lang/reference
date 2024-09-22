@@ -13,11 +13,18 @@ linking external libraries.
 
 r[abi.compatibility]
 
-r[abi.compatibility.type]
-Two types, `T` and `U`, can be *abi compatible*.
+r[abi.compatibility.intro]
+Function calls pass parameters and return values between the caller and the callee function. This requires the caller and callee to agree on an ABI for those parameters and return values. This is typically only guaranteed when the same type is used in both the call site and the definition site of the callee, but certain other types may be *abi compatible*. This can appear when transmuting a [function pointer] or using an [`extern` block] to call a function. When the parameters or return types differ between the call site and def site, assuming they are *abi compatible*, the parameters or return types are transmuted to the type at the def site or call site respectively.
 
 > [!NOTE]
-> *abi compatible* types can be used in place of each other in signatures when calling via [function pointer] at runtime (via pointer, or [`extern` block]). 
+> This can include calls to functions defined outside of rust, or built using a different Rust compiler version.
+> Additional guarantees will apply in this case for "FFI Safe" types, which match up with the platform C ABI in well-defined ways.
+> These are not fully documented here currently.
+
+> [!WARNING]
+> Two types that are ABI Compatible may not allow the same set of values (e.g. [`*const T`] and [`core::ptr::NonNull<T>`]). 
+> If an invalid value is passed as a parameter or returned from a function, the result is immediate undefined behaviour, even if the parameter or return value is never used.
+> For example, passing a null pointer to a function that accepts a `NonNull<i32>` parameter via `fn(*const i32)` function pointer caused undefined behaviour.
 
 r[abi.compatibility.equivalence]
 Two types `T` and `U` are *abi compatible* if:
@@ -27,12 +34,16 @@ Two types `T` and `U` are *abi compatible* if:
 
 > [!NOTE]
 > These properties are respectively called "reflexivity", "symmetry", and "transitivity". They ensure that *abi compatibility* is an equivalence relation.
+> ABI compatibility is a pairwise relation between two types. With Transivity and Symmetry, however, it can be well-defined to refer to several types being ABI compatible
 
 r[abi.compatibility.integer]
-Two [integer types] are *abi compatible* if they have the same size and the same signedness.
+Two [integer types] are *abi compatible* if they have the same width and the same signedness.
 
 > [!NOTE]
-> In particular, `usize` is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width.
+> The width of an integer type is the number of bits, e.g. `u8` has a width of 8, and `i128` has a width of 128.
+
+> [!NOTE]
+> In particular, [`usize`] is *abi compatible* with `uN`, and `isize` is *abi compatible* with `iN` where `N` is the target_pointer_width.
 > Two integer types with different signedness, such as `u8` and `i8` are not *abi compatible*.
 
 ```rust
@@ -124,7 +135,6 @@ Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1
 r[abi.compatibility.option]
 If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable/core/option/index.html#representation), then given `S` is a type with size 0 and alignment 1, `T` is *abi compatible* with the types [`core::option::Option<T>`], [`core::result::Result<T,S>`], and [`core::result::Result<S,T>`].
 
-
 r[abi.compatibility.fn-ptr]
 An [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
 
@@ -147,7 +157,7 @@ Two function signatures are compatible if:
 > A signature is compatible with itself.
 
 r[abi.compatibility.simd-abi]
-A type has *simd abi requirements* if:
+Certain types have *simd abi requirements*, which can impose additional constraints on calls with a parameter or return value of that type. A type has *simd abi requirements* if:
 * It is a type declared with the standard-library repr-attribute `simd`, or
 * It is a aggregate type[^aggregate], which has a type with *simd abi requirements* as a field.
 
@@ -155,14 +165,16 @@ A type has *simd abi requirements* if:
 > Types with *simd abi requirements* may be passed using special registers that aren't always available to code.
 
 > [!NOTE]
-> Notably References and pointers to types with *simd abi requirements* do not have *simd abi requirements*. 
+> Notably References and pointers to types with *simd abi requirements* do not have *simd abi requirements*.
+> Only direct parameters and return values are affected by *simd abi requirements*.
 
 > [!NOTE]
-> The `repr(simd)` attribute cannot be used by Rust code, only by the standard library.
+> The `repr(simd)` attribute cannot be used by Rust code, only by the standard library. The name used here is for *exposition only*.
 
 r[abi.compatibility.simd-target-feature]
 A type with *simd abi requirements* may have one or more [*salient target features*][target_feature] . In the case of an aggregate type, the set of [*salient target features*][target_feature] is the union of the set of [*salient target features*][target_feature] of each field with *simd abi requirements*.
 
+r[abi.compatibility.simd-target-feature-x86]
 > [!TARGET-SPECIFIC]
 > On x86 and x86-64, the [*salient target features*][target_feature] of the `simd` types are:
 > * [`__m128`], [`__m128i`], [`__m128f`], and [`__m128d`] (128-bit vector types): `sse`
@@ -176,8 +188,6 @@ A call to a function `f` via a function item or function pointer with a given si
 
 The behavior of a call that is not valid is undefined.
 
-> [!NOTE]
-> When parameter or return types do not exactly match, they are converted as though by calling [`core::mem::transmute`]. The representation and validity requirements of the type in the definition or return site still apply. For example, passing `0` to a function pointer `fn(u32)` that points to a function declared as `fn foo(x: NonZeroU32)` is undefined behavior.
 
 > [!NOTE]
 > The ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
@@ -270,8 +280,7 @@ $ nm -C foo.o
 
 r[abi.symbol-name]
 
-
-The `no_mangle` and `export_name` attributes allow you to control which symbols are exported from rust code under provided symbol names. 
+The `no_mangle` and `export_name` attributes allow you to control which symbols are exported from rust code under provided symbol names.
 
 > **<sup>Attribute Syntax</sup>**\
 > _MetaItemNoMangle_ :\
@@ -303,7 +312,6 @@ extern "C" {
 
 > [!NOTE]
 > They may be applied to an associated `fn` of an `impl` block.
-
 
 r[abi.symbol-name.exported]
 An item with either the *`no_mangle` attribute* or the *`export_name` attribute* is an *exported item*.
@@ -361,7 +369,7 @@ extern "C" fn foo() {}
 
 r[abi.link_section]
 
-The `link_section` attribute allows a program to control the section that certain items are placed into. 
+The `link_section` attribute allows a program to control the section that certain items are placed into.
 
 > **<sup>Attribute Syntax</sup>**\
 > _MetaItemLinkSection_ :\
@@ -395,11 +403,13 @@ pub static VAR1: u32 = 1;
 [integer types]: types/numeric.md#integer-types
 [`char`]: types/textual.md
 [pointer types]: types/pointer.md#raw-pointers-const-and-mut
+[`*const T`]: types/pointer.md#raw-pointers-const-and-mut
 [`&T`]: types/pointer.md#shared-references-
 [`&mut T`]: types/pointer.md#mutable-references-mut
 [`struct`]: types/struct.md
 [`enum`]: types/enum.md
 [`union`]: types/union.md
+[`usize`]: types/numeric.md#machine-dependent-integer-types
 [array]: types/array.md
 [item]: items.md
 [static]: items/static-items.md
