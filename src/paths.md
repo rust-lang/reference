@@ -240,7 +240,6 @@ r[path.qualifier.mod-self.restriction]
 r[path.qualifier.self-pat]
 In a method body, a path which consists of a single `self` segment resolves to the method's self parameter.
 
-
 ```rust
 fn foo() {}
 fn bar() {

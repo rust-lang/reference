@@ -131,7 +131,6 @@ r[name.implicit.root]
 Additionally, the crate root module does not have a name, but can be referred
 to with certain [path qualifiers] or aliases.
 
-
 [*Name resolution*]: names/name-resolution.md
 [*namespaces*]: names/namespaces.md
 [*paths*]: paths.md

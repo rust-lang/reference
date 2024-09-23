@@ -102,7 +102,7 @@ _default object lifetime bound_. These were defined in [RFC 599] and amended in
 
 r[lifetime-elision.trait-object.explicit-bound]
 These default object lifetime bounds are used instead of the lifetime parameter
-elision rules defined above when the lifetime bound is omitted entirely. 
+elision rules defined above when the lifetime bound is omitted entirely.
 
 r[lifetime-elision.trait-object.explicit-placeholder]
 If `'_` is used as the lifetime bound then the bound follows the usual elision
