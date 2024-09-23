@@ -332,7 +332,6 @@ fn foo() {
     m!();
 }
 
-
 // m!(); // Error: m is not in scope.
 ```
 
@@ -508,7 +507,6 @@ r[macro.decl.follow-set.intro]
 The parser used by the macro system is reasonably powerful, but it is limited in
 order to prevent ambiguity in current or future versions of the language.
 
-
 r[macro.decl.follow-set.token-restriction]
 In particular, in addition to the rule about ambiguous expansions, a nonterminal
 matched by a metavariable must be followed by a token which has been decided can
@@ -561,7 +559,6 @@ expansions, taking separators into account. This means:
     repetition.
   * If the repetition can match zero times (`*` or `?`), then whatever comes
     after must be able to follow whatever comes before.
-
 
 For more detail, see the [formal specification].
 
