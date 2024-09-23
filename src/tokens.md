@@ -357,7 +357,7 @@ The _raw string body_ can contain any sequence of ASCII characters other than `U
 It is terminated only by another `U+0022` (double-quote) character, followed by the same number of `U+0023` (`#`) characters that preceded the opening `U+0022` (double-quote) character.
 A raw byte string literal can not contain any non-ASCII byte.
 
-r[lex.token.literal.str-raw.content]
+r[lex.token.literal.str-byte-raw.content]
 All characters contained in the raw string body represent their ASCII encoding,
 the characters `U+0022` (double-quote) (except when followed by at least as
 many `U+0023` (`#`) characters as were used to start the raw string literal) or
