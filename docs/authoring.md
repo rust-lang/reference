@@ -87,8 +87,6 @@ When assigning rules to new paragraphs, or when modifying rule names, use the fo
 4. The following keywords should be used to identify paragraphs when unambiguous:
     * `intro`: The beginning paragraph of each section - should explain the construct being defined overall.
     * `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used
-    * `restriction`: Syntactic (parsing) requirements on the construct
-    * `constraint`: Semantic (type checking) requirements on the construct
     * `safety` (instead of restriction): Stating that an operation is `unsafe` or the conditions under which it is `unsafe`
     * `behavior`: Runtime effects of evaluating the construct in a well-defined manner
     * `panics`: Conditions under which evaluating the construct causes a runtime panic
