@@ -241,9 +241,9 @@ fn main() { bar() }
 
 ## Re-exporting and Visibility
 
-r[vis.export]
+r[vis.reexports]
 
-r[vis.export.intro]
+r[vis.reexports.intro]
 Rust allows publicly re-exporting items through a `pub use` directive. Because
 this is a public directive, this allows the item to be used in the current
 module through the rules above. It essentially allows public access into the
@@ -264,7 +264,7 @@ mod implementation {
 This means that any external crate referencing `implementation::api::f` would
 receive a privacy violation, while the path `api::f` would be allowed.
 
-r[vis.export.priv]
+r[vis.reexports.private-item]
 When re-exporting a private item, it can be thought of as allowing the "privacy
 chain" being short-circuited through the reexport instead of passing through
 the namespace hierarchy as it normally would.
