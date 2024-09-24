@@ -15,7 +15,8 @@ This document serves as a guide for editors and reviewers. Some conventions and 
 * Code blocks should have an explicit language tag.
 * Do not wrap long lines. This helps with reviewing diffs of the source.
 * Use [smart punctuation] instead of Unicode characters. For example, use `---` for em-dash instead of the Unicode character. Characters like em-dash can be difficult to see in a fixed-width editor, and some editors may not have easy methods to enter such characters.
-* Links should be relative with the `.md` extension. Links to other rust-lang books that are published with the reference or the standard library API should also be relative so that the linkchecker can validate them.
+* Links should be relative with the `.md` extension. Links to other rust-lang books that are published with the reference should also be relative so that the linkchecker can validate them.
+* Links to the standard library should use rustdoc-style links described in [Standard library links](#standard-library-links).
 * The use of reference links is preferred, with shortcuts if appropriate. Place the sorted link reference definitions at the bottom of the file, or at the bottom of a section if there are an unusually large number of links that are specific to the section.
 
     ```markdown
