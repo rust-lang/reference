@@ -18,7 +18,7 @@ The *`test` attribute* marks a function to be executed as a test.
 r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
 
-r[attributes.testing.test.restriction]
+r[attributes.testing.test.target]
 Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
 
 * `()`
@@ -80,7 +80,7 @@ fn mytest() {
 
 r[attributes.testing.should_panic]
 
-r[attributes.testing.should_panic.restriction]
+r[attributes.testing.should_panic.target]
 A function annotated with the `test` attribute that returns `()` can also be
 annotated with the `should_panic` attribute.
 

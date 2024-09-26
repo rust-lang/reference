@@ -12,7 +12,7 @@ r[attributes.debugger.debugger_visualizer.intro]
 The *`debugger_visualizer` attribute* can be used to embed a debugger visualizer file into the debug information.
 This enables an improved debugger experience for displaying values in the debugger.
 
-r[attributes.debugger.debugger_visualizer.restriction]
+r[attributes.debugger.debugger_visualizer.syntax]
 It uses the [_MetaListNameValueStr_] syntax to specify its inputs, and must be specified as a crate attribute.
 
 ### Using `debugger_visualizer` with Natvis
@@ -23,7 +23,7 @@ r[attributes.debugger.debugger_visualizer.natvis.intro]
 Natvis is an XML-based framework for Microsoft debuggers (such as Visual Studio and WinDbg) that uses declarative rules to customize the display of types.
 For detailed information on the Natvis format, refer to Microsoft's [Natvis documentation].
 
-r[attributes.debugger.debugger_visualizer.natvis.restrictions]
+r[attributes.debugger.debugger_visualizer.natvis.msvc]
 This attribute only supports embedding Natvis files on `-windows-msvc` targets.
 
 r[attributes.debugger.debugger_visualizer.natvis.path]
