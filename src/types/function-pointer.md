@@ -1,5 +1,8 @@
 # Function pointer types
 
+r[type.fn-pointer]
+
+r[type.fn-pointer.syntax]
 > **<sup>Syntax</sup>**\
 > _BareFunctionType_ :\
 > &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> _FunctionTypeQualifiers_ `fn`\
@@ -23,13 +26,18 @@
 > _MaybeNamedFunctionParametersVariadic_ :\
 > &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
 
+r[type.fn-pointer.intro]
 Function pointer types, written using the `fn` keyword, refer to a function
-whose identity is not necessarily known at compile-time. They can be created
-via a coercion from both [function items] and non-capturing [closures].
+whose identity is not necessarily known at compile-time.
 
+r[type.fn-pointer.coercion]
+They can be created via a coercion from both [function items] and non-capturing [closures].
+
+r[type.fn-pointer.qualifiers]
 The `unsafe` qualifier indicates that the type's value is an [unsafe
 function], and the `extern` qualifier indicates it is an [extern function].
 
+r[type.fn-pointer.constraint-variadic]
 Variadic parameters can only be specified with [`extern`] function types with
 the `"C"` or `"cdecl"` calling convention.
 
@@ -48,6 +56,8 @@ x = bo(5,7);
 ```
 
 ## Attributes on function pointer parameters
+
+r[type.fn-pointer.attributes]
 
 Attributes on function pointer parameters follow the same rules and
 restrictions as [regular function parameters].
