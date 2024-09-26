@@ -232,7 +232,7 @@ unsized coercion to `Foo<U>`.
 
 r[coerce.least-upper-bound]
 
-r[coerce.least-upper-bound]
+r[coerce.least-upper-bound.intro]
 In some contexts, the compiler must coerce together multiple types to try and
 find the most general type. This is called a "Least Upper Bound" coercion.
 LUB coercion is used and only used in the following situations:
