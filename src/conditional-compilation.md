@@ -219,6 +219,12 @@ This can be used to enable extra debugging code in development but not in
 production.  For example, it controls the behavior of the standard library's
 [`debug_assert!`] macro.
 
+### `overflow_checks`
+
+Enabled when compiling with [overflow checks] enabled, e.g. in development builds.
+
+[overflow checks]: expressions/operator-expr.md#overflow
+
 ### `proc_macro`
 
 Set when the crate being compiled is being compiled with the `proc_macro`
