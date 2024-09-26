@@ -1,5 +1,8 @@
 # Identifiers
 
+r[ident]
+
+r[ident.syntax]
 > **<sup>Lexer:<sup>**\
 > IDENTIFIER_OR_KEYWORD :\
 > &nbsp;&nbsp; &nbsp;&nbsp; XID_Start XID_Continue<sup>\*</sup>\
@@ -13,6 +16,7 @@
 > NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
 
 <!-- When updating the version, update the UAX links, too. -->
+r[ident.unicode]
 Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for Unicode version 15.0, with the additions described below. Some examples of identifiers:
 
 * `foo`
@@ -21,6 +25,7 @@ Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for 
 * `Москва`
 * `東京`
 
+r[ident.profile]
 The profile used from UAX #31 is:
 
 * Start := [`XID_Start`], plus the underscore character (U+005F)
@@ -31,10 +36,13 @@ with the additional constraint that a single underscore character is not an iden
 
 > **Note**: Identifiers starting with an underscore are typically used to indicate an identifier that is intentionally unused, and will silence the unused warning in `rustc`.
 
+r[ident.keyword]
 Identifiers may not be a [strict] or [reserved] keyword without the `r#` prefix described below in [raw identifiers](#raw-identifiers).
 
+r[ident.zero-width-chars]
 Zero width non-joiner (ZWNJ U+200C) and zero width joiner (ZWJ U+200D) characters are not allowed in identifiers.
 
+r[ident.ascii-limitations]
 Identifiers are restricted to the ASCII subset of [`XID_Start`] and [`XID_Continue`] in the following situations:
 
 * [`extern crate`] declarations
@@ -45,14 +53,21 @@ Identifiers are restricted to the ASCII subset of [`XID_Start`] and [`XID_Contin
 
 ## Normalization
 
+r[ident.normalization]
+
 Identifiers are normalized using Normalization Form C (NFC) as defined in [Unicode Standard Annex #15][UAX15]. Two identifiers are equal if their NFC forms are equal.
 
 [Procedural][proc-macro] and [declarative][mbe] macros receive normalized identifiers in their input.
 
 ## Raw identifiers
 
+r[ident.raw]
+
+r[ident.raw.intro]
 A raw identifier is like a normal identifier, but prefixed by `r#`. (Note that
 the `r#` prefix is not included as part of the actual identifier.)
+
+r[ident.raw.allowed]
 Unlike a normal identifier, a raw identifier may be any strict or reserved
 keyword except the ones listed above for `RAW_IDENTIFIER`.
 
