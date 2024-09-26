@@ -38,8 +38,11 @@ to be run.
 * [Closure expressions] which don't capture variables from the environment.
 * Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool`, and `char`.
-* Shared [borrow]s, except if applied to a type with [interior mutability].
-* The [dereference operator] except for raw pointers.
+* All forms of [borrow]s, including raw borrows, with one limitation:
+  mutable borrows and shared borrows to values with interior mutability
+  are only allowed to refer to *transient* places. A place is *transient*
+  if its lifetime is strictly contained inside the current [const context].
+* The [dereference operator].
 * [Grouped] expressions.
 * [Cast] expressions, except
   * pointer to address casts and
@@ -49,6 +52,7 @@ to be run.
 * [if], [`if let`] and [match] expressions.
 
 ## Const context
+[const context]: #const-context
 
 A _const context_ is one of the following:
 
@@ -61,39 +65,23 @@ A _const context_ is one of the following:
 * A [const generic argument]
 * A [const block]
 
+Const contexts that are used as parts of types (array type and repeat length
+expressions as well as const generic arguments) can only make restricted use of
+surrounding generic parameters: such an expression must either be a single bare
+const generic parameter, or an arbitrary expression not making use of any
+generics.
+
 ## Const Functions
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
 `const` has no effect on any existing uses, it only restricts the types that arguments and the
-return type may use, as well as prevent various expressions from being used within it. You can freely
-do anything with a const function that you can do with a regular function.
+return type may use, and restricts the function body to constant expressions.
 
 When called from a const context, the function is interpreted by the
 compiler at compile time. The interpretation happens in the
 environment of the compilation target and not the host. So `usize` is
 `32` bits if you are compiling against a `32` bit system, irrelevant
 of whether you are building on a `64` bit or a `32` bit system.
-
-Const functions have various restrictions to make sure that they can be
-evaluated at compile-time. It is, for example, not possible to write a random
-number generator as a const function. Calling a const function at compile-time
-will always yield the same result as calling it at runtime, even when called
-multiple times. There's one exception to this rule: if you are doing complex
-floating point operations in extreme situations, then you might get (very
-slightly) different results. It is advisable to not make array lengths and enum
-discriminants depend on floating point computations.
-
-
-Notable features that are allowed in const contexts but not in const functions include:
-
-* floating point operations
-  * floating point values are treated just like generic parameters without trait bounds beyond
-  `Copy`. So you cannot do anything with them but copy/move them around.
-
-Conversely, the following are possible in a const function, but not in a const context:
-
-* Use of generic type and lifetime parameters.
-  * Const contexts do allow limited use of [const generic parameters].
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md

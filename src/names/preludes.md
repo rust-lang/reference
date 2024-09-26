@@ -44,7 +44,7 @@ new_name`, then the symbol `new_name` is instead added to the prelude.
 The [`core`] crate is always added to the extern prelude. The [`std`] crate is
 added as long as the [`no_std` attribute] is not specified in the crate root.
 
-> **Edition Differences**: In the 2015 edition, crates in the extern prelude
+> **Edition differences**: In the 2015 edition, crates in the extern prelude
 > cannot be referenced via [use declarations], so it is generally standard
 > practice to include `extern crate` declarations to bring them into scope.
 >
@@ -91,13 +91,8 @@ The *`no_std` [attribute]* may be applied at the crate level to prevent the
 > library. Those capabilities are mainly dynamic memory allocation (e.g. `Box`
 > and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
-<div class="warning">
-
-Warning: Using `no_std` does not prevent the standard library from being
-linked in. It is still valid to put `extern crate std;` into the crate and
-dependencies can also link it in.
-
-</div>
+> [!WARNING]
+> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 ## Language prelude
 
@@ -132,7 +127,7 @@ module or any of its descendants.
 
 This attribute does not affect the [language prelude].
 
-> **Edition Differences**: In the 2015 edition, the `no_implicit_prelude`
+> **Edition differences**: In the 2015 edition, the `no_implicit_prelude`
 > attribute does not affect the [`macro_use` prelude], and all macros exported
 > from the standard library are still included in the `macro_use` prelude.
 > Starting in the 2018 edition, it will remove the `macro_use` prelude.

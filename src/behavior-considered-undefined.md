@@ -12,19 +12,10 @@ behaviors. `unsafe` code that satisfies this property for any safe client is
 called *sound*; if `unsafe` code can be misused by safe code to exhibit
 undefined behavior, it is *unsound*.
 
-<div class="warning">
-
-***Warning:*** The following list is not exhaustive; it may grow or shrink.
-There is no formal model of Rust's semantics for what is and is not allowed in
-unsafe code, so there may be more behavior considered unsafe. We also reserve
-the right to make some of the behavior in that list defined in the future. In
-other words, this list does not say that anything will *definitely* always be
-undefined in all future Rust version (but we might make such commitments for
-some list items in the future).
-
-Please read the [Rustonomicon] before writing unsafe code.
-
-</div>
+> [!WARNING]
+> The following list is not exhaustive; it may grow or shrink. There is no formal model of Rust's semantics for what is and is not allowed in unsafe code, so there may be more behavior considered unsafe. We also reserve the right to make some of the behavior in that list defined in the future. In other words, this list does not say that anything will *definitely* always be undefined in all future Rust version (but we might make such commitments for some list items in the future).
+>
+> Please read the [Rustonomicon] before writing unsafe code.
 
 * Data races.
 * Accessing (loading from or storing to) a place that is [dangling] or [based on
@@ -87,7 +78,7 @@ The span of bytes a pointer or reference "points to" is determined by the pointe
 A place is said to be "based on a misaligned pointer" if the last `*` projection
 during place computation was performed on a pointer that was not aligned for its
 type. (If there is no `*` projection in the place expression, then this is
-accessing the field of a local and rustc will guarantee proper alignment. If
+accessing the field of a local or `static` and rustc will guarantee proper alignment. If
 there are multiple `*` projection, then each of them incurs a load of the
 pointer-to-be-dereferenced itself from memory, and each of these loads is
 subject to the alignment constraint. Note that some `*` projections can be

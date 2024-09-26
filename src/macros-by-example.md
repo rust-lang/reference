@@ -148,7 +148,7 @@ the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
 specifier when it appears as a subexpression.
 For the same reason, a standalone [const block] is not matched but it is matched when appearing as a subexpression.
 
-> **Edition Differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
+> **Edition differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
@@ -421,7 +421,7 @@ macro_rules! call_foo {
 fn foo() {}
 ```
 
-> **Version & Edition Differences**: Prior to Rust 1.30, `$crate` and
+> **Version & Edition differences**: Prior to Rust 1.30, `$crate` and
 > `local_inner_macros` (below) were unsupported. They were added alongside
 > path-based imports of macros (described above), to ensure that helper macros
 > did not need to be manually imported by users of a macro-exporting crate.
@@ -475,7 +475,7 @@ Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
     `ident`, `ty`, or `path` fragment specifier.
   * All other fragment specifiers have no restrictions.
 
-> **Edition Differences**: Before the 2021 edition, `pat` may also be followed by `|`.
+> **Edition differences**: Before the 2021 edition, `pat` may also be followed by `|`.
 
 When repetitions are involved, then the rules apply to every possible number of
 expansions, taking separators into account. This means:

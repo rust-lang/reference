@@ -80,20 +80,18 @@ r[expr.method.ambiguious-search]
 If a step is reached where there is more than one possible method, such as where generic methods or traits are considered the same, then it is a compiler error.
 These cases require a [disambiguating function call syntax] for method and function invocation.
 
-> **Edition Differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
+> **Edition differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
 > The edition used for this purpose is determined by the token representing the method name.
 >
 > This special case may be removed in the future.
 
-<div class="warning">
+> [!WARNING]
+> For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression.
+> Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method.
+> There is no way to call the inherent method.
+> Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
 
-***Warning:*** For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression.
-Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method.
-There is no way to call the inherent method.
-Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
-
-</div>
 
 [_CallParams_]: call-expr.md
 [_Expression_]: ../expressions.md

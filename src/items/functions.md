@@ -195,7 +195,7 @@ called from other programming languages like C:
 extern "C" fn new_i32() -> i32 { 0 }
 
 // Declares a function with the "stdcall" ABI
-# #[cfg(target_arch = "x86_64")]
+# #[cfg(any(windows, target_arch = "x86"))]
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
@@ -227,7 +227,7 @@ Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
 
-Const functions may use the [`extern`] function qualifier, but only with the `"Rust"` and `"C"` ABIs.
+Const functions may use the [`extern`] function qualifier.
 
 Const functions are not allowed to be [async](#async-functions).
 
