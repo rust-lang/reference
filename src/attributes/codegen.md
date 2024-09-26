@@ -86,7 +86,7 @@ It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
-r[attributes.codegen.target_feature.restriction-inline]
+r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
 be used with a `target_feature` attribute.

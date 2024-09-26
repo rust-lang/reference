@@ -53,7 +53,7 @@ r[attributes.limits.type_length_limit.intro]
 The *`type_length_limit` attribute* limits the maximum number of type
 substitutions made when constructing a concrete type during monomorphization.
 
-r[attributes.limits.type_length_limit.restriction]
+r[attributes.limits.type_length_limit.syntax]
 It is applied at the [crate] level, and uses the [_MetaNameValueStr_] syntax
 to set the limit based on the number of type substitutions.
 
