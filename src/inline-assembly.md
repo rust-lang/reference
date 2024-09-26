@@ -74,9 +74,22 @@ With the `asm!` macro, the assembly code is emitted in a function scope and inte
 This assembly code must obey [strict rules](#rules-for-inline-assembly) to avoid undefined behavior.
 Note that in some cases the compiler may choose to emit the assembly code as a separate function and generate a call to it.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  unsafe { core::arch::asm!("/* {} */", in(reg) 0); }
+# }
+```
+
 r[asm.scope.global_asm]
 With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function.
 This can be used to hand-write entire functions using assembly code, and generally provides much more freedom to use arbitrary registers and assembler directives.
+
+```rust
+# fn main(){}
+
+# #[cfg(target_arch = "x86_64")]
+core::arch::global_asm!("/* {} */", const 0);
+```
 
 r[asm.ts-args]
 ## Template string arguments
@@ -87,24 +100,106 @@ The assembler template uses the same syntax as [format strings][format-syntax] (
 r[asm.ts-args.order]
 The corresponding arguments are accessed in order, by index, or by name.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64;
+  let y: i64;
+  let z: i64;
+  // This
+  unsafe { core::arch::asm!("mov {}, {}", out(reg) x, in(reg) 5);}  
+  // ... this
+  unsafe { core::arch::asm!("mov {0}, {1}", out(reg) y, in(reg) 5);}
+  /// ... and this
+  unsafe { core::arch::asm!("mov {out}, {in}", out = out(reg) z, in = in(reg) 5);}
+  /// all have the same behaviour
+  assert_eq!(x,y);
+  assert_eq!(y,z);
+# }
+```
+
+
 r[asm.ts-args.no-implicit]
 However, implicit named arguments (introduced by [RFC #2795][rfc-2795]) are not supported.
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // We can't refer to `x` from the scope directly, we need an operand like `in(reg) x`
+  unsafe { core::arch::asm!("/* {x} */"); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.ts-args.one-or-more]
 An `asm!` invocation may have one or more template string arguments; an `asm!` with multiple template string arguments is treated as if all the strings were concatenated with a `\n` between them.
 The expected usage is for each template string argument to correspond to a line of assembly code.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64;
+  let y: i64;
+  unsafe { core::arch::asm!("mov eax, 5", "mov ecx, eax", out("rax") x, out("rcx") y); }
+  assert_eq!(x, y);
+# }
+```
+
 r[asm.ts-args.before-other-args]
 All template string arguments must appear before any other arguments.
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // The template strings need to appear first in the asm invocation
+  unsafe { core::arch::asm!("/* {x} */", x = const 5, "ud2"); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.ts-args.positional-first]
 As with format strings, positional arguments must appear before named arguments and explicit [register operands](#register-operands).
 
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // Named operands need to come after positional ones
+  unsafe { core::arch::asm!("/* {x} {} */", x = const 5, in(reg) 5); }
+
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // We also can't put explicit registers before positional operands
+  unsafe { core::arch::asm!("/* {} */", in("eax") 0, in(reg) 5); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.ts-args.register-operands]
 Explicit register operands cannot be used by placeholders in the template string.
 
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // Explicit register operands don't get substituted, use `eax` explicitly in the string
+  unsafe { core::arch::asm!("/* {} */", in("eax") 5); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.ts-args.at-least-once]
 All other named and positional operands must appear at least once in the template string, otherwise a compiler error is generated.
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // We have to name all of the operands in the format string
+  unsafe { core::arch::asm!("". in(reg) 5, x = const 5); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.ts-args.opaque]
 The exact assembly code syntax is target-specific and opaque to the compiler except for the way operands are substituted into the template string to form the code passed to the assembler.
@@ -133,6 +228,12 @@ r[asm.operand-type.supported-operands.in]
   - The allocated register will contain the value of `<expr>` at the start of the asm code.
   - The allocated register must contain the same value at the end of the asm code (except if a `lateout` is allocated to the same register).
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  unsafe { core::arch::asm!("/* {} */", in(reg) 5); }
+# }
+```
+
 r[asm.operand-type.supported-operands.out]
 * `out(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register.
@@ -141,10 +242,25 @@ r[asm.operand-type.supported-operands.out]
   - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
   - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64;
+  unsafe { core::arch::asm!("/* {} */", out(reg) x); }
+# }
+```
+
 r[asm.operand-type.supported-operands.lateout]
 * `lateout(<reg>) <expr>`
   - Identical to `out` except that the register allocator can reuse a register allocated to an `in`.
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64;
+  unsafe { core::arch::asm!("mov {}, 5", lateout(reg) x); }
+  assert_eq!(x, 5)
+# }
+```
 
 r[asm.operand-type.supported-operands.inout]
 * `inout(<reg>) <expr>`
@@ -153,6 +269,14 @@ r[asm.operand-type.supported-operands.inout]
   - The allocated register will contain the value of `<expr>` at the start of the asm code.
   - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register are written at the end of the asm code.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let mut x: i64 = 4;
+  unsafe { core::arch::asm!("inc {}", inout(reg) x); }
+  assert_eq!(x,5);
+# }
+```
+
 r[asm.operand-type.supported-operands.inout-arrow]
 * `inout(<reg>) <in expr> => <out expr>`
   - Same as `inout` except that the initial value of the register is taken from the value of `<in expr>`.
@@ -160,10 +284,26 @@ r[asm.operand-type.supported-operands.inout-arrow]
   - An underscore (`_`) may be specified instead of an expression for `<out expr>`, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
   - `<in expr>` and `<out expr>` may have different types.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64;
+  unsafe { core::arch::asm!("inc {}", inout(reg) 4u64=>x); }
+  assert_eq!(x,5);
+# }
+```
+
 r[asm.operand-type.supported-operands.inlateout]
 * `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
   - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let mut x: i64 = 4;
+  unsafe { core::arch::asm!("inc {}", inlateout(reg) x); }
+  assert_eq!(x,5);
+# }
+```
 
 r[asm.operand-type.supported-operands.sym]
 * `sym <path>`
@@ -171,18 +311,71 @@ r[asm.operand-type.supported-operands.sym]
   - A mangled symbol name referring to the item is substituted into the asm template string.
   - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
   - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  extern "C" fn foo(){
+    println!("Hello from inline assembly")
+  }
+  unsafe { core::arch::asm!("call {}", sym foo, clobber_abi("C")); }
+# }
+```
+
 * `const <expr>`
   - `<expr>` must be an integer constant expression. This expression follows the same rules as inline `const` blocks.
   - The type of the expression may be any integer type, but defaults to `i32` just like integer literals.
   - The value of the expression is formatted as a string and substituted directly into the asm template string.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  // swizzle [0, 1, 2, 3] => [3, 2, 0, 1]
+  const SHUFFLE: u8 = 0b01_00_10_11;
+  let x: core::arch::x86_64::__m128 = unsafe{ core::mem::transmute([0u32, 1u32, 2u32, 3u32]) }; 
+  let y: core::arch::x86_64::__m128;
+  // Pass a constant value into an instruction that expects an immediate like `pshufd`
+  unsafe { core::arch::asm!("pshufd {xmm}, {xmm}, {shuffle}", xmm = inlateout(xmm_reg) x=>y, shuffle = const SHUFFLE); }
+  let y: [u32; 4] = unsafe { core::mem::transmute(y) };
+  assert_eq!(y,[3, 2, 0, 1]);
+# }
+```
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
 After the `asm!` has executed, outputs are written to in left to right order.
 This is significant if two outputs point to the same place: that place will contain the value of the rightmost output.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let mut y: i64;
+  // y gets its value from the second output, rather than the first
+  unsafe { core::arch::asm!("mov {}, 0", "mov {}, 1", out(reg) y, out(reg) y); }
+  assert_eq!(y,1);
+# }
+```
+
 r[asm.operand-type.global_asm-restriction]
 Since `global_asm!` exists outside a function, it can only use `sym` and `const` operands.
+
+```rust,compile_fail
+let x = 5;
+# fn main() {}
+
+// register operands aren't allowed, since we aren't in a function
+# #[cfg(target_arch = "x86_64")]
+core::arch::global_asm!("", in(reg) 5); 
+
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
+```rust
+# fn main(){}
+
+fn foo(){}
+
+# #[cfg(target_arch = "x86_64")]
+// `const` and `sym` are both allowed, however
+core::arch::global_asm!("/* {} {} */", const 0, sym foo);
+```
 
 r[asm.register-operands]
 ## Register operands
@@ -191,14 +384,48 @@ r[asm.register-operands.register-or-class]
 Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register.
 Explicit registers are specified as string literals (e.g. `"eax"`) while register classes are specified as identifiers (e.g. `reg`).
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let mut y: i64;
+  // We can name both `reg`, or an explicit register like `eax` to get an integer register
+  unsafe { core::arch::asm!("mov eax, {:e}", in(reg) 5, lateout("eax") y); }
+  assert_eq!(y,5);
+# }
+```
+
 r[asm.register-operands.equivalence-to-base-register]
 Note that explicit registers treat register aliases (e.g. `r14` vs `lr` on ARM) and smaller views of a register (e.g. `eax` vs `rax`) as equivalent to the base register.
 
 r[asm.register-operands.error-two-operands]
 It is a compile-time error to use the same explicit register for two input operands or two output operands.
 
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // We can't name eax twice
+  unsafe { core::arch::asm!("", in("eax") 5, in("eax") 4); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // ... even using different aliases
+  unsafe { core::arch::asm!("", in("ax") 5, in("rax") 4); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
+
 r[asm.register-operands.error-overlapping]
 Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  // al overlaps with ax, so we can't name both of them.
+  unsafe { core::arch::asm!("", in("ax") 5, in("al") 4); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.register-operands.allowed-types]
 Only the following types are allowed as operands for inline assembly:
@@ -208,6 +435,40 @@ Only the following types are allowed as operands for inline assembly:
 - Function pointers
 - SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`).
 This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM).
+
+```rust
+extern "C" fn foo(){}
+# #[cfg(target_arch = "x86_64")] {
+  // Integers are allowed...
+  let y: i64 = 5;
+  unsafe { core::arch::asm!("/* {} */", in(reg) y); }
+
+  // and pointers...
+  let py = core::ptr::addr_of!(y);
+  unsafe { core::arch::asm!("/* {} */", in(reg) py); }
+
+  // floats as well...
+  let f = 1.0f32;
+  unsafe { core::arch::asm!("/* {} */", in(xmm_reg) f); }
+
+  /// even function pointers and simd vectors.
+  let func: extern "C" fn() = foo;
+  unsafe { core::arch::asm!("/* {} */", in(reg) func); }
+
+  let z = unsafe{core::arch::x86_64::_mm_set_epi64x(1,0)};
+  unsafe { core::arch::asm!("/* {} */", in(xmm_reg) z); }
+# }
+```
+
+```rust,compile_fail
+struct Foo;
+# #[cfg(target_arch = "x86_64")] {
+  let x: Foo = Foo;
+  // Complex types like structs are not allowed
+  unsafe { core::arch::asm!("/* {} */", in(reg) x); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.register-operands.supported-register-classes]
 Here is the list of currently supported register classes:
@@ -302,14 +563,59 @@ The availability of supported types for a particular register class may depend o
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  let z = unsafe{core::arch::x86_64::_mm_set_epi64x(1,0)};
+  // We can't pass an `__m128i` to a `reg` input
+  unsafe { core::arch::asm!("/* {} */", in(reg) z); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.register-operands.smaller-value]
 If a value is of a smaller size than the register it is allocated in then the upper bits of that register will have an undefined value for inputs and will be ignored for outputs.
 The only exception is the `freg` register class on RISC-V where `f32` values are NaN-boxed in a `f64` as required by the RISC-V architecture.
+
+<!--no_run, this test has a non-deterministic runtime behaviour-->
+```rust,no_run
+# #[cfg(target_arch = "x86_64")] {
+  let mut x: i64;
+  // Moving a 32-bit value into a 64-bit value, oops.
+  #[allow(asm_sub_register)] // rustc warns about this behaviour
+  unsafe { core::arch::asm!("mov {}, {}", lateout(reg) x, in(reg) 4i32); }
+  // top 32-bits are indeterminate
+  assert_eq!(x, 4); // This assertion is not guaranteed to succeed
+  assert_eq!(x & 0xFFFFFFFF, 4); // However, this one will succeed
+# }
+```
 
 r[asm.register-operands.separate-input-output]
 When separate input and output expressions are specified for an `inout` operand, both expressions must have the same type.
 The only exception is if both operands are pointers or integers, in which case they are only required to have the same size.
 This restriction exists because the register allocators in LLVM and GCC sometimes cannot handle tied operands with different types.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  // Pointers and integers can mix (as long as they are the same size)
+  let x: isize = 0;
+  let y: *mut ();
+  // Transmute an `isize` to a `*mut ()`, using inline assembly magic
+  unsafe { core::arch::asm!("/*{}*/", inout(reg) x=>y); }
+  assert!(y.is_null()); // Extremely roundabout way to make a null pointer
+# }
+```
+
+```rust,compile_fail
+let x = 5;
+# #[cfg(target_arch = "x86_64")] {
+  let x: i32 = 0;
+  let y: f32;
+  // But we can't reinterpret an `i32` to an `f32` like this
+  unsafe { core::arch::asm!("/* {} */", inout(reg) x=>y); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.register-names]
 ## Register names
