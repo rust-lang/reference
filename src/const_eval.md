@@ -87,7 +87,7 @@ const A_CONST: &'static u32 = allowed();
 
 On the contrary, for example, `static mut` and types embedding an `UnsafeCell` is not allowed.
 
-```rust,edition2021,compile_fail
+```rust,edition2021,compile_fail,E0080
 const fn not_allowed() -> &'static u32 {
     static mut VALUE: u32 = 0;
     &VALUE
