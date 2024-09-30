@@ -97,9 +97,9 @@ Behind each return-position `impl Trait` abstract type is some hidden concrete t
 
 ## Automatic capturing
 
-Return-position `impl Trait` abstract types automatically capture certain of the in-scope generic parameters.  Everywhere, these automatically capture all in-scope type and const generic parameters.
+Return-position `impl Trait` abstract types automatically capture all in-scope generic parameters, including generic type, const, and lifetime parameters (including higher-ranked ones).
 
-On items of trait impls and trait definitions, these types additionally automatically capture all in-scope generic lifetime parameters, including higher-ranked ones.  On free functions and on associated functions and methods of inherent impls, only the generic lifetime parameters that appear in the bounds of abstract return type are captured.
+**Edition differences**: Before the 2024 edition, on free functions and on associated functions and methods of inherent impls, generic lifetime parameters that do not appear in the bounds of the abstract return type are not automatically captured.
 
 ## Precise capturing
 
