@@ -95,6 +95,17 @@ const fn not_allowed() -> &'static u32 {
 const WILL_FAIL: &'static u32 = not_allowed();
 ```
 
+One other instance that the constant evaluation will reject is any attempt to read values behind a `static` item declared in an [`extern`] block, even though the item is not marked as `mut`.
+Computing the address to the `static` item is still permitted. However, as soon as a use or dereferencing of the whole or a part of the `static` item is performed, it constitutes a read access which will fail the constant evaluation.
+
+```rust,edition2021,compile_fail,E0080
+extern {
+    static S: u32;
+}
+
+const C: u32 = unsafe { S };
+```
+
 ## Const Functions
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
@@ -130,6 +141,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [enum discriminants]:   items/enumerations.md#discriminants
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
+[`extern`]:             items/external-blocks.md#statics
 [field]:                expressions/field-expr.md
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
