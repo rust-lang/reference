@@ -282,6 +282,8 @@ Feature               | Implicitly Enables  | Description
 `relaxed-simd`        | `simd128`           | [WebAssembly relaxed simd proposal][relaxed-simd]
 `sign-ext`            |                     | [WebAssembly sign extension operators Proposal][sign-ext]
 `simd128`             |                     | [WebAssembly simd proposal][simd128]
+`multivalue`          |                     | [WebAssembly multivalue proposal][multivalue]
+`reference-types`     |                     | [WebAssembly reference-types proposal][reference-types]
 
 [bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
 [extended-const]: https://github.com/WebAssembly/extended-const
@@ -290,6 +292,8 @@ Feature               | Implicitly Enables  | Description
 [relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
 [sign-ext]: https://github.com/WebAssembly/sign-extension-ops
 [simd128]: https://github.com/webassembly/simd
+[reference-types]: https://github.com/webassembly/reference-types
+[multivalue]: https://github.com/webassembly/multi-value
 
 ### Additional information
 
