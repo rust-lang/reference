@@ -563,8 +563,16 @@ The availability of supported types for a particular register class may depend o
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x = 5i32;
+  let y = -1i8;
+  let z = unsafe{core::arch::x86_64::_mm_set_epi64x(1,0)};
+  unsafe { core::arch::asm!("/* {} {} {} */", in(reg) x, in(reg_byte) y, in(xmm_reg) z, out("tmm0") _); }
+# }
+```
+
 ```rust,compile_fail
-let x = 5;
 # #[cfg(target_arch = "x86_64")] {
   let z = unsafe{core::arch::x86_64::_mm_set_epi64x(1,0)};
   // We can't pass an `__m128i` to a `reg` input
@@ -689,6 +697,14 @@ Here is the list of all supported register aliases:
 | LoongArch | `$f[8-23]` | `$ft[0-15]` |
 | LoongArch | `$f[24-31]` | `$fs[0-7]` |
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let z = 0i64;
+  // rax is an alias for eax and ax
+  unsafe { core::arch::asm!("", in("rax") z); }
+# }
+```
+
 r[asm.register-names.not-for-io]
 Some registers cannot be used for input or output operands:
 
@@ -714,6 +730,14 @@ Some registers cannot be used for input or output operands:
 | s390x | `c[0-15]` | Reserved by the kernel. |
 | s390x | `a[0-1]` | Reserved for system use. |
 
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // bp is reserved
+  unsafe { core::arch::asm!("", in("bp") 5i32); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.register-names.fp-bp-reserved]
 The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
 
@@ -726,6 +750,15 @@ These modifiers do not affect register allocation, but change the way operands a
 
 r[asm.template-modifiers.only-one]
 Only one modifier is allowed per template placeholder.
+
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // bp is reserved
+  unsafe { core::arch::asm!("/* {:er}", in(reg) 5i32); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 
 r[asm.template-modifiers.supported-modifiers]
 The supported modifiers are a subset of LLVM's (and GCC's) [asm template argument modifiers][llvm-argmod], but do not use the same letter codes.
@@ -792,11 +825,40 @@ r[asm.abi-clobbers.intro]
 The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
 This will automatically insert the necessary clobber constraints as needed for calling a function with a particular calling convention: if the calling convention does not fully preserve the value of a register across a call then `lateout("...") _` is implicitly added to the operands list (where the `...` is replaced by the register's name).
 
+```rust
+extern "C" fn foo() -> i32{ 0 }
+# #[cfg(target_arch = "x86_64")] {
+  let z: i32;
+  unsafe { core::arch::asm!("call {}", sym foo, out("rax") z, clobber_abi("C")); }
+  assert_eq!(z, 0);
+# }
+```
+
 r[asm.abi-clobbers.many]
 `clobber_abi` may be specified any number of times. It will insert a clobber for all unique registers in the union of all specified calling conventions.
 
+```rust
+extern "sysv64" fn foo() -> i32{ 0 }
+extern "win64" fn bar(x: i32) -> i32{ x + 1}
+# #[cfg(target_arch = "x86_64")] {
+  let z: i32;
+  unsafe { core::arch::asm!("call {}", "mov ecx, eax", "call {}", sym foo, sym bar, out("rax") z, clobber_abi("C")); }
+  assert_eq!(z, 1);
+# }
+```
+
 r[asm.abi-clobbers.must-specify]
 Generic register class outputs are disallowed by the compiler when `clobber_abi` is used: all outputs must specify an explicit register.
+
+```rust,compile_fail
+extern "C" fn foo(x: i32) -> i32{ 0 }
+# #[cfg(target_arch = "x86_64")] {
+  let z: i32;
+  unsafe { core::arch::asm!("mov eax, {:e}", "call {}", out(reg) z, sym foo, clobber_abi("C")); }
+  assert_eq!(z, 0);
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.abi-clobbers.explicit-have-precedence]
 Explicit register outputs have precedence over the implicit clobbers inserted by `clobber_abi`: a clobber will only be inserted for a register if that register is not used as an output.
@@ -834,15 +896,52 @@ r[asm.options.supported-options.pure]
   This allows the compiler to execute the `asm!` block fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used.
   The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i32 = 0;
+  let z: i32;
+  unsafe { core::arch::asm!("inc {}", inout(reg) x => z, options(pure, nomem)); }
+  assert_eq!(z, 1);
+# }
+```
+
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  let z: i32;
+  unsafe { core::arch::asm!("inc {}", inout(reg) x => z, options(pure)); }
+  assert_eq!(z, 0);
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.options.supported-options.nomem]
 - `nomem`: The `asm!` block does not read from or write to any memory accessible outside of the `asm!` block.
   This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
   The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 
+<!-- no_run: This test has unpredictable or undefined behaviour at runtime -->
+```rust,no_run
+# #[cfg(target_arch = "x86_64")] {
+  let mut x = 0i32;
+  let z: i32;
+  // The following line has undefined behaviour
+  unsafe { core::arch::asm!("mov {val:e}, dword ptr [{ptr}]", ptr = in(reg) &mut x, val = lateout(reg) z, options(nomem))}
+# } 
+```
+
 r[asm.options.supported-options.readonly]
 - `readonly`: The `asm!` block does not write to any memory accessible outside of the `asm!` block.
   This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
   The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
+
+<!-- no_run: This test has undefined behaviour at runtime -->
+```rust,no_run
+# #[cfg(target_arch = "x86_64")] {
+  let mut x = 0;
+  // The following line has undefined behaviour
+  unsafe { core::arch::asm!("mov dword ptr[{}], 1", in(reg) &mut x, options(readonly))}
+# } 
+```
 
 r[asm.options.supported-options.preserves_flags]
 - `preserves_flags`: The `asm!` block does not modify the flags register (defined in the rules below).
@@ -853,13 +952,49 @@ r[asm.options.supported-options.noreturn]
   Behavior is undefined if execution falls through past the end of the asm code.
   A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
 
+<!-- no_run: This test aborts at runtime -->
+```rust,no_run
+fn main() -> !{
+# #[cfg(target_arch = "x86_64")] {
+  // We can use an instruction to trap execution inside of a noreturn block
+  unsafe { core::arch::asm!("ud2", options(noreturn)); }
+# }
+}
+```
+
+<!-- no_run: Test has undefined behaviour at runtime -->
+```rust,no_run
+# #[cfg(target_arch = "x86_64")] {
+  // You are responsible for not falling past the end of a noreturn asm block
+  unsafe { core::arch::asm!("", options(noreturn)); }
+# }
+```
+
 r[asm.options.supported-options.nostack]
 - `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
   If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
 
+<!-- no_run: Test has undefined behaviour at runtime -->
+```rust,no_run
+# #[cfg(target_arch = "x86_64")] {
+  // `push` and `pop` are UB when used with nostack
+  unsafe { core::arch::asm!("push rax", "pop rax", options(nostack)); }
+# }
+```
+
 r[asm.options.supported-options.att_syntax]
 - `att_syntax`: This option is only valid on x86, and causes the assembler to use the `.att_syntax prefix` mode of the GNU assembler.
   Register operands are substituted in with a leading `%`.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i32;
+  let y = 1i32;
+  // We need to use AT&T Syntax here. src, dest order for operands
+  unsafe { core::arch::asm!("mov {y:e}, {x:e}", x = lateout(reg) x, y = in(reg) y, options(att_syntax)); }
+  assert_eq!(x, y);
+# }
+```
 
 r[asm.options.supported-options.raw]
 - `raw`: This causes the template string to be parsed as a raw assembly string, with no special handling for `{` and `}`.
@@ -871,15 +1006,50 @@ The compiler performs some additional checks on options:
 r[asm.options.checks.mutually-exclusive]
 - The `nomem` and `readonly` options are mutually exclusive: it is a compile-time error to specify both.
 
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // nomem is strictly stronger than readonly, they can't be specified together
+  unsafe { core::arch::asm!("", options(nomem, readonly)); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.options.checks.pure]
 - It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
+
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  // pure blocks need at least one output
+  unsafe { core::arch::asm!("", options(pure)); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.options.checks.noreturn]
 - It is a compile-time error to specify `noreturn` on an asm block with outputs.
 
+```rust,compile_fail
+# #[cfg(target_arch = "x86_64")] {
+  let z: i32;
+  // noreturn can't have outputs
+  unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
+# }
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
+
 r[asm.options.global_asm-restriction]
 `global_asm!` only supports the `att_syntax` and `raw` options.
 The remaining options are not meaningful for global-scope inline assembly
+
+```rust,compile_fail
+# fn main(){}
+
+# #[cfg(target_arch = "x86_64")]
+// nomem is useless on global_asm!
+core::arch::global_asm!("", options(nomem));
+
+# #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
+```
 
 r[asm.rules]
 ## Rules for inline assembly
