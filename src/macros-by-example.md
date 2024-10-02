@@ -143,8 +143,8 @@ Valid fragment specifiers are:
     statements that require semicolons)
   * `pat_param`: a [_PatternNoTopAlt_]
   * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
-  * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
-  * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
+  * `expr`: an [_Expression_]
+  * `expr_2021`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.edition2024])
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
   * `path`: a [_TypePath_] style path
@@ -163,19 +163,15 @@ r[macro.decl.meta.dollar-crate]
 The keyword metavariable `$crate` can be used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
-r[macro.decl.meta.expr-underscore]
-For reasons of backwards compatibility, though `_` [is also an
-expression][_UnderscoreExpression_], a standalone underscore is not matched by
-the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
-specifier when it appears as a subexpression.
-For the same reason, a standalone [const block] is not matched but it is matched when appearing as a subexpression.
-
 r[macro.decl.meta.edition2021]
 > **Edition differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
+
+r[macro.decl.meta.edition2024]
+> **Edition differences**: Before the 2024 edition, `expr` fragment specifiers do not match [_UnderscoreExpression_] or [_ConstBlockExpression_] at the top level. They are allowed within subexpressions.
 >
 > The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
@@ -565,7 +561,6 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
-[const block]: expressions/block-expr.md#const-blocks
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
 [IDENTIFIER_OR_KEYWORD]: identifiers.md
