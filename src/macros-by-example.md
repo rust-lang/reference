@@ -142,7 +142,7 @@ Valid fragment specifiers are:
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item
     statements that require semicolons)
   * `pat_param`: a [_PatternNoTopAlt_]
-  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
+  * `pat`: a [_Pattern_] (see [macro.decl.meta.edition2021])
   * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
   * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
   * `ty`: a [_Type_]
