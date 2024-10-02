@@ -348,7 +348,7 @@ Token trees in procedural macros are defined as
       and floating point literals.
 - Identifiers, including keywords (`ident`, `r#ident`, `fn`)
 
-r[macro.proc.token.converstion-intro]
+r[macro.proc.token.conversion-intro]
 Mismatches between these two definitions are accounted for when token streams
 are passed to and from procedural macros. \
 Note that the conversions below may happen lazily, so they might not happen if

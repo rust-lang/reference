@@ -412,7 +412,7 @@ by other crates, either by path or by `#[macro_use]` as described above.
 
 r[macro.decl.hygiene]
 
-r[macreo.decl.hygiene.intro]
+r[macro.decl.hygiene.intro]
 By default, all identifiers referred to in a macro are expanded as-is, and are
 looked up at the macro's invocation site. This can lead to issues if a macro
 refers to an item or macro which isn't in scope at the invocation site. To
@@ -480,7 +480,7 @@ fn foo() {}
 > modified to use `$crate` or `local_inner_macros` to work well with path-based
 > imports.
 
-r[macro.decl.hygeine.local_inner_macros]
+r[macro.decl.hygiene.local_inner_macros]
 When a macro is exported, the `#[macro_export]` attribute can have the
 `local_inner_macros` keyword added to automatically prefix all contained macro
 invocations with `$crate::`. This is intended primarily as a tool to migrate
