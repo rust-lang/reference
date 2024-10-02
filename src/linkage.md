@@ -253,6 +253,9 @@ RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows
 
 ## Mixed Rust and foreign codebases
 
+r[link.foreign-code]
+
+r[link.foreign-code.foreign-linkers]
 If you are mixing Rust with foreign code (e.g. C, C++) and wish to make a single
 binary containing both types of code, you have two approaches for the final
 binary link:
@@ -268,6 +271,42 @@ binary link:
 
 Passing `rlib`s directly into your foreign linker is currently unsupported.
 
+### Prohibited linkage and foreign unwinding
+
+r[link.foreign-code.prohibited]
+
+Undfined behavior may be caused by foreign code unwinding into a Rust crate
+with these characteristics:
+
+* The foreign unwind enters Rust via a function or function pointer declared
+  with an ABI that permits unwinding, that is, `"Rust"` (the default ABI) or
+  any `-unwind` ABI
+* The Rust crate containing the `-unwind` ABI declaration was compiled with
+  `panic=unwind`
+* The final binary is linked with [the `panic=abort` runtime][panic-runtime]
+
+> **Note**: To protect against this undefined behavior, `rustc` does not permit
+> linking the `panic=abort` runtime against any crate that was compiled with
+> `panic=unwind` if that crate also contains a call to a foreign function or
+> function pointer declared with an `-unwind` ABI. Note that this prohibition
+> applies even when linking a static or dynamic library that only includes Rust
+> code, since the resulting library may be subsequently linked against another
+> library that may unwind. However, use of the `Rust` (default) ABI does not
+> cause a link-error, since that ABI is not expected to be used as an
+> entrypoint into a static or shared library.
+
+r[link.foreign-code.prohibited.lint.ffi_unwind_calls]
+To guarantee that a library will be sound (and linkable with `rustc`)
+regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
+may be used. The lint flags any calls to `-unwind` foreign functions or
+function pointers.
+
+> **Note**: the restriction can only be violated when mixing code with different
+> `-C panic` flags. This is not possible in normal use of cargo, so most users
+> need not be concerned about this.
+
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
+[`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
 [configuration option]: conditional-compilation.md
+[panic-runtime]: panic.md#panic-runtimes
 [procedural macros]: procedural-macros.md

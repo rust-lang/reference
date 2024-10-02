@@ -58,8 +58,10 @@ r[runtime.panic_handler.std]
 
 The standard library provides an implementation of `panic_handler` that
 defaults to unwinding the stack but that can be [changed to abort the
-process][abort]. The standard library's panic behavior can be modified at
-runtime with the [set_hook] function.
+process][abort]. See [panic runtimes] for more details.
+
+The standard library's panic behavior can be modified at runtime with the
+[`set_hook` function][set_hook].
 
 r[runtime.global_allocator]
 ## The `global_allocator` attribute
@@ -100,6 +102,7 @@ display a console window on startup. It will run detached from any existing cons
 [abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
 [attribute]: attributes.md
 [crate types]: linkage.md
+[panic runtimes]: panic.md#panic-runtimes
 [set_hook]: std::panic::set_hook
 [static item]: items/static-items.md
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx
