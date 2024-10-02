@@ -83,7 +83,7 @@ Indices are zero-based for arrays and slices.
 
 r[expr.array.index.const]
 Array access is a [constant expression], so bounds can be checked at compile-time with a constant index value.
-Otherwise a check will be performed at run-time that will put the thread in a _panicked state_ if it fails.
+Otherwise a check will be performed at run-time that will put the thread in a [_panicked state_][panic] if it fails.
 
 ```rust,should_panic
 // lint is deny by default.
@@ -115,5 +115,6 @@ The array index expression can be implemented for types other than arrays and sl
 [constant item]: ../items/constant-items.md
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
+[panic]: ../panic.md
 [path]: path-expr.md
 [slice]: ../types/slice.md
