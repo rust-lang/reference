@@ -30,7 +30,7 @@ r[macro.decl.syntax]
 > &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroRepOp_
 >
 > _MacroFragSpec_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime` | `literal`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `expr_2021` | `ident` | `item` | `lifetime` | `literal`\
 > &nbsp;&nbsp; | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
@@ -143,7 +143,8 @@ Valid fragment specifiers are:
     statements that require semicolons)
   * `pat_param`: a [_PatternNoTopAlt_]
   * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
-  * `expr`: an [_Expression_]
+  * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
+  * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
   * `path`: a [_TypePath_] style path
@@ -175,6 +176,8 @@ r[macro.decl.meta.edition2021]
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
+>
+> The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
 ## Repetitions
 
@@ -572,6 +575,7 @@ For more detail, see the [formal specification].
 [Repetitions]: #repetitions
 [_Attr_]: attributes.md
 [_BlockExpression_]: expressions/block-expr.md
+[_ConstBlockExpression_]: expressions/block-expr.md#const-blocks
 [_DelimTokenTree_]: macros.md
 [_Expression_]: expressions.md
 [_Item_]: items.md
