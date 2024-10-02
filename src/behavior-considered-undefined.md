@@ -49,7 +49,9 @@ undefined behavior, it is *unsound*.
 * Invoking undefined behavior via compiler intrinsics.
 * Executing code compiled with platform features that the current platform
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
-* Calling a function with the wrong call ABI or unwinding from a function with the wrong unwind ABI.
+* Calling a function with the wrong [call ABI][abi], or unwinding past a stack
+  frame that does not allow unwinding (e.g. by calling a `"C-unwind"` function
+  imported or transmuted as a `"C"` function or function pointer).
 * Producing an [invalid value][invalid-values]. "Producing" a
   value happens any time a value is assigned to or read from a place, passed to
   a function/primitive operation or returned from a function/primitive
@@ -61,6 +63,14 @@ undefined behavior, it is *unsound*.
   some allocated object as a non-pointer type (such as integers).
   'Reinterpreting' refers to loading the pointer value at integer type without a
   cast, e.g. by doing raw pointer casts or using a union.
+* Violating assumptions of the Rust runtime. This is only possible using
+  mechanisms outside Rust. Most assumptions of the Rust runtime are currently
+  not explicitly documented.
+  * For assumptions specifically related to unwinding, see the [panic
+    documentation][unwinding-ffi].
+  * The runtime assumes that a Rust stack frame is not deallocated without
+    executing destructors for local variables owned by the stack frame. This assumption
+    can be violated by C functions like `longjmp`.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
 > a function in C that exhibits undefined behavior of C means your entire
@@ -160,11 +170,11 @@ a restricted set of valid values. In other words, the only cases in which
 reading uninitialized memory is permitted are inside `union`s and in "padding"
 (the gaps between the fields of a type).
 
-
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
+[abi]: abi.md
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
@@ -178,4 +188,5 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [project-field]: expressions/field-expr.md
 [project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
 [project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
+[unwinding-ffi]: panic.md#unwinding-across-ffi-boundaries
 [const-promoted]: destructors.md#constant-promotion
