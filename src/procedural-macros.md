@@ -348,13 +348,13 @@ Token trees in procedural macros are defined as
       and floating point literals.
 - Identifiers, including keywords (`ident`, `r#ident`, `fn`)
 
-r[macro.proc.token.conversion-intro]
+r[macro.proc.token.conversion.intro]
 Mismatches between these two definitions are accounted for when token streams
 are passed to and from procedural macros. \
 Note that the conversions below may happen lazily, so they might not happen if
 the tokens are not actually inspected.
 
-r[macro.proc.token.conversion]
+r[macro.proc.token.conversion.to-proc_macro]
 When passed to a proc-macro
 - All multi-character operators are broken into single characters.
 - Lifetimes are broken into a `'` character and an identifier.
@@ -366,7 +366,7 @@ When passed to a proc-macro
     - `tt` and `ident` substitutions are never wrapped into such groups and
       always represented as their underlying token trees.
 
-r[macro.proc.token.emission]
+r[macro.proc.token.conversion.from-proc_macro]
 When emitted from a proc macro
 - Punctuation characters are glued into multi-character operators
   when applicable.
