@@ -137,22 +137,21 @@ fragment of the kind specified and binds it to the metavariable `$`_name_.
 r[macro.decl.meta.specifier]
 Valid fragment specifiers are:
 
-  * `item`: an [_Item_]
   * `block`: a [_BlockExpression_]
-  * `stmt`: a [_Statement_] without the trailing semicolon (except for item
-    statements that require semicolons)
-  * `pat_param`: a [_PatternNoTopAlt_]
-  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
   * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
   * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
-  * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
-  * `path`: a [_TypePath_] style path
-  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-  * `meta`: an [_Attr_], the contents of an attribute
+  * `item`: an [_Item_]
   * `lifetime`: a [LIFETIME_TOKEN]
-  * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
+  * `meta`: an [_Attr_], the contents of an attribute
+  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
+  * `pat_param`: a [_PatternNoTopAlt_]
+  * `path`: a [_TypePath_] style path
+  * `stmt`: a [_Statement_] without the trailing semicolon (except for item statements that require semicolons)
+  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
+  * `ty`: a [_Type_]
+  * `vis`: a possibly empty [_Visibility_] qualifier
 
 r[macro.decl.meta.transcription]
 In the transcriber, metavariables are referred to simply by `$`_name_, since
