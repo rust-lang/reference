@@ -94,7 +94,6 @@ When assigning rules to new paragraphs, or when modifying rule names, use the fo
     * If the rule is naming a specific Rust language construct (e.g. an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s).
     * Other than Rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule".
     * Whenever possible, do not repeat previous components of the rule.
-    * Prefer using singular forms of words over plural unless the rule applies to a list or the construct is named as plural in the language (e.g. `r[attribute.diagnostic.lint.group]).
     * Edition differences admonitions should typically be named by the edition referenced directly by the rule. If multiple editions are named, use the one for which the behavior is defined by the admonition, and not by a previous paragraph.
     * Target specific admonitions should typically be named by the least specific target property to which they apply (e.g. if a rule affects all x86 CPUs, the rule name should include `x86` rather than separately listing `i586`, `i686` and `x86_64`, and if a rule applies to all ELF platforms, it should be named `elf` rather than listing every ELF OS).
     * Use an appropriately descriptive, but short, name if the language does not provide one.
