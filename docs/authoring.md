@@ -86,7 +86,6 @@ When assigning rules to new paragraphs, or when modifying rule names, use the fo
     * Warning: Omit the rule if the warning follows from the previous paragraph or if the warning is explanatory and doesn't introduce any new rules.
     * Target specific behavior: Always include the rule.
     * Edition differences: Always include the rule.
-    * Version history: Omit the rule if the present behavior is explained in the immediately preceding rule.
 5. The following keywords should be used to identify paragraphs when unambiguous:
     * `intro`: The beginning paragraph of each section - should explain the construct being defined overall.
     * `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used.
