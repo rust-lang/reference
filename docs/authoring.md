@@ -76,6 +76,29 @@ Rules can be linked to by their ID using markdown such as `[foo.bar]`. There are
 
 In the HTML, the rules are clickable just like headers.
 
+When assigning rules to new paragraphs, or when modifying rule names, use the following guidelines:
+
+1. A rule applies to one core idea, which should be easily determined when reading the paragraph it is applied to.
+2. Other than the "intro" paragraph, purely explanatory, expository, or exemplary content does not need a rule. If the expository paragraph isn't directly related to the previous, separate it with a hard (rendered) line break.
+    * This content will be moved to `[!NOTE]` or more specific admonitions in the future.
+3. Rust code examples and tests do not need their own rules.
+4. Use the following guidelines for admonitions:
+    * Notes: Do not include a rule.
+    * Warning: Omit the rule if the warning follows from the previous paragraph or if the warning is explanatory and doesn't introduce any new rules.
+    * Target specific behavior: Always include the rule.
+    * Edition differences: Always include the rule.
+5. The following keywords should be used to identify paragraphs when unambiguous:
+    * `intro`: The beginning paragraph of each section - should explain the construct being defined overall.
+    * `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used.
+    * `namespace`: For items only, specifies the namespace(s) the item introduces a name in. May also be used elsewhere when defining a namespace (e.g. `r[attribute.diagnostic.namespace]`).
+6. When a rule doesn't fall under the above keywords, or for section rule ids, name the subrule as follows:
+    * If the rule is naming a specific Rust language construct (e.g. an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s).
+    * Other than Rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule".
+    * Whenever possible, do not repeat previous components of the rule.
+    * Edition differences admonitions should typically be named by the edition referenced directly by the rule. If multiple editions are named, use the one for which the behavior is defined by the admonition, and not by a previous paragraph.
+    * Target specific admonitions should typically be named by the least specific target property to which they apply (e.g. if a rule affects all x86 CPUs, the rule name should include `x86` rather than separately listing `i586`, `i686` and `x86_64`, and if a rule applies to all ELF platforms, it should be named `elf` rather than listing every ELF OS).
+    * Use an appropriately descriptive, but short, name if the language does not provide one.
+
 ### Standard library links
 
 You should link to the standard library without specifying a URL in a fashion similar to [rustdoc intra-doc links][intra]. Some examples:
