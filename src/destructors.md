@@ -325,6 +325,18 @@ let x = &mut 0;
 println!("{}", x);
 ```
 
+r[destructors.scope.lifetime-extension.static]
+Lifetime extension also applies to `static` and `const` items, where it
+makes temporaries live until the end of the program. For example:
+
+```rust
+const C: &Vec<i32> = &Vec::new();
+// Usually this would be a dangling reference as the `Vec` would only
+// exist inside the initializer expression of `C`, but instead the
+// borrow gets lifetime-extended so it effectively has `'static` lifetime.
+println!("{:?}", C);
+```
+
 r[destructors.scope.lifetime-extension.sub-expressions]
 If a [borrow][borrow expression], [dereference][dereference expression],
 [field][field expression], or [tuple indexing expression] has an extended

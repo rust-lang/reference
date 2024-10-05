@@ -40,7 +40,8 @@ undefined behavior, it is *unsound*.
   All this also applies when values of these
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
-* Mutating immutable bytes. All bytes inside a [`const`] item or within an implicitly [const-promoted] expression are immutable.
+* Mutating immutable bytes.
+  All bytes reachable through a [const-promoted] expression are immutable, as well as bytes reachable through borrows in `static` and `const` initializers that have been [lifetime-extended] to `'static`.
   The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
   Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
@@ -179,3 +180,4 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
 [project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [const-promoted]: destructors.md#constant-promotion
+[lifetime-extended]: destructors.md#temporary-lifetime-extension
