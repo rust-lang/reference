@@ -226,6 +226,25 @@ a statically linked binary on MSVC you would execute:
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 
+## Prohibited linkage scenarios
+
+No crate may be linked with [the `panic=abort` runtime][panic-runtime] if it has
+both of the following characteristics:
+
+* It contains a call to an `-unwind` foreign function or function pointer
+* It was compiled with `panic=unwind`
+
+`rustc` enforces this restriction at link-time. To guarantee that
+a library will be linkable regardless of the panic mode used at
+link-time, the [`ffi_unwind_calls` lint] may be used. The lint flags any
+calls to `-unwind` foreign functions or function pointers.
+
+Note: Cargo will automatically ensure that all code is both compiled and linked
+using a single `panic` runtime, so this prohibition does not apply to projects
+compiled with Cargo.
+
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
+[`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
 [configuration option]: conditional-compilation.md
+[panic-runtime]: panic.md#panic-runtimes
 [procedural macros]: procedural-macros.md
