@@ -7,8 +7,8 @@
 > _TraitObjectTypeOneBound_ :\
 > &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
 
-A *trait object* is an opaque value of another type that implements a set of
-traits. The set of traits is made up of an [object safe] *base trait* plus any
+A *trait object* is an opaque value of a `dyn`-prefixed type that implements a set of
+traits. The set of traits is made up of a [trait-object safe] *base trait* plus any
 number of [auto traits].
 
 Trait objects implement the base trait, its auto traits, and any [supertraits]
@@ -103,5 +103,5 @@ inferred with a sensible choice.
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
 [dynamically sized types]: ../dynamically-sized-types.md
-[object safe]: ../items/traits.md#object-safety
+[trait-object safe]: ../items/traits.md#object-safety
 [supertraits]: ../items/traits.md#supertraits
