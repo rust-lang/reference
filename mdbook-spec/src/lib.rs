@@ -1,5 +1,6 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
+use crate::rules::Rules;
 use anyhow::Result;
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
@@ -8,9 +9,7 @@ use mdbook::BookItem;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
-use std::collections::BTreeMap;
 use std::io;
-use std::path::PathBuf;
 
 mod rules;
 mod std_links;
@@ -58,13 +57,10 @@ impl Spec {
 
     /// Generates link references to all rules on all pages, so you can easily
     /// refer to rules anywhere in the book.
-    fn auto_link_references(
-        &self,
-        chapter: &Chapter,
-        found_rules: &BTreeMap<String, (PathBuf, PathBuf)>,
-    ) -> String {
+    fn auto_link_references(&self, chapter: &Chapter, rules: &Rules) -> String {
         let current_path = chapter.path.as_ref().unwrap().parent().unwrap();
-        let definitions: String = found_rules
+        let definitions: String = rules
+            .def_paths
             .iter()
             .map(|(rule_id, (_, path))| {
                 let relative = pathdiff::diff_paths(path, current_path).unwrap();
@@ -125,7 +121,8 @@ impl Preprocessor for Spec {
     }
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
-        let mut found_rules = BTreeMap::new();
+        let rules = self.collect_rules(&book);
+
         book.for_each_mut(|item| {
             let BookItem::Chapter(ch) = item else {
                 return;
@@ -133,20 +130,11 @@ impl Preprocessor for Spec {
             if ch.is_draft_chapter() {
                 return;
             }
-            ch.content = self.rule_definitions(&ch, &mut found_rules);
             ch.content = self.admonitions(&ch);
+            ch.content = self.auto_link_references(&ch, &rules);
+            ch.content = self.render_rule_definitions(&ch.content);
         });
-        // This is a separate pass because it relies on the modifications of
-        // the previous passes.
-        book.for_each_mut(|item| {
-            let BookItem::Chapter(ch) = item else {
-                return;
-            };
-            if ch.is_draft_chapter() {
-                return;
-            }
-            ch.content = self.auto_link_references(&ch, &found_rules);
-        });
+
         // Final pass will resolve everything as a std link (or error if the
         // link is unknown).
         std_links::std_links(&mut book);
