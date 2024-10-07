@@ -1,11 +1,13 @@
 //! Handling for rule identifiers.
 
+use crate::test_links::RuleToTests;
 use crate::Spec;
 use mdbook::book::Book;
 use mdbook::BookItem;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::collections::{BTreeMap, HashSet};
+use std::fmt::Write;
 use std::path::PathBuf;
 
 /// The Regex for rules like `r[foo]`.
@@ -76,13 +78,35 @@ impl Spec {
 
     /// Converts lines that start with `r[…]` into a "rule" which has special
     /// styling and can be linked to.
-    pub fn render_rule_definitions(&self, content: &str) -> String {
+    pub fn render_rule_definitions(&self, content: &str, tests: &RuleToTests) -> String {
         RULE_RE
             .replace_all(content, |caps: &Captures<'_>| {
                 let rule_id = &caps[1];
+                let mut test_html = String::new();
+                if let Some(tests) = tests.get(rule_id) {
+                    test_html = format!(
+                        "<span class=\"popup-container\">\n\
+                            &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"spec_toggle_tests('{rule_id}');\">\
+                            Tests</a>\n\
+                            <div id=\"tests-{rule_id}\" class=\"tests-popup popup-hidden\">\n\
+                            Tests with this rule:
+                            <ul>");
+                    for test in tests {
+                        writeln!(
+                            test_html,
+                            "<li><a href=\"https://github.com/rust-lang/rust/blob/{git_ref}/{test_path}\">{test_path}</a></li>",
+                            test_path = test.path,
+                            git_ref = self.git_ref
+                        )
+                        .unwrap();
+                    }
+
+                    test_html.push_str("</ul></div></span>");
+                }
                 format!(
                     "<div class=\"rule\" id=\"r-{rule_id}\">\
                      <a class=\"rule-link\" href=\"#r-{rule_id}\">[{rule_id}]</a>\
+                     {test_html}\
                      </div>\n"
                 )
             })
