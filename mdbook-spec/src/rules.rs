@@ -5,7 +5,7 @@ use mdbook::book::Book;
 use mdbook::BookItem;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 use std::path::PathBuf;
 
 /// The Regex for rules like `r[foo]`.
@@ -24,6 +24,10 @@ pub struct Rules {
     /// trying to access the source files (`source_path`), or creating links
     /// in the output (`path`).
     pub def_paths: BTreeMap<String, (PathBuf, PathBuf)>,
+    /// Set of rule name prefixes that have more specific rules within.
+    ///
+    /// For example, `asm.ts-args` is an interior prefix of `asm.ts-args.syntax`.
+    pub interior_prefixes: HashSet<String>,
 }
 
 impl Spec {
@@ -57,6 +61,12 @@ impl Spec {
                         } else {
                             eprintln!("warning: {message}");
                         }
+                    }
+                    let mut parts: Vec<_> = rule_id.split('.').collect();
+                    while !parts.is_empty() {
+                        parts.pop();
+                        let prefix = parts.join(".");
+                        rules.interior_prefixes.insert(prefix);
                     }
                 });
         }
