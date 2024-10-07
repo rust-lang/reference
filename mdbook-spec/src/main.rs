@@ -12,9 +12,7 @@ fn main() {
         None => {}
     }
 
-    let preprocessor = mdbook_spec::Spec::new();
-
-    if let Err(e) = mdbook_spec::handle_preprocessing(&preprocessor) {
+    if let Err(e) = mdbook_spec::handle_preprocessing() {
         eprintln!("{}", e);
         std::process::exit(1);
     }
