@@ -1,5 +1,6 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
+use anyhow::Result;
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
@@ -20,7 +21,8 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
 
-pub fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
+pub fn handle_preprocessing() -> Result<(), Error> {
+    let pre = Spec::new()?;
     let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
@@ -49,10 +51,9 @@ pub struct Spec {
 }
 
 impl Spec {
-    pub fn new() -> Spec {
-        Spec {
-            deny_warnings: std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1"),
-        }
+    fn new() -> Result<Spec> {
+        let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
+        Ok(Spec { deny_warnings })
     }
 
     /// Generates link references to all rules on all pages, so you can easily
