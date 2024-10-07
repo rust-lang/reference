@@ -66,10 +66,14 @@ SPEC_RELATIVE=0 mdbook build --open
 
 This will open a browser with a websocket live-link to automatically reload whenever the source is updated.
 
-The `SPEC_RELATIVE=0` environment variable makes links to the standard library go to <https://doc.rust-lang.org/> instead of being relative, which is useful when viewing locally since you normally don't have a copy of the standard library.
-
 You can also use mdbook's live webserver option, which will automatically rebuild the book and reload your web browser whenever a source file is modified:
 
 ```sh
 SPEC_RELATIVE=0 mdbook serve --open
 ```
+
+### `SPEC_RELATIVE`
+
+The `SPEC_RELATIVE=0` environment variable makes links to the standard library go to <https://doc.rust-lang.org/> instead of being relative, which is useful when viewing locally since you normally don't have a copy of the standard library.
+
+The published site at <https://doc.rust-lang.org/reference/> (or local docs using `rustup doc`) does not set this, which means it will use relative links which supports offline viewing and links to the correct version (for example, links in <https://doc.rust-lang.org/1.81.0/reference/> will stay within the 1.81.0 directory).
