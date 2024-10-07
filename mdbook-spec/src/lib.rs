@@ -1,7 +1,7 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
 use crate::rules::Rules;
-use anyhow::Result;
+use anyhow::{bail, Context, Result};
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
@@ -10,9 +10,11 @@ use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
 use std::io;
+use std::path::PathBuf;
 
 mod rules;
 mod std_links;
+mod test_links;
 
 /// The Regex for the syntax for blockquotes that have a specific CSS class,
 /// like `> [!WARNING]`.
@@ -47,12 +49,37 @@ pub struct Spec {
     /// Whether or not warnings should be errors (set by SPEC_DENY_WARNINGS
     /// environment variable).
     deny_warnings: bool,
+    /// Path to the rust-lang/rust git repository (set by SPEC_RUST_ROOT
+    /// environment variable).
+    rust_root: Option<PathBuf>,
+    /// The git ref that can be used in a URL to the rust-lang/rust repository.
+    git_ref: String,
 }
 
 impl Spec {
     fn new() -> Result<Spec> {
         let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
-        Ok(Spec { deny_warnings })
+        let rust_root = std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from);
+        if deny_warnings && rust_root.is_none() {
+            bail!("SPEC_RUST_ROOT environment variable must be set");
+        }
+        let git_ref = match git_ref(&rust_root) {
+            Ok(s) => s,
+            Err(e) => {
+                if deny_warnings {
+                    eprintln!("error: {e:?}");
+                    std::process::exit(1);
+                } else {
+                    eprintln!("warning: {e:?}");
+                    "master".into()
+                }
+            }
+        };
+        Ok(Spec {
+            deny_warnings,
+            rust_root,
+            git_ref,
+        })
     }
 
     /// Generates link references to all rules on all pages, so you can easily
@@ -115,6 +142,28 @@ fn to_initial_case(s: &str) -> String {
     format!("{first}{rest}")
 }
 
+/// Determines the git ref used for linking to a particular branch/tag in GitHub.
+fn git_ref(rust_root: &Option<PathBuf>) -> Result<String> {
+    let Some(rust_root) = rust_root else {
+        return Ok("master".into());
+    };
+    let channel = std::fs::read_to_string(rust_root.join("src/ci/channel"))
+        .context("failed to read src/ci/channel")?;
+    let git_ref = match channel.trim() {
+        // nightly/beta are branches, not stable references. Should be ok
+        // because we're not expecting those channels to be long-lived.
+        "nightly" => "master".into(),
+        "beta" => "beta".into(),
+        "stable" => {
+            let version = std::fs::read_to_string(rust_root.join("src/version"))
+                .context("|| failed to read src/version")?;
+            version.trim().into()
+        }
+        ch => bail!("unknown channel {ch}"),
+    };
+    Ok(git_ref)
+}
+
 impl Preprocessor for Spec {
     fn name(&self) -> &str {
         "spec"
@@ -122,6 +171,8 @@ impl Preprocessor for Spec {
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
         let rules = self.collect_rules(&book);
+        let tests = self.collect_tests(&rules);
+        let summary_table = test_links::make_summary_table(&book, &tests, &rules);
 
         book.for_each_mut(|item| {
             let BookItem::Chapter(ch) = item else {
@@ -132,7 +183,10 @@ impl Preprocessor for Spec {
             }
             ch.content = self.admonitions(&ch);
             ch.content = self.auto_link_references(&ch, &rules);
-            ch.content = self.render_rule_definitions(&ch.content);
+            ch.content = self.render_rule_definitions(&ch.content, &tests);
+            if ch.name == "Test summary" {
+                ch.content = ch.content.replace("{{summary-table}}", &summary_table);
+            }
         });
 
         // Final pass will resolve everything as a std link (or error if the
