@@ -91,6 +91,7 @@ Slices have the same layout as the section of the array they slice.
 > etc.) to slices.
 
 ## `str` Layout
+
 String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
 
 ## Tuple Layout
@@ -588,6 +589,22 @@ primitive field will have the ABI of the primitive field.
 
 Because this representation delegates type layout to another type, it cannot be
 used with any other representation.
+
+## Bit validity of composite types
+
+Each Rust type has "bit validity", which is the set of bit patterns which may
+appear in a value of that type. It is [undefined behavior] to produce a value
+of a type which violates bit validity (in other words, to initialize a value
+to a bit pattern which is not in that type's set of valid bit patterns).
+Note that the total set of possible bit patterns for any given byte has 257
+elements - 256 initialized bit patterns and one "uninitialized" bit pattern.
+
+The bit validity of a struct type is the composition of the bit validities
+of its fields.
+
+Padding bytes have no bit validity requirement: it is always well-defined
+to write any byte value - including an uninitialized byte - to any byte of
+padding.
 
 [`align_of_val`]: std::mem::align_of_val
 [`size_of_val`]: std::mem::size_of_val
