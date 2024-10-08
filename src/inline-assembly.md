@@ -111,7 +111,7 @@ The corresponding arguments are accessed in order, by index, or by name.
   unsafe { core::arch::asm!("mov {0}, {1}", out(reg) y, in(reg) 5);}
   /// ... and this
   unsafe { core::arch::asm!("mov {out}, {in}", out = out(reg) z, in = in(reg) 5);}
-  /// all have the same behaviour
+  /// all have the same behavior
   assert_eq!(x,y);
   assert_eq!(y,z);
 # }
@@ -138,6 +138,7 @@ The expected usage is for each template string argument to correspond to a line 
 # #[cfg(target_arch = "x86_64")] {
   let x: i64;
   let y: i64;
+  // We can separate multiple strings as if they were written together
   unsafe { core::arch::asm!("mov eax, 5", "mov ecx, eax", out("rax") x, out("rcx") y); }
   assert_eq!(x, y);
 # }
@@ -230,6 +231,7 @@ r[asm.operand-type.supported-operands.in]
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
+  // ``in` can be used to pass values into inline assembly...
   unsafe { core::arch::asm!("/* {} */", in(reg) 5); }
 # }
 ```
@@ -245,6 +247,7 @@ r[asm.operand-type.supported-operands.out]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
   let x: i64;
+  /// and `out` can be used to pass values back to rust.
   unsafe { core::arch::asm!("/* {} */", out(reg) x); }
 # }
 ```
@@ -257,6 +260,8 @@ r[asm.operand-type.supported-operands.lateout]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
   let x: i64;
+  // `lateout` is the same as `out`
+  // but the compiler knows we don't care about the value of any inputs by the time we overwrite it.
   unsafe { core::arch::asm!("mov {}, 5", lateout(reg) x); }
   assert_eq!(x, 5)
 # }
@@ -272,6 +277,7 @@ r[asm.operand-type.supported-operands.inout]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
   let mut x: i64 = 4;
+  // `inout` can be used to modify values in-register
   unsafe { core::arch::asm!("inc {}", inout(reg) x); }
   assert_eq!(x,5);
 # }
@@ -287,6 +293,7 @@ r[asm.operand-type.supported-operands.inout-arrow]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
   let x: i64;
+  /// `inout` can also move values to different places
   unsafe { core::arch::asm!("inc {}", inout(reg) 4u64=>x); }
   assert_eq!(x,5);
 # }
@@ -300,6 +307,7 @@ r[asm.operand-type.supported-operands.inlateout]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
   let mut x: i64 = 4;
+  // `inlateout` is `inout` using `lateout`
   unsafe { core::arch::asm!("inc {}", inlateout(reg) x); }
   assert_eq!(x,5);
 # }
@@ -317,6 +325,7 @@ r[asm.operand-type.supported-operands.sym]
   extern "C" fn foo(){
     println!("Hello from inline assembly")
   }
+  // `sym` can be used to refer to a function (even if it doesn't have an external name we can directly write)
   unsafe { core::arch::asm!("call {}", sym foo, clobber_abi("C")); }
 # }
 ```
@@ -568,6 +577,9 @@ The availability of supported types for a particular register class may depend o
   let x = 5i32;
   let y = -1i8;
   let z = unsafe{core::arch::x86_64::_mm_set_epi64x(1,0)};
+
+  // reg is valid for `i32`, `reg_byte` is valid for `i8`, and xmm_reg is valid for `__m128i`
+  // We can't use `tmm0` as an input or output, but we can clobber it.
   unsafe { core::arch::asm!("/* {} {} {} */", in(reg) x, in(reg_byte) y, in(xmm_reg) z, out("tmm0") _); }
 # }
 ```
@@ -585,12 +597,12 @@ r[asm.register-operands.smaller-value]
 If a value is of a smaller size than the register it is allocated in then the upper bits of that register will have an undefined value for inputs and will be ignored for outputs.
 The only exception is the `freg` register class on RISC-V where `f32` values are NaN-boxed in a `f64` as required by the RISC-V architecture.
 
-<!--no_run, this test has a non-deterministic runtime behaviour-->
+<!--no_run, this test has a non-deterministic runtime behavior-->
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
   let mut x: i64;
   // Moving a 32-bit value into a 64-bit value, oops.
-  #[allow(asm_sub_register)] // rustc warns about this behaviour
+  #[allow(asm_sub_register)] // rustc warns about this behavior
   unsafe { core::arch::asm!("mov {}, {}", lateout(reg) x, in(reg) 4i32); }
   // top 32-bits are indeterminate
   assert_eq!(x, 4); // This assertion is not guaranteed to succeed
@@ -753,7 +765,7 @@ Only one modifier is allowed per template placeholder.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-  // bp is reserved
+  // We can't specify both `r` and `e` at the same time.
   unsafe { core::arch::asm!("/* {:er}", in(reg) 5i32); }
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
@@ -810,6 +822,17 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 >   GCC will infer the modifier based on the operand value type, while we default to the full register size.
 > - on x86 `xmm_reg`: the `x`, `t` and `g` LLVM modifiers are not yet implemented in LLVM (they are supported by GCC only), but this should be a simple change.
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let mut x = 0x10u16;
+
+  // u16::swap_bytes using `xchg`
+  // low half of `{x}` is referred to by `{x:l}`, and the high half by `{x:h}`
+  unsafe { core::arch::asm!("xchg {x:l}, {x:h}", x = inout(reg_abcd) x); }
+  assert_eq!(x, 0x1000u16);
+# }
+```
+
 r[asm.template-modifiers.smaller-value]
 As stated in the previous section, passing an input value smaller than the register width will result in the upper bits of the register containing undefined values.
 This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the asm code (e.g. `ax` instead of `rax`).
@@ -829,6 +852,7 @@ This will automatically insert the necessary clobber constraints as needed for c
 extern "C" fn foo() -> i32{ 0 }
 # #[cfg(target_arch = "x86_64")] {
   let z: i32;
+  // To call a function, we have to inform the compiler that we're clobbering callee saved registers
   unsafe { core::arch::asm!("call {}", sym foo, out("rax") z, clobber_abi("C")); }
   assert_eq!(z, 0);
 # }
@@ -842,6 +866,7 @@ extern "sysv64" fn foo() -> i32{ 0 }
 extern "win64" fn bar(x: i32) -> i32{ x + 1}
 # #[cfg(target_arch = "x86_64")] {
   let z: i32;
+  // We can even call multiple functions with different conventions and different saved registers
   unsafe { core::arch::asm!("call {}", "mov ecx, eax", "call {}", sym foo, sym bar, out("rax") z, clobber_abi("C")); }
   assert_eq!(z, 1);
 # }
@@ -854,6 +879,7 @@ Generic register class outputs are disallowed by the compiler when `clobber_abi`
 extern "C" fn foo(x: i32) -> i32{ 0 }
 # #[cfg(target_arch = "x86_64")] {
   let z: i32;
+  // explicit registers must be used to not accidentally overlap.
   unsafe { core::arch::asm!("mov eax, {:e}", "call {}", out(reg) z, sym foo, clobber_abi("C")); }
   assert_eq!(z, 0);
 # }
@@ -900,6 +926,7 @@ r[asm.options.supported-options.pure]
 # #[cfg(target_arch = "x86_64")] {
   let x: i32 = 0;
   let z: i32;
+  // pure can be used to optimize by assuming the assembly has no side effects
   unsafe { core::arch::asm!("inc {}", inout(reg) x => z, options(pure, nomem)); }
   assert_eq!(z, 1);
 # }
@@ -908,6 +935,7 @@ r[asm.options.supported-options.pure]
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
   let z: i32;
+  // Either nomem or readonly must be satisfied, to indicate whether or not memory is allowed to be read
   unsafe { core::arch::asm!("inc {}", inout(reg) x => z, options(pure)); }
   assert_eq!(z, 0);
 # }
@@ -919,15 +947,30 @@ r[asm.options.supported-options.nomem]
   This allows the compiler to cache the values of modified global variables in registers across the `asm!` block since it knows that they are not read or written to by the `asm!`.
   The compiler also assumes that this `asm!` block does not perform any kind of synchronization with other threads, e.g. via fences.
 
-<!-- no_run: This test has unpredictable or undefined behaviour at runtime -->
+<!-- no_run: This test has unpredictable or undefined behavior at runtime -->
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
   let mut x = 0i32;
   let z: i32;
-  // The following line has undefined behaviour
+  // Accessing memory from a nomem asm block is disallowed
   unsafe { core::arch::asm!("mov {val:e}, dword ptr [{ptr}]", ptr = in(reg) &mut x, val = lateout(reg) z, options(nomem))}
+  
+  // Writing to memory is also undefined behaviour
+  unsafe { core::arch::asm!("mov  dword ptr [{ptr}], {val:e}", ptr = in(reg) &mut x, val = in(reg) z, options(nomem))}
 # } 
 ```
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i32 = 0;
+  let z: i32;
+  // If we allocate our own memory, such as via `push`, however.
+  // we can still use it
+  unsafe { core::arch::asm!("push {x}", "add qword ptr [rsp], 1", "pop {x}",  x = inout(reg) x => z, options(nomem)); }
+  assert_eq!(z, 1);
+# }
+```
+
 
 r[asm.options.supported-options.readonly]
 - `readonly`: The `asm!` block does not write to any memory accessible outside of the `asm!` block.
@@ -938,9 +981,30 @@ r[asm.options.supported-options.readonly]
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
   let mut x = 0;
-  // The following line has undefined behaviour
+  // We cannot modify memory in readonly
   unsafe { core::arch::asm!("mov dword ptr[{}], 1", in(reg) &mut x, options(readonly))}
 # } 
+```
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64 = 0;
+  let z: i64;
+  // We can still read from it, though
+  unsafe { core::arch::asm!("mov {x}, qword ptr [{x}]",  x = inout(reg) &x => z, options(readonly)); }
+  assert_eq!(z, 0);
+# }
+```
+
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let x: i64 = 0;
+  let z: i64;
+  // Same exception applies as with nomem.
+  unsafe { core::arch::asm!("push {x}", "add qword ptr [rsp], 1", "pop {x}",  x = inout(reg) x => z, options(readonly)); }
+  assert_eq!(z, 1);
+# }
 ```
 
 r[asm.options.supported-options.preserves_flags]
@@ -962,7 +1026,7 @@ fn main() -> !{
 }
 ```
 
-<!-- no_run: Test has undefined behaviour at runtime -->
+<!-- no_run: Test has undefined behavior at runtime -->
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
   // You are responsible for not falling past the end of a noreturn asm block
@@ -974,7 +1038,7 @@ r[asm.options.supported-options.nostack]
 - `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
   If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
 
-<!-- no_run: Test has undefined behaviour at runtime -->
+<!-- no_run: Test has undefined behavior at runtime -->
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
   // `push` and `pop` are UB when used with nostack
