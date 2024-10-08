@@ -1134,6 +1134,39 @@ r[asm.rules.x86-x87]
 - On x86, the x87 floating-point register stack must remain unchanged unless all of the `st([0-7])` registers have been marked as clobbered with `out("st(0)") _, out("st(1)") _, ...`.
   - If all x87 registers are clobbered then the x87 register stack is guaranteed to be empty upon entering an `asm` block. Assembly code must ensure that the x87 register stack is also empty when exiting the asm block.
 
+```rust
+# #[cfg(target_arch = "x86_64")]
+pub fn fadd(x: f64, y: f64) -> f64{
+  let mut out = 0f64;
+  let mut top = 0u16;
+  // we can do complex stuff with x87 if we clobber the entire x87 stack
+  unsafe{ core::arch::asm!(
+    "fld qword ptr [{x}]", 
+    "fld qword ptr [{y}])",  
+    "faddp", 
+    "fstp qword ptr [{out}]", 
+    "xor eax, eax",
+    "fstsw ax",
+    "shl eax, 11",
+    x = in(reg) &x, 
+    y = in(reg) &y, 
+    out = in(reg) &mut out,
+    out("st(0)") _, out("st(1)") _, out("st(2)") _, out("st(3)") _, 
+    out("st(4)") _, out("st(5)") _, out("st(6)") _, out("st(7)") _,
+    out("eax") top 
+  );}
+
+  assert_eq!(top & 0x7, 0);
+  out
+}
+
+pub fn main(){
+# #[cfg(target_arch = "x86_64")]{
+  assert_eq!(fadd(1.0, 1.0), 2.0);
+# }
+}
+```
+
 r[asm.rules.arm64ec]
 - On arm64ec, [call checkers with appropriate thunks](https://learn.microsoft.com/en-us/windows/arm/arm64ec-abi#authoring-arm64ec-in-assembly) are mandatory when calling functions.
 
@@ -1249,7 +1282,18 @@ The following directives are guaranteed to be supported by the assembler:
 - `.uleb128`
 - `.word`
 
+```rust
+# #[cfg(target_arch = "x86_64")] {
+  let bytes: *const u8;
+  let len: usize;
+  // `push` and `pop` are UB when used with nostack
+  unsafe { core::arch::asm!("jmp 3f", "2: .ascii \"Hello World!\"", "3: lea {bytes}, [2b+rip]", "mov {len}, 12", bytes = out(reg) bytes, len = out(reg) len); }
 
+  let s = unsafe{core::str::from_utf8_unchecked(core::slice::from_raw_parts(bytes, len))};
+
+  assert_eq!(s, "Hello World!");
+# }
+```
 
 r[asm.target-specific-directives]
 #### Target Specific Directive Support
