@@ -25,6 +25,7 @@ to be run.
   Recursively defining constants is not allowed.
 * Paths to immutable [statics].
     * Reads of [`extern` statics] are not allowed.
+    * Reads from and writes to a `static` with interior mutability are not allowed.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
