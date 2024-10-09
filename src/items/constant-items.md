@@ -90,32 +90,6 @@ m!(const _: () = (););
 // const _: () = ();
 ```
 
-## Use and reference to `static` items
-
-When a constant item or constant block is defined, [`static` items] can be used, borrowed or taken address of.
-By extension, you are allowed to call methods that immutably borrows the `static` items as receivers.
-
-```rust
-static A: u32 = 32;
-const ANOTHER_A: u32 = A;
-const BORROW_A: &'static u32 = &A;
-const POINTER_TO_A: *const u32 = &A as _;
-
-struct MyStruct {
-    inner: u32,
-}
-impl MyStruct {
-    const fn get(&self) -> u32 {
-        self.inner + 1
-    }
-}
-static MYSTRUCT: MyStruct = MyStruct {
-    inner: 0
-};
-const BORROW_STATIC_INNER: &'static u32 = &MYSTRUCT.inner;
-const CALL_CONST_STATIC_ASSOCIATED_METHOD: u32 = MYSTRUCT.get();
-```
-
 ## Evaluation
 
 [Free][free] constants are always [evaluated][const_eval] at compile-time to surface
@@ -136,7 +110,6 @@ fn unused_generic_function<T>() {
 [constant value]: ../const_eval.md#constant-expressions
 [free]: ../glossary.md#free-item
 [static lifetime elision]: ../lifetime-elision.md#static-lifetime-elision
-[`static` items]: ./static-items.md
 [trait definition]: traits.md
 [IDENTIFIER]: ../identifiers.md
 [underscore imports]: use-declarations.md#underscore-imports

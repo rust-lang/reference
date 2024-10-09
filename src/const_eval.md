@@ -24,6 +24,7 @@ to be run.
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
 * Paths to immutable [statics].
+    * Reads of [`extern` statics] are not allowed.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
@@ -71,41 +72,6 @@ surrounding generic parameters: such an expression must either be a single bare
 const generic parameter, or an arbitrary expression not making use of any
 generics.
 
-## Permitted use of `static`s
-
-Within the constant evaluation context, items that ultimately contain no mutable memory or data that is
-capable of interior mutability can be used, borrowed or taken address of.
-Among those are the `static` items as long as they are not actually `mut` items.
-
-```rust
-const fn allowed() -> &'static u32 {
-    static VALUE: u32 = 0;
-    &VALUE
-}
-const A_CONST: &'static u32 = allowed();
-```
-
-On the contrary, for example, `static mut` and types embedding an `UnsafeCell` is not allowed.
-
-```rust,edition2021,compile_fail,E0080
-const fn not_allowed() -> &'static u32 {
-    static mut VALUE: u32 = 0;
-    &VALUE
-}
-const WILL_FAIL: &'static u32 = not_allowed();
-```
-
-One other instance that the constant evaluation will reject is any attempt to read values behind a `static` item declared in an [`extern`] block, even though the item is not marked as `mut`.
-Computing the address to the `static` item is still permitted. However, as soon as a use or dereferencing of the whole or a part of the `static` item is performed, it constitutes a read access which will fail the constant evaluation.
-
-```rust,edition2021,compile_fail,E0080
-extern {
-    static S: u32;
-}
-
-const C: u32 = unsafe { S };
-```
-
 ## Const Functions
 
 A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
@@ -141,7 +107,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [enum discriminants]:   items/enumerations.md#discriminants
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
-[`extern`]:             items/external-blocks.md#statics
+[`extern` statics]:     items/external-blocks.md#statics
 [field]:                expressions/field-expr.md
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
