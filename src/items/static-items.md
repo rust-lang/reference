@@ -22,11 +22,7 @@ Static initializers may refer to other statics.
 Non-`mut` static items that contain a type that is not [interior mutable] may
 be placed in read-only memory.
 
-All access to a static is safe, but there are a number of restrictions on
-statics:
-
-* The type must have the `Sync` trait bound to allow thread-safe access.
-* Constants cannot refer to statics.
+The type of an immutable static must implement the [`Sync`](std::marker::Sync) trait.
 
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
@@ -131,7 +127,7 @@ It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the
 following are true:
 
-* Large amounts of data are being stored
+* Large amounts of data are being stored.
 * The single-address property of statics is required.
 * Interior mutability is required.
 

@@ -23,7 +23,10 @@ to be run.
 * [Const parameters].
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
-* Paths to [statics]. These are only allowed within the initializer of a static.
+* Paths to immutable [statics] with these exception with these restrictions.
+    * Reads out of and writes into [`extern` statics] are not allowed.
+    * Reads out of and writes into either a `static` with data equipped with interior mutability,
+      or a whole or parts of `static mut`, are not allowed.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
@@ -106,6 +109,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [enum discriminants]:   items/enumerations.md#discriminants
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
+[`extern` statics]:     items/external-blocks.md#statics
 [field]:                expressions/field-expr.md
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md

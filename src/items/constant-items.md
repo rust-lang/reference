@@ -39,6 +39,8 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 };
 ```
 
+The final value of a `const` item cannot contain references to anything mutable.
+
 The constant expression may only be omitted in a [trait definition].
 
 ## Constants with Destructors
