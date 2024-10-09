@@ -22,8 +22,7 @@ Static initializers may refer to other statics.
 Non-`mut` static items that contain a type that is not [interior mutable] may
 be placed in read-only memory.
 
-All access to a static is safe,
-provided that the type must have the `Sync` trait bound to allow thread-safe access.
+The type of an immutable static must implement the [`Sync`](std::marker::Sync) trait.
 
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
