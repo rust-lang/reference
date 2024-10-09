@@ -23,9 +23,10 @@ to be run.
 * [Const parameters].
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
-* Paths to immutable [statics].
-    * Reads of [`extern` statics] are not allowed.
-    * Reads from and writes to a `static` with interior mutability are not allowed.
+* Paths to immutable [statics] with these exception with these restrictions.
+    * Reads out of and writes into [`extern` statics] are not allowed.
+    * Reads out of and writes into either a `static` with data equipped with interior mutability,
+      or a whole or parts of `static mut`, are not allowed.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
