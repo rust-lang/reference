@@ -108,7 +108,7 @@ The corresponding arguments are accessed in order, by index, or by name.
   let y: i64;
   let z: i64;
   // This
-  unsafe { core::arch::asm!("mov {}, {}", out(reg) x, in(reg) 5);}  
+  unsafe { core::arch::asm!("mov {}, {}", out(reg) x, in(reg) 5);}
   // ... this
   unsafe { core::arch::asm!("mov {0}, {1}", out(reg) y, in(reg) 5);}
   /// ... and this
@@ -118,7 +118,6 @@ The corresponding arguments are accessed in order, by index, or by name.
   assert_eq!(y,z);
 # }
 ```
-
 
 r[asm.ts-args.no-implicit]
 However, implicit named arguments (introduced by [RFC #2795][rfc-2795]) are not supported.
@@ -342,7 +341,7 @@ r[asm.operand-type.supported-operands.sym]
 # #[cfg(target_arch = "x86_64")] {
   // swizzle [0, 1, 2, 3] => [3, 2, 0, 1]
   const SHUFFLE: u8 = 0b01_00_10_11;
-  let x: core::arch::x86_64::__m128 = unsafe{ core::mem::transmute([0u32, 1u32, 2u32, 3u32]) }; 
+  let x: core::arch::x86_64::__m128 = unsafe{ core::mem::transmute([0u32, 1u32, 2u32, 3u32]) };
   let y: core::arch::x86_64::__m128;
   // Pass a constant value into an instruction that expects an immediate like `pshufd`
   unsafe { core::arch::asm!("pshufd {xmm}, {xmm}, {shuffle}", xmm = inlateout(xmm_reg) x=>y, shuffle = const SHUFFLE); }
@@ -374,7 +373,7 @@ let x = 5;
 
 // register operands aren't allowed, since we aren't in a function
 # #[cfg(target_arch = "x86_64")]
-core::arch::global_asm!("", in(reg) 5); 
+core::arch::global_asm!("", in(reg) 5);
 
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
@@ -426,7 +425,6 @@ It is a compile-time error to use the same explicit register for two input opera
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
-
 
 r[asm.register-operands.error-overlapping]
 Additionally, it is also a compile-time error to use overlapping registers (e.g. ARM VFP) in input operands or in output operands.
@@ -751,7 +749,6 @@ Only one modifier is allowed per template placeholder.
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
-
 r[asm.template-modifiers.supported-modifiers]
 The supported modifiers are a subset of LLVM's (and GCC's) [asm template argument modifiers][llvm-argmod], but do not use the same letter codes.
 
@@ -930,10 +927,10 @@ r[asm.options.supported-options.nomem]
   let z: i32;
   // Accessing memory from a nomem asm block is disallowed
   unsafe { core::arch::asm!("mov {val:e}, dword ptr [{ptr}]", ptr = in(reg) &mut x, val = lateout(reg) z, options(nomem))}
-  
+
   // Writing to memory is also undefined behaviour
   unsafe { core::arch::asm!("mov  dword ptr [{ptr}], {val:e}", ptr = in(reg) &mut x, val = in(reg) z, options(nomem))}
-# } 
+# }
 ```
 
 ```rust
@@ -947,7 +944,6 @@ r[asm.options.supported-options.nomem]
 # }
 ```
 
-
 r[asm.options.supported-options.readonly]
 - `readonly`: The `asm!` block does not write to any memory accessible outside of the `asm!` block.
   This allows the compiler to cache the values of unmodified global variables in registers across the `asm!` block since it knows that they are not written to by the `asm!`.
@@ -959,7 +955,7 @@ r[asm.options.supported-options.readonly]
   let mut x = 0;
   // We cannot modify memory in readonly
   unsafe { core::arch::asm!("mov dword ptr[{}], 1", in(reg) &mut x, options(readonly))}
-# } 
+# }
 ```
 
 ```rust
@@ -971,7 +967,6 @@ r[asm.options.supported-options.readonly]
   assert_eq!(z, 0);
 # }
 ```
-
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -1180,19 +1175,19 @@ pub fn fadd(x: f64, y: f64) -> f64{
   let mut top = 0u16;
   // we can do complex stuff with x87 if we clobber the entire x87 stack
   unsafe{ core::arch::asm!(
-    "fld qword ptr [{x}]", 
-    "fld qword ptr [{y}])",  
-    "faddp", 
-    "fstp qword ptr [{out}]", 
+    "fld qword ptr [{x}]",
+    "fld qword ptr [{y}])",
+    "faddp",
+    "fstp qword ptr [{out}]",
     "xor eax, eax",
     "fstsw ax",
     "shl eax, 11",
-    x = in(reg) &x, 
-    y = in(reg) &y, 
+    x = in(reg) &x,
+    y = in(reg) &y,
     out = in(reg) &mut out,
-    out("st(0)") _, out("st(1)") _, out("st(2)") _, out("st(3)") _, 
+    out("st(0)") _, out("st(1)") _, out("st(2)") _, out("st(3)") _,
     out("st(4)") _, out("st(5)") _, out("st(6)") _, out("st(7)") _,
-    out("eax") top 
+    out("eax") top
   );}
 
   assert_eq!(top & 0x7, 0);
@@ -1341,7 +1336,6 @@ r[asm.target-specific-directives]
 r[asm.target-specific-directives.dwarf-unwinding]
 The following directives are supported on ELF targets that support DWARF unwind info:
 
-
 - `.cfi_adjust_cfa_offset`
 - `.cfi_def_cfa`
 - `.cfi_def_cfa_offset`
@@ -1364,7 +1358,6 @@ The following directives are supported on ELF targets that support DWARF unwind 
 - `.cfi_undefined`
 - `.cfi_window_save`
 
-
 ##### Structured Exception Handling
 
 r[asm.target-specific-directives.structured-exception-handling]
@@ -1378,7 +1371,6 @@ On targets with structured exception Handling, the following additional directiv
 - `.seh_setframe`
 - `.seh_stackalloc`
 
-
 ##### x86 (32-bit and 64-bit)
 
 r[asm.target-specific-directives.x86]
@@ -1388,10 +1380,8 @@ On x86 targets, both 32-bit and 64-bit, the following additional directives are 
 - `.code32`
 - `.code64`
 
-
 Use of `.code16`, `.code32`, and `.code64` directives are only supported if the state is reset to the default before exiting the assembly block.
 32-bit x86 uses `.code32` by default, and x86_64 uses `.code64` by default.
-
 
 
 ##### ARM (32-bit)
