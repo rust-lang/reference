@@ -101,7 +101,7 @@ When assigning rules to new paragraphs, or when modifying rule names, use the fo
 
 #### Test rule annotations
 
-Tests in <https://github.com/rust-lang/rust> can be linked to rules in the reference. The rule will include a link to the tests, and there is also an appendix which tracks how the rules are currently linked.
+Tests in <https://github.com/rust-lang/rust> can be linked to rules in the reference. The rule will include a link to the tests, and there is also an [appendix] which tracks how the rules are currently linked.
 
 Tests in the `tests` directory can be annotated with the `//@ reference: x.y.z` header to link it to a rule. The header can be specified multiple times if a single file covers multiple rules.
 
@@ -110,6 +110,8 @@ You *should* when possible make sure every rule has a test associated with it. T
 Prefixed rule names should not be used in tests. That is, do not use something like `asm.rules` when there are specific rules like `asm.rules.reg-not-input`.
 
 We are not expecting 100% coverage at any time. Although it would be nice, it is unrealistic due to the sequence things are developed, and resources available.
+
+[appendix]: https://doc.rust-lang.org/nightly/reference/test-summary.html
 
 ### Standard library links
 
