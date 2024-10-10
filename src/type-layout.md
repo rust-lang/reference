@@ -136,7 +136,7 @@ Trait objects have the same layout as the value the trait object is of.
 
 ## Closure Layout
 
-r[kayout.closure]
+r[layout.closure]
 
 Closures have no layout guarantees.
 
@@ -260,7 +260,7 @@ is [zero-variant enums] for which the `C` representation is an error.
 
 r[layout.repr.c.struct]
 
-r[layour.repr.c.struct.align]
+r[layout.repr.c.struct.align]
 The alignment of the struct is the alignment of the most-aligned field in it.
 
 r[layout.repr.c.struct.size-field-offset]
