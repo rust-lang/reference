@@ -5,6 +5,7 @@ author = "The Rust Project Developers"
 
 [output.html]
 additional-css = ["theme/reference.css"]
+additional-js = ["theme/reference.js"]
 git-repository-url = "https://github.com/rust-lang/reference/"
 edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
 smart-punctuation = true
