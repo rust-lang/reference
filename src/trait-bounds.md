@@ -8,10 +8,10 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_ | _UseBound_
 >
 > _TraitBound_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TypePath_]\
-> &nbsp;&nbsp; | `(` `?`<sup>?</sup>
-> [_ForLifetimes_](#higher-ranked-trait-bounds)<sup>?</sup> [_TypePath_] `)`
+> &nbsp;&nbsp; &nbsp;&nbsp; ( `?` |
+> [_ForLifetimes_](#higher-ranked-trait-bounds) )<sup>?</sup> [_TypePath_]\
+> &nbsp;&nbsp; | `(` ( `?` |
+> [_ForLifetimes_](#higher-ranked-trait-bounds) )<sup>?</sup> [_TypePath_] `)`
 >
 > _LifetimeBounds_ :\
 > &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>
