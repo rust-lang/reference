@@ -109,6 +109,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Checkout rust-lang/rust
+      uses: actions/checkout@master
+      with:
+        repository: rust-lang/rust
+        path: rust
     - name: Update rustup
       run: rustup self update
     - name: Install Rust
@@ -123,7 +128,8 @@ jobs:
         echo "$(pwd)/bin" >> $GITHUB_PATH
     - name: Build the book
       env:
-          SPEC_RELATIVE: 0
+        SPEC_RELATIVE: 0
+        SPEC_RUST_ROOT: ${{ github.workspace }}/rust
       run: mdbook build --dest-dir dist/preview-${{ github.event.pull_request.number }}
     - name: Upload artifact
       uses: actions/upload-artifact@v4
