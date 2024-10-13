@@ -24,9 +24,9 @@ to be run.
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
 * Paths to immutable [statics] with these restrictions and observations.
-    * In particular, reads and writes to `static mut` are not allowed.
-    * Reads out of and writes into a `static` with data equipped with interior mutability are not allowed.
-    * Reads out of and writes into [`extern` statics] are not allowed.
+    * In particular, reads and writes to any `static`, `static mut` or [`extern` statics] is not allowed.
+    * Immutable borrows and pointers into immutable part of a `static` are allowed and observes the same restriction
+      on all other forms of [borrow]s as mentioned below.
 * [Tuple expressions].
 * [Array expressions].
 * [Struct] expressions.
