@@ -58,6 +58,18 @@ configuration option from within the source code of the crate being compiled.
 > [!WARNING]
 > Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
 
+Some default configuration values can be obtained from `rustc`:
+
+```text
+rustc --print cfg # optionally, a --target can be specified
+target_abi=""
+target_arch="aarch64"
+target_endian="little"
+target_env=""
+target_family="unix"
+...
+```
+
 ### `target_arch`
 
 Key-value option set once with the target's CPU architecture. The value is
