@@ -13,7 +13,7 @@ r[asm.stable-targets]
 Support for inline assembly is stable on the following architectures:
 - x86 and x86-64
 - ARM
-- AArch64
+- AArch64 and Arm64EC
 - RISC-V
 - LoongArch
 
@@ -234,6 +234,9 @@ Here is the list of currently supported register classes:
 | AArch64 | `vreg` | `v[0-31]` | `w` |
 | AArch64 | `vreg_low16` | `v[0-15]` | `x` |
 | AArch64 | `preg` | `p[0-15]`, `ffr` | Only clobbers |
+| Arm64EC | `reg` | `x[0-12]`, `x[15-22]`, `x[25-27]`, `x30` | `r` |
+| Arm64EC | `vreg` | `v[0-15]` | `w` |
+| Arm64EC | `vreg_low16` | `v[0-15]` | `x` |
 | ARM (ARM/Thumb2) | `reg` | `r[0-12]`, `r14` | `r` |
 | ARM (Thumb1) | `reg` | `r[0-7]` | `r` |
 | ARM | `sreg` | `s[0-31]` | `t` |
@@ -277,6 +280,8 @@ The availability of supported types for a particular register class may depend o
 | AArch64 | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
 | AArch64 | `vreg` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
 | AArch64 | `preg` | N/A | Only clobbers |
+| Arm64EC | `reg` | None | `i8`, `i16`, `i32`, `f32`, `i64`, `f64` |
+| Arm64EC | `vreg` | `neon` | `i8`, `i16`, `i32`, `f32`, `i64`, `f64`, <br> `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2`, `f64x1`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
 | ARM | `reg` | None | `i8`, `i16`, `i32`, `f32` |
 | ARM | `sreg` | `vfp2` | `i32`, `f32` |
 | ARM | `dreg` | `vfp2` | `i64`, `f64`, `i8x8`, `i16x4`, `i32x2`, `i64x1`, `f32x2` |
@@ -329,6 +334,12 @@ Here is the list of all supported register aliases:
 | AArch64 | `sp` | `wsp` |
 | AArch64 | `xzr` | `wzr` |
 | AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]` |
+| Arm64EC | `x[0-30]` | `w[0-30]` |
+| Arm64EC | `x29` | `fp` |
+| Arm64EC | `x30` | `lr` |
+| Arm64EC | `sp` | `wsp` |
+| Arm64EC | `xzr` | `wzr` |
+| Arm64EC | `v[0-15]` | `b[0-15]`, `h[0-15]`, `s[0-15]`, `d[0-15]`, `q[0-15]` |
 | ARM | `r[0-3]` | `a[1-4]` |
 | ARM | `r[4-9]` | `v[1-6]` |
 | ARM | `r9` | `rfp` |
@@ -373,12 +384,15 @@ Some registers cannot be used for input or output operands:
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
 | All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
-| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
+| All | `bp` (x86), `x29` (AArch64 and Arm64EC), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
-| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
+| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64 and Arm64EC), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `ip` | This is the program counter, not a real register. |
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
 | AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
+| Arm64EC | `xzr` | This is a constant zero register which can't be modified. |
+| Arm64EC | `x18` | This is an OS-reserved register. |
+| Arm64EC | `x13`, `x14`, `x23`, `x24`, `x28`, `v[16-31]`, `p[0-15]`, `ffr` | These are AArch64 registers that are not supported for Arm64EC. |
 | ARM | `pc` | This is the program counter, not a real register. |
 | ARM | `r9` | This is an OS-reserved register on some ARM targets. |
 | RISC-V | `x0` | This is a constant zero register which can't be modified. |
@@ -432,6 +446,16 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | AArch64 | `vreg` | `s` | `s0` | `s` |
 | AArch64 | `vreg` | `d` | `d0` | `d` |
 | AArch64 | `vreg` | `q` | `q0` | `q` |
+| Arm64EC | `reg` | None | `x0` | `x` |
+| Arm64EC | `reg` | `w` | `w0` | `w` |
+| Arm64EC | `reg` | `x` | `x0` | `x` |
+| Arm64EC | `vreg` | None | `v0` | None |
+| Arm64EC | `vreg` | `v` | `v0` | None |
+| Arm64EC | `vreg` | `b` | `b0` | `b` |
+| Arm64EC | `vreg` | `h` | `h0` | `h` |
+| Arm64EC | `vreg` | `s` | `s0` | `s` |
+| Arm64EC | `vreg` | `d` | `d0` | `d` |
+| Arm64EC | `vreg` | `q` | `q0` | `q` |
 | ARM | `reg` | None | `r0` | None |
 | ARM | `sreg` | None | `s0` | None |
 | ARM | `dreg` | None | `d0` | `P` |
@@ -482,6 +506,7 @@ The following ABIs can be used with `clobber_abi`:
 | x86-64 | `"C"`, `"system"` (on Windows), `"efiapi"`, `"win64"` | `ax`, `cx`, `dx`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
 | x86-64 | `"C"`, `"system"` (on non-Windows), `"sysv64"` | `ax`, `cx`, `dx`, `si`, `di`, `r[8-11]`, `xmm[0-31]`, `mm[0-7]`, `k[0-7]`, `st([0-7])`, `tmm[0-7]` |
 | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
+| Arm64EC | `"C"`, `"system"` | `x[0-12]`, `x[15-17]`, `x30`, `v[0-15]` |
 | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
 | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
 | LoongArch | `"C"`, `"system"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
@@ -616,7 +641,7 @@ r[asm.rules.preserved-registers]
     - Condition flags in `FPSCR` (N, Z, C, V)
     - Saturation flag in `FPSCR` (QC)
     - Floating-point exception flags in `FPSCR` (IDC, IXC, UFC, OFC, DZC, IOC).
-  - AArch64
+  - AArch64 and Arm64EC
     - Condition flags (`NZCV` register).
     - Floating-point status (`FPSR` register).
   - RISC-V
