@@ -40,7 +40,8 @@ undefined behavior, it is *unsound*.
   All this also applies when values of these
   types are passed in a (nested) field of a compound type, but not behind
   pointer indirections.
-* Mutating immutable bytes. All bytes inside a [`const`] item or within an implicitly [const-promoted] expression are immutable.
+* Mutating immutable bytes.
+  All bytes reachable through a [const-promoted] expression are immutable, as well as bytes reachable through borrows in `static` and `const` initializers that have been [lifetime-extended] to `'static`.
   The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
   Moreover, the bytes [pointed to] by a shared reference, including transitively through other references (both shared and mutable) and `Box`es, are immutable; transitivity includes those references stored in fields of compound types.
@@ -78,7 +79,7 @@ The span of bytes a pointer or reference "points to" is determined by the pointe
 A place is said to be "based on a misaligned pointer" if the last `*` projection
 during place computation was performed on a pointer that was not aligned for its
 type. (If there is no `*` projection in the place expression, then this is
-accessing the field of a local and rustc will guarantee proper alignment. If
+accessing the field of a local or `static` and rustc will guarantee proper alignment. If
 there are multiple `*` projection, then each of them incurs a load of the
 pointer-to-be-dereferenced itself from memory, and each of these loads is
 subject to the alignment constraint. Note that some `*` projections can be
@@ -179,3 +180,4 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [project-tuple]: expressions/tuple-expr.md#tuple-indexing-expressions
 [project-slice]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [const-promoted]: destructors.md#constant-promotion
+[lifetime-extended]: destructors.md#temporary-lifetime-extension

@@ -1,31 +1,44 @@
 # Boolean type
 
+r[type.bool]
+
 ```rust
 let b: bool = true;
 ```
 
+r[type.bool.intro]
 The *boolean type* or *bool* is a primitive data type that can take on one of
 two values, called *true* and *false*.
 
+r[type.bool.literal]
 Values of this type may be created using a [literal expression] using the
 keywords `true` and `false` corresponding to the value of the same name.
 
+r[type.bool.namespace]
 This type is a part of the [language prelude] with the [name] `bool`.
 
-An object with the boolean type has a [size and alignment] of 1 each. The
-value false has the bit pattern `0x00` and the value true has the bit pattern
+r[type.bool.layout]
+An object with the boolean type has a [size and alignment] of 1 each.
+
+r[type.bool.repr]
+The value false has the bit pattern `0x00` and the value true has the bit pattern
 `0x01`. It is [undefined behavior] for an object with the boolean type to have
 any other bit pattern.
 
+r[type.bool.usage]
 The boolean type is the type of many operands in various [expressions]:
 
+r[type.bool.usage-condition]
 * The condition operand in [if expressions] and [while expressions]
+
+r[type.bool.usage-lazy-operator]
 * The operands in [lazy boolean operator expressions][lazy]
 
 > **Note**: The boolean type acts similarly to but is not an [enumerated type].
 In practice, this mostly means that constructors are not associated to the type
 (e.g. `bool::true`).
 
+r[type.bool.traits]
 Like all primitives, the boolean type [implements][p-impl] the
 [traits][p-traits] [`Clone`][p-clone], [`Copy`][p-copy], [`Sized`][p-sized],
 [`Send`][p-send], and [`Sync`][p-sync].
@@ -34,10 +47,14 @@ Like all primitives, the boolean type [implements][p-impl] the
 
 ## Operations on boolean values
 
+r[type.bool.expr]
+
 <!-- This is washy wording --> When using certain operator expressions with a
 boolean type for its operands, they evaluate using the rules of [boolean logic].
 
 ### Logical not
+
+r[type.bool.expr.not]
 
 | `b` | [`!b`][op-not] |
 |- | - |
@@ -45,6 +62,8 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 | `false` | `true` |
 
 ### Logical or
+
+r[type.bool.expr.or]
 
 | `a` | `b` | [<code>a &#124; b</code>][op-or] |
 |- | - | - |
@@ -55,6 +74,8 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 
 ### Logical and
 
+r[type.bool.expr.and]
+
 | `a` | `b` | [`a & b`][op-and] |
 |- | - | - |
 | `true` | `true` | `true` |
@@ -63,6 +84,8 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 | `false` | `false` | `false` |
 
 ### Logical xor
+
+r[type.bool.expr.xor]
 
 | `a` | `b` | [`a ^ b`][op-xor] |
 |- | - | - |
@@ -73,6 +96,9 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 
 ### Comparisons
 
+r[type.bool.expr.cmp]
+
+r[type.bool.expr.cmp.eq]
 | `a` | `b` | [`a == b`][op-compare] |
 |- | - | - |
 | `true` | `true` | `true` |
@@ -80,6 +106,7 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 | `false` | `true` | `false` |
 | `false` | `false` | `true` |
 
+r[type.bool.expr.cmp.greater]
 | `a` | `b` | [`a > b`][op-compare] |
 |- | - | - |
 | `true` | `true` | `false` |
@@ -87,12 +114,21 @@ boolean type for its operands, they evaluate using the rules of [boolean logic].
 | `false` | `true` | `false` |
 | `false` | `false` | `false` |
 
+r[type.bool.expr.cmp.not-eq]
 * `a != b` is the same as `!(a == b)`
+
+r[type.bool.expr.cmp.greater-eq]
 * `a >= b` is the same as `a == b | a > b`
+
+r[type.bool.expr.cmp.less]
 * `a < b` is the same as `!(a >= b)`
+
+r[type.bool.expr.cmp.less-eq]
 * `a <= b` is the same as `a == b | a < b`
 
 ## Bit validity
+
+r[type.bool.validity]
 
 The single byte of a `bool` is guaranteed to be initialized (in other words,
 `transmute::<bool, u8>(...)` is always sound -- but since some bit patterns

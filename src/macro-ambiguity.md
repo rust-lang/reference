@@ -325,7 +325,7 @@ represent simple nonterminals with the given fragment specifier.
 
   * FOLLOW(pat) = {`=>`, `,`, `=`, `|`, `if`, `in`}`.
 
-  * FOLLOW(expr) = FOLLOW(stmt) =  {`=>`, `,`, `;`}`.
+  * FOLLOW(expr) = FOLLOW(expr_2021) = FOLLOW(stmt) =  {`=>`, `,`, `;`}`.
 
   * FOLLOW(ty) = FOLLOW(path) = {`{`, `[`, `,`, `=>`, `:`, `=`, `>`, `>>`, `;`,
     `|`, `as`, `where`, block nonterminals}.

@@ -14,13 +14,12 @@ guaranteed to refer to the same memory address.
 The constant declaration defines the constant value in the [value namespace] of the module or block where it is located.
 
 Constants must be explicitly typed. The type must have a `'static` lifetime: any
-references in the initializer must have `'static` lifetimes.
+references in the initializer must have `'static` lifetimes. References
+in the type of a constant default to `'static` lifetime; see [static lifetime
+elision].
 
-Constants may refer to the address of other constants, in which case the
-address will have elided lifetimes where applicable, otherwise -- in most cases
--- defaulting to the `static` lifetime. (See [static lifetime
-elision].) The compiler is, however, still at liberty to translate the constant
-many times, so the address referred to may not be stable.
+A reference to a constant will have `'static` lifetime if the constant value is eligible for
+[promotion]; otherwise, a temporary will be created.
 
 ```rust
 const BIT1: u32 = 1 << 0;
@@ -118,3 +117,4 @@ fn unused_generic_function<T>() {
 [_Expression_]: ../expressions.md
 [`Copy`]: ../special-types-and-traits.md#copy
 [value namespace]: ../names/namespaces.md
+[promotion]: ../destructors.md#constant-promotion

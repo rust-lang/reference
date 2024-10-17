@@ -1,5 +1,8 @@
 # Macros By Example
 
+r[macro.decl]
+
+r[macro.decl.syntax]
 > **<sup>Syntax</sup>**\
 > _MacroRulesDefinition_ :\
 > &nbsp;&nbsp; `macro_rules` `!` [IDENTIFIER] _MacroRulesDef_
@@ -27,7 +30,7 @@
 > &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroRepOp_
 >
 > _MacroFragSpec_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `ident` | `item` | `lifetime` | `literal`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `expr_2021` | `ident` | `item` | `lifetime` | `literal`\
 > &nbsp;&nbsp; | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
 >
 > _MacroRepSep_ :\
@@ -39,6 +42,7 @@
 > _MacroTranscriber_ :\
 > &nbsp;&nbsp; [_DelimTokenTree_]
 
+r[macro.decl.intro]
 `macro_rules` allows users to define syntax extension in a declarative way.  We
 call such extensions "macros by example" or simply "macros".
 
@@ -51,10 +55,15 @@ items), types, or patterns.
 
 ## Transcribing
 
+r[macro.decl.transcription]
+
+r[macro.decl.transcription.intro]
 When a macro is invoked, the macro expander looks up macro invocations by name,
 and tries each macro rule in turn. It transcribes the first successful match; if
-this results in an error, then future matches are not tried. When matching, no
-lookahead is performed; if the compiler cannot unambiguously determine how to
+this results in an error, then future matches are not tried.
+
+r[macro.decl.transcription.lookahead]
+When matching, no lookahead is performed; if the compiler cannot unambiguously determine how to
 parse the macro invocation one token at a time, then it is an error. In the
 following example, the compiler does not look ahead past the identifier to see
 if the following token is a `)`, even though that would allow it to parse the
@@ -68,6 +77,7 @@ macro_rules! ambiguity {
 ambiguity!(error); // Error: local ambiguity
 ```
 
+r[macro.decl.transcription.syntax]
 In both the matcher and the transcriber, the `$` token is used to invoke special
 behaviours from the macro engine (described below in [Metavariables] and
 [Repetitions]). Tokens that aren't part of such an invocation are matched and
@@ -77,6 +87,8 @@ instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
 `$` cannot be matched or transcribed literally.
 
 ### Forwarding a matched fragment
+
+r[macro.decl.transcription.fragment]
 
 When forwarding a matched fragment to another macro-by-example, matchers in
 the second macro will see an opaque AST of the fragment type. The second macro
@@ -116,9 +128,14 @@ foo!(3);
 
 ## Metavariables
 
+r[macro.decl.meta]
+
+r[macro.decl.meta.intro]
 In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax
-fragment of the kind specified and binds it to the metavariable `$`_name_. Valid
-fragment specifiers are:
+fragment of the kind specified and binds it to the metavariable `$`_name_.
+
+r[macro.decl.meta.specifier]
+Valid fragment specifiers are:
 
   * `item`: an [_Item_]
   * `block`: a [_BlockExpression_]
@@ -126,7 +143,8 @@ fragment specifiers are:
     statements that require semicolons)
   * `pat_param`: a [_PatternNoTopAlt_]
   * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
-  * `expr`: an [_Expression_]
+  * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
+  * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
   * `ty`: a [_Type_]
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
   * `path`: a [_TypePath_] style path
@@ -136,42 +154,58 @@ fragment specifiers are:
   * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
 
+r[macro.decl.meta.transcription]
 In the transcriber, metavariables are referred to simply by `$`_name_, since
 the fragment kind is specified in the matcher. Metavariables are replaced with
-the syntax element that matched them. The keyword metavariable `$crate` can be
-used to refer to the current crate; see [Hygiene] below. Metavariables can be
+the syntax element that matched them.
+
+r[macro.decl.meta.dollar-crate]
+The keyword metavariable `$crate` can be used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
+r[macro.decl.meta.expr-underscore]
 For reasons of backwards compatibility, though `_` [is also an
 expression][_UnderscoreExpression_], a standalone underscore is not matched by
 the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
 specifier when it appears as a subexpression.
 For the same reason, a standalone [const block] is not matched but it is matched when appearing as a subexpression.
 
+r[macro.decl.meta.edition2021]
 > **Edition differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
+>
+> The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
 ## Repetitions
 
+r[macro.decl.repetition]
+
+r[macro.decl.repetition.intro]
 In both the matcher and transcriber, repetitions are indicated by placing the
 tokens to be repeated inside `$(`…`)`, followed by a repetition operator,
-optionally with a separator token between. The separator token can be any token
+optionally with a separator token between.
+
+r[macro.decl.repetition.separator]
+The separator token can be any token
 other than a delimiter or one of the repetition operators, but `;` and `,` are
 the most common. For instance, `$( $i:ident ),*` represents any number of
 identifiers separated by commas. Nested repetitions are permitted.
 
+r[macro.decl.repetition.operators]
 The repetition operators are:
 
 - `*` --- indicates any number of repetitions.
 - `+` --- indicates any number but at least one.
 - `?` --- indicates an optional fragment with zero or one occurrence.
 
+r[macro.decl.repetition.optional-restriction]
 Since `?` represents at most one occurrence, it cannot be used with a
 separator.
 
+r[macro.decl.repetition.fragment]
 The repeated fragment both matches and transcribes to the specified number of
 the fragment, separated by the separator token. Metavariables are matched to
 every repetition of their corresponding fragment. For instance, the `$( $i:ident
@@ -198,6 +232,9 @@ compiler knows how to expand them properly:
 
 ## Scoping, Exporting, and Importing
 
+r[macro.decl.scope]
+
+r[macro.decl.scope.intro]
 For historical reasons, the scoping of macros by example does not work entirely
 like items. Macros have two forms of scope: textual scope, and path-based scope.
 Textual scope is based on the order that things appear in source files, or even
@@ -205,6 +242,7 @@ across multiple files, and is the default scoping. It is explained further below
 Path-based scope works exactly the same way that item scoping does. The scoping,
 exporting, and importing of macros is controlled largely by attributes.
 
+r[macro.decl.scope.unqualified]
 When a macro is invoked by an unqualified identifier (not part of a multi-part
 path), it is first looked up in textual scoping. If this does not yield any
 results, then it is looked up in path-based scoping. If the macro's name is
@@ -224,6 +262,9 @@ self::lazy_static!{} // Path-based lookup ignores our macro, finds imported one.
 
 ### Textual Scope
 
+r[macro.decl.scope.textual]
+
+r[macro.decl.scope.textual.intro]
 Textual scope is based largely on the order that things appear in source files,
 and works similarly to the scope of local variables declared with `let` except
 it also applies at the module level. When `macro_rules!` is used to define a
@@ -253,6 +294,7 @@ mod has_macro {
 m!{} // OK: appears after declaration of m in src/lib.rs
 ```
 
+r[macro.decl.scope.textual.shadow]
 It is not an error to define a macro multiple times; the most recent declaration
 will shadow the previous one unless it has gone out of scope.
 
@@ -293,12 +335,14 @@ fn foo() {
     m!();
 }
 
-
 // m!(); // Error: m is not in scope.
 ```
 
 ### The `macro_use` attribute
 
+r[macro.decl.scope.macro_use]
+
+r[macro.decl.scope.macro_use.mod-decl]
 The *`macro_use` attribute* has two purposes. First, it can be used to make a
 module's macro scope not end when the module is closed, by applying it to a
 module:
@@ -314,6 +358,7 @@ mod inner {
 m!();
 ```
 
+r[macro.decl.scope.macro_use.prelude]
 Second, it can be used to import macros from another crate, by attaching it to
 an `extern crate` declaration appearing in the crate's root module. Macros
 imported this way are imported into the [`macro_use` prelude], not textually,
@@ -332,11 +377,15 @@ lazy_static!{}
 // self::lazy_static!{} // Error: lazy_static is not defined in `self`
 ```
 
+r[macro.decl.scope.macro_use.export]
 Macros to be imported with `#[macro_use]` must be exported with
 `#[macro_export]`, which is described below.
 
 ### Path-Based Scope
 
+r[macro.decl.scope.path]
+
+r[macro.decl.scope.path.intro]
 By default, a macro has no path-based scope. However, if it has the
 `#[macro_export]` attribute, then it is declared in the crate root scope and can
 be referred to normally as such:
@@ -358,11 +407,15 @@ mod mac {
 }
 ```
 
+r[macro.decl.scope.path.export]
 Macros labeled with `#[macro_export]` are always `pub` and can be referred to
 by other crates, either by path or by `#[macro_use]` as described above.
 
 ## Hygiene
 
+r[macro.decl.hygiene]
+
+r[macro.decl.hygiene.intro]
 By default, all identifiers referred to in a macro are expanded as-is, and are
 looked up at the macro's invocation site. This can lead to issues if a macro
 refers to an item or macro which isn't in scope at the invocation site. To
@@ -406,6 +459,7 @@ pub mod inner {
 }
 ```
 
+r[macro.decl.hygiene.vis]
 Additionally, even though `$crate` allows a macro to refer to items within its
 own crate when expanding, its use has no effect on visibility. An item or macro
 referred to must still be visible from the invocation site. In the following
@@ -429,6 +483,7 @@ fn foo() {}
 > modified to use `$crate` or `local_inner_macros` to work well with path-based
 > imports.
 
+r[macro.decl.hygiene.local_inner_macros]
 When a macro is exported, the `#[macro_export]` attribute can have the
 `local_inner_macros` keyword added to automatically prefix all contained macro
 invocations with `$crate::`. This is intended primarily as a tool to migrate
@@ -449,9 +504,14 @@ macro_rules! helper {
 
 ## Follow-set Ambiguity Restrictions
 
+r[macro.decl.follow-set]
+
+r[macro.decl.follow-set.intro]
 The parser used by the macro system is reasonably powerful, but it is limited in
-order to prevent ambiguity in current or future versions of the language. In
-particular, in addition to the rule about ambiguous expansions, a nonterminal
+order to prevent ambiguity in current or future versions of the language.
+
+r[macro.decl.follow-set.token-restriction]
+In particular, in addition to the rule about ambiguous expansions, a nonterminal
 matched by a metavariable must be followed by a token which has been decided can
 be safely used after that kind of match.
 
@@ -464,19 +524,32 @@ matcher would become ambiguous or would misparse, breaking working code.
 Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
 `;` are legal expression separators. The specific rules are:
 
+r[macro.decl.follow-set.token-expr-stmt]
   * `expr` and `stmt` may only be followed by one of: `=>`, `,`, or `;`.
+
+r[macro.decl.follow-set.token-pat_param]
   * `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
+
+r[macro.decl.follow-set.token-pat]
   * `pat` may only be followed by one of: `=>`, `,`, `=`, `if`, or `in`.
+
+r[macro.decl.follow-set.token-path-ty]
   * `path` and `ty` may only be followed by one of: `=>`, `,`, `=`, `|`, `;`,
     `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
     fragment specifier.
+
+r[macro.decl.follow-set.token-vis]
   * `vis` may only be followed by one of: `,`, an identifier other than a
     non-raw `priv`, any token that can begin a type, or a metavariable with a
     `ident`, `ty`, or `path` fragment specifier.
+
+r[macro.decl.follow-set.token-other]
   * All other fragment specifiers have no restrictions.
 
+r[macro.decl.follow-set.edition2021]
 > **Edition differences**: Before the 2021 edition, `pat` may also be followed by `|`.
 
+r[macro.decl.follow-set.repetition]
 When repetitions are involved, then the rules apply to every possible number of
 expansions, taking separators into account. This means:
 
@@ -490,7 +563,6 @@ expansions, taking separators into account. This means:
   * If the repetition can match zero times (`*` or `?`), then whatever comes
     after must be able to follow whatever comes before.
 
-
 For more detail, see the [formal specification].
 
 [const block]: expressions/block-expr.md#const-blocks
@@ -503,6 +575,7 @@ For more detail, see the [formal specification].
 [Repetitions]: #repetitions
 [_Attr_]: attributes.md
 [_BlockExpression_]: expressions/block-expr.md
+[_ConstBlockExpression_]: expressions/block-expr.md#const-blocks
 [_DelimTokenTree_]: macros.md
 [_Expression_]: expressions.md
 [_Item_]: items.md
