@@ -144,21 +144,26 @@ Closures have no layout guarantees.
 
 r[layout.aggregate]
 
-r[layout.aggregate.intro] Aggregate types, `struct`s and `union`s, determine the layout based on its fields, and the [repr][layout.repr] attribute. Each field is categorized by its alignment and size, and an offset within that struct which, by default, is a multiple of its alignment.
+r[layout.aggregate.intro]
+Aggregate types, `struct`s and `union`s, determine the layout based on its fields, and the [repr][layout.repr] attribute. Each field is categorized by its alignment and size, and an offset within that struct which, by default, is a multiple of its alignment.
 
-r[layout.aggregate.struct-offsets] The fields of a `struct` have offsets such that none of the fields overlap within the `struct`.
+r[layout.aggregate.struct-offsets]
+The fields of a `struct` have offsets such that none of the fields overlap within the `struct`.
 
 r[layout.aggregate.struct-size-align]
 The size of a `struct` is at least such that each field can be placed within the struct's storage, and the size is a multiple of its alignment. The alignment of a `struct`, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute, is at least the largest alignment of all fields.
 
-r[layout.aggregate.union-offsets] The fields of a `union` may have any offset within the `union`. In particular, `union` fields are permitted to overlap within the `union`.
+r[layout.aggregate.union-offsets]
+The fields of a `union` may have any offset within the `union`. In particular, `union` fields are permitted to overlap within the `union`.
 
 > [!NOTE]
 > Typically, union fields are all given offset 0 and are all allocated in the same storage. This is not necessarily guaranteed, however, for [The Rust Representation][layout.repr.rust]
 
-r[layout.aggregate.union-size-align] The size of a `union` is at least such that the largest field, and the size is a multiple of the alignment. The alignment of a `union`, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute, is at least the largest alignment of all fields.
+r[layout.aggregate.union-size-align]
+The size of a `union` is at least such that the largest field, and the size is a multiple of the alignment. The alignment of a `union`, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute, is at least the largest alignment of all fields.
 
-r[layout.aggregate.repr] The [`repr`][layout.repr] attribute may restrict the valid offsets for each field, as well as the size and alignment of the aggregate type. By [default][layout.repr.rust], the offsets of fields are unspecified.
+r[layout.aggregate.repr]
+The [`repr`][layout.repr] attribute may restrict the valid offsets for each field, as well as the size and alignment of the aggregate type. By [default][layout.repr.rust], the offsets of fields are unspecified.
 
 > [!NOTE]
 > The choices of the offsets of fields are made per-struct. Two `struct`s or two `union`s with the same fields using [`repr(Rust)`][layout.repr.rust] are not necessarily layed out the same
@@ -236,7 +241,8 @@ without a `repr` attribute. Using this representation explicitly through a
 `repr` attribute is guaranteed to be the same as omitting the attribute
 entirely.
 
-r[layout.repr.rust.aggregate] The layout of aggregate types with this repr is unspecified, such that the guarantees of all `struct` and `union` types are upheld.
+r[layout.repr.rust.aggregate]
+The layout of aggregate types with this repr is unspecified, such that the guarantees of all `struct` and `union` types are upheld.
 
 > [!NOTE]
 > `repr(Rust)` does not provide any guarantees other than the default constraints.
@@ -245,11 +251,14 @@ r[layout.repr.rust.aggregate] The layout of aggregate types with this repr is un
 
 r[layout.repr.rust.enum]
 
-r[layout.repr.rust.enum.intro] Like `struct`s and `union`s with the `Rust` representation, `enum`s typically have no guarantees. The fields of individual variants are layed out with the same rules as a `repr(Rust)` struct, and the `enum` contains sufficient information to determine which variant is being represented.
+r[layout.repr.rust.enum.intro]
+Like `struct`s and `union`s with the `Rust` representation, `enum`s typically have no guarantees. The fields of individual variants are layed out with the same rules as a `repr(Rust)` struct, and the `enum` contains sufficient information to determine which variant is being represented.
 
-r[layout.repr.rust.enum.variant-fields] Each field of a variant has an offset within the `enum`, such that no two fields of the same variant overlap, and each field of each variant is aligned, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute. Fields of different variants are allowed to overlap, as though each variant appears within a `union` definition.
+r[layout.repr.rust.enum.variant-fields]
+Each field of a variant has an offset within the `enum`, such that no two fields of the same variant overlap, and each field of each variant is aligned, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute. Fields of different variants are allowed to overlap, as though each variant appears within a `union` definition.
 
-r[layout.repr.rust.enum.size-align] The size of an enum is such that each field of each variant that is not uninhabited can be allocated within the enum at its given offset. The alignment of an enum, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute, is at least the largest alignment of all fields in variants that are inhabited.
+r[layout.repr.rust.enum.size-align]
+The size of an enum is such that each field of each variant that is not uninhabited can be allocated within the enum at its given offset. The alignment of an enum, unless modified by the [`repr(packed)`][layout.repr.alignment.packed] attribute, is at least the largest alignment of all fields in variants that are inhabited.
 
 > [!NOTE]
 > A Rough approximation of a `repr(Rust)` enum is a `repr(Rust)` union containing `repr(Rust)` structs for each variant, with a discriminant field present in each struct.
@@ -263,9 +272,11 @@ r[layout.repr.rust.enum.size-align] The size of an enum is such that each field 
 
 r[layout.repr.rust.option]
 
-r[layout.repr.rust.option.intro] Certain `repr(Rust)` enums are specially layed out when used with certain types. This layout process is known as discriminant elision.
+r[layout.repr.rust.option.intro]
+Certain `repr(Rust)` enums are specially layed out when used with certain types. This layout process is known as discriminant elision.
 
-r[layout.repr.rust.option.elligible] An `enum` type is a *discriminant elision eligible* enum if:
+r[layout.repr.rust.option.elligible]
+An `enum` type is a *discriminant elision eligible* enum if:
 * It has exactly two variants,
 * One variant has exactly one field, known as the *elision candidate field*, and
 * The other variant has no fields that have size greater than 0 or alignment greater than 1, known as the *elided variant*.
@@ -274,7 +285,8 @@ r[layout.repr.rust.option.elligible] An `enum` type is a *discriminant elision e
 > The determination of whether an `enum` type is *discriminant elision eligible* applies after mono-morphization.
 > In particular, a type like [`core::result::Result<T,E>`] is *discriminant elision eligible* if either `T` or `E` is instantiated with a 1-ZST type, and [`core::option::Option<T>`] is *discriminant elision eligible* always (due to its `None` variant).
 
-r[layout.repr.rust.option.candidates] The following types are *elision candidate types*:
+r[layout.repr.rust.option.candidates]
+The following types are *elision candidate types*:
 * [`&U`][type.pointer.reference.shared], if `U` is a `Sized` type
 * [`&mut U`][type.pointer.reference.mut], if `U` is a `Sized` type
 * [`core::ptr::NonNull<U>`], if `U` is a `Sized` type
@@ -283,7 +295,8 @@ r[layout.repr.rust.option.candidates] The following types are *elision candidate
 * A [function pointer][type.fn-pointer] type
 * A `struct`, defined using [`repr(transparent)`][layout.repr.transparent], which has a field that is an *elision candidate*, and all other fields have size 0 and alignment 1.
 
-r[layout.repr.rust.option.elision] If the *elision candidate field* of a *discriminant elision eligible* `enum` has an *elision candidate type*, then the `enum` has the same layout as that field, except that the value consisting of all `0` bytes represents the *elided variant* of the `enum`.
+r[layout.repr.rust.option.elision]
+If the *elision candidate field* of a *discriminant elision eligible* `enum` has an *elision candidate type*, then the `enum` has the same layout as that field, except that the value consisting of all `0` bytes represents the *elided variant* of the `enum`.
 
 > [!NOTE]
 > It is valid for this optimization to be performed for types an `enum`s other than those mentioned above, however, it is only guaranteed for these types and `enum`s.
@@ -305,9 +318,11 @@ r[layout.repr.c.constraint]
 This representation can be applied to structs, unions, and enums. The exception
 is [zero-variant enums] for which the `C` representation is an error.
 
-r[layout.repr.c.aggregate] An aggregate type (`struct` or `union`) with the `C` representation is laid out by each field being given by the smallest valid offset for that field that is ascending in declaration order. That is, for a `union`, each field is at offset `0`, and for a struct, the first field is at offset `0`, then the second is at the next offset aligned to the field type. The size of such an aggregate type is the minimum value valid for the type.
+r[layout.repr.c.aggregate]
+An aggregate type (`struct` or `union`) with the `C` representation is laid out by each field being given by the smallest valid offset for that field that is ascending in declaration order. That is, for a `union`, each field is at offset `0`, and for a struct, the first field is at offset `0`, then the second is at the next offset aligned to the field type. The size of such an aggregate type is the minimum value valid for the type.
 
-r[layout.repr.c.align] An aggregate type with the `C` representation has an alignment equal to the maximum alignment of each of its fields, unless an [alignment modifier][layout.repr.alignment] is present.
+r[layout.repr.c.align]
+An aggregate type with the `C` representation has an alignment equal to the maximum alignment of each of its fields, unless an [alignment modifier][layout.repr.alignment] is present.
 
 > [!NOTE]
 > The layout of unions in particular is maximally compact - the size of a `C` representation `union` is the size of its largest field, rounded up to the alignment of the `union`
