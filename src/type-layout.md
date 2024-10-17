@@ -324,6 +324,7 @@ An aggregate type (`struct` or `union`) with the `C` representation is laid out 
 r[layout.repr.c.align]
 An aggregate type with the `C` representation has an alignment equal to the maximum alignment of each of its fields, unless an [alignment modifier][layout.repr.alignment] is present.
 
+<a id="reprc-unions"></a>
 > [!NOTE]
 > The layout of unions in particular is maximally compact - the size of a `C` representation `union` is the size of its largest field, rounded up to the alignment of the `union`
 
