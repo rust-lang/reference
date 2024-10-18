@@ -70,7 +70,7 @@ standard C ABI on the specific platform. Other ABIs may be specified using an
 unsafe extern "stdcall" { }
 ```
 
-There are three ABI strings which are cross-platform, and which all compilers
+There are five ABI strings which are cross-platform, and which all compilers
 are guaranteed to support:
 
 * `unsafe extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
@@ -80,6 +80,9 @@ are guaranteed to support:
 * `unsafe extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
   which case it's `"stdcall"`, or what you should use to link to the Windows
   API itself
+* `extern "C-unwind"` and `extern "system-unwind"` -- identical to `"C"` and
+  `"system"`, respectively, but with [different behavior][unwind-behavior] when
+  the callee unwinds (by panicking or throwing a C++ style exception).
 
 There are also some platform-specific ABI strings:
 
@@ -95,6 +98,18 @@ There are also some platform-specific ABI strings:
 * `unsafe extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 * `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
+
+Like `"C"` and `"system"`, most platform-specific ABI strings also have a
+[corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
+
+* `"cdecl-unwind"`
+* `"stdcall-unwind"`
+* `"fastcall-unwind"`
+* `"vectorcall-unwind"`
+* `"thiscall-unwind"`
+* `"aapcs-unwind"`
+* `"win64-unwind"`
+* `"sysv64-unwind"`
 
 ## Variadic functions
 
@@ -316,10 +331,9 @@ Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].
 
 [IDENTIFIER]: ../identifiers.md
+[PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
 [UEFI]: https://uefi.org/specifications
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
-[functions]: functions.md
-[statics]: static-items.md
 [_Abi_]: functions.md
 [_Function_]: functions.md
 [_InnerAttribute_]: ../attributes.md
@@ -329,11 +343,13 @@ restrictions as [regular function parameters].
 [_OuterAttribute_]: ../attributes.md
 [_StaticItem_]: static-items.md
 [_Visibility_]: ../visibility-and-privacy.md
-[attributes]: ../attributes.md
-[regular function parameters]: functions.md#attributes-on-function-parameters
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
-[`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
-[`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
-[PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
+[`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
+[`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
+[attributes]: ../attributes.md
+[functions]: functions.md
+[regular function parameters]: functions.md#attributes-on-function-parameters
+[statics]: static-items.md
+[unwind-behavior]: functions.md#unwinding
 [value namespace]: ../names/namespaces.md
