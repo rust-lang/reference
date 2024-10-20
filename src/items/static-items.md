@@ -12,21 +12,26 @@ r[items.static.syntax]
 >   allowed semantically within `extern` blocks.
 
 r[items.static.intro]
-A *static item* is similar to a [constant], except that it represents a precise
-memory location in the program. All references to the static refer to the same
-memory location.
+A *static item* is similar to a [constant], except that it represents an allocated object in the
+program that is initialized with the initializer expression. All references and raw pointers to the
+static refer to the same allocated object.
 
 r[items.static.lifetime]
-Static items have the `static` lifetime, which outlives all
-other lifetimes in a Rust program. Static items do not call [`drop`] at the
-end of the program.
+Static items have the `static` lifetime, which outlives all other lifetimes in a Rust program.
+Static items do not call [`drop`] at the end of the program.
+
+r[items.static.storage-disjointness]
+This allocated object is disjoint from all other `static` objects as well as heap-allocated and
+stack-allocated variables. However, the storage of immutable `static` items can overlap with objects
+that do not themselves have a unique address, such as [promoteds] and [`const` items][constant].
 
 r[items.static.namespace]
 The static declaration defines a static value in the [value namespace] of the module or block where it is located.
 
 r[items.static.init]
 The static initializer is a [constant expression] evaluated at compile time.
-Static initializers may refer to other statics.
+Static initializers may refer to and read from other statics.
+When reading from mutable statics, they read the initial value of that static.
 
 r[items.static.read-only]
 Non-`mut` static items that contain a type that is not [interior mutable] may
@@ -173,3 +178,4 @@ following are true:
 [_Expression_]: ../expressions.md
 [value namespace]: ../names/namespaces.md
 [_ItemSafety_]: functions.md
+[promoteds]: ../destructors.md#constant-promotion
