@@ -43,8 +43,9 @@ pub mod m1 {
 ```
 
 Lint attributes can override the level specified from a previous attribute, as
-long as the level does not attempt to change a forbidden lint. Previous
-attributes are those from a higher level in the syntax tree, or from a
+long as the level does not attempt to change a forbidden lint
+(except for `deny`, which is allowed inside a `forbid` context, but ignored).
+Previous attributes are those from a higher level in the syntax tree, or from a
 previous attribute on the same entity as listed in left-to-right source order.
 
 This example shows how one can use `allow` and `warn` to toggle a particular
