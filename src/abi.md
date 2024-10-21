@@ -211,7 +211,7 @@ The behavior of a call that is not valid is undefined.
 [`__m512f`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512f.html
 [`__m512d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512d.html
 
-[layout.repr.rust.option]: https://github.com/RalfJung/unsafe-code-guidelines/blob/option-like/reference/src/layout/enums.md#discriminant-elision-on-option-like-enums
+[layout.repr.rust.option.elision]: https://github.com/RalfJung/unsafe-code-guidelines/blob/option-like/reference/src/layout/enums.md#discriminant-elision-on-option-like-enums
 
 ## The `used` attribute
 
