@@ -133,11 +133,11 @@ r[abi.compatibility.zst]
 Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1.
 
 r[abi.compatibility.discriminant]
-If `T` is an a type listed in [layout.repr.rust.option.elision], and `U` is the type of the *elision candidate field*, then `T` is layout compatible with `U`. 
+If `T` is an a type listed in [layout.repr.rust.option.elision], and `U` is the type of the *elision candidate field*, then `T` is layout compatible with `U`.
 
 > [!NOTE]
 > `Option<U>`, `Result<U,Z>`, or `Result<Z,U>` are such types, when `U` are *elision candidate type*s, and `Z` is a 1-ZST type.
-> 
+>
 > Due to transitivity, two such types are *abi compatible* with each other if their *elision candidate field*s are *abi comaptible*
 
 r[abi.compatibility.fn-ptr]
