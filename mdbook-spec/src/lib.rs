@@ -57,7 +57,7 @@ pub struct Spec {
 }
 
 impl Spec {
-    fn new() -> Result<Spec> {
+    pub fn new() -> Result<Spec> {
         let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
         let rust_root = std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from);
         if deny_warnings && rust_root.is_none() {
