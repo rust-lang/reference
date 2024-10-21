@@ -765,6 +765,3 @@ used with any other representation.
 [structs]: items/structs.md
 [`transparent`]: #the-transparent-representation
 [`Layout`]: std::alloc::Layout
-[type.pointer.reference.shared]: types/pointer.md#shared-references-
-[type.pointer.reference.mut]: types/pointer.md#mutable-references-mut
-[type.fn-pointer]: types/function-pointer.md
