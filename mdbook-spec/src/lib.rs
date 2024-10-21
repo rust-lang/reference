@@ -23,7 +23,7 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
 });
 
 pub fn handle_preprocessing() -> Result<(), Error> {
-    let pre = Spec::new()?;
+    let pre = Spec::new(None)?;
     let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
@@ -57,9 +57,16 @@ pub struct Spec {
 }
 
 impl Spec {
-    pub fn new() -> Result<Spec> {
+    /// Creates a new `Spec` preprocessor.
+    ///
+    /// The `rust_root` parameter specifies an optional path to the root of
+    /// the rust git checkout. If `None`, it will use the `SPEC_RUST_ROOT`
+    /// environment variable. If the root is not specified, then no tests will
+    /// be linked unless `SPEC_DENY_WARNINGS` is set in which case this will
+    /// return an error..
+    pub fn new(rust_root: Option<PathBuf>) -> Result<Spec> {
         let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
-        let rust_root = std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from);
+        let rust_root = rust_root.or_else(|| std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from));
         if deny_warnings && rust_root.is_none() {
             bail!("SPEC_RUST_ROOT environment variable must be set");
         }
