@@ -132,8 +132,13 @@ A [`struct`] declared with the `transparent` representation is *abi compatible* 
 r[abi.compatibility.zst]
 Two types, `T` and `U`, are *abi compatible* if both have size 0 and alignment 1.
 
-r[abi.compatibility.option]
-If `T` is a type listed in [layout.enum.option](https://doc.rust-lang.org/stable/core/option/index.html#representation), then given `S` is a type with size 0 and alignment 1, `T` is *abi compatible* with the types [`core::option::Option<T>`], [`core::result::Result<T,S>`], and [`core::result::Result<S,T>`].
+r[abi.compatibility.discriminant]
+If `T` is an a type listed in [layout.repr.rust.option.elision], and `U` is the type of the *elision candidate field*, then `T` is layout compatible with `U`. 
+
+> [!NOTE]
+> `Option<U>`, `Result<U,Z>`, or `Result<Z,U>` are such types, when `U` are *elision candidate type*s, and `Z` is a 1-ZST type.
+> 
+> Due to transitivity, two such types are *abi compatible* with each other if their *elision candidate field*s are *abi comaptible*
 
 r[abi.compatibility.fn-ptr]
 An [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
@@ -205,6 +210,8 @@ The behavior of a call that is not valid is undefined.
 [`__m512i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512i.html
 [`__m512f`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512f.html
 [`__m512d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512d.html
+
+[layout.repr.rust.option]: https://github.com/RalfJung/unsafe-code-guidelines/blob/option-like/reference/src/layout/enums.md#discriminant-elision-on-option-like-enums
 
 ## The `used` attribute
 
