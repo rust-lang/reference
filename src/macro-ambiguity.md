@@ -8,9 +8,9 @@ of this text is copied, and expanded upon in subsequent RFCs.
 
 ## Definitions & Conventions
 
-r[macro.ambiguity.conventions]
+r[macro.ambiguity.convention]
 
-r[macro.ambiguity.conventions.defs]
+r[macro.ambiguity.convention.defs]
   - `macro`: anything invokable as `foo!(...)` in source code.
   - `MBE`: macro-by-example, a macro defined by `macro_rules`.
   - `matcher`: the left-hand-side of a rule in a `macro_rules` invocation, or a
@@ -84,7 +84,7 @@ r[macro.ambiguity.convention.set]
 `*`, `+`, and `?`, "OPEN"/"CLOSE" over matching token pairs surrounding a
 delimited sequence (e.g. `[` and `]`).
 
-r[macro.ambiguity.sequence-vars]
+r[macro.ambiguity.convention.sequence-vars]
 Greek letters "α" "β" "γ" "δ"  stand for potentially empty token-tree sequences.
 (However, the Greek letter "ε" (epsilon) has a special role in the presentation
 and does not stand for a token-tree sequence.)
