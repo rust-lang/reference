@@ -1,68 +1,132 @@
 # Constant evaluation
+r[const-eval]
 
+r[const-eval.general]
 Constant evaluation is the process of computing the result of
 [expressions] during compilation. Only a subset of all expressions
 can be evaluated at compile-time.
 
 ## Constant expressions
 
+r[const-eval.const-expr]
+
+r[const-eval.const-expr.general]
 Certain forms of expressions, called constant expressions, can be evaluated at
-compile time. In [const contexts](#const-context), these are the only allowed
-expressions, and are always evaluated at compile time. In other places, such as
-[let statements], constant expressions *may*
-be, but are not guaranteed to be, evaluated at compile time. Behaviors such as
-out of bounds [array indexing] or [overflow] are compiler errors if the value
+compile time.
+
+r[const-eval.const-expr.const-context]
+In [const contexts](#const-context), these are the only allowed
+expressions, and are always evaluated at compile time.
+
+r[const-eval.const-expr.runtime-context]
+In other places, such as [let statements], constant expressions *may* be, but are not guaranteed to be, evaluated at compile time.
+
+r[const-eval.const-expr.error]
+Behaviors such as out of bounds [array indexing] or [overflow] are compiler errors if the value
 must be evaluated at compile time (i.e. in const contexts). Otherwise, these
 behaviors are warnings, but will likely panic at run-time.
 
+r[const-eval.const-expr.list]
 The following expressions are constant expressions, so long as any operands are
 also constant expressions and do not cause any [`Drop::drop`][destructors] calls
 to be run.
 
+r[const-eval.const-expr.literal]
 * [Literals].
+
+r[const-eval.const-expr.parameter]
 * [Const parameters].
+
+r[const-eval.const-expr.path-item]
 * [Paths] to [functions] and [constants].
   Recursively defining constants is not allowed.
+
+r[const-eval.const-expr.path-static]
 * Paths to [statics]. These are only allowed within the initializer of a static.
+
+r[const-eval.const-expr.tuple]
 * [Tuple expressions].
+
+r[const-eval.const-expr.array]
 * [Array expressions].
+
+r[const-eval.const-expr.constructor]
 * [Struct] expressions.
+
+r[const-eval.const-expr.block]
 * [Block expressions], including `unsafe` and `const` blocks.
     * [let statements] and thus irrefutable [patterns], including mutable bindings
     * [assignment expressions]
     * [compound assignment expressions]
     * [expression statements]
+
+r[const-eval.const-expr.field]
 * [Field] expressions.
+
+r[const-eval.const-expr.index]
 * Index expressions, [array indexing] or [slice] with a `usize`.
+
+r[const-eval.const-expr.range]
 * [Range expressions].
+
+r[const-eval.const-expr.closure]
 * [Closure expressions] which don't capture variables from the environment.
+
+r[const-eval.const-expr.builtin-arith-logic]
 * Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
   operators used on integer and floating point types, `bool`, and `char`.
+
+r[const-eval.const-expr.borrows]
 * All forms of [borrow]s, including raw borrows, with one limitation:
   mutable borrows and shared borrows to values with interior mutability
   are only allowed to refer to *transient* places. A place is *transient*
   if its lifetime is strictly contained inside the current [const context].
-* The [dereference operator].
+
+r[const-eval.const-expr.deref]
+* The [dereference operator] except for raw pointers.
+
+r[const-eval.const-expr.group]
+
 * [Grouped] expressions.
+
+r[const-eval.const-expr.cast]
 * [Cast] expressions, except
   * pointer to address casts and
   * function pointer to address casts.
+
+r[const-eval.const-expr.const-fn]
 * Calls of [const functions] and const methods.
+
+r[const-eval.const-expr.loop]
 * [loop], [while] and [`while let`] expressions.
+
+r[const-eval.const-expr.if-match]
 * [if], [`if let`] and [match] expressions.
 
 ## Const context
 [const context]: #const-context
 
+r[const-eval.const-context]
+
+r[const-eval.const-context.general]
 A _const context_ is one of the following:
 
+r[const-eval.const-context.array-length]
 * [Array type length expressions]
+
+r[const-eval.const-context.repeat-length]
 * [Array repeat length expressions][array expressions]
+
+r[const-eval.const-context.init]
 * The initializer of
   * [constants]
   * [statics]
   * [enum discriminants]
+
+r[const-eval.const-context.generic]
 * A [const generic argument]
+
+r[const-eval.const-context.block]
 * A [const block]
 
 Const contexts that are used as parts of types (array type and repeat length
@@ -73,10 +137,17 @@ generics.
 
 ## Const Functions
 
-A _const fn_ is a function that one is permitted to call from a const context. Declaring a function
+r[const-eval.const-fn]
+
+r[const-eval.const-fn.general]
+A _const fn_ is a function that one is permitted to call from a const context.
+
+r[const-eval.const-fn.usage]
+Declaring a function
 `const` has no effect on any existing uses, it only restricts the types that arguments and the
 return type may use, and restricts the function body to constant expressions.
 
+r[const-eval.const-fn.const-context]
 When called from a const context, the function is interpreted by the
 compiler at compile time. The interpretation happens in the
 environment of the compilation target and not the host. So `usize` is
