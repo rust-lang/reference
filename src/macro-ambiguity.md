@@ -1,11 +1,16 @@
 # Appendix: Macro Follow-Set Ambiguity Formal Specification
 
+r[macro.ambiguity]
+
 This page documents the formal specification of the follow rules for [Macros
 By Example]. They were originally specified in [RFC 550], from which the bulk
 of this text is copied, and expanded upon in subsequent RFCs.
 
 ## Definitions & Conventions
 
+r[macro.ambiguity.convention]
+
+r[macro.ambiguity.convention.defs]
   - `macro`: anything invokable as `foo!(...)` in source code.
   - `MBE`: macro-by-example, a macro defined by `macro_rules`.
   - `matcher`: the left-hand-side of a rule in a `macro_rules` invocation, or a
@@ -46,11 +51,13 @@ macro_rules! i_am_an_mbe {
 }
 ```
 
+r[macro.ambiguity.convention.matcher]
 `(start $foo:expr $($i:ident),* end)` is a matcher. The whole matcher is a
 delimited sequence (with open- and close-delimiters `(` and `)`), and `$foo`
 and `$i` are simple NT's with `expr` and `ident` as their respective fragment
 specifiers.
 
+r[macro.ambiguity.convention.complex-nt]
 `$(i:ident),*` is *also* an NT; it is a complex NT that matches a
 comma-separated repetition of identifiers. The `,` is the separator token for
 the complex NT; it occurs in between each pair of elements (if any) of the
@@ -65,16 +72,19 @@ token.
 proper nesting of token tree structure and correct matching of open- and
 close-delimiters.)
 
+r[macro.ambiguity.convention.vars]
 We will tend to use the variable "M" to stand for a matcher, variables "t" and
 "u" for arbitrary individual tokens, and the variables "tt" and "uu" for
 arbitrary token trees. (The use of "tt" does present potential ambiguity with
 its additional role as a fragment specifier; but it will be clear from context
 which interpretation is meant.)
 
+r[macro.ambiguity.convention.set]
 "SEP" will range over separator tokens, "OP" over the repetition operators
 `*`, `+`, and `?`, "OPEN"/"CLOSE" over matching token pairs surrounding a
 delimited sequence (e.g. `[` and `]`).
 
+r[macro.ambiguity.convention.sequence-vars]
 Greek letters "α" "β" "γ" "δ"  stand for potentially empty token-tree sequences.
 (However, the Greek letter "ε" (epsilon) has a special role in the presentation
 and does not stand for a token-tree sequence.)
@@ -101,6 +111,9 @@ purposes of the formalism, we will treat `$v:vis` as actually being
 
 ### The Matcher Invariants
 
+r[macro.ambiguity.invariant]
+
+r[macro.ambiguity.invariant.list]
 To be valid, a matcher must meet the following three invariants. The definitions
 of FIRST and FOLLOW are described later.
 
@@ -112,18 +125,21 @@ of FIRST and FOLLOW are described later.
 1.  For an unseparated complex NT in a matcher, `M = ... $(tt ...) OP ...`, if
     OP = `*` or `+`, we must have FOLLOW(`tt ...`) ⊇ FIRST(`tt ...`).
 
+r[macro.ambiguity.invariant.follow-matcher]
 The first invariant says that whatever actual token that comes after a matcher,
 if any, must be somewhere in the predetermined follow set.  This ensures that a
 legal macro definition will continue to assign the same determination as to
 where `... tt` ends and `uu ...` begins, even as new syntactic forms are added
 to the language.
 
+r[macro.ambiguity.invariant.separated-complex-nt]
 The second invariant says that a separated complex NT must use a separator token
 that is part of the predetermined follow set for the internal contents of the
 NT. This ensures that a legal macro definition will continue to parse an input
 fragment into the same delimited sequence of `tt ...`'s, even as new syntactic
 forms are added to the language.
 
+r[macro.ambiguity.invariant.unseparated-complex-nt]
 The third invariant says that when we have a complex NT that can match two or
 more copies of the same thing with no separation in between, it must be
 permissible for them to be placed next to each other as per the first invariant.
@@ -137,6 +153,9 @@ invalid in a future edition of Rust. See the [tracking issue].**
 
 ### FIRST and FOLLOW, informally
 
+r[macro.ambiguity.sets]
+
+r[macro.ambiguity.sets.intro]
 A given matcher M maps to three sets: FIRST(M), LAST(M) and FOLLOW(M).
 
 Each of the three sets is made up of tokens. FIRST(M) and LAST(M) may also
@@ -145,12 +164,15 @@ can match the empty fragment. (But FOLLOW(M) is always just a set of tokens.)
 
 Informally:
 
+r[macro.ambiguity.sets.first]
   * FIRST(M): collects the tokens potentially used first when matching a
     fragment to M.
 
+r[macro.ambiguity.sets.last]
   * LAST(M): collects the tokens potentially used last when matching a fragment
     to M.
 
+r[macro.ambiguity.sets.follow]
   * FOLLOW(M): the set of tokens allowed to follow immediately after some
     fragment matched by M.
 
@@ -163,6 +185,7 @@ Informally:
 
       * The concatenation α β γ δ is a parseable Rust program.
 
+r[macro.ambiguity.sets.universe]
 We use the shorthand ANYTOKEN to denote the set of all tokens (including simple
 NTs). For example, if any token is legal after a matcher M, then FOLLOW(M) =
 ANYTOKEN.
@@ -174,18 +197,27 @@ definitions.)
 
 ### FIRST, LAST
 
+r[macro.ambiguity.sets.def]
+
+r[macro.ambiguity.sets.def.intro]
 Below are formal inductive definitions for FIRST and LAST.
 
+r[macro.ambiguity.sets.def.notation]
 "A ∪ B" denotes set union, "A ∩ B" denotes set intersection, and "A \ B"
 denotes set difference (i.e. all elements of A that are not present in B).
 
 #### FIRST
 
+r[macro.ambiguity.sets.def.first]
+
+r[macro.ambiguity.sets.def.first.intro]
 FIRST(M) is defined by case analysis on the sequence M and the structure of its
 first token-tree (if any):
 
+r[macro.ambiguity.sets.def.first.epsilon]
   * if M is the empty sequence, then FIRST(M) = { ε },
 
+r[macro.ambiguity.sets.def.first.token]
   * if M starts with a token t, then FIRST(M) = { t },
 
     (Note: this covers the case where M starts with a delimited token-tree
@@ -195,6 +227,7 @@ first token-tree (if any):
     (Note: this critically relies on the property that no simple NT matches the
     empty fragment.)
 
+r[macro.ambiguity.sets.def.first.complex]
   * Otherwise, M is a token-tree sequence starting with a complex NT: `M = $( tt
     ... ) OP α`, or `M = $( tt ... ) SEP OP α`, (where `α` is the (potentially
     empty) sequence of token trees for the rest of the matcher).
@@ -229,12 +262,18 @@ with respect to \varepsilon as well.
 
 #### LAST
 
+r[macro.ambiguity.sets.def.last]
+
+r[macro.ambiguity.sets.def.last.intro]
 LAST(M), defined by case analysis on M itself (a sequence of token-trees):
 
+r[macro.ambiguity.sets.def.last.empty]
   * if M is the empty sequence, then LAST(M) = { ε }
 
+r[macro.ambiguity.sets.def.last.token]
   * if M is a singleton token t, then LAST(M) = { t }
 
+r[macro.ambiguity.sets.def.last.rep-star]
   * if M is the singleton complex NT repeating zero or more times, `M = $( tt
     ... ) *`, or `M = $( tt ... ) SEP *`
 
@@ -245,6 +284,7 @@ LAST(M), defined by case analysis on M itself (a sequence of token-trees):
       * otherwise, the sequence `tt ...` must be non-empty; LAST(M) = LAST(`tt
         ...`) ∪ {ε}.
 
+r[macro.ambiguity.sets.def.last.rep-plus]
   * if M is the singleton complex NT repeating one or more times, `M = $( tt ...
     ) +`, or `M = $( tt ... ) SEP +`
 
@@ -255,12 +295,15 @@ LAST(M), defined by case analysis on M itself (a sequence of token-trees):
       * otherwise, the sequence `tt ...` must be non-empty; LAST(M) = LAST(`tt
         ...`)
 
+r[macro.ambiguity.sets.def.last.rep-question]
   * if M is the singleton complex NT repeating zero or one time, `M = $( tt ...)
     ?`, then LAST(M) = LAST(`tt ...`) ∪ {ε}.
 
+r[macro.ambiguity.sets.def.last.delim]
   * if M is a delimited token-tree sequence `OPEN tt ... CLOSE`, then LAST(M) =
     { `CLOSE` }.
 
+r[macro.ambiguity.sets.def.last.sequence]
   * if M is a non-empty sequence of token-trees `tt uu ...`,
 
       * If ε ∈ LAST(`uu ...`), then LAST(M) = LAST(`tt`) ∪ (LAST(`uu ...`) \ { ε }).
@@ -320,25 +363,35 @@ Here are similar examples but now for LAST.
 
 ### FOLLOW(M)
 
+r[macro.ambiguity.sets.def.follow]
+
+r[macro.ambiguity.sets.def.follow.intro]
 Finally, the definition for FOLLOW(M) is built up as follows. pat, expr, etc.
 represent simple nonterminals with the given fragment specifier.
 
+r[macro.ambiguity.sets.def.follow.pat]
   * FOLLOW(pat) = {`=>`, `,`, `=`, `|`, `if`, `in`}`.
 
+r[macro.ambiguity.sets.def.follow.expr-stmt]
   * FOLLOW(expr) = FOLLOW(expr_2021) = FOLLOW(stmt) =  {`=>`, `,`, `;`}`.
 
+r[macro.ambiguity.sets.def.follow.ty-path]
   * FOLLOW(ty) = FOLLOW(path) = {`{`, `[`, `,`, `=>`, `:`, `=`, `>`, `>>`, `;`,
     `|`, `as`, `where`, block nonterminals}.
 
+r[macro.ambiguity.sets.def.follow.vis]
   * FOLLOW(vis) = {`,`l any keyword or identifier except a non-raw `priv`; any
     token that can begin a type; ident, ty, and path nonterminals}.
 
+r[macro.ambiguity.sets.def.follow.simple]
   * FOLLOW(t) = ANYTOKEN for any other simple token, including block, ident,
     tt, item, lifetime, literal and meta simple nonterminals, and all terminals.
 
+r[macro.ambiguity.sets.def.follow.other-matcher]
   * FOLLOW(M), for any other M, is defined as the intersection, as t ranges over
     (LAST(M) \ {ε}), of FOLLOW(t).
 
+r[macro.ambiguity.sets.def.follow.type-first]
 The tokens that can begin a type are, as of this writing, {`(`, `[`, `!`, `*`,
 `&`, `&&`, `?`, lifetimes, `>`, `>>`, `::`, any non-keyword identifier, `super`,
 `self`, `Self`, `extern`, `crate`, `$crate`, `_`, `for`, `impl`, `fn`, `unsafe`,
