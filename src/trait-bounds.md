@@ -52,7 +52,7 @@ certain common cases:
   `trait A { type B: Copy; }` is equivalent to
   `trait A where Self::B: Copy { type B; }`.
 
-r[bound.satisfication]
+r[bound.satisfaction]
 Bounds on an item must be satisfied when using the item. When type checking and
 borrow checking a generic item, the bounds can be used to determine that a
 trait is implemented for a type. For example, given `Ty: Trait`
