@@ -145,7 +145,7 @@ Valid fragment specifiers are:
   * `lifetime`: a [LIFETIME_TOKEN]
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
   * `meta`: an [_Attr_], the contents of an attribute
-  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
+  * `pat`: a [_Pattern_] (see [macro.decl.meta.edition2021])
   * `pat_param`: a [_PatternNoTopAlt_]
   * `path`: a [_TypePath_] style path
   * `stmt`: a [_Statement_] without the trailing semicolon (except for item statements that require semicolons)
