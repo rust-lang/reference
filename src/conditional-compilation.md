@@ -83,7 +83,7 @@ It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
 > **Note**: For `rustc`, arbitrary-set configuration options are set using the
-> [`--cfg`] flag.
+> [`--cfg`] flag. Configuration values for a specified target can be displayed with `rustc --print cfg --target $TARGET`.
 
 > **Note**: Configuration options with the key `feature` are a convention used
 > by [Cargo][cargo-feature] for specifying compile-time options and optional
