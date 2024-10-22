@@ -49,7 +49,7 @@ passed to the compiler outside of the code. It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
 > **Note**: For `rustc`, arbitrary-set configuration options are set using the
-> [`--cfg`] flag.
+> [`--cfg`] flag. Configuration values for a specified target can be displayed with `rustc --print cfg --target $TARGET`.
 
 > **Note**: Configuration options with the key `feature` are a convention used
 > by [Cargo][cargo-feature] for specifying compile-time options and optional
@@ -57,18 +57,6 @@ configuration option from within the source code of the crate being compiled.
 
 > [!WARNING]
 > Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
-
-Some default configuration values can be obtained from `rustc`:
-
-```text
-rustc --print cfg # optionally, a --target can be specified
-target_abi=""
-target_arch="aarch64"
-target_endian="little"
-target_env=""
-target_family="unix"
-...
-```
 
 ### `target_arch`
 
