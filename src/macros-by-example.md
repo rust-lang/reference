@@ -416,8 +416,7 @@ by other crates, either by path or by `#[macro_use]` as described above.
 r[macro.decl.hygiene]
 
 r[macro.decl.hygiene.intro]
-
-Macros by example have _mixed-site hygiene_. It means that [loop labels], [block labels] and local variables are looked up at the macro definition site, and other symbols are looked up at the macro invocation site. For example:
+Macros by example have _mixed-site hygiene_. This means that [loop labels], [block labels], and local variables are looked up at the macro definition site while other symbols are looked up at the macro invocation site. For example:
 
 ```rust
 let x = 1;
@@ -427,7 +426,7 @@ fn func() {
 
 macro_rules! check {
     () => {
-        assert_eq!(x, 1); // Uses `x` from the declaration site.
+        assert_eq!(x, 1); // Uses `x` from the definition site.
         func();           // Uses `func` from the invocation site.
     };
 }
@@ -441,7 +440,7 @@ macro_rules! check {
 
 Labels and local variables defined in macro expansion are not shared between invocations, so this code doesn’t compile:
 
-```rust,compile_fail
+```rust,compile_fail,E0425
 macro_rules! m {
     (define) => {
         let x = 1;
@@ -456,7 +455,6 @@ m!(refer);
 ```
 
 r[macro.decl.hygiene.crate]
-
 A special case is the `$crate` metavariable. It refers to the crate defining the macro, and can be used at the start of the path to look up items or macros which are not in scope at the invocation site.
 
 <!-- ignore: requires external crates -->
