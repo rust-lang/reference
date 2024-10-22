@@ -66,6 +66,7 @@ standard C ABI on the specific platform. Other ABIs may be specified using an
 `abi` string, as shown here:
 
 ```rust
+# #[cfg(any(windows, target_arch = "x86"))]
 // Interface to the Windows API
 unsafe extern "stdcall" { }
 ```
