@@ -8,16 +8,17 @@
 > [^extern-safety]: The `safe` and `unsafe` function qualifiers are only
 >   allowed semantically within `extern` blocks.
 
-A *static item* is similar to a [constant], except that it represents a precise
-memory location in the program. All references to the static refer to the same
-memory location. Static items have the `static` lifetime, which outlives all
-other lifetimes in a Rust program. Static items do not call [`drop`] at the
-end of the program.
+A *static item* is similar to a [constant], except that it represents an allocated object in the
+program that is initialized with the initializer expression. This allocated object is disjoint from
+all other allocated objects. All references and raw pointers to the static refer to the same
+allocated object. Static items have the `static` lifetime, which outlives all other lifetimes in a
+Rust program. Static items do not call [`drop`] at the end of the program.
 
 The static declaration defines a static value in the [value namespace] of the module or block where it is located.
 
 The static initializer is a [constant expression] evaluated at compile time.
-Static initializers may refer to other statics.
+Static initializers may refer to and even read from other statics.
+When reading from mutable statics, they read the initial value of that static.
 
 Non-`mut` static items that contain a type that is not [interior mutable] may
 be placed in read-only memory.
