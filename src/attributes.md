@@ -44,7 +44,7 @@ The following attributes are unsafe:
 Attributes can be classified into the following kinds:
 
 * [Built-in attributes]
-* [Macro attributes][attribute macros]
+* [Proc macro attributes][attribute macros]
 * [Derive macro helper attributes]
 * [Tool attributes](#tool-attributes)
 
