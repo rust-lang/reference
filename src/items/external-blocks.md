@@ -66,6 +66,7 @@ standard C ABI on the specific platform. Other ABIs may be specified using an
 `abi` string, as shown here:
 
 ```rust
+# #[cfg(any(windows, target_arch = "x86"))]
 // Interface to the Windows API
 unsafe extern "stdcall" { }
 ```
@@ -295,8 +296,8 @@ that symbol rather than having to look it up by name.
 > [!WARNING]
 > `link_ordinal` should only be used in cases where the ordinal of the symbol is known to be stable: if the ordinal of a symbol is not explicitly set when its containing binary is built then one will be automatically assigned to it, and that assigned ordinal may change between builds of the binary.
 
-<!-- ignore: Only works on x86 Windows -->
-```rust,ignore
+```rust
+# #[cfg(all(windows, target_arch = "x86"))]
 #[link(name = "exporter", kind = "raw-dylib")]
 unsafe extern "stdcall" {
     #[link_ordinal(15)]
