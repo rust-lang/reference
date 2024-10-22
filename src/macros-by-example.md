@@ -416,11 +416,46 @@ by other crates, either by path or by `#[macro_use]` as described above.
 r[macro.decl.hygiene]
 
 r[macro.decl.hygiene.intro]
-By default, all identifiers referred to in a macro are expanded as-is, and are
-looked up at the macro's invocation site. This can lead to issues if a macro
-refers to an item or macro which isn't in scope at the invocation site. To
-alleviate this, the `$crate` metavariable can be used at the start of a path to
-force lookup to occur inside the crate defining the macro.
+Macros by example have _mixed-site hygiene_. This means that [loop labels], [block labels], and local variables are looked up at the macro definition site while other symbols are looked up at the macro invocation site. For example:
+
+```rust
+let x = 1;
+fn func() {
+    unreachable!("this is never called")
+}
+
+macro_rules! check {
+    () => {
+        assert_eq!(x, 1); // Uses `x` from the definition site.
+        func();           // Uses `func` from the invocation site.
+    };
+}
+
+{
+    let x = 2;
+    fn func() { /* does not panic */ }
+    check!();
+}
+```
+
+Labels and local variables defined in macro expansion are not shared between invocations, so this code doesn’t compile:
+
+```rust,compile_fail,E0425
+macro_rules! m {
+    (define) => {
+        let x = 1;
+    };
+    (refer) => {
+        dbg!(x);
+    };
+}
+
+m!(define);
+m!(refer);
+```
+
+r[macro.decl.hygiene.crate]
+A special case is the `$crate` metavariable. It refers to the crate defining the macro, and can be used at the start of the path to look up items or macros which are not in scope at the invocation site.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
@@ -565,6 +600,7 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[block labels]: expressions/loop-expr.md#labelled-block-expressions
 [const block]: expressions/block-expr.md#const-blocks
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
@@ -580,6 +616,7 @@ For more detail, see the [formal specification].
 [_Expression_]: expressions.md
 [_Item_]: items.md
 [_LiteralExpression_]: expressions/literal-expr.md
+[loop labels]: expressions/loop-expr.md#loop-labels
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
 [_Pattern_]: patterns.md
 [_PatternNoTopAlt_]: patterns.md
