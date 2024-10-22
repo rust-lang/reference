@@ -164,7 +164,7 @@ fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) {
 }
 ```
 
-For the purpose of determining implied bounds on trait implementations, the implementing type (the `T` in `impl Trait for T`) is considered to be an input, as are generic parameters on the trait definition.
+For the purpose of determining implied bounds on trait implementations, the type being implemented is considered to be an input, as are generic parameters on the trait definition.
 Parameters of the trait implementation, which come directly after the `impl` keyword, are not otherwise considered to be inputs.
 For example, for the `Vec<T>` implementation below, `'a` and `Vec<T>` are inputs to the trait, but `T` and `&'a T` are not:
 
@@ -177,7 +177,7 @@ impl<'a, T> MakeRef<'a> for Vec<T>
     type Type = &'a T;
 }
 
-// `T: 'a` is implied: `&'a T` (implementing type) is an input to the trait
+// `T: 'a` is implied: `&'a T` is an input to the trait
 impl<'a, T> MakeRef<'a> for &'a T {
     type Type = &'a T;
 }
