@@ -489,6 +489,10 @@ assert_eq!(values[1], 3);
   such as `struct Foo(i32, [u8])` or `(u64, Foo)`.
 - If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
 
+For any `*const T` / `*mut T` to `*const U` / `*mut U` cast which is well-defined as described
+in this section, `core::mem::transmute<*const T, *const U>` / `core::mem::transmute<*mut T, *mut U>`
+has the same behavior as the corresponding cast.
+
 ## Assignment expressions
 
 > **<sup>Syntax</sup>**\
