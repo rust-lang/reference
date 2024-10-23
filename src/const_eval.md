@@ -42,7 +42,10 @@ r[const-eval.const-expr.path-item]
   Recursively defining constants is not allowed.
 
 r[const-eval.const-expr.path-static]
-* Paths to [statics]. These are only allowed within the initializer of a static.
+* Paths to [statics] with these restrictions and observations.
+    * In particular, reads and writes to any `static`, `static mut` or [`extern` statics] is not allowed.
+    * Immutable borrows and pointers into immutable part of a `static` are allowed and observes the same restriction
+      on all other forms of [borrow]s as mentioned below.
 
 r[const-eval.const-expr.tuple]
 * [Tuple expressions].
@@ -177,6 +180,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [enum discriminants]:   items/enumerations.md#discriminants
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
+[`extern` statics]:     items/external-blocks.md#statics
 [field]:                expressions/field-expr.md
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
