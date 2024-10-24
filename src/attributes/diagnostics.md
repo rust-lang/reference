@@ -492,6 +492,47 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
    = note: Note 2
 ```
 
+### The `diagnostic::do_not_recommend` attribute
+
+The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to not show a certain trait implementation as part of the error message.
+The attribute should be placed on a [trait implementation items]. It does not accept any arguments. If the attribute is placed in a wrong location or contains an unexpected argument the compiler might emit a warning and otherwise ignore the malformed part.
+
+In this example:
+
+```rust,compile_fail,E0277
+trait Foo {}
+
+#[diagnostic::do_not_recommend]
+impl<T> Foo for T where T: Send {}
+
+fn needs_foo<T: Foo>() {}
+
+fn main() {
+    needs_foo::<*mut ()>();
+}
+
+```
+
+the compiler may generate an error message which looks like this:
+
+```text
+error[E0277]: the trait bound `*mut (): Foo` is not satisfied
+  --> $DIR/simple.rs:15:17
+   |
+LL |     needs_foo::<*mut ()>();
+   |                 ^^^^^^^ the trait `Foo` is not implemented for `*mut ()`
+   |
+note: required by a bound in `needs_foo`
+  --> $DIR/simple.rs:10:17
+   |
+LL | fn needs_foo<T: Foo>() {}
+   |                 ^^^ required by this bound in `needs_foo`
+
+error: aborting due to 1 previous error
+```
+
+Without the attribute the compiler would complain about `*mut (): Send` instead.
+
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
