@@ -84,7 +84,7 @@ r[value.primitive.float]
 A floating-point value consists of either a rational number, which is within the range and precision dictated by the type, an infinity, or a NaN value.
 
 r[value.primitive.float-repr]
-A floating-point value is represented the same as a value of the unsigned integer type with the same width given by its [IEEE 754-2019] encoding. 
+A floating-point value is represented the same as a value of the unsigned integer type with the same width given by its [IEEE 754-2019] encoding.
 
 r[value.primitive.float-format]
 The [IEEE 754-2019] `binary32` format is used for `f32`, and the `binary64` format is used for `f64`.
