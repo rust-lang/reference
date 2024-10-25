@@ -99,6 +99,7 @@
     - [Type coercions](type-coercions.md)
     - [Destructors](destructors.md)
     - [Lifetime elision](lifetime-elision.md)
+    - [Values and Representation](values.md)
 
 - [Special types and traits](special-types-and-traits.md)
 
