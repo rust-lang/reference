@@ -52,7 +52,7 @@ Trait functions are not allowed to be [`const`].
 
 Generic items may use traits as [bounds] on their type parameters.
 
-## Generic Traits
+## Generic traits
 
 Type parameters can be specified for a trait to make it generic. These appear
 after the trait name, using the same syntax used in [generic functions].
@@ -65,12 +65,12 @@ trait Seq<T> {
 }
 ```
 
-## Object Safety
+## Dyn compatibility
 
-Object safe traits can be the base trait of a [trait object]. A trait is
-*object safe* if it has the following qualities (defined in [RFC 255]):
+A dyn-compatible trait can be the base trait of a [trait object]. A trait is
+*dyn compatible* if it has the following qualities:
 
-* All [supertraits] must also be object safe.
+* All [supertraits] must also be dyn compatible.
 * `Sized` must not be a [supertrait][supertraits]. In other words, it must not require `Self: Sized`.
 * It must not have any associated constants.
 * It must not have any associated types with generics.
@@ -92,11 +92,14 @@ Object safe traits can be the base trait of a [trait object]. A trait is
     * Explicitly non-dispatchable functions require:
         * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 
+This concept was formerly known as *object safety*.
+The original set of rules was defined in [RFC 255] and has since been extended.
+
 ```rust
 # use std::rc::Rc;
 # use std::sync::Arc;
 # use std::pin::Pin;
-// Examples of object safe methods.
+// Examples of dyn compatible methods.
 trait TraitMethods {
     fn by_ref(self: &Self) {}
     fn by_ref_mut(self: &mut Self) {}
@@ -113,7 +116,7 @@ trait TraitMethods {
 ```
 
 ```rust,compile_fail
-// This trait is object-safe, but these methods cannot be dispatched on a trait object.
+// This trait is dyn compatible, but these methods cannot be dispatched on a trait object.
 trait NonDispatchable {
     // Non-methods cannot be dispatched.
     fn foo() where Self: Sized {}
@@ -137,8 +140,8 @@ obj.typed(1);  // ERROR: cannot call with generic type
 
 ```rust,compile_fail
 # use std::rc::Rc;
-// Examples of non-object safe traits.
-trait NotObjectSafe {
+// Examples of dyn-incompatible traits.
+trait DynIncompatible {
     const CONST: i32 = 1;  // ERROR: cannot have associated const
 
     fn foo() {}  // ERROR: associated function without Sized
@@ -148,14 +151,14 @@ trait NotObjectSafe {
 }
 
 struct S;
-impl NotObjectSafe for S {
+impl DynIncompatible for S {
     fn returns(&self) -> Self { S }
 }
-let obj: Box<dyn NotObjectSafe> = Box::new(S); // ERROR
+let obj: Box<dyn DynIncompatible> = Box::new(S); // ERROR
 ```
 
 ```rust,compile_fail
-// Self: Sized traits are not object-safe.
+// `Self: Sized` traits are dyn-incompatible.
 trait TraitWithSize where Self: Sized {}
 
 struct S;
@@ -164,7 +167,7 @@ let obj: Box<dyn TraitWithSize> = Box::new(S); // ERROR
 ```
 
 ```rust,compile_fail
-// Not object safe if `Self` is a type argument.
+// Dyn-incompatible if `Self` is a type argument.
 trait Super<A> {}
 trait WithSelf: Super<Self> where Self: Sized {}
 
@@ -349,3 +352,17 @@ fn main() {
 [`async`]: functions.md#async-functions
 [`const`]: functions.md#const-functions
 [type namespace]: ../names/namespaces.md
+
+<script>
+(function() {
+    var fragments = {
+        "#object-safety": "traits.html#dyn-compatibility",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
