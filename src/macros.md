@@ -1,17 +1,26 @@
 # Macros
 
+r[macro]
+
+r[macro.intro]
 The functionality and syntax of Rust can be extended with custom definitions
 called macros. They are given names, and invoked through a consistent
 syntax: `some_extension!(...)`.
 
 There are two ways to define new macros:
 
+r[macro.rules]
 * [Macros by Example] define new syntax in a higher-level, declarative way.
+
+r[macro.proc]
 * [Procedural Macros] define function-like macros, custom derives, and custom
   attributes using functions that operate on input tokens.
 
 ## Macro Invocation
 
+r[macro.invocation]
+
+r[macro.invocation.syntax]
 > **<sup>Syntax</sup>**\
 > _MacroInvocation_ :\
 > &nbsp;&nbsp; [_SimplePath_] `!` _DelimTokenTree_
@@ -29,17 +38,30 @@ There are two ways to define new macros:
 > &nbsp;&nbsp; | [_SimplePath_] `!` `[` _TokenTree_<sup>\*</sup> `]` `;`\
 > &nbsp;&nbsp; | [_SimplePath_] `!` `{` _TokenTree_<sup>\*</sup> `}`
 
+r[macro.invocation.intro]
 A macro invocation expands a macro at compile time and replaces the
 invocation with the result of the macro. Macros may be invoked in the
 following situations:
 
+r[macro.invocation.expr]
 * [Expressions] and [statements]
+
+r[macro.invocation.pattern]
 * [Patterns]
+
+r[macro.invocation.type]
 * [Types]
+
+r[macro.invocation.item]
 * [Items] including [associated items]
+
+r[macro.invocation.nested]
 * [`macro_rules`] transcribers
+
+r[macro.invocation.extern]
 * [External blocks]
 
+r[macro.invocation.item-statement]
 When used as an item or a statement, the _MacroInvocationSemi_ form is used
 where a semicolon is required at the end when not using curly braces.
 [Visibility qualifiers] are never allowed before a macro invocation or
