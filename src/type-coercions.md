@@ -209,7 +209,7 @@ r[coerce.unsize.slice]
 * `[T; n]` to `[T]`.
 
 r[coerce.unsize.trait-object]
-* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [object safe].
+* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
 
 r[coerce.unsized.composite]
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
@@ -322,7 +322,7 @@ precisely.
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
-[object safe]: items/traits.md#object-safety
+[dyn compatible]: items/traits.md#dyn-compatibility
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
