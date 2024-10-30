@@ -65,6 +65,7 @@ trait Seq<T> {
 }
 ```
 
+<a id="object-safety"></a>
 ## Dyn compatibility
 
 A dyn-compatible trait can be the base trait of a [trait object]. A trait is
