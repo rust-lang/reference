@@ -36,7 +36,7 @@ other traits and so forth [as usual][generics].
 r[items.trait.impls]
 Traits are implemented for specific types through separate [implementations].
 
-r[item.trait.associated-item-decls]
+r[items.trait.associated-item-decls]
 Trait functions may omit the function body by replacing it with a semicolon.
 This indicates that the implementation must define the function. If the trait
 function defines a body, this definition acts as a default for any

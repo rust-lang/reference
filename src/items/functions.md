@@ -266,7 +266,7 @@ aborts the process by executing an illegal instruction.
 
 r[items.fn.const]
 
-r[item.fn.const.intro]
+r[items.fn.const.intro]
 Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
