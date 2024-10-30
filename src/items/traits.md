@@ -94,7 +94,6 @@ A dyn-compatible trait can be the base trait of a [trait object]. A trait is
         * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 
 > **Note**: This concept was formerly known as *object safety*.
-> The original set of rules were defined in [RFC 255] and have since been extended.
 
 ```rust
 # use std::rc::Rc;
@@ -334,7 +333,6 @@ fn main() {
 [_WhereClause_]: generics.md#where-clauses
 [bounds]: ../trait-bounds.md
 [trait object]: ../types/trait-object.md
-[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 [associated items]: associated-items.md
 [method]: associated-items.md#methods
 [supertraits]: #supertraits
