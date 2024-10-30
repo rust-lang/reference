@@ -758,22 +758,31 @@ r[lex.token.life.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]
 >   _(not immediately followed by `'`)_\
 > &nbsp;&nbsp; | `'_`
->   _(not immediately followed by `'`)_
+>   _(not immediately followed by `'`)_\
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [NON_KEYWORD_IDENTIFIER][identifier]
->   _(not immediately followed by `'`)_
+>   _(not immediately followed by `'`)_\
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > RAW_LIFETIME :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier]
+> &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier]
 >   _(not immediately followed by `'`)_
 
 r[lex.token.life.intro]
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
 LIFETIME_TOKEN will be accepted by the lexer, and for example, can be used in
 macros.
+
+r[lex.token.life.raw.intro]
+A raw lifetime is like a normal lifetime, but its identifier is prefixed by `r#`. (Note that the `r#` prefix is not included as part of the actual lifetime.)
+
+r[lex.token.life.raw.allowed]
+Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword.
+
+> **Edition differences**: Raw lifetimes are accepted in the 2021
+> edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
 
 ## Punctuation
 
@@ -855,7 +864,8 @@ r[lex.token.reserved-prefix.syntax]
 > **<sup>Lexer 2021+</sup>**\
 > RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b` or `c` or `r` or `br` or `cr`_</sub> | `_` ) `"`\
 > RESERVED_TOKEN_SINGLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b`_</sub> | `_` ) `'`\
-> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br` or `cr`_</sub> | `_` ) `#`
+> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br` or `cr`_</sub> | `_` ) `#`\
+> RESERVED_TOKEN_LIFETIME : `'` (IDENTIFIER_OR_KEYWORD <sub>_Except `r`_</sub> | _) `#`
 
 r[lex.token.reserved-prefix.intro]
 Some lexical forms known as _reserved prefixes_ are reserved for future use.
@@ -869,6 +879,9 @@ Note that raw identifiers, raw string literals, and raw byte string literals may
 r[lex.token.reserved-prefix.strings]
 Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals, byte literals, byte string literals, raw byte string literals, C string literals, and raw C string literals are not interpreted as reserved prefixes.
 
+r[lex.token.reserved-prefix.life]
+Source input which would otherwise be lexically interpreted as a non-raw lifetime (or a keyword or `_`) which is immediately followed by a `#` character (without intervening whitespace) is identified as a reserved lifetime prefix.
+
 r[lex.token.reserved-prefix.edition2021]
 > **Edition differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
 >
@@ -881,6 +894,7 @@ r[lex.token.reserved-prefix.edition2021]
 > lexes!{continue 'foo}
 > lexes!{match "..." {}}
 > lexes!{r#let#foo}         // three tokens: r#let # foo
+> lexes!{'prefix #lt}
 > ```
 >
 > Examples accepted before the 2021 edition but rejected later:
@@ -889,6 +903,7 @@ r[lex.token.reserved-prefix.edition2021]
 > lexes!{a#foo}
 > lexes!{continue'foo}
 > lexes!{match"..." {}}
+> lexes!{'prefix#lt}
 > ```
 
 [Inferred types]: types/inferred.md
