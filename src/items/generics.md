@@ -12,7 +12,7 @@ r[items.generics.syntax]
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _LifetimeParam_ | _TypeParam_ | _ConstParam_ )
 >
 > _LifetimeParam_ :\
-> &nbsp;&nbsp; [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
+> &nbsp;&nbsp; [_Lifetime_]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
 >
 > _TypeParam_ :\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
@@ -54,8 +54,8 @@ r[items.generics.builtin-generic-types]
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
-r[items.generics.wildcard-lifetime]
-`'_` is not a valid lifetime parameter.
+r[items.generics.invalid-lifetimes]
+`'_` and `'_static` are not valid lifetime parameters.
 
 ### Const generics
 
@@ -294,7 +294,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 ```
 
 [IDENTIFIER]: ../identifiers.md
-[LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 
 [_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
 [_LifetimeParam_]: #generic-parameters

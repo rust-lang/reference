@@ -762,8 +762,6 @@ r[lex.token.life.syntax]
 >
 > LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [NON_KEYWORD_IDENTIFIER][identifier]
->   _(not immediately followed by `'`)_\
-> &nbsp;&nbsp; | `'_`
 >   _(not immediately followed by `'`)_
 
 r[lex.token.life.intro]

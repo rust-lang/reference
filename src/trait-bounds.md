@@ -21,7 +21,8 @@ r[bound.syntax]
 >
 > _Lifetime_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
-> &nbsp;&nbsp; | `'static`
+> &nbsp;&nbsp; | `'static`\
+> &nbsp;&nbsp; | `'_`
 >
 > _UseBound_ :\
 > &nbsp;&nbsp; `use` _UseBoundGenericArgs_
