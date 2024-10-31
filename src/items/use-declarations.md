@@ -1,5 +1,8 @@
 # Use declarations
 
+r[items.use]
+
+r[items.use.syntax]
 > **<sup>Syntax:</sup>**\
 > _UseDeclaration_ :\
 > &nbsp;&nbsp; `use` _UseTree_ `;`
@@ -9,6 +12,7 @@
 > &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`\
 > &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` ( [IDENTIFIER] | `_` ) )<sup>?</sup>
 
+r[items.use.intro]
 A _use declaration_ creates one or more local name bindings synonymous with
 some other [path]. Usually a `use` declaration is used to shorten the path
 required to refer to a module item. These declarations may appear in [modules]
@@ -19,17 +23,27 @@ A `use` declaration is also sometimes called an _import_, or, if it is public, a
 [modules]: modules.md
 [blocks]: ../expressions/block-expr.md
 
+r[items.use.forms]
 Use declarations support a number of convenient shortcuts:
 
+r[items.use.forms.multiple]
 * Simultaneously binding a list of paths with a common prefix, using the
   brace syntax `use a::b::{c, d, e::f, g::h::i};`
+
+r[items.use.forms.self]
 * Simultaneously binding a list of paths with a common prefix and their common
   parent module, using the `self` keyword, such as `use a::b::{self, c, d::e};`
+
+r[items.use.forms.as]
 * Rebinding the target name as a new local name, using the syntax `use p::q::r
   as x;`. This can also be used with the last two features:
   `use a::b::{self as ab, c as abc}`.
+
+r[items.use.forms.glob]
 * Binding all paths matching a given prefix, using the asterisk wildcard syntax
   `use a::b::*;`.
+
+r[items.use.forms.nesting]
 * Nesting groups of the previous features multiple times, such as
   `use a::b::{self as ab, c, d::{*, e::f}};`
 
@@ -58,12 +72,18 @@ fn main() {
 
 ## `use` Visibility
 
+r[items.use.visibility]
+
+r[items.use.visibility.intro]
 Like items, `use` declarations are private to the containing module, by
 default. Also like items, a `use` declaration can be public, if qualified by
 the `pub` keyword. Such a `use` declaration serves to _re-export_ a name. A
 public `use` declaration can therefore _redirect_ some public name to a
 different target definition: even a definition with a private canonical path,
-inside a different module. If a sequence of such redirections form a cycle or
+inside a different module.
+
+r[items.use.visibility.unambiguous]
+If a sequence of such redirections form a cycle or
 cannot be resolved unambiguously, they represent a compile-time error.
 
 An example of re-exporting:
@@ -88,6 +108,9 @@ In this example, the module `quux` re-exports two public names defined in
 
 ## `use` Paths
 
+r[items.use.path]
+
+r[items.use.path.intro]
 The [paths] that are allowed in a `use` item follow the [_SimplePath_] grammar and are similar to the paths that may be used in an expression.
 They may create bindings for:
 
@@ -97,8 +120,10 @@ They may create bindings for:
 * [Attributes]
 * [Derive macros]
 
+r[items.use.path.disallowed]
 They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
 
+r[items.use.path.namespace]
 `use` will create bindings for all [namespaces] from the imported entities, with the exception that a `self` import will only import from the type namespace (as described below).
 For example, the following illustrates creating bindings for the same name in two namespaces:
 
@@ -116,6 +141,7 @@ fn example() {
 }
 ```
 
+r[items.use.path.edition2015]
 > **Edition differences**: In the 2015 edition, `use` paths are relative to the crate root.
 > For example:
 >
@@ -141,6 +167,8 @@ fn example() {
 
 ## `as` renames
 
+r[items.use.as]
+
 The `as` keyword can be used to change the name of an imported entity.
 For example:
 
@@ -155,6 +183,9 @@ mod inner {
 
 ## Brace syntax
 
+r[items.use.multiple-syntax]
+
+r[items.use.multiple-syntax.intro]
 Braces can be used in the last segment of the path to import multiple entities from the previous segment, or, if there are no previous segments, from the current scope.
 Braces can be nested, creating a tree of paths, where each grouping of segments is logically combined with its parent to create a full path.
 
@@ -166,13 +197,18 @@ Braces can be nested, creating a tree of paths, where each grouping of segments 
 use std::collections::{BTreeSet, hash_map::{self, HashMap}};
 ```
 
+r[items.use.multiple-syntax.empty]
 An empty brace does not import anything, though the leading path is validated that it is accessible.
 <!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
 
+r[items.use.multiple-syntax.edition2015]
 > **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018, those names are relative to the current scope.
 
 ## `self` imports
 
+r[items.use.self]
+
+r[items.use.self.intro]
 The keyword `self` may be used within [brace syntax](#brace-syntax) to create a binding of the parent entity under its own name.
 
 ```rust
@@ -191,6 +227,7 @@ mod example {
 # fn main() {}
 ```
 
+r[items.use.self.namespace]
 `self` only creates a binding from the [type namespace] of the parent entity.
 For example, in the following, only the `foo` mod is imported:
 
@@ -215,6 +252,9 @@ fn main() {
 
 ## Glob imports
 
+r[items.use.glob]
+
+r[items.use.glob.intro]
 The `*` character may be used as the last segment of a `use` path to import all importable entities from the entity of the preceding segment.
 For example:
 
@@ -237,6 +277,7 @@ mod foo {
 }
 ```
 
+r[items.use.glob.shadowing]
 Items and named imports are allowed to shadow names from glob imports in the same [namespace].
 That is, if there is a name already defined by another item in the same namespace, the glob import will be shadowed.
 For example:
@@ -268,20 +309,28 @@ mod clashing {
 }
 ```
 
+r[items.use.glob.last-segment-only]
 `*` cannot be used as the first or intermediate segments.
+
+r[items.use.glob.self-import]
 `*` cannot be used to import a module's contents into itself (such as `use self::*;`).
 
+r[items.use.glob.edition2015]
 > **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
 > This cannot be used in the crate root itself.
 
 ## Underscore Imports
 
+r[items.use.as-underscore]
+
+r[items.use.as-underscore.intro]
 Items can be imported without binding to a name by using an underscore with
 the form `use path as _`. This is particularly useful to import a trait so
 that its methods may be used without importing the trait's symbol, for example
 if the trait's symbol may conflict with another symbol. Another example is to
 link an external crate without importing its name.
 
+r[items.use.as-underscore.glob]
 Asterisk glob imports will import items imported with `_` in their unnameable
 form.
 
@@ -303,6 +352,7 @@ fn main() {
 }
 ```
 
+r[items.use.as-underscore.macro]
 The unique, unnameable symbols are created after macro expansion so that
 macros may safely emit multiple references to `_` imports. For example, the
 following should not produce an error:
@@ -320,12 +370,23 @@ m!(use std as _;);
 
 ## Restrictions
 
+r[items.use.restrictions]
+
 The following are restrictions for valid `use` declarations:
 
+r[items.use.restrictions.crate]
 * `use crate;` must use `as` to define the name to which to bind the crate root.
+
+r[items.use.restrictions.self]
 * `use {self};` is an error; there must be a leading segment when using `self`.
+
+r[items.use.restrictions.duplicate-name]
 * As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
+
+r[items.use.restrictions.macro-crate]
 * `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
+
+r[items.use.restrictions.variant]
 * `use` paths cannot refer to enum variants through a [type alias]. For example:
   ```rust,compile_fail
   enum MyEnum {
@@ -339,10 +400,14 @@ The following are restrictions for valid `use` declarations:
 
 ## Ambiguities
 
+r[items.use.ambiguities]
+
 > **Note**: This section is incomplete.
 
+r[items.use.ambiguities.intro]
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
+r[items.use.ambiguities.glob]
 Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
 For example:
 

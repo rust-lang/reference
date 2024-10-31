@@ -1,5 +1,8 @@
 # Static items
 
+r[items.static]
+
+r[items.static.syntax]
 > **<sup>Syntax</sup>**\
 > _StaticItem_ :\
 > &nbsp;&nbsp; [_ItemSafety_]<sup>?</sup>[^extern-safety] `static` `mut`<sup>?</sup> [IDENTIFIER] `:` [_Type_]
@@ -8,32 +11,47 @@
 > [^extern-safety]: The `safe` and `unsafe` function qualifiers are only
 >   allowed semantically within `extern` blocks.
 
+r[items.static.intro]
 A *static item* is similar to a [constant], except that it represents a precise
 memory location in the program. All references to the static refer to the same
-memory location. Static items have the `static` lifetime, which outlives all
+memory location.
+
+r[items.static.lifetime]
+Static items have the `static` lifetime, which outlives all
 other lifetimes in a Rust program. Static items do not call [`drop`] at the
 end of the program.
 
+r[items.static.namespace]
 The static declaration defines a static value in the [value namespace] of the module or block where it is located.
 
+r[items.static.init]
 The static initializer is a [constant expression] evaluated at compile time.
 Static initializers may refer to other statics.
 
+r[items.static.read-only]
 Non-`mut` static items that contain a type that is not [interior mutable] may
 be placed in read-only memory.
 
+r[items.static.safety]
 All access to a static is safe, but there are a number of restrictions on
 statics:
 
+r[items.static.sync]
 * The type must have the `Sync` trait bound to allow thread-safe access.
+
+r[items.static.const]
 * Constants cannot refer to statics.
 
+r[items.static.init.omission]
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
 
+r[items.static.safety-qualifiers]
 The `safe` and `unsafe` qualifiers are semantically only allowed when used in an [external block].
 
 ## Statics & generics
+
+r[items.static.generics]
 
 A static item defined in a generic scope (for example in a blanket or default
 implementation) will result in exactly one static item being defined, as if
@@ -83,14 +101,21 @@ blanket_impl: counter was 1
 
 ## Mutable statics
 
+r[items.static.mut]
+
+r[items.static.mut.intro]
 If a static item is declared with the `mut` keyword, then it is allowed to be
 modified by the program. One of Rust's goals is to make concurrency bugs hard
 to run into, and this is obviously a very large source of race conditions or
-other bugs. For this reason, an `unsafe` block is required when either reading
+other bugs
+
+r[items.static.mut.safety]
+For this reason, an `unsafe` block is required when either reading
 or writing a mutable static variable. Care should be taken to ensure that
 modifications to a mutable static are safe with respect to other threads
 running in the same process.
 
+r[items.static.mut.extern]
 Mutable statics are still very useful, however. They can be used with C
 libraries and can also be bound from C libraries in an `extern` block.
 
@@ -122,10 +147,13 @@ fn bump_levels_safe() -> u32 {
 }
 ```
 
+r[items.static.mut.sync]
 Mutable statics have the same restrictions as normal statics, except that the
 type does not have to implement the `Sync` trait.
 
 ## Using Statics or Consts
+
+r[items.static.alternate]
 
 It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the

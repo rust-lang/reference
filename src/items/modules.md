@@ -1,5 +1,8 @@
 # Modules
 
+r[items.mod]
+
+r[items.mod.syntax]
 > **<sup>Syntax:</sup>**\
 > _Module_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `unsafe`<sup>?</sup> `mod` [IDENTIFIER] `;`\
@@ -8,11 +11,16 @@
 > &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; `}`
 
+r[items.mod.intro]
 A module is a container for zero or more [items].
 
+r[items.mod.def]
 A _module item_ is a module, surrounded in braces, named, and prefixed with the
 keyword `mod`. A module item introduces a new, named module into the tree of
-modules making up a crate. Modules can nest arbitrarily.
+modules making up a crate\1
+
+r[items.mod.nesting]
+Modules can nest arbitrarily.
 
 An example of a module:
 
@@ -34,10 +42,14 @@ mod math {
 }
 ```
 
+r[items.mod.namespace]
 Modules are defined in the [type namespace] of the module or block where they are located.
+
+r[items.mod.multiple-items]
 It is an error to define multiple items with the same name in the same namespace within a module.
 See the [scopes chapter] for more details on restrictions and shadowing behavior.
 
+r[items.mod.unsafe]
 The `unsafe` keyword is syntactically allowed to appear before the `mod`
 keyword, but it is rejected at a semantic level. This allows macros to consume
 the syntax and make use of the `unsafe` keyword, before removing it from the
@@ -45,9 +57,15 @@ token stream.
 
 ## Module Source Filenames
 
+r[items.mod.outlined]
+
+r[items.mod.outlined.intro]
 A module without a body is loaded from an external file. When the module does
 not have a `path` attribute, the path to the file mirrors the logical [module
-path]. Ancestor module path components are directories, and the module's
+path].
+
+r[items.mod.outlined.search]
+Ancestor module path components are directories, and the module's
 contents are in a file with the name of the module plus the `.rs` extension.
 For example, the following module structure can have this corresponding
 filesystem structure:
@@ -58,6 +76,7 @@ Module Path               | Filesystem Path  | File Contents
 `crate::util`             | `util.rs`        | `mod config;`
 `crate::util::config`     | `util/config.rs` |
 
+r[items.mod.outlined.search-mod]
 Module filenames may also be the name of the module as a directory with the
 contents in a file named `mod.rs` within that directory. The above example can
 alternately be expressed with `crate::util`'s contents in a file named
@@ -70,9 +89,13 @@ alternately be expressed with `crate::util`'s contents in a file named
 
 ### The `path` attribute
 
+r[items.mod.outlined.path]
+
+r[items.mod.outlined.path.intro]
 The directories and files used for loading external file modules can be
 influenced with the `path` attribute.
 
+r[items.mod.outlined.path.search]
 For `path` attributes on modules not inside inline module blocks, the file
 path is relative to the directory the source file is located. For example, the
 following code snippet would use the paths shown based on where it is located:
@@ -88,6 +111,7 @@ Source File    | `c`'s File Location | `c`'s Module Path
 `src/a/b.rs`   | `src/a/foo.rs`      | `crate::a::b::c`
 `src/a/mod.rs` | `src/a/foo.rs`      | `crate::a::c`
 
+r[items.mod.outlined.path.search-nested]
 For `path` attributes inside inline module blocks, the relative location of
 the file path depends on the kind of source file the `path` attribute is
 located in. "mod-rs" source files are root modules (such as `lib.rs` or
@@ -128,10 +152,14 @@ mod thread {
 
 ## Attributes on Modules
 
+r[items.mod.attributes]
+
+r[items.mod.attributes.intro]
 Modules, like all items, accept outer attributes. They also accept inner
 attributes: either after `{` for a module with a body, or at the beginning of the
 source file, after the optional BOM and shebang.
 
+r[items.mod.attributes.supported]
 The built-in attributes that have meaning on a module are [`cfg`],
 [`deprecated`], [`doc`], [the lint check attributes], [`path`], and
 [`no_implicit_prelude`]. Modules also accept macro attributes.
