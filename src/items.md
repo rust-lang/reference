@@ -44,43 +44,18 @@ execution, and may reside in read-only memory.
 r[items.kinds]
 There are several kinds of items:
 
-r[items.kind-modules]
 * [modules]
-
-r[items.kind-extern-crate]
 * [`extern crate` declarations]
-
-r[items.kind-use]
 * [`use` declarations]
-
-r[items.kind-fn]
 * [function definitions]
-
-r[items.kind-type]
 * [type definitions]
-
-r[items.kind-struct]
 * [struct definitions]
-
-r[items.kind-enum]
 * [enumeration definitions]
-
-r[items.kind-union]
 * [union definitions]
-
-r[items.kind-const]
 * [constant items]
-
-r[items.kind-static]
 * [static items]
-
-r[items.kind-trait]
 * [trait definitions]
-
-r[items.kind-impl]
 * [implementations]
-
-r[items.kind-extern]
 * [`extern` blocks]
 
 r[items.locations]

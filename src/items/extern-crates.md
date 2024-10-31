@@ -25,7 +25,7 @@ Additionally, if the `extern crate` appears in the crate root, then the crate na
 r[items.extern-crate.as]
 The `as` clause can be used to bind the imported crate to a different name.
 
-r[items.exter-crate.lookup]
+r[items.extern-crate.lookup]
 The external crate is resolved to a specific `soname` at compile time, and a
 runtime linkage requirement to that `soname` is passed to the linker for
 loading at runtime. The `soname` is resolved at compile time by scanning the

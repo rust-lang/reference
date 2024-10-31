@@ -2,7 +2,7 @@
 
 r[items.enum]
 
-r[items.enum.sybtax]
+r[items.enum.syntax]
 > **<sup>Syntax</sup>**\
 > _Enumeration_ :\
 > &nbsp;&nbsp; `enum`
@@ -128,7 +128,7 @@ let z = StructLike { value: 123 }; // Struct expression.
 
 r[items.enum.discriminant]
 
-r[items.enum.discrimnant.intro]
+r[items.enum.discriminant.intro]
 Each enum instance has a _discriminant_: an integer logically associated to it
 that is used to determine which variant it holds.
 
@@ -150,7 +150,7 @@ following the variant name with `=` and a [constant expression]:
 r[items.enum.discriminant.explicit.unit-only]
 1. if the enumeration is "[unit-only]".
 
-r[items.enum.discriminan.explicit.primitive-repr]
+r[items.enum.discriminant.explicit.primitive-repr]
 2. if a [primitive representation] is used. For example:
 
    ```rust
@@ -187,9 +187,9 @@ assert_eq!(baz_discriminant, 123);
 
 #### Restrictions
 
-r[items.enum.discriminant.constraints]
+r[items.enum.discriminant.restrictions]
 
-r[items.enum.discrimnant.constraints.same-discriminant]
+r[items.enum.discriminant.restrictions.same-discriminant]
 It is an error when two variants share the same discriminant.
 
 ```rust,compile_fail
@@ -205,7 +205,7 @@ enum SharedDiscriminantError2 {
 }
 ```
 
-r[items.enum.discrimnant.constraints.above-max-discriminant]
+r[items.enum.discriminant.restrictions.above-max-discriminant]
 It is also an error to have an unspecified discriminant where the previous
 discriminant is the maximum value for the size of the discriminant.
 
@@ -254,7 +254,7 @@ assert_eq!(1, Enum::Bar as isize);
 assert_eq!(2, Enum::Baz as isize);
 ```
 
-r[items.enum.discriminant.coercion.constraint]
+r[items.enum.discriminant.coercion.fieldless]
 [Field-less enums] can be casted if they do not have explicit discriminants, or where only unit variants are explicit.
 
 ```rust
@@ -338,7 +338,7 @@ let y: u32 = x; // mismatched type error
 
 ## Variant visibility
 
-r[items.enum.constraint-variant-visibility]
+r[items.enum.variant-visibility]
 
 Enum variants syntactically allow a [_Visibility_] annotation, but this is
 rejected when the enum is validated. This allows items to be parsed with a

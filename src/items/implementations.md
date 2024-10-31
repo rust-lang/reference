@@ -51,10 +51,10 @@ r[items.impl.inherent.associated-items]
 Inherent implementations associate the contained items to the
 implementing type.
 
-r[items.impl.inherent.values]
+r[items.impl.inherent.associated-items.allowed-items]
 Inherent implementations can contain [associated functions] (including [methods]) and [associated constants].
 
-r[items.impl.inherent.constraint-type-alias]
+r[items.impl.inherent.type-alias]
 They cannot contain associated type aliases.
 
 r[items.impl.inherent.associated-item-path]
@@ -115,7 +115,7 @@ r[items.impl.trait.implemented-trait]
 The trait is known as the _implemented trait_. The implementing type
 implements the implemented trait.
 
-r[items.impl.trait.constraint]
+r[items.impl.trait.def-requirement]
 A trait implementation must define all non-default associated items declared
 by the implemented trait, may redefine default associated items defined by the
 implemented trait, and cannot define any other items.
@@ -226,7 +226,7 @@ least once in one of:
 * As an [associated type] in the [bounds] of a type that contains another
   parameter that constrains the implementation
 
-r[items.impl.generics.constraint]
+r[items.impl.generics.constrain]
 Type and const parameters must always constrain the implementation. Lifetimes
 must constrain the implementation if the lifetime is used in an associated type.
 

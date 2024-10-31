@@ -30,7 +30,7 @@ implementations, which don't have a name, they come directly after `impl`.
 r[items.generics.syntax.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
-r[items.generics.syntax.constraint]
+r[items.generics.syntax.duplicate-params]
 The same parameter name may not be declared more than once in a _GenericParams_ list.
 
 Some examples of items with type, const, and lifetime parameters:
@@ -54,7 +54,7 @@ r[items.generics.builtin-generic-types]
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
-r[items.generics.constraint-widlcard-lifetime]
+r[items.generics.wildcard-lifetime]
 `'_` is not a valid lifetime parameter.
 
 ### Const generics
@@ -67,7 +67,7 @@ r[items.generics.const.intro]
 r[items.generics.const.namespace]
 The const identifier introduces a name in the [value namespace] for the constant parameter, and all instances of the item must be instantiated with a value of the given type.
 
-r[items.generics.const.constraint]
+r[items.generics.const.allowed-types]
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
@@ -129,7 +129,7 @@ fn foo<const N: usize>() {
 }
 ```
 
-r[items.generics.const.constraint-const-expr]
+r[items.generics.const.standalone]
 As a further restriction, const parameters may only appear as a standalone
 argument inside of a [type] or [array repeat expression]. In those contexts,
 they may only be used as a single segment [path expression], possibly inside a
@@ -150,7 +150,7 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 r[items.generics.const.argument]
 A const argument in a [path] specifies the const value to use for that item.
 
-r[items.generics.const.argument-restriction]
+r[items.generics.const.argument.const-expr]
 The argument must be a [const expression] of the type ascribed to the const
 parameter. The const expression must be a [block expression][block]
 (surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
@@ -256,7 +256,7 @@ r[items.generics.where.intro]
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
 
-r[items.generics.where.higher-ranked-;ifetimes]
+r[items.generics.where.higher-ranked-lifetimes]
 The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
 allows [_LifetimeParam_] parameters.
 

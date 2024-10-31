@@ -28,7 +28,7 @@ The key property of unions is that all fields of a union share common storage.
 As a result, writes to one field of a union can overwrite its other fields, and
 size of a union is determined by the size of its largest field.
 
-r[items.union.field-constraints]
+r[items.union.field-restrictions]
 Union field types are restricted to the following subset of types:
 
 r[items.union.field-copy]
@@ -48,7 +48,7 @@ This restriction ensures, in particular, that union fields never need to be
 dropped. Like for structs and enums, it is possible to `impl Drop` for a union
 to manually define what happens when it gets dropped.
 
-r[items.union.constraint]
+r[items.union.fieldless]
 Unions without any fields are not accepted by the compiler, but can be accepted by macros.
 
 ## Initialization of a union
@@ -92,7 +92,7 @@ r[items.union.fields.offset]
 Fields might have a non-zero offset (except when [the C representation] is used); in that case the
 bits starting at the offset of the fields are read
 
-r[items.union.fields.precondition]
+r[items.union.fields.validity]
 It is the programmer's responsibility to make sure that the data is valid at the field's type. Failing
 to do so results in [undefined behavior]. For example, reading the value `3`
 from a field of the [boolean type] is undefined behavior. Effectively,
@@ -128,7 +128,7 @@ r[items.union.pattern]
 r[items.union.pattern.intro]
 Another way to access union fields is to use pattern matching.
 
-r[items.union.pattern.constraint]
+r[items.union.pattern.one-field]
 Pattern matching on union fields uses the same syntax as struct patterns, except that the pattern
 must specify exactly one field.
 

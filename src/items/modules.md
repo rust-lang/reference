@@ -45,11 +45,11 @@ mod math {
 r[items.mod.namespace]
 Modules are defined in the [type namespace] of the module or block where they are located.
 
-r[items.mod.namespace-def]
+r[items.mod.multiple-items]
 It is an error to define multiple items with the same name in the same namespace within a module.
 See the [scopes chapter] for more details on restrictions and shadowing behavior.
 
-r[items.mod.constraint]
+r[items.mod.unsafe]
 The `unsafe` keyword is syntactically allowed to appear before the `mod`
 keyword, but it is rejected at a semantic level. This allows macros to consume
 the syntax and make use of the `unsafe` keyword, before removing it from the

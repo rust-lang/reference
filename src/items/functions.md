@@ -75,7 +75,7 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 }
 ```
 
-r[items.fn.constraint-safety-qualifiers]
+r[items.fn.safety-qualifiers]
 The `safe` function is semantically only allowed when used in an [`extern` block].
 
 ## Function parameters
@@ -94,7 +94,7 @@ r[items.fn.params.self-pat]
 If the first parameter is a _SelfParam_, this indicates that the function is a
 [method].
 
-r[items.fn.params.self-constraint]
+r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated
 function] in a [trait] or [implementation].
 
@@ -125,7 +125,7 @@ return {
 };
 ```
 
-r[items.fn.body.restriction]
+r[items.fn.body.bodyless]
 Functions without a body block are terminated with a semicolon. This form
 may only appear in a [trait] or [external block].
 
@@ -271,7 +271,7 @@ Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
 
-r[item.fn.const.extern]
+r[items.fn.const.extern]
 Const functions may use the [`extern`] function qualifier.
 
 r[items.fn.const.exclusivity]
@@ -320,7 +320,7 @@ fn example<'a>(x: &'a str) -> impl Future<Output = usize> + 'a {
 r[items.fn.async.desugar]
 The actual desugaring is more complex:
 
-r[items.fn.async.lifetime-catpure]
+r[items.fn.async.lifetime-capture]
 - The return type in the desugaring is assumed to capture all lifetime
   parameters from the `async fn` declaration. This can be seen in the
   desugared example above, which explicitly outlives, and hence
@@ -373,7 +373,6 @@ async fn safe_example() {
 }
 ```
 
-r[items.fn.async.safety.]
 Note that this behavior is a consequence of the desugaring to a
 function that returns an `impl Future` -- in this case, the function
 we desugar to is an `unsafe` function, but the return value remains

@@ -1,8 +1,8 @@
 # Traits
 
-r[items.trait]
+r[items.traits]
 
-r[items.trait.syntax]
+r[items.traits.syntax]
 > **<sup>Syntax</sup>**\
 > _Trait_ :\
 > &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
@@ -13,7 +13,7 @@ r[items.trait.syntax]
 > &nbsp;&nbsp;&nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
 
-r[items.trait.intro]
+r[items.traits.intro]
 A _trait_ describes an abstract interface that types can implement. This
 interface consists of [associated items], which come in three varieties:
 
@@ -21,22 +21,22 @@ interface consists of [associated items], which come in three varieties:
 - [types](associated-items.md#associated-types)
 - [constants](associated-items.md#associated-constants)
 
-r[items.trait.namespace]
+r[items.traits.namespace]
 The trait declaration defines a trait in the [type namespace] of the module or block where it is located.
 
-r[items.trait.associated-item-namespaces]
+r[items.traits.associated-item-namespaces]
 Associated items are defined as members of the trait within their respective namespaces. Associated types are defined in the type namespace. Associated constants and associated functions are defined in the value namespace.
 
-r[items.trait.self-param]
+r[items.traits.self-param]
 All traits define an implicit type parameter `Self` that refers to "the type
 that is implementing this interface". Traits may also contain additional type
 parameters. These type parameters, including `Self`, may be constrained by
 other traits and so forth [as usual][generics].
 
-r[items.trait.impls]
+r[items.traits.impls]
 Traits are implemented for specific types through separate [implementations].
 
-r[items.trait.associated-item-decls]
+r[items.traits.associated-item-decls]
 Trait functions may omit the function body by replacing it with a semicolon.
 This indicates that the implementation must define the function. If the trait
 function defines a body, this definition acts as a default for any
@@ -56,7 +56,7 @@ trait Example {
 }
 ```
 
-r[items.trait.fn-constraint]
+r[items.traits.const-fn]
 Trait functions are not allowed to be [`const`].
 
 ## Trait bounds
@@ -83,25 +83,25 @@ trait Seq<T> {
 <a id="object-safety"></a>
 ## Dyn compatibility
 
-r[items.trait.dyn-compatible]
+r[items.traits.dyn-compatible]
 
-r[items.trait.dyn-compatible.intro]
+r[items.traits.dyn-compatible.intro]
 A dyn-compatible trait can be the base trait of a [trait object]. A trait is
 *dyn compatible* if it has the following qualities:
 
-r[items.trait.dyn-compatible.supertraits]
+r[items.traits.dyn-compatible.supertraits]
 * All [supertraits] must also be dyn compatible.
 
-r[items.trait.dyn-compatible.sized]
+r[items.traits.dyn-compatible.sized]
 * `Sized` must not be a [supertrait][supertraits]. In other words, it must not require `Self: Sized`.
 
-r[items.trait.dyn-compatible.associated-consts]
+r[items.traits.dyn-compatible.associated-consts]
 * It must not have any associated constants.
 
-r[items.trait.dyn-compatible.associated-types]
+r[items.traits.dyn-compatible.associated-types]
 * It must not have any associated types with generics.
 
-r[items.trait.dyn-compatible.associated-functions]
+r[items.traits.dyn-compatible.associated-functions]
 * All associated functions must either be dispatchable from a trait object or be explicitly non-dispatchable:
     * Dispatchable functions must:
         * Not have any type parameters (although lifetime parameters are allowed).
@@ -206,19 +206,19 @@ let obj: Box<dyn WithSelf> = Box::new(S); // ERROR: cannot use `Self` type param
 
 ## Supertraits
 
-r[items.trait.supertraits]
+r[items.traits.supertraits]
 
-r[items.trait.supertraits.intro]
+r[items.traits.supertraits.intro]
 **Supertraits** are traits that are required to be implemented for a type to
 implement a specific trait. Furthermore, anywhere a [generic][generics] or [trait object]
 is bounded by a trait, it has access to the associated items of its supertraits.
 
-r[items.trait.supertraits.decl]
+r[items.traits.supertraits.decl]
 Supertraits are declared by trait bounds on the `Self` type of a trait and
 transitively the supertraits of the traits declared in those trait bounds. It is
 an error for a trait to be its own supertrait.
 
-r[items.trait.supertraits.subtrait]
+r[items.traits.supertraits.subtrait]
 The trait with a supertrait is called a **subtrait** of its supertrait.
 
 The following is an example of declaring `Shape` to be a supertrait of `Circle`.
@@ -277,9 +277,9 @@ let nonsense = circle.radius() * circle.area();
 
 ## Unsafe traits
 
-r[items.trait.safety]
+r[items.traits.safety]
 
-r[items.trait.safety.intro]
+r[items.traits.safety.intro]
 Traits items that begin with the `unsafe` keyword indicate that *implementing* the
 trait may be [unsafe]. It is safe to use a correctly implemented unsafe trait.
 The [trait implementation] must also begin with the `unsafe` keyword.
@@ -288,15 +288,15 @@ The [trait implementation] must also begin with the `unsafe` keyword.
 
 ## Parameter patterns
 
-r[items.trait.params]
+r[items.traits.params]
 
-r[items.trait.params.constraint]
+r[items.traits.params.allowed-patterns]
 Function or method declarations without a body only allow [IDENTIFIER] or
 `_` [wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
 allowed, but it is deprecated and will become a hard error in the future.
 <!-- https://github.com/rust-lang/rust/issues/35203 -->
 
-r[items.trait.params.edition2015]
+r[items.traits.params.edition2015]
 In the 2015 edition, the pattern for a trait function or method parameter is
 optional:
 
@@ -307,7 +307,7 @@ trait T {
 }
 ```
 
-r[items.trait.params.restriction]
+r[items.traits.params.restriction]
 The kinds of patterns for parameters is limited to one of the following:
 
 * [IDENTIFIER]
@@ -316,7 +316,7 @@ The kinds of patterns for parameters is limited to one of the following:
 * `&` [IDENTIFIER]
 * `&&` [IDENTIFIER]
 
-r[items.trait.params.restriction-edition2018]
+r[items.traits.params.restriction.edition2018]
 Beginning in the 2018 edition, function or method parameter patterns are no
 longer optional. Also, all irrefutable patterns are allowed as long as there
 is a body. Without a body, the limitations listed above are still in effect.
@@ -330,9 +330,9 @@ trait T {
 
 ## Item visibility
 
-r[items.trait.associated-visibility]
+r[items.traits.associated-visibility]
 
-r[items.trait.associated-visibility.intro]
+r[items.traits.associated-visibility.intro]
 Trait items syntactically allow a [_Visibility_] annotation, but this is
 rejected when the trait is validated. This allows items to be parsed with a
 unified syntax across different contexts where they are used. As an example,

@@ -36,17 +36,17 @@ r[items.static.safety]
 All access to a static is safe, but there are a number of restrictions on
 statics:
 
-r[items.static.constraint-sync]
+r[items.static.sync]
 * The type must have the `Sync` trait bound to allow thread-safe access.
 
-r[items.static.constraint-const]
+r[items.static.const]
 * Constants cannot refer to statics.
 
-r[items.static.restriction-init]
+r[items.static.init.omission]
 The initializer expression must be omitted in an [external block], and must be
 provided for free static items.
 
-r[items.static.constraint-safety-qualifier]
+r[items.static.safety-qualifiers]
 The `safe` and `unsafe` qualifiers are semantically only allowed when used in an [external block].
 
 ## Statics & generics
@@ -147,7 +147,7 @@ fn bump_levels_safe() -> u32 {
 }
 ```
 
-r[items.static.mut.constraints]
+r[items.static.mut.sync]
 Mutable statics have the same restrictions as normal statics, except that the
 type does not have to implement the `Sync` trait.
 

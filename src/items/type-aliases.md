@@ -22,7 +22,7 @@ type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
 
-r[items.type.constraint-constructor]
+r[items.type.constructor-alias]
 A type alias to a tuple-struct or unit-struct cannot be used to qualify that type's constructor:
 
 ```rust,compile_fail
@@ -35,15 +35,15 @@ let _ = UseAlias(5); // OK
 let _ = TypeAlias(5); // Doesn't work
 ```
 
-r[items.type.constraint]
+r[items.type.associated-type]
 A type alias, when not used as an [associated type], must include a [_Type_] and
 may not include [_TypeParamBounds_].
 
-r[items.type.constraint-associated-trait]
+r[items.type.associated-trait]
 A type alias, when used as an [associated type] in a [trait], must not include a
 [_Type_] specification but may include [_TypeParamBounds_].
 
-r[items.type.constraint-associated-impl]
+r[items.type.associated-impl]
 A type alias, when used as an [associated type] in a [trait impl], must include
 a [_Type_] specification and may not include [_TypeParamBounds_].
 

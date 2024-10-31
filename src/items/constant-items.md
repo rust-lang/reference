@@ -11,7 +11,7 @@ r[items.const.intro]
 A *constant item* is an optionally named _[constant value]_ which is not associated
 with a specific memory location in the program.
 
-r[items.const.behaviour]
+r[items.const.behavior]
 Constants are essentially inlined wherever they are used, meaning that they are copied directly into the relevant
 context when used. This includes usage of constants from external crates, and
 non-[`Copy`] types. References to the same constant are not necessarily
@@ -48,7 +48,7 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 };
 ```
 
-r[items.const.restriction]
+r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
 
 ## Constants with Destructors

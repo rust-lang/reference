@@ -23,27 +23,27 @@ A `use` declaration is also sometimes called an _import_, or, if it is public, a
 [modules]: modules.md
 [blocks]: ../expressions/block-expr.md
 
-r[items.use.modes]
+r[items.use.forms]
 Use declarations support a number of convenient shortcuts:
 
-r[items.use.mode-multiple]
+r[items.use.forms.multiple]
 * Simultaneously binding a list of paths with a common prefix, using the
   brace syntax `use a::b::{c, d, e::f, g::h::i};`
 
-r[items.use.mode-self]
+r[items.use.forms.self]
 * Simultaneously binding a list of paths with a common prefix and their common
   parent module, using the `self` keyword, such as `use a::b::{self, c, d::e};`
 
-r[items.use.mode-as]
+r[items.use.forms.as]
 * Rebinding the target name as a new local name, using the syntax `use p::q::r
   as x;`. This can also be used with the last two features:
   `use a::b::{self as ab, c as abc}`.
 
-r[items.use.mode-glob]
+r[items.use.forms.glob]
 * Binding all paths matching a given prefix, using the asterisk wildcard syntax
   `use a::b::*;`.
 
-r[items.use.mode-nesting]
+r[items.use.forms.nesting]
 * Nesting groups of the previous features multiple times, such as
   `use a::b::{self as ab, c, d::{*, e::f}};`
 
@@ -72,7 +72,7 @@ fn main() {
 
 ## `use` Visibility
 
-r[items.use.vis]
+r[items.use.visibility]
 
 r[items.use.visibility.intro]
 Like items, `use` declarations are private to the containing module, by
@@ -82,7 +82,7 @@ public `use` declaration can therefore _redirect_ some public name to a
 different target definition: even a definition with a private canonical path,
 inside a different module.
 
-r[items.use.visibility.constraint]
+r[items.use.visibility.unambiguous]
 If a sequence of such redirections form a cycle or
 cannot be resolved unambiguously, they represent a compile-time error.
 
@@ -120,7 +120,7 @@ They may create bindings for:
 * [Attributes]
 * [Derive macros]
 
-r[items.use.path.constraint]
+r[items.use.path.disallowed]
 They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
 
 r[items.use.path.namespace]
@@ -197,7 +197,7 @@ Braces can be nested, creating a tree of paths, where each grouping of segments 
 use std::collections::{BTreeSet, hash_map::{self, HashMap}};
 ```
 
-r[items.use.multiple-syntax.sempty]
+r[items.use.multiple-syntax.empty]
 An empty brace does not import anything, though the leading path is validated that it is accessible.
 <!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
 
@@ -309,8 +309,10 @@ mod clashing {
 }
 ```
 
-r[items.use.glob.restriction]
+r[items.use.glob.last-segment-only]
 `*` cannot be used as the first or intermediate segments.
+
+r[items.use.glob.self-import]
 `*` cannot be used to import a module's contents into itself (such as `use self::*;`).
 
 r[items.use.glob.edition2015]
@@ -368,23 +370,23 @@ m!(use std as _;);
 
 ## Restrictions
 
-r[items.use.restriction]
+r[items.use.restrictions]
 
 The following are restrictions for valid `use` declarations:
 
-r[items.use.restriction.crate]
+r[items.use.restrictions.crate]
 * `use crate;` must use `as` to define the name to which to bind the crate root.
 
-r[items.use.restriction.self]
+r[items.use.restrictions.self]
 * `use {self};` is an error; there must be a leading segment when using `self`.
 
-r[items.use.restriction.duplicate-name]
+r[items.use.restrictions.duplicate-name]
 * As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
-r[items.use.restriction.macro-crate]
+r[items.use.restrictions.macro-crate]
 * `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
 
-r[items.use.restriction.variant]
+r[items.use.restrictions.variant]
 * `use` paths cannot refer to enum variants through a [type alias]. For example:
   ```rust,compile_fail
   enum MyEnum {
@@ -398,14 +400,14 @@ r[items.use.restriction.variant]
 
 ## Ambiguities
 
-r[items.use.ambiguity]
+r[items.use.ambiguities]
 
 > **Note**: This section is incomplete.
 
-r[items.use.ambiguity.intro]
+r[items.use.ambiguities.intro]
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
-r[items.use.ambiguity.glob]
+r[items.use.ambiguities.glob]
 Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
 For example:
 
