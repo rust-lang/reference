@@ -216,7 +216,7 @@ r[coerce.unsized.composite]
     * `Foo` is a struct.
     * `T` implements `Unsize<U>`.
     * The last field of `Foo` has a type involving `T`.
-    * If that field has type `Bar<T>`, then `Bar<T>` implements `Unsized<Bar<U>>`.
+    * If that field has type `Bar<T>`, then `Bar<T>` implements `Unsize<Bar<U>>`.
     * T is not part of the type of any other fields.
 
 r[coerce.unsized.pointer]
