@@ -889,16 +889,23 @@ r[lex.token.reserved-prefix.edition2021]
 
 ## Reserved guards
 
+r[lex.token.reserved-guards]
+
+r[lex.token.reserved-guards.syntax]
 > **<sup>Lexer 2024+</sup>**\
 > RESERVED_GUARDED_STRING_LITERAL : `#`<sup>+</sup> [STRING_LITERAL]\
 > RESERVED_POUNDS : `#`<sup>2..</sup>
 
+r[lex.token.reserved-guards.intro]
 The reserved guards are syntax reserved for future use, and will generate a compile error if used.
 
+r[lex.token.reserved-guards.string-literal]
 The *reserved guarded string literal* is a token of one or more `U+0023` (`#`) immediately followed by a [STRING_LITERAL].
 
+r[lex.token.reserved-guards.pounds]
 The *reserved pounds* is a token of two or more `U+0023` (`#`).
 
+r[lex.token.reserved-guards.edition2024]
 > **Edition differences**: Before the 2024 edition, reserved guards are accepted by the lexer and interpreted as multiple tokens. For example, the `#"foo"#` form is interpreted as three tokens. `##` is interpreted as two tokens.
 
 [Inferred types]: types/inferred.md
