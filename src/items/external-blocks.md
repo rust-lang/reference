@@ -33,10 +33,11 @@ Calling functions or accessing statics that are declared in external blocks is o
 r[items.extern.namespace]
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
 
-**Edition differences**: Starting in the 2024 edition, the `unsafe` keyword is
-required to appear before the `extern` keyword on external blocks. In previous
-editions, it is accepted but not required. The `safe` and `unsafe` item qualifiers
-are only allowed if the external block itself is marked as `unsafe`.
+r[items.extern.unsafe-required]
+The `unsafe` keyword is semantically required to appear before the `extern` keyword on external blocks.
+
+r[items.extern.edition2024]
+> **Edition differences**: Prior to the 2024 edition, the `unsafe` keyword is optional. The `safe` and `unsafe` item qualifiers are only allowed if the external block itself is marked as `unsafe`.
 
 ## Functions
 
