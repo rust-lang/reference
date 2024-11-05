@@ -24,7 +24,7 @@ Trait objects are written as the keyword `dyn` followed by a set of trait
 bounds, but with the following restrictions on the trait bounds.
 
 r[type.trait-object.constraint]
-All traits except the first trait must be auto traits, there may not be more than one
+There may not be more than one non-auto trait, no more than one
 lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
