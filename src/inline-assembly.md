@@ -16,6 +16,7 @@ Support for inline assembly is stable on the following architectures:
 - AArch64
 - RISC-V
 - LoongArch
+- s390x
 
 The compiler will emit an error if `asm!` is used on an unsupported target.
 
@@ -249,6 +250,11 @@ Here is the list of currently supported register classes:
 | RISC-V | `vreg` | `v[0-31]` | Only clobbers |
 | LoongArch | `reg` | `$r1`, `$r[4-20]`, `$r[23,30]` | `r` |
 | LoongArch | `freg` | `$f[0-31]` | `f` |
+| s390x | `reg` | `r[0-10]`, `r[12-14]` | `r` |
+| s390x | `reg_addr` | `r[1-10]`, `r[12-14]` | `a` |
+| s390x | `freg` | `f[0-15]` | `f` |
+| s390x | `vreg` | `v[0-31]` | Only clobbers |
+| s390x | `areg` | `a[2-15]` | Only clobbers |
 
 > **Notes**:
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
@@ -288,6 +294,10 @@ The availability of supported types for a particular register class may depend o
 | RISC-V | `vreg` | N/A | Only clobbers |
 | LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
 | LoongArch64 | `freg` | None | `f32`, `f64` |
+| s390x | `reg`, `reg_addr` | None | `i8`, `i16`, `i32`, `i64` |
+| s390x | `freg` | None | `f32`, `f64` |
+| s390x | `vreg` | N/A | Only clobbers |
+| s390x | `areg` | N/A | Only clobbers |
 
 > **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
@@ -372,8 +382,8 @@ Some registers cannot be used for input or output operands:
 
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
-| All | `sp` | The stack pointer must be restored to its original value at the end of an asm code block. |
-| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch) | The frame pointer cannot be used as an input or output. |
+| All | `sp`, `r15` (s390x) | The stack pointer must be restored to its original value at the end of an asm code block. |
+| All | `bp` (x86), `x29` (AArch64), `x8` (RISC-V), `$fp` (LoongArch), `r11` (s390x) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
 | All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `ip` | This is the program counter, not a real register. |
@@ -386,6 +396,8 @@ Some registers cannot be used for input or output operands:
 | LoongArch | `$r0` or `$zero` | This is a constant zero register which can't be modified. |
 | LoongArch | `$r2` or `$tp` | This is reserved for TLS. |
 | LoongArch | `$r21` | This is reserved by the ABI. |
+| s390x | `c[0-15]` | Reserved by the kernel. |
+| s390x | `a[0-1]` | Reserved for system use. |
 
 r[asm.register-names.fp-bp-reserved]
 The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
@@ -441,6 +453,9 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | RISC-V | `freg` | None | `f0` | None |
 | LoongArch | `reg` | None | `$r1` | None |
 | LoongArch | `freg` | None | `$f0` | None |
+| s390x | `reg` | None | `%r0` | None |
+| s390x | `reg_addr` | None | `%r1` | None |
+| s390x | `freg` | None | `%f0` | None |
 
 > **Notes**:
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
@@ -485,6 +500,7 @@ The following ABIs can be used with `clobber_abi`:
 | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
 | RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
 | LoongArch | `"C"`, `"system"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
+| s390x | `"C"`, `"system"` | `r[0-5]`, `r14`, `f[0-7]`, `v[0-31]`, `a[2-15]` |
 
 > Notes:
 > - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
@@ -624,6 +640,8 @@ r[asm.rules.preserved-registers]
     - Vector extension state (`vtype`, `vl`, `vcsr`).
   - LoongArch
     - Floating-point condition flags in `$fcc[0-7]`.
+  - s390x
+    - The condition code register `cc`.
 
 r[asm.rules.x86-df]
 - On x86, the direction flag (DF in `EFLAGS`) is clear on entry to an asm block and must be clear on exit.
