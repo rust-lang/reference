@@ -1,4 +1,4 @@
-# Values and Representation
+# Values and representation
 
 r[value]
 
@@ -110,17 +110,17 @@ A thin reference to `T` consists of a non-null, well aligned address, and proven
 > [!NOTE]
 > This is true for both shared and mutable references. There are additional constraints enforced by the aliasing model.
 
-r[value.pointer.fat]
-A fat pointer or reference consists of a data pointer or reference, and a pointee-specific metadata value.
+r[value.pointer.wide]
+A wide pointer or reference consists of a data pointer or reference, and a pointee-specific metadata value.
 
-r[value.pointer.fat-reference]
-The data pointer of a fat reference has a non-null address, well aligned for `align_of_val(self)`, and with provenance for `size_of_val(self)` bytes.
+r[value.pointer.wide-reference]
+The data pointer of a wide reference has a non-null address, well aligned for `align_of_val(self)`, and with provenance for `size_of_val(self)` bytes.
 
-r[value.pointer.fat-representation]
-A fat pointer or reference is represented the same as `struct FatPointer<M>{data: *mut (), metadata: M}` where `M` is the pointee metadata type, and the `data` and `metadata` fields are the corresponding parts of the pointer.
+r[value.pointer.wide-representation]
+A wide pointer or reference is represented the same as `struct WidePointer<M>{data: *mut (), metadata: M}` where `M` is the pointee metadata type, and the `data` and `metadata` fields are the corresponding parts of the pointer.
 
 > [!NOTE]
-> The `FatPointer` struct has no guarantees about layout, and has the default representation.
+> The `WidePointer` struct has no guarantees about layout, and has the default representation.
 
 r[value.pointer.fn]
 A value of a function pointer type consists of an non-null address. A function pointer value is represented the same as an address represented as an unsigned integer type with the same width as the function pointer.
