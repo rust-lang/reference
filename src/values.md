@@ -59,7 +59,7 @@ r[value.provenance.dangling]
 A pointer is dangling if it has no provenance, or if it has provenance to an allocation that has since been deallocated. An access, except for an access of size zero, using a dangling pointer, is undefined behavior.
 
 > [!NOTE]
-> Allocations include local and static variables, as well as temporaries. Local Variables and Temporaries are deallocated when they go out of scope. 
+> Allocations include local and static variables, as well as temporaries. Local Variables and Temporaries are deallocated when they go out of scope.
 
 > [!WARN]
 > The above is necessary, but not sufficient, to avoid undefined behavior. The full requirements for pointer access is not yet decided.
