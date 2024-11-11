@@ -42,6 +42,29 @@ The operation to encode or decode a value is determined by the representation of
 r[value.encoding.decode]
 If a value of type `T` is decoded from a sequence of bytes that does not correspond to a defined value, the behavior is undefined. If a value of type `T` is decoded from a sequence of bytes that contain pointer fragments, which are not used to represent the value, the pointer fragments are ignored.
 
+## Pointer Provenance
+
+r[value.provenance]
+
+r[value.provenance.intro]
+Pointer Provenance is a term that refers to additional data carried by pointer values in Rust, beyond its address. When stored in memory, Provenance is encoded in the Pointer Fragment part of each byte of the pointer.
+
+r[value.provenance.allocation]
+Whenever a pointer to a particular allocation is produced by using the reference or raw reference operators, or when a pointer is returned from an allocation function, the resulting pointer has provenance that refers to that allocation.
+
+> [!NOTE]
+> There is additional information encoded by provenance, but the exact scope of this information is not yet decided.
+
+r[value.provenance.dangling]
+A pointer is dangling if it has no provenance, or if it has provenance to an allocation that has since been deallocated. An access, except for an access of size zero, using a dangling pointer, is undefined behavior.
+
+> [!NOTE]
+> Allocations include local and static variables, as well as temporaries. Local Variables and Temporaries are deallocated when they go out of scope. 
+
+> [!WARN]
+> The above is necessary, but not sufficient, to avoid undefined behavior. The full requirements for pointer access is not yet decided.
+> A reference obtained in safe code is guaranteed to be valid for its usable lifetime, unless interfered with by unsafe code.
+
 ## Primitive Values
 
 r[value.primitive]
