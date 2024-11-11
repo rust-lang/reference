@@ -155,61 +155,16 @@ r[abi.compatibility.signature]
 Two function signatures are compatible if:
 * The [abi tags][abi tag] of both signatures are *abi compatible*,
 * They have the same number of parameters, excluding C-varargs,
+* The return types of both signatures are *abi comaptible*,
 * Each parameter of both signatures, in order, are *abi compatible*, and
 * Either both signatures have C-varargs, or neither signature does.
 
 > [!NOTE]
 > A signature is compatible with itself.
 
-r[abi.compatibility.simd-abi]
-Certain types have *simd abi requirements*, which can impose additional constraints on calls with a parameter or return value of that type. A type has *simd abi requirements* if:
-* It is a type declared with the standard-library repr-attribute `simd`, or
-* It is a aggregate type[^aggregate], which has a type with *simd abi requirements* as a field.
-
-> [!NOTE]
-> Types with *simd abi requirements* may be passed using special registers that aren't always available to code.
-
-> [!NOTE]
-> Notably References and pointers to types with *simd abi requirements* do not have *simd abi requirements*.
-> Only direct parameters and return values are affected by *simd abi requirements*.
-
-> [!NOTE]
-> The `repr(simd)` attribute cannot be used by Rust code, only by the standard library. The name used here is for *exposition only*.
-
-r[abi.compatibility.simd-target-feature]
-A type with *simd abi requirements* may have one or more [*salient target features*][target_feature] . In the case of an aggregate type, the set of [*salient target features*][target_feature] is the union of the set of [*salient target features*][target_feature] of each field with *simd abi requirements*.
-
-r[abi.compatibility.simd-target-feature-x86]
-> [!TARGET-SPECIFIC]
-> On x86 and x86-64, the [*salient target features*][target_feature] of the `simd` types are:
-> * [`__m128`], [`__m128i`], [`__m128f`], and [`__m128d`] (128-bit vector types): `sse`
-> * [`__m256`], [`__m256i`], [`__m256f`], and [`__m256d`] (256-bit vector types): `avx`
-> * [`__m512`], [`__m512i`], [`__m512f`], and [`__m512d`] (512-bit vector types): `avx512f` and `avx512vl`
 
 r[abi.compatibility.call]
-A call to a function `f` via a function item or function pointer with a given signature `S` is valid if and only if the signature of the definition `f` is *compatible* with the signature `S`, and:
-* The ABI tag of the signature is `extern "Rust"`, or
-* If any parameter type, the return type, or the type of any argument passed via C-varargs has *simd abi requirements*, each [*salient target features*][target_feature] of that type is either set at both the definition site of the function, and at the call site, or is set at neither site.
-
-The behavior of a call that is not valid is undefined.
-
-> [!NOTE]
-> The ABI tag `extern "Rust"` is the default when the `extern` keyword is not used (either to declare the function within an [`extern` block], or as a [function qualifier][extern functions]). Thus it is safe to call most functions that use simd types.
-
-[^aggregate]: The aggregate types, for the purposes of this clause, are [`struct`] types, [`enum`] types, [`union`] types, and [array] types.
-
-[`__m128`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128.html
-[`__m128i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128i.html
-[`__m128f`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128f.html
-[`__m128d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m128d.html
-[`__m256`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m256.html
-[`__m256i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m256i.html
-[`__m256f`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m256f.html
-[`__m256d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m256d.html
-[`__m512`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512.html
-[`__m512i`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512i.html
-[`__m512f`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512f.html
-[`__m512d`]: https://doc.rust-lang.org/stable/core/arch/x86_64/struct.__m512d.html
+A call to a function `f` via a function item or function pointer with a given signature `S` is valid if and only if the signature of the definition `f` is *compatible* with the signature `S`. The behavior of a call that is not valid is undefined.
 
 [layout.repr.rust.option.elision]: https://github.com/RalfJung/unsafe-code-guidelines/blob/option-like/reference/src/layout/enums.md#discriminant-elision-on-option-like-enums
 
