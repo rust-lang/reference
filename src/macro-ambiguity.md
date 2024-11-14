@@ -11,7 +11,7 @@ of this text is copied, and expanded upon in subsequent RFCs.
 r[macro.ambiguity.convention]
 
 r[macro.ambiguity.convention.defs]
-  - `macro`: anything invokable as `foo!(...)` in source code.
+  - `macro`: anything invocable as `foo!(...)` in source code.
   - `MBE`: macro-by-example, a macro defined by `macro_rules`.
   - `matcher`: the left-hand-side of a rule in a `macro_rules` invocation, or a
     subportion thereof.
