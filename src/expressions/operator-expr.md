@@ -400,11 +400,9 @@ reference types and `mut` or `const` in pointer types.
   (Rust uses 2's complement for negative values of fixed integers)
 
   ```rust
-  # #![allow(overflowing_literals)]
   assert_eq!(42i8 as u8, 42u8);
   assert_eq!(-1i8 as u8, 255u8);
   assert_eq!(255u8 as i8, -1i8);
-  assert_eq!(0xffu8 as i8, 0xffi8);
   assert_eq!(-1i16 as u16, 65535u16);
   ```
 
@@ -412,14 +410,13 @@ reference types and `mut` or `const` in pointer types.
   truncate
 
   ```rust
-  # #![allow(overflowing_literals)]
   assert_eq!(42u16 as u8, 42u8);
   assert_eq!(1234u16 as u8, 210u8);
   assert_eq!(0xabcdu16 as u8, 0xcdu8);
 
   assert_eq!(-42i16 as i8, -42i8);
   assert_eq!(1234u16 as i8, -46i8);
-  assert_eq!(0xabcdi16 as i8, 0xcdi8);
+  assert_eq!(0xabcdi32 as i8, -51i8);
   ```
 
 * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
@@ -427,12 +424,11 @@ reference types and `mut` or `const` in pointer types.
     * sign-extend if the source is signed
 
   ```rust
-  # #![allow(overflowing_literals)]
   assert_eq!(42i8 as i16, 42i16);
   assert_eq!(-17i8 as i16, -17i16);
   assert_eq!(0b1000_1010u8 as u16, 0b0000_0000_1000_1010u16, "Zero-extend");
   assert_eq!(0b0000_1010i8 as i16, 0b0000_0000_0000_1010i16, "Sign-extend 0");
-  assert_eq!(0b1000_1010i8 as i16, 0b1111_1111_1000_1010i16, "Sign-extend 1");
+  assert_eq!(0b1000_1010u8 as i8 as i16, 0b1111_1111_1000_1010u16 as i16, "Sign-extend 1");
   ```
 
 * Casting from a float to an integer will round the float towards zero
