@@ -767,7 +767,7 @@ r[lex.token.life.syntax]
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > RAW_LIFETIME :\
-> &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier]
+> &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier] <sub>*Except `crate`, `self`, `super`, `Self`*</sub>
 >   _(not immediately followed by `'`)_
 
 r[lex.token.life.intro]
@@ -779,7 +779,7 @@ r[lex.token.life.raw.intro]
 A raw lifetime is like a normal lifetime, but its identifier is prefixed by `r#`. (Note that the `r#` prefix is not included as part of the actual lifetime.)
 
 r[lex.token.life.raw.allowed]
-Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword.
+Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword except the ones listed above for `RAW_LIFETIME`.
 
 > **Edition differences**: Raw lifetimes are accepted in the 2021
 > edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
