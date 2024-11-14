@@ -238,7 +238,7 @@ on the endianness of the target's CPU.
 
 ### `target_pointer_width`
 
-r[cfg.target_poitner_width]
+r[cfg.target_pointer_width]
 
 r[cfg.target_pointer_width.general]
 Key-value option set once with the target's pointer width in bits.
