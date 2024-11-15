@@ -48,6 +48,7 @@ The following attributes are unsafe:
 
 r[attributes.kind]
 Attributes can be classified into the following kinds:
+
 * [Built-in attributes]
 * [Macro attributes][attribute macros]
 * [Derive macro helper attributes]
@@ -55,6 +56,7 @@ Attributes can be classified into the following kinds:
 
 r[attributes.application]
 Attributes may be applied to many things in the language:
+
 * All [item declarations] accept outer attributes while [external blocks],
   [functions], [implementations], and [modules] accept inner attributes.
 * Most [statements] accept outer attributes (see [Expression Attributes] for
