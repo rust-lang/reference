@@ -80,7 +80,7 @@ Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
-r[attributes.codegen.target_feature.precondition]
+r[attributes.codegen.target_feature.target-ub]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
@@ -344,7 +344,7 @@ in the standard library for runtime feature detection on these platforms.
 
 r[attributes.codegen.track_caller]
 
-r[attributes.codegen.track_caller.restriction]
+r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
 with the exception of the entry point `fn main`.
 
@@ -478,7 +478,7 @@ trait object whose methods are attributed.
 
 r[attributes.codegen.instruction_set]
 
-r[attributes.codegen.instruction_set.restriction]
+r[attributes.codegen.instruction_set.allowed-positions]
 The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
 
 r[attributes.codegen.instruction_set.behavior]

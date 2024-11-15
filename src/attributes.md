@@ -54,7 +54,7 @@ Attributes can be classified into the following kinds:
 * [Derive macro helper attributes]
 * [Tool attributes](#tool-attributes)
 
-r[attributes.application]
+r[attributes.allowed-position]
 Attributes may be applied to many things in the language:
 
 * All [item declarations] accept outer attributes while [external blocks],

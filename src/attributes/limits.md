@@ -8,7 +8,7 @@ The following [attributes] affect compile-time limits.
 
 r[attributes.limits.recursion_limit]
 
-r[attributes.limits.recursion_limit.application]
+r[attributes.limits.recursion_limit.intro]
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 maximum depth for potentially infinitely-recursive compile-time operations
 like macro expansion or auto-dereference.

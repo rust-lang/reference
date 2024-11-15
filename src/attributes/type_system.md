@@ -12,7 +12,7 @@ r[attributes.type-system.non_exhaustive.intro]
 The *`non_exhaustive` attribute* indicates that a type or variant may have
 more fields or variants added in the future.
 
-r[attributes.type-system.non_exhaustive.application]
+r[attributes.type-system.non_exhaustive.allowed-positions]
 It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
 
 r[attributes.type-system.non_exhaustive.syntax]

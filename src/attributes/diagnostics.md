@@ -326,7 +326,7 @@ The `deprecated` attribute has several forms:
     message. This is typically used to provide an explanation about the
     deprecation and preferred alternatives.
 
-r[attributes.diagnostic.deprecated.application]
+r[attributes.diagnostic.deprecated.allowed-positions]
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
 variant], [struct field], [external block item], or [macro definition]. It
 cannot be applied to [trait implementation items]. When applied to an item
@@ -354,13 +354,16 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 r[attributes.diagnostic.must_use]
 
-r[attributes.diagnostic.must_use.application]
+r[attributes.diagnostic.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
-is not "used". It can be applied to user-defined composite types
+is not "used".
+
+r[attributes.diagnostic.must_use.allowed-positions]
+The `must_use` attribute can be applied to user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
 and [traits].
 
-r[attributes.diagnostic.must_use.syntax]
+r[attributes.diagnostic.must_use.message]
 The `must_use` attribute may include a message by using the
 [_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
 message will be given alongside the warning.
@@ -486,7 +489,7 @@ r[attributes.diagnostic.on_unimplemented]
 r[attributes.diagnostic.on_unimplemented.intro]
 The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
 
-r[attributes.diagnostic.on_unimplemented.application]
+r[attributes.diagnostic.on_unimplemented.allowed-positions]
 The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
 
 r[attributes.diagnostic.on_unimplemented.syntax]
