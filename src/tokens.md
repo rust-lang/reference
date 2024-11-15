@@ -781,6 +781,7 @@ A raw lifetime is like a normal lifetime, but its identifier is prefixed by `r#`
 r[lex.token.life.raw.allowed]
 Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword except the ones listed above for `RAW_LIFETIME`.
 
+r[lex.token.life.raw.edition2021]
 > **Edition differences**: Raw lifetimes are accepted in the 2021
 > edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
 
