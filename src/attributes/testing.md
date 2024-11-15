@@ -31,7 +31,7 @@ Test functions must be free, monomorphic functions that take no arguments, and t
 > Note: The test mode is enabled by passing the `--test` argument to `rustc`
 > or using `cargo test`.
 
-r[attributes.testing.success]
+r[attributes.testing.test.success]
 The test harness calls the returned value's [`report`] method, and classifies the test as passed or failed depending on whether the resulting [`ExitCode`] represents successful termination.
 In particular:
 * Tests that return `()` pass as long as they terminate and do not panic.
@@ -84,7 +84,7 @@ r[attributes.testing.should_panic.target]
 A function annotated with the `test` attribute that returns `()` can also be
 annotated with the `should_panic` attribute.
 
-r[attributes.testing.should_panic.behaviour]
+r[attributes.testing.should_panic.behavior]
 The *`should_panic` attribute*
 makes the test only pass if it actually panics.
 

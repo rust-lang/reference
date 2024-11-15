@@ -21,7 +21,7 @@ have no effect on a trait function without a body.
 
 ### The `inline` attribute
 
-r[attributes.codgen.inline]
+r[attributes.codegen.inline]
 
 r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function
@@ -46,7 +46,7 @@ There are three ways to use the inline attribute:
 
 ### The `cold` attribute
 
-r[attribute.codegen.cold]
+r[attributes.codegen.cold]
 
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
@@ -93,13 +93,13 @@ be used with a `target_feature` attribute.
 
 ### Available features
 
-r[attributes.codegen.target_features.availability]
+r[attributes.codegen.target_feature.availability]
 
 The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
 
-r[attributes.codegen.target_features.x86]
+r[attributes.codegen.target_feature.x86]
 
 Executing code with unsupported features is undefined behavior on this platform.
 Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
@@ -482,7 +482,7 @@ r[attributes.codegen.instruction_set]
 r[attributes.codegen.instruction_set.restriction]
 The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
 
-r[attributes.codegen.instruction_set.behaviour]
+r[attributes.codegen.instruction_set.behavior]
 This allows mixing more than one instruction set in a single program on CPU architectures that support it.
 
 r[attributes.codegen.instruction_set.syntax]

@@ -499,7 +499,7 @@ The following keys have the given meaning:
 * `label` --- The text for the label shown inline in the broken code in the error message.
 * `note` --- Provides additional notes.
 
-r[attributes.diagnostic.on_unimplemented-note-repetition]
+r[attributes.diagnostic.on_unimplemented.note-repetition]
 The `note` option can appear several times, which results in several note messages being emitted.
 
 r[attributes.diagnostic.on_unimplemented.repetition]
@@ -509,18 +509,18 @@ r[attributes.diagnostic.on_unimplemented.warnings]
 Any other occurrence generates an lint warning.
 For any other non-existing option a lint-warning is generated.
 
-r[attributes.diagnostic.format-string]
+r[attributes.diagnostic.on_unimplemented.format-string]
 All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
 
-r[attributes.diagnostic.format-parameters]
+r[attributes.diagnostic.on_unimplemented.format-parameters]
 Format parameters with the given named parameter will be replaced with the following text:
 * `{Self}` --- The name of the type implementing the trait.
 * `{` *GenericParameterName* `}` --- The name of the generic argument's type for the given generic parameter.
 
-r[attributes.diagnostic.invalid-formats]
+r[attributes.diagnostic.on_unimplemented.invalid-formats]
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 
-r[attributes.diagnostic.invalid-string]
+r[attributes.diagnostic.on_unimplemented.invalid-string]
 Invalid format strings may generate a warning, but are otherwise allowed, but may not display as intended.
 Format specifiers may generate a warning, but are otherwise ignored.
 
