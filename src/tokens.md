@@ -769,6 +769,9 @@ r[lex.token.life.syntax]
 > RAW_LIFETIME :\
 > &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier] <sub>*Except `crate`, `self`, `super`, `Self`*</sub>
 >   _(not immediately followed by `'`)_
+>
+> RESERVED_RAW_LIFETIME : `'r#_`
+>   _(not immediately followed by `'`)_
 
 r[lex.token.life.intro]
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
@@ -780,6 +783,9 @@ A raw lifetime is like a normal lifetime, but its identifier is prefixed by `r#`
 
 r[lex.token.life.raw.allowed]
 Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword except the ones listed above for `RAW_LIFETIME`.
+
+r[lex.token.life.raw.reserved]
+It is an error to use the RESERVED_RAW_LIFETIME token `'r#_` in order to avoid confusion with the [placeholder lifetime].
 
 r[lex.token.life.raw.edition2021]
 > **Edition differences**: Raw lifetimes are accepted in the 2021
@@ -946,6 +952,7 @@ r[lex.token.reserved-prefix.edition2021]
 [numeric types]: types/numeric.md
 [paths]: paths.md
 [patterns]: patterns.md
+[placeholder lifetime]: lifetime-elision.md
 [question]: expressions/operator-expr.md#the-question-mark-operator
 [range]: expressions/range-expr.md
 [rangepat]: patterns.md#range-patterns
