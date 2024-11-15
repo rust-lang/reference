@@ -1,25 +1,41 @@
 # Diagnostic attributes
 
+r[attributes.diagnostics]
+
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
 ## Lint check attributes
 
+r[attributes.diagnostics.lint]
+
 A lint check names a potentially undesirable coding pattern, such as
-unreachable code or omitted documentation. The lint attributes `allow`,
+unreachable code or omitted documentation.
+
+r[attributes.diagnostics.lint.level]
+The lint attributes `allow`,
 `expect`, `warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax
 to specify a list of lint names to change the lint level for the entity
 to which the attribute applies.
 
 For any lint check `C`:
 
+r[attributes.diagnostics.lint.allow]
 * `#[allow(C)]` overrides the check for `C` so that violations will go
    unreported.
+
+r[attributes.diagnostics.lint.expect]
 * `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
   attribute will suppress the emission of `C` or issue a warning, if the
   expectation is unfulfilled.
+
+r[attributes.diagnostics.lint.warn]
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
+
+r[attributes.diagnostics.lint.deny]
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
+
+r[attributes.diagnostics.lint.forbid]
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
 
@@ -42,6 +58,7 @@ pub mod m1 {
 }
 ```
 
+r[attributes.diagnostics.lint.override]
 Lint attributes can override the level specified from a previous attribute, as
 long as the level does not attempt to change a forbidden lint
 (except for `deny`, which is allowed inside a `forbid` context, but ignored).
@@ -89,6 +106,7 @@ pub mod m3 {
 
 ### Lint Reasons
 
+r[attributes.diagnostics.lint.reason]
 All lint attributes support an additional `reason` parameter, to give context why
 a certain attribute was added. This reason will be displayed as part of the lint
 message if the lint is emitted at the defined level.
@@ -125,6 +143,9 @@ pub fn get_path() -> PathBuf {
 
 ### The `#[expect]` attribute
 
+r[attributes.diagnostics.expect]
+
+r[attributes.diagnostics.expect.intro]
 The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
 expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
 would result in a lint emission. If the expectation is unfulfilled, because
@@ -150,6 +171,7 @@ fn main() {
 }
 ```
 
+r[attributes.diagnostics.expect.fulfillment]
 The lint expectation is only fulfilled by lint emissions which have been suppressed by
 the `expect` attribute. If the lint level is modified in the scope with other level
 attributes like `allow` or `warn`, the lint emission will be handled accordingly and the
@@ -179,6 +201,7 @@ fn select_song() {
 }
 ```
 
+r[attributes.diagnostics.expect.independent]
 If the `expect` attribute contains several lints, each one is expected separately. For a
 lint group it's enough if one lint inside the group has been emitted:
 
@@ -207,6 +230,7 @@ pub fn another_example() {
 
 ### Lint groups
 
+r[attributes.diagnostics.lint.group]
 Lints may be organized into named groups so that the level of related lints
 can be adjusted together. Using a named group is equivalent to listing out the
 lints within that group.
@@ -227,6 +251,7 @@ fn example() {
 }
 ```
 
+r[attributes.diagnostics.lint.group.warnings]
 There is a special group named "warnings" which includes all lints at the
 "warn" level. The "warnings" group ignores attribute order and applies to all
 lints that would otherwise warn within the entity.
@@ -246,9 +271,13 @@ fn example_err() {
 
 ### Tool lint attributes
 
+r[attributes.diagnostics.lint.tool]
+
+r[attributes.diagnostics.lint.tool.intro]
 Tool lints allows using scoped lints, to `allow`, `warn`, `deny` or `forbid`
 lints of certain tools.
 
+r[attributes.diagnostics.lint.tool.activation]
 Tool lints only get checked when the associated tool is active. If a lint
 attribute, such as `allow`, references a nonexistent tool lint, the compiler
 will not warn about the nonexistent lint until you use the tool.
@@ -276,10 +305,14 @@ fn foo() {
 
 ## The `deprecated` attribute
 
+r[attributes.diagnostics.deprecated]
+
+r[attributes.diagnostics.deprecated.intro]
 The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue
 warnings on usage of `#[deprecated]` items. `rustdoc` will show item
 deprecation, including the `since` version and `note`, if available.
 
+r[attributes.diagnostics.deprecated.syntax]
 The `deprecated` attribute has several forms:
 
 - `deprecated` --- Issues a generic message.
@@ -293,6 +326,7 @@ The `deprecated` attribute has several forms:
     message. This is typically used to provide an explanation about the
     deprecation and preferred alternatives.
 
+r[attributes.diagnostic.deprecated.allowed-positions]
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
 variant], [struct field], [external block item], or [macro definition]. It
 cannot be applied to [trait implementation items]. When applied to an item
@@ -318,15 +352,23 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 ## The `must_use` attribute
 
+r[attributes.diagnostics.must_use]
+
+r[attributes.diagnostics.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
-is not "used". It can be applied to user-defined composite types
+is not "used".
+
+r[attributes.diagnostics.must_use.allowed-positions]
+The `must_use` attribute can be applied to user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
 and [traits].
 
+r[attributes.diagnostics.must_use.message]
 The `must_use` attribute may include a message by using the
 [_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
 message will be given alongside the warning.
 
+r[attributes.diagnostics.must_use.type]
 When used on user-defined composite types, if the [expression] of an
 [expression statement] has that type, then the `unused_must_use` lint is
 violated.
@@ -345,6 +387,7 @@ struct MustUse {
 MustUse::new();
 ```
 
+r[attributes.diagnostics.must_use.fn]
 When used on a function, if the [expression] of an [expression statement] is a
 [call expression] to that function, then the `unused_must_use` lint is
 violated.
@@ -357,6 +400,7 @@ fn five() -> i32 { 5i32 }
 five();
 ```
 
+r[attributes.diagnostics.must_use.trait]
 When used on a [trait declaration], a [call expression] of an [expression
 statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates
 the `unused_must_use` lint.
@@ -374,6 +418,7 @@ fn get_critical() -> impl Critical {
 get_critical();
 ```
 
+r[attributes.diagnostics.must_use.trait-function]
 When used on a function in a trait declaration, then the behavior also applies
 when the call expression is a function from an implementation of the trait.
 
@@ -391,6 +436,7 @@ impl Trait for i32 {
 5i32.use_me();
 ```
 
+r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
 
 > Note: Trivial no-op expressions containing the value will not violate the
@@ -425,36 +471,58 @@ When used on a function in a trait implementation, the attribute does nothing.
 
 ## The `diagnostic` tool attribute namespace
 
+r[attributes.diagnostic.namespace]
+
+r[attributes.diagnostic.namespace.intro]
 The `#[diagnostic]` attribute namespace is a home for attributes to influence compile-time error messages.
 The hints provided by these attributes are not guaranteed to be used.
+
+r[attributes.diagnostic.namespace.unknown-invalid-syntax]
 Unknown attributes in this namespace are accepted, though they may emit warnings for unused attributes.
 Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
 This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
 ### The `diagnostic::on_unimplemented` attribute
 
-The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
-The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
-The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
-The following keys have the given meaning:
+r[attributes.diagnostic.on_unimplemented]
 
+r[attributes.diagnostic.on_unimplemented.intro]
+The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
+
+r[attributes.diagnostic.on_unimplemented.allowed-positions]
+The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+
+r[attributes.diagnostic.on_unimplemented.syntax]
+The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
+
+r[attributes.diagnostic.on_unimplemented.keys]
+The following keys have the given meaning:
 * `message` --- The text for the top level error message.
 * `label` --- The text for the label shown inline in the broken code in the error message.
 * `note` --- Provides additional notes.
 
+r[attributes.diagnostic.on_unimplemented.note-repetition]
 The `note` option can appear several times, which results in several note messages being emitted.
+
+r[attributes.diagnostic.on_unimplemented.repetition]
 If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
+
+r[attributes.diagnostic.on_unimplemented.warnings]
 Any other occurrence generates an lint warning.
 For any other non-existing option a lint-warning is generated.
 
+r[attributes.diagnostic.on_unimplemented.format-string]
 All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
-Format parameters with the given named parameter will be replaced with the following text:
 
+r[attributes.diagnostic.on_unimplemented.format-parameters]
+Format parameters with the given named parameter will be replaced with the following text:
 * `{Self}` --- The name of the type implementing the trait.
 * `{` *GenericParameterName* `}` --- The name of the generic argument's type for the given generic parameter.
 
+r[attributes.diagnostic.on_unimplemented.invalid-formats]
 Any other format parameter will generate a warning, but will otherwise be included in the string as-is.
 
+r[attributes.diagnostic.on_unimplemented.invalid-string]
 Invalid format strings may generate a warning, but are otherwise allowed, but may not display as intended.
 Format specifiers may generate a warning, but are otherwise ignored.
 
