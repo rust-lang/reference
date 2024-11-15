@@ -63,7 +63,6 @@ assumed to exist.
 
 r[attributes.codegen.target_feature]
 
-
 r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture

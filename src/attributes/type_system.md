@@ -8,7 +8,6 @@ The following [attributes] are used for changing how a type can be used.
 
 r[attributes.type-system.non_exhaustive]
 
-
 r[attributes.type-system.non_exhaustive.intro]
 The *`non_exhaustive` attribute* indicates that a type or variant may have
 more fields or variants added in the future.

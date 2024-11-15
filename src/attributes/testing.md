@@ -11,7 +11,6 @@ enables the [`test` conditional compilation option].
 
 r[attributes.testing.test]
 
-
 r[attributes.testing.test.intro]
 The *`test` attribute* marks a function to be executed as a test.
 
@@ -54,7 +53,6 @@ fn test_the_thing() -> io::Result<()> {
 ## The `ignore` attribute
 
 r[attributes.testing.ignore]
-
 
 r[attributes.testing.ignore.intro]
 A function annotated with the `test` attribute can also be annotated with the

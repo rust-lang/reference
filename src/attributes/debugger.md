@@ -86,7 +86,6 @@ When viewed under WinDbg, the `fancy_rect` variable would be shown as follows:
 
 r[attributes.debugger.debugger_visualizer.gdb]
 
-
 r[attributes.debugger.debugger_visualizer.gdb.pretty]
 GDB supports the use of a structured Python script, called a *pretty printer*, that describes how a type should be visualized in the debugger view.
 For detailed information on pretty printers, refer to GDB's [pretty printing documentation].
@@ -160,7 +159,6 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 ## The `collapse_debuginfo` attribute
 
 r[attributes.debugger.collapse_debuginfo]
-
 
 r[attributes.debugger.collapse_debuginfo.intro]
 The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site,

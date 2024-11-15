@@ -109,7 +109,6 @@ fn some_unused_variables() {
 
 r[attributes.meta]
 
-
 r[attributes.meta.intro]
 A "meta item" is the syntax used for the _Attr_ rule by most [built-in
 attributes]. It has the following grammar:

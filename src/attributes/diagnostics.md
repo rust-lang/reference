@@ -492,7 +492,6 @@ The attribute should be placed on a [trait declaration], though it is not an err
 r[attributes.diagnostic.on_unimplemented.syntax]
 The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
 
-
 r[attributes.diagnostic.on_unimplemented.keys]
 The following keys have the given meaning:
 * `message` --- The text for the top level error message.
