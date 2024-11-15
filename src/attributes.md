@@ -240,24 +240,20 @@ r[attributes.builtin]
 
 The following is an index of all built-in attributes.
 
-r[attributes.builtin.cfg]
 - Conditional compilation
   - [`cfg`] --- Controls conditional compilation.
   - [`cfg_attr`] --- Conditionally includes attributes.
 
-r[attributes.builtin.testing]
 - Testing
   - [`test`] --- Marks a function as a test.
   - [`ignore`] --- Disables a test function.
   - [`should_panic`] --- Indicates a test should generate a panic.
 
-r[attributes.builtin.derive]
 - Derive
   - [`derive`] --- Automatic trait implementations.
   - [`automatically_derived`] --- Marker for implementations created by
     `derive`.
 
-r[attributes.builtin.macros]
 - Macros
   - [`macro_export`] --- Exports a `macro_rules` macro for cross-crate usage.
   - [`macro_use`] --- Expands macro visibility, or imports macros from other
@@ -266,7 +262,6 @@ r[attributes.builtin.macros]
   - [`proc_macro_derive`] --- Defines a derive macro.
   - [`proc_macro_attribute`] --- Defines an attribute macro.
 
-r[attributes.builtin.diagnostic]
 - Diagnostics
   - [`allow`], [`expect`], [`warn`], [`deny`], [`forbid`] --- Alters the default lint level.
   - [`deprecated`] --- Generates deprecation notices.
@@ -274,7 +269,6 @@ r[attributes.builtin.diagnostic]
   - [`diagnostic::on_unimplemented`] --- Hints the compiler to emit a certain error
     message if a trait is not implemented.
 
-r[attributes.builtin.linkage]
 - ABI, linking, symbols, and FFI
   - [`link`] --- Specifies a native library to link with an `extern` block.
   - [`link_name`] --- Specifies the name of the symbol for functions or statics
@@ -294,7 +288,6 @@ r[attributes.builtin.linkage]
     object file.
   - [`crate_name`] --- Specifies the crate name.
 
-r[attributes.builtin.codegen]
 - Code generation
   - [`inline`] --- Hint to inline code.
   - [`cold`] --- Hint that a function is unlikely to be called.
@@ -303,43 +296,35 @@ r[attributes.builtin.codegen]
   - [`track_caller`] - Pass the parent call location to `std::panic::Location::caller()`.
   - [`instruction_set`] - Specify the instruction set used to generate a functions code
 
-r[attributes.builtin.doc]
 - Documentation
   - `doc` --- Specifies documentation. See [The Rustdoc Book] for more
     information. [Doc comments] are transformed into `doc` attributes.
 
-r[attributes.builtin.prelude]
 - Preludes
   - [`no_std`] --- Removes std from the prelude.
   - [`no_implicit_prelude`] --- Disables prelude lookups within a module.
 
-r[attributes.builtin.module]
 - Modules
   - [`path`] --- Specifies the filename for a module.
 
-r[attributes.builtin.limits]
 - Limits
   - [`recursion_limit`] --- Sets the maximum recursion limit for certain
     compile-time operations.
   - [`type_length_limit`] --- Sets the maximum size of a polymorphic type.
 
-r[attributes.builtin.rt]
 - Runtime
   - [`panic_handler`] --- Sets the function to handle panics.
   - [`global_allocator`] --- Sets the global memory allocator.
   - [`windows_subsystem`] --- Specifies the windows subsystem to link with.
 
-r[attributes.builtin.unstable]
 - Features
   - `feature` --- Used to enable unstable or experimental compiler features. See
     [The Unstable Book] for features implemented in `rustc`.
 
-r[attributes.builtin.typesystem]
 - Type System
   - [`non_exhaustive`] --- Indicate that a type will have more fields/variants
     added in future.
 
-r[attributes.builtin.debugging]
 - Debugger
   - [`debugger_visualizer`] --- Embeds a file that specifies debugger output for a type.
   - [`collapse_debuginfo`] --- Controls how macro invocations are encoded in debuginfo.
