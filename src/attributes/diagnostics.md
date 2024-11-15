@@ -1,18 +1,18 @@
 # Diagnostic attributes
 
-r[attributes.diagnostic]
+r[attributes.diagnostics]
 
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
 ## Lint check attributes
 
-r[attributes.diagnostic.lint]
+r[attributes.diagnostics.lint]
 
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation.
 
-r[attributes.diagnostic.lint.level]
+r[attributes.diagnostics.lint.level]
 The lint attributes `allow`,
 `expect`, `warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax
 to specify a list of lint names to change the lint level for the entity
@@ -20,22 +20,22 @@ to which the attribute applies.
 
 For any lint check `C`:
 
-r[attributes.diagnostic.lint.allow]
+r[attributes.diagnostics.lint.allow]
 * `#[allow(C)]` overrides the check for `C` so that violations will go
    unreported.
 
-r[attributes.diagnostic.lint.expect]
+r[attributes.diagnostics.lint.expect]
 * `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
   attribute will suppress the emission of `C` or issue a warning, if the
   expectation is unfulfilled.
 
-r[attributes.diagnostic.lint.warn]
+r[attributes.diagnostics.lint.warn]
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
 
-r[attributes.diagnostic.lint.deny]
+r[attributes.diagnostics.lint.deny]
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
 
-r[attributes.diagnostic.lint.forbid]
+r[attributes.diagnostics.lint.forbid]
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
 
@@ -58,7 +58,7 @@ pub mod m1 {
 }
 ```
 
-r[attributes.diagnostic.lint.override]
+r[attributes.diagnostics.lint.override]
 Lint attributes can override the level specified from a previous attribute, as
 long as the level does not attempt to change a forbidden lint
 (except for `deny`, which is allowed inside a `forbid` context, but ignored).
@@ -106,7 +106,7 @@ pub mod m3 {
 
 ### Lint Reasons
 
-r[attributes.diagnostic.lint.reason]
+r[attributes.diagnostics.lint.reason]
 All lint attributes support an additional `reason` parameter, to give context why
 a certain attribute was added. This reason will be displayed as part of the lint
 message if the lint is emitted at the defined level.
@@ -143,9 +143,9 @@ pub fn get_path() -> PathBuf {
 
 ### The `#[expect]` attribute
 
-r[attributes.diagnostic.expect]
+r[attributes.diagnostics.expect]
 
-r[attributes.diagnostic.expect.intro]
+r[attributes.diagnostics.expect.intro]
 The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
 expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
 would result in a lint emission. If the expectation is unfulfilled, because
@@ -171,7 +171,7 @@ fn main() {
 }
 ```
 
-r[attributes.lints.expect.fulfillment]
+r[attributes.diagnostics.expect.fulfillment]
 The lint expectation is only fulfilled by lint emissions which have been suppressed by
 the `expect` attribute. If the lint level is modified in the scope with other level
 attributes like `allow` or `warn`, the lint emission will be handled accordingly and the
@@ -201,7 +201,7 @@ fn select_song() {
 }
 ```
 
-r[attributes.diagnostic.expect.independent]
+r[attributes.diagnostics.expect.independent]
 If the `expect` attribute contains several lints, each one is expected separately. For a
 lint group it's enough if one lint inside the group has been emitted:
 
@@ -230,7 +230,7 @@ pub fn another_example() {
 
 ### Lint groups
 
-r[attributes.diagnostic.lint.group]
+r[attributes.diagnostics.lint.group]
 Lints may be organized into named groups so that the level of related lints
 can be adjusted together. Using a named group is equivalent to listing out the
 lints within that group.
@@ -251,7 +251,7 @@ fn example() {
 }
 ```
 
-r[attributes.diagnostic.lint.group.warnings]
+r[attributes.diagnostics.lint.group.warnings]
 There is a special group named "warnings" which includes all lints at the
 "warn" level. The "warnings" group ignores attribute order and applies to all
 lints that would otherwise warn within the entity.
@@ -271,13 +271,13 @@ fn example_err() {
 
 ### Tool lint attributes
 
-r[attributes.diagnostic.lint.tool]
+r[attributes.diagnostics.lint.tool]
 
-r[attributes.diagnostic.lint.tool.intro]
+r[attributes.diagnostics.lint.tool.intro]
 Tool lints allows using scoped lints, to `allow`, `warn`, `deny` or `forbid`
 lints of certain tools.
 
-r[attributes.diagnostic.lint.tool.activation]
+r[attributes.diagnostics.lint.tool.activation]
 Tool lints only get checked when the associated tool is active. If a lint
 attribute, such as `allow`, references a nonexistent tool lint, the compiler
 will not warn about the nonexistent lint until you use the tool.
@@ -305,14 +305,14 @@ fn foo() {
 
 ## The `deprecated` attribute
 
-r[attributes.diagnostic.deprecated]
+r[attributes.diagnostics.deprecated]
 
-r[attributes.diagnostic.deprecated.intro]
+r[attributes.diagnostics.deprecated.intro]
 The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue
 warnings on usage of `#[deprecated]` items. `rustdoc` will show item
 deprecation, including the `since` version and `note`, if available.
 
-r[attributes.diagnostic.deprecated.syntax]
+r[attributes.diagnostics.deprecated.syntax]
 The `deprecated` attribute has several forms:
 
 - `deprecated` --- Issues a generic message.
@@ -352,23 +352,23 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 ## The `must_use` attribute
 
-r[attributes.diagnostic.must_use]
+r[attributes.diagnostics.must_use]
 
-r[attributes.diagnostic.must_use.intro]
+r[attributes.diagnostics.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
 is not "used".
 
-r[attributes.diagnostic.must_use.allowed-positions]
+r[attributes.diagnostics.must_use.allowed-positions]
 The `must_use` attribute can be applied to user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
 and [traits].
 
-r[attributes.diagnostic.must_use.message]
+r[attributes.diagnostics.must_use.message]
 The `must_use` attribute may include a message by using the
 [_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
 message will be given alongside the warning.
 
-r[attributes.diagnostic.must_use.type]
+r[attributes.diagnostics.must_use.type]
 When used on user-defined composite types, if the [expression] of an
 [expression statement] has that type, then the `unused_must_use` lint is
 violated.
@@ -387,7 +387,7 @@ struct MustUse {
 MustUse::new();
 ```
 
-r[attributes.diagnostic.must_use.fn]
+r[attributes.diagnostics.must_use.fn]
 When used on a function, if the [expression] of an [expression statement] is a
 [call expression] to that function, then the `unused_must_use` lint is
 violated.
@@ -400,7 +400,7 @@ fn five() -> i32 { 5i32 }
 five();
 ```
 
-r[attributes.diagnostic.must_use.trait]
+r[attributes.diagnostics.must_use.trait]
 When used on a [trait declaration], a [call expression] of an [expression
 statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates
 the `unused_must_use` lint.
@@ -418,7 +418,7 @@ fn get_critical() -> impl Critical {
 get_critical();
 ```
 
-r[attributes.diagnostic.must_use.trait-function]
+r[attributes.diagnostics.must_use.trait-function]
 When used on a function in a trait declaration, then the behavior also applies
 when the call expression is a function from an implementation of the trait.
 
@@ -436,7 +436,7 @@ impl Trait for i32 {
 5i32.use_me();
 ```
 
-r[attributes.diagnostic.must_use.trait-impl-function]
+r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
 
 > Note: Trivial no-op expressions containing the value will not violate the
