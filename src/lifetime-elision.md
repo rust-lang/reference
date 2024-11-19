@@ -48,8 +48,8 @@ fn get_mut2<'a>(&'a mut self) -> &'a mut dyn T;       // expanded
 fn args1<T: ToCStr>(&mut self, args: &[T]) -> &mut Command;                  // elided
 fn args2<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command; // expanded
 
-fn other_args1<'a>(arg: &T) -> &'a str;               // elided
-fn other_args2<'a, 'b>(arg: &'b T) -> &'a str;        // expanded
+fn other_args1<'a>(args: &[T]) -> &'a str;            // elided
+fn other_args2<'a, 'b>(args: &'b [T]) -> &'a str;     // expanded
 
 fn new1(buf: &mut [u8]) -> Thing<'_>;                 // elided - preferred
 fn new2(buf: &mut [u8]) -> Thing;                     // elided
