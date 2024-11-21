@@ -87,6 +87,9 @@ pub mod m2 {
 }
 ```
 
+r[attributes.diagnostics.lint.override-forbid]
+It is an error to specify a lint level attribute weaker than `deny` that overrides a `forbid` in effect for that item.
+
 This example shows how one can use `forbid` to disallow uses of `allow` or
 `expect` for that lint check:
 
@@ -358,6 +361,9 @@ r[attributes.diagnostics.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
 is not "used".
 
+r[attributes.diagnostics.must_use.syntax]
+The `must_use` attribute uses either the [_MetaWord_] syntax, or the [_MetaNameValueStr_] syntax.
+
 r[attributes.diagnostics.must_use.allowed-positions]
 The `must_use` attribute can be applied to user-defined composite types
 ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
@@ -561,6 +567,7 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 ```
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
+[_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax

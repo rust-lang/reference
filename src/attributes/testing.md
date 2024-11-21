@@ -14,6 +14,9 @@ r[attributes.testing.test]
 r[attributes.testing.test.intro]
 The *`test` attribute* marks a function to be executed as a test.
 
+r[attributes.testing.test.syntax]
+The `test` attribute uses the [_MetaWord_] syntax.
+
 r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
 
@@ -60,8 +63,10 @@ A function annotated with the `test` attribute can also be annotated with the
 execute that function as a test. It will still be compiled when in test mode.
 
 r[attributes.testing.ignore.syntax]
-The `ignore` attribute may optionally be written with the [_MetaNameValueStr_]
-syntax to specify a reason why the test is ignored.
+The `ignore` attribute uses either the [_MetaWord_] syntax or the [_MetaNameValueStr_] syntax.
+
+r[attributes.testing.ignore.reason]
+The value in the case of using the [_MetaNameValueStr_] syntax is a reason for the test being ignored.
 
 ```rust
 #[test]
@@ -82,11 +87,14 @@ r[attributes.testing.should_panic.intro]
 A function annotated with the `test` attribute that returns `()` can also be
 annotated with the `should_panic` attribute.
 
+r[attributes.testing.should_panic.syntax]
+The `should_panic` attribute uses the [_MetaWord_] syntax, [_MetaNameValueStr_] syntax, or the [_MetaListNameValueStr_] syntax.
+
 r[attributes.testing.should_panic.behavior]
 The *`should_panic` attribute*
 makes the test only pass if it actually panics.
 
-r[attributes.testing.should_panic.syntax]
+r[attributes.testing.should_panic.expected]
 The `should_panic` attribute may optionally take an input string that must
 appear within the panic message. If the string is not found in the message,
 then the test will fail. The string may be passed using the
@@ -101,6 +109,7 @@ fn mytest() {
 }
 ```
 
+[_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`Termination`]: std::process::Termination
