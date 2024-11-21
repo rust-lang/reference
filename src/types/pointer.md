@@ -81,19 +81,61 @@ r[type.pointer.smart]
 
 The standard library contains additional 'smart pointer' types beyond references and raw pointers.
 
-## Bit validity
+## Pointer values and representation
 
-r[type.pointer.validity]
+r[type.pointer.value]
 
-r[type.pointer.validity.pointer-fragment]
-Despite pointers and references being similar to `usize`s in the machine code emitted on most platforms,
-the semantics of transmuting a reference or pointer type to a non-pointer type is currently undecided.
-Thus, it may not be valid to transmute a pointer or reference type, `P`, to a `[u8; size_of::<P>()]`.
+r[type.pointer.value.thin]
+Each thin pointer consists of an address and an optional [provenance][type.pointer.provenance]. The address refers to which byte the pointer points to. The provenance refers to which bytes the pointer is allowed to access, and the allocation those bytes are within.
 
-r[type.pointer.validity.raw]
-For thin raw pointers (i.e., for `P = *const T` or `P = *mut T` for `T: Sized`),
-the inverse direction (transmuting from an integer or array of integers to `P`) is always valid.
-However, the pointer produced via such a transmutation may not be dereferenced (not even if `T` has size zero).
+> [!NOTE]
+> A pointer that does not have a provenance may be called an invalid or dangling pointer.
+
+r[type.pointer.value.thin-repr]
+The representation of a value of a thin pointer is a sequence of initialized bytes with `u8` values given by the representation of its address as a value of type `usize`, and pointer fragments corresponding to its provenance, if present.
+
+r[type.pointer.value.thin-ref]
+A thin reference to `T` consists of a non-null, well aligned address, and provenance for `size_of::<T>()` bytes starting from that address. The representation of a thin reference to `T` is the same as the pointer with the same address and provenance.
+
+> [!NOTE]
+> This is true for both shared and mutable references. There are additional constraints enforced by the aliasing model that are not yet fully decided.
+
+r[type.pointer.value.wide]
+A wide pointer or reference consists of a data pointer or reference, and a pointee-specific metadata value.
+
+r[type.pointer.value.wide-reference]
+The data pointer of a wide reference has a non-null address, well aligned for `align_of_val(self)`, and with provenance for `size_of_val(self)` bytes.
+
+r[type.pointer.value.wide-representation]
+A wide pointer or reference is represented the same as `struct WidePointer<M>{data: *mut (), metadata: M}` where `M` is the pointee metadata type, and the `data` and `metadata` fields are the corresponding parts of the pointer.
+
+> [!NOTE]
+> The `WidePointer` struct has no guarantees about layout, and has the default representation.
+
+
+## Pointer Provenance
+
+r[type.pointer.provenance]
+
+r[type.pointer.provenance.intro]
+Pointer Provenance is a term that refers to additional data carried by pointer values in Rust, beyond its address. When stored in memory, Provenance is encoded in the Pointer Fragment part of each byte of the pointer.
+
+r[type.pointer.provenance.allocation]
+Whenever a pointer to a particular allocation is produced by using the reference or raw reference operators, or when a pointer is returned from an allocation function, the resulting pointer has provenance that refers to that allocation.
+
+> [!NOTE]
+> There is additional information encoded by provenance, but the exact scope of this information is not yet decided.
+
+r[type.pointer.provenance.dangling]
+A pointer is dangling if it has no provenance, or if it has provenance to an allocation that has since been deallocated. An access, except for an access of size zero, using a dangling pointer, is undefined behavior.
+
+> [!NOTE]
+> Allocations include local and static variables, as well as temporaries. Local Variables and Temporaries are deallocated when they go out of scope.
+
+> [!WARN]
+> The above is necessary, but not sufficient, to avoid undefined behavior. The full requirements for pointer access is not yet decided.
+> A reference obtained in safe code is guaranteed to be valid for its usable lifetime, unless interfered with by unsafe code.
+
 
 [Interior mutability]: ../interior-mutability.md
 [_Lifetime_]: ../trait-bounds.md

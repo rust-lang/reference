@@ -10,10 +10,13 @@ A value of type `char` is a [Unicode scalar value] (i.e. a code point that is
 not a surrogate), represented as a 32-bit unsigned word in the 0x0000 to 0xD7FF
 or 0xE000 to 0x10FFFF range.
 
-r[type.text.char-precondition]
-It is immediate [undefined behavior] to create a
-`char` that falls outside this range. A `[char]` is effectively a UCS-4 / UTF-32
-string of length 1.
+> [!NOTE]
+> It is immediate [undefined behavior] to create a
+> `char` that falls outside this range. A `[char]` is effectively a UCS-4 / UTF-32
+> string of length 1.
+
+r[type.text.char-repr]
+A value of type `char` is represented as the value of type `u32` with value equal to the code point that it represents.
 
 r[type.text.str-value]
 A value of type `str` is represented the same way as `[u8]`, a slice of
