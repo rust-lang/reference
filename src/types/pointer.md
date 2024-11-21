@@ -112,7 +112,6 @@ A wide pointer or reference is represented the same as `struct WidePointer<M>{da
 > [!NOTE]
 > The `WidePointer` struct has no guarantees about layout, and has the default representation.
 
-
 ## Pointer Provenance
 
 r[type.pointer.provenance]
@@ -135,7 +134,6 @@ A pointer is dangling if it has no provenance, or if it has provenance to an all
 > [!WARN]
 > The above is necessary, but not sufficient, to avoid undefined behavior. The full requirements for pointer access is not yet decided.
 > A reference obtained in safe code is guaranteed to be valid for its usable lifetime, unless interfered with by unsafe code.
-
 
 [Interior mutability]: ../interior-mutability.md
 [_Lifetime_]: ../trait-bounds.md

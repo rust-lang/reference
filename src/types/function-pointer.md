@@ -68,7 +68,6 @@ A value of a function pointer type consists of an non-null address. A function p
 > [!NOTE]
 > Whether or not a function pointer value has provenance, and whether or not this provenance is represented as pointer fragments, is not yet decided.
 
-
 ## Attributes on function pointer parameters
 
 r[type.fn-pointer.attributes]
