@@ -76,6 +76,9 @@ In particular, `i128` and `u128` are often aligned to 4 or 8 bytes even though
 their size is 16, and on many 32-bit platforms, `i64`, `u64`, and `f64` are only
 aligned to 4 bytes, not 8.
 
+r[layout.primitive.align-char]
+The alignment of `char` is the same as the alignment of `u32`.
+
 ## Pointers and References Layout
 
 r[layout.pointer]
