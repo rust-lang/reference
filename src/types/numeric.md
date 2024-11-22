@@ -59,13 +59,6 @@ r[type.numeric.int.size.minimum]
 > pointer support is limited and may require explicit care and acknowledgment
 > from a library to support.
 
-## Bit validity
-
-r[type.numeric.validity]
-
-For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
-validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
-
 ## Representation
 
 r[type.numeric.repr]
