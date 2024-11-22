@@ -211,8 +211,8 @@ smallest scope that contains the expression and is one of the following:
   guard.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
-* *Starting from Edition 2024* the pattern-matching condition and consequent body of [`if let`].
-* *Starting from Edition 2024* the entirety of the tail expression of a block.
+* The pattern-matching condition and consequent body of [`if let`] ([destructors.scope.temporary.edition2024]).
+* The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > **Notes**:
 >
@@ -220,6 +220,9 @@ smallest scope that contains the expression and is one of the following:
 > temporaries in the scrutinee can be dropped after the `match` expression. For
 > example, the temporary for `1` in `match 1 { ref mut z => z };` lives until
 > the end of the statement.
+
+r[destructors.scope.temporary.edition2024]
+> **Edition differences**: The 2024 edition added two new temporary scope narrowing rules: `if let` temporaries are dropped before the `else` block, and temporaries of tail expressions of blocks are dropped immediately after the tail expression is evaluated.
 
 Some examples:
 
