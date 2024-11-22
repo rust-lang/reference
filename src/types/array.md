@@ -32,7 +32,7 @@ always bounds-checked in safe methods and operators.
 > array type.
 
 r[type.array.repr]
-The values and representation of a tuple type are the same as a [struct type][type.struct.value] with `N` fields of type `T` corresponding to each index in order, where the fields are layed out according to the [`C` representation][layout.repr.c].
+An array value is represented by each element in ascending index order, placed immediately adjacent in memory.
 
 [_Expression_]: ../expressions.md
 [_Type_]: ../types.md#type-expressions
