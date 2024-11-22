@@ -216,10 +216,6 @@ smallest scope that contains the expression and is one of the following:
 
 > **Notes**:
 >
-> Temporaries that are created in the final expression of a function
-> body are dropped *after* any named variables bound in the function body.
-> Their drop scope is the entire function, as there is no smaller enclosing temporary scope.
->
 > The [scrutinee] of a `match` expression is not a temporary scope, so
 > temporaries in the scrutinee can be dropped after the `match` expression. For
 > example, the temporary for `1` in `match 1 { ref mut z => z };` lives until
