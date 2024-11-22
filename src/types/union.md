@@ -24,5 +24,11 @@ The memory layout of a `union` is undefined by default (in particular, fields do
 *not* have to be at offset 0), but the `#[repr(...)]` attribute can be used to
 fix a layout.
 
+r[type.union.value]
+A value of a union type consists of a sequence of bytes, corresponding to each [value byte][type.struct.value.value-bytes]. The value bytes of a union are represented exactly. Each [padding byte][type.struct.value.padding] is set to uninit.
+
+> [!NOTE]
+> When a union value is constructed or a field is read/written to, the value of that field is encoded or decoded appropriately.
+
 [`Copy`]: ../special-types-and-traits.md#copy
 [item]: ../items/unions.md

@@ -49,6 +49,9 @@ Furthermore, various expressions will produce the unit value if there is no othe
 r[type.tuple.access]
 Tuple fields can be accessed by either a [tuple index expression] or [pattern matching].
 
+r[type.tuple.repr]
+The values and representation of a tuple type are the same as a [struct type][type.struct.value] with the same fields and layout.
+
 [^1]: Structural types are always equivalent if their internal types are equivalent.
       For a nominal version of tuples, see [tuple structs].
 
