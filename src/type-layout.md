@@ -297,7 +297,7 @@ The following types are *elision candidate types*:
 * [`alloc::boxed::Box<U>`], if `U` is a `Sized` type
 * [`core::num::NonZero<T>`] if `T` is an integer type
 * A [function pointer][type.fn-pointer] type
-* A `struct`, defined using [`repr(transparent)`][layout.repr.transparent], which has a field that is an *elision candidate*, and all other fields have size 0 and alignment 1.
+* A `struct`, other than [`core::cell::UnsafeCell<T>`], defined using [`repr(transparent)`][layout.repr.transparent], which has a field that is an *elision candidate*, and all other fields have size 0 and alignment 1.
 
 r[layout.repr.rust.option.elision]
 If the *elision candidate field* of a *discriminant elision eligible* `enum` has an *elision candidate type*, then the `enum` has the same layout as that field, except that the value consisting of all `0` bytes represents the *elided variant* of the `enum`.
