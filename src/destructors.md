@@ -226,6 +226,7 @@ r[destructors.scope.temporary.edition2024]
 
 Some examples:
 
+<!--TODO: edition2024 -->
 ```rust
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
@@ -243,6 +244,16 @@ if PrintOnDrop("If condition").0 == "If condition" {
     unreachable!()
 };
 
+if let "if let scrutinee" = PrintOnDrop("if let scrutinee").0 {
+    PrintOnDrop("if let consequent").0
+    // `if let consequent` dropped here
+}
+// `if let scrutinee` is dropped here
+else {
+    PrintOnDrop("if let else").0
+    // `if let else` dropped here
+};
+
 // Dropped before the first ||
 (PrintOnDrop("first operand").0 == ""
 // Dropped before the )
@@ -250,10 +261,8 @@ if PrintOnDrop("If condition").0 == "If condition" {
 // Dropped before the ;
 || PrintOnDrop("third operand").0 == "";
 
-// Dropped at the end of the function, after local variables.
-// Changing this to a statement containing a return expression would make the
-// temporary be dropped before the local variables. Binding to a variable
-// which is then returned would also make the temporary be dropped first.
+// Scrutinee is dropped at the end of the function, before local variables
+// (because this is the tail expression of the function body block).
 match PrintOnDrop("Matched value in final expression") {
     // Dropped once the condition has been evaluated
     _ if PrintOnDrop("guard condition").0 == "" => (),
