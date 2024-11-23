@@ -210,7 +210,7 @@ smallest scope that contains the expression and is one of the following:
 * The condition expression of an `if` or `while` expression, or a `match`
   guard.
 * The body expression for a match arm.
-* The second operand of a [lazy boolean expression].
+* Each operand of a [lazy boolean expression].
 
 > **Notes**:
 >
@@ -242,11 +242,11 @@ if PrintOnDrop("If condition").0 == "If condition" {
     unreachable!()
 };
 
-// Dropped at the end of the statement
+// Dropped before the first ||
 (PrintOnDrop("first operand").0 == ""
-// Dropped at the )
+// Dropped before the )
 || PrintOnDrop("second operand").0 == "")
-// Dropped at the end of the expression
+// Dropped before the ;
 || PrintOnDrop("third operand").0 == "";
 
 // Dropped at the end of the function, after local variables.
