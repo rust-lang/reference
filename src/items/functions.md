@@ -293,9 +293,10 @@ from the "Native unwind" column in the table.
 | `panic=abort`  | unwinding     | `panic` aborts without unwinding      | abort                    |
 | `panic=abort`  | non-unwinding | `panic` aborts without unwinding      | [undefined behavior]     |
 
-> **Note**: With `panic=unwind`, when a `panic` is turned into an abort by a
-> non-unwinding ABI boundary, either no destructors (`Drop` calls) will run, or
-> all destructors up until the ABI boundary will run.
+> **Note**: The following guarantee applies from Rust 1.82 onward: with
+> `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding
+> ABI boundary, either no destructors (`Drop` calls) will run, or all destructors
+> up until the ABI boundary will run.
 
 For other considerations and limitations regarding unwinding across FFI
 boundaries, see the [relevant section in the Panic documentation][panic-ffi].
