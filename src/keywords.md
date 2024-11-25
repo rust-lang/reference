@@ -104,7 +104,8 @@ is possible to declare a variable or method with the name `union`.
 > KW_MACRO_RULES    : `macro_rules`\
 > KW_UNION          : `union`\
 > KW_STATICLIFETIME : `'static`\
-> KW_SAFE           : `safe`
+> KW_SAFE           : `safe`\
+> KW_RAW            : `raw`
 >
 > **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
@@ -127,6 +128,8 @@ is possible to declare a variable or method with the name `union`.
 
 * `safe` is used for functions and statics, which has meaning in [external blocks].
 
+* `raw` is used for [raw borrow operators], and is only a keyword when matching a raw borrow operator form (such as `&raw const expr` or `&raw mut expr`).
+
 [items]: items.md
 [Variables]: variables.md
 [Type parameters]: types/parameters.md
@@ -141,3 +144,4 @@ is possible to declare a variable or method with the name `union`.
 [loop label]: expressions/loop-expr.md#loop-labels
 [generic lifetime parameter]: items/generics.md
 [external blocks]: items/external-blocks.md
+[raw borrow operators]: expressions/operator-expr.md#raw-borrow-operators
