@@ -211,20 +211,22 @@ smallest scope that contains the expression and is one of the following:
   guard.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
+* The pattern-matching condition and consequent body of [`if let`] ([destructors.scope.temporary.edition2024]).
+* The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > **Notes**:
->
-> Temporaries that are created in the final expression of a function
-> body are dropped *after* any named variables bound in the function body.
-> Their drop scope is the entire function, as there is no smaller enclosing temporary scope.
 >
 > The [scrutinee] of a `match` expression is not a temporary scope, so
 > temporaries in the scrutinee can be dropped after the `match` expression. For
 > example, the temporary for `1` in `match 1 { ref mut z => z };` lives until
 > the end of the statement.
 
+r[destructors.scope.temporary.edition2024]
+> **Edition differences**: The 2024 edition added two new temporary scope narrowing rules: `if let` temporaries are dropped before the `else` block, and temporaries of tail expressions of blocks are dropped immediately after the tail expression is evaluated.
+
 Some examples:
 
+<!--TODO: edition2024 -->
 ```rust
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
@@ -242,6 +244,16 @@ if PrintOnDrop("If condition").0 == "If condition" {
     unreachable!()
 };
 
+if let "if let scrutinee" = PrintOnDrop("if let scrutinee").0 {
+    PrintOnDrop("if let consequent").0
+    // `if let consequent` dropped here
+}
+// `if let scrutinee` is dropped here
+else {
+    PrintOnDrop("if let else").0
+    // `if let else` dropped here
+};
+
 // Dropped before the first ||
 (PrintOnDrop("first operand").0 == ""
 // Dropped before the )
@@ -249,10 +261,8 @@ if PrintOnDrop("If condition").0 == "If condition" {
 // Dropped before the ;
 || PrintOnDrop("third operand").0 == "";
 
-// Dropped at the end of the function, after local variables.
-// Changing this to a statement containing a return expression would make the
-// temporary be dropped before the local variables. Binding to a variable
-// which is then returned would also make the temporary be dropped first.
+// Scrutinee is dropped at the end of the function, before local variables
+// (because this is the tail expression of the function body block).
 match PrintOnDrop("Matched value in final expression") {
     // Dropped once the condition has been evaluated
     _ if PrintOnDrop("guard condition").0 == "" => (),
