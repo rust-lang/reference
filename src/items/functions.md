@@ -257,12 +257,13 @@ let fptr: extern "C" fn() -> i32 = new_i32;
 
 r[items.fn.extern.unwind]
 
-r[items.fn.extern.unwind.into]
+r[items.fn.extern.unwind.info]
 Most ABI strings come in two variants, one with an `-unwind` suffix and one without.
 The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI. The
 choice of ABI, together with the runtime [panic mode][panic-modes], determines
 the behavior when unwinding out of a function.
 
+r[items.fn.extern.unwind.behavior]
 The table below indicates the behavior of an unwinding operation reaching each
 type of ABI boundary (function declaration or definition using the
 corresponding ABI string). Note that the Rust runtime is not affected by, and
@@ -293,10 +294,12 @@ from the "Native unwind" column in the table.
 | `panic=abort`  | unwinding     | `panic` aborts without unwinding      | abort                    |
 | `panic=abort`  | non-unwinding | `panic` aborts without unwinding      | [undefined behavior]     |
 
-> **Note**: The following guarantee applies from Rust 1.82 onward: with
-> `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding
-> ABI boundary, either no destructors (`Drop` calls) will run, or all destructors
-> up until the ABI boundary will run.
+r[items.fn.extern.abort]
+With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding ABI boundary, either no destructors (`Drop` calls) will run, or all destructors
+up until the ABI boundary will run.
+
+> [!NOTE]
+> Prior to Rust 1.82, it is possible for only some of the destructors to executive, and not others.
 
 For other considerations and limitations regarding unwinding across FFI
 boundaries, see the [relevant section in the Panic documentation][panic-ffi].
