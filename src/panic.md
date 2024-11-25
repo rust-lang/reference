@@ -32,7 +32,7 @@ Panicking may either be recoverable or non-recoverable, though it can be
 configured (via `panic=abort`) to always be non-recoverable. (The converse is
 not true: `panic=unwind` does not guarantee that all panics are recoverable,
 only that panicking via the `panic!` macro and similar standard library
-mechanisms is recoverable.) 
+mechanisms is recoverable.)
 
 r[panic.unwind.destruction]
 When panic recovery occurs, the runtime "unwinds" Rust frames, just as C++'s `throw` unwinds C++ frames, until the panic reaches
