@@ -26,6 +26,7 @@ Edition | `no_std` not applied        | `no_std` applied
 2015    | [`std::prelude::rust_2015`] | [`core::prelude::rust_2015`]
 2018    | [`std::prelude::rust_2018`] | [`core::prelude::rust_2018`]
 2021    | [`std::prelude::rust_2021`] | [`core::prelude::rust_2021`]
+2024    | [`std::prelude::rust_2024`] | [`core::prelude::rust_2024`]
 
 
 > **Note**:
