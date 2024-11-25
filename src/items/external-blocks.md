@@ -5,7 +5,7 @@ r[items.extern]
 r[items.extern.syntax]
 > **<sup>Syntax</sup>**\
 > _ExternBlock_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> `extern` [_Abi_]<sup>?</sup> `{`\
+> &nbsp;&nbsp; `unsafe`<sup>?</sup>[^unsafe-2024] `extern` [_Abi_]<sup>?</sup> `{`\
 > &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
@@ -15,6 +15,8 @@ r[items.extern.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_StaticItem_] | [_Function_] ) )\
 > &nbsp;&nbsp; )
+>
+> [^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
 
 r[items.extern.intro]
 External blocks provide _declarations_ of items that are not _defined_ in the
@@ -30,6 +32,12 @@ Calling functions or accessing statics that are declared in external blocks is o
 
 r[items.extern.namespace]
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
+
+r[items.extern.unsafe-required]
+The `unsafe` keyword is semantically required to appear before the `extern` keyword on external blocks.
+
+r[items.extern.edition2024]
+> **Edition differences**: Prior to the 2024 edition, the `unsafe` keyword is optional. The `safe` and `unsafe` item qualifiers are only allowed if the external block itself is marked as `unsafe`.
 
 ## Functions
 
