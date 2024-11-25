@@ -100,6 +100,14 @@ The following keywords are reserved beginning in the 2024 edition.
 These keywords have special meaning only in certain contexts. For example, it
 is possible to declare a variable or method with the name `union`.
 
+> **<sup>Lexer</sup>**\
+> KW_MACRO_RULES    : `macro_rules`\
+> KW_UNION          : `union`\
+> KW_STATICLIFETIME : `'static`
+>
+> **<sup>Lexer 2015</sup>**\
+> KW_DYN            : `dyn`
+
 * `macro_rules` is used to create custom [macros].
 * `union` is used to declare a [union] and is only a keyword when used in a
   union declaration.
@@ -116,13 +124,6 @@ is possible to declare a variable or method with the name `union`.
 
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
-> **<sup>Lexer</sup>**\
-> KW_MACRO_RULES    : `macro_rules`\
-> KW_UNION          : `union`\
-> KW_STATICLIFETIME : `'static`
->
-> **<sup>Lexer 2015</sup>**\
-> KW_DYN            : `dyn`
 * `safe` is used for functions and statics, which has meaning in [external blocks].
 
 [items]: items.md
