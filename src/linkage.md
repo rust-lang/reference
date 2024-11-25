@@ -305,7 +305,6 @@ regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
 may be used. The lint flags any calls to `-unwind` foreign functions or
 function pointers.
 
-
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
 [configuration option]: conditional-compilation.md
