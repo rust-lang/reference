@@ -295,15 +295,16 @@ with these characteristics:
 > cause a link-error, since that ABI is not expected to be used as an
 > entrypoint into a static or shared library.
 
+> **Note**: the restriction can only be violated when mixing code with different
+> `-C panic` flags. This is not possible in normal use of cargo, so most users
+> need not be concerned about this.
+
 r[link.foreign-code.prohibited.lint.ffi_unwind_calls]
 To guarantee that a library will be sound (and linkable with `rustc`)
 regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
 may be used. The lint flags any calls to `-unwind` foreign functions or
 function pointers.
 
-> **Note**: the restriction can only be violated when mixing code with different
-> `-C panic` flags. This is not possible in normal use of cargo, so most users
-> need not be concerned about this.
 
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
