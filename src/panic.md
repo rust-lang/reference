@@ -84,7 +84,7 @@ which will occur:
 * The function returns a `Result::Err` containing an opaque type.
 
 > [!NOTE]
->  Rust code compiled or linked with a different runtime counts as a
+>  Rust code compiled or linked with a different instance of the Rust runtime counts as a
 > "foreign exception" for the purpose of this guarantee. Thus, a library that
 > uses `panic!` and is linked against one version of the Rust standard library,
 > invoked from an application that uses a different version of the standard
