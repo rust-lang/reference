@@ -82,7 +82,7 @@ unsafe { core::arch::asm!("/* {} */", in(reg) 0); }
 
 r[asm.scope.naked_asm]
 With the `naked_asm!` macro, the assembly code is emitted in a function scope and constitutes the full assembly code of a function.
-The `naked_asm!` macro is only allowed in [naked functions](../attributes/codegen.md#the-naked-attribute).
+The `naked_asm!` macro is only allowed in [naked functions](attributes/codegen.md#the-naked-attribute).
 
 r[asm.scope.global_asm]
 With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function.
@@ -1186,7 +1186,7 @@ unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
 ```
 
 r[asm.options.naked_asm-restriction]
-`global_asm!` only supports the `att_syntax` and `raw` options.
+`naked_asm!` only supports the `att_syntax` and `raw` options.
 The remaining options are not meaningful because the inline assembly defines the whole function body.
 
 r[asm.options.global_asm-restriction]
@@ -1356,7 +1356,7 @@ r[asm.naked-rules.reg-not-input]
     Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
 
 r[asm.naked-rules.reg-not-output]
-- Any callee-saved registers must have the same value upon exiting the asm block as they had on entry, otherwise behavior is undefined.
+- Any callee-saved registers must have the same value upon return as they had on entry, otherwise behavior is undefined.
   - Caller-saved registes may be used freely, even if they are not used for the return value.
 
 r[asm.naked-rules.unwind]
@@ -1365,6 +1365,7 @@ r[asm.naked-rules.unwind]
 
 r[asm.naked-rules.noreturn]
 - Behavior is undefined if execution falls through to the end of the asm block.
+    - the assembly code is expected to contain a return instruction or to diverge
 
 r[asm.naked-rules.mem-same-as-ffi]
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
@@ -1376,10 +1377,6 @@ r[asm.naked-rules.black-box]
   - This effectively means that the compiler must treat the `naked_asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
   - However there is no guarantee that each `naked_asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate `naked_asm!` blocks.
-
-r[asm.naked-rules.not-exactly-once]
-- You cannot assume that an `naked_asm!` block will appear exactly once in the output binary.
-  The compiler is allowed to instantiate multiple copies of the `naked_asm!` block, for example when the function containing it is inlined in multiple places.
 
 r[asm.validity]
 ### Correctness and Validity

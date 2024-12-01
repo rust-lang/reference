@@ -67,18 +67,11 @@ No function prologue or epilogue are generated for the attributed function: the 
 of the `naked_asm!` invocation make up the full body of a naked function.
 
 r[attributes.codegen.naked.call-stack]
-The caller must set up the call stack according to the specified calling convention before
-executing a naked function, even in contexts where setting up the call stack would ordinarily
-be unnecessary, such as when the function is inlined.
+The asm code will have a valid call stack and register state on entry as per the signature and calling convention of the function.
 
-An implementation can fulfill this requirement by guaranteeing that naked functions
-are never inlined. However, implementations are not currently required to guarantee that
-naked functions are never inlined.
-
-In the future it may become a requirement for implementations to guarantee that
-naked functions are never inlined; users must not rely on any observable behavior
-that may result from inlining. according to the specified calling convention before
-executing a naked function,
+r[attributes.codegen.naked.no-duplication]
+The asm code may not be duplicated by the compiler.
+This property is important for naked functions that define symbols in the assembly code.
 
 r[attributes.codegen.naked.unsafe-function]
 A naked function that makes use of registers in a way that does not conform
@@ -95,7 +88,7 @@ r[attributes.codegen.naked.track_caller]
 A naked function cannot be attributed by the [`track_caller`](#the-track_caller-attribute) attribute.
 
 r[attributes.codegen.naked.testing]
-A naked function cannot be attributed by [the testing attributes](../testing.md).
+A naked function cannot be attributed by [the testing attributes](attributes/testing.md).
 
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
