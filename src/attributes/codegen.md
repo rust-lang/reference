@@ -67,7 +67,7 @@ No function prologue or epilogue are generated for the attributed function: the 
 of the `naked_asm!` invocation make up the full body of a naked function.
 
 r[attributes.codegen.naked.call-stack]
-The caller must set up the call stack acording to the specified calling convention before
+The caller must set up the call stack according to the specified calling convention before
 executing a naked function, even in contexts where setting up the call stack would ordinarily
 be unnecessary, such as when the function is inlined.
 
@@ -86,7 +86,7 @@ to the specified calling convention imposes additional safety invariants on its 
 and therefore must be marked as an [unsafe function].
 
 > ***Note***: a `naked_asm!` invocation may refer to registers that were not specified as operands.
-> for standard `asm!` this is undefined behavior, but `inline_asm!` may rely on the state of registers
+> for standard `asm!` this is undefined behavior, but `naked_asm!` may rely on the state of registers
 > as specified by the calling convention.
 
 r[attributes.codegen.naked.unused-variables]
