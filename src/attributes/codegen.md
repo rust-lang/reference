@@ -88,7 +88,7 @@ r[attributes.codegen.naked.track_caller]
 A naked function cannot be attributed by the [`track_caller`](#the-track_caller-attribute) attribute.
 
 r[attributes.codegen.naked.testing]
-A naked function cannot be attributed by [the testing attributes](attributes/testing.md).
+A naked function cannot be attributed by [the testing attributes](testing.md).
 
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
