@@ -85,16 +85,17 @@ A naked function that makes use of registers in a way that does not conform
 to the specified calling convention imposes additional safety invariants on its caller,
 and therefore must be marked as an [unsafe function].
 
-> ***Note***: a `naked_asm!` invocation may refer to registers that were not specified as operands.
-> for standard `asm!` this is undefined behavior, but `naked_asm!` may rely on the state of registers
-> as specified by the calling convention.
-
 r[attributes.codegen.naked.unused-variables]
 The [`unused_variables`] lint is suppressed within naked functions.
 
-r[attributes.codegen.naked.no-unwind]
-Implementations may assume that naked functions never unwind.
-Unwinding through a naked function is undefined behavior.
+r[attributes.codegen.naked.inline]
+A naked function cannot be attributed by the [`inline`](#the-inline-attribute) attribute.
+
+r[attributes.codegen.naked.track_caller]
+A naked function cannot be attributed by the [`track_caller`](#the-track_caller-attribute) attribute.
+
+r[attributes.codegen.naked.testing]
+A naked function cannot be attributed by [the testing attributes](../testing.md).
 
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
