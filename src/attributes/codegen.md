@@ -570,12 +570,9 @@ trait object whose methods are attributed.
 [`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
 [attributes]: ../attributes.md
-[extern function qualifier]: ../items/functions.md#extern-function-qualifier
 [FFI-safe]: ../../rustc/lints/listing/warn-by-default.html#improper-ctypes-definitions
 [function body]: ../items/functions.md#function-body
 [functions]: ../items/functions.md
-[operands]: ../inline-assembly.md#operand-type
-[option]: ../inline-assembly.md#options
 [rules for inline assembly]: ../inline-assembly.md#rules-for-inline-assembly
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
