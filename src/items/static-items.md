@@ -37,10 +37,7 @@ All access to a static is safe, but there are a number of restrictions on
 statics:
 
 r[items.static.sync]
-* The type must have the `Sync` trait bound to allow thread-safe access.
-
-r[items.static.const]
-* Constants cannot refer to statics.
+* The type must have the [`Sync`](std::marker::Sync) trait bound to allow thread-safe access.
 
 r[items.static.init.omission]
 The initializer expression must be omitted in an [external block], and must be
@@ -159,7 +156,7 @@ It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the
 following are true:
 
-* Large amounts of data are being stored
+* Large amounts of data are being stored.
 * The single-address property of statics is required.
 * Interior mutability is required.
 

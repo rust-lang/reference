@@ -48,6 +48,9 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 };
 ```
 
+r[items.const.final-value-immutable]
+The final value of a `const` item cannot contain references to anything mutable.
+
 r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
 
