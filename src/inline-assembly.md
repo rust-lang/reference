@@ -1372,11 +1372,10 @@ r[asm.naked-rules.mem-same-as-ffi]
   - Refer to the unsafe code guidelines for the exact rules.
   - These rules do not apply to memory which is private to the asm code, such as stack space allocated within the asm block.
 
-r[asm.naked-rules.black-box]
+r[asm.rules.black-box]
 - The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
   - This effectively means that the compiler must treat the `naked_asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
-  - However there is no guarantee that each `naked_asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate `naked_asm!` blocks.
 
 r[asm.validity]
 ### Correctness and Validity
