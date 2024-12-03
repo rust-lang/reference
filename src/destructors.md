@@ -226,7 +226,6 @@ r[destructors.scope.temporary.edition2024]
 
 Some examples:
 
-<!--TODO: edition2024 -->
 ```rust
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
