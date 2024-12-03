@@ -100,6 +100,16 @@ The following keywords are reserved beginning in the 2024 edition.
 These keywords have special meaning only in certain contexts. For example, it
 is possible to declare a variable or method with the name `union`.
 
+> **<sup>Lexer</sup>**\
+> KW_MACRO_RULES    : `macro_rules`\
+> KW_UNION          : `union`\
+> KW_STATICLIFETIME : `'static`\
+> KW_SAFE           : `safe`\
+> KW_RAW            : `raw`
+>
+> **<sup>Lexer 2015</sup>**\
+> KW_DYN            : `dyn`
+
 * `macro_rules` is used to create custom [macros].
 * `union` is used to declare a [union] and is only a keyword when used in a
   union declaration.
@@ -116,14 +126,9 @@ is possible to declare a variable or method with the name `union`.
 
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
-> **<sup>Lexer</sup>**\
-> KW_MACRO_RULES    : `macro_rules`\
-> KW_UNION          : `union`\
-> KW_STATICLIFETIME : `'static`
->
-> **<sup>Lexer 2015</sup>**\
-> KW_DYN            : `dyn`
 * `safe` is used for functions and statics, which has meaning in [external blocks].
+
+* `raw` is used for [raw borrow operators], and is only a keyword when matching a raw borrow operator form (such as `&raw const expr` or `&raw mut expr`).
 
 [items]: items.md
 [Variables]: variables.md
@@ -139,3 +144,4 @@ is possible to declare a variable or method with the name `union`.
 [loop label]: expressions/loop-expr.md#loop-labels
 [generic lifetime parameter]: items/generics.md
 [external blocks]: items/external-blocks.md
+[raw borrow operators]: expressions/operator-expr.md#raw-borrow-operators
