@@ -116,14 +116,16 @@ is possible to declare a variable or method with the name `union`.
 
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
+* `safe` is used for functions and statics, which has meaning in [external blocks].
+
 > **<sup>Lexer</sup>**\
 > KW_MACRO_RULES    : `macro_rules`\
 > KW_UNION          : `union`\
 > KW_STATICLIFETIME : `'static`
+> KW_SAFE : `safe`
 >
 > **<sup>Lexer 2015</sup>**\
 > KW_DYN            : `dyn`
-* `safe` is used for functions and statics, which has meaning in [external blocks].
 
 [items]: items.md
 [Variables]: variables.md
