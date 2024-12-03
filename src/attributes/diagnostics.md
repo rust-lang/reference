@@ -505,11 +505,10 @@ r[attributes.diagnostic.on_unimplemented.note-repetition]
 The `note` option can appear several times, which results in several note messages being emitted.
 
 r[attributes.diagnostic.on_unimplemented.repetition]
-If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value.
+If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Subsequent occurrences generates a warning.
 
-r[attributes.diagnostic.on_unimplemented.warnings]
-Any other occurrence generates an lint warning.
-For any other non-existing option a lint-warning is generated.
+r[attributes.diagnostic.on_unimplemented.unknown-keys]
+A warning is generated for any unknown keys.
 
 r[attributes.diagnostic.on_unimplemented.format-string]
 All three options accept a string as an argument, interpreted using the same formatting as a [`std::fmt`] string.
