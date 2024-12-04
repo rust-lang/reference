@@ -52,7 +52,7 @@ format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "\"" <explicit register> "\""
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
-reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr>
+reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr> / label <block>
 clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *("," option) [","] ")"
@@ -353,6 +353,23 @@ let y: [u32; 4] = unsafe { core::mem::transmute(y) };
 assert_eq!(y, [3, 2, 0, 1]);
 # }
 ```
+
+r[asm.operand-type.supported-operands.label]
+* `label <block>`
+  - The address of the block is substituted into the asm template string. The assembly block may jump to the substituted addresses.
+  - After execution of the block, the `asm!` expression returns.
+  - The type of the block must be unit or `!` (never).
+  - The block starts new safety context; despite the outer `unsafe` needed for `asm!`, you need an extra `unsafe` to perform unsafe operations inside the block.
+
+```rust
+# #[cfg(target_arch = "x86_64")]
+unsafe {
+    core::arch::asm!("jmp {}", label {
+        println!("Hello from inline assembly label");
+    });
+}
+```
+
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
@@ -1080,6 +1097,8 @@ r[asm.options.supported-options.noreturn]
 - `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
   Behavior is undefined if execution falls through past the end of the asm code.
   A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
+- When labels are present, `noreturn` means the execution of the `asm!` block never falls through; the asm block may only exit by jumping to one of the specified blocks.
+  The entire `asm!` block will have unit type in this case, unless all label blocks diverge, in which case the return type is `!`.
 
 <!-- no_run: This test aborts at runtime -->
 ```rust,no_run
@@ -1164,7 +1183,10 @@ unsafe { core::arch::asm!("", options(pure)); }
 ```
 
 r[asm.options.checks.noreturn]
-- It is a compile-time error to specify `noreturn` on an asm block with outputs.
+- It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
+
+r[asm.options.checks.label-with-outputs]
+- It is a compile-time error to specify label on an asm block with outputs.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
