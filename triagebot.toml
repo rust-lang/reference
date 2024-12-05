@@ -11,3 +11,14 @@ allow-unauthenticated = [
 remove = []
 add = ["S-waiting-on-author"]
 unless = ["S-blocked", "S-waiting-on-team", "S-waiting-on-review"]
+
+[autolabel."S-waiting-on-review"]
+new_pr = true
+
+[review-submitted]
+reviewed_label = "S-waiting-on-author"
+review_labels = ["S-waiting-on-review"]
+
+[review-requested]
+remove_labels = ["S-waiting-on-author"]
+add_labels = ["S-waiting-on-review"]
