@@ -298,7 +298,8 @@ The availability of supported types for a particular register class may depend o
 | RISC-V | `freg` | `d` | `f64` |
 | RISC-V | `vreg` | N/A | Only clobbers |
 | LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
-| LoongArch64 | `freg` | None | `f32`, `f64` |
+| LoongArch64 | `freg` | `f` | `f32` |
+| LoongArch64 | `freg` | `d` | `f64` |
 | s390x | `reg`, `reg_addr` | None | `i8`, `i16`, `i32`, `i64` |
 | s390x | `freg` | None | `f32`, `f64` |
 | s390x | `vreg` | N/A | Only clobbers |
@@ -513,12 +514,13 @@ The following ABIs can be used with `clobber_abi`:
 | AArch64 | `"C"`, `"system"`, `"efiapi"` | `x[0-17]`, `x18`\*, `x30`, `v[0-31]`, `p[0-15]`, `ffr` |
 | Arm64EC | `"C"`, `"system"` | `x[0-12]`, `x[15-17]`, `x30`, `v[0-15]` |
 | ARM | `"C"`, `"system"`, `"efiapi"`, `"aapcs"` | `r[0-3]`, `r12`, `r14`, `s[0-15]`, `d[0-7]`, `d[16-31]` |
-| RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`, `x[28-31]`, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
+| RISC-V | `"C"`, `"system"`, `"efiapi"` | `x1`, `x[5-7]`, `x[10-17]`\*, `x[28-31]`\*, `f[0-7]`, `f[10-17]`, `f[28-31]`, `v[0-31]` |
 | LoongArch | `"C"`, `"system"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
 | s390x | `"C"`, `"system"` | `r[0-5]`, `r14`, `f[0-7]`, `v[0-31]`, `a[2-15]` |
 
 > Notes:
 > - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
+> - On RISC-V `x[16-17]` and `x[28-31]` only included in the clobber list if they are not considered as reserved registers on the target.
 
 The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
 
