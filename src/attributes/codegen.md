@@ -32,6 +32,10 @@ function where it is defined.
 > internal heuristics. Incorrectly inlining functions can make the program
 > slower, so this attribute should be used with care.
 
+r[attributes.codegen.inline.syntax]
+The `inline` attribute uses either [_MetaWord_] syntax (for the default form), or [_MetaListIdents_] syntax.
+When using [_MetaListIdents_] form, only a single ident is permitted.
+
 r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
 
@@ -48,16 +52,34 @@ There are three ways to use the inline attribute:
 
 r[attributes.codegen.cold]
 
+r[attributes.codegen.cold.intro]
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
+
+> [!NOTE]
+> In particular, it indicates that branches that lead to such a call are unlikely to be taken.
+
+r[attributes.codegen.cold.syntax]
+The `cold` attribute uses the [_MetaWord_] syntax.
 
 ## The `no_builtins` attribute
 
 r[attributes.codegen.no_builtins]
 
+r[attributes.codegen.no_builtins.intro]
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
 assumed to exist.
+
+> [!NOTE]
+> Such library functions may include, but are not limited to, C routines such as `memcpy` or `memset`.
+
+> [!WARN]
+> A crate using `no_builtins` does not guarantee that the crate will be free from calls to such functions, even if it does not call the routines explicit.
+> For example, the standard library implementation may still call such functions.
+
+r[attributes.codegen.no_builtins.syntax]
+The `no_builtins` attribute uses the [_MetaWord_] syntax.
 
 ## The `target_feature` attribute
 
@@ -66,7 +88,10 @@ r[attributes.codegen.target_feature]
 r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
-features. It uses the [_MetaListNameValueStr_] syntax with a single key of
+features.
+
+r[attributes.codegen.target_feature.syntax]
+The `target_feature` attribute uses the [_MetaListNameValueStr_] syntax with a single key of
 `enable` whose value is a string of comma-separated feature names to enable.
 
 ```rust
@@ -181,7 +206,6 @@ Reference Manual], or elsewhere on [developer.arm.com].
 > ***Note***: The following pairs of features should both be marked as enabled
 > or disabled together if used:
 > - `paca` and `pacg`, which LLVM currently implements as one feature.
-
 
 Feature        | Implicitly Enables | Feature Name
 ---------------|--------------------|-------------------
@@ -354,6 +378,9 @@ r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
 with the exception of the entry point `fn main`.
 
+r[attributes.codegen.track_caller.syntax]
+The `track_caller` attribute uses the [_MetaWord_] syntax.
+
 r[attributes.codegen.track_caller.traits]
 When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a
 default implementation with the attribute, then the attribute also applies to override implementations.
@@ -363,8 +390,6 @@ When applied to a function in an `extern` block the attribute must also be appli
 implementations, otherwise undefined behavior results. When applied to a function which is made
 available to an `extern` block, the declaration in the `extern` block must also have the attribute,
 otherwise undefined behavior results.
-
-### Behavior
 
 r[attributes.codegen.track_caller.behavior]
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
@@ -385,7 +410,7 @@ fn f() {
 > Note: because the resulting `Location` is a hint, an implementation may halt its walk up the stack
 > early. See [Limitations](#limitations) for important caveats.
 
-#### Examples
+### Examples
 
 When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
 
@@ -464,7 +489,6 @@ trait object whose methods are attributed.
 > creation of a shim hides the implicit parameter from callers of the function pointer, preserving
 > soundness.
 
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
@@ -493,8 +517,6 @@ This allows mixing more than one instruction set in a single program on CPU arch
 r[attributes.codegen.instruction_set.syntax]
 It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
-[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
-
 r[attributes.codegen.instruction_set.target-limits]
 It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
 
@@ -519,3 +541,8 @@ Using the `instruction_set` attribute has the following effects:
 
 * If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
 * Any inline assembly in the function must use the specified instruction set instead of the target default.
+
+[_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
+[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
