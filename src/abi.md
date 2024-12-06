@@ -74,6 +74,8 @@ with the same name (or with a well-known symbol), leading to undefined behavior.
 extern "C" fn foo() {}
 ```
 
+> **Edition differences**: Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
+
 ## The `link_section` attribute
 
 The *`link_section` attribute* specifies the section of the object file that a
@@ -90,6 +92,8 @@ of memory not expecting them, such as mutable data into read-only areas.
 pub static VAR1: u32 = 1;
 ```
 
+> **Edition differences**: Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
+
 ## The `export_name` attribute
 
 The *`export_name` attribute* specifies the name of the symbol that will be
@@ -104,6 +108,8 @@ behavior.
 #[unsafe(export_name = "exported_symbol_name")]
 pub fn name_in_rust() { }
 ```
+
+> **Edition differences**: Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
 
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md

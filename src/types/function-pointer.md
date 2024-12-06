@@ -39,7 +39,14 @@ function], and the `extern` qualifier indicates it is an [extern function].
 
 r[type.fn-pointer.constraint-variadic]
 Variadic parameters can only be specified with [`extern`] function types with
-the `"C"` or `"cdecl"` calling convention.
+these calling conventions:
+* `C`
+* `cdecl`
+* `system`
+* `aapcs`
+* `sysv64`
+* `win64`
+* `efiapi`
 
 An example where `Binop` is defined as a function pointer type:
 

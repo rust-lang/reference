@@ -16,7 +16,7 @@ smart-punctuation = true
 "/unsafe-functions.html" = "unsafe-keyword.html"
 
 [rust]
-edition = "2021"
+edition = "2024"
 
 [preprocessor.spec]
 command = "cargo run --release --manifest-path mdbook-spec/Cargo.toml"
