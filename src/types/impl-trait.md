@@ -140,7 +140,7 @@ fn capture<'a, 'b, T>(x: &'a (), y: T) -> impl Sized + use<'a, T> {
 ```
 
 r[type.impl-trait.generic-capture.precise.constraint-single]
-Currently, only one `use<..>` bound may be present in a bounds list, such bounds are not allowed in the signature of items of a trait definition, all in-scope type and const generic parameters must be included, and all lifetime parameters that appear in other bounds of the abstract type must be included\1
+Currently, only one `use<..>` bound may be present in a bounds list, such bounds are not allowed in the signature of items of a trait definition, all in-scope type and const generic parameters must be included, and all lifetime parameters that appear in other bounds of the abstract type must be included.
 
 r[type.impl-trait.generic-capture.precise.constraint-lifetime]
 Within the `use<..>` bound, any lifetime parameters present must appear before all type and const generic parameters, and the elided lifetime (`'_`) may be present if it is otherwise allowed to appear within the `impl Trait` return type.
