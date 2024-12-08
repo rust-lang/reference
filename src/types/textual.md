@@ -11,7 +11,7 @@ not a surrogate), represented as a 32-bit unsigned word in the 0x0000 to 0xD7FF
 or 0xE000 to 0x10FFFF range.
 
 r[type.text.char-precondition]
-It is immediate [undefined behavior] to create \1
+It is immediate [undefined behavior] to create a
 `char` that falls outside this range. A `[char]` is effectively a UCS-4 / UTF-32
 string of length 1.
 
