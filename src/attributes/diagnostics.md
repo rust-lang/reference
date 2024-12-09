@@ -329,7 +329,7 @@ The `deprecated` attribute has several forms:
 r[attributes.diagnostic.deprecated.allowed-positions]
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
 variant], [struct field], [external block item], or [macro definition]. It
-cannot be applied to [trait implementation items]. When applied to an item
+cannot be applied to [trait implementation items][trait-impl]. When applied to an item
 containing other items, such as a [module] or [implementation], all child
 items inherit the deprecation attribute.
 <!-- NOTE: It is only rejected for trait impl items
@@ -561,8 +561,16 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 
 ### The `diagnostic::do_not_recommend` attribute
 
-The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to not show a certain trait implementation as part of the error message.
-The attribute should be placed on a [trait implementation items]. It does not accept any arguments. If the attribute is placed in a wrong location or contains an unexpected argument the compiler might emit a warning and otherwise ignore the malformed part.
+r[attributes.diagnostic.do_not_recommend]
+
+r[attributes.diagnostic.do_not_recommend.intro]
+The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message. For example, in an error message about a type not implementing a required trait, the compiler may indicate that an unsatisfied trait bound is a result of the given trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to prevent those annotations about the trait implementation from being included in the diagnostic when they are unlikely to be useful.
+
+r[attributes.diagnostic.do_not_recommend.allowed-positions]
+The attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
+
+r[attributes.diagnostic.do_not_recommend.syntax]
+The attribute does not accept any arguments, though unexpected arguments are not considered as an error.
 
 In this example:
 
@@ -598,7 +606,7 @@ LL | fn needs_foo<T: Foo>() {}
 error: aborting due to 1 previous error
 ```
 
-Without the attribute the compiler would complain about `*mut (): Send` instead.
+Without the attribute the compiler would complain about `Send` not being implemented for `*mut ()` due to the required bounds in the implementation.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
@@ -628,7 +636,7 @@ Without the attribute the compiler would complain about `*mut (): Send` instead.
 [struct field]: ../items/structs.md
 [struct]: ../items/structs.md
 [trait declaration]: ../items/traits.md
-[trait implementation items]: ../items/implementations.md#trait-implementations
 [trait item]: ../items/traits.md
+[trait-impl]: ../items/implementations.md#trait-implementations
 [traits]: ../items/traits.md
 [union]: ../items/unions.md
