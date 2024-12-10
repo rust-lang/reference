@@ -2,6 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ClosureExpression_ :\
+> &nbsp;&nbsp; `async`<sup>?</sup>\
 > &nbsp;&nbsp; `move`<sup>?</sup>\
 > &nbsp;&nbsp; ( `||` | `|` _ClosureParameters_<sup>?</sup> `|` )\
 > &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
@@ -13,7 +14,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_PatternNoTopAlt_]&nbsp;( `:` [_Type_] )<sup>?</sup>
 
 A *closure expression*, also known as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
-The syntax for a closure expression is an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
+The syntax for a closure expression is an optional `async` keyword, an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
 The optional type after each pattern is a type annotation for the pattern.
 If there is a return type, the closure body must be a [block].
 
@@ -29,9 +30,18 @@ This is often used to ensure that the closure's lifetime is `'static`.
 
 ## Closure trait implementations
 
-Which traits the closure type implement depends on how variables are captured and the types of the captured variables.
+Which traits the closure type implement depends on how variables are captured, the types of the captured variables, and the presence of `async`.
 See the [call traits and coercions] chapter for how and when a closure implements `Fn`, `FnMut`, and `FnOnce`.
 The closure type implements [`Send`] and [`Sync`] if the type of every captured variable also implements the trait.
+
+## Async closures
+
+When a closure is marked with the `async` keyword, it is allowed to `await` futures in its body.
+Calling the closure evaluates to a future that corresponds to the computation of the body of the closure.
+This closure implements `AsyncFn`, `AsyncFnMut`, and `AsyncFnOnce` depending on the use of the captured variables in its body.
+It may also implement `Fn`, `FnMut`, and `FnOnce` if the future it returns does not borrow any captured variables from the closure itself.
+
+> **Edition differences**: Async closures are only available beginning with Rust 2018.
 
 ## Example
 
