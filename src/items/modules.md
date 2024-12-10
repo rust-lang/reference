@@ -17,7 +17,7 @@ A module is a container for zero or more [items].
 r[items.mod.def]
 A _module item_ is a module, surrounded in braces, named, and prefixed with the
 keyword `mod`. A module item introduces a new, named module into the tree of
-modules making up a crate\1
+modules making up a crate.
 
 r[items.mod.nesting]
 Modules can nest arbitrarily.
