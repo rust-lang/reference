@@ -1,5 +1,8 @@
 # Structs
 
+r[items.struct]
+
+r[items.struct.syntax]
 > **<sup>Syntax</sup>**\
 > _Struct_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _StructStruct_\
@@ -36,7 +39,10 @@
 > &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
 > &nbsp;&nbsp; [_Type_]
 
+r[items.struct.intro]
 A _struct_ is a nominal [struct type] defined with the keyword `struct`.
+
+r[items.struct.namespace]
 A struct declaration defines the given name in the [type namespace] of the module or block where it is located.
 
 An example of a `struct` item and its use:
@@ -47,6 +53,7 @@ let p = Point {x: 10, y: 11};
 let px: i32 = p.x;
 ```
 
+r[items.struct.tuple]
 A _tuple struct_ is a nominal [tuple type], and is also defined with the keyword `struct`.
 In addition to defining a type, it also defines a constructor of the same name in the [value namespace].
 The constructor is a function which can be called to create a new instance of the struct.
@@ -58,6 +65,7 @@ let p = Point(10, 11);
 let px: i32 = match p { Point(x, _) => x };
 ```
 
+r[items.struct.unit]
 A _unit-like struct_ is a struct without any fields, defined by leaving off the
 list of fields entirely. Such a struct implicitly defines a [constant] of its
 type with the same name. For example:
@@ -75,6 +83,7 @@ const Cookie: Cookie = Cookie {};
 let c = [Cookie, Cookie {}, Cookie, Cookie {}];
 ```
 
+r[items.struct.layout]
 The precise memory layout of a struct is not specified. One can specify a
 particular layout using the [`repr` attribute].
 

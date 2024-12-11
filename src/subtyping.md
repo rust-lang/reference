@@ -1,7 +1,13 @@
 # Subtyping and Variance
 
+r[subtype]
+
+r[subtype.intro]
 Subtyping is implicit and can occur at any stage in type checking or
-inference. Subtyping is restricted to two cases:
+inference.
+
+r[subtype.kinds]
+Subtyping is restricted to two cases:
 variance with respect to lifetimes and between types with higher ranked
 lifetimes. If we were to erase lifetimes from types, then the only subtyping
 would be due to type equality.
@@ -19,6 +25,7 @@ fn bar<'a>() {
 Since `'static` outlives the lifetime parameter `'a`, `&'static str` is a
 subtype of `&'a str`.
 
+r[subtype.higher-ranked]
 [Higher-ranked]&#32;[function pointers] and [trait objects] have another
 subtype relation. They are subtypes of types that are given by substitutions of
 the higher-ranked lifetimes. Some examples:
@@ -39,17 +46,26 @@ let supertype: &for<'c> fn(&'c i32, &'c i32) = subtype;
 
 ## Variance
 
+r[subtyping.variance]
+
+r[subtyping.variance.intro]
 Variance is a property that generic types have with respect to their arguments.
 A generic type's *variance* in a parameter is how the subtyping of the
 parameter affects the subtyping of the type.
 
+r[subtyping.variance.covariant]
 * `F<T>` is *covariant* over `T` if `T` being a subtype of `U` implies that
   `F<T>` is a subtype of `F<U>` (subtyping "passes through")
+
+r[subtyping.variance.contravariant]
 * `F<T>` is *contravariant* over `T` if `T` being a subtype of `U` implies that
   `F<U>` is a subtype of `F<T>`
+
+r[subtyping.variance.invariant]
 * `F<T>` is *invariant* over `T` otherwise (no subtyping relation can be
   derived)
 
+r[subtyping.variance.builtin-types]
 Variance of types is automatically determined as follows
 
 | Type                          | Variance in `'a`  | Variance in `T`   |
@@ -65,6 +81,7 @@ Variance of types is automatically determined as follows
 | `std::marker::PhantomData<T>` |                   | covariant         |
 | `dyn Trait<T> + 'a`           | covariant         | invariant         |
 
+r[subtyping.variance.user-composite-types]
 The variance of other `struct`, `enum`, and `union` types is decided by
 looking at the variance of the types of their fields. If the parameter is used
 in positions with different variances then the parameter is invariant. For
@@ -85,6 +102,7 @@ struct Variance<'a, 'b, 'c, T, U: 'a> {
 }
 ```
 
+r[subtyping.variance.builtin-composite-types]
 When used outside of an `struct`, `enum`, or `union`, the variance for parameters is checked at each location separately.
 
 ```rust

@@ -1,8 +1,11 @@
 # Linkage
 
+r[link]
+
 > Note: This section is described more in terms of the compiler than of
 > the language.
 
+r[link.intro]
 The compiler supports various methods to link crates together both
 statically and dynamically. This section will explore the various methods to
 link crates together, and more information about native libraries can be
@@ -10,17 +13,20 @@ found in the [FFI section of the book][ffi].
 
 [ffi]: ../book/ch19-01-unsafe-rust.html#using-extern-functions-to-call-external-code
 
+r[link.type]
 In one session of compilation, the compiler can generate multiple artifacts
 through the usage of either command line flags or the `crate_type` attribute.
 If one or more command line flags are specified, all `crate_type` attributes will
 be ignored in favor of only building the artifacts specified by command line.
 
+r[link.bin]
 * `--crate-type=bin`, `#![crate_type = "bin"]` - A runnable executable will be
   produced. This requires that there is a `main` function in the crate which
   will be run when the program begins executing. This will link in all Rust and
   native dependencies, producing a single distributable binary.
   This is the default crate type.
 
+r[link.lib]
 * `--crate-type=lib`, `#![crate_type = "lib"]` - A Rust library will be produced.
   This is an ambiguous concept as to what exactly is produced because a library
   can manifest itself in several forms. The purpose of this generic `lib` option
@@ -30,6 +36,7 @@ be ignored in favor of only building the artifacts specified by command line.
   libraries, and the `lib` type can be seen as an alias for one of them (but the
   actual one is compiler-defined).
 
+r[link.dylib]
 * `--crate-type=dylib`, `#![crate_type = "dylib"]` - A dynamic Rust library will
   be produced. This is different from the `lib` output type in that this forces
   dynamic library generation. The resulting dynamic library can be used as a
@@ -37,6 +44,7 @@ be ignored in favor of only building the artifacts specified by command line.
   create `*.so` files on Linux, `*.dylib` files on macOS, and `*.dll` files on
   Windows.
 
+r[link.staticlib]
 * `--crate-type=staticlib`, `#![crate_type = "staticlib"]` - A static system
   library will be produced. This is different from other library outputs in that
   the compiler will never attempt to link to `staticlib` outputs. The
@@ -62,12 +70,14 @@ be ignored in favor of only building the artifacts specified by command line.
   dependencies that is not actually used (e.g. `--gc-sections` or `-dead_strip`
   for macOS).
 
+r[link.cdylib]
 * `--crate-type=cdylib`, `#![crate_type = "cdylib"]` - A dynamic system
   library will be produced.  This is used when compiling
   a dynamic library to be loaded from another language.  This output type will
   create `*.so` files on Linux, `*.dylib` files on macOS, and `*.dll` files on
   Windows.
 
+r[link.rlib]
 * `--crate-type=rlib`, `#![crate_type = "rlib"]` - A "Rust library" file will be
   produced. This is used as an intermediate artifact and can be thought of as a
   "static Rust library". These `rlib` files, unlike `staticlib` files, are
@@ -76,6 +86,7 @@ be ignored in favor of only building the artifacts specified by command line.
   in dynamic libraries. This form of output is used to produce statically linked
   executables as well as `staticlib` outputs.
 
+r[link.proc-macro]
 * `--crate-type=proc-macro`, `#![crate_type = "proc-macro"]` - The output
   produced is not specified, but if a `-L` path is provided to it then the
   compiler will recognize the output artifacts as a macro and it can be loaded
@@ -87,6 +98,7 @@ be ignored in favor of only building the artifacts specified by command line.
   `x86_64-unknown-linux-gnu` even if the crate is a dependency of another crate
   being built for a different target.
 
+r[link.repetition]
 Note that these outputs are stackable in the sense that if multiple are
 specified, then the compiler will produce each form of output without
 having to recompile. However, this only applies for outputs specified by the
@@ -94,6 +106,7 @@ same method. If only `crate_type` attributes are specified, then they will all
 be built, but if one or more `--crate-type` command line flags are specified,
 then only those outputs will be built.
 
+r[link.dependency]
 With all these different kinds of outputs, if crate A depends on crate B, then
 the compiler could find B in various different forms throughout the system. The
 only forms looked for by the compiler, however, are the `rlib` format and the
@@ -102,6 +115,7 @@ compiler must at some point make a choice between these two formats. With this
 in mind, the compiler follows these rules when determining what format of
 dependencies will be used:
 
+r[link.dependency-staticlib]
 1. If a static library is being produced, all upstream dependencies are
    required to be available in `rlib` formats. This requirement stems from the
    reason that a dynamic library cannot be converted into a static format.
@@ -109,6 +123,8 @@ dependencies will be used:
    Note that it is impossible to link in native dynamic dependencies to a static
    library, and in this case warnings will be printed about all unlinked native
    dynamic dependencies.
+
+r[link.dependency-rlib]
 
 2. If an `rlib` file is being produced, then there are no restrictions on what
    format the upstream dependencies are available in. It is simply required that
@@ -118,10 +134,14 @@ dependencies will be used:
    dependencies. It wouldn't be very efficient for all `rlib` files to contain a
    copy of `libstd.rlib`!
 
+r[link.dependency-prefer-dynamic]
+
 3. If an executable is being produced and the `-C prefer-dynamic` flag is not
    specified, then dependencies are first attempted to be found in the `rlib`
    format. If some dependencies are not available in an rlib format, then
    dynamic linking is attempted (see below).
+
+r[link.dependency-dynamic]
 
 4. If a dynamic library or an executable that is being dynamically linked is
    being produced, then the compiler will attempt to reconcile the available
@@ -148,6 +168,9 @@ fine-grained control is desired over the output format of a crate.
 
 ## Static and dynamic C runtimes
 
+r[link.crt]
+
+r[link.crt.intro]
 The standard library in general strives to support both statically linked and
 dynamically linked C runtimes for targets as appropriate. For example the
 `x86_64-pc-windows-msvc` and `x86_64-unknown-linux-musl` targets typically come
@@ -162,6 +185,7 @@ default such as:
 * `i686-unknown-linux-musl`
 * `x86_64-unknown-linux-musl`
 
+r[link.crt.crt-static]
 The linkage of the C runtime is configured to respect the `crt-static` target
 feature. These target features are typically configured from the command line
 via flags to the compiler itself. For example to enable a static runtime you
@@ -177,10 +201,12 @@ whereas to link dynamically to the C runtime you would execute:
 rustc -C target-feature=-crt-static foo.rs
 ```
 
+r[link.crt.ineffective]
 Targets which do not support switching between linkage of the C runtime will
 ignore this flag. It's recommended to inspect the resulting binary to ensure
 that it's linked as you would expect after the compiler succeeds.
 
+r[link.crt.target_feature]
 Crates may also learn about how the C runtime is being linked. Code on MSVC, for
 example, needs to be compiled differently (e.g. with `/MT` or `/MD`) depending
 on the runtime being linked. This is exported currently through the
@@ -225,6 +251,23 @@ a statically linked binary on MSVC you would execute:
 ```sh
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
+
+## Mixed Rust and foreign codebases
+
+If you are mixing Rust with foreign code (e.g. C, C++) and wish to make a single
+binary containing both types of code, you have two approaches for the final
+binary link:
+
+* Use `rustc`. Pass any non-Rust libraries using `-L <directory>` and `-l<library>`
+  rustc arguments, and/or `#[link]` directives in your Rust code. If you need to
+  link against `.o` files you can use `-Clink-arg=file.o`.
+* Use your foreign linker. In this case, you first need to generate a Rust `staticlib`
+  target and pass that into your foreign linker invocation. If you need to link
+  multiple Rust subsystems, you will need to generate a _single_ `staticlib`
+  perhaps using lots of `extern crate` statements to include multiple Rust `rlib`s.
+  Multiple Rust `staticlib` files are likely to conflict.
+
+Passing `rlib`s directly into your foreign linker is currently unsupported.
 
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [configuration option]: conditional-compilation.md

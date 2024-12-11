@@ -1,5 +1,8 @@
 # Trait objects
 
+r[type.trait-object]
+
+r[type.trait-object.syntax]
 > **<sup>Syntax</sup>**\
 > _TraitObjectType_ :\
 > &nbsp;&nbsp; `dyn`<sup>?</sup> [_TypeParamBounds_]
@@ -7,16 +10,21 @@
 > _TraitObjectTypeOneBound_ :\
 > &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
 
+r[type.trait-object.intro]
 A *trait object* is an opaque value of another type that implements a set of
-traits. The set of traits is made up of an [object safe] *base trait* plus any
+traits. The set of traits is made up of a [dyn compatible] *base trait* plus any
 number of [auto traits].
 
+r[type.trait-object.impls]
 Trait objects implement the base trait, its auto traits, and any [supertraits]
 of the base trait.
 
+r[type.trait-object.name]
 Trait objects are written as the keyword `dyn` followed by a set of trait
-bounds, but with the following restrictions on the trait bounds. All traits
-except the first trait must be auto traits, there may not be more than one
+bounds, but with the following restrictions on the trait bounds.
+
+r[type.trait-object.constraint]
+There may not be more than one non-auto trait, no more than one
 lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
@@ -31,12 +39,14 @@ For example, given a trait `Trait`, the following are all trait objects:
 * `dyn 'static + Trait`.
 * `dyn (Trait)`
 
+r[type.trait-object.syntax-edition2021]
 > **Edition differences**: Before the 2021 edition, the `dyn` keyword may be
 > omitted.
 >
 > Note: For clarity, it is recommended to always use the `dyn` keyword on your
 > trait objects unless your codebase supports compiling with Rust 1.26 or lower.
 
+r[type.trait-object.syntax-edition2015]
 > **Edition differences**: In the 2015 edition, if the first bound of the
 > trait object is a path that starts with `::`, then the `dyn` will be treated
 > as a part of the path. The first path can be put in parenthesis to get
@@ -46,11 +56,13 @@ For example, given a trait `Trait`, the following are all trait objects:
 > Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in
 > paths, so the parentheses are not necessary.
 
+r[type.trait-object.alias]
 Two trait object types alias each other if the base traits alias each other and
 if the sets of auto traits are the same and the lifetime bounds are the same.
 For example, `dyn Trait + Send + UnwindSafe` is the same as
 `dyn Trait + UnwindSafe + Send`.
 
+r[type.trait-object.unsized]
 Due to the opaqueness of which concrete type the value is of, trait objects are
 [dynamically sized types]. Like all
 <abbr title="dynamically sized types">DSTs</abbr>, trait objects are used
@@ -93,6 +105,8 @@ type signature of `print`, and the cast expression in `main`.
 
 ## Trait Object Lifetime Bounds
 
+r[type.trait-object.lifetime-bounds]
+
 Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. This lifetime is written as
 `Trait + 'a`. There are [defaults] that allow this lifetime to usually be
@@ -102,6 +116,6 @@ inferred with a sensible choice.
 [_TypeParamBounds_]: ../trait-bounds.md
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
+[dyn compatible]: ../items/traits.md#dyn-compatibility
 [dynamically sized types]: ../dynamically-sized-types.md
-[object safe]: ../items/traits.md#object-safety
 [supertraits]: ../items/traits.md#supertraits
