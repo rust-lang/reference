@@ -12,7 +12,7 @@ r[type.trait-object.syntax]
 
 r[type.trait-object.intro]
 A *trait object* is an opaque value of another type that implements a set of
-traits. The set of traits is made up of an [object safe] *base trait* plus any
+traits. The set of traits is made up of a [dyn compatible] *base trait* plus any
 number of [auto traits].
 
 r[type.trait-object.impls]
@@ -24,7 +24,7 @@ Trait objects are written as the keyword `dyn` followed by a set of trait
 bounds, but with the following restrictions on the trait bounds.
 
 r[type.trait-object.constraint]
-All traits except the first trait must be auto traits, there may not be more than one
+There may not be more than one non-auto trait, no more than one
 lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore,
 paths to traits may be parenthesized.
 
@@ -116,6 +116,6 @@ inferred with a sensible choice.
 [_TypeParamBounds_]: ../trait-bounds.md
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
+[dyn compatible]: ../items/traits.md#dyn-compatibility
 [dynamically sized types]: ../dynamically-sized-types.md
-[object safe]: ../items/traits.md#object-safety
 [supertraits]: ../items/traits.md#supertraits

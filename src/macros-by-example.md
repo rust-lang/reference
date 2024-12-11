@@ -137,22 +137,21 @@ fragment of the kind specified and binds it to the metavariable `$`_name_.
 r[macro.decl.meta.specifier]
 Valid fragment specifiers are:
 
-  * `item`: an [_Item_]
   * `block`: a [_BlockExpression_]
-  * `stmt`: a [_Statement_] without the trailing semicolon (except for item
-    statements that require semicolons)
-  * `pat_param`: a [_PatternNoTopAlt_]
-  * `pat`: at least any [_PatternNoTopAlt_], and possibly more depending on edition
-  * `expr`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.expr-underscore])
-  * `expr_2021`: same as `expr` (see [macro.decl.meta.edition2021])
-  * `ty`: a [_Type_]
+  * `expr`: an [_Expression_]
+  * `expr_2021`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.edition2024])
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
-  * `path`: a [_TypePath_] style path
-  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-  * `meta`: an [_Attr_], the contents of an attribute
+  * `item`: an [_Item_]
   * `lifetime`: a [LIFETIME_TOKEN]
-  * `vis`: a possibly empty [_Visibility_] qualifier
   * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
+  * `meta`: an [_Attr_], the contents of an attribute
+  * `pat`: a [_Pattern_] (see [macro.decl.meta.edition2021])
+  * `pat_param`: a [_PatternNoTopAlt_]
+  * `path`: a [_TypePath_] style path
+  * `stmt`: a [_Statement_] without the trailing semicolon (except for item statements that require semicolons)
+  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
+  * `ty`: a [_Type_]
+  * `vis`: a possibly empty [_Visibility_] qualifier
 
 r[macro.decl.meta.transcription]
 In the transcriber, metavariables are referred to simply by `$`_name_, since
@@ -163,19 +162,15 @@ r[macro.decl.meta.dollar-crate]
 The keyword metavariable `$crate` can be used to refer to the current crate; see [Hygiene] below. Metavariables can be
 transcribed more than once or not at all.
 
-r[macro.decl.meta.expr-underscore]
-For reasons of backwards compatibility, though `_` [is also an
-expression][_UnderscoreExpression_], a standalone underscore is not matched by
-the `expr` fragment specifier. However, `_` is matched by the `expr` fragment
-specifier when it appears as a subexpression.
-For the same reason, a standalone [const block] is not matched but it is matched when appearing as a subexpression.
-
 r[macro.decl.meta.edition2021]
 > **Edition differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
+
+r[macro.decl.meta.edition2024]
+> **Edition differences**: Before the 2024 edition, `expr` fragment specifiers do not match [_UnderscoreExpression_] or [_ConstBlockExpression_] at the top level. They are allowed within subexpressions.
 >
 > The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
@@ -416,11 +411,46 @@ by other crates, either by path or by `#[macro_use]` as described above.
 r[macro.decl.hygiene]
 
 r[macro.decl.hygiene.intro]
-By default, all identifiers referred to in a macro are expanded as-is, and are
-looked up at the macro's invocation site. This can lead to issues if a macro
-refers to an item or macro which isn't in scope at the invocation site. To
-alleviate this, the `$crate` metavariable can be used at the start of a path to
-force lookup to occur inside the crate defining the macro.
+Macros by example have _mixed-site hygiene_. This means that [loop labels], [block labels], and local variables are looked up at the macro definition site while other symbols are looked up at the macro invocation site. For example:
+
+```rust
+let x = 1;
+fn func() {
+    unreachable!("this is never called")
+}
+
+macro_rules! check {
+    () => {
+        assert_eq!(x, 1); // Uses `x` from the definition site.
+        func();           // Uses `func` from the invocation site.
+    };
+}
+
+{
+    let x = 2;
+    fn func() { /* does not panic */ }
+    check!();
+}
+```
+
+Labels and local variables defined in macro expansion are not shared between invocations, so this code doesn’t compile:
+
+```rust,compile_fail,E0425
+macro_rules! m {
+    (define) => {
+        let x = 1;
+    };
+    (refer) => {
+        dbg!(x);
+    };
+}
+
+m!(define);
+m!(refer);
+```
+
+r[macro.decl.hygiene.crate]
+A special case is the `$crate` metavariable. It refers to the crate defining the macro, and can be used at the start of the path to look up items or macros which are not in scope at the invocation site.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
@@ -565,7 +595,7 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
-[const block]: expressions/block-expr.md#const-blocks
+[block labels]: expressions/loop-expr.md#labelled-block-expressions
 [Hygiene]: #hygiene
 [IDENTIFIER]: identifiers.md
 [IDENTIFIER_OR_KEYWORD]: identifiers.md
@@ -580,6 +610,7 @@ For more detail, see the [formal specification].
 [_Expression_]: expressions.md
 [_Item_]: items.md
 [_LiteralExpression_]: expressions/literal-expr.md
+[loop labels]: expressions/loop-expr.md#loop-labels
 [_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
 [_Pattern_]: patterns.md
 [_PatternNoTopAlt_]: patterns.md

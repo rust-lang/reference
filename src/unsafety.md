@@ -26,10 +26,12 @@ r[safety.unsafe-impl]
 - Implementing an [unsafe trait].
 
 r[safety.unsafe-extern]
-- Declaring an [`extern`] block.
+- Declaring an [`extern`] block[^extern-2024].
 
 r[safety.unsafe-attribute]
 - Applying an [unsafe attribute] to an item.
+
+[^extern-2024]: Prior to the 2024 edition, extern blocks were allowed to be declared without `unsafe`.
 
 [`extern`]: items/external-blocks.md
 [`union`]: items/unions.md

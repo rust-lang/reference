@@ -329,6 +329,8 @@ with the same name (or with a well-known symbol), leading to undefined behavior.
 extern "C" fn foo() {}
 ```
 
+> **Edition differences**: Before the 2024 edition it is allowed to use the `no_mangle` and `export_name` attributes without the `unsafe` qualification.
+
 ## The `link_section` attribute
 
 r[abi.link_section]
@@ -354,6 +356,9 @@ This attribute is unsafe as it allows users to place data and code into sections
 #[unsafe(link_section = ".example_section")]
 pub static VAR1: u32 = 1;
 ```
+
+> **Edition differences**: Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
+
 
 [_MetaWord_]: attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax

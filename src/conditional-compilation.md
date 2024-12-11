@@ -83,7 +83,7 @@ It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
 > **Note**: For `rustc`, arbitrary-set configuration options are set using the
-> [`--cfg`] flag.
+> [`--cfg`] flag. Configuration values for a specified target can be displayed with `rustc --print cfg --target $TARGET`.
 
 > **Note**: Configuration options with the key `feature` are a convention used
 > by [Cargo][cargo-feature] for specifying compile-time options and optional
@@ -238,7 +238,7 @@ on the endianness of the target's CPU.
 
 ### `target_pointer_width`
 
-r[cfg.target_poitner_width]
+r[cfg.target_pointer_width]
 
 r[cfg.target_pointer_width.general]
 Key-value option set once with the target's pointer width in bits.
@@ -445,6 +445,8 @@ fn bewitched() {}
 r[cfg.cfg_attr.restriction]
 The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 
+The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.
+
 ### The `cfg` macro
 
 r[cfg.macro]
@@ -476,6 +478,8 @@ println!("I'm running on a {} machine!", machine_kind);
 [`cfg`]: #the-cfg-attribute
 [`cfg` macro]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
+[`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
+[`crate_type`]: linkage.md
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
 [attribute]: attributes.md
 [attributes]: attributes.md

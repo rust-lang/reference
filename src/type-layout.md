@@ -204,10 +204,11 @@ struct AlignedStruct {
 r[layout.repr.inter-field]
 The representation of a type can change the padding between fields, but does
 not change the layout of the fields themselves. For example, a struct with a
-`C` representation that contains a struct `Inner` with the default
+`C` representation that contains a struct `Inner` with the `Rust`
 representation will not change the layout of `Inner`.
 
-### <a id="the-default-representation"></a> The `Rust` Representation
+<a id="the-default-representation"></a>
+### The `Rust` Representation
 
 r[layout.repr.rust]
 
