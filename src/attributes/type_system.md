@@ -1,16 +1,25 @@
 # Type system attributes
 
+r[attributes.type-system]
+
 The following [attributes] are used for changing how a type can be used.
 
 ## The `non_exhaustive` attribute
 
-The *`non_exhaustive` attribute* indicates that a type or variant may have
-more fields or variants added in the future. It can be applied to
-[`struct`s][struct], [`enum`s][enum], and `enum` variants.
+r[attributes.type-system.non_exhaustive]
 
+r[attributes.type-system.non_exhaustive.intro]
+The *`non_exhaustive` attribute* indicates that a type or variant may have
+more fields or variants added in the future.
+
+r[attributes.type-system.non_exhaustive.allowed-positions]
+It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+
+r[attributes.type-system.non_exhaustive.syntax]
 The `non_exhaustive` attribute uses the [_MetaWord_] syntax and thus does not
 take any inputs.
 
+r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
 
 ```rust
@@ -65,9 +74,11 @@ match message {
 }
 ```
 
+r[attributes.type-system.non_exhaustive.external-crate]
 Outside of the defining crate, types annotated with `non_exhaustive` have limitations that
 preserve backwards compatibility when new fields or variants are added.
 
+r[attributes.type-system.non_exhaustive.construction]
 Non-exhaustive types cannot be constructed outside of the defining crate:
 
 - Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed
@@ -119,6 +130,7 @@ let message = Message::Reaction(0);
 let message = Message::Quit;
 ```
 
+r[attributes.type-system.non_exhaustive.match]
 There are limitations when matching on non-exhaustive types outside of the defining crate:
 
 - When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]),
@@ -163,12 +175,35 @@ match message {
 }
 ```
 
-It's also not allowed to cast non-exhaustive types from foreign crates.
-```rust, ignore
-use othercrate::NonExhaustiveEnum;
+It's also not allowed to use numeric casts (`as`) on enums that contain any non-exhaustive variants.
 
-// Cannot cast a non-exhaustive enum outside of its defining crate.
-let _ = NonExhaustiveEnum::default() as u8;
+For example, the following enum can be cast because it doesn't contain any non-exhaustive variants:
+
+```rust
+#[non_exhaustive]
+pub enum Example {
+    First,
+    Second
+}
+```
+
+However, if the enum contains even a single non-exhaustive variant, casting will result in an error. Consider this modified version of the same enum:
+
+```rust
+#[non_exhaustive]
+pub enum EnumWithNonExhaustiveVariants {
+    First,
+    #[non_exhaustive]
+    Second
+}
+```
+
+<!-- ignore: needs multiple crates -->
+```rust,ignore
+use othercrate::EnumWithNonExhaustiveVariants;
+
+// Error: cannot cast an enum with a non-exhaustive variant when it's defined in another crate
+let _ = EnumWithNonExhaustiveVariants::First as u8;
 ```
 
 Non-exhaustive types are always considered inhabited in downstream crates.

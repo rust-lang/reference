@@ -1,5 +1,8 @@
 # Whitespace
 
+r[lex.whitespace]
+
+r[lex.whitespace.intro]
 Whitespace is any non-empty string containing only characters that have the
 [`Pattern_White_Space`] Unicode property, namely:
 
@@ -15,9 +18,11 @@ Whitespace is any non-empty string containing only characters that have the
 - `U+2028` (line separator)
 - `U+2029` (paragraph separator)
 
+r[lex.whitespace.token-sep]
 Rust is a "free-form" language, meaning that all forms of whitespace serve only
 to separate _tokens_ in the grammar, and have no semantic significance.
 
+r[lex.whitespace.replacement]
 A Rust program has identical meaning if each whitespace element is replaced
 with any other legal whitespace element, such as a single space character.
 

@@ -132,4 +132,5 @@
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
     - [Influences](influences.md)
+    - [Test summary](test-summary.md)
     - [Glossary](glossary.md)
