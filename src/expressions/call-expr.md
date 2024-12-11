@@ -10,7 +10,13 @@
 A *call expression* calls a function.
 The syntax of a call expression is an expression, called the *function operand*, followed by a parenthesized comma-separated list of expression, called the *argument operands*.
 If the function eventually returns, then the expression completes.
-For [non-function types], the expression `f(...)` uses the method on one of the [`std::ops::Fn`], [`std::ops::FnMut`] or [`std::ops::FnOnce`] traits, which differ in whether they take the type by reference, mutable reference, or take ownership respectively.
+
+For [non-function types], the expression `f(...)` uses the method on one of the following traits based on the function operand:
+
+- [`Fn`] or [`AsyncFn`] --- shared reference.
+- [`FnMut`] or [`AsyncFnMut`] --- mutable reference.
+- [`FnOnce`] or [`AsyncFnOnce`] --- value.
+
 An automatic borrow will be taken if needed.
 The function operand will also be [automatically dereferenced] as required.
 
