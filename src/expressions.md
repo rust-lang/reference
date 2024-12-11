@@ -197,7 +197,7 @@ Explicitly, the assignee expressions are:
   fields).
 - [Unit structs][_StructExpression_].
 
-r[expr.place-value.parentehesis]
+r[expr.place-value.parenthesis]
 Arbitrary parenthesisation is permitted inside assignee expressions.
 
 ### Moved and copied types

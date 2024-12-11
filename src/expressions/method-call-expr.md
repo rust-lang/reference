@@ -24,11 +24,11 @@ When looking up a method call, the receiver may be automatically dereferenced or
 This requires a more complex lookup process than for other functions, since there may be a number of possible methods to call.
 The following procedure is used:
 
-r[expr.method.candidate-recievers]
+r[expr.method.candidate-receivers]
 The first step is to build a list of candidate receiver types.
 Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
 
-r[expr.method.candidate-recievers-refs]
+r[expr.method.candidate-receivers-refs]
 Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
 
 For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
@@ -69,14 +69,14 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
 > }
 > ```
 
-r[expr.method.ambiguious-target]
+r[expr.method.ambiguous-target]
 If this results in multiple possible candidates, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
 
 r[expr.method.constraint]
 This process does not take into account the mutability or lifetime of the receiver, or whether a method is `unsafe`.
 Once a method is looked up, if it can't be called for one (or more) of those reasons, the result is a compiler error.
 
-r[expr.method.ambiguious-search]
+r[expr.method.ambiguous-search]
 If a step is reached where there is more than one possible method, such as where generic methods or traits are considered the same, then it is a compiler error.
 These cases require a [disambiguating function call syntax] for method and function invocation.
 
