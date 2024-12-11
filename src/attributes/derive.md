@@ -1,7 +1,13 @@
 # Derive
 
+r[attributes.derive]
+
+r[attributes.derive.intro]
 The *`derive` attribute* allows new [items] to be automatically generated for
-data structures. It uses the [_MetaListPaths_] syntax to specify a list of
+data structures.
+
+r[attributes.derive.syntax]
+It uses the [_MetaListPaths_] syntax to specify a list of
 traits to implement or paths to [derive macros] to process.
 
 For example, the following will create an [`impl` item] for the
@@ -27,10 +33,12 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 }
 ```
 
+r[attributes.derive.proc-macro]
 You can implement `derive` for your own traits through [procedural macros].
 
 ## The `automatically_derived` attribute
 
+r[attributes.derive.automatically_derived]
 The *`automatically_derived` attribute* is automatically added to
 [implementations] created by the `derive` attribute for built-in traits. It
 has no direct effect, but it may be used by tools and diagnostic lints to

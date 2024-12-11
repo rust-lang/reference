@@ -1,5 +1,8 @@
 # Items
 
+r[items]
+
+r[items.syntax]
 > **<sup>Syntax:<sup>**\
 > _Item_:\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
@@ -28,15 +31,17 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
 > &nbsp;&nbsp; | [_MacroRulesDefinition_]
 
-
+r[items.intro]
 An _item_ is a component of a crate. Items are organized within a crate by a
 nested set of [modules]. Every crate has a single "outermost" anonymous module;
 all further items within the crate have [paths] within the module tree of the
 crate.
 
+r[items.static-def]
 Items are entirely determined at compile-time, generally remain fixed during
 execution, and may reside in read-only memory.
 
+r[items.kinds]
 There are several kinds of items:
 
 * [modules]
@@ -53,11 +58,19 @@ There are several kinds of items:
 * [implementations]
 * [`extern` blocks]
 
+r[items.locations]
 Items may be declared in the [root of the crate], a [module][modules], or a [block expression].
+
+r[items.associated-locations]
 A subset of items, called [associated items], may be declared in [traits] and [implementations].
+
+r[items.extern-locations]
 A subset of items, called external items, may be declared in [`extern` blocks].
 
+r[items.decl-order]
 Items may be defined in any order, with the exception of [`macro_rules`] which has its own scoping behavior.
+
+r[items.name-resolution]
 [Name resolution] of item names allows items to be defined before or after where the item is referred to in the module or block.
 
 See [item scopes] for information on the scoping rules of items.

@@ -1,5 +1,8 @@
 # Crates and source files
 
+r[crate]
+
+r[crate.syntax]
 > **<sup>Syntax</sup>**\
 > _Crate_ :\
 > &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
@@ -10,17 +13,20 @@
 > compiler, and the language has always been designed to be compiled. For these
 > reasons, this section assumes a compiler.
 
+r[crate.compile-time]
 Rust's semantics obey a *phase distinction* between compile-time and
 run-time.[^phase-distinction] Semantic rules that have a *static
 interpretation* govern the success or failure of compilation, while
 semantic rules that have a *dynamic interpretation* govern the behavior of the
 program at run-time.
 
+r[crate.unit]
 The compilation model centers on artifacts called _crates_. Each compilation
 processes a single crate in source form, and if successful, produces a single
 crate in binary form: either an executable or some sort of
 library.[^cratesourcefile]
 
+r[crate.module]
 A _crate_ is a unit of compilation and linking, as well as versioning,
 distribution, and runtime loading. A crate contains a _tree_ of nested
 [module] scopes. The top level of this tree is a module that is
@@ -28,22 +34,31 @@ anonymous (from the point of view of paths within the module) and any item
 within a crate has a canonical [module path] denoting its location
 within the crate's module tree.
 
+r[crate.input-source]
 The Rust compiler is always invoked with a single source file as input, and
 always produces a single output crate. The processing of that source file may
 result in other source files being loaded as modules. Source files have the
 extension `.rs`.
 
+r[crate.module-def]
 A Rust source file describes a module, the name and location of which &mdash;
 in the module tree of the current crate &mdash; are defined from outside the
 source file: either by an explicit [_Module_][module] item in a referencing
-source file, or by the name of the crate itself. Every source file is a
+source file, or by the name of the crate itself.
+
+r[crate.inline-module]
+Every source file is a
 module, but not every module needs its own source file: [module
 definitions][module] can be nested within one file.
 
+r[crate.items]
 Each source file contains a sequence of zero or more [_Item_] definitions, and
 may optionally begin with any number of [attributes]
 that apply to the containing module, most of which influence the behavior of
-the compiler. The anonymous crate module can have additional attributes that
+the compiler.
+
+r[crate.attributes]
+The anonymous crate module can have additional attributes that
 apply to the crate as a whole.
 
 > **Note**: The file's contents may be preceded by a [shebang].
@@ -62,8 +77,13 @@ apply to the crate as a whole.
 
 ## Main Functions
 
-A crate that contains a `main` [function] can be compiled to an executable. If a
-`main` function is present, it must take no arguments, must not declare any
+r[crate.main]
+
+r[crate.main.general]
+A crate that contains a `main` [function] can be compiled to an executable.
+
+r[crate.main.restriction]
+If a `main` function is present, it must take no arguments, must not declare any
 [trait or lifetime bounds], must not have any [where clauses], and its return
 type must implement the [`Termination`] trait.
 
@@ -81,6 +101,7 @@ fn main() -> impl std::process::Termination {
 }
 ```
 
+r[crate.main.import]
 The `main` function may be an import, e.g. from an external crate or from the current one.
 
 ```rust
@@ -105,12 +126,17 @@ use foo::bar as main;
 
 ### The `no_main` attribute
 
+r[crate.no_main]
+
 The *`no_main` [attribute]* may be applied at the crate level to disable
 emitting the `main` symbol for an executable binary. This is useful when some
 other object being linked to defines `main`.
 
 ## The `crate_name` attribute
 
+r[crate.crate_name]
+
+r[crate.crate_name.general]
 The *`crate_name` [attribute]* may be applied at the crate level to specify the
 name of the crate with the [_MetaNameValueStr_] syntax.
 
@@ -118,6 +144,7 @@ name of the crate with the [_MetaNameValueStr_] syntax.
 #![crate_name = "mycrate"]
 ```
 
+r[crate.crate_name.restriction]
 The crate name must not be empty, and must only contain [Unicode alphanumeric]
 or `_` (U+005F) characters.
 
