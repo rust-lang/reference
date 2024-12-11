@@ -38,10 +38,13 @@ The closure type implements [`Send`] and [`Sync`] if the type of every captured 
 
 ## Async closures
 
-When a closure is marked with the `async` keyword, it is allowed to `await` futures in its body.
-Calling the closure evaluates to a future that corresponds to the computation of the body of the closure.
-This closure implements `AsyncFn`, `AsyncFnMut`, and `AsyncFnOnce` depending on the use of the captured variables in its body.
-It may also implement `Fn`, `FnMut`, and `FnOnce` if the future it returns does not borrow any captured variables from the closure itself.
+Closures marked with the `async` keyword indicate that they are asynchronous in an analogous way to an [async function][items.fn.async].
+
+Calling the async closure does not perform any work, but instead evaluates to a value that implements [`Future`] that corresponds to the computation of the body of the closure.
+
+Async closures implement [`AsyncFn`], [`AsyncFnMut`], and [`AsyncFnOnce`] depending on the use of the captured variables in its body.
+
+Async closures may also implement [`Fn`], [`FnMut`], and [`FnOnce`] if the future it returns does not borrow any captured variables from the closure itself.
 
 > **Edition differences**: Async closures are only available beginning with Rust 2018.
 
