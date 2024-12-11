@@ -2,7 +2,7 @@
 
 > **<sup>Syntax</sup>**\
 > _ClosureExpression_ :\
-> &nbsp;&nbsp; `async`<sup>?</sup>\
+> &nbsp;&nbsp; `async`[^cl-async-edition]<sup>?</sup>\
 > &nbsp;&nbsp; `move`<sup>?</sup>\
 > &nbsp;&nbsp; ( `||` | `|` _ClosureParameters_<sup>?</sup> `|` )\
 > &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
@@ -12,6 +12,8 @@
 >
 > _ClosureParam_ :\
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_PatternNoTopAlt_]&nbsp;( `:` [_Type_] )<sup>?</sup>
+>
+> [^cl-async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 
 A *closure expression*, also known as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
 The syntax for a closure expression is an optional `async` keyword, an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
