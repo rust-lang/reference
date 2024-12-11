@@ -247,7 +247,7 @@ fn run_rustdoc(tmp: &TempDir, chapter_links: &HashMap<&PathBuf, Vec<Link<'_>>>) 
     fs::write(&src_path, &src).unwrap();
     let rustdoc = std::env::var("RUSTDOC").unwrap_or_else(|_| "rustdoc".into());
     let output = Command::new(rustdoc)
-        .arg("--edition=2021")
+        .arg("--edition=2024")
         .arg(&src_path)
         .current_dir(tmp.path())
         .output()
