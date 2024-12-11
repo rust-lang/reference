@@ -102,6 +102,11 @@ The following keywords are reserved beginning in the 2018 edition.
 > **<sup>Lexer 2018+</sup>**\
 > KW_TRY   : `try`
 
+The following keywords are reserved beginning in the 2024 edition.
+
+> **<sup>Lexer 2024+</sup>**\
+> KW_GEN   : `gen`
+
 ## Weak keywords
 
 r[lex.keywords.weak]
@@ -109,6 +114,17 @@ r[lex.keywords.weak]
 r[lex.keywords.weak.intro]
 These keywords have special meaning only in certain contexts. For example, it
 is possible to declare a variable or method with the name `union`.
+
+r[lex.keywords.weak.list]
+> **<sup>Lexer</sup>**\
+> KW_MACRO_RULES    : `macro_rules`\
+> KW_UNION          : `union`\
+> KW_STATICLIFETIME : `'static`\
+> KW_SAFE           : `safe`\
+> KW_RAW            : `raw`
+>
+> **<sup>Lexer 2015</sup>**\
+> KW_DYN            : `dyn`
 
 r[lex.keywords.weak.macro_rules]
 * `macro_rules` is used to create custom [macros].
@@ -133,17 +149,11 @@ r[lex.keywords.weak.dyn]
 
   Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
-r[lex.keywords.weak.list]
-> **<sup>Lexer</sup>**\
-> KW_MACRO_RULES    : `macro_rules`\
-> KW_UNION          : `union`\
-> KW_STATICLIFETIME : `'static`
->
-> **<sup>Lexer 2015</sup>**\
-> KW_DYN            : `dyn`
-
 r[lex.keywords.weak.safe]
 * `safe` is used for functions and statics, which has meaning in [external blocks].
+
+r[lex.keywords.weak.raw]                                                         
+* `raw` is used for [raw borrow operators], and is only a keyword when matching a raw borrow operator form (such as `&raw const expr` or `&raw mut expr`).
 
 [items]: items.md
 [Variables]: variables.md
@@ -159,3 +169,4 @@ r[lex.keywords.weak.safe]
 [loop label]: expressions/loop-expr.md#loop-labels
 [generic lifetime parameter]: items/generics.md
 [external blocks]: items/external-blocks.md
+[raw borrow operators]: expressions/operator-expr.md#raw-borrow-operators

@@ -1,5 +1,7 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
+use crate::rules::Rules;
+use anyhow::{bail, Context, Result};
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
@@ -7,14 +9,12 @@ use mdbook::BookItem;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
-use std::collections::BTreeMap;
 use std::io;
 use std::path::PathBuf;
 
+mod rules;
 mod std_links;
-
-/// The Regex for rules like `r[foo]`.
-static RULE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?m)^r\[([^]]+)]$").unwrap());
+mod test_links;
 
 /// The Regex for the syntax for blockquotes that have a specific CSS class,
 /// like `> [!WARNING]`.
@@ -22,7 +22,8 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
 
-pub fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
+pub fn handle_preprocessing() -> Result<(), Error> {
+    let pre = Spec::new(None)?;
     let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
@@ -48,59 +49,52 @@ pub struct Spec {
     /// Whether or not warnings should be errors (set by SPEC_DENY_WARNINGS
     /// environment variable).
     deny_warnings: bool,
+    /// Path to the rust-lang/rust git repository (set by SPEC_RUST_ROOT
+    /// environment variable).
+    rust_root: Option<PathBuf>,
+    /// The git ref that can be used in a URL to the rust-lang/rust repository.
+    git_ref: String,
 }
 
 impl Spec {
-    pub fn new() -> Spec {
-        Spec {
-            deny_warnings: std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1"),
+    /// Creates a new `Spec` preprocessor.
+    ///
+    /// The `rust_root` parameter specifies an optional path to the root of
+    /// the rust git checkout. If `None`, it will use the `SPEC_RUST_ROOT`
+    /// environment variable. If the root is not specified, then no tests will
+    /// be linked unless `SPEC_DENY_WARNINGS` is set in which case this will
+    /// return an error..
+    pub fn new(rust_root: Option<PathBuf>) -> Result<Spec> {
+        let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
+        let rust_root = rust_root.or_else(|| std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from));
+        if deny_warnings && rust_root.is_none() {
+            bail!("SPEC_RUST_ROOT environment variable must be set");
         }
-    }
-
-    /// Converts lines that start with `r[…]` into a "rule" which has special
-    /// styling and can be linked to.
-    fn rule_definitions(
-        &self,
-        chapter: &Chapter,
-        found_rules: &mut BTreeMap<String, (PathBuf, PathBuf)>,
-    ) -> String {
-        let source_path = chapter.source_path.clone().unwrap_or_default();
-        let path = chapter.path.clone().unwrap_or_default();
-        RULE_RE
-            .replace_all(&chapter.content, |caps: &Captures<'_>| {
-                let rule_id = &caps[1];
-                if let Some((old, _)) =
-                    found_rules.insert(rule_id.to_string(), (source_path.clone(), path.clone()))
-                {
-                    let message = format!(
-                        "rule `{rule_id}` defined multiple times\n\
-                        First location: {old:?}\n\
-                        Second location: {source_path:?}"
-                    );
-                    if self.deny_warnings {
-                        panic!("error: {message}");
-                    } else {
-                        eprintln!("warning: {message}");
-                    }
+        let git_ref = match git_ref(&rust_root) {
+            Ok(s) => s,
+            Err(e) => {
+                if deny_warnings {
+                    eprintln!("error: {e:?}");
+                    std::process::exit(1);
+                } else {
+                    eprintln!("warning: {e:?}");
+                    "master".into()
                 }
-                format!(
-                    "<div class=\"rule\" id=\"r-{rule_id}\">\
-                     <a class=\"rule-link\" href=\"#r-{rule_id}\">[{rule_id}]</a>\
-                     </div>\n"
-                )
-            })
-            .to_string()
+            }
+        };
+        Ok(Spec {
+            deny_warnings,
+            rust_root,
+            git_ref,
+        })
     }
 
     /// Generates link references to all rules on all pages, so you can easily
     /// refer to rules anywhere in the book.
-    fn auto_link_references(
-        &self,
-        chapter: &Chapter,
-        found_rules: &BTreeMap<String, (PathBuf, PathBuf)>,
-    ) -> String {
+    fn auto_link_references(&self, chapter: &Chapter, rules: &Rules) -> String {
         let current_path = chapter.path.as_ref().unwrap().parent().unwrap();
-        let definitions: String = found_rules
+        let definitions: String = rules
+            .def_paths
             .iter()
             .map(|(rule_id, (_, path))| {
                 let relative = pathdiff::diff_paths(path, current_path).unwrap();
@@ -155,13 +149,38 @@ fn to_initial_case(s: &str) -> String {
     format!("{first}{rest}")
 }
 
+/// Determines the git ref used for linking to a particular branch/tag in GitHub.
+fn git_ref(rust_root: &Option<PathBuf>) -> Result<String> {
+    let Some(rust_root) = rust_root else {
+        return Ok("master".into());
+    };
+    let channel = std::fs::read_to_string(rust_root.join("src/ci/channel"))
+        .context("failed to read src/ci/channel")?;
+    let git_ref = match channel.trim() {
+        // nightly/beta are branches, not stable references. Should be ok
+        // because we're not expecting those channels to be long-lived.
+        "nightly" => "master".into(),
+        "beta" => "beta".into(),
+        "stable" => {
+            let version = std::fs::read_to_string(rust_root.join("src/version"))
+                .context("|| failed to read src/version")?;
+            version.trim().into()
+        }
+        ch => bail!("unknown channel {ch}"),
+    };
+    Ok(git_ref)
+}
+
 impl Preprocessor for Spec {
     fn name(&self) -> &str {
         "spec"
     }
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
-        let mut found_rules = BTreeMap::new();
+        let rules = self.collect_rules(&book);
+        let tests = self.collect_tests(&rules);
+        let summary_table = test_links::make_summary_table(&book, &tests, &rules);
+
         book.for_each_mut(|item| {
             let BookItem::Chapter(ch) = item else {
                 return;
@@ -169,20 +188,14 @@ impl Preprocessor for Spec {
             if ch.is_draft_chapter() {
                 return;
             }
-            ch.content = self.rule_definitions(&ch, &mut found_rules);
             ch.content = self.admonitions(&ch);
-        });
-        // This is a separate pass because it relies on the modifications of
-        // the previous passes.
-        book.for_each_mut(|item| {
-            let BookItem::Chapter(ch) = item else {
-                return;
-            };
-            if ch.is_draft_chapter() {
-                return;
+            ch.content = self.auto_link_references(&ch, &rules);
+            ch.content = self.render_rule_definitions(&ch.content, &tests);
+            if ch.name == "Test summary" {
+                ch.content = ch.content.replace("{{summary-table}}", &summary_table);
             }
-            ch.content = self.auto_link_references(&ch, &found_rules);
         });
+
         // Final pass will resolve everything as a std link (or error if the
         // link is unknown).
         std_links::std_links(&mut book);

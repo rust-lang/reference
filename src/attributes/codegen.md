@@ -1,13 +1,19 @@
 # Code generation attributes
 
+r[attributes.codegen]
+
 The following [attributes] are used for controlling code generation.
 
 ## Optimization hints
 
+r[attributes.codegen.hint]
+
+r[attributes.codegen.hint.cold-inline]
 The `cold` and `inline` [attributes] give suggestions to generate code in a
 way that may be faster than what it would do without the hint. The attributes
 are only hints, and may be ignored.
 
+r[attributes.codegen.hint.usage]
 Both attributes can be used on [functions]. When applied to a function in a
 [trait], they apply only to that function when used as a default function for
 a trait implementation and not to all trait implementations. The attributes
@@ -15,6 +21,9 @@ have no effect on a trait function without a body.
 
 ### The `inline` attribute
 
+r[attributes.codegen.inline]
+
+r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function
 should be placed in the caller, rather than generating code to call the
 function where it is defined.
@@ -23,6 +32,7 @@ function where it is defined.
 > internal heuristics. Incorrectly inlining functions can make the program
 > slower, so this attribute should be used with care.
 
+r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
 
 * `#[inline]` *suggests* performing an inline expansion.
@@ -36,10 +46,14 @@ There are three ways to use the inline attribute:
 
 ### The `cold` attribute
 
+r[attributes.codegen.cold]
+
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
 ## The `no_builtins` attribute
+
+r[attributes.codegen.no_builtins]
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
@@ -47,6 +61,9 @@ assumed to exist.
 
 ## The `target_feature` attribute
 
+r[attributes.codegen.target_feature]
+
+r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
 features. It uses the [_MetaListNameValueStr_] syntax with a single key of
@@ -58,23 +75,30 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 unsafe fn foo_avx2() {}
 ```
 
+r[attributes.codegen.target_feature.arch]
 Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
+r[attributes.codegen.target_feature.target-ub]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
+r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
 be used with a `target_feature` attribute.
 
 ### Available features
 
+r[attributes.codegen.target_feature.availability]
+
 The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
+
+r[attributes.codegen.target_feature.x86]
 
 Executing code with unsupported features is undefined behavior on this platform.
 Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
@@ -143,6 +167,8 @@ Feature     | Implicitly Enables | Description
 
 #### `aarch64`
 
+r[attributes.codegen.target_feature.aarch64]
+
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
 
@@ -206,6 +232,8 @@ Feature        | Implicitly Enables | Feature Name
 
 #### `riscv32` or `riscv64`
 
+r[attributes.codegen.target_feature.riscv]
+
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
 
@@ -266,6 +294,8 @@ Feature     | Implicitly Enables  | Description
 
 #### `wasm32` or `wasm64`
 
+r[attributes.codegen.target_feature.wasm]
+
 `#[target_feature]` may be used with both safe and
 [`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
 cause undefined behavior via the `#[target_feature]` attribute because
@@ -282,6 +312,9 @@ Feature               | Implicitly Enables  | Description
 `relaxed-simd`        | `simd128`           | [WebAssembly relaxed simd proposal][relaxed-simd]
 `sign-ext`            |                     | [WebAssembly sign extension operators Proposal][sign-ext]
 `simd128`             |                     | [WebAssembly simd proposal][simd128]
+`multivalue`          |                     | [WebAssembly multivalue proposal][multivalue]
+`reference-types`     |                     | [WebAssembly reference-types proposal][reference-types]
+`tail-call`           |                     | [WebAssembly tail-call proposal][tail-call]
 
 [bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
 [extended-const]: https://github.com/WebAssembly/extended-const
@@ -290,14 +323,21 @@ Feature               | Implicitly Enables  | Description
 [relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
 [sign-ext]: https://github.com/WebAssembly/sign-extension-ops
 [simd128]: https://github.com/webassembly/simd
+[reference-types]: https://github.com/webassembly/reference-types
+[tail-call]: https://github.com/webassembly/tail-call
+[multivalue]: https://github.com/webassembly/multi-value
 
 ### Additional information
 
+r[attributes.codegen.target_feature.info]
+
+r[attributes.codegen.target_feature.remark-cfg]
 See the [`target_feature` conditional compilation option] for selectively
 enabling or disabling compilation of code based on compile-time settings. Note
 that this option is not affected by the `target_feature` attribute, and is
 only driven by the features enabled for the entire crate.
 
+r[attributes.codegen.target_feature.remark-rt]
 See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros
 in the standard library for runtime feature detection on these platforms.
 
@@ -308,11 +348,17 @@ in the standard library for runtime feature detection on these platforms.
 
 ## The `track_caller` attribute
 
+r[attributes.codegen.track_caller]
+
+r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
-with the exception of the entry point `fn main`. When applied to functions and methods in
-trait declarations, the attribute applies to all implementations. If the trait provides a
+with the exception of the entry point `fn main`.
+
+r[attributes.codegen.track_caller.traits]
+When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a
 default implementation with the attribute, then the attribute also applies to override implementations.
 
+r[attributes.codegen.track_caller.extern]
 When applied to a function in an `extern` block the attribute must also be applied to any linked
 implementations, otherwise undefined behavior results. When applied to a function which is made
 available to an `extern` block, the declaration in the `extern` block must also have the attribute,
@@ -320,6 +366,7 @@ otherwise undefined behavior results.
 
 ### Behavior
 
+r[attributes.codegen.track_caller.behavior]
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
 the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
 implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
@@ -399,8 +446,12 @@ And so on.
 
 ### Limitations
 
+r[attributes.codegen.track_caller.limits]
+
+r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
 
+r[attributes.codegen.track_caller.decay]
 In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which
 appears to observers to have been called at the attributed function's definition site, losing actual
 caller information across virtual calls. A common example of this coercion is the creation of a
@@ -431,18 +482,27 @@ trait object whose methods are attributed.
 
 ## The `instruction_set` attribute
 
+r[attributes.codegen.instruction_set]
+
+r[attributes.codegen.instruction_set.allowed-positions]
 The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
+
+r[attributes.codegen.instruction_set.behavior]
 This allows mixing more than one instruction set in a single program on CPU architectures that support it.
+
+r[attributes.codegen.instruction_set.syntax]
 It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
 [_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
 
+r[attributes.codegen.instruction_set.target-limits]
 It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
 
 ### On ARM
 
-For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
+r[attributes.codegen.instruction_set.arm]
 
+For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 * `arm::a32` --- Generate the function as A32 "ARM" code.
 * `arm::t32` --- Generate the function as T32 "Thumb" code.
 

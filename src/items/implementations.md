@@ -1,5 +1,8 @@
 # Implementations
 
+r[items.impl]
+
+r[items.impl.syntax]
 > **<sup>Syntax</sup>**\
 > _Implementation_ :\
 > &nbsp;&nbsp; _InherentImpl_ | _TraitImpl_
@@ -19,11 +22,13 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
 > &nbsp;&nbsp; `}`
 
+r[items.impl.intro]
 An _implementation_ is an item that associates items with an _implementing type_.
 Implementations are defined with the keyword `impl` and contain functions
 that belong to an instance of the type that is being implemented or to the
 type statically.
 
+r[items.impl.kinds]
 There are two types of implementations:
 
 - inherent implementations
@@ -31,22 +36,33 @@ There are two types of implementations:
 
 ## Inherent Implementations
 
+r[items.impl.inherent]
+
+r[items.impl.inherent.intro]
 An inherent implementation is defined as the sequence of the `impl` keyword,
 generic type declarations, a path to a nominal type, a where clause, and a
 bracketed set of associable items.
 
+r[items.impl.inherent.implementing-type]
 The nominal type is called the _implementing type_ and the associable items are
 the _associated items_ to the implementing type.
 
+r[items.impl.inherent.associated-items]
 Inherent implementations associate the contained items to the
-implementing type.  Inherent implementations can contain [associated
-functions] (including [methods]) and [associated constants]. They cannot
-contain associated type aliases.
+implementing type.
 
+r[items.impl.inherent.associated-items.allowed-items]
+Inherent implementations can contain [associated functions] (including [methods]) and [associated constants].
+
+r[items.impl.inherent.type-alias]
+They cannot contain associated type aliases.
+
+r[items.impl.inherent.associated-item-path]
 The [path] to an associated item is any path to the implementing type,
 followed by the associated item's identifier as the final path
 component.
 
+r[items.impl.inherent.coherence]
 A type can also have multiple inherent implementations. An implementing type
 must be defined within the same crate as the original type definition.
 
@@ -86,23 +102,30 @@ fn main() {
 
 ## Trait Implementations
 
+r[items.impl.trait]
+
+r[items.impl.trait.intro]
 A _trait implementation_ is defined like an inherent implementation except that
 the optional generic type declarations are followed by a [trait], followed
 by the keyword `for`, followed by a path to a nominal type.
 
 <!-- To understand this, you have to back-reference to the previous section. :( -->
 
+r[items.impl.trait.implemented-trait]
 The trait is known as the _implemented trait_. The implementing type
 implements the implemented trait.
 
+r[items.impl.trait.def-requirement]
 A trait implementation must define all non-default associated items declared
 by the implemented trait, may redefine default associated items defined by the
 implemented trait, and cannot define any other items.
 
+r[items.impl.trait.associated-item-path]
 The path to the associated items is `<` followed by a path to the implementing
 type followed by `as` followed by a path to the trait followed by `>` as a path
 component followed by the associated item's path component.
 
+r[items.impl.trait.safety]
 [Unsafe traits] require the trait implementation to begin with the `unsafe`
 keyword.
 
@@ -140,9 +163,13 @@ impl Shape for Circle {
 
 ### Trait Implementation Coherence
 
+r[items.impl.trait.coherence]
+
+r[items.impl.trait.coherence.intro]
 A trait implementation is considered incoherent if either the orphan rules check fails
 or there are overlapping implementation instances.
 
+r[items.impl.trait.coherence.overlapping]
 Two trait implementations overlap when there is a non-empty intersection of the
 traits the implementation is for, the implementations can be instantiated with
 the same type. <!-- This is probably wrong? Source: No two implementations can
@@ -150,6 +177,9 @@ be instantiable with the same set of types for the input type parameters. -->
 
 #### Orphan rules
 
+r[items.impl.trait.orphan-rule]
+
+r[items.impl.trait.orphan-rule.general]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
 least one of the following is true:
 
@@ -160,14 +190,19 @@ least one of the following is true:
   - No [uncovered type] parameters `P1..=Pn` may appear in `T0..Ti` (excluding
     `Ti`)
 
+r[items.impl.trait.uncovered-param]
 Only the appearance of *uncovered* type parameters is restricted.
+
+r[items.impl.trait.fundamental]
 Note that for the purposes of coherence, [fundamental types] are
 special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>`
 is considered local.
 
-
 ## Generic Implementations
 
+r[items.impl.generics]
+
+r[items.impl.generics.intro]
 An implementation can take [generic parameters], which can be used in the rest
 of the implementation. Implementation parameters are written directly after the
 `impl` keyword.
@@ -182,6 +217,7 @@ impl Seq<bool> for u32 {
 }
 ```
 
+r[items.impl.generics.usage]
 Generic parameters *constrain* an implementation if the parameter appears at
 least once in one of:
 
@@ -190,6 +226,7 @@ least once in one of:
 * As an [associated type] in the [bounds] of a type that contains another
   parameter that constrains the implementation
 
+r[items.impl.generics.constrain]
 Type and const parameters must always constrain the implementation. Lifetimes
 must constrain the implementation if the lifetime is used in an associated type.
 
@@ -262,6 +299,8 @@ impl<'a> HasAssocType for Struct {
 ```
 
 ## Attributes on Implementations
+
+r[items.impl.attributes]
 
 Implementations may contain outer [attributes] before the `impl` keyword and
 inner [attributes] inside the brackets that contain the associated items. Inner

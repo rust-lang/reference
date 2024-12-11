@@ -1,5 +1,8 @@
 # Generic parameters
 
+r[items.generics]
+
+r[items.generics.syntax]
 > **<sup>Syntax</sup>**\
 > _GenericParams_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
@@ -9,7 +12,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _LifetimeParam_ | _TypeParam_ | _ConstParam_ )
 >
 > _LifetimeParam_ :\
-> &nbsp;&nbsp; [LIFETIME_OR_LABEL]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
+> &nbsp;&nbsp; [_Lifetime_]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
 >
 > _TypeParam_ :\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
@@ -17,12 +20,17 @@
 > _ConstParam_:\
 > &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] ( `=` _[Block][block]_ | [IDENTIFIER] | -<sup>?</sup>[LITERAL] )<sup>?</sup>
 
+r[items.generics.syntax.intro]
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
 [implementations] may be *parameterized* by types, constants, and lifetimes. These
 parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after `impl`.
+
+r[items.generics.syntax.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
+
+r[items.generics.syntax.duplicate-params]
 The same parameter name may not be declared more than once in a _GenericParams_ list.
 
 Some examples of items with type, const, and lifetime parameters:
@@ -35,25 +43,35 @@ struct InnerArray<T, const N: usize>([T; N]);
 struct EitherOrderWorks<const N: bool, U>(U);
 ```
 
+r[items.generics.syntax.scope]
 Generic parameters are in scope within the item definition where they are
 declared. They are not in scope for items declared within the body of a
 function as described in [item declarations].
 See [generic parameter scopes] for more details.
 
+r[items.generics.builtin-generic-types]
 [References], [raw pointers], [arrays], [slices], [tuples], and
 [function pointers] have lifetime or type parameters as well, but are not
 referred to with path syntax.
 
-`'_` is not a valid lifetime parameter.
+r[items.generics.invalid-lifetimes]
+`'_` and `'_static` are not valid lifetime parameters.
 
 ### Const generics
 
+r[items.generics.const]
+
+r[items.generics.const.intro]
 *Const generic parameters* allow items to be generic over constant values.
+
+r[items.generics.const.namespace]
 The const identifier introduces a name in the [value namespace] for the constant parameter, and all instances of the item must be instantiated with a value of the given type.
 
+r[items.generics.const.allowed-types]
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
+r[items.generics.const.usage]
 Const parameters can be used anywhere a [const item] can be used, with the
 exception that when used in a [type] or [array repeat expression], it must be
 standalone (as described below). That is, they are allowed in the following
@@ -111,6 +129,7 @@ fn foo<const N: usize>() {
 }
 ```
 
+r[items.generics.const.standalone]
 As a further restriction, const parameters may only appear as a standalone
 argument inside of a [type] or [array repeat expression]. In those contexts,
 they may only be used as a single segment [path expression], possibly inside a
@@ -128,7 +147,10 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 }
 ```
 
+r[items.generics.const.argument]
 A const argument in a [path] specifies the const value to use for that item.
+
+r[items.generics.const.argument.const-expr]
 The argument must be a [const expression] of the type ascribed to the const
 parameter. The const expression must be a [block expression][block]
 (surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
@@ -154,6 +176,7 @@ fn example() {
 }
 ```
 
+r[items.generics.const.type-ambiguity]
 When there is ambiguity if a generic argument could be resolved as either a
 type or const argument, it is always resolved as a type. Placing the argument
 in a block expression can force it to be interpreted as a const argument.
@@ -172,6 +195,7 @@ fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
 fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
+r[items.generics.const.variance]
 Unlike type and lifetime parameters, const parameters can be declared without
 being used inside of a parameterized item, with the exception of
 implementations as described in [generic implementations]:
@@ -188,6 +212,7 @@ struct Unconstrained;
 impl<const N: usize> Unconstrained {}
 ```
 
+r[items.generics.const.exhaustiveness]
 When resolving a trait bound obligation, the exhaustiveness of all
 implementations of const parameters is not considered when determining if the
 bound is satisfied. For example, in the following, even though all possible
@@ -207,9 +232,11 @@ fn generic<const B: bool>() {
 }
 ```
 
-
 ## Where clauses
 
+r[items.generics.where]
+
+r[items.generics.where.syntax]
 > **<sup>Syntax</sup>**\
 > _WhereClause_ :\
 > &nbsp;&nbsp; `where` ( _WhereClauseItem_ `,` )<sup>\*</sup> _WhereClauseItem_ <sup>?</sup>
@@ -224,10 +251,12 @@ fn generic<const B: bool>() {
 > _TypeBoundWhereClauseItem_ :\
 > &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
 
+r[items.generics.where.intro]
 *Where clauses* provide another way to specify bounds on type and lifetime
 parameters as well as a way to specify bounds on types that aren't type
 parameters.
 
+r[items.generics.where.higher-ranked-lifetimes]
 The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
 allows [_LifetimeParam_] parameters.
 
@@ -244,6 +273,8 @@ where
 ```
 
 ## Attributes
+
+r[items.generics.attributes]
 
 Generic lifetime and type parameters allow [attributes] on them. There are no
 built-in attributes that do anything in this position, although custom derive
@@ -263,7 +294,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 ```
 
 [IDENTIFIER]: ../identifiers.md
-[LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
 
 [_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
 [_LifetimeParam_]: #generic-parameters

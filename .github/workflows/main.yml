@@ -4,7 +4,7 @@ on:
   merge_group:
 
 env:
-  MDBOOK_VERSION: 0.4.40
+  MDBOOK_VERSION: 0.4.43
 
 jobs:
   code-tests:
@@ -35,6 +35,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Checkout rust-lang/rust
+      uses: actions/checkout@master
+      with:
+        repository: rust-lang/rust
+        path: rust
     - name: Update rustup
       run: rustup self update
     - name: Install Rust
@@ -52,16 +57,17 @@ jobs:
         rustup --version
         rustc -Vv
         mdbook --version
-    - name: Verify the book builds
-      env:
-        SPEC_DENY_WARNINGS: 1
-      run: mdbook build
     - name: Style checks
       working-directory: style-check
       run: cargo run --locked -- ../src
     - name: Style fmt
       working-directory: style-check
       run: cargo fmt --check
+    - name: Verify the book builds
+      env:
+        SPEC_DENY_WARNINGS: 1
+        SPEC_RUST_ROOT: ${{ github.workspace }}/rust
+      run: mdbook build
     - name: Check for broken links
       run: |
         curl -sSLo linkcheck.sh \
@@ -98,6 +104,40 @@ jobs:
       working-directory: ./mdbook-spec
       run: cargo fmt --check
 
+  preview:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Checkout rust-lang/rust
+      uses: actions/checkout@master
+      with:
+        repository: rust-lang/rust
+        path: rust
+    - name: Update rustup
+      run: rustup self update
+    - name: Install Rust
+      run: |
+        rustup set profile minimal
+        rustup toolchain install nightly
+        rustup default nightly
+    - name: Install mdbook
+      run: |
+        mkdir bin
+        curl -sSL https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+        echo "$(pwd)/bin" >> $GITHUB_PATH
+    - name: Build the book
+      env:
+        SPEC_RELATIVE: 0
+        SPEC_RUST_ROOT: ${{ github.workspace }}/rust
+      run: mdbook build --dest-dir dist/preview-${{ github.event.pull_request.number }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: preview-${{ github.event.pull_request.number }}
+        overwrite: true
+        path: dist
+
   # The success job is here to consolidate the total success/failure state of
   # all other jobs. This job is then included in the GitHub branch protection
   # rule which prevents merges unless all other jobs are passing. This makes
@@ -110,6 +150,7 @@ jobs:
       - code-tests
       - style-tests
       - mdbook-spec
+      # preview is explicitly excluded here since it doesn't run on merge
     runs-on: ubuntu-latest
     steps:
       - run: jq --exit-status 'all(.result == "success")' <<< '${{ toJson(needs) }}'

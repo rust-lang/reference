@@ -173,12 +173,14 @@ the hierarchy has its own collection of named entities.
 ### Nominal types
 
 Types that can be referred to by a path directly. Specifically [enums],
-[structs], [unions], and [trait objects].
+[structs], [unions], and [trait object types].
 
-### Object safe traits
+### Dyn-compatible traits
 
-[Traits] that can be used as [trait objects]. Only traits that follow specific
-[rules][object safety] are object safe.
+[Traits] that can be used in [trait object types] (`dyn Trait`).
+Only traits that follow specific [rules][dyn compatibility] are *dyn compatible*.
+
+These were formerly known as *object safe* traits.
 
 ### Path
 
@@ -293,6 +295,7 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [attributes]: attributes.md
 [*entity*]: names.md
 [crate]: crates-and-source-files.md
+[dyn compatibility]: items/traits.md#dyn-compatibility
 [enums]: items/enumerations.md
 [fields]: expressions/field-expr.md
 [free item]: #free-item
@@ -315,12 +318,11 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [*name*]: names.md
 [*namespace*]: names/namespaces.md
 [never type]: types/never.md
-[object safety]: items/traits.md#object-safety
 [*path*]: paths.md
 [Paths]: paths.md
 [*scope*]: names/scopes.md
 [structs]: items/structs.md
-[trait objects]: types/trait-object.md
+[trait object types]: types/trait-object.md
 [traits]: items/traits.md
 [turbofish test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/parser/bastion-of-the-turbofish.rs
 [types of crates]: linkage.md
@@ -329,3 +331,17 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [unions]: items/unions.md
 [variable bindings]: patterns.md
 [visibility rules]: visibility-and-privacy.md
+
+<script>
+(function() {
+    var fragments = {
+        "#object-safe-traits": "glossary.html#dyn-compatible-traits",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
