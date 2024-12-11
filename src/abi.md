@@ -14,10 +14,10 @@ linking external libraries.
 r[abi.compatibility]
 
 r[abi.compatibility.intro]
-Function calls pass parameters and return values between the caller and the callee function. This requires the caller and callee to agree on an ABI for those parameters and return values. This is typically only guaranteed when the same type is used in both the call site and the definition site of the callee, but certain other types may be *abi compatible*. This can appear when transmuting a [function pointer] or using an [`extern` block] to call a function. When the parameters or return types differ between the call site and def site, assuming they are *abi compatible*, the parameters or return types are transmuted to the type at the def site or call site respectively.
+Function calls pass parameters and return values between the caller and the callee function. This requires the caller and callee to agree on an ABI for those parameters and return values. This is typically only guaranteed when the same type is used in both the call site and the definition site of the callee. However, differences between caller and callee types can appear when transmuting a [function pointer] or using an [`extern` block] to call a function. This is permitted if the caller and callee types are *abi compatible* (otherwise, it is undefined behavior). If the types are abi compatible, the parameters are transmuted to the callee type as part of the call and the return value is transmuted to the caller type upon return.
 
 > [!NOTE]
-> This can include calls to functions defined outside of rust, or built using a different Rust compiler version.
+> This can include calls to functions defined outside of Rust, or built using a different Rust compiler version.
 > Additional guarantees will apply in this case for "FFI Safe" types, which match up with the platform C ABI in well-defined ways.
 > These are not fully documented here currently.
 
@@ -141,7 +141,7 @@ If `T` is an a type listed in [layout.repr.rust.option.elision], and `U` is the 
 > Due to transitivity, two such types are *abi compatible* with each other if their *elision candidate field*s are *abi comaptible*
 
 r[abi.compatibility.fn-ptr]
-An [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
+A [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
 
 r[abi.compatibility.extern-tag]
 Two [abi tags][abi tag] are *abi compatible* if:
