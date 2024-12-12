@@ -268,8 +268,7 @@ The following is an index of all built-in attributes.
   - [`must_use`] --- Generates a lint for unused values.
   - [`diagnostic::on_unimplemented`] --- Hints the compiler to emit a certain error
     message if a trait is not implemented.
-  - [`diagnostic::do_not_recommend`] --- Hints the compiler to not show a certain trait
-    impl in error messages
+  - [`diagnostic::do_not_recommend`] --- Hints the compiler to not show a certain trait impl in error messages.
 
 - ABI, linking, symbols, and FFI
   - [`link`] --- Specifies a native library to link with an `extern` block.
