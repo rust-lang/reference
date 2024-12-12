@@ -94,6 +94,11 @@ let c = || {
 };
 ```
 
+### Async input capture
+
+r[type.closure.async.input]
+Async closures always capture all input arguments, regardless of whether or not they are used within the body.
+
 ## Capture Precision
 
 r[type.closure.capture.precision.capture-path]
