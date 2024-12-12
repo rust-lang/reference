@@ -42,6 +42,20 @@ Closures marked with the `async` keyword indicate that they are asynchronous in 
 
 Calling the async closure does not perform any work, but instead evaluates to a value that implements [`Future`] that corresponds to the computation of the body of the closure.
 
+```rust
+async fn takes_async_callback(f: impl AsyncFn(u64)) {
+    f(0).await;
+    f(1).await;
+}
+
+async fn example() {
+    takes_async_callback(async |i| {
+        core::future::ready(i).await;
+        println!("done with {i}.");
+    }).await;
+}
+```
+
 > **Edition differences**: Async closures are only available beginning with Rust 2018.
 
 ## Example
