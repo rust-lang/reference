@@ -496,7 +496,7 @@ r[type.closure.call.fn]
 
 r[type.closure.non-capturing]
 *Non-capturing closures* are closures that don't capture anything from their
-environment. Non-async closures can be coerced to function pointers (e.g., `fn()`)
+environment. Non-async, non-capturing closures can be coerced to function pointers (e.g., `fn()`)
 with the matching signature.
 
 ```rust
@@ -521,7 +521,7 @@ The [`Future`] returned by the async closure has similar capturing characteristi
 - The `Future` includes a mutable capture.
 - The async closure captures by value, except when the value is accessed with a dereference projection.
 
-If the async closure is lending to its `Future`, then [`FnMut`] and [`Fn`] are *not* implemented.
+If the async closure is lending to its `Future`, then [`FnMut`] and [`Fn`] are *not* implemented. [`FnOnce`] is always implemented.
 
 > **Example**: The first clause for a mutable capture can be illustrated with the following:
 >
