@@ -83,7 +83,6 @@ A value `i` of an unsigned integer type `U` is represented by a sequence of init
 > [!WARN]
 > On `little` endian, the order of bytes used to decode an integer type is the same as the natural order of a `u8` array - that is, the `m` value corresponds with the `m` index into a same-sized `u8` array. On `big` endian, however, the order is the opposite of this order - that is, the `m` value corresponds with the `size_of::<T>() - m` index in that array.
 
-
 r[type.numeric.repr.signed]
 A value `i` of a signed integer type with width `N` is represented the same as the corresponding value of the unsigned counterpart type which is congruent modulo `2^N`.
 
@@ -98,9 +97,6 @@ A floating-point value is represented by the following decoding:
 * The byte sequence is decoded as the unsigned integer type with the same width as the floating-point type,
 * The resulting integer is decoded according to [IEEE 754-2019] into the format used for the type.
 
-> [!NOTE]
-> The representation of each finite number and infinity is unique as a result of the definition of [IEEE 754-2019].
-> The exact behaviour of encoding and decoding NaNs is not yet decided
 
 r[type.numeric.repr.float-format]
 The [IEEE 754-2019] `binary32` format is used for `f32`, and the `binary64` format is used for `f64`. The set of values for each floating-point type are determined by the respective format.

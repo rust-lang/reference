@@ -51,7 +51,6 @@ A sequence of bytes is said to represent a value of a type, if the decode operat
 
 > [!NOTE]
 > Representation is related to, but is not the same property as, the layout of the type.
-> A type has a unique representation when each value is represented by exactly one byte sequence. Most primitive types have unique representations.
 
 r[memory.encoding.symmetric]
 The result of encoding a given value of a type is a sequence of bytes that represents that value.
