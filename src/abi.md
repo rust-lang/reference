@@ -256,7 +256,7 @@ r[abi.symbol-name.names]
 The *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block].
 
 ```rust
-#[unsafe(no_mangle(]
+#[unsafe(no_mangle)]
 extern "C" fn foo(x: i32) -> i32 {
     x + 1
 }
