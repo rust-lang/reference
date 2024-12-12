@@ -36,13 +36,9 @@ r[type.struct.value]
 r[type.struct.value.intro]
 A value of a struct type consists of a list of values for each field.
 
-
 r[type.struct.value.encode-decode]
 When a value of a struct type is encoded, each field of the struct is encoded at its corresponding offset and each byte that is not within a field of the struct is set to uninit.
-When a value of a struct type is decoded, each field of the struct is decoded from its corresponding offset.
-
-> [!NOTE]
-> It is valid for padding bytes to hold a value other than uninit when decoded, and these bytes are ignored when decoding an struct value.
+When a value of a struct type is decoded, each field of the struct is decoded from its corresponding offset. Each byte that is not within a field of the struct is ignored.
 
 [^structtype]: `struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.

@@ -24,7 +24,7 @@ The memory layout of a `union` is undefined by default (in particular, fields do
 *not* have to be at offset 0), but the `#[repr(...)]` attribute can be used to
 fix a layout.
 
-## Union Values 
+## Union Values
 
 r[type.union.value]
 
@@ -37,7 +37,7 @@ A byte `b` in the representation of a struct or union is a value byte if there e
 > [!NOTE]
 > A byte in a union is a value byte if it is a value byte in *any* field.
 
-r[type.struct.value.padding]
+r[type.union.value.padding]
 Every byte in an struct or union which is not a value byte is a padding byte. [Enum types][type.enum.value.value-padding], [tuple types][type.tuple.padding], and other types may also have padding bytes.
 
 > [!NOTE]
