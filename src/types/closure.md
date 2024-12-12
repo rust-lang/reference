@@ -523,6 +523,48 @@ The [`Future`] returned by the async closure has similar capturing characteristi
 
 If the async closure is lending to its `Future`, then [`FnMut`] and [`Fn`] are *not* implemented.
 
+> **Example**: The first clause for a mutable capture can be illustrated with the following:
+>
+> ```rust,compile_fail
+> fn takes_callback<Fut: Future>(c: impl FnMut() -> Fut) {}
+>
+> fn f() {
+>     let mut x = 1i32;
+>     let c = async || {
+>         x = 2;  // x captured with MutBorrow
+>     };
+>     takes_callback(c);  // ERROR: async closure does not implement `FnMut`
+> }
+> ```
+>
+> The second clause for a regular value capture can be illustrated with the following:
+>
+> ```rust,compile_fail
+> fn takes_callback<Fut: Future>(c: impl Fn() -> Fut) {}
+>
+> fn f() {
+>     let x = &1i32;
+>     let c = async move || {
+>         let a = x + 2;  // x captured ByValue
+>     };
+>     takes_callback(c);  // ERROR: async closure does not implement `Fn`
+> }
+> ```
+>
+> The exception of the the second clause can be illustrated by using a dereference, which does allow `Fn` and `FnMut` to be implemented:
+>
+> ```rust
+> fn takes_callback<Fut: Future>(c: impl Fn() -> Fut) {}
+>
+> fn f() {
+>     let x = &1i32;
+>     let c = async move || {
+>         let a = *x + 2;
+>     };
+>     takes_callback(c);  // OK: implements `Fn`
+> }
+> ```
+
 r[type.closure.async.traits.async-family]
 Async closures implement [`AsyncFn`], [`AsyncFnMut`], and [`AsyncFnOnce`] in an analogous way as regular closures implement [`Fn`], [`FnMut`], and [`FnOnce`]; that is, depending on the use of the captured variables in its body.
 
