@@ -564,7 +564,11 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 r[attributes.diagnostic.do_not_recommend]
 
 r[attributes.diagnostic.do_not_recommend.intro]
-The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message. For example, in an error message about a type not implementing a required trait, the compiler may indicate that an unsatisfied trait bound is a result of the given trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to prevent those annotations about the trait implementation from being included in the diagnostic when they are unlikely to be useful.
+The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.
+
+> **Note**: Suppressing the recommendation can be useful if you know that the recommendation would not be useful to the programmer. This often occurs with broad, blanket impls. The recommendation may send the programmer down the wrong path, or the trait implementation may be an internal detail that you don't want to expose, or the bounds may not be able to be satisfied by the programmer.
+>
+> For example, in an error message about a type not implementing a required trait, the compiler may find a trait implementation that would satisfy the requirements if it weren't for specific bounds in the trait implementation. The compiler may tell the user that there is an impl, but the problem is the bounds in the trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to tell the compiler to *not* tell the user about the trait implementation, and instead simply tell the user the type doesn't implement the required trait.
 
 r[attributes.diagnostic.do_not_recommend.allowed-positions]
 The attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
@@ -572,41 +576,57 @@ The attribute should be placed on a [trait implementation item][trait-impl], tho
 r[attributes.diagnostic.do_not_recommend.syntax]
 The attribute does not accept any arguments, though unexpected arguments are not considered as an error.
 
-In this example:
+In this example,
 
 ```rust,compile_fail,E0277
 trait Foo {}
 
-#[diagnostic::do_not_recommend]
 impl<T> Foo for T where T: Send {}
 
 fn needs_foo<T: Foo>() {}
 
 fn main() {
+    // Mutable pointers do not implement `Send`, so this will not work.
     needs_foo::<*mut ()>();
 }
-
 ```
 
-the compiler may generate an error message which looks like this:
+the compiler may generate an error message about the `Send` bound in the impl which looks like this:
 
 ```text
 error[E0277]: the trait bound `*mut (): Foo` is not satisfied
-  --> $DIR/simple.rs:15:17
+ --> src/main.rs:9:17
+  |
+9 |     needs_foo::<*mut ()>();
+  |                 ^^^^^^^ the trait `Send` is not implemented for `*mut ()`
+  |
+note: required for `*mut ()` to implement `Foo`
+ --> src/main.rs:3:9
+  |
+3 | impl<T> Foo for T where T: Send {}
+  |         ^^^     ^          ---- unsatisfied trait bound introduced here
+note: required by a bound in `needs_foo`
+ --> src/main.rs:5:17
+  |
+5 | fn needs_foo<T: Foo>() {}
+  |                 ^^^ required by this bound in `needs_foo`
+```
+
+By adding the `#[diagnostic::do_no_recommend]` attribute to the `impl`, the message would no longer suggest it:
+
+```text
+error[E0277]: the trait bound `*mut (): Foo` is not satisfied
+  --> src/main.rs:11:17
    |
-LL |     needs_foo::<*mut ()>();
+11 |     needs_foo::<*mut ()>();
    |                 ^^^^^^^ the trait `Foo` is not implemented for `*mut ()`
    |
 note: required by a bound in `needs_foo`
-  --> $DIR/simple.rs:10:17
+  --> src/main.rs:7:17
    |
-LL | fn needs_foo<T: Foo>() {}
+7  | fn needs_foo<T: Foo>() {}
    |                 ^^^ required by this bound in `needs_foo`
-
-error: aborting due to 1 previous error
 ```
-
-Without the attribute the compiler would complain about `Send` not being implemented for `*mut ()` due to the required bounds in the implementation.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
