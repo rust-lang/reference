@@ -256,21 +256,21 @@ r[abi.symbol-name.names]
 The *`export_name` attribute* shall only be applied to a `static` or `fn` item. The *`export_name` attribute* shall not be applied to an item declared within an [`extern` block].
 
 ```rust
-#[no_mangle]
+#[unsafe(no_mangle(]
 extern "C" fn foo(x: i32) -> i32 {
     x + 1
 }
 
-#[export_name = "bar"]
+#[unsafe(export_name = "bar")]
 extern "C" fn baz(x: i32) -> i32 {
     x + 2
 }
 ```
 
 ```rust,compile_fail
-extern "C" {
-    #[export_name = "foo"]
-    fn __foo(x: i32) -> i32;  // error: not a free function, impl method, or static
+unsafe extern "C" {
+    #[unsafe(export_name = "foo")]
+    unsafe fn __foo(x: i32) -> i32;  // error: not a free function, impl method, or static
 }
 ```
 
@@ -284,11 +284,11 @@ r[abi.symbol-name.no_mangle]
 The *`no_mangle` attribute* may be specified as a built-in attribute, using the [_MetaWord_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the declaration name of the item.
 
 ```rust
-extern "C" {
-    fn bar() -> i32;
+unsafe extern "C" {
+    unsafe fn bar() -> i32;
 }
 mod inner{
-    #[no_mangle]
+    #[unsafe(no_mangle)]
     extern "C" fn bar() -> i32 {
         0
     }
@@ -304,11 +304,11 @@ r[abi.symbol-name.export_name]
 The *`export_name` attribute* may be specified as a built-in attribute, using the [_MetaNameValueStr_] syntax. The *export name* of an item with the *`no_mangle` attribute* is the content of `STRING_LITERAL`.
 
 ```rust
-extern "C" {
-    fn bar() -> i32;
+unsafe extern "C" {
+    unsafe fn bar() -> i32;
 }
 mod inner{
-    #[export_name = "bar"]
+    #[unsafe(export_name = "bar")]
     extern "C" fn __some_other_item_name() -> i32 {
         0
     }
