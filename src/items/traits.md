@@ -120,6 +120,9 @@ r[items.traits.dyn-compatible.associated-functions]
     * Explicitly non-dispatchable functions require:
         * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 
+r[items.traits.dyn-compatible.async-traits]
+* The [`AsyncFn`], [`AsyncFnMut`], and [`AsyncFnOnce`] traits are not dyn-compatible.
+
 > **Note**: This concept was formerly known as *object safety*.
 
 ```rust
