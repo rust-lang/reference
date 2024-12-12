@@ -461,7 +461,8 @@ let z = &x;
 ```
 
 In this case, borrowing `x` mutably is not possible, because `x` is not `mut`.
-But at the same time, borrowing `x` immutably would make the assignment illegal, because a `& &mut` reference might not be unique, so it cannot safely be used to modify a value.
+But at the same time, borrowing `x` immutably would make the assignment illegal,
+because a `& &mut` reference might not be unique, so it cannot safely be used to modify a value.
 So a unique immutable borrow is used: it borrows `x` immutably, but like a mutable borrow, it must be unique.
 
 In the above example, uncommenting the declaration of `y` will produce an error because it would violate the uniqueness of the closure's borrow of `x`; the declaration of `z` is valid because the closure's lifetime has expired, i.e. there are no `c` calls after `z`, releasing the borrow.
