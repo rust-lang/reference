@@ -491,7 +491,7 @@ r[type.closure.call.fn]
 
 r[type.closure.non-capturing]
 *Non-capturing closures* are closures that don't capture anything from their
-environment. They can be coerced to function pointers (e.g., `fn()`)
+environment. Non-async closures can be coerced to function pointers (e.g., `fn()`)
 with the matching signature.
 
 ```rust
