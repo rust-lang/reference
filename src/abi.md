@@ -26,16 +26,6 @@ Function calls pass parameters and return values between the caller and the call
 > If an invalid value is passed as a parameter or returned from a function, the result is immediate undefined behaviour, even if the parameter or return value is never used.
 > For example, passing a null pointer to a function that accepts a `NonNull<i32>` parameter via `fn(*const i32)` function pointer caused undefined behaviour.
 
-r[abi.compatibility.equivalence]
-Two types `T` and `U` are *abi compatible* if:
-* They are the same type,
-* `U` is *abi compatible* with `T`, or
-* There exists a type `V`, such that `T` is *abi compatible* with `V` an `V` is *abi compatible* with `U`,
-
-> [!NOTE]
-> These properties are respectively called "reflexivity", "symmetry", and "transitivity". They ensure that *abi compatibility* is an equivalence relation.
-> ABI compatibility is a pairwise relation between two types. With Transivity and Symmetry, however, it can be well-defined to refer to several types being ABI compatible
-
 r[abi.compatibility.integer]
 Two [integer types] are *abi compatible* if they have the same width and the same signedness.
 
@@ -136,12 +126,22 @@ r[abi.compatibility.discriminant]
 If `T` is an a type listed in [layout.repr.rust.option.elision], and `U` is the type of the *elision candidate field*, then `T` is layout compatible with `U`.
 
 > [!NOTE]
-> `Option<U>`, `Result<U,Z>`, or `Result<Z,U>` are such types, when `U` are *elision candidate type*s, and `Z` is a 1-ZST type.
+> `Option<U>`, `Result<U,Z>`, or `Result<Z,U>` are examples of such types, when `U` are *elision candidate type*s, and `Z` is a 1-ZST type.
 >
 > Due to transitivity, two such types are *abi compatible* with each other if their *elision candidate field*s are *abi comaptible*
 
 r[abi.compatibility.fn-ptr]
 A [function pointer] type `T` is *abi compatible* with an [function pointer] type `U` if `T` and `U` have *abi compatible* tags.
+
+r[abi.compatibility.equivalence]
+Two types `T` and `U` are *abi compatible* if:
+* They are the same type,
+* `U` is *abi compatible* with `T`, or
+* There exists a type `V`, such that `T` is *abi compatible* with `V` an `V` is *abi compatible* with `U`,
+
+> [!NOTE]
+> These properties are respectively called "reflexivity", "symmetry", and "transitivity". They ensure that *abi compatibility* is an equivalence relation.
+> ABI compatibility is a pairwise relation between two types. With Transivity and Symmetry, however, it can be well-defined to refer to several types being ABI compatible
 
 r[abi.compatibility.extern-tag]
 Two [abi tags][abi tag] are *abi compatible* if:
