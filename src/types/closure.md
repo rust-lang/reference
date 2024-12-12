@@ -504,7 +504,24 @@ let bo: Binop = add;
 x = bo(5,7);
 ```
 
-## Other traits
+### Async closure traits
+
+r[type.closure.async.traits]
+
+r[type.closure.async.traits.fn-family]
+Async closures have a further restriction of whether or not they implement [`FnMut`] or [`Fn`].
+
+The [`Future`] returned by the async closure has similar capturing characteristics as a closure. It captures place expressions from the async closure based on how they are used. The async closure is said to be *lending* if it has either of the following properties:
+
+- The future capture is mutable.
+- The async closure captures by value, except when the value is accessed with a dereference projection.
+
+If the async closure is lending to the future, then [`FnMut`] and [`Fn`] are *not* implemented.
+
+r[type.closure.async.traits.async-family]
+Async closures implement [`AsyncFn`], [`AsyncFnMut`], and [`AsyncFnOnce`] in an analogous way as regular closures implement [`Fn`], [`FnMut`], and [`FnOnce`]; that is, depending on the use of the captured variables in its body.
+
+### Other traits
 
 r[type.closure.traits]
 
