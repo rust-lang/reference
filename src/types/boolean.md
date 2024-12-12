@@ -21,7 +21,7 @@ r[type.bool.layout]
 An object with the boolean type has a [size and alignment] of 1 each.
 
 r[type.bool.repr]
-A `bool` is represented as a single initialized byte with a value of `0x00` corresponding to `false` and a value of `0x01` corresponding to `true`. 
+A `bool` is represented as a single initialized byte with a value of `0x00` corresponding to `false` and a value of `0x01` corresponding to `true`.
 
 > [!NOTE]
 > No other representations are valid for `bool`. Undefined Behaviour occurs when any other byte is read as type `bool`.

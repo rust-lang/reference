@@ -111,7 +111,7 @@ A wide pointer or reference is represented the same as `struct WidePointer<M>{da
 
 > [!NOTE]
 > The `WidePointer` struct has no guarantees about layout, and has the default representation.
-> In particular, it is not guaranteed that you can write a struct type with the same layout as `WidePointer<M>`. 
+> In particular, it is not guaranteed that you can write a struct type with the same layout as `WidePointer<M>`.
 
 ## Pointer Provenance
 
