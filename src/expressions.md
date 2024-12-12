@@ -35,6 +35,7 @@
 > &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
 > &nbsp;&nbsp; (\
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; | [_ConstBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
@@ -145,7 +146,7 @@ A *value expression* is an expression that represents an actual value.
 The following contexts are *place expression* contexts:
 
 * The left operand of a [compound assignment] expression.
-* The operand of a unary [borrow], [address-of][addr-of] or [dereference][deref] operator.
+* The operand of a unary [borrow], [raw borrow] or [dereference][deref] operator.
 * The operand of a field expression.
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
@@ -275,7 +276,6 @@ They are never allowed before:
 
 [assign]:               expressions/operator-expr.md#assignment-expressions
 [borrow]:               expressions/operator-expr.md#borrow-operators
-[addr-of]:              expressions/operator-expr.md#raw-address-of-operators
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
@@ -283,7 +283,6 @@ They are never allowed before:
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 
-[`Box<T>`]:             ../std/boxed/struct.Box.html
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`Sized`]:              special-types-and-traits.md#sized
@@ -294,6 +293,7 @@ They are never allowed before:
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [scrutinee]:            glossary.md#scrutinee
 [promoted]:             destructors.md#constant-promotion
+[raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
 [slice]:                types/slice.md
 [statement]:            statements.md
 [static variables]:     items/static-items.md
@@ -311,6 +311,7 @@ They are never allowed before:
 [_ClosureExpression_]:            expressions/closure-expr.md
 [_ComparisonExpression_]:         expressions/operator-expr.md#comparison-operators
 [_CompoundAssignmentExpression_]: expressions/operator-expr.md#compound-assignment-expressions
+[_ConstBlockExpression_]:         expressions/block-expr.md#const-blocks
 [_ContinueExpression_]:           expressions/loop-expr.md#continue-expressions
 [_FieldExpression_]:              expressions/field-expr.md
 [_GroupedExpression_]:            expressions/grouped-expr.md

@@ -1,26 +1,38 @@
 # The `unsafe` keyword
 
+r[unsafe]
+
+r[unsafe.intro]
 The `unsafe` keyword can occur in several different contexts:
-unsafe functions (`unsafe fn`), unsafe blocks (`unsafe {}`), unsafe traits (`unsafe trait`), and unsafe trait implementations (`unsafe impl`).
+unsafe functions (`unsafe fn`), unsafe blocks (`unsafe {}`), unsafe traits (`unsafe trait`), unsafe trait implementations (`unsafe impl`), unsafe external blocks (`unsafe extern`), and unsafe attributes (`#[unsafe(attr)]`).
 It plays several different roles, depending on where it is used and whether the `unsafe_op_in_unsafe_fn` lint is enabled:
 - it is used to mark code that *defines* extra safety conditions (`unsafe fn`, `unsafe trait`)
-- it is used to mark code that needs to *satisfy* extra safety conditions (`unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`])
+- it is used to mark code that needs to *satisfy* extra safety conditions (`unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`], `unsafe extern`, `#[unsafe(attr)]`)
 
 The following discusses each of these cases.
 See the [keyword documentation][keyword] for some illustrative examples.
 
 ## Unsafe functions (`unsafe fn`)
 
+r[unsafe.fn]
+
+r[unsafe.fn.intro]
 Unsafe functions are functions that are not safe in all contexts and/or for all possible inputs.
 We say they have *extra safety conditions*, which are requirements that must be upheld by all callers and that the compiler does not check.
 For example, [`get_unchecked`] has the extra safety condition that the index must be in-bounds.
 The unsafe function should come with documentation explaining what those extra safety conditions are.
 
+r[unsafe.fn.safety]
 Such a function must be prefixed with the keyword `unsafe` and can only be called from inside an `unsafe` block, or inside `unsafe fn` without the [`unsafe_op_in_unsafe_fn`] lint.
 
 ## Unsafe blocks (`unsafe {}`)
 
+r[unsafe.block]
+
+r[unsafe.block.intro]
 A block of code can be prefixed with the `unsafe` keyword, to permit calling `unsafe` functions or dereferencing raw pointers.
+
+r[unsafe.block.fn-body]
 By default, the body of an unsafe function is also considered to be an unsafe block;
 this can be changed by enabling the [`unsafe_op_in_unsafe_fn`] lint.
 
@@ -41,12 +53,18 @@ By using `unsafe` blocks to represent the reverse links as raw pointers, it can 
 
 ## Unsafe traits (`unsafe trait`)
 
+r[unsafe.trait]
+
+r[unsafe.trait.intro]
 An unsafe trait is a trait that comes with extra safety conditions that must be upheld by *implementations* of the trait.
 The unsafe trait should come with documentation explaining what those extra safety conditions are.
 
+r[unsafe.trait.safety]
 Such a trait must be prefixed with the keyword `unsafe` and can only be implemented by `unsafe impl` blocks.
 
 ## Unsafe trait implementations (`unsafe impl`)
+
+r[unsafe.impl]
 
 When implementing an unsafe trait, the implementation needs to be prefixed with the `unsafe` keyword.
 By writing `unsafe impl`, the programmer states that they have taken care of satisfying the extra safety conditions required by the trait.
@@ -54,5 +72,24 @@ By writing `unsafe impl`, the programmer states that they have taken care of sat
 Unsafe trait implementations are the logical dual to unsafe traits: where unsafe traits define a proof obligation that implementations must uphold, unsafe implementations state that all relevant proof obligations have been discharged.
 
 [keyword]: ../std/keyword.unsafe.html
-[`get_unchecked`]: ../std/primitive.slice.html#method.get_unchecked
+[`get_unchecked`]: slice::get_unchecked
 [`unsafe_op_in_unsafe_fn`]: ../rustc/lints/listing/allowed-by-default.html#unsafe-op-in-unsafe-fn
+
+## Unsafe external blocks (`unsafe extern`)
+
+r[unsafe.extern]
+
+The programmer who declares an [external block] must assure that the signatures of the items contained within are correct. Failing to do so may lead to undefined behavior.  That this obligation has been met is indicated by writing `unsafe extern`.
+
+r[unsafe.extern.edition2024]
+> **Edition differences**: Prior to edition 2024, `extern` blocks were allowed without being qualified as `unsafe`.
+
+[external block]: items/external-blocks.md
+
+## Unsafe attributes (`#[unsafe(attr)]`)
+
+r[unsafe.attribute]
+
+An [unsafe attribute] is one that has extra safety conditions that must be upheld when using the attribute. The compiler cannot check whether these conditions have been upheld.  To assert that they have been, these attributes must be wrapped in `unsafe(..)`, e.g. `#[unsafe(no_mangle)]`.
+
+[unsafe attribute]: attributes.md

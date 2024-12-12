@@ -41,7 +41,9 @@ The following things are considered to be overflow:
 > **<sup>Syntax</sup>**\
 > _BorrowExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
-> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]
+> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]\
+> &nbsp;&nbsp; | (`&`|`&&`) `raw` `const` [_Expression_]\
+> &nbsp;&nbsp; | (`&`|`&&`) `raw` `mut` [_Expression_]
 
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix operators.
 When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
@@ -79,20 +81,18 @@ let a = && && mut 10;
 let a = & & & & mut 10;
 ```
 
-### Raw address-of operators
+### Raw borrow operators
 
-Related to the borrow operators are the *raw address-of operators*, which do not have first-class syntax, but are exposed via the macros [`ptr::addr_of!(expr)`][addr_of] and [`ptr::addr_of_mut!(expr)`][addr_of_mut].
-The expression `expr` is evaluated in place expression context.
-`ptr::addr_of!(expr)` then creates a const raw pointer of type `*const T` to the given place, and `ptr::addr_of_mut!(expr)` creates a mutable raw pointer of type `*mut T`.
+`&raw const` and `&raw mut` are the *raw borrow operators*.
+The operand expression of these operators is evaluated in place expression context.
+`&raw const expr` then creates a const raw pointer of type `*const T` to the given place, and `&raw mut expr` creates a mutable raw pointer of type `*mut T`.
 
-The raw address-of operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
-In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed using an address-of operator.
+The raw borrow operators must be used instead of a borrow operator whenever the place expression could evaluate to a place that is not properly aligned or does not store a valid value as determined by its type, or whenever creating a reference would introduce incorrect aliasing assumptions.
+In those situations, using a borrow operator would cause [undefined behavior] by creating an invalid reference, but a raw pointer may still be constructed.
 
 The following is an example of creating a raw pointer to an unaligned place through a `packed` struct:
 
 ```rust
-use std::ptr;
-
 #[repr(packed)]
 struct Packed {
     f1: u8,
@@ -100,15 +100,15 @@ struct Packed {
 }
 
 let packed = Packed { f1: 1, f2: 2 };
-// `&packed.f2` would create an unaligned reference, and thus be Undefined Behavior!
-let raw_f2 = ptr::addr_of!(packed.f2);
+// `&packed.f2` would create an unaligned reference, and thus be undefined behavior!
+let raw_f2 = &raw const packed.f2;
 assert_eq!(unsafe { raw_f2.read_unaligned() }, 2);
 ```
 
 The following is an example of creating a raw pointer to a place that does not contain a valid value:
 
 ```rust
-use std::{ptr, mem::MaybeUninit};
+use std::mem::MaybeUninit;
 
 struct Demo {
     field: bool,
@@ -116,8 +116,8 @@ struct Demo {
 
 let mut uninit = MaybeUninit::<Demo>::uninit();
 // `&uninit.as_mut().field` would create a reference to an uninitialized `bool`,
-// and thus be Undefined Behavior!
-let f1_ptr = unsafe { ptr::addr_of_mut!((*uninit.as_mut_ptr()).field) };
+// and thus be undefined behavior!
+let f1_ptr = unsafe { &raw mut (*uninit.as_mut_ptr()).field };
 unsafe { f1_ptr.write(true); }
 let init = unsafe { uninit.assume_init() };
 ```
@@ -398,24 +398,83 @@ reference types and `mut` or `const` in pointer types.
 
 * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
   (Rust uses 2's complement for negative values of fixed integers)
+
+  ```rust
+  assert_eq!(42i8 as u8, 42u8);
+  assert_eq!(-1i8 as u8, 255u8);
+  assert_eq!(255u8 as i8, -1i8);
+  assert_eq!(-1i16 as u16, 65535u16);
+  ```
+
 * Casting from a larger integer to a smaller integer (e.g. u32 -> u8) will
   truncate
+
+  ```rust
+  assert_eq!(42u16 as u8, 42u8);
+  assert_eq!(1234u16 as u8, 210u8);
+  assert_eq!(0xabcdu16 as u8, 0xcdu8);
+
+  assert_eq!(-42i16 as i8, -42i8);
+  assert_eq!(1234u16 as i8, -46i8);
+  assert_eq!(0xabcdi32 as i8, -51i8);
+  ```
+
 * Casting from a smaller integer to a larger integer (e.g. u8 -> u32) will
     * zero-extend if the source is unsigned
     * sign-extend if the source is signed
+
+  ```rust
+  assert_eq!(42i8 as i16, 42i16);
+  assert_eq!(-17i8 as i16, -17i16);
+  assert_eq!(0b1000_1010u8 as u16, 0b0000_0000_1000_1010u16, "Zero-extend");
+  assert_eq!(0b0000_1010i8 as i16, 0b0000_0000_0000_1010i16, "Sign-extend 0");
+  assert_eq!(0b1000_1010u8 as i8 as i16, 0b1111_1111_1000_1010u16 as i16, "Sign-extend 1");
+  ```
+
 * Casting from a float to an integer will round the float towards zero
     * `NaN` will return `0`
     * Values larger than the maximum integer value, including `INFINITY`, will saturate to the maximum value of the integer type.
     * Values smaller than the minimum integer value, including `NEG_INFINITY`, will saturate to the minimum value of the integer type.
+
+  ```rust
+  assert_eq!(42.9f32 as i32, 42);
+  assert_eq!(-42.9f32 as i32, -42);
+  assert_eq!(42_000_000f32 as i32, 42_000_000);
+  assert_eq!(std::f32::NAN as i32, 0);
+  assert_eq!(1_000_000_000_000_000f32 as i32, 0x7fffffffi32);
+  assert_eq!(std::f32::NEG_INFINITY as i32, -0x80000000i32);
+  ```
+
 * Casting from an integer to float will produce the closest possible float \*
     * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
     * on overflow, infinity (of the same sign as the input) is produced
     * note: with the current set of numeric types, overflow can only happen
       on `u128 as f32` for values greater or equal to `f32::MAX + (0.5 ULP)`
+
+  ```rust
+  assert_eq!(1337i32 as f32, 1337f32);
+  assert_eq!(123_456_789i32 as f32, 123_456_790f32, "Rounded");
+  assert_eq!(0xffffffff_ffffffff_ffffffff_ffffffff_u128 as f32, std::f32::INFINITY);
+  ```
+
 * Casting from an f32 to an f64 is perfect and lossless
+
+  ```rust
+  assert_eq!(1_234.5f32 as f64, 1_234.5f64);
+  assert_eq!(std::f32::INFINITY as f64, std::f64::INFINITY);
+  assert!((std::f32::NAN as f64).is_nan());
+  ```
+
 * Casting from an f64 to an f32 will produce the closest possible f32 \*\*
     * if necessary, rounding is according to `roundTiesToEven` mode \*\*\*
     * on overflow, infinity (of the same sign as the input) is produced
+
+  ```rust
+  assert_eq!(1_234.5f64 as f32, 1_234.5f32);
+  assert_eq!(1_234_567_891.123f64 as f32, 1_234_567_890f32, "Rounded");
+  assert_eq!(std::f64::INFINITY as f32, std::f32::INFINITY);
+  assert!((std::f64::NAN as f32).is_nan());
+  ```
 
 \* if integer-to-float casts with this rounding mode and overflow behavior are
 not supported natively by the hardware, these casts will likely be slower than
@@ -437,14 +496,33 @@ Casting is limited to the following kinds of enumerations:
 * [Unit-only enums]
 * [Field-less enums] without [explicit discriminants], or where only unit-variants have explicit discriminants
 
+```rust
+enum Enum { A, B, C }
+assert_eq!(Enum::A as i32, 0);
+assert_eq!(Enum::B as i32, 1);
+assert_eq!(Enum::C as i32, 2);
+```
+
 #### Primitive to integer cast
 
 * `false` casts to `0`, `true` casts to `1`
 * `char` casts to the value of the code point, then uses a numeric cast if needed.
 
+```rust
+assert_eq!(false as i32, 0);
+assert_eq!(true as i32, 1);
+assert_eq!('A' as i32, 65);
+assert_eq!('Ö' as i32, 214);
+```
+
 #### `u8` to `char` cast
 
 Casts to the `char` with the corresponding code point.
+
+```rust
+assert_eq!(65u8 as char, 'A');
+assert_eq!(214u8 as char, 'Ö');
+```
 
 #### Pointer to address cast
 
@@ -455,14 +533,10 @@ If the integer type is smaller than the pointer type, the address may be truncat
 
 Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
-<div class="warning">
-
-Warning:
-This interacts with the Rust memory model, which is still under development.
-A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
-Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
-
-</div>
+> [!WARNING]
+> This interacts with the Rust memory model, which is still under development.
+> A pointer obtained from this cast may suffer additional restrictions even if it is bitwise equal to a valid pointer.
+> Dereferencing such a pointer may be [undefined behavior] if aliasing rules are not followed.
 
 A trivial example of sound address arithmetic:
 
@@ -478,15 +552,20 @@ unsafe {
 assert_eq!(values[1], 3);
 ```
 
-#### Slice DST pointer to pointer cast
+#### Pointer-to-pointer cast
 
-For slice types like `[T]` and `[U]`, the raw pointer types `*const [T]`, `*mut [T]`,
-`*const [U]`, and `*mut [U]` encode the number of elements in this slice. Casts between
-these raw pointer types preserve the number of elements. Note that, as a consequence,
-such casts do *not* necessarily preserve the size of the pointer's referent (e.g.,
-casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refers to an
-object of half the size of the original). The same holds for `str` and any compound type
-whose unsized tail is a slice type, such as struct `Foo(i32, [u8])` or `(u64, Foo)`.
+`*const T` / `*mut T` can be cast to `*const U` / `*mut U` with the following behavior:
+
+- If `T` and `U` are both sized, the pointer is returned unchanged.
+- If `T` and `U` are both unsized, the pointer is also returned unchanged.
+  In particular, the metadata is preserved exactly.
+
+  For instance, a cast from `*const [T]` to `*const [U]` preserves the number of elements.
+  Note that, as a consequence, such casts do not necessarily preserve the size of the pointer's referent
+  (e.g., casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refers to an object of half the size of the original).
+  The same holds for `str` and any compound type whose unsized tail is a slice type,
+  such as `struct Foo(i32, [u8])` or `(u64, Foo)`.
+- If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
 
 ## Assignment expressions
 
@@ -637,14 +716,11 @@ fn example() {
 
 Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
 
-<div class="warning">
-
-Warning: The evaluation order of operands swaps depending on the types of the operands:
-with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
-Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
-See [this test] for an example of using this dependency.
-
-</div>
+> [!WARNING]
+> The evaluation order of operands swaps depending on the types of the operands:
+> with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
+> Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
+> See [this test] for an example of using this dependency.
 
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
@@ -669,8 +745,6 @@ See [this test] for an example of using this dependency.
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[addr_of]: ../../std/ptr/macro.addr_of.html
-[addr_of_mut]: ../../std/ptr/macro.addr_of_mut.html
 
 [_BorrowExpression_]: #borrow-operators
 [_DereferenceExpression_]: #the-dereference-operator
@@ -687,3 +761,17 @@ See [this test] for an example of using this dependency.
 [_TypeNoBounds_]: ../types.md#type-expressions
 [_RangeExpression_]: ./range-expr.md
 [_UnderscoreExpression_]: ./underscore-expr.md
+
+<script>
+(function() {
+    var fragments = {
+        "#slice-dst-pointer-to-pointer-cast": "operator-expr.html#pointer-to-pointer-cast",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>

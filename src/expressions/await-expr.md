@@ -49,12 +49,12 @@ The variable `current_context` refers to the context taken from the async enviro
 [_Expression_]: ../expressions.md
 [`async fn`]: ../items/functions.md#async-functions
 [`async` block]: block-expr.md#async-blocks
-[`context`]: ../../std/task/struct.Context.html
-[`future::poll`]: ../../std/future/trait.Future.html#tymethod.poll
-[`pin::new_unchecked`]: ../../std/pin/struct.Pin.html#method.new_unchecked
-[`poll::Pending`]: ../../std/task/enum.Poll.html#variant.Pending
-[`poll::Ready`]: ../../std/task/enum.Poll.html#variant.Ready
+[`Context`]: std::task::Context
+[`future::poll`]: std::future::Future::poll
+[`pin::new_unchecked`]: std::pin::Pin::new_unchecked
+[`poll::Pending`]: std::task::Poll::Pending
+[`poll::Ready`]: std::task::Poll::Ready
 [async context]: ../expressions/block-expr.md#async-context
-[future]: ../../std/future/trait.Future.html
-[`IntoFuture`]: ../../std/future/trait.IntoFuture.html
-[`IntoFuture::into_future`]: ../../std/future/trait.IntoFuture.html#tymethod.into_future
+[future]: std::future::Future
+[`IntoFuture`]: std::future::IntoFuture
+[`IntoFuture::into_future`]: std::future::IntoFuture::into_future

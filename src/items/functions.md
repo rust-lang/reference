@@ -1,5 +1,8 @@
 # Functions
 
+r[items.fn]
+
+r[items.fn.syntax]
 > **<sup>Syntax</sup>**\
 > _Function_ :\
 > &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
@@ -8,7 +11,10 @@
 > &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
 >
 > _FunctionQualifiers_ :\
-> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> `unsafe`<sup>?</sup> (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> _ItemSafety_<sup>?</sup>[^extern-qualifiers] (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
+>
+> _ItemSafety_ :\
+> &nbsp;&nbsp; `safe`[^extern-safe] | `unsafe`
 >
 > _Abi_ :\
 > &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
@@ -39,15 +45,31 @@
 >
 > [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 >
+> [^extern-safe]: The `safe` function qualifier is only allowed semantically within
+>   `extern` blocks.
+>
+> [^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within
+>   `extern` blocks, the `safe` or `unsafe` function qualifier is only allowed
+>   when the `extern` is qualified as `unsafe`.
+>
 > [^fn-param-2015]: Function parameters with only a type are only allowed
 >   in an associated function of a [trait item] in the 2015 edition.
 
-A _function_ consists of a [block], along with a name, a set of parameters, and an output type.
+r[items.fn.intro]
+A _function_ consists of a [block] (that's the _body_ of the function),
+along with a name, a set of parameters, and an output type.
 Other than a name, all these are optional.
-Functions are declared with the keyword `fn`.
+
+r[items.fn.namespace]
+Functions are declared with the keyword `fn` which defines the given name in the [value namespace] of the module or block where it is located.
+
+r[items.fn.signature]
 Functions may declare a set of *input* [*variables*][variables] as parameters, through which the caller passes arguments into the function, and the *output* [*type*][type] of the value the function will return to its caller on completion.
+
+r[items.fn.implicit-return]
 If the output type is not explicitly stated, it is the [unit type].
 
+r[items.fn.fn-item-type]
 When referred to, a _function_ yields a first-class *value* of the corresponding zero-sized [*function item type*], which when called evaluates to a direct call to the function.
 
 For example, this is a simple function:
@@ -57,8 +79,14 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 }
 ```
 
+r[items.fn.safety-qualifiers]
+The `safe` function is semantically only allowed when used in an [`extern` block].
+
 ## Function parameters
 
+r[items.fn.params]
+
+r[items.fn.params.intro]
 Function parameters are irrefutable [patterns], so any pattern that is valid in
 an else-less `let` binding is also valid as a parameter:
 
@@ -66,18 +94,26 @@ an else-less `let` binding is also valid as a parameter:
 fn first((value, _): (i32, i32)) -> i32 { value }
 ```
 
+r[items.fn.params.self-pat]
 If the first parameter is a _SelfParam_, this indicates that the function is a
-[method]. Functions with a self parameter may only appear as an [associated
+[method].
+
+r[items.fn.params.self-restriction]
+Functions with a self parameter may only appear as an [associated
 function] in a [trait] or [implementation].
 
+r[items.fn.params.varargs]
 A parameter with the `...` token indicates a [variadic function], and may only
 be used as the last parameter of an [external block] function. The variadic
 parameter may have an optional identifier, such as `args: ...`.
 
 ## Function body
 
-The block of a function is conceptually wrapped in a block that binds the
-argument patterns and then `return`s the value of the function's block. This
+r[items.fn.body]
+
+r[items.fn.body.intro]
+The body block of a function is conceptually wrapped in another block that first binds the
+argument patterns and then `return`s the value of the function's body. This
 means that the tail expression of the block, if evaluated, ends up being
 returned to the caller. As usual, an explicit return expression within
 the body of the function will short-cut that implicit return, if reached.
@@ -93,11 +129,15 @@ return {
 };
 ```
 
+r[items.fn.body.bodyless]
 Functions without a body block are terminated with a semicolon. This form
 may only appear in a [trait] or [external block].
 
 ## Generic functions
 
+r[items.fn.generics]
+
+r[items.fn.generics.intro]
 A _generic function_ allows one or more _parameterized types_ to appear in its
 signature. Each type parameter must be explicitly declared in an
 angle-bracket-enclosed and comma-separated list, following the function name.
@@ -109,8 +149,12 @@ fn foo<A, B>(x: A, y: B) {
 # }
 ```
 
+r[items.fn.generics.param-names]
 Inside the function signature and body, the name of the type parameter can be
-used as a type name. [Trait] bounds can be specified for type
+used as a type name.
+
+r[items.fn.generics.param-bounds]
+[Trait] bounds can be specified for type
 parameters to allow methods with that trait to be called on values of that
 type. This is specified using the `where` syntax:
 
@@ -120,6 +164,7 @@ fn foo<T>(x: T) where T: Debug {
 # }
 ```
 
+r[items.fn.generics.mono]
 When a generic function is referenced, its type is instantiated based on the
 context of the reference. For example, calling the `foo` function here:
 
@@ -135,6 +180,7 @@ foo(&[1, 2]);
 
 will instantiate type parameter `T` with `i32`.
 
+r[items.fn.generics.explicit-arguments]
 The type parameters can also be explicitly supplied in a trailing [path]
 component after the function name. This might be necessary if there is not
 sufficient context to determine the type parameters. For example,
@@ -142,6 +188,9 @@ sufficient context to determine the type parameters. For example,
 
 ## Extern function qualifier
 
+r[items.fn.extern]
+
+r[items.fn.extern.intro]
 The `extern` function qualifier allows providing function _definitions_ that can
 be called with a particular ABI:
 
@@ -150,18 +199,22 @@ be called with a particular ABI:
 extern "ABI" fn foo() { /* ... */ }
 ```
 
+r[items.fn.extern.def]
 These are often used in combination with [external block] items which provide
 function _declarations_ that can be used to call functions without providing
 their _definition_:
 
 <!-- ignore: fake ABI -->
 ```rust,ignore
-extern "ABI" {
-  fn foo(); /* no body */
+unsafe extern "ABI" {
+  unsafe fn foo(); /* no body */
+  safe fn bar(); /* no body */
 }
-unsafe { foo() }
+unsafe { foo() };
+bar();
 ```
 
+r[items.fn.extern.default-abi]
 When `"extern" Abi?*` is omitted from `FunctionQualifiers` in function items,
 the ABI `"Rust"` is assigned. For example:
 
@@ -175,6 +228,7 @@ is equivalent to:
 extern "Rust" fn foo() {}
 ```
 
+r[items.fn.extern.foreign-call]
 Functions can be called by foreign code, and using an ABI that
 differs from Rust allows, for example, to provide functions that can be
 called from other programming languages like C:
@@ -184,10 +238,11 @@ called from other programming languages like C:
 extern "C" fn new_i32() -> i32 { 0 }
 
 // Declares a function with the "stdcall" ABI
-# #[cfg(target_arch = "x86_64")]
+# #[cfg(any(windows, target_arch = "x86"))]
 extern "stdcall" fn new_i32_stdcall() -> i32 { 0 }
 ```
 
+r[items.fn.extern.default-extern]
 Just as with [external block], when the `extern` keyword is used and the `"ABI"`
 is omitted, the ABI used defaults to `"C"`. That is, this:
 
@@ -203,6 +258,7 @@ extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
+r[items.fn.extern.unwind]
 Functions with an ABI that differs from `"Rust"` do not support unwinding in the
 exact same way that Rust does. Therefore, unwinding past the end of functions
 with such ABIs causes the process to abort.
@@ -212,16 +268,24 @@ aborts the process by executing an illegal instruction.
 
 ## Const functions
 
+r[items.fn.const]
+
+r[items.fn.const.intro]
 Functions qualified with the `const` keyword are [const functions], as are
 [tuple struct] and [tuple variant] constructors. _Const functions_  can be
 called from within [const contexts].
 
-Const functions may use the [`extern`] function qualifier, but only with the `"Rust"` and `"C"` ABIs.
+r[items.fn.const.extern]
+Const functions may use the [`extern`] function qualifier.
 
+r[items.fn.const.exclusivity]
 Const functions are not allowed to be [async](#async-functions).
 
 ## Async functions
 
+r[items.fn.async]
+
+r[items.fn.async.intro]
 Functions may be qualified as async, and this can also be combined with the
 `unsafe` qualifier:
 
@@ -230,10 +294,12 @@ async fn regular_example() { }
 async unsafe fn unsafe_example() { }
 ```
 
+r[items.fn.async.future]
 Async functions do no work when called: instead, they
 capture their arguments into a future. When polled, that future will
 execute the function's body.
 
+r[items.fn.async.desugar-brief]
 An async function is roughly equivalent to a function
 that returns [`impl Future`] and with an [`async move` block][async-blocks] as
 its body:
@@ -255,12 +321,16 @@ fn example<'a>(x: &'a str) -> impl Future<Output = usize> + 'a {
 }
 ```
 
+r[items.fn.async.desugar]
 The actual desugaring is more complex:
 
+r[items.fn.async.lifetime-capture]
 - The return type in the desugaring is assumed to capture all lifetime
   parameters from the `async fn` declaration. This can be seen in the
   desugared example above, which explicitly outlives, and hence
   captures, `'a`.
+
+r[items.fn.async.param-capture]
 - The [`async move` block][async-blocks] in the body captures all function
   parameters, including those that are unused or bound to a `_`
   pattern. This ensures that function parameters are dropped in the
@@ -273,11 +343,15 @@ For more information on the effect of async, see [`async` blocks][async-blocks].
 [async-blocks]: ../expressions/block-expr.md#async-blocks
 [`impl Future`]: ../types/impl-trait.md
 
+r[items.fn.async.edition2018]
 > **Edition differences**: Async functions are only available beginning with
 > Rust 2018.
 
 ### Combining `async` and `unsafe`
 
+r[items.fn.async.safety]
+
+r[items.fn.async.safety.intro]
 It is legal to declare a function that is both async and unsafe. The
 resulting function is unsafe to call and (like any async function)
 returns a future. This future is just an ordinary future and thus an
@@ -320,8 +394,11 @@ responsibility to ensure that.
 
 ## Attributes on functions
 
+r[items.fn.attributes]
+
+r[items.fn.attributes.intro]
 [Outer attributes][attributes] are allowed on functions. [Inner
-attributes][attributes] are allowed directly after the `{` inside its [block].
+attributes][attributes] are allowed directly after the `{` inside its body [block].
 
 This example shows an inner attribute on a function. The function is documented
 with just the word "Example".
@@ -335,6 +412,7 @@ fn documented() {
 > Note: Except for lints, it is idiomatic to only use outer attributes on
 > function items.
 
+r[items.fn.attributes.builtin-attributes]
 The attributes that have meaning on a function are [`cfg`], [`cfg_attr`], [`deprecated`],
 [`doc`], [`export_name`], [`link_section`], [`no_mangle`], [the lint check
 attributes], [`must_use`], [the procedural macro attributes], [the testing
@@ -343,6 +421,9 @@ attributes macros.
 
 ## Attributes on function parameters
 
+r[items.fn.param-attributes]
+
+r[items.fn.param-attributes.intro]
 [Outer attributes][attributes] are allowed on function parameters and the
 permitted [built-in attributes] are restricted to `cfg`, `cfg_attr`, `allow`,
 `warn`, `deny`, and `forbid`.
@@ -356,6 +437,7 @@ fn len(
 }
 ```
 
+r[items.fn.param-attributes.parsed-attributes]
 Inert helper attributes used by procedural macro attributes applied to items are also
 allowed but be careful to not include these inert attributes in your final `TokenStream`.
 
@@ -407,9 +489,11 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
-[built-in attributes]: ../attributes.html#built-in-attributes-index
+[built-in attributes]: ../attributes.md#built-in-attributes-index
 [trait item]: traits.md
 [method]: associated-items.md#methods
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
+[value namespace]: ../names/namespaces.md
 [variadic function]: external-blocks.md#variadic-functions
+[`extern` block]: external-blocks.md

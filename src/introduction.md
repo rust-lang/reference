@@ -7,13 +7,9 @@ It provides three kinds of material:
   - Chapters that informally describe the memory model, concurrency model, runtime services, linkage model, and debugging facilities.
   - Appendix chapters providing rationale and references to languages that influenced the design.
 
-<div class="warning">
-
-Warning:
-This book is incomplete. Documenting everything takes a while.
-See the [GitHub issues] for what is not documented in this book.
-
-</div>
+> [!WARNING]
+> This book is incomplete. Documenting everything takes a while.
+> See the [GitHub issues] for what is not documented in this book.
 
 ## Rust releases
 
@@ -82,9 +78,9 @@ These conventions are documented here.
 
   An *example term* is an example of a term being defined.
 
-* Differences in the language by which edition the crate is compiled under are in a blockquote that start with the words "Edition Differences:" in **bold**.
+* Differences in the language by which edition the crate is compiled under are in a blockquote that start with the words "Edition differences:" in **bold**.
 
-  > **Edition Differences**: In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
+  > **Edition differences**: In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
 
 * Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in blockquotes that start with the word "Note:" in **bold**.
 
@@ -92,11 +88,8 @@ These conventions are documented here.
 
 * Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
 
-  <div class="warning">
-
-  Warning: This is an example warning.
-
-  </div>
+  > [!WARNING]
+  > This is an example warning.
 
 * Code snippets inline in the text are inside `<code>` tags.
 
@@ -120,6 +113,15 @@ These conventions are documented here.
 
   See [Notation] for more detail.
 
+* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to a specific rule in the language. The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example).
+
+  The rule name can be clicked to link to that rule.
+
+r[example.rule.label]
+
+  > [!WARNING]
+  > The organization of the rules is currently in flux. For the time being, these identifier names are not stable between releases, and links to these rules may fail if they are changed. We intend to stabilize these once the organization has settled so that links to the rule names will not break between releases.
+
 ## Contributing
 
 We welcome contributions of all kinds.
@@ -131,7 +133,7 @@ We also want the reference to be as normative as possible, so if you see anythin
 
 [book]: ../book/index.html
 [github issues]: https://github.com/rust-lang/reference/issues
-[standard library]: ../std/index.html
+[standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [_Expression_]: expressions.md

@@ -48,6 +48,9 @@ fn get_mut2<'a>(&'a mut self) -> &'a mut dyn T;       // expanded
 fn args1<T: ToCStr>(&mut self, args: &[T]) -> &mut Command;                  // elided
 fn args2<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command; // expanded
 
+fn other_args1<'a>(arg: &str) -> &'a str;             // elided
+fn other_args2<'a, 'b>(arg: &'b str) -> &'a str;      // expanded
+
 fn new1(buf: &mut [u8]) -> Thing<'_>;                 // elided - preferred
 fn new2(buf: &mut [u8]) -> Thing;                     // elided
 fn new3<'a>(buf: &'a mut [u8]) -> Thing<'a>;          // expanded
@@ -182,10 +185,10 @@ usual rules, then it will error. By way of example:
 # struct Bar;
 # struct Baz;
 # fn somefunc(a: &Foo, b: &Bar, c: &Baz) -> usize {42}
-// Resolved as `fn<'a>(&'a str) -> &'a str`.
+// Resolved as `for<'a> fn(&'a str) -> &'a str`.
 const RESOLVED_SINGLE: fn(&str) -> &str = |x| x;
 
-// Resolved as `Fn<'a, 'b, 'c>(&'a Foo, &'b Bar, &'c Baz) -> usize`.
+// Resolved as `for<'a, 'b, 'c> Fn(&'a Foo, &'b Bar, &'c Baz) -> usize`.
 const RESOLVED_MULTIPLE: &dyn Fn(&Foo, &Bar, &Baz) -> usize = &somefunc;
 ```
 

@@ -142,19 +142,8 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 _Literal patterns_ match exactly the same value as what is created by the literal.
 Since negative numbers are not [literals], literal patterns also accept an optional minus sign before the literal, which acts like the negation operator.
 
-<div class="warning">
-
-Floating-point literals are currently accepted, but due to the complexity of comparing them, they are going to be forbidden on literal patterns in a future version of Rust (see [issue #41620](https://github.com/rust-lang/rust/issues/41620)).
-
-</div>
-
-<div class="warning">
-
-C string and raw C string literals are accepted in literal patterns, but `&CStr`
-doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore
-any such `match` on a `&CStr` will be rejected with a type error.
-
-</div>
+> [!WARNING]
+> C string and raw C string literals are accepted in literal patterns, but `&CStr` doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore any such `match` on a `&CStr` will be rejected with a type error.
 
 Literal patterns are always refutable.
 
@@ -177,10 +166,10 @@ for i in -2..5 {
 > _IdentifierPattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `ref`<sup>?</sup> `mut`<sup>?</sup> [IDENTIFIER] (`@` [_PatternNoTopAlt_] ) <sup>?</sup>
 
-Identifier patterns bind the value they match to a variable.
+Identifier patterns bind the value they match to a variable in the [value namespace].
 The identifier must be unique within the pattern.
 The variable will shadow any variables of the same name in scope.
-The scope of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
+The [scope] of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
 
 Patterns that consist of only an identifier, possibly with a `mut`, match any value and bind it to that identifier.
 This is the most commonly used pattern in variable declarations and parameters for functions and closures.
@@ -242,7 +231,7 @@ To make it valid, write the following:
 #    age: u8,
 # }
 # let value = Person { name: String::from("John"), age: 23 };
-if let Person {name: ref person_name, age: 18..=150 } = value { }
+if let Person { name: ref person_name, age: 18..=150 } = value { }
 ```
 
 Thus, `ref` is not something that is being matched against.
@@ -397,6 +386,9 @@ match tuple {
 > &nbsp;&nbsp; | _RangeToInclusivePattern_\
 > &nbsp;&nbsp; | _ObsoleteRangePattern_
 >
+> _RangeExclusivePattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..` _RangePatternBound_
+>
 > _RangeInclusivePattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..=` _RangePatternBound_
 >
@@ -422,10 +414,11 @@ A bound on the left of the sigil is a *lower bound*.
 A bound on the right is an *upper bound*.
 
 A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
-It is written as its lower bound, followed by `..=`, followed by its upper bound.
+It is written as its lower bound, followed by `..` for end-exclusive or `..=` for end-inclusive, followed by its upper bound.
 The type of the range pattern is the type unification of its upper and lower bounds.
 
 For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`.
+Similarly, `'m'..'p'` will match only `'m'`, `'n'` and `'o'`, specifically **not** including `'p'`.
 
 The lower bound cannot be greater than the upper bound.
 That is, in `a..=b`, a &le; b must be the case.
@@ -451,6 +444,7 @@ If the bounds is written as a path, after macro resolution, the path must resolv
 
 The type and value of the bounds is dependent upon how it is written out.
 If the bounds is a [path], the pattern has the type and value of the [constant] the path resolves to.
+For float range patterns, the constant may not be a `NaN`.
 If it is a literal, it has the type and value of the corresponding [literal expression].
 If is a literal preceded by a `-`, it has the same type as the corresponding [literal expression] and the value of [negating] the value of the corresponding literal expression.
 
@@ -467,7 +461,7 @@ let valid_variable = match c {
 
 # let ph = 10;
 println!("{}", match ph {
-    0..=6 => "acid",
+    0..7 => "acid",
     7 => "neutral",
     8..=14 => "base",
     _ => unreachable!(),
@@ -534,13 +528,7 @@ For example, `0u8..=255u8` is irrefutable.
 The range of values for an integer type is the closed range from its minimum to maximum value.
 The range of values for a `char` type are precisely those ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and `'\u{E000}'..='\u{10FFFF}'`.
 
-Floating point range patterns are deprecated and may be removed in a future Rust release.
-See [issue #41620](https://github.com/rust-lang/rust/issues/41620) for more information.
-
-> **Edition Differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
-
-> **Note**: Although range patterns use the same syntax as [range expressions], there are no exclusive range patterns.
-> That is, neither `x .. y` nor `.. x` are valid range patterns.
+> **Edition differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
 
 ## Reference patterns
 
@@ -597,8 +585,8 @@ Reference patterns are always irrefutable.
 [_OuterAttribute_]: attributes.md
 [TUPLE_INDEX]: tokens.md#tuple-index
 
-Struct patterns match struct values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a struct.
+Struct patterns match struct, enum, and union values that match all criteria defined by its subpatterns.
+They are also used to [destructure](#destructuring) a struct, enum, or union value.
 
 On a struct pattern, the fields are referenced by name, index (in the case of tuple structs) or ignored by use of `..`:
 
@@ -628,9 +616,21 @@ match t {
     PointTuple {0: 10, ..} => (),
     PointTuple {..} => (),
 }
+
+# enum Message {
+#     Quit,
+#     Move { x: i32, y: i32 },
+# }
+# let m = Message::Quit;
+#
+match m {
+    Message::Quit => (),
+    Message::Move {x: 10, y: 20} => (),
+    Message::Move {..} => (),
+}
 ```
 
-If `..` is not used, it is required to match all fields:
+If `..` is not used, a struct pattern used to match a struct is required to specify all fields:
 
 ```rust
 # struct Struct {
@@ -649,6 +649,8 @@ match struct_value {
 }
 ```
 
+A struct pattern used to match a union must specify exactly one field (see [Pattern matching on unions]).
+
 The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a variable with the same name as the given field.
 
 ```rust
@@ -662,7 +664,7 @@ The `ref` and/or `mut` _IDENTIFIER_ syntax matches any value and binds it to a v
 let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 ```
 
-A struct pattern is refutable when one of its subpatterns is refutable.
+A struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple struct patterns
 
@@ -676,7 +678,7 @@ A struct pattern is refutable when one of its subpatterns is refutable.
 Tuple struct patterns match tuple struct and enum values that match all criteria defined by its subpatterns.
 They are also used to [destructure](#destructuring) a tuple struct or enum value.
 
-A tuple struct pattern is refutable when one of its subpatterns is refutable.
+A tuple struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
 ## Tuple patterns
 
@@ -776,11 +778,30 @@ Unqualified path patterns can refer to:
 
 Qualified path patterns can only refer to associated constants.
 
-Constants cannot be a union type.
-Struct and enum constants must have `#[derive(PartialEq, Eq)]` (not merely implemented).
-
 Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
 They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.
+
+### Constant patterns
+
+When a constant `C` of type `T` is used as a pattern, we first check that `T: PartialEq`.
+Furthermore we require that the value of `C` *has (recursive) structural equality*, which is defined recursively as follows:
+
+- Integers as well as `str`, `bool` and `char` values always have structural equality.
+- Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
+  (In particular, `()` and `[]` always have structural equality.)
+- References have structural equality if the value they point to has structural equality.
+- A value of `struct` or `enum` type has structural equality if its `PartialEq` instance is derived via `#[derive(PartialEq)]`,
+  and all fields (for enums: of the active variant) have structural equality.
+- A raw pointer has structural equality if it was defined as a constant integer (and then cast/transmuted).
+- A float value has structural equality if it is not a `NaN`.
+- Nothing else has structural equality.
+
+In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
+This means that associated consts that involve generic parameters cannot be used as patterns.
+
+After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
+In particular, it fully participates in exhaustiveness checking.
+(For raw pointers, constants are the only way to write such patterns. Only `_` is ever considered exhaustive for these types.)
 
 ## Or-patterns
 
@@ -855,8 +876,11 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [literal expression]: expressions/literal-expr.md
 [negating]: expressions/operator-expr.md#negation-operators
 [path]: expressions/path-expr.md
+[pattern matching on unions]: items/unions.md#pattern-matching-on-unions
 [range expressions]: expressions/range-expr.md
+[scope]: names/scopes.md
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
 [type coercions]: type-coercions.md
+[value namespace]: names/namespaces.md

@@ -75,11 +75,11 @@ display a console window on startup. It will run detached from any existing cons
 ```
 
 [_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
-[`GlobalAlloc`]: ../alloc/alloc/trait.GlobalAlloc.html
-[`PanicInfo`]: ../core/panic/struct.PanicInfo.html
+[`GlobalAlloc`]: alloc::alloc::GlobalAlloc
+[`PanicInfo`]: core::panic::PanicInfo
 [abort]: ../book/ch09-01-unrecoverable-errors-with-panic.html
 [attribute]: attributes.md
 [crate types]: linkage.md
-[set_hook]: ../std/panic/fn.set_hook.html
+[set_hook]: std::panic::set_hook
 [static item]: items/static-items.md
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx

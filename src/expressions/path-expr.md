@@ -23,6 +23,8 @@ let push_integer = Vec::<i32>::push;
 let slice_reverse = <[i32]>::reverse;
 ```
 
+Evaluation of associated constants is handled the same way as [`const` blocks].
+
 [_PathInExpression_]: ../paths.md#paths-in-expressions
 [_QualifiedPathInExpression_]: ../paths.md#qualified-paths
 [place expressions]: ../expressions.md#place-expressions-and-value-expressions
@@ -30,3 +32,4 @@ let slice_reverse = <[i32]>::reverse;
 [path]: ../paths.md
 [`static mut`]: ../items/static-items.md#mutable-statics
 [`unsafe` block]: block-expr.md#unsafe-blocks
+[`const` blocks]: block-expr.md#const-blocks

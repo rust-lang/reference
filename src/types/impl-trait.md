@@ -1,10 +1,14 @@
 # Impl trait
 
+r[type.impl-trait]
+
+r[type.impl-trait.syntax]
 > **<sup>Syntax</sup>**\
 > _ImplTraitType_ : `impl` [_TypeParamBounds_]
 >
 > _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
 
+r[type.impl-trait.intro]
 `impl Trait` provides ways to specify unnamed but concrete types that
 implement a specific trait.
 It can appear in two sorts of places: argument position (where it can act as an anonymous type parameter to functions), and return position (where it can act as an abstract return type).
@@ -23,9 +27,12 @@ fn bar() -> impl Trait {
 ```
 ## Anonymous type parameters
 
+r[type.impl-trait.param]
+
 > Note: This is often called "impl Trait in argument position".
 (The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
 
+r[type.impl-trait.param.intro]
 Functions can use `impl` followed by a set of trait bounds to declare a parameter as having an anonymous type.
 The caller must provide a type that satisfies the bounds declared by the anonymous type parameter, and the function can only use the methods available through the trait bounds of the anonymous type parameter.
 
@@ -43,22 +50,25 @@ fn with_impl_trait(arg: impl Trait) {
 }
 ```
 
+r[type.impl-trait.param.generic]
 That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [_GenericParams_] list.
 
 > **Note:**
 > For function parameters, generic type parameters and `impl Trait` are not exactly equivalent.
 > With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
-> If `impl Trait` is the type of *any* function parameter, then the caller can't ever provide any generic arguments when calling that function.
-This includes generic arguments for the return type or any const generics.
->
-> Therefore, changing the function signature from either one to the other can constitute a breaking change for the callers of a function.
+> Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
 
 ## Abstract return types
 
+r[type.impl-trait.return]
+
 > Note: This is often called "impl Trait in return position".
 
+r[type.impl-trait.return.intro]
 Functions can use `impl Trait` to return an abstract return type.
 These types stand in for another concrete type where the caller may only use the methods declared by the specified `Trait`.
+
+r[type.impl-trait.return.constraint-body]
 Each possible return value from the function must resolve to the same concrete type.
 
 `impl Trait` in return position allows a function to return an unboxed abstract type.
@@ -90,11 +100,55 @@ Returning `impl Iterator` means that a function only exposes the `Iterator` trai
 
 ## Return-position `impl Trait` in traits and trait implementations
 
+r[type.impl-trait.return-in-trait]
+
+r[type.impl-trait.return-in-trait.intro]
 Functions in traits may also use `impl Trait` as a syntax for an anonymous associated type.
 
+r[type.impl-trait.return-in-trait.desugaring]
 Every `impl Trait` in the return type of an associated function in a trait is desugared to an anonymous associated type. The return type that appears in the implementation's function signature is used to determine the value of the associated type.
 
-### Differences between generics and `impl Trait` in return position
+## Capturing
+
+r[type.impl-trait.generic-captures]
+
+Behind each return-position `impl Trait` abstract type is some hidden concrete type.  For this concrete type to use a generic parameter, that generic parameter must be *captured* by the abstract type.
+
+## Automatic capturing
+
+r[type.impl-trait.generic-capture.auto]
+
+r[type.impl-trait.generic-capture.auto.intro]
+Return-position `impl Trait` abstract types automatically capture all in-scope generic parameters, including generic type, const, and lifetime parameters (including higher-ranked ones).
+
+r[type.impl-trait.generic-capture.edition2024]
+> **Edition differences**: Before the 2024 edition, on free functions and on associated functions and methods of inherent impls, generic lifetime parameters that do not appear in the bounds of the abstract return type are not automatically captured.
+
+## Precise capturing
+
+r[type.impl-trait.generic-capture.precise]
+
+r[type.impl-trait.generic-capture.precise.use]
+The set of generic parameters captured by a return-position `impl Trait` abstract type may be explicitly controlled with a [`use<..>` bound].  If present, only the generic parameters listed in the `use<..>` bound will be captured.  E.g.:
+
+```rust
+fn capture<'a, 'b, T>(x: &'a (), y: T) -> impl Sized + use<'a, T> {
+  //                                      ~~~~~~~~~~~~~~~~~~~~~~~
+  //                                     Captures `'a` and `T` only.
+  (x, y)
+}
+```
+
+r[type.impl-trait.generic-capture.precise.constraint-single]
+Currently, only one `use<..>` bound may be present in a bounds list, such bounds are not allowed in the signature of items of a trait definition, all in-scope type and const generic parameters must be included, and all lifetime parameters that appear in other bounds of the abstract type must be included.
+
+r[type.impl-trait.generic-capture.precise.constraint-lifetime]
+Within the `use<..>` bound, any lifetime parameters present must appear before all type and const generic parameters, and the elided lifetime (`'_`) may be present if it is otherwise allowed to appear within the `impl Trait` return type.
+
+r[type.impl-trait.generic-capture.precise.constraint-param-impl-trait]
+Because all in-scope type parameters must be included by name, a `use<..>` bound may not be used in the signature of items that use argument-position `impl Trait`, as those items have anonymous type parameters in scope.
+
+## Differences between generics and `impl Trait` in return position
 
 In argument position, `impl Trait` is very similar in semantics to a generic type parameter.
 However, there are significant differences between the two in return position.
@@ -127,12 +181,15 @@ Instead, the function chooses the return type, but only promises that it will im
 
 ## Limitations
 
+r[type.impl-trait.constraint]
+
 `impl Trait` can only appear as a parameter or return type of a non-`extern` function.
 It cannot be the type of a `let` binding, field type, or appear inside a type alias.
 
-[closures]: closure.md
 [_GenericArgs_]: ../paths.md#paths-in-expressions
 [_GenericParams_]: ../items/generics.md
 [_TraitBound_]: ../trait-bounds.md
-[trait object]: trait-object.md
 [_TypeParamBounds_]: ../trait-bounds.md
+[`use<..>` bound]: ../trait-bounds.md#use-bounds
+[closures]: closure.md
+[trait object]: trait-object.md

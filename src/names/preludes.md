@@ -26,6 +26,7 @@ Edition | `no_std` not applied        | `no_std` applied
 2015    | [`std::prelude::rust_2015`] | [`core::prelude::rust_2015`]
 2018    | [`std::prelude::rust_2018`] | [`core::prelude::rust_2018`]
 2021    | [`std::prelude::rust_2021`] | [`core::prelude::rust_2021`]
+2024    | [`std::prelude::rust_2024`] | [`core::prelude::rust_2024`]
 
 
 > **Note**:
@@ -44,7 +45,7 @@ new_name`, then the symbol `new_name` is instead added to the prelude.
 The [`core`] crate is always added to the extern prelude. The [`std`] crate is
 added as long as the [`no_std` attribute] is not specified in the crate root.
 
-> **Edition Differences**: In the 2015 edition, crates in the extern prelude
+> **Edition differences**: In the 2015 edition, crates in the extern prelude
 > cannot be referenced via [use declarations], so it is generally standard
 > practice to include `extern crate` declarations to bring them into scope.
 >
@@ -52,7 +53,7 @@ added as long as the [`no_std` attribute] is not specified in the crate root.
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
 > **Note**: Additional crates that ship with `rustc`, such as [`alloc`], and
-> [`test`], are not automatically included with the `--extern` flag when using
+> [`test`](mod@test), are not automatically included with the `--extern` flag when using
 > Cargo. They must be brought into scope with an `extern crate` declaration,
 > even in the 2018 edition.
 >
@@ -91,13 +92,8 @@ The *`no_std` [attribute]* may be applied at the crate level to prevent the
 > library. Those capabilities are mainly dynamic memory allocation (e.g. `Box`
 > and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
-<div class="warning">
-
-Warning: Using `no_std` does not prevent the standard library from being
-linked in. It is still valid to put `extern crate std;` into the crate and
-dependencies can also link it in.
-
-</div>
+> [!WARNING]
+> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 ## Language prelude
 
@@ -105,11 +101,11 @@ The language prelude includes names of types and attributes that are built-in
 to the language. The language prelude is always in scope. It includes the following:
 
 * [Type namespace]
-    * [Boolean type] — `bool`
-    * [Textual types] — `char` and `str`
-    * [Integer types] — `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
-    * [Machine-dependent integer types] — `usize` and `isize`
-    * [floating-point types] — `f32` and `f64`
+    * [Boolean type] --- `bool`
+    * [Textual types] --- `char` and `str`
+    * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
+    * [Machine-dependent integer types] --- `usize` and `isize`
+    * [floating-point types] --- `f32` and `f64`
 * [Macro namespace]
     * [Built-in attributes]
 
@@ -132,29 +128,16 @@ module or any of its descendants.
 
 This attribute does not affect the [language prelude].
 
-> **Edition Differences**: In the 2015 edition, the `no_implicit_prelude`
+> **Edition differences**: In the 2015 edition, the `no_implicit_prelude`
 > attribute does not affect the [`macro_use` prelude], and all macros exported
 > from the standard library are still included in the `macro_use` prelude.
 > Starting in the 2018 edition, it will remove the `macro_use` prelude.
 
-[`alloc`]: ../../alloc/index.html
-[`Box`]: ../../std/boxed/struct.Box.html
-[`core::prelude::v1`]: ../../core/prelude/v1/index.html
-[`core::prelude::rust_2015`]: ../../core/prelude/rust_2015/index.html
-[`core::prelude::rust_2018`]: ../../core/prelude/rust_2018/index.html
-[`core::prelude::rust_2021`]: ../../core/prelude/rust_2021/index.html
-[`core`]: ../../core/index.html
 [`extern crate`]: ../items/extern-crates.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
 [`no_std` attribute]: #the-no_std-attribute
-[`std::prelude::v1`]: ../../std/prelude/v1/index.html
-[`std::prelude::rust_2015`]: ../../std/prelude/rust_2015/index.html
-[`std::prelude::rust_2018`]: ../../std/prelude/rust_2018/index.html
-[`std::prelude::rust_2021`]: ../../std/prelude/rust_2021/index.html
-[`std`]: ../../std/index.html
-[`test`]: ../../test/index.html
 [attribute]: ../attributes.md
 [Boolean type]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index

@@ -1,13 +1,19 @@
 # Code generation attributes
 
+r[attributes.codegen]
+
 The following [attributes] are used for controlling code generation.
 
 ## Optimization hints
 
+r[attributes.codegen.hint]
+
+r[attributes.codegen.hint.cold-inline]
 The `cold` and `inline` [attributes] give suggestions to generate code in a
 way that may be faster than what it would do without the hint. The attributes
 are only hints, and may be ignored.
 
+r[attributes.codegen.hint.usage]
 Both attributes can be used on [functions]. When applied to a function in a
 [trait], they apply only to that function when used as a default function for
 a trait implementation and not to all trait implementations. The attributes
@@ -15,6 +21,9 @@ have no effect on a trait function without a body.
 
 ### The `inline` attribute
 
+r[attributes.codegen.inline]
+
+r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function
 should be placed in the caller, rather than generating code to call the
 function where it is defined.
@@ -23,6 +32,7 @@ function where it is defined.
 > internal heuristics. Incorrectly inlining functions can make the program
 > slower, so this attribute should be used with care.
 
+r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
 
 * `#[inline]` *suggests* performing an inline expansion.
@@ -36,10 +46,14 @@ There are three ways to use the inline attribute:
 
 ### The `cold` attribute
 
+r[attributes.codegen.cold]
+
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
 ## The `no_builtins` attribute
+
+r[attributes.codegen.no_builtins]
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
@@ -47,6 +61,9 @@ assumed to exist.
 
 ## The `target_feature` attribute
 
+r[attributes.codegen.target_feature]
+
+r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
 features. It uses the [_MetaListNameValueStr_] syntax with a single key of
@@ -58,23 +75,30 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 unsafe fn foo_avx2() {}
 ```
 
+r[attributes.codegen.target_feature.arch]
 Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
+r[attributes.codegen.target_feature.target-ub]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
+r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
 be used with a `target_feature` attribute.
 
 ### Available features
 
+r[attributes.codegen.target_feature.availability]
+
 The following is a list of the available feature names.
 
 #### `x86` or `x86_64`
+
+r[attributes.codegen.target_feature.x86]
 
 Executing code with unsupported features is undefined behavior on this platform.
 Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
@@ -82,33 +106,33 @@ functions][unsafe function].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
-`adx`       |          | [ADX] — Multi-Precision Add-Carry Instruction Extensions
-`aes`       | `sse2`   | [AES] — Advanced Encryption Standard
-`avx`       | `sse4.2` | [AVX] — Advanced Vector Extensions
-`avx2`      | `avx`    | [AVX2] — Advanced Vector Extensions 2
-`bmi1`      |          | [BMI1] — Bit Manipulation Instruction Sets
-`bmi2`      |          | [BMI2] — Bit Manipulation Instruction Sets 2
-`cmpxchg16b`|          | [`cmpxchg16b`] - Compares and exchange 16 bytes (128 bits) of data atomically
-`f16c`      | `avx`    | [F16C] — 16-bit floating point conversion instructions
-`fma`       | `avx`    | [FMA3] — Three-operand fused multiply-add
-`fxsr`      |          | [`fxsave`] and [`fxrstor`] — Save and restore x87 FPU, MMX Technology, and SSE State
-`lzcnt`     |          | [`lzcnt`] — Leading zeros count
-`movbe`     |          | [`movbe`] - Move data after swapping bytes
-`pclmulqdq` | `sse2`   | [`pclmulqdq`] — Packed carry-less multiplication quadword
-`popcnt`    |          | [`popcnt`] — Count of bits set to 1
-`rdrand`    |          | [`rdrand`] — Read random number
-`rdseed`    |          | [`rdseed`] — Read random seed
-`sha`       | `sse2`   | [SHA] — Secure Hash Algorithm
-`sse`       |          | [SSE] — Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
-`sse2`      | `sse`    | [SSE2] — Streaming SIMD Extensions 2
-`sse3`      | `sse2`   | [SSE3] — Streaming SIMD Extensions 3
-`sse4.1`    | `ssse3`  | [SSE4.1] — Streaming SIMD Extensions 4.1
-`sse4.2`    | `sse4.1` | [SSE4.2] — Streaming SIMD Extensions 4.2
-`ssse3`     | `sse3`   | [SSSE3] — Supplemental Streaming SIMD Extensions 3
-`xsave`     |          | [`xsave`] — Save processor extended states
-`xsavec`    |          | [`xsavec`] — Save processor extended states with compaction
-`xsaveopt`  |          | [`xsaveopt`] — Save processor extended states optimized
-`xsaves`    |          | [`xsaves`] — Save processor extended states supervisor
+`adx`       |          | [ADX] --- Multi-Precision Add-Carry Instruction Extensions
+`aes`       | `sse2`   | [AES] --- Advanced Encryption Standard
+`avx`       | `sse4.2` | [AVX] --- Advanced Vector Extensions
+`avx2`      | `avx`    | [AVX2] --- Advanced Vector Extensions 2
+`bmi1`      |          | [BMI1] --- Bit Manipulation Instruction Sets
+`bmi2`      |          | [BMI2] --- Bit Manipulation Instruction Sets 2
+`cmpxchg16b`|          | [`cmpxchg16b`] --- Compares and exchange 16 bytes (128 bits) of data atomically
+`f16c`      | `avx`    | [F16C] --- 16-bit floating point conversion instructions
+`fma`       | `avx`    | [FMA3] --- Three-operand fused multiply-add
+`fxsr`      |          | [`fxsave`] and [`fxrstor`] --- Save and restore x87 FPU, MMX Technology, and SSE State
+`lzcnt`     |          | [`lzcnt`] --- Leading zeros count
+`movbe`     |          | [`movbe`] --- Move data after swapping bytes
+`pclmulqdq` | `sse2`   | [`pclmulqdq`] --- Packed carry-less multiplication quadword
+`popcnt`    |          | [`popcnt`] --- Count of bits set to 1
+`rdrand`    |          | [`rdrand`] --- Read random number
+`rdseed`    |          | [`rdseed`] --- Read random seed
+`sha`       | `sse2`   | [SHA] --- Secure Hash Algorithm
+`sse`       |          | [SSE] --- Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
+`sse2`      | `sse`    | [SSE2] --- Streaming SIMD Extensions 2
+`sse3`      | `sse2`   | [SSE3] --- Streaming SIMD Extensions 3
+`sse4.1`    | `ssse3`  | [SSE4.1] --- Streaming SIMD Extensions 4.1
+`sse4.2`    | `sse4.1` | [SSE4.2] --- Streaming SIMD Extensions 4.2
+`ssse3`     | `sse3`   | [SSSE3] --- Supplemental Streaming SIMD Extensions 3
+`xsave`     |          | [`xsave`] --- Save processor extended states
+`xsavec`    |          | [`xsavec`] --- Save processor extended states with compaction
+`xsaveopt`  |          | [`xsaveopt`] --- Save processor extended states optimized
+`xsaves`    |          | [`xsaves`] --- Save processor extended states supervisor
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
@@ -143,6 +167,8 @@ Feature     | Implicitly Enables | Description
 
 #### `aarch64`
 
+r[attributes.codegen.target_feature.aarch64]
+
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
 
@@ -159,52 +185,54 @@ Reference Manual], or elsewhere on [developer.arm.com].
 
 Feature        | Implicitly Enables | Feature Name
 ---------------|--------------------|-------------------
-`aes`          | `neon`         | FEAT_AES - Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES instructions
-`bf16`         |                | FEAT_BF16 - BFloat16 instructions
-`bti`          |                | FEAT_BTI - Branch Target Identification
-`crc`          |                | FEAT_CRC - CRC32 checksum instructions
-`dit`          |                | FEAT_DIT - Data Independent Timing instructions
-`dotprod`      |                | FEAT_DotProd - Advanced SIMD Int8 dot product instructions
-`dpb`          |                | FEAT_DPB - Data cache clean to point of persistence
-`dpb2`         |                | FEAT_DPB2 - Data cache clean to point of deep persistence
-`f32mm`        | `sve`          | FEAT_F32MM - SVE single-precision FP matrix multiply instruction
-`f64mm`        | `sve`          | FEAT_F64MM - SVE double-precision FP matrix multiply instruction
-`fcma`         | `neon`         | FEAT_FCMA - Floating point complex number support
-`fhm`          | `fp16`         | FEAT_FHM - Half-precision FP FMLAL instructions
-`flagm`        |                | FEAT_FlagM - Conditional flag manipulation
-`fp16`         | `neon`         | FEAT_FP16 - Half-precision FP data processing
-`frintts`      |                | FEAT_FRINTTS - Floating-point to int helper instructions
-`i8mm`         |                | FEAT_I8MM - Int8 Matrix Multiplication
-`jsconv`       | `neon`         | FEAT_JSCVT - JavaScript conversion instruction
-`lse`          |                | FEAT_LSE - Large System Extension
-`lor`          |                | FEAT_LOR - Limited Ordering Regions extension
-`mte`          |                | FEAT_MTE - Memory Tagging Extension
-`neon`         |                | FEAT_FP & FEAT_AdvSIMD - Floating Point and Advanced SIMD extension
-`pan`          |                | FEAT_PAN - Privileged Access-Never extension
-`paca`         |                | FEAT_PAuth - Pointer Authentication (address authentication)
-`pacg`         |                | FEAT_PAuth - Pointer Authentication (generic authentication)
-`pmuv3`        |                | FEAT_PMUv3 - Performance Monitors extension (v3)
-`rand`         |                | FEAT_RNG - Random Number Generator
-`ras`          |                | FEAT_RAS - Reliability, Availability and Serviceability extension
-`rcpc`         |                | FEAT_LRCPC - Release consistent Processor Consistent
-`rcpc2`        | `rcpc`         | FEAT_LRCPC2 - RcPc with immediate offsets
-`rdm`          |                | FEAT_RDM - Rounding Double Multiply accumulate
-`sb`           |                | FEAT_SB - Speculation Barrier
-`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 - Advanced SIMD SHA instructions
-`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 - Advanced SIMD SHA instructions
-`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 - Advanced SIMD SM3/4 instructions
-`spe`          |                | FEAT_SPE - Statistical Profiling Extension
-`ssbs`         |                | FEAT_SSBS - Speculative Store Bypass Safe
-`sve`          | `fp16`         | FEAT_SVE - Scalable Vector Extension
-`sve2`         | `sve`          | FEAT_SVE2 - Scalable Vector Extension 2
-`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES - SVE AES instructions
-`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 - SVE SM4 instructions
-`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 - SVE SHA3 instructions
-`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm - SVE Bit Permute
-`tme`          |                | FEAT_TME - Transactional Memory Extension
-`vh`           |                | FEAT_VHE - Virtualization Host Extensions
+`aes`          | `neon`         | FEAT_AES & FEAT_PMULL --- Advanced <abbr title="Single Instruction Multiple Data">SIMD</abbr> AES & PMULL instructions
+`bf16`         |                | FEAT_BF16 --- BFloat16 instructions
+`bti`          |                | FEAT_BTI --- Branch Target Identification
+`crc`          |                | FEAT_CRC --- CRC32 checksum instructions
+`dit`          |                | FEAT_DIT --- Data Independent Timing instructions
+`dotprod`      |                | FEAT_DotProd --- Advanced SIMD Int8 dot product instructions
+`dpb`          |                | FEAT_DPB --- Data cache clean to point of persistence
+`dpb2`         |                | FEAT_DPB2 --- Data cache clean to point of deep persistence
+`f32mm`        | `sve`          | FEAT_F32MM --- SVE single-precision FP matrix multiply instruction
+`f64mm`        | `sve`          | FEAT_F64MM --- SVE double-precision FP matrix multiply instruction
+`fcma`         | `neon`         | FEAT_FCMA --- Floating point complex number support
+`fhm`          | `fp16`         | FEAT_FHM --- Half-precision FP FMLAL instructions
+`flagm`        |                | FEAT_FlagM --- Conditional flag manipulation
+`fp16`         | `neon`         | FEAT_FP16 --- Half-precision FP data processing
+`frintts`      |                | FEAT_FRINTTS --- Floating-point to int helper instructions
+`i8mm`         |                | FEAT_I8MM --- Int8 Matrix Multiplication
+`jsconv`       | `neon`         | FEAT_JSCVT --- JavaScript conversion instruction
+`lse`          |                | FEAT_LSE --- Large System Extension
+`lor`          |                | FEAT_LOR --- Limited Ordering Regions extension
+`mte`          |                | FEAT_MTE & FEAT_MTE2 --- Memory Tagging Extension
+`neon`         |                | FEAT_FP & FEAT_AdvSIMD --- Floating Point and Advanced SIMD extension
+`pan`          |                | FEAT_PAN --- Privileged Access-Never extension
+`paca`         |                | FEAT_PAuth --- Pointer Authentication (address authentication)
+`pacg`         |                | FEAT_PAuth --- Pointer Authentication (generic authentication)
+`pmuv3`        |                | FEAT_PMUv3 --- Performance Monitors extension (v3)
+`rand`         |                | FEAT_RNG --- Random Number Generator
+`ras`          |                | FEAT_RAS & FEAT_RASv1p1 --- Reliability, Availability and Serviceability extension
+`rcpc`         |                | FEAT_LRCPC --- Release consistent Processor Consistent
+`rcpc2`        | `rcpc`         | FEAT_LRCPC2 --- RcPc with immediate offsets
+`rdm`          |                | FEAT_RDM --- Rounding Double Multiply accumulate
+`sb`           |                | FEAT_SB --- Speculation Barrier
+`sha2`         | `neon`         | FEAT_SHA1 & FEAT_SHA256 --- Advanced SIMD SHA instructions
+`sha3`         | `sha2`         | FEAT_SHA512 & FEAT_SHA3 --- Advanced SIMD SHA instructions
+`sm4`          | `neon`         | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
+`spe`          |                | FEAT_SPE --- Statistical Profiling Extension
+`ssbs`         |                | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
+`sve`          | `fp16`         | FEAT_SVE --- Scalable Vector Extension
+`sve2`         | `sve`          | FEAT_SVE2 --- Scalable Vector Extension 2
+`sve2-aes`     | `sve2`, `aes`  | FEAT_SVE_AES --- SVE AES instructions
+`sve2-sm4`     | `sve2`, `sm4`  | FEAT_SVE_SM4 --- SVE SM4 instructions
+`sve2-sha3`    | `sve2`, `sha3` | FEAT_SVE_SHA3 --- SVE SHA3 instructions
+`sve2-bitperm` | `sve2`         | FEAT_SVE_BitPerm --- SVE Bit Permute
+`tme`          |                | FEAT_TME --- Transactional Memory Extension
+`vh`           |                | FEAT_VHE --- Virtualization Host Extensions
 
 #### `riscv32` or `riscv64`
+
+r[attributes.codegen.target_feature.riscv]
 
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
@@ -218,27 +246,27 @@ in another manual hosted on the [RISC-V GitHub Account].
 
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
-`a`         |                     | [A][rv-a] — Atomic instructions
-`c`         |                     | [C][rv-c] — Compressed instructions
-`m`         |                     | [M][rv-m] — Integer Multiplication and Division instructions
-`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] — Bit Manipulation instructions
-`zba`       |                     | [Zba][rv-zb-zba] — Address Generation instructions
-`zbb`       |                     | [Zbb][rv-zb-zbb] — Basic bit-manipulation
-`zbc`       |                     | [Zbc][rv-zb-zbc] — Carry-less multiplication
-`zbkb`      |                     | [Zbkb][rv-zb-zbkb] — Bit Manipulation Instructions for Cryptography
-`zbkc`      |                     | [Zbkc][rv-zb-zbc] — Carry-less multiplication for Cryptography
-`zbkx`      |                     | [Zbkx][rv-zb-zbkx] — Crossbar permutations
-`zbs`       |                     | [Zbs][rv-zb-zbs] — Single-bit instructions
-`zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] — Scalar Cryptography
-`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] — NIST Algorithm suite extension
-`zknd`      |                                                    | [Zknd][rv-zknd] — NIST Suite: AES Decryption
-`zkne`      |                                                    | [Zkne][rv-zkne] — NIST Suite: AES Encryption
-`zknh`      |                                                    | [Zknh][rv-zknh] — NIST Suite: Hash Function Instructions
-`zkr`       |                                                    | [Zkr][rv-zkr] — Entropy Source Extension
-`zks`       | `zksed`, `zksh`, `zbkb`, `zbkc`, `zkbx`            | [Zks][rv-zks] — ShangMi Algorithm Suite
-`zksed`     |                                                    | [Zksed][rv-zksed] — ShangMi Suite: SM4 Block Cipher Instructions
-`zksh`      |                                                    | [Zksh][rv-zksh] — ShangMi Suite: SM3 Hash Function Instructions
-`zkt`       |                                                    | [Zkt][rv-zkt] — Data Independent Execution Latency Subset
+`a`         |                     | [A][rv-a] --- Atomic instructions
+`c`         |                     | [C][rv-c] --- Compressed instructions
+`m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
+`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] --- Bit Manipulation instructions
+`zba`       |                     | [Zba][rv-zb-zba] --- Address Generation instructions
+`zbb`       |                     | [Zbb][rv-zb-zbb] --- Basic bit-manipulation
+`zbc`       |                     | [Zbc][rv-zb-zbc] --- Carry-less multiplication
+`zbkb`      |                     | [Zbkb][rv-zb-zbkb] --- Bit Manipulation Instructions for Cryptography
+`zbkc`      |                     | [Zbkc][rv-zb-zbc] --- Carry-less multiplication for Cryptography
+`zbkx`      |                     | [Zbkx][rv-zb-zbkx] --- Crossbar permutations
+`zbs`       |                     | [Zbs][rv-zb-zbs] --- Single-bit instructions
+`zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
+`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
+`zknd`      |                                                    | [Zknd][rv-zknd] --- NIST Suite: AES Decryption
+`zkne`      |                                                    | [Zkne][rv-zkne] --- NIST Suite: AES Encryption
+`zknh`      |                                                    | [Zknh][rv-zknh] --- NIST Suite: Hash Function Instructions
+`zkr`       |                                                    | [Zkr][rv-zkr] --- Entropy Source Extension
+`zks`       | `zksed`, `zksh`, `zbkb`, `zbkc`, `zkbx`            | [Zks][rv-zks] --- ShangMi Algorithm Suite
+`zksed`     |                                                    | [Zksed][rv-zksed] --- ShangMi Suite: SM4 Block Cipher Instructions
+`zksh`      |                                                    | [Zksh][rv-zksh] --- ShangMi Suite: SM3 Hash Function Instructions
+`zkt`       |                                                    | [Zkt][rv-zkt] --- Data Independent Execution Latency Subset
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
@@ -262,9 +290,11 @@ Feature     | Implicitly Enables  | Description
 [rv-zks]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zks.adoc
 [rv-zksed]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksed.adoc
 [rv-zksh]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksh.adoc
-[rv-zkt]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkr.adoc
+[rv-zkt]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkt.adoc
 
 #### `wasm32` or `wasm64`
+
+r[attributes.codegen.target_feature.wasm]
 
 `#[target_feature]` may be used with both safe and
 [`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
@@ -273,19 +303,41 @@ attempting to use instructions unsupported by the Wasm engine will fail at load
 time without the risk of being interpreted in a way different from what the
 compiler expected.
 
-Feature     | Description
-------------|-------------------
-`simd128`   | [WebAssembly simd proposal][simd128]
+Feature               | Implicitly Enables  | Description
+----------------------|---------------------|-------------------
+`bulk-memory`         |                     | [WebAssembly bulk memory operations proposal][bulk-memory]
+`extended-const`      |                     | [WebAssembly extended const expressions proposal][extended-const]
+`mutable-globals`     |                     | [WebAssembly mutable global proposal][mutable-globals]
+`nontrapping-fptoint` |                     | [WebAssembly non-trapping float-to-int conversion proposal][nontrapping-fptoint]
+`relaxed-simd`        | `simd128`           | [WebAssembly relaxed simd proposal][relaxed-simd]
+`sign-ext`            |                     | [WebAssembly sign extension operators Proposal][sign-ext]
+`simd128`             |                     | [WebAssembly simd proposal][simd128]
+`multivalue`          |                     | [WebAssembly multivalue proposal][multivalue]
+`reference-types`     |                     | [WebAssembly reference-types proposal][reference-types]
+`tail-call`           |                     | [WebAssembly tail-call proposal][tail-call]
 
+[bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
+[extended-const]: https://github.com/WebAssembly/extended-const
+[mutable-globals]: https://github.com/WebAssembly/mutable-global
+[nontrapping-fptoint]: https://github.com/WebAssembly/nontrapping-float-to-int-conversions
+[relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
+[sign-ext]: https://github.com/WebAssembly/sign-extension-ops
 [simd128]: https://github.com/webassembly/simd
+[reference-types]: https://github.com/webassembly/reference-types
+[tail-call]: https://github.com/webassembly/tail-call
+[multivalue]: https://github.com/webassembly/multi-value
 
 ### Additional information
 
+r[attributes.codegen.target_feature.info]
+
+r[attributes.codegen.target_feature.remark-cfg]
 See the [`target_feature` conditional compilation option] for selectively
 enabling or disabling compilation of code based on compile-time settings. Note
 that this option is not affected by the `target_feature` attribute, and is
 only driven by the features enabled for the entire crate.
 
+r[attributes.codegen.target_feature.remark-rt]
 See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros
 in the standard library for runtime feature detection on these platforms.
 
@@ -296,11 +348,17 @@ in the standard library for runtime feature detection on these platforms.
 
 ## The `track_caller` attribute
 
+r[attributes.codegen.track_caller]
+
+r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
-with the exception of the entry point `fn main`. When applied to functions and methods in
-trait declarations, the attribute applies to all implementations. If the trait provides a
+with the exception of the entry point `fn main`.
+
+r[attributes.codegen.track_caller.traits]
+When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a
 default implementation with the attribute, then the attribute also applies to override implementations.
 
+r[attributes.codegen.track_caller.extern]
 When applied to a function in an `extern` block the attribute must also be applied to any linked
 implementations, otherwise undefined behavior results. When applied to a function which is made
 available to an `extern` block, the declaration in the `extern` block must also have the attribute,
@@ -308,6 +366,7 @@ otherwise undefined behavior results.
 
 ### Behavior
 
+r[attributes.codegen.track_caller.behavior]
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
 the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
 implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
@@ -387,8 +446,12 @@ And so on.
 
 ### Limitations
 
+r[attributes.codegen.track_caller.limits]
+
+r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
 
+r[attributes.codegen.track_caller.decay]
 In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which
 appears to observers to have been called at the attributed function's definition site, losing actual
 caller information across virtual calls. A common example of this coercion is the creation of a
@@ -415,26 +478,33 @@ trait object whose methods are attributed.
 [undefined behavior]: ../behavior-considered-undefined.md
 [unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
-[`core::intrinsics::caller_location`]: ../../core/intrinsics/fn.caller_location.html
-[`core::panic::Location::caller`]: ../../core/panic/struct.Location.html#method.caller
-[`Location`]: ../../core/panic/struct.Location.html
+[`Location`]: core::panic::Location
 
 ## The `instruction_set` attribute
 
+r[attributes.codegen.instruction_set]
+
+r[attributes.codegen.instruction_set.allowed-positions]
 The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
+
+r[attributes.codegen.instruction_set.behavior]
 This allows mixing more than one instruction set in a single program on CPU architectures that support it.
+
+r[attributes.codegen.instruction_set.syntax]
 It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
 
 [_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
 
+r[attributes.codegen.instruction_set.target-limits]
 It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
 
 ### On ARM
 
-For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
+r[attributes.codegen.instruction_set.arm]
 
-* `arm::a32` - Generate the function as A32 "ARM" code.
-* `arm::t32` - Generate the function as T32 "Thumb" code.
+For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
+* `arm::a32` --- Generate the function as A32 "ARM" code.
+* `arm::t32` --- Generate the function as T32 "Thumb" code.
 
 <!-- ignore: arm-only -->
 ```rust,ignore
