@@ -106,11 +106,12 @@ A wide pointer or reference consists of a data pointer or reference, and a point
 r[type.pointer.value.wide-reference]
 The data pointer of a wide reference has a non-null address, well aligned for `align_of_val(self)`, and with provenance for `size_of_val(self)` bytes.
 
-r[type.pointer.value.wide-representation]
+r[type.pointer.value.wide-repr]
 A wide pointer or reference is represented the same as `struct WidePointer<M>{data: *mut (), metadata: M}` where `M` is the pointee metadata type, and the `data` and `metadata` fields are the corresponding parts of the pointer.
 
 > [!NOTE]
 > The `WidePointer` struct has no guarantees about layout, and has the default representation.
+> In particular, it is not guaranteed that you can write a struct type with the same layout as `WidePointer<M>`. 
 
 ## Pointer Provenance
 

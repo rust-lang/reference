@@ -28,14 +28,13 @@ An enum value corresponds to exactly one variant of the enum, and consists of th
 > [!NOTE]
 > An enum with no variants therefore has no values.
 
-r[type.enum.value.variant-padding]
-A byte is a padding byte in a variant `V` if the byte is not used for computing the discriminant, and the byte would be a padding byte in a struct consisting of the fields of the variant at the same offsets.
-
 r[type.enum.value.value-padding]
-A byte is a padding byte of an enum if it is a padding byte in each variant of the enum. A byte that is not a padding byte of an enum is a value byte.
+A byte is a [padding][type.union.value.padding] byte of an enum if that byte is not part of the representation of the discriminant of the enum, and in each variant it either:
+* Does not overlap with a field of the variant, or
+* Overlaps with a padding byte in a field of that variant.
 
 r[type.enum.value.repr]
-The representation of a value of an enum type includes the representation of each field of the variant at the appropriate offsets. When encoding a value of an enum type, each byte which is a padding byte in the variant is set to uninit. In the case of a [`repr(C)`][layout.repr.c.adt] or a [primitive-repr][layout.repr.primitive.adt] enum, the discriminant of the variant is represented as though by the appropriate integer type stored at offset 0.
+The representation of a value of an enum type includes the representation of each field of the variant at the appropriate offsets. When encoding a value of an enum type, each byte which is not use d to store a field of the variant or the discriminant is . In the case of a [`repr(C)`][layout.repr.c.adt] or a [primitive-repr][layout.repr.primitive.adt] enum, the discriminant of the variant is represented as though by the appropriate integer type stored at offset 0.
 
 > [!NOTE]
 > Most `repr(Rust)` enums will also store a discriminant in the representation of the enum, but the exact placement or type of the discriminant is unspecified, as is the value that represents each variant.

@@ -24,8 +24,27 @@ The memory layout of a `union` is undefined by default (in particular, fields do
 *not* have to be at offset 0), but the `#[repr(...)]` attribute can be used to
 fix a layout.
 
+## Union Values 
+
 r[type.union.value]
-A value of a union type consists of a sequence of bytes, corresponding to each [value byte][type.struct.value.value-bytes]. The value bytes of a union are represented exactly. Each [padding byte][type.struct.value.padding] is set to uninit when encoded.
+
+r[type.union.value.value-bytes]
+A byte `b` in the representation of a struct or union is a value byte if there exists a field of that aggregate such that:
+* The field has some type `T`,
+* The offset of that field `o` is such that `b` falls at an offset in `o..(o+size_of::<T>())`,
+* Either `T` is a primitive type or the offset of `b` within the field is not a padding byte in the representation of `T`.
+
+> [!NOTE]
+> A byte in a union is a value byte if it is a value byte in *any* field.
+
+r[type.struct.value.padding]
+Every byte in an struct or union which is not a value byte is a padding byte. [Enum types][type.enum.value.value-padding], [tuple types][type.tuple.padding], and other types may also have padding bytes.
+
+> [!NOTE]
+> Primitive types, such as integer types, do not have padding bytes.
+
+r[type.union.value.encoding]
+A value of a union type consists of a sequence of bytes, corresponding to each [value byte][type.union.value.value-bytes]. The value bytes of a union are represented exactly. Each [padding byte][type.union.value.padding] is set to uninit when encoded.
 
 > [!NOTE]
 > A given value byte is guaranteed allowed to be uninit if it is padding in any field, recursively expanding union fields. Whether a byte of a union is allowed to be uninit in any other case is not yet decided.

@@ -18,6 +18,9 @@ or 0xE000 to 0x10FFFF range.
 r[type.text.char-repr]
 A value of type `char` is represented as the value of type `u32` with value equal to the code point that it represents.
 
+> [!NOTE]
+> The representation of `char` is unique.
+
 r[type.text.str-value]
 A value of type `str` is represented the same way as `[u8]`, a slice of
 8-bit unsigned bytes. However, the Rust standard library makes extra assumptions
