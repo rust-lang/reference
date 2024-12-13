@@ -47,7 +47,7 @@ Zero width non-joiner (ZWNJ U+200C) and zero width joiner (ZWJ U+200D) character
 r[ident.ascii-limitations]
 Identifiers are restricted to the ASCII subset of [`XID_Start`] and [`XID_Continue`] in the following situations:
 
-* [`extern crate`] declarations
+* [`extern crate`] declarations (except the _AsClause_ identifier)
 * External crate names referenced in a [path]
 * [Module] names loaded from the filesystem without a [`path` attribute]
 * [`no_mangle`] attributed items
