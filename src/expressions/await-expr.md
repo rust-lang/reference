@@ -8,7 +8,7 @@ An `await` expression is a syntactic construct for suspending a computation
 provided by an implementation of `std::future::IntoFuture` until the given
 future is ready to produce a value.
 The syntax for an await expression is an expression with a type that implements the [`IntoFuture`] trait, called the *future operand*, then the token `.`, and then the `await` keyword.
-Await expressions are legal only within an [async context], like an [`async fn`] or an [`async` block].
+Await expressions are legal only within an [async context], like an [`async fn`], [`async` closure], or [`async` block].
 
 More specifically, an await expression has the following effect.
 
@@ -48,6 +48,7 @@ The variable `current_context` refers to the context taken from the async enviro
 
 [_Expression_]: ../expressions.md
 [`async fn`]: ../items/functions.md#async-functions
+[`async` closure]: closure-expr.md#async-closures
 [`async` block]: block-expr.md#async-blocks
 [`Context`]: std::task::Context
 [`future::poll`]: std::future::Future::poll

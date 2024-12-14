@@ -31,7 +31,7 @@ Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time.
 
 r[type.fn-pointer.coercion]
-They can be created via a coercion from both [function items] and non-capturing [closures].
+They can be created via a coercion from both [function items] and non-capturing, non-async [closures].
 
 r[type.fn-pointer.qualifiers]
 The `unsafe` qualifier indicates that the type's value is an [unsafe
