@@ -576,57 +576,101 @@ The attribute should be placed on a [trait implementation item][trait-impl], tho
 r[attributes.diagnostic.do_not_recommend.syntax]
 The attribute does not accept any arguments, though unexpected arguments are not considered as an error.
 
-In this example,
+In the following example, there is a trait called `AsExpression` which is used for casting arbitrary types to the `Expression` type used in an SQL library. There is a method called `check` which takes an `AsExpression`.
 
 ```rust,compile_fail,E0277
-trait Foo {}
+# pub trait Expression {
+#     type SqlType;
+# }
+#
+# pub trait AsExpression<ST> {
+#     type Expression: Expression<SqlType = ST>;
+# }
+#
+# pub struct Text;
+# pub struct Integer;
+#
+# pub struct Bound<T>(T);
+# pub struct SelectInt;
+#
+# impl Expression for SelectInt {
+#     type SqlType = Integer;
+# }
+#
+# impl<T> Expression for Bound<T> {
+#     type SqlType = T;
+# }
+#
+# impl AsExpression<Integer> for i32 {
+#     type Expression = Bound<Integer>;
+# }
+#
+# impl AsExpression<Text> for &'_ str {
+#     type Expression = Bound<Text>;
+# }
+#
+# impl<T> Foo for T where T: Expression {}
 
-impl<T> Foo for T where T: Send {}
+// Uncomment this line to change the recommendation.
+// #[diagnostic::do_not_recommend]
+impl<T, ST> AsExpression<ST> for T
+where
+    T: Expression<SqlType = ST>,
+{
+    type Expression = T;
+}
 
-fn needs_foo<T: Foo>() {}
+trait Foo: Expression + Sized {
+    fn check<T>(&self, _: T) -> <T as AsExpression<<Self as Expression>::SqlType>>::Expression
+    where
+        T: AsExpression<Self::SqlType>,
+    {
+        todo!()
+    }
+}
 
 fn main() {
-    // Mutable pointers do not implement `Send`, so this will not work.
-    needs_foo::<*mut ()>();
+    SelectInt.check("bar");
 }
 ```
 
-the compiler may generate an error message about the `Send` bound in the impl which looks like this:
+The `SelectInt` type's `check` method is expecting an `Integer` type. Calling it with an i32 type works, as it gets converted to an `Integer` by the `AsExpression` trait. However, calling it with a string does not, and generates a an error that may look like this:
 
 ```text
-error[E0277]: the trait bound `*mut (): Foo` is not satisfied
- --> src/main.rs:9:17
-  |
-9 |     needs_foo::<*mut ()>();
-  |                 ^^^^^^^ the trait `Send` is not implemented for `*mut ()`
-  |
-note: required for `*mut ()` to implement `Foo`
- --> src/main.rs:3:9
-  |
-3 | impl<T> Foo for T where T: Send {}
-  |         ^^^     ^          ---- unsatisfied trait bound introduced here
-note: required by a bound in `needs_foo`
- --> src/main.rs:5:17
-  |
-5 | fn needs_foo<T: Foo>() {}
-  |                 ^^^ required by this bound in `needs_foo`
+error[E0277]: the trait bound `&str: Expression` is not satisfied
+  --> src/main.rs:53:15
+   |
+53 |     SelectInt.check("bar");
+   |               ^^^^^ the trait `Expression` is not implemented for `&str`
+   |
+   = help: the following other types implement trait `Expression`:
+             Bound<T>
+             SelectInt
+note: required for `&str` to implement `AsExpression<Integer>`
+  --> src/main.rs:45:13
+   |
+45 | impl<T, ST> AsExpression<ST> for T
+   |             ^^^^^^^^^^^^^^^^     ^
+46 | where
+47 |     T: Expression<SqlType = ST>,
+   |        ------------------------ unsatisfied trait bound introduced here
 ```
 
-By adding the `#[diagnostic::do_no_recommend]` attribute to the `impl`, the message would no longer suggest it:
+By adding the `#[diagnostic::do_no_recommend]` attribute to the blanket `impl` for `AsExpression`, the message changes to:
 
 ```text
-error[E0277]: the trait bound `*mut (): Foo` is not satisfied
-  --> src/main.rs:11:17
+error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
+  --> src/main.rs:53:15
    |
-11 |     needs_foo::<*mut ()>();
-   |                 ^^^^^^^ the trait `Foo` is not implemented for `*mut ()`
+53 |     SelectInt.check("bar");
+   |               ^^^^^ the trait `AsExpression<Integer>` is not implemented for `&str`
    |
-note: required by a bound in `needs_foo`
-  --> src/main.rs:7:17
-   |
-7  | fn needs_foo<T: Foo>() {}
-   |                 ^^^ required by this bound in `needs_foo`
+   = help: the trait `AsExpression<Integer>` is not implemented for `&str`
+           but trait `AsExpression<Text>` is implemented for it
+   = help: for that trait implementation, expected `Text`, found `Integer`
 ```
+
+The first error message includes a somewhat confusing error message about the relationship of `&str` and `Expression`, as well as the unsatisfied trait bound in the blanket impl. After adding `#[diagnostic::do_no_recommend]`, it no longer considers the blanket impl for the recommendation. The message should be a little clearer, with an indication that a string cannot be converted to an `Integer`.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
