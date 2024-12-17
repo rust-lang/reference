@@ -98,7 +98,9 @@ impl Spec {
             .iter()
             .map(|(rule_id, (_, path))| {
                 let relative = pathdiff::diff_paths(path, current_path).unwrap();
-                format!("[{rule_id}]: {}#r-{rule_id}\n", relative.display())
+                // Adjust paths for Windows.
+                let relative = relative.display().to_string().replace('\\', "/");
+                format!("[{rule_id}]: {}#r-{rule_id}\n", relative)
             })
             .collect();
         format!(
