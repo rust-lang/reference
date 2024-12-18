@@ -328,8 +328,9 @@ The following is an index of all built-in attributes.
 - Debugger
   - [`debugger_visualizer`] --- Embeds a file that specifies debugger output for a type.
   - [`collapse_debuginfo`] --- Controls how macro invocations are encoded in debuginfo.
+
 - Coverage Instrumentation
-  - [`coverage`] --- Controls how code coverage is instrumented
+  - [`coverage`] --- Controls how code coverage is instrumented.
 
 [Doc comments]: comments.md#doc-comments
 [ECMA-334]: https://www.ecma-international.org/publications-and-standards/standards/ecma-334/
