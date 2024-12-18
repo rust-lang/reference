@@ -62,6 +62,12 @@ let bo: Binop = add;
 x = bo(5,7);
 ```
 
+r[type.fn-pointer.value]
+A value of a function pointer type consists of an non-null address. A function pointer value is represented the same as an address represented as an unsigned integer type with the same width as the function pointer.
+
+> [!NOTE]
+> Whether or not a function pointer value has provenance, and whether or not this provenance is represented as pointer fragments, is not yet decided.
+
 ## Attributes on function pointer parameters
 
 r[type.fn-pointer.attributes]
