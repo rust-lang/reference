@@ -197,6 +197,7 @@ An attribute is either active or inert. During attribute processing, *active
 attributes* remove themselves from the thing they are on while *inert attributes*
 stay on.
 
+r[attributes.activity.builtin]
 The [`cfg`] and [`cfg_attr`] attributes are active. The [`test`] attribute is
 inert when compiling for tests and active otherwise. [Attribute macros] are
 active. All other attributes are inert.
