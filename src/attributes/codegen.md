@@ -70,7 +70,7 @@ r[attributes.codegen.naked.call-stack]
 The asm code will have a valid call stack and register state on entry as per the signature and calling convention of the function.
 
 r[attributes.codegen.naked.no-duplication]
-The asm code may not be duplicated by the compiler.
+The asm code may not be duplicated by the compiler, except when monomorphizing polymorphic functions.
 This property is important for naked functions that define symbols in the assembly code.
 
 r[attributes.codegen.naked.unsafe-function]
