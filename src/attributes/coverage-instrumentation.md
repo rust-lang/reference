@@ -1,6 +1,10 @@
 # Coverage instrumentation attributes
 
-The following [attributes] are used for controlling coverage instrumentation, which can be enabled with the `-C instrument-coverage` compiler flag.
+The following [attributes] are used for controlling coverage instrumentation.
+
+> **Note**: Coverage instrumentation is controlled in `rustc` with the [`-C instrument-coverage`] compiler flag.
+
+[`-C instrument-coverage`]: ../../rustc/instrument-coverage.html
 
 ### The `coverage` attribute
 
