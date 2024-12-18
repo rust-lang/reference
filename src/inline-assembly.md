@@ -55,7 +55,7 @@ format_string := STRING_LITERAL / RAW_STRING_LITERAL
 dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
 reg_spec := <register class> / "\"" <explicit register> "\""
 operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
-reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr>
+reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr> / label <block>
 clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
 option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
 options := "options(" option *("," option) [","] ")"
@@ -179,6 +179,13 @@ r[asm.operand-type.supported-operands.sym]
   - `<expr>` must be an integer constant expression. This expression follows the same rules as inline `const` blocks.
   - The type of the expression may be any integer type, but defaults to `i32` just like integer literals.
   - The value of the expression is formatted as a string and substituted directly into the asm template string.
+
+r[asm.operand-type.supported-operands.label]
+* `label <block>`
+  - The address of the block is substituted into the asm template string. The assembly block may jump to the substituted addresses.
+  - After execution of the block, the `asm!` expression returns.
+  - The type of the block must be unit or `!` (never).
+  - The block starts new safety context; despite the outer `unsafe` needed for `asm!`, you need extra unsafe to perform unsafe operations inside the block.
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
@@ -555,6 +562,8 @@ r[asm.options.supported-options.noreturn]
 - `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
   Behavior is undefined if execution falls through past the end of the asm code.
   A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
+- When labels are present, `noreturn` means the `asm!` block never fallthrough; the asm block may jump to one of the specified blocks.
+  The entire `asm!` block will have unit type in this case, unless all label blocks diverge, in which case the return type is `!`.
 
 r[asm.options.supported-options.nostack]
 - `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
@@ -578,7 +587,10 @@ r[asm.options.checks.pure]
 - It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
 
 r[asm.options.checks.noreturn]
-- It is a compile-time error to specify `noreturn` on an asm block with outputs.
+- It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
+
+r[asm.options.checks.label-with-outputs]
+- It is a compile-time error to specify label on an asm block with outputs.
 
 r[asm.options.global_asm-restriction]
 `global_asm!` only supports the `att_syntax` and `raw` options.
