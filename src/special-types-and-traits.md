@@ -49,7 +49,15 @@ The traits in [`std::ops`] and [`std::cmp`] are used to overload [operators],
 ## `Deref` and `DerefMut`
 
 As well as overloading the unary `*` operator, [`Deref`] and [`DerefMut`] are
-also used in [method resolution] and [deref coercions].
+also used in [deref coercions]; see also [`Receiver`] below.
+
+## `Receiver`
+
+[`Receiver`] is used in [method resolution]. It indicates that a type may be
+used as a method receiver; that is, the type of a `self` parameter for a
+method. There is a blanket implementation of `Receiver` for all `T: Deref`,
+so it's rare to implement `Receiver` directly: you'd only normally do this
+for smart pointer types which for some reason can't implement `Deref`.
 
 ## `Drop`
 
@@ -145,6 +153,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`DerefMut`]: std::ops::DerefMut
 [`Pin<P>`]: std::pin::Pin
 [`Rc<Self>`]: std::rc::Rc
+[`Receiver`]: std::ops::Receiver
 [`RefUnwindSafe`]: std::panic::RefUnwindSafe
 [`Termination`]: std::process::Termination
 [`UnwindSafe`]: std::panic::UnwindSafe
