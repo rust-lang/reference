@@ -23,7 +23,18 @@ Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately afte
 
 For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
 
-Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:
+A second - possible more expansive - list is then made of types where we might
+find [visible] methods with a receiver of that type, called the list of
+contributing types. To make this list, follow the exact same process,
+but this time use the `Receiver` trait
+instead of the `Deref` trait for any non-built-in derefences.
+
+There is a blanket implementation of `Receiver` for all `T: Deref`, so in many
+cases the lists are identical, but there are rare smart pointers which
+may implement `Receiver` without implementing `Deref`, so this second list of
+types may be longer than the list of candidate types.
+
+Then, for each contributing type `T`, search for a [visible] method with a receiver of any candidate type in the following places:
 
 1. `T`'s inherent methods (methods implemented directly on `T`).
 1. Any of the methods provided by a [visible] trait implemented by `T`.
@@ -65,6 +76,15 @@ Once a method is looked up, if it can't be called for one (or more) of those rea
 
 If a step is reached where there is more than one possible method, such as where generic methods or traits are considered the same, then it is a compiler error.
 These cases require a [disambiguating function call syntax] for method and function invocation.
+
+As well as emitting methods for multiple candidates within a given step,
+an additional search may be performed to look for specific cases where an outer
+(smart pointer) type may have a method that shadows or overrides a method
+on its referent. This process is performed if we are about to return a method
+identified by a by-value step; a search is then performed for a matching by-reference
+methods deeper along the chain of contributing types with an identical `self` type.
+This extra search is also performed if we are about to return a method from
+a `&T` pick; error are emitted if a `&mut T` method would be shadowed.
 
 > **Edition differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
