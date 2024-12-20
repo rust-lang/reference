@@ -329,7 +329,7 @@ The `deprecated` attribute has several forms:
 r[attributes.diagnostic.deprecated.allowed-positions]
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
 variant], [struct field], [external block item], or [macro definition]. It
-cannot be applied to [trait implementation items]. When applied to an item
+cannot be applied to [trait implementation items][trait-impl]. When applied to an item
 containing other items, such as a [module] or [implementation], all child
 items inherit the deprecation attribute.
 <!-- NOTE: It is only rejected for trait impl items
@@ -559,6 +559,119 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
    = note: Note 2
 ```
 
+### The `diagnostic::do_not_recommend` attribute
+
+r[attributes.diagnostic.do_not_recommend]
+
+r[attributes.diagnostic.do_not_recommend.intro]
+The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.
+
+> **Note**: Suppressing the recommendation can be useful if you know that the recommendation would normally not be useful to the programmer. This often occurs with broad, blanket impls. The recommendation may send the programmer down the wrong path, or the trait implementation may be an internal detail that you don't want to expose, or the bounds may not be able to be satisfied by the programmer.
+>
+> For example, in an error message about a type not implementing a required trait, the compiler may find a trait implementation that would satisfy the requirements if it weren't for specific bounds in the trait implementation. The compiler may tell the user that there is an impl, but the problem is the bounds in the trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to tell the compiler to *not* tell the user about the trait implementation, and instead simply tell the user the type doesn't implement the required trait.
+
+r[attributes.diagnostic.do_not_recommend.allowed-positions]
+The attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
+
+r[attributes.diagnostic.do_not_recommend.syntax]
+The attribute does not accept any arguments, though unexpected arguments are not considered as an error.
+
+In the following example, there is a trait called `AsExpression` which is used for casting arbitrary types to the `Expression` type used in an SQL library. There is a method called `check` which takes an `AsExpression`.
+
+```rust,compile_fail,E0277
+# pub trait Expression {
+#     type SqlType;
+# }
+#
+# pub trait AsExpression<ST> {
+#     type Expression: Expression<SqlType = ST>;
+# }
+#
+# pub struct Text;
+# pub struct Integer;
+#
+# pub struct Bound<T>(T);
+# pub struct SelectInt;
+#
+# impl Expression for SelectInt {
+#     type SqlType = Integer;
+# }
+#
+# impl<T> Expression for Bound<T> {
+#     type SqlType = T;
+# }
+#
+# impl AsExpression<Integer> for i32 {
+#     type Expression = Bound<Integer>;
+# }
+#
+# impl AsExpression<Text> for &'_ str {
+#     type Expression = Bound<Text>;
+# }
+#
+# impl<T> Foo for T where T: Expression {}
+
+// Uncomment this line to change the recommendation.
+// #[diagnostic::do_not_recommend]
+impl<T, ST> AsExpression<ST> for T
+where
+    T: Expression<SqlType = ST>,
+{
+    type Expression = T;
+}
+
+trait Foo: Expression + Sized {
+    fn check<T>(&self, _: T) -> <T as AsExpression<<Self as Expression>::SqlType>>::Expression
+    where
+        T: AsExpression<Self::SqlType>,
+    {
+        todo!()
+    }
+}
+
+fn main() {
+    SelectInt.check("bar");
+}
+```
+
+The `SelectInt` type's `check` method is expecting an `Integer` type. Calling it with an i32 type works, as it gets converted to an `Integer` by the `AsExpression` trait. However, calling it with a string does not, and generates a an error that may look like this:
+
+```text
+error[E0277]: the trait bound `&str: Expression` is not satisfied
+  --> src/main.rs:53:15
+   |
+53 |     SelectInt.check("bar");
+   |               ^^^^^ the trait `Expression` is not implemented for `&str`
+   |
+   = help: the following other types implement trait `Expression`:
+             Bound<T>
+             SelectInt
+note: required for `&str` to implement `AsExpression<Integer>`
+  --> src/main.rs:45:13
+   |
+45 | impl<T, ST> AsExpression<ST> for T
+   |             ^^^^^^^^^^^^^^^^     ^
+46 | where
+47 |     T: Expression<SqlType = ST>,
+   |        ------------------------ unsatisfied trait bound introduced here
+```
+
+By adding the `#[diagnostic::do_no_recommend]` attribute to the blanket `impl` for `AsExpression`, the message changes to:
+
+```text
+error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
+  --> src/main.rs:53:15
+   |
+53 |     SelectInt.check("bar");
+   |               ^^^^^ the trait `AsExpression<Integer>` is not implemented for `&str`
+   |
+   = help: the trait `AsExpression<Integer>` is not implemented for `&str`
+           but trait `AsExpression<Text>` is implemented for it
+   = help: for that trait implementation, expected `Text`, found `Integer`
+```
+
+The first error message includes a somewhat confusing error message about the relationship of `&str` and `Expression`, as well as the unsatisfied trait bound in the blanket impl. After adding `#[diagnostic::do_no_recommend]`, it no longer considers the blanket impl for the recommendation. The message should be a little clearer, with an indication that a string cannot be converted to an `Integer`.
+
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
@@ -587,7 +700,7 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
 [struct field]: ../items/structs.md
 [struct]: ../items/structs.md
 [trait declaration]: ../items/traits.md
-[trait implementation items]: ../items/implementations.md#trait-implementations
 [trait item]: ../items/traits.md
+[trait-impl]: ../items/implementations.md#trait-implementations
 [traits]: ../items/traits.md
 [union]: ../items/unions.md
