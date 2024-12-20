@@ -265,6 +265,24 @@ References will set the default binding mode to `ref`.
 Mutable references will set the mode to `ref mut` unless the mode is already `ref` in which case it remains `ref`.
 If the automatically dereferenced value is still a reference, it is dereferenced and this process repeats.
 
+The binding pattern may only explicitly specify a `ref` or `ref mut` binding mode, or specify mutability with `mut`, when the default binding mode is "move". For example, these are not accepted:
+
+```rust,edition2024,compile_fail
+let [mut x] = &[()]; //~ ERROR
+let [ref x] = &[()]; //~ ERROR
+let [ref mut x] = &mut [()]; //~ ERROR
+```
+
+> **Edition differences**: Before the 2024 edition, bindings could explicitly specify a `ref` or `ref mut` binding mode even when the default binding mode was not "move", and they could specify mutability on such bindings with `mut`. In these editions, specifying `mut` on a binding set the binding mode to "move" regardless of the current default binding mode.
+
+Similarly, a reference pattern may only appear when the default binding mode is "move". For example, this is not accepted:
+
+```rust,edition2024,compile_fail
+let [&x] = &[&()]; //~ ERROR
+```
+
+> **Edition differences**: Before the 2024 edition, reference patterns could appear even when the default binding mode was not "move", and had both the effect of matching against the scrutinee and of causing the default binding mode to be reset to "move".
+
 Move bindings and reference bindings can be mixed together in the same pattern.
 Doing so will result in partial move of the object bound to and the object cannot be used afterwards.
 This applies only if the type cannot be copied.
