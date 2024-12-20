@@ -59,7 +59,7 @@ option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nost
 options := "options(" option *("," option) [","] ")"
 operand := reg_operand / clobber_abi / options
 asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
-naked_asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
+naked_asm := "naked_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 ```
 
