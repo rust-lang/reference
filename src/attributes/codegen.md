@@ -52,8 +52,6 @@ be called.
 r[attributes.codegen.naked]
 ## The `naked` attribute
 
-r[attributes.codegen.naked]
-
 r[attributes.codegen.naked.intro]
 The *`naked` [attribute]* prevents the compiler from emitting a function prologue and
 epilogue for the attributed function.
