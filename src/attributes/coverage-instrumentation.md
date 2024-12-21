@@ -3,6 +3,7 @@
 The following [attributes] are used for controlling coverage instrumentation.
 
 > **Note**: Coverage instrumentation is controlled in `rustc` with the [`-C instrument-coverage`] compiler flag.
+Exact specifics of how code coverage works or what code is reported in code coverage data may change from release to release.
 
 [`-C instrument-coverage`]: ../../rustc/instrument-coverage.html
 
