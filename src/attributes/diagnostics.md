@@ -87,6 +87,9 @@ pub mod m2 {
 }
 ```
 
+r[attributes.diagnostics.lint.override-forbid]
+It is an error to specify a lint level attribute weaker than `deny` that overrides a `forbid` in effect for that item.
+
 This example shows how one can use `forbid` to disallow uses of `allow` or
 `expect` for that lint check:
 
@@ -357,6 +360,9 @@ r[attributes.diagnostics.must_use]
 r[attributes.diagnostics.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
 is not "used".
+
+r[attributes.diagnostics.must_use.syntax]
+The `must_use` attribute uses either the [_MetaWord_] syntax, or the [_MetaNameValueStr_] syntax.
 
 r[attributes.diagnostics.must_use.allowed-positions]
 The `must_use` attribute can be applied to user-defined composite types
@@ -673,6 +679,7 @@ error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
 The first error message includes a somewhat confusing error message about the relationship of `&str` and `Expression`, as well as the unsatisfied trait bound in the blanket impl. After adding `#[diagnostic::do_no_recommend]`, it no longer considers the blanket impl for the recommendation. The message should be a little clearer, with an indication that a string cannot be converted to an `Integer`.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
+[_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax

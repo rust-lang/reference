@@ -39,11 +39,17 @@ You can implement `derive` for your own traits through [procedural macros].
 ## The `automatically_derived` attribute
 
 r[attributes.derive.automatically_derived]
+
+r[attributes.derive.automatically_derived.intro]
 The *`automatically_derived` attribute* is automatically added to
 [implementations] created by the `derive` attribute for built-in traits. It
 has no direct effect, but it may be used by tools and diagnostic lints to
 detect these automatically generated implementations.
 
+r[attributes.derive.automatically_derived.syntax]
+The `automatically_derived` attribute uses the [_MetaWord_] syntax
+
+[_MetaWord_]: ../attributes.md#meta-item-attribute-syntax
 [_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
 [`impl` item]: ../items/implementations.md
 [items]: ../items.md
