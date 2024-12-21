@@ -65,27 +65,22 @@ not have a `path` attribute, the path to the file mirrors the logical [module
 path].
 
 r[items.mod.outlined.search]
-Ancestor module path components are directories, and the module's
-contents are in a file with the name of the module plus the `.rs` extension.
+Ancestor module path components are directories, and the module's contents are in a file with the
+name of the module plus the `.rs` extension. Alternatively, the module's contents can also be in a
+file called `mod.rs` in a directory with the name of the module. It is not allowed to have both
+`$name.rs` and `$name/mod.rs`.
+
 For example, the following module structure can have this corresponding
 filesystem structure:
 
 Module Path               | Filesystem Path  | File Contents
 ------------------------- | ---------------  | -------------
 `crate`                   | `lib.rs`         | `mod util;`
-`crate::util`             | `util.rs`        | `mod config;`
+`crate::util`             | `util.rs` *or* `util/mod.rs` | `mod config;`
 `crate::util::config`     | `util/config.rs` |
 
-r[items.mod.outlined.search-mod]
-Module filenames may also be the name of the module as a directory with the
-contents in a file named `mod.rs` within that directory. The above example can
-alternately be expressed with `crate::util`'s contents in a file named
-`util/mod.rs`. It is not allowed to have both `util.rs` and `util/mod.rs`.
-
 > **Note**: Prior to `rustc` 1.30, using `mod.rs` files was the way to load
-> a module with nested children. It is encouraged to use the new naming
-> convention as it is more consistent, and avoids having many files named
-> `mod.rs` within a project.
+> a module with nested children.
 
 ### The `path` attribute
 
