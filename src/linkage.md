@@ -283,21 +283,20 @@ handled consistently across the entire binary. This includes using `dlopen` or s
 where linking is done by the system runtime without `rustc` being involved.
 
 r[link.unwinding.potential]
-A Rust binary or `staticlib` is called *potentially unwinding* if any of the following conditions
-is met:
-- The binary or `staticlib` is linked with [the `panic=unwind` runtime][panic-runtime].
-- The binary or `staticlib` contains a crate built with `-Cpanic=unwind` that makes a call
+A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
+- The artifact is linked with [the `panic=unwind` runtime][panic-runtime].
+- The artifact contains a crate built with `-Cpanic=unwind` that makes a call
   to a function using a `-unwind` ABI.
-- The binary or `staticlib` makes a `"Rust"` ABI call to code running in a separately built
-  `staticlib` (i.e., a separate instance of the Rust runtime), and that other `staticlib` is
+- The artifact makes a `"Rust"` ABI call to code running in another Rust
+  artifact that has a separate copy of the Rust runtime, and that other artifact is
   potentially unwinding.
 
 > [!NOTE]
-> This definition captures whether a `"Rust"` ABI call inside a Rust binary or `staticlib` can ever
+> This definition captures whether a `"Rust"` ABI call inside a Rust artifact can ever
 > unwind.
 
 r[link.unwinding.prohibited]
-If a Rust binary or `staticlib` is potentially unwinding, then all its crates must be built with `-Cpanic=unwind`.
+If a Rust artifact is potentially unwinding, then all its crates must be built with `-Cpanic=unwind`.
 
 > [!NOTE]
 > This restriction can only be violated when mixing code with different `-C panic` flags
