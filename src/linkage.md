@@ -254,6 +254,9 @@ RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows
 
 ## Mixed Rust and foreign codebases
 
+r[link.foreign-code]
+
+r[link.foreign-code.foreign-linkers]
 If you are mixing Rust with foreign code (e.g. C, C++) and wish to make a single
 binary containing both types of code, you have two approaches for the final
 binary link:
@@ -269,6 +272,45 @@ binary link:
 
 Passing `rlib`s directly into your foreign linker is currently unsupported.
 
+> [!NOTE]
+>  Rust code compiled or linked with a different instance of the Rust runtime counts as a
+> "foreign code" for the purpose of this section.
+
+### Prohibited linkage and unwinding
+
+r[link.unwinding]
+If you are *not* using `rustc` to link Rust files, you must take care to ensure that unwinding is
+handled consistently across the entire binary. This includes using `dlopen` or similar facilities
+where linking is done by the system runtime without `rustc` being involved.
+
+r[link.unwinding.potential]
+A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
+- The artifact is linked with [the `panic=unwind` runtime][panic-runtime].
+- The artifact contains a crate built with `-Cpanic=unwind` that makes a call
+  to a function using a `-unwind` ABI.
+- The artifact makes a `"Rust"` ABI call to code running in another Rust
+  artifact that has a separate copy of the Rust runtime, and that other artifact is
+  potentially unwinding.
+
+> [!NOTE]
+> This definition captures whether a `"Rust"` ABI call inside a Rust artifact can ever
+> unwind.
+
+r[link.unwinding.prohibited]
+If a Rust artifact is potentially unwinding, then all its crates must be built with `-Cpanic=unwind`.
+
+> [!NOTE]
+> This restriction can only be violated when mixing code with different `-C panic` flags
+> while also using a non-`rustc` linker. Most users to not have to be concerned about this.
+
+r[link.unwinding.prohibited.lint.ffi_unwind_calls]
+To guarantee that a library will be sound (and linkable with `rustc`)
+regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
+may be used. The lint flags any calls to `-unwind` foreign functions or
+function pointers.
+
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
+[`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
 [configuration option]: conditional-compilation.md
+[panic-runtime]: panic.md#panic-runtimes
 [procedural macros]: procedural-macros.md
