@@ -59,6 +59,26 @@ The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
 assumed to exist.
 
+## The `no_sanitize` attribute
+
+The `no_sanitize` attribute can be used to selectively disable sanitizer
+instrumentation in an annotated function. This might be useful to: avoid
+instrumentation overhead in a performance critical function, or avoid
+instrumenting code that contains constructs unsupported by given sanitizer.
+
+The precise effect of this annotation depends on particular sanitizer in use.
+For example, with `no_sanitize(thread)`, the thread sanitizer will no longer
+instrument non-atomic store / load operations, but it will instrument atomic
+operations to avoid reporting false positives and provide meaning full stack
+traces.
+
+``` rust
+#[no_sanitize(address)]
+fn foo() {
+  // ...
+}
+```
+
 ## The `target_feature` attribute
 
 r[attributes.codegen.target_feature]
