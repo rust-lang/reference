@@ -223,7 +223,7 @@ The only data layout guarantees made by this representation are those required
 for soundness. They are:
 
  1. The fields are properly aligned.
- 2. The fields do not overlap.
+ 2. For structs, within each enum variant, and excluding unions, the fields do not overlap.
  3. The alignment of the type is at least the maximum alignment of its fields.
 
 r[layout.repr.rust.alignment]
@@ -235,7 +235,8 @@ The second guarantee means that the fields can be
 ordered such that the offset plus the size of any field is less than or equal to
 the offset of the next field in the ordering. The ordering does not have to be
 the same as the order in which the fields are specified in the declaration of
-the type.
+the type. This applies within each variant of an enum, but fields of
+different variants may overlap.
 
 Be aware that the second guarantee does not imply that the fields have distinct
 addresses: zero-sized types may have the same address as other fields in the
