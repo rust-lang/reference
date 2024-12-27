@@ -19,9 +19,7 @@ The attribute uses the [_MetaListIdents_] syntax to specify its behavior:
 * `#[coverage(off)]` indicates that all functions within an item, recursively, should not be instrumented, unless specified by another attribute.
 * `#[coverage(on)]` (the default) indicates that all functions within an item, recursively, *should* be instrumented, unless specified by another attribute.
 
-```rust
-#![feature(coverage_attribute)]
-
+```rust,ignore
 #[coverage(off)]
 fn example() {}
 
