@@ -182,10 +182,10 @@ r[asm.operand-type.supported-operands.sym]
 
 r[asm.operand-type.supported-operands.label]
 * `label <block>`
-  - The address of the block is substituted into the asm template string. The assembly block may jump to the substituted addresses.
+  - The address of the block is substituted into the asm template string. The assembly block may jump to the substituted address.
   - After execution of the block, the `asm!` expression returns.
   - The type of the block must be unit or `!` (never).
-  - The block starts new safety context; despite the outer `unsafe` needed for `asm!`, you need an extra `unsafe` to perform unsafe operations inside the block.
+  - The block starts a new safety context; despite the outer `unsafe` block needed for `asm!`, unsafe operations within the `label` block must be wrapped in an inner `unsafe` block.
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
@@ -560,8 +560,8 @@ r[asm.options.supported-options.noreturn]
 - `noreturn`: The `asm!` block never returns, and its return type is defined as `!` (never).
   Behavior is undefined if execution falls through past the end of the asm code.
   A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
-- When labels are present, `noreturn` means the execution of the `asm!` block never falls through; the asm block may only exit by jumping to one of the specified blocks.
-  The entire `asm!` block will have unit type in this case, unless all label blocks diverge, in which case the return type is `!`.
+- When any `label` blocks are present, `noreturn` means the execution of the `asm!` block never falls through; the asm block may only exit by jumping to one of the specified blocks.
+  The entire `asm!` block will have unit type in this case, unless all `label` blocks diverge, in which case the return type is `!`.
 
 r[asm.options.supported-options.nostack]
 - `nostack`: The `asm!` block does not push data to the stack, or write to the stack red-zone (if supported by the target).
@@ -588,7 +588,7 @@ r[asm.options.checks.noreturn]
 - It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
 
 r[asm.options.checks.label-with-outputs]
-- It is a compile-time error to specify label on an asm block with outputs.
+- It is a compile-time error to have any `label` blocks in an asm block with outputs.
 
 r[asm.options.global_asm-restriction]
 `global_asm!` only supports the `att_syntax` and `raw` options.
