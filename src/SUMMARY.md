@@ -129,6 +129,10 @@
 
 - [The Rust runtime](runtime.md)
 
+- [Standard Library](stdlib.md)
+    - [core](core.md)
+        - [core::ffi](core/ffi.md)
+
 - [Appendices](appendices.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
     - [Influences](influences.md)
