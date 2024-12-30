@@ -59,9 +59,46 @@ r[type.numeric.int.size.minimum]
 > pointer support is limited and may require explicit care and acknowledgment
 > from a library to support.
 
-## Bit validity
+## Representation
 
-r[type.numeric.validity]
+r[type.numeric.repr]
 
-For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
-validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
+r[type.numeric.repr.integer]
+Each value of an integer type is a whole number. For unsigned types, this is a positive integer or `0`. For signed types, this can either be a positive integer, negative integer, or `0`.
+
+r[type.numeric.repr.integer-width]
+The range of values an integer type can represent depends on its signedness and its width, in bits. The width of type `uN` or `iN` is `N`. The width of type `usize` or `isize` is the value of the `target_pointer_width` property.
+
+> [!NOTE]
+> There are exactly `1<<N` unique values of an integer type of width `N`.
+> In particular, for an unsigned type, these values are in the range `0..(1<<N)` and for a signed type, are in the range `-(1<<(N-1))..(1<<(N-1))`, using rust range syntax.
+
+r[type.numeric.repr.unsigned]
+A value `i` of an unsigned integer type `U` is represented by a sequence of initialized bytes, where the `m`th successive byte according to the byte order of the platform is `(i >> (m*8)) as u8`, where `m` is between `0` and the size of `U`. None of the bytes produced by encoding an unsigned integer has a pointer fragment.
+
+> [!NOTE]
+> The two primary byte orders are `little` endian, where the bytes are ordered from lowest memory address to highest, and `big` endian, where the bytes are ordered from highest memory address to lowest.
+> The `cfg` predicate `target_endian` indicates the byte order
+
+> [!WARN]
+> On `little` endian, the order of bytes used to decode an integer type is the same as the natural order of a `u8` array - that is, the `m` value corresponds with the `m` index into a same-sized `u8` array. On `big` endian, however, the order is the opposite of this order - that is, the `m` value corresponds with the `size_of::<T>() - m` index in that array.
+
+r[type.numeric.repr.signed]
+A value `i` of a signed integer type with width `N` is represented the same as the corresponding value of the unsigned counterpart type which is congruent modulo `2^N`.
+
+> [!NOTE]
+> This encoding of signed integers is known as the 2s complement encoding.
+
+r[type.numeric.repr.float-width]
+Each floating-point type has a width. The type `fN` has a width of `N`.
+
+r[type.numeric.repr.float]
+A floating-point value is represented by the following decoding:
+* The byte sequence is decoded as the unsigned integer type with the same width as the floating-point type,
+* The resulting integer is decoded according to [IEEE 754-2019] into the format used for the type.
+
+
+r[type.numeric.repr.float-format]
+The [IEEE 754-2019] `binary32` format is used for `f32`, and the `binary64` format is used for `f64`. The set of values for each floating-point type are determined by the respective format.
+
+[IEEE 754-2019]: https://ieeexplore.ieee.org/document/8766229
