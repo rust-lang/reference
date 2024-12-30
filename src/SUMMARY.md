@@ -45,7 +45,6 @@
     - [Limits](attributes/limits.md)
     - [Type System](attributes/type_system.md)
     - [Debugger](attributes/debugger.md)
-    - [Coverage instrumentation](attributes/coverage-instrumentation.md)
 
 - [Statements and expressions](statements-and-expressions.md)
     - [Statements](statements.md)
