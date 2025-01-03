@@ -230,6 +230,27 @@ Feature        | Implicitly Enables | Feature Name
 `tme`          |                | FEAT_TME --- Transactional Memory Extension
 `vh`           |                | FEAT_VHE --- Virtualization Host Extensions
 
+#### `loongarch`
+
+r[attributes.codegen.target_feature.loongarch]
+
+This platform requires that `#[target_feature]` is only applied to [`unsafe`
+functions][unsafe function].
+
+Further documentation on these features can be found in the [LoongArch Reference
+Manual], or elsewhere on [LoongArch GitHub Account].
+
+[LoongArch Reference Manual]: https://github.com/loongson/LoongArch-Documentation
+[LoongArch GitHub Account]: https://github.com/loongson
+
+Feature     | Implicitly Enables  | Description
+------------|---------------------|-------------------
+`frecipe`   |                     | FRECIPE --- Reciprocal approximation instrutions
+`lasx`      | `lsx`               | LASX --- 256-bit vector instructions
+`lbt`       |                     | LBT --- Binary translation instructions
+`lsx`       | `d`                 | LSX --- 128-bit vector instructions
+`lvz`       |                     | LVZ --- Virtualization instructions
+
 #### `riscv32` or `riscv64`
 
 r[attributes.codegen.target_feature.riscv]
