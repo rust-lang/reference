@@ -309,6 +309,32 @@ Feature        | Implicitly Enables | Feature Name
 `tme`          |                    | FEAT_TME --- Transactional Memory Extension
 `vh`           |                    | FEAT_VHE --- Virtualization Host Extensions
 
+r[attributes.codegen.target_feature.loongarch]
+#### `loongarch`
+
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+
+Feature     | Implicitly Enables  | Description
+------------|---------------------|-------------------
+`f`         |                     | [F][la-f] --- Single-precision float-point instructions
+`d`         | `f`                 | [D][la-d] --- Double-precision float-point instructions
+`frecipe`   |                     | [FRECIPE][la-frecipe] --- Reciprocal approximation instructions
+`lasx`      | `lsx`               | [LASX][la-lasx] --- 256-bit vector instructions
+`lbt`       |                     | [LBT][la-lbt] --- Binary translation instructions
+`lsx`       | `d`                 | [LSX][la-lsx] --- 128-bit vector instructions
+`lvz`       |                     | [LVZ][la-lvz] --- Virtualization instructions
+
+<!-- Keep links near each table to make it easier to move and update. -->
+
+[la-f]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-fp_sp
+[la-d]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-fp_dp
+[la-frecipe]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-frecipe
+[la-lasx]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-lasx
+[la-lbt]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-lbt_x86
+[la-lsx]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-lsx
+[la-lvz]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#cpucfg-lvz
+
 r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
