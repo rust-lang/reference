@@ -284,6 +284,8 @@ main > .rule {
     float: right;
     text-align: right;
     padding-right: 10px;
+    /* We add `<wbr>` ourselves and only want breaks there */
+    word-break: keep-all;
     /* Remove the blue coloring of links on rules that mdbook normally sets. */
     color: #999 !important;
 }
