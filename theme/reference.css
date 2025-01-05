@@ -278,6 +278,10 @@ main > .rule {
     max-width: unset;
     justify-self: right;
     width: 100%;
+    /* We use a container query to know the size of the "left margin",
+       so that we can hide rules is there is not enough space. */
+    container-type: inline-size;
+    container-name: rule;
 }
 
 .rule-link {
@@ -299,6 +303,19 @@ main > .rule {
     content: "»";
     margin-inline-start: -20px;
     width: 20px;
+}
+
+/* Hide the rules if the width of the container is too small.
+   The cutoff point is chosen semi-arbitrary, it felt that
+   when `width < 14em`, there are too many breaks. */
+@container rule (width < 14em) {
+    main > .rule a span {
+        display: none;
+    }
+
+    main > .rule a::before {
+        content: "[*]";
+    }
 }
 
 /* Align rules to various siblings */

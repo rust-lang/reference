@@ -105,7 +105,7 @@ impl Spec {
                 }
                 format!(
                     "<div class=\"rule\" id=\"r-{rule_id}\">\
-                     <a class=\"rule-link\" href=\"#r-{rule_id}\">[{rule_id_broken}]</a>\
+                     <a class=\"rule-link\" href=\"#r-{rule_id}\"><span>[{rule_id_broken}]<span/></a>\
                      {test_html}\
                      </div>\n",
                      rule_id_broken = rule_id.replace(".", "<wbr>."),
