@@ -204,6 +204,25 @@ main > .rule {
     grid-column: rules;
 }
 
+/* Unset footnote margin,
+   see below for more information about margins */
+/* FIXME: this doesn't work. `unset` can still break the margin of the next element,
+          and since mdbook applies the margin to `:not(.footnore-definition)`,
+          it can literally be anything, so there is no way to properly fix it,
+          without changing mdbook... */
+:not(.footnote-definition) + .footnote-definition,
+.footnote-definition + :not(.footnote-definition) {
+    margin-block-start: unset;
+}
+
+:not(.footnote-definition) + .footnote-definition {
+     margin-top: calc(2em - 16px);
+}
+
+.footnote-definition:has(+ :not(.footnote-definition)) {
+    margin-bottom: calc(2em - 16px);
+}
+
 /* This is quite dumb, ugh.
    CSS doesn't allow margin colapsing between grid items and anything else
    (src: <https://stackoverflow.com/a/37837971>), which means that the margins
