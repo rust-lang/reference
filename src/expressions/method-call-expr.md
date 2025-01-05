@@ -25,7 +25,7 @@ The following procedure is used:
 
 r[expr.method.candidate-receivers]
 The first step is to build a list of candidate receiver types.
-Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
+Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion][coerce.unsize] at the end, and adding the result type if that is successful.
 
 r[expr.method.candidate-receivers-refs]
 Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
@@ -100,5 +100,4 @@ r[expr.method.edition2021]
 [disambiguating function call syntax]: call-expr.md#disambiguating-function-calls
 [dereference]: operator-expr.md#the-dereference-operator
 [methods]: ../items/associated-items.md#methods
-[unsized coercion]: ../type-coercions.md#unsized-coercions
 [`IntoIterator`]: std::iter::IntoIterator
