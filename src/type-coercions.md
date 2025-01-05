@@ -7,7 +7,7 @@ r[coerce.intro]
 They happen automatically at specific locations and are highly restricted in
 what types actually coerce.
 
-r[cerce.as]
+r[coerce.as]
 Any conversions allowed by coercion can also be explicitly performed by the
 [type cast operator], `as`.
 
