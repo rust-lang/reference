@@ -156,31 +156,46 @@ dfn {
 
 /* Rules are generated via r[foo.bar] syntax, processed by mdbook-spec. */
 .rule {
-    /* Allows the rule to be positioned. */
-    position: relative;
-    /* Position slightly to the left. */
-    left: -4em;
-    color: #999;
     font-size: 0.8em;
 }
-/* mdbook will wrap the rule content in a <p> tag, with a margin. However, we
-   don't need the extra space
-*/
-.rule ~ p {
-    margin-top: 0px;
+
+main {
+    /* To nicely display rules (`[a.b.c]`) on a side of the main text body we
+       use grid layout. */
+    display: grid;
+    grid-template-columns:
+        /* Left margin / place for rules */
+        [rules] minmax(20px, 1fr)
+        /* The main text body */
+        [text] auto
+        /* Right margin */
+        [margin] minmax(20px, 1fr);
+    max-width: none !important;
 }
 
-/* When the sidebar is visible, reduce the spacing of rules so that the
-   content doesn't get shifted too far, and make the text too narrow.
-*/
-.sidebar-visible .rule {
-    left: -1em;
-}
-.sidebar-visible .content main {
-    padding-left: 1em;
+main > * {
+    /* By default grid items can't be smaller than their content.
+       That is, by default `min-width: auto`.
+       We want to be able to force code blocks to be scrollable,
+       so we need to overwrite `min-width`. */
+    min-width: 0;
+    max-width: var(--content-max-width);
+
+    /* All elements should be in the main text body... */
+    grid-column: text;
 }
 
-/* Remove the blue coloring of links on rules that mdbook normally sets. */
+main > .rule {
+    /* ... except the rules, which must be in the left margin */
+    grid-column: rules;
+}
+
+main > .rule {
+    max-width: unset;
+    justify-self: right;
+    width: 100%;
+}
+
 .rule-link {
     color: #999 !important;
 }
