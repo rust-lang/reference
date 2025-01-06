@@ -3,7 +3,7 @@
 r[vis]
 
 r[vis.syntax]
-> **<sup>Syntax<sup>**\
+> **<sup>Syntax</sup>**\
 > _Visibility_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `pub`\
 > &nbsp;&nbsp; | `pub` `(` `crate` `)`\

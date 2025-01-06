@@ -3,7 +3,7 @@
 r[items.extern-crate]
 
 r[items.extern-crate.syntax]
-> **<sup>Syntax:<sup>**\
+> **<sup>Syntax:</sup>**\
 > _ExternCrate_ :\
 > &nbsp;&nbsp; `extern` `crate` _CrateRef_ _AsClause_<sup>?</sup> `;`
 >
