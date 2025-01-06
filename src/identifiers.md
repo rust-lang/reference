@@ -3,7 +3,7 @@
 r[ident]
 
 r[ident.syntax]
-> **<sup>Lexer:<sup>**\
+> **<sup>Lexer:</sup>**\
 > IDENTIFIER_OR_KEYWORD :\
 > &nbsp;&nbsp; &nbsp;&nbsp; XID_Start XID_Continue<sup>\*</sup>\
 > &nbsp;&nbsp; | `_` XID_Continue<sup>+</sup>
