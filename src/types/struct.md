@@ -29,6 +29,17 @@ A _unit-like struct_ type is like a struct type, except that it has no fields.
 The one value constructed by the associated [struct expression] is the only
 value that inhabits such a type.
 
+## Struct
+
+r[type.struct.value]
+
+r[type.struct.value.intro]
+A value of a struct type consists of a list of values for each field.
+
+r[type.struct.value.encode-decode]
+When a value of a struct type is encoded, each field of the struct is encoded at its corresponding offset and each byte that is not within a field of the struct is set to uninit.
+When a value of a struct type is decoded, each field of the struct is decoded from its corresponding offset. Each byte that is not within a field of the struct is ignored.
+
 [^structtype]: `struct` types are analogous to `struct` types in C, the
     *record* types of the ML family, or the *struct* types of the Lisp family.
 

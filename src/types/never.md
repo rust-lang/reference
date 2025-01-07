@@ -10,6 +10,9 @@ r[type.never.intro]
 The never type `!` is a type with no values, representing the result of
 computations that never complete.
 
+> [!NOTE]
+> Because `!` has no values, reading it from memory (or otherwise producing a value of the type at runtime) is immediate undefined behaviour.
+
 r[type.never.coercion]
 Expressions of type `!` can be coerced into any other type.
 

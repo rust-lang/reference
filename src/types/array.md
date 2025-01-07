@@ -31,6 +31,10 @@ always bounds-checked in safe methods and operators.
 > Note: The [`Vec<T>`] standard library type provides a heap-allocated resizable
 > array type.
 
+r[type.array.repr]
+An array value is represented by each element in ascending index order, placed immediately adjacent in memory.
+
+
 [_Expression_]: ../expressions.md
 [_Type_]: ../types.md#type-expressions
 [`usize`]: numeric.md#machine-dependent-integer-types
