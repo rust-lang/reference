@@ -446,8 +446,6 @@ struct MyCFields { x: u32, y: u8 }
 struct MyDFields;
 ```
 
-> Note: `union`s with non-`Copy` fields are unstable, see [55149].
-
 ### Primitive representations
 
 r[layout.repr.primitive]
