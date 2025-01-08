@@ -1,6 +1,5 @@
-# Subtyping and Variance
-
 r[subtype]
+# Subtyping and Variance
 
 r[subtype.intro]
 Subtyping is implicit and can occur at any stage in type checking or
@@ -44,9 +43,8 @@ let subtype: &(for<'a, 'b> fn(&'a i32, &'b i32))= &((|x, y| {}) as fn(&_, &_));
 let supertype: &for<'c> fn(&'c i32, &'c i32) = subtype;
 ```
 
-## Variance
-
 r[subtyping.variance]
+## Variance
 
 r[subtyping.variance.intro]
 Variance is a property that generic types have with respect to their arguments.

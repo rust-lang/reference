@@ -1,6 +1,5 @@
-# Constant items
-
 r[items.const]
+# Constant items
 
 r[items.const.syntax]
 > **<sup>Syntax</sup>**\
@@ -54,9 +53,8 @@ The final value of a `const` item cannot contain references to anything mutable.
 r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
 
-## Constants with Destructors
-
 r[items.const.destructor]
+## Constants with Destructors
 
 Constants can contain destructors. Destructors are run when the value goes out
 of scope.
@@ -79,9 +77,8 @@ fn create_and_drop_zero_with_destructor() {
 }
 ```
 
-## Unnamed constant
-
 r[items.const.unnamed]
+## Unnamed constant
 
 r[items.const.unnamed.intro]
 Unlike an [associated constant], a [free] constant may be unnamed by using
@@ -109,9 +106,8 @@ m!(const _: () = (););
 // const _: () = ();
 ```
 
-## Evaluation
-
 r[items.const.eval]
+## Evaluation
 
 [Free][free] constants are always [evaluated][const_eval] at compile-time to surface
 panics. This happens even within an unused function:

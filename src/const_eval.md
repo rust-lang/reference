@@ -1,14 +1,13 @@
-# Constant evaluation
 r[const-eval]
+# Constant evaluation
 
 r[const-eval.general]
 Constant evaluation is the process of computing the result of
 [expressions] during compilation. Only a subset of all expressions
 can be evaluated at compile-time.
 
-## Constant expressions
-
 r[const-eval.const-expr]
+## Constant expressions
 
 r[const-eval.const-expr.general]
 Certain forms of expressions, called constant expressions, can be evaluated at
@@ -140,9 +139,8 @@ surrounding generic parameters: such an expression must either be a single bare
 const generic parameter, or an arbitrary expression not making use of any
 generics.
 
-## Const Functions
-
 r[const-eval.const-fn]
+## Const Functions
 
 r[const-eval.const-fn.general]
 A _const fn_ is a function that one is permitted to call from a const context.

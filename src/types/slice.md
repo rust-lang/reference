@@ -1,6 +1,5 @@
-# Slice types
-
 r[type.slice]
+# Slice types
 
 r[type.slice.syntax]
 > **<sup>Syntax</sup>**\

@@ -1,12 +1,11 @@
+r[attributes.codegen]
 # Code generation attributes
 
-r[attributes.codegen]
 
 The following [attributes] are used for controlling code generation.
 
-## Optimization hints
-
 r[attributes.codegen.hint]
+## Optimization hints
 
 r[attributes.codegen.hint.cold-inline]
 The `cold` and `inline` [attributes] give suggestions to generate code in a
@@ -19,9 +18,8 @@ Both attributes can be used on [functions]. When applied to a function in a
 a trait implementation and not to all trait implementations. The attributes
 have no effect on a trait function without a body.
 
-### The `inline` attribute
-
 r[attributes.codegen.inline]
+### The `inline` attribute
 
 r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function
@@ -44,24 +42,23 @@ There are three ways to use the inline attribute:
 > ***Note***: `#[inline]` in every form is a hint, with no *requirements*
 > on the language to place a copy of the attributed function in the caller.
 
+r[attributes.codegen.cold]
 ### The `cold` attribute
 
-r[attributes.codegen.cold]
 
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
+r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
 
-r[attributes.codegen.no_builtins]
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
 assumed to exist.
 
-## The `target_feature` attribute
-
 r[attributes.codegen.target_feature]
+## The `target_feature` attribute
 
 r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
@@ -90,15 +87,15 @@ Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
 be used with a `target_feature` attribute.
 
+r[attributes.codegen.target_feature.availability]
 ### Available features
 
-r[attributes.codegen.target_feature.availability]
 
 The following is a list of the available feature names.
 
+r[attributes.codegen.target_feature.x86]
 #### `x86` or `x86_64`
 
-r[attributes.codegen.target_feature.x86]
 
 Executing code with unsupported features is undefined behavior on this platform.
 Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
@@ -165,9 +162,9 @@ Feature     | Implicitly Enables | Description
 [`xsaveopt`]: https://www.felixcloutier.com/x86/xsaveopt
 [`xsaves`]: https://www.felixcloutier.com/x86/xsaves
 
+r[attributes.codegen.target_feature.aarch64]
 #### `aarch64`
 
-r[attributes.codegen.target_feature.aarch64]
 
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
@@ -230,9 +227,9 @@ Feature        | Implicitly Enables | Feature Name
 `tme`          |                | FEAT_TME --- Transactional Memory Extension
 `vh`           |                | FEAT_VHE --- Virtualization Host Extensions
 
+r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
-r[attributes.codegen.target_feature.riscv]
 
 This platform requires that `#[target_feature]` is only applied to [`unsafe`
 functions][unsafe function].
@@ -292,9 +289,9 @@ Feature     | Implicitly Enables  | Description
 [rv-zksh]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksh.adoc
 [rv-zkt]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkt.adoc
 
+r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
 
-r[attributes.codegen.target_feature.wasm]
 
 `#[target_feature]` may be used with both safe and
 [`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
@@ -327,9 +324,8 @@ Feature               | Implicitly Enables  | Description
 [tail-call]: https://github.com/webassembly/tail-call
 [multivalue]: https://github.com/webassembly/multi-value
 
-### Additional information
-
 r[attributes.codegen.target_feature.info]
+### Additional information
 
 r[attributes.codegen.target_feature.remark-cfg]
 See the [`target_feature` conditional compilation option] for selectively
@@ -346,9 +342,8 @@ in the standard library for runtime feature detection on these platforms.
 > may be enabled or disabled for an entire crate with the
 > [`-C target-feature`] flag.
 
-## The `track_caller` attribute
-
 r[attributes.codegen.track_caller]
+## The `track_caller` attribute
 
 r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
@@ -364,9 +359,9 @@ implementations, otherwise undefined behavior results. When applied to a functio
 available to an `extern` block, the declaration in the `extern` block must also have the attribute,
 otherwise undefined behavior results.
 
+r[attributes.codegen.track_caller.behavior]
 ### Behavior
 
-r[attributes.codegen.track_caller.behavior]
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
 the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
 implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
@@ -444,9 +439,8 @@ fn calls_h() {
 
 And so on.
 
-### Limitations
-
 r[attributes.codegen.track_caller.limits]
+### Limitations
 
 r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
@@ -480,9 +474,8 @@ trait object whose methods are attributed.
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
-## The `instruction_set` attribute
-
 r[attributes.codegen.instruction_set]
+## The `instruction_set` attribute
 
 r[attributes.codegen.instruction_set.allowed-positions]
 The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
@@ -498,9 +491,9 @@ It uses the [_MetaListPath_] syntax, and a path comprised of the architecture fa
 r[attributes.codegen.instruction_set.target-limits]
 It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
 
+r[attributes.codegen.instruction_set.arm]
 ### On ARM
 
-r[attributes.codegen.instruction_set.arm]
 
 For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 * `arm::a32` --- Generate the function as A32 "ARM" code.

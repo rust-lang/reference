@@ -1,6 +1,5 @@
-# Tokens
-
 r[lex.token]
+# Tokens
 
 r[lex.token.intro]
 Tokens are primitive productions in the grammar defined by regular
@@ -19,9 +18,9 @@ table production] form, and appear in `monospace` font.
 
 [string table production]: notation.md#string-table-productions
 
+r[lex.token.literal]
 ## Literals
 
-r[lex.token.literal]
 Literals are tokens used in [literal expressions].
 
 ### Examples
@@ -90,9 +89,8 @@ Literals are tokens used in [literal expressions].
 
 [^nl]: All number literals allow `_` as a visual separator: `1_234.0E+18f64`
 
-#### Suffixes
-
 r[lex.token.literal.suffix]
+#### Suffixes
 
 r[lex.token.literal.literal.suffix.intro]
 A suffix is a sequence of characters following the primary part of a literal (without intervening whitespace), of the same form as a non-raw identifier or keyword.
@@ -128,9 +126,8 @@ and numeric literal tokens are accepted only with suffixes from the list below.
 
 ### Character and string literals
 
-#### Character literals
-
 r[lex.token.literal.char]
+#### Character literals
 
 r[lex.token.literal.char.syntax]
 > **<sup>Lexer</sup>**\
@@ -152,9 +149,8 @@ A _character literal_ is a single Unicode character enclosed within two
 `U+0027` (single-quote) characters, with the exception of `U+0027` itself,
 which must be _escaped_ by a preceding `U+005C` character (`\`).
 
-#### String literals
-
 r[lex.token.literal.str]
+#### String literals
 
 r[lex.token.literal.str.syntax]
 > **<sup>Lexer</sup>**\
@@ -181,9 +177,8 @@ When an unescaped `U+005C` character (`\`) occurs immediately before a line brea
 See [String continuation escapes] for details.
 The character `U+000D` (CR) may not appear in a string literal other than as part of such a string continuation escape.
 
-#### Character escapes
-
 r[lex.token.literal.char-escape]
+#### Character escapes
 
 r[lex.token.literal.char-escape.intro]
 Some additional _escapes_ are available in either character or non-raw string
@@ -215,9 +210,8 @@ r[lex.token.literal.char-escape.slash]
 * The _backslash escape_ is the character `U+005C` (`\`) which must be
   escaped in order to denote itself.
 
-#### Raw string literals
-
 r[lex.token.literal.str-raw]
+#### Raw string literals
 
 r[lex.token.literal.str-raw.syntax]
 > **<sup>Lexer</sup>**\
@@ -258,9 +252,8 @@ r##"foo #"# bar"##;                // foo #"# bar
 
 ### Byte and byte string literals
 
-#### Byte literals
-
 r[lex.token.byte]
+#### Byte literals
 
 r[lex.token.byte.syntax]
 > **<sup>Lexer</sup>**\
@@ -282,9 +275,8 @@ range) or a single _escape_ preceded by the characters `U+0062` (`b`) and
 `U+005C` (`\`) character. It is equivalent to a `u8` unsigned 8-bit integer
 _number literal_.
 
-#### Byte string literals
-
 r[lex.token.str-byte]
+#### Byte string literals
 
 r[lex.token.str-byte.syntax]
 > **<sup>Lexer</sup>**\
@@ -331,9 +323,8 @@ r[lex.token.str-byte.escape-slash]
 * The _backslash escape_ is the character `U+005C` (`\`) which must be
   escaped in order to denote its ASCII encoding `0x5C`.
 
-#### Raw byte string literals
-
 r[lex.token.str-byte-raw]
+#### Raw byte string literals
 
 r[lex.token.str-byte-raw.syntax]
 > **<sup>Lexer</sup>**\
@@ -378,9 +369,8 @@ b"\\x52"; br"\x52";                  // \x52
 
 ### C string and raw C string literals
 
-#### C string literals
-
 r[lex.token.str-c]
+#### C string literals
 
 r[lex.token.str-c.syntax]
 > **<sup>Lexer</sup>**\
@@ -453,9 +443,8 @@ r[lex.token.str-c.edition2021]
 > **Edition differences**: C string literals are accepted in the 2021 edition or
 > later. In earlier additions the token `c""` is lexed as `c ""`.
 
-#### Raw C string literals
-
 r[lex.token.str-c-raw]
+#### Raw C string literals
 
 r[lex.token.str-c-raw.syntax]
 > **<sup>Lexer</sup>**\
@@ -499,16 +488,15 @@ c"\x52"; c"R"; cr"R";                // R
 c"\\x52"; cr"\x52";                  // \x52
 ```
 
+r[lex.token.literal.num]
 ### Number literals
 
-r[lex.token.literal.num]
 
 A _number literal_ is either an _integer literal_ or a _floating-point
 literal_. The grammar for recognizing the two kinds of literals is mixed.
 
-#### Integer literals
-
 r[lex.token.literal.int]
+#### Integer literals
 
 r[lex.token.literal.int.syntax]
 > **<sup>Lexer</sup>**\
@@ -609,9 +597,8 @@ Examples of integer literals which are not accepted as literal expressions:
 # }
 ```
 
-#### Tuple index
-
 r[lex.token.literal.int.tuple-field]
+#### Tuple index
 
 r[lex.token.literal.int.tuple-field.syntax]
 > **<sup>Lexer</sup>**\
@@ -640,9 +627,8 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 > **Note**: Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version.
 > See <https://github.com/rust-lang/rust/issues/60210> for more information.
 
-#### Floating-point literals
-
 r[lex.token.literal.float]
+#### Floating-point literals
 
 r[lex.token.literal.float.syntax]
 > **<sup>Lexer</sup>**\
@@ -698,9 +684,9 @@ Examples of floating-point literals which are not accepted as literal expression
 # }
 ```
 
+r[lex.token.literal.reserved]
 #### Reserved forms similar to number literals
 
-r[lex.token.literal.reserved]
 
 > **<sup>Lexer</sup>**\
 > RESERVED_NUMBER :\
@@ -748,9 +734,8 @@ Examples of reserved forms:
 2.0em;   // this is not a suffixed literal, or `2.0` followed by `em`
 ```
 
-## Lifetimes and loop labels
-
 r[lex.token.life]
+## Lifetimes and loop labels
 
 r[lex.token.life.syntax]
 > **<sup>Lexer</sup>**\
@@ -791,9 +776,8 @@ r[lex.token.life.raw.edition2021]
 > **Edition differences**: Raw lifetimes are accepted in the 2021
 > edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
 
-## Punctuation
-
 r[lex.token.punct]
+## Punctuation
 
 r[lex.token.punct.intro]
 Punctuation symbol tokens are listed here for completeness. Their individual
@@ -849,9 +833,9 @@ usages and meanings are defined in the linked pages.
 | `?`    | Question    | [Question mark operator][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
 | `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used
 
+r[lex.token.delim]
 ## Delimiters
 
-r[lex.token.delim]
 
 Bracket punctuation is used in various parts of the grammar. An open bracket
 must always be paired with a close bracket. Brackets and the tokens within
@@ -863,9 +847,8 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `[` `]` | Square brackets |
 | `(` `)` | Parentheses     |
 
-## Reserved prefixes
-
 r[lex.token.reserved-prefix]
+## Reserved prefixes
 
 r[lex.token.reserved-prefix.syntax]
 > **<sup>Lexer 2021+</sup>**\
@@ -913,9 +896,8 @@ r[lex.token.reserved-prefix.edition2021]
 > lexes!{'prefix#lt}
 > ```
 
-## Reserved guards
-
 r[lex.token.reserved-guards]
+## Reserved guards
 
 r[lex.token.reserved-guards.syntax]
 > **<sup>Lexer 2024+</sup>**\

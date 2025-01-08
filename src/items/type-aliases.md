@@ -1,6 +1,5 @@
-# Type aliases
-
 r[items.type]
+# Type aliases
 
 r[items.type.syntax]
 > **<sup>Syntax</sup>**\

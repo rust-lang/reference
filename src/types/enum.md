@@ -1,6 +1,5 @@
-# Enumerated types
-
 r[type.enum]
+# Enumerated types
 
 r[type.enum.intro]
 An *enumerated type* is a nominal, heterogeneous disjoint union type, denoted

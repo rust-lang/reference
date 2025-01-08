@@ -1,6 +1,5 @@
-## Behavior considered undefined
-
 r[undefined]
+## Behavior considered undefined
 
 r[undefined.general]
 Rust code is incorrect if it exhibits any of the behaviors in the following
@@ -103,9 +102,9 @@ r[undefined.const-transmute-ptr2int]
 > vice versa, undefined behavior in Rust can cause adverse affects on code
 > executed by any FFI calls to other languages.
 
+r[undefined.pointed-to]
 ### Pointed-to bytes
 
-r[undefined.pointed-to]
 The span of bytes a pointer or reference "points to" is determined by the pointer value and the size of the pointee type (using `size_of_val`).
 
 ### Places based on misaligned pointers

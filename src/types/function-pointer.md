@@ -1,6 +1,5 @@
-# Function pointer types
-
 r[type.fn-pointer]
+# Function pointer types
 
 r[type.fn-pointer.syntax]
 > **<sup>Syntax</sup>**\
@@ -62,9 +61,8 @@ let bo: Binop = add;
 x = bo(5,7);
 ```
 
-## Attributes on function pointer parameters
-
 r[type.fn-pointer.attributes]
+## Attributes on function pointer parameters
 
 Attributes on function pointer parameters follow the same rules and
 restrictions as [regular function parameters].

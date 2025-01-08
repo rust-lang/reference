@@ -1,6 +1,5 @@
-# Type Layout
-
 r[layout]
+# Type Layout
 
 r[layout.intro]
 The layout of a type is its size, alignment, and the relative offsets of its
@@ -15,9 +14,9 @@ Note that even types with the same layout can still differ in how they are passe
 across function boundaries. For function call ABI compatibility of types,
 see [here][fn-abi-compatibility].
 
+r[layout.properties]
 ## Size and Alignment
 
-r[layout.properties]
 All values have an alignment and size.
 
 r[layout.properties.align]
@@ -44,9 +43,8 @@ as [dynamically sized types]. Since all values of a `Sized` type share the same
 size and alignment, we refer to those shared values as the size of the type and
 the alignment of the type respectively.
 
-## Primitive Data Layout
-
 r[layout.primitive]
+## Primitive Data Layout
 
 r[layout.primitive.size]
 The size of most primitives is given in this table.
@@ -76,9 +74,8 @@ In particular, `i128` and `u128` are often aligned to 4 or 8 bytes even though
 their size is 16, and on many 32-bit platforms, `i64`, `u64`, and `f64` are only
 aligned to 4 bytes, not 8.
 
-## Pointers and References Layout
-
 r[layout.pointer]
+## Pointers and References Layout
 
 r[layout.pointer.intro]
 Pointers and references have the same layout. Mutability of the pointer or
@@ -95,32 +92,31 @@ at least equal to the size and alignment of a pointer.
 > <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the
 > size of the size of `usize` and have the same alignment.
 
+r[layout.array]
 ## Array Layout
 
-r[layout.array]
 
 An array of `[T; N]` has a size of `size_of::<T>() * N` and the same alignment
 of `T`. Arrays are laid out so that the zero-based `nth` element of the array
 is offset from the start of the array by `n * size_of::<T>()` bytes.
 
+r[layout.slice]
 ## Slice Layout
 
-r[layout.slice]
 
 Slices have the same layout as the section of the array they slice.
 
 > Note: This is about the raw `[T]` type, not pointers (`&[T]`, `Box<[T]>`,
 > etc.) to slices.
 
+r[layout.str]
 ## `str` Layout
 
-r[layout.str]
 
 String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
 
-## Tuple Layout
-
 r[layout.tuple]
+## Tuple Layout
 
 r[layout.tuple.general]
 Tuples are laid out according to the [`Rust` representation][`Rust`].
@@ -129,24 +125,23 @@ r[layout.tuple.unit]
 The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
 
+r[layout.trait-object]
 ## Trait Object Layout
 
-r[layout.trait-object]
 
 Trait objects have the same layout as the value the trait object is of.
 
 > Note: This is about the raw trait object types, not pointers (`&dyn Trait`,
 > `Box<dyn Trait>`, etc.) to trait objects.
 
+r[layout.closure]
 ## Closure Layout
 
-r[layout.closure]
 
 Closures have no layout guarantees.
 
-## Representations
-
 r[layout.repr]
+## Representations
 
 r[layout.repr.intro]
 All user-defined composite types (`struct`s, `enum`s, and `union`s) have a
@@ -208,9 +203,8 @@ not change the layout of the fields themselves. For example, a struct with a
 representation will not change the layout of `Inner`.
 
 <a id="the-default-representation"></a>
-### The `Rust` Representation
-
 r[layout.repr.rust]
+### The `Rust` Representation
 
 r[layout.repr.rust.intro]
 The `Rust` representation is the default representation for nominal types
@@ -244,9 +238,8 @@ same struct.
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
-### The `C` Representation
-
 r[layout.repr.c]
+### The `C` Representation
 
 r[layout.repr.c.intro]
 The `C` representation is designed for dual purposes. One purpose is for
@@ -261,9 +254,8 @@ r[layout.repr.c.constraint]
 This representation can be applied to structs, unions, and enums. The exception
 is [zero-variant enums] for which the `C` representation is an error.
 
-#### `#[repr(C)]` Structs
-
 r[layout.repr.c.struct]
+#### `#[repr(C)]` Structs
 
 r[layout.repr.c.struct.align]
 The alignment of the struct is the alignment of the most-aligned field in it.
@@ -327,9 +319,8 @@ struct.size = current_offset + padding_needed_for(current_offset, struct.alignme
 > they are fields that have the `[[no_unique_address]]` attribute, in which
 > case they do not increase the overall size of the struct.
 
-#### `#[repr(C)]` Unions
-
 r[layout.repr.c.union]
+#### `#[repr(C)]` Unions
 
 r[layout.repr.c.union.intro]
 A union declared with `#[repr(C)]` will have the same size and alignment as an
@@ -362,9 +353,9 @@ assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
 assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 ```
 
+r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
-r[layout.repr.c.enum]
 
 For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
@@ -376,9 +367,8 @@ the default `enum` size and alignment for the target platform's C ABI.
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
 
-#### `#[repr(C)]` Enums With Fields
-
 r[layout.repr.c.adt]
+#### `#[repr(C)]` Enums With Fields
 
 r[layout.repr.c.adt.intro]
 The representation of a `repr(C)` enum with fields is a `repr(C)` struct with
@@ -448,9 +438,8 @@ struct MyDFields;
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
-### Primitive representations
-
 r[layout.repr.primitive]
+### Primitive representations
 
 r[layout.repr.primitive.intro]
 The *primitive representations* are the representations with the same names as
@@ -463,18 +452,18 @@ different behavior whether the enum has fields or no fields. It is an error
 for [zero-variant enums] to have a primitive representation. Combining
 two primitive representations together is an error.
 
+r[layout.repr.primitive.enum]
 #### Primitive Representation of Field-less Enums
 
-r[layout.repr.primitive.enum]
 
 For [field-less enums], primitive representations set the size and alignment to
 be the same as the primitive type of the same name. For example, a field-less
 enum with a `u8` representation can only have discriminants between 0 and 255
 inclusive.
 
+r[layout.repr.primitive.adt]
 #### Primitive Representation of Enums With Fields
 
-r[layout.repr.primitive.adt]
 
 The representation of a primitive representation enum is a `repr(C)` union of
 `repr(C)` structs for each variant with a field. The first field of each struct
@@ -528,9 +517,9 @@ struct MyVariantD(MyEnumDiscriminant);
 
 > Note: `union`s with non-`Copy` fields are unstable, see [55149].
 
+r[layout.repr.primitive-c]
 #### Combining primitive representations of enums with fields and `#[repr(C)]`
 
-r[layout.repr.primitive-c]
 
 For enums with fields, it is also possible to combine `repr(C)` and a
 primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by
@@ -594,9 +583,8 @@ assert_eq!(std::mem::size_of::<Enum16>(), 4);
 
 [`repr(C)`]: #reprc-enums-with-fields
 
-### The alignment modifiers
-
 r[layout.repr.alignment]
+### The alignment modifiers
 
 r[layout.repr.alignment.intro]
 The `align` and `packed` modifiers can be used to respectively raise or lower
@@ -665,9 +653,8 @@ was wrapped in a newtype `struct` with the same `align` modifier.
 > unsafe { mut_ptr.write_unaligned(3) }
 > ```
 
-### The `transparent` Representation
-
 r[layout.repr.transparent]
+### The `transparent` Representation
 
 r[layout.repr.transparent.constraint-field]
 The `transparent` representation can only be used on a [`struct`][structs]

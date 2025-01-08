@@ -1,10 +1,8 @@
+r[type.numeric]
 # Numeric types
 
-r[type.numeric]
-
-## Integer types
-
 r[type.numeric.int]
+## Integer types
 
 r[type.numeric.int.unsigned]
 The unsigned integer types consist of:
@@ -29,16 +27,14 @@ Type   | Minimum            | Maximum
 `i128` | -(2<sup>127</sup>) | 2<sup>127</sup>-1
 
 
-## Floating-point types
-
 r[type.numeric.float]
+## Floating-point types
 
 The IEEE 754-2008 "binary32" and "binary64" floating-point types are `f32` and
 `f64`, respectively.
 
-## Machine-dependent integer types
-
 r[type.numeric.int.size]
+## Machine-dependent integer types
 
 r[type.numeric.int.size.usize]
 The `usize` type is an unsigned integer type with the same number of bits as the
@@ -59,9 +55,8 @@ r[type.numeric.int.size.minimum]
 > pointer support is limited and may require explicit care and acknowledgment
 > from a library to support.
 
-## Bit validity
-
 r[type.numeric.validity]
+## Bit validity
 
 For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
 validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.

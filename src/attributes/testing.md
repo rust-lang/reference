@@ -1,15 +1,14 @@
+r[attributes.testing]
 # Testing attributes
 
-r[attributes.testing]
 
 The following [attributes] are used for specifying functions for performing
 tests. Compiling a crate in "test" mode enables building the test functions
 along with a test harness for executing the tests. Enabling the test mode also
 enables the [`test` conditional compilation option].
 
-## The `test` attribute
-
 r[attributes.testing.test]
+## The `test` attribute
 
 r[attributes.testing.test.intro]
 The *`test` attribute* marks a function to be executed as a test.
@@ -50,9 +49,8 @@ fn test_the_thing() -> io::Result<()> {
 }
 ```
 
-## The `ignore` attribute
-
 r[attributes.testing.ignore]
+## The `ignore` attribute
 
 r[attributes.testing.ignore.intro]
 A function annotated with the `test` attribute can also be annotated with the
@@ -74,9 +72,8 @@ fn mytest() {
 > **Note**: The `rustc` test harness supports the `--include-ignored` flag to
 > force ignored tests to be run.
 
-## The `should_panic` attribute
-
 r[attributes.testing.should_panic]
+## The `should_panic` attribute
 
 r[attributes.testing.should_panic.intro]
 A function annotated with the `test` attribute that returns `()` can also be

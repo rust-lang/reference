@@ -1,6 +1,5 @@
-# Static items
-
 r[items.static]
+# Static items
 
 r[items.static.syntax]
 > **<sup>Syntax</sup>**\
@@ -46,9 +45,8 @@ provided for free static items.
 r[items.static.safety-qualifiers]
 The `safe` and `unsafe` qualifiers are semantically only allowed when used in an [external block].
 
-## Statics & generics
-
 r[items.static.generics]
+## Statics & generics
 
 A static item defined in a generic scope (for example in a blanket or default
 implementation) will result in exactly one static item being defined, as if
@@ -96,9 +94,8 @@ blanket_impl: counter was 0
 blanket_impl: counter was 1
 ```
 
-## Mutable statics
-
 r[items.static.mut]
+## Mutable statics
 
 r[items.static.mut.intro]
 If a static item is declared with the `mut` keyword, then it is allowed to be
@@ -148,9 +145,8 @@ r[items.static.mut.sync]
 Mutable statics have the same restrictions as normal statics, except that the
 type does not have to implement the `Sync` trait.
 
-## Using Statics or Consts
-
 r[items.static.alternate]
+## Using Statics or Consts
 
 It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the

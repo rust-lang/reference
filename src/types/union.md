@@ -1,6 +1,5 @@
-# Union types
-
 r[type.union]
+# Union types
 
 r[type.union.intro]
 A *union type* is a nominal, heterogeneous C-like union, denoted by the name of

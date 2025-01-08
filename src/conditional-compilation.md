@@ -1,6 +1,5 @@
-# Conditional compilation
-
 r[cfg]
+# Conditional compilation
 
 r[cfg.syntax]
 > **<sup>Syntax</sup>**\
@@ -64,9 +63,8 @@ Key-value pairs are written as an identifier, `=`, and then a string, such as `t
 r[cfg.option-key-uniqueness]
 Keys do not need to be unique. For example, both `feature = "std"` and `feature = "serde"` can be set at the same time.
 
-## Set Configuration Options
-
 r[cfg.options.set]
+## Set Configuration Options
 
 r[cfg.options.general]
 Which configuration options are set is determined statically during the
@@ -92,9 +90,8 @@ configuration option from within the source code of the crate being compiled.
 > [!WARNING]
 > Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
 
-### `target_arch`
-
 r[cfg.target_arch]
+### `target_arch`
 
 r[cfg.target_arch.gen]
 Key-value option set once with the target's CPU architecture. The value is
@@ -112,9 +109,8 @@ Example values:
 * `"arm"`
 * `"aarch64"`
 
-### `target_feature`
-
 r[cfg.target_feature]
+### `target_feature`
 
 r[cfg.target_feature.general]
 Key-value option set for each platform feature available for the current
@@ -138,9 +134,8 @@ r[cfg.target_feature.crt_static]
 An additional feature of `crt-static` is available to the
 `target_feature` option to indicate that a [static C runtime] is available.
 
-### `target_os`
-
 r[cfg.target_os]
+### `target_os`
 
 r[cfg.target_os.general]
 Key-value option set once with the target's operating system. This value is
@@ -160,9 +155,8 @@ Example values:
 * `"netbsd"`
 * `"none"` (typical for embedded targets)
 
-### `target_family`
-
 r[cfg.target_family]
+### `target_family`
 
 r[cfg.target_family.general]
 Key-value option providing a more generic description of a target, such as the family of the
@@ -177,17 +171,16 @@ Example values:
 * `"wasm"`
 * Both `"unix"` and `"wasm"`
 
+r[cfg.target_family.unix]
 ### `unix` and `windows`
 
-r[cfg.target_family.unix]
 `unix` is set if `target_family = "unix"` is set.
 
 r[cfg.target_family.windows]
 `windows` is set if `target_family = "windows"` is set.
 
-### `target_env`
-
 r[cfg.target_env]
+### `target_env`
 
 r[cfg.target_env.general]
 Key-value option set with further disambiguating information about the target
@@ -207,9 +200,8 @@ Example values:
 * `"musl"`
 * `"sgx"`
 
-### `target_abi`
-
 r[cfg.target_abi]
+### `target_abi`
 
 r[cfg.target_abi.general]
 Key-value option set to further disambiguate the `target_env` with information
@@ -230,15 +222,14 @@ Example values:
 * `"sim"`
 * `"macabi"`
 
+r[cfg.target_endian]
 ### `target_endian`
 
-r[cfg.target_endian]
 Key-value option set once with either a value of "little" or "big" depending
 on the endianness of the target's CPU.
 
-### `target_pointer_width`
-
 r[cfg.target_pointer_width]
+### `target_pointer_width`
 
 r[cfg.target_pointer_width.general]
 Key-value option set once with the target's pointer width in bits.
@@ -250,9 +241,8 @@ Example values:
 * `"32"`
 * `"64"`
 
-### `target_vendor`
-
 r[cfg.target_vendor]
+### `target_vendor`
 
 r[cfg.target_vendor.general]
 Key-value option set once with the vendor of the target.
@@ -265,9 +255,8 @@ Example values:
 * `"pc"`
 * `"unknown"`
 
-### `target_has_atomic`
-
 r[cfg.target_has_atomic]
+### `target_has_atomic`
 
 r[cfg.target_has_atomic.general]
 Key-value option set for each bit width that the target supports
@@ -288,32 +277,31 @@ Possible values:
 * `"128"`
 * `"ptr"`
 
+r[cfg.test]
 ### `test`
 
-r[cfg.test]
 
 Enabled when compiling the test harness. Done with `rustc` by using the
 [`--test`] flag. See [Testing] for more on testing support.
 
+r[cfg.debug_assertions]
 ### `debug_assertions`
 
-r[cfg.debug_assertions]
 
 Enabled by default when compiling without optimizations.
 This can be used to enable extra debugging code in development but not in
 production.  For example, it controls the behavior of the standard library's
 [`debug_assert!`] macro.
 
+r[cfg.proc_macro]
 ### `proc_macro`
 
-r[cfg.proc_macro]
 
 Set when the crate being compiled is being compiled with the `proc_macro`
 [crate type].
 
-### `panic`
-
 r[cfg.panic]
+### `panic`
 
 r[cfg.panic.general]
 Key-value option set depending on the panic strategy. Note that more values may be added in the future.
@@ -326,9 +314,8 @@ Example values:
 
 ## Forms of conditional compilation
 
-### The `cfg` attribute
-
 r[cfg.attr]
+### The `cfg` attribute
 
 r[cfg.attr.syntax]
 > **<sup>Syntax</sup>**\
@@ -394,9 +381,8 @@ fn when_unwinding() {
 r[cfg.attr.restriction]
 The `cfg` attribute is allowed anywhere attributes are allowed.
 
-### The `cfg_attr` attribute
-
 r[cfg.cfg_attr]
+### The `cfg_attr` attribute
 
 r[cfg.cfg_attr.syntax]
 > **<sup>Syntax</sup>**\
@@ -447,9 +433,9 @@ The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 
 The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.
 
+r[cfg.macro]
 ### The `cfg` macro
 
-r[cfg.macro]
 The built-in `cfg` macro takes in a single configuration predicate and evaluates
 to the `true` literal when the predicate is true and the `false` literal when
 it is false.

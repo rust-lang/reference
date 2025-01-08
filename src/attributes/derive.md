@@ -1,6 +1,5 @@
-# Derive
-
 r[attributes.derive]
+# Derive
 
 r[attributes.derive.intro]
 The *`derive` attribute* allows new [items] to be automatically generated for
@@ -36,9 +35,9 @@ impl<T: PartialEq> PartialEq for Foo<T> {
 r[attributes.derive.proc-macro]
 You can implement `derive` for your own traits through [procedural macros].
 
+r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
 
-r[attributes.derive.automatically_derived]
 The *`automatically_derived` attribute* is automatically added to
 [implementations] created by the `derive` attribute for built-in traits. It
 has no direct effect, but it may be used by tools and diagnostic lints to

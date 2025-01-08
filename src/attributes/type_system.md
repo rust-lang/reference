@@ -1,12 +1,10 @@
-# Type system attributes
-
 r[attributes.type-system]
+# Type system attributes
 
 The following [attributes] are used for changing how a type can be used.
 
-## The `non_exhaustive` attribute
-
 r[attributes.type-system.non_exhaustive]
+## The `non_exhaustive` attribute
 
 r[attributes.type-system.non_exhaustive.intro]
 The *`non_exhaustive` attribute* indicates that a type or variant may have

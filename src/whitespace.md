@@ -1,6 +1,5 @@
-# Whitespace
-
 r[lex.whitespace]
+# Whitespace
 
 r[lex.whitespace.intro]
 Whitespace is any non-empty string containing only characters that have the

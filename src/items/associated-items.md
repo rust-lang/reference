@@ -1,6 +1,5 @@
-# Associated Items
-
 r[items.associated]
+# Associated Items
 
 r[items.associated.syntax]
 > **<sup>Syntax</sup>**\
@@ -37,9 +36,8 @@ r[items.associated.trait-items]
 It is the declarations that make up the contract of traits and what is available
 on generic types.
 
-## Associated functions and methods
-
 r[items.associated.fn]
+## Associated functions and methods
 
 r[items.associated.fn.intro]
 *Associated functions* are [functions] associated with a type.
@@ -102,9 +100,8 @@ let _: f64 = <f64 as Num>::from_i32(42);
 let _: f64 = f64::from_i32(42);
 ```
 
-### Methods
-
 r[items.associated.fn.method]
+### Methods
 
 r[items.associated.fn.method.intro]
 Associated functions whose first parameter is named `self` are called *methods*
@@ -218,16 +215,14 @@ r[items.associated.fn.params.edition2015]
 > methods with anonymous parameters (e.g. `fn foo(u8)`). This is deprecated and
 > an error as of the 2018 edition. All parameters must have an argument name.
 
-#### Attributes on method parameters
-
 r[items.associated.fn.param-attributes]
+#### Attributes on method parameters
 
 Attributes on method parameters follow the same rules and restrictions as
 [regular function parameters].
 
-## Associated Types
-
 r[items.associated.type]
+## Associated Types
 
 r[items.associated.type.intro]
 *Associated types* are [type aliases] associated with another type.
@@ -394,9 +389,8 @@ trait Example {
 
 Given a reference to the associated type like `<X as Example>::Output<Y>`, the associated type itself must be `Ord`, and the type `Y` must be `Debug`.
 
-### Required where clauses on generic associated types
-
 r[items.associated.type.generic-where-clause]
+### Required where clauses on generic associated types
 
 r[items.associated.type.generic-where-clause.intro]
 Generic associated type declarations on traits currently may require a list of
@@ -465,9 +459,8 @@ trait StaticReturn {
 }
 ```
 
-## Associated Constants
-
 r[items.associated.const]
+## Associated Constants
 
 r[items.associated.const.intro]
 *Associated constants* are [constants] associated with a type.

@@ -1,6 +1,5 @@
-# Never type
-
 r[type.never]
+# Never type
 
 r[type.never.syntax]
 > **<sup>Syntax</sup>**\

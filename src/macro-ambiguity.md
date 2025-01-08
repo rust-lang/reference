@@ -1,14 +1,13 @@
+r[macro.ambiguity]
 # Appendix: Macro Follow-Set Ambiguity Formal Specification
 
-r[macro.ambiguity]
 
 This page documents the formal specification of the follow rules for [Macros
 By Example]. They were originally specified in [RFC 550], from which the bulk
 of this text is copied, and expanded upon in subsequent RFCs.
 
-## Definitions & Conventions
-
 r[macro.ambiguity.convention]
+## Definitions & Conventions
 
 r[macro.ambiguity.convention.defs]
   - `macro`: anything invocable as `foo!(...)` in source code.
@@ -109,9 +108,8 @@ true, because the `vis` matcher can match an empty fragment. Thus, for the
 purposes of the formalism, we will treat `$v:vis` as actually being
 `$($v:vis)?`, with a requirement that the matcher match an empty fragment.
 
-### The Matcher Invariants
-
 r[macro.ambiguity.invariant]
+### The Matcher Invariants
 
 r[macro.ambiguity.invariant.list]
 To be valid, a matcher must meet the following three invariants. The definitions
@@ -151,9 +149,8 @@ and significant reliance on the behaviour. It is currently undecided what to do
 about this going forward. Macros that do not respect the behaviour may become
 invalid in a future edition of Rust. See the [tracking issue].**
 
-### FIRST and FOLLOW, informally
-
 r[macro.ambiguity.sets]
+### FIRST and FOLLOW, informally
 
 r[macro.ambiguity.sets.intro]
 A given matcher M maps to three sets: FIRST(M), LAST(M) and FOLLOW(M).
@@ -195,9 +192,8 @@ at this point may want to jump ahead to the [examples of
 FIRST/LAST](#examples-of-first-and-last) before reading their formal
 definitions.)
 
-### FIRST, LAST
-
 r[macro.ambiguity.sets.def]
+### FIRST, LAST
 
 r[macro.ambiguity.sets.def.intro]
 Below are formal inductive definitions for FIRST and LAST.
@@ -206,9 +202,8 @@ r[macro.ambiguity.sets.def.notation]
 "A ∪ B" denotes set union, "A ∩ B" denotes set intersection, and "A \ B"
 denotes set difference (i.e. all elements of A that are not present in B).
 
-#### FIRST
-
 r[macro.ambiguity.sets.def.first]
+#### FIRST
 
 r[macro.ambiguity.sets.def.first.intro]
 FIRST(M) is defined by case analysis on the sequence M and the structure of its
@@ -260,9 +255,8 @@ then by definition ε ∉ ALPHA\_SET(M). Otherwise, the complex NT can accept ze
 repetitions, and then ALPHA\_SET(M) = FOLLOW(`α`). So this definition is correct
 with respect to \varepsilon as well.
 
-#### LAST
-
 r[macro.ambiguity.sets.def.last]
+#### LAST
 
 r[macro.ambiguity.sets.def.last.intro]
 LAST(M), defined by case analysis on M itself (a sequence of token-trees):
@@ -361,9 +355,8 @@ Here are similar examples but now for LAST.
  * LAST(`$( $d:ident $e:expr );* $(h)* $( f ;)+`) = { `;` }
  * LAST(`$( $d:ident $e:expr );* $(h)* $( f ;)+ g`) = { `g` }
 
-### FOLLOW(M)
-
 r[macro.ambiguity.sets.def.follow]
+### FOLLOW(M)
 
 r[macro.ambiguity.sets.def.follow.intro]
 Finally, the definition for FOLLOW(M) is built up as follows. pat, expr, etc.

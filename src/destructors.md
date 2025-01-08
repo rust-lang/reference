@@ -58,9 +58,8 @@ core::mem::forget(partial_move.1);
 // When partial_move's scope ends, only the first field is dropped.
 ```
 
-## Drop scopes
-
 r[destructors.scope]
+## Drop scopes
 
 r[destructors.scope.intro]
 Each variable or temporary is associated to a *drop scope*. When control flow
@@ -134,9 +133,9 @@ r[destructors.scope.nesting.other]
 * The parent of all other scopes is the scope of the immediately enclosing
   expression.
 
+r[destructors.scope.params]
 ### Scopes of function parameters
 
-r[destructors.scope.params]
 
 All function parameters are in the scope of the entire function body, so are
 dropped last when evaluating the function. Each actual function parameter is
@@ -162,9 +161,8 @@ patterns_in_parameters(
 );
 ```
 
-### Scopes of local variables
-
 r[destructors.scope.bindings]
+### Scopes of local variables
 
 r[destructors.scope.bindings.intro]
 Local variables declared in a `let` statement are associated to the scope of
@@ -190,9 +188,8 @@ r[destructors.scope.bindings.match-pattern-order]
 If multiple patterns are used in the same arm for a `match` expression, then an
 unspecified pattern will be used to determine the drop order.
 
-### Temporary scopes
-
 r[destructors.scope.temporary]
+### Temporary scopes
 
 r[destructors.scope.temporary.intro]
 The *temporary scope* of an expression is the scope that is used for the
@@ -269,9 +266,9 @@ match PrintOnDrop("Matched value in final expression") {
 }
 ```
 
+r[destructors.scope.operands]
 ### Operands
 
-r[destructors.scope.operands]
 
 Temporaries are also created to hold the result of operands to an expression
 while the other operands are evaluated. The temporaries are associated to the
@@ -301,9 +298,9 @@ loop {
 }
 ```
 
+r[destructors.scope.const-promotion]
 ### Constant promotion
 
-r[destructors.scope.const-promotion]
 
 Promotion of a value expression to a `'static` slot occurs when the expression
 could be written in a constant and borrowed, and that borrow could be dereferenced
@@ -314,9 +311,9 @@ resulting value does not contain [interior mutability] or [destructors] (these
 properties are determined based on the value where possible, e.g. `&None`
 always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
+r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
 
-r[destructors.scope.lifetime-extension]
 
 > **Note**: The exact rules for temporary lifetime extension are subject to
 > change. This is describing the current behavior only.
@@ -353,9 +350,8 @@ temporary scope then so does its operand. If an [indexing expression] has an
 extended temporary scope then the indexed expression also has an extended
 temporary scope.
 
-#### Extending based on patterns
-
 r[destructors.scope.lifetime-extension.patterns]
+#### Extending based on patterns
 
 r[destructors.scope.lifetime-extension.patterns.extending]
 An *extending pattern* is either
@@ -372,9 +368,9 @@ r[destructors.scope.lifetime-extension.patterns.let]
 If the pattern in a `let` statement is an extending pattern then the temporary
 scope of the initializer expression is extended.
 
+r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
-r[destructors.scope.lifetime-extension.exprs]
 
 For a let statement with an initializer, an *extending expression* is an
 expression which is one of the following:
@@ -426,9 +422,9 @@ let x = (&temp()).use_temp();  // ERROR
 # x;
 ```
 
+r[destructors.forget]
 ## Not running destructors
 
-r[destructors.forget]
 
 [`std::mem::forget`] can be used to prevent the destructor of a variable from being run,
 and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a

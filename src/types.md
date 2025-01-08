@@ -1,7 +1,6 @@
 {{#include types-redirect.html}}
-# Types
-
 r[type]
+# Types
 
 r[type.intro]
 Every variable, item, and value in a Rust program has a type. The _type_ of a
@@ -42,9 +41,8 @@ The list of types is:
     * [Trait objects]
     * [Impl trait]
 
-## Type expressions
-
 r[type.name]
+## Type expressions
 
 r[type.name.syntax]
 > **<sup>Syntax</sup>**\
@@ -101,9 +99,8 @@ r[type.name.never]
 r[type.name.macro-expansion]
 * [Macros] which expand to a type expression.
 
-### Parenthesized types
-
 r[type.name.parenthesized]
+### Parenthesized types
 
 r[type.name.parenthesized.syntax]
 > _ParenthesizedType_ :\
@@ -122,9 +119,8 @@ require this disambiguation use the [_TypeNoBounds_] rule instead of
 type T<'a> = &'a (dyn Any + Send);
 ```
 
-## Recursive types
-
 r[type.recursive]
+## Recursive types
 
 r[type.recursive.intro]
 Nominal types &mdash; [structs], [enumerations], and [unions] &mdash; may be

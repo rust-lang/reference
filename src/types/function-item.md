@@ -1,6 +1,5 @@
-# Function item types
-
 r[type.fn-item]
+# Function item types
 
 r[type.fn-item.intro]
 When referred to, a function item, or the constructor of a tuple-like struct or

@@ -1,6 +1,5 @@
-# Unsafety
-
 r[safety]
+# Unsafety
 
 r[safety.intro]
 Unsafe operations are those that can potentially violate the memory-safety

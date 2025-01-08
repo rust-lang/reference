@@ -1,6 +1,5 @@
-# Modules
-
 r[items.mod]
+# Modules
 
 r[items.mod.syntax]
 > **<sup>Syntax:</sup>**\
@@ -55,9 +54,8 @@ keyword, but it is rejected at a semantic level. This allows macros to consume
 the syntax and make use of the `unsafe` keyword, before removing it from the
 token stream.
 
-## Module Source Filenames
-
 r[items.mod.outlined]
+## Module Source Filenames
 
 r[items.mod.outlined.intro]
 A module without a body is loaded from an external file. When the module does
@@ -87,9 +85,8 @@ alternately be expressed with `crate::util`'s contents in a file named
 > convention as it is more consistent, and avoids having many files named
 > `mod.rs` within a project.
 
-### The `path` attribute
-
 r[items.mod.outlined.path]
+### The `path` attribute
 
 r[items.mod.outlined.path.intro]
 The directories and files used for loading external file modules can be
@@ -150,9 +147,8 @@ mod thread {
 }
 ```
 
-## Attributes on Modules
-
 r[items.mod.attributes]
+## Attributes on Modules
 
 r[items.mod.attributes.intro]
 Modules, like all items, accept outer attributes. They also accept inner

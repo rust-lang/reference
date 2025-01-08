@@ -1,6 +1,5 @@
-# Type coercions
-
 r[coerce]
+# Type coercions
 
 r[coerce.intro]
 **Type coercions** are implicit operations that change the type of a value.
@@ -13,9 +12,8 @@ Any conversions allowed by coercion can also be explicitly performed by the
 
 Coercions are originally defined in [RFC 401] and expanded upon in [RFC 1558].
 
-## Coercion sites
-
 r[coerce.site]
+## Coercion sites
 
 r[coerce.site.intro]
 A coercion can only occur at certain coercion sites in a program; these are
@@ -109,9 +107,8 @@ it is not semicolon-terminated) is a coercion site to `U`. This includes
 blocks which are part of control flow statements, such as `if`/`else`, if
 the block has a known type.
 
-## Coercion types
-
 r[coerce.types]
+## Coercion types
 
 r[coerce.types.intro]
 Coercion is allowed between the following types:
@@ -189,9 +186,8 @@ r[coerce.types.closure]
 r[coerce.types.never]
 * `!` to any `T`
 
-### Unsized Coercions
-
 r[coerce.unsize]
+### Unsized Coercions
 
 r[coerce.unsize.intro]
 The following coercions are called `unsized coercions`, since they
@@ -228,9 +224,8 @@ unsized coercion to `Foo<U>`.
 > has been stabilized, the traits themselves are not yet stable and therefore
 > can't be used directly in stable Rust.
 
-## Least upper bound coercions
-
 r[coerce.least-upper-bound]
+## Least upper bound coercions
 
 r[coerce.least-upper-bound.intro]
 In some contexts, the compiler must coerce together multiple types to try and

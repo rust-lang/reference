@@ -1,6 +1,5 @@
-# Macros By Example
-
 r[macro.decl]
+# Macros By Example
 
 r[macro.decl.syntax]
 > **<sup>Syntax</sup>**\
@@ -53,9 +52,8 @@ the matcher and the transcriber must be surrounded by delimiters. Macros can
 expand to expressions, statements, items (including traits, impls, and foreign
 items), types, or patterns.
 
-## Transcribing
-
 r[macro.decl.transcription]
+## Transcribing
 
 r[macro.decl.transcription.intro]
 When a macro is invoked, the macro expander looks up macro invocations by name,
@@ -86,9 +84,9 @@ delimiters for the matcher will match any pair of delimiters. Thus, for
 instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
 `$` cannot be matched or transcribed literally.
 
+r[macro.decl.transcription.fragment]
 ### Forwarding a matched fragment
 
-r[macro.decl.transcription.fragment]
 
 When forwarding a matched fragment to another macro-by-example, matchers in
 the second macro will see an opaque AST of the fragment type. The second macro
@@ -126,9 +124,8 @@ macro_rules! bar {
 foo!(3);
 ```
 
-## Metavariables
-
 r[macro.decl.meta]
+## Metavariables
 
 r[macro.decl.meta.intro]
 In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax
@@ -174,9 +171,8 @@ r[macro.decl.meta.edition2024]
 >
 > The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
-## Repetitions
-
 r[macro.decl.repetition]
+## Repetitions
 
 r[macro.decl.repetition.intro]
 In both the matcher and transcriber, repetitions are indicated by placing the
@@ -225,9 +221,8 @@ compiler knows how to expand them properly:
     not have the same number. This requirement applies to every layer of nested
     repetitions.
 
-## Scoping, Exporting, and Importing
-
 r[macro.decl.scope]
+## Scoping, Exporting, and Importing
 
 r[macro.decl.scope.intro]
 For historical reasons, the scoping of macros by example does not work entirely
@@ -255,9 +250,8 @@ lazy_static!{lazy} // Textual lookup finds our macro first.
 self::lazy_static!{} // Path-based lookup ignores our macro, finds imported one.
 ```
 
-### Textual Scope
-
 r[macro.decl.scope.textual]
+### Textual Scope
 
 r[macro.decl.scope.textual.intro]
 Textual scope is based largely on the order that things appear in source files,
@@ -333,9 +327,8 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
-### The `macro_use` attribute
-
 r[macro.decl.scope.macro_use]
+### The `macro_use` attribute
 
 r[macro.decl.scope.macro_use.mod-decl]
 The *`macro_use` attribute* has two purposes. First, it can be used to make a
@@ -376,9 +369,8 @@ r[macro.decl.scope.macro_use.export]
 Macros to be imported with `#[macro_use]` must be exported with
 `#[macro_export]`, which is described below.
 
-### Path-Based Scope
-
 r[macro.decl.scope.path]
+### Path-Based Scope
 
 r[macro.decl.scope.path.intro]
 By default, a macro has no path-based scope. However, if it has the
@@ -406,9 +398,8 @@ r[macro.decl.scope.path.export]
 Macros labeled with `#[macro_export]` are always `pub` and can be referred to
 by other crates, either by path or by `#[macro_use]` as described above.
 
-## Hygiene
-
 r[macro.decl.hygiene]
+## Hygiene
 
 r[macro.decl.hygiene.intro]
 Macros by example have _mixed-site hygiene_. This means that [loop labels], [block labels], and local variables are looked up at the macro definition site while other symbols are looked up at the macro invocation site. For example:
@@ -532,9 +523,8 @@ macro_rules! helper {
 }
 ```
 
-## Follow-set Ambiguity Restrictions
-
 r[macro.decl.follow-set]
+## Follow-set Ambiguity Restrictions
 
 r[macro.decl.follow-set.intro]
 The parser used by the macro system is reasonably powerful, but it is limited in

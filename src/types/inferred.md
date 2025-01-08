@@ -1,6 +1,5 @@
-# Inferred type
-
 r[type.inferred]
+# Inferred type
 
 r[type.inferred.syntax]
 > **<sup>Syntax</sup>**\
