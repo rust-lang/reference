@@ -298,11 +298,18 @@ main > .rule {
    navigate to it. This adds an indicator that the linked rule is the one that
    is "current", just like normal headers are in mdbook.
 */
-.rule:target::before {
+.rule:target a span::before {
     display: inline-block;
     content: "»";
-    margin-inline-start: -20px;
-    width: 20px;
+    padding-right: 5px;
+}
+
+/* Dodge » from headings */
+.rule:has(+ h1:target),
+.rule:has(+ h2:target),
+.rule:has(+ h3:target),
+.rule:has(+ h4:target) {
+    padding-right: 24px;
 }
 
 /* Hide the rules if the width of the container is too small.
