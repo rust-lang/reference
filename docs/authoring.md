@@ -169,7 +169,7 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 > This is a warning.
 ```
 
-All this does is apply a CSS class to the blockquote. You should define the color or style of the rule in the `css/custom.css` file if it isn't already defined.
+All this does is apply a CSS class to the blockquote. You should define the color or style of the rule in the [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) file if it isn't already defined.
 
 ## Style
 
