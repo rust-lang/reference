@@ -21,7 +21,7 @@ over panic behavior:
 
 > [!NOTE]
 > The standard library provides the capability to explicitly panic
-> via the [`panic!` macro][macro-panic].
+> via the [`panic!` macro][panic!].
 
 ## Unwinding
 
@@ -49,8 +49,8 @@ just as if they had gone out of scope normally.
 
 > [!NOTE]
 > The standard library provides two mechanisms for recovering from a panic,
-> [`catch_unwind`][fn-catch-unwind] (which enables recovery within the
-> panicking thread) and [`thread::spawn`][thread-spawn] (which automatically
+> [`std::panic::catch_unwind`] (which enables recovery within the
+> panicking thread) and [`std::thread::spawn`] (which automatically
 > sets up panic recovery for the spawned thread so that other threads may
 > continue running).
 
@@ -77,11 +77,11 @@ Unwinding with the wrong ABI is undefined behavior:
 
 r[panic.unwind.ffi.catch-foreign]
 Catching a foreign unwinding operation (such as a C++ exception) using
-`catch_unwind`, `JoinHandle::join`, or by letting it propagate all the way to a
+[`std::panic::catch_unwind`], [`std::thread::JoinHandle::join`], or by letting it propagate all the way to a
 Rust `main()` function will have one of two behaviors, and it is unspecified
 which will occur:
 * The process aborts.
-* The function returns a `Result::Err` containing an opaque type.
+* The function returns a [`Result::Err`] containing an opaque type.
 
 > [!NOTE]
 >  Rust code compiled or linked with a different instance of the Rust runtime counts as a
@@ -120,8 +120,5 @@ See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute)
 
 [array indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [destructors]: destructors.md
-[fn-catch-unwind]: ../std/panic/fn.catch_unwind.html
-[macro-panic]: ../std/macro.panic.html
 [runtime]: runtime.md
-[thread-spawn]: ../std/thread/fn.spawn.html
 [unwind-abi]: items/functions.md#unwinding
