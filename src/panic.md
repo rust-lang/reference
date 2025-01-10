@@ -91,7 +91,7 @@ which will occur:
 > library, may cause the entire application to crash even if the library is only
 > used within a child thread.
 
-r[panic.unwind.ffi.dipose-panic]
+r[panic.unwind.ffi.dispose-panic]
 There are currently no guarantees about the behavior that occurs when a foreign
 runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other
 words, an unwind originated from a Rust runtime must either lead to termination
