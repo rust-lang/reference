@@ -302,11 +302,11 @@ If a Rust artifact is potentially unwinding, then all its crates must be built w
 > This restriction can only be violated when mixing code with different `-C panic` flags
 > while also using a non-`rustc` linker. Most users to not have to be concerned about this.
 
-r[link.unwinding.prohibited.lint.ffi_unwind_calls]
-To guarantee that a library will be sound (and linkable with `rustc`)
-regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
-may be used. The lint flags any calls to `-unwind` foreign functions or
-function pointers.
+> [!NOTE]
+> To guarantee that a library will be sound (and linkable with `rustc`)
+> regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
+> may be used. The lint flags any calls to `-unwind` foreign functions or
+> function pointers.
 
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
