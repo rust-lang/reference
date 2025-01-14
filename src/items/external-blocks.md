@@ -159,13 +159,13 @@ r[items.extern.abi.efiapi]
 Like `"C"` and `"system"`, most platform-specific ABI strings also have a
 [corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
 
-* `"cdecl-unwind"`
-* `"stdcall-unwind"`
-* `"fastcall-unwind"`
-* `"thiscall-unwind"`
 * `"aapcs-unwind"`
-* `"win64-unwind"`
+* `"cdecl-unwind"`
+* `"fastcall-unwind"`
+* `"stdcall-unwind"`
 * `"sysv64-unwind"`
+* `"thiscall-unwind"`
+* `"win64-unwind"`
 
 r[items.extern.variadic]
 ## Variadic functions
