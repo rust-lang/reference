@@ -257,7 +257,7 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [`const`]: items/constant-items.md
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
 [pointer aliasing rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
-[abi]: abi.md
+[abi]: items/external-blocks.md#abi
 [undef]: http://llvm.org/docs/LangRef.html#undefined-values
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
