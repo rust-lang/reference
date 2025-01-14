@@ -339,7 +339,7 @@ mod b {
 # fn main() {}
 ```
 
-r[path.qualifier.super.repetion]
+r[path.qualifier.super.repetition]
 `super` may be repeated several times after the first `super` or `self` to refer to
 ancestor modules.
 
@@ -435,7 +435,7 @@ r[path.canonical.bare-impl-prefix]
 For bare implementations, it is the canonical path of the item being implemented
 surrounded by <span class="parenthetical">angle (`<>`)</span> brackets.
 
-r[path.canonical.trait-impl-preifx]
+r[path.canonical.trait-impl-prefix]
 For [trait implementations], it is the canonical path of the item being implemented
 followed by `as` followed by the canonical path to the trait all surrounded in
 <span class="parenthetical">angle (`<>`)</span> brackets.

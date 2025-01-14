@@ -32,7 +32,7 @@ r[lifetime-elision.function.output-lifetime]
 * If there is exactly one lifetime used in the parameters (elided or not), that
   lifetime is assigned to *all* elided output lifetimes.
 
-r[lifetime-elision.function.reciever-lifetime]
+r[lifetime-elision.function.receiver-lifetime]
 In method signatures there is another rule
 
 * If the receiver has type `&Self`  or `&mut Self`, then the lifetime of that

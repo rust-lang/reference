@@ -20,7 +20,7 @@ r[lang-types.box.deref]
   from. This means that the `*` operator and the destructor of `Box<T>` are
   built-in to the language.
 
-r[lang-types.box.reciever]
+r[lang-types.box.receiver]
 * [Methods] can take `Box<Self>` as a receiver.
 
 r[lang-types.box.fundamental]
