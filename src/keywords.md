@@ -151,6 +151,7 @@ r[lex.keywords.weak.dyn]
 r[lex.keywords.weak.safe]
 * `safe` is used for functions and statics, which has meaning in [external blocks].
 
+r[lex.keywords.weak.raw]
 * `raw` is used for [raw borrow operators], and is only a keyword when matching a raw borrow operator form (such as `&raw const expr` or `&raw mut expr`).
 
 [items]: items.md
