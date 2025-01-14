@@ -278,10 +278,11 @@ Passing `rlib`s directly into your foreign linker is currently unsupported.
 r[link.unwinding]
 ### Prohibited linkage and unwinding
 
-r[link.unwinding.consistency]
+r[link.unwinding.intro]
 If you are *not* using `rustc` to link Rust files, you must take care to ensure that unwinding is
-handled consistently across the entire binary. This includes using `dlopen` or similar facilities
-where linking is done by the system runtime without `rustc` being involved.
+handled consistently across the entire binary. Linking without `rustc` includes using `dlopen` or similar facilities
+where linking is done by the system runtime without `rustc` being involved. In the following,
+we define what exactly is meant by "handling unwinding consistently".
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:

@@ -426,8 +426,8 @@ let x = (&temp()).use_temp();  // ERROR
 r[destructors.forget]
 ## Not running destructors
 
-r[destructors.manually-preventing]
-### Manually preventing destructors
+r[destructors.manually-suppressing]
+### Manually suppressing destructors
 
 [`std::mem::forget`] can be used to prevent the destructor of a variable from being run,
 and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
