@@ -1,49 +1,49 @@
 # Names
 
-r[name]
+r[names]
 
-r[name.intro]
+r[names.intro]
 An *entity* is a language construct that can be referred to in some way within
 the source program, usually via a [path]. Entities include [types], [items],
 [generic parameters], [variable bindings], [loop labels], [lifetimes],
 [fields], [attributes], and [lints].
 
-r[name.decl]
+r[names.decl]
 A *declaration* is a syntactical construct that can introduce a *name* to
 refer to an entity. Entity names are valid within a [*scope*] --- a region of
 source text where that name may be referenced.
 
-r[name.explicit-decl]
+r[names.explicit-decl]
 Some entities are [explicitly declared](#explicitly-declared-entities) in the
 source code, and some are [implicitly declared](#implicitly-declared-entities)
 as part of the language or compiler extensions.
 
-r[name.path]
+r[names.path]
 [*Paths*] are used to refer to an entity, possibly in another module or type.
 
-r[name.lifetime]
+r[names.lifetime]
 Lifetimes and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
 leading quote.
 
-r[name.namespace]
+r[names.namespace]
 Names are segregated into different [*namespaces*], allowing entities in
 different namespaces to share the same name without conflict.
 
-r[name.resolution]
+r[names.resolution]
 [*Name resolution*] is the compile-time process of tying paths, identifiers,
 and labels to entity declarations.
 
-r[name.visibility]
+r[names.visibility]
 Access to certain names may be restricted based on their [*visibility*].
 
 ## Explicitly declared entities
 
-r[name.explicit]
+r[names.explicit]
 
-r[name.explicit.list]
+r[names.explicit.list]
 Entities that explicitly introduce a name in the source code are:
 
-r[name.explicit.item-decl]
+r[names.explicit.item-decl]
 * [Items]:
     * [Module declarations]
     * [External crate declarations]
@@ -59,7 +59,7 @@ r[name.explicit.item-decl]
     * [`macro_rules` declarations] and [matcher metavariables]
     * [Implementation] associated items
 
-r[name.explicit.expr]
+r[names.explicit.expr]
 * [Expressions]:
     * [Closure] parameters
     * [`while let`] pattern bindings
@@ -68,34 +68,34 @@ r[name.explicit.expr]
     * [`match`] pattern bindings
     * [Loop labels]
 
-r[name.explicit.generics]
+r[names.explicit.generics]
 * [Generic parameters]
 
-r[name.explicit.higher-ranked-bounds]
+r[names.explicit.higher-ranked-bounds]
 * [Higher ranked trait bounds]
 
-r[name.explicit.binding]
+r[names.explicit.binding]
 * [`let` statement] pattern bindings
 
-r[name.explicit.macro_use]
+r[names.explicit.macro_use]
 * The [`macro_use` attribute] can introduce macro names from another crate
 
-r[name.explicit.macro_export]
+r[names.explicit.macro_export]
 * The [`macro_export` attribute] can introduce an alias for the macro into the crate root
 
-r[name.explicit.macro-invocation]
+r[names.explicit.macro-invocation]
 Additionally, [macro invocations] and [attributes] can introduce names by
 expanding to one of the above items.
 
 ## Implicitly declared entities
 
-r[name.implicit]
+r[names.implicit]
 
-r[name.implicit.list]
+r[names.implicit.list]
 The following entities are implicitly defined by the language, or are
 introduced by compiler options and extensions:
 
-r[name.implicit.primitive-types]
+r[names.implicit.primitive-types]
 * [Language prelude]:
     * [Boolean type] --- `bool`
     * [Textual types] --- `char` and `str`
@@ -103,31 +103,31 @@ r[name.implicit.primitive-types]
     * [Machine-dependent integer types] --- `usize` and `isize`
     * [floating-point types] --- `f32` and `f64`
 
-r[name.implicit.builtin-attributes]
+r[names.implicit.builtin-attributes]
 * [Built-in attributes]
 
-r[name.implicit.prelude]
+r[names.implicit.prelude]
 * [Standard library prelude] items, attributes, and macros
 
-r[name.implicit.stdlib]
+r[names.implicit.stdlib]
 * [Standard library][extern-prelude] crates in the root module
 
-r[name.implicit.extern-prelude]
+r[names.implicit.extern-prelude]
 * [External crates][extern-prelude] linked by the compiler
 
-r[name.implicit.tool-attributes]
+r[names.implicit.tool-attributes]
 * [Tool attributes]
 
-r[name.implicit.lints]
+r[names.implicit.lints]
 * [Lints] and [tool lint attributes]
 
-r[name.implicit.derive-helpers]
+r[names.implicit.derive-helpers]
 * [Derive helper attributes] are valid within an item without being explicitly imported
 
-r[name.implicit.lifetime-static]
+r[names.implicit.lifetime-static]
 * The [`'static`] lifetime
 
-r[name.implicit.root]
+r[names.implicit.root]
 Additionally, the crate root module does not have a name, but can be referred
 to with certain [path qualifiers] or aliases.
 

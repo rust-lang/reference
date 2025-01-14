@@ -9,10 +9,7 @@ syntax: `some_extension!(...)`.
 
 There are two ways to define new macros:
 
-r[macro.rules]
 * [Macros by Example] define new syntax in a higher-level, declarative way.
-
-r[macro.proc]
 * [Procedural Macros] define function-like macros, custom derives, and custom
   attributes using functions that operate on input tokens.
 

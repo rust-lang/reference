@@ -14,7 +14,7 @@ In order to make common patterns more ergonomic, lifetime arguments can be
 *elided* in [function item], [function pointer], and [closure trait] signatures.
 The following rules are used to infer lifetime parameters for elided lifetimes.
 
-r[lifetime-elision.function.constraint]
+r[lifetime-elision.function.lifetimes-not-inferred]
 It is an error to elide lifetime parameters that cannot be inferred.
 
 r[lifetime-elision.function.explicit-placeholder]
@@ -184,11 +184,10 @@ impl<'a> dyn Bar<'a> {}
 impl<'a> dyn Bar<'a> + 'a {}
 ```
 
+r[lifetime-elision.const-static]
 ## `const` and `static` elision
 
-r[lifetime-elision.item]
-
-r[lifetime-elision.item.intro]
+r[lifetime-elision.const-static.implicit-static]
 Both [constant] and [static] declarations of reference types have *implicit*
 `'static` lifetimes unless an explicit lifetime is specified. As such, the
 constant declarations involving `'static` above may be written without the
@@ -210,7 +209,7 @@ const BITS_N_STRINGS: BitsNStrings<'_> = BitsNStrings {
 };
 ```
 
-r[lifetime-elision.item.fn-types]
+r[lifetime-elision.const-static.fn-references]
 Note that if the `static` or `const` items include function or closure
 references, which themselves include references, the compiler will first try
 the standard elision rules. If it is unable to resolve the lifetimes by its

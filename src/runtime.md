@@ -8,7 +8,7 @@ This section documents features that define some aspects of the Rust runtime.
 
 r[runtime.panic_handler]
 
-r[runtime.panic_handler.constraint]
+r[runtime.panic_handler.allowed-positions]
 The *`panic_handler` attribute* can only be applied to a function with signature
 `fn(&PanicInfo) -> !`.
 
@@ -79,7 +79,7 @@ r[runtime.windows_subsystem.intro]
 The *`windows_subsystem` attribute* may be applied at the crate level to set
 the [subsystem] when linking on a Windows target.
 
-r[runtime.windows_subsystem.restriction]
+r[runtime.windows_subsystem.syntax]
 It uses the [_MetaNameValueStr_] syntax to specify the subsystem with a value of either
 `console` or `windows`.
 
