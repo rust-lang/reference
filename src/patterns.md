@@ -1,6 +1,5 @@
-# Patterns
-
 r[patterns]
+# Patterns
 
 r[patterns.syntax]
 > **<sup>Syntax</sup>**\
@@ -85,9 +84,8 @@ r[patterns.while-let]
 r[patterns.for]
 * [`for` expressions](expressions/loop-expr.md#iterator-loops)
 
-## Destructuring
-
 r[patterns.destructure]
+## Destructuring
 
 r[patterns.destructure.intro]
 Patterns can be used to *destructure* [structs], [enums], and [tuples].
@@ -119,9 +117,8 @@ match message {
 };
 ```
 
-## Refutability
-
 r[patterns.refutable]
+## Refutability
 
 A pattern is said to be *refutable* when it has the possibility of not being matched by the value it is being matched against.
 *Irrefutable* patterns, on the other hand, always match the value they are being matched against.
@@ -137,9 +134,8 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 }
 ```
 
-## Literal patterns
-
 r[patterns.literal]
+## Literal patterns
 
 r[patterns.literal.syntax]
 > **<sup>Syntax</sup>**\
@@ -190,9 +186,8 @@ for i in -2..5 {
 }
 ```
 
-## Identifier patterns
-
 r[patterns.ident]
+## Identifier patterns
 
 r[patterns.ident.syntax]
 > **<sup>Syntax</sup>**\
@@ -290,9 +285,8 @@ It is an error if `ref` or `ref mut` is specified and the identifier shadows a c
 r[patterns.ident.refutable]
 Identifier patterns are irrefutable if the `@` subpattern is irrefutable or the subpattern is not specified.
 
-### Binding modes
-
 r[patterns.ident.binding]
+### Binding modes
 
 r[patterns.ident.binding.intro]
 To service better ergonomics, patterns operate in different *binding modes* in order to make it easier to bind references to values.
@@ -372,9 +366,8 @@ Example:
 let Person { name, ref age } = person;
 ```
 
-## Wildcard pattern
-
 r[patterns.wildcard]
+## Wildcard pattern
 
 r[patterns.wildcard.syntax]
 > **<sup>Syntax</sup>**\
@@ -422,9 +415,8 @@ if let Some(_) = x {}
 r[patterns.wildcard.refutable]
 The wildcard pattern is always irrefutable.
 
-## Rest patterns
-
 r[patterns.rest]
+## Rest patterns
 
 > **<sup>Syntax</sup>**\
 > _RestPattern_ :\
@@ -480,9 +472,8 @@ match tuple {
 }
 ```
 
-## Range patterns
-
 r[patterns.range]
+## Range patterns
 
 r[patterns.range.syntax]
 > **<sup>Syntax</sup>**\
@@ -665,9 +656,8 @@ The range of values for a `char` type are precisely those ranges containing all 
 r[patterns.range.edition2021]
 > **Edition differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
 
-## Reference patterns
-
 r[patterns.ref]
+## Reference patterns
 
 r[patterns.ref.syntax]
 > **<sup>Syntax</sup>**\
@@ -697,9 +687,8 @@ Adding the `mut` keyword dereferences a mutable reference. The mutability must m
 r[patterns.ref.refutable]
 Reference patterns are always irrefutable.
 
-## Struct patterns
-
 r[patterns.struct]
+## Struct patterns
 
 r[patterns.struct.syntax]
 > **<sup>Syntax</sup>**\
@@ -817,9 +806,8 @@ let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 r[patterns.struct.refutable]
 A struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
-## Tuple struct patterns
-
 r[patterns.tuple-struct]
+## Tuple struct patterns
 
 r[patterns.tuple-struct.syntax]
 > **<sup>Syntax</sup>**\
@@ -836,9 +824,8 @@ They are also used to [destructure](#destructuring) a tuple struct or enum value
 r[patterns.tuple-struct.refutable]
 A tuple struct pattern is refutable if the _PathInExpression_ resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
-## Tuple patterns
-
 r[patterns.tuple]
+## Tuple patterns
 
 r[patterns.tuple.syntax]
 > **<sup>Syntax</sup>**\
@@ -870,9 +857,8 @@ assert_eq!(a, 10);
 assert_eq!(b, "ten");
 ```
 
-## Grouped patterns
-
 r[patterns.paren]
+## Grouped patterns
 
 r[patterns.paren.syntax]
 > **<sup>Syntax</sup>**\
@@ -891,9 +877,8 @@ match int_reference {
 }
 ```
 
-## Slice patterns
-
 r[patterns.slice]
+## Slice patterns
 
 r[patterns.slice.syntax]
 > **<sup>Syntax</sup>**\
@@ -934,9 +919,8 @@ r[patterns.slice.restriction]
 Within a slice, a range pattern without both lower and upper bound must be enclosed in parentheses, as in `(a..)`, to clarify it is intended to match against a single slice element.
 A range pattern with both lower and upper bound, like `a..=b`, is not required to be enclosed in parentheses.
 
-## Path patterns
-
 r[patterns.path]
+## Path patterns
 
 r[patterns.path.syntax]
 > **<sup>Syntax</sup>**\
@@ -962,9 +946,8 @@ r[patterns.path.refutable]
 Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
 They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.
 
-### Constant patterns
-
 r[patterns.const]
+### Constant patterns
 
 r[patterns.const.partial-eq]
 When a constant `C` of type `T` is used as a pattern, we first check that `T: PartialEq`.
@@ -1004,17 +987,15 @@ After ensuring all conditions are met, the constant value is translated into a p
 In particular, it fully participates in exhaustiveness checking.
 (For raw pointers, constants are the only way to write such patterns. Only `_` is ever considered exhaustive for these types.)
 
-## Or-patterns
-
 r[patterns.or]
+## Or-patterns
 
 _Or-patterns_ are patterns that match on one of two or more sub-patterns (for example `A | B | C`).
 They can nest arbitrarily.
 Syntactically, or-patterns are allowed in any of the places where other patterns are allowed (represented by the _Pattern_ production), with the exceptions of `let`-bindings and function and closure arguments (represented by the _PatternNoTopAlt_ production).
 
-### Static semantics
-
 r[patterns.constraints]
+### Static semantics
 
 r[patterns.constraints.pattern]
 1. Given a pattern `p | q` at some depth for some arbitrary patterns `p` and `q`, the pattern is considered ill-formed if:
@@ -1040,9 +1021,8 @@ r[patterns.constraints.exhaustiveness-or-pattern]
    Note that by *"constructor"* we do not refer to tuple struct patterns, but rather we refer to a pattern for any product type.
    This includes enum variants, tuple structs, structs with named fields, arrays, tuples, and slices.
 
-### Dynamic semantics
-
 r[patterns.behavior]
+### Dynamic semantics
 
 r[patterns.behavior.nested-or-patterns]
 1. The dynamic semantics of pattern matching a scrutinee expression `e_s` against a pattern `c(p | q, ..rest)` at depth `d` where `c` is some constructor,
@@ -1050,9 +1030,8 @@ r[patterns.behavior.nested-or-patterns]
    and `rest` is optionally any remaining potential factors in `c`,
    is defined as being the same as that of `c(p, ..rest) | c(q, ..rest)`.
 
-### Precedence with other undelimited patterns
-
 r[patterns.precedence]
+### Precedence with other undelimited patterns
 
 As shown elsewhere in this chapter, there are several types of patterns that are syntactically undelimited, including identifier patterns, reference patterns, and or-patterns.
 Or-patterns always have the lowest-precedence.

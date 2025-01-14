@@ -1,6 +1,5 @@
-# Memory allocation and lifetime
-
 r[alloc]
+# Memory allocation and lifetime
 
 r[alloc.static]
 The _items_ of a program are those functions, modules, and types that have their

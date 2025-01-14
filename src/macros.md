@@ -1,6 +1,5 @@
-# Macros
-
 r[macro]
+# Macros
 
 r[macro.intro]
 The functionality and syntax of Rust can be extended with custom definitions
@@ -13,9 +12,8 @@ There are two ways to define new macros:
 * [Procedural Macros] define function-like macros, custom derives, and custom
   attributes using functions that operate on input tokens.
 
-## Macro Invocation
-
 r[macro.invocation]
+## Macro Invocation
 
 r[macro.invocation.syntax]
 > **<sup>Syntax</sup>**\

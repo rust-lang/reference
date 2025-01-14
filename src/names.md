@@ -1,6 +1,5 @@
-# Names
-
 r[names]
+# Names
 
 r[names.intro]
 An *entity* is a language construct that can be referred to in some way within
@@ -36,9 +35,8 @@ and labels to entity declarations.
 r[names.visibility]
 Access to certain names may be restricted based on their [*visibility*].
 
-## Explicitly declared entities
-
 r[names.explicit]
+## Explicitly declared entities
 
 r[names.explicit.list]
 Entities that explicitly introduce a name in the source code are:
@@ -87,9 +85,8 @@ r[names.explicit.macro-invocation]
 Additionally, [macro invocations] and [attributes] can introduce names by
 expanding to one of the above items.
 
-## Implicitly declared entities
-
 r[names.implicit]
+## Implicitly declared entities
 
 r[names.implicit.list]
 The following entities are implicitly defined by the language, or are

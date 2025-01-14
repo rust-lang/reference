@@ -1,15 +1,13 @@
-# Special types and traits
-
 r[lang-types]
+# Special types and traits
 
 r[lang-types.intro]
 Certain types and traits that exist in [the standard library] are known to the
 Rust compiler. This chapter documents the special features of these types and
 traits.
 
-## `Box<T>`
-
 r[lang-types.box]
+## `Box<T>`
 
 r[lang-types.box.intro]
 [`Box<T>`] has a few special features that Rust doesn't currently allow for user
@@ -29,30 +27,26 @@ r[lang-types.box.fundamental]
 
 <!-- Editor Note: This is nowhere close to an exhaustive list -->
 
-## `Rc<T>`
-
 r[lang-types.rc]
+## `Rc<T>`
 
 r[lang-types.rc.receiver]
 [Methods] can take [`Rc<Self>`] as a receiver.
 
-## `Arc<T>`
-
 r[lang-types.arc]
+## `Arc<T>`
 
 r[lang-types.arc.receiver]
 [Methods] can take [`Arc<Self>`] as a receiver.
 
-## `Pin<P>`
-
 r[lang-types.pin]
+## `Pin<P>`
 
 r[lang-types.pin.receiver]
 [Methods] can take [`Pin<P>`] as a receiver.
 
-## `UnsafeCell<T>`
-
 r[lang-types.unsafe-cell]
+## `UnsafeCell<T>`
 
 r[lang-types.unsafe-cell.interior-mut]
 [`std::cell::UnsafeCell<T>`] is used for [interior mutability]. It ensures that
@@ -62,38 +56,33 @@ r[lang-types.unsafe-cell.read-only-alloc]
 It also ensures that [`static` items] which have a type with interior
 mutability aren't placed in memory marked as read only.
 
-## `PhantomData<T>`
-
 r[lang-types.phantom-data]
+## `PhantomData<T>`
 
 [`std::marker::PhantomData<T>`] is a zero-sized, minimum alignment, type that
 is considered to own a `T` for the purposes of [variance], [drop check], and
 [auto traits](#auto-traits).
 
-## Operator Traits
-
 r[lang-types.ops]
+## Operator Traits
 
 The traits in [`std::ops`] and [`std::cmp`] are used to overload [operators],
 [indexing expressions], and [call expressions].
 
-## `Deref` and `DerefMut`
-
 r[lang-types.deref]
+## `Deref` and `DerefMut`
 
 As well as overloading the unary `*` operator, [`Deref`] and [`DerefMut`] are
 also used in [method resolution] and [deref coercions].
 
-## `Drop`
-
 r[lang-types.drop]
+## `Drop`
 
 The [`Drop`] trait provides a [destructor], to be run whenever a value of this
 type is to be destroyed.
 
-## `Copy`
-
 r[lang-types.copy]
+## `Copy`
 
 r[lang-types.copy.intro]
 The [`Copy`] trait changes the semantics of a type implementing it.
@@ -121,9 +110,8 @@ r[lang-types.copy.fn-item]
 r[lang-types.copy.closure]
 * [Closures] that capture no values or that only capture values of `Copy` types
 
-## `Clone`
-
 r[lang-types.clone]
+## `Clone`
 
 r[lang-types.clone.intro]
 The [`Clone`] trait is a supertrait of `Copy`, so it also needs compiler
@@ -141,16 +129,14 @@ r[lang-types.clone.tuple]
 r[lang-types.clone.closure]
 * [Closures] that only capture values of `Clone` types or capture no values from the environment
 
-## `Send`
-
 r[lang-types.send]
+## `Send`
 
 The [`Send`] trait indicates that a value of this type is safe to send from one
 thread to another.
 
-## `Sync`
-
 r[lang-types.sync]
+## `Sync`
 
 r[lang-types.sync.intro]
 The [`Sync`] trait indicates that a value of this type is safe to share between
@@ -159,15 +145,13 @@ multiple threads.
 r[lang-types.sync.static-constraint]
 This trait must be implemented for all types used in immutable [`static` items].
 
-## `Termination`
-
 r[lang-types.termination]
+## `Termination`
 
 The [`Termination`] trait indicates the acceptable return types for the [main function] and [test functions].
 
-## Auto traits
-
 r[lang-types.auto-traits]
+## Auto traits
 
 The [`Send`], [`Sync`], [`Unpin`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto
 traits_. Auto traits have special properties.
@@ -214,9 +198,8 @@ Auto traits may be added as an additional bound to any [trait object], even
 though normally only one trait is allowed. For instance, `Box<dyn Debug + Send +
 UnwindSafe>` is a valid type.
 
-## `Sized`
-
 r[lang-types.sized]
+## `Sized`
 
 r[lang-types.sized.intro]
 The [`Sized`] trait indicates that the size of this type is known at compile-time; that is, it's not a [dynamically sized type].

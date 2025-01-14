@@ -1,6 +1,5 @@
-# Paths
-
 r[paths]
+# Paths
 
 r[paths.intro]
 A *path* is a sequence of one or more path segments separated by `::` tokens.
@@ -16,9 +15,8 @@ x::y::z;
 
 ## Types of paths
 
-### Simple Paths
-
 r[paths.simple]
+### Simple Paths
 
 r[paths.simple.syntax]
 > **<sup>Syntax</sup>**\
@@ -40,9 +38,8 @@ mod m {
 }
 ```
 
-### Paths in expressions
-
 r[paths.expr]
+### Paths in expressions
 
 r[paths.expr.syntax]
 > **<sup>Syntax</sup>**\
@@ -99,9 +96,8 @@ r[paths.expr.impl-trait-params]
 The synthetic type parameters corresponding to `impl Trait` types are implicit,
 and these cannot be explicitly specified.
 
-## Qualified paths
-
 r[paths.qualified]
+## Qualified paths
 
 r[paths.qualified.syntax]
 > **<sup>Syntax</sup>**\
@@ -137,9 +133,8 @@ S::f();  // Calls the inherent impl.
 <S as T2>::f();  // Calls the T2 trait function.
 ```
 
-### Paths in types
-
 r[paths.type]
+### Paths in types
 
 r[paths.type.syntax]
 > **<sup>Syntax</sup>**\
@@ -179,16 +174,14 @@ fn i<'a>() -> impl Iterator<Item = ops::Example<'a>> {
 type G = std::boxed::Box<dyn std::ops::FnOnce(isize) -> isize>;
 ```
 
-## Path qualifiers
-
 r[paths.qualifiers]
+## Path qualifiers
 
 Paths can be denoted with various leading qualifiers to change the meaning of
 how it is resolved.
 
-### `::`
-
 r[paths.qualifiers.global-root]
+### `::`
 
 r[paths.qualifiers.global-root.intro]
 Paths starting with `::` are considered to be *global paths* where the segments of the path
@@ -227,9 +220,8 @@ mod b {
 # fn main() {}
 ```
 
-### `self`
-
 r[paths.qualifiers.mod-self]
+### `self`
 
 r[paths.qualifiers.mod-self.intro]
 `self` resolves the path relative to the current module.
@@ -254,9 +246,8 @@ impl S {
 # fn main() {}
 ```
 
-### `Self`
-
 r[paths.qualifiers.type-self]
+### `Self`
 
 r[paths.qualifiers.type-self.intro]
 `Self`, with a capital "S", is used to refer to the current type being implemented or defined. It may be used in the following situations:
@@ -319,9 +310,8 @@ struct NonEmptyList<T> {
 }
 ```
 
-### `super`
-
 r[paths.qualifiers.super]
+### `super`
 
 r[paths.qualifiers.super.intro]
 `super` in a path resolves to the parent module.
@@ -361,9 +351,8 @@ mod a {
 # fn main() {}
 ```
 
-### `crate`
-
 r[paths.qualifiers.crate]
+### `crate`
 
 r[paths.qualifiers.crate.intro]
 `crate` resolves the path relative to the current crate.
@@ -381,9 +370,8 @@ mod a {
 # fn main() {}
 ```
 
-### `$crate`
-
 r[paths.qualifiers.macro-crate]
+### `$crate`
 
 r[paths.qualifiers.macro-crate.allowed-positions]
 `$crate` is only used within [macro transcribers], and can only be used as the first
@@ -406,9 +394,8 @@ macro_rules! inc {
 # fn main() { }
 ```
 
-## Canonical paths
-
 r[paths.canonical]
+## Canonical paths
 
 r[paths.canonical.intro]
 Items defined in a module or implementation have a *canonical path* that

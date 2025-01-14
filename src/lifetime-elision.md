@@ -1,13 +1,11 @@
-# Lifetime elision
-
 r[lifetime-elision]
+# Lifetime elision
 
 Rust has rules that allow lifetimes to be elided in various places where the
 compiler can infer a sensible default choice.
 
-## Lifetime elision in functions
-
 r[lifetime-elision.function]
+## Lifetime elision in functions
 
 r[lifetime-elision.function.intro]
 In order to make common patterns more ergonomic, lifetime arguments can be
@@ -91,9 +89,8 @@ fn frob(s: &str, t: &str) -> &str;                    // ILLEGAL
 # }
 ```
 
-## Default trait object lifetimes
-
 r[lifetime-elision.trait-object]
+## Default trait object lifetimes
 
 r[lifetime-elision.trait-object.intro]
 The assumed lifetime of references held by a [trait object] is called its

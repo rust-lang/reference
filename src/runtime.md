@@ -1,12 +1,10 @@
-# The Rust runtime
-
 r[runtime]
+# The Rust runtime
 
 This section documents features that define some aspects of the Rust runtime.
 
-## The `panic_handler` attribute
-
 r[runtime.panic_handler]
+## The `panic_handler` attribute
 
 r[runtime.panic_handler.allowed-positions]
 The *`panic_handler` attribute* can only be applied to a function with signature
@@ -55,25 +53,22 @@ fn panic(info: &PanicInfo) -> ! {
 }
 ```
 
-### Standard behavior
-
 r[runtime.panic_handler.std]
+### Standard behavior
 
 The standard library provides an implementation of `panic_handler` that
 defaults to unwinding the stack but that can be [changed to abort the
 process][abort]. The standard library's panic behavior can be modified at
 runtime with the [set_hook] function.
 
-## The `global_allocator` attribute
-
 r[runtime.global_allocator]
+## The `global_allocator` attribute
 
 The *`global_allocator` attribute* is used on a [static item] implementing the
 [`GlobalAlloc`] trait to set the global allocator.
 
-## The `windows_subsystem` attribute
-
 r[runtime.windows_subsystem]
+## The `windows_subsystem` attribute
 
 r[runtime.windows_subsystem.intro]
 The *`windows_subsystem` attribute* may be applied at the crate level to set

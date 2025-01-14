@@ -1,6 +1,5 @@
-# Keywords
-
 r[lex.keywords]
+# Keywords
 
 Rust divides keywords into three categories:
 
@@ -8,9 +7,8 @@ Rust divides keywords into three categories:
 * [reserved](#reserved-keywords)
 * [weak](#weak-keywords)
 
-## Strict keywords
-
 r[lex.keywords.strict]
+## Strict keywords
 
 r[lex.keywords.strict.intro]
 These keywords can only be used in their correct contexts. They cannot
@@ -71,9 +69,8 @@ The following keywords were added beginning in the 2018 edition.
 > KW_AWAIT          : `await`\
 > KW_DYN            : `dyn`
 
-## Reserved keywords
-
 r[lex.keywords.reserved]
+## Reserved keywords
 
 r[lex.keywords.reserved.intro]
 These keywords aren't used yet, but they are reserved for future use. They have
@@ -107,9 +104,8 @@ The following keywords are reserved beginning in the 2024 edition.
 > **<sup>Lexer 2024+</sup>**\
 > KW_GEN   : `gen`
 
-## Weak keywords
-
 r[lex.keywords.weak]
+## Weak keywords
 
 r[lex.keywords.weak.intro]
 These keywords have special meaning only in certain contexts. For example, it
