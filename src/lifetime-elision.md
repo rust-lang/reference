@@ -184,7 +184,7 @@ impl<'a> dyn Bar<'a> {}
 impl<'a> dyn Bar<'a> + 'a {}
 ```
 
-## `'static` lifetime elision
+## `const` and `static` elision
 
 r[lifetime-elision.item]
 
@@ -249,3 +249,17 @@ const RESOLVED_STATIC: &dyn Fn(&Foo, &Bar) -> &Baz = &somefunc;
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
 [static]: items/static-items.md
 [trait object]: types/trait-object.md
+
+<script>
+(function() {
+    var fragments = {
+        "#static-lifetime-elision": "lifetime-elision.html#const-and-static-elision",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
