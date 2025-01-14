@@ -162,7 +162,6 @@ Like `"C"` and `"system"`, most platform-specific ABI strings also have a
 * `"cdecl-unwind"`
 * `"stdcall-unwind"`
 * `"fastcall-unwind"`
-* `"vectorcall-unwind"`
 * `"thiscall-unwind"`
 * `"aapcs-unwind"`
 * `"win64-unwind"`
