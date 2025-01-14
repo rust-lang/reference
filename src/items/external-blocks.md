@@ -156,6 +156,7 @@ r[items.extern.abi.thiscall]
 r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
 
+r[items.extern.abi.platform-unwind-variants]
 Like `"C"` and `"system"`, most platform-specific ABI strings also have a
 [corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
 
