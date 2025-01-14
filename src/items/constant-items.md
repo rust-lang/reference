@@ -126,7 +126,7 @@ fn unused_generic_function<T>() {
 [associated constant]: ../items/associated-items.md#associated-constants
 [constant value]: ../const_eval.md#constant-expressions
 [free]: ../glossary.md#free-item
-[static lifetime elision]: ../lifetime-elision.md#static-lifetime-elision
+[static lifetime elision]: ../lifetime-elision.md#const-and-static-elision
 [trait definition]: traits.md
 [IDENTIFIER]: ../identifiers.md
 [underscore imports]: use-declarations.md#underscore-imports
