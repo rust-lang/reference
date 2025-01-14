@@ -298,9 +298,6 @@ r[items.fn.extern.abort]
 With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding ABI boundary, either no destructors (`Drop` calls) will run, or all destructors
 up until the ABI boundary will run.
 
-> [!NOTE]
-> Prior to Rust 1.82, it is possible for only some of the destructors to execute, and not others.
-
 For other considerations and limitations regarding unwinding across FFI
 boundaries, see the [relevant section in the Panic documentation][panic-ffi].
 
