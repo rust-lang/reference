@@ -426,9 +426,9 @@ let x = (&temp()).use_temp();  // ERROR
 r[destructors.forget]
 ## Not running destructors
 
+r[destructors.manually-preventing]
 ### Manually preventing destructors
 
-r[destructors.manually-preventing]
 [`std::mem::forget`] can be used to prevent the destructor of a variable from being run,
 and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
 variable or field from being dropped automatically.
@@ -436,9 +436,8 @@ variable or field from being dropped automatically.
 > Note: Preventing a destructor from being run via [`std::mem::forget`] or other means is safe even if it has a type that isn't `'static`.
 > Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.
 
-### Process termination without unwinding
-
 r[destructors.process-termination]
+### Process termination without unwinding
 
 There are some ways to terminate the process without [unwinding], in which case
 destructors will not be run.
