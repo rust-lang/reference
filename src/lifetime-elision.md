@@ -1,23 +1,36 @@
+r[lifetime-elision]
 # Lifetime elision
 
 Rust has rules that allow lifetimes to be elided in various places where the
 compiler can infer a sensible default choice.
 
+r[lifetime-elision.function]
 ## Lifetime elision in functions
 
+r[lifetime-elision.function.intro]
 In order to make common patterns more ergonomic, lifetime arguments can be
 *elided* in [function item], [function pointer], and [closure trait] signatures.
 The following rules are used to infer lifetime parameters for elided lifetimes.
-It is an error to elide lifetime parameters that cannot be inferred. The
-placeholder lifetime, `'_`, can also be used to have a lifetime inferred in the
-same way. For lifetimes in paths, using `'_` is preferred. Trait object
-lifetimes follow different rules discussed
+
+r[lifetime-elision.function.lifetimes-not-inferred]
+It is an error to elide lifetime parameters that cannot be inferred.
+
+r[lifetime-elision.function.explicit-placeholder]
+The placeholder lifetime, `'_`, can also be used to have a lifetime inferred in the
+same way. For lifetimes in paths, using `'_` is preferred.
+
+r[lifetime-elision.function.only-functions]
+Trait object lifetimes follow different rules discussed
 [below](#default-trait-object-lifetimes).
 
+r[lifetime-elision.function.implicit-lifetime-parameters]
 * Each elided lifetime in the parameters becomes a distinct lifetime parameter.
+
+r[lifetime-elision.function.output-lifetime]
 * If there is exactly one lifetime used in the parameters (elided or not), that
   lifetime is assigned to *all* elided output lifetimes.
 
+r[lifetime-elision.function.receiver-lifetime]
 In method signatures there is another rule
 
 * If the receiver has type `&Self`  or `&mut Self`, then the lifetime of that
@@ -76,29 +89,44 @@ fn frob(s: &str, t: &str) -> &str;                    // ILLEGAL
 # }
 ```
 
+r[lifetime-elision.trait-object]
 ## Default trait object lifetimes
 
+r[lifetime-elision.trait-object.intro]
 The assumed lifetime of references held by a [trait object] is called its
 _default object lifetime bound_. These were defined in [RFC 599] and amended in
 [RFC 1156].
 
+r[lifetime-elision.trait-object.explicit-bound]
 These default object lifetime bounds are used instead of the lifetime parameter
-elision rules defined above when the lifetime bound is omitted entirely. If
-`'_` is used as the lifetime bound then the bound follows the usual elision
+elision rules defined above when the lifetime bound is omitted entirely.
+
+r[lifetime-elision.trait-object.explicit-placeholder]
+If `'_` is used as the lifetime bound then the bound follows the usual elision
 rules.
 
+r[lifetime-elision.trait-object.containing-type]
 If the trait object is used as a type argument of a generic type then the
 containing type is first used to try to infer a bound.
 
+r[lifetime-elision.trait-object.containing-type-unique]
 * If there is a unique bound from the containing type then that is the default
+
+r[lifetime-elision.trait-object.containing-type-explicit]
 * If there is more than one bound from the containing type then an explicit
   bound must be specified
 
+r[lifetime-elision.trait-object.trait-bounds]
 If neither of those rules apply, then the bounds on the trait are used:
 
+r[lifetime-elision.trait-object.trait-unique]
 * If the trait is defined with a single lifetime _bound_ then that bound is
   used.
+
+r[lifetime-elision.trait-object.static-lifetime]
 * If `'static` is used for any lifetime bound then `'static` is used.
+
+r[lifetime-elision.trait-object.default]
 * If the trait has no lifetime bounds, then the lifetime is inferred in
   expressions and is `'static` outside of expressions.
 
@@ -136,6 +164,7 @@ type T7<'a, 'b> = TwoBounds<'a, 'b, dyn Foo>;
 // Error: the lifetime bound for this object type cannot be deduced from context
 ```
 
+r[lifetime-elision.trait-object.innermost-type]
 Note that the innermost object sets the bound, so `&'a Box<dyn Foo>` is still
 `&'a Box<dyn Foo + 'static>`.
 
@@ -152,8 +181,10 @@ impl<'a> dyn Bar<'a> {}
 impl<'a> dyn Bar<'a> + 'a {}
 ```
 
-## `'static` lifetime elision
+r[lifetime-elision.const-static]
+## `const` and `static` elision
 
+r[lifetime-elision.const-static.implicit-static]
 Both [constant] and [static] declarations of reference types have *implicit*
 `'static` lifetimes unless an explicit lifetime is specified. As such, the
 constant declarations involving `'static` above may be written without the
@@ -175,6 +206,7 @@ const BITS_N_STRINGS: BitsNStrings<'_> = BitsNStrings {
 };
 ```
 
+r[lifetime-elision.const-static.fn-references]
 Note that if the `static` or `const` items include function or closure
 references, which themselves include references, the compiler will first try
 the standard elision rules. If it is unable to resolve the lifetimes by its
@@ -213,3 +245,17 @@ const RESOLVED_STATIC: &dyn Fn(&Foo, &Bar) -> &Baz = &somefunc;
 [RFC 1156]: https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md
 [static]: items/static-items.md
 [trait object]: types/trait-object.md
+
+<script>
+(function() {
+    var fragments = {
+        "#static-lifetime-elision": "lifetime-elision.html#const-and-static-elision",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
