@@ -296,7 +296,7 @@ from the "Native unwind" column in the table.
 
 r[items.fn.extern.abort]
 With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding ABI boundary, either no destructors (`Drop` calls) will run, or all destructors
-up until the ABI boundary will run.
+up until the ABI boundary will run. It is unspecified which of those two behaviors will happen.
 
 For other considerations and limitations regarding unwinding across FFI
 boundaries, see the [relevant section in the Panic documentation][panic-ffi].
