@@ -599,6 +599,9 @@ assert_eq!(Enum::B as i32, 1);
 assert_eq!(Enum::C as i32, 2);
 ```
 
+> [!WARNING]
+> By default [enum casts are not allowed for enums which implement `Drop`][cenum_impl_drop_cast].
+
 r[expr.as.bool-char-as-int]
 #### Primitive to integer cast
 
@@ -879,6 +882,7 @@ Like assignment expressions, compound assignment expressions always produce [the
 [undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
 [Unit-only enums]: ../items/enumerations.md#unit-only-enum
+[cenum_impl_drop_cast]: https://github.com/rust-lang/rust/issues/73333
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
 [this test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
