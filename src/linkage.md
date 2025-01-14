@@ -278,6 +278,8 @@ Passing `rlib`s directly into your foreign linker is currently unsupported.
 ### Prohibited linkage and unwinding
 
 r[link.unwinding]
+
+r[link.unwinding.consistency]
 If you are *not* using `rustc` to link Rust files, you must take care to ensure that unwinding is
 handled consistently across the entire binary. This includes using `dlopen` or similar facilities
 where linking is done by the system runtime without `rustc` being involved.
