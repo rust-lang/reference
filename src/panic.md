@@ -77,8 +77,8 @@ Unwinding with the wrong ABI is undefined behavior:
 
 r[panic.unwind.ffi.catch-foreign]
 Catching a foreign unwinding operation (such as a C++ exception) using
-[`std::panic::catch_unwind`], [`std::thread::JoinHandle::join`], or by letting it propagate all the way to a
-Rust `main()` function will have one of two behaviors, and it is unspecified
+[`std::panic::catch_unwind`], [`std::thread::JoinHandle::join`], or by letting it propagate beyond the
+Rust `main()` function or thread root will have one of two behaviors, and it is unspecified
 which will occur:
 * The process aborts.
 * The function returns a [`Result::Err`] containing an opaque type.
