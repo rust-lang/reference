@@ -1,6 +1,5 @@
-# Panic
-
 r[panic]
+# Panic
 
 r[panic.intro]
 Rust provides a mechanism to prevent a function from returning normally, and instead "panic," which is a response to an error condition that is typically not expected to be recoverable within the context in which the error is encountered.
@@ -17,9 +16,8 @@ There are also language features that provide a level of control over panic beha
 > [!NOTE]
 > The standard library provides the capability to explicitly panic via the [`panic!` macro][panic!].
 
-## Unwinding
-
 r[panic.unwind]
+## Unwinding
 
 r[panic.unwind.intro]
 Panicking may either be recoverable or non-recoverable, though it can be configured (via `panic=abort`) to always be non-recoverable. (The converse is not true: `panic=unwind` does not guarantee that all panics are recoverable, only that panicking via the `panic!` macro and similar standard library mechanisms is recoverable.)
@@ -33,9 +31,8 @@ When panic recovery occurs, the runtime "unwinds" Rust frames, just as C++'s `th
 > [!NOTE]
 > The standard library provides two mechanisms for recovering from a panic, [`std::panic::catch_unwind`] (which enables recovery within the panicking thread) and [`std::thread::spawn`] (which automatically sets up panic recovery for the spawned thread so that other threads may continue running).
 
-### Unwinding across FFI boundaries
-
 r[panic.unwind.ffi]
+### Unwinding across FFI boundaries
 
 r[panic.unwind.ffi.intro]
 It is possible to unwind across FFI boundaries using an [appropriate ABI declaration][unwind-abi]. While useful in certain cases, this creates unique opportunities for undefined behavior, especially when multiple language runtimes are involved.
@@ -58,9 +55,8 @@ Catching a foreign unwinding operation (such as a C++ exception) using [`std::pa
 r[panic.unwind.ffi.dispose-panic]
 There are currently no guarantees about the behavior that occurs when a foreign runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other words, an unwind originated from a Rust runtime must either lead to termination of the process or be caught by the same runtime.
 
-## Panic runtimes
-
 r[panic.runtime]
+## Panic runtimes
 
 The actual behavior and implementation of `panic!` is controlled by the _panic runtime_.
 
