@@ -255,8 +255,8 @@ main > ul {
     margin-bottom: 0;
 }
 
-/* Values for h2/h3/h4 margin-top and blockquote margin are taken from mdbook's general.css,
-   values for h2/h3/h4 margin-bottom are taken from <https://www.w3schools.com/cssref/css_default_values.php> */
+/* Values for header margin-top and blockquote margin are taken from mdbook's general.css,
+   values for header margin-bottom are taken from <https://www.w3schools.com/cssref/css_default_values.php> */
 main > h2 {
     margin-top: calc(2.5em - 16px);
     margin-bottom: calc(0.83em - 16px);
@@ -268,6 +268,14 @@ main > h3 {
 main > h4 {
     margin-top: calc(2em - 16px);
     margin-bottom: calc(1.33em - 16px);
+}
+main > h5 {
+    margin-top: calc(2em - 16px);
+    margin-bottom: calc(1.67em - 16px);
+}
+main > h6 {
+    margin-top: calc(2em - 16px);
+    margin-bottom: calc(2.33em - 16px);
 }
 main > blockquote {
     margin-top: calc(20px - 16px);
@@ -308,7 +316,9 @@ main > .rule {
 .rule:has(+ h1:target),
 .rule:has(+ h2:target),
 .rule:has(+ h3:target),
-.rule:has(+ h4:target) {
+.rule:has(+ h4:target),
+.rule:has(+ h5:target),
+.rule:has(+ h6:target) {
     padding-right: 24px;
 }
 
@@ -376,6 +386,36 @@ main > .rule {
         2em * var(--h4-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h4-em-mult) - 1em) / 2
+    )
+}
+
+.rule:has(+ h5) {
+    /* multiplying by this turns h5's em into .rule's em*/
+    --h5-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 0.83 /* to h5 font size */
+    );
+
+    margin-top: calc(
+        /* h5 margin top */
+        2em * var(--h5-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h5-em-mult) - 1em) / 2
+    )
+}
+
+.rule:has(+ h6) {
+    /* multiplying by this turns h6's em into .rule's em*/
+    --h6-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 0.67 /* to h6 font size */
+    );
+
+    margin-top: calc(
+        /* h6 margin top */
+        2em * var(--h6-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h6-em-mult) - 1em) / 2
     )
 }
 
