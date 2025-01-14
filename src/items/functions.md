@@ -253,9 +253,8 @@ extern "C" fn new_i32() -> i32 { 0 }
 let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
-### Unwinding
-
 r[items.fn.extern.unwind]
+### Unwinding
 
 r[items.fn.extern.unwind.intro]
 Most ABI strings come in two variants, one with an `-unwind` suffix and one without.

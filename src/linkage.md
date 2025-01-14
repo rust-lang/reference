@@ -275,9 +275,8 @@ Passing `rlib`s directly into your foreign linker is currently unsupported.
 >  Rust code compiled or linked with a different instance of the Rust runtime counts as a
 > "foreign code" for the purpose of this section.
 
-### Prohibited linkage and unwinding
-
 r[link.unwinding]
+### Prohibited linkage and unwinding
 
 r[link.unwinding.consistency]
 If you are *not* using `rustc` to link Rust files, you must take care to ensure that unwinding is
