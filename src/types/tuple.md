@@ -1,6 +1,5 @@
-# Tuple types
-
 r[type.tuple]
+# Tuple types
 
 r[type.tuple.syntax]
 > **<sup>Syntax</sup>**\

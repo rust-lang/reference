@@ -1,13 +1,11 @@
-# Diagnostic attributes
-
 r[attributes.diagnostics]
+# Diagnostic attributes
 
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
-## Lint check attributes
-
 r[attributes.diagnostics.lint]
+## Lint check attributes
 
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation.
@@ -104,9 +102,9 @@ pub mod m3 {
 > [command-line][rustc-lint-cli], and also supports [setting
 > caps][rustc-lint-caps] on the lints that are reported.
 
+r[attributes.diagnostics.lint.reason]
 ### Lint Reasons
 
-r[attributes.diagnostics.lint.reason]
 All lint attributes support an additional `reason` parameter, to give context why
 a certain attribute was added. This reason will be displayed as part of the lint
 message if the lint is emitted at the defined level.
@@ -141,9 +139,8 @@ pub fn get_path() -> PathBuf {
 }
 ```
 
-### The `#[expect]` attribute
-
 r[attributes.diagnostics.expect]
+### The `#[expect]` attribute
 
 r[attributes.diagnostics.expect.intro]
 The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
@@ -228,9 +225,9 @@ pub fn another_example() {
 > Note: The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
 > defined to always generate the `unfulfilled_lint_expectations` lint.
 
+r[attributes.diagnostics.lint.group]
 ### Lint groups
 
-r[attributes.diagnostics.lint.group]
 Lints may be organized into named groups so that the level of related lints
 can be adjusted together. Using a named group is equivalent to listing out the
 lints within that group.
@@ -269,9 +266,8 @@ fn example_err() {
 }
 ```
 
-### Tool lint attributes
-
 r[attributes.diagnostics.lint.tool]
+### Tool lint attributes
 
 r[attributes.diagnostics.lint.tool.intro]
 Tool lints allows using scoped lints, to `allow`, `warn`, `deny` or `forbid`
@@ -303,9 +299,8 @@ fn foo() {
 
 > Note: `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
 
-## The `deprecated` attribute
-
 r[attributes.diagnostics.deprecated]
+## The `deprecated` attribute
 
 r[attributes.diagnostics.deprecated.intro]
 The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue
@@ -350,9 +345,8 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 [1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
 
-## The `must_use` attribute
-
 r[attributes.diagnostics.must_use]
+## The `must_use` attribute
 
 r[attributes.diagnostics.must_use.intro]
 The *`must_use` attribute* is used to issue a diagnostic warning when a value
@@ -469,9 +463,8 @@ When used on a function in a trait implementation, the attribute does nothing.
 > let _ = five();
 > ```
 
-## The `diagnostic` tool attribute namespace
-
 r[attributes.diagnostic.namespace]
+## The `diagnostic` tool attribute namespace
 
 r[attributes.diagnostic.namespace.intro]
 The `#[diagnostic]` attribute namespace is a home for attributes to influence compile-time error messages.
@@ -482,9 +475,8 @@ Unknown attributes in this namespace are accepted, though they may emit warnings
 Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
 This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
-### The `diagnostic::on_unimplemented` attribute
-
 r[attributes.diagnostic.on_unimplemented]
+### The `diagnostic::on_unimplemented` attribute
 
 r[attributes.diagnostic.on_unimplemented.intro]
 The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.

@@ -1,6 +1,5 @@
-# Trait objects
-
 r[type.trait-object]
+# Trait objects
 
 r[type.trait-object.syntax]
 > **<sup>Syntax</sup>**\
@@ -103,9 +102,8 @@ fn main() {
 In this example, the trait `Printable` occurs as a trait object in both the
 type signature of `print`, and the cast expression in `main`.
 
-## Trait Object Lifetime Bounds
-
 r[type.trait-object.lifetime-bounds]
+## Trait Object Lifetime Bounds
 
 Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. This lifetime is written as

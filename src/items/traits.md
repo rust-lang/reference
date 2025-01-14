@@ -1,6 +1,5 @@
-# Traits
-
 r[items.traits]
+# Traits
 
 r[items.traits.syntax]
 > **<sup>Syntax</sup>**\
@@ -59,15 +58,13 @@ trait Example {
 r[items.traits.const-fn]
 Trait functions are not allowed to be [`const`].
 
-## Trait bounds
-
 r[items.traits.bounds]
+## Trait bounds
 
 Generic items may use traits as [bounds] on their type parameters.
 
-## Generic traits
-
 r[items.traits.generic]
+## Generic traits
 
 Type parameters can be specified for a trait to make it generic. These appear
 after the trait name, using the same syntax used in [generic functions].
@@ -81,9 +78,8 @@ trait Seq<T> {
 ```
 
 <a id="object-safety"></a>
-## Dyn compatibility
-
 r[items.traits.dyn-compatible]
+## Dyn compatibility
 
 r[items.traits.dyn-compatible.intro]
 A dyn-compatible trait can be the base trait of a [trait object]. A trait is
@@ -207,9 +203,8 @@ impl WithSelf for S {}
 let obj: Box<dyn WithSelf> = Box::new(S); // ERROR: cannot use `Self` type parameter
 ```
 
-## Supertraits
-
 r[items.traits.supertraits]
+## Supertraits
 
 r[items.traits.supertraits.intro]
 **Supertraits** are traits that are required to be implemented for a type to
@@ -278,9 +273,8 @@ let circle = Box::new(circle) as Box<dyn Circle>;
 let nonsense = circle.radius() * circle.area();
 ```
 
-## Unsafe traits
-
 r[items.traits.safety]
+## Unsafe traits
 
 r[items.traits.safety.intro]
 Traits items that begin with the `unsafe` keyword indicate that *implementing* the
@@ -289,9 +283,8 @@ The [trait implementation] must also begin with the `unsafe` keyword.
 
 [`Sync`] and [`Send`] are examples of unsafe traits.
 
-## Parameter patterns
-
 r[items.traits.params]
+## Parameter patterns
 
 r[items.traits.params.allowed-patterns]
 Function or method declarations without a body only allow [IDENTIFIER] or
@@ -331,9 +324,8 @@ trait T {
 }
 ```
 
-## Item visibility
-
 r[items.traits.associated-visibility]
+## Item visibility
 
 r[items.traits.associated-visibility.intro]
 Trait items syntactically allow a [_Visibility_] annotation, but this is

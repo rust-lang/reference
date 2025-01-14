@@ -1,6 +1,5 @@
-# Variables
-
 r[variable]
+# Variables
 
 r[variable.intro]
 A _variable_ is a component of a stack frame, either a named function parameter,

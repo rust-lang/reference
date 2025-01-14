@@ -1,6 +1,5 @@
-# Boolean type
-
 r[type.bool]
+# Boolean type
 
 ```rust
 let b: bool = true;
@@ -45,25 +44,22 @@ Like all primitives, the boolean type [implements][p-impl] the
 
 > **Note**: See the [standard library docs](bool) for library operations.
 
-## Operations on boolean values
-
 r[type.bool.expr]
+## Operations on boolean values
 
 <!-- This is washy wording --> When using certain operator expressions with a
 boolean type for its operands, they evaluate using the rules of [boolean logic].
 
-### Logical not
-
 r[type.bool.expr.not]
+### Logical not
 
 | `b` | [`!b`][op-not] |
 |- | - |
 | `true` | `false` |
 | `false` | `true` |
 
-### Logical or
-
 r[type.bool.expr.or]
+### Logical or
 
 | `a` | `b` | [<code>a &#124; b</code>][op-or] |
 |- | - | - |
@@ -72,9 +68,8 @@ r[type.bool.expr.or]
 | `false` | `true` | `true` |
 | `false` | `false` | `false` |
 
-### Logical and
-
 r[type.bool.expr.and]
+### Logical and
 
 | `a` | `b` | [`a & b`][op-and] |
 |- | - | - |
@@ -83,9 +78,8 @@ r[type.bool.expr.and]
 | `false` | `true` | `false` |
 | `false` | `false` | `false` |
 
-### Logical xor
-
 r[type.bool.expr.xor]
+### Logical xor
 
 | `a` | `b` | [`a ^ b`][op-xor] |
 |- | - | - |
@@ -94,9 +88,8 @@ r[type.bool.expr.xor]
 | `false` | `true` | `true` |
 | `false` | `false` | `false` |
 
-### Comparisons
-
 r[type.bool.expr.cmp]
+### Comparisons
 
 r[type.bool.expr.cmp.eq]
 | `a` | `b` | [`a == b`][op-compare] |
@@ -126,9 +119,8 @@ r[type.bool.expr.cmp.less]
 r[type.bool.expr.cmp.less-eq]
 * `a <= b` is the same as `a == b | a < b`
 
-## Bit validity
-
 r[type.bool.validity]
+## Bit validity
 
 The single byte of a `bool` is guaranteed to be initialized (in other words,
 `transmute::<bool, u8>(...)` is always sound -- but since some bit patterns

@@ -1,12 +1,11 @@
+r[attributes.limits]
 # Limits
 
-r[attributes.limits]
 
 The following [attributes] affect compile-time limits.
 
-## The `recursion_limit` attribute
-
 r[attributes.limits.recursion_limit]
+## The `recursion_limit` attribute
 
 r[attributes.limits.recursion_limit.intro]
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the
@@ -41,9 +40,9 @@ a!{}
 (|_: &u8| {})(&&&1);
 ```
 
+r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 
-r[attributes.limits.type_length_limit]
 
 > **Note**: This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
 >

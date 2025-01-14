@@ -1,6 +1,5 @@
-# Implementations
-
 r[items.impl]
+# Implementations
 
 r[items.impl.syntax]
 > **<sup>Syntax</sup>**\
@@ -34,9 +33,8 @@ There are two types of implementations:
 - inherent implementations
 - [trait] implementations
 
-## Inherent Implementations
-
 r[items.impl.inherent]
+## Inherent Implementations
 
 r[items.impl.inherent.intro]
 An inherent implementation is defined as the sequence of the `impl` keyword,
@@ -100,9 +98,8 @@ fn main() {
 }
 ```
 
-## Trait Implementations
-
 r[items.impl.trait]
+## Trait Implementations
 
 r[items.impl.trait.intro]
 A _trait implementation_ is defined like an inherent implementation except that
@@ -161,9 +158,8 @@ impl Shape for Circle {
 }
 ```
 
-### Trait Implementation Coherence
-
 r[items.impl.trait.coherence]
+### Trait Implementation Coherence
 
 r[items.impl.trait.coherence.intro]
 A trait implementation is considered incoherent if either the orphan rules check fails
@@ -175,9 +171,8 @@ traits the implementation is for, the implementations can be instantiated with
 the same type. <!-- This is probably wrong? Source: No two implementations can
 be instantiable with the same set of types for the input type parameters. -->
 
-#### Orphan rules
-
 r[items.impl.trait.orphan-rule]
+#### Orphan rules
 
 r[items.impl.trait.orphan-rule.general]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
@@ -198,9 +193,8 @@ Note that for the purposes of coherence, [fundamental types] are
 special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>`
 is considered local.
 
-## Generic Implementations
-
 r[items.impl.generics]
+## Generic Implementations
 
 r[items.impl.generics.intro]
 An implementation can take [generic parameters], which can be used in the rest
@@ -298,9 +292,8 @@ impl<'a> HasAssocType for Struct {
 }
 ```
 
-## Attributes on Implementations
-
 r[items.impl.attributes]
+## Attributes on Implementations
 
 Implementations may contain outer [attributes] before the `impl` keyword and
 inner [attributes] inside the brackets that contain the associated items. Inner

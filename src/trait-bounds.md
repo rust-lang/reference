@@ -1,6 +1,5 @@
-# Trait and lifetime bounds
-
 r[bound]
+# Trait and lifetime bounds
 
 r[bound.syntax]
 > **<sup>Syntax</sup>**\
@@ -118,16 +117,15 @@ struct UsesA<'a, T>(A<'a, T>);
 r[bound.trait-object]
 Trait and lifetime bounds are also used to name [trait objects].
 
+r[bound.sized]
 ## `?Sized`
 
-r[bound.sized]
 
 `?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types].
 `?Sized` may not be used as a bound for other types.
 
-## Lifetime bounds
-
 r[bound.lifetime]
+## Lifetime bounds
 
 r[bound.lifetime.intro]
 Lifetime bounds can be applied to types or to other lifetimes.
@@ -147,9 +145,8 @@ r[bound.lifetime.outlive-type]
 `T: 'a` means that all lifetime parameters of `T` outlive `'a`.
 For example, if `'a` is an unconstrained lifetime parameter, then `i32: 'static` and `&'static str: 'a` are satisfied, but `Vec<&'a ()>: 'static` is not.
 
-## Higher-ranked trait bounds
-
 r[bound.higher-ranked]
+## Higher-ranked trait bounds
 
 r[bound.higher-ranked.syntax]
 > _ForLifetimes_ :\
@@ -192,9 +189,8 @@ fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
 }
 ```
 
-## Implied bounds
-
 r[bound.implied]
+## Implied bounds
 
 r[bound.implied.intro]
 Lifetime bounds required for types to be well-formed are sometimes inferred.
@@ -271,9 +267,9 @@ trait Trait<'a, T: 'a> {}
 impl<'a, T> Trait<'a, T> for &'a T {}
 ```
 
+r[bound.use]
 ## Use bounds
 
-r[bound.use]
 
 Certain bounds lists may include a `use<..>` bound to control which generic parameters are captured by the `impl Trait` [abstract return type].  See [precise capturing] for more details.
 

@@ -1,6 +1,6 @@
+r[stmt-expr]
 # Statements and expressions
 
-r[stmt-expr]
 
 Rust is _primarily_ an expression language.
 This means that most forms of value-producing or effect-causing evaluation are directed by the uniform syntax category of _expressions_.

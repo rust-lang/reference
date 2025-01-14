@@ -1,6 +1,5 @@
-# Visibility and Privacy
-
 r[vis]
+# Visibility and Privacy
 
 r[vis.syntax]
 > **<sup>Syntax</sup>**\
@@ -152,9 +151,8 @@ For a Rust program to pass the privacy checking pass, all paths must be valid
 accesses given the two rules above. This includes all use statements,
 expressions, types, etc.
 
-## `pub(in path)`, `pub(crate)`, `pub(super)`, and `pub(self)`
-
 r[vis.scoped]
+## `pub(in path)`, `pub(crate)`, `pub(super)`, and `pub(self)`
 
 r[vis.scoped.intro]
 In addition to public and private, Rust allows users to declare an item as
@@ -239,9 +237,8 @@ fn main() { bar() }
 > specified scope. To access an item, all of its parent items up to the
 > current scope must still be visible as well.
 
-## Re-exporting and Visibility
-
 r[vis.reexports]
+## Re-exporting and Visibility
 
 r[vis.reexports.intro]
 Rust allows publicly re-exporting items through a `pub use` directive. Because

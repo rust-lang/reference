@@ -156,32 +156,149 @@ dfn {
 
 /* Rules are generated via r[foo.bar] syntax, processed by mdbook-spec. */
 .rule {
-    /* Allows the rule to be positioned. */
-    position: relative;
-    /* Position slightly to the left. */
-    left: -4em;
-    color: #999;
-    font-size: 0.8em;
-}
-/* mdbook will wrap the rule content in a <p> tag, with a margin. However, we
-   don't need the extra space
-*/
-.rule ~ p {
-    margin-top: 0px;
+    --font-size-mult: 0.8;
+    --font-size: calc(1em * var(--font-size-mult));
+
+    font-size: var(--font-size);
 }
 
-/* When the sidebar is visible, reduce the spacing of rules so that the
-   content doesn't get shifted too far, and make the text too narrow.
-*/
-.sidebar-visible .rule {
-    left: -1em;
+/* included in the grid below as 20px */
+.page, .content {
+    padding-left: 0;
+    padding-right: 0;
 }
-.sidebar-visible .content main {
-    padding-left: 1em;
+/* required to accomodate above, somehow... */
+#menu-bar {
+    margin-left: 0;
 }
 
-/* Remove the blue coloring of links on rules that mdbook normally sets. */
+main {
+    /* To nicely display rules (`[a.b.c]`) on a side of the main text body we
+       use grid layout. */
+    display: grid;
+    grid-template-columns:
+        /* Left margin / place for rules */
+        [rules] minmax(20px, 1fr)
+        /* The main text body */
+        [text] auto
+        /* Right margin */
+        [margin] minmax(20px, 1fr);
+
+    /* We do these by hand via the grid */
+    margin: 0;
+    padding: 0 !important;
+    max-width: none !important;
+}
+
+main > * {
+    /* By default grid items can't be smaller than their content.
+       That is, by default `min-width: auto`.
+       We want to be able to force code blocks to be scrollable,
+       so we need to overwrite `min-width`. */
+    min-width: 0;
+    max-width: var(--content-max-width);
+
+    /* All elements should be in the main text body... */
+    grid-column: text;
+}
+
+main > .rule {
+    /* ... except the rules, which must be in the left margin */
+    grid-column: rules;
+}
+
+/* Unset footnote margin,
+   see below for more information about margins */
+/* FIXME: this doesn't work. `unset` can still break the margin of the next element,
+          and since mdbook applies the margin to `:not(.footnore-definition)`,
+          it can literally be anything, so there is no way to properly fix it,
+          without changing mdbook... */
+:not(.footnote-definition) + .footnote-definition,
+.footnote-definition + :not(.footnote-definition) {
+    margin-block-start: unset;
+}
+
+:not(.footnote-definition) + .footnote-definition {
+     margin-top: calc(2em - 16px);
+}
+
+.footnote-definition:has(+ :not(.footnote-definition)) {
+    margin-bottom: calc(2em - 16px);
+}
+
+/* This is quite dumb, ugh.
+   CSS doesn't allow margin colapsing between grid items and anything else
+   (src: <https://stackoverflow.com/a/37837971>), which means that the margins
+   of li's children are not collapsed with ul's margins, adding too much margins.
+
+   Ideally we'd add `<div>`s for each grid cell, so that margin collapsing happens
+   as-usual inside of them. But, we don't have that kind of control over mdbook. */
+main > ul > li > *:first-child,
+main > ul > li > pre:first-child > pre.playground {
+    margin-top: 0;
+}
+main > ul > li > *:last-child,
+main > ul > li > pre:last-child > pre.playground {
+    margin-bottom: 0;
+}
+
+/* Similarly to the above, margin collapse doesn't happen between grid items,
+   so we have to replace it with grid gap. (p, pre, and ul had 16px vertical margins) */
+main {
+    row-gap: 16px;
+}
+main > p,
+main > pre,
+main > pre > pre.playground,
+main > ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Values for header margin-top and blockquote margin are taken from mdbook's general.css,
+   values for header margin-bottom are taken from <https://www.w3schools.com/cssref/css_default_values.php> */
+main > h2 {
+    margin-top: calc(2.5em - 16px);
+    margin-bottom: calc(0.83em - 16px);
+}
+main > h3 {
+    margin-top: calc(2.5em - 16px);
+    margin-bottom: calc(1em - 16px);
+}
+main > h4 {
+    margin-top: calc(2em - 16px);
+    margin-bottom: calc(1.33em - 16px);
+}
+main > h5 {
+    margin-top: calc(2em - 16px);
+    margin-bottom: calc(1.67em - 16px);
+}
+main > h6 {
+    margin-top: calc(2em - 16px);
+    margin-bottom: calc(2.33em - 16px);
+}
+main > blockquote {
+    margin-top: calc(20px - 16px);
+    margin-bottom: calc(20px - 16px);
+}
+
+main > .rule {
+    max-width: unset;
+    justify-self: right;
+    width: 100%;
+    /* We use a container query to know the size of the "left margin",
+       so that we can hide rules is there is not enough space. */
+    container-type: inline-size;
+    container-name: rule;
+}
+
 .rule-link {
+    float: right;
+    text-align: right;
+    padding-right: 10px;
+    /* We add `<wbr>` ourselves and only want breaks there */
+    word-break: keep-all;
+    /* Remove the blue coloring of links on rules that mdbook normally sets. */
     color: #999 !important;
 }
 
@@ -189,11 +306,117 @@ dfn {
    navigate to it. This adds an indicator that the linked rule is the one that
    is "current", just like normal headers are in mdbook.
 */
-.rule:target::before {
+.rule:target a span::before {
     display: inline-block;
     content: "»";
-    margin-inline-start: -20px;
-    width: 20px;
+    padding-right: 5px;
+}
+
+/* Dodge » from headings */
+.rule:has(+ h1:target),
+.rule:has(+ h2:target),
+.rule:has(+ h3:target),
+.rule:has(+ h4:target),
+.rule:has(+ h5:target),
+.rule:has(+ h6:target) {
+    padding-right: 24px;
+}
+
+/* Hide the rules if the width of the container is too small.
+   The cutoff point is chosen semi-arbitrary, it felt that
+   when `width < 14em`, there are too many breaks. */
+@container rule (width < 14em) {
+    main > .rule a span {
+        display: none;
+    }
+
+    main > .rule a::before {
+        content: "[*]";
+    }
+}
+
+/* Align rules to various siblings */
+.rule:has(+ p),
+.rule:has(+ ul) {
+    margin-top: calc((1em - var(--font-size)) / var(--font-size-mult) / 2);
+}
+
+.rule:has(+ h1) {
+    align-self: center;
+}
+
+.rule:has(+ h2) {
+    /* multiplying by this turns h2's em into .rule's em*/
+    --h2-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 1.5 /* to h2 font size */
+    );
+
+    margin-top: calc(
+        /* h2 margin top */
+        2.5em * var(--h2-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h2-em-mult) - 1em) / 2
+    )
+}
+.rule:has(+ h3) {
+    /* multiplying by this turns h3's em into .rule's em*/
+    --h3-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 1.17 /* to h3 font size */
+    );
+
+    margin-top: calc(
+        /* h3 margin top */
+        2.5em * var(--h3-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h3-em-mult) - 1em) / 2
+    )
+}
+
+.rule:has(+ h4) {
+    /* multiplying by this turns h4's em into .rule's em*/
+    --h4-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 1 /* to h4 font size */
+    );
+
+    margin-top: calc(
+        /* h4 margin top */
+        2em * var(--h4-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h4-em-mult) - 1em) / 2
+    )
+}
+
+.rule:has(+ h5) {
+    /* multiplying by this turns h5's em into .rule's em*/
+    --h5-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 0.83 /* to h5 font size */
+    );
+
+    margin-top: calc(
+        /* h5 margin top */
+        2em * var(--h5-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h5-em-mult) - 1em) / 2
+    )
+}
+
+.rule:has(+ h6) {
+    /* multiplying by this turns h6's em into .rule's em*/
+    --h6-em-mult: calc(
+        (1 / var(--font-size-mult)) /* to main font size */
+          * 0.67 /* to h6 font size */
+    );
+
+    margin-top: calc(
+        /* h6 margin top */
+        2em * var(--h6-em-mult) - 16px
+        /* half of the font size difference */
+        + (1em * var(--h6-em-mult) - 1em) / 2
+    )
 }
 
 /* Sets the color for [!HISTORY] blockquote admonitions. */

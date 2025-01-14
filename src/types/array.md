@@ -1,6 +1,5 @@
-# Array types
-
 r[type.array]
+# Array types
 
 r[type.array.syntax]
 > **<sup>Syntax</sup>**\

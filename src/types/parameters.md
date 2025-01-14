@@ -1,6 +1,5 @@
-# Type parameters
-
 r[type.generic]
+# Type parameters
 
 Within the body of an item that has type parameter declarations, the names of
 its type parameters are types:

@@ -1,6 +1,5 @@
-# Unions
-
 r[items.union]
+# Unions
 
 r[items.union.syntax]
 > **<sup>Syntax</sup>**\
@@ -51,9 +50,8 @@ to manually define what happens when it gets dropped.
 r[items.union.fieldless]
 Unions without any fields are not accepted by the compiler, but can be accepted by macros.
 
-## Initialization of a union
-
 r[items.union.init]
+## Initialization of a union
 
 r[items.union.init.intro]
 A value of a union type can be created using the same syntax that is used for
@@ -77,9 +75,8 @@ struct fields:
 let f = unsafe { u.f1 };
 ```
 
-## Reading and writing union fields
-
 r[items.union.fields]
+## Reading and writing union fields
 
 r[items.union.fields.intro]
 Unions have no notion of an "active field". Instead, every union access just
@@ -121,9 +118,8 @@ arbitrary data, but cannot cause undefined behavior. (Note that union field
 types can never have drop glue, so a union field write will never implicitly
 drop anything.)
 
-## Pattern matching on unions
-
 r[items.union.pattern]
+## Pattern matching on unions
 
 r[items.union.pattern.intro]
 Another way to access union fields is to use pattern matching.
@@ -180,9 +176,8 @@ fn is_zero(v: Value) -> bool {
 }
 ```
 
-## References to union fields
-
 r[items.union.ref]
+## References to union fields
 
 r[items.union.ref.intro]
 Since union fields share common storage, gaining write access to one field of a

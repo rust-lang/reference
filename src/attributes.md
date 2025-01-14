@@ -105,9 +105,8 @@ fn some_unused_variables() {
 }
 ```
 
-## Meta Item Attribute Syntax
-
 r[attributes.meta]
+## Meta Item Attribute Syntax
 
 r[attributes.meta.intro]
 A "meta item" is the syntax used for the _Attr_ rule by most [built-in
@@ -188,9 +187,8 @@ _MetaListPaths_ | `allow(unused, clippy::inline_always)`
 _MetaListIdents_ | `macro_use(foo, bar)`
 _MetaListNameValueStr_ | `link(name = "CoreFoundation", kind = "framework")`
 
-## Active and inert attributes
-
 r[attributes.activity]
+## Active and inert attributes
 
 r[attributes.activity.intro]
 An attribute is either active or inert. During attribute processing, *active
@@ -201,9 +199,8 @@ The [`cfg`] and [`cfg_attr`] attributes are active. The [`test`] attribute is
 inert when compiling for tests and active otherwise. [Attribute macros] are
 active. All other attributes are inert.
 
-## Tool attributes
-
 r[attributes.tool]
+## Tool attributes
 
 r[attributes.tool.intro]
 The compiler may allow attributes for external tools where each tool resides
@@ -234,9 +231,8 @@ pub fn f() {}
 > Note: `rustc` currently recognizes the tools "clippy", "rustfmt", "diagnostic",
 > "miri" and "rust_analyzer".
 
-## Built-in attributes index
-
 r[attributes.builtin]
+## Built-in attributes index
 
 The following is an index of all built-in attributes.
 

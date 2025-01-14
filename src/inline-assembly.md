@@ -1,6 +1,5 @@
-# Inline assembly
-
 r[asm]
+# Inline assembly
 
 r[asm.intro]
 Support for inline assembly is provided via the [`asm!`] and [`global_asm!`] macros.
@@ -20,9 +19,9 @@ Support for inline assembly is stable on the following architectures:
 
 The compiler will emit an error if `asm!` is used on an unsupported target.
 
+r[asm.example]
 ## Example
 
-r[asm.example]
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -44,9 +43,9 @@ assert_eq!(x, 4 * 6);
 # }
 ```
 
+r[asm.syntax]
 ## Syntax
 
-r[asm.syntax]
 
 The following ABNF specifies the general syntax:
 
@@ -64,9 +63,8 @@ asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
 global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
 ```
 
-## Scope
-
 r[asm.scope]
+## Scope
 
 r[asm.scope.intro]
 Inline assembly can be used in one of two ways.
@@ -80,9 +78,8 @@ r[asm.scope.global_asm]
 With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function.
 This can be used to hand-write entire functions using assembly code, and generally provides much more freedom to use arbitrary registers and assembler directives.
 
-## Template string arguments
-
 r[asm.ts-args]
+## Template string arguments
 
 r[asm.ts-args.syntax]
 The assembler template uses the same syntax as [format strings][format-syntax] (i.e. placeholders are specified by curly braces).
@@ -123,9 +120,8 @@ Further constraints on the directives used by inline assembly are indicated by [
 [format-syntax]: std::fmt#syntax
 [rfc-2795]: https://github.com/rust-lang/rfcs/pull/2795
 
-## Operand type
-
 r[asm.operand-type]
+## Operand type
 
 r[asm.operand-type.supported-operands]
 Several types of operands are supported:
@@ -188,9 +184,8 @@ This is significant if two outputs point to the same place: that place will cont
 r[asm.operand-type.global_asm-restriction]
 Since `global_asm!` exists outside a function, it can only use `sym` and `const` operands.
 
-## Register operands
-
 r[asm.register-operands]
+## Register operands
 
 r[asm.register-operands.register-or-class]
 Input and output operands can be specified either as an explicit register or as a register class from which the register allocator can select a register.
@@ -316,9 +311,8 @@ When separate input and output expressions are specified for an `inout` operand,
 The only exception is if both operands are pointers or integers, in which case they are only required to have the same size.
 This restriction exists because the register allocators in LLVM and GCC sometimes cannot handle tied operands with different types.
 
-## Register names
-
 r[asm.register-names]
+## Register names
 
 r[asm.register-names.supported-register-aliases]
 Some registers have multiple names.
@@ -417,9 +411,8 @@ Some registers cannot be used for input or output operands:
 r[asm.register-names.fp-bp-reserved]
 The frame pointer and base pointer registers are reserved for internal use by LLVM. While `asm!` statements cannot explicitly specify the use of reserved registers, in some cases LLVM will allocate one of these reserved registers for `reg` operands. Assembly code making use of reserved registers should be careful since `reg` operands may use the same registers.
 
-## Template modifiers
-
 r[asm.template-modifiers]
+## Template modifiers
 
 r[asm.template-modifiers.intro]
 The placeholders can be augmented by modifiers which are specified after the `:` in the curly braces.
@@ -486,9 +479,8 @@ If all references to an operand already have modifiers then the warning is suppr
 
 [llvm-argmod]: http://llvm.org/docs/LangRef.html#asm-template-argument-modifiers
 
-## ABI clobbers
-
 r[asm.abi-clobbers]
+## ABI clobbers
 
 r[asm.abi-clobbers.intro]
 The `clobber_abi` keyword can be used to apply a default set of clobbers to an `asm!` block.
@@ -524,9 +516,8 @@ The following ABIs can be used with `clobber_abi`:
 
 The list of clobbered registers for each ABI is updated in rustc as architectures gain new registers: this ensures that `asm!` clobbers will continue to be correct when LLVM starts using these new registers in its generated code.
 
-## Options
-
 r[asm.options]
+## Options
 
 r[asm.options.supported-options]
 Flags are used to further influence the behavior of the inline assembly block.
@@ -584,9 +575,8 @@ r[asm.options.global_asm-restriction]
 `global_asm!` only supports the `att_syntax` and `raw` options.
 The remaining options are not meaningful for global-scope inline assembly
 
-## Rules for inline assembly
-
 r[asm.rules]
+## Rules for inline assembly
 
 r[asm.rules.intro]
 To avoid undefined behavior, these rules must be followed when using function-scope inline assembly (`asm!`):
@@ -695,9 +685,8 @@ r[asm.rules.x86-prefix-restriction]
 r[asm.rules.preserves_flags]
 > **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
 
-### Correctness and Validity
-
 r[asm.validity]
+### Correctness and Validity
 
 r[asm.validity.necessary-but-not-sufficient]
 In addition to all of the previous rules, the string argument to `asm!` must ultimately become---
@@ -722,9 +711,8 @@ and the rules for assembly may include thousands of pages of architectural refer
 Programmers should exercise appropriate care, as invoking this `unsafe` capability comes with
 assuming the responsibility of not violating rules of both the compiler or the architecture.
 
-### Directives Support
-
 r[asm.directives]
+### Directives Support
 
 r[asm.directives.subset-supported]
 Inline assembly supports a subset of the directives supported by both GNU AS and LLVM's internal assembler, given as follows.
@@ -787,13 +775,13 @@ The following directives are guaranteed to be supported by the assembler:
 
 
 
+r[asm.target-specific-directives]
 #### Target Specific Directive Support
 
-r[asm.target-specific-directives]
-
-##### Dwarf Unwinding
 
 r[asm.target-specific-directives.dwarf-unwinding]
+##### Dwarf Unwinding
+
 The following directives are supported on ELF targets that support DWARF unwind info:
 
 
@@ -820,9 +808,9 @@ The following directives are supported on ELF targets that support DWARF unwind 
 - `.cfi_window_save`
 
 
+r[asm.target-specific-directives.structured-exception-handling]
 ##### Structured Exception Handling
 
-r[asm.target-specific-directives.structured-exception-handling]
 On targets with structured exception Handling, the following additional directives are guaranteed to be supported:
 
 - `.seh_endproc`
@@ -834,9 +822,9 @@ On targets with structured exception Handling, the following additional directiv
 - `.seh_stackalloc`
 
 
+r[asm.target-specific-directives.x86]
 ##### x86 (32-bit and 64-bit)
 
-r[asm.target-specific-directives.x86]
 On x86 targets, both 32-bit and 64-bit, the following additional directives are guaranteed to be supported:
 - `.nops`
 - `.code16`
@@ -849,9 +837,9 @@ Use of `.code16`, `.code32`, and `.code64` directives are only supported if the 
 
 
 
+r[asm.target-specific-directives.arm-32-bit]
 ##### ARM (32-bit)
 
-r[asm.target-specific-directives.arm-32-bit]
 On ARM, the following additional directives are guaranteed to be supported:
 
 - `.even`

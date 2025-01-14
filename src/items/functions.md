@@ -1,6 +1,5 @@
-# Functions
-
 r[items.fn]
+# Functions
 
 r[items.fn.syntax]
 > **<sup>Syntax</sup>**\
@@ -82,9 +81,8 @@ fn answer_to_life_the_universe_and_everything() -> i32 {
 r[items.fn.safety-qualifiers]
 The `safe` function is semantically only allowed when used in an [`extern` block].
 
-## Function parameters
-
 r[items.fn.params]
+## Function parameters
 
 r[items.fn.params.intro]
 Function parameters are irrefutable [patterns], so any pattern that is valid in
@@ -107,9 +105,8 @@ A parameter with the `...` token indicates a [variadic function], and may only
 be used as the last parameter of an [external block] function. The variadic
 parameter may have an optional identifier, such as `args: ...`.
 
-## Function body
-
 r[items.fn.body]
+## Function body
 
 r[items.fn.body.intro]
 The body block of a function is conceptually wrapped in another block that first binds the
@@ -133,9 +130,8 @@ r[items.fn.body.bodyless]
 Functions without a body block are terminated with a semicolon. This form
 may only appear in a [trait] or [external block].
 
-## Generic functions
-
 r[items.fn.generics]
+## Generic functions
 
 r[items.fn.generics.intro]
 A _generic function_ allows one or more _parameterized types_ to appear in its
@@ -186,9 +182,8 @@ component after the function name. This might be necessary if there is not
 sufficient context to determine the type parameters. For example,
 `mem::size_of::<u32>() == 4`.
 
-## Extern function qualifier
-
 r[items.fn.extern]
+## Extern function qualifier
 
 r[items.fn.extern.intro]
 The `extern` function qualifier allows providing function _definitions_ that can
@@ -266,9 +261,8 @@ with such ABIs causes the process to abort.
 > **Note**: The LLVM backend of the `rustc` implementation
 aborts the process by executing an illegal instruction.
 
-## Const functions
-
 r[items.fn.const]
+## Const functions
 
 r[items.fn.const.intro]
 Functions qualified with the `const` keyword are [const functions], as are
@@ -281,9 +275,8 @@ Const functions may use the [`extern`] function qualifier.
 r[items.fn.const.exclusivity]
 Const functions are not allowed to be [async](#async-functions).
 
-## Async functions
-
 r[items.fn.async]
+## Async functions
 
 r[items.fn.async.intro]
 Functions may be qualified as async, and this can also be combined with the
@@ -347,9 +340,8 @@ r[items.fn.async.edition2018]
 > **Edition differences**: Async functions are only available beginning with
 > Rust 2018.
 
-### Combining `async` and `unsafe`
-
 r[items.fn.async.safety]
+### Combining `async` and `unsafe`
 
 r[items.fn.async.safety.intro]
 It is legal to declare a function that is both async and unsafe. The
@@ -392,9 +384,8 @@ dereferenced that pointer. This implies that `x` would have to be
 valid until the future is finished executing, and it is the caller's
 responsibility to ensure that.
 
-## Attributes on functions
-
 r[items.fn.attributes]
+## Attributes on functions
 
 r[items.fn.attributes.intro]
 [Outer attributes][attributes] are allowed on functions. [Inner
@@ -419,9 +410,8 @@ attributes], [`must_use`], [the procedural macro attributes], [the testing
 attributes], and [the optimization hint attributes]. Functions also accept
 attributes macros.
 
-## Attributes on function parameters
-
 r[items.fn.param-attributes]
+## Attributes on function parameters
 
 r[items.fn.param-attributes.intro]
 [Outer attributes][attributes] are allowed on function parameters and the

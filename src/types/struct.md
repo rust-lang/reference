@@ -1,6 +1,5 @@
-# Struct types
-
 r[type.struct]
+# Struct types
 
 r[type.struct.intro]
 A `struct` *type* is a heterogeneous product of other types, called the

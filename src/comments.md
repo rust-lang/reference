@@ -1,6 +1,6 @@
+r[comments.syntax]
 # Comments
 
-r[comments.syntax]
 
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
@@ -34,9 +34,9 @@ r[comments.syntax]
 > _IsolatedCR_ :\
 > &nbsp;&nbsp; \\r
 
+r[comments.normal]
 ## Non-doc comments
 
-r[comments.normal]
 
 Comments follow the general C++ style of line (`//`) and
 block (`/* ... */`) comment forms. Nested block comments are supported.
@@ -44,9 +44,8 @@ block (`/* ... */`) comment forms. Nested block comments are supported.
 r[comments.normal.tokenization]
 Non-doc comments are interpreted as a form of whitespace.
 
-## Doc comments
-
 r[comments.doc]
+## Doc comments
 
 r[comments.doc.syntax]
 Line doc comments beginning with exactly _three_ slashes (`///`), and block

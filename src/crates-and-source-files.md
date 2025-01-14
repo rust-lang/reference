@@ -1,6 +1,5 @@
-# Crates and source files
-
 r[crate]
+# Crates and source files
 
 r[crate.syntax]
 > **<sup>Syntax</sup>**\
@@ -75,9 +74,8 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-## Main Functions
-
 r[crate.main]
+## Main Functions
 
 r[crate.main.general]
 A crate that contains a `main` [function] can be compiled to an executable.
@@ -124,17 +122,16 @@ use foo::bar as main;
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the testing.md file -->
 
+r[crate.no_main]
 ### The `no_main` attribute
 
-r[crate.no_main]
 
 The *`no_main` [attribute]* may be applied at the crate level to disable
 emitting the `main` symbol for an executable binary. This is useful when some
 other object being linked to defines `main`.
 
-## The `crate_name` attribute
-
 r[crate.crate_name]
+## The `crate_name` attribute
 
 r[crate.crate_name.general]
 The *`crate_name` [attribute]* may be applied at the crate level to specify the

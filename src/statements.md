@@ -1,6 +1,5 @@
-# Statements
-
 r[statement]
+# Statements
 
 r[statement.syntax]
 > **<sup>Syntax</sup>**\
@@ -17,18 +16,17 @@ A *statement* is a component of a [block], which is in turn a component of an ou
 r[statement.kind]
 Rust has two kinds of statement: [declaration statements](#declaration-statements) and [expression statements](#expression-statements).
 
+r[statement.decl]
 ## Declaration statements
 
-r[statement.decl]
 
 A *declaration statement* is one that introduces one or more *names* into the enclosing statement block.
 The declared names may denote new variables or new [items][item].
 
 The two kinds of declaration statements are item declarations and `let` statements.
 
-### Item declarations
-
 r[statement.item]
+### Item declarations
 
 r[statement.item.intro]
 An *item declaration statement* has a syntactic form identical to an [item declaration][item] within a [module].
@@ -55,9 +53,8 @@ fn outer() {
 }
 ```
 
-### `let` statements
-
 r[statement.let]
+### `let` statements
 
 r[statement.let.syntax]
 > **<sup>Syntax</sup>**\
@@ -98,9 +95,8 @@ let [u, v] = [v[0], v[1]] else { // This pattern is irrefutable, so the compiler
 };
 ```
 
-## Expression statements
-
 r[statement.expr]
+## Expression statements
 
 r[statement.expr.syntax]
 > **<sup>Syntax</sup>**\
@@ -148,9 +144,9 @@ if true {
 };
 ```
 
+r[statement.attribute]
 ## Attributes on Statements
 
-r[statement.attribute]
 
 Statements accept [outer attributes].
 The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].

@@ -1,6 +1,5 @@
-# External blocks
-
 r[items.extern]
+# External blocks
 
 r[items.extern.syntax]
 > **<sup>Syntax</sup>**\
@@ -39,9 +38,8 @@ The `unsafe` keyword is semantically required to appear before the `extern` keyw
 r[items.extern.edition2024]
 > **Edition differences**: Prior to the 2024 edition, the `unsafe` keyword is optional. The `safe` and `unsafe` item qualifiers are only allowed if the external block itself is marked as `unsafe`.
 
-## Functions
-
 r[items.extern.fn]
+## Functions
 
 r[items.extern.fn.body]
 Functions within external blocks are declared in the same way as other Rust
@@ -71,9 +69,8 @@ type `extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`,
 ... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of
 its parameters, `R` is the declared return type.
 
-## Statics
-
 r[items.extern.static]
+## Statics
 
 r[items.extern.static.intro]
 Statics within external blocks are declared in the same way as [statics] outside of external blocks,
@@ -94,9 +91,8 @@ the static to be initialized before Rust code reads from it.
 Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB,
 except if the mutation happens to bytes inside of an `UnsafeCell`.
 
-## ABI
-
 r[items.extern.abi]
+## ABI
 
 r[items.extern.abi.intro]
 By default external blocks assume that the library they are calling uses the
@@ -159,9 +155,8 @@ r[items.extern.abi.thiscall]
 r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
 
-## Variadic functions
-
 r[items.extern.variadic]
+## Variadic functions
 
 Functions within external blocks may be variadic by specifying `...` as the
 last argument. The variadic parameter may optionally be specified with an
@@ -175,16 +170,14 @@ unsafe extern "C" {
 }
 ```
 
-## Attributes on extern blocks
-
 r[items.extern.attributes]
+## Attributes on extern blocks
 
 r[items.extern.attributes.intro]
 The following [attributes] control the behavior of external blocks.
 
-### The `link` attribute
-
 r[items.extern.attributes.link]
+### The `link` attribute
 
 r[items.extern.attributes.link.intro]
 The *`link` attribute* specifies the name of a native library that the
@@ -258,9 +251,8 @@ this to satisfy the linking requirements of extern blocks elsewhere in your
 code (including upstream crates) instead of adding the attribute to each extern
 block.
 
-#### Linking modifiers: `bundle`
-
 r[items.extern.attributes.link.modifiers.bundle]
+#### Linking modifiers: `bundle`
 
 r[items.extern.attributes.link.modifiers.bundle.allowed-kinds]
 This modifier is only compatible with the `static` linking kind.
@@ -288,9 +280,8 @@ The default for this modifier is `+bundle`.
 More implementation details about this modifier can be found in
 [`bundle` documentation for rustc].
 
-#### Linking modifiers: `whole-archive`
-
 r[items.extern.attributes.link.modifiers.whole-archive]
+#### Linking modifiers: `whole-archive`
 
 r[items.extern.attributes.link.modifiers.whole-archive.allowed-kinds]
 This modifier is only compatible with the `static` linking kind.
@@ -306,9 +297,8 @@ The default for this modifier is `-whole-archive`.
 More implementation details about this modifier can be found in
 [`whole-archive` documentation for rustc].
 
-### Linking modifiers: `verbatim`
-
 r[items.extern.attributes.link.modifiers.verbatim]
+### Linking modifiers: `verbatim`
 
 r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
@@ -328,9 +318,8 @@ The default for this modifier is `-verbatim`.
 More implementation details about this modifier can be found in
 [`verbatim` documentation for rustc].
 
-#### `dylib` versus `raw-dylib`
-
 r[items.extern.attributes.link.kind-raw-dylib]
+#### `dylib` versus `raw-dylib`
 
 r[items.extern.attributes.link.kind-raw-dylib.intro]
 On Windows, linking against a dynamic library requires that an import library
@@ -349,9 +338,8 @@ r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other
 platforms will result in a compiler error.
 
-#### The `import_name_type` key
-
 r[items.extern.attributes.link.import_name_type]
+#### The `import_name_type` key
 
 r[items.extern.attributes.link.import_name_type.intro]
 On x86 Windows, names of functions are "decorated" (i.e., have a specific prefix
@@ -386,9 +374,8 @@ r[items.extern.attributes.link.import_name_type.platform-specific]
 The `import_name_type` key is only supported on x86 Windows. Using it when
 targeting other platforms will result in a compiler error.
 
-### The `link_name` attribute
-
 r[items.extern.attributes.link_name]
+### The `link_name` attribute
 
 r[items.extern.attributes.link_name.intro]
 The *`link_name` attribute* may be specified on declarations inside an `extern`
@@ -408,9 +395,8 @@ r[items.extern.attributes.link_name.exclusive]
 Using this attribute with the `link_ordinal` attribute will result in a
 compiler error.
 
-### The `link_ordinal` attribute
-
 r[items.extern.attributes.link_ordinal]
+### The `link_ordinal` attribute
 
 r[items.extern.attributes.link_ordinal.intro]
 The *`link_ordinal` attribute* can be applied on declarations inside an `extern`
@@ -439,9 +425,8 @@ r[items.extern.attributes.link_ordinal.exclusive]
 Using this attribute with the `link_name` attribute will result in a
 compiler error.
 
-### Attributes on function parameters
-
 r[items.extern.attributes.fn-parameters]
+### Attributes on function parameters
 
 Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].

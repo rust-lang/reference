@@ -1,6 +1,5 @@
-# Structs
-
 r[items.struct]
+# Structs
 
 r[items.struct.syntax]
 > **<sup>Syntax</sup>**\

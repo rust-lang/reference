@@ -1,6 +1,5 @@
-# Items
-
 r[items]
+# Items
 
 r[items.syntax]
 > **<sup>Syntax:</sup>**\

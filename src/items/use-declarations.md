@@ -1,6 +1,5 @@
-# Use declarations
-
 r[items.use]
+# Use declarations
 
 r[items.use.syntax]
 > **<sup>Syntax:</sup>**\
@@ -70,9 +69,8 @@ fn main() {
 }
 ```
 
-## `use` Visibility
-
 r[items.use.visibility]
+## `use` Visibility
 
 r[items.use.visibility.intro]
 Like items, `use` declarations are private to the containing module, by
@@ -106,9 +104,8 @@ fn main() {
 In this example, the module `quux` re-exports two public names defined in
 `foo`.
 
-## `use` Paths
-
 r[items.use.path]
+## `use` Paths
 
 r[items.use.path.intro]
 The [paths] that are allowed in a `use` item follow the [_SimplePath_] grammar and are similar to the paths that may be used in an expression.
@@ -165,9 +162,8 @@ r[items.use.path.edition2015]
 > Thus, [`extern crate`] declarations are still required in 2015 to reference an external crate in a `use` declaration.
 > Beginning with the 2018 edition, `use` declarations can specify an external crate dependency the same way `extern crate` can.
 
-## `as` renames
-
 r[items.use.as]
+## `as` renames
 
 The `as` keyword can be used to change the name of an imported entity.
 For example:
@@ -181,9 +177,8 @@ mod inner {
 }
 ```
 
-## Brace syntax
-
 r[items.use.multiple-syntax]
+## Brace syntax
 
 r[items.use.multiple-syntax.intro]
 Braces can be used in the last segment of the path to import multiple entities from the previous segment, or, if there are no previous segments, from the current scope.
@@ -204,9 +199,8 @@ An empty brace does not import anything, though the leading path is validated th
 r[items.use.multiple-syntax.edition2015]
 > **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018, those names are relative to the current scope.
 
-## `self` imports
-
 r[items.use.self]
+## `self` imports
 
 r[items.use.self.intro]
 The keyword `self` may be used within [brace syntax](#brace-syntax) to create a binding of the parent entity under its own name.
@@ -250,9 +244,8 @@ fn main() {
 > The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment.
 > See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
 
-## Glob imports
-
 r[items.use.glob]
+## Glob imports
 
 r[items.use.glob.intro]
 The `*` character may be used as the last segment of a `use` path to import all importable entities from the entity of the preceding segment.
@@ -319,9 +312,8 @@ r[items.use.glob.edition2015]
 > **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
 > This cannot be used in the crate root itself.
 
-## Underscore Imports
-
 r[items.use.as-underscore]
+## Underscore Imports
 
 r[items.use.as-underscore.intro]
 Items can be imported without binding to a name by using an underscore with
@@ -368,9 +360,8 @@ m!(use std as _;);
 // use std as _;
 ```
 
-## Restrictions
-
 r[items.use.restrictions]
+## Restrictions
 
 The following are restrictions for valid `use` declarations:
 
@@ -398,9 +389,8 @@ r[items.use.restrictions.variant]
   use TypeAlias::MyVariant; //~ ERROR
   ```
 
-## Ambiguities
-
 r[items.use.ambiguities]
+## Ambiguities
 
 > **Note**: This section is incomplete.
 

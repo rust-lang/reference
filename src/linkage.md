@@ -1,6 +1,6 @@
+r[link]
 # Linkage
 
-r[link]
 
 > Note: This section is described more in terms of the compiler than of
 > the language.
@@ -166,9 +166,8 @@ In general, `--crate-type=bin` or `--crate-type=lib` should be sufficient for
 all compilation needs, and the other options are just available if more
 fine-grained control is desired over the output format of a crate.
 
-## Static and dynamic C runtimes
-
 r[link.crt]
+## Static and dynamic C runtimes
 
 r[link.crt.intro]
 The standard library in general strives to support both statically linked and

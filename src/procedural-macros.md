@@ -1,6 +1,5 @@
-## Procedural Macros
-
 r[macro.proc]
+## Procedural Macros
 
 r[macro.proc.intro]
 *Procedural macros* allow creating syntax extensions as execution of a function.
@@ -43,9 +42,8 @@ r[macro.proc.error]
 Procedural macros have two ways of reporting errors. The first is to panic. The
 second is to emit a [`compile_error`] macro invocation.
 
-### The `proc_macro` crate
-
 r[macro.proc.proc_macro]
+### The `proc_macro` crate
 
 r[macro.proc.proc_macro.intro]
 Procedural macro crates almost always will link to the compiler-provided
@@ -68,9 +66,9 @@ code within a program and are primarily used for error reporting. While you
 cannot modify a `Span` itself, you can always change the `Span` *associated*
 with any token, such as through getting a `Span` from another token.
 
+r[macro.proc.hygiene]
 ### Procedural macro hygiene
 
-r[macro.proc.hygiene]
 
 Procedural macros are *unhygienic*. This means they behave as if the output
 token stream was simply written inline to the code it's next to. This means that
@@ -82,9 +80,8 @@ items in libraries (for example, `::std::option::Option` instead of `Option`) or
 by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
-### Function-like procedural macros
-
 r[macro.proc.function]
+### Function-like procedural macros
 
 r[macro.proc.function.intro]
 *Function-like procedural macros* are procedural macros that are invoked using
@@ -134,9 +131,8 @@ position, which includes [statements], [expressions], [patterns], [type
 expressions], [item] positions, including items in [`extern` blocks], inherent
 and trait [implementations], and [trait definitions].
 
-### Derive macros
-
 r[macro.proc.derive]
+### Derive macros
 
 r[macro.proc.derive.intro]
 *Derive macros* define new inputs for the [`derive` attribute]. These macros
@@ -186,9 +182,8 @@ fn main() {
 }
 ```
 
-#### Derive macro helper attributes
-
 r[macro.proc.derive.attributes]
+#### Derive macro helper attributes
 
 r[macro.proc.derive.attributes.intro]
 Derive macros can add additional [attributes] into the scope of the [item]
@@ -226,9 +221,8 @@ struct Struct {
 }
 ```
 
-### Attribute macros
-
 r[macro.proc.attribute]
+### Attribute macros
 
 r[macro.proc.attribute.intro]
 *Attribute macros* define new [outer attributes][attributes] which can be
@@ -313,9 +307,8 @@ fn invoke4() {}
 // out: item: "fn invoke4() {}"
 ```
 
-### Declarative macro tokens and procedural macro tokens
-
 r[macro.proc.token]
+### Declarative macro tokens and procedural macro tokens
 
 r[macro.proc.token.intro]
 Declarative `macro_rules` macros and procedural macros use similar, but

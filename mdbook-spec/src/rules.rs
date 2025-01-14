@@ -105,9 +105,10 @@ impl Spec {
                 }
                 format!(
                     "<div class=\"rule\" id=\"r-{rule_id}\">\
-                     <a class=\"rule-link\" href=\"#r-{rule_id}\">[{rule_id}]</a>\
+                     <a class=\"rule-link\" href=\"#r-{rule_id}\" title=\"{rule_id}\"><span>[{rule_id_broken}]<span/></a>\
                      {test_html}\
-                     </div>\n"
+                     </div>\n",
+                     rule_id_broken = rule_id.replace(".", "<wbr>."),
                 )
             })
             .to_string()

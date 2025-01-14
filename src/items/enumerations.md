@@ -1,6 +1,5 @@
-# Enumerations
-
 r[items.enum]
+# Enumerations
 
 r[items.enum.syntax]
 > **<sup>Syntax</sup>**\
@@ -124,9 +123,8 @@ let z = StructLike { value: 123 }; // Struct expression.
 ```
 
 <span id="custom-discriminant-values-for-fieldless-enumerations"></span>
-## Discriminants
-
 r[items.enum.discriminant]
+## Discriminants
 
 r[items.enum.discriminant.intro]
 Each enum instance has a _discriminant_: an integer logically associated to it
@@ -139,9 +137,8 @@ another means of distinguishing variants) in its actual memory layout.
 
 ### Assigning discriminant values
 
-#### Explicit discriminants
-
 r[items.enum.discriminant.explicit]
+#### Explicit discriminants
 
 r[items.enum.discriminant.explicit.intro]
 In two circumstances, the discriminant of a variant may be explicitly set by
@@ -165,9 +162,8 @@ r[items.enum.discriminant.explicit.primitive-repr]
    }
    ```
 
-#### Implicit discriminants
-
 r[items.enum.discriminant.implicit]
+#### Implicit discriminants
 
 If a discriminant for a variant is not specified, then it is set to one higher
 than the discriminant of the previous variant in the declaration. If the
@@ -185,9 +181,8 @@ let baz_discriminant = Foo::Baz as u32;
 assert_eq!(baz_discriminant, 123);
 ```
 
-#### Restrictions
-
 r[items.enum.discriminant.restrictions]
+#### Restrictions
 
 r[items.enum.discriminant.restrictions.same-discriminant]
 It is an error when two variants share the same discriminant.
@@ -234,9 +229,8 @@ r[items.enum.discriminant.access-opaque]
 an enum value which can be compared. This cannot be used to get the value
 of the discriminant.
 
-#### Casting
-
 r[items.enum.discriminant.coercion]
+#### Casting
 
 r[items.enum.discriminant.coercion.intro]
 If an enumeration is [unit-only] (with no tuple and struct variants), then its
@@ -314,9 +308,8 @@ assert_eq!(1, tuple_like.discriminant());
 assert_eq!(2, struct_like.discriminant());
 ```
 
-## Zero-variant enums
-
 r[items.enum.empty]
+## Zero-variant enums
 
 r[items.enum.empty.intro]
 Enums with zero variants are known as *zero-variant enums*. As they have
@@ -336,9 +329,8 @@ let x: ZeroVariants = panic!();
 let y: u32 = x; // mismatched type error
 ```
 
-## Variant visibility
-
 r[items.enum.variant-visibility]
+## Variant visibility
 
 Enum variants syntactically allow a [_Visibility_] annotation, but this is
 rejected when the enum is validated. This allows items to be parsed with a

@@ -1,6 +1,5 @@
-# Impl trait
-
 r[type.impl-trait]
+# Impl trait
 
 r[type.impl-trait.syntax]
 > **<sup>Syntax</sup>**\
@@ -25,9 +24,8 @@ fn foo(arg: impl Trait) {
 fn bar() -> impl Trait {
 }
 ```
-## Anonymous type parameters
-
 r[type.impl-trait.param]
+## Anonymous type parameters
 
 > Note: This is often called "impl Trait in argument position".
 (The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
@@ -58,9 +56,8 @@ That is, `impl Trait` in argument position is syntactic sugar for a generic type
 > With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
 > Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
 
-## Abstract return types
-
 r[type.impl-trait.return]
+## Abstract return types
 
 > Note: This is often called "impl Trait in return position".
 
@@ -98,9 +95,8 @@ which also avoids the drawbacks of using a boxed trait object.
 Similarly, the concrete types of iterators could become very complex, incorporating the types of all previous iterators in a chain.
 Returning `impl Iterator` means that a function only exposes the `Iterator` trait as a bound on its return type, instead of explicitly specifying all of the other iterator types involved.
 
-## Return-position `impl Trait` in traits and trait implementations
-
 r[type.impl-trait.return-in-trait]
+## Return-position `impl Trait` in traits and trait implementations
 
 r[type.impl-trait.return-in-trait.intro]
 Functions in traits may also use `impl Trait` as a syntax for an anonymous associated type.
@@ -108,15 +104,13 @@ Functions in traits may also use `impl Trait` as a syntax for an anonymous assoc
 r[type.impl-trait.return-in-trait.desugaring]
 Every `impl Trait` in the return type of an associated function in a trait is desugared to an anonymous associated type. The return type that appears in the implementation's function signature is used to determine the value of the associated type.
 
-## Capturing
-
 r[type.impl-trait.generic-captures]
+## Capturing
 
 Behind each return-position `impl Trait` abstract type is some hidden concrete type.  For this concrete type to use a generic parameter, that generic parameter must be *captured* by the abstract type.
 
-## Automatic capturing
-
 r[type.impl-trait.generic-capture.auto]
+## Automatic capturing
 
 r[type.impl-trait.generic-capture.auto.intro]
 Return-position `impl Trait` abstract types automatically capture all in-scope generic parameters, including generic type, const, and lifetime parameters (including higher-ranked ones).
@@ -124,9 +118,8 @@ Return-position `impl Trait` abstract types automatically capture all in-scope g
 r[type.impl-trait.generic-capture.edition2024]
 > **Edition differences**: Before the 2024 edition, on free functions and on associated functions and methods of inherent impls, generic lifetime parameters that do not appear in the bounds of the abstract return type are not automatically captured.
 
-## Precise capturing
-
 r[type.impl-trait.generic-capture.precise]
+## Precise capturing
 
 r[type.impl-trait.generic-capture.precise.use]
 The set of generic parameters captured by a return-position `impl Trait` abstract type may be explicitly controlled with a [`use<..>` bound].  If present, only the generic parameters listed in the `use<..>` bound will be captured.  E.g.:
@@ -179,9 +172,8 @@ fn foo() -> impl Trait {
 doesn't allow the caller to determine the return type.
 Instead, the function chooses the return type, but only promises that it will implement `Trait`.
 
-## Limitations
-
 r[type.impl-trait.constraint]
+## Limitations
 
 `impl Trait` can only appear as a parameter or return type of a non-`extern` function.
 It cannot be the type of a `let` binding, field type, or appear inside a type alias.

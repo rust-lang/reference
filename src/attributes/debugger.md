@@ -1,12 +1,11 @@
+r[attributes.debugger]
 # Debugger attributes
 
-r[attributes.debugger]
 
 The following [attributes] are used for enhancing the debugging experience when using third-party debuggers like GDB or WinDbg.
 
-## The `debugger_visualizer` attribute
-
 r[attributes.debugger.debugger_visualizer]
+## The `debugger_visualizer` attribute
 
 r[attributes.debugger.debugger_visualizer.intro]
 The *`debugger_visualizer` attribute* can be used to embed a debugger visualizer file into the debug information.
@@ -15,9 +14,8 @@ This enables an improved debugger experience for displaying values in the debugg
 r[attributes.debugger.debugger_visualizer.syntax]
 It uses the [_MetaListNameValueStr_] syntax to specify its inputs, and must be specified as a crate attribute.
 
-### Using `debugger_visualizer` with Natvis
-
 r[attributes.debugger.debugger_visualizer.natvis]
+### Using `debugger_visualizer` with Natvis
 
 r[attributes.debugger.debugger_visualizer.natvis.intro]
 Natvis is an XML-based framework for Microsoft debuggers (such as Visual Studio and WinDbg) that uses declarative rules to customize the display of types.
@@ -82,9 +80,8 @@ When viewed under WinDbg, the `fancy_rect` variable would be shown as follows:
     > LowerRight: (15.0, 10.0)
 ```
 
-### Using `debugger_visualizer` with GDB
-
 r[attributes.debugger.debugger_visualizer.gdb]
+### Using `debugger_visualizer` with GDB
 
 r[attributes.debugger.debugger_visualizer.gdb.pretty]
 GDB supports the use of a structured Python script, called a *pretty printer*, that describes how a type should be visualized in the debugger view.
@@ -156,9 +153,8 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 [pretty printing documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Pretty-Printing.html
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 
-## The `collapse_debuginfo` attribute
-
 r[attributes.debugger.collapse_debuginfo]
+## The `collapse_debuginfo` attribute
 
 r[attributes.debugger.collapse_debuginfo.intro]
 The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site,

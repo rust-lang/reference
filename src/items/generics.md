@@ -1,6 +1,5 @@
-# Generic parameters
-
 r[items.generics]
+# Generic parameters
 
 r[items.generics.syntax]
 > **<sup>Syntax</sup>**\
@@ -57,9 +56,8 @@ referred to with path syntax.
 r[items.generics.invalid-lifetimes]
 `'_` and `'_static` are not valid lifetime parameters.
 
-### Const generics
-
 r[items.generics.const]
+### Const generics
 
 r[items.generics.const.intro]
 *Const generic parameters* allow items to be generic over constant values.
@@ -232,9 +230,8 @@ fn generic<const B: bool>() {
 }
 ```
 
-## Where clauses
-
 r[items.generics.where]
+## Where clauses
 
 r[items.generics.where.syntax]
 > **<sup>Syntax</sup>**\
@@ -272,9 +269,8 @@ where
 }
 ```
 
-## Attributes
-
 r[items.generics.attributes]
+## Attributes
 
 Generic lifetime and type parameters allow [attributes] on them. There are no
 built-in attributes that do anything in this position, although custom derive
