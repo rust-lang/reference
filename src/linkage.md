@@ -286,8 +286,8 @@ we define what exactly is meant by "handling unwinding consistently".
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
-- The artifact is linked with [the `panic=unwind` runtime][panic-runtime].
-- The artifact contains a crate built with `-Cpanic=unwind` that makes a call
+- The artifact is linked with [the `unwind` runtime][panic-runtime].
+- The artifact contains a crate built with the `unwind` [panic strategy] that makes a call
   to a function using a `-unwind` ABI.
 - The artifact makes a `"Rust"` ABI call to code running in another Rust
   artifact that has a separate copy of the Rust runtime, and that other artifact is
@@ -298,15 +298,15 @@ A Rust artifact is called *potentially unwinding* if any of the following condit
 > unwind.
 
 r[link.unwinding.prohibited]
-If a Rust artifact is potentially unwinding, then all its crates must be built with `-Cpanic=unwind`.
+If a Rust artifact is potentially unwinding, then all its crates must be built with the `unwind` [panic strategy].
 
 > [!NOTE]
-> This restriction can only be violated when mixing code with different `-C panic` flags
+> This restriction can only be violated when mixing code with different [`-C panic`] flags
 > while also using a non-`rustc` linker. Most users to not have to be concerned about this.
 
 > [!NOTE]
 > To guarantee that a library will be sound (and linkable with `rustc`)
-> regardless of the panic mode used at link-time, the [`ffi_unwind_calls` lint]
+> regardless of the panic runtime used at link-time, the [`ffi_unwind_calls` lint]
 > may be used. The lint flags any calls to `-unwind` foreign functions or
 > function pointers.
 
@@ -315,3 +315,5 @@ If a Rust artifact is potentially unwinding, then all its crates must be built w
 [configuration option]: conditional-compilation.md
 [panic-runtime]: panic.md#panic-runtimes
 [procedural macros]: procedural-macros.md
+[panic strategy]: panic.md#panic-strategy
+[`-C panic`]: ../rustc/codegen-options/index.html#panic
