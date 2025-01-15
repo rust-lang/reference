@@ -16,6 +16,19 @@ There are also language features that provide a level of control over panic beha
 > [!NOTE]
 > The standard library provides the capability to explicitly panic via the [`panic!` macro][panic!].
 
+r[panic.runtime]
+## Panic runtimes
+
+The actual behavior and implementation of `panic!` is controlled by the _panic runtime_.
+
+> [!NOTE]
+> The Rust standard library provides two panic runtimes: `panic_unwind` (which unwinds the stack and is potentially recoverable) and `panic_abort` (which aborts the process and is non-recoverable). The default runtime depends on the target platform, but is generally `panic_unwind` on platforms with native support for C++ exceptions.
+
+> [!NOTE]
+> When compiling code that is guaranteed to be linked to a non-recoverable panic runtime, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
+
+See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
+
 r[panic.unwind]
 ## Unwinding
 
@@ -54,19 +67,6 @@ Catching a foreign unwinding operation (such as a C++ exception) using [`std::pa
 
 r[panic.unwind.ffi.dispose-panic]
 There are currently no guarantees about the behavior that occurs when a foreign runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other words, an unwind originated from a Rust runtime must either lead to termination of the process or be caught by the same runtime.
-
-r[panic.runtime]
-## Panic runtimes
-
-The actual behavior and implementation of `panic!` is controlled by the _panic runtime_.
-
-> [!NOTE]
-> The Rust standard library provides two panic runtimes: `panic_unwind` (which unwinds the stack and is potentially recoverable) and `panic_abort` (which aborts the process and is non-recoverable). The default runtime depends on the target platform, but is generally `panic_unwind` on platforms with native support for C++ exceptions.
-
-> [!NOTE]
-> When compiling code that is guaranteed to be linked to a non-recoverable panic runtime, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
-
-See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
 
 [array indexing]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [destructors]: destructors.md
