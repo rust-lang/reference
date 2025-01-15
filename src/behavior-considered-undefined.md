@@ -99,9 +99,8 @@ r[undefined.const-transmute-ptr2int]
   cast, e.g. by doing raw pointer casts or using a union.
 
 r[undefined.runtime]
-* Violating assumptions of the Rust runtime. This is only possible using
-  mechanisms outside Rust. Most assumptions of the Rust runtime are currently
-  not explicitly documented.
+* Violating assumptions of the Rust runtime. Most assumptions of the Rust
+  runtime are currently not explicitly documented.
   * For assumptions specifically related to unwinding, see the [panic
     documentation][unwinding-ffi].
   * The runtime assumes that a Rust stack frame is not deallocated without
