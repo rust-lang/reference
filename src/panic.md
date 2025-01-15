@@ -19,24 +19,39 @@ There are also language features that provide a level of control over panic beha
 r[panic.runtime]
 ## Panic runtimes
 
-The actual behavior and implementation of `panic!` is controlled by the _panic runtime_.
+The actual behavior and implementation of a panic is controlled by the _panic runtime_. The panic runtime is a handler linked into the output which provides the necessary implementation for panicking.
 
 > [!NOTE]
 > The Rust standard library provides two panic runtimes: `panic_unwind` (which unwinds the stack and is potentially recoverable) and `panic_abort` (which aborts the process and is non-recoverable). The default runtime depends on the target platform, but is generally `panic_unwind` on platforms with native support for C++ exceptions.
+
+> [!NOTE]
+> The panic runtime can be chosen in `rustc` with the [`-C panic`] CLI flag when building any crate type except an rlib.
 
 > [!NOTE]
 > When compiling code that is guaranteed to be linked to a non-recoverable panic runtime, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
 
 See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
 
+r[panic.strategy]
+## Panic strategy
+
+r[panic.strategy.intro]
+The _panic strategy_ defines the kind of panic runtime that a crate is built to support.
+
+> [!NOTE]
+> The panic strategy can be chosen in `rustc` with the [`-C panic`] CLI flag.
+
+r[panic.strategy.mixed]
+When linking with the `unwind` runtime, all crates must be built with the `unwind` strategy.
+
 r[panic.unwind]
 ## Unwinding
 
 r[panic.unwind.intro]
-Panicking may either be recoverable or non-recoverable, though it can be configured (via `panic=abort`) to always be non-recoverable. (The converse is not true: `panic=unwind` does not guarantee that all panics are recoverable, only that panicking via the `panic!` macro and similar standard library mechanisms is recoverable.)
+Panicking may either be recoverable or non-recoverable, though it can be configured (by choosing the `abort` panic runtime) to always be non-recoverable. (The converse is not true: the `unwind` runtime does not guarantee that all panics are recoverable, only that panicking via the `panic!` macro and similar standard library mechanisms is recoverable.)
 
 r[panic.unwind.destruction]
-When panic recovery occurs, the runtime "unwinds" Rust frames, just as C++'s `throw` unwinds C++ frames, until the panic reaches the point of recovery (for instance at a thread boundary). This means that as the panic traverses Rust frames, live objects in those frames that [implement `Drop`][destructors] will have their `drop` methods called. Thus, when normal execution resumes, no-longer-accessible objects will have been "cleaned up" just as if they had gone out of scope normally.
+When panic recovery occurs, the `unwind` runtime "unwinds" Rust frames, just as C++'s `throw` unwinds C++ frames, until the panic reaches the point of recovery (for instance at a thread boundary). This means that as the panic traverses Rust frames, live objects in those frames that [implement `Drop`][destructors] will have their `drop` methods called. Thus, when normal execution resumes, no-longer-accessible objects will have been "cleaned up" just as if they had gone out of scope normally.
 
 > [!NOTE]
 > As long as this guarantee of resource-cleanup is preserved, "unwinding" may be implemented without actually using the mechanism used by C++ for the target platform.
@@ -72,3 +87,4 @@ There are currently no guarantees about the behavior that occurs when a foreign 
 [destructors]: destructors.md
 [runtime]: runtime.md
 [unwind-abi]: items/functions.md#unwinding
+[`-C panic`]: ../rustc/codegen-options/index.html#panic
