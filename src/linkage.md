@@ -302,7 +302,7 @@ If a Rust artifact is potentially unwinding, then all its crates must be built w
 
 > [!NOTE]
 > This restriction can only be violated when mixing code with different [`-C panic`] flags
-> while also using a non-`rustc` linker. Most users to not have to be concerned about this.
+> while also using a non-`rustc` linker. Most users do not have to be concerned about this.
 
 > [!NOTE]
 > To guarantee that a library will be sound (and linkable with `rustc`)
