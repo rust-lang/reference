@@ -27,9 +27,6 @@ The actual behavior and implementation of a panic is controlled by the _panic ru
 > [!NOTE]
 > The panic runtime can be chosen in `rustc` with the [`-C panic`] CLI flag when building any crate type except an rlib.
 
-> [!NOTE]
-> When compiling code that is guaranteed to be linked to a non-recoverable panic runtime, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
-
 See also the [`panic_handler` attribute](runtime.md#the-panic_handler-attribute) which can be used to change the behavior of panics.
 
 r[panic.strategy]
@@ -40,6 +37,9 @@ The _panic strategy_ defines the kind of panic runtime that a crate is built to 
 
 > [!NOTE]
 > The panic strategy can be chosen in `rustc` with the [`-C panic`] CLI flag.
+
+> [!NOTE]
+> When compiling code with a non-recoverable panic strategy, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
 
 r[panic.strategy.mixed]
 When linking with the `unwind` runtime, all crates must be built with the `unwind` strategy.
