@@ -10,6 +10,7 @@ use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
 use std::io;
+use std::ops::Range;
 use std::path::PathBuf;
 
 mod rules;
@@ -204,4 +205,18 @@ impl Preprocessor for Spec {
 
         Ok(book)
     }
+}
+
+fn line_from_range<'a>(contents: &'a str, range: &Range<usize>) -> &'a str {
+    assert!(range.start < contents.len());
+
+    let mut start_index = 0;
+    for line in contents.lines() {
+        let end_index = start_index + line.len();
+        if range.start >= start_index && range.start <= end_index {
+            return line;
+        }
+        start_index = end_index + 1;
+    }
+    panic!("did not find line {range:?} in contents");
 }
