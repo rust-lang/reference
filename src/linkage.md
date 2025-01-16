@@ -286,7 +286,7 @@ we define what exactly is meant by "handling unwinding consistently".
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
-- The artifact is linked with [the `unwind` runtime][panic-runtime].
+- The artifact is linked with [the `unwind` panic runtime][panic-runtime].
 - The artifact contains a crate built with the `unwind` [panic strategy] that makes a call
   to a function using a `-unwind` ABI.
 - The artifact makes a `"Rust"` ABI call to code running in another Rust
