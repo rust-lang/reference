@@ -19,10 +19,18 @@ There are also language features that provide a level of control over panic beha
 r[panic.runtime]
 ## Panic runtimes
 
+r[panic.runtime.intro]
 The actual behavior and implementation of a panic is controlled by the _panic runtime_. The panic runtime is a handler linked into the output which provides the necessary implementation for panicking.
 
-> [!NOTE]
-> The Rust standard library provides two panic runtimes: `panic_unwind` (which unwinds the stack and is potentially recoverable) and `panic_abort` (which aborts the process and is non-recoverable). The default runtime depends on the target platform, but is generally `panic_unwind` on platforms with native support for C++ exceptions.
+r[panic.runtime.kinds]
+The following panic runtimes are provided by the standard library:
+
+* `unwind` --- unwinds the stack and is potentially recoverable.
+* `abort` ---- aborts the process and is non-recoverable.
+
+Not all targets may provide the `unwind` runtime.
+
+The default runtime depends on the target platform, but is generally `unwind` on platforms with native support for C++ exceptions.
 
 > [!NOTE]
 > The panic runtime can be chosen in `rustc` with the [`-C panic`] CLI flag when building any crate type except an rlib.
@@ -39,7 +47,7 @@ The _panic strategy_ defines the kind of panic runtime that a crate is built to 
 > The panic strategy can be chosen in `rustc` with the [`-C panic`] CLI flag.
 
 > [!NOTE]
-> When compiling code with a non-recoverable panic strategy, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
+> When compiling code with the `abort` panic strategy, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
 
 r[panic.strategy.mixed]
 When linking with the `unwind` runtime, all crates must be built with the `unwind` strategy.
