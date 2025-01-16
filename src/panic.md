@@ -49,8 +49,8 @@ The _panic strategy_ defines the kind of panic runtime that a crate is built to 
 > [!NOTE]
 > When compiling code with the `abort` panic strategy, the optimizer may assume that unwinding across Rust frames is impossible, which can result in both code-size and runtime speed improvements.
 
-r[panic.strategy.mixed]
-When linking with the `unwind` runtime, all crates must be built with the `unwind` strategy.
+> [!NOTE]
+> See [link.unwinding] for restrictions on linking crates with different panic strategies. An implication is that crates built with the `unwind` strategy can use the `abort` runtime, but not vice-versa.
 
 r[panic.unwind]
 ## Unwinding

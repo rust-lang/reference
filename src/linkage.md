@@ -279,10 +279,7 @@ r[link.unwinding]
 ### Prohibited linkage and unwinding
 
 r[link.unwinding.intro]
-If you are *not* using `rustc` to link Rust files, you must take care to ensure that unwinding is
-handled consistently across the entire binary. Linking without `rustc` includes using `dlopen` or similar facilities
-where linking is done by the system runtime without `rustc` being involved. In the following,
-we define what exactly is meant by "handling unwinding consistently".
+Panic unwinding must be supported consistently across the binary per the following rules.
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
@@ -301,8 +298,9 @@ r[link.unwinding.prohibited]
 If a Rust artifact is potentially unwinding, then all its crates must be built with the `unwind` [panic strategy].
 
 > [!NOTE]
-> This restriction can only be violated when mixing code with different [`-C panic`] flags
-> while also using a non-`rustc` linker. Most users do not have to be concerned about this.
+> If you are *not* using `rustc` to link, you must take care to ensure that unwinding is handled consistently across the entire binary. Linking without `rustc` includes using `dlopen` or similar facilities where linking is done by the system runtime without `rustc` being involved.
+>
+> This can only happen when mixing code with different [`-C panic`] flags, so most users do not have to be concerned about this.
 
 > [!NOTE]
 > To guarantee that a library will be sound (and linkable with `rustc`)
