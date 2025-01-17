@@ -279,7 +279,7 @@ r[link.unwinding]
 ### Prohibited linkage and unwinding
 
 r[link.unwinding.intro]
-Panic unwinding must be supported consistently across the binary per the following rules.
+Panic unwinding can only be used if the binary is built consistently according to the following rules.
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
@@ -296,8 +296,10 @@ A Rust artifact is called *potentially unwinding* if any of the following condit
 
 r[link.unwinding.prohibited]
 If a Rust artifact is potentially unwinding, then all its crates must be built with the `unwind` [panic strategy].
+Otherwise, unwinding can cause undefined behavior.
 
 > [!NOTE]
+> If you are using `rustc` to link, these rules are enforced automatically.
 > If you are *not* using `rustc` to link, you must take care to ensure that unwinding is handled consistently across the entire binary. Linking without `rustc` includes using `dlopen` or similar facilities where linking is done by the system runtime without `rustc` being involved.
 >
 > This can only happen when mixing code with different [`-C panic`] flags, so most users do not have to be concerned about this.
