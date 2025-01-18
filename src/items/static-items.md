@@ -22,7 +22,7 @@ Static items do not call [`drop`] at the end of the program.
 
 r[items.static.storage-disjointness]
 If the `static` has a size of at least 1 byte, this allocated object is disjoint from all other such
-`static` objects as well as heap-allocated and stack-allocated variables. However, the storage of
+`static` objects as well as heap allocations and stack-allocated variables. However, the storage of
 immutable `static` items can overlap with objects that do not themselves have a unique address, such
 as [promoteds] and [`const` items][constant].
 
