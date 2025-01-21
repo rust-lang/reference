@@ -84,7 +84,7 @@ pub fn std_links(book: &mut Book) {
         }
         let key = ch.source_path.as_ref().unwrap();
         // Create a list of replacements to make in the raw markdown to point to the new url.
-        let replacements = compute_replacements(&ch.content, &chapter_links[key], &ch_urls[key]);
+        let replacements = compute_replacements(&ch, &chapter_links[key], &ch_urls[key]);
 
         let mut new_contents = ch.content.clone();
         for (md_link, url, range) in replacements {
@@ -119,6 +119,9 @@ struct Link<'a> {
     /// Where the link is going to, for example `std::ffi::OsString`.
     dest_url: CowStr<'a>,
     /// The span in the original markdown where the link is located.
+    ///
+    /// Note that this is the post-processed markdown (such as having rules
+    /// expanded), not the markdown on the disk.
     ///
     /// Note that during translation, all links will be converted to inline
     /// links. That means that for reference-style links, the link reference
@@ -288,7 +291,7 @@ fn relative_url(url: &str, chapter: &Chapter) -> String {
 /// - `url` is the URL to the standard library.
 /// - `range` is the range in the original markdown to replace with the new link.
 fn compute_replacements<'a>(
-    contents: &'a str,
+    chapter: &'a Chapter,
     links: &[Link<'_>],
     urls: &[&'a str],
 ) -> Vec<(&'a str, &'a str, Range<usize>)> {
@@ -296,11 +299,19 @@ fn compute_replacements<'a>(
 
     for (url, link) in urls.iter().zip(links) {
         let Some(cap) = ANCHOR_URL.captures(url) else {
-            eprintln!("error: could not find anchor in:\n{url}\nlink={link:#?}");
+            let line = super::line_from_range(&chapter.content, &link.range);
+            eprintln!(
+                "error: broken markdown link found in {}\n\
+                Line is: {line}\n\
+                Link to `{}` could not be resolved by rustdoc to a known URL (result was `{}`).\n",
+                chapter.source_path.as_ref().unwrap().display(),
+                link.dest_url,
+                url
+            );
             process::exit(1);
         };
         let url = cap.get(1).unwrap().as_str();
-        let md_link = &contents[link.range.clone()];
+        let md_link = &chapter.content[link.range.clone()];
 
         let range = link.range.clone();
         let add_link = |re: &Regex| {
