@@ -29,8 +29,22 @@ r[type.fn-pointer.intro]
 Function pointer types, written using the `fn` keyword, refer to a function
 whose identity is not necessarily known at compile-time.
 
+An example where `Binop` is defined as a function pointer type:
+
+```rust
+fn add(x: i32, y: i32) -> i32 {
+    x + y
+}
+
+let mut x = add(5,7);
+
+type Binop = fn(i32, i32) -> i32;
+let bo: Binop = add;
+x = bo(5,7);
+```
+
 r[type.fn-pointer.coercion]
-They can be created via a coercion from both [function items] and non-capturing, non-async [closures].
+Function pointers can be created via a coercion from both [function items] and non-capturing, non-async [closures].
 
 r[type.fn-pointer.qualifiers]
 The `unsafe` qualifier indicates that the type's value is an [unsafe
@@ -46,20 +60,6 @@ these calling conventions:
 * `sysv64`
 * `win64`
 * `efiapi`
-
-An example where `Binop` is defined as a function pointer type:
-
-```rust
-fn add(x: i32, y: i32) -> i32 {
-    x + y
-}
-
-let mut x = add(5,7);
-
-type Binop = fn(i32, i32) -> i32;
-let bo: Binop = add;
-x = bo(5,7);
-```
 
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
