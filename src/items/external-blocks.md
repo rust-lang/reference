@@ -144,10 +144,6 @@ r[items.extern.abi.fastcall]
 * `unsafe extern "fastcall"` -- The `fastcall` ABI -- corresponds to MSVC's
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
 
-r[items.extern.abi.vectorcall]
-* `unsafe extern "vectorcall"` -- The `vectorcall` ABI -- corresponds to MSVC's
-  `__vectorcall` and clang's `__attribute__((vectorcall))`
-
 r[items.extern.abi.thiscall]
 * `unsafe extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
