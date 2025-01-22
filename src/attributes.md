@@ -195,9 +195,8 @@ An attribute is either active or inert. During attribute processing, *active
 attributes* remove themselves from the thing they are on while *inert attributes*
 stay on.
 
-The [`cfg`] and [`cfg_attr`] attributes are active. The [`test`] attribute is
-inert when compiling for tests and active otherwise. [Attribute macros] are
-active. All other attributes are inert.
+The [`cfg`] and [`cfg_attr`] attributes are active.
+[Attribute macros] are active. All other attributes are inert.
 
 r[attributes.tool]
 ## Tool attributes
