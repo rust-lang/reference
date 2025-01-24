@@ -80,6 +80,7 @@ trait Seq<T> {
 <a id="object-safety"></a>
 r[items.traits.dyn-compatible]
 ## Dyn compatibility
+(Formerly known as *object safety*.)
 
 r[items.traits.dyn-compatible.intro]
 A dyn-compatible trait can be the base trait of a [trait object]. A trait is
