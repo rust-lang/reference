@@ -54,7 +54,7 @@ r[items.generics.builtin-generic-types]
 referred to with path syntax.
 
 r[items.generics.invalid-lifetimes]
-`'_` and `'_static` are not valid lifetime parameters.
+`'_` and `'static` are not valid lifetime parameter names.
 
 r[items.generics.const]
 ### Const generics
