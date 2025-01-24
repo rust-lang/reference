@@ -69,7 +69,7 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 ```rust
 # #[cfg(target_feature = "avx2")]
 #[target_feature(enable = "avx2")]
-unsafe fn foo_avx2() {}
+fn foo_avx2() {}
 ```
 
 r[attributes.codegen.target_feature.arch]
@@ -77,10 +77,36 @@ Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
+r[attributes.codegen.target_feature.closures]
+Closures defined within a `target_feature`-annotated function inherit the
+attribute from the enclosing function.
+
 r[attributes.codegen.target_feature.target-ub]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
+
+r[attributes.codegen.target_feature.safety-restrictions]
+Because of this, on many platforms the following restrictions apply:
+
+- `#[target_feature]` functions (and closures that inherit the attribute)
+  can only be safely called within caller that enable all the `target_feature`s
+  that the callee enables.
+- `#[target_feature]` functions (and closures that inherit the attribute)
+  can only be coerced to *safe* `fn` pointers in contexts that enable all the
+  `target_feature`s that the coercee enables.
+- `#[target_feature]` functions *never* implement `Fn` traits, although
+  closures inheriting features from the enclosing function do.
+
+Moreover, since Rust needs to be able to check the usage of `#[target_feature]`
+functions at callsites to ensure safety, safe functions for which this check
+would not be possible cannot be annotated with this attribute. This includes:
+
+- `main`
+- other special functions that allow safe functions such as `#[panic_handler]`
+- safe trait methods
+- safe default functions in traits
+
 
 r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
@@ -98,8 +124,8 @@ r[attributes.codegen.target_feature.x86]
 
 
 Executing code with unsupported features is undefined behavior on this platform.
-Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+Hence on this platform usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
@@ -166,8 +192,8 @@ r[attributes.codegen.target_feature.aarch64]
 #### `aarch64`
 
 
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Further documentation on these features can be found in the [ARM Architecture
 Reference Manual], or elsewhere on [developer.arm.com].
@@ -231,8 +257,8 @@ r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
 
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Further documentation on these features can be found in their respective
 specification. Many specifications are described in the [RISC-V ISA Manual] or
@@ -293,12 +319,11 @@ r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
 
 
-`#[target_feature]` may be used with both safe and
-[`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
-cause undefined behavior via the `#[target_feature]` attribute because
-attempting to use instructions unsupported by the Wasm engine will fail at load
-time without the risk of being interpreted in a way different from what the
-compiler expected.
+Safe `#[target_feature]` functions may always be used in safe contexts on Wasm
+platforms. It is impossible to cause undefined behavior via the
+`#[target_feature]` attribute because attempting to use instructions
+unsupported by the Wasm engine will fail at load time without the risk of being
+interpreted in a way different from what the compiler expected.
 
 Feature               | Implicitly Enables  | Description
 ----------------------|---------------------|-------------------
