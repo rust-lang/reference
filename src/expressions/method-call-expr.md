@@ -17,24 +17,17 @@ When looking up a method call, the receiver may be automatically dereferenced or
 This requires a more complex lookup process than for other functions, since there may be a number of possible methods to call.
 The following procedure is used:
 
-The first step is to build a list of candidate receiver types.
+The first step is to build a list of types where we might find methods.
 Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
-Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
+Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`. While dereferencing, we don't use the normal `Deref` trait, but instead the `Receiver` trait: there is a blanket implementation of `Receiver` for all `T: Deref` so in practice this is often the same.
 
-For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
+For instance, if the receiver has type `Box<[i32;2]>`, then the contributing types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
 
-A second - possible more expansive - list is then made of types where we might
-find [visible] methods with a receiver of that type, called the list of
-contributing types. To make this list, follow the exact same process,
-but this time use the `Receiver` trait
-instead of the `Deref` trait for any non-built-in derefences.
+Some custom smart pointers may implement `Receiver` but not `Deref`. Imagine `MySmartPtr<T>: Receiver<Target=T>`: if the receiver type has `Box<MySmartPtr<SomeStruct>>` the contributing types will be `Box<MySmartPtr<SomeStruct>>`, `MySmartPtr<SomeStruct>` and `SomeStruct`.
 
-There is a blanket implementation of `Receiver` for all `T: Deref`, so in many
-cases the lists are identical, but there are rare smart pointers which
-may implement `Receiver` without implementing `Deref`, so this second list of
-types may be longer than the list of candidate types.
+Even though we assemble this list by following the chain of `Receiver` implementations, we keep a note of which steps can be reached by following the regular `Deref` chain. In the above example, that would be all but the last step. The items in the list reachable by the `Deref` chain are termed the "candidate types"; the full list reachable by the `Receiver` chain is called the "contributing types".
 
-Then, for each contributing type `T`, search for a [visible] method with a receiver of any candidate type in the following places:
+Then, for each _contributing_ type `T`, search for a [visible] method with a receiver of any _candidate_ type in the following places:
 
 1. `T`'s inherent methods (methods implemented directly on `T`).
 1. Any of the methods provided by a [visible] trait implemented by `T`.
