@@ -17,33 +17,11 @@ r[lang-types.box.deref]
 * The [dereference operator] for `Box<T>` produces a place which can be moved
   from. This means that the `*` operator and the destructor of `Box<T>` are
   built-in to the language.
-
-r[lang-types.box.receiver]
-* [Methods] can take `Box<Self>` as a receiver.
-
 r[lang-types.box.fundamental]
 * A trait may be implemented for `Box<T>` in the same crate as `T`, which the
   [orphan rules] prevent for other generic types.
 
 <!-- Editor Note: This is nowhere close to an exhaustive list -->
-
-r[lang-types.rc]
-## `Rc<T>`
-
-r[lang-types.rc.receiver]
-[Methods] can take [`Rc<Self>`] as a receiver.
-
-r[lang-types.arc]
-## `Arc<T>`
-
-r[lang-types.arc.receiver]
-[Methods] can take [`Arc<Self>`] as a receiver.
-
-r[lang-types.pin]
-## `Pin<P>`
-
-r[lang-types.pin.receiver]
-[Methods] can take [`Pin<P>`] as a receiver.
 
 r[lang-types.unsafe-cell]
 ## `UnsafeCell<T>`
@@ -83,6 +61,9 @@ used as a method receiver; that is, the type of a `self` parameter for a
 method. There is a blanket implementation of `Receiver` for all `T: Deref`,
 so it's rare to implement `Receiver` directly: you'd only normally do this
 for smart pointer types which for some reason can't implement `Deref`.
+Built-in types which implement `Receiver` (via `Deref`) and are commonly
+used as method receivers include `Rc<T>`, `Arc<T>`, `Box<T>`, and `Pin<P>`
+where `P: Deref`.
 
 r[lang-types.drop]
 ## `Drop`
