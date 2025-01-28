@@ -113,7 +113,7 @@ If the type of the `self` parameter is specified, it is limited to types resolvi
 to a type implementing the [`Receiver`] trait with a `Target` associated type
 matching the implementing type. Typically, this means the type itself, a
 reference to it, or a smart pointer referring to it (such as [`Box<Self>`]
-or [`Arc<Self>`]).
+or `Arc<Self>`).
 
 This can also include the contextual type alias `Self`, other type aliases,
 or associated type projections resolving to the implementing type.
@@ -555,7 +555,6 @@ fn main() {
 [_OuterAttribute_]: ../attributes.md
 [_TypeAlias_]: type-aliases.md
 [_Visibility_]: ../visibility-and-privacy.md
-[`Arc<Self>`]: ../special-types-and-traits.md#arct
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
 [`Pin<P>`]: ../special-types-and-traits.md#pinp
 [`Rc<Self>`]: ../special-types-and-traits.md#rct

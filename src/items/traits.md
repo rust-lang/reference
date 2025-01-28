@@ -102,13 +102,13 @@ r[items.traits.dyn-compatible.associated-functions]
     * Dispatchable functions must:
         * Not have any type parameters (although lifetime parameters are allowed).
         * Be a [method] that does not use `Self` except in the type of the receiver.
-        * Have a receiver with one of the following types:
+        * Have a receiver implementing [`Receiver`], for example one of the following types:
             * `&Self` (i.e. `&self`)
             * `&mut Self` (i.e `&mut self`)
             * [`Box<Self>`]
-            * [`Rc<Self>`]
-            * [`Arc<Self>`]
-            * [`Pin<P>`] where `P` is one of the types above
+            * `Rc<Self>`
+            * `Arc<Self>`
+            * `Pin<P>` where `P` is one of the types above
         * Not have an opaque return type; that is,
             * Not be an `async fn` (which has a hidden `Future` type).
             * Not have a return position `impl Trait` type (`fn example(&self) -> impl Trait`).
@@ -383,10 +383,8 @@ fn main() {
 [trait implementation]: implementations.md#trait-implementations
 [`Send`]: ../special-types-and-traits.md#send
 [`Sync`]: ../special-types-and-traits.md#sync
-[`Arc<Self>`]: ../special-types-and-traits.md#arct
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
-[`Pin<P>`]: ../special-types-and-traits.md#pinp
-[`Rc<Self>`]: ../special-types-and-traits.md#rct
+[`Receiver`]: ../special-types-and-traits.md#receiver
 [`async`]: functions.md#async-functions
 [`const`]: functions.md#const-functions
 [type namespace]: ../names/namespaces.md
