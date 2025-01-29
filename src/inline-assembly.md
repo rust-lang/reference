@@ -194,7 +194,7 @@ All other named and positional operands must appear at least once in the templat
 let x = 5;
 # #[cfg(target_arch = "x86_64")] {
   // We have to name all of the operands in the format string
-  unsafe { core::arch::asm!("". in(reg) 5, x = const 5); }
+  unsafe { core::arch::asm!("", in(reg) 5, x = const 5); }
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
