@@ -10,6 +10,9 @@ git-repository-url = "https://github.com/rust-lang/reference/"
 edit-url-template = "https://github.com/rust-lang/reference/edit/master/{path}"
 smart-punctuation = true
 
+[output.html.search.chapter]
+"test-summary.md" = { enable = false }
+
 [output.html.redirect]
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
 "/unsafe-blocks.html" = "unsafe-keyword.html"
