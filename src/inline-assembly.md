@@ -857,9 +857,9 @@ r[asm.abi-clobbers.many]
 `clobber_abi` may be specified any number of times. It will insert a clobber for all unique registers in the union of all specified calling conventions.
 
 ```rust
+# #[cfg(target_arch = "x86_64")] {
 extern "sysv64" fn foo() -> i32{ 0 }
 extern "win64" fn bar(x: i32) -> i32{ x + 1}
-# #[cfg(target_arch = "x86_64")] {
   let z: i32;
   // We can even call multiple functions with different conventions and different saved registers
   unsafe { core::arch::asm!("call {}", "mov ecx, eax", "call {}", sym foo, sym bar, out("rax") z, clobber_abi("C")); }
@@ -1016,6 +1016,7 @@ fn main() -> !{
   // We can use an instruction to trap execution inside of a noreturn block
   unsafe { core::arch::asm!("ud2", options(noreturn)); }
 # }
+# #[cfg(not(target_arch = "x86_64"))] panic!("no return");
 }
 ```
 
