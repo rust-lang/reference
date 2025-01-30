@@ -77,7 +77,7 @@ r[panic.unwind.ffi.undefined]
 Unwinding with the wrong ABI is undefined behavior:
 
 * Causing an unwind into Rust code from a foreign function that was called via a function declaration or pointer declared with a non-unwinding ABI, such as `"C"`, `"system"`, etc. (For example, this case occurs when such a function written in C++ throws an exception that is uncaught and propagates to Rust.)
-* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or another ABI that permits unwinding) from a runtime that does not support. unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
+* Calling a Rust `extern` function that unwinds (with `extern "C-unwind"` or another ABI that permits unwinding) from a runtime that does not support unwinding, such as code compiled with GCC or Clang using `-fno-exceptions`
 
 r[panic.unwind.ffi.catch-foreign]
 Catching a foreign unwinding operation (such as a C++ exception) using [`std::panic::catch_unwind`], [`std::thread::JoinHandle::join`], or by letting it propagate beyond the Rust `main()` function or thread root will have one of two behaviors, and it is unspecified which will occur:
