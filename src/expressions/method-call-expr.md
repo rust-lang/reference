@@ -15,22 +15,155 @@ let log_pi = pi.unwrap_or(1.0).log(2.72);
 
 When looking up a method call, the receiver may be automatically dereferenced or borrowed in order to call a method.
 This requires a more complex lookup process than for other functions, since there may be a number of possible methods to call.
+
 The following procedure is used:
 
-The first step is to build a list of candidate receiver types.
-Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
-Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
+## Determining candidate types
 
-For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
+First, a list of "candidate types" is assembled.
 
-Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:
+These types are found by taking the receiver type and iterating, following either:
 
-1. `T`'s inherent methods (methods implemented directly on `T`).
-1. Any of the methods provided by a [visible] trait implemented by `T`.
-   If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first.
-   Then all remaining methods in scope are looked up.
+* The built-in [dereference]; or
+* `<T as Receiver>::Target`
 
-> Note: the lookup is done for each type in order, which can occasionally lead to surprising results.
+to the next type. (If a step involved following the `Receiver` target, we also
+note whether it would have been reachable by following `<T as Deref::Target>`
+- this information is used later).
+
+At the end, an additional candidate step may be added for
+an [unsized coercion].
+
+Each step of this chain provides a possible `self` type for methods that
+might be called. The list will be used in two different ways:
+
+* To find types that might have methods. This is used in the
+  "determining candidate methods" step, described below. This considers
+  the full list.
+* To find types to which the receiver can be converted. This is used in the
+  "picking a method from the candidates" step, also described below - in this
+  case, we only consider the types reachable via `Deref` or built-in
+  dereferencing.
+
+There is a built-in implementation of `Receiver` for all `T: Deref`, so
+most of the time, every step can be reached through either mechanism.
+Sometimes, more types can be reached via the `Receiver` chain, and so
+more types will be considered for the former usage than the latter usage.
+
+For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types
+will be `Box<[i32;2]>`,`[i32; 2]` (by dereferencing), and `[i32]` (by unsized
+coercion).
+
+If `SmartPtr<T>: Receiver<Target=T>`, and the receiver type is `&SmartPtr<Foo>`,
+then the candidate types would be `&SmartPtr<Foo>`, `SmartPtr<Foo>` and `Foo`.
+
+## Determining candidate methods
+
+This list of candidate types is then converted to a list of candidate methods.
+For each step, the `self` type is used to determine what searches to perform:
+
+* For a trait object, there is first a search for for inherent candidates for
+  the object, then inherent impl candidates for the type.
+* For a struct, enum, or foreign type, there is a search for inherent
+  impl candidates for the type.
+* For a type param, there's a search for for inherent candidates on the param.
+* For other tyings (e.g. bools, chars) there's a search for inherent candidates
+  for the incoherent type.
+* After any of these, there's a further search for extension candidates for
+  traits in scope.
+
+These searches contribute to list of all the candidate methods found;
+separate lists are maintained for inherent and extension candidates. Only
+[visible] candidates are included.
+
+(For diagnostic purposes, the search may be performed slightly differently, for
+instance searching all traits not just those in scope, or also noting
+inaccessible candidates.)
+
+## Picking a method from the candidates
+
+Once the list of candidate methods is assembled, the "picking" process
+starts.
+
+Once again, the candidate types are iterated. This time, only those types
+are iterated which can be reached via the `Deref` trait or built-in derefs;
+as noted above, this may be a shorter list than those that can be reached
+using the `Receiver` trait.
+
+For each step, picking is attempted in this order:
+
+* First, a by-value method, where the `self` type precisely matches
+  * First for inherent methods
+  * Then for extension methods
+* Then, a method where `self` is received by immutable reference (`&T`)
+  * First for inherent methods
+  * Then for extension methods
+* Then, a method where `self` is received by mutable reference (`&mut T`)
+  * First for inherent methods
+  * Then for extension methods
+* Then, a method where the `self` type is a `*const T` - this is only considered
+  if the self type is `*mut T`)
+  * First for inherent methods
+  * Then for extension methods
+* And finally, a method with a `Pin` that's reborrowed, if the `pin_ergonomics`
+  feature is enabled.
+  * First for inherent methods
+  * Then for extension methods
+
+For each of those searches, if exactly one candidate is identified,
+it's picked, and the search stops. If this results in multiple possible candidates,
+then it is an error, and the receiver must be [converted][disambiguate call]
+to an appropriate receiver type to make the method call.
+
+With the example above of `SmartPtr<T>: Receiver<Target=T>`, and the receiver
+type `&SmartPtr<Foo>`, this mechanism would pick:
+
+```rust,ignore
+impl Foo {
+   fn method(self: &SmartPtr<Foo>) {}
+}
+```
+
+but would not pick
+
+```rust,ignore
+impl Foo {
+   fn method(self: &Foo) {}
+}
+```
+
+because the receiver could not be converted to `&Foo` using the `Deref` chain,
+only the `Receiver` chain.
+
+## Extra details
+
+There are a few details not considered in this overview:
+
+* The search for candidate methods will also consider searches for
+  incoherent types if `rustc_has_incoherent_inherent_impls` is active for
+  a `dyn`, struct, enum, or foreign type.
+* If there are multiple candidates from traits, they may in fact be
+  identical, and the picking operation collapses them to a single pick to avoid
+  reporting conflicts.
+* Extra searches are performed to spot "shadowing" of pointee methods
+  by smart pointer methods, during the picking process. If a by-value pick
+  is going to be returned, an extra search is performed for a `&T` or
+  `&mut T` method. Similarly, if a `&T` method is to be returned, an extra
+  search is performed for `&mut T` methods. These extra searches consider
+  only inherent methods, where `T` is identical, but the method is
+  found from a step further along the `Receiver` chain. If any such method
+  is found, an ambiguity error is emitted.
+* An error is emitted if we reached a recursion limit.
+* The picking process emits some adjustments which must be made to the
+  receiver type in order to get to the correct `self` type. This includes
+  a number of dereferences, a possible autoreferencing, a conversion from
+  a mutable pointer to a constant pointer, or a pin reborrow.
+* Extra lists are maintained for diagnostic purposes:
+  unstable candidates, unsatisfied predicates, and static candidates.
+
+## Net results
+
+> The lookup is done for each type in order, which can occasionally lead to surprising results.
 > The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
 >
 > ```rust
@@ -57,14 +190,6 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
 >   f.bar();
 > }
 > ```
-
-If this results in multiple possible candidates, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
-
-This process does not take into account the mutability or lifetime of the receiver, or whether a method is `unsafe`.
-Once a method is looked up, if it can't be called for one (or more) of those reasons, the result is a compiler error.
-
-If a step is reached where there is more than one possible method, such as where generic methods or traits are considered the same, then it is a compiler error.
-These cases require a [disambiguating function call syntax] for method and function invocation.
 
 > **Edition differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
