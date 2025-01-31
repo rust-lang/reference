@@ -15,7 +15,7 @@ When the operand is [mutable], the field expression is also mutable.
 r[expr.field.form]
 The syntax for a field expression is an expression, called the *container operand*, then a `.`, and finally an [identifier].
 
-r[expr.field.constraint]
+r[expr.field.not-method-call]
 Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression].
 That is, they cannot be the function operand of a [call expression].
 

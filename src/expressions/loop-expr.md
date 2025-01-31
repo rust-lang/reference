@@ -144,7 +144,7 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 }
 ```
 
-r[expr.loop.while.let.restriction]
+r[expr.loop.while.let.lazy-bool]
 As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 
 r[expr.loop.for]
@@ -302,7 +302,7 @@ Labelled block expressions are exactly like block expressions, except that they 
 r[expr.loop.block-labels.break]
 Unlike loops, `break` expressions within a labelled block expression *must* have a label (i.e. the label is not optional).
 
-r[expr.loop.block-labels.restriction]
+r[expr.loop.block-labels.label-required]
 Similarly, labelled block expressions *must* begin with a label.
 
 ```rust
@@ -344,7 +344,7 @@ In the case of a `for` loop, the head is the call-expression controlling the loo
 r[expr.loop.continue.label]
 Like `break`, `continue` is normally associated with the innermost enclosing loop, but `continue 'label` may be used to specify the loop affected.
 
-r[expr.loop.continue.constraint]
+r[expr.loop.continue.in-loop-only]
 A `continue` expression is only permitted in the body of a loop.
 
 r[expr.loop.break-value]

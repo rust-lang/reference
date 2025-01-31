@@ -16,7 +16,7 @@ r[expr.if.intro]
 An `if` expression is a conditional branch in program control.
 The syntax of an `if` expression is a condition operand, followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
 
-r[expr.if.constraint]
+r[expr.if.condition-bool]
 The condition operands must have the [boolean type].
 
 r[expr.if.condition-true]
@@ -152,7 +152,7 @@ if let E::X(n) | E::Y(n) = v {
 }
 ```
 
-r[expr.if.let.restriction]
+r[expr.if.let.lazy-bool]
 The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
 When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:

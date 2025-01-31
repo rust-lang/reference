@@ -68,7 +68,7 @@ r[expr.struct.update]
 r[expr.struct.update.intro]
 A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
 
-r[expr.struct.update.constraint]
+r[expr.struct.update.base-same-type]
 The expression following `..` (the base) must have the same struct type as the new struct type being formed.
 
 r[expr.struct.update.fields]
@@ -85,7 +85,7 @@ Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
 drop(y_ref);
 ```
 
-r[expr.struct.restriction]
+r[expr.struct.brace-restricted-positions]
 Struct expressions with curly braces can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
 However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
 

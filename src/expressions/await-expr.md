@@ -14,7 +14,7 @@ future is ready to produce a value.
 r[expr.await.construct]
 The syntax for an await expression is an expression with a type that implements the [`IntoFuture`] trait, called the *future operand*, then the token `.`, and then the `await` keyword.
 
-r[expr.await.constraints]
+r[expr.await.allowed-positions]
 Await expressions are legal only within an [async context], like an [`async fn`], [`async` closure], or [`async` block].
 
 r[expr.await.effects]

@@ -151,7 +151,7 @@ r[expr.match.guard.value]
 Only when the guard evaluates to true is the value moved, or copied, from the scrutinee into the variable.
 This allows shared borrows to be used inside guards without moving out of the scrutinee in case guard fails to match.
 
-r[expr.match.guard.restriction]
+r[expr.match.guard.no-mutation]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
 r[expr.match.attributes]

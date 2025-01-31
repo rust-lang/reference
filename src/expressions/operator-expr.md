@@ -196,7 +196,7 @@ r[expr.try.syntax]
 r[expr.try.intro]
 The question mark operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
 
-r[expr.try.constraint]
+r[expr.try.restricted-types]
 It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
 
 r[expr.try.behavior-std-result]
@@ -358,7 +358,7 @@ r[expr.cmp.syntax]
 r[expr.cmp.intro]
 Comparison operators are also defined both for primitive types and many types in the standard library.
 
-r[expr.cmp.restriction]
+r[expr.cmp.paren-chaining]
 Parentheses are required when chaining comparison operators. For example, the expression `a == b == c` is invalid and may be written as `(a == b) == c`.
 
 r[expr.cmp.trait]
@@ -736,12 +736,12 @@ let (mut a, mut b) = (0, 1);
 (b, a) = (a, b);
 ```
 
-r[expr.assign.destructure.restriction]
+r[expr.assign.destructure.assignee]
 In contrast to destructuring declarations using `let`, patterns may not appear on the left-hand side of an assignment due to syntactic ambiguities.
 Instead, a group of expressions that correspond to patterns are designated to be [assignee expressions][assignee expression], and permitted on the left-hand side of an assignment.
 Assignee expressions are then desugared to pattern matches followed by sequential assignment.
 
-r[expr.assign.destructure.constraint]
+r[expr.assign.destructure.irrefutable]
 The desugared patterns must be irrefutable: in particular, this means that only slice patterns whose length is known at compile-time, and the trivial slice `[..]`, are permitted for destructuring assignment.
 
 The desugaring method is straightforward, and is illustrated best by example.
@@ -818,7 +818,7 @@ The syntax of compound assignment is a [mutable] [place expression], the *assign
 r[expr.compound-assign.place]
 Unlike other place operands, the assigned place operand must be a place expression.
 
-r[expr.compound-assign.constraint]
+r[expr.compound-assign.no-value]
 Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
 r[expr.compound-assign.operand-order]

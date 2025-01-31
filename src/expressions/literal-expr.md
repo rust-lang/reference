@@ -129,7 +129,7 @@ A character literal expression consists of a single [CHAR_LITERAL] token.
 r[expr.literal.char.type]
 The expression's type is the primitive [`char`][textual types] type.
 
-r[expr.literal.char.restriction]
+r[expr.literal.char.no-suffix]
 The token must not have a suffix.
 
 r[expr.literal.char.literal-content]
@@ -171,7 +171,7 @@ r[expr.literal.string.type]
 The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type.
 That is, the type is `&'static str`.
 
-r[expr.literal.string.restriction]
+r[expr.literal.string.no-suffix]
 The token must not have a suffix.
 
 r[expr.literal.string.literal-content]
@@ -218,7 +218,7 @@ A byte literal expression consists of a single [BYTE_LITERAL] token.
 r[expr.literal.byte-char.literal]
 The expression's type is the primitive [`u8`][numeric types] type.
 
-r[expr.literal.byte-char.restriction]
+r[expr.literal.byte-char.no-suffix]
 The token must not have a suffix.
 
 r[expr.literal.byte-char.literal-content]
@@ -259,7 +259,7 @@ r[expr.literal.byte-string.type]
 The expression's type is a shared reference (with `static` lifetime) to an array whose element type is [`u8`][numeric types].
 That is, the type is `&'static [u8; N]`, where `N` is the number of bytes in the represented string described below.
 
-r[expr.literal.byte-string.restriction]
+r[expr.literal.byte-string.no-suffix]
 The token must not have a suffix.
 
 r[expr.literal.byte-string.literal-content]
@@ -308,7 +308,7 @@ r[expr.literal.c-string.type]
 The expression's type is a shared reference (with `static` lifetime) to the standard library [CStr] type.
 That is, the type is `&'static core::ffi::CStr`.
 
-r[expr.literal.c-string.restriction]
+r[expr.literal.c-string.no-suffix]
 The token must not have a suffix.
 
 r[expr.literal.c-string.literal-content]
