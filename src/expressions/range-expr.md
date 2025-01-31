@@ -1,6 +1,5 @@
-# Range expressions
-
 r[expr.range]
+# Range expressions
 
 r[expr.range.syntax]
 > **<sup>Syntax</sup>**\

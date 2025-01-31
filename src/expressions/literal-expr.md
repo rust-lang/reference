@@ -1,6 +1,5 @@
-# Literal expressions
-
 r[expr.literal]
+# Literal expressions
 
 r[expr.literal.syntax]
 > **<sup>Syntax</sup>**\
@@ -37,9 +36,8 @@ In the descriptions below, the _string representation_ of a token is the sequenc
 
 > **Note**: this string representation never includes a character `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
 
-## Escapes
-
 r[expr.literal.escape]
+## Escapes
 
 r[expr.literal.escape.intro]
 The descriptions of textual literal expressions below make use of several forms of _escape_.
@@ -53,9 +51,8 @@ In the definitions of escapes below:
  * An _octal digit_ is any of the characters in the range \[`0`-`7`].
  * A _hexadecimal digit_ is any of the characters in the ranges \[`0`-`9`], \[`a`-`f`], or \[`A`-`F`].
 
-### Simple escapes
-
 r[expr.literal.escape.simple]
+### Simple escapes
 
 Each sequence of characters occurring in the first column of the following table is an escape sequence.
 
@@ -71,9 +68,8 @@ In each case, the escaped value is the character given in the corresponding entr
 | `\'`            | U+0027 (APOSTROPHE)      |
 | `\\`            | U+005C (REVERSE SOLIDUS) |
 
-### 8-bit escapes
-
 r[expr.literal.escape.hex-octet]
+### 8-bit escapes
 
 The escape sequence consists of `\x` followed by two hexadecimal digits.
 
@@ -81,17 +77,15 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 
 > **Note**: the escaped value therefore has a [Unicode scalar value] in the range of [`u8`][numeric types].
 
-### 7-bit escapes
-
 r[expr.literal.escape.hex-ascii]
+### 7-bit escapes
 
 The escape sequence consists of `\x` followed by an octal digit then a hexadecimal digit.
 
 The escaped value is the character whose [Unicode scalar value] is the result of interpreting the final two characters in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
 
-### Unicode escapes
-
 r[expr.literal.escape.unicode]
+### Unicode escapes
 
 The escape sequence consists of `\u{`, followed by a sequence of characters each of which is a hexadecimal digit or `_`, followed by `}`.
 
@@ -99,9 +93,8 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 
 > **Note**: the permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
 
-### String continuation escapes
-
 r[expr.literal.continuation]
+### String continuation escapes
 
 The escape sequence consists of `\` followed immediately by `U+000A` (LF), and all following whitespace characters before the next non-whitespace character.
 For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U+000D` (CR), and `U+0020` (SPACE).
@@ -127,9 +120,8 @@ The escaped value is an empty sequence of characters.
 > Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
 > See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
-## Character literal expressions
-
 r[expr.literal.char]
+## Character literal expressions
 
 r[expr.literal.char.intro]
 A character literal expression consists of a single [CHAR_LITERAL] token.
@@ -169,9 +161,8 @@ Examples of character literal expressions:
 '\u{00E6}';                        // LATIN SMALL LETTER AE (U+00E6)
 ```
 
-## String literal expressions
-
 r[expr.literal.string]
+## String literal expressions
 
 r[expr.literal.string.intro]
 A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
@@ -218,9 +209,8 @@ r##"foo #"# bar"##;                // foo #"# bar
 "\\x52"; r"\x52";                  // \x52
 ```
 
-## Byte literal expressions
-
 r[expr.literal.byte-char]
+## Byte literal expressions
 
 r[expr.literal.byte-char.intro]
 A byte literal expression consists of a single [BYTE_LITERAL] token.
@@ -259,9 +249,8 @@ b'\x52';                           // 82
 b'\xA0';                           // 160
 ```
 
-## Byte string literal expressions
-
 r[expr.literal.byte-string]
+## Byte string literal expressions
 
 r[expr.literal.byte-string.intro]
 A byte string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
@@ -309,9 +298,8 @@ b"\x52"; b"R"; br"R";                // R
 b"\\x52"; br"\x52";                  // \x52
 ```
 
-## C string literal expressions
-
 r[expr.literal.c-string]
+## C string literal expressions
 
 r[expr.literal.c-string.intro]
 A C string literal expression consists of a single [C_STRING_LITERAL] or [RAW_C_STRING_LITERAL] token.
@@ -366,9 +354,8 @@ c"\xE6".to_bytes();                  // [230]
 c"\u{00E6}".to_bytes();              // [195, 166]
 ```
 
-## Integer literal expressions
-
 r[expr.literal.int]
+## Integer literal expressions
 
 r[expr.literal.int.intro]
 An integer literal expression consists of a single [INTEGER_LITERAL] token.
@@ -442,9 +429,8 @@ r[expr.literal.int.cast]
 > **Note**: `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
 > See [Overflow] for notes on representing the most negative value for a signed type.
 
-## Floating-point literal expressions
-
 r[expr.literal.float]
+## Floating-point literal expressions
 
 r[expr.literal.float.intro]
 A floating-point literal expression has one of two forms:
@@ -495,9 +481,8 @@ r[expr.literal.float.value]
 > The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
 > In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
 
-## Boolean literal expressions
-
 r[expr.literal.bool]
+## Boolean literal expressions
 
 r[expr.literal.bool.intro]
 A boolean literal expression consists of one of the keywords `true` or `false`.

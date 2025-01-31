@@ -1,6 +1,5 @@
-# Block expressions
-
 r[expr.block]
+# Block expressions
 
 r[expr.block.syntax]
 > **<sup>Syntax</sup>**\
@@ -87,9 +86,8 @@ Blocks are always [value expressions] and evaluate the last operand in value exp
 > }
 > ```
 
-## `async` blocks
-
 r[expr.block.async]
+## `async` blocks
 
 r[expr.block.async.syntax]
 > **<sup>Syntax</sup>**\
@@ -116,24 +114,21 @@ The actual data format for this type is unspecified.
 
 > **Edition differences**: Async blocks are only available beginning with Rust 2018.
 
-### Capture modes
-
 r[expr.block.async.capture]
+### Capture modes
 
 Async blocks capture variables from their environment using the same [capture modes] as closures.
 Like closures, when written `async { .. }` the capture mode for each variable will be inferred from the content of the block.
 `async move { .. }` blocks however will move all referenced variables into the resulting future.
 
-### Async context
-
 r[expr.block.async.context]
+### Async context
 
 Because async blocks construct a future, they define an **async context** which can in turn contain [`await` expressions].
 Async contexts are established by async blocks as well as the bodies of async functions, whose semantics are defined in terms of async blocks.
 
-### Control-flow operators
-
 r[expr.block.async.function]
+### Control-flow operators
 
 r[expr.block.async.function.intro]
 Async blocks act like a function boundary, much like closures.
@@ -155,9 +150,8 @@ loop {
 }
 ```
 
-## `const` blocks
-
 r[expr.block.const]
+## `const` blocks
 
 r[expr.block.const.syntax]
 > **<sup>Syntax</sup>**\
@@ -221,9 +215,8 @@ if false {
 }
 ```
 
-## `unsafe` blocks
-
 r[expr.block.unsafe]
+## `unsafe` blocks
 
 > **<sup>Syntax</sup>**\
 > _UnsafeBlockExpression_ :\
@@ -246,15 +239,13 @@ unsafe {
 let a = unsafe { an_unsafe_fn() };
 ```
 
-## Labelled block expressions
-
 r[expr.block.label]
+## Labelled block expressions
 
 Labelled block expressions are documented in the [Loops and other breakable expressions] section.
 
-## Attributes on block expressions
-
 r[expr.block.attributes]
+## Attributes on block expressions
 
 r[expr.block.attributes.inner-attributes]
 [Inner attributes] are allowed directly after the opening brace of a block expression in the following situations:

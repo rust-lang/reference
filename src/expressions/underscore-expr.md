@@ -1,6 +1,5 @@
-# `_` expressions
-
 r[expr.placeholder]
+# `_` expressions
 
 r[expr.placeholder.syntax]
 > **<sup>Syntax</sup>**\

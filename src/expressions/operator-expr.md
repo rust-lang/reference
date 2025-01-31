@@ -1,6 +1,5 @@
-# Operator expressions
-
 r[expr.operator]
+# Operator expressions
 
 r[expr.operator.syntax]
 > **<sup>Syntax</sup>**\
@@ -22,9 +21,8 @@ Operators are defined for built in types by the Rust language.
 r[expr.operator.trait]
 Many of the following operators can also be overloaded using traits in `std::ops` or `std::cmp`.
 
-## Overflow
-
 r[expr.operator.int-overflow]
+## Overflow
 
 r[expr.operator.int-overflow.intro]
 Integer operators will panic when they overflow when compiled in debug mode.
@@ -52,9 +50,8 @@ r[expr.operator.int-overflow.shift]
 >
 > In `rustc`, these most negative expressions are also ignored by the `overflowing_literals` lint check.
 
-## Borrow operators
-
 r[expr.operator.borrow]
+## Borrow operators
 
 > **<sup>Syntax</sup>**\
 > _BorrowExpression_ :\
@@ -109,9 +106,8 @@ let a = && && mut 10;
 let a = & & & & mut 10;
 ```
 
-### Raw borrow operators
-
 r[expr.borrow.raw]
+### Raw borrow operators
 
 r[expr.borrow.raw.intro]
 `&raw const` and `&raw mut` are the *raw borrow operators*.
@@ -158,9 +154,8 @@ unsafe { f1_ptr.write(true); }
 let init = unsafe { uninit.assume_init() };
 ```
 
-## The dereference operator
-
 r[expr.deref]
+## The dereference operator
 
 r[expr.deref.syntax]
 > **<sup>Syntax</sup>**\
@@ -190,9 +185,8 @@ let y = &mut 9;
 assert_eq!(*y, 11);
 ```
 
-## The question mark operator
-
 r[expr.try]
+## The question mark operator
 
 r[expr.try.syntax]
 > **<sup>Syntax</sup>**\
@@ -253,9 +247,8 @@ assert_eq!(try_option_none(), None);
 r[expr.try.trait]
 `?` cannot be overloaded.
 
-## Negation operators
-
 r[expr.negate]
+## Negation operators
 
 r[expr.negate.syntax]
 > **<sup>Syntax</sup>**\
@@ -287,9 +280,8 @@ assert_eq!(!x, -7);
 assert_eq!(true, !false);
 ```
 
-## Arithmetic and Logical Binary Operators
-
 r[expr.arith-logic]
+## Arithmetic and Logical Binary Operators
 
 r[expr.arith-logic.syntax]
 > **<sup>Syntax</sup>**\
@@ -350,9 +342,8 @@ assert_eq!(13 << 3, 104);
 assert_eq!(-10 >> 2, -3);
 ```
 
-## Comparison Operators
-
 r[expr.cmp]
+## Comparison Operators
 
 r[expr.cmp.syntax]
 > **<sup>Syntax</sup>**\
@@ -409,9 +400,8 @@ assert!('A' <= 'B');
 assert!("World" >= "Hello");
 ```
 
-## Lazy boolean operators
-
 r[expr.bool-logic]
+## Lazy boolean operators
 
 r[expr.bool-logic.syntax]
 > **<sup>Syntax</sup>**\
@@ -432,9 +422,8 @@ let x = false || true; // true
 let y = false && panic!(); // false, doesn't evaluate `panic!()`
 ```
 
-## Type cast expressions
-
 r[expr.as]
+## Type cast expressions
 
 r[expr.as.syntax]
 > **<sup>Syntax</sup>**\
@@ -492,9 +481,8 @@ reference types and `mut` or `const` in pointer types.
 
 ### Semantics
 
-#### Numeric cast
-
 r[expr.as.numeric]
+#### Numeric cast
 
 r[expr.as.numeric.int-same-size]
 * Casting between two integers of the same size (e.g. i32 -> u32) is a no-op
@@ -595,9 +583,8 @@ expected.
 number, preferring the one with an even least significant digit if exactly
 halfway between two floating point numbers.
 
-#### Enum cast
-
 r[expr.as.enum]
+#### Enum cast
 
 Casts an enum to its discriminant, then uses a numeric cast if needed.
 Casting is limited to the following kinds of enumerations:
@@ -612,9 +599,8 @@ assert_eq!(Enum::B as i32, 1);
 assert_eq!(Enum::C as i32, 2);
 ```
 
-#### Primitive to integer cast
-
 r[expr.as.bool-char-as-int]
+#### Primitive to integer cast
 
 * `false` casts to `0`, `true` casts to `1`
 * `char` casts to the value of the code point, then uses a numeric cast if needed.
@@ -626,9 +612,9 @@ assert_eq!('A' as i32, 65);
 assert_eq!('Ö' as i32, 214);
 ```
 
+r[expr.as.u8-as-char]
 #### `u8` to `char` cast
 
-r[expr.as.u8-as-char]
 Casts to the `char` with the corresponding code point.
 
 ```rust
@@ -636,16 +622,14 @@ assert_eq!(65u8 as char, 'A');
 assert_eq!(214u8 as char, 'Ö');
 ```
 
-#### Pointer to address cast
-
 r[expr.as.pointer-as-int]
+#### Pointer to address cast
 
 Casting from a raw pointer to an integer produces the machine address of the referenced memory.
 If the integer type is smaller than the pointer type, the address may be truncated; using `usize` avoids this.
 
-#### Address to pointer cast
-
 r[expr.as.int-as-pointer]
+#### Address to pointer cast
 
 Casting from an integer to a raw pointer interprets the integer as a memory address and produces a pointer referencing that memory.
 
@@ -668,9 +652,8 @@ unsafe {
 assert_eq!(values[1], 3);
 ```
 
-#### Pointer-to-pointer cast
-
 r[expr.as.pointer]
+#### Pointer-to-pointer cast
 
 r[expr.as.pointer.behavior]
 `*const T` / `*mut T` can be cast to `*const U` / `*mut U` with the following behavior:
@@ -691,9 +674,8 @@ r[expr.as.pointer.unsized]
 r[expr.as.pointer.discard-metadata]
 - If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
 
-## Assignment expressions
-
 r[expr.assign]
+## Assignment expressions
 
 r[expr.assign.syntax]
 > **<sup>Syntax</sup>**\
@@ -712,9 +694,8 @@ In its most basic form, an assignee expression is a [place expression], and we d
 r[expr.assign.behavior-destructring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
-### Basic assignments
-
 r[expr.assign.basic]
+### Basic assignments
 
 r[expr.assign.evaluation-order]
 Evaluating assignment expressions begins by evaluating its operands.
@@ -742,9 +723,8 @@ let y = 0;
 x = y;
 ```
 
-### Destructuring assignments
-
 r[expr.assign.destructure]
+### Destructuring assignments
 
 r[expr.assign.destructure.intro]
 Destructuring assignment is a counterpart to destructuring pattern matches for variable declaration, permitting assignment to complex values, such as tuples or structs.
@@ -805,9 +785,8 @@ r[expr.assign.destructure.discard-value]
 r[expr.assign.destructure.default-binding]
 Note that default binding modes do not apply for the desugared expression.
 
-## Compound assignment expressions
-
 r[expr.compound-assign]
+## Compound assignment expressions
 
 r[expr.compound-assign.syntax]
 > **<sup>Syntax</sup>**\

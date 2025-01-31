@@ -1,6 +1,5 @@
-# Await expressions
-
 r[expr.await]
+# Await expressions
 
 r[expr.await.syntax]
 > **<sup>Syntax</sup>**\
@@ -30,16 +29,14 @@ More specifically, an await expression has the following effect.
 
 > **Edition differences**: Await expressions are only available beginning with Rust 2018.
 
-## Task context
-
 r[expr.await.task]
+## Task context
 
 The task context refers to the [`Context`] which was supplied to the current [async context] when the async context itself was polled.
 Because `await` expressions are only legal in an async context, there must be some task context available.
 
-## Approximate desugaring
-
 r[expr.await.desugar]
+## Approximate desugaring
 
 Effectively, an await expression is roughly equivalent to the following non-normative desugaring:
 

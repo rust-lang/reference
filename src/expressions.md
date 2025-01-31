@@ -1,6 +1,5 @@
-# Expressions
-
 r[expr]
+# Expressions
 
 r[expr.syntax]
 > **<sup>Syntax</sup>**\
@@ -68,9 +67,8 @@ Blocks are just another kind of expression, so blocks, statements, expressions, 
 
 > **Note**: We give names to the operands of expressions so that we may discuss them, but these names are not stable and may be changed.
 
-## Expression precedence
-
 r[expr.precedence]
+## Expression precedence
 
 The precedence of Rust operators and expressions is ordered as follows, going from strong to weak.
 Binary Operators at the same precedence level are grouped in the order given by their associativity.
@@ -97,9 +95,8 @@ Binary Operators at the same precedence level are grouped in the order given by 
 | `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
 | `return` `break` closures   |                     |
 
-## Evaluation order of operands
-
 r[expr.operand-order]
+## Evaluation order of operands
 
 r[expr.operand-order.default]
 The following list of expressions all evaluate their operands the same way, as described after the list.
@@ -147,9 +144,8 @@ assert_eq!(
 
 > **Note**: Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
-## Place Expressions and Value Expressions
-
 r[expr.place-value]
+## Place Expressions and Value Expressions
 
 r[expr.place-value.intro]
 Expressions are divided into two main categories: place expressions and value expressions;
@@ -200,9 +196,8 @@ Explicitly, the assignee expressions are:
 r[expr.place-value.parenthesis]
 Arbitrary parenthesisation is permitted inside assignee expressions.
 
-### Moved and copied types
-
 r[expr.move]
+### Moved and copied types
 
 r[expr.move.intro]
 When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
@@ -227,9 +222,8 @@ After moving out of a place expression that evaluates to a local variable, the l
 r[expr.move.place-invalid]
 In all other cases, trying to use a place expression in a value expression context is an error.
 
-### Mutability
-
 r[expr.mut]
+### Mutability
 
 r[expr.mut.intro]
 For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_.
@@ -251,17 +245,15 @@ The following expressions can be mutable place expression contexts:
 * [Array indexing] of a type that implements `IndexMut`:
   this then evaluates the value being indexed, but not the index, in mutable place expression context.
 
-### Temporaries
-
 r[expr.temporary]
+### Temporaries
 
 When using a value expression in most place expression contexts, a temporary unnamed memory location is created and initialized to that value.
 The expression evaluates to that location instead, except if [promoted] to a `static`.
 The [drop scope] of the temporary is usually the end of the enclosing statement.
 
-### Implicit Borrows
-
 r[expr.implicit-borrow]
+### Implicit Borrows
 
 r[expr.implicit-borrow-intro]
 Certain expressions will treat an expression as a place expression by implicitly borrowing it.
@@ -291,16 +283,14 @@ Implicit borrows may be taken in the following expressions:
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 
-## Overloading Traits
-
 r[expr.overload]
+## Overloading Traits
 
 Many of the following operators and expressions can also be overloaded for other types using traits in `std::ops` or `std::cmp`.
 These traits also exist in `core::ops` and `core::cmp` with the same names.
 
-## Expression Attributes
-
 r[expr.attr]
+## Expression Attributes
 
 r[expr.attr.restriction]
 [Outer attributes][_OuterAttribute_] before an expression are allowed only in a few specific cases:

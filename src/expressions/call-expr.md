@@ -1,6 +1,5 @@
-# Call expressions
-
 r[expr.call]
+# Call expressions
 
 r[expr.call.syntax]
 > **<sup>Syntax</sup>**\
@@ -36,9 +35,8 @@ let three: i32 = add(1i32, 2i32);
 let name: &'static str = (|| "Rust")();
 ```
 
-## Disambiguating Function Calls
-
 r[expr.call.desugar]
+## Disambiguating Function Calls
 
 r[expr.call.desugar.fully-qualified]
 All function calls are sugar for a more explicit [fully-qualified syntax].

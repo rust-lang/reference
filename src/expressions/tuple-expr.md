@@ -1,6 +1,5 @@
-# Tuple and tuple indexing expressions
-
 r[expr.tuple]
+# Tuple and tuple indexing expressions
 
 ## Tuple expressions
 
@@ -43,9 +42,8 @@ Examples of tuple expressions and their types:
 | `("x".to_string(), )` | `(String, )`  |
 | `("a", 4usize, true)`| `(&'static str, usize, bool)` |
 
-## Tuple indexing expressions
-
 r[expr.tuple-index]
+## Tuple indexing expressions
 
 r[expr.tuple-index.syntax]
 > **<sup>Syntax</sup>**\

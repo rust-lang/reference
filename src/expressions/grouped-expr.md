@@ -1,6 +1,5 @@
-# Grouped expressions
-
 r[expr.paren]
+# Grouped expressions
 
 r[expr.paren.syntax]
 > **<sup>Syntax</sup>**\

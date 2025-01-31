@@ -1,6 +1,5 @@
-# `if` and `if let` expressions
-
 r[expr.if]
+# `if` and `if let` expressions
 
 ## `if` expressions
 
@@ -53,9 +52,8 @@ let y = if 12 * 15 > 150 {
 assert_eq!(y, "Bigger");
 ```
 
-## `if let` expressions
-
 r[expr.if.let]
+## `if let` expressions
 
 r[expr.if.let.syntax]
 > **<sup>Syntax</sup>**\

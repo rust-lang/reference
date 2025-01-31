@@ -1,6 +1,5 @@
-# Array and array index expressions
-
 r[expr.array]
+# Array and array index expressions
 
 ## Array expressions
 
@@ -64,9 +63,8 @@ const EMPTY: Vec<i32> = Vec::new();
 [EMPTY; 2];
 ```
 
-## Array and slice indexing expressions
-
 r[expr.array.index]
+## Array and slice indexing expressions
 
 > **<sup>Syntax</sup>**\
 > _IndexExpression_ :\

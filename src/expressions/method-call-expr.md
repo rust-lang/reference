@@ -1,6 +1,5 @@
-# Method-call expressions
-
 r[expr.method]
+# Method-call expressions
 
 r[expr.method.syntax]
 > **<sup>Syntax</sup>**\

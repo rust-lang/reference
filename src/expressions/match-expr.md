@@ -1,6 +1,5 @@
-# `match` expressions
-
 r[expr.match]
+# `match` expressions
 
 r[expr.match.syntax]
 > **<sup>Syntax</sup>**\
@@ -101,9 +100,8 @@ Every binding in each `|` separated pattern must appear in all of the patterns i
 r[expr.match.binding-restriction]
 Every binding of the same name must have the same type, and have the same binding mode.
 
-## Match guards
-
 r[expr.match.guard]
+## Match guards
 
 r[expr.match.guard.intro]
 Match arms can accept _match guards_ to further refine the criteria for matching a case.
@@ -156,9 +154,8 @@ This allows shared borrows to be used inside guards without moving out of the sc
 r[expr.match.guard.restriction]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
-## Attributes on match arms
-
 r[expr.match.attributes]
+## Attributes on match arms
 
 r[expr.match.attributes.outer]
 Outer attributes are allowed on match arms.

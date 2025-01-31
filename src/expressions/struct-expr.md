@@ -1,6 +1,5 @@
-# Struct expressions
-
 r[expr.struct]
+# Struct expressions
 
 r[expr.struct.syntax]
 > **<sup>Syntax</sup>**\
@@ -53,9 +52,8 @@ let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
 
-## Field struct expression
-
 r[expr.struct.field]
+## Field struct expression
 
 r[expr.struct.field.intro]
 A struct expression with fields enclosed in curly braces allows you to specify the value for each individual field in any order.
@@ -64,9 +62,8 @@ The field name is separated from its value with a colon.
 r[expr.struct.field.union-constraint]
 A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
 
-## Functional update syntax
-
 r[expr.struct.update]
+## Functional update syntax
 
 r[expr.struct.update.intro]
 A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
@@ -103,9 +100,8 @@ let c2 = Color{0: 255, 1: 127, 2: 0};  // Specifying fields by index.
 let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
 ```
 
-### Struct field init shorthand
-
 r[expr.struct.field.named]
+### Struct field init shorthand
 
 When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
 This allows a compact syntax with less duplication.
@@ -120,9 +116,8 @@ Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
 
-## Tuple struct expression
-
 r[expr.struct.tuple]
+## Tuple struct expression
 
 A struct expression with fields enclosed in parentheses constructs a tuple struct.
 Though it is listed here as a specific expression for completeness, it is equivalent to a [call expression] to the tuple struct's constructor. For example:
@@ -134,9 +129,8 @@ let c = Position;  // `c` is a function that takes 3 arguments.
 let pos = c(8, 6, 7);  // Creates a `Position` value.
 ```
 
-## Unit struct expression
-
 r[expr.struct.unit]
+## Unit struct expression
 
 A unit struct expression is just the path to a unit struct item.
 This refers to the unit struct's implicit constant of its value.

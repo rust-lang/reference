@@ -1,6 +1,5 @@
-# Loops and other breakable expressions
-
 r[expr.loop]
+# Loops and other breakable expressions
 
 r[expr.loop.syntax]
 > **<sup>Syntax</sup>**\
@@ -38,9 +37,8 @@ All except labelled block expressions support [`continue` expressions](#continue
 r[expr.loop.explicit-result]
 Only `loop` and labelled block expressions support [evaluation to non-trivial values](#break-and-loop-values).
 
-## Infinite loops
-
 r[expr.loop.infinite]
+## Infinite loops
 
 r[expr.loop.infinite.syntax]
 > **<sup>Syntax</sup>**\
@@ -57,9 +55,8 @@ A `loop` expression without an associated `break` expression is diverging and ha
 r[expr.loop.infinite.break]
 A `loop` expression containing associated [`break` expression(s)](#break-expressions) may terminate, and must have type compatible with the value of the `break` expression(s).
 
-## Predicate loops
-
 r[expr.loop.while]
+## Predicate loops
 
 r[expr.loop.while.syntax]
 > **<sup>Syntax</sup>**\
@@ -84,9 +81,8 @@ while i < 10 {
 }
 ```
 
-## Predicate pattern loops
-
 r[expr.loop.while.let]
+## Predicate pattern loops
 
 r[expr.loop.while.let.syntax]
 > **<sup>Syntax</sup>**\
@@ -151,9 +147,8 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 r[expr.loop.while.let.restriction]
 As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 
-## Iterator loops
-
 r[expr.loop.for]
+## Iterator loops
 
 r[expr.loop.for.syntax]
 > **<sup>Syntax</sup>**\
@@ -226,9 +221,8 @@ The variable names `next`, `iter`, and `val` are for exposition only, they do no
 > **Note**: that the outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished.
 > `next` is declared before being assigned because it results in types being inferred correctly more often.
 
-## Loop labels
-
 r[expr.loop.label]
+## Loop labels
 
 r[expr.loop.label.syntax]
 > **<sup>Syntax</sup>**\
@@ -257,9 +251,8 @@ Labels follow the hygiene and shadowing rules of local variables. For example, t
 
 `'_` is not a valid loop label.
 
-## `break` expressions
-
 r[expr.loop.break]
+## `break` expressions
 
 r[expr.loop.break.syntax]
 > **<sup>Syntax</sup>**\
@@ -296,9 +289,8 @@ Example:
 r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
-## Labelled block expressions
-
 r[expr.loop.block-labels]
+## Labelled block expressions
 
 > **<sup>Syntax</sup>**\
 > _LabelBlockExpression_ :\
@@ -332,9 +324,8 @@ let result = 'block: {
 };
 ```
 
-## `continue` expressions
-
 r[expr.loop.continue]
+## `continue` expressions
 
 r[expr.loop.continue.syntax]
 > **<sup>Syntax</sup>**\
@@ -356,9 +347,8 @@ Like `break`, `continue` is normally associated with the innermost enclosing loo
 r[expr.loop.continue.constraint]
 A `continue` expression is only permitted in the body of a loop.
 
-## `break` and loop values
-
 r[expr.loop.break-value]
+## `break` and loop values
 
 r[expr.loop.break-value.intro]
 When associated with a `loop`, a break expression may be used to return a value from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where `EXPR` is an expression whose result is returned from the `loop`.

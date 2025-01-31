@@ -1,6 +1,5 @@
-# `return` expressions
-
 r[expr.return]
+# `return` expressions
 
 r[expr.return.syntax]
 > **<sup>Syntax</sup>**\

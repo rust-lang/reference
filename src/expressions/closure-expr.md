@@ -1,6 +1,5 @@
-# Closure expressions
-
 r[expr.closure]
+# Closure expressions
 
 r[expr.closure.syntax]
 > **<sup>Syntax</sup>**\
@@ -48,9 +47,8 @@ r[expr.closure.capture-move]
 A closure can be forced to capture its environment by copying or moving values by prefixing it with the `move` keyword.
 This is often used to ensure that the closure's lifetime is `'static`.
 
-## Closure trait implementations
-
 r[expr.closure.trait-impl]
+## Closure trait implementations
 
 Which traits the closure type implement depends on how variables are captured, the types of the captured variables, and the presence of `async`.
 See the [call traits and coercions] chapter for how and when a closure implements `Fn`, `FnMut`, and `FnOnce`.
@@ -100,7 +98,6 @@ ten_times(move |j| println!("{}, {}", word, j));
 ## Attributes on closure parameters
 
 r[expr.closure.param-attributes]
-
 Attributes on closure parameters follow the same rules and restrictions as [regular function parameters].
 
 [_Expression_]: ../expressions.md

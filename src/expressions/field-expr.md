@@ -1,6 +1,5 @@
-# Field access expressions
-
 r[expr.field]
+# Field access expressions
 
 r[expr.field.syntax]
 > **<sup>Syntax</sup>**\
@@ -43,16 +42,14 @@ foo().x;
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
-## Automatic dereferencing
-
 r[expr.field.autoref-deref]
+## Automatic dereferencing
 
 If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
 This process is also called *autoderef* for short.
 
-## Borrowing
-
 r[expr.field.borrow]
+## Borrowing
 
 The fields of a struct or a reference to a struct are treated as separate entities when borrowing.
 If the struct does not implement [`Drop`] and is stored in a local variable, this also applies to moving out of each of its fields.

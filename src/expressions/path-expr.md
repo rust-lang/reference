@@ -1,6 +1,5 @@
-# Path expressions
-
 r[expr.path]
+# Path expressions
 
 r[expr.path.syntax]
 > **<sup>Syntax</sup>**\
