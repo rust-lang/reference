@@ -54,10 +54,13 @@ Which traits the closure type implement depends on how variables are captured, t
 See the [call traits and coercions] chapter for how and when a closure implements `Fn`, `FnMut`, and `FnOnce`.
 The closure type implements [`Send`] and [`Sync`] if the type of every captured variable also implements the trait.
 
+r[expr.closure.async]
 ## Async closures
 
+r[expr.closure.async.intro]
 Closures marked with the `async` keyword indicate that they are asynchronous in an analogous way to an [async function][items.fn.async].
 
+r[expr.closure.async.future]
 Calling the async closure does not perform any work, but instead evaluates to a value that implements [`Future`] that corresponds to the computation of the body of the closure.
 
 ```rust
@@ -74,6 +77,7 @@ async fn example() {
 }
 ```
 
+r[expr.closure.async.edition2018]
 > **Edition differences**: Async closures are only available beginning with Rust 2018.
 
 ## Example
