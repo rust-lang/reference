@@ -1,5 +1,7 @@
+r[expr.range]
 # Range expressions
 
+r[expr.range.syntax]
 > **<sup>Syntax</sup>**\
 > _RangeExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangeExpr_\
@@ -27,6 +29,7 @@
 > _RangeToInclusiveExpr_ :\
 > &nbsp;&nbsp; `..=` [_Expression_]
 
+r[expr.range.behavior]
 The `..` and `..=` operators will construct an object of one of the `std::ops::Range` (or `core::ops::Range`) variants, according to the following table:
 
 | Production             | Syntax        | Type                         | Range                 |
@@ -49,6 +52,7 @@ Examples:
 ..=7;   // std::ops::RangeToInclusive
 ```
 
+r[expr.range.equivalence]
 The following expressions are equivalent.
 
 ```rust
@@ -58,6 +62,7 @@ let y = 0..10;
 assert_eq!(x, y);
 ```
 
+r[expr.range.for]
 Ranges can be used in `for` loops:
 
 ```rust

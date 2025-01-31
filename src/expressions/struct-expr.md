@@ -1,5 +1,7 @@
+r[expr.struct]
 # Struct expressions
 
+r[expr.struct.syntax]
 > **<sup>Syntax</sup>**\
 > _StructExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _StructExprStruct_\
@@ -29,6 +31,7 @@
 >
 > _StructExprUnit_ : [_PathInExpression_]
 
+r[expr.struct.intro]
 A *struct expression* creates a struct, enum, or union value.
 It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
 There are three forms of struct expressions: struct, tuple, and unit.
@@ -49,19 +52,29 @@ let u = game::User {name: "Joe", age: 35, score: 100_000};
 some_fn::<Cookie>(Cookie);
 ```
 
+r[expr.struct.field]
 ## Field struct expression
 
+r[expr.struct.field.intro]
 A struct expression with fields enclosed in curly braces allows you to specify the value for each individual field in any order.
 The field name is separated from its value with a colon.
 
+r[expr.struct.field.union-constraint]
 A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
 
+r[expr.struct.update]
 ## Functional update syntax
 
+r[expr.struct.update.intro]
 A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
+
+r[expr.struct.update.base-same-type]
 The expression following `..` (the base) must have the same struct type as the new struct type being formed.
 
+r[expr.struct.update.fields]
 The entire expression uses the given values for the fields that were specified and moves or copies the remaining fields from the base expression.
+
+r[expr.struct.update.visibility-constraint]
 As with all struct expressions, all of the fields of the struct must be [visible], even those not explicitly named.
 
 ```rust
@@ -72,9 +85,11 @@ Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
 drop(y_ref);
 ```
 
+r[expr.struct.brace-restricted-positions]
 Struct expressions with curly braces can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
 However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
 
+r[expr.struct.tuple-field]
 The field names can be decimal integer values to specify indices for constructing tuple structs.
 This can be used with base structs to fill out the remaining indices not specified:
 
@@ -85,6 +100,7 @@ let c2 = Color{0: 255, 1: 127, 2: 0};  // Specifying fields by index.
 let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
 ```
 
+r[expr.struct.field.named]
 ### Struct field init shorthand
 
 When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
@@ -100,6 +116,7 @@ Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
 
+r[expr.struct.tuple]
 ## Tuple struct expression
 
 A struct expression with fields enclosed in parentheses constructs a tuple struct.
@@ -112,6 +129,7 @@ let c = Position;  // `c` is a function that takes 3 arguments.
 let pos = c(8, 6, 7);  // Creates a `Position` value.
 ```
 
+r[expr.struct.unit]
 ## Unit struct expression
 
 A unit struct expression is just the path to a unit struct item.

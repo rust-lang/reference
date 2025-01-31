@@ -1,7 +1,9 @@
+r[expr.if]
 # `if` and `if let` expressions
 
 ## `if` expressions
 
+r[expr.if.syntax]
 > **<sup>Syntax</sup>**\
 > _IfExpression_ :\
 > &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]\
@@ -10,13 +12,26 @@
 > | _IfExpression_
 > | _IfLetExpression_ ) )<sup>\?</sup>
 
+r[expr.if.intro]
 An `if` expression is a conditional branch in program control.
 The syntax of an `if` expression is a condition operand, followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
+
+r[expr.if.condition-bool]
 The condition operands must have the [boolean type].
+
+r[expr.if.condition-true]
 If a condition operand evaluates to `true`, the consequent block is executed and any subsequent `else if` or `else` block is skipped.
+
+r[expr.if.else-if]
 If a condition operand evaluates to `false`, the consequent block is skipped and any subsequent `else if` condition is evaluated.
+
+r[expr.if.else]
 If all `if` and `else if` conditions evaluate to `false` then any `else` block is executed.
+
+r[expr.if.result]
 An if expression evaluates to the same value as the executed block, or `()` if no block is evaluated.
+
+r[expr.if.type]
 An `if` expression must have the same type in all situations.
 
 ```rust
@@ -37,8 +52,10 @@ let y = if 12 * 15 > 150 {
 assert_eq!(y, "Bigger");
 ```
 
+r[expr.if.let]
 ## `if let` expressions
 
+r[expr.if.let.syntax]
 > **<sup>Syntax</sup>**\
 > _IfLetExpression_ :\
 > &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
@@ -48,9 +65,16 @@ assert_eq!(y, "Bigger");
 > | _IfExpression_
 > | _IfLetExpression_ ) )<sup>\?</sup>
 
+r[expr.if.let.intro]
 An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
+
+r[expr.if.let.pattern]
 If the value of the scrutinee matches the pattern, the corresponding block will execute.
+
+r[expr.if.let.else]
 Otherwise, flow proceeds to the following `else` block if it exists.
+
+r[expr.if.let.result]
 Like `if` expressions, `if let` expressions have a value determined by the block that is evaluated.
 
 ```rust
@@ -74,6 +98,7 @@ if let _ = 5 {
 }
 ```
 
+r[expr.if.let.else-if]
 `if` and `if let` expressions can be intermixed:
 
 ```rust
@@ -90,6 +115,7 @@ let a = if let Some(1) = x {
 assert_eq!(a, 3);
 ```
 
+r[expr.if.let.desugaring]
 An `if let` expression is equivalent to a [`match` expression] as follows:
 
 <!-- ignore: expansion example -->
@@ -111,6 +137,7 @@ match EXPR {
 }
 ```
 
+r[expr.if.let.or-pattern]
 Multiple patterns may be specified with the `|` operator. This has the same semantics as with `|` in `match` expressions:
 
 ```rust
@@ -125,6 +152,7 @@ if let E::X(n) | E::Y(n) = v {
 }
 ```
 
+r[expr.if.let.lazy-bool]
 The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
 Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
 When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:

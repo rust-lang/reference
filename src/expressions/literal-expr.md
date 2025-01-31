@@ -1,5 +1,7 @@
+r[expr.literal]
 # Literal expressions
 
+r[expr.literal.syntax]
 > **<sup>Syntax</sup>**\
 > _LiteralExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
@@ -14,10 +16,13 @@
 > &nbsp;&nbsp; | [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | `true` | `false`
 
+r[expr.literal.intro]
 A _literal expression_ is an expression consisting of a single token, rather than a sequence of tokens, that immediately and directly denotes the value it evaluates to, rather than referring to it by name or some other evaluation rule.
 
+r[expr.literal.const-expr]
 A literal is a form of [constant expression], so is evaluated (primarily) at compile time.
 
+r[expr.literal.literal-token]
 Each of the lexical [literal][literal tokens] forms described earlier can make up a literal expression, as can the keywords `true` and `false`.
 
 ```rust
@@ -26,14 +31,18 @@ Each of the lexical [literal][literal tokens] forms described earlier can make u
 5;         // integer type
 ```
 
+r[expr.literal.string-representation]
 In the descriptions below, the _string representation_ of a token is the sequence of characters from the input which matched the token's production in a *Lexer* grammar snippet.
 
 > **Note**: this string representation never includes a character `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
 
+r[expr.literal.escape]
 ## Escapes
 
+r[expr.literal.escape.intro]
 The descriptions of textual literal expressions below make use of several forms of _escape_.
 
+r[expr.literal.escape.sequence]
 Each form of escape is characterised by:
  * an _escape sequence_: a sequence of characters, which always begins with `U+005C` (`\`)
  * an _escaped value_: either a single character or an empty sequence of characters
@@ -42,6 +51,7 @@ In the definitions of escapes below:
  * An _octal digit_ is any of the characters in the range \[`0`-`7`].
  * A _hexadecimal digit_ is any of the characters in the ranges \[`0`-`9`], \[`a`-`f`], or \[`A`-`F`].
 
+r[expr.literal.escape.simple]
 ### Simple escapes
 
 Each sequence of characters occurring in the first column of the following table is an escape sequence.
@@ -58,6 +68,7 @@ In each case, the escaped value is the character given in the corresponding entr
 | `\'`            | U+0027 (APOSTROPHE)      |
 | `\\`            | U+005C (REVERSE SOLIDUS) |
 
+r[expr.literal.escape.hex-octet]
 ### 8-bit escapes
 
 The escape sequence consists of `\x` followed by two hexadecimal digits.
@@ -66,12 +77,14 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 
 > **Note**: the escaped value therefore has a [Unicode scalar value] in the range of [`u8`][numeric types].
 
+r[expr.literal.escape.hex-ascii]
 ### 7-bit escapes
 
 The escape sequence consists of `\x` followed by an octal digit then a hexadecimal digit.
 
 The escaped value is the character whose [Unicode scalar value] is the result of interpreting the final two characters in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
 
+r[expr.literal.escape.unicode]
 ### Unicode escapes
 
 The escape sequence consists of `\u{`, followed by a sequence of characters each of which is a hexadecimal digit or `_`, followed by `}`.
@@ -80,6 +93,7 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 
 > **Note**: the permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
 
+r[expr.literal.continuation]
 ### String continuation escapes
 
 The escape sequence consists of `\` followed immediately by `U+000A` (LF), and all following whitespace characters before the next non-whitespace character.
@@ -106,25 +120,34 @@ The escaped value is an empty sequence of characters.
 > Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
 > See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
+r[expr.literal.char]
 ## Character literal expressions
 
+r[expr.literal.char.intro]
 A character literal expression consists of a single [CHAR_LITERAL] token.
 
+r[expr.literal.char.type]
 The expression's type is the primitive [`char`][textual types] type.
 
+r[expr.literal.char.no-suffix]
 The token must not have a suffix.
 
+r[expr.literal.char.literal-content]
 The token's _literal content_ is the sequence of characters following the first `U+0027` (`'`) and preceding the last `U+0027` (`'`) in the string representation of the token.
 
+r[expr.literal.char.represented]
 The literal expression's _represented character_ is derived from the literal content as follows:
 
+r[expr.literal.char.escape]
 * If the literal content is one of the following forms of escape sequence, the represented character is the escape sequence's escaped value:
     * [Simple escapes]
     * [7-bit escapes]
     * [Unicode escapes]
 
+r[expr.literal.char.single]
 * Otherwise the represented character is the single character that makes up the literal content.
 
+r[expr.literal.char.result]
 The expression's value is the [`char`][textual types] corresponding to the represented character's [Unicode scalar value].
 
 > **Note**: the permitted forms of a [CHAR_LITERAL] token ensure that these rules always produce a single character.
@@ -138,19 +161,26 @@ Examples of character literal expressions:
 '\u{00E6}';                        // LATIN SMALL LETTER AE (U+00E6)
 ```
 
+r[expr.literal.string]
 ## String literal expressions
 
+r[expr.literal.string.intro]
 A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
 
+r[expr.literal.string.type]
 The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type.
 That is, the type is `&'static str`.
 
+r[expr.literal.string.no-suffix]
 The token must not have a suffix.
 
+r[expr.literal.string.literal-content]
 The token's _literal content_ is the sequence of characters following the first `U+0022` (`"`) and preceding the last `U+0022` (`"`) in the string representation of the token.
 
+r[expr.literal.string.represented]
 The literal expression's _represented string_ is a sequence of characters derived from the literal content as follows:
 
+r[expr.literal.string.escape]
 * If the token is a [STRING_LITERAL], each escape sequence of any of the following forms occurring in the literal content is replaced by the escape sequence's escaped value.
     * [Simple escapes]
     * [7-bit escapes]
@@ -160,8 +190,10 @@ The literal expression's _represented string_ is a sequence of characters derive
   These replacements take place in left-to-right order.
   For example, the token `"\\x41"` is converted to the characters `\` `x` `4` `1`.
 
+r[expr.literal.string.raw]
 * If the token is a [RAW_STRING_LITERAL], the represented string is identical to the literal content.
 
+r[expr.literal.string.result]
 The expression's value is a reference to a statically allocated [`str`][textual types] containing the UTF-8 encoding of the represented string.
 
 Examples of string literal expressions:
@@ -177,24 +209,33 @@ r##"foo #"# bar"##;                // foo #"# bar
 "\\x52"; r"\x52";                  // \x52
 ```
 
+r[expr.literal.byte-char]
 ## Byte literal expressions
 
+r[expr.literal.byte-char.intro]
 A byte literal expression consists of a single [BYTE_LITERAL] token.
 
+r[expr.literal.byte-char.literal]
 The expression's type is the primitive [`u8`][numeric types] type.
 
+r[expr.literal.byte-char.no-suffix]
 The token must not have a suffix.
 
+r[expr.literal.byte-char.literal-content]
 The token's _literal content_ is the sequence of characters following the first `U+0027` (`'`) and preceding the last `U+0027` (`'`) in the string representation of the token.
 
+r[expr.literal.byte-char.represented]
 The literal expression's _represented character_ is derived from the literal content as follows:
 
+r[expr.literal.byte-char.escape]
 * If the literal content is one of the following forms of escape sequence, the represented character is the escape sequence's escaped value:
     * [Simple escapes]
     * [8-bit escapes]
 
+r[expr.literal.byte-char.single]
 * Otherwise the represented character is the single character that makes up the literal content.
 
+r[expr.literal.byte-char.result]
 The expression's value is the represented character's [Unicode scalar value].
 
 > **Note**: the permitted forms of a [BYTE_LITERAL] token ensure that these rules always produce a single character, whose Unicode scalar value is in the range of [`u8`][numeric types].
@@ -208,19 +249,26 @@ b'\x52';                           // 82
 b'\xA0';                           // 160
 ```
 
+r[expr.literal.byte-string]
 ## Byte string literal expressions
 
+r[expr.literal.byte-string.intro]
 A byte string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
 
+r[expr.literal.byte-string.type]
 The expression's type is a shared reference (with `static` lifetime) to an array whose element type is [`u8`][numeric types].
 That is, the type is `&'static [u8; N]`, where `N` is the number of bytes in the represented string described below.
 
+r[expr.literal.byte-string.no-suffix]
 The token must not have a suffix.
 
+r[expr.literal.byte-string.literal-content]
 The token's _literal content_ is the sequence of characters following the first `U+0022` (`"`) and preceding the last `U+0022` (`"`) in the string representation of the token.
 
+r[expr.literal.byte-string.represented]
 The literal expression's _represented string_ is a sequence of characters derived from the literal content as follows:
 
+r[expr.literal.byte-string.escape]
 * If the token is a [BYTE_STRING_LITERAL], each escape sequence of any of the following forms occurring in the literal content is replaced by the escape sequence's escaped value.
     * [Simple escapes]
     * [8-bit escapes]
@@ -229,8 +277,10 @@ The literal expression's _represented string_ is a sequence of characters derive
   These replacements take place in left-to-right order.
   For example, the token `b"\\x41"` is converted to the characters `\` `x` `4` `1`.
 
+r[expr.literal.byte-string.raw]
 * If the token is a [RAW_BYTE_STRING_LITERAL], the represented string is identical to the literal content.
 
+r[expr.literal.byte-string.result]
 The expression's value is a reference to a statically allocated array containing the [Unicode scalar values] of the characters in the represented string, in the same order.
 
 > **Note**: the permitted forms of [BYTE_STRING_LITERAL] and [RAW_BYTE_STRING_LITERAL] tokens ensure that these rules always produce array element values in the range of [`u8`][numeric types].
@@ -248,19 +298,26 @@ b"\x52"; b"R"; br"R";                // R
 b"\\x52"; br"\x52";                  // \x52
 ```
 
+r[expr.literal.c-string]
 ## C string literal expressions
 
+r[expr.literal.c-string.intro]
 A C string literal expression consists of a single [C_STRING_LITERAL] or [RAW_C_STRING_LITERAL] token.
 
+r[expr.literal.c-string.type]
 The expression's type is a shared reference (with `static` lifetime) to the standard library [CStr] type.
 That is, the type is `&'static core::ffi::CStr`.
 
+r[expr.literal.c-string.no-suffix]
 The token must not have a suffix.
 
+r[expr.literal.c-string.literal-content]
 The token's _literal content_ is the sequence of characters following the first `"` and preceding the last `"` in the string representation of the token.
 
+r[expr.literal.c-string.represented]
 The literal expression's _represented bytes_ are a sequence of bytes derived from the literal content as follows:
 
+r[expr.literal.c-string.escape]
 * If the token is a [C_STRING_LITERAL], the literal content is treated as a sequence of items, each of which is either a single Unicode character other than `\` or an [escape].
 The sequence of items is converted to a sequence of bytes as follows:
   * Each single Unicode character contributes its UTF-8 representation.
@@ -269,10 +326,12 @@ The sequence of items is converted to a sequence of bytes as follows:
   * Each [unicode escape] contributes the UTF-8 representation of its escaped value.
   * Each [string continuation escape] contributes no bytes.
 
+r[expr.literal.c-string.raw]
 * If the token is a [RAW_C_STRING_LITERAL], the represented bytes are the UTF-8 encoding of the literal content.
 
 > **Note**: the permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a null byte.
 
+r[expr.literal.c-string.result]
 The expression's value is a reference to a statically allocated [CStr] whose array of bytes contains the represented bytes followed by a null byte.
 
 Examples of C string literal expressions:
@@ -295,18 +354,25 @@ c"\xE6".to_bytes();                  // [230]
 c"\u{00E6}".to_bytes();              // [195, 166]
 ```
 
+r[expr.literal.int]
 ## Integer literal expressions
 
+r[expr.literal.int.intro]
 An integer literal expression consists of a single [INTEGER_LITERAL] token.
 
+r[expr.literal.int.suffix]
 If the token has a [suffix], the suffix must be the name of one of the [primitive integer types][numeric types]: `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`, and the expression has that type.
 
+r[expr.literal.int.infer]
 If the token has no suffix, the expression's type is determined by type inference:
 
+r[expr.literal.int.inference-unique-type]
 * If an integer type can be _uniquely_ determined from the surrounding program context, the expression has that type.
 
+r[expr.literal.int.inference-default]
 * If the program context under-constrains the type, it defaults to the signed 32-bit integer `i32`.
 
+r[expr.literal.int.inference-error]
 * If the program context over-constrains the type, it is considered a static type error.
 
 Examples of integer literal expressions:
@@ -330,8 +396,10 @@ let a: u64 = 123;                  // type u64
 0usize;                            // type usize
 ```
 
+r[expr.literal.int.representation]
 The value of the expression is determined from the string representation of the token as follows:
 
+r[expr.literal.int.radix]
 * An integer radix is chosen by inspecting the first two characters of the string, as follows:
 
     * `0b` indicates radix 2
@@ -339,15 +407,20 @@ The value of the expression is determined from the string representation of the 
     * `0x` indicates radix 16
     * otherwise the radix is 10.
 
+r[expr.literal.int.radix-prefix-stripped]
 * If the radix is not 10, the first two characters are removed from the string.
 
+r[expr.literal.int.type-suffix-stripped]
 * Any suffix is removed from the string.
 
+r[expr.literal.int.separators-stripped]
 * Any underscores are removed from the string.
 
+r[expr.literal.int.u128-value]
 * The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
 If the value does not fit in `u128`, it is a compiler error.
 
+r[expr.literal.int.cast]
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
 > **Note**: The final cast will truncate the value of the literal if it does not fit in the expression's type.
@@ -356,20 +429,27 @@ If the value does not fit in `u128`, it is a compiler error.
 > **Note**: `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
 > See [Overflow] for notes on representing the most negative value for a signed type.
 
+r[expr.literal.float]
 ## Floating-point literal expressions
 
+r[expr.literal.float.intro]
 A floating-point literal expression has one of two forms:
  * a single [FLOAT_LITERAL] token
  * a single [INTEGER_LITERAL] token which has a suffix and no radix indicator
 
+r[expr.literal.float.suffix]
 If the token has a [suffix], the suffix must be the name of one of the [primitive floating-point types][floating-point types]: `f32` or `f64`, and the expression has that type.
 
+r[expr.literal.float.infer]
 If the token has no suffix, the expression's type is determined by type inference:
 
+r[expr.literal.float.inference-unique-type]
 * If a floating-point type can be _uniquely_ determined from the surrounding program context, the expression has that type.
 
+r[expr.literal.float.inference-default]
 * If the program context under-constrains the type, it defaults to `f64`.
 
+r[expr.literal.float.inference-error]
 * If the program context over-constrains the type, it is considered a static type error.
 
 Examples of floating-point literal expressions:
@@ -383,12 +463,16 @@ Examples of floating-point literal expressions:
 let x: f64 = 2.; // type f64
 ```
 
+r[expr.literal.float.result]
 The value of the expression is determined from the string representation of the token as follows:
 
+r[expr.literal.float.type-suffix-stripped]
 * Any suffix is removed from the string.
 
+r[expr.literal.float.separators-stripped]
 * Any underscores are removed from the string.
 
+r[expr.literal.float.value]
 * The string is converted to the expression's type as if by [`f32::from_str`] or [`f64::from_str`].
 
 > **Note**: `-1.0`, for example, is an application of the [negation operator] to the literal expression `1.0`, not a single floating-point literal expression.
@@ -397,14 +481,16 @@ The value of the expression is determined from the string representation of the 
 > The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
 > In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
 
+r[expr.literal.bool]
 ## Boolean literal expressions
 
+r[expr.literal.bool.intro]
 A boolean literal expression consists of one of the keywords `true` or `false`.
 
+r[expr.literal.bool.result]
 The expression's type is the primitive [boolean type], and its value is:
  * true if the keyword is `true`
  * false if the keyword is `false`
-
 
 [Escape]: #escapes
 [Simple escape]: #simple-escapes
