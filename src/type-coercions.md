@@ -187,7 +187,7 @@ r[coerce.types.closure]
 * Non capturing closures to `fn` pointers
 
 r[coerce.types.never]
-* `!` to any `T`
+* `!` to any `T` which is `Sized`
 
 ### Unsized Coercions
 
