@@ -290,7 +290,7 @@ r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
 > [!NOTE]
-> A `break` expression that appears outside of a loop or labeled with a value specified as the identifier `rust` causes an internal error when compiling, as the rust compiler is incapable of breaking rust, or attempting to do so.
+> A `break` expression that appears outside of a loop or labeled block with a value specified as the identifier `rust` causes an internal error when compiling, as the rust compiler is incapable of breaking rust, or attempting to do so.
 > See <https://github.com/rust-lang/rust/issues/43162> for further details.
 
 r[expr.loop.block-labels]
