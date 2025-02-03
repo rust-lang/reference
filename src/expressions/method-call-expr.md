@@ -102,7 +102,7 @@ For each step, picking is attempted in this order:
   * First for inherent methods
   * Then for extension methods
 * Then, a method where the `self` type is a `*const T` - this is only considered
-  if the self type is `*mut T`)
+  if the self type is `*mut T`
   * First for inherent methods
   * Then for extension methods
 * And finally, a method with a `Pin` that's reborrowed, if the `pin_ergonomics`
