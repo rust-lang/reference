@@ -28,8 +28,8 @@ These types are found by taking the receiver type and iterating, following eithe
 * `<T as Receiver>::Target`
 
 to the next type. (If a step involved following the `Receiver` target, we also
-note whether it would have been reachable by following `<T as Deref::Target>`
-- this information is used later).
+note whether it would have been reachable by following `<T as
+Deref::Target>` - this information is used later).
 
 At the end, an additional candidate step may be added for
 an [unsized coercion].
