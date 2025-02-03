@@ -67,18 +67,18 @@ For each step, the candidate type is used to determine what searches to perform:
 * For a struct, enum, or foreign type, there is a search for inherent
   impl candidates for the type.
 * For a type param, there's a search for for inherent candidates on the param.
-* For other tyings (e.g. bools, chars) there's a search for inherent candidates
-  for the incoherent type.
+* For various simpler types (listed below) there's a search for inherent
+  candidates for the incoherent type.
 * After any of these, there's a further search for extension candidates for
   traits in scope.
 
-These searches contribute to list of all the candidate methods found;
-separate lists are maintained for inherent and extension candidates. Only
-[visible] candidates are included.
+"Various simpler types" currently means bool, char, all numbers, str, array,
+slices, raw pointers, references, never and tuple.
 
-(For diagnostic purposes, the search may be performed slightly differently, for
-instance searching all traits not just those in scope, or also noting
-inaccessible candidates.)
+These searches contribute to list of all the candidate methods found;
+separate lists are maintained for inherent and extension candidates
+(that is, applicable candidates from traits). Only [visible] candidates
+are included.
 
 ## Picking a method from the candidates
 
@@ -94,21 +94,21 @@ For each step, picking is attempted in this order:
 
 * First, a by-value method, where the `self` type precisely matches
   * First for inherent methods
-  * Then for extension methods
+  * Then for extension (trait) methods
 * Then, a method where `self` is received by immutable reference (`&T`)
   * First for inherent methods
-  * Then for extension methods
+  * Then for extension (trait) methods
 * Then, a method where `self` is received by mutable reference (`&mut T`)
   * First for inherent methods
-  * Then for extension methods
+  * Then for extension (trait) methods
 * Then, a method where the `self` type is a `*const T` - this is only considered
   if the self type is `*mut T`
   * First for inherent methods
-  * Then for extension methods
+  * Then for extension (trait) methods
 * And finally, a method with a `Pin` that's reborrowed, if the `pin_ergonomics`
   feature is enabled.
   * First for inherent methods
-  * Then for extension methods
+  * Then for extension (trait) methods
 
 For each of those searches, if exactly one candidate is identified,
 it's picked, and the search stops. If this results in multiple possible candidates,
@@ -160,6 +160,9 @@ There are a few details not considered in this overview:
   a mutable pointer to a constant pointer, or a pin reborrow.
 * Extra lists are maintained for diagnostic purposes:
   unstable candidates, unsatisfied predicates, and static candidates.
+* For diagnostic purposes, the search may be performed slightly differently,
+  for instance searching all traits not just those in scope, or also noting
+  inaccessible candidates.
 
 ## Net results
 
