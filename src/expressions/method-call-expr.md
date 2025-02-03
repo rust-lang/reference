@@ -60,7 +60,7 @@ then the candidate types would be `&SmartPtr<Foo>`, `SmartPtr<Foo>` and `Foo`.
 ## Determining candidate methods
 
 This list of candidate types is then converted to a list of candidate methods.
-For each step, the `self` type is used to determine what searches to perform:
+For each step, the candidate type is used to determine what searches to perform:
 
 * For a trait object, there is first a search for inherent candidates for
   the object, then inherent impl candidates for the type.
