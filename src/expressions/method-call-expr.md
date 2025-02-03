@@ -66,7 +66,7 @@ For each step, the candidate type is used to determine what searches to perform:
   the object, then inherent impl candidates for the type.
 * For a struct, enum, or foreign type, there is a search for inherent
   impl candidates for the type.
-* For a type param, there's a search for for inherent candidates on the param.
+* For a type param, there's a search for inherent candidates on the param.
 * For various simpler types (listed below) there's a search for inherent
   candidates for the incoherent type.
 * After any of these, there's a further search for extension candidates for
