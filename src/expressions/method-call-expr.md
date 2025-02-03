@@ -112,8 +112,8 @@ For each step, picking is attempted in this order:
 
 For each of those searches, if exactly one candidate is identified,
 it's picked, and the search stops. If this results in multiple possible candidates,
-then it is an error, and the receiver must be [converted][disambiguate call]
-to an appropriate receiver type to make the method call.
+then it is an error, and the user must [disambiguate][disambiguate call]
+the call and convert the receiver to an appropriate receiver type.
 
 With the example above of `SmartPtr<T>: Receiver<Target=T>`, and the receiver
 type `&SmartPtr<Foo>`, this mechanism would pick:
