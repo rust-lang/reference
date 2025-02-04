@@ -586,6 +586,7 @@ halfway between two floating point numbers.
 r[expr.as.enum]
 #### Enum cast
 
+r[expr.as.enum.discriminant]
 Casts an enum to its discriminant, then uses a numeric cast if needed.
 Casting is limited to the following kinds of enumerations:
 
@@ -599,8 +600,8 @@ assert_eq!(Enum::B as i32, 1);
 assert_eq!(Enum::C as i32, 2);
 ```
 
-> [!WARNING]
-> By default [enum casts are not allowed for enums which implement `Drop`][cenum_impl_drop_cast].
+r[expr.as.enum.no-drop]
+Casting is not allowed if the enum implements [`Drop`].
 
 r[expr.as.bool-char-as-int]
 #### Primitive to integer cast
@@ -882,7 +883,6 @@ Like assignment expressions, compound assignment expressions always produce [the
 [undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
 [Unit-only enums]: ../items/enumerations.md#unit-only-enum
-[cenum_impl_drop_cast]: https://github.com/rust-lang/rust/issues/73333
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
 [this test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
