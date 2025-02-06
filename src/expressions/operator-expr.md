@@ -586,6 +586,7 @@ halfway between two floating point numbers.
 r[expr.as.enum]
 #### Enum cast
 
+r[expr.as.enum.discriminant]
 Casts an enum to its discriminant, then uses a numeric cast if needed.
 Casting is limited to the following kinds of enumerations:
 
@@ -598,6 +599,9 @@ assert_eq!(Enum::A as i32, 0);
 assert_eq!(Enum::B as i32, 1);
 assert_eq!(Enum::C as i32, 2);
 ```
+
+r[expr.as.enum.no-drop]
+Casting is not allowed if the enum implements [`Drop`].
 
 r[expr.as.bool-char-as-int]
 #### Primitive to integer cast
