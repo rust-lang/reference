@@ -146,8 +146,9 @@ There are a few details not considered in this overview:
 
 * The search for candidate methods will search more widely (potentially
   across crates) for certain [incoherent] types: that includes any of
-  the "various simpler types" listed above, and a `dyn`, struct, enum, or
-  foreign type if `rustc_has_incoherent_inherent_impls` is active.
+  the "various simpler types" listed above; and any `dyn`, struct, enum, or
+  foreign type where the standard-library-internal attribute
+  `rustc_has_incoherent_inherent_impls` is active.
 * If there are multiple candidates from traits, they may in fact be
   identical, and the picking operation collapses them to a single pick to avoid
   reporting conflicts.
