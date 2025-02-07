@@ -463,8 +463,8 @@ reference types and `mut` or `const` in pointer types.
 | `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
 | `*T` where `T: Sized` | Integer type          | Pointer to address cast          |
 | Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
-| `&m₁ T`               | `*m₂ T` \*\*          | Reference to pointer cast        |
 | `&m₁ [T; n]`          | `*m₂ T` \*\*          | Array to pointer cast            |
+| `*m₁ [T; n]`          | `*m₂ T` \*\*          | Array to pointer cast            |
 | [Function item]       | [Function pointer]    | Function item to function pointer cast |
 | [Function item]       | `*V` where `V: Sized` | Function item to pointer cast    |
 | [Function item]       | Integer               | Function item to address cast    |
