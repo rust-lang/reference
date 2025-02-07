@@ -78,10 +78,10 @@ traits in scope.
 "Various simpler types" currently means bool, char, all numbers, str, array,
 slices, raw pointers, references, never and tuple.
 
-"Inherent" means a candidate method that can be identified just from
-the signature. For example, the `impl` blocks corresponding to a struct
-or a trait. "Extension" means a candidate gathered by considering the
-traits in scope.
+["Inherent"][inherent] means a candidate method from a block directly
+corresponding to the type in the signature. For example, the `impl` blocks
+corresponding to a struct or a trait. "Extension" means a candidate gathered
+by considering [methods on traits] in scope.
 
 These searches contribute to list of all the candidate methods found;
 separate lists are maintained for the inherent and extension candidates.
@@ -226,3 +226,5 @@ There are a few details not considered in this overview:
 [methods]: ../items/associated-items.md#methods
 [unsized coercion]: ../type-coercions.md#unsized-coercions
 [`IntoIterator`]: std::iter::IntoIterator
+[inherent]: ../items/implementations.md#inherent-implementations
+[methods on traits]: ../items/implementations.md#trait-implementations
