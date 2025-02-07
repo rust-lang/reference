@@ -27,7 +27,7 @@ r[unsafe.block]
 ## Unsafe blocks (`unsafe {}`)
 
 r[unsafe.block.intro]
-A block of code can be prefixed with the `unsafe` keyword, to permit calling `unsafe` functions or dereferencing raw pointers.
+A block of code can be prefixed with the `unsafe` keyword to permit using the unsafe actions as defined in the [Unsafety] chapter, such as calling other unsafe functions or dereferencing raw pointers.
 
 r[unsafe.block.fn-body]
 By default, the body of an unsafe function is also considered to be an unsafe block;
@@ -47,6 +47,8 @@ Rust's type system is a conservative approximation of the dynamic safety require
 For example, a doubly-linked list is not a tree structure and can only be represented with reference-counted pointers in safe code.
 By using `unsafe` blocks to represent the reverse links as raw pointers, it can be implemented without reference counting.
 (See ["Learn Rust With Entirely Too Many Linked Lists"](https://rust-unofficial.github.io/too-many-lists/) for a more in-depth exploration of this particular example.)
+
+[Unsafety]: unsafety.md
 
 r[unsafe.trait]
 ## Unsafe traits (`unsafe trait`)
