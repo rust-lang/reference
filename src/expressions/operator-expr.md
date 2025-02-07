@@ -454,23 +454,23 @@ Any cast that does not fit either a coercion rule or an entry in the table is a 
 Here `*T` means either `*const T` or `*mut T`. `m` stands for optional `mut` in
 reference types and `mut` or `const` in pointer types.
 
-| Type of `e`           | `U`                   | Cast performed by `e as U`       |
-|-----------------------|-----------------------|----------------------------------|
-| Integer or Float type | Integer or Float type | Numeric cast                     |
-| Enumeration           | Integer type          | Enum cast                        |
-| `bool` or `char`      | Integer type          | Primitive to integer cast        |
-| `u8`                  | `char`                | `u8` to `char` cast              |
-| `*T`                  | `*V` [^1]             | Pointer to pointer cast          |
-| `*T` where `T: Sized` | Integer type          | Pointer to address cast          |
-| Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
-| `&m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast            |
-| `*m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast            |
-| [Function item]       | [Function pointer]    | Function item to function pointer cast |
-| [Function item]       | `*V` where `V: Sized` | Function item to pointer cast    |
-| [Function item]       | Integer               | Function item to address cast    |
-| [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast |
-| [Function pointer]    | Integer               | Function pointer to address cast |
-| Closure [^3]          | Function pointer      | Closure to function pointer cast |
+| Type of `e`           | `U`                   | Cast performed by `e as U`                            |
+|-----------------------|-----------------------|-------------------------------------------------------|
+| Integer or Float type | Integer or Float type | [Numeric cast][expr.as.numeric]                       |
+| Enumeration           | Integer type          | [Enum cast][expr.as.enum]                             |
+| `bool` or `char`      | Integer type          | [Primitive to integer cast][expr.as.bool-char-as-int] |
+| `u8`                  | `char`                | [`u8` to `char` cast][expr.as.u8-as-char]             |
+| `*T`                  | `*V` [^1]             | [Pointer to pointer cast][expr.as.pointer]            |
+| `*T` where `T: Sized` | Integer type          | [Pointer to address cast][expr.as.pointer-as-int]     |
+| Integer type          | `*V` where `V: Sized` | [Address to pointer cast][expr.as.int-as-pointer]     |
+| `&m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast                                 |
+| `*m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast                                 |
+| [Function item]       | [Function pointer]    | Function item to function pointer cast                |
+| [Function item]       | `*V` where `V: Sized` | Function item to pointer cast                         |
+| [Function item]       | Integer               | Function item to address cast                         |
+| [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast                      |
+| [Function pointer]    | Integer               | Function pointer to address cast                      |
+| Closure [^3]          | Function pointer      | Closure to function pointer cast                      |
 
 [^1]: where `T` and `V` have compatible metadata:
       * `V: Sized`, or
