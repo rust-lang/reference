@@ -66,7 +66,9 @@ For each step, the candidate type is used to determine what searches to perform:
   impl candidates for the type.
 * For a type param, there's a search for inherent candidates on the param.
 * For a trait object, there is first a search for inherent candidates for
-  the object, then inherent impl candidates for the type.
+  the trait (for example in `impl Trait` blocks), then inherent impl
+  candidates for the trait object itself (for example found in `impl dyn Trait`
+  blocks)
 * For various simpler types (listed below) there's a search for inherent
   candidates for the incoherent type.
 
