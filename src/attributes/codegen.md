@@ -107,7 +107,6 @@ would not be possible cannot be annotated with this attribute. This includes:
 - safe trait methods
 - safe default functions in traits
 
-
 r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
 does not support the given features. The `#[inline(always)]` attribute may not
@@ -495,7 +494,6 @@ trait object whose methods are attributed.
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
