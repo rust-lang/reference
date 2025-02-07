@@ -87,23 +87,52 @@ that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
 
 r[attributes.codegen.target_feature.safety-restrictions]
-Because of this, on many platforms the following restrictions apply:
+The following restrictions apply unless otherwise specified by the platform rules below:
 
-- `#[target_feature]` functions (and closures that inherit the attribute)
-  can only be safely called within caller that enable all the `target_feature`s
-  that the callee enables.
-- `#[target_feature]` functions (and closures that inherit the attribute)
-  can only be coerced to *safe* `fn` pointers in contexts that enable all the
-  `target_feature`s that the coercee enables.
-- `#[target_feature]` functions *never* implement `Fn` traits, although
-  closures inheriting features from the enclosing function do.
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be safely called within a caller that enables all the `target_feature`s that the callee enables.
+  This restriction does not apply in an `unsafe` context.
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be coerced to *safe* function pointers in contexts that enable all the `target_feature`s that the coercee enables.
+  This restriction does not apply to `unsafe` function pointers.
 
-Moreover, since Rust needs to be able to check the usage of `#[target_feature]`
-functions at callsites to ensure safety, safe functions for which this check
-would not be possible cannot be annotated with this attribute. This includes:
+Implicitly enabled features are included in this rule. For example an `sse2` function can call ones marked with `sse`.
 
-- `main`
-- other special functions that allow safe functions such as `#[panic_handler]`
+```rust
+# #[cfg(target_feature = "avx2")] {
+#[target_feature(enable = "avx")]
+fn foo_avx() {}
+
+fn bar() {
+    // Calling `foo_avx` here is unsafe, as we must ensure that AVX is
+    // available first, even if `avx` is enabled by default on the target
+    // platform or manually enabled as compiler flags.
+    unsafe {
+        foo_avx();
+    }
+}
+
+#[target_feature(enable = "avx")]
+fn bar_avx() {
+    // Calling `foo_avx` here is safe.
+    foo_avx();
+    || foo_avx();
+}
+
+#[target_feature(enable = "avx2")]
+fn bar_avx2() {
+    // Calling `foo_avx` here is safe because `avx2` implies `avx`.
+    foo_avx();
+}
+# }
+```
+
+r[attributes.codegen.target_feature.fn-traits]
+A function with a `#[target_feature]` attribute *never* implements the `Fn` family of traits, although closures inheriting features from the enclosing function do.
+
+r[attributes.codegen.target_feature.allowed-positions]
+The `#[target_feature]` attribute is not allowed on the following places:
+
+- [the `main` function][crate.main]
+- a [`panic_handler` function][runtime.panic_handler]
 - safe trait methods
 - safe default functions in traits
 
