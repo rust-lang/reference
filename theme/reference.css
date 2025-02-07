@@ -306,7 +306,7 @@ main > .rule {
    navigate to it. This adds an indicator that the linked rule is the one that
    is "current", just like normal headers are in mdbook.
 */
-.rule:target a span::before {
+.rule:target a::before {
     display: inline-block;
     content: "»";
     padding-right: 5px;
