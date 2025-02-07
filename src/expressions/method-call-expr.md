@@ -69,8 +69,9 @@ For each step, the candidate type is used to determine what searches to perform:
 * For a type param, there's a search for inherent candidates on the param.
 * For various simpler types (listed below) there's a search for inherent
   candidates for the incoherent type.
-* After any of these, there's a further search for extension candidates for
-  traits in scope.
+
+After these occur, there's a further search for extension candidates for
+traits in scope.
 
 "Various simpler types" currently means bool, char, all numbers, str, array,
 slices, raw pointers, references, never and tuple.
