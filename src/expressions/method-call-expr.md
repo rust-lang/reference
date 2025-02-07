@@ -201,6 +201,31 @@ There are a few details not considered in this overview:
 > }
 > ```
 
+The types and number of parameters in the method call expression aren't taken
+into account in method resolution. So the following won't compile:
+
+```rust,nocompile
+trait NoParameter {
+    fn method(self);
+}
+
+trait OneParameter {
+    fn method(&self, jj: i32);
+}
+
+impl NoParameter for char {
+    fn method(self) {}  // found first and picked, but doesn't work
+}
+
+impl OneParameter for char {
+    fn method(&self, jj: i32) {}  // found second, thus ignored
+}
+
+fn f() {
+    'x'.method(123);
+}
+```
+
 > **Edition differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
 > The edition used for this purpose is determined by the token representing the method name.
