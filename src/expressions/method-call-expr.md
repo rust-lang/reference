@@ -62,15 +62,13 @@ then the candidate types would be `&SmartPtr<Foo>`, `SmartPtr<Foo>` and `Foo`.
 This list of candidate types is then converted to a list of candidate methods.
 For each step, the candidate type is used to determine what searches to perform:
 
-* For a struct, enum, or foreign type, there is a search for inherent
-  impl candidates for the type.
+* For a struct, enum, foreign type, or various simpler types (listed below)
+  there is a search for inherent impl candidates for the type.
 * For a type param, there's a search for inherent candidates on the param.
 * For a trait object, there is first a search for inherent candidates for
   the trait (for example in `impl Trait` blocks), then inherent impl
   candidates for the trait object itself (for example found in `impl dyn Trait`
-  blocks)
-* For various simpler types (listed below) there's a search for inherent
-  candidates for the incoherent type.
+  blocks).
 
 After these occur, there's a further search for extension candidates for
 traits in scope.
@@ -146,9 +144,10 @@ only the `Receiver` chain.
 
 There are a few details not considered in this overview:
 
-* The search for candidate methods will also consider searches for
-  incoherent types if `rustc_has_incoherent_inherent_impls` is active for
-  a `dyn`, struct, enum, or foreign type.
+* The search for candidate methods will search more widely (potentially
+  across crates) for certain [incoherent] types: that includes any of
+  the "various simpler types" listed above, and a `dyn`, struct, enum, or
+  foreign type if `rustc_has_incoherent_inherent_impls` is active.
 * If there are multiple candidates from traits, they may in fact be
   identical, and the picking operation collapses them to a single pick to avoid
   reporting conflicts.
@@ -228,3 +227,4 @@ There are a few details not considered in this overview:
 [`IntoIterator`]: std::iter::IntoIterator
 [inherent]: ../items/implementations.md#inherent-implementations
 [methods on traits]: ../items/implementations.md#trait-implementations
+[incoherent]: ../items/implementations.md#trait-implementation-coherence
