@@ -62,11 +62,11 @@ then the candidate types would be `&SmartPtr<Foo>`, `SmartPtr<Foo>` and `Foo`.
 This list of candidate types is then converted to a list of candidate methods.
 For each step, the candidate type is used to determine what searches to perform:
 
-* For a trait object, there is first a search for inherent candidates for
-  the object, then inherent impl candidates for the type.
 * For a struct, enum, or foreign type, there is a search for inherent
   impl candidates for the type.
 * For a type param, there's a search for inherent candidates on the param.
+* For a trait object, there is first a search for inherent candidates for
+  the object, then inherent impl candidates for the type.
 * For various simpler types (listed below) there's a search for inherent
   candidates for the incoherent type.
 
@@ -76,10 +76,14 @@ traits in scope.
 "Various simpler types" currently means bool, char, all numbers, str, array,
 slices, raw pointers, references, never and tuple.
 
+"Inherent" means a candidate method that can be identified just from
+the signature. For example, the `impl` blocks corresponding to a struct
+or a trait. "Extension" means a candidate gathered by considering the
+traits in scope.
+
 These searches contribute to list of all the candidate methods found;
-separate lists are maintained for inherent and extension candidates
-(that is, applicable candidates from traits). Only [visible] candidates
-are included.
+separate lists are maintained for the inherent and extension candidates.
+Only [visible] candidates are included.
 
 ## Picking a method from the candidates
 
@@ -95,21 +99,21 @@ For each step, picking is attempted in this order:
 
 * First, a by-value method, where the `self` type precisely matches
   * First for inherent methods
-  * Then for extension (trait) methods
+  * Then for extension methods
 * Then, a method where `self` is received by immutable reference (`&T`)
   * First for inherent methods
-  * Then for extension (trait) methods
+  * Then for extension methods
 * Then, a method where `self` is received by mutable reference (`&mut T`)
   * First for inherent methods
-  * Then for extension (trait) methods
+  * Then for extension methods
 * Then, a method where the `self` type is a `*const T` - this is only considered
   if the self type is `*mut T`
   * First for inherent methods
-  * Then for extension (trait) methods
+  * Then for extension methods
 * And finally, a method with a `Pin` that's reborrowed, if the `pin_ergonomics`
   feature is enabled.
   * First for inherent methods
-  * Then for extension (trait) methods
+  * Then for extension methods
 
 For each of those searches, if exactly one candidate is identified,
 it's picked, and the search stops. If this results in multiple possible candidates,
