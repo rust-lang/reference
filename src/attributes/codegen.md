@@ -49,9 +49,49 @@ r[attributes.codegen.cold]
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
+r[attributes.codegen.naked]
+## The `naked` attribute
+
+r[attributes.codegen.naked]
+
+r[attributes.codegen.naked.intro]
+The *`naked` [attribute]* prevents the compiler from emitting a function prologue and
+epilogue for the attributed function.
+
+r[attributes.codegen.naked.body]
+The [function body] must consist of exactly one [`naked_asm!`] macro invocation, which
+may be enclosed within an [unsafe block].
+
+r[attributes.codegen.naked.prologue-epilogue]
+No function prologue or epilogue are generated for the attributed function: the contents
+of the `naked_asm!` invocation make up the full body of a naked function.
+
+r[attributes.codegen.naked.call-stack]
+The asm code will have a valid call stack and register state on entry as per the signature and calling convention of the function.
+
+r[attributes.codegen.naked.no-duplication]
+The asm code may not be duplicated by the compiler, except when monomorphizing polymorphic functions.
+This property is important for naked functions that define symbols in the assembly code.
+
+r[attributes.codegen.naked.unsafe-function]
+A naked function that makes use of registers in a way that does not conform
+to the specified calling convention imposes additional safety invariants on its caller,
+and therefore must be marked as an [unsafe function].
+
+r[attributes.codegen.naked.unused-variables]
+The [`unused_variables`] lint is suppressed within naked functions.
+
+r[attributes.codegen.naked.inline]
+A naked function cannot be attributed by the [`inline`](#the-inline-attribute) attribute.
+
+r[attributes.codegen.naked.track_caller]
+A naked function cannot be attributed by the [`track_caller`](#the-track_caller-attribute) attribute.
+
+r[attributes.codegen.naked.testing]
+A naked function cannot be attributed by [the testing attributes](testing.md).
+
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
-
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
@@ -463,14 +503,22 @@ trait object whose methods are attributed.
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
+[`naked_asm!`]: ../inline-assembly.md
+[`inline`]: #the-inline-attribute
+[`track_caller`]: #the-track-caller-attribute
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
+[`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
 [attributes]: ../attributes.md
+[FFI-safe]: ../../rustc/lints/listing/warn-by-default.html#improper-ctypes-definitions
+[function body]: ../items/functions.md#function-body
 [functions]: ../items/functions.md
+[rules for inline assembly]: ../inline-assembly.md#rules-for-inline-assembly
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[unsafe function]: ../unsafe-keyword.md
+[unsafe block]: ../unsafe-blocks.md
+[unsafe function]: ../unsafe-functions.md
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
