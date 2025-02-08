@@ -61,6 +61,8 @@ these calling conventions:
 * `win64`
 * `efiapi`
 
+This also includes the corresponding [`-unwind` variants][items.fn.extern.unwind].
+
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
 
