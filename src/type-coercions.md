@@ -191,7 +191,7 @@ r[coerce.unsize]
 
 r[coerce.unsize.intro]
 The following coercions are called `unsized coercions`, since they
-relate to converting sized types to unsized types, and are permitted in a few
+relate to converting types to unsized types, and are permitted in a few
 cases where other coercions are not, as described above. They can still happen
 anywhere else a coercion can occur.
 
@@ -206,6 +206,11 @@ r[coerce.unsize.slice]
 
 r[coerce.unsize.trait-object]
 * `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
+
+r[coerce.unsize.trait-upcast]
+* `dyn T` to `dyn U`, when `U` is one of `T`'s [supertraits].
+    * This allows dropping auto traits, i.e. `dyn T + Auto` to `dyn U` is allowed.
+    * This allows adding auto traits if the principal trait has the auto trait as a super trait, i.e. given `trait T: U + Send {}`, `dyn T` to `dyn T + Send` or to `dyn U + Send` coercions are allowed.
 
 r[coerce.unsized.composite]
 * `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
@@ -322,3 +327,4 @@ precisely.
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
 [method-call expressions]: expressions/method-call-expr.md
+[supertraits]: items/traits.md#supertraits
