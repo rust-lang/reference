@@ -69,7 +69,7 @@ features. It uses the [_MetaListNameValueStr_] syntax with a single key of
 ```rust
 # #[cfg(target_feature = "avx2")]
 #[target_feature(enable = "avx2")]
-unsafe fn foo_avx2() {}
+fn foo_avx2() {}
 ```
 
 r[attributes.codegen.target_feature.arch]
@@ -77,10 +77,64 @@ Each [target architecture] has a set of features that may be enabled. It is an
 error to specify a feature for a target architecture that the crate is not
 being compiled for.
 
+r[attributes.codegen.target_feature.closures]
+Closures defined within a `target_feature`-annotated function inherit the
+attribute from the enclosing function.
+
 r[attributes.codegen.target_feature.target-ub]
 It is [undefined behavior] to call a function that is compiled with a feature
 that is not supported on the current platform the code is running on, *except*
 if the platform explicitly documents this to be safe.
+
+r[attributes.codegen.target_feature.safety-restrictions]
+The following restrictions apply unless otherwise specified by the platform rules below:
+
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be safely called within a caller that enables all the `target_feature`s that the callee enables.
+  This restriction does not apply in an `unsafe` context.
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be coerced to *safe* function pointers in contexts that enable all the `target_feature`s that the coercee enables.
+  This restriction does not apply to `unsafe` function pointers.
+
+Implicitly enabled features are included in this rule. For example an `sse2` function can call ones marked with `sse`.
+
+```rust
+# #[cfg(target_feature = "avx2")] {
+#[target_feature(enable = "avx")]
+fn foo_avx() {}
+
+fn bar() {
+    // Calling `foo_avx` here is unsafe, as we must ensure that AVX is
+    // available first, even if `avx` is enabled by default on the target
+    // platform or manually enabled as compiler flags.
+    unsafe {
+        foo_avx();
+    }
+}
+
+#[target_feature(enable = "avx")]
+fn bar_avx() {
+    // Calling `foo_avx` here is safe.
+    foo_avx();
+    || foo_avx();
+}
+
+#[target_feature(enable = "avx2")]
+fn bar_avx2() {
+    // Calling `foo_avx` here is safe because `avx2` implies `avx`.
+    foo_avx();
+}
+# }
+```
+
+r[attributes.codegen.target_feature.fn-traits]
+A function with a `#[target_feature]` attribute *never* implements the `Fn` family of traits, although closures inheriting features from the enclosing function do.
+
+r[attributes.codegen.target_feature.allowed-positions]
+The `#[target_feature]` attribute is not allowed on the following places:
+
+- [the `main` function][crate.main]
+- a [`panic_handler` function][runtime.panic_handler]
+- safe trait methods
+- safe default functions in traits
 
 r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that
@@ -98,8 +152,8 @@ r[attributes.codegen.target_feature.x86]
 
 
 Executing code with unsupported features is undefined behavior on this platform.
-Hence this platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+Hence on this platform usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
@@ -166,8 +220,8 @@ r[attributes.codegen.target_feature.aarch64]
 #### `aarch64`
 
 
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Further documentation on these features can be found in the [ARM Architecture
 Reference Manual], or elsewhere on [developer.arm.com].
@@ -231,8 +285,8 @@ r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
 
-This platform requires that `#[target_feature]` is only applied to [`unsafe`
-functions][unsafe function].
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Further documentation on these features can be found in their respective
 specification. Many specifications are described in the [RISC-V ISA Manual] or
@@ -293,12 +347,11 @@ r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
 
 
-`#[target_feature]` may be used with both safe and
-[`unsafe` functions][unsafe function] on Wasm platforms. It is impossible to
-cause undefined behavior via the `#[target_feature]` attribute because
-attempting to use instructions unsupported by the Wasm engine will fail at load
-time without the risk of being interpreted in a way different from what the
-compiler expected.
+Safe `#[target_feature]` functions may always be used in safe contexts on Wasm
+platforms. It is impossible to cause undefined behavior via the
+`#[target_feature]` attribute because attempting to use instructions
+unsupported by the Wasm engine will fail at load time without the risk of being
+interpreted in a way different from what the compiler expected.
 
 Feature               | Implicitly Enables  | Description
 ----------------------|---------------------|-------------------
@@ -470,7 +523,6 @@ trait object whose methods are attributed.
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[unsafe function]: ../unsafe-keyword.md
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
