@@ -106,8 +106,7 @@ unsafe extern "stdcall" { }
 ```
 
 r[items.extern.abi.standard]
-There are five ABI strings which are cross-platform, and which all compilers
-are guaranteed to support:
+The following ABI strings are supported on all platforms:
 
 r[items.extern.abi.rust]
 * `unsafe extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
