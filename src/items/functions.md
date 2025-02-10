@@ -259,7 +259,7 @@ r[items.fn.extern.unwind]
 r[items.fn.extern.unwind.intro]
 Most ABI strings come in two variants, one with an `-unwind` suffix and one without.
 The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI. The
-choice of ABI, together with the runtime [panic mode][panic-modes], determines
+choice of ABI, together with the runtime [panic handler], determines
 the behavior when unwinding out of a function.
 
 r[items.fn.extern.unwind.behavior]
@@ -301,7 +301,7 @@ For other considerations and limitations regarding unwinding across FFI
 boundaries, see the [relevant section in the Panic documentation][panic-ffi].
 
 [forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
-[panic-modes]: ../panic.md#panic-runtimes
+[panic handler]: ../panic.md#the-panic_handler-attribute
 [panic-ffi]: ../panic.md#unwinding-across-ffi-boundaries
 [panicking]: ../panic.md
 [undefined behavior]: ../behavior-considered-undefined.md

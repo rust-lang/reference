@@ -126,7 +126,7 @@ r[crate.uncaught-foreign-unwinding]
 ### Uncaught foreign unwinding
 
 When a "foreign" unwind (e.g. an exception thrown from C++ code, or a `panic!`
-in Rust code compiled or linked with a different runtime) propagates beyond
+in Rust code using a different panic handler) propagates beyond
 the `main` function, the process will be safely terminated. This may
 take the form of an abort, in which case it is not guaranteed that any `Drop`
 calls will be executed, and the error output may be less informative than if the
