@@ -460,29 +460,29 @@ reference types and `mut` or `const` in pointer types.
 | Enumeration           | Integer type          | [Enum cast][expr.as.enum]                             |
 | `bool` or `char`      | Integer type          | [Primitive to integer cast][expr.as.bool-char-as-int] |
 | `u8`                  | `char`                | [`u8` to `char` cast][expr.as.u8-as-char]             |
-| `*T`                  | `*V` [^1]             | [Pointer to pointer cast][expr.as.pointer]            |
+| `*T`                  | `*V` [^meta-compat]   | [Pointer to pointer cast][expr.as.pointer]            |
 | `*T` where `T: Sized` | Integer type          | [Pointer to address cast][expr.as.pointer-as-int]     |
 | Integer type          | `*V` where `V: Sized` | [Address to pointer cast][expr.as.int-as-pointer]     |
-| `&m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast                                 |
-| `*m₁ [T; n]`          | `*m₂ T` [^2]          | Array to pointer cast                                 |
+| `&m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
+| `*m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
 | [Function item]       | [Function pointer]    | Function item to function pointer cast                |
 | [Function item]       | `*V` where `V: Sized` | Function item to pointer cast                         |
 | [Function item]       | Integer               | Function item to address cast                         |
 | [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast                      |
 | [Function pointer]    | Integer               | Function pointer to address cast                      |
-| Closure [^3]          | Function pointer      | Closure to function pointer cast                      |
+| Closure [^no-capture] | Function pointer      | Closure to function pointer cast                      |
 
-[^1]: where `T` and `V` have compatible metadata:
+[^meta-compat]: where `T` and `V` have compatible metadata:
       * `V: Sized`, or
       * Both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`), or
       * Both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`)
           * **Note**: *adding* auto traits is only allowed if the principal trait has the auto trait as a super trait (given `trait T: Send {}`, `*dyn T` -> `*dyn T + Send` is valid, but `*dyn Debug` -> `*dyn Debug + Send` is not)
           * **Note**: Generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
-[^2]: only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to
+[^lessmut]: only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to
 `const` pointer is allowed.
 
-[^3]: only for closures that do not capture (close over) any local variables can be casted to function pointers.
+[^no-capture]: only for closures that do not capture (close over) any local variables can be casted to function pointers.
 
 ### Semantics
 
