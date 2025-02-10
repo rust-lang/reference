@@ -444,7 +444,7 @@ destructors will not be run.
 
 The standard library provides [`std::process::exit`] and
 [`std::process::abort`] to do this explicitly. Additionally, if the
-[panic-mode] is set to `abort`, panicking will always terminate the process
+[panic handler][panic.panic_handler.std] is set to `abort`, panicking will always terminate the process
 without destructors being run.
 
 There is one additional case to be aware of: when a panic reaches a
@@ -462,7 +462,6 @@ destructors up until the ABI boundary will run.
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
 [non-unwinding ABI boundary]: items/functions.md#unwinding
 [panic]: panic.md
-[panic-mode]: panic.md#panic-runtimes
 [place context]: expressions.md#place-expressions-and-value-expressions
 [promoted]: destructors.md#constant-promotion
 [scrutinee]: glossary.md#scrutinee

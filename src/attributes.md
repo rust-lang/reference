@@ -370,7 +370,7 @@ The following is an index of all built-in attributes.
 [`no_mangle`]: abi.md#the-no_mangle-attribute
 [`no_std`]: names/preludes.md#the-no_std-attribute
 [`non_exhaustive`]: attributes/type_system.md#the-non_exhaustive-attribute
-[`panic_handler`]: runtime.md#the-panic_handler-attribute
+[`panic_handler`]: panic.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
 [`proc_macro_attribute`]: procedural-macros.md#attribute-macros
 [`proc_macro_derive`]: procedural-macros.md#derive-macros

@@ -283,7 +283,7 @@ Panic unwinding can only be used if the binary is built consistently according t
 
 r[link.unwinding.potential]
 A Rust artifact is called *potentially unwinding* if any of the following conditions is met:
-- The artifact is linked with [the `unwind` panic runtime][panic-runtime].
+- The artifact uses the [`unwind` panic handler][panic.panic_handler].
 - The artifact contains a crate built with the `unwind` [panic strategy] that makes a call
   to a function using a `-unwind` ABI.
 - The artifact makes a `"Rust"` ABI call to code running in another Rust
@@ -313,7 +313,6 @@ Otherwise, unwinding can cause undefined behavior.
 [`cfg` attribute `target_feature` option]: conditional-compilation.md#target_feature
 [`ffi_unwind_calls` lint]: ../rustc/lints/listing/allowed-by-default.html#ffi-unwind-calls
 [configuration option]: conditional-compilation.md
-[panic-runtime]: panic.md#panic-runtimes
 [procedural macros]: procedural-macros.md
 [panic strategy]: panic.md#panic-strategy
 [`-C panic`]: ../rustc/codegen-options/index.html#panic
