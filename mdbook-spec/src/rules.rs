@@ -1,7 +1,7 @@
 //! Handling for rule identifiers.
 
 use crate::test_links::RuleToTests;
-use crate::Spec;
+use crate::{warn_or_err, Diagnostics, Spec};
 use mdbook::book::Book;
 use mdbook::BookItem;
 use once_cell::sync::Lazy;
@@ -34,7 +34,7 @@ pub struct Rules {
 
 impl Spec {
     /// Collects all rule definitions in the book.
-    pub fn collect_rules(&self, book: &Book) -> Rules {
+    pub fn collect_rules(&self, book: &Book, diag: &mut Diagnostics) -> Rules {
         let mut rules = Rules::default();
         for item in book.iter() {
             let BookItem::Chapter(ch) = item else {
@@ -53,16 +53,12 @@ impl Spec {
                         .def_paths
                         .insert(rule_id.to_string(), (source_path.clone(), path.clone()))
                     {
-                        let message = format!(
+                        warn_or_err!(
+                            diag,
                             "rule `{rule_id}` defined multiple times\n\
                              First location: {old:?}\n\
                              Second location: {source_path:?}"
                         );
-                        if self.deny_warnings {
-                            panic!("error: {message}");
-                        } else {
-                            eprintln!("warning: {message}");
-                        }
                     }
                     let mut parts: Vec<_> = rule_id.split('.').collect();
                     while !parts.is_empty() {
@@ -78,7 +74,12 @@ impl Spec {
 
     /// Converts lines that start with `r[…]` into a "rule" which has special
     /// styling and can be linked to.
-    pub fn render_rule_definitions(&self, content: &str, tests: &RuleToTests) -> String {
+    pub fn render_rule_definitions(
+        &self,
+        content: &str,
+        tests: &RuleToTests,
+        git_ref: &str,
+    ) -> String {
         RULE_RE
             .replace_all(content, |caps: &Captures<'_>| {
                 let rule_id = &caps[1];
@@ -96,7 +97,6 @@ impl Spec {
                             test_html,
                             "<li><a href=\"https://github.com/rust-lang/rust/blob/{git_ref}/{test_path}\">{test_path}</a></li>",
                             test_path = test.path,
-                            git_ref = self.git_ref
                         )
                         .unwrap();
                     }
