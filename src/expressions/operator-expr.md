@@ -454,35 +454,35 @@ Any cast that does not fit either a coercion rule or an entry in the table is a 
 Here `*T` means either `*const T` or `*mut T`. `m` stands for optional `mut` in
 reference types and `mut` or `const` in pointer types.
 
-| Type of `e`           | `U`                   | Cast performed by `e as U`       |
-|-----------------------|-----------------------|----------------------------------|
-| Integer or Float type | Integer or Float type | Numeric cast                     |
-| Enumeration           | Integer type          | Enum cast                        |
-| `bool` or `char`      | Integer type          | Primitive to integer cast        |
-| `u8`                  | `char`                | `u8` to `char` cast              |
-| `*T`                  | `*V` where `V: Sized` \* | Pointer to pointer cast       |
-| `*T` where `T: Sized` | Integer type          | Pointer to address cast          |
-| Integer type          | `*V` where `V: Sized` | Address to pointer cast          |
-| `&m₁ T`               | `*m₂ T` \*\*          | Reference to pointer cast        |
-| `&m₁ [T; n]`          | `*m₂ T` \*\*          | Array to pointer cast            |
-| [Function item]       | [Function pointer]    | Function item to function pointer cast |
-| [Function item]       | `*V` where `V: Sized` | Function item to pointer cast    |
-| [Function item]       | Integer               | Function item to address cast    |
-| [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast |
-| [Function pointer]    | Integer               | Function pointer to address cast |
-| Closure \*\*\*        | Function pointer      | Closure to function pointer cast |
+| Type of `e`           | `U`                   | Cast performed by `e as U`                            |
+|-----------------------|-----------------------|-------------------------------------------------------|
+| Integer or Float type | Integer or Float type | [Numeric cast][expr.as.numeric]                       |
+| Enumeration           | Integer type          | [Enum cast][expr.as.enum]                             |
+| `bool` or `char`      | Integer type          | [Primitive to integer cast][expr.as.bool-char-as-int] |
+| `u8`                  | `char`                | [`u8` to `char` cast][expr.as.u8-as-char]             |
+| `*T`                  | `*V` [^meta-compat]   | [Pointer to pointer cast][expr.as.pointer]            |
+| `*T` where `T: Sized` | Integer type          | [Pointer to address cast][expr.as.pointer-as-int]     |
+| Integer type          | `*V` where `V: Sized` | [Address to pointer cast][expr.as.int-as-pointer]     |
+| `&m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
+| `*m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
+| [Function item]       | [Function pointer]    | Function item to function pointer cast                |
+| [Function item]       | `*V` where `V: Sized` | Function item to pointer cast                         |
+| [Function item]       | Integer               | Function item to address cast                         |
+| [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast                      |
+| [Function pointer]    | Integer               | Function pointer to address cast                      |
+| Closure [^no-capture] | Function pointer      | Closure to function pointer cast                      |
 
-\* or `T` and `V` are unsized types with compatible metadata:
+[^meta-compat]: where `T` and `V` have compatible metadata:
+      * `V: Sized`, or
+      * Both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`), or
+      * Both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`)
+          * **Note**: *adding* auto traits is only allowed if the principal trait has the auto trait as a super trait (given `trait T: Send {}`, `*dyn T` -> `*dyn T + Send` is valid, but `*dyn Debug` -> `*dyn Debug + Send` is not)
+          * **Note**: Generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
-* Both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`).
-* Both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`).
-    * **Note**: Adding auto traits is only allowed if the principal trait has the auto trait as a super trait (given `trait T: Send {}`, `*dyn T` -> `*dyn T + Send` is valid, but `*dyn Debug` -> `*dyn Debug + Send` is not).
-    * **Note**: Generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`).
-
-\*\* only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference to
+[^lessmut]: only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to
 `const` pointer is allowed.
 
-\*\*\* only for closures that do not capture (close over) any local variables
+[^no-capture]: only for closures that do not capture (close over) any local variables can be casted to function pointers.
 
 ### Semantics
 
