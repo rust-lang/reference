@@ -21,6 +21,9 @@ r[safety.unsafe-union-access]
 r[safety.unsafe-call]
 - Calling an unsafe function (including an intrinsic or foreign function).
 
+r[safety.unsafe-target-feature-call]
+- Calling a safe function marked with a [`target_feature`][attributes.codegen.target_feature] from a function that does not have a `target_feature` attribute enabling the same features (see [attributes.codegen.target_feature.safety-restrictions]).
+
 r[safety.unsafe-impl]
 - Implementing an [unsafe trait].
 
