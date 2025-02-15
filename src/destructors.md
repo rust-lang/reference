@@ -274,8 +274,7 @@ Temporaries are also created to hold the result of operands to an expression
 while the other operands are evaluated. The temporaries are associated to the
 scope of the expression with that operand. Since the temporaries are moved from
 once the expression is evaluated, dropping them has no effect unless one of the
-operands to an expression breaks out of the expression, returns, or
-[panics][panic].
+operands to an expression breaks out of the expression, returns, or [panics][panic].
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -439,17 +438,11 @@ variable or field from being dropped automatically.
 r[destructors.process-termination]
 ### Process termination without unwinding
 
-There are some ways to terminate the process without [unwinding], in which case
-destructors will not be run.
+There are some ways to terminate the process without [unwinding], in which case destructors will not be run.
 
-The standard library provides [`std::process::exit`] and
-[`std::process::abort`] to do this explicitly. Additionally, if the
-[panic handler][panic.panic_handler.std] is set to `abort`, panicking will always terminate the process
-without destructors being run.
+The standard library provides [`std::process::exit`] and [`std::process::abort`] to do this explicitly. Additionally, if the [panic handler][panic.panic_handler.std] is set to `abort`, panicking will always terminate the process without destructors being run.
 
-There is one additional case to be aware of: when a panic reaches a
-[non-unwinding ABI boundary], either no destructors will run, or all
-destructors up until the ABI boundary will run.
+There is one additional case to be aware of: when a panic reaches a [non-unwinding ABI boundary], either no destructors will run, or all destructors up until the ABI boundary will run.
 
 [Assignment]: expressions/operator-expr.md#assignment-expressions
 [binding modes]: patterns.md#binding-modes

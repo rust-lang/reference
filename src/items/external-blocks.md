@@ -122,9 +122,7 @@ r[items.extern.abi.system]
   API itself
 
 r[items.extern.abi.unwind]
-* `extern "C-unwind"` and `extern "system-unwind"` -- identical to `"C"` and
-  `"system"`, respectively, but with [different behavior][unwind-behavior] when
-  the callee unwinds (by panicking or throwing a C++ style exception).
+* `extern "C-unwind"` and `extern "system-unwind"` -- identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
 
 r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
@@ -156,8 +154,7 @@ r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
 
 r[items.extern.abi.platform-unwind-variants]
-Like `"C"` and `"system"`, most platform-specific ABI strings also have a
-[corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
+Like `"C"` and `"system"`, most platform-specific ABI strings also have a [corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
 
 * `"aapcs-unwind"`
 * `"cdecl-unwind"`

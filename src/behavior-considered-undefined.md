@@ -77,9 +77,7 @@ r[undefined.target-feature]
   does not support (see [`target_feature`]), *except* if the platform explicitly documents this to be safe.
 
 r[undefined.call]
-* Calling a function with the wrong [call ABI][abi], or unwinding past a stack
-  frame that does not allow unwinding (e.g. by calling a `"C-unwind"` function
-  imported or transmuted as a `"C"` function or function pointer).
+* Calling a function with the wrong [call ABI][abi], or unwinding past a stack frame that does not allow unwinding (e.g. by calling a `"C-unwind"` function imported or transmuted as a `"C"` function or function pointer).
 
 r[undefined.invalid]
 * Producing an [invalid value][invalid-values]. "Producing" a
@@ -99,13 +97,9 @@ r[undefined.const-transmute-ptr2int]
   cast, e.g. by doing raw pointer casts or using a union.
 
 r[undefined.runtime]
-* Violating assumptions of the Rust runtime. Most assumptions of the Rust
-  runtime are currently not explicitly documented.
-  * For assumptions specifically related to unwinding, see the [panic
-    documentation][unwinding-ffi].
-  * The runtime assumes that a Rust stack frame is not deallocated without
-    executing destructors for local variables owned by the stack frame. This assumption
-    can be violated by C functions like `longjmp`.
+* Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
+  * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
+  * The runtime assumes that a Rust stack frame is not deallocated without executing destructors for local variables owned by the stack frame. This assumption can be violated by C functions like `longjmp`.
 
 > **Note**: Undefined behavior affects the entire program. For example, calling
 > a function in C that exhibits undefined behavior of C means your entire
