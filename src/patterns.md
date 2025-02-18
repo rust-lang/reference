@@ -713,7 +713,6 @@ r[patterns.struct.syntax]
 > &nbsp;&nbsp; )
 >
 > _StructPatternEtCetera_ :\
-> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
 > &nbsp;&nbsp; `..`
 
 [_OuterAttribute_]: attributes.md
