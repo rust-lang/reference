@@ -1,5 +1,7 @@
+r[names.preludes]
 # Preludes
 
+r[names.preludes.intro]
 A *prelude* is a collection of names that are automatically brought into scope
 of every module in a crate.
 
@@ -8,6 +10,7 @@ queried during [name resolution]. For example, even though something like
 [`Box`] is in scope in every module, you cannot refer to it as `self::Box`
 because it is not a member of the current module.
 
+r[names.preludes.kinds]
 There are several different preludes:
 
 - [Standard library prelude]
@@ -16,9 +19,13 @@ There are several different preludes:
 - [`macro_use` prelude]
 - [Tool prelude]
 
+r[names.preludes.std]
 ## Standard library prelude
 
+r[names.preludes.std.intro]
 Each crate has a standard library prelude, which consists of the names from a single standard library module.
+
+r[names.preludes.std.module]
 The module used depends on the crate's edition, and on whether the [`no_std` attribute] is applied to the crate:
 
 Edition | `no_std` not applied        | `no_std` applied
@@ -35,16 +42,22 @@ Edition | `no_std` not applied        | `no_std` applied
 >
 > [`core::prelude::rust_2015`] and [`core::prelude::rust_2018`] have the same contents as [`core::prelude::v1`].
 
+r[names.preludes.extern]
 ## Extern prelude
 
+r[names.preludes.extern.intro]
 External crates imported with [`extern crate`] in the root module or provided
 to the compiler (as with the `--extern` flag with `rustc`) are added to the
 *extern prelude*. If imported with an alias such as `extern crate orig_name as
 new_name`, then the symbol `new_name` is instead added to the prelude.
 
-The [`core`] crate is always added to the extern prelude. The [`std`] crate is
-added as long as the [`no_std` attribute] is not specified in the crate root.
+r[names.preludes.extern.core]
+The [`core`] crate is always added to the extern prelude.
 
+r[names.preludes.extern.std]
+The [`std`] crate is added as long as the [`no_std` attribute] is not specified in the crate root.
+
+r[names.preludes.extern.edition2018]
 > **Edition differences**: In the 2015 edition, crates in the extern prelude
 > cannot be referenced via [use declarations], so it is generally standard
 > practice to include `extern crate` declarations to bring them into scope.
@@ -70,19 +83,27 @@ See https://github.com/rust-lang/rust/issues/57288 for more about the
 alloc/test limitation.
 -->
 
+r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
+r[names.preludes.extern.no_std.intro]
 By default, the standard library is automatically included in the crate root
 module. The [`std`] crate is added to the root, along with an implicit
 [`macro_use` attribute] pulling in all macros exported from `std` into the
 [`macro_use` prelude]. Both [`core`] and [`std`] are added to the [extern
 prelude].
 
+r[names.preludes.extern.no_std.allowed-positions]
 The *`no_std` [attribute]* may be applied at the crate level to prevent the
-[`std`] crate from being automatically added into scope. It does three things:
+[`std`] crate from being automatically added into scope.
 
+It does three things:
+
+r[names.preludes.extern.no_std.extern]
 * Prevents `std` from being added to the [extern prelude](#extern-prelude).
+r[names.preludes.extern.no_std.module]
 * Affects which module is used to make up the [standard library prelude] (as described above).
+r[names.preludes.extern.no_std.core]
 * Injects the [`core`] crate into the crate root instead of [`std`], and pulls
   in all macros exported from `core` in the [`macro_use` prelude].
 
@@ -95,10 +116,15 @@ The *`no_std` [attribute]* may be applied at the crate level to prevent the
 > [!WARNING]
 > Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
+r[names.preludes.lang]
 ## Language prelude
 
+r[names.preludes.lang.intro]
 The language prelude includes names of types and attributes that are built-in
-to the language. The language prelude is always in scope. It includes the following:
+to the language. The language prelude is always in scope.
+
+r[names.preludes.lang.entities]
+It includes the following:
 
 * [Type namespace]
     * [Boolean type] --- `bool`
@@ -109,25 +135,33 @@ to the language. The language prelude is always in scope. It includes the follow
 * [Macro namespace]
     * [Built-in attributes]
 
+r[names.preludes.macro_use]
 ## `macro_use` prelude
 
+r[names.preludes.macro_use.intro]
 The `macro_use` prelude includes macros from external crates that were
 imported by the [`macro_use` attribute] applied to an [`extern crate`].
 
+r[names.preludes.tool]
 ## Tool prelude
 
+r[names.preludes.tool.intro]
 The tool prelude includes tool names for external tools in the [type
 namespace]. See the [tool attributes] section for more details.
 
+r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
+r[names.preludes.no_implicit_prelude.intro]
 The *`no_implicit_prelude` [attribute]* may be applied at the crate level or
 on a module to indicate that it should not automatically bring the [standard
 library prelude], [extern prelude], or [tool prelude] into scope for that
 module or any of its descendants.
 
+r[names.preludes.no_implicit_prelude.lang]
 This attribute does not affect the [language prelude].
 
+r[names.preludes.no_implicit_prelude.edition2018]
 > **Edition differences**: In the 2015 edition, the `no_implicit_prelude`
 > attribute does not affect the [`macro_use` prelude], and all macros exported
 > from the standard library are still included in the `macro_use` prelude.

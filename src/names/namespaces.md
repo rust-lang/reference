@@ -1,5 +1,7 @@
+r[names.namespaces]
 # Namespaces
 
+r[names.namespaces.intro]
 A *namespace* is a logical grouping of declared [names]. Names are segregated
 into separate namespaces based on the kind of entity the name refers to.
 Namespaces allow the occurrence of a name in one namespace to not conflict
@@ -10,6 +12,7 @@ entities. The usage of a name will look for the declaration of that name in
 different namespaces, based on the context, as described in the [name
 resolution] chapter.
 
+r[names.namespaces.kinds]
 The following is a list of namespaces, with their corresponding entities:
 
 * Type Namespace
@@ -81,6 +84,7 @@ fn example<'Foo>(f: Foo) {
 }
 ```
 
+r[names.namespaces.without]
 ## Named entities without a namespace
 
 The following entities have explicit names, but the names are not a part of
@@ -88,6 +92,7 @@ any specific namespace.
 
 ### Fields
 
+r[names.namespaces.without.fields]
 Even though struct, enum, and union fields are named, the named fields do not
 live in an explicit namespace. They can only be accessed via a [field
 expression], which only inspects the field names of the specific type being
@@ -95,13 +100,16 @@ accessed.
 
 ### Use declarations
 
+r[names.namespaces.without.use]
 A [use declaration] has named aliases that it imports into scope, but the
 `use` item itself does not belong to a specific namespace. Instead, it can
 introduce aliases into multiple namespaces, depending on the item kind being
 imported.
 
+r[names.namespaces.sub-namespaces]
 ## Sub-namespaces
 
+r[names.namespaces.sub-namespaces.intro]
 The macro namespace is split into two sub-namespaces: one for [bang-style macros] and one for [attributes].
 When an attribute is resolved, any bang-style macros in scope will be ignored.
 And conversely resolving a bang-style macro will ignore attribute macros in scope.
@@ -109,6 +117,7 @@ This prevents one style from shadowing another.
 
 For example, the [`cfg` attribute] and the [`cfg` macro] are two different entities with the same name in the macro namespace, but they can still be used in their respective context.
 
+r[names.namespaces.sub-namespaces.use-shadow]
 It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
 
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
