@@ -359,7 +359,7 @@ r[asm.operand-type.supported-operands.label]
   - The address of the block is substituted into the asm template string. The assembly code may jump to the substituted address.
   - After execution of the block, the `asm!` expression returns.
   - The type of the block must be unit or `!` (never).
-  - The block starts a new safety context; despite the outer `unsafe` block needed for `asm!`, unsafe operations within the `label` block must be wrapped in an inner `unsafe` block.
+  - The block starts a new safety context: unsafe operations within the `label` block must be wrapped in an inner `unsafe` block, even though the entire `asm!` statement is already wrapped in `unsafe`.
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
@@ -1331,7 +1331,7 @@ r[asm.rules.arm64ec]
 
 r[asm.rules.only-on-exit]
 - The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting the assembly code.
-  - This means that assembly code that never return (even if not marked `noreturn`) don't need to preserve these registers.
+  - This means that assembly code that never returns (even if not marked `noreturn`) doesn't need to preserve these registers.
   - When returning to a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
     - You cannot exit an `asm!` block that has not been entered.
       Neither can you exit an `asm!` block that has already been exited (without first entering it again).
