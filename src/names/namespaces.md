@@ -123,14 +123,14 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
 [`for`]: ../expressions/loop-expr.md#iterator-loops
-[`if let`]: ../expressions/if-expr.md#if-let-expressions
+[`if let`]: ../expressions/if-expr.md#if-let-patterns
 [`let`]: ../statements.md#let-statements
 [`macro_rules` declarations]: ../macros-by-example.md
 [`match`]: ../expressions/match-expr.md
 [`Self` constructors]: ../paths.md#self-1
 [`Self` type]: ../paths.md#self-1
 [`use` import]: ../items/use-declarations.md
-[`while let`]: ../expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]: ../expressions/loop-expr.md#while-let-patterns
 [Associated const declarations]: ../items/associated-items.md#associated-constants
 [Associated function declarations]: ../items/associated-items.md#associated-functions-and-methods
 [Associated type declarations]: ../items/associated-items.md#associated-types

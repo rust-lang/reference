@@ -79,7 +79,7 @@ r[patterns.if-let]
 * [`if let` expressions](expressions/if-expr.md)
 
 r[patterns.while-let]
-* [`while let` expressions](expressions/loop-expr.md#predicate-pattern-loops)
+* [`while let` expressions](expressions/loop-expr.md#while-let-patterns)
 
 r[patterns.for]
 * [`for` expressions](expressions/loop-expr.md#iterator-loops)
