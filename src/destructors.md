@@ -473,10 +473,10 @@ variable or field from being dropped automatically.
 [tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
 
 [`for`]: expressions/loop-expr.md#iterator-loops
-[`if let`]: expressions/if-expr.md#if-let-expressions
+[`if let`]: expressions/if-expr.md#if-let-patterns
 [`if`]: expressions/if-expr.md#if-expressions
 [`let` statement]: statements.md#let-statements
 [`loop`]: expressions/loop-expr.md#infinite-loops
 [`match`]: expressions/match-expr.md
-[`while let`]: expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]: expressions/loop-expr.md#while-let-patterns
 [`while`]: expressions/loop-expr.md#predicate-loops
