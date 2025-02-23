@@ -146,7 +146,7 @@ Point3d { x, y: y_value, z };
 ```
 
 [enum variant]: ../items/enumerations.md
-[if let]: if-expr.md#if-let-expressions
+[if let]: if-expr.md#if-let-patterns
 [if]: if-expr.md#if-expressions
 [loop]: loop-expr.md
 [match]: match-expr.md

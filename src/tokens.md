@@ -1049,7 +1049,7 @@ r[lex.token.reserved-guards.edition2024]
 [functions]: items/functions.md
 [generics]: items/generics.md
 [identifier]: identifiers.md
-[if let]: expressions/if-expr.md#if-let-expressions
+[if let]: expressions/if-expr.md#if-let-patterns
 [Integer literal expressions]: expressions/literal-expr.md#integer-literal-expressions
 [keywords]: keywords.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
@@ -1080,4 +1080,4 @@ r[lex.token.reserved-guards.edition2024]
 [unary minus operator]: expressions/operator-expr.md#negation-operators
 [use declarations]: items/use-declarations.md
 [use wildcards]: items/use-declarations.md
-[while let]: expressions/loop-expr.md#predicate-pattern-loops
+[while let]: expressions/loop-expr.md#while-let-patterns

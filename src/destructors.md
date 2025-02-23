@@ -67,8 +67,9 @@ leaves a drop scope all variables associated to that scope are dropped in
 reverse order of declaration (for variables) or creation (for temporaries).
 
 r[destructors.scope.desugaring]
-Drop scopes are determined after replacing [`for`], [`if let`], and
-[`while let`] expressions with the equivalent expressions using [`match`].
+Drop scopes can be determined by replacing [`for`], [`if`], and [`while`]
+expressions with equivalent expressions using [`match`], [`loop`] and
+`break`.
 
 r[destructors.scope.operators]
 Overloaded operators are not distinguished from built-in operators and [binding
@@ -203,11 +204,11 @@ smallest scope that contains the expression and is one of the following:
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The condition expression of an `if` or `while` expression, or a `match`
-  guard.
+* The non-pattern matching condition expression of an `if` or `while` expression,
+  or a `match` guard.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
-* The pattern-matching condition and consequent body of [`if let`] ([destructors.scope.temporary.edition2024]).
+* The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
 * The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > [!NOTE]
@@ -479,10 +480,10 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
 
 [`for`]: expressions/loop-expr.md#iterator-loops
-[`if let`]: expressions/if-expr.md#if-let-expressions
+[`if let`]: expressions/if-expr.md#if-let-patterns
 [`if`]: expressions/if-expr.md#if-expressions
 [`let` statement]: statements.md#let-statements
 [`loop`]: expressions/loop-expr.md#infinite-loops
 [`match`]: expressions/match-expr.md
-[`while let`]: expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]: expressions/loop-expr.md#while-let-patterns
 [`while`]: expressions/loop-expr.md#predicate-loops

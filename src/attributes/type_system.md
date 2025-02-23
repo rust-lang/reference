@@ -206,7 +206,6 @@ let _ = EnumWithNonExhaustiveVariants::First as u8;
 
 Non-exhaustive types are always considered inhabited in downstream crates.
 
-[`if let`]: ../expressions/if-expr.md#if-let-expressions
 [`match`]: ../expressions/match-expr.md
 [attributes]: ../attributes.md
 [enum]: ../items/enumerations.md
