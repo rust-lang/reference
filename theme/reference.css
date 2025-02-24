@@ -302,6 +302,17 @@ main > .rule {
     color: #999 !important;
 }
 
+/* Test links */
+.rule .popup-container {
+    float: right;
+    padding-right: 10px;
+}
+
+.rule .popup-container > a {
+    float: right;
+    text-align: right;
+}
+
 /* When clicking a rule, it is added as a URL fragment and the browser will
    navigate to it. This adds an indicator that the linked rule is the one that
    is "current", just like normal headers are in mdbook.
@@ -326,13 +337,18 @@ main > .rule {
    The cutoff point is chosen semi-arbitrary, it felt that
    when `width < 14em`, there are too many breaks. */
 @container rule (width < 14em) {
-    main > .rule a span {
+    main > .rule a.rule-link span,
+    main > .rule .popup-container > a span {
         display: none;
     }
 
-    main > .rule a::before {
+    main > .rule > a.rule-link::before {
         content: "[*]";
-    }
+    } 
+    
+    main > .rule .popup-container > a::before {
+        content: "[T]";
+    } 
 }
 
 /* Align rules to various siblings */
