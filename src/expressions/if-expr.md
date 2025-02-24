@@ -107,10 +107,14 @@ if let E::X(n) | E::Y(n) = v {
 r[expr.if.chains]
 ## Chains of conditions
 
+r[expr.if.chains.intro]
 Multiple condition operands can be separated with `&&`.
+
+r[expr.if.chains.order]
 Similar to a `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
 in which case the subsequent operands are not evaluated.
 
+r[expr.if.chains.bindings]
 The bindings of each pattern are put into scope to be available for the next condition operand and the consequent block.
 
 The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
@@ -144,6 +148,7 @@ fn nested() {
 }
 ```
 
+r[expr.if.chains.or]
 If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with the `let` scrutinee.
 If a `||` expression is needed, then parentheses can be used. For example:
 

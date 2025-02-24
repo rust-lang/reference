@@ -66,17 +66,26 @@ r[expr.loop.while]
 > &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>\
 > &nbsp;&nbsp; | `let` [_Pattern_] `=` [_Scrutinee_]
 
+r[expr.loop.while.intro]
 A `while` loop expression allows repeating the evaluation of a block while a set of conditions remain true.
+
+r[expr.loop.while.syntax]
 The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`,
 followed by a [_BlockExpression_].
 
+r[expr.loop.while.condition]
 Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
 If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
 then the loop body block executes.
+
+r[expr.loop.while.repeat]
 After the loop body successfully executes, the condition operands are re-evaluated to determine if the body should be executed again.
+
+r[expr.loop.while.exit]
 If any condition operand evaluates to `false` or any `let` pattern does not match its scrutinee,
 the body is not executed and execution continues after the `while` expression.
 
+r[expr.loop.while.eval]
 A `while` expression evaluates to `()`.
 
 An example:
