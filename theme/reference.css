@@ -178,11 +178,11 @@ main {
     display: grid;
     grid-template-columns:
         /* Left margin / place for rules */
-        [rules] minmax(20px, 1fr)
+        [rules] minmax(36px, 1fr)
         /* The main text body */
         [text] auto
         /* Right margin */
-        [margin] minmax(20px, 1fr);
+        [margin] minmax(36px, 1fr);
 
     /* We do these by hand via the grid */
     margin: 0;
