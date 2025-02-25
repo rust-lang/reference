@@ -86,9 +86,9 @@ impl Spec {
                 let mut test_html = String::new();
                 if let Some(tests) = tests.get(rule_id) {
                     test_html = format!(
-                        "<span class=\"popup-container\">\n\
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"spec_toggle_tests('{rule_id}');\">\
-                            Tests</a>\n\
+                        "<br><span class=\"popup-container\">\n\
+                            <a href=\"javascript:void(0)\" onclick=\"spec_toggle_tests('{rule_id}');\">\
+                            <span>Tests</span></a>\n\
                             <div id=\"tests-{rule_id}\" class=\"tests-popup popup-hidden\">\n\
                             Tests with this rule:
                             <ul>");
