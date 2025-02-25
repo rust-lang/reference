@@ -47,8 +47,8 @@ Like all primitives, the boolean type [implements][p-impl] the
 r[type.bool.expr]
 ## Operations on boolean values
 
-<!-- This is washy wording --> When using certain operator expressions with a
-boolean type for its operands, they evaluate using the rules of [boolean logic].
+When using certain operator expressions with a boolean type for its operands,
+they evaluate using the rules of [boolean logic].
 
 r[type.bool.expr.not]
 ### Logical not
