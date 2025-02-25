@@ -54,9 +54,7 @@ so that the call to `f` works as if it were:
 
 <!-- ignore: continuation of above -->
 ```rust,ignore
-// Note: This is not valid Rust due to the duplicate mutable borrows.
-// This is only provided as an illustration.
-f(Closure{ left_top: &mut rect.left_top, right_bottom_x: &mut rect.left_top.x });
+f(Closure{ left_top: &mut rect.left_top, right_bottom_x: &mut rect.right_bottom.x });
 ```
 
 r[type.closure.capture]
