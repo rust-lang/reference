@@ -79,7 +79,7 @@ Module Path               | Filesystem Path  | File Contents
 `crate::util`             | `util.rs` *or* `util/mod.rs` | `mod config;`
 `crate::util::config`     | `util/config.rs` |
 
-> **Note**: Prior to `rustc` 1.30, using `mod.rs` files was the way to load
+> **Note**: Prior to `rustc` 1.30, using `mod.rs` files was the only way to load
 > a module with nested children.
 
 ### The `path` attribute
