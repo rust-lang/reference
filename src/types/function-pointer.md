@@ -54,6 +54,8 @@ r[type.fn-pointer.constraint-variadic]
 Variadic parameters can only be specified with [`extern`] function types with
 the `"C"` or `"cdecl"` calling convention.
 
+This also includes the corresponding [`-unwind` variants][items.fn.extern.unwind].
+
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
 

@@ -132,7 +132,7 @@ r[attributes.codegen.target_feature.allowed-positions]
 The `#[target_feature]` attribute is not allowed on the following places:
 
 - [the `main` function][crate.main]
-- a [`panic_handler` function][runtime.panic_handler]
+- a [`panic_handler` function][panic.panic_handler]
 - safe trait methods
 - safe default functions in traits
 

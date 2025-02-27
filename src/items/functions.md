@@ -254,20 +254,43 @@ let fptr: extern "C" fn() -> i32 = new_i32;
 ```
 
 r[items.fn.extern.unwind]
-Functions with an ABI that differs from `"Rust"` do not support unwinding in the
-exact same way that Rust does. Therefore, unwinding past the end of functions
-with such ABIs causes the process to abort.
+### Unwinding
 
-> **Note**: The LLVM backend of the `rustc` implementation
-aborts the process by executing an illegal instruction.
+r[items.fn.extern.unwind.intro]
+Most ABI strings come in two variants, one with an `-unwind` suffix and one without. The `Rust` ABI always permits unwinding, so there is no `Rust-unwind` ABI. The choice of ABI, together with the runtime [panic handler], determines the behavior when unwinding out of a function.
+
+r[items.fn.extern.unwind.behavior]
+The table below indicates the behavior of an unwinding operation reaching each type of ABI boundary (function declaration or definition using the corresponding ABI string). Note that the Rust runtime is not affected by, and cannot have an effect on, any unwinding that occurs entirely within another language's runtime, that is, unwinds that are thrown and caught without reaching a Rust ABI boundary.
+
+The `panic`-unwind column refers to [panicking] via the `panic!` macro and similar standard library mechanisms, as well as to any other Rust operations that cause a panic, such as out-of-bounds array indexing or integer overflow.
+
+The "unwinding" ABI category refers to `"Rust"` (the implicit ABI of Rust functions not marked `extern`), `"C-unwind"`, and any other ABI with `-unwind` in its name. The "non-unwinding" ABI category refers to all other ABI strings, including `"C"` and `"stdcall"`.
+
+Native unwinding is defined per-target. On targets that support throwing and catching C++ exceptions, it refers to the mechanism used to implement this feature. Some platforms implement a form of unwinding referred to as ["forced unwinding"][forced-unwinding]; `longjmp` on Windows and `pthread_exit` in `glibc` are implemented this way. Forced unwinding is explicitly excluded from the "Native unwind" column in the table.
+
+| panic runtime  | ABI           | `panic`-unwind                        | Native unwind (unforced) |
+| -------------- | ------------  | ------------------------------------- | -----------------------  |
+| `panic=unwind` | unwinding     | unwind                                | unwind                   |
+| `panic=unwind` | non-unwinding | abort (see notes below)               | [undefined behavior]     |
+| `panic=abort`  | unwinding     | `panic` aborts without unwinding      | abort                    |
+| `panic=abort`  | non-unwinding | `panic` aborts without unwinding      | [undefined behavior]     |
+
+r[items.fn.extern.abort]
+With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding ABI boundary, either no destructors (`Drop` calls) will run, or all destructors up until the ABI boundary will run. It is unspecified which of those two behaviors will happen.
+
+For other considerations and limitations regarding unwinding across FFI boundaries, see the [relevant section in the Panic documentation][panic-ffi].
+
+[forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
+[panic handler]: ../panic.md#the-panic_handler-attribute
+[panic-ffi]: ../panic.md#unwinding-across-ffi-boundaries
+[panicking]: ../panic.md
+[undefined behavior]: ../behavior-considered-undefined.md
 
 r[items.fn.const]
 ## Const functions
 
 r[items.fn.const.intro]
-Functions qualified with the `const` keyword are [const functions], as are
-[tuple struct] and [tuple variant] constructors. _Const functions_  can be
-called from within [const contexts].
+Functions qualified with the `const` keyword are [const functions], as are [tuple struct] and [tuple variant] constructors. _Const functions_  can be called from within [const contexts].
 
 r[items.fn.const.extern]
 Const functions may use the [`extern`] function qualifier.

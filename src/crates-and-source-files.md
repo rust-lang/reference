@@ -122,13 +122,17 @@ use foo::bar as main;
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the testing.md file -->
 
+r[crate.uncaught-foreign-unwinding]
+### Uncaught foreign unwinding
+
+When a "foreign" unwind (e.g. an exception thrown from C++ code, or a `panic!` in Rust code using a different panic handler) propagates beyond the `main` function, the process will be safely terminated. This may take the form of an abort, in which case it is not guaranteed that any `Drop` calls will be executed, and the error output may be less informative than if the runtime had been terminated by a "native" Rust `panic`.
+
+For more information, see the [panic documentation][panic-docs].
+
 r[crate.no_main]
 ### The `no_main` attribute
 
-
-The *`no_main` [attribute]* may be applied at the crate level to disable
-emitting the `main` symbol for an executable binary. This is useful when some
-other object being linked to defines `main`.
+The *`no_main` [attribute]* may be applied at the crate level to disable emitting the `main` symbol for an executable binary. This is useful when some other object being linked to defines `main`.
 
 r[crate.crate_name]
 ## The `crate_name` attribute
@@ -166,6 +170,7 @@ or `_` (U+005F) characters.
 [function]: items/functions.md
 [module]: items/modules.md
 [module path]: paths.md
+[panic-docs]: panic.md#unwinding-across-ffi-boundaries
 [shebang]: input-format.md#shebang-removal
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses

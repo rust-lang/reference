@@ -304,13 +304,15 @@ r[cfg.panic]
 ### `panic`
 
 r[cfg.panic.general]
-Key-value option set depending on the panic strategy. Note that more values may be added in the future.
+Key-value option set depending on the [panic strategy]. Note that more values may be added in the future.
 
 r[cfg.panic.values]
 Example values:
 
 * `"abort"`
 * `"unwind"`
+
+[panic strategy]: panic.md#panic-strategy
 
 ## Forms of conditional compilation
 
