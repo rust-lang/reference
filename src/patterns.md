@@ -492,6 +492,9 @@ r[patterns.range.syntax]
 > _RangeFromPattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..`
 >
+> _RangeToExclusivePattern_ :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `..` _RangePatternBound_
+>
 > _RangeToInclusivePattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `..=` _RangePatternBound_
 >
@@ -537,8 +540,9 @@ For example, `1..` will match 1, 9, or 9001, or 9007199254740991 (if it is of an
 
 r[patterns.range.open-above]
 A range pattern with only an upper bound matches any value less than or equal to the upper bound.
-It is written as `..=` followed by its upper bound, and has the same type as its upper bound.
-For example, `..=10` will match 10, 1, 0, and for signed integer types, all negative values.
+It is written as `..=` for an end-inclusive or `..` for an end-exclusive pattern, followed by its upper bound,
+and has the same type as its upper bound.
+For example, `..=10` will match 10, 1, 0, and for signed integer types, all negative values, while `..10` will not match 10.
 
 r[patterns.range.constraint-slice]
 Range patterns with only one bound cannot be used as the top-level pattern for subpatterns in [slice patterns](#slice-patterns).
