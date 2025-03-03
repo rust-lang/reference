@@ -478,8 +478,10 @@ r[patterns.range]
 r[patterns.range.syntax]
 > **<sup>Syntax</sup>**\
 > _RangePattern_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _RangeInclusivePattern_\
+> &nbsp;&nbsp; &nbsp;&nbsp; _RangeExclusivePattern_\
+> &nbsp;&nbsp; | _RangeInclusivePattern_\
 > &nbsp;&nbsp; | _RangeFromPattern_\
+> &nbsp;&nbsp; | _RangeToExclusivePattern_\
 > &nbsp;&nbsp; | _RangeToInclusivePattern_\
 > &nbsp;&nbsp; | _ObsoleteRangePattern_
 >
