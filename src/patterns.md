@@ -483,7 +483,7 @@ r[patterns.range.syntax]
 > &nbsp;&nbsp; | _RangeFromPattern_\
 > &nbsp;&nbsp; | _RangeToExclusivePattern_\
 > &nbsp;&nbsp; | _RangeToInclusivePattern_\
-> &nbsp;&nbsp; | _ObsoleteRangePattern_
+> &nbsp;&nbsp; | _ObsoleteRangePattern_[^obsolete-range-edition]
 >
 > _RangeExclusivePattern_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; _RangePatternBound_ `..` _RangePatternBound_
@@ -509,6 +509,8 @@ r[patterns.range.syntax]
 > &nbsp;&nbsp; | `-`<sup>?</sup> [INTEGER_LITERAL]\
 > &nbsp;&nbsp; | `-`<sup>?</sup> [FLOAT_LITERAL]\
 > &nbsp;&nbsp; | [_PathExpression_]
+>
+> [^obsolete-range-edition]: The _ObsoleteRangePattern_ syntax has been removed in the 2021 edition.
 
 r[patterns.range.intro]
 *Range patterns* match scalar values within the range defined by their bounds.
