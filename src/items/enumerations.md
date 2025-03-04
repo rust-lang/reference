@@ -320,8 +320,8 @@ enum ZeroVariants {}
 ```
 
 r[items.enum.empty.uninhabited]
-Zero-variant enums are equivalent to the [never type], but they cannot be
-coerced into other types.
+Only the [never type] can be coerced into zero-variant enums. Conversely, 
+zero-variant enums cannot be coerced into any other type.
 
 ```rust,compile_fail
 # enum ZeroVariants {}
