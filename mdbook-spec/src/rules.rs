@@ -83,31 +83,34 @@ impl Spec {
         RULE_RE
             .replace_all(content, |caps: &Captures<'_>| {
                 let rule_id = &caps[1];
-                let mut test_html = String::new();
+                let mut test_link = String::new();
+                let mut test_popup = String::new();
                 if let Some(tests) = tests.get(rule_id) {
-                    test_html = format!(
-                        "<span class=\"popup-container\">\n\
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"spec_toggle_tests('{rule_id}');\">\
-                            Tests</a>\n\
-                            <div id=\"tests-{rule_id}\" class=\"tests-popup popup-hidden\">\n\
-                            Tests with this rule:
+                    test_link = format!(
+                        "<br><div class=\"test-link\">\n\
+                            <a href=\"javascript:void(0)\" onclick=\"spec_toggle_tests('{rule_id}');\">\
+                            <span>Tests</span></a></div>\n");
+                    test_popup = format!(
+                        "<div id=\"tests-{rule_id}\" class=\"tests-popup popup-hidden\">\n\
+                            Tests with this rule:\n\
                             <ul>");
                     for test in tests {
                         writeln!(
-                            test_html,
+                            test_popup,
                             "<li><a href=\"https://github.com/rust-lang/rust/blob/{git_ref}/{test_path}\">{test_path}</a></li>",
                             test_path = test.path,
                         )
                         .unwrap();
                     }
 
-                    test_html.push_str("</ul></div></span>");
+                    test_popup.push_str("</ul></div>");
                 }
                 format!(
                     "<div class=\"rule\" id=\"r-{rule_id}\">\
-                     <a class=\"rule-link\" href=\"#r-{rule_id}\" title=\"{rule_id}\"><span>[{rule_id_broken}]<span/></a>\
-                     {test_html}\
-                     </div>\n",
+                        <a class=\"rule-link\" href=\"#r-{rule_id}\" title=\"{rule_id}\"><span>[{rule_id_broken}]</span/></a>\n\
+                        {test_link}\
+                     </div>\n\
+                     {test_popup}\n",
                      rule_id_broken = rule_id.replace(".", "<wbr>."),
                 )
             })

@@ -178,11 +178,11 @@ main {
     display: grid;
     grid-template-columns:
         /* Left margin / place for rules */
-        [rules] minmax(20px, 1fr)
+        [rules] minmax(36px, 1fr)
         /* The main text body */
         [text] auto
         /* Right margin */
-        [margin] minmax(20px, 1fr);
+        [margin] minmax(36px, 1fr);
 
     /* We do these by hand via the grid */
     margin: 0;
@@ -257,24 +257,32 @@ main > ul {
 
 /* Values for header margin-top and blockquote margin are taken from mdbook's general.css,
    values for header margin-bottom are taken from <https://www.w3schools.com/cssref/css_default_values.php> */
+:root {
+    /* 1.6 is body font-size */
+    --h2-margin-top: calc(1.5rem * 1.6 * 2.5 - 16px);
+    --h3-margin-top: calc(1.17rem * 1.6 * 2.5 - 16px);
+    --h4-margin-top: calc(1.00rem * 1.6 * 2 - 16px);
+    --h5-margin-top: calc(0.83rem * 1.6 * 2 - 16px);
+    --h6-margin-top: calc(0.67rem * 1.6 * 2 - 16px);
+}
 main > h2 {
-    margin-top: calc(2.5em - 16px);
+    margin-top: var(--h2-margin-top);
     margin-bottom: calc(0.83em - 16px);
 }
 main > h3 {
-    margin-top: calc(2.5em - 16px);
+    margin-top: var(--h3-margin-top);
     margin-bottom: calc(1em - 16px);
 }
 main > h4 {
-    margin-top: calc(2em - 16px);
+    margin-top: var(--h4-margin-top);
     margin-bottom: calc(1.33em - 16px);
 }
 main > h5 {
-    margin-top: calc(2em - 16px);
+    margin-top: var(--h5-margin-top);
     margin-bottom: calc(1.67em - 16px);
 }
 main > h6 {
-    margin-top: calc(2em - 16px);
+    margin-top: var(--h6-margin-top);
     margin-bottom: calc(2.33em - 16px);
 }
 main > blockquote {
@@ -302,50 +310,92 @@ main > .rule {
     color: #999 !important;
 }
 
+/* Test links */
+.test-link {
+    float: right;
+    padding-right: 10px;
+}
+
+.rule .popup-container > a {
+    float: right;
+    text-align: right;
+}
+
 /* When clicking a rule, it is added as a URL fragment and the browser will
    navigate to it. This adds an indicator that the linked rule is the one that
    is "current", just like normal headers are in mdbook.
 */
-.rule:target a::before {
+.rule:target .rule-link::before {
     display: inline-block;
     content: "»";
     padding-right: 5px;
 }
 
 /* Dodge » from headings */
-.rule:has(+ h1:target),
-.rule:has(+ h2:target),
-.rule:has(+ h3:target),
-.rule:has(+ h4:target),
-.rule:has(+ h5:target),
-.rule:has(+ h6:target) {
+/* Note: Some rules have a .tests-popup in the way, so that's why this selects
+         either with or without. */
+.rule:has(+ h1:target, + .tests-popup + h1:target),
+.rule:has(+ h2:target, + .tests-popup + h2:target),
+.rule:has(+ h3:target, + .tests-popup + h3:target),
+.rule:has(+ h4:target, + .tests-popup + h4:target),
+.rule:has(+ h5:target, + .tests-popup + h5:target),
+.rule:has(+ h6:target, + .tests-popup + h6:target) {
     padding-right: 24px;
+}
+
+/* This positioning is to push the popup down over the header's top margin.
+   Ideally I would like the popup to show *below* the header, but I have no idea how to do that.
+*/
+.tests-popup:has(+ h2) {
+    position: relative;
+    top: calc(var(--h2-margin-top) + 10px);
+}
+.tests-popup:has(+ h3) {
+    position: relative;
+    top: calc(var(--h3-margin-top) + 10px);
+}
+.tests-popup:has(+ h4) {
+    position: relative;
+    top: calc(var(--h4-margin-top) + 10px);
+}
+.tests-popup:has(+ h5) {
+    position: relative;
+    top: calc(var(--h5-margin-top) + 10px);
+}
+.tests-popup:has(+ h6) {
+    position: relative;
+    top: calc(var(--h6-margin-top) + 10px);
 }
 
 /* Hide the rules if the width of the container is too small.
    The cutoff point is chosen semi-arbitrary, it felt that
    when `width < 14em`, there are too many breaks. */
 @container rule (width < 14em) {
-    main > .rule a span {
+    main > .rule a.rule-link span,
+    .test-link > a span {
         display: none;
     }
 
-    main > .rule a::before {
+    main > .rule > a.rule-link::before {
         content: "[*]";
-    }
+    } 
+    
+    .test-link > a::before {
+        content: "[T]";
+    } 
 }
 
 /* Align rules to various siblings */
-.rule:has(+ p),
-.rule:has(+ ul) {
+.rule:has(+ p, + .tests-popup + p),
+.rule:has(+ ul, + .tests-popup + ul) {
     margin-top: calc((1em - var(--font-size)) / var(--font-size-mult) / 2);
 }
 
-.rule:has(+ h1) {
+.rule:has(+ h1, + .tests-popup + h1) {
     align-self: center;
 }
 
-.rule:has(+ h2) {
+.rule:has(+ h2, + .tests-popup + h2) {
     /* multiplying by this turns h2's em into .rule's em*/
     --h2-em-mult: calc(
         (1 / var(--font-size-mult)) /* to main font size */
@@ -359,7 +409,7 @@ main > .rule {
         + (1em * var(--h2-em-mult) - 1em) / 2
     )
 }
-.rule:has(+ h3) {
+.rule:has(+ h3, + .tests-popup + h3) {
     /* multiplying by this turns h3's em into .rule's em*/
     --h3-em-mult: calc(
         (1 / var(--font-size-mult)) /* to main font size */
@@ -374,7 +424,7 @@ main > .rule {
     )
 }
 
-.rule:has(+ h4) {
+.rule:has(+ h4, + .tests-popup + h4) {
     /* multiplying by this turns h4's em into .rule's em*/
     --h4-em-mult: calc(
         (1 / var(--font-size-mult)) /* to main font size */
@@ -389,7 +439,7 @@ main > .rule {
     )
 }
 
-.rule:has(+ h5) {
+.rule:has(+ h5, + .tests-popup + h5) {
     /* multiplying by this turns h5's em into .rule's em*/
     --h5-em-mult: calc(
         (1 / var(--font-size-mult)) /* to main font size */
@@ -404,7 +454,7 @@ main > .rule {
     )
 }
 
-.rule:has(+ h6) {
+.rule:has(+ h6, + .tests-popup + h6) {
     /* multiplying by this turns h6's em into .rule's em*/
     --h6-em-mult: calc(
         (1 / var(--font-size-mult)) /* to main font size */
