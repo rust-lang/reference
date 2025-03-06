@@ -363,6 +363,11 @@ the default `enum` size and alignment for the target platform's C ABI.
 > Note: The enum representation in C is implementation defined, so this is
 > really a "best guess". In particular, this may be incorrect when the C code
 > of interest is compiled with certain flags.
+>
+> However, it is guaranteed that, for any two `repr(C)` enum types, their
+> discriminants will have the same size and alignment *within a given
+> compilation of the program.* This is true for both field-less enums and
+> for enums with fields.
 
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
