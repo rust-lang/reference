@@ -2,7 +2,8 @@ r[link]
 # Linkage
 
 
-> Note: This section is described more in terms of the compiler than of
+> [!NOTE]
+> This section is described more in terms of the compiler than of
 > the language.
 
 r[link.intro]

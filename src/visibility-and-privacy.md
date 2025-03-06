@@ -232,7 +232,8 @@ fn bar() {
 fn main() { bar() }
 ```
 
-> **Note:** This syntax only adds another restriction to the visibility of an
+> [!NOTE]
+> This syntax only adds another restriction to the visibility of an
 > item. It does not guarantee that the item is visible within all parts of the
 > specified scope. To access an item, all of its parent items up to the
 > current scope must still be visible as well.

@@ -42,7 +42,8 @@ r[expr.operator.int-overflow.div]
 r[expr.operator.int-overflow.shift]
 * Using `<<` or `>>` where the right-hand argument is greater than or equal to the number of bits in the type of the left-hand argument, or is negative.
 
-> **Note**: The exception for literal expressions behind unary `-` means that forms such as `-128_i8` or `let j: i8 = -(128)` never cause a panic and have the expected value of -128.
+> [!NOTE]
+> The exception for literal expressions behind unary `-` means that forms such as `-128_i8` or `let j: i8 = -(128)` never cause a panic and have the expected value of -128.
 >
 > In these cases, the literal expression already has the most negative value for its type (for example, `128_i8` has the value -128) because integer literals are truncated to their type per the description in [Integer literal expressions][literal expression].
 >
@@ -713,7 +714,8 @@ The assigned value operand is evaluated first, followed by the assignee expressi
 r[expr.assign.destructring-order]
 For destructuring assignment, subexpressions of the assignee expression are evaluated left-to-right.
 
-> **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
+> [!NOTE]
+> This is different than other expressions in that the right operand is evaluated before the left one.
 
 r[expr.assign.drop-target]
 It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
@@ -837,7 +839,8 @@ r[expr.compound-assign.primitive-order]
 If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
 It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
 
-> **Note**: This is different than other expressions in that the right operand is evaluated before the left one.
+> [!NOTE]
+> This is different than other expressions in that the right operand is evaluated before the left one.
 
 r[expr.compound-assign.trait]
 Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assignment trait of the operator (see the table earlier in this chapter).

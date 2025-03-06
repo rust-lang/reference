@@ -211,8 +211,7 @@ smallest scope that contains the expression and is one of the following:
 * The pattern-matching condition and consequent body of [`if let`] ([destructors.scope.temporary.edition2024]).
 * The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
-> **Notes**:
->
+> [!NOTE]
 > The [scrutinee] of a `match` expression is not a temporary scope, so
 > temporaries in the scrutinee can be dropped after the `match` expression. For
 > example, the temporary for `1` in `match 1 { ref mut z => z };` lives until
@@ -315,7 +314,8 @@ r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
 
 
-> **Note**: The exact rules for temporary lifetime extension are subject to
+> [!NOTE]
+> The exact rules for temporary lifetime extension are subject to
 > change. This is describing the current behavior only.
 
 r[destructors.scope.lifetime-extension.let]
@@ -432,7 +432,8 @@ r[destructors.manually-suppressing]
 and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
 variable or field from being dropped automatically.
 
-> Note: Preventing a destructor from being run via [`std::mem::forget`] or other means is safe even if it has a type that isn't `'static`.
+> [!NOTE]
+> Preventing a destructor from being run via [`std::mem::forget`] or other means is safe even if it has a type that isn't `'static`.
 > Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.
 
 r[destructors.process-termination]
