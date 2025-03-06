@@ -155,8 +155,7 @@ parameter. The const expression must be a [block expression][block]
 or a [literal] (with a possibly leading `-` token).
 
 > [!NOTE]
-> This syntactic restriction is necessary to avoid requiring
-> infinite lookahead when parsing an expression inside of a type.
+> This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
 
 ```rust
 fn double<const N: i32>() {

@@ -81,10 +81,7 @@ alternately be expressed with `crate::util`'s contents in a file named
 `util/mod.rs`. It is not allowed to have both `util.rs` and `util/mod.rs`.
 
 > [!NOTE]
-> Prior to `rustc` 1.30, using `mod.rs` files was the way to load
-> a module with nested children. It is encouraged to use the new naming
-> convention as it is more consistent, and avoids having many files named
-> `mod.rs` within a project.
+> Prior to `rustc` 1.30, using `mod.rs` files was the way to load a module with nested children. It is encouraged to use the new naming convention as it is more consistent, and avoids having many files named `mod.rs` within a project.
 
 r[items.mod.outlined.path]
 ### The `path` attribute

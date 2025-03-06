@@ -27,8 +27,7 @@ Test functions must be free, monomorphic functions that take no arguments, and t
   onwards, also update it in the crates-and-source-files.md file -->
 
 > [!NOTE]
-> The test mode is enabled by passing the `--test` argument to `rustc`
-> or using `cargo test`.
+> The test mode is enabled by passing the `--test` argument to `rustc` or using `cargo test`.
 
 r[attributes.testing.test.success]
 The test harness calls the returned value's [`report`] method, and classifies the test as passed or failed depending on whether the resulting [`ExitCode`] represents successful termination.
@@ -71,8 +70,7 @@ fn mytest() {
 ```
 
 > [!NOTE]
-> The `rustc` test harness supports the `--include-ignored` flag to
-> force ignored tests to be run.
+> The `rustc` test harness supports the `--include-ignored` flag to force ignored tests to be run.
 
 r[attributes.testing.should_panic]
 ## The `should_panic` attribute

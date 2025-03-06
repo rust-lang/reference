@@ -19,8 +19,7 @@ Procedural macros must be defined in the root of a crate with the [crate type] o
 The macros may not be used from the crate where they are defined, and can only be used when imported in another crate.
 
 > [!NOTE]
-> When using Cargo, Procedural macro crates are defined with the
-> `proc-macro` key in your manifest:
+> When using Cargo, Procedural macro crates are defined with the `proc-macro` key in your manifest:
 >
 > ```toml
 > [lib]

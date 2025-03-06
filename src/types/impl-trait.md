@@ -28,8 +28,7 @@ r[type.impl-trait.param]
 ## Anonymous type parameters
 
 > [!NOTE]
-> This is often called "impl Trait in argument position".
-(The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
+> This is often called "impl Trait in argument position". (The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
 
 r[type.impl-trait.param.intro]
 Functions can use `impl` followed by a set of trait bounds to declare a parameter as having an anonymous type.

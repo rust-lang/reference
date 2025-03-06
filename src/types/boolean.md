@@ -34,9 +34,7 @@ r[type.bool.usage-lazy-operator]
 * The operands in [lazy boolean operator expressions][lazy]
 
 > [!NOTE]
-> The boolean type acts similarly to but is not an [enumerated type].
-In practice, this mostly means that constructors are not associated to the type
-(e.g. `bool::true`).
+> The boolean type acts similarly to but is not an [enumerated type]. In practice, this mostly means that constructors are not associated to the type (e.g. `bool::true`).
 
 r[type.bool.traits]
 Like all primitives, the boolean type [implements][p-impl] the

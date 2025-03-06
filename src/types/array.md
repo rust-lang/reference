@@ -28,8 +28,7 @@ All elements of arrays are always initialized, and access to an array is
 always bounds-checked in safe methods and operators.
 
 > [!NOTE]
-> The [`Vec<T>`] standard library type provides a heap-allocated resizable
-> array type.
+> The [`Vec<T>`] standard library type provides a heap-allocated resizable array type.
 
 [_Expression_]: ../expressions.md
 [_Type_]: ../types.md#type-expressions

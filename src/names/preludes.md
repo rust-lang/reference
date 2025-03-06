@@ -65,18 +65,14 @@ r[names.preludes.extern.edition2018]
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
 > [!NOTE]
-> Additional crates that ship with `rustc`, such as [`alloc`], and
-> [`test`](mod@test), are not automatically included with the `--extern` flag when using
-> Cargo. They must be brought into scope with an `extern crate` declaration,
-> even in the 2018 edition.
+> Additional crates that ship with `rustc`, such as [`alloc`], and [`test`](mod@test), are not automatically included with the `--extern` flag when using Cargo. They must be brought into scope with an `extern crate` declaration, even in the 2018 edition.
 >
 > ```rust
 > extern crate alloc;
 > use alloc::rc::Rc;
 > ```
 >
-> Cargo does bring in `proc_macro` to the extern prelude for proc-macro crates
-> only.
+> Cargo does bring in `proc_macro` to the extern prelude for proc-macro crates only.
 
 <!--
 See https://github.com/rust-lang/rust/issues/57288 for more about the
@@ -108,11 +104,7 @@ r[names.preludes.extern.no_std.core]
   in all macros exported from `core` in the [`macro_use` prelude].
 
 > [!NOTE]
-> Using the core prelude over the standard prelude is useful when
-> either the crate is targeting a platform that does not support the standard
-> library or is purposefully not using the capabilities of the standard
-> library. Those capabilities are mainly dynamic memory allocation (e.g. `Box`
-> and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
+> Using the core prelude over the standard prelude is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
 > [!WARNING]
 > Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.

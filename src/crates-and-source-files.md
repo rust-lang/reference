@@ -8,10 +8,7 @@ r[crate.syntax]
 > &nbsp;&nbsp; [_Item_]<sup>\*</sup>
 
 > [!NOTE]
-> Although Rust, like any other language, can be implemented by an
-> interpreter as well as a compiler, the only existing implementation is a
-> compiler, and the language has always been designed to be compiled. For these
-> reasons, this section assumes a compiler.
+> Although Rust, like any other language, can be implemented by an interpreter as well as a compiler, the only existing implementation is a compiler, and the language has always been designed to be compiled. For these reasons, this section assumes a compiler.
 
 r[crate.compile-time]
 Rust's semantics obey a *phase distinction* between compile-time and
