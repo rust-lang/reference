@@ -35,8 +35,7 @@ r[dynamic-sized.struct-field]
   <abbr title="dynamically sized type">DST</abbr>.
 
 > [!NOTE]
-> [Variables], function parameters, [const] items, and [static] items must be
-`Sized`.
+> [Variables], function parameters, [const] items, and [static] items must be `Sized`.
 
 [sized]: special-types-and-traits.md#sized
 [Slices]: types/slice.md

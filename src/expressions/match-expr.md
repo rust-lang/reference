@@ -92,8 +92,7 @@ match S(1, 2) {
 ```
 
 > [!NOTE]
-> The `2..=9` is a [Range Pattern], not a [Range Expression].
-> Thus, only those types of ranges supported by range patterns can be used in match arms.
+> The `2..=9` is a [Range Pattern], not a [Range Expression]. Thus, only those types of ranges supported by range patterns can be used in match arms.
 
 r[expr.match.or-patterns-restriction]
 Every binding in each `|` separated pattern must appear in all of the patterns in the arm.
@@ -129,8 +128,7 @@ let message = match maybe_digit {
 ```
 
 > [!NOTE]
-> Multiple matches using the `|` operator can cause the pattern guard and the side effects it has to execute multiple times.
-> For example:
+> Multiple matches using the `|` operator can cause the pattern guard and the side effects it has to execute multiple times. For example:
 >
 > ```rust
 > # use std::cell::Cell;

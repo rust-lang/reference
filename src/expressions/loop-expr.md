@@ -219,8 +219,7 @@ r[expr.loop.for.lang-items]
 The variable names `next`, `iter`, and `val` are for exposition only, they do not actually have names the user can type.
 
 > [!NOTE]
-> The outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished.
-> `next` is declared before being assigned because it results in types being inferred correctly more often.
+> The outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished. `next` is declared before being assigned because it results in types being inferred correctly more often.
 
 r[expr.loop.label]
 ## Loop labels

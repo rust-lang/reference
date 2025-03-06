@@ -82,13 +82,10 @@ It is not possible to set a
 configuration option from within the source code of the crate being compiled.
 
 > [!NOTE]
-> For `rustc`, arbitrary-set configuration options are set using the
-> [`--cfg`] flag. Configuration values for a specified target can be displayed with `rustc --print cfg --target $TARGET`.
+> For `rustc`, arbitrary-set configuration options are set using the [`--cfg`] flag. Configuration values for a specified target can be displayed with `rustc --print cfg --target $TARGET`.
 
 > [!NOTE]
-> Configuration options with the key `feature` are a convention used
-> by [Cargo][cargo-feature] for specifying compile-time options and optional
-> dependencies.
+> Configuration options with the key `feature` are a convention used by [Cargo][cargo-feature] for specifying compile-time options and optional dependencies.
 
 r[cfg.target_arch]
 ### `target_arch`
@@ -426,10 +423,7 @@ fn bewitched() {}
 ```
 
 > [!NOTE]
-> The `cfg_attr` can expand to another `cfg_attr`. For example,
-> `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]`
-> is valid. This example would be equivalent to
-> `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
+> The `cfg_attr` can expand to another `cfg_attr`. For example, `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]` is valid. This example would be equivalent to `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
 
 r[cfg.cfg_attr.restriction]
 The `cfg_attr` attribute is allowed anywhere attributes are allowed.

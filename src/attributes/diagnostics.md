@@ -38,8 +38,7 @@ r[attributes.diagnostics.lint.forbid]
    level afterwards,
 
 > [!NOTE]
-> The lint checks supported by `rustc` can be found via `rustc -W help`,
-> along with their default settings and are documented in the [rustc book].
+> The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
 
 ```rust
 pub mod m1 {
@@ -100,9 +99,7 @@ pub mod m3 {
 ```
 
 > [!NOTE]
-> `rustc` allows setting lint levels on the
-> [command-line][rustc-lint-cli], and also supports [setting
-> caps][rustc-lint-caps] on the lints that are reported.
+> `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
 
 r[attributes.diagnostics.lint.reason]
 ### Lint Reasons
@@ -225,8 +222,7 @@ pub fn another_example() {
 ```
 
 > [!NOTE]
-> The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
-> defined to always generate the `unfulfilled_lint_expectations` lint.
+> The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
 
 r[attributes.diagnostics.lint.group]
 ### Lint groups
@@ -438,10 +434,7 @@ r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
 
 > [!NOTE]
-> Trivial no-op expressions containing the value will not violate the
-> lint. Examples include wrapping the value in a type that does not implement
-> [`Drop`] and then not using that type and being the final expression of a
-> [block expression] that is not used.
+> Trivial no-op expressions containing the value will not violate the lint. Examples include wrapping the value in a type that does not implement [`Drop`] and then not using that type and being the final expression of a [block expression] that is not used.
 >
 > ```rust
 > #[must_use]
@@ -458,8 +451,7 @@ When used on a function in a trait implementation, the attribute does nothing.
 > ```
 
 > [!NOTE]
-> It is idiomatic to use a [let statement] with a pattern of `_`
-> when a must-used value is purposely discarded.
+> It is idiomatic to use a [let statement] with a pattern of `_` when a must-used value is purposely discarded.
 >
 > ```rust
 > #[must_use]

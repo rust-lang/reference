@@ -66,8 +66,7 @@ r[expr.block.value]
 Blocks are always [value expressions] and evaluate the last operand in value expression context.
 
 > [!NOTE]
-> This can be used to force moving a value if really needed.
-> For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.
+> This can be used to force moving a value if really needed. For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.
 >
 > ```rust,compile_fail
 > struct Struct;

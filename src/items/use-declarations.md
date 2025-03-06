@@ -241,9 +241,7 @@ fn main() {
 ```
 
 > [!NOTE]
-> `self` may also be used as the first segment of a path.
-> The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment.
-> See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
+> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
 
 r[items.use.glob]
 ## Glob imports

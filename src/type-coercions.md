@@ -226,9 +226,7 @@ implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide an
 unsized coercion to `Foo<U>`.
 
 > [!NOTE]
-> While the definition of the unsized coercions and their implementation
-> has been stabilized, the traits themselves are not yet stable and therefore
-> can't be used directly in stable Rust.
+> While the definition of the unsized coercions and their implementation has been stabilized, the traits themselves are not yet stable and therefore can't be used directly in stable Rust.
 
 r[coerce.least-upper-bound]
 ## Least upper bound coercions

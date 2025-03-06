@@ -626,8 +626,7 @@ let horse = example.0b10;  // ERROR no field named `0b10`
 ```
 
 > [!NOTE]
-> Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version.
-> See <https://github.com/rust-lang/rust/issues/60210> for more information.
+> Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version. See <https://github.com/rust-lang/rust/issues/60210> for more information.
 
 r[lex.token.literal.float]
 #### Floating-point literals

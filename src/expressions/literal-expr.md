@@ -105,8 +105,8 @@ For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U
 The escaped value is an empty sequence of characters.
 
 > [!NOTE]
-> The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines.
-> Thus `a`, `b` and `c` are equal:
+> The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines. Thus `a`, `b` and `c` are equal:
+>
 > ```rust
 > let a = "foobar";
 > let b = "foo\
@@ -119,10 +119,7 @@ The escaped value is an empty sequence of characters.
 > assert_eq!(b, c);
 > ```
 >
-> Skipping additional newlines (as in example c) is potentially confusing and unexpected.
-> This behavior may be adjusted in the future.
-> Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
-> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
+> Skipping additional newlines (as in example c) is potentially confusing and unexpected. This behavior may be adjusted in the future. Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations. See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
 r[expr.literal.char]
 ## Character literal expressions
@@ -432,12 +429,10 @@ r[expr.literal.int.cast]
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
 > [!NOTE]
-> The final cast will truncate the value of the literal if it does not fit in the expression's type.
-> `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
+> The final cast will truncate the value of the literal if it does not fit in the expression's type. `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
 
 > [!NOTE]
-> `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
-> See [Overflow] for notes on representing the most negative value for a signed type.
+> `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression. See [Overflow] for notes on representing the most negative value for a signed type.
 
 r[expr.literal.float]
 ## Floating-point literal expressions
@@ -489,9 +484,7 @@ r[expr.literal.float.value]
 > `-1.0`, for example, is an application of the [negation operator] to the literal expression `1.0`, not a single floating-point literal expression.
 
 > [!NOTE]
-> `inf` and `NaN` are not literal tokens.
-> The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
-> In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
+> `inf` and `NaN` are not literal tokens. The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions. In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
 
 r[expr.literal.bool]
 ## Boolean literal expressions

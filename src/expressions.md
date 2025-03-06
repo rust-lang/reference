@@ -128,8 +128,7 @@ The operands of these expressions are evaluated prior to applying the effects of
 Expressions taking multiple operands are evaluated left to right as written in the source code.
 
 > [!NOTE]
-> Which subexpressions are the operands of an expression is
-> determined by expression precedence as per the previous section.
+> Which subexpressions are the operands of an expression is determined by expression precedence as per the previous section.
 
 For example, the two `next` method calls will always be called in the same order:
 
