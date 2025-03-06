@@ -87,11 +87,6 @@ configuration option from within the source code of the crate being compiled.
 > by [Cargo][cargo-feature] for specifying compile-time options and optional
 > dependencies.
 
-> [!WARNING]
-> Arbitrarily-set configuration options can clash with compiler-set configuration options. For example, it is possible to do `rustc --cfg "unix" program.rs` while compiling to a Windows target, and have both `unix` and `windows` configuration options set at the same time. Doing this would be unwise.
->
-> Since Rust 1.82 `rustc` prevents setting configuration options that can clash with it's set of builtin configurations with the deny-by-default [`explicit_builtin_cfgs_in_flags`](https://doc.rust-lang.org/rustc/lints/listing/deny-by-default.html#explicit-builtin-cfgs-in-flags) lint.
-
 r[cfg.target_arch]
 ### `target_arch`
 
