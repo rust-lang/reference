@@ -16,7 +16,8 @@ r[attributes.limits.recursion_limit.syntax]
 It uses the [_MetaNameValueStr_]
 syntax to specify the recursion depth.
 
-> Note: The default in `rustc` is 128.
+> [!NOTE]
+> The default in `rustc` is 128.
 
 ```rust,compile_fail
 #![recursion_limit = "4"]
@@ -44,7 +45,8 @@ r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 
 
-> **Note**: This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
+> [!NOTE]
+> This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
 >
 > For more information, see <https://github.com/rust-lang/rust/pull/127670>.
 
@@ -56,7 +58,8 @@ r[attributes.limits.type_length_limit.syntax]
 It is applied at the [crate] level, and uses the [_MetaNameValueStr_] syntax
 to set the limit based on the number of type substitutions.
 
-> Note: The default in `rustc` is 1048576.
+> [!NOTE]
+> The default in `rustc` is 1048576.
 
 ```rust,ignore
 #![type_length_limit = "4"]

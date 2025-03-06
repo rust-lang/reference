@@ -50,7 +50,8 @@ r[input.shebang.inner-attribute]
 As an exception, if the `#!` characters are followed (ignoring intervening [comments] or [whitespace]) by a `[` token, nothing is removed.
 This prevents an [inner attribute] at the start of a source file being removed.
 
-> **Note**: The standard library [`include!`] macro applies byte order mark removal, CRLF normalization, and shebang removal to the file it reads. The [`include_str!`] and [`include_bytes!`] macros do not.
+> [!NOTE]
+> The standard library [`include!`] macro applies byte order mark removal, CRLF normalization, and shebang removal to the file it reads. The [`include_str!`] and [`include_bytes!`] macros do not.
 
 r[input.tokenization]
 ## Tokenization

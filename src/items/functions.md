@@ -423,7 +423,8 @@ fn documented() {
 }
 ```
 
-> Note: Except for lints, it is idiomatic to only use outer attributes on
+> [!NOTE]
+> Except for lints, it is idiomatic to only use outer attributes on
 > function items.
 
 r[items.fn.attributes.builtin-attributes]

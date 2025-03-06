@@ -33,7 +33,8 @@ r[type.bool.usage-condition]
 r[type.bool.usage-lazy-operator]
 * The operands in [lazy boolean operator expressions][lazy]
 
-> **Note**: The boolean type acts similarly to but is not an [enumerated type].
+> [!NOTE]
+> The boolean type acts similarly to but is not an [enumerated type].
 In practice, this mostly means that constructors are not associated to the type
 (e.g. `bool::true`).
 
@@ -42,7 +43,8 @@ Like all primitives, the boolean type [implements][p-impl] the
 [traits][p-traits] [`Clone`][p-clone], [`Copy`][p-copy], [`Sized`][p-sized],
 [`Send`][p-send], and [`Sync`][p-sync].
 
-> **Note**: See the [standard library docs](bool) for library operations.
+> [!NOTE]
+> See the [standard library docs](bool) for library operations.
 
 r[type.bool.expr]
 ## Operations on boolean values

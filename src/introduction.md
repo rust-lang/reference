@@ -82,9 +82,10 @@ These conventions are documented here.
 
   > **Edition differences**: In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
 
-* Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in blockquotes that start with the word "Note:" in **bold**.
+* Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in note blocks.
 
-  > **Note**: This is an example note.
+  > [!NOTE]
+  > This is an example note.
 
 * Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
 

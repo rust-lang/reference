@@ -26,7 +26,8 @@ Test functions must be free, monomorphic functions that take no arguments, and t
 <!-- If the previous section needs updating (from "must take no arguments"
   onwards, also update it in the crates-and-source-files.md file -->
 
-> Note: The test mode is enabled by passing the `--test` argument to `rustc`
+> [!NOTE]
+> The test mode is enabled by passing the `--test` argument to `rustc`
 > or using `cargo test`.
 
 r[attributes.testing.test.success]
@@ -69,7 +70,8 @@ fn mytest() {
 }
 ```
 
-> **Note**: The `rustc` test harness supports the `--include-ignored` flag to
+> [!NOTE]
+> The `rustc` test harness supports the `--include-ignored` flag to
 > force ignored tests to be run.
 
 r[attributes.testing.should_panic]

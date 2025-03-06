@@ -1,3 +1,4 @@
 # Name resolution
 
-> **Note**: This is a placeholder for future expansion.
+> [!NOTE]
+> This is a placeholder for future expansion.

@@ -34,7 +34,8 @@ r[dynamic-sized.struct-field]
   last field; this makes the struct itself a
   <abbr title="dynamically sized type">DST</abbr>.
 
-> **Note**: [variables], function parameters, [const] items, and [static] items must be
+> [!NOTE]
+> [variables], function parameters, [const] items, and [static] items must be
 `Sized`.
 
 [sized]: special-types-and-traits.md#sized

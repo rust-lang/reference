@@ -37,7 +37,8 @@ r[attributes.diagnostics.lint.forbid]
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
    level afterwards,
 
-> Note: The lint checks supported by `rustc` can be found via `rustc -W help`,
+> [!NOTE]
+> The lint checks supported by `rustc` can be found via `rustc -W help`,
 > along with their default settings and are documented in the [rustc book].
 
 ```rust
@@ -98,7 +99,8 @@ pub mod m3 {
 }
 ```
 
-> Note: `rustc` allows setting lint levels on the
+> [!NOTE]
+> `rustc` allows setting lint levels on the
 > [command-line][rustc-lint-cli], and also supports [setting
 > caps][rustc-lint-caps] on the lints that are reported.
 
@@ -222,7 +224,8 @@ pub fn another_example() {
 }
 ```
 
-> Note: The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
+> [!NOTE]
+> The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently
 > defined to always generate the `unfulfilled_lint_expectations` lint.
 
 r[attributes.diagnostics.lint.group]
@@ -297,7 +300,8 @@ fn foo() {
 }
 ```
 
-> Note: `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
+> [!NOTE]
+> `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
 
 r[attributes.diagnostics.deprecated]
 ## The `deprecated` attribute
@@ -433,7 +437,8 @@ impl Trait for i32 {
 r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
 
-> Note: Trivial no-op expressions containing the value will not violate the
+> [!NOTE]
+> Trivial no-op expressions containing the value will not violate the
 > lint. Examples include wrapping the value in a type that does not implement
 > [`Drop`] and then not using that type and being the final expression of a
 > [block expression] that is not used.
@@ -452,7 +457,8 @@ When used on a function in a trait implementation, the attribute does nothing.
 > };
 > ```
 
-> Note: It is idiomatic to use a [let statement] with a pattern of `_`
+> [!NOTE]
+> It is idiomatic to use a [let statement] with a pattern of `_`
 > when a must-used value is purposely discarded.
 >
 > ```rust
@@ -558,7 +564,8 @@ r[attributes.diagnostic.do_not_recommend]
 r[attributes.diagnostic.do_not_recommend.intro]
 The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.
 
-> **Note**: Suppressing the recommendation can be useful if you know that the recommendation would normally not be useful to the programmer. This often occurs with broad, blanket impls. The recommendation may send the programmer down the wrong path, or the trait implementation may be an internal detail that you don't want to expose, or the bounds may not be able to be satisfied by the programmer.
+> [!NOTE]
+> Suppressing the recommendation can be useful if you know that the recommendation would normally not be useful to the programmer. This often occurs with broad, blanket impls. The recommendation may send the programmer down the wrong path, or the trait implementation may be an internal detail that you don't want to expose, or the bounds may not be able to be satisfied by the programmer.
 >
 > For example, in an error message about a type not implementing a required trait, the compiler may find a trait implementation that would satisfy the requirements if it weren't for specific bounds in the trait implementation. The compiler may tell the user that there is an impl, but the problem is the bounds in the trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to tell the compiler to *not* tell the user about the trait implementation, and instead simply tell the user the type doesn't implement the required trait.
 

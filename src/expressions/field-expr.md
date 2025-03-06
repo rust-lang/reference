@@ -19,7 +19,8 @@ r[expr.field.not-method-call]
 Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression].
 That is, they cannot be the function operand of a [call expression].
 
-> **Note**: Wrap the field expression in a [parenthesized expression] to use it in a call expression.
+> [!NOTE]
+> Wrap the field expression in a [parenthesized expression] to use it in a call expression.
 >
 > ```rust
 > # struct HoldsCallable<F: Fn()> { callable: F }

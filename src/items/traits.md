@@ -119,7 +119,8 @@ r[items.traits.dyn-compatible.associated-functions]
 r[items.traits.dyn-compatible.async-traits]
 * The [`AsyncFn`], [`AsyncFnMut`], and [`AsyncFnOnce`] traits are not dyn-compatible.
 
-> **Note**: This concept was formerly known as *object safety*.
+> [!NOTE]
+> This concept was formerly known as *object safety*.
 
 ```rust
 # use std::rc::Rc;

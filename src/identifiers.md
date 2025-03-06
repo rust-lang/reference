@@ -35,7 +35,8 @@ The profile used from UAX #31 is:
 
 with the additional constraint that a single underscore character is not an identifier.
 
-> **Note**: Identifiers starting with an underscore are typically used to indicate an identifier that is intentionally unused, and will silence the unused warning in `rustc`.
+> [!NOTE]
+> Identifiers starting with an underscore are typically used to indicate an identifier that is intentionally unused, and will silence the unused warning in `rustc`.
 
 r[ident.keyword]
 Identifiers may not be a [strict] or [reserved] keyword without the `r#` prefix described below in [raw identifiers](#raw-identifiers).
