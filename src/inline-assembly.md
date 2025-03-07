@@ -1382,7 +1382,7 @@ r[asm.naked-rules.intro]
 To avoid undefined behavior, these rules must be followed when using function-scope inline assembly in naked functions (`naked_asm!`):
 
 r[asm.naked-rules.reg-not-input]
-- Any registers not used for function inputs according to the calling convention and function signature will contain an undefined value on entry to the asm block.
+- Any registers not used for function inputs according to the calling convention and function signature will contain an undefined value on entry to the `naked_asm!` block.
   - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture.
     Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
 
@@ -1391,16 +1391,16 @@ r[asm.naked-rules.reg-not-output]
   - Caller-saved registes may be used freely, even if they are not used for the return value.
 
 r[asm.naked-rules.noreturn]
-- Behavior is undefined if execution falls through to the end of the asm block.
+- Behavior is undefined if execution falls through to the end of the `naked_asm!` block.
     - the assembly code is expected to contain a return instruction or to diverge
 
 r[asm.naked-rules.mem-same-as-ffi]
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
   - Refer to the unsafe code guidelines for the exact rules.
-  - These rules do not apply to memory which is private to the asm code, such as stack space allocated within the asm block.
+  - These rules do not apply to memory which is private to the asm code, such as stack space allocated within the `naked_asm!` block.
 
 r[asm.naked-rules.black-box]
-- The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
+- The compiler cannot assume that the instructions in the `naked_asm!` block are the ones that will actually be executed.
   - This effectively means that the compiler must treat the `naked_asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
 
