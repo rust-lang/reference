@@ -31,8 +31,8 @@ to the next type. (If a step involved following the `Receiver` target, we also
 note whether it would have been reachable by following `<T as
 Deref::Target>` - this information is used later).
 
-At the end, an additional candidate step may be added for
-an [unsized coercion].
+If the final type is an array, an additional candidate type is added
+by [unsized coercion] of that array.
 
 Each step of this chain provides a possible `self` type for methods that
 might be called. The list will be used in two different ways:
