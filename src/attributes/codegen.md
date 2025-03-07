@@ -26,9 +26,8 @@ The *`inline` [attribute]* suggests that a copy of the attributed function
 should be placed in the caller, rather than generating code to call the
 function where it is defined.
 
-> ***Note***: The `rustc` compiler automatically inlines functions based on
-> internal heuristics. Incorrectly inlining functions can make the program
-> slower, so this attribute should be used with care.
+> [!NOTE]
+> The `rustc` compiler automatically inlines functions based on internal heuristics. Incorrectly inlining functions can make the program slower, so this attribute should be used with care.
 
 r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
@@ -39,8 +38,8 @@ There are three ways to use the inline attribute:
 * `#[inline(never)]` *suggests* that an inline expansion should never be
   performed.
 
-> ***Note***: `#[inline]` in every form is a hint, with no *requirements*
-> on the language to place a copy of the attributed function in the caller.
+> [!NOTE]
+> `#[inline]` in every form is a hint, with no *requirements* on the language to place a copy of the attributed function in the caller.
 
 r[attributes.codegen.cold]
 ### The `cold` attribute
@@ -229,8 +228,8 @@ Reference Manual], or elsewhere on [developer.arm.com].
 [ARM Architecture Reference Manual]: https://developer.arm.com/documentation/ddi0487/latest
 [developer.arm.com]: https://developer.arm.com
 
-> ***Note***: The following pairs of features should both be marked as enabled
-> or disabled together if used:
+> [!NOTE]
+> The following pairs of features should both be marked as enabled or disabled together if used:
 > - `paca` and `pacg`, which LLVM currently implements as one feature.
 
 
@@ -390,10 +389,8 @@ r[attributes.codegen.target_feature.remark-rt]
 See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros
 in the standard library for runtime feature detection on these platforms.
 
-> Note: `rustc` has a default set of features enabled for each target and CPU.
-> The CPU may be chosen with the [`-C target-cpu`] flag. Individual features
-> may be enabled or disabled for an entire crate with the
-> [`-C target-feature`] flag.
+> [!NOTE]
+> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
@@ -427,11 +424,11 @@ fn f() {
 }
 ```
 
-> Note: `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps
-> the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
+> [!NOTE]
+> `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
 
-> Note: because the resulting `Location` is a hint, an implementation may halt its walk up the stack
-> early. See [Limitations](#limitations) for important caveats.
+> [!NOTE]
+> Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#limitations) for important caveats.
 
 #### Examples
 
@@ -504,12 +501,8 @@ appears to observers to have been called at the attributed function's definition
 caller information across virtual calls. A common example of this coercion is the creation of a
 trait object whose methods are attributed.
 
-> Note: The aforementioned shim for function pointers is necessary because `rustc` implements
-> `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but
-> this would be unsound for an indirect call because the parameter is not a part of the function's
-> type and a given function pointer type may or may not refer to a function with the attribute. The
-> creation of a shim hides the implicit parameter from callers of the function pointer, preserving
-> soundness.
+> [!NOTE]
+> The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
 
 [_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu

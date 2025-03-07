@@ -227,8 +227,8 @@ struct S {
 pub fn f() {}
 ```
 
-> Note: `rustc` currently recognizes the tools "clippy", "rustfmt", "diagnostic",
-> "miri" and "rust_analyzer".
+> [!NOTE]
+> `rustc` currently recognizes the tools "clippy", "rustfmt", "diagnostic", "miri" and "rust_analyzer".
 
 r[attributes.builtin]
 ## Built-in attributes index

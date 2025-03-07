@@ -41,9 +41,6 @@ For example, given a trait `Trait`, the following are all trait objects:
 r[type.trait-object.syntax-edition2021]
 > **Edition differences**: Before the 2021 edition, the `dyn` keyword may be
 > omitted.
->
-> Note: For clarity, it is recommended to always use the `dyn` keyword on your
-> trait objects unless your codebase supports compiling with Rust 1.26 or lower.
 
 r[type.trait-object.syntax-edition2015]
 > **Edition differences**: In the 2015 edition, if the first bound of the

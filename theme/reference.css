@@ -11,47 +11,81 @@ the parenthetical. So for this example, you'd use
 }
 
 /*
-Warnings are defined using admonitions in blockquotes:
+Admonitions are defined with blockquotes:
 
 > [!WARNING]
 > This is bad!
 
+See mdbook-spec/src/lib.rs.
 */
-main .warning blockquote {
-    padding: 0px;
-}
-
-main .warning blockquote p {
-    padding: 0px 20px;
+.alert blockquote {
+    /* Add some padding to make the vertical bar a little taller than the text.*/
+    padding: 8px 0px 8px 20px;
+    /* Add a solid color bar on the left side. */
+    border-inline-start-style: solid;
+    border-inline-start-width: 4px;
+    /* Disable the background color from mdbook for a cleaner look. */
+    background-color: inherit;
+    /* Disable border blocks from mdbook. */
+    border-block-start: none;
+    border-block-end: none;
+    /* Reduce margin from mdbook, it uses a lot of space. */
     margin: 10px 0;
 }
 
-main .warning blockquote p:first-child::before {
-    content: "⚠️ ";
+.alert-title {
+    /* Slightly increase the weight for more emphasis. */
+    font-weight: 600;
+    /* Vertically center the icon with the text. */
+    display: flex;
+    align-items: center;
+    /* Remove default large margins for a more compact display.
+       Important to override .alert p rule. */
+    margin: 0 0 8px 0 !important;
+}
+.alert blockquote > :nth-child(2) {
+    /* Default margins of content just below the label add too much space. */
+    margin-top: 0;
+}
+.alert blockquote > :last-child {
+    /* Default margins of content add too much space. */
+    margin-bottom: 0;
 }
 
-.light main .warning blockquote,
-.rust main .warning blockquote {
-    border: 2px solid red;
-    background: #ffcece;
+.alert-title svg {
+    fill: currentColor;
+    /* Add some space between the icon and the text. */
+    margin-right: 8px;
 }
 
-.rust main .warning blockquote {
-    /* overrides previous declaration */
-    border-color: #961717;
+.light .alert {
+    --alert-note-color: #0969da;
+    --alert-warning-color: #9a6700;
 }
-
-.coal main .warning blockquote,
-.navy main .warning blockquote,
-.ayu main .warning blockquote {
-    background: #542626;
+.ayu .alert {
+    --alert-note-color: #74b9ff;
+    --alert-warning-color: #f0b72f;
 }
-
-/* Make the links higher contrast on dark themes */
-.coal main .warning blockquote p a,
-.navy main .warning blockquote p a,
-.ayu main .warning blockquote p a {
-    color: #80d0d0;
+.rust .alert {
+    --alert-note-color: #023b95;
+    --alert-warning-color: #603700;
+}
+.coal .alert,
+.navy .alert {
+    --alert-note-color: #4493f8;
+    --alert-warning-color: #d29922;
+}
+.alert-note blockquote {
+    border-inline-start-color: var(--alert-note-color);
+}
+.alert-warning blockquote {
+    border-inline-start-color: var(--alert-warning-color);
+}
+.alert-note .alert-title {
+    color: var(--alert-note-color);
+}
+.alert-warning .alert-title {
+    color: var(--alert-warning-color);
 }
 
 /* <kbd> tags can be used to highlight specific character elements. */

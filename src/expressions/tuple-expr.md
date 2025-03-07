@@ -83,9 +83,11 @@ assert_eq!(point.0, 1.0);
 assert_eq!(point.1, 0.0);
 ```
 
-> **Note**: Unlike field access expressions, tuple index expressions can be the function operand of a [call expression] as it cannot be confused with a method call since method names cannot be numbers.
+> [!NOTE]
+> Unlike field access expressions, tuple index expressions can be the function operand of a [call expression] as it cannot be confused with a method call since method names cannot be numbers.
 
-> **Note**: Although arrays and slices also have elements, you must use an [array or slice indexing expression] or a [slice pattern] to access their elements.
+> [!NOTE]
+> Although arrays and slices also have elements, you must use an [array or slice indexing expression] or a [slice pattern] to access their elements.
 
 [_Expression_]: ../expressions.md
 [array or slice indexing expression]: array-expr.md#array-and-slice-indexing-expressions

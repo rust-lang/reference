@@ -156,7 +156,8 @@ Shorthand             | Equivalent
 `&'lifetime self`     | `self: &'lifetime Self`
 `&'lifetime mut self` | `self: &'lifetime mut Self`
 
-> **Note**: Lifetimes can be, and usually are, elided with this shorthand.
+> [!NOTE]
+> Lifetimes can be, and usually are, elided with this shorthand.
 
 r[associated.fn.method.self-pat-mut]
 If the `self` parameter is prefixed with `mut`, it becomes a mutable variable,

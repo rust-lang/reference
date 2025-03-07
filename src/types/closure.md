@@ -484,10 +484,8 @@ r[type.closure.call.fn]
 * A closure which does not mutate or move out of any captured variables
   implements [`Fn`], indicating that it can be called by shared reference.
 
-> Note: `move` closures may still implement [`Fn`] or [`FnMut`], even though
-> they capture variables by move. This is because the traits implemented by a
-> closure type are determined by what the closure does with captured values,
-> not how it captures them.
+> [!NOTE]
+> `move` closures may still implement [`Fn`] or [`FnMut`], even though they capture variables by move. This is because the traits implemented by a closure type are determined by what the closure does with captured values, not how it captures them.
 
 r[type.closure.non-capturing]
 *Non-capturing closures* are closures that don't capture anything from their

@@ -423,8 +423,8 @@ fn documented() {
 }
 ```
 
-> Note: Except for lints, it is idiomatic to only use outer attributes on
-> function items.
+> [!NOTE]
+> Except for lints, it is idiomatic to only use outer attributes on function items.
 
 r[items.fn.attributes.builtin-attributes]
 The attributes that have meaning on a function are [`cfg`], [`cfg_attr`], [`deprecated`],
