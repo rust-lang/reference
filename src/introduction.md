@@ -113,14 +113,17 @@ These conventions are documented here.
 
   See [Notation] for more detail.
 
-* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to a specific rule in the language. The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example).
+r[example.rule.label]
+* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to a specific rule in the language. The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
 
   The rule name can be clicked to link to that rule.
 
-r[example.rule.label]
-
   > [!WARNING]
   > The organization of the rules is currently in flux. For the time being, these identifier names are not stable between releases, and links to these rules may fail if they are changed. We intend to stabilize these once the organization has settled so that links to the rule names will not break between releases.
+
+* Rules that have associated tests will include a `Tests` link below them (no narrow screens, the link is `[T]`). Clicking the link will pop up a list of tests, which can be clicked to view the test. For example, see [input.encoding.utf8].
+
+  Linking rules to tests is an ongoing effort. See the [Test summary](test-summary.md) chapter for an overview.
 
 ## Contributing
 
