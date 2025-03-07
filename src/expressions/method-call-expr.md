@@ -70,8 +70,9 @@ For each step, the candidate type is used to determine what searches to perform:
   candidates for the trait object itself (for example found in `impl dyn Trait`
   blocks).
 
-After these occur, there's a further search for extension candidates for
-traits in scope.
+After these occur, there's a further search for extension candidates from
+all traits in scope (irrespective of whether the trait is remotely relevant
+to the `self` type - that's considered later).
 
 "Various simpler types" currently means bool, char, all numbers, str, array,
 slices, raw pointers, references, never and tuple.
