@@ -1390,10 +1390,6 @@ r[asm.naked-rules.reg-not-output]
 - Any callee-saved registers must have the same value upon return as they had on entry, otherwise behavior is undefined.
   - Caller-saved registes may be used freely, even if they are not used for the return value.
 
-r[asm.naked-rules.unwind]
-- Behavior is undefined if execution unwinds out of an asm block.
-  - This also applies if the assembly code calls a function which then unwinds.
-
 r[asm.naked-rules.noreturn]
 - Behavior is undefined if execution falls through to the end of the asm block.
     - the assembly code is expected to contain a return instruction or to diverge
