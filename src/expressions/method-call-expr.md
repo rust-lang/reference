@@ -81,9 +81,11 @@ corresponding to the type in the signature. For example, the `impl` blocks
 corresponding to a struct or a trait. "Extension" means a candidate gathered
 by considering [methods on traits] in scope.
 
+Each of these searches looks for [visible] candidates where the method name
+matches.
+
 These searches contribute to list of all the candidate methods found;
 separate lists are maintained for the inherent and extension candidates.
-Only [visible] candidates are included.
 
 ## Picking a method from the candidates
 
@@ -169,7 +171,7 @@ There are a few details not considered in this overview:
   unstable candidates, unsatisfied predicates, and static candidates.
 * For diagnostic purposes, the search may be performed slightly differently,
   for instance searching all traits not just those in scope, or also noting
-  inaccessible candidates.
+  inaccessible candidates, or noting those with similar names.
 
 ## Net results
 
