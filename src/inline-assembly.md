@@ -1404,6 +1404,41 @@ r[asm.naked-rules.black-box]
   - This effectively means that the compiler must treat the `naked_asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
 
+r[asm.naked-rules.unwind]
+- Unwinding out of a `naked_asm!` block is allowed.
+  - For correct behavior, the appropriate assembler directives that emit unwinding metadata must be used.
+
+<!-- #[naked] is currently unstable, tests would fail if this were marked `rust` -->
+```txt
+# #[cfg(target_arch = "x86_64")] {
+#[naked]
+extern "C-unwind" fn naked_function() {
+    unsafe {
+        core::arch::naked_asm!(
+            ".cfi_startproc",
+            "push rbp",
+            ".cfi_def_cfa_offset 16",
+            ".cfi_offset rbp, -16",
+            "mov rbp, rsp",
+            ".cfi_def_cfa_register rbp",
+            "",
+            "call {function}",
+            "",
+            "pop rbp",
+            ".cfi_def_cfa rsp, 8",
+            "ret",
+            ".cfi_endproc",
+            function = sym function_that_panics,
+        )
+    }
+}
+
+extern "C-unwind" fn function_that_panics() {
+    panic!("unwind!");
+}
+# }
+```
+
 r[asm.validity]
 ### Correctness and Validity
 
