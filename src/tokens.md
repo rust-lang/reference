@@ -40,7 +40,8 @@ Literals are tokens used in [literal expressions].
 
 [^nsets]: The number of `#`s on each side of the same literal must be equivalent.
 
-> **Note**:  Character and string literal tokens never include the sequence of `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
+> [!NOTE]
+> Character and string literal tokens never include the sequence of `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
 
 #### ASCII escapes
 
@@ -624,8 +625,8 @@ let cat = example.01;  // ERROR no field named `01`
 let horse = example.0b10;  // ERROR no field named `0b10`
 ```
 
-> **Note**: Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version.
-> See <https://github.com/rust-lang/rust/issues/60210> for more information.
+> [!NOTE]
+> Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version. See <https://github.com/rust-lang/rust/issues/60210> for more information.
 
 r[lex.token.literal.float]
 #### Floating-point literals

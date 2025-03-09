@@ -533,7 +533,7 @@ Here is the list of currently supported register classes:
 | s390x | `vreg` | `v[0-31]` | Only clobbers |
 | s390x | `areg` | `a[2-15]` | Only clobbers |
 
-> **Notes**:
+> [!NOTE]
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 > - Some register classes are marked as "Only clobbers" which means that registers in these classes cannot be used for inputs or outputs, only clobbers of the form `out(<explicit register>) _` or `lateout(<explicit register>) _`.
@@ -579,7 +579,8 @@ The availability of supported types for a particular register class may depend o
 | s390x | `vreg` | N/A | Only clobbers |
 | s390x | `areg` | N/A | Only clobbers |
 
-> **Note**: For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
+> [!NOTE]
+> For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -827,7 +828,7 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | s390x | `reg_addr` | None | `%r1` | None |
 | s390x | `freg` | None | `%f0` | None |
 
-> **Notes**:
+> [!NOTE]
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
 > - on x86: our behavior for `reg` with no modifiers differs from what GCC does.
 >   GCC will infer the modifier based on the operand value type, while we default to the full register size.
@@ -939,7 +940,7 @@ The following ABIs can be used with `clobber_abi`:
 | LoongArch | `"C"`, `"system"` | `$r1`, `$r[4-20]`, `$f[0-23]` |
 | s390x | `"C"`, `"system"` | `r[0-5]`, `r14`, `f[0-7]`, `v[0-31]`, `a[2-15]` |
 
-> Notes:
+> [!NOTE]
 > - On AArch64 `x18` only included in the clobber list if it is not considered as a reserved register on the target.
 > - On RISC-V `x[16-17]` and `x[28-31]` only included in the clobber list if they are not considered as reserved registers on the target.
 
@@ -1329,7 +1330,8 @@ r[asm.rules.x86-prefix-restriction]
   - The compiler is currently unable to detect this due to the way inline assembly is compiled, but may catch and reject this in the future.
 
 r[asm.rules.preserves_flags]
-> **Note**: As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
+> [!NOTE]
+> As a general rule, the flags covered by `preserves_flags` are those which are *not* preserved when performing a function call.
 
 r[asm.validity]
 ### Correctness and Validity

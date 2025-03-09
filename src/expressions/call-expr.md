@@ -44,9 +44,8 @@ All function calls are sugar for a more explicit [fully-qualified syntax].
 r[expr.call.desugar.ambiguity]
 Function calls may need to be fully qualified, depending on the ambiguity of a call in light of in-scope items.
 
-> **Note**: In the past, the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", have been used in documentation, issues, RFCs, and other community writings.
-> However, these terms lack descriptive power and potentially confuse the issue at hand.
-> We mention them here for searchability's sake.
+> [!NOTE]
+> In the past, the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", have been used in documentation, issues, RFCs, and other community writings. However, these terms lack descriptive power and potentially confuse the issue at hand. We mention them here for searchability's sake.
 
 r[expr.call.desugar.limits]
 Several situations often occur which result in ambiguities about the receiver or referent of method or associated function calls.

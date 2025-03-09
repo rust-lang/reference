@@ -101,11 +101,8 @@ r[undefined.runtime]
   * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
   * The runtime assumes that a Rust stack frame is not deallocated without executing destructors for local variables owned by the stack frame. This assumption can be violated by C functions like `longjmp`.
 
-> **Note**: Undefined behavior affects the entire program. For example, calling
-> a function in C that exhibits undefined behavior of C means your entire
-> program contains undefined behaviour that can also affect the Rust code. And
-> vice versa, undefined behavior in Rust can cause adverse affects on code
-> executed by any FFI calls to other languages.
+> [!NOTE]
+> Undefined behavior affects the entire program. For example, calling a function in C that exhibits undefined behavior of C means your entire program contains undefined behaviour that can also affect the Rust code. And vice versa, undefined behavior in Rust can cause adverse affects on code executed by any FFI calls to other languages.
 
 r[undefined.pointed-to]
 ### Pointed-to bytes
@@ -237,8 +234,8 @@ r[undefined.validity.valid-range]
 * If a type has a custom range of a valid values, then a valid value must be in that range.
   In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
 
-  > **Note**: `rustc` achieves this with the unstable
-  > `rustc_layout_scalar_valid_range_*` attributes.
+  > [!NOTE]
+  > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
 
 r[undefined.validity.undef]
 **Note:** Uninitialized memory is also implicitly invalid for any type that has

@@ -134,7 +134,7 @@ Catching a foreign unwinding operation (such as a C++ exception) using [`std::pa
 * The function returns a [`Result::Err`] containing an opaque type.
 
 > [!NOTE]
->  Rust code compiled or linked with a different instance of the Rust standard library counts as a "foreign exception" for the purpose of this guarantee. Thus, a library that uses `panic!` and is linked against one version of the Rust standard library, invoked from an application that uses a different version of the standard library, may cause the entire application to abort even if the library is only used within a child thread.
+> Rust code compiled or linked with a different instance of the Rust standard library counts as a "foreign exception" for the purpose of this guarantee. Thus, a library that uses `panic!` and is linked against one version of the Rust standard library, invoked from an application that uses a different version of the standard library, may cause the entire application to abort even if the library is only used within a child thread.
 
 r[panic.unwind.ffi.dispose-panic]
 There are currently no guarantees about the behavior that occurs when a foreign runtime attempts to dispose of, or rethrow, a Rust `panic` payload. In other words, an unwind originated from a Rust runtime must either lead to termination of the process or be caught by the same runtime.

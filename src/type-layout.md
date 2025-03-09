@@ -88,9 +88,8 @@ r[layout.pointer.unsized]
 Pointers to unsized types are sized. The size and alignment is guaranteed to be
 at least equal to the size and alignment of a pointer.
 
-> Note: Though you should not rely on this, all pointers to
-> <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the
-> size of the size of `usize` and have the same alignment.
+> [!NOTE]
+> Though you should not rely on this, all pointers to <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the size of the size of `usize` and have the same alignment.
 
 r[layout.array]
 ## Array Layout
@@ -106,8 +105,8 @@ r[layout.slice]
 
 Slices have the same layout as the section of the array they slice.
 
-> Note: This is about the raw `[T]` type, not pointers (`&[T]`, `Box<[T]>`,
-> etc.) to slices.
+> [!NOTE]
+> This is about the raw `[T]` type, not pointers (`&[T]`, `Box<[T]>`, etc.) to slices.
 
 r[layout.str]
 ## `str` Layout
@@ -131,8 +130,8 @@ r[layout.trait-object]
 
 Trait objects have the same layout as the value the trait object is of.
 
-> Note: This is about the raw trait object types, not pointers (`&dyn Trait`,
-> `Box<dyn Trait>`, etc.) to trait objects.
+> [!NOTE]
+> This is about the raw trait object types, not pointers (`&dyn Trait`, `Box<dyn Trait>`, etc.) to trait objects.
 
 r[layout.closure]
 ## Closure Layout
@@ -191,10 +190,8 @@ struct AlignedStruct {
 }
 ```
 
-> Note: As a consequence of the representation being an attribute on the item,
-> the representation does not depend on generic parameters. Any two types with
-> the same name have the same representation. For example, `Foo<Bar>` and
-> `Foo<Baz>` both have the same representation.
+> [!NOTE]
+> As a consequence of the representation being an attribute on the item, the representation does not depend on generic parameters. Any two types with the same name have the same representation. For example, `Foo<Bar>` and `Foo<Baz>` both have the same representation.
 
 r[layout.repr.inter-field]
 The representation of a type can change the padding between fields, but does
@@ -312,12 +309,8 @@ struct.size = current_offset + padding_needed_for(current_offset, struct.alignme
 > [!WARNING]
 > This pseudocode uses a naive algorithm that ignores overflow issues for the sake of clarity. To perform memory layout computations in actual code, use [`Layout`].
 
-> Note: This algorithm can produce zero-sized structs. In C, an empty struct
-> declaration like `struct Foo { }` is illegal. However, both gcc and clang
-> support options to enable such structs, and assign them size zero. C++, in
-> contrast, gives empty structs a size of 1, unless they are inherited from or
-> they are fields that have the `[[no_unique_address]]` attribute, in which
-> case they do not increase the overall size of the struct.
+> [!NOTE]
+> This algorithm can produce zero-sized structs. In C, an empty struct declaration like `struct Foo { }` is illegal. However, both gcc and clang support options to enable such structs, and assign them size zero. C++, in contrast, gives empty structs a size of 1, unless they are inherited from or they are fields that have the `[[no_unique_address]]` attribute, in which case they do not increase the overall size of the struct.
 
 r[layout.repr.c.union]
 #### `#[repr(C)]` Unions
@@ -360,9 +353,8 @@ r[layout.repr.c.enum]
 For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
 
-> Note: The enum representation in C is implementation defined, so this is
-> really a "best guess". In particular, this may be incorrect when the C code
-> of interest is compiled with certain flags.
+> [!NOTE]
+> The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
 
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
@@ -381,11 +373,8 @@ r[layout.repr.c.adt.fields]
 - a `repr(C)` union of `repr(C)` structs for the fields of each variant that had
   them ("the payload")
 
-> Note: Due to the representation of `repr(C)` structs and unions, if a variant
-> has a single field there is no difference between putting that field directly
-> in the union or wrapping it in a struct; any system which wishes to manipulate
-> such an `enum`'s representation may therefore use whichever form is more
-> convenient or consistent for them.
+> [!NOTE]
+> Due to the representation of `repr(C)` structs and unions, if a variant has a single field there is no difference between putting that field directly in the union or wrapping it in a struct; any system which wishes to manipulate such an `enum`'s representation may therefore use whichever form is more convenient or consistent for them.
 
 ```rust
 // This Enum has the same representation as ...
@@ -436,7 +425,8 @@ struct MyCFields { x: u32, y: u8 }
 struct MyDFields;
 ```
 
-> Note: `union`s with non-`Copy` fields are unstable, see [55149].
+> [!NOTE]
+> `union`s with non-`Copy` fields are unstable, see [55149].
 
 r[layout.repr.primitive]
 ### Primitive representations
@@ -470,9 +460,8 @@ The representation of a primitive representation enum is a `repr(C)` union of
 in the union is the primitive representation version of the enum with all fields
 removed ("the tag") and the remaining fields are the fields of that variant.
 
-> Note: This representation is unchanged if the tag is given its own member in
-> the union, should that make manipulation more clear for you (although to
-> follow the C++ standard the tag member should be wrapped in a `struct`).
+> [!NOTE]
+> This representation is unchanged if the tag is given its own member in the union, should that make manipulation more clear for you (although to follow the C++ standard the tag member should be wrapped in a `struct`).
 
 ```rust
 // This enum has the same representation as ...
@@ -515,7 +504,8 @@ struct MyVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
 struct MyVariantD(MyEnumDiscriminant);
 ```
 
-> Note: `union`s with non-`Copy` fields are unstable, see [55149].
+> [!NOTE]
+> `union`s with non-`Copy` fields are unstable, see [55149].
 
 r[layout.repr.primitive-c]
 #### Combining primitive representations of enums with fields and `#[repr(C)]`
@@ -630,8 +620,8 @@ The `align` modifier can also be applied on an `enum`.
 When it is, the effect on the `enum`'s alignment is the same as if the `enum`
 was wrapped in a newtype `struct` with the same `align` modifier.
 
-> Note: References to unaligned fields are not allowed because it is [undefined behavior].
-> When fields are unaligned due to an alignment modifier, consider the following options for using references and dereferences:
+> [!NOTE]
+> References to unaligned fields are not allowed because it is [undefined behavior]. When fields are unaligned due to an alignment modifier, consider the following options for using references and dereferences:
 >
 > ```rust
 > #[repr(packed)]

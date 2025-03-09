@@ -59,13 +59,14 @@ let five: i32 = {
 assert_eq!(5, five);
 ```
 
-> Note: As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
+> [!NOTE]
+> As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
 r[expr.block.value]
 Blocks are always [value expressions] and evaluate the last operand in value expression context.
 
-> **Note**: This can be used to force moving a value if really needed.
-> For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.
+> [!NOTE]
+> This can be used to force moving a value if really needed. For example, the following example fails on the call to `consume_self` because the struct was moved out of `s` in the block expression.
 >
 > ```rust,compile_fail
 > struct Struct;
@@ -110,7 +111,8 @@ Whereas closures return a type that implements one or more of the [`std::ops::Fn
 r[expr.block.async.layout-unspecified]
 The actual data format for this type is unspecified.
 
-> **Note:** The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
+> [!NOTE]
+> The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
 
 > **Edition differences**: Async blocks are only available beginning with Rust 2018.
 

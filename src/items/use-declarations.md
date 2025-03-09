@@ -240,9 +240,8 @@ fn main() {
 }
 ```
 
-> **Note**: `self` may also be used as the first segment of a path.
-> The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment.
-> See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
+> [!NOTE]
+> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
 
 r[items.use.glob]
 ## Glob imports
@@ -392,7 +391,8 @@ r[items.use.restrictions.variant]
 r[items.use.ambiguities]
 ## Ambiguities
 
-> **Note**: This section is incomplete.
+> [!NOTE]
+> This section is incomplete.
 
 r[items.use.ambiguities.intro]
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.

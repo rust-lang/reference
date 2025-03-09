@@ -7,10 +7,8 @@ r[crate.syntax]
 > &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
 > &nbsp;&nbsp; [_Item_]<sup>\*</sup>
 
-> Note: Although Rust, like any other language, can be implemented by an
-> interpreter as well as a compiler, the only existing implementation is a
-> compiler, and the language has always been designed to be compiled. For these
-> reasons, this section assumes a compiler.
+> [!NOTE]
+> Although Rust, like any other language, can be implemented by an interpreter as well as a compiler, the only existing implementation is a compiler, and the language has always been designed to be compiled. For these reasons, this section assumes a compiler.
 
 r[crate.compile-time]
 Rust's semantics obey a *phase distinction* between compile-time and
@@ -60,7 +58,8 @@ r[crate.attributes]
 The anonymous crate module can have additional attributes that
 apply to the crate as a whole.
 
-> **Note**: The file's contents may be preceded by a [shebang].
+> [!NOTE]
+> The file's contents may be preceded by a [shebang].
 
 ```rust
 // Specify the crate name.
@@ -111,7 +110,8 @@ mod foo {
 use foo::bar as main;
 ```
 
-> **Note**: Types with implementations of [`Termination`] in the standard library include:
+> [!NOTE]
+> Types with implementations of [`Termination`] in the standard library include:
 >
 > * `()`
 > * [`!`]

@@ -34,7 +34,8 @@ Each of the lexical [literal][literal tokens] forms described earlier can make u
 r[expr.literal.string-representation]
 In the descriptions below, the _string representation_ of a token is the sequence of characters from the input which matched the token's production in a *Lexer* grammar snippet.
 
-> **Note**: this string representation never includes a character `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
+> [!NOTE]
+> This string representation never includes a character `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
 
 r[expr.literal.escape]
 ## Escapes
@@ -75,7 +76,8 @@ The escape sequence consists of `\x` followed by two hexadecimal digits.
 
 The escaped value is the character whose [Unicode scalar value] is the result of interpreting the final two characters in the escape sequence as a hexadecimal integer, as if by [`u8::from_str_radix`] with radix 16.
 
-> **Note**: the escaped value therefore has a [Unicode scalar value] in the range of [`u8`][numeric types].
+> [!NOTE]
+> The escaped value therefore has a [Unicode scalar value] in the range of [`u8`][numeric types].
 
 r[expr.literal.escape.hex-ascii]
 ### 7-bit escapes
@@ -91,7 +93,8 @@ The escape sequence consists of `\u{`, followed by a sequence of characters each
 
 The escaped value is the character whose [Unicode scalar value] is the result of interpreting the hexadecimal digits contained in the escape sequence as a hexadecimal integer, as if by [`u32::from_str_radix`] with radix 16.
 
-> **Note**: the permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
+> [!NOTE]
+> The permitted forms of a [CHAR_LITERAL] or [STRING_LITERAL] token ensure that there is such a character.
 
 r[expr.literal.continuation]
 ### String continuation escapes
@@ -101,8 +104,9 @@ For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U
 
 The escaped value is an empty sequence of characters.
 
-> **Note**: The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines.
-> Thus `a`, `b` and `c` are equal:
+> [!NOTE]
+> The effect of this form of escape is that a string continuation skips following whitespace, including additional newlines. Thus `a`, `b` and `c` are equal:
+>
 > ```rust
 > let a = "foobar";
 > let b = "foo\
@@ -115,10 +119,7 @@ The escaped value is an empty sequence of characters.
 > assert_eq!(b, c);
 > ```
 >
-> Skipping additional newlines (as in example c) is potentially confusing and unexpected.
-> This behavior may be adjusted in the future.
-> Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations.
-> See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
+> Skipping additional newlines (as in example c) is potentially confusing and unexpected. This behavior may be adjusted in the future. Until a decision is made, it is recommended to avoid relying on skipping multiple newlines with line continuations. See [this issue](https://github.com/rust-lang/reference/pull/1042) for more information.
 
 r[expr.literal.char]
 ## Character literal expressions
@@ -150,7 +151,8 @@ r[expr.literal.char.single]
 r[expr.literal.char.result]
 The expression's value is the [`char`][textual types] corresponding to the represented character's [Unicode scalar value].
 
-> **Note**: the permitted forms of a [CHAR_LITERAL] token ensure that these rules always produce a single character.
+> [!NOTE]
+> The permitted forms of a [CHAR_LITERAL] token ensure that these rules always produce a single character.
 
 Examples of character literal expressions:
 
@@ -238,7 +240,8 @@ r[expr.literal.byte-char.single]
 r[expr.literal.byte-char.result]
 The expression's value is the represented character's [Unicode scalar value].
 
-> **Note**: the permitted forms of a [BYTE_LITERAL] token ensure that these rules always produce a single character, whose Unicode scalar value is in the range of [`u8`][numeric types].
+> [!NOTE]
+> The permitted forms of a [BYTE_LITERAL] token ensure that these rules always produce a single character, whose Unicode scalar value is in the range of [`u8`][numeric types].
 
 Examples of byte literal expressions:
 
@@ -283,7 +286,8 @@ r[expr.literal.byte-string.raw]
 r[expr.literal.byte-string.result]
 The expression's value is a reference to a statically allocated array containing the [Unicode scalar values] of the characters in the represented string, in the same order.
 
-> **Note**: the permitted forms of [BYTE_STRING_LITERAL] and [RAW_BYTE_STRING_LITERAL] tokens ensure that these rules always produce array element values in the range of [`u8`][numeric types].
+> [!NOTE]
+> The permitted forms of [BYTE_STRING_LITERAL] and [RAW_BYTE_STRING_LITERAL] tokens ensure that these rules always produce array element values in the range of [`u8`][numeric types].
 
 Examples of byte string literal expressions:
 
@@ -329,7 +333,8 @@ The sequence of items is converted to a sequence of bytes as follows:
 r[expr.literal.c-string.raw]
 * If the token is a [RAW_C_STRING_LITERAL], the represented bytes are the UTF-8 encoding of the literal content.
 
-> **Note**: the permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a null byte.
+> [!NOTE]
+> The permitted forms of [C_STRING_LITERAL] and [RAW_C_STRING_LITERAL] tokens ensure that the represented bytes never include a null byte.
 
 r[expr.literal.c-string.result]
 The expression's value is a reference to a statically allocated [CStr] whose array of bytes contains the represented bytes followed by a null byte.
@@ -423,11 +428,11 @@ If the value does not fit in `u128`, it is a compiler error.
 r[expr.literal.int.cast]
 * The `u128` value is converted to the expression's type via a [numeric cast].
 
-> **Note**: The final cast will truncate the value of the literal if it does not fit in the expression's type.
-> `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
+> [!NOTE]
+> The final cast will truncate the value of the literal if it does not fit in the expression's type. `rustc` includes a [lint check] named `overflowing_literals`, defaulting to `deny`, which rejects expressions where this occurs.
 
-> **Note**: `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression.
-> See [Overflow] for notes on representing the most negative value for a signed type.
+> [!NOTE]
+> `-1i8`, for example, is an application of the [negation operator] to the literal expression `1i8`, not a single integer literal expression. See [Overflow] for notes on representing the most negative value for a signed type.
 
 r[expr.literal.float]
 ## Floating-point literal expressions
@@ -475,11 +480,11 @@ r[expr.literal.float.separators-stripped]
 r[expr.literal.float.value]
 * The string is converted to the expression's type as if by [`f32::from_str`] or [`f64::from_str`].
 
-> **Note**: `-1.0`, for example, is an application of the [negation operator] to the literal expression `1.0`, not a single floating-point literal expression.
+> [!NOTE]
+> `-1.0`, for example, is an application of the [negation operator] to the literal expression `1.0`, not a single floating-point literal expression.
 
-> **Note**: `inf` and `NaN` are not literal tokens.
-> The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions.
-> In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
+> [!NOTE]
+> `inf` and `NaN` are not literal tokens. The [`f32::INFINITY`], [`f64::INFINITY`], [`f32::NAN`], and [`f64::NAN`] constants can be used instead of literal expressions. In `rustc`, a literal large enough to be evaluated as infinite will trigger the `overflowing_literals` lint check.
 
 r[expr.literal.bool]
 ## Boolean literal expressions

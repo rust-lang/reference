@@ -65,7 +65,8 @@ r[expr.structure]
 In this way, the structure of expressions dictates the structure of execution.
 Blocks are just another kind of expression, so blocks, statements, expressions, and blocks again can recursively nest inside each other to an arbitrary depth.
 
-> **Note**: We give names to the operands of expressions so that we may discuss them, but these names are not stable and may be changed.
+> [!NOTE]
+> We give names to the operands of expressions so that we may discuss them, but these names are not stable and may be changed.
 
 r[expr.precedence]
 ## Expression precedence
@@ -126,8 +127,8 @@ r[expr.operand-order.operands-before-primary]
 The operands of these expressions are evaluated prior to applying the effects of the expression.
 Expressions taking multiple operands are evaluated left to right as written in the source code.
 
-> **Note**: Which subexpressions are the operands of an expression is
-> determined by expression precedence as per the previous section.
+> [!NOTE]
+> Which subexpressions are the operands of an expression is determined by expression precedence as per the previous section.
 
 For example, the two `next` method calls will always be called in the same order:
 
@@ -142,7 +143,8 @@ assert_eq!(
 );
 ```
 
-> **Note**: Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
+> [!NOTE]
+> Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
 r[expr.place-value]
 ## Place Expressions and Value Expressions
@@ -178,7 +180,8 @@ The following contexts are *place expression* contexts:
   expression.
 * The base of a [functional update] struct expression.
 
-> Note: Historically, place expressions were called *lvalues* and value expressions were called *rvalues*.
+> [!NOTE]
+> Historically, place expressions were called *lvalues* and value expressions were called *rvalues*.
 
 r[expr.place-value.assignee]
 An *assignee expression* is an expression that appears in the left operand of an [assignment][assign] expression.

@@ -27,8 +27,8 @@ fn bar() -> impl Trait {
 r[type.impl-trait.param]
 ## Anonymous type parameters
 
-> Note: This is often called "impl Trait in argument position".
-(The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
+> [!NOTE]
+> This is often called "impl Trait in argument position". (The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
 
 r[type.impl-trait.param.intro]
 Functions can use `impl` followed by a set of trait bounds to declare a parameter as having an anonymous type.
@@ -51,15 +51,14 @@ fn with_impl_trait(arg: impl Trait) {
 r[type.impl-trait.param.generic]
 That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [_GenericParams_] list.
 
-> **Note:**
-> For function parameters, generic type parameters and `impl Trait` are not exactly equivalent.
-> With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`.
-> Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
+> [!NOTE]
+> For function parameters, generic type parameters and `impl Trait` are not exactly equivalent. With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`. Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
 
 r[type.impl-trait.return]
 ## Abstract return types
 
-> Note: This is often called "impl Trait in return position".
+> [!NOTE]
+> This is often called "impl Trait in return position".
 
 r[type.impl-trait.return.intro]
 Functions can use `impl Trait` to return an abstract return type.

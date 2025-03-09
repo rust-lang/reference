@@ -40,8 +40,8 @@ Then, for each candidate type `T`, search for a [visible] method with a receiver
    If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first.
    Then all remaining methods in scope are looked up.
 
-> Note: the lookup is done for each type in order, which can occasionally lead to surprising results.
-> The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
+> [!NOTE]
+> The lookup is done for each type in order, which can occasionally lead to surprising results. The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
 >
 > ```rust
 > struct Foo {}

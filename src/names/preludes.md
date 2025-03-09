@@ -36,8 +36,7 @@ Edition | `no_std` not applied        | `no_std` applied
 2024    | [`std::prelude::rust_2024`] | [`core::prelude::rust_2024`]
 
 
-> **Note**:
->
+> [!NOTE]
 > [`std::prelude::rust_2015`] and [`std::prelude::rust_2018`] have the same contents as [`std::prelude::v1`].
 >
 > [`core::prelude::rust_2015`] and [`core::prelude::rust_2018`] have the same contents as [`core::prelude::v1`].
@@ -65,18 +64,15 @@ r[names.preludes.extern.edition2018]
 > Beginning in the 2018 edition, [use declarations] can reference crates in
 > the extern prelude, so it is considered unidiomatic to use `extern crate`.
 
-> **Note**: Additional crates that ship with `rustc`, such as [`alloc`], and
-> [`test`](mod@test), are not automatically included with the `--extern` flag when using
-> Cargo. They must be brought into scope with an `extern crate` declaration,
-> even in the 2018 edition.
+> [!NOTE]
+> Additional crates that ship with `rustc`, such as [`alloc`], and [`test`](mod@test), are not automatically included with the `--extern` flag when using Cargo. They must be brought into scope with an `extern crate` declaration, even in the 2018 edition.
 >
 > ```rust
 > extern crate alloc;
 > use alloc::rc::Rc;
 > ```
 >
-> Cargo does bring in `proc_macro` to the extern prelude for proc-macro crates
-> only.
+> Cargo does bring in `proc_macro` to the extern prelude for proc-macro crates only.
 
 <!--
 See https://github.com/rust-lang/rust/issues/57288 for more about the
@@ -107,11 +103,8 @@ r[names.preludes.extern.no_std.core]
 * Injects the [`core`] crate into the crate root instead of [`std`], and pulls
   in all macros exported from `core` in the [`macro_use` prelude].
 
-> **Note**: Using the core prelude over the standard prelude is useful when
-> either the crate is targeting a platform that does not support the standard
-> library or is purposefully not using the capabilities of the standard
-> library. Those capabilities are mainly dynamic memory allocation (e.g. `Box`
-> and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
+> [!NOTE]
+> Using the core prelude over the standard prelude is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
 > [!WARNING]
 > Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.

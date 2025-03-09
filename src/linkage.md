@@ -2,8 +2,8 @@ r[link]
 # Linkage
 
 
-> Note: This section is described more in terms of the compiler than of
-> the language.
+> [!NOTE]
+> This section is described more in terms of the compiler than of the language.
 
 r[link.intro]
 The compiler supports various methods to link crates together both
@@ -272,7 +272,7 @@ binary link:
 Passing `rlib`s directly into your foreign linker is currently unsupported.
 
 > [!NOTE]
->  Rust code compiled or linked with a different instance of the Rust runtime counts as "foreign code" for the purpose of this section.
+> Rust code compiled or linked with a different instance of the Rust runtime counts as "foreign code" for the purpose of this section.
 
 r[link.unwinding]
 ### Prohibited linkage and unwinding
