@@ -49,13 +49,10 @@ r[undefined.alias]
   `Box<T>` is treated similar to `&'static mut T` for the purpose of these rules.
   The exact liveness duration is not specified, but some bounds exist:
   * For references, the liveness duration is upper-bounded by the syntactic
-    lifetime assigned by the borrow checker; it cannot be live any *longer* than
-    that lifetime.
-  * Each time a reference or box is passed to or returned from a function, it is
-    considered live.
-  * When a reference (but not a `Box`!) is passed to a function, it is live at
-    least as long as that function call, again except if the `&T` contains an
-    [`UnsafeCell<U>`].
+    lifetime assigned by the borrow checker; it cannot be live any *longer* than that lifetime.
+  * Each time a reference or box is dereferenced or reborrowed, it is considered live.
+  * Each time a reference or box is passed to or returned from a function, it is considered live.
+  * When a reference (but not a `Box`!) is passed to a function, it is live at least as long as that function call, again except if the `&T` contains an [`UnsafeCell<U>`].
 
   All this also applies when values of these types are passed in a (nested) field of a compound type, but not behind pointer indirections.
 
