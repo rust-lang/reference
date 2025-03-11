@@ -174,6 +174,15 @@ be instantiable with the same set of types for the input type parameters. -->
 r[items.impl.trait.orphan-rule]
 #### Orphan rules
 
+r[items.impl.trait.orphan-rule.rationale]
+The orphan rules ensure that other peoples code can't break your code, and vice versa.
+If an external crate implements an external trait for an external type, and your crate also
+implements the same trait for the same type, the compiler wouldn't know which implementation
+to use.\
+The orphan rule prevents this by requiring that either the trait or some type in the
+implementation is local to your crate, ensuring only one crate defines the implementation and
+thereby maintaining coherence.
+
 r[items.impl.trait.orphan-rule.general]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
 least one of the following is true:
