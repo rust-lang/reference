@@ -516,11 +516,9 @@ r[patterns.range.intro]
 *Range patterns* match scalar values within the range defined by their bounds.
 They comprise a *sigil* (`..` or `..=`) and a bound on one or both sides.
 
-r[patterns.range.lower-bound]
-A bound on the left of the sigil is a *lower bound*.
+A bound on the left of the sigil is called a *lower bound*.
+A bound on the right is called an *upper bound*.
 
-r[patterns.range.upper-bound]
-A bound on the right is an *upper bound*.
 
 r[patterns.range.closed]
 A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
