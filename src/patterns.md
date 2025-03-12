@@ -519,57 +519,65 @@ They comprise a *sigil* (`..` or `..=`) and a bound on one or both sides.
 A bound on the left of the sigil is called a *lower bound*.
 A bound on the right is called an *upper bound*.
 
+r[patterns.range.exclusive]
+The *exclusive range pattern* matches all values from the lower bound up to, but not including the upper bound.
+It is written as its lower bound, followed by `..`, followed by the upper bound.
 
-r[patterns.range.closed]
-A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
-It is written as its lower bound, followed by `..` for end-exclusive or `..=` for end-inclusive, followed by its upper bound.
+For example, a pattern `'m'..'p'` will match only `'m'`, `'n'` and `'o'`, specifically **not** including `'p'`.
 
-r[patterns.range.type]
-The type of the range pattern is the type unification of its upper and lower bounds.
+r[patterns.range.inclusive]
+The *inclusive range pattern* matches all values from the lower bound up to and including the upper bound.
+It is written as its lower bound, followed by `..=`, followed by the upper bound.
 
 For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`.
-Similarly, `'m'..'p'` will match only `'m'`, `'n'` and `'o'`, specifically **not** including `'p'`.
+
+r[patterns.range.from]
+The *from range pattern* matches all values greater than or equal to the lower bound.
+It is written as its lower bound followed by `..`.
+
+For example, `1..` will match any integer greater than or equal to 1, such as 1, 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
+
+r[patterns.range.to-exclusive]
+The *to exclusive range pattern* matches all values less than the upper bound.
+It is written as `..` followed by the upper bound.
+
+For example, `..10` will match any integer less than 10, such as 9, 1, 0, and for signed integer types, all negative values.
+
+r[patterns.range.to-inclusive]
+The *to inclusive range pattern* matches all values less than or equal to the upper bound.
+It is written as `..=` followed by the upper bound.
+
+For example, `..=10` will match any integer less than or equal to 10, such as 10, 1, 0, and for signed integer types, all negative values.
 
 r[patterns.range.constraint-less-than]
 The lower bound cannot be greater than the upper bound.
 That is, in `a..=b`, a &le; b must be the case.
 For example, it is an error to have a range pattern `10..=0`.
 
-r[patterns.range.open-below]
-A range pattern with only a lower bound will match any value greater than or equal to the lower bound.
-It is written as its lower bound followed by `..`, and has the same type as its lower bound.
-For example, `1..` will match 1, 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
-
-r[patterns.range.open-above]
-A range pattern with only an upper bound matches any value less than or equal to the upper bound.
-It is written as `..=` for an end-inclusive or `..` for an end-exclusive pattern, followed by its upper bound,
-and has the same type as its upper bound.
-For example, `..=10` will match 10, 1, 0, and for signed integer types, all negative values, while `..10` will not match 10.
-
 r[patterns.range.bound]
-The bounds is written as one of:
+A bound is written as one of:
 
 * A character, byte, integer, or float literal.
 * A `-` followed by an integer or float literal.
 * A [path]
 
 r[patterns.range.constraint-bound-path]
-If the bounds is written as a path, after macro resolution, the path must resolve to a constant item of the type `char`, an integer type, or a float type.
+If a bound is written as a path, after macro resolution, the path must resolve to a constant item of the type `char`, an integer type, or a float type.
 
-r[patterns.range.value]
-The type and value of the bounds is dependent upon how it is written out.
+r[patterns.range.type]
+The range pattern matches the type of its upper and lower bounds, which must be the same type.
 
 r[patterns.range.path-value]
-If the bounds is a [path], the pattern has the type and value of the [constant] the path resolves to.
+If a bound is a [path], the bound matches the type and has the value of the [constant] the path resolves to.
+
+r[patterns.range.literal-value]
+If a bound is a literal, the bound matches the type and has the value of the corresponding [literal expression].
+
+r[patterns.range.negation]
+If a bound is a literal preceded by a `-`, the bound matches the same type as the corresponding [literal expression] and has the value of [negating] the value of the corresponding literal expression.
 
 r[patterns.range.float-restriction]
 For float range patterns, the constant may not be a `NaN`.
-
-r[patterns.range.literal-value]
-If it is a literal, it has the type and value of the corresponding [literal expression].
-
-r[patterns.range.negation]
-If is a literal preceded by a `-`, it has the same type as the corresponding [literal expression] and the value of [negating] the value of the corresponding literal expression.
 
 Examples:
 
