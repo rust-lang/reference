@@ -546,9 +546,6 @@ It is written as `..=` for an end-inclusive or `..` for an end-exclusive pattern
 and has the same type as its upper bound.
 For example, `..=10` will match 10, 1, 0, and for signed integer types, all negative values, while `..10` will not match 10.
 
-r[patterns.range.constraint-slice]
-Range patterns with only one bound cannot be used as the top-level pattern for subpatterns in [slice patterns](#slice-patterns).
-
 r[patterns.range.bound]
 The bounds is written as one of:
 
@@ -658,6 +655,10 @@ The range of values for an integer type is the closed range from its minimum to 
 
 r[patterns.range.refutable-char]
 The range of values for a `char` type are precisely those ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and `'\u{E000}'..='\u{10FFFF}'`.
+
+r[patterns.range.constraint-slice]
+_RangeFromPattern_ cannot be used as a top-level pattern for subpatterns in [slice patterns](#slice-patterns).
+For example, the pattern `[1.., _]` is not a valid pattern.
 
 r[patterns.range.edition2021]
 > **Edition differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
