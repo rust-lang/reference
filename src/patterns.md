@@ -514,7 +514,7 @@ r[patterns.range.syntax]
 
 r[patterns.range.intro]
 *Range patterns* match scalar values within the range defined by their bounds.
-They comprise a *sigil* (one of `..`, `..=`, or `...`) and a bound on one or both sides.
+They comprise a *sigil* (`..` or `..=`) and a bound on one or both sides.
 
 r[patterns.range.lower-bound]
 A bound on the left of the sigil is a *lower bound*.
