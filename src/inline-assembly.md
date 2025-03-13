@@ -1096,7 +1096,7 @@ r[asm.options.supported-options.preserves_flags]
 r[asm.options.supported-options.noreturn]
 - `noreturn`: The assembly code never returns, and its return type is defined as `!` (never).
   Behavior is undefined if execution falls through past the end of the asm code.
-  A `noreturn` asm block behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
+  A `noreturn` asm block with no `label` blocks behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
 - When any `label` blocks are present, `noreturn` means the execution of the assembly code never falls through; the assembly code may only exit by jumping to one of the specified blocks.
   The entire `asm!` block will have unit type in this case, unless all `label` blocks diverge, in which case the return type is `!`.
 
