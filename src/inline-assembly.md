@@ -1007,7 +1007,7 @@ r[asm.options.supported-options.nomem]
 # #[cfg(target_arch = "x86_64")] {
 let mut x = 0i32;
 let z: i32;
-// Accessing memory from a nomem asm block is disallowed
+// Accessing memory from assembly in a nomem asm block is disallowed
 unsafe {
     core::arch::asm!("mov {val:e}, dword ptr [{ptr}]",
         ptr = in(reg) &mut x,
@@ -1016,7 +1016,7 @@ unsafe {
     )
 }
 
-// Writing to memory is also undefined behaviour
+// Writing to memory from assembly in a nomem asm block is also undefined behaviour
 unsafe {
     core::arch::asm!("mov  dword ptr [{ptr}], {val:e}",
         ptr = in(reg) &mut x,
@@ -1243,7 +1243,7 @@ r[asm.rules.black-box]
 - The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
   - This effectively means that the compiler must treat the `asm!` as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
-  - However there is no guarantee that each `asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate `asm!` blocks.
+  - However there is no guarantee that each `asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate the assembly code in `asm!` blocks.
 
 r[asm.rules.stack-below-sp]
 - Unless the `nostack` option is set, asm code is allowed to use stack space below the stack pointer.
@@ -1332,9 +1332,9 @@ r[asm.rules.arm64ec]
 r[asm.rules.only-on-exit]
 - The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting the assembly code.
   - This means that assembly code that never returns (even if not marked `noreturn`) doesn't need to preserve these registers.
-  - When returning to a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
-    - You cannot exit an `asm!` block that has not been entered.
-      Neither can you exit an `asm!` block that has already been exited (without first entering it again).
+  - When returning to the assembly code of a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
+    - You cannot exit the assembly code of an `asm!` block that has not been entered.
+      Neither can you exit the assembly code of an `asm!` block whose assembly code has already been exited (without first entering it again).
     - You are responsible for switching any target-specific state (e.g. thread-local storage, stack bounds).
     - You cannot jump from an address in one `asm!` block to an address in another, even within the same function or block, without treating their contexts as potentially different and requiring context switching. You cannot assume that any particular value in those contexts (e.g. current stack pointer or temporary values below the stack pointer) will remain unchanged between the two `asm!` blocks.
     - The set of memory locations that you may access is the intersection of those allowed by the `asm!` blocks you entered and exited.
@@ -1361,7 +1361,7 @@ In addition to all of the previous rules, the string argument to `asm!` must ult
 after all other arguments are evaluated, formatting is performed, and operands are translated---
 assembly that is both syntactically correct and semantically valid for the target architecture.
 The formatting rules allow the compiler to generate assembly with correct syntax.
-Rules concerning operands permit valid translation of Rust operands into and out of `asm!`.
+Rules concerning operands permit valid translation of Rust operands into and out of the assembly code.
 Adherence to these rules is necessary, but not sufficient, for the final expanded assembly to be
 both correct and valid. For instance:
 
