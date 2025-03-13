@@ -175,7 +175,7 @@ r[items.impl.trait.orphan-rule]
 #### Orphan rules
 
 r[items.impl.trait.orphan-rule.rationale]
-The orphan rules ensure that other peoples code can't break your code, and vice versa.
+The orphan rule helps ensure that other people's code can't break your code, and vice versa.
 If an external crate implements an external trait for an external type, and your crate also
 implements the same trait for the same type, the compiler wouldn't know which implementation
 to use.\
