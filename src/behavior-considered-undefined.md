@@ -15,19 +15,10 @@ behaviors. `unsafe` code that satisfies this property for any safe client is
 called *sound*; if `unsafe` code can be misused by safe code to exhibit
 undefined behavior, it is *unsound*.
 
-<div class="warning">
-
-***Warning:*** The following list is not exhaustive; it may grow or shrink.
-There is no formal model of Rust's semantics for what is and is not allowed in
-unsafe code, so there may be more behavior considered unsafe. We also reserve
-the right to make some of the behavior in that list defined in the future. In
-other words, this list does not say that anything will *definitely* always be
-undefined in all future Rust version (but we might make such commitments for
-some list items in the future).
-
-Please read the [Rustonomicon] before writing unsafe code.
-
-</div>
+> [!WARNING]
+> The following list is not exhaustive; it may grow or shrink. There is no formal model of Rust's semantics for what is and is not allowed in unsafe code, so there may be more behavior considered unsafe. We also reserve the right to make some of the behavior in that list defined in the future. In other words, this list does not say that anything will *definitely* always be undefined in all future Rust version (but we might make such commitments for some list items in the future).
+>
+> Please read the [Rustonomicon] before writing unsafe code.
 
 r[undefined.race]
 * Data races.
