@@ -77,7 +77,7 @@ Module Path               | Filesystem Path  | File Contents
 ------------------------- | ---------------  | -------------
 `crate`                   | `lib.rs`         | `mod util;`
 `crate::util`             | `util.rs` *or* `util/mod.rs` | `mod config;`
-`crate::util::config`     | `util/config.rs` |
+`crate::util::config`     | `util/config.rs` *or* `util/config/mod.rs` |
 
 > **Note**: Prior to `rustc` 1.30, using `mod.rs` files was the only way to load
 > a module with nested children. Rust 2018 added the new naming convention to be more consistent with modules that don't have submodules, and to avoid having many files named `mod.rs`.
