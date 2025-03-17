@@ -67,8 +67,9 @@ leaves a drop scope all variables associated to that scope are dropped in
 reverse order of declaration (for variables) or creation (for temporaries).
 
 r[destructors.scope.desugaring]
-Drop scopes are determined after replacing [`for`], [`if let`], and
-[`while let`] expressions with the equivalent expressions using [`match`].
+Drop scopes can be determined by replacing [`for`], [`if`], and [`while`]
+expressions with equivalent expressions using [`match`], [`loop`] and
+`break`.
 
 r[destructors.scope.operators]
 Overloaded operators are not distinguished from built-in operators and [binding
@@ -204,11 +205,11 @@ smallest scope that contains the expression and is one of the following:
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The condition expression of an `if` or `while` expression, or a `match`
-  guard.
+* The non-pattern matching condition expression of an `if` or `while` expression,
+  or a `match` guard.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
-* The pattern-matching condition and consequent body of [`if let`] ([destructors.scope.temporary.edition2024]).
+* The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
 * The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > **Notes**:

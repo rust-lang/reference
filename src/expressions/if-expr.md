@@ -10,17 +10,19 @@ r[expr.if.syntax]
 > &nbsp;&nbsp; (`else` ( [_BlockExpression_] | _IfExpression_ ) )<sup>\?</sup>
 >
 > _IfConditions_ :\
-> &nbsp;&nbsp; _IfCondition_ ( && _IfCondition_ )*
+> &nbsp;&nbsp; _IfCondition_ ( && _IfCondition_ )*[^if-condition-2024]
 >
 > _IfCondition_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>\
-> &nbsp;&nbsp; | `let` [_Pattern_] `=` [_Scrutinee_]
+> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_]<sub>_except struct expression or lazy boolean expression_</sub>\
+> &nbsp;&nbsp; | `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except struct expression or lazy boolean expression_</sub>
+>
+> [^if-condition-2024]: Editions before 2024 only allow a single _IfCondition_.
 
 r[expr.if.intro]
 The syntax of an `if` expression is a sequence of one or more condition operands separated by `&&`,
 followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
 
-r[expr.if.condition-bool]
+r[expr.if.condition]
 Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
 
 r[expr.if.condition-true]
@@ -159,6 +161,9 @@ If a `||` expression is needed, then parentheses can be used. For example:
 // Parentheses are required here.
 if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
 ```
+
+r[expr.if.edition2024]
+> **Edition differences**: Before the 2024 edition, let chains are not supported and only a single _IfCondition_ is allowed in an `if` expression.
 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
