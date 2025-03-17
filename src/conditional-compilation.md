@@ -8,6 +8,8 @@ ConfigurationPredicate ->
     | ConfigurationAll
     | ConfigurationAny
     | ConfigurationNot
+    | `true`
+    | `false`
 
 ConfigurationOption ->
     IDENTIFIER ( `=` ( STRING_LITERAL | RAW_STRING_LITERAL ) )?
@@ -49,6 +51,9 @@ r[cfg.predicate.any]
 
 r[cfg.predicate.not]
 * `not()` with a configuration predicate. It is true if its predicate is false and false if its predicate is true.
+
+r[cfg.predicate.literal]
+* `true` or `false` literals, which are always true or false respectively.
 
 r[cfg.option-spec]
 _Configuration options_ are either names or key-value pairs, and are either set or unset.
