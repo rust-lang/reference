@@ -225,8 +225,8 @@ r[asm.operand-type.supported-operands.in]
 * `in(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register.
     The allocated register name is substituted into the asm template string.
-  - The allocated register will contain the value of `<expr>` at the start of the asm code.
-  - The allocated register must contain the same value at the end of the asm code (except if a `lateout` is allocated to the same register).
+  - The allocated register will contain the value of `<expr>` at the start of the assembly code.
+  - The allocated register must contain the same value at the end of the assembly code (except if a `lateout` is allocated to the same register).
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -239,9 +239,9 @@ r[asm.operand-type.supported-operands.out]
 * `out(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register.
     The allocated register name is substituted into the asm template string.
-  - The allocated register will contain an undefined value at the start of the asm code.
-  - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
-  - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
+  - The allocated register will contain an undefined value at the start of the assembly code.
+  - `<expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the assembly code.
+  - An underscore (`_`) may be specified instead of an expression, which will cause the contents of the register to be discarded at the end of the assembly code (effectively acting as a clobber).
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -271,8 +271,8 @@ r[asm.operand-type.supported-operands.inout]
 * `inout(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register.
     The allocated register name is substituted into the asm template string.
-  - The allocated register will contain the value of `<expr>` at the start of the asm code.
-  - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register are written at the end of the asm code.
+  - The allocated register will contain the value of `<expr>` at the start of the assembly code.
+  - `<expr>` must be a mutable initialized place expression, to which the contents of the allocated register are written at the end of the assembly code.
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -286,8 +286,8 @@ assert_eq!(x, 5);
 r[asm.operand-type.supported-operands.inout-arrow]
 * `inout(<reg>) <in expr> => <out expr>`
   - Same as `inout` except that the initial value of the register is taken from the value of `<in expr>`.
-  - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the asm code.
-  - An underscore (`_`) may be specified instead of an expression for `<out expr>`, which will cause the contents of the register to be discarded at the end of the asm code (effectively acting as a clobber).
+  - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the assembly code.
+  - An underscore (`_`) may be specified instead of an expression for `<out expr>`, which will cause the contents of the register to be discarded at the end of the assembly code (effectively acting as a clobber).
   - `<in expr>` and `<out expr>` may have different types.
 
 ```rust
@@ -318,7 +318,7 @@ r[asm.operand-type.supported-operands.sym]
   - `<path>` must refer to a `fn` or `static`.
   - A mangled symbol name referring to the item is substituted into the asm template string.
   - The substituted string does not include any modifiers (e.g. GOT, PLT, relocations, etc).
-  - `<path>` is allowed to point to a `#[thread_local]` static, in which case the asm code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
+  - `<path>` is allowed to point to a `#[thread_local]` static, in which case the assembly code can combine the symbol with relocations (e.g. `@plt`, `@TPOFF`) to read from thread-local data.
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -359,7 +359,7 @@ r[asm.operand-type.supported-operands.label]
   - The address of the block is substituted into the asm template string. The assembly code may jump to the substituted address.
   - After execution of the block, the `asm!` expression returns.
   - The type of the block must be unit or `!` (never).
-  - The block starts a new safety context: unsafe operations within the `label` block must be wrapped in an inner `unsafe` block, even though the entire `asm!` statement is already wrapped in `unsafe`.
+  - The block starts a new safety context; unsafe operations within the `label` block must be wrapped in an inner `unsafe` block, even though the entire `asm!` expression is already wrapped in `unsafe`.
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
@@ -369,7 +369,6 @@ unsafe {
     });
 }
 ```
-
 
 r[asm.operand-type.left-to-right]
 Operand expressions are evaluated from left to right, just like function call arguments.
@@ -749,7 +748,7 @@ Some registers cannot be used for input or output operands:
 
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
-| All | `sp`, `r15` (s390x) | The stack pointer must be restored to its original value at the end of an assembly code. |
+| All | `sp`, `r15` (s390x) | The stack pointer must be restored to its original value at the end of the assembly code or before jumping to a `label` block. |
 | All | `bp` (x86), `x29` (AArch64 and Arm64EC), `x8` (RISC-V), `$fp` (LoongArch), `r11` (s390x) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
 | All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64 and Arm64EC), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
@@ -863,7 +862,7 @@ assert_eq!(x, 0x1000u16);
 
 r[asm.template-modifiers.smaller-value]
 As stated in the previous section, passing an input value smaller than the register width will result in the upper bits of the register containing undefined values.
-This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the asm code (e.g. `ax` instead of `rax`).
+This is not a problem if the inline asm only accesses the lower bits of the register, which can be done by using a template modifier to use a subregister name in the assembly code (e.g. `ax` instead of `rax`).
 Since this an easy pitfall, the compiler will suggest a template modifier to use where appropriate given the input type.
 If all references to an operand already have modifiers then the warning is suppressed for that operand.
 
@@ -999,7 +998,7 @@ assert_eq!(z, 0);
 
 r[asm.options.supported-options.nomem]
 - `nomem`: The assembly code does not read from or write to any memory accessible outside of the assembly code.
-  This allows the compiler to cache the values of modified global variables in registers across the assembly code since it knows that they are not read or written to by the `asm!`.
+  This allows the compiler to cache the values of modified global variables in registers across execution of the assembly code since it knows that they are not read from or written to by it.
   The compiler also assumes that the assembly code does not perform any kind of synchronization with other threads, e.g. via fences.
 
 <!-- no_run: This test has unpredictable or undefined behavior at runtime -->
@@ -1007,7 +1006,8 @@ r[asm.options.supported-options.nomem]
 # #[cfg(target_arch = "x86_64")] {
 let mut x = 0i32;
 let z: i32;
-// Accessing memory from assembly in a nomem asm block is disallowed
+// Accessing outside memory from assembly when `nomem` is
+// specified is disallowed
 unsafe {
     core::arch::asm!("mov {val:e}, dword ptr [{ptr}]",
         ptr = in(reg) &mut x,
@@ -1016,7 +1016,8 @@ unsafe {
     )
 }
 
-// Writing to memory from assembly in a nomem asm block is also undefined behaviour
+// Writing to outside memory from assembly when `nomem` is
+// specified is also undefined behaviour
 unsafe {
     core::arch::asm!("mov  dword ptr [{ptr}], {val:e}",
         ptr = in(reg) &mut x,
@@ -1045,14 +1046,14 @@ assert_eq!(z, 1);
 
 r[asm.options.supported-options.readonly]
 - `readonly`: The assembly code does not write to any memory accessible outside of the assembly code.
-  This allows the compiler to cache the values of unmodified global variables in registers across the assembly code since it knows that they are not written to by the `asm!`.
+  This allows the compiler to cache the values of unmodified global variables in registers across execution of the assembly code since it knows that they are not written to by it.
   The compiler also assumes that this assembly code does not perform any kind of synchronization with other threads, e.g. via fences.
 
 <!-- no_run: This test has undefined behaviour at runtime -->
 ```rust,no_run
 # #[cfg(target_arch = "x86_64")] {
 let mut x = 0;
-// We cannot modify memory in readonly
+// We cannot modify outside memory when `readonly` is specified
 unsafe {
     core::arch::asm!("mov dword ptr[{}], 1", in(reg) &mut x, options(readonly))
 }
@@ -1091,14 +1092,10 @@ assert_eq!(z, 1);
 
 r[asm.options.supported-options.preserves_flags]
 - `preserves_flags`: The assembly code does not modify the flags register (defined in the rules below).
-  This allows the compiler to avoid recomputing the condition flags after the assembly code.
+  This allows the compiler to avoid recomputing the condition flags after execution of the assembly code.
 
 r[asm.options.supported-options.noreturn]
-- `noreturn`: The assembly code never returns, and its return type is defined as `!` (never).
-  Behavior is undefined if execution falls through past the end of the asm code.
-  A `noreturn` asm block with no `label` blocks behaves just like a function which doesn't return; notably, local variables in scope are not dropped before it is invoked.
-- When any `label` blocks are present, `noreturn` means the execution of the assembly code never falls through; the assembly code may only exit by jumping to one of the specified blocks.
-  The entire `asm!` block will have unit type in this case, unless all `label` blocks diverge, in which case the return type is `!`.
+- `noreturn`: The assembly code does not fall through; behavior is undefined if it does. It may still jump to `label` blocks. If any `label` blocks return unit, the `asm!` block will return unit. Otherwise it will return `!` (never). As with a call to a function that does not return, local variables in scope are not dropped before execution of the assembly code.
 
 <!-- no_run: This test aborts at runtime -->
 ```rust,no_run
@@ -1117,6 +1114,16 @@ fn main() -> ! {
 // You are responsible for not falling past the end of a noreturn asm block
 unsafe { core::arch::asm!("", options(noreturn)); }
 # }
+```
+
+```rust
+# #[cfg(target_arch = "x86_64")]
+let _: () = unsafe {
+    // You may still jump to a `label` block
+    core::arch::asm!("jmp {}", label {
+        println!();
+    }, options(noreturn));
+};
 ```
 
 r[asm.options.supported-options.nostack]
@@ -1237,29 +1244,29 @@ r[asm.rules.mem-same-as-ffi]
   - Refer to the unsafe code guidelines for the exact rules.
   - If the `readonly` option is set, then only memory reads are allowed.
   - If the `nomem` option is set then no reads or writes to memory are allowed.
-  - These rules do not apply to memory which is private to the asm code, such as stack space allocated within the assembly code.
+  - These rules do not apply to memory which is private to the assembly code, such as stack space allocated within it.
 
 r[asm.rules.black-box]
-- The compiler cannot assume that the instructions in the asm are the ones that will actually end up executed.
-  - This effectively means that the compiler must treat the `asm!` as a black box and only take the interface specification into account, not the instructions themselves.
+- The compiler cannot assume that the instructions in the assembly code are the ones that will actually end up executed.
+  - This effectively means that the compiler must treat the assembly code as a black box and only take the interface specification into account, not the instructions themselves.
   - Runtime code patching is allowed, via target-specific mechanisms.
-  - However there is no guarantee that each `asm!` directly corresponds to a single instance of instructions in the object file: the compiler is free to duplicate or deduplicate the assembly code in `asm!` blocks.
+  - However there is no guarantee that each block of assembly code in the source directly corresponds to a single instance of instructions in the object file; the compiler is free to duplicate or deduplicate the assembly code in `asm!` blocks.
 
 r[asm.rules.stack-below-sp]
-- Unless the `nostack` option is set, asm code is allowed to use stack space below the stack pointer.
+- Unless the `nostack` option is set, assembly code is allowed to use stack space below the stack pointer.
   - On entry to the assembly code the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
   - You are responsible for making sure you don't overflow the stack (e.g. use stack probing to ensure you hit a guard page).
   - You should adjust the stack pointer when allocating stack memory as required by the target ABI.
   - The stack pointer must be restored to its original value before leaving the assembly code.
 
 r[asm.rules.noreturn]
-- If the `noreturn` option is set then behavior is undefined if execution falls through to the end of the assembly code.
+- If the `noreturn` option is set then behavior is undefined if execution falls through the end of the assembly code.
 
 r[asm.rules.pure]
 - If the `pure` option is set then behavior is undefined if the `asm!` has side-effects other than its direct outputs.
   Behavior is also undefined if two executions of the `asm!` code with the same inputs result in different outputs.
   - When used with the `nomem` option, "inputs" are just the direct inputs of the `asm!`.
-  - When used with the `readonly` option, "inputs" comprise the direct inputs of the `asm!` and any memory that the assembly code is allowed to read.
+  - When used with the `readonly` option, "inputs" comprise the direct inputs of the assembly code and any memory that it is allowed to read.
 
 r[asm.rules.preserved-registers]
 - These flags registers must be restored upon exiting the assembly code if the `preserves_flags` option is set:
@@ -1331,7 +1338,7 @@ r[asm.rules.arm64ec]
 
 r[asm.rules.only-on-exit]
 - The requirement of restoring the stack pointer and non-output registers to their original value only applies when exiting the assembly code.
-  - This means that assembly code that never returns (even if not marked `noreturn`) doesn't need to preserve these registers.
+  - This means that assembly code that does not fall through and does not jump to any `label` blocks, even if not marked `noreturn`, doesn't need to preserve these registers.
   - When returning to the assembly code of a different `asm!` block than you entered (e.g. for context switching), these registers must contain the value they had upon entering the `asm!` block that you are *exiting*.
     - You cannot exit the assembly code of an `asm!` block that has not been entered.
       Neither can you exit the assembly code of an `asm!` block whose assembly code has already been exited (without first entering it again).
