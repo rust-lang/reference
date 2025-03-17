@@ -345,7 +345,7 @@ macro_rules! mac_variant {
 mac_variant! { E }
 
 // This is allowed, since it is removed before being validated.
-#[cfg(FALSE)]
+#[cfg(false)]
 enum E {
     pub U,
     pub(crate) T(u8),
