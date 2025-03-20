@@ -57,7 +57,8 @@ r[names.preludes.extern.std]
 The [`std`] crate is added as long as the [`no_std` attribute] is not specified in the crate root.
 
 r[names.preludes.extern.edition2018]
-> **Edition differences**: In the 2015 edition, crates in the extern prelude
+> [!EDITION-2018]
+> In the 2015 edition, crates in the extern prelude
 > cannot be referenced via [use declarations], so it is generally standard
 > practice to include `extern crate` declarations to bring them into scope.
 >
@@ -155,7 +156,8 @@ r[names.preludes.no_implicit_prelude.lang]
 This attribute does not affect the [language prelude].
 
 r[names.preludes.no_implicit_prelude.edition2018]
-> **Edition differences**: In the 2015 edition, the `no_implicit_prelude`
+> [!EDITION-2018]
+> In the 2015 edition, the `no_implicit_prelude`
 > attribute does not affect the [`macro_use` prelude], and all macros exported
 > from the standard library are still included in the `macro_use` prelude.
 > Starting in the 2018 edition, it will remove the `macro_use` prelude.

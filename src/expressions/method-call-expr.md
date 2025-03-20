@@ -79,7 +79,9 @@ r[expr.method.ambiguous-search]
 If a step is reached where there is more than one possible method, such as where generic methods or traits are considered the same, then it is a compiler error.
 These cases require a [disambiguating function call syntax] for method and function invocation.
 
-> **Edition differences**: Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
+r[expr.method.edition2021]
+> [!EDITION-2021]
+> Before the 2021 edition, during the search for visible methods, if the candidate receiver type is an [array type], methods provided by the standard library [`IntoIterator`] trait are ignored.
 >
 > The edition used for this purpose is determined by the token representing the method name.
 >

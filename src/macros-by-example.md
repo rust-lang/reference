@@ -160,14 +160,16 @@ The keyword metavariable `$crate` can be used to refer to the current crate; see
 transcribed more than once or not at all.
 
 r[macro.decl.meta.edition2021]
-> **Edition differences**: Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
+> [!EDITION-2021]
+> Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
 >
 > Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
 
 r[macro.decl.meta.edition2024]
-> **Edition differences**: Before the 2024 edition, `expr` fragment specifiers do not match [_UnderscoreExpression_] or [_ConstBlockExpression_] at the top level. They are allowed within subexpressions.
+> [!EDITION-2024]
+> Before the 2024 edition, `expr` fragment specifiers do not match [_UnderscoreExpression_] or [_ConstBlockExpression_] at the top level. They are allowed within subexpressions.
 >
 > The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
@@ -496,7 +498,7 @@ macro_rules! call_foo {
 fn foo() {}
 ```
 
-> **Version & Edition differences**: Prior to Rust 1.30, `$crate` and
+> **Version differences**: Prior to Rust 1.30, `$crate` and
 > `local_inner_macros` (below) were unsupported. They were added alongside
 > path-based imports of macros (described above), to ensure that helper macros
 > did not need to be manually imported by users of a macro-exporting crate.
@@ -567,7 +569,8 @@ r[macro.decl.follow-set.token-other]
   * All other fragment specifiers have no restrictions.
 
 r[macro.decl.follow-set.edition2021]
-> **Edition differences**: Before the 2021 edition, `pat` may also be followed by `|`.
+> [!EDITION-2021]
+> Before the 2021 edition, `pat` may also be followed by `|`.
 
 r[macro.decl.follow-set.repetition]
 When repetitions are involved, then the rules apply to every possible number of

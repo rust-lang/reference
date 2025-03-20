@@ -114,7 +114,9 @@ The actual data format for this type is unspecified.
 > [!NOTE]
 > The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
 
-> **Edition differences**: Async blocks are only available beginning with Rust 2018.
+r[expr.block.async.edition2018]
+> [!EDITION-2018]
+> Async blocks are only available beginning with Rust 2018.
 
 r[expr.block.async.capture]
 ### Capture modes

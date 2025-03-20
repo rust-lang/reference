@@ -39,11 +39,13 @@ For example, given a trait `Trait`, the following are all trait objects:
 * `dyn (Trait)`
 
 r[type.trait-object.syntax-edition2021]
-> **Edition differences**: Before the 2021 edition, the `dyn` keyword may be
+> [!EDITION-2021]
+> Before the 2021 edition, the `dyn` keyword may be
 > omitted.
 
-r[type.trait-object.syntax-edition2015]
-> **Edition differences**: In the 2015 edition, if the first bound of the
+r[type.trait-object.syntax-edition2018]
+> [!EDITION-2018]
+> In the 2015 edition, if the first bound of the
 > trait object is a path that starts with `::`, then the `dyn` will be treated
 > as a part of the path. The first path can be put in parenthesis to get
 > around this. As such, if you want a trait object with the trait
