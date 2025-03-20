@@ -63,4 +63,4 @@ r[type.numeric.validity]
 For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
 validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
 
-[type cast expressions]: ../expressions/operator-expr.html#type-cast-expressions
+[type cast expressions]: ../expressions/operator-expr.md#type-cast-expressions
