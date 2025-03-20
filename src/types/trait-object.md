@@ -40,19 +40,13 @@ For example, given a trait `Trait`, the following are all trait objects:
 
 r[type.trait-object.syntax-edition2021]
 > [!EDITION-2021]
-> Before the 2021 edition, the `dyn` keyword may be
-> omitted.
+> Before the 2021 edition, the `dyn` keyword may be omitted.
 
 r[type.trait-object.syntax-edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, if the first bound of the
-> trait object is a path that starts with `::`, then the `dyn` will be treated
-> as a part of the path. The first path can be put in parenthesis to get
-> around this. As such, if you want a trait object with the trait
-> `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
+> In the 2015 edition, if the first bound of the trait object is a path that starts with `::`, then the `dyn` will be treated as a part of the path. The first path can be put in parenthesis to get around this. As such, if you want a trait object with the trait `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
 >
-> Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in
-> paths, so the parentheses are not necessary.
+> Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in paths, so the parentheses are not necessary.
 
 r[type.trait-object.alias]
 Two trait object types alias each other if the base traits alias each other and

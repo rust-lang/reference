@@ -140,8 +140,7 @@ fn example() {
 
 r[items.use.path.edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, `use` paths are relative to the crate root.
-> For example:
+> In the 2015 edition, `use` paths are relative to the crate root. For example:
 >
 > ```rust,edition2015
 > mod foo {
@@ -311,8 +310,7 @@ r[items.use.glob.self-import]
 
 r[items.use.glob.edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
-> This cannot be used in the crate root itself.
+> In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root. This cannot be used in the crate root itself.
 
 r[items.use.as-underscore]
 ## Underscore Imports
