@@ -42,7 +42,7 @@ platform's pointer type. It can represent every memory address in the process.
 
 > [!NOTE]
 > While a `usize` can represent every *address*, converting a *pointer* to a `usize` is not necessarily a reversible operation.
-> For more information, see the documentation for [type cast expressions] and [`std::ptr`].
+> For more information, see the documentation for [type cast expressions], [`std::ptr`], and [provenance][std::ptr#provenance] in particular.
 
 r[type.numeric.int.size.isize]
 The `isize` type is a signed integer type with the same number of bits as the
