@@ -40,6 +40,10 @@ r[type.numeric.int.size.usize]
 The `usize` type is an unsigned integer type with the same number of bits as the
 platform's pointer type. It can represent every memory address in the process.
 
+> [!NOTE]
+> While a `usize` can represent every *address*, converting a *pointer* to a `usize` is not necessarily a reversible operation.
+> For more information, see the documentation for [type cast expressions], [`std::ptr`], and [provenance][std::ptr#provenance] in particular.
+
 r[type.numeric.int.size.isize]
 The `isize` type is a signed integer type with the same number of bits as the
 platform's pointer type. The theoretical upper bound on object and array size
@@ -58,3 +62,5 @@ r[type.numeric.validity]
 
 For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
 validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
+
+[type cast expressions]: ../expressions/operator-expr.md#type-cast-expressions
