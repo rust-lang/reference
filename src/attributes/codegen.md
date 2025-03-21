@@ -280,6 +280,27 @@ Feature        | Implicitly Enables | Feature Name
 `tme`          |                | FEAT_TME --- Transactional Memory Extension
 `vh`           |                | FEAT_VHE --- Virtualization Host Extensions
 
+r[attributes.codegen.target_feature.loongarch]
+#### `loongarch`
+
+
+On this platform the usage of `#[target_feature]` functions follows the
+[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+
+Feature     | Implicitly Enables  | Description
+------------|---------------------|-------------------
+`f`         |                     | [F][cpucfg] --- Single-precision float-point instructions
+`d`         | `f`                 | [D][cpucfg] --- Double-precision float-point instructions
+`frecipe`   |                     | [FRECIPE][cpucfg] --- Reciprocal approximation instructions
+`lasx`      | `lsx`               | [LASX][cpucfg] --- 256-bit vector instructions
+`lbt`       |                     | [LBT][cpucfg] --- Binary translation instructions
+`lsx`       | `d`                 | [LSX][cpucfg] --- 128-bit vector instructions
+`lvz`       |                     | [LVZ][cpucfg] --- Virtualization instructions
+
+<!-- Keep links near each table to make it easier to move and update. -->
+
+[cpucfg]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#the-configuration-information-accessible-by-the-cpucfg-instruction
+
 r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
