@@ -360,8 +360,8 @@ For more information on the effect of async, see [`async` blocks][async-blocks].
 [`impl Future`]: ../types/impl-trait.md
 
 r[items.fn.async.edition2018]
-> **Edition differences**: Async functions are only available beginning with
-> Rust 2018.
+> [!EDITION-2018]
+> Async functions are only available beginning with Rust 2018.
 
 r[items.fn.async.safety]
 ### Combining `async` and `unsafe`

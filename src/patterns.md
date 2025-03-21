@@ -334,7 +334,8 @@ let [ref mut x] = &mut [()]; //~ ERROR
 ```
 
 r[patterns.ident.binding.mode-limitations.edition2024]
-> **Edition differences**: Before the 2024 edition, bindings could explicitly specify a `ref` or `ref mut` binding mode even when the default binding mode was not "move", and they could specify mutability on such bindings with `mut`. In these editions, specifying `mut` on a binding set the binding mode to "move" regardless of the current default binding mode.
+> [!EDITION-2024]
+> Before the 2024 edition, bindings could explicitly specify a `ref` or `ref mut` binding mode even when the default binding mode was not "move", and they could specify mutability on such bindings with `mut`. In these editions, specifying `mut` on a binding set the binding mode to "move" regardless of the current default binding mode.
 
 r[patterns.ident.binding.mode-limitations-reference]
 Similarly, a reference pattern may only appear when the default binding mode is "move". For example, this is not accepted:
@@ -344,7 +345,8 @@ let [&x] = &[&()]; //~ ERROR
 ```
 
 r[patterns.ident.binding.mode-limitations-reference.edition2024]
-> **Edition differences**: Before the 2024 edition, reference patterns could appear even when the default binding mode was not "move", and had both the effect of matching against the scrutinee and of causing the default binding mode to be reset to "move".
+> [!EDITION-2024]
+> Before the 2024 edition, reference patterns could appear even when the default binding mode was not "move", and had both the effect of matching against the scrutinee and of causing the default binding mode to be reset to "move".
 
 r[patterns.ident.binding.mixed]
 Move bindings and reference bindings can be mixed together in the same pattern.
@@ -669,7 +671,8 @@ _RangeFromPattern_ cannot be used as a top-level pattern for subpatterns in [sli
 For example, the pattern `[1.., _]` is not a valid pattern.
 
 r[patterns.range.edition2021]
-> **Edition differences**: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
+> [!EDITION-2021]
+> Before the 2021 edition, range patterns with both a lower and upper bound may also be written using `...` in place of `..=`, with the same meaning.
 
 r[patterns.ref]
 ## Reference patterns

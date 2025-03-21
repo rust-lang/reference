@@ -78,7 +78,8 @@ async fn example() {
 ```
 
 r[expr.closure.async.edition2018]
-> **Edition differences**: Async closures are only available beginning with Rust 2018.
+> [!EDITION-2018]
+> Async closures are only available beginning with Rust 2018.
 
 ## Example
 

@@ -36,7 +36,8 @@ r[items.extern.unsafe-required]
 The `unsafe` keyword is semantically required to appear before the `extern` keyword on external blocks.
 
 r[items.extern.edition2024]
-> **Edition differences**: Prior to the 2024 edition, the `unsafe` keyword is optional. The `safe` and `unsafe` item qualifiers are only allowed if the external block itself is marked as `unsafe`.
+> [!EDITION-2024]
+> Prior to the 2024 edition, the `unsafe` keyword is optional. The `safe` and `unsafe` item qualifiers are only allowed if the external block itself is marked as `unsafe`.
 
 r[items.extern.fn]
 ## Functions

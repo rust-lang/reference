@@ -441,8 +441,8 @@ c"\xC3\xA6";
 ```
 
 r[lex.token.str-c.edition2021]
-> **Edition differences**: C string literals are accepted in the 2021 edition or
-> later. In earlier additions the token `c""` is lexed as `c ""`.
+> [!EDITION-2021]
+> C string literals are accepted in the 2021 edition or later. In earlier additions the token `c""` is lexed as `c ""`.
 
 r[lex.token.str-c-raw]
 #### Raw C string literals
@@ -472,9 +472,8 @@ least as many `U+0023` (`#`) characters as were used to start the raw C string
 literal) or `U+005C` (`\`) do not have any special meaning.
 
 r[lex.token.str-c-raw.edition2021]
-> **Edition differences**: Raw C string literals are accepted in the 2021
-> edition or later. In earlier additions the token `cr""` is lexed as `cr ""`,
-> and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
+> [!EDITION-2021]
+> Raw C string literals are accepted in the 2021 edition or later. In earlier additions the token `cr""` is lexed as `cr ""`, and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
 
 #### Examples for C string and raw C string literals
 
@@ -774,8 +773,8 @@ r[lex.token.life.raw.reserved]
 It is an error to use the RESERVED_RAW_LIFETIME token `'r#_` in order to avoid confusion with the [placeholder lifetime].
 
 r[lex.token.life.raw.edition2021]
-> **Edition differences**: Raw lifetimes are accepted in the 2021
-> edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
+> [!EDITION-2021]
+> Raw lifetimes are accepted in the 2021 edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
 
 r[lex.token.punct]
 ## Punctuation
@@ -874,7 +873,8 @@ r[lex.token.reserved-prefix.life]
 Source input which would otherwise be lexically interpreted as a non-raw lifetime (or a keyword or `_`) which is immediately followed by a `#` character (without intervening whitespace) is identified as a reserved lifetime prefix.
 
 r[lex.token.reserved-prefix.edition2021]
-> **Edition differences**: Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
+> [!EDITION-2021]
+> Starting with the 2021 edition, reserved prefixes are reported as an error by the lexer (in particular, they cannot be passed to macros).
 >
 > Before the 2021 edition, reserved prefixes are accepted by the lexer and interpreted as multiple tokens (for example, one token for the identifier or keyword, followed by a `#` token).
 >
@@ -915,7 +915,8 @@ r[lex.token.reserved-guards.pounds]
 The *reserved pounds* is a token of two or more `U+0023` (`#`).
 
 r[lex.token.reserved-guards.edition2024]
-> **Edition differences**: Before the 2024 edition, reserved guards are accepted by the lexer and interpreted as multiple tokens. For example, the `#"foo"#` form is interpreted as three tokens. `##` is interpreted as two tokens.
+> [!EDITION-2024]
+> Before the 2024 edition, reserved guards are accepted by the lexer and interpreted as multiple tokens. For example, the `#"foo"#` form is interpreted as three tokens. `##` is interpreted as two tokens.
 
 [Inferred types]: types/inferred.md
 [Range patterns]: patterns.md#range-patterns
