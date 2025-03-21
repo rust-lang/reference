@@ -79,9 +79,12 @@ r[type.pointer.validity]
 ## Bit validity
 
 r[type.pointer.validity.pointer-fragment]
-Despite pointers and references being similar to `usize`s in the machine code emitted on most platforms,
-the semantics of transmuting a reference or pointer type to a non-pointer type is currently undecided.
-Thus, it may not be valid to transmute a pointer or reference type, `P`, to a `[u8; size_of::<P>()]`.
+A pointer or reference type, `P`, is guaranteed to have all of its bytes initialized. Thus, it is always
+sound to transmute `p0: P` to `bytes: [u8; size_of::<P>()]`. However, this operation may not preserve
+provenance, and so transmuting `bytes` back to `p1: P` may result in a pointer or reference without
+valid provenance. If `P` is a raw pointer type, then it may be the case that dereferencing `p1` is undefined
+behavior. If `P` is a reference type, then it may be the case that the act of transmuting to `p1` is
+undefined behavior even if `p1` is never used.
 
 r[type.pointer.validity.raw]
 For thin raw pointers (i.e., for `P = *const T` or `P = *mut T` for `T: Sized`),
