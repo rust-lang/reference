@@ -142,6 +142,16 @@ r[names.preludes.tool.intro]
 The tool prelude includes tool names for external tools in the [type
 namespace]. See the [tool attributes] section for more details.
 
+r[names.preludes.precedence]
+## Prelude precedence
+Names of items are resolved in the following order:
+
+1. Explicit definitions (including imports)
+2. Language and macro prelude. If an item is present in both preludes, an error is emitted.
+3. Extern prelude
+4. Tool prelude
+5. Standard library prelude
+
 r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
