@@ -94,7 +94,7 @@ These macros are defined by a [public]&#32;[function] with the `proc_macro`
 output [`TokenStream`] replaces the entire macro invocation.
 
 r[macro.proc.function.namespace]
-The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
+The `proc_macro` attribute defines the macro in the [bang-style sub-namespace][sub-namespace] of the [macro namespace] in the root of the crate.
 
 For example, the following macro definition ignores its input and outputs a
 function `answer` into its scope.
@@ -144,7 +144,7 @@ Custom derive macros are defined by a [public]&#32;[function] with the
 `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 r[macro.proc.derive.namespace]
-The `proc_macro_derive` attribute defines the custom derive in the [macro namespace] in the root of the crate.
+The `proc_macro_derive` attribute defines the custom derive in the [attribute sub-namespace][sub-namespace] of the [macro namespace] in the root of the crate.
 
 r[macro.proc.derive.output]
 The input [`TokenStream`] is the token stream of the item that has the `derive`
@@ -240,7 +240,7 @@ including other [attributes] on the [item]. The returned [`TokenStream`]
 replaces the [item] with an arbitrary number of [items].
 
 r[macro.proc.attribute.namespace]
-The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate.
+The `proc_macro_attribute` attribute defines the attribute in the [attribute sub-namespace][sub-namespace] of the [macro namespace] in the root of the crate.
 
 For example, this attribute macro takes the input stream and returns it as is,
 effectively being the no-op of attributes.
@@ -399,6 +399,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [item]: items.md
 [items]: items.md
 [macro namespace]: names/namespaces.md
+[sub-namespace]: names/namespaces.md#sub-namespaces
 [module]: items/modules.md
 [patterns]: patterns.md
 [public]: visibility-and-privacy.md
