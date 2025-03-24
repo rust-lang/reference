@@ -647,7 +647,7 @@ note: required for `&str` to implement `AsExpression<Integer>`
    |        ------------------------ unsatisfied trait bound introduced here
 ```
 
-By adding the `#[diagnostic::do_no_recommend]` attribute to the blanket `impl` for `AsExpression`, the message changes to:
+By adding the `#[diagnostic::do_not_recommend]` attribute to the blanket `impl` for `AsExpression`, the message changes to:
 
 ```text
 error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
