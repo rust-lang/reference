@@ -138,9 +138,9 @@ fn example() {
 }
 ```
 
-r[items.use.path.edition2015]
-> **Edition differences**: In the 2015 edition, `use` paths are relative to the crate root.
-> For example:
+r[items.use.path.edition2018]
+> [!EDITION-2018]
+> In the 2015 edition, `use` paths are relative to the crate root. For example:
 >
 > ```rust,edition2015
 > mod foo {
@@ -196,8 +196,9 @@ r[items.use.multiple-syntax.empty]
 An empty brace does not import anything, though the leading path is validated that it is accessible.
 <!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
 
-r[items.use.multiple-syntax.edition2015]
-> **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018, those names are relative to the current scope.
+r[items.use.multiple-syntax.edition2018]
+> [!EDITION-2018]
+> In the 2015 edition, paths are relative to the crate root, so an import such as `use {foo, bar};` will import the names `foo` and `bar` from the crate root, whereas starting in 2018, those names are relative to the current scope.
 
 r[items.use.self]
 ## `self` imports
@@ -307,9 +308,9 @@ r[items.use.glob.last-segment-only]
 r[items.use.glob.self-import]
 `*` cannot be used to import a module's contents into itself (such as `use self::*;`).
 
-r[items.use.glob.edition2015]
-> **Edition differences**: In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root.
-> This cannot be used in the crate root itself.
+r[items.use.glob.edition2018]
+> [!EDITION-2018]
+> In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root. This cannot be used in the crate root itself.
 
 r[items.use.as-underscore]
 ## Underscore Imports

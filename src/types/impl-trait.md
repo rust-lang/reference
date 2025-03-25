@@ -115,7 +115,8 @@ r[type.impl-trait.generic-capture.auto.intro]
 Return-position `impl Trait` abstract types automatically capture all in-scope generic parameters, including generic type, const, and lifetime parameters (including higher-ranked ones).
 
 r[type.impl-trait.generic-capture.edition2024]
-> **Edition differences**: Before the 2024 edition, on free functions and on associated functions and methods of inherent impls, generic lifetime parameters that do not appear in the bounds of the abstract return type are not automatically captured.
+> [!EDITION-2024]
+> Before the 2024 edition, on free functions and on associated functions and methods of inherent impls, generic lifetime parameters that do not appear in the bounds of the abstract return type are not automatically captured.
 
 r[type.impl-trait.generic-capture.precise]
 ## Precise capturing

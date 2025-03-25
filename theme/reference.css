@@ -61,19 +61,23 @@ See mdbook-spec/src/lib.rs.
 .light .alert {
     --alert-note-color: #0969da;
     --alert-warning-color: #9a6700;
+    --alert-edition-color: #1a7f37;
 }
 .ayu .alert {
     --alert-note-color: #74b9ff;
     --alert-warning-color: #f0b72f;
+    --alert-edition-color: #2bd853;
 }
 .rust .alert {
     --alert-note-color: #023b95;
     --alert-warning-color: #603700;
+    --alert-edition-color: #008200;
 }
 .coal .alert,
 .navy .alert {
     --alert-note-color: #4493f8;
     --alert-warning-color: #d29922;
+    --alert-edition-color: #3fb950;
 }
 .alert-note blockquote {
     border-inline-start-color: var(--alert-note-color);
@@ -81,11 +85,26 @@ See mdbook-spec/src/lib.rs.
 .alert-warning blockquote {
     border-inline-start-color: var(--alert-warning-color);
 }
+.alert-edition blockquote {
+    border-inline-start-color: var(--alert-edition-color);
+}
 .alert-note .alert-title {
     color: var(--alert-note-color);
 }
 .alert-warning .alert-title {
     color: var(--alert-warning-color);
+}
+.alert-edition .alert-title {
+    color: var(--alert-edition-color);
+}
+/* Puts a rounded rectangle around the edition date. */
+.alert-title-edition {
+    padding: 0px 5px;
+    margin-right: 1rem;
+    border: 2px solid var(--alert-edition-color);
+    border-radius: 15px;
+    font-weight: bold;
+    color: var(--alert-edition-color);
 }
 
 /* <kbd> tags can be used to highlight specific character elements. */

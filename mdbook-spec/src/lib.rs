@@ -155,6 +155,18 @@ impl Spec {
                 let blockquote = &caps["blockquote"];
                 let initial_spaces = blockquote.chars().position(|ch| ch != ' ').unwrap_or(0);
                 let space = &blockquote[..initial_spaces];
+                if lower.starts_with("edition-") {
+                    let edition = &lower[8..];
+                    return format!("{space}<div class=\"alert alert-edition\">\n\
+                        \n\
+                        {space}> <p class=\"alert-title\">\
+                            <span class=\"alert-title-edition\">{edition}</span> Edition differences</p>\n\
+                        {space} >\n\
+                        {blockquote}\n\
+                        \n\
+                        {space}</div>\n");
+                }
+
                 // These icons are from GitHub, MIT License, see https://github.com/primer/octicons
                 let svg = match lower.as_str() {
                     "note" => "<path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path>",
