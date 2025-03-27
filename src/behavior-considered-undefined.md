@@ -43,7 +43,7 @@ r[undefined.place-projection]
   [array/slice index expression][project-slice].
 
 r[undefined.alias]
-* Breaking the pointer aliasing rules. The exact aliasing rules are not determined yet, but here is a rough sketch of what the requirements look like:
+* Breaking the pointer aliasing rules. The exact aliasing rules are not determined yet, but here is an outline of the general principles:
   `&T` must point to memory that is not mutated while they are live (except for data inside an [`UnsafeCell<U>`]),
   and `&mut T` must point to memory that is not read or written by any pointer not derived from the reference and that no other reference points to while they are live.
   `Box<T>` is treated similar to `&'static mut T` for the purpose of these rules.
