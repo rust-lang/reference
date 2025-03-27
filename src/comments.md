@@ -1,7 +1,6 @@
 r[comments.syntax]
 # Comments
 
-
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\
@@ -36,7 +35,6 @@ r[comments.syntax]
 
 r[comments.normal]
 ## Non-doc comments
-
 
 Comments follow the general C++ style of line (`//`) and
 block (`/* ... */`) comment forms. Nested block comments are supported.

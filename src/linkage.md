@@ -1,7 +1,6 @@
 r[link]
 # Linkage
 
-
 > [!NOTE]
 > This section is described more in terms of the compiler than of the language.
 

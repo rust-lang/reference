@@ -136,7 +136,6 @@ r[destructors.scope.nesting.other]
 r[destructors.scope.params]
 ### Scopes of function parameters
 
-
 All function parameters are in the scope of the entire function body, so are
 dropped last when evaluating the function. Each actual function parameter is
 dropped after any bindings introduced in that parameter's pattern.
@@ -266,7 +265,6 @@ match PrintOnDrop("Matched value in final expression") {
 r[destructors.scope.operands]
 ### Operands
 
-
 Temporaries are also created to hold the result of operands to an expression
 while the other operands are evaluated. The temporaries are associated to the
 scope of the expression with that operand. Since the temporaries are moved from
@@ -298,7 +296,6 @@ loop {
 r[destructors.scope.const-promotion]
 ### Constant promotion
 
-
 Promotion of a value expression to a `'static` slot occurs when the expression
 could be written in a constant and borrowed, and that borrow could be dereferenced
 where
@@ -310,7 +307,6 @@ always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
-
 
 > [!NOTE]
 > The exact rules for temporary lifetime extension are subject to change. This is describing the current behavior only.
@@ -367,7 +363,6 @@ scope of the initializer expression is extended.
 
 r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
-
 
 For a let statement with an initializer, an *extending expression* is an
 expression which is one of the following:

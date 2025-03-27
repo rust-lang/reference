@@ -69,7 +69,6 @@ with any token, such as through getting a `Span` from another token.
 r[macro.proc.hygiene]
 ### Procedural macro hygiene
 
-
 Procedural macros are *unhygienic*. This means they behave as if the output
 token stream was simply written inline to the code it's next to. This means that
 it's affected by external items and also affects external imports.
