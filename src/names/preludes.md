@@ -35,7 +35,6 @@ Edition | `no_std` not applied        | `no_std` applied
 2021    | [`std::prelude::rust_2021`] | [`core::prelude::rust_2021`]
 2024    | [`std::prelude::rust_2024`] | [`core::prelude::rust_2024`]
 
-
 > [!NOTE]
 > [`std::prelude::rust_2015`] and [`std::prelude::rust_2018`] have the same contents as [`std::prelude::v1`].
 >

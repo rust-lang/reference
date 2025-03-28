@@ -94,14 +94,12 @@ at least equal to the size and alignment of a pointer.
 r[layout.array]
 ## Array Layout
 
-
 An array of `[T; N]` has a size of `size_of::<T>() * N` and the same alignment
 of `T`. Arrays are laid out so that the zero-based `nth` element of the array
 is offset from the start of the array by `n * size_of::<T>()` bytes.
 
 r[layout.slice]
 ## Slice Layout
-
 
 Slices have the same layout as the section of the array they slice.
 
@@ -110,7 +108,6 @@ Slices have the same layout as the section of the array they slice.
 
 r[layout.str]
 ## `str` Layout
-
 
 String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
 
@@ -127,7 +124,6 @@ zero-sized type to have a size of 0 and an alignment of 1.
 r[layout.trait-object]
 ## Trait Object Layout
 
-
 Trait objects have the same layout as the value the trait object is of.
 
 > [!NOTE]
@@ -135,7 +131,6 @@ Trait objects have the same layout as the value the trait object is of.
 
 r[layout.closure]
 ## Closure Layout
-
 
 Closures have no layout guarantees.
 
@@ -349,7 +344,6 @@ assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
-
 For [field-less enums], the `C` representation has the size and alignment of
 the default `enum` size and alignment for the target platform's C ABI.
 
@@ -445,7 +439,6 @@ two primitive representations together is an error.
 r[layout.repr.primitive.enum]
 #### Primitive Representation of Field-less Enums
 
-
 For [field-less enums], primitive representations set the size and alignment to
 be the same as the primitive type of the same name. For example, a field-less
 enum with a `u8` representation can only have discriminants between 0 and 255
@@ -453,7 +446,6 @@ inclusive.
 
 r[layout.repr.primitive.adt]
 #### Primitive Representation of Enums With Fields
-
 
 The representation of a primitive representation enum is a `repr(C)` union of
 `repr(C)` structs for each variant with a field. The first field of each struct
@@ -509,7 +501,6 @@ struct MyVariantD(MyEnumDiscriminant);
 
 r[layout.repr.primitive-c]
 #### Combining primitive representations of enums with fields and `#[repr(C)]`
-
 
 For enums with fields, it is also possible to combine `repr(C)` and a
 primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by

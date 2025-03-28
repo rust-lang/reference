@@ -19,7 +19,6 @@ Rust has two kinds of statement: [declaration statements](#declaration-statement
 r[statement.decl]
 ## Declaration statements
 
-
 A *declaration statement* is one that introduces one or more *names* into the enclosing statement block.
 The declared names may denote new variables or new [items][item].
 
@@ -146,7 +145,6 @@ if true {
 
 r[statement.attribute]
 ## Attributes on Statements
-
 
 Statements accept [outer attributes].
 The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].

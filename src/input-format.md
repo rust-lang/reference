@@ -18,12 +18,10 @@ It is an error if the file is not valid UTF-8.
 r[input.byte-order-mark]
 ## Byte order mark removal
 
-
 If the first character in the sequence is `U+FEFF` ([BYTE ORDER MARK]), it is removed.
 
 r[input.crlf]
 ## CRLF normalization
-
 
 Each pair of characters `U+000D` (CR) immediately followed by `U+000A` (LF) is replaced by a single `U+000A` (LF).
 
@@ -55,7 +53,6 @@ This prevents an [inner attribute] at the start of a source file being removed.
 
 r[input.tokenization]
 ## Tokenization
-
 
 The resulting sequence of characters is then converted into tokens as described in the remainder of this chapter.
 

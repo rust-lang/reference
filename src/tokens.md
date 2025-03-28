@@ -491,7 +491,6 @@ c"\\x52"; cr"\x52";                  // \x52
 r[lex.token.literal.num]
 ### Number literals
 
-
 A _number literal_ is either an _integer literal_ or a _floating-point
 literal_. The grammar for recognizing the two kinds of literals is mixed.
 
@@ -583,7 +582,6 @@ Examples of integer literals which are accepted as literal expressions:
 ```
 
 Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
-
 
 Examples of integer literals which are not accepted as literal expressions:
 
@@ -686,7 +684,6 @@ Examples of floating-point literals which are not accepted as literal expression
 
 r[lex.token.literal.reserved]
 #### Reserved forms similar to number literals
-
 
 > **<sup>Lexer</sup>**\
 > RESERVED_NUMBER :\
@@ -835,7 +832,6 @@ usages and meanings are defined in the linked pages.
 
 r[lex.token.delim]
 ## Delimiters
-
 
 Bracket punctuation is used in various parts of the grammar. An open bracket
 must always be paired with a close bracket. Brackets and the tokens within

@@ -263,7 +263,6 @@ r[cfg.target_has_atomic.stdlib]
 When this cfg is present, all of the stable [`core::sync::atomic`] APIs are available for
 the relevant atomic width.
 
-
 r[cfg.target_has_atomic.values]
 Possible values:
 
@@ -277,13 +276,11 @@ Possible values:
 r[cfg.test]
 ### `test`
 
-
 Enabled when compiling the test harness. Done with `rustc` by using the
 [`--test`] flag. See [Testing] for more on testing support.
 
 r[cfg.debug_assertions]
 ### `debug_assertions`
-
 
 Enabled by default when compiling without optimizations.
 This can be used to enable extra debugging code in development but not in
@@ -292,7 +289,6 @@ production.  For example, it controls the behavior of the standard library's
 
 r[cfg.proc_macro]
 ### `proc_macro`
-
 
 Set when the crate being compiled is being compiled with the `proc_macro`
 [crate type].

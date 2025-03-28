@@ -56,7 +56,6 @@ Identifiers are restricted to the ASCII subset of [`XID_Start`] and [`XID_Contin
 r[ident.normalization]
 ## Normalization
 
-
 Identifiers are normalized using Normalization Form C (NFC) as defined in [Unicode Standard Annex #15][UAX15]. Two identifiers are equal if their NFC forms are equal.
 
 [Procedural][proc-macro] and [declarative][mbe] macros receive normalized identifiers in their input.

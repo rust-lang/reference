@@ -577,7 +577,6 @@ The rules for [`Send`] and [`Sync`] match those for normal struct types, while
 [`Clone`] and [`Copy`] behave as if [derived]. For [`Clone`], the order of
 cloning of the captured values is left unspecified.
 
-
 Because captures are often by reference, the following general rules arise:
 
 * A closure is [`Sync`] if all captured values are [`Sync`].

@@ -26,7 +26,6 @@ Type   | Minimum            | Maximum
 `i64`  | -(2<sup>63</sup>)  | 2<sup>63</sup>-1
 `i128` | -(2<sup>127</sup>) | 2<sup>127</sup>-1
 
-
 r[type.numeric.float]
 ## Floating-point types
 

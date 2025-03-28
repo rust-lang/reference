@@ -1,7 +1,6 @@
 r[macro.ambiguity]
 # Appendix: Macro Follow-Set Ambiguity Formal Specification
 
-
 This page documents the formal specification of the follow rules for [Macros
 By Example]. They were originally specified in [RFC 550], from which the bulk
 of this text is copied, and expanded upon in subsequent RFCs.

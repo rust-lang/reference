@@ -1,7 +1,6 @@
 r[attributes.codegen]
 # Code generation attributes
 
-
 The following [attributes] are used for controlling code generation.
 
 r[attributes.codegen.hint]
@@ -44,13 +43,11 @@ There are three ways to use the inline attribute:
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
-
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
-
 
 The *`no_builtins` [attribute]* may be applied at the crate level to disable
 optimizing certain code patterns to invocations of library functions that are
@@ -143,12 +140,10 @@ be used with a `target_feature` attribute.
 r[attributes.codegen.target_feature.availability]
 ### Available features
 
-
 The following is a list of the available feature names.
 
 r[attributes.codegen.target_feature.x86]
 #### `x86` or `x86_64`
-
 
 Executing code with unsupported features is undefined behavior on this platform.
 Hence on this platform usage of `#[target_feature]` functions follows the
@@ -218,7 +213,6 @@ Feature     | Implicitly Enables | Description
 r[attributes.codegen.target_feature.aarch64]
 #### `aarch64`
 
-
 On this platform the usage of `#[target_feature]` functions follows the
 [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
@@ -231,7 +225,6 @@ Reference Manual], or elsewhere on [developer.arm.com].
 > [!NOTE]
 > The following pairs of features should both be marked as enabled or disabled together if used:
 > - `paca` and `pacg`, which LLVM currently implements as one feature.
-
 
 Feature        | Implicitly Enables | Feature Name
 ---------------|--------------------|-------------------
@@ -282,7 +275,6 @@ Feature        | Implicitly Enables | Feature Name
 
 r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
-
 
 On this platform the usage of `#[target_feature]` functions follows the
 [above restrictions][attributes.codegen.target_feature.safety-restrictions].
@@ -344,7 +336,6 @@ Feature     | Implicitly Enables  | Description
 
 r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
-
 
 Safe `#[target_feature]` functions may always be used in safe contexts on Wasm
 platforms. It is impossible to cause undefined behavior via the
@@ -538,7 +529,6 @@ It is a compilation error to use the `instruction_set` attribute on a target tha
 
 r[attributes.codegen.instruction_set.arm]
 ### On ARM
-
 
 For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 * `arm::a32` --- Generate the function as A32 "ARM" code.

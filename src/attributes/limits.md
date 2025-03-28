@@ -1,7 +1,6 @@
 r[attributes.limits]
 # Limits
 
-
 The following [attributes] affect compile-time limits.
 
 r[attributes.limits.recursion_limit]
@@ -43,7 +42,6 @@ a!{}
 
 r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
-
 
 > [!NOTE]
 > This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.

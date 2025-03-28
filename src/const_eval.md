@@ -107,10 +107,9 @@ r[const-eval.const-expr.loop]
 r[const-eval.const-expr.if-match]
 * [if], [`if let`] and [match] expressions.
 
+r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
-
-r[const-eval.const-context]
 
 r[const-eval.const-context.general]
 A _const context_ is one of the following:

@@ -120,7 +120,6 @@ Trait and lifetime bounds are also used to name [trait objects].
 r[bound.sized]
 ## `?Sized`
 
-
 `?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types].
 `?Sized` may not be used as a bound for other types.
 
@@ -269,7 +268,6 @@ impl<'a, T> Trait<'a, T> for &'a T {}
 
 r[bound.use]
 ## Use bounds
-
 
 Certain bounds lists may include a `use<..>` bound to control which generic parameters are captured by the `impl Trait` [abstract return type].  See [precise capturing] for more details.
 
