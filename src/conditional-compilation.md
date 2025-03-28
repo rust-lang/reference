@@ -7,7 +7,8 @@ r[cfg.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; _ConfigurationOption_\
 > &nbsp;&nbsp; | _ConfigurationAll_\
 > &nbsp;&nbsp; | _ConfigurationAny_\
-> &nbsp;&nbsp; | _ConfigurationNot_
+> &nbsp;&nbsp; | _ConfigurationNot_\
+> &nbsp;&nbsp; | `true` | `false`
 >
 > _ConfigurationOption_ :\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;(`=` ([STRING_LITERAL] | [RAW_STRING_LITERAL]))<sup>?</sup>
@@ -48,6 +49,9 @@ r[cfg.predicate.any]
 
 r[cfg.predicate.not]
 * `not()` with a configuration predicate. It is true if its predicate is false and false if its predicate is true.
+
+r[cfg.predicate.literal]
+* `true` or `false` literals, which are always `true`/`false` respectively.
 
 r[cfg.option-spec]
 _Configuration options_ are either names or key-value pairs, and are either set or unset.
