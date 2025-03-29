@@ -140,6 +140,34 @@ r[names.preludes.tool.intro]
 The tool prelude includes tool names for external tools in the [type
 namespace]. See the [tool attributes] section for more details.
 
+r[names.preludes.precedence]
+## Prelude precedence
+Names of items are resolved in the following order:
+
+Value namespace: only the standard library prelude contains items in this namespace.
+
+1. Explicit definitions (including imports)
+2. Standard library prelude
+
+Type namespace:
+
+1. Explicit definitions (including imports)
+2. Extern prelude
+3. Tool prelude
+4. Standard library prelude
+5. Language prelude
+
+Macro namespace:
+
+1. Explicit definitions (including imports)
+    1. [Derive helpers]
+    2. [Macros by example][macro_rules]
+2. Macro prelude
+3. Standard library prelude
+4. [Language prelude][Built-in attributes]
+
+Currently, the ordering between library and language is not observable because there are no items in both namespaces.
+
 r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
@@ -157,6 +185,8 @@ r[names.preludes.no_implicit_prelude.edition2018]
 > In the 2015 edition, the `no_implicit_prelude` attribute does not affect the [`macro_use` prelude], and all macros exported from the standard library are still included in the `macro_use` prelude. Starting in the 2018 edition, it will remove the `macro_use` prelude.
 
 [`extern crate`]: ../items/extern-crates.md
+[macro_rules]: ../macros-by-example.md
+[Derive helpers]: ../names/scopes.html#derive-macro-helper-attributes
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
