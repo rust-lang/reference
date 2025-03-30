@@ -260,23 +260,18 @@ main > .rule {
     grid-column: rules;
 }
 
-/* Unset footnote margin,
-   see below for more information about margins */
-/* FIXME: this doesn't work. `unset` can still break the margin of the next element,
-          and since mdbook applies the margin to `:not(.footnore-definition)`,
-          it can literally be anything, so there is no way to properly fix it,
-          without changing mdbook... */
-:not(.footnote-definition) + .footnote-definition,
-.footnote-definition + :not(.footnote-definition) {
-    margin-block-start: unset;
+hr {
+    /* For some reason, grid is shrinking this to a point. */
+    width: 100%;
 }
 
-:not(.footnote-definition) + .footnote-definition {
-     margin-top: calc(2em - 16px);
+/* Too much space with the grid.
+*/
+.footnote-definition {
+    margin-top: 0;
 }
-
-.footnote-definition:has(+ :not(.footnote-definition)) {
-    margin-bottom: calc(2em - 16px);
+.footnote-definition li:first-child > *:first-child {
+    margin-top: 0;
 }
 
 /* This is quite dumb, ugh.
