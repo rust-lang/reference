@@ -1,0 +1,4 @@
+[alias]
+style-check = "run --manifest-path=style-check/Cargo.toml -- src"
+linkcheck = "run --manifest-path=xtask/Cargo.toml -- linkcheck"
+test-all = "run --manifest-path=xtask/Cargo.toml -- test-all"
