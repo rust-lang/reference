@@ -24,6 +24,10 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
 
+/// A primitive regex to find link reference definitions.
+static MD_LINK_REFERENCE_DEFINITION: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?m)^\[(?<label>[^]]+)]: (?<dest>.*)").unwrap());
+
 pub fn handle_preprocessing() -> Result<(), Error> {
     let pre = Spec::new(None)?;
     let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
@@ -112,6 +116,34 @@ impl Spec {
     pub fn new(rust_root: Option<PathBuf>) -> Result<Spec> {
         let rust_root = rust_root.or_else(|| std::env::var_os("SPEC_RUST_ROOT").map(PathBuf::from));
         Ok(Spec { rust_root })
+    }
+
+    /// Converts link reference definitions that point to a rule to the correct link.
+    ///
+    /// For example:
+    /// ```markdown
+    /// See [this rule].
+    ///
+    /// [this rule]: expr.array
+    /// ```
+    ///
+    /// This will convert the `[this rule]` definition to point to the actual link.
+    fn rule_link_references(&self, chapter: &Chapter, rules: &Rules) -> String {
+        let current_path = chapter.path.as_ref().unwrap().parent().unwrap();
+        MD_LINK_REFERENCE_DEFINITION
+            .replace_all(&chapter.content, |caps: &Captures<'_>| {
+                let dest = &caps["dest"];
+                if let Some((_source_path, path)) = rules.def_paths.get(dest) {
+                    let label = &caps["label"];
+                    let relative = pathdiff::diff_paths(path, current_path).unwrap();
+                    // Adjust paths for Windows.
+                    let relative = relative.display().to_string().replace('\\', "/");
+                    format!("[{label}]: {relative}#r-{dest}")
+                } else {
+                    caps.get(0).unwrap().as_str().to_string()
+                }
+            })
+            .to_string()
     }
 
     /// Generates link references to all rules on all pages, so you can easily
@@ -255,6 +287,7 @@ impl Preprocessor for Spec {
                 return;
             }
             ch.content = self.admonitions(&ch, &mut diag);
+            ch.content = self.rule_link_references(&ch, &rules);
             ch.content = self.auto_link_references(&ch, &rules);
             ch.content = self.render_rule_definitions(&ch.content, &tests, &git_ref);
             if ch.name == "Test summary" {
