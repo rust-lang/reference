@@ -1,11 +1,11 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
 use crate::rules::Rules;
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
+use mdbook::BookItem;
 use mdbook::book::{Book, Chapter};
 use mdbook::errors::Error;
 use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
-use mdbook::BookItem;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};

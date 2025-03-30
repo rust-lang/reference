@@ -1,9 +1,9 @@
 //! Support for translating links to the standard library.
 
-use crate::{bug, warn_or_err, Diagnostics};
-use anyhow::{bail, Result};
-use mdbook::book::{Book, Chapter};
+use crate::{Diagnostics, bug, warn_or_err};
+use anyhow::{Result, bail};
 use mdbook::BookItem;
+use mdbook::book::{Book, Chapter};
 use once_cell::sync::Lazy;
 use pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
 use regex::Regex;
