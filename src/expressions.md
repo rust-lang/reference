@@ -81,7 +81,7 @@ Binary Operators at the same precedence level are grouped in the order given by 
 | [Field expressions][expr.field] | left to right   |
 | [Function calls][expr.call], [array indexing][expr.array.index] | |
 | [`?`][expr.try]             |                     |
-| Unary [`-`][expr.negate] [`!`][expr.negate] [`*`][expr.deref] [`&`][expr.operator.borrow] [`&mut`][expr.operator.borrow]  | |
+| Unary [`-`][expr.negate] [`!`][expr.negate] [`*`][expr.deref] [borrow][expr.operator.borrow] | |
 | [`as`][expr.as]             | left to right       |
 | [`*`][expr.arith-logic] [`/`][expr.arith-logic] [`%`][expr.arith-logic] | left to right       |
 | [`+`][expr.arith-logic] [`-`][expr.arith-logic] | left to right       |
