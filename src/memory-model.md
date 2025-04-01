@@ -8,7 +8,7 @@ r[memory.bytes]
 ## Bytes
 
 r[memory.bytes.intro]
-The most basic unit of memory in Rust is a byte. All values are computed from zero or more bytes read from an allocation.
+The most basic unit of memory in Rust is a byte.
 
 > [!NOTE]
 > While bytes are typically lowered to hardware bytes, Rust uses an "abstract" notion of bytes that can make distinctions which are absent in hardware, such as being uninitialized, or storing part of a pointer. Those distinctions can affect whether your program has undefined behavior, so they still have tangible impact on how compiled Rust programs behave.
