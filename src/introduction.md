@@ -116,7 +116,7 @@ These conventions are documented here.
   See [Notation] for more detail.
 
 r[example.rule.label]
-* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to a specific rule in the language. The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
+* Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to and link to a specific rule in the language ([e.g.][example rule]). The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
 
   The rule name can be clicked to link to that rule.
 
@@ -144,6 +144,7 @@ We also want the reference to be as normative as possible, so if you see anythin
 [_Expression_]: expressions.md
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
+[example rule]: example.rule.label
 [expressions chapter]: expressions.html
 [file an issue]: https://github.com/rust-lang/reference/issues
 [lifetime of temporaries]: expressions.html#temporaries
