@@ -22,7 +22,7 @@ r[expr.struct.syntax]
 > &nbsp;&nbsp; )
 >
 > _StructBase_ :\
-> &nbsp;&nbsp; `..` [_Expression_]
+> &nbsp;&nbsp; `..` [_Expression_]<sup>?</sup>
 >
 > _StructExprTuple_ :\
 > &nbsp;&nbsp; [_PathInExpression_] `(`\
@@ -61,29 +61,6 @@ The field name is separated from its value with a colon.
 
 r[expr.struct.field.union-constraint]
 A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
-
-r[expr.struct.update]
-## Functional update syntax
-
-r[expr.struct.update.intro]
-A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
-
-r[expr.struct.update.base-same-type]
-The expression following `..` (the base) must have the same struct type as the new struct type being formed.
-
-r[expr.struct.update.fields]
-The entire expression uses the given values for the fields that were specified and moves or copies the remaining fields from the base expression.
-
-r[expr.struct.update.visibility-constraint]
-As with all struct expressions, all of the fields of the struct must be [visible], even those not explicitly named.
-
-```rust
-# struct Point3d { x: i32, y: i32, z: i32 }
-let mut base = Point3d {x: 1, y: 2, z: 3};
-let y_ref = &mut base.y;
-Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
-drop(y_ref);
-```
 
 r[expr.struct.brace-restricted-positions]
 Struct expressions with curly braces can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
@@ -142,6 +119,52 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
+r[expr.struct.update]
+## Functional update syntax
+
+r[expr.struct.update.intro]
+A struct expression that constructs a value of a struct type can terminate with the syntax `..` followed by an expression to denote a functional update.
+
+r[expr.struct.update.base-same-type]
+The expression following `..` (the base) must have the same struct type as the new struct type being formed.
+
+r[expr.struct.update.fields]
+The entire expression uses the given values for the fields that were specified and moves or copies the remaining fields from the base expression.
+
+r[expr.struct.update.visibility-constraint]
+As with all struct expressions, all of the fields of the struct must be [visible], even those not explicitly named.
+
+```rust
+# struct Point3d { x: i32, y: i32, z: i32 }
+let mut base = Point3d {x: 1, y: 2, z: 3};
+let y_ref = &mut base.y;
+Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
+drop(y_ref);
+```
+
+r[expr.struct.default]
+## Default field syntax
+
+r[expr.struct.default.intro]
+A struct expression that constructs a value of a struct type can terminate with the syntax `..` without a following expression to denote that unlisted fields should be set to their [default values].
+
+r[expr.struct.default.fields]
+All fields without defualt values must be listed in the expression.
+The entire expression uses the given values for the fields that were specified and initializes the remaining fields with their respective default values.
+
+r[expr.struct.default.visibility-constraint]
+As with all struct expressions, all of the fields of the struct must be [visible], even those not explicitly named.
+
+```rust
+struct Pet {
+    name: Option<String>,
+    age: i128 = 42,
+}
+
+let pet = Pet { name: None, .. };
+assert_eq!(valid.age, 42);
+```
+
 [_OuterAttribute_]: ../attributes.md
 [IDENTIFIER]: ../identifiers.md
 [TUPLE_INDEX]: ../tokens.md#tuple-index
@@ -158,3 +181,4 @@ let b = Gamma{};  // Exact same value as `a`.
 [union]: ../items/unions.md
 [visible]: ../visibility-and-privacy.md
 [scrutinee]: ../glossary.md#scrutinee
+[default values]: ../items/structs.md#default-field-values
