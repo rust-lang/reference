@@ -7,6 +7,7 @@ type Result<T> = std::result::Result<T, Box<dyn Error>>;
 fn main() -> Result<()> {
     let mut args = std::env::args().skip(1);
     let cmd = args.next();
+    const OPTIONS: &str = "linkcheck, style-check, test-all";
     match cmd.as_deref() {
         Some("test-all") => {
             mdbook_test()?;
@@ -18,14 +19,13 @@ fn main() -> Result<()> {
         }
         Some("linkcheck") => linkcheck(args)?,
         Some("style-check") => style_check()?,
+        Some("-h" | "--help") => eprintln!("valid options: {OPTIONS}"),
         Some(x) => {
-            eprintln!(
-                "error: unknown command `{x}` (valid options: linkcheck, style-check, test-all)"
-            );
+            eprintln!("error: unknown command `{x}` (valid options: {OPTIONS})");
             exit(1);
         }
         None => {
-            eprintln!("error: specify a command (valid options: linkcheck, style-check, test-all)");
+            eprintln!("error: specify a command (valid options: {OPTIONS})");
             exit(1);
         }
     }
