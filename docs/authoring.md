@@ -28,7 +28,7 @@ This document serves as a guide for editors and reviewers. Some conventions and 
     ```
 * See the [Conventions] section for formatting callouts such as notes, edition differences, and warnings.
 
-There are automated checks for some of these rules. Run `cargo run --manifest-path style-check/Cargo.toml -- src` to run them locally.
+There are automated checks for some of these rules. Run `cargo xtask style-check` to run them locally.
 
 [atx]: https://spec.commonmark.org/0.31.2/#atx-headings
 [conventions]: ../src/introduction.md#conventions
@@ -57,6 +57,16 @@ Rust examples are tested via rustdoc, and should include the appropriate annotat
 See the [rustdoc documentation] for more detail.
 
 [rustdoc documentation]: https://doc.rust-lang.org/rustdoc/documentation-tests.html
+
+You can verify the samples pass by running `mdbook test`.
+
+### Linkcheck
+
+To verify that links are not broken, run `cargo xtask linkcheck`.
+
+### Running all tests
+
+As a last step before opening a PR, it is recommended to run `cargo xtask test-all`. This will go through and run most of the tests that are required for CI to pass. See `xtask/src/main.rs` for what all this does.
 
 ## Special markdown constructs
 
