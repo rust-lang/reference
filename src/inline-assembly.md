@@ -1473,7 +1473,6 @@ assert_eq!(s, "Hello World!");
 r[asm.target-specific-directives]
 #### Target Specific Directive Support
 
-
 r[asm.target-specific-directives.dwarf-unwinding]
 ##### Dwarf Unwinding
 

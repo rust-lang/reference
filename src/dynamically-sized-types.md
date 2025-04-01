@@ -1,6 +1,5 @@
-# Dynamically Sized Types
-
 r[dynamic-sized]
+# Dynamically Sized Types
 
 r[dynamic-sized.intro]
 Most types have a fixed size that is known at compile time and implement the

@@ -549,9 +549,8 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
    = note: Note 2
 ```
 
-### The `diagnostic::do_not_recommend` attribute
-
 r[attributes.diagnostic.do_not_recommend]
+### The `diagnostic::do_not_recommend` attribute
 
 r[attributes.diagnostic.do_not_recommend.intro]
 The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.

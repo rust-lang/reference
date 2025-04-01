@@ -63,7 +63,6 @@ Such a trait must be prefixed with the keyword `unsafe` and can only be implemen
 r[unsafe.impl]
 ## Unsafe trait implementations (`unsafe impl`)
 
-
 When implementing an unsafe trait, the implementation needs to be prefixed with the `unsafe` keyword.
 By writing `unsafe impl`, the programmer states that they have taken care of satisfying the extra safety conditions required by the trait.
 
@@ -76,7 +75,6 @@ Unsafe trait implementations are the logical dual to unsafe traits: where unsafe
 r[unsafe.extern]
 ## Unsafe external blocks (`unsafe extern`)
 
-
 The programmer who declares an [external block] must assure that the signatures of the items contained within are correct. Failing to do so may lead to undefined behavior.  That this obligation has been met is indicated by writing `unsafe extern`.
 
 r[unsafe.extern.edition2024]
@@ -87,7 +85,6 @@ r[unsafe.extern.edition2024]
 
 r[unsafe.attribute]
 ## Unsafe attributes (`#[unsafe(attr)]`)
-
 
 An [unsafe attribute] is one that has extra safety conditions that must be upheld when using the attribute. The compiler cannot check whether these conditions have been upheld.  To assert that they have been, these attributes must be wrapped in `unsafe(..)`, e.g. `#[unsafe(no_mangle)]`.
 

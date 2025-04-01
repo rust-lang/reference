@@ -96,10 +96,9 @@ r[undefined.pointed-to]
 
 The span of bytes a pointer or reference "points to" is determined by the pointer value and the size of the pointee type (using `size_of_val`).
 
+r[undefined.misaligned]
 ### Places based on misaligned pointers
 [based on a misaligned pointer]: #places-based-on-misaligned-pointers
-
-r[undefined.misaligned]
 
 r[undefined.misaligned.general]
 A place is said to be "based on a misaligned pointer" if the last `*` projection
@@ -137,10 +136,9 @@ more aligned than the type that contains it, i.e., `repr(packed)`. This means
 that being based on an aligned pointer is always sufficient to ensure that the
 new reference is aligned, but it is not always necessary.
 
+r[undefined.dangling]
 ### Dangling pointers
 [dangling]: #dangling-pointers
-
-r[undefined.dangling]
 
 r[undefined.dangling.general]
 A reference/pointer is "dangling" if not all of the bytes it
@@ -160,10 +158,9 @@ In particular, the dynamic size of a Rust value (as determined by `size_of_val`)
 must never exceed `isize::MAX`, since it is impossible for a single allocation
 to be larger than `isize::MAX`.
 
+r[undefined.validity]
 ### Invalid values
 [invalid-values]: #invalid-values
-
-r[undefined.validity]
 
 r[undefined.validity.general]
 The Rust compiler assumes that all values produced during program execution are

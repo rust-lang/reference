@@ -1,7 +1,6 @@
 r[link]
 # Linkage
 
-
 > [!NOTE]
 > This section is described more in terms of the compiler than of the language.
 
@@ -251,9 +250,8 @@ a statically linked binary on MSVC you would execute:
 RUSTFLAGS='-C target-feature=+crt-static' cargo build --target x86_64-pc-windows-msvc
 ```
 
-## Mixed Rust and foreign codebases
-
 r[link.foreign-code]
+## Mixed Rust and foreign codebases
 
 r[link.foreign-code.foreign-linkers]
 If you are mixing Rust with foreign code (e.g. C, C++) and wish to make a single
