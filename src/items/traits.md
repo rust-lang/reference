@@ -287,43 +287,70 @@ The [trait implementation] must also begin with the `unsafe` keyword.
 r[items.traits.params]
 ## Parameter patterns
 
-r[items.traits.params.allowed-patterns]
-Function or method declarations without a body only allow [IDENTIFIER] or
-`_` [wild card][WildcardPattern] patterns. `mut` [IDENTIFIER] is currently
-allowed, but it is deprecated and will become a hard error in the future.
+r[items.traits.params.patterns-no-body]
+Parameters in associated functions without a body only allow [IDENTIFIER] or `_` [wild card][WildcardPattern] patterns, as well as the form allowed by [_SelfParam_]. `mut` [IDENTIFIER] is currently allowed, but it is deprecated and will become a hard error in the future.
 <!-- https://github.com/rust-lang/rust/issues/35203 -->
-
-r[items.traits.params.edition2015]
-In the 2015 edition, the pattern for a trait function or method parameter is
-optional:
-
-```rust,edition2015
-// 2015 Edition
-trait T {
-    fn f(i32);  // Parameter identifiers are not required.
-}
-```
-
-r[items.traits.params.restriction]
-The kinds of patterns for parameters is limited to one of the following:
-
-* [IDENTIFIER]
-* `mut` [IDENTIFIER]
-* [`_`][WildcardPattern]
-* `&` [IDENTIFIER]
-* `&&` [IDENTIFIER]
-
-r[items.traits.params.restriction.edition2018]
-Beginning in the 2018 edition, function or method parameter patterns are no
-longer optional. Also, all irrefutable patterns are allowed as long as there
-is a body. Without a body, the limitations listed above are still in effect.
 
 ```rust
 trait T {
-    fn f1((a, b): (i32, i32)) {}
-    fn f2(_: (i32, i32));  // Cannot use tuple pattern without a body.
+    fn f1(&self);
+    fn f2(x: Self, _: i32);
 }
 ```
+
+```rust,compile_fail,E0642
+trait T {
+    fn f2(&x: &i32); // ERROR: patterns aren't allowed in functions without bodies
+}
+```
+
+r[items.traits.params.patterns-with-body]
+Parameters in associated functions with a body only allow irrefutable patterns.
+
+```rust
+trait T {
+    fn f1((a, b): (i32, i32)) {} // OK: is irrefutable
+}
+```
+
+```rust,compile_fail,E0005
+trait T {
+    fn f1(123: i32) {} // ERROR: pattern is refutable
+    fn f2(Some(x): Option<i32>) {} // ERROR: pattern is refutable
+}
+```
+
+r[items.traits.params.pattern-required.edition2018]
+> [!EDITION-2018]
+> Prior to the 2018 edition, the pattern for an associated function parameter is optional:
+>
+> ```rust,edition2015
+> // 2015 Edition
+> trait T {
+>     fn f(i32); // OK: parameter identifiers are not required
+> }
+> ```
+>
+> Beginning in the 2018 edition, patterns are no longer optional.
+
+r[items.traits.params.restriction-patterns.edition2018]
+> [!EDITION-2018]
+> Prior to the 2018 edition, parameters in associated functions with a body are limited to the following kinds of patterns:
+>
+> * [IDENTIFIER]
+> * `mut` [IDENTIFIER]
+> * [`_`][WildcardPattern]
+> * `&` [IDENTIFIER]
+> * `&&` [IDENTIFIER]
+>
+> ```rust,edition2015,compile_fail,E0642
+> // 2015 Edition
+> trait T {
+>     fn f1((a, b): (i32, i32)) {} // ERROR: pattern not allowed
+> }
+> ```
+>
+> Beginning in 2018, all irrefutable patterns are allowed as described in [items.traits.params.patterns-with-body].
 
 r[items.traits.associated-visibility]
 ## Item visibility
@@ -368,6 +395,7 @@ fn main() {
 [_AssociatedItem_]: associated-items.md
 [_GenericParams_]: generics.md
 [_InnerAttribute_]: ../attributes.md
+[_SelfParam_]: functions.md
 [_TypeParamBounds_]: ../trait-bounds.md
 [_Visibility_]: ../visibility-and-privacy.md
 [_WhereClause_]: generics.md#where-clauses
