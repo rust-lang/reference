@@ -17,12 +17,15 @@ fn main() -> Result<()> {
             eprintln!("all tests passed!");
         }
         Some("linkcheck") => linkcheck(args)?,
+        Some("style-check") => style_check()?,
         Some(x) => {
-            eprintln!("error: unknown command `{x}` (valid options: linkcheck)");
+            eprintln!(
+                "error: unknown command `{x}` (valid options: linkcheck, style-check, test-all)"
+            );
             exit(1);
         }
         None => {
-            eprintln!("error: specify a command (valid options: linkcheck)");
+            eprintln!("error: specify a command (valid options: linkcheck, style-check, test-all)");
             exit(1);
         }
     }
