@@ -76,25 +76,25 @@ Binary Operators at the same precedence level are grouped in the order given by 
 
 | Operator/Expression         | Associativity       |
 |-----------------------------|---------------------|
-| Paths                       |                     |
-| Method calls                |                     |
-| Field expressions           | left to right       |
-| Function calls, array indexing |                  |
-| `?`                         |                     |
-| Unary `-` `*` `!` `&` `&mut` |                    |
-| `as`                        | left to right       |
-| `*` `/` `%`                 | left to right       |
-| `+` `-`                     | left to right       |
-| `<<` `>>`                   | left to right       |
-| `&`                         | left to right       |
-| `^`                         | left to right       |
-| <code>&#124;</code>         | left to right       |
-| `==` `!=` `<` `>` `<=` `>=` | Require parentheses |
-| `&&`                        | left to right       |
-| <code>&#124;&#124;</code>   | left to right       |
-| `..` `..=`                  | Require parentheses |
-| `=` `+=` `-=` `*=` `/=` `%=` <br> `&=` <code>&#124;=</code> `^=` `<<=` `>>=` | right to left |
-| `return` `break` closures   |                     |
+| [Paths][expr.path]          |                     |
+| [Method calls][expr.method] |                     |
+| [Field expressions][expr.field] | left to right   |
+| [Function calls][expr.call], [array indexing][expr.array.index] | |
+| [`?`][expr.try]             |                     |
+| Unary [`-`][expr.negate] [`!`][expr.negate] [`*`][expr.deref] [borrow][expr.operator.borrow] | |
+| [`as`][expr.as]             | left to right       |
+| [`*`][expr.arith-logic] [`/`][expr.arith-logic] [`%`][expr.arith-logic] | left to right       |
+| [`+`][expr.arith-logic] [`-`][expr.arith-logic] | left to right       |
+| [`<<`][expr.arith-logic] [`>>`][expr.arith-logic] | left to right     |
+| [`&`][expr.arith-logic]     | left to right       |
+| [`^`][expr.arith-logic]     | left to right       |
+| [<code>&#124;</code>][expr.arith-logic] | left to right       |
+| [`==`][expr.cmp] [`!=`][expr.cmp] [`<`][expr.cmp] [`>`][expr.cmp] [`<=`][expr.cmp] [`>=`][expr.cmp] | Require parentheses |
+| [`&&`][expr.bool-logic]     | left to right       |
+| [<code>&#124;&#124;</code>][expr.bool-logic] | left to right       |
+| [`..`][expr.range] [`..=`][expr.range] | Require parentheses |
+| [`=`][expr.assign] [`+=`][expr.compound-assign] [`-=`][expr.compound-assign] [`*=`][expr.compound-assign] [`/=`][expr.compound-assign] [`%=`][expr.compound-assign] <br> [`&=`][expr.compound-assign] [<code>&#124;=</code>][expr.compound-assign] [`^=`][expr.compound-assign] [`<<=`][expr.compound-assign] [`>>=`][expr.compound-assign] | right to left |
+| [`return`][expr.return] [`break`][expr.loop.break] [closures][expr.closure]  | |
 
 r[expr.operand-order]
 ## Evaluation order of operands
