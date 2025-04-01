@@ -1,9 +1,9 @@
 //! Handling for rule identifiers.
 
 use crate::test_links::RuleToTests;
-use crate::{warn_or_err, Diagnostics, Spec};
-use mdbook::book::Book;
+use crate::{Diagnostics, Spec, warn_or_err};
 use mdbook::BookItem;
+use mdbook::book::Book;
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::collections::{BTreeMap, HashSet};
