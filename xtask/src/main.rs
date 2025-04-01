@@ -81,7 +81,6 @@ fn cargo_test() -> Result<()> {
     if !status.success() {
         return Err("mdbook-spec test failed".into());
     }
-
     Ok(())
 }
 
@@ -103,6 +102,5 @@ fn linkcheck(args: impl Iterator<Item = String>) -> Result<()> {
     if !status.success() {
         return Err("linkcheck failed".into());
     }
-
     Ok(())
 }
