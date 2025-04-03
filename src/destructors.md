@@ -209,6 +209,7 @@ smallest scope that contains the expression and is one of the following:
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
 * The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
+* The pattern-matching condition and loop body of [`while`].
 * The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > [!NOTE]
