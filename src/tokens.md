@@ -902,6 +902,26 @@ them are referred to as "token trees" in [macros].  The three types of brackets 
 | `[` `]` | Square brackets |
 | `(` `)` | Parentheses     |
 
+r[lex.token.reserved]
+## Reserved tokens
+
+r[lex.token.reserved.intro]
+Several token forms are reserved for future use. It is an error for the source input to match one of these forms.
+
+r[lex.token.reserved.syntax]
+
+> **<sup>Lexer</sup>**\
+> RESERVED_TOKEN :\
+> &nbsp;&nbsp; &nbsp;&nbsp; RESERVED_GUARDED_STRING_LITERAL\
+> &nbsp;&nbsp; | RESERVED_NUMBER\
+> &nbsp;&nbsp; | RESERVED_POUNDS\
+> &nbsp;&nbsp; | RESERVED_RAW_IDENTIFIER\
+> &nbsp;&nbsp; | RESERVED_RAW_LIFETIME\
+> &nbsp;&nbsp; | RESERVED_TOKEN_DOUBLE_QUOTE\
+> &nbsp;&nbsp; | RESERVED_TOKEN_LIFETIME\
+> &nbsp;&nbsp; | RESERVED_TOKEN_POUND\
+> &nbsp;&nbsp; | RESERVED_TOKEN_SINGLE_QUOTE
+
 r[lex.token.reserved-prefix]
 ## Reserved prefixes
 
