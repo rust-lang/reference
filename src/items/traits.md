@@ -224,7 +224,7 @@ The following is an example of declaring `Shape` to be a supertrait of `Circle`.
 
 ```rust
 trait Shape { fn area(&self) -> f64; }
-trait Circle : Shape { fn radius(&self) -> f64; }
+trait Circle: Shape { fn radius(&self) -> f64; }
 ```
 
 And the following is the same example, except using [where clauses].
@@ -244,7 +244,7 @@ trait Circle where Self: Shape {
         // A = pi * r^2
         // so algebraically,
         // r = sqrt(A / pi)
-        (self.area() /std::f64::consts::PI).sqrt()
+        (self.area() / std::f64::consts::PI).sqrt()
     }
 }
 ```
@@ -253,7 +253,7 @@ This next example calls a supertrait method on a generic parameter.
 
 ```rust
 # trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
+# trait Circle: Shape { fn radius(&self) -> f64; }
 fn print_area_and_radius<C: Circle>(c: C) {
     // Here we call the area method from the supertrait `Shape` of `Circle`.
     println!("Area: {}", c.area());
@@ -265,7 +265,7 @@ Similarly, here is an example of calling supertrait methods on trait objects.
 
 ```rust
 # trait Shape { fn area(&self) -> f64; }
-# trait Circle : Shape { fn radius(&self) -> f64; }
+# trait Circle: Shape { fn radius(&self) -> f64; }
 # struct UnitCircle;
 # impl Shape for UnitCircle { fn area(&self) -> f64 { std::f64::consts::PI } }
 # impl Circle for UnitCircle { fn radius(&self) -> f64 { 1.0 } }
