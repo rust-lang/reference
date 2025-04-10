@@ -263,7 +263,7 @@ assert_eq!(1, Fieldless::Struct{} as isize);
 assert_eq!(2, Fieldless::Unit as isize);
 
 #[repr(u8)]
-enum FieldlessWithDiscrimants {
+enum FieldlessWithDiscriminants {
     First = 10,
     Tuple(),
     Second = 20,
@@ -271,11 +271,11 @@ enum FieldlessWithDiscrimants {
     Unit,
 }
 
-assert_eq!(10, FieldlessWithDiscrimants::First as u8);
-assert_eq!(11, FieldlessWithDiscrimants::Tuple() as u8);
-assert_eq!(20, FieldlessWithDiscrimants::Second as u8);
-assert_eq!(21, FieldlessWithDiscrimants::Struct{} as u8);
-assert_eq!(22, FieldlessWithDiscrimants::Unit as u8);
+assert_eq!(10, FieldlessWithDiscriminants::First as u8);
+assert_eq!(11, FieldlessWithDiscriminants::Tuple() as u8);
+assert_eq!(20, FieldlessWithDiscriminants::Second as u8);
+assert_eq!(21, FieldlessWithDiscriminants::Struct{} as u8);
+assert_eq!(22, FieldlessWithDiscriminants::Unit as u8);
 ```
 
 #### Pointer casting
