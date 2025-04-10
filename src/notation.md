@@ -13,12 +13,18 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | x<sup>\*</sup>    | _OuterAttribute_<sup>\*</sup> | 0 or more of x                            |
 | x<sup>+</sup>     |  _MacroMatch_<sup>+</sup>     | 1 or more of x                            |
 | x<sup>a..b</sup>  | HEX_DIGIT<sup>1..6</sup>      | a to b repetitions of x                   |
+| Rule1 Rule2       | `fn` _Name_ _Parameters_      | Sequence of rules in order                |
 | \|                | `u8` \| `u16`, Block \| Item  | Either one or another                     |
 | \[ ]               | \[`b` `B`]                     | Any of the characters listed              |
 | \[ - ]             | \[`a`-`z`]                     | Any of the characters in the range        |
 | ~\[ ]              | ~\[`b` `B`]                    | Any characters, except those listed       |
 | ~`string`         | ~`\n`, ~`*/`                  | Any characters, except this sequence      |
 | ( )               | (`,` _Parameter_)<sup>?</sup> | Groups items                              |
+| U+xxxx            | U+0060                        | A single unicode character                |
+| \<text\>          | \<any ASCII char except CR\>  | An English description of what should be matched |
+| Rule <sub>suffix</sub> | IDENTIFIER_OR_KEYWORD <sub>_except `crate`_</sub> | A modification to the previous rule |
+
+Sequences have a higher precedence than `|` alternation.
 
 ## String table productions
 
@@ -33,6 +39,12 @@ entries.
 When such a string in `monospace` font occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
+
+## Railroad visualizations
+
+Below each grammar block is a button to toggle the display of a [railroad diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
+
+[railroad diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 
 ## Common productions
 
