@@ -131,18 +131,17 @@ r[lex.keywords.weak.lifetime-static]
   fn invalid_lifetime_parameter<'static>(s: &'static str) -> &'static str { s }
   ```
 
-r[lex.keywords.weak.dyn]
-* In the 2015 edition, [`dyn`] is a keyword when used in a type position
-  followed by a path that does not start with `::` or `<`, a lifetime, a question mark, a `for`
-  keyword or an opening parenthesis.
-
-  Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
-
 r[lex.keywords.weak.safe]
 * `safe` is used for functions and statics, which has meaning in [external blocks].
 
 r[lex.keywords.weak.raw]
 * `raw` is used for [raw borrow operators], and is only a keyword when matching a raw borrow operator form (such as `&raw const expr` or `&raw mut expr`).
+
+r[lex.keywords.weak.dyn.edition2018]
+> [!EDITION-2018]
+> In the 2015 edition, [`dyn`] is a keyword when used in a type position followed by a path that does not start with `::` or `<`, a lifetime, a question mark, a `for` keyword or an opening parenthesis.
+>
+> Beginning in the 2018 edition, `dyn` has been promoted to a strict keyword.
 
 [items]: items.md
 [Variables]: variables.md
