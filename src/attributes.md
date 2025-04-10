@@ -1,4 +1,5 @@
 {{#include attributes-redirect.html}}
+r[attributes]
 # Attributes
 
 r[attributes.syntax]
