@@ -777,6 +777,64 @@ r[lex.token.life.raw.edition2021]
 r[lex.token.punct]
 ## Punctuation
 
+r[lex.token.punct.syntax]
+> **<sup>Lexer</sup>**\
+> Token :\
+> PUNCTUATION :\
+> &nbsp;&nbsp; &nbsp;&nbsp; `=`\
+> &nbsp;&nbsp; | `<`\
+> &nbsp;&nbsp; | `<=`\
+> &nbsp;&nbsp; | `==`\
+> &nbsp;&nbsp; | `!=`\
+> &nbsp;&nbsp; | `>=`\
+> &nbsp;&nbsp; | `>`\
+> &nbsp;&nbsp; | `&&`\
+> &nbsp;&nbsp; | `||`\
+> &nbsp;&nbsp; | `!`\
+> &nbsp;&nbsp; | `~`\
+> &nbsp;&nbsp; | `+`\
+> &nbsp;&nbsp; | `-`\
+> &nbsp;&nbsp; | `*`\
+> &nbsp;&nbsp; | `/`\
+> &nbsp;&nbsp; | `%`\
+> &nbsp;&nbsp; | `^`\
+> &nbsp;&nbsp; | `&`\
+> &nbsp;&nbsp; | `|`\
+> &nbsp;&nbsp; | `<<`\
+> &nbsp;&nbsp; | `>>`\
+> &nbsp;&nbsp; | `+=`\
+> &nbsp;&nbsp; | `-=`\
+> &nbsp;&nbsp; | `*=`\
+> &nbsp;&nbsp; | `/=`\
+> &nbsp;&nbsp; | `%=`\
+> &nbsp;&nbsp; | `^=`\
+> &nbsp;&nbsp; | `&=`\
+> &nbsp;&nbsp; | `|=`\
+> &nbsp;&nbsp; | `<<=`\
+> &nbsp;&nbsp; | `>>=`\
+> &nbsp;&nbsp; | `@`\
+> &nbsp;&nbsp; | `.`\
+> &nbsp;&nbsp; | `..`\
+> &nbsp;&nbsp; | `...`\
+> &nbsp;&nbsp; | `..=`\
+> &nbsp;&nbsp; | `,`\
+> &nbsp;&nbsp; | `;`\
+> &nbsp;&nbsp; | `:`\
+> &nbsp;&nbsp; | `::`\
+> &nbsp;&nbsp; | `->`\
+> &nbsp;&nbsp; | `<-`\
+> &nbsp;&nbsp; | `=>`\
+> &nbsp;&nbsp; | `#`\
+> &nbsp;&nbsp; | `$`\
+> &nbsp;&nbsp; | `?`\
+> &nbsp;&nbsp; | `_`\
+> &nbsp;&nbsp; | `{`\
+> &nbsp;&nbsp; | `}`\
+> &nbsp;&nbsp; | `[`\
+> &nbsp;&nbsp; | `]`\
+> &nbsp;&nbsp; | `(`\
+> &nbsp;&nbsp; | `)`
+
 r[lex.token.punct.intro]
 Punctuation symbol tokens are listed here for completeness. Their individual
 usages and meanings are defined in the linked pages.
