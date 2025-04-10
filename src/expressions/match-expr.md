@@ -9,7 +9,7 @@ r[expr.match.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>\
 > &nbsp;&nbsp; `}`
 >
->_Scrutinee_ :\
+> _Scrutinee_ :\
 > &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>
 >
 > _MatchArms_ :\

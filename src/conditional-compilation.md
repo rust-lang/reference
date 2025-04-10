@@ -12,16 +12,16 @@ r[cfg.syntax]
 > _ConfigurationOption_ :\
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;(`=` ([STRING_LITERAL] | [RAW_STRING_LITERAL]))<sup>?</sup>
 >
-> _ConfigurationAll_\
+> _ConfigurationAll_ :\
 > &nbsp;&nbsp; `all` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
 >
-> _ConfigurationAny_\
+> _ConfigurationAny_ :\
 > &nbsp;&nbsp; `any` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
 >
-> _ConfigurationNot_\
+> _ConfigurationNot_ :\
 > &nbsp;&nbsp; `not` `(` _ConfigurationPredicate_ `)`
 >
-> _ConfigurationPredicateList_\
+> _ConfigurationPredicateList_ :\
 > &nbsp;&nbsp; _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup>
 
 r[cfg.general]

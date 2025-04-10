@@ -145,10 +145,10 @@ r[paths.type.syntax]
 > &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_))<sup>?</sup>
 >
 > _TypePathFn_ :\
-> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_TypeNoBounds_])<sup>?</sup>
+> &nbsp;&nbsp; `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_TypeNoBounds_])<sup>?</sup>
 >
 > _TypePathFnInputs_ :\
-> [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
+> &nbsp;&nbsp; [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
 
 r[paths.type.intro]
 Type paths are used within type definitions, trait bounds, type parameter bounds,
