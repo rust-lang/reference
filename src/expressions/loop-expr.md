@@ -292,6 +292,7 @@ A `break` expression is only permitted in the body of a loop, and has one of the
 r[expr.loop.block-labels]
 ## Labelled block expressions
 
+r[expr.loop.block-labels.syntax]
 > **<sup>Syntax</sup>**\
 > _LabelBlockExpression_ :\
 > &nbsp;&nbsp; [_BlockExpression_]

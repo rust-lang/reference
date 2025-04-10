@@ -420,6 +420,7 @@ The wildcard pattern is always irrefutable.
 r[patterns.rest]
 ## Rest patterns
 
+r[patterns.rest.syntax]
 > **<sup>Syntax</sup>**\
 > _RestPattern_ :\
 > &nbsp;&nbsp; `..`

@@ -66,6 +66,7 @@ const EMPTY: Vec<i32> = Vec::new();
 r[expr.array.index]
 ## Array and slice indexing expressions
 
+r[expr.array.index.syntax]
 > **<sup>Syntax</sup>**\
 > _IndexExpression_ :\
 > &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`

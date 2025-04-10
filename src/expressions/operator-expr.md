@@ -54,6 +54,7 @@ r[expr.operator.int-overflow.shift]
 r[expr.operator.borrow]
 ## Borrow operators
 
+r[expr.operator.borrow.syntax]
 > **<sup>Syntax</sup>**\
 > _BorrowExpression_ :\
 > &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\

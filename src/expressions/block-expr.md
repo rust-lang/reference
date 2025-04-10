@@ -222,10 +222,12 @@ if false {
 r[expr.block.unsafe]
 ## `unsafe` blocks
 
+r[expr.block.unsafe.syntax]
 > **<sup>Syntax</sup>**\
 > _UnsafeBlockExpression_ :\
 > &nbsp;&nbsp; `unsafe` _BlockExpression_
 
+r[expr.block.unsafe.intro]
 _See [`unsafe` blocks] for more information on when to use `unsafe`_.
 
 A block of code can be prefixed with the `unsafe` keyword to permit [unsafe operations].

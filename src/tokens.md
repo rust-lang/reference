@@ -685,6 +685,7 @@ Examples of floating-point literals which are not accepted as literal expression
 r[lex.token.literal.reserved]
 #### Reserved forms similar to number literals
 
+r[lex.token.literal.reserved.syntax]
 > **<sup>Lexer</sup>**\
 > RESERVED_NUMBER :\
 > &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`&ZeroWidthSpace;]\

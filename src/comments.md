@@ -1,6 +1,7 @@
-r[comments.syntax]
+r[comments]
 # Comments
 
+r[comments.syntax]
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\

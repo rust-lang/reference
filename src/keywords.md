@@ -99,6 +99,7 @@ The following keywords are reserved beginning in the 2018 edition.
 > **<sup>Lexer 2018+</sup>**\
 > KW_TRY   : `try`
 
+r[lex.keywords.reserved.edition2024]
 The following keywords are reserved beginning in the 2024 edition.
 
 > **<sup>Lexer 2024+</sup>**\
