@@ -1,6 +1,25 @@
 r[lex.token]
 # Tokens
 
+r[lex.token.syntax]
+> **<sup>Lexer</sup>**\
+> Token :\
+> &nbsp;&nbsp; &nbsp;&nbsp; IDENTIFIER_OR_KEYWORD\
+> &nbsp;&nbsp; | RAW_IDENTIFIER\
+> &nbsp;&nbsp; | CHAR_LITERAL\
+> &nbsp;&nbsp; | STRING_LITERAL\
+> &nbsp;&nbsp; | RAW_STRING_LITERAL\
+> &nbsp;&nbsp; | BYTE_LITERAL\
+> &nbsp;&nbsp; | BYTE_STRING_LITERAL\
+> &nbsp;&nbsp; | RAW_BYTE_STRING_LITERAL\
+> &nbsp;&nbsp; | C_STRING_LITERAL\
+> &nbsp;&nbsp; | RAW_C_STRING_LITERAL\
+> &nbsp;&nbsp; | INTEGER_LITERAL\
+> &nbsp;&nbsp; | FLOAT_LITERAL\
+> &nbsp;&nbsp; | LIFETIME_TOKEN\
+> &nbsp;&nbsp; | PUNCTUATION\
+> &nbsp;&nbsp; | RESERVED_TOKEN
+
 r[lex.token.intro]
 Tokens are primitive productions in the grammar defined by regular
 (non-recursive) languages.  Rust source input can be broken down
