@@ -632,7 +632,7 @@ r[lex.token.literal.float.syntax]
 > **<sup>Lexer</sup>**\
 > FLOAT_LITERAL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; DEC_LITERAL `.`
->   _(not immediately followed by `.`, `_` or an XID_Start character)_\
+>   _not immediately followed by `.`, `_` or an XID_Start character_\
 > &nbsp;&nbsp; | DEC_LITERAL `.` DEC_LITERAL SUFFIX_NO_E<sup>?</sup>\
 > &nbsp;&nbsp; | DEC_LITERAL (`.` DEC_LITERAL)<sup>?</sup> FLOAT_EXPONENT SUFFIX<sup>?</sup>
 >
@@ -691,7 +691,7 @@ r[lex.token.literal.reserved.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; BIN_LITERAL \[`2`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | OCT_LITERAL \[`8`-`9`&ZeroWidthSpace;]\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an XID_Start character)_\
+> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _not immediately followed by `.`, `_` or an XID_Start character_\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) (`e`|`E`)\
 > &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> \<end of input or not BIN_DIGIT\>\
 > &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> \<end of input or not OCT_DIGIT\>\
@@ -739,22 +739,22 @@ r[lex.token.life.syntax]
 > **<sup>Lexer</sup>**\
 > LIFETIME_TOKEN :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [IDENTIFIER_OR_KEYWORD][identifier]
->   _(not immediately followed by `'`)_\
+>   _not immediately followed by `'`_\
 > &nbsp;&nbsp; | `'_`
->   _(not immediately followed by `'`)_\
+>   _not immediately followed by `'`_\
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > LIFETIME_OR_LABEL :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `'` [NON_KEYWORD_IDENTIFIER][identifier]
->   _(not immediately followed by `'`)_\
+>   _not immediately followed by `'`_\
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > RAW_LIFETIME :\
 > &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier] <sub>*except `crate`, `self`, `super`, `Self`*</sub>
->   _(not immediately followed by `'`)_
+>   _not immediately followed by `'`_
 >
 > RESERVED_RAW_LIFETIME : `'r#_`
->   _(not immediately followed by `'`)_
+>   _not immediately followed by `'`_
 
 r[lex.token.life.intro]
 Lifetime parameters and [loop labels] use LIFETIME_OR_LABEL tokens. Any
