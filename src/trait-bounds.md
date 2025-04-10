@@ -148,6 +148,7 @@ r[bound.higher-ranked]
 ## Higher-ranked trait bounds
 
 r[bound.higher-ranked.syntax]
+> **<sup>Syntax</sup>**\
 > _ForLifetimes_ :\
 > &nbsp;&nbsp; `for` [_GenericParams_]
 

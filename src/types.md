@@ -103,6 +103,7 @@ r[type.name.parenthesized]
 ### Parenthesized types
 
 r[type.name.parenthesized.syntax]
+> **<sup>Syntax</sup>**\
 > _ParenthesizedType_ :\
 > &nbsp;&nbsp; `(` [_Type_] `)`
 
