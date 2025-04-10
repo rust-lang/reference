@@ -157,7 +157,7 @@ r[lex.token.literal.str.syntax]
 > **<sup>Lexer</sup>**\
 > STRING_LITERAL :\
 > &nbsp;&nbsp; `"` (\
-> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` _IsolatedCR_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` CR]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | QUOTE_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | ASCII_ESCAPE\
 > &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE\
@@ -220,7 +220,7 @@ r[lex.token.literal.str-raw.syntax]
 > &nbsp;&nbsp; `r` RAW_STRING_CONTENT SUFFIX<sup>?</sup>
 >
 > RAW_STRING_CONTENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ )<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ CR )<sup>* (non-greedy)</sup> `"`\
 > &nbsp;&nbsp; | `#` RAW_STRING_CONTENT `#`
 
 r[lex.token.literal.str-raw.intro]
@@ -285,7 +285,7 @@ r[lex.token.str-byte.syntax]
 > &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_STRING :\
-> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F), except_ `"`, `\` _and IsolatedCR_
+> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F) except_ `"`, `\`, _or CR_
 
 r[lex.token.str-byte.intro]
 A non-raw _byte string literal_ is a sequence of ASCII characters and _escapes_,
@@ -337,7 +337,7 @@ r[lex.token.str-byte-raw.syntax]
 > &nbsp;&nbsp; | `#` RAW_BYTE_STRING_CONTENT `#`
 >
 > ASCII_FOR_RAW :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except IsolatedCR_
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except CR_
 
 r[lex.token.str-byte-raw.intro]
 Raw byte string literals do not process any escapes. They start with the
@@ -377,7 +377,7 @@ r[lex.token.str-c.syntax]
 > **<sup>Lexer</sup>**\
 > C_STRING_LITERAL :\
 > &nbsp;&nbsp; `c"` (\
-> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` _IsolatedCR_ _NUL_]\
+> &nbsp;&nbsp; &nbsp;&nbsp; ~\[`"` `\` CR _NUL_]\
 > &nbsp;&nbsp; &nbsp;&nbsp; | BYTE_ESCAPE _except `\0` or `\x00`_\
 > &nbsp;&nbsp; &nbsp;&nbsp; | UNICODE_ESCAPE _except `\u{0}`, `\u{00}`, …, `\u{000000}`_\
 > &nbsp;&nbsp; &nbsp;&nbsp; | STRING_CONTINUE\
@@ -453,7 +453,7 @@ r[lex.token.str-c-raw.syntax]
 > &nbsp;&nbsp; `cr` RAW_C_STRING_CONTENT SUFFIX<sup>?</sup>
 >
 > RAW_C_STRING_CONTENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~ _IsolatedCR_ _NUL_ )<sup>* (non-greedy)</sup> `"`\
+> &nbsp;&nbsp; &nbsp;&nbsp; `"` ( ~\[CR NUL] )<sup>* (non-greedy)</sup> `"`\
 > &nbsp;&nbsp; | `#` RAW_C_STRING_CONTENT `#`
 
 r[lex.token.str-c-raw.intro]

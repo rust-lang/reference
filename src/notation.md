@@ -35,6 +35,13 @@ When such a string in `monospace` font occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
 
+## Common productions
+
+The following are common definitions used in the grammar.
+
+> **<sup>Lexer</sup>**\
+> CR : U+000D
+
 [binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [keywords]: keywords.md
 [tokens]: tokens.md
