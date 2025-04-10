@@ -4,7 +4,7 @@ r[comments]
 r[comments.syntax]
 > **<sup>Lexer</sup>**\
 > LINE_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\
+> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` LF] | `//`) ~LF<sup>\*</sup>\
 > &nbsp;&nbsp; | `//`
 >
 > BLOCK_COMMENT :\
@@ -14,13 +14,13 @@ r[comments.syntax]
 > &nbsp;&nbsp; | `/***/`
 >
 > INNER_LINE_DOC :\
-> &nbsp;&nbsp; `//!` ~\[`\n` CR]<sup>\*</sup>
+> &nbsp;&nbsp; `//!` ~\[LF CR]<sup>\*</sup>
 >
 > INNER_BLOCK_DOC :\
 > &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~\[`*/` CR] )<sup>\*</sup> `*/`
 >
 > OUTER_LINE_DOC :\
-> &nbsp;&nbsp; `///` (~`/` ~\[`\n` CR]<sup>\*</sup>)<sup>?</sup>
+> &nbsp;&nbsp; `///` (~`/` ~\[LF CR]<sup>\*</sup>)<sup>?</sup>
 >
 > OUTER_BLOCK_DOC :\
 > &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )

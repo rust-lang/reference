@@ -133,7 +133,7 @@ r[lex.token.literal.char]
 r[lex.token.literal.char.syntax]
 > **<sup>Lexer</sup>**\
 > CHAR_LITERAL :\
-> &nbsp;&nbsp; `'` ( ~\[`'` `\` \\n \\r \\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'` SUFFIX<sup>?</sup>
+> &nbsp;&nbsp; `'` ( ~\[`'` `\` LF CR TAB] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE ) `'` SUFFIX<sup>?</sup>
 >
 > QUOTE_ESCAPE :\
 > &nbsp;&nbsp; `\'` | `\"`
@@ -165,7 +165,7 @@ r[lex.token.literal.str.syntax]
 > &nbsp;&nbsp; )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > STRING_CONTINUE :\
-> &nbsp;&nbsp; `\` _followed by_ \\n
+> &nbsp;&nbsp; `\` _followed by_ LF
 
 r[lex.token.literal.str.intro]
 A _string literal_ is a sequence of any Unicode characters enclosed within two
@@ -262,7 +262,7 @@ r[lex.token.byte.syntax]
 > &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_CHAR :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F), except_ `'`, `\`, \\n, \\r or \\t
+> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except_ `'`, `\`, LF, CR, or TAB
 >
 > BYTE_ESCAPE :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
