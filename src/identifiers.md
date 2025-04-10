@@ -7,6 +7,10 @@ r[ident.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; XID_Start XID_Continue<sup>\*</sup>\
 > &nbsp;&nbsp; | `_` XID_Continue<sup>+</sup>
 >
+> XID_Start : \<`XID_Start` defined by Unicode\>
+>
+> XID_Continue : \<`XID_Continue` defined by Unicode\>
+>
 > RAW_IDENTIFIER : `r#` IDENTIFIER_OR_KEYWORD <sub>*except `crate`, `self`, `super`, `Self`*</sub>
 >
 > NON_KEYWORD_IDENTIFIER : IDENTIFIER_OR_KEYWORD <sub>*except a [strict] or [reserved] keyword*</sub>
