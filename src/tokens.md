@@ -262,7 +262,7 @@ r[lex.token.byte.syntax]
 > &nbsp;&nbsp; `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_CHAR :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except_ `'`, `\`, LF, CR, or TAB
+> &nbsp;&nbsp; \<any ASCII (i.e. 0x00 to 0x7F) except `'`, `\`, LF, CR, or TAB\>
 >
 > BYTE_ESCAPE :\
 > &nbsp;&nbsp; &nbsp;&nbsp; `\x` HEX_DIGIT HEX_DIGIT\
@@ -285,7 +285,7 @@ r[lex.token.str-byte.syntax]
 > &nbsp;&nbsp; `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > ASCII_FOR_STRING :\
-> &nbsp;&nbsp; _any ASCII (i.e 0x00 to 0x7F) except_ `"`, `\`, _or CR_
+> &nbsp;&nbsp; \<any ASCII (i.e 0x00 to 0x7F) except `"`, `\`, or CR\>
 
 r[lex.token.str-byte.intro]
 A non-raw _byte string literal_ is a sequence of ASCII characters and _escapes_,
@@ -337,7 +337,7 @@ r[lex.token.str-byte-raw.syntax]
 > &nbsp;&nbsp; | `#` RAW_BYTE_STRING_CONTENT `#`
 >
 > ASCII_FOR_RAW :\
-> &nbsp;&nbsp; _any ASCII (i.e. 0x00 to 0x7F) except CR_
+> &nbsp;&nbsp; \<any ASCII (i.e. 0x00 to 0x7F) except CR\>
 
 r[lex.token.str-byte-raw.intro]
 Raw byte string literals do not process any escapes. They start with the
@@ -693,10 +693,10 @@ r[lex.token.literal.reserved.syntax]
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` \
 > &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; _(not immediately followed by `.`, `_` or an XID_Start character)_\
 > &nbsp;&nbsp; | ( BIN_LITERAL | OCT_LITERAL ) (`e`|`E`)\
-> &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> _end of input or not BIN_DIGIT_\
-> &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> _end of input or not OCT_DIGIT_\
-> &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> _end of input or not HEX_DIGIT_\
-> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)<sup>?</sup> (`e`|`E`) (`+`|`-`)<sup>?</sup> _end of input or not DEC_DIGIT_
+> &nbsp;&nbsp; | `0b` `_`<sup>\*</sup> \<end of input or not BIN_DIGIT\>\
+> &nbsp;&nbsp; | `0o` `_`<sup>\*</sup> \<end of input or not OCT_DIGIT\>\
+> &nbsp;&nbsp; | `0x` `_`<sup>\*</sup> \<end of input or not HEX_DIGIT\>\
+> &nbsp;&nbsp; | DEC_LITERAL ( . DEC_LITERAL)<sup>?</sup> (`e`|`E`) (`+`|`-`)<sup>?</sup> \<end of input or not DEC_DIGIT\>
 
 r[lex.token.literal.reserved.intro]
 The following lexical forms similar to number literals are _reserved forms_.
