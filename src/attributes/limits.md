@@ -12,7 +12,7 @@ maximum depth for potentially infinitely-recursive compile-time operations
 like macro expansion or auto-dereference.
 
 r[attributes.limits.recursion_limit.syntax]
-It uses the [_MetaNameValueStr_]
+It uses the [MetaNameValueStr]
 syntax to specify the recursion depth.
 
 > [!NOTE]
@@ -53,7 +53,7 @@ The *`type_length_limit` attribute* limits the maximum number of type
 substitutions made when constructing a concrete type during monomorphization.
 
 r[attributes.limits.type_length_limit.syntax]
-It is applied at the [crate] level, and uses the [_MetaNameValueStr_] syntax
+It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax
 to set the limit based on the number of type substitutions.
 
 > [!NOTE]
@@ -69,6 +69,5 @@ fn f<T>(x: T) {}
 f(((((1,), 2), 3), 4));
 ```
 
-[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md

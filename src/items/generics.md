@@ -2,22 +2,21 @@ r[items.generics]
 # Generic parameters
 
 r[items.generics.syntax]
-> **<sup>Syntax</sup>**\
-> _GenericParams_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
-> &nbsp;&nbsp;  | `<` (_GenericParam_ `,`)<sup>\*</sup> _GenericParam_ `,`<sup>?</sup> `>`
->
-> _GenericParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _LifetimeParam_ | _TypeParam_ | _ConstParam_ )
->
-> _LifetimeParam_ :\
-> &nbsp;&nbsp; [_Lifetime_]&nbsp;( `:` [_LifetimeBounds_] )<sup>?</sup>
->
-> _TypeParam_ :\
-> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
->
-> _ConstParam_:\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] ( `=` _[BlockExpression][block]_ | [IDENTIFIER] | `-`<sup>?</sup>[_LiteralExpression_][literal] )<sup>?</sup>
+```grammar,items
+GenericParams ->
+      `<` `>`
+    | `<` (GenericParam `,`)* GenericParam `,`? `>`
+
+GenericParam -> OuterAttribute* ( LifetimeParam | TypeParam | ConstParam )
+
+LifetimeParam -> Lifetime ( `:` LifetimeBounds )?
+
+TypeParam -> IDENTIFIER ( `:` TypeParamBounds? )? ( `=` Type )?
+
+ConstParam ->
+    `const` IDENTIFIER `:` Type
+    ( `=` BlockExpression | IDENTIFIER | `-`?LiteralExpression )?
+```
 
 r[items.generics.syntax.intro]
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
@@ -234,19 +233,17 @@ r[items.generics.where]
 ## Where clauses
 
 r[items.generics.where.syntax]
-> **<sup>Syntax</sup>**\
-> _WhereClause_ :\
-> &nbsp;&nbsp; `where` ( _WhereClauseItem_ `,` )<sup>\*</sup> _WhereClauseItem_ <sup>?</sup>
->
-> _WhereClauseItem_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _LifetimeWhereClauseItem_\
-> &nbsp;&nbsp; | _TypeBoundWhereClauseItem_
->
-> _LifetimeWhereClauseItem_ :\
-> &nbsp;&nbsp; [_Lifetime_] `:` [_LifetimeBounds_]
->
-> _TypeBoundWhereClauseItem_ :\
-> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> [_Type_] `:` [_TypeParamBounds_]<sup>?</sup>
+```grammar,items
+WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem ?
+
+WhereClauseItem ->
+      LifetimeWhereClauseItem
+    | TypeBoundWhereClauseItem
+
+LifetimeWhereClauseItem -> Lifetime `:` LifetimeBounds
+
+TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
+```
 
 r[items.generics.where.intro]
 *Where clauses* provide another way to specify bounds on type and lifetime
@@ -255,7 +252,7 @@ parameters.
 
 r[items.generics.where.higher-ranked-lifetimes]
 The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
-allows [_LifetimeParam_] parameters.
+allows [LifetimeParam] parameters.
 
 ```rust
 struct A<T>
@@ -288,16 +285,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
     a: *const H
 }
 ```
-
-[IDENTIFIER]: ../identifiers.md
-
-[_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
-[_LifetimeParam_]: #generic-parameters
-[_LifetimeBounds_]: ../trait-bounds.md
-[_Lifetime_]: ../trait-bounds.md
-[_OuterAttribute_]: ../attributes.md
-[_Type_]: ../types.md#type-expressions
-[_TypeParamBounds_]: ../trait-bounds.md
 
 [array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md

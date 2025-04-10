@@ -2,57 +2,47 @@ r[items.fn]
 # Functions
 
 r[items.fn.syntax]
-> **<sup>Syntax</sup>**\
-> _Function_ :\
-> &nbsp;&nbsp; _FunctionQualifiers_ `fn` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _FunctionParameters_<sup>?</sup> `)`\
-> &nbsp;&nbsp; &nbsp;&nbsp; _FunctionReturnType_<sup>?</sup> [_WhereClause_]<sup>?</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; ( [_BlockExpression_] | `;` )
->
-> _FunctionQualifiers_ :\
-> &nbsp;&nbsp; `const`<sup>?</sup> `async`[^async-edition]<sup>?</sup> _ItemSafety_<sup>?</sup>[^extern-qualifiers] (`extern` _Abi_<sup>?</sup>)<sup>?</sup>
->
-> _ItemSafety_ :\
-> &nbsp;&nbsp; `safe`[^extern-safe] | `unsafe`
->
-> _Abi_ :\
-> &nbsp;&nbsp; [STRING_LITERAL] | [RAW_STRING_LITERAL]
->
-> _FunctionParameters_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _SelfParam_ `,`<sup>?</sup>\
-> &nbsp;&nbsp; | (_SelfParam_ `,`)<sup>?</sup> _FunctionParam_ (`,` _FunctionParam_)<sup>\*</sup> `,`<sup>?</sup>
->
-> _SelfParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( _ShorthandSelf_ | _TypedSelf_ )
->
-> _ShorthandSelf_ :\
-> &nbsp;&nbsp;  (`&` | `&` [_Lifetime_])<sup>?</sup> `mut`<sup>?</sup> `self`
->
-> _TypedSelf_ :\
-> &nbsp;&nbsp; `mut`<sup>?</sup> `self` `:` [_Type_]
->
-> _FunctionParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (
->   _FunctionParamPattern_ | `...` | [_Type_] [^fn-param-2015]
-> )
->
-> _FunctionParamPattern_ :\
-> &nbsp;&nbsp; [_PatternNoTopAlt_] `:` ( [_Type_] | `...` )
->
-> _FunctionReturnType_ :\
-> &nbsp;&nbsp; `->` [_Type_]
->
-> [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
->
-> [^extern-safe]: The `safe` function qualifier is only allowed semantically within
->   `extern` blocks.
->
-> [^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within
->   `extern` blocks, the `safe` or `unsafe` function qualifier is only allowed
->   when the `extern` is qualified as `unsafe`.
->
-> [^fn-param-2015]: Function parameters with only a type are only allowed
->   in an associated function of a [trait item] in the 2015 edition.
+```grammar,items
+Function ->
+    FunctionQualifiers `fn` IDENTIFIER GenericParams?
+        `(` FunctionParameters? `)`
+        FunctionReturnType? WhereClause?
+        ( BlockExpression | `;` )
+
+FunctionQualifiers -> `const`? `async`?[^async-edition] ItemSafety?[^extern-qualifiers] (`extern` Abi?)?
+
+ItemSafety -> `safe`[^extern-safe] | `unsafe`
+
+Abi -> STRING_LITERAL | RAW_STRING_LITERAL
+
+FunctionParameters ->
+      SelfParam `,`?
+    | (SelfParam `,`)? FunctionParam (`,` FunctionParam)* `,`?
+
+SelfParam -> OuterAttribute* ( ShorthandSelf | TypedSelf )
+
+ShorthandSelf -> (`&` | `&` Lifetime)? `mut`? `self`
+
+TypedSelf -> `mut`? `self` `:` Type
+
+FunctionParam -> OuterAttribute* ( FunctionParamPattern | `...` | Type[^fn-param-2015] )
+
+FunctionParamPattern -> PatternNoTopAlt `:` ( Type | `...` )
+
+FunctionReturnType -> `->` Type
+```
+
+[^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
+
+[^extern-safe]: The `safe` function qualifier is only allowed semantically within
+  `extern` blocks.
+
+[^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within
+  `extern` blocks, the `safe` or `unsafe` function qualifier is only allowed
+  when the `extern` is qualified as `unsafe`.
+
+[^fn-param-2015]: Function parameters with only a type are only allowed
+  in an associated function of a [trait item] in the 2015 edition.
 
 r[items.fn.intro]
 A _function_ consists of a [block] (that's the _body_ of the function),
@@ -465,16 +455,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 }
 ```
 
-[IDENTIFIER]: ../identifiers.md
-[RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
-[STRING_LITERAL]: ../tokens.md#string-literals
-[_BlockExpression_]: ../expressions/block-expr.md
-[_GenericParams_]: generics.md
-[_Lifetime_]: ../trait-bounds.md
-[_PatternNoTopAlt_]: ../patterns.md
-[_Type_]: ../types.md#type-expressions
-[_WhereClause_]: generics.md#where-clauses
-[_OuterAttribute_]: ../attributes.md
 [const contexts]: ../const_eval.md#const-context
 [const functions]: ../const_eval.md#const-functions
 [tuple struct]: structs.md

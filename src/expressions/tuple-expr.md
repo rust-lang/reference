@@ -4,12 +4,11 @@ r[expr.tuple]
 ## Tuple expressions
 
 r[expr.tuple.syntax]
-> **<sup>Syntax</sup>**\
-> _TupleExpression_ :\
-> &nbsp;&nbsp; `(` _TupleElements_<sup>?</sup> `)`
->
-> _TupleElements_ :\
-> &nbsp;&nbsp; ( [_Expression_] `,` )<sup>+</sup> [_Expression_]<sup>?</sup>
+```grammar,expressions
+TupleExpression -> `(` TupleElements? `)`
+
+TupleElements -> ( Expression `,` )+ Expression?
+```
 
 r[expr.tuple.result]
 A *tuple expression* constructs [tuple values][tuple type].
@@ -46,9 +45,9 @@ r[expr.tuple-index]
 ## Tuple indexing expressions
 
 r[expr.tuple-index.syntax]
-> **<sup>Syntax</sup>**\
-> _TupleIndexingExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `.` [TUPLE_INDEX]
+```grammar,expressions
+TupleIndexingExpression -> Expression `.` TUPLE_INDEX
+```
 
 r[expr.tuple-index.intro]
 A *tuple indexing expression* accesses fields of [tuples][tuple type] and [tuple structs][tuple struct].
@@ -89,7 +88,6 @@ assert_eq!(point.1, 0.0);
 > [!NOTE]
 > Although arrays and slices also have elements, you must use an [array or slice indexing expression] or a [slice pattern] to access their elements.
 
-[_Expression_]: ../expressions.md
 [array or slice indexing expression]: array-expr.md#array-and-slice-indexing-expressions
 [call expression]: ./call-expr.md
 [decimal literal]: ../tokens.md#integer-literals
@@ -100,5 +98,4 @@ assert_eq!(point.1, 0.0);
 [slice pattern]: ../patterns.md#slice-patterns
 [tuple type]: ../types/tuple.md
 [tuple struct]: ../types/struct.md
-[TUPLE_INDEX]: ../tokens.md#tuple-index
 [value expression]: ../expressions.md#place-expressions-and-value-expressions

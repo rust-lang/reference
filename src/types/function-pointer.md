@@ -2,28 +2,27 @@ r[type.fn-pointer]
 # Function pointer types
 
 r[type.fn-pointer.syntax]
-> **<sup>Syntax</sup>**\
-> _BareFunctionType_ :\
-> &nbsp;&nbsp; [_ForLifetimes_]<sup>?</sup> _FunctionTypeQualifiers_ `fn`\
-> &nbsp;&nbsp; &nbsp;&nbsp;  `(` _FunctionParametersMaybeNamedVariadic_<sup>?</sup> `)` _BareFunctionReturnType_<sup>?</sup>
->
-> _FunctionTypeQualifiers_:\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> (`extern` [_Abi_]<sup>?</sup>)<sup>?</sup>
->
-> _BareFunctionReturnType_:\
-> &nbsp;&nbsp; `->` [_TypeNoBounds_]
->
-> _FunctionParametersMaybeNamedVariadic_ :\
-> &nbsp;&nbsp; _MaybeNamedFunctionParameters_ | _MaybeNamedFunctionParametersVariadic_
->
-> _MaybeNamedFunctionParameters_ :\
-> &nbsp;&nbsp; _MaybeNamedParam_ ( `,` _MaybeNamedParam_ )<sup>\*</sup> `,`<sup>?</sup>
->
-> _MaybeNamedParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> ( ( [IDENTIFIER] | `_` ) `:` )<sup>?</sup> [_Type_]
->
-> _MaybeNamedFunctionParametersVariadic_ :\
-> &nbsp;&nbsp; ( _MaybeNamedParam_ `,` )<sup>\*</sup> _MaybeNamedParam_ `,` [_OuterAttribute_]<sup>\*</sup> `...`
+```grammar,types
+BareFunctionType ->
+    ForLifetimes? FunctionTypeQualifiers `fn`
+       `(` FunctionParametersMaybeNamedVariadic? `)` BareFunctionReturnType?
+
+FunctionTypeQualifiers -> `unsafe`? (`extern` Abi?)?
+
+BareFunctionReturnType -> `->` TypeNoBounds
+
+FunctionParametersMaybeNamedVariadic ->
+    MaybeNamedFunctionParameters | MaybeNamedFunctionParametersVariadic
+
+MaybeNamedFunctionParameters ->
+    MaybeNamedParam ( `,` MaybeNamedParam )* `,`?
+
+MaybeNamedParam ->
+    OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? Type
+
+MaybeNamedFunctionParametersVariadic ->
+    ( MaybeNamedParam `,` )* MaybeNamedParam `,` OuterAttribute* `...`
+```
 
 r[type.fn-pointer.intro]
 Function pointer types, written using the `fn` keyword, refer to a function
@@ -62,12 +61,6 @@ r[type.fn-pointer.attributes]
 Attributes on function pointer parameters follow the same rules and
 restrictions as [regular function parameters].
 
-[IDENTIFIER]: ../identifiers.md
-[_Abi_]: ../items/functions.md
-[_ForLifetimes_]: ../trait-bounds.md#higher-ranked-trait-bounds
-[_TypeNoBounds_]: ../types.md#type-expressions
-[_Type_]: ../types.md#type-expressions
-[_OuterAttribute_]: ../attributes.md
 [`extern`]: ../items/external-blocks.md
 [closures]: closure.md
 [extern function]: ../items/functions.md#extern-function-qualifier

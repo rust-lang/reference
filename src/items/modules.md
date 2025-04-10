@@ -2,13 +2,14 @@ r[items.mod]
 # Modules
 
 r[items.mod.syntax]
-> **<sup>Syntax:</sup>**\
-> _Module_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `unsafe`<sup>?</sup> `mod` [IDENTIFIER] `;`\
-> &nbsp;&nbsp; | `unsafe`<sup>?</sup> `mod` [IDENTIFIER] `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [_Item_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; `}`
+```grammar,items
+Module ->
+      `unsafe`? `mod` IDENTIFIER `;`
+    | `unsafe`? `mod` IDENTIFIER `{`
+        InnerAttribute*
+        Item*
+      `}`
+```
 
 r[items.mod.intro]
 A module is a container for zero or more [items].
@@ -158,14 +159,11 @@ The built-in attributes that have meaning on a module are [`cfg`],
 [`deprecated`], [`doc`], [the lint check attributes], [`path`], and
 [`no_implicit_prelude`]. Modules also accept macro attributes.
 
-[_InnerAttribute_]: ../attributes.md
-[_Item_]: ../items.md
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`no_implicit_prelude`]: ../names/preludes.md#the-no_implicit_prelude-attribute
 [`path`]: #the-path-attribute
-[IDENTIFIER]: ../identifiers.md
 [attribute]: ../attributes.md
 [items]: ../items.md
 [module path]: ../paths.md

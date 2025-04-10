@@ -2,20 +2,19 @@ r[expr.closure]
 # Closure expressions
 
 r[expr.closure.syntax]
-> **<sup>Syntax</sup>**\
-> _ClosureExpression_ :\
-> &nbsp;&nbsp; `async`[^cl-async-edition]<sup>?</sup>\
-> &nbsp;&nbsp; `move`<sup>?</sup>\
-> &nbsp;&nbsp; ( `||` | `|` _ClosureParameters_<sup>?</sup> `|` )\
-> &nbsp;&nbsp; ([_Expression_] | `->` [_TypeNoBounds_]&nbsp;[_BlockExpression_])
->
-> _ClosureParameters_ :\
-> &nbsp;&nbsp; _ClosureParam_ (`,` _ClosureParam_)<sup>\*</sup> `,`<sup>?</sup>
->
-> _ClosureParam_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_PatternNoTopAlt_]&nbsp;( `:` [_Type_] )<sup>?</sup>
->
-> [^cl-async-edition]: The `async` qualifier is not allowed in the 2015 edition.
+```grammar,expressions
+ClosureExpression ->
+    `async`?[^cl-async-edition]
+    `move`?
+    ( `||` | `|` ClosureParameters? `|` )
+    (Expression | `->` TypeNoBounds BlockExpression)
+
+ClosureParameters -> ClosureParam (`,` ClosureParam)* `,`?
+
+ClosureParam -> OuterAttribute* PatternNoTopAlt ( `:` Type )?
+```
+
+[^cl-async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 
 r[expr.closure.intro]
 A *closure expression*, also known as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
@@ -105,15 +104,9 @@ ten_times(move |j| println!("{}, {}", word, j));
 r[expr.closure.param-attributes]
 Attributes on closure parameters follow the same rules and restrictions as [regular function parameters].
 
-[_Expression_]: ../expressions.md
-[_BlockExpression_]: block-expr.md
-[_TypeNoBounds_]: ../types.md#type-expressions
-[_PatternNoTopAlt_]: ../patterns.md
-[_Type_]: ../types.md#type-expressions
 [`let` binding]: ../statements.md#let-statements
 [`Send`]: ../special-types-and-traits.md#send
 [`Sync`]: ../special-types-and-traits.md#sync
-[_OuterAttribute_]: ../attributes.md
 [block]: block-expr.md
 [call traits and coercions]: ../types/closure.md#call-traits-and-coercions
 [closure type]: ../types/closure.md

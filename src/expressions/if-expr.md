@@ -4,13 +4,12 @@ r[expr.if]
 ## `if` expressions
 
 r[expr.if.syntax]
-> **<sup>Syntax</sup>**\
-> _IfExpression_ :\
-> &nbsp;&nbsp; `if` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]\
-> &nbsp;&nbsp; (`else` (
->   [_BlockExpression_]
-> | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>
+```grammar,expressions
+IfExpression ->
+    `if` Expression _except [StructExprStruct]_ BlockExpression
+    (`else` ( BlockExpression | IfExpression | IfLetExpression ) )?
+```
+<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.if.intro]
 An `if` expression is a conditional branch in program control.
@@ -56,14 +55,11 @@ r[expr.if.let]
 ## `if let` expressions
 
 r[expr.if.let.syntax]
-> **<sup>Syntax</sup>**\
-> _IfLetExpression_ :\
-> &nbsp;&nbsp; `if` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
->              [_BlockExpression_]\
-> &nbsp;&nbsp; (`else` (
->   [_BlockExpression_]
-> | _IfExpression_
-> | _IfLetExpression_ ) )<sup>\?</sup>
+```grammar,expressions
+IfLetExpression ->
+    `if` `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_ BlockExpression
+    (`else` ( BlockExpression | IfExpression | IfLetExpression ) )?
+```
 
 r[expr.if.let.intro]
 An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
@@ -153,7 +149,7 @@ if let E::X(n) | E::Y(n) = v {
 ```
 
 r[expr.if.let.lazy-bool]
-The expression cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+The expression cannot be a [lazy boolean operator expression][expr.bool-logic].
 Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
 When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:
 
@@ -172,11 +168,6 @@ if let PAT = EXPR || EXPR { .. }
 if let PAT = ( EXPR || EXPR ) { .. }
 ```
 
-[_BlockExpression_]: block-expr.md
-[_Expression_]: ../expressions.md
-[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
-[_Pattern_]: ../patterns.md
-[_Scrutinee_]: match-expr.md
 [_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md

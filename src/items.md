@@ -2,33 +2,32 @@ r[items]
 # Items
 
 r[items.syntax]
-> **<sup>Syntax:</sup>**\
-> _Item_:\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _VisItem_\
-> &nbsp;&nbsp; | _MacroItem_
->
-> _VisItem_:\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  [_Module_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternCrate_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_UseDeclaration_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Function_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_TypeAlias_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Struct_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Enumeration_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Union_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ConstantItem_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_StaticItem_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Trait_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_Implementation_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ExternBlock_]\
-> &nbsp;&nbsp; )
->
-> _MacroItem_:\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; | [_MacroRulesDefinition_]
+```grammar,items
+Item ->
+    OuterAttribute* ( VisItem | MacroItem )
+
+VisItem ->
+    Visibility?
+    (
+        Module
+      | ExternCrate
+      | UseDeclaration
+      | Function
+      | TypeAlias
+      | Struct
+      | Enumeration
+      | Union
+      | ConstantItem
+      | StaticItem
+      | Trait
+      | Implementation
+      | ExternBlock
+    )
+
+MacroItem ->
+      MacroInvocationSemi
+    | MacroRulesDefinition
+```
 
 r[items.intro]
 An _item_ is a component of a crate. Items are organized within a crate by a
@@ -74,23 +73,6 @@ r[items.name-resolution]
 
 See [item scopes] for information on the scoping rules of items.
 
-[_ConstantItem_]: items/constant-items.md
-[_Enumeration_]: items/enumerations.md
-[_ExternBlock_]: items/external-blocks.md
-[_ExternCrate_]: items/extern-crates.md
-[_Function_]: items/functions.md
-[_Implementation_]: items/implementations.md
-[_MacroInvocationSemi_]: macros.md#macro-invocation
-[_MacroRulesDefinition_]: macros-by-example.md
-[_Module_]: items/modules.md
-[_OuterAttribute_]: attributes.md
-[_StaticItem_]: items/static-items.md
-[_Struct_]: items/structs.md
-[_Trait_]: items/traits.md
-[_TypeAlias_]: items/type-aliases.md
-[_Union_]: items/unions.md
-[_UseDeclaration_]: items/use-declarations.md
-[_Visibility_]: visibility-and-privacy.md
 [`extern crate` declarations]: items/extern-crates.md
 [`extern` blocks]: items/external-blocks.md
 [`macro_rules`]: macros-by-example.md

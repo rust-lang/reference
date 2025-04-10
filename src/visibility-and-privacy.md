@@ -2,13 +2,14 @@ r[vis]
 # Visibility and Privacy
 
 r[vis.syntax]
-> **<sup>Syntax</sup>**\
-> _Visibility_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `pub`\
-> &nbsp;&nbsp; | `pub` `(` `crate` `)`\
-> &nbsp;&nbsp; | `pub` `(` `self` `)`\
-> &nbsp;&nbsp; | `pub` `(` `super` `)`\
-> &nbsp;&nbsp; | `pub` `(` `in` [_SimplePath_] `)`
+```grammar,items
+Visibility ->
+      `pub`
+    | `pub` `(` `crate` `)`
+    | `pub` `(` `self` `)`
+    | `pub` `(` `super` `)`
+    | `pub` `(` `in` SimplePath `)`
+```
 
 r[vis.intro]
 These two terms are often used interchangeably, and what they are attempting to
@@ -262,5 +263,3 @@ r[vis.reexports.private-item]
 When re-exporting a private item, it can be thought of as allowing the "privacy
 chain" being short-circuited through the reexport instead of passing through
 the namespace hierarchy as it normally would.
-
-[_SimplePath_]: paths.md#simple-paths

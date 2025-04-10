@@ -59,7 +59,7 @@ r[attributes.codegen.target_feature]
 r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to
 enable code generation of that function for specific platform architecture
-features. It uses the [_MetaListNameValueStr_] syntax with a single key of
+features. It uses the [MetaListNameValueStr] syntax with a single key of
 `enable` whose value is a string of comma-separated feature names to enable.
 
 ```rust
@@ -495,7 +495,6 @@ trait object whose methods are attributed.
 > [!NOTE]
 > The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
 
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html

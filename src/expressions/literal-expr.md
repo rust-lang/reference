@@ -2,19 +2,21 @@ r[expr.literal]
 # Literal expressions
 
 r[expr.literal.syntax]
-> **<sup>Syntax</sup>**\
-> _LiteralExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [CHAR_LITERAL]\
-> &nbsp;&nbsp; | [STRING_LITERAL]\
-> &nbsp;&nbsp; | [RAW_STRING_LITERAL]\
-> &nbsp;&nbsp; | [BYTE_LITERAL]\
-> &nbsp;&nbsp; | [BYTE_STRING_LITERAL]\
-> &nbsp;&nbsp; | [RAW_BYTE_STRING_LITERAL]\
-> &nbsp;&nbsp; | [C_STRING_LITERAL]\
-> &nbsp;&nbsp; | [RAW_C_STRING_LITERAL]\
-> &nbsp;&nbsp; | [INTEGER_LITERAL]\
-> &nbsp;&nbsp; | [FLOAT_LITERAL]\
-> &nbsp;&nbsp; | `true` | `false`
+```grammar,expressions
+LiteralExpression ->
+      CHAR_LITERAL
+    | STRING_LITERAL
+    | RAW_STRING_LITERAL
+    | BYTE_LITERAL
+    | BYTE_STRING_LITERAL
+    | RAW_BYTE_STRING_LITERAL
+    | C_STRING_LITERAL
+    | RAW_C_STRING_LITERAL
+    | INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | `true`
+    | `false`
+```
 
 r[expr.literal.intro]
 A _literal expression_ is an expression consisting of a single token, rather than a sequence of tokens, that immediately and directly denotes the value it evaluates to, rather than referring to it by name or some other evaluation rule.
@@ -524,13 +526,3 @@ The expression's type is the primitive [boolean type], and its value is:
 [Unicode scalar values]: http://www.unicode.org/glossary/#unicode_scalar_value
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
 [`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
-[CHAR_LITERAL]: ../tokens.md#character-literals
-[STRING_LITERAL]: ../tokens.md#string-literals
-[RAW_STRING_LITERAL]: ../tokens.md#raw-string-literals
-[BYTE_LITERAL]: ../tokens.md#byte-literals
-[BYTE_STRING_LITERAL]: ../tokens.md#byte-string-literals
-[RAW_BYTE_STRING_LITERAL]: ../tokens.md#raw-byte-string-literals
-[C_STRING_LITERAL]: ../tokens.md#c-string-literals
-[RAW_C_STRING_LITERAL]: ../tokens.md#raw-c-string-literals
-[INTEGER_LITERAL]: ../tokens.md#integer-literals
-[FLOAT_LITERAL]: ../tokens.md#floating-point-literals
