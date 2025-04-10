@@ -106,14 +106,7 @@ These conventions are documented here.
 
   All examples are written for the latest edition unless otherwise stated.
 
-* The grammar and lexical structure is in blockquotes with either "Lexer" or "Syntax" in <sup>**bold superscript**</sup> as the first line.
-
-  > **<sup>Syntax</sup>**\
-  > _ExampleGrammar_:\
-  > &nbsp;&nbsp; &nbsp;&nbsp; `~` [_Expression_]\
-  > &nbsp;&nbsp; | `box` [_Expression_]
-
-  See [Notation] for more detail.
+* The grammar and lexical productions are described in the [Notation] chapter.
 
 r[example.rule.label]
 * Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to and link to a specific rule in the language ([e.g.][example rule]). The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
@@ -141,7 +134,6 @@ We also want the reference to be as normative as possible, so if you see anythin
 [standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
-[_Expression_]: expressions.md
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
 [example rule]: example.rule.label
