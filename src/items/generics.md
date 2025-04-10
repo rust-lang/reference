@@ -17,7 +17,7 @@ r[items.generics.syntax]
 > &nbsp;&nbsp; [IDENTIFIER]&nbsp;( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup> ( `=` [_Type_] )<sup>?</sup>
 >
 > _ConstParam_:\
-> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] ( `=` _[Block][block]_ | [IDENTIFIER] | -<sup>?</sup>[LITERAL] )<sup>?</sup>
+> &nbsp;&nbsp; `const` [IDENTIFIER] `:` [_Type_] ( `=` _[BlockExpression][block]_ | [IDENTIFIER] | `-`<sup>?</sup>[_LiteralExpression_][literal] )<sup>?</sup>
 
 r[items.generics.syntax.intro]
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
