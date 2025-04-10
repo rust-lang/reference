@@ -553,7 +553,7 @@ enum Enum16 {
     Variant1,
 }
 
-// The size of the C representation is platform dependant
+// The size of the C representation is platform dependent
 assert_eq!(std::mem::size_of::<EnumC>(), 8);
 // One byte for the discriminant and one byte for the value in Enum8::Variant0
 assert_eq!(std::mem::size_of::<Enum8>(), 2);
