@@ -2,27 +2,28 @@ r[cfg]
 # Conditional compilation
 
 r[cfg.syntax]
-> **<sup>Syntax</sup>**\
-> _ConfigurationPredicate_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _ConfigurationOption_\
-> &nbsp;&nbsp; | _ConfigurationAll_\
-> &nbsp;&nbsp; | _ConfigurationAny_\
-> &nbsp;&nbsp; | _ConfigurationNot_
->
-> _ConfigurationOption_ :\
-> &nbsp;&nbsp; [IDENTIFIER]&nbsp;(`=` ([STRING_LITERAL] | [RAW_STRING_LITERAL]))<sup>?</sup>
->
-> _ConfigurationAll_ :\
-> &nbsp;&nbsp; `all` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
->
-> _ConfigurationAny_ :\
-> &nbsp;&nbsp; `any` `(` _ConfigurationPredicateList_<sup>?</sup> `)`
->
-> _ConfigurationNot_ :\
-> &nbsp;&nbsp; `not` `(` _ConfigurationPredicate_ `)`
->
-> _ConfigurationPredicateList_ :\
-> &nbsp;&nbsp; _ConfigurationPredicate_ (`,` _ConfigurationPredicate_)<sup>\*</sup> `,`<sup>?</sup>
+```grammar,configuration
+ConfigurationPredicate ->
+      ConfigurationOption
+    | ConfigurationAll
+    | ConfigurationAny
+    | ConfigurationNot
+
+ConfigurationOption ->
+    IDENTIFIER ( `=` ( STRING_LITERAL | RAW_STRING_LITERAL ) )?
+
+ConfigurationAll ->
+    `all` `(` ConfigurationPredicateList? `)`
+
+ConfigurationAny ->
+    `any` `(` ConfigurationPredicateList? `)`
+
+ConfigurationNot ->
+    `not` `(` ConfigurationPredicate `)`
+
+ConfigurationPredicateList ->
+    ConfigurationPredicate (`,` ConfigurationPredicate)* `,`?
+```
 
 r[cfg.general]
 *Conditionally compiled source code* is source code that is compiled only under certain conditions.
@@ -313,9 +314,9 @@ r[cfg.attr]
 ### The `cfg` attribute
 
 r[cfg.attr.syntax]
-> **<sup>Syntax</sup>**\
-> _CfgAttribute_ :\
-> &nbsp;&nbsp; `cfg` `(` _ConfigurationPredicate_ `)`
+```grammar,configuration
+CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
+```
 
 <!-- should we say they're active attributes here? -->
 
@@ -380,12 +381,11 @@ r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
 
 r[cfg.cfg_attr.syntax]
-> **<sup>Syntax</sup>**\
-> _CfgAttrAttribute_ :\
-> &nbsp;&nbsp; `cfg_attr` `(` _ConfigurationPredicate_ `,` _CfgAttrs_<sup>?</sup> `)`
->
-> _CfgAttrs_ :\
-> &nbsp;&nbsp; [_Attr_]&nbsp;(`,` [_Attr_])<sup>\*</sup> `,`<sup>?</sup>
+```grammar,configuration
+CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
+
+CfgAttrs -> Attr (`,` Attr)* `,`?
+```
 
 r[cfg.cfg_attr.general]
 The `cfg_attr` [attribute] conditionally includes [attributes] based on a
@@ -447,11 +447,7 @@ let machine_kind = if cfg!(unix) {
 println!("I'm running on a {} machine!", machine_kind);
 ```
 
-[IDENTIFIER]: identifiers.md
-[RAW_STRING_LITERAL]: tokens.md#raw-string-literals
-[STRING_LITERAL]: tokens.md#string-literals
 [Testing]: attributes/testing.md
-[_Attr_]: attributes.md
 [`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute

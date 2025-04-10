@@ -2,9 +2,9 @@ r[expr.paren]
 # Grouped expressions
 
 r[expr.paren.syntax]
-> **<sup>Syntax</sup>**\
-> _GroupedExpression_ :\
-> &nbsp;&nbsp; `(` [_Expression_] `)`
+```grammar,expressions
+GroupedExpression -> `(` Expression `)`
+```
 
 r[expr.paren.intro]
 A *parenthesized expression* wraps a single expression, evaluating to that expression.
@@ -46,5 +46,4 @@ assert_eq!( a.f (), "The method f");
 assert_eq!((a.f)(), "The field f");
 ```
 
-[_Expression_]: ../expressions.md
 [place]: ../expressions.md#place-expressions-and-value-expressions

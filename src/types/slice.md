@@ -2,9 +2,9 @@ r[type.slice]
 # Slice types
 
 r[type.slice.syntax]
-> **<sup>Syntax</sup>**\
-> _SliceType_ :\
-> &nbsp;&nbsp; `[` [_Type_] `]`
+```grammar,types
+SliceType -> `[` Type `]`
+```
 
 r[type.slice.intro]
 A slice is a [dynamically sized type] representing a 'view' into a sequence of
@@ -32,5 +32,4 @@ r[type.slice.safe]
 All elements of slices are always initialized, and access to a slice is always
 bounds-checked in safe methods and operators.
 
-[_Type_]: ../types.md#type-expressions
 [dynamically sized type]: ../dynamically-sized-types.md

@@ -86,7 +86,7 @@ r[names.scopes.generic-parameters]
 ## Generic parameter scopes
 
 r[names.scopes.generic-parameters.param-list]
-Generic parameters are declared in a [_GenericParams_] list.
+Generic parameters are declared in a [GenericParams] list.
 The scope of a generic parameter is within the item it is declared on.
 
 r[names.scopes.generic-parameters.order-independent]
@@ -150,7 +150,7 @@ trait SomeTrait<'a, T, const N: usize> {
 r[names.scopes.lifetimes]
 ### Lifetime scopes
 
-Lifetime parameters are declared in a [_GenericParams_] list and [higher-ranked trait bounds][hrtb].
+Lifetime parameters are declared in a [GenericParams] list and [higher-ranked trait bounds][hrtb].
 
 r[names.scopes.lifetimes.special]
 The `'static` lifetime and [placeholder lifetime] `'_` have a special meaning and cannot be declared as a parameter.
@@ -166,9 +166,9 @@ r[names.scopes.lifetimes.generic]
 r[names.scopes.lifetimes.higher-ranked]
 The scope of a lifetime parameter declared as a [higher-ranked trait bound][hrtb] depends on the scenario where it is used.
 
-* As a [_TypeBoundWhereClauseItem_] the declared lifetimes are in scope in the type and the type bounds.
-* As a [_TraitBound_] the declared lifetimes are in scope within the bound type path.
-* As a [_BareFunctionType_] the declared lifetimes are in scope within the function parameters and return type.
+* As a [TypeBoundWhereClauseItem] the declared lifetimes are in scope in the type and the type bounds.
+* As a [TraitBound] the declared lifetimes are in scope within the bound type path.
+* As a [BareFunctionType] the declared lifetimes are in scope within the function parameters and return type.
 
 ```rust
 # trait Trait<'a>{}
@@ -337,10 +337,6 @@ impl ImplExample {
 }
 ```
 
-[_BareFunctionType_]: ../types/function-pointer.md
-[_GenericParams_]: ../items/generics.md
-[_TraitBound_]: ../trait-bounds.md
-[_TypeBoundWhereClauseItem_]: ../items/generics.md
 [`derive` attribute]: ../attributes/derive.md
 [`for` loop]: ../expressions/loop-expr.md#iterator-loops
 [`for`]: ../expressions/loop-expr.md#iterator-loops

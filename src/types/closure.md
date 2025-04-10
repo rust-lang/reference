@@ -203,7 +203,7 @@ c();
 ```
 
 This also includes destructuring of tuples, structs, and enums.
-Fields matched with the [_RestPattern_] or [_StructPatternEtCetera_] are also not considered as read, and thus those fields will not be captured.
+Fields matched with the [RestPattern] or [StructPatternEtCetera] are also not considered as read, and thus those fields will not be captured.
 The following illustrates some of these:
 
 ```rust
@@ -262,8 +262,6 @@ let c = || {
 };
 ```
 
-[_RestPattern_]: ../patterns.md#rest-patterns
-[_StructPatternEtCetera_]: ../patterns.md#struct-patterns
 [wildcard pattern]: ../patterns.md#wildcard-pattern
 
 r[type.closure.capture.precision.move-dereference]

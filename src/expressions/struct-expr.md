@@ -2,34 +2,34 @@ r[expr.struct]
 # Struct expressions
 
 r[expr.struct.syntax]
-> **<sup>Syntax</sup>**\
-> _StructExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _StructExprStruct_\
-> &nbsp;&nbsp; | _StructExprTuple_\
-> &nbsp;&nbsp; | _StructExprUnit_
->
-> _StructExprStruct_ :\
-> &nbsp;&nbsp; [_PathInExpression_] `{` (_StructExprFields_ | _StructBase_)<sup>?</sup> `}`
->
-> _StructExprFields_ :\
-> &nbsp;&nbsp; _StructExprField_ (`,` _StructExprField_)<sup>\*</sup> (`,` _StructBase_ | `,`<sup>?</sup>)
->
-> _StructExprField_ :\
-> &nbsp;&nbsp; [_OuterAttribute_] <sup>\*</sup>\
-> &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [IDENTIFIER]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ([IDENTIFIER] | [TUPLE_INDEX]) `:` [_Expression_]\
-> &nbsp;&nbsp; )
->
-> _StructBase_ :\
-> &nbsp;&nbsp; `..` [_Expression_]
->
-> _StructExprTuple_ :\
-> &nbsp;&nbsp; [_PathInExpression_] `(`\
-> &nbsp;&nbsp; &nbsp;&nbsp; ( [_Expression_] (`,` [_Expression_])<sup>\*</sup> `,`<sup>?</sup> )<sup>?</sup>\
-> &nbsp;&nbsp; `)`
->
-> _StructExprUnit_ : [_PathInExpression_]
+```grammar,expressions
+StructExpression ->
+      StructExprStruct
+    | StructExprTuple
+    | StructExprUnit
+
+StructExprStruct ->
+    PathInExpression `{` (StructExprFields | StructBase)? `}`
+
+StructExprFields ->
+    StructExprField (`,` StructExprField)* (`,` StructBase | `,`?)
+
+StructExprField ->
+    OuterAttribute*
+    (
+        IDENTIFIER
+      | (IDENTIFIER | TUPLE_INDEX) `:` Expression
+    )
+
+StructBase -> `..` Expression
+
+StructExprTuple ->
+    PathInExpression `(`
+      ( Expression (`,` Expression)* `,`? )?
+    `)`
+
+StructExprUnit -> PathInExpression
+```
 
 r[expr.struct.intro]
 A *struct expression* creates a struct, enum, or union value.
@@ -142,11 +142,6 @@ let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
 
-[_OuterAttribute_]: ../attributes.md
-[IDENTIFIER]: ../identifiers.md
-[TUPLE_INDEX]: ../tokens.md#tuple-index
-[_Expression_]: ../expressions.md
-[_PathInExpression_]: ../paths.md#paths-in-expressions
 [call expression]: call-expr.md
 [enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-expressions

@@ -16,22 +16,23 @@ r[macro.invocation]
 ## Macro Invocation
 
 r[macro.invocation.syntax]
-> **<sup>Syntax</sup>**\
-> _MacroInvocation_ :\
-> &nbsp;&nbsp; [_SimplePath_] `!` _DelimTokenTree_
->
-> _DelimTokenTree_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp;  `(` _TokenTree_<sup>\*</sup> `)`\
-> &nbsp;&nbsp; | `[` _TokenTree_<sup>\*</sup> `]`\
-> &nbsp;&nbsp; | `{` _TokenTree_<sup>\*</sup> `}`
->
-> _TokenTree_ :\
-> &nbsp;&nbsp; [_Token_]<sub>_except [delimiters]_</sub> | _DelimTokenTree_
->
-> _MacroInvocationSemi_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_SimplePath_] `!` `(` _TokenTree_<sup>\*</sup> `)` `;`\
-> &nbsp;&nbsp; | [_SimplePath_] `!` `[` _TokenTree_<sup>\*</sup> `]` `;`\
-> &nbsp;&nbsp; | [_SimplePath_] `!` `{` _TokenTree_<sup>\*</sup> `}`
+```grammar,macros
+MacroInvocation ->
+    SimplePath `!` DelimTokenTree
+
+DelimTokenTree ->
+      `(` TokenTree* `)`
+    | `[` TokenTree* `]`
+    | `{` TokenTree* `}`
+
+TokenTree ->
+    Token _except [delimiters][lex.token.delim]_ | DelimTokenTree
+
+MacroInvocationSemi ->
+      SimplePath `!` `(` TokenTree* `)` `;`
+    | SimplePath `!` `[` TokenTree* `]` `;`
+    | SimplePath `!` `{` TokenTree* `}`
+```
 
 r[macro.invocation.intro]
 A macro invocation expands a macro at compile time and replaces the
@@ -107,8 +108,6 @@ example!();
 
 [Macros by Example]: macros-by-example.md
 [Procedural Macros]: procedural-macros.md
-[_SimplePath_]: paths.md#simple-paths
-[_Token_]: tokens.md
 [associated items]: items/associated-items.md
 [delimiters]: tokens.md#delimiters
 [expressions]: expressions.md

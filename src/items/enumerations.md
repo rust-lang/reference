@@ -2,30 +2,22 @@ r[items.enum]
 # Enumerations
 
 r[items.enum.syntax]
-> **<sup>Syntax</sup>**\
-> _Enumeration_ :\
-> &nbsp;&nbsp; `enum`
->    [IDENTIFIER]&nbsp;
->    [_GenericParams_]<sup>?</sup>
->    [_WhereClause_]<sup>?</sup>
->    `{` _EnumItems_<sup>?</sup> `}`
->
-> _EnumItems_ :\
-> &nbsp;&nbsp; _EnumItem_ ( `,` _EnumItem_ )<sup>\*</sup> `,`<sup>?</sup>
->
-> _EnumItem_ :\
-> &nbsp;&nbsp; _OuterAttribute_<sup>\*</sup> [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; [IDENTIFIER]&nbsp;( _EnumItemTuple_ | _EnumItemStruct_ )<sup>?</sup>
->                                _EnumItemDiscriminant_<sup>?</sup>
->
-> _EnumItemTuple_ :\
-> &nbsp;&nbsp; `(` [_TupleFields_]<sup>?</sup> `)`
->
-> _EnumItemStruct_ :\
-> &nbsp;&nbsp; `{` [_StructFields_]<sup>?</sup> `}`
->
-> _EnumItemDiscriminant_ :\
-> &nbsp;&nbsp; `=` [_Expression_]
+```grammar,items
+Enumeration ->
+    `enum` IDENTIFIER GenericParams? WhereClause? `{` EnumItems? `}`
+
+EnumItems -> EnumItem ( `,` EnumItem )* `,`?
+
+EnumItem ->
+    OuterAttribute* Visibility?
+    IDENTIFIER ( EnumItemTuple | EnumItemStruct )? EnumItemDiscriminant?
+
+EnumItemTuple -> `(` TupleFields? `)`
+
+EnumItemStruct -> `{` StructFields? `}`
+
+EnumItemDiscriminant -> `=` Expression
+```
 
 r[items.enum.intro]
 An *enumeration*, also referred to as an *enum*, is a simultaneous definition of a
@@ -332,7 +324,7 @@ let y: u32 = x; // mismatched type error
 r[items.enum.variant-visibility]
 ## Variant visibility
 
-Enum variants syntactically allow a [_Visibility_] annotation, but this is
+Enum variants syntactically allow a [Visibility] annotation, but this is
 rejected when the enum is validated. This allows items to be parsed with a
 unified syntax across different contexts where they are used.
 
@@ -361,18 +353,11 @@ enum E {
 }
 ```
 
-[_Expression_]: ../expressions.md
-[_GenericParams_]: generics.md
-[_StructFields_]: structs.md
-[_TupleFields_]: structs.md
-[_Visibility_]: ../visibility-and-privacy.md
-[_WhereClause_]: generics.md#where-clauses
 [`C` representation]: ../type-layout.md#the-c-representation
 [call expression]: ../expressions/call-expr.md
 [constant expression]: ../const_eval.md#constant-expressions
 [enumerated type]: ../types/enum.md
 [Field-less enums]: #field-less-enum
-[IDENTIFIER]: ../identifiers.md
 [never type]: ../types/never.md
 [numeric cast]: ../expressions/operator-expr.md#semantics
 [path expression]: ../expressions/path-expr.md

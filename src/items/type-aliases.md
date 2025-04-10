@@ -2,11 +2,12 @@ r[items.type]
 # Type aliases
 
 r[items.type.syntax]
-> **<sup>Syntax</sup>**\
-> _TypeAlias_ :\
-> &nbsp;&nbsp; `type` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup>
->              ( `:` [_TypeParamBounds_] )<sup>?</sup>
->              [_WhereClause_]<sup>?</sup> ( `=` [_Type_] [_WhereClause_]<sup>?</sup>)<sup>?</sup> `;`
+```grammar,items
+TypeAlias ->
+    `type` IDENTIFIER GenericParams? ( `:` TypeParamBounds )?
+        WhereClause?
+        ( `=` Type WhereClause?)? `;`
+```
 
 r[items.type.intro]
 A _type alias_ defines a new name for an existing [type] in the [type namespace] of the module or block where it is located.
@@ -35,29 +36,24 @@ let _ = TypeAlias(5); // Doesn't work
 ```
 
 r[items.type.associated-type]
-A type alias, when not used as an [associated type], must include a [_Type_] and
-may not include [_TypeParamBounds_].
+A type alias, when not used as an [associated type], must include a [Type][grammar-Type] and
+may not include [TypeParamBounds].
 
 r[items.type.associated-trait]
 A type alias, when used as an [associated type] in a [trait], must not include a
-[_Type_] specification but may include [_TypeParamBounds_].
+[Type][grammar-Type] specification but may include [TypeParamBounds].
 
 r[items.type.associated-impl]
 A type alias, when used as an [associated type] in a [trait impl], must include
-a [_Type_] specification and may not include [_TypeParamBounds_].
+a [Type][grammar-Type] specification and may not include [TypeParamBounds].
 
 r[items.type.deprecated]
 Where clauses before the equals sign on a type alias in a [trait impl] (like
 `type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after
 the equals sign (like `type TypeAlias<T> = Bar<T> where T: Foo`) are preferred.
 
-[IDENTIFIER]: ../identifiers.md
-[_GenericParams_]: generics.md
-[_TypeParamBounds_]: ../trait-bounds.md
-[_WhereClause_]: generics.md#where-clauses
-[_Type_]: ../types.md#type-expressions
 [associated type]: associated-items.md#associated-types
-[trait]: traits.md
-[type]: ../types.md
 [trait impl]: implementations.md#trait-implementations
+[trait]: traits.md
 [type namespace]: ../names/namespaces.md
+[type]: ../types.md

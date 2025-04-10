@@ -2,12 +2,13 @@ r[items.associated]
 # Associated Items
 
 r[items.associated.syntax]
-> **<sup>Syntax</sup>**\
-> _AssociatedItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_TypeAlias_] | [_ConstantItem_] | [_Function_] ) )\
-> &nbsp;&nbsp; )
+```grammar,items
+AssociatedItem ->
+    OuterAttribute* (
+        MacroInvocationSemi
+      | ( Visibility? ( TypeAlias | ConstantItem | Function ) )
+    )
+```
 
 r[items.associated.intro]
 *Associated Items* are the items declared in [traits] or defined in
@@ -553,12 +554,6 @@ fn main() {
 }
 ```
 
-[_ConstantItem_]: constant-items.md
-[_Function_]: functions.md
-[_MacroInvocationSemi_]: ../macros.md#macro-invocation
-[_OuterAttribute_]: ../attributes.md
-[_TypeAlias_]: type-aliases.md
-[_Visibility_]: ../visibility-and-privacy.md
 [`Arc<Self>`]: ../special-types-and-traits.md#arct
 [`Box<Self>`]: ../special-types-and-traits.md#boxt
 [`Pin<P>`]: ../special-types-and-traits.md#pinp

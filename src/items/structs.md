@@ -2,41 +2,25 @@ r[items.struct]
 # Structs
 
 r[items.struct.syntax]
-> **<sup>Syntax</sup>**\
-> _Struct_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _StructStruct_\
-> &nbsp;&nbsp; | _TupleStruct_
->
-> _StructStruct_ :\
-> &nbsp;&nbsp; `struct`
->   [IDENTIFIER]&nbsp;
->   [_GenericParams_]<sup>?</sup>
->   [_WhereClause_]<sup>?</sup>
->   ( `{` _StructFields_<sup>?</sup> `}` | `;` )
->
-> _TupleStruct_ :\
-> &nbsp;&nbsp; `struct`
->   [IDENTIFIER]&nbsp;
->   [_GenericParams_]<sup>?</sup>
->   `(` _TupleFields_<sup>?</sup> `)`
->   [_WhereClause_]<sup>?</sup>
->   `;`
->
-> _StructFields_ :\
-> &nbsp;&nbsp; _StructField_ (`,` _StructField_)<sup>\*</sup> `,`<sup>?</sup>
->
-> _StructField_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; [IDENTIFIER] `:` [_Type_]
->
-> _TupleFields_ :\
-> &nbsp;&nbsp; _TupleField_ (`,` _TupleField_)<sup>\*</sup> `,`<sup>?</sup>
->
-> _TupleField_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Visibility_]<sup>?</sup>\
-> &nbsp;&nbsp; [_Type_]
+```grammar,items
+Struct ->
+      StructStruct
+    | TupleStruct
+
+StructStruct ->
+    `struct` IDENTIFIER GenericParams? WhereClause? ( `{` StructFields? `}` | `;` )
+
+TupleStruct ->
+    `struct` IDENTIFIER GenericParams? `(` TupleFields? `)` WhereClause? `;`
+
+StructFields -> StructField (`,` StructField)* `,`?
+
+StructField -> OuterAttribute* Visibility? IDENTIFIER `:` Type
+
+TupleFields -> TupleField (`,` TupleField)* `,`?
+
+TupleField -> OuterAttribute* Visibility? Type
+```
 
 r[items.struct.intro]
 A _struct_ is a nominal [struct type] defined with the keyword `struct`.
@@ -86,13 +70,7 @@ r[items.struct.layout]
 The precise memory layout of a struct is not specified. One can specify a
 particular layout using the [`repr` attribute].
 
-[_GenericParams_]: generics.md
-[_OuterAttribute_]: ../attributes.md
-[_Type_]: ../types.md#type-expressions
-[_Visibility_]: ../visibility-and-privacy.md
-[_WhereClause_]: generics.md#where-clauses
 [`repr` attribute]: ../type-layout.md#representations
-[IDENTIFIER]: ../identifiers.md
 [constant]: constant-items.md
 [struct type]: ../types/struct.md
 [tuple type]: ../types/tuple.md

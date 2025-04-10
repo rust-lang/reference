@@ -12,7 +12,7 @@ unreachable code or omitted documentation.
 
 r[attributes.diagnostics.lint.level]
 The lint attributes `allow`,
-`expect`, `warn`, `deny`, and `forbid` use the [_MetaListPaths_] syntax
+`expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax
 to specify a list of lint names to change the lint level for the entity
 to which the attribute applies.
 
@@ -313,7 +313,7 @@ The `deprecated` attribute has several forms:
 - `deprecated` --- Issues a generic message.
 - `deprecated = "message"` --- Includes the given string in the deprecation
   message.
-- [_MetaListNameValueStr_] syntax with two optional fields:
+- [MetaListNameValueStr] syntax with two optional fields:
   - `since` --- Specifies a version number when the item was deprecated. `rustc`
     does not currently interpret the string, but external tools like [Clippy]
     may check the validity of the value.
@@ -359,7 +359,7 @@ and [traits].
 
 r[attributes.diagnostics.must_use.message]
 The `must_use` attribute may include a message by using the
-[_MetaNameValueStr_] syntax such as `#[must_use = "example message"]`. The
+[MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The
 message will be given alongside the warning.
 
 r[attributes.diagnostics.must_use.type]
@@ -483,7 +483,7 @@ r[attributes.diagnostic.on_unimplemented.allowed-positions]
 The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
 
 r[attributes.diagnostic.on_unimplemented.syntax]
-The attribute uses the [_MetaListNameValueStr_] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
+The attribute uses the [MetaListNameValueStr] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
 
 r[attributes.diagnostic.on_unimplemented.keys]
 The following keys have the given meaning:
@@ -663,9 +663,6 @@ error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
 The first error message includes a somewhat confusing error message about the relationship of `&str` and `Expression`, as well as the unsatisfied trait bound in the blanket impl. After adding `#[diagnostic::do_not_recommend]`, it no longer considers the blanket impl for the recommendation. The message should be a little clearer, with an indication that a string cannot be converted to an `Integer`.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
-[_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
-[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`Drop`]: ../special-types-and-traits.md#drop
 [attributes]: ../attributes.md
 [block expression]: ../expressions/block-expr.md

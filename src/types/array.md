@@ -2,9 +2,9 @@ r[type.array]
 # Array types
 
 r[type.array.syntax]
-> **<sup>Syntax</sup>**\
-> _ArrayType_ :\
-> &nbsp;&nbsp; `[` [_Type_] `;` [_Expression_] `]`
+```grammar,types
+ArrayType -> `[` Type `;` Expression `]`
+```
 
 r[type.array.intro]
 An array is a fixed-size sequence of `N` elements of type `T`. The array type
@@ -30,7 +30,5 @@ always bounds-checked in safe methods and operators.
 > [!NOTE]
 > The [`Vec<T>`] standard library type provides a heap-allocated resizable array type.
 
-[_Expression_]: ../expressions.md
-[_Type_]: ../types.md#type-expressions
 [`usize`]: numeric.md#machine-dependent-integer-types
 [constant expression]: ../const_eval.md#constant-expressions

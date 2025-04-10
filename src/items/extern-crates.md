@@ -2,15 +2,13 @@ r[items.extern-crate]
 # Extern crate declarations
 
 r[items.extern-crate.syntax]
-> **<sup>Syntax:</sup>**\
-> _ExternCrate_ :\
-> &nbsp;&nbsp; `extern` `crate` _CrateRef_ _AsClause_<sup>?</sup> `;`
->
-> _CrateRef_ :\
-> &nbsp;&nbsp; [IDENTIFIER] | `self`
->
-> _AsClause_ :\
-> &nbsp;&nbsp; `as` ( [IDENTIFIER] | `_` )
+```grammar,items
+ExternCrate -> `extern` `crate` CrateRef AsClause? `;`
+
+CrateRef -> IDENTIFIER | `self`
+
+AsClause -> `as` ( IDENTIFIER | `_` )
+```
 
 r[items.extern-crate.intro]
 An _`extern crate` declaration_ specifies a dependency on an external crate.
@@ -82,7 +80,7 @@ The *`no_link` attribute* may be specified on an `extern crate` item to
 prevent linking the crate into the output. This is commonly used to load a
 crate to access only its macros.
 
-[IDENTIFIER]: ../identifiers.md
+[identifier]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [extern prelude]: ../names/preludes.md#extern-prelude

@@ -2,13 +2,14 @@ r[statement]
 # Statements
 
 r[statement.syntax]
-> **<sup>Syntax</sup>**\
-> _Statement_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `;`\
-> &nbsp;&nbsp; | [_Item_]\
-> &nbsp;&nbsp; | [_LetStatement_]\
-> &nbsp;&nbsp; | [_ExpressionStatement_]\
-> &nbsp;&nbsp; | [_MacroInvocationSemi_]
+```grammar,statements
+Statement ->
+      `;`
+    | Item
+    | LetStatement
+    | ExpressionStatement
+    | MacroInvocationSemi
+```
 
 r[statement.intro]
 A *statement* is a component of a [block], which is in turn a component of an outer [expression] or [function].
@@ -56,14 +57,14 @@ r[statement.let]
 ### `let` statements
 
 r[statement.let.syntax]
-> **<sup>Syntax</sup>**\
-> _LetStatement_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> `let` [_PatternNoTopAlt_]
->     ( `:` [_Type_] )<sup>?</sup> (`=` [_Expression_] [†](#let-else-restriction)
->     ( `else` [_BlockExpression_]) <sup>?</sup> ) <sup>?</sup> `;`
->
-> <span id="let-else-restriction">† When an `else` block is specified, the
-> _Expression_ must not be a [_LazyBooleanExpression_], or end with a `}`.</span>
+```grammar,statements
+LetStatement ->
+    OuterAttribute* `let` PatternNoTopAlt ( `:` Type )?
+    (
+          `=` Expression
+        | `=` Expression _except [LazyBooleanExpression] or end with a `}`_ `else` BlockExpression
+    )? `;`
+```
 
 r[statement.let.intro]
 A *`let` statement* introduces a new set of [variables], given by a [pattern].
@@ -98,10 +99,11 @@ r[statement.expr]
 ## Expression statements
 
 r[statement.expr.syntax]
-> **<sup>Syntax</sup>**\
-> _ExpressionStatement_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_ExpressionWithoutBlock_][expression] `;`\
-> &nbsp;&nbsp; | [_ExpressionWithBlock_][expression] `;`<sup>?</sup>
+```grammar,statements
+ExpressionStatement ->
+      ExpressionWithoutBlock `;`
+    | ExpressionWithBlock `;`?
+```
 
 r[statement.expr.intro]
 An *expression statement* is one that evaluates an [expression] and ignores its result.
@@ -113,7 +115,7 @@ This can cause an ambiguity between it being parsed as a standalone statement an
 in this case, it is parsed as a statement.
 
 r[statement.expr.constraint-block]
-The type of [_ExpressionWithBlock_][expression] expressions when used as statements must be the unit type.
+The type of [ExpressionWithBlock] expressions when used as statements must be the unit type.
 
 ```rust
 # let mut v = vec![1, 2, 3];
@@ -163,13 +165,3 @@ The attributes that have meaning on a statement are [`cfg`], and [the lint check
 [the lint check attributes]: attributes/diagnostics.md#lint-check-attributes
 [pattern]: patterns.md
 [scope]: names/scopes.md
-[_BlockExpression_]: expressions/block-expr.md
-[_ExpressionStatement_]: #expression-statements
-[_Expression_]: expressions.md
-[_Item_]: items.md
-[_LazyBooleanExpression_]: expressions/operator-expr.md#lazy-boolean-operators
-[_LetStatement_]: #let-statements
-[_MacroInvocationSemi_]: macros.md#macro-invocation
-[_OuterAttribute_]: attributes.md
-[_PatternNoTopAlt_]: patterns.md
-[_Type_]: types.md

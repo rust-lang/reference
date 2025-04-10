@@ -2,48 +2,49 @@ r[expr]
 # Expressions
 
 r[expr.syntax]
-> **<sup>Syntax</sup>**\
-> _Expression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _ExpressionWithoutBlock_\
-> &nbsp;&nbsp; | _ExpressionWithBlock_
->
-> _ExpressionWithoutBlock_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
-> &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_LiteralExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PathExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_OperatorExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_GroupedExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ArrayExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_AwaitExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IndexExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_TupleIndexingExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_StructExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_CallExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MethodCallExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_FieldExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ClosureExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_AsyncBlockExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ContinueExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_BreakExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_RangeExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ReturnExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_UnderscoreExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MacroInvocation_]\
-> &nbsp;&nbsp; )
->
-> _ExpressionWithBlock_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup>[†](#expression-attributes)\
-> &nbsp;&nbsp; (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_ConstBlockExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_UnsafeBlockExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_LoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IfExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IfLetExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_MatchExpression_]\
-> &nbsp;&nbsp; )
+```grammar,expressions
+Expression ->
+      ExpressionWithoutBlock
+    | ExpressionWithBlock
+
+ExpressionWithoutBlock ->
+    OuterAttribute*
+    (
+        LiteralExpression
+      | PathExpression
+      | OperatorExpression
+      | GroupedExpression
+      | ArrayExpression
+      | AwaitExpression
+      | IndexExpression
+      | TupleExpression
+      | TupleIndexingExpression
+      | StructExpression
+      | CallExpression
+      | MethodCallExpression
+      | FieldExpression
+      | ClosureExpression
+      | AsyncBlockExpression
+      | ContinueExpression
+      | BreakExpression
+      | RangeExpression
+      | ReturnExpression
+      | UnderscoreExpression
+      | MacroInvocation
+    )
+
+ExpressionWithBlock ->
+    OuterAttribute*
+    (
+        BlockExpression
+      | ConstBlockExpression
+      | UnsafeBlockExpression
+      | LoopExpression
+      | IfExpression
+      | IfLetExpression
+      | MatchExpression
+    )
+```
 
 r[expr.intro]
 An expression may have two roles: it always produces a *value*, and it may have *effects* (otherwise known as "side effects").
@@ -188,13 +189,13 @@ An *assignee expression* is an expression that appears in the left operand of an
 Explicitly, the assignee expressions are:
 
 - Place expressions.
-- [Underscores][_UnderscoreExpression_].
-- [Tuples][_TupleExpression_] of assignee expressions.
-- [Slices][_ArrayExpression_] of assignee expressions.
-- [Tuple structs][_StructExpression_] of assignee expressions.
-- [Structs][_StructExpression_] of assignee expressions (with optionally named
+- [Underscores].
+- [Tuples] of assignee expressions.
+- [Slices][expr.array.index] of assignee expressions.
+- [Tuple structs] of assignee expressions.
+- [Structs] of assignee expressions (with optionally named
   fields).
-- [Unit structs][_StructExpression_].
+- [Unit structs]
 
 r[expr.place-value.parenthesis]
 Arbitrary parenthesisation is permitted inside assignee expressions.
@@ -296,7 +297,7 @@ r[expr.attr]
 ## Expression Attributes
 
 r[expr.attr.restriction]
-[Outer attributes][_OuterAttribute_] before an expression are allowed only in a few specific cases:
+[Outer attributes] before an expression are allowed only in a few specific cases:
 
 * Before an expression used as a [statement].
 * Elements of [array expressions], [tuple expressions], [call expressions], and tuple-style [struct] expressions.
@@ -305,82 +306,49 @@ r[expr.attr.restriction]
 
 r[expr.attr.never-before]
 They are never allowed before:
-* [Range][_RangeExpression_] expressions.
-* Binary operator expressions ([_ArithmeticOrLogicalExpression_], [_ComparisonExpression_], [_LazyBooleanExpression_], [_TypeCastExpression_], [_AssignmentExpression_], [_CompoundAssignmentExpression_]).
-
-[block expressions]:    expressions/block-expr.md
-[call expressions]:     expressions/call-expr.md
-[field]:                expressions/field-expr.md
-[functional update]:    expressions/struct-expr.md#functional-update-syntax
-[`if let`]:             expressions/if-expr.md#if-let-expressions
-[match]:                expressions/match-expr.md
-[method-call]:          expressions/method-call-expr.md
-[paths]:                expressions/path-expr.md
-[struct]:               expressions/struct-expr.md
-[tuple expressions]:    expressions/tuple-expr.md
-[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
-
-[array expressions]:    expressions/array-expr.md
-[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
-
-[assign]:               expressions/operator-expr.md#assignment-expressions
-[borrow]:               expressions/operator-expr.md#borrow-operators
-[comparison]:           expressions/operator-expr.md#comparison-operators
-[compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
-[deref]:                expressions/operator-expr.md#the-dereference-operator
-
-[destructors]:          destructors.md
-[drop scope]:           destructors.md#drop-scopes
+* [Range] expressions.
+* Binary operator expressions ([ArithmeticOrLogicalExpression], [ComparisonExpression], [LazyBooleanExpression], [TypeCastExpression], [AssignmentExpression], [CompoundAssignmentExpression]).
 
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
+[`if let`]:             expressions/if-expr.md#if-let-expressions
 [`Sized`]:              special-types-and-traits.md#sized
+[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
+[array expressions]:    expressions/array-expr.md
+[array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
+[assign]:               expressions/operator-expr.md#assignment-expressions
+[block expressions]:    expressions/block-expr.md
+[borrow]:               expressions/operator-expr.md#borrow-operators
+[call expressions]:     expressions/call-expr.md
+[comparison]:           expressions/operator-expr.md#comparison-operators
+[compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
+[deref]:                expressions/operator-expr.md#the-dereference-operator
+[destructors]:          destructors.md
+[drop scope]:           destructors.md#drop-scopes
+[field]:                expressions/field-expr.md
+[functional update]:    expressions/struct-expr.md#functional-update-syntax
 [implicit borrow]:      #implicit-borrows
 [implicitly mutably borrowed]: #implicit-borrows
 [interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
+[match]:                expressions/match-expr.md
+[method-call]:          expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
-[scrutinee]:            glossary.md#scrutinee
+[Outer attributes]:     attributes.md
+[paths]:                expressions/path-expr.md
 [promoted]:             destructors.md#constant-promotion
+[Range]:                expressions/range-expr.md
 [raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
+[scrutinee]:            glossary.md#scrutinee
 [slice]:                types/slice.md
 [statement]:            statements.md
 [static variables]:     items/static-items.md
+[struct]:               expressions/struct-expr.md
+[Structs]:              expr.struct
 [Temporary values]:     #temporaries
+[tuple expressions]:    expressions/tuple-expr.md
+[Tuple structs]:        expr.struct.tuple
+[Tuples]:               expressions/tuple-expr.md
+[Underscores]:          expressions/underscore-expr.md
+[Unit structs]:         expr.struct.unit
 [Variables]:            variables.md
-
-[_ArithmeticOrLogicalExpression_]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
-[_ArrayExpression_]:              expressions/array-expr.md
-[_AsyncBlockExpression_]:         expressions/block-expr.md#async-blocks
-[_AwaitExpression_]:              expressions/await-expr.md
-[_AssignmentExpression_]:         expressions/operator-expr.md#assignment-expressions
-[_BlockExpression_]:              expressions/block-expr.md
-[_BreakExpression_]:              expressions/loop-expr.md#break-expressions
-[_CallExpression_]:               expressions/call-expr.md
-[_ClosureExpression_]:            expressions/closure-expr.md
-[_ComparisonExpression_]:         expressions/operator-expr.md#comparison-operators
-[_CompoundAssignmentExpression_]: expressions/operator-expr.md#compound-assignment-expressions
-[_ConstBlockExpression_]:         expressions/block-expr.md#const-blocks
-[_ContinueExpression_]:           expressions/loop-expr.md#continue-expressions
-[_FieldExpression_]:              expressions/field-expr.md
-[_GroupedExpression_]:            expressions/grouped-expr.md
-[_IfExpression_]:                 expressions/if-expr.md#if-expressions
-[_IfLetExpression_]:              expressions/if-expr.md#if-let-expressions
-[_IndexExpression_]:              expressions/array-expr.md#array-and-slice-indexing-expressions
-[_LazyBooleanExpression_]:        expressions/operator-expr.md#lazy-boolean-operators
-[_LiteralExpression_]:            expressions/literal-expr.md
-[_LoopExpression_]:               expressions/loop-expr.md
-[_MacroInvocation_]:              macros.md#macro-invocation
-[_MatchExpression_]:              expressions/match-expr.md
-[_MethodCallExpression_]:         expressions/method-call-expr.md
-[_OperatorExpression_]:           expressions/operator-expr.md
-[_OuterAttribute_]:               attributes.md
-[_PathExpression_]:               expressions/path-expr.md
-[_RangeExpression_]:              expressions/range-expr.md
-[_ReturnExpression_]:             expressions/return-expr.md
-[_StructExpression_]:             expressions/struct-expr.md
-[_TupleExpression_]:              expressions/tuple-expr.md
-[_TupleIndexingExpression_]:      expressions/tuple-expr.md#tuple-indexing-expressions
-[_TypeCastExpression_]:           expressions/operator-expr.md#type-cast-expressions
-[_UnderscoreExpression_]:         expressions/underscore-expr.md
-[_UnsafeBlockExpression_]:        expressions/block-expr.md#unsafe-blocks
