@@ -27,7 +27,7 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
 
 /// A primitive regex to find link reference definitions.
 static MD_LINK_REFERENCE_DEFINITION: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?m)^\[(?<label>[^]]+)]: (?<dest>.*)").unwrap());
+    Lazy::new(|| Regex::new(r"(?m)^\[(?<label>[^]]+)]: +(?<dest>.*)").unwrap());
 
 pub fn handle_preprocessing() -> Result<(), Error> {
     let pre = Spec::new(None)?;
