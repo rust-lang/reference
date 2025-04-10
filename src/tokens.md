@@ -750,7 +750,7 @@ r[lex.token.life.syntax]
 > &nbsp;&nbsp; | RAW_LIFETIME
 >
 > RAW_LIFETIME :\
-> &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier] <sub>*Except `crate`, `self`, `super`, `Self`*</sub>
+> &nbsp;&nbsp; `'r#` [IDENTIFIER_OR_KEYWORD][identifier] <sub>*except `crate`, `self`, `super`, `Self`*</sub>
 >   _(not immediately followed by `'`)_
 >
 > RESERVED_RAW_LIFETIME : `'r#_`
@@ -849,10 +849,10 @@ r[lex.token.reserved-prefix]
 
 r[lex.token.reserved-prefix.syntax]
 > **<sup>Lexer 2021+</sup>**\
-> RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b` or `c` or `r` or `br` or `cr`_</sub> | `_` ) `"`\
-> RESERVED_TOKEN_SINGLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_Except `b`_</sub> | `_` ) `'`\
-> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_Except `r` or `br` or `cr`_</sub> | `_` ) `#`\
-> RESERVED_TOKEN_LIFETIME : `'` (IDENTIFIER_OR_KEYWORD <sub>_Except `r`_</sub> | _) `#`
+> RESERVED_TOKEN_DOUBLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_except `b` or `c` or `r` or `br` or `cr`_</sub> | `_` ) `"`\
+> RESERVED_TOKEN_SINGLE_QUOTE : ( IDENTIFIER_OR_KEYWORD <sub>_except `b`_</sub> | `_` ) `'`\
+> RESERVED_TOKEN_POUND : ( IDENTIFIER_OR_KEYWORD <sub>_except `r` or `br` or `cr`_</sub> | `_` ) `#`\
+> RESERVED_TOKEN_LIFETIME : `'` ( IDENTIFIER_OR_KEYWORD <sub>_except `r`_</sub> | `_` ) `#`
 
 r[lex.token.reserved-prefix.intro]
 Some lexical forms known as _reserved prefixes_ are reserved for future use.

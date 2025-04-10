@@ -7,9 +7,9 @@ r[ident.syntax]
 > &nbsp;&nbsp; &nbsp;&nbsp; XID_Start XID_Continue<sup>\*</sup>\
 > &nbsp;&nbsp; | `_` XID_Continue<sup>+</sup>
 >
-> RAW_IDENTIFIER : `r#` IDENTIFIER_OR_KEYWORD <sub>*Except `crate`, `self`, `super`, `Self`*</sub>
+> RAW_IDENTIFIER : `r#` IDENTIFIER_OR_KEYWORD <sub>*except `crate`, `self`, `super`, `Self`*</sub>
 >
-> NON_KEYWORD_IDENTIFIER : IDENTIFIER_OR_KEYWORD <sub>*Except a [strict] or [reserved] keyword*</sub>
+> NON_KEYWORD_IDENTIFIER : IDENTIFIER_OR_KEYWORD <sub>*except a [strict] or [reserved] keyword*</sub>
 >
 > IDENTIFIER :\
 > NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
