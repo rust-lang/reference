@@ -165,7 +165,7 @@ r[lex.token.literal.str.syntax]
 > &nbsp;&nbsp; )<sup>\*</sup> `"` SUFFIX<sup>?</sup>
 >
 > STRING_CONTINUE :\
-> &nbsp;&nbsp; `\` _followed by_ LF
+> &nbsp;&nbsp; `\` LF
 
 r[lex.token.literal.str.intro]
 A _string literal_ is a sequence of any Unicode characters enclosed within two
