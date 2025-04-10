@@ -314,7 +314,7 @@ r[cfg.attr]
 
 r[cfg.attr.syntax]
 > **<sup>Syntax</sup>**\
-> _CfgAttrAttribute_ :\
+> _CfgAttribute_ :\
 > &nbsp;&nbsp; `cfg` `(` _ConfigurationPredicate_ `)`
 
 <!-- should we say they're active attributes here? -->
