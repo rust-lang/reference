@@ -132,6 +132,7 @@
 - [The Rust runtime](runtime.md)
 
 - [Appendices](appendices.md)
+    - [Grammar summary](grammar.md)
     - [Macro Follow-Set Ambiguity Formal Specification](macro-ambiguity.md)
     - [Influences](influences.md)
     - [Test summary](test-summary.md)
