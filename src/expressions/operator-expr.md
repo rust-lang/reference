@@ -701,7 +701,7 @@ An assignment expression consists of a [mutable] [assignee expression], the *ass
 r[expr.assign.behavior-basic]
 In its most basic form, an assignee expression is a [place expression], and we discuss this case first.
 
-r[expr.assign.behavior-destructring]
+r[expr.assign.behavior-destructuring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
 r[expr.assign.basic]
@@ -711,7 +711,7 @@ r[expr.assign.evaluation-order]
 Evaluating assignment expressions begins by evaluating its operands.
 The assigned value operand is evaluated first, followed by the assignee expression.
 
-r[expr.assign.destructring-order]
+r[expr.assign.destructuring-order]
 For destructuring assignment, subexpressions of the assignee expression are evaluated left-to-right.
 
 > [!NOTE]
