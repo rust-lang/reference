@@ -2,17 +2,18 @@ r[expr.block]
 # Block expressions
 
 r[expr.block.syntax]
-> **<sup>Syntax</sup>**\
-> _BlockExpression_ :\
-> &nbsp;&nbsp; `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Statements_<sup>?</sup>\
-> &nbsp;&nbsp; `}`
->
-> _Statements_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Statement_]<sup>\+</sup>\
-> &nbsp;&nbsp; | [_Statement_]<sup>\+</sup> [_ExpressionWithoutBlock_]\
-> &nbsp;&nbsp; | [_ExpressionWithoutBlock_]
+```grammar,expressions
+BlockExpression ->
+    `{`
+        InnerAttribute*
+        Statements?
+    `}`
+
+Statements ->
+      Statement+
+    | Statement+ ExpressionWithoutBlock
+    | ExpressionWithoutBlock
+```
 
 r[expr.block.intro]
 A *block expression*, or *block*, is a control flow expression and anonymous namespace scope for items and variable declarations.
@@ -91,9 +92,9 @@ r[expr.block.async]
 ## `async` blocks
 
 r[expr.block.async.syntax]
-> **<sup>Syntax</sup>**\
-> _AsyncBlockExpression_ :\
-> &nbsp;&nbsp; `async` `move`<sup>?</sup> _BlockExpression_
+```grammar,expressions
+AsyncBlockExpression -> `async` `move`? BlockExpression
+```
 
 r[expr.block.async.intro]
 An *async block* is a variant of a block expression which evaluates to a future.
@@ -158,9 +159,9 @@ r[expr.block.const]
 ## `const` blocks
 
 r[expr.block.const.syntax]
-> **<sup>Syntax</sup>**\
-> _ConstBlockExpression_ :\
-> &nbsp;&nbsp; `const` _BlockExpression_
+```grammar,expressions
+ConstBlockExpression -> `const` BlockExpression
+```
 
 r[expr.block.const.intro]
 A *const block* is a variant of a block expression whose body evaluates at compile-time instead of at runtime.
@@ -222,10 +223,12 @@ if false {
 r[expr.block.unsafe]
 ## `unsafe` blocks
 
-> **<sup>Syntax</sup>**\
-> _UnsafeBlockExpression_ :\
-> &nbsp;&nbsp; `unsafe` _BlockExpression_
+r[expr.block.unsafe.syntax]
+```grammar,expressions
+UnsafeBlockExpression -> `unsafe` BlockExpression
+```
 
+r[expr.block.unsafe.intro]
 _See [`unsafe` blocks] for more information on when to use `unsafe`_.
 
 A block of code can be prefixed with the `unsafe` keyword to permit [unsafe operations].
@@ -274,9 +277,6 @@ fn is_unix_platform() -> bool {
 }
 ```
 
-[_ExpressionWithoutBlock_]: ../expressions.md
-[_InnerAttribute_]: ../attributes.md
-[_Statement_]: ../statements.md
 [`await` expressions]: await-expr.md
 [`cfg`]: ../conditional-compilation.md
 [`for`]: loop-expr.md#iterator-loops

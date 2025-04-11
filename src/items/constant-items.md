@@ -2,9 +2,10 @@ r[items.const]
 # Constant items
 
 r[items.const.syntax]
-> **<sup>Syntax</sup>**\
-> _ConstantItem_ :\
-> &nbsp;&nbsp; `const` ( [IDENTIFIER] | `_` ) `:` [_Type_] ( `=` [_Expression_] )<sup>?</sup> `;`
+```grammar,items
+ConstantItem ->
+    `const` ( IDENTIFIER | `_` ) `:` Type ( `=` Expression )? `;`
+```
 
 r[items.const.intro]
 A *constant item* is an optionally named _[constant value]_ which is not associated
@@ -128,10 +129,7 @@ fn unused_generic_function<T>() {
 [free]: ../glossary.md#free-item
 [static lifetime elision]: ../lifetime-elision.md#const-and-static-elision
 [trait definition]: traits.md
-[IDENTIFIER]: ../identifiers.md
 [underscore imports]: use-declarations.md#underscore-imports
-[_Type_]: ../types.md#type-expressions
-[_Expression_]: ../expressions.md
 [`Copy`]: ../special-types-and-traits.md#copy
 [value namespace]: ../names/namespaces.md
 [promotion]: ../destructors.md#constant-promotion

@@ -2,10 +2,11 @@ r[expr.path]
 # Path expressions
 
 r[expr.path.syntax]
-> **<sup>Syntax</sup>**\
-> _PathExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_PathInExpression_]\
-> &nbsp;&nbsp; | [_QualifiedPathInExpression_]
+```grammar,expressions
+PathExpression ->
+      PathInExpression
+    | QualifiedPathInExpression
+```
 
 r[expr.path.intro]
 A [path] used as an expression context denotes either a local variable or an item.
@@ -33,8 +34,6 @@ let slice_reverse = <[i32]>::reverse;
 r[expr.path.const]
 Evaluation of associated constants is handled the same way as [`const` blocks].
 
-[_PathInExpression_]: ../paths.md#paths-in-expressions
-[_QualifiedPathInExpression_]: ../paths.md#qualified-paths
 [place expressions]: ../expressions.md#place-expressions-and-value-expressions
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
 [path]: ../paths.md

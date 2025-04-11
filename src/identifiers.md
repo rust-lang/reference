@@ -2,19 +2,23 @@ r[ident]
 # Identifiers
 
 r[ident.syntax]
-> **<sup>Lexer:</sup>**\
-> IDENTIFIER_OR_KEYWORD :\
-> &nbsp;&nbsp; &nbsp;&nbsp; XID_Start XID_Continue<sup>\*</sup>\
-> &nbsp;&nbsp; | `_` XID_Continue<sup>+</sup>
->
-> RAW_IDENTIFIER : `r#` IDENTIFIER_OR_KEYWORD <sub>*Except `crate`, `self`, `super`, `Self`*</sub>
->
-> NON_KEYWORD_IDENTIFIER : IDENTIFIER_OR_KEYWORD <sub>*Except a [strict] or [reserved] keyword*</sub>
->
-> IDENTIFIER :\
-> NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
->
-> RESERVED_RAW_IDENTIFIER : `r#_`
+```grammar,lexer
+IDENTIFIER_OR_KEYWORD ->
+      XID_Start XID_Continue*
+    | `_` XID_Continue+
+
+XID_Start -> <`XID_Start` defined by Unicode>
+
+XID_Continue -> <`XID_Continue` defined by Unicode>
+
+RAW_IDENTIFIER -> `r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self`_
+
+NON_KEYWORD_IDENTIFIER -> IDENTIFIER_OR_KEYWORD _except a [strict][lex.keywords.strict] or [reserved][lex.keywords.reserved] keyword_
+
+IDENTIFIER -> NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
+
+RESERVED_RAW_IDENTIFIER -> `r#_`
+```
 
 <!-- When updating the version, update the UAX links, too. -->
 r[ident.unicode]
@@ -72,9 +76,8 @@ Unlike a normal identifier, a raw identifier may be any strict or reserved
 keyword except the ones listed above for `RAW_IDENTIFIER`.
 
 r[ident.raw.reserved]
-It is an error to use the RESERVED_RAW_IDENTIFIER token `r#_` in order to avoid confusion with the [_WildcardPattern_].
+It is an error to use the [RESERVED_RAW_IDENTIFIER] token `r#_` in order to avoid confusion with the [WildcardPattern].
 
-[_WildcardPattern_]: patterns.md#wildcard-pattern
 [`extern crate`]: items/extern-crates.md
 [`no_mangle`]: abi.md#the-no_mangle-attribute
 [`path` attribute]: items/modules.md#the-path-attribute

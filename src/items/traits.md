@@ -2,15 +2,14 @@ r[items.traits]
 # Traits
 
 r[items.traits.syntax]
-> **<sup>Syntax</sup>**\
-> _Trait_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> `trait` [IDENTIFIER]&nbsp;
->              [_GenericParams_]<sup>?</sup>
->              ( `:` [_TypeParamBounds_]<sup>?</sup> )<sup>?</sup>
->              [_WhereClause_]<sup>?</sup> `{`\
-> &nbsp;&nbsp;&nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp;&nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
-> &nbsp;&nbsp; `}`
+```grammar,items
+Trait ->
+    `unsafe`? `trait` IDENTIFIER GenericParams? ( `:` TypeParamBounds? )? WhereClause?
+    `{`
+        InnerAttribute*
+        AssociatedItem*
+    `}`
+```
 
 r[items.traits.intro]
 A _trait_ describes an abstract interface that types can implement. This
@@ -288,7 +287,7 @@ r[items.traits.params]
 ## Parameter patterns
 
 r[items.traits.params.patterns-no-body]
-Parameters in associated functions without a body only allow [IDENTIFIER] or `_` [wild card][WildcardPattern] patterns, as well as the form allowed by [_SelfParam_]. `mut` [IDENTIFIER] is currently allowed, but it is deprecated and will become a hard error in the future.
+Parameters in associated functions without a body only allow [IDENTIFIER] or `_` [wild card][WildcardPattern] patterns, as well as the form allowed by [SelfParam]. `mut` [IDENTIFIER] is currently allowed, but it is deprecated and will become a hard error in the future.
 <!-- https://github.com/rust-lang/rust/issues/35203 -->
 
 ```rust
@@ -356,7 +355,7 @@ r[items.traits.associated-visibility]
 ## Item visibility
 
 r[items.traits.associated-visibility.intro]
-Trait items syntactically allow a [_Visibility_] annotation, but this is
+Trait items syntactically allow a [Visibility] annotation, but this is
 rejected when the trait is validated. This allows items to be parsed with a
 unified syntax across different contexts where they are used. As an example,
 an empty `vis` macro fragment specifier can be used for trait items, where the
@@ -390,15 +389,7 @@ fn main() {
 }
 ```
 
-[IDENTIFIER]: ../identifiers.md
 [WildcardPattern]: ../patterns.md#wildcard-pattern
-[_AssociatedItem_]: associated-items.md
-[_GenericParams_]: generics.md
-[_InnerAttribute_]: ../attributes.md
-[_SelfParam_]: functions.md
-[_TypeParamBounds_]: ../trait-bounds.md
-[_Visibility_]: ../visibility-and-privacy.md
-[_WhereClause_]: generics.md#where-clauses
 [bounds]: ../trait-bounds.md
 [trait object]: ../types/trait-object.md
 [associated items]: associated-items.md

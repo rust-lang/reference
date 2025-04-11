@@ -45,27 +45,28 @@ r[type.name]
 ## Type expressions
 
 r[type.name.syntax]
-> **<sup>Syntax</sup>**\
-> _Type_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _TypeNoBounds_\
-> &nbsp;&nbsp; | [_ImplTraitType_]\
-> &nbsp;&nbsp; | [_TraitObjectType_]
->
-> _TypeNoBounds_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_ParenthesizedType_]\
-> &nbsp;&nbsp; | [_ImplTraitTypeOneBound_]\
-> &nbsp;&nbsp; | [_TraitObjectTypeOneBound_]\
-> &nbsp;&nbsp; | [_TypePath_]\
-> &nbsp;&nbsp; | [_TupleType_]\
-> &nbsp;&nbsp; | [_NeverType_]\
-> &nbsp;&nbsp; | [_RawPointerType_]\
-> &nbsp;&nbsp; | [_ReferenceType_]\
-> &nbsp;&nbsp; | [_ArrayType_]\
-> &nbsp;&nbsp; | [_SliceType_]\
-> &nbsp;&nbsp; | [_InferredType_]\
-> &nbsp;&nbsp; | [_QualifiedPathInType_]\
-> &nbsp;&nbsp; | [_BareFunctionType_]\
-> &nbsp;&nbsp; | [_MacroInvocation_]
+```grammar,types
+Type ->
+      TypeNoBounds
+    | ImplTraitType
+    | TraitObjectType
+
+TypeNoBounds ->
+      ParenthesizedType
+    | ImplTraitTypeOneBound
+    | TraitObjectTypeOneBound
+    | TypePath
+    | TupleType
+    | NeverType
+    | RawPointerType
+    | ReferenceType
+    | ArrayType
+    | SliceType
+    | InferredType
+    | QualifiedPathInType
+    | BareFunctionType
+    | MacroInvocation
+```
 
 r[type.name.intro]
 A _type expression_ as defined in the _Type_ grammar rule above is the syntax
@@ -103,16 +104,17 @@ r[type.name.parenthesized]
 ### Parenthesized types
 
 r[type.name.parenthesized.syntax]
-> _ParenthesizedType_ :\
-> &nbsp;&nbsp; `(` [_Type_] `)`
+```grammar,types
+ParenthesizedType -> `(` Type `)`
+```
 
 r[type.name.parenthesized.intro]
 In some situations the combination of types may be ambiguous. Use parentheses
 around a type to avoid ambiguity. For example, the `+` operator for [type
 boundaries] within a [reference type] is unclear where the
 boundary applies, so the use of parentheses is required. Grammar rules that
-require this disambiguation use the [_TypeNoBounds_] rule instead of
-[_Type_].
+require this disambiguation use the [TypeNoBounds] rule instead of
+[Type][grammar-Type].
 
 ```rust
 # use std::any::Any;
@@ -147,25 +149,6 @@ enum List<T> {
 
 let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 ```
-
-[_ArrayType_]: types/array.md
-[_BareFunctionType_]: types/function-pointer.md
-[_ImplTraitTypeOneBound_]: types/impl-trait.md
-[_ImplTraitType_]: types/impl-trait.md
-[_InferredType_]: types/inferred.md
-[_MacroInvocation_]: macros.md#macro-invocation
-[_NeverType_]: types/never.md
-[_ParenthesizedType_]: types.md#parenthesized-types
-[_QualifiedPathInType_]: paths.md#qualified-paths
-[_RawPointerType_]: types/pointer.md#raw-pointers-const-and-mut
-[_ReferenceType_]: types/pointer.md#shared-references-
-[_SliceType_]: types/slice.md
-[_TraitObjectTypeOneBound_]: types/trait-object.md
-[_TraitObjectType_]: types/trait-object.md
-[_TupleType_]: types/tuple.md#tuple-types
-[_TypeNoBounds_]: types.md#type-expressions
-[_TypePath_]: paths.md#paths-in-types
-[_Type_]: types.md#type-expressions
 
 [Array]: types/array.md
 [Boolean]: types/boolean.md

@@ -57,7 +57,7 @@ A function annotated with the `test` attribute can also be annotated with the
 execute that function as a test. It will still be compiled when in test mode.
 
 r[attributes.testing.ignore.syntax]
-The `ignore` attribute may optionally be written with the [_MetaNameValueStr_]
+The `ignore` attribute may optionally be written with the [MetaNameValueStr]
 syntax to specify a reason why the test is ignored.
 
 ```rust
@@ -86,7 +86,7 @@ r[attributes.testing.should_panic.syntax]
 The `should_panic` attribute may optionally take an input string that must
 appear within the panic message. If the string is not found in the message,
 then the test will fail. The string may be passed using the
-[_MetaNameValueStr_] syntax or the [_MetaListNameValueStr_] syntax with an
+[MetaNameValueStr] syntax or the [MetaListNameValueStr] syntax with an
 `expected` field.
 
 ```rust
@@ -97,8 +97,6 @@ fn mytest() {
 }
 ```
 
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
-[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 [`Termination`]: std::process::Termination
 [`report`]: std::process::Termination::report
 [`test` conditional compilation option]: ../conditional-compilation.md#test

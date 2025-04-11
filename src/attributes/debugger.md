@@ -11,7 +11,7 @@ The *`debugger_visualizer` attribute* can be used to embed a debugger visualizer
 This enables an improved debugger experience for displaying values in the debugger.
 
 r[attributes.debugger.debugger_visualizer.syntax]
-It uses the [_MetaListNameValueStr_] syntax to specify its inputs, and must be specified as a crate attribute.
+It uses the [MetaListNameValueStr] syntax to specify its inputs, and must be specified as a crate attribute.
 
 r[attributes.debugger.debugger_visualizer.natvis]
 ### Using `debugger_visualizer` with Natvis
@@ -150,7 +150,6 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 [attributes]: ../attributes.md
 [Natvis documentation]: https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects
 [pretty printing documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Pretty-Printing.html
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
 
 r[attributes.debugger.collapse_debuginfo]
 ## The `collapse_debuginfo` attribute
@@ -160,7 +159,7 @@ The *`collapse_debuginfo` [attribute]* controls whether code locations from a ma
 when generating debuginfo for code calling this macro.
 
 r[attributes.debugger.collapse_debuginfo.syntax]
-The attribute uses the [_MetaListIdents_] syntax to specify its inputs, and can only be applied to macro definitions.
+The attribute uses the [MetaListIdents] syntax to specify its inputs, and can only be applied to macro definitions.
 
 r[attributes.debugger.collapse_debuginfo.options]
 Accepted options:
@@ -185,4 +184,3 @@ macro_rules! example {
 ```
 
 [attribute]: ../attributes.md
-[_MetaListIdents_]: ../attributes.md#meta-item-attribute-syntax

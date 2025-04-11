@@ -214,3 +214,7 @@ r[foo.bar.edition2021]
 > [!EDITION-2021]
 > Describe what changed in 2021.
 ```
+
+## Grammar
+
+See [Grammar](grammar.md) for details on how to write grammar rules.

@@ -2,28 +2,24 @@ r[expr.match]
 # `match` expressions
 
 r[expr.match.syntax]
-> **<sup>Syntax</sup>**\
-> _MatchExpression_ :\
-> &nbsp;&nbsp; `match` _Scrutinee_ `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _MatchArms_<sup>?</sup>\
-> &nbsp;&nbsp; `}`
->
->_Scrutinee_ :\
-> &nbsp;&nbsp; [_Expression_]<sub>_except struct expression_</sub>
->
-> _MatchArms_ :\
-> &nbsp;&nbsp; ( _MatchArm_ `=>`
->                             ( [_ExpressionWithoutBlock_][_Expression_] `,`
->                             | [_ExpressionWithBlock_][_Expression_] `,`<sup>?</sup> )
->                           )<sup>\*</sup>\
-> &nbsp;&nbsp; _MatchArm_ `=>` [_Expression_] `,`<sup>?</sup>
->
-> _MatchArm_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> [_Pattern_] _MatchArmGuard_<sup>?</sup>
->
-> _MatchArmGuard_ :\
-> &nbsp;&nbsp; `if` [_Expression_]
+```grammar,expressions
+MatchExpression ->
+    `match` Scrutinee `{`
+        InnerAttribute*
+        MatchArms?
+    `}`
+
+Scrutinee -> Expression _except [StructExprStruct]_
+
+MatchArms ->
+    ( MatchArm `=>` ( ExpressionWithoutBlock `,` | ExpressionWithBlock `,`? ) )*
+    MatchArm `=>` Expression `,`?
+
+MatchArm -> OuterAttribute* Pattern MatchArmGuard?
+
+MatchArmGuard -> `if` Expression
+```
+<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.match.intro]
 A *`match` expression* branches on a pattern.
@@ -164,19 +160,14 @@ The only attributes that have meaning on match arms are [`cfg`] and the [lint ch
 r[expr.match.attributes.inner]
 [Inner attributes] are allowed directly after the opening brace of the match expression in the same expression contexts as [attributes on block expressions].
 
-[_Expression_]: ../expressions.md
-[place expression]: ../expressions.md#place-expressions-and-value-expressions
-[value expression]: ../expressions.md#place-expressions-and-value-expressions
-[_InnerAttribute_]: ../attributes.md
-[_OuterAttribute_]: ../attributes.md
 [`cfg`]: ../conditional-compilation.md
-[lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
-[Range Expression]: range-expr.md
-
-[_Pattern_]: ../patterns.md
-[pattern]: ../patterns.md
-[Inner attributes]: ../attributes.md
-[Range Pattern]: ../patterns.md#range-patterns
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [binding mode]: ../patterns.md#binding-modes
+[Inner attributes]: ../attributes.md
+[lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+[pattern]: ../patterns.md
+[place expression]: ../expressions.md#place-expressions-and-value-expressions
+[Range Expression]: range-expr.md
+[Range Pattern]: ../patterns.md#range-patterns
 [scrutinee]: ../glossary.md#scrutinee
+[value expression]: ../expressions.md#place-expressions-and-value-expressions

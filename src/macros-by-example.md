@@ -2,44 +2,42 @@ r[macro.decl]
 # Macros By Example
 
 r[macro.decl.syntax]
-> **<sup>Syntax</sup>**\
-> _MacroRulesDefinition_ :\
-> &nbsp;&nbsp; `macro_rules` `!` [IDENTIFIER] _MacroRulesDef_
->
-> _MacroRulesDef_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MacroRules_ `)` `;`\
-> &nbsp;&nbsp; | `[` _MacroRules_ `]` `;`\
-> &nbsp;&nbsp; | `{` _MacroRules_ `}`
->
-> _MacroRules_ :\
-> &nbsp;&nbsp; _MacroRule_ ( `;` _MacroRule_ )<sup>\*</sup> `;`<sup>?</sup>
->
-> _MacroRule_ :\
-> &nbsp;&nbsp; _MacroMatcher_ `=>` _MacroTranscriber_
->
-> _MacroMatcher_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `(` _MacroMatch_<sup>\*</sup> `)`\
-> &nbsp;&nbsp; | `[` _MacroMatch_<sup>\*</sup> `]`\
-> &nbsp;&nbsp; | `{` _MacroMatch_<sup>\*</sup> `}`
->
-> _MacroMatch_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Token_]<sub>_except `$` and [delimiters]_</sub>\
-> &nbsp;&nbsp; | _MacroMatcher_\
-> &nbsp;&nbsp; | `$` ( [IDENTIFIER_OR_KEYWORD] <sub>_except `crate`_</sub> | [RAW_IDENTIFIER] | `_` ) `:` _MacroFragSpec_\
-> &nbsp;&nbsp; | `$` `(` _MacroMatch_<sup>+</sup> `)` _MacroRepSep_<sup>?</sup> _MacroRepOp_
->
-> _MacroFragSpec_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `block` | `expr` | `expr_2021` | `ident` | `item` | `lifetime` | `literal`\
-> &nbsp;&nbsp; | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
->
-> _MacroRepSep_ :\
-> &nbsp;&nbsp; [_Token_]<sub>_except [delimiters] and MacroRepOp_</sub>
->
-> _MacroRepOp_ :\
-> &nbsp;&nbsp; `*` | `+` | `?`
->
-> _MacroTranscriber_ :\
-> &nbsp;&nbsp; [_DelimTokenTree_]
+```grammar,macros
+MacroRulesDefinition ->
+    `macro_rules` `!` IDENTIFIER MacroRulesDef
+
+MacroRulesDef ->
+      `(` MacroRules `)` `;`
+    | `[` MacroRules `]` `;`
+    | `{` MacroRules `}`
+
+MacroRules ->
+    MacroRule ( `;` MacroRule )* `;`?
+
+MacroRule ->
+    MacroMatcher `=>` MacroTranscriber
+
+MacroMatcher ->
+      `(` MacroMatch* `)`
+    | `[` MacroMatch* `]`
+    | `{` MacroMatch* `}`
+
+MacroMatch ->
+      Token _except `$` and [delimiters][lex.token.delim]_
+    | MacroMatcher
+    | `$` ( IDENTIFIER_OR_KEYWORD _except `crate`_ | RAW_IDENTIFIER | `_` ) `:` MacroFragSpec
+    | `$` `(` MacroMatch+ `)` MacroRepSep? MacroRepOp
+
+MacroFragSpec ->
+      `block` | `expr` | `expr_2021` | `ident` | `item` | `lifetime` | `literal`
+    | `meta` | `pat` | `pat_param` | `path` | `stmt` | `tt` | `ty` | `vis`
+
+MacroRepSep -> Token _except [delimiters][lex.token.delim] and [MacroRepOp]_
+
+MacroRepOp -> `*` | `+` | `?`
+
+MacroTranscriber -> DelimTokenTree
+```
 
 r[macro.decl.intro]
 `macro_rules` allows users to define syntax extension in a declarative way.  We
@@ -133,21 +131,21 @@ fragment of the kind specified and binds it to the metavariable `$`_name_.
 r[macro.decl.meta.specifier]
 Valid fragment specifiers are:
 
-  * `block`: a [_BlockExpression_]
-  * `expr`: an [_Expression_]
-  * `expr_2021`: an [_Expression_] except [_UnderscoreExpression_] and [_ConstBlockExpression_] (see [macro.decl.meta.edition2024])
+  * `block`: a [BlockExpression]
+  * `expr`: an [Expression]
+  * `expr_2021`: an [Expression] except [UnderscoreExpression] and [ConstBlockExpression] (see [macro.decl.meta.edition2024])
   * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
-  * `item`: an [_Item_]
+  * `item`: an [Item]
   * `lifetime`: a [LIFETIME_TOKEN]
-  * `literal`: matches `-`<sup>?</sup>[_LiteralExpression_]
-  * `meta`: an [_Attr_], the contents of an attribute
-  * `pat`: a [_Pattern_] (see [macro.decl.meta.edition2021])
-  * `pat_param`: a [_PatternNoTopAlt_]
-  * `path`: a [_TypePath_] style path
-  * `stmt`: a [_Statement_] without the trailing semicolon (except for item statements that require semicolons)
-  * `tt`: a [_TokenTree_]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
-  * `ty`: a [_Type_]
-  * `vis`: a possibly empty [_Visibility_] qualifier
+  * `literal`: matches `-`<sup>?</sup>[LiteralExpression]
+  * `meta`: an [Attr], the contents of an attribute
+  * `pat`: a [Pattern] (see [macro.decl.meta.edition2021])
+  * `pat_param`: a [PatternNoTopAlt]
+  * `path`: a [TypePath] style path
+  * `stmt`: a [Statement][grammar-Statement] without the trailing semicolon (except for item statements that require semicolons)
+  * `tt`: a [TokenTree]&nbsp;(a single [token] or tokens in matching delimiters `()`, `[]`, or `{}`)
+  * `ty`: a [Type][grammar-Type]
+  * `vis`: a possibly empty [Visibility] qualifier
 
 r[macro.decl.meta.transcription]
 In the transcriber, metavariables are referred to simply by `$`_name_, since
@@ -160,15 +158,15 @@ transcribed more than once or not at all.
 
 r[macro.decl.meta.edition2021]
 > [!EDITION-2021]
-> Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [_Pattern_]).
+> Starting with the 2021 edition, `pat` fragment-specifiers match top-level or-patterns (that is, they accept [Pattern]).
 >
-> Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [_PatternNoTopAlt_]).
+> Before the 2021 edition, they match exactly the same fragments as `pat_param` (that is, they accept [PatternNoTopAlt]).
 >
 > The relevant edition is the one in effect for the `macro_rules!` definition.
 
 r[macro.decl.meta.edition2024]
 > [!EDITION-2024]
-> Before the 2024 edition, `expr` fragment specifiers do not match [_UnderscoreExpression_] or [_ConstBlockExpression_] at the top level. They are allowed within subexpressions.
+> Before the 2024 edition, `expr` fragment specifiers do not match [UnderscoreExpression] or [ConstBlockExpression] at the top level. They are allowed within subexpressions.
 >
 > The `expr_2021` fragment specifier exists to maintain backwards compatibility with editions before 2024.
 
@@ -354,7 +352,7 @@ imported this way are imported into the [`macro_use` prelude], not textually,
 which means that they can be shadowed by any other name. While macros imported
 by `#[macro_use]` can be used before the import statement, in case of a
 conflict, the last macro imported wins. Optionally, a list of macros to import
-can be specified using the [_MetaListIdents_] syntax; this is not supported
+can be specified using the [MetaListIdents] syntax; this is not supported
 when `#[macro_use]` is applied to a module.
 
 <!-- ignore: requires external crates -->
@@ -587,33 +585,12 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[`macro_use` prelude]: names/preludes.md#macro_use-prelude
 [block labels]: expressions/loop-expr.md#labelled-block-expressions
+[delimiters]: tokens.md#delimiters
+[formal specification]: macro-ambiguity.md
 [Hygiene]: #hygiene
-[IDENTIFIER]: identifiers.md
-[IDENTIFIER_OR_KEYWORD]: identifiers.md
-[RAW_IDENTIFIER]: identifiers.md
-[LIFETIME_TOKEN]: tokens.md#lifetimes-and-loop-labels
+[loop labels]: expressions/loop-expr.md#loop-labels
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
-[_Attr_]: attributes.md
-[_BlockExpression_]: expressions/block-expr.md
-[_ConstBlockExpression_]: expressions/block-expr.md#const-blocks
-[_DelimTokenTree_]: macros.md
-[_Expression_]: expressions.md
-[_Item_]: items.md
-[_LiteralExpression_]: expressions/literal-expr.md
-[loop labels]: expressions/loop-expr.md#loop-labels
-[_MetaListIdents_]: attributes.md#meta-item-attribute-syntax
-[_Pattern_]: patterns.md
-[_PatternNoTopAlt_]: patterns.md
-[_Statement_]: statements.md
-[_TokenTree_]: macros.md#macro-invocation
-[_Token_]: tokens.md
-[delimiters]: tokens.md#delimiters
-[_TypePath_]: paths.md#paths-in-types
-[_Type_]: types.md#type-expressions
-[_UnderscoreExpression_]: expressions/underscore-expr.md
-[_Visibility_]: visibility-and-privacy.md
-[formal specification]: macro-ambiguity.md
 [token]: tokens.md
-[`macro_use` prelude]: names/preludes.md#macro_use-prelude

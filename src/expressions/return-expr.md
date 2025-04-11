@@ -2,9 +2,9 @@ r[expr.return]
 # `return` expressions
 
 r[expr.return.syntax]
-> **<sup>Syntax</sup>**\
-> _ReturnExpression_ :\
-> &nbsp;&nbsp; `return` [_Expression_]<sup>?</sup>
+```grammar,expressions
+ReturnExpression -> `return` Expression?
+```
 
 r[expr.return.intro]
 Return expressions are denoted with the keyword `return`.
@@ -22,5 +22,3 @@ fn max(a: i32, b: i32) -> i32 {
     return b;
 }
 ```
-
-[_Expression_]: ../expressions.md

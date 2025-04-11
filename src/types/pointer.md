@@ -9,9 +9,9 @@ r[type.pointer.reference]
 ## References (`&` and `&mut`)
 
 r[type.pointer.reference.syntax]
-> **<sup>Syntax</sup>**\
-> _ReferenceType_ :\
-> &nbsp;&nbsp; `&` [_Lifetime_]<sup>?</sup> `mut`<sup>?</sup> [_TypeNoBounds_]
+```grammar,types
+ReferenceType -> `&` Lifetime? `mut`? TypeNoBounds
+```
 
 r[type.pointer.reference.shared]
 ### Shared references (`&`)
@@ -44,9 +44,9 @@ r[type.pointer.raw]
 ## Raw pointers (`*const` and `*mut`)
 
 r[type.pointer.raw.syntax]
-> **<sup>Syntax</sup>**\
-> _RawPointerType_ :\
-> &nbsp;&nbsp; `*` ( `mut` | `const` ) [_TypeNoBounds_]
+```grammar,types
+RawPointerType -> `*` ( `mut` | `const` ) TypeNoBounds
+```
 
 r[type.pointer.raw.intro]
 Raw pointers are pointers without safety or liveness guarantees.
@@ -89,8 +89,6 @@ the inverse direction (transmuting from an integer or array of integers to `P`) 
 However, the pointer produced via such a transmutation may not be dereferenced (not even if `T` has size zero).
 
 [Interior mutability]: ../interior-mutability.md
-[_Lifetime_]: ../trait-bounds.md
-[_TypeNoBounds_]: ../types.md#type-expressions
 [`unsafe` operation]: ../unsafety.md
 [dynamically sized types]: ../dynamically-sized-types.md
 [temporary value]: ../expressions.md#temporaries

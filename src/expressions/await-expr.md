@@ -2,9 +2,9 @@ r[expr.await]
 # Await expressions
 
 r[expr.await.syntax]
-> **<sup>Syntax</sup>**\
-> _AwaitExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `.` `await`
+```grammar,expressions
+AwaitExpression -> Expression `.` `await`
+```
 
 r[expr.await.intro]
 An `await` expression is a syntactic construct for suspending a computation
@@ -58,7 +58,6 @@ match operand.into_future() {
 where the `yield` pseudo-code returns `Poll::Pending` and, when re-invoked, resumes execution from that point.
 The variable `current_context` refers to the context taken from the async environment.
 
-[_Expression_]: ../expressions.md
 [`async fn`]: ../items/functions.md#async-functions
 [`async` closure]: closure-expr.md#async-closures
 [`async` block]: block-expr.md#async-blocks

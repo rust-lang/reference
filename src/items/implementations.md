@@ -2,24 +2,23 @@ r[items.impl]
 # Implementations
 
 r[items.impl.syntax]
-> **<sup>Syntax</sup>**\
-> _Implementation_ :\
-> &nbsp;&nbsp; _InherentImpl_ | _TraitImpl_
->
-> _InherentImpl_ :\
-> &nbsp;&nbsp; `impl` [_GenericParams_]<sup>?</sup>&nbsp;[_Type_]&nbsp;[_WhereClause_]<sup>?</sup> `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
-> &nbsp;&nbsp; `}`
->
-> _TraitImpl_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup> `impl` [_GenericParams_]<sup>?</sup> `!`<sup>?</sup>
->              [_TypePath_] `for` [_Type_]\
-> &nbsp;&nbsp; [_WhereClause_]<sup>?</sup>\
-> &nbsp;&nbsp; `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_AssociatedItem_]<sup>\*</sup>\
-> &nbsp;&nbsp; `}`
+```grammar,items
+Implementation -> InherentImpl | TraitImpl
+
+InherentImpl ->
+    `impl` GenericParams? Type WhereClause? `{`
+        InnerAttribute*
+        AssociatedItem*
+    `}`
+
+TraitImpl ->
+    `unsafe`? `impl` GenericParams? `!`? TypePath `for` Type
+    WhereClause?
+    `{`
+        InnerAttribute*
+        AssociatedItem*
+    `}`
+```
 
 r[items.impl.intro]
 An _implementation_ is an item that associates items with an _implementing type_.
@@ -301,12 +300,6 @@ attributes must come before any associated items. The attributes that have
 meaning here are [`cfg`], [`deprecated`], [`doc`], and [the lint check
 attributes].
 
-[_AssociatedItem_]: associated-items.md
-[_GenericParams_]: generics.md
-[_InnerAttribute_]: ../attributes.md
-[_TypePath_]: ../paths.md#paths-in-types
-[_Type_]: ../types.md#type-expressions
-[_WhereClause_]: generics.md#where-clauses
 [trait]: traits.md
 [associated constants]: associated-items.md#associated-constants
 [associated functions]: associated-items.md#associated-functions-and-methods

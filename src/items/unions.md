@@ -2,10 +2,10 @@ r[items.union]
 # Unions
 
 r[items.union.syntax]
-> **<sup>Syntax</sup>**\
-> _Union_ :\
-> &nbsp;&nbsp; `union` [IDENTIFIER]&nbsp;[_GenericParams_]<sup>?</sup> [_WhereClause_]<sup>?</sup>
->   `{`[_StructFields_]<sup>?</sup> `}`
+```grammar,items
+Union ->
+    `union` IDENTIFIER GenericParams? WhereClause? `{` StructFields? `}`
+```
 
 r[items.union.intro]
 A union declaration uses the same syntax as a struct declaration, except with
@@ -213,10 +213,6 @@ aspects of Rust language (such as privacy, name resolution, type inference,
 generics, trait implementations, inherent implementations, coherence, pattern
 checking, etc etc etc).
 
-[IDENTIFIER]: ../identifiers.md
-[_GenericParams_]: generics.md
-[_WhereClause_]: generics.md#where-clauses
-[_StructFields_]: structs.md
 [`transmute`]: std::mem::transmute
 [boolean type]: ../types/boolean.md
 [the C representation]: ../type-layout.md#reprc-unions

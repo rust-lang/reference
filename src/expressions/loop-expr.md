@@ -2,22 +2,16 @@ r[expr.loop]
 # Loops and other breakable expressions
 
 r[expr.loop.syntax]
-> **<sup>Syntax</sup>**\
-> _LoopExpression_ :\
-> &nbsp;&nbsp; [_LoopLabel_]<sup>?</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_InfiniteLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicateLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_PredicatePatternLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_IteratorLoopExpression_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | [_LabelBlockExpression_]\
-> &nbsp;&nbsp; )
-
-[_LoopLabel_]: #loop-labels
-[_InfiniteLoopExpression_]: #infinite-loops
-[_PredicateLoopExpression_]: #predicate-loops
-[_PredicatePatternLoopExpression_]: #predicate-pattern-loops
-[_IteratorLoopExpression_]: #iterator-loops
-[_LabelBlockExpression_]: #labelled-block-expressions
+```grammar,expressions
+LoopExpression ->
+    LoopLabel? (
+        InfiniteLoopExpression
+      | PredicateLoopExpression
+      | PredicatePatternLoopExpression
+      | IteratorLoopExpression
+      | LabelBlockExpression
+    )
+```
 
 r[expr.loop.intro]
 Rust supports five loop expressions:
@@ -41,9 +35,9 @@ r[expr.loop.infinite]
 ## Infinite loops
 
 r[expr.loop.infinite.syntax]
-> **<sup>Syntax</sup>**\
-> _InfiniteLoopExpression_ :\
-> &nbsp;&nbsp; `loop` [_BlockExpression_]
+```grammar,expressions
+InfiniteLoopExpression -> `loop` BlockExpression
+```
 
 r[expr.loop.infinite.intro]
 A `loop` expression repeats execution of its body continuously:
@@ -59,9 +53,10 @@ r[expr.loop.while]
 ## Predicate loops
 
 r[expr.loop.while.syntax]
-> **<sup>Syntax</sup>**\
-> _PredicateLoopExpression_ :\
-> &nbsp;&nbsp; `while` [_Expression_]<sub>_except struct expression_</sub> [_BlockExpression_]
+```grammar,expressions
+PredicateLoopExpression -> `while` Expression _except [StructExprStruct]_ BlockExpression
+```
+<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.loop.while.intro]
 A `while` loop begins by evaluating the [boolean] loop conditional operand.
@@ -85,10 +80,10 @@ r[expr.loop.while.let]
 ## Predicate pattern loops
 
 r[expr.loop.while.let.syntax]
-> **<sup>Syntax</sup>**\
-> [_PredicatePatternLoopExpression_] :\
-> &nbsp;&nbsp; `while` `let` [_Pattern_] `=` [_Scrutinee_]<sub>_except lazy boolean operator expression_</sub>
->              [_BlockExpression_]
+```grammar,expressions
+PredicatePatternLoopExpression ->
+    `while` `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_ BlockExpression
+```
 
 r[expr.loop.while.let.intro]
 A `while let` loop is semantically similar to a `while` loop but in place of a condition expression it expects the keyword `let` followed by a pattern, an `=`, a [scrutinee] expression and a block expression.
@@ -145,16 +140,17 @@ while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
 ```
 
 r[expr.loop.while.let.lazy-bool]
-As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][_LazyBooleanOperatorExpression_].
+As is the case in [`if let` expressions], the scrutinee cannot be a [lazy boolean operator expression][expr.bool-logic].
 
 r[expr.loop.for]
 ## Iterator loops
 
 r[expr.loop.for.syntax]
-> **<sup>Syntax</sup>**\
-> _IteratorLoopExpression_ :\
-> &nbsp;&nbsp; `for` [_Pattern_] `in` [_Expression_]<sub>_except struct expression_</sub>
->              [_BlockExpression_]
+```grammar,expressions
+IteratorLoopExpression ->
+    `for` Pattern `in` Expression _except [StructExprStruct]_ BlockExpression
+```
+<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.loop.for.intro]
 A `for` expression is a syntactic construct for looping over elements provided by an implementation of `std::iter::IntoIterator`.
@@ -225,9 +221,9 @@ r[expr.loop.label]
 ## Loop labels
 
 r[expr.loop.label.syntax]
-> **<sup>Syntax</sup>**\
-> _LoopLabel_ :\
-> &nbsp;&nbsp; [LIFETIME_OR_LABEL] `:`
+```grammar,expressions
+LoopLabel -> LIFETIME_OR_LABEL `:`
+```
 
 r[expr.loop.label.intro]
 A loop expression may optionally have a _label_. The label is written as a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`, `'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
@@ -255,9 +251,9 @@ r[expr.loop.break]
 ## `break` expressions
 
 r[expr.loop.break.syntax]
-> **<sup>Syntax</sup>**\
-> _BreakExpression_ :\
-> &nbsp;&nbsp; `break` [LIFETIME_OR_LABEL]<sup>?</sup> [_Expression_]<sup>?</sup>
+```grammar,expressions
+BreakExpression -> `break` LIFETIME_OR_LABEL? Expression?
+```
 
 r[expr.loop.break.intro]
 When `break` is encountered, execution of the associated loop body is immediately terminated, for example:
@@ -292,9 +288,10 @@ A `break` expression is only permitted in the body of a loop, and has one of the
 r[expr.loop.block-labels]
 ## Labelled block expressions
 
-> **<sup>Syntax</sup>**\
-> _LabelBlockExpression_ :\
-> &nbsp;&nbsp; [_BlockExpression_]
+r[expr.loop.block-labels.syntax]
+```grammar,expressions
+LabelBlockExpression -> BlockExpression
+```
 
 r[expr.loop.block-labels.intro]
 Labelled block expressions are exactly like block expressions, except that they allow using `break` expressions within the block.
@@ -328,9 +325,9 @@ r[expr.loop.continue]
 ## `continue` expressions
 
 r[expr.loop.continue.syntax]
-> **<sup>Syntax</sup>**\
-> _ContinueExpression_ :\
-> &nbsp;&nbsp; `continue` [LIFETIME_OR_LABEL]<sup>?</sup>
+```grammar,expressions
+ContinueExpression -> `continue` LIFETIME_OR_LABEL?
+```
 
 r[expr.loop.continue.intro]
 When `continue` is encountered, the current iteration of the associated loop body is immediately terminated, returning control to the loop *head*.
@@ -372,14 +369,8 @@ r[expr.loop.break-value.loop]
 In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
 `break` without an expression is considered identical to `break` with expression `()`.
 
-[LIFETIME_OR_LABEL]: ../tokens.md#lifetimes-and-loop-labels
-[_BlockExpression_]: block-expr.md
-[_Expression_]: ../expressions.md
-[_Pattern_]: ../patterns.md
-[_Scrutinee_]: match-expr.md
 [`match` expression]: match-expr.md
 [boolean]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
-[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [`if let` expressions]: if-expr.md#if-let-expressions

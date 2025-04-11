@@ -6,7 +6,7 @@ The *`derive` attribute* allows new [items] to be automatically generated for
 data structures.
 
 r[attributes.derive.syntax]
-It uses the [_MetaListPaths_] syntax to specify a list of
+It uses the [MetaListPaths] syntax to specify a list of
 traits to implement or paths to [derive macros] to process.
 
 For example, the following will create an [`impl` item] for the
@@ -43,7 +43,6 @@ The *`automatically_derived` attribute* is automatically added to
 has no direct effect, but it may be used by tools and diagnostic lints to
 detect these automatically generated implementations.
 
-[_MetaListPaths_]: ../attributes.md#meta-item-attribute-syntax
 [`impl` item]: ../items/implementations.md
 [items]: ../items.md
 [derive macros]: ../procedural-macros.md#derive-macros

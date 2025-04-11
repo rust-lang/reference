@@ -2,9 +2,9 @@ r[expr.placeholder]
 # `_` expressions
 
 r[expr.placeholder.syntax]
-> **<sup>Syntax</sup>**\
-> _UnderscoreExpression_ :\
-> &nbsp;&nbsp; `_`
+```grammar,expressions
+UnderscoreExpression -> `_`
+```
 
 r[expr.placeholder.intro]
 Underscore expressions, denoted with the symbol `_`, are used to signify a

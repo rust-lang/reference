@@ -17,7 +17,7 @@ The *`windows_subsystem` attribute* may be applied at the crate level to set
 the [subsystem] when linking on a Windows target.
 
 r[runtime.windows_subsystem.syntax]
-It uses the [_MetaNameValueStr_] syntax to specify the subsystem with a value of either
+It uses the [MetaNameValueStr] syntax to specify the subsystem with a value of either
 `console` or `windows`.
 
 r[runtime.windows_subsystem.ignored]
@@ -36,7 +36,6 @@ display a console window on startup. It will run detached from any existing cons
 #![windows_subsystem = "windows"]
 ```
 
-[_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`GlobalAlloc`]: alloc::alloc::GlobalAlloc
 [crate types]: linkage.md
 [static item]: items/static-items.md
