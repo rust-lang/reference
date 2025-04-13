@@ -20,7 +20,7 @@ A *block expression*, or *block*, is a control flow expression and anonymous nam
 r[expr.block.sequential-evaluation]
 As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
 
-r[expr.block.namepsace]
+r[expr.block.namespace]
 As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by `let` statements are in scope from the next statement until the end of the block.
 See the [scopes] chapter for more details.
 
