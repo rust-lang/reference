@@ -187,6 +187,7 @@ fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
     let expected: HashSet<_> = [
         "CfgAttrAttribute",
         "CfgAttribute",
+        "CHAR",
         "Crate",
         "INNER_LINE_DOC",
         "LINE_COMMENT",

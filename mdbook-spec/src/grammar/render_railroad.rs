@@ -199,8 +199,8 @@ impl Expression {
             }
             ExpressionKind::NegExpression(e) => {
                 let n = e.render_railroad(stack, link_map, reverse)?;
-                let lbox = LabeledBox::new(n, Comment::new("any character except".to_string()));
-                Box::new(lbox)
+                let ch = node_for_nt(link_map, "CHAR");
+                Box::new(Except::new(Box::new(ch), n))
             }
             ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
         };
@@ -241,4 +241,43 @@ fn strip_markdown(s: &str) -> String {
     static LINK_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"(?s)\[([^\]]+)\](?:\[[^\]]*\]|\([^)]*\))?").unwrap());
     LINK_RE.replace_all(s, "$1").to_string()
+}
+
+struct Except {
+    inner: LabeledBox<Box<dyn Node>, Box<dyn Node>>,
+}
+
+impl Except {
+    fn new(inner: Box<dyn Node>, label: Box<dyn Node>) -> Self {
+        let grid = Box::new(VerticalGrid::new(vec![
+            Box::new(Comment::new("⚠️ with the exception of".to_owned())) as Box<dyn Node>,
+            label,
+        ])) as Box<dyn Node>;
+        let mut this = Self {
+            inner: LabeledBox::new(inner, grid),
+        };
+        this.inner
+            .attr("class".to_owned())
+            .or_default()
+            .push_str(" exceptbox");
+        this
+    }
+}
+
+impl Node for Except {
+    fn entry_height(&self) -> i64 {
+        self.inner.entry_height()
+    }
+
+    fn height(&self) -> i64 {
+        self.inner.height()
+    }
+
+    fn width(&self) -> i64 {
+        self.inner.width()
+    }
+
+    fn draw(&self, x: i64, y: i64, h_dir: svg::HDir) -> svg::Element {
+        self.inner.draw(x, y, h_dir)
+    }
 }

@@ -52,6 +52,8 @@ The following are common definitions used in the grammar.
 
 r[input.syntax]
 ```grammar,lexer
+CHAR -> <a Unicode scalar value>
+
 NUL -> U+0000
 
 TAB -> U+0009

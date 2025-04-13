@@ -705,3 +705,7 @@ svg.railroad g.labeledbox>rect {
     stroke-dasharray: 5px;
     fill: rgba(90, 90, 150, .1);
 }
+
+svg.railroad g.exceptbox > rect {
+    fill:rgba(245, 160, 125, .1);
+}
