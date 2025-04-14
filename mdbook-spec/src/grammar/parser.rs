@@ -136,6 +136,8 @@ impl Parser<'_> {
     }
 
     fn parse_production(&mut self, category: &str, path: &Path) -> Result<Production> {
+        let is_root = self.parse_is_root();
+        self.space0();
         let name = self
             .parse_name()
             .ok_or_else(|| self.error("expected production name".to_string()))?;
@@ -148,7 +150,12 @@ impl Parser<'_> {
             category: category.to_string(),
             expression,
             path: path.to_owned(),
+            is_root,
         })
+    }
+
+    fn parse_is_root(&mut self) -> bool {
+        self.take_str("@root")
     }
 
     fn parse_name(&mut self) -> Option<String> {

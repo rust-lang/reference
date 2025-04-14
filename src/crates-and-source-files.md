@@ -3,7 +3,7 @@ r[crate]
 
 r[crate.syntax]
 ```grammar,items
-Crate ->
+@root Crate ->
     InnerAttribute*
     Item*
 ```

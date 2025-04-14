@@ -52,7 +52,7 @@ The following are common definitions used in the grammar.
 
 r[input.syntax]
 ```grammar,lexer
-CHAR -> <a Unicode scalar value>
+@root CHAR -> <a Unicode scalar value>
 
 NUL -> U+0000
 

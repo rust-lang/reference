@@ -164,19 +164,19 @@ forms:
 
 r[attributes.meta.builtin.syntax]
 ```grammar,attributes
-MetaWord ->
+@root MetaWord ->
     IDENTIFIER
 
 MetaNameValueStr ->
     IDENTIFIER `=` (STRING_LITERAL | RAW_STRING_LITERAL)
 
-MetaListPaths ->
+@root MetaListPaths ->
     IDENTIFIER `(` ( SimplePath (`,` SimplePath)* `,`? )? `)`
 
-MetaListIdents ->
+@root MetaListIdents ->
     IDENTIFIER `(` ( IDENTIFIER (`,` IDENTIFIER)* `,`? )? `)`
 
-MetaListNameValueStr ->
+@root MetaListNameValueStr ->
     IDENTIFIER `(` ( MetaNameValueStr (`,` MetaNameValueStr)* `,`? )? `)`
 ```
 

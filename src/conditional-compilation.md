@@ -315,7 +315,7 @@ r[cfg.attr]
 
 r[cfg.attr.syntax]
 ```grammar,configuration
-CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
+@root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
 ```
 
 <!-- should we say they're active attributes here? -->
@@ -382,7 +382,7 @@ r[cfg.cfg_attr]
 
 r[cfg.cfg_attr.syntax]
 ```grammar,configuration
-CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
+@root CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
 
 CfgAttrs -> Attr (`,` Attr)* `,`?
 ```

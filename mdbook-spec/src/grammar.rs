@@ -28,6 +28,7 @@ pub struct Production {
     expression: Expression,
     /// The path to the chapter where this is defined.
     path: PathBuf,
+    is_root: bool,
 }
 
 #[derive(Debug)]
@@ -139,7 +140,7 @@ impl Expression {
 static GRAMMAR_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?ms)^```grammar,([^\n]+)\n(.*?)^```").unwrap());
 static NAMES_RE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?m)^([A-Za-z0-9_]+)(?: \([^)]+\))? ->").unwrap());
+    LazyLock::new(|| Regex::new(r"(?m)^(?:@root )?([A-Za-z0-9_]+)(?: \([^)]+\))? ->").unwrap());
 
 /// Loads the [`Grammar`] from the book.
 pub fn load_grammar(book: &Book, diag: &mut Diagnostics) -> Grammar {
@@ -183,38 +184,30 @@ fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
     grammar.visit_nt(&mut |nt| {
         set.remove(nt);
     });
-    // TODO: We may want to rethink how some of these are structured.
-    let expected: HashSet<_> = [
-        "CfgAttrAttribute",
-        "CfgAttribute",
-        "CHAR",
-        "Crate",
-        "INNER_LINE_DOC",
-        "LINE_COMMENT",
-        "MetaListIdents",
-        "MetaListNameValueStr",
-        "MetaListPaths",
-        "MetaWord",
-        "OUTER_LINE_DOC",
-    ]
-    .into_iter()
-    .collect();
+    let expected: HashSet<_> = grammar
+        .productions
+        .values()
+        .filter_map(|p| p.is_root.then(|| p.name.as_str()))
+        .collect();
     if set != expected {
         let new: Vec<_> = set.difference(&expected).collect();
         let removed: Vec<_> = expected.difference(&set).collect();
         if !new.is_empty() {
             warn_or_err!(
                 diag,
-                "New grammar production detected that is not used in any other production.\n\
-                 If this is expected, add it to the `check_unexpected_roots` function.\n\
-                 If not, make sure it is spelled correctly and used in another production.\n\
+                "New grammar production detected that is not used in any other\n\
+                 production. If this is expected, mark the production with\n\
+                 `@root`. If not, make sure it is spelled correctly and used in\n\
+                 another production.\n\
+                 \n\
                  The new names are: {new:?}\n"
             );
         } else if !removed.is_empty() {
             warn_or_err!(
                 diag,
                 "Old grammar production root seems to have been removed.\n\
-                 If this is expected, remove it from the `check_unexpected_roots` function.\n\
+                 If this is expected, remove `@root` from the production.\n\
+                 \n\
                  The removed names are: {removed:?}\n"
             );
         } else {

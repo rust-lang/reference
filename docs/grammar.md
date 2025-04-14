@@ -16,6 +16,8 @@ The category is used to group similar productions on the grammar summary page in
 
 The syntax for the grammar itself is pretty close to what is described in the [Notation chapter](../src/notation.md), though there are some rendering differences.
 
+A "root" production, marked with `@root`, is one that is not used in any other production.
+
 The syntax for the grammar itself (written in itself, hopefully that's not too confusing) is:
 
 ```
@@ -25,7 +27,7 @@ BACKTICK -> U+0060
 
 LF -> U+000A
 
-Production -> Name ` ->` Expression
+Production -> `@root`? Name ` ->` Expression
 
 Name -> <Alphanumeric or `_`>+
 
