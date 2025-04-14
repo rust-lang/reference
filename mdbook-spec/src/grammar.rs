@@ -200,8 +200,8 @@ fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
     .into_iter()
     .collect();
     if set != expected {
-        let new: Vec<_> = set.symmetric_difference(&expected).collect();
-        let removed: Vec<_> = expected.symmetric_difference(&set).collect();
+        let new: Vec<_> = set.difference(&expected).collect();
+        let removed: Vec<_> = expected.difference(&set).collect();
         if !new.is_empty() {
             warn_or_err!(
                 diag,
