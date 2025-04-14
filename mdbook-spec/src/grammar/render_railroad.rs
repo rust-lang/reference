@@ -163,15 +163,12 @@ impl Expression {
                 Box::new(Optional::new(n))
             }
             ExpressionKind::Repeat(e) => {
-                // Railroad renders everything in the opposite order. However,
-                // our grammar is not written that way, so we need to undo the
-                // reversal.
-                let n = e.render_railroad(stack, link_map, !reverse)?;
-                Box::new(Repeat::new(railroad::Empty, n))
+                let n = e.render_railroad(stack, link_map, reverse)?;
+                Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
             }
             ExpressionKind::RepeatNonGreedy(e) => {
-                let n = e.render_railroad(stack, link_map, !reverse)?;
-                let r = Box::new(Repeat::new(railroad::Empty, n));
+                let n = e.render_railroad(stack, link_map, reverse)?;
+                let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
                 let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                 Box::new(lbox)
             }
