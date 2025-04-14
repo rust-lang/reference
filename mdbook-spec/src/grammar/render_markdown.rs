@@ -20,9 +20,8 @@ impl Grammar {
     ) -> anyhow::Result<()> {
         let mut iter = names.into_iter().peekable();
         while let Some(name) = iter.next() {
-            let prod = match self.productions.get(*name) {
-                Some(p) => p,
-                None => bail!("could not find grammar production named `{name}`"),
+            let Some(prod) = self.productions.get(*name) else {
+                bail!("could not find grammar production named `{name}`");
             };
             prod.render_markdown(link_map, rr_link_map, output, for_summary);
             if iter.peek().is_some() {
