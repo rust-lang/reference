@@ -71,7 +71,7 @@ impl Production {
         link_map: &HashMap<String, String>,
         md_link_map: &HashMap<String, String>,
     ) -> Diagram<Box<dyn Node>> {
-        let n = self.expression.render_railroad(stack, link_map, false);
+        let n = self.expression.render_railroad(stack, link_map);
         let dest = md_link_map
             .get(&self.name)
             .map(|path| path.to_string())
@@ -92,7 +92,6 @@ impl Expression {
         &self,
         stack: bool,
         link_map: &HashMap<String, String>,
-        reverse: bool,
     ) -> Option<Box<dyn Node>> {
         let n: Box<dyn Node> = match &self.kind {
             ExpressionKind::Grouped(e) => {
@@ -100,26 +99,22 @@ impl Expression {
                 // expression is usually an Alt or Optional or something like
                 // that which ends up as a distinct railroad node. But I'm not
                 // sure.
-                e.render_railroad(stack, link_map, reverse)?
+                e.render_railroad(stack, link_map)?
             }
             ExpressionKind::Alt(es) => {
                 let choices: Vec<_> = es
                     .iter()
-                    .map(|e| e.render_railroad(stack, link_map, reverse))
+                    .map(|e| e.render_railroad(stack, link_map))
                     .filter_map(|n| n)
                     .collect();
                 Box::new(Choice::<Box<dyn Node>>::new(choices))
             }
             ExpressionKind::Sequence(es) => {
-                let mut es: Vec<_> = es.iter().collect();
-                // For reversing, see ::Repeat for an explanation.
-                if reverse {
-                    es.reverse();
-                }
+                let es: Vec<_> = es.iter().collect();
                 let make_seq = |es: &[&Expression]| {
                     let seq: Vec<_> = es
                         .iter()
-                        .map(|e| e.render_railroad(stack, link_map, reverse))
+                        .map(|e| e.render_railroad(stack, link_map))
                         .filter_map(|n| n)
                         .collect();
                     let seq: Sequence<Box<dyn Node>> = Sequence::new(seq);
@@ -159,31 +154,31 @@ impl Expression {
                 }
             }
             ExpressionKind::Optional(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 Box::new(Optional::new(n))
             }
             ExpressionKind::Repeat(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
             }
             ExpressionKind::RepeatNonGreedy(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
                 let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                 Box::new(lbox)
             }
             ExpressionKind::RepeatPlus(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 Box::new(Repeat::new(n, railroad::Empty))
             }
             ExpressionKind::RepeatPlusNonGreedy(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 let r = Repeat::new(n, railroad::Empty);
                 let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                 Box::new(lbox)
             }
             ExpressionKind::RepeatRange(e, a, b) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 let cmt = match (a, b) {
                     (Some(a), Some(b)) => format!("repeat between {a} and {b} times"),
                     (None, Some(b)) => format!("repeat at most {b} times"),
@@ -202,7 +197,7 @@ impl Expression {
                 Box::new(Choice::<Box<dyn Node>>::new(ns))
             }
             ExpressionKind::NegExpression(e) => {
-                let n = e.render_railroad(stack, link_map, reverse)?;
+                let n = e.render_railroad(stack, link_map)?;
                 let ch = node_for_nt(link_map, "CHAR");
                 Box::new(Except::new(Box::new(ch), n))
             }
