@@ -23,9 +23,14 @@ function spec_toggle_tests(rule_id) {
     }
 }
 
-function toggle_grammar() {
+function toggle_railroad() {
     const grammarRailroad = get_railroad();
     set_railroad(!grammarRailroad);
+    update_railroad();
+}
+
+function show_railroad() {
+    set_railroad(true);
     update_railroad();
 }
 
@@ -58,7 +63,7 @@ function update_railroad() {
             element.classList.add('grammar-hidden');
         }
     });
-    const buttons = document.querySelectorAll('.grammar-toggle');
+    const buttons = document.querySelectorAll('.grammar-toggle-railroad');
     buttons.forEach(button => {
         if (grammarRailroad) {
             button.innerText = "Hide Railroad";

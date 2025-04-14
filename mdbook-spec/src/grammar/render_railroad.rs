@@ -14,6 +14,7 @@ impl Grammar {
         &self,
         names: &[&str],
         link_map: &HashMap<String, String>,
+        md_link_map: &HashMap<String, String>,
         output: &mut String,
         for_summary: bool,
     ) -> anyhow::Result<()> {
@@ -22,7 +23,7 @@ impl Grammar {
                 Some(p) => p,
                 None => bail!("could not find grammar production named `{name}`"),
             };
-            prod.render_railroad(link_map, output, for_summary);
+            prod.render_railroad(link_map, md_link_map, output, for_summary);
         }
         Ok(())
     }
@@ -41,16 +42,17 @@ impl Production {
     fn render_railroad(
         &self,
         link_map: &HashMap<String, String>,
+        md_link_map: &HashMap<String, String>,
         output: &mut String,
         for_summary: bool,
     ) {
-        let mut dia = self.make_diagram(false, link_map);
+        let mut dia = self.make_diagram(false, link_map, md_link_map);
         // If the diagram is very wide, try stacking it to reduce the width.
         // This 900 is somewhat arbitrary based on looking at productions that
         // looked too squished. If your diagram is still too squished,
         // consider adding more rules to shorten it.
         if dia.width() > 900 {
-            dia = self.make_diagram(true, link_map);
+            dia = self.make_diagram(true, link_map, md_link_map);
         }
         writeln!(
             output,
@@ -67,12 +69,17 @@ impl Production {
         &self,
         stack: bool,
         link_map: &HashMap<String, String>,
+        md_link_map: &HashMap<String, String>,
     ) -> Diagram<Box<dyn Node>> {
         let n = self.expression.render_railroad(stack, link_map, false);
+        let dest = md_link_map
+            .get(&self.name)
+            .map(|path| path.to_string())
+            .unwrap_or_else(|| format!("missing"));
         let seq: Sequence<Box<dyn Node>> =
             Sequence::new(vec![Box::new(SimpleStart), n.unwrap(), Box::new(SimpleEnd)]);
         let vert = VerticalGrid::<Box<dyn Node>>::new(vec![
-            Box::new(Comment::new(self.name.clone())),
+            Box::new(Link::new(Comment::new(self.name.clone()), dest)),
             Box::new(seq),
         ]);
 

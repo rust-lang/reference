@@ -626,7 +626,7 @@ main > .rule {
 }
 
 /* The toggle button. */
-.grammar-toggle {
+.grammar-toggle-railroad {
     width: 120px;
     padding: 5px 0px;
     border-radius: 5px;

@@ -14,6 +14,7 @@ impl Grammar {
         &self,
         names: &[&str],
         link_map: &HashMap<String, String>,
+        rr_link_map: &HashMap<String, String>,
         output: &mut String,
         for_summary: bool,
     ) -> anyhow::Result<()> {
@@ -23,7 +24,7 @@ impl Grammar {
                 Some(p) => p,
                 None => bail!("could not find grammar production named `{name}`"),
             };
-            prod.render_markdown(link_map, output, for_summary);
+            prod.render_markdown(link_map, rr_link_map, output, for_summary);
             if iter.peek().is_some() {
                 output.push_str("\n");
             }
@@ -45,14 +46,23 @@ impl Production {
     fn render_markdown(
         &self,
         link_map: &HashMap<String, String>,
+        rr_link_map: &HashMap<String, String>,
         output: &mut String,
         for_summary: bool,
     ) {
+        let dest = rr_link_map
+            .get(&self.name)
+            .map(|path| path.to_string())
+            .unwrap_or_else(|| format!("missing"));
         write!(
             output,
-            "<span class=\"grammar-text grammar-production\" id=\"{id}\">{name}</span> → ",
+            "<span class=\"grammar-text grammar-production\" id=\"{id}\" \
+               onclick=\"show_railroad()\"\
+             >\
+               [{name}]({dest})\
+             </span> → ",
             id = markdown_id(&self.name, for_summary),
-            name = self.name
+            name = self.name,
         )
         .unwrap();
         self.expression.render_markdown(link_map, output);

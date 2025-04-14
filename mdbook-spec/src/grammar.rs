@@ -309,7 +309,18 @@ fn render_names(
     };
 
     let markdown_link_map = updated_link_map(render_markdown::markdown_id);
-    if let Err(e) = grammar.render_markdown(&names, &markdown_link_map, &mut output, for_summary) {
+    // Modify the link map so that it contains the exact destination needed to
+    // link to the railroad productions, and to accommodate the summary
+    // chapter.
+    let railroad_link_map = updated_link_map(render_railroad::railroad_id);
+
+    if let Err(e) = grammar.render_markdown(
+        &names,
+        &markdown_link_map,
+        &railroad_link_map,
+        &mut output,
+        for_summary,
+    ) {
         warn_or_err!(
             diag,
             "grammar failed in chapter {:?}: {e}",
@@ -319,9 +330,9 @@ fn render_names(
 
     output.push_str(
         "\n\
-         <button class=\"grammar-toggle\" type=\"button\" \
-            title=\"Toggle grammar display\" \
-            onclick=\"toggle_grammar()\">\
+         <button class=\"grammar-toggle-railroad\" type=\"button\" \
+            title=\"Toggle railroad display\" \
+            onclick=\"toggle_railroad()\">\
             Show Railroad\
          </button>\n\
          </div>\n\
@@ -329,11 +340,13 @@ fn render_names(
          \n",
     );
 
-    // Modify the link map so that it contains the exact destination needed to
-    // link to the railroad productions, and to accommodate the summary
-    // chapter.
-    let railroad_link_map = updated_link_map(render_railroad::railroad_id);
-    if let Err(e) = grammar.render_railroad(&names, &railroad_link_map, &mut output, for_summary) {
+    if let Err(e) = grammar.render_railroad(
+        &names,
+        &railroad_link_map,
+        &markdown_link_map,
+        &mut output,
+        for_summary,
+    ) {
         warn_or_err!(
             diag,
             "grammar failed in chapter {:?}: {e}",
