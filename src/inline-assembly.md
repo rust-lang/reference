@@ -1210,9 +1210,6 @@ unsafe { core::arch::asm!("", options(pure)); }
 r[asm.options.checks.noreturn]
 - It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
 
-r[asm.options.checks.label-with-outputs]
-- It is a compile-time error to have any `label` blocks in an asm block with outputs.
-
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
 let z: i32;
@@ -1222,6 +1219,9 @@ unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
+
+r[asm.options.checks.label-with-outputs]
+- It is a compile-time error to have any `label` blocks in an asm block with outputs.
 
 r[asm.options.naked_asm-restriction]
 `naked_asm!` only supports the `att_syntax` and `raw` options. The remaining options are not meaningful because the inline assembly defines the whole function body.
