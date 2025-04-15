@@ -2,8 +2,9 @@ r[type.inferred]
 # Inferred type
 
 r[type.inferred.syntax]
-> **<sup>Syntax</sup>**\
-> _InferredType_ : `_`
+```grammar,types
+InferredType -> `_`
+```
 
 r[type.inferred.intro]
 The inferred type asks the compiler to infer the type if possible based on the

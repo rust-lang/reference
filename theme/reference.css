@@ -551,3 +551,161 @@ main > .rule {
     z-index: 1000;
     padding: 1rem;
 }
+
+/* The box that contains the grammar. */
+.grammar-container {
+    font-family: var(--mono-font);
+    /* Enable absolute positioning for the target chevron. */
+    position: relative;
+    background-color: var(--quote-bg);
+    border-block-start: .1em solid var(--quote-border);
+    border-block-end: .1em solid var(--quote-border);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 0 20px;
+}
+
+/* English words inside the grammar. */
+.grammar-text {
+    font-family: "Open Sans", sans-serif;
+}
+
+/* Places a box around literals to differentiate from other grammar punctuation like | and ( . */
+.grammar-literal {
+    font-family: var(--mono-font);
+    border-radius: 4px;
+    border: solid 1px var(--theme-popup-border);
+    font-weight: bold;
+    font-size: var(--code-font-size);
+    padding: 1px 4px;
+    color: var(--inline-code-color);
+}
+
+.light .grammar-literal {
+    background-color: #fafafa
+}
+.rust .grammar-literal {
+    background-color: #dedede
+}
+.coal .grammar-literal {
+    background-color: #1d1f21;
+}
+.navy .grammar-literal {
+    background-color: #1d1f21;
+}
+.ayu .grammar-literal {
+    background-color: #191f26
+}
+
+.grammar-production:target, .railroad-production:target {
+    scroll-margin-top: 50vh;
+}
+
+.railroad-production {
+    /* Enables absolute positioning of the target chevron. */
+    position: relative;
+}
+
+/* Adds an indicator to the targeted production name. */
+.grammar-production:target::before, .railroad-production:target::before {
+    content: "»";
+    position: absolute;
+    left: 3px;
+    font-size: 2rem;
+    font-weight: bolder;
+    /* For some reason, the vertical alignment is slightly off center. This helps
+       with that alignment. It was too difficult to try to fix that via
+       absolute positioning. */
+    line-height: 1;
+}
+
+/* Overrides the positioning of the chevron from the rule above. */
+.railroad-production:target::before {
+    left: -20px;
+    top: 8px;
+}
+
+/* The toggle button. */
+.grammar-toggle-railroad {
+    width: 120px;
+    padding: 5px 0px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* This is used to toggle the hidden status of the railroad diagrams. */
+.grammar-hidden {
+    display: none;
+}
+
+:root {
+    --railroad-background-color: hsl(30, 20%, 95%);
+    --railroad-background-image: linear-gradient(to right, rgba(30, 30, 30, .05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 30, .05) 1px, transparent 1px);
+    --railroad-path-stroke: black;
+    --railroad-rect-stroke: black;
+    --railroad-rect-fill: hsl(-290, 70%, 90%);
+}
+
+.coal, .navy, .ayu {
+    --railroad-background-color: hsl(230, 10%, 20%);
+    --railroad-background-image: linear-gradient(to right, rgba(150, 150, 150, .05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(150, 150, 150, .05) 1px, transparent 1px);
+    --railroad-path-stroke: hsl(200, 10%, 60%);
+    --railroad-text-fill: hsl(230, 30%, 80%);
+    --railroad-rect-stroke: hsl(200, 10%, 50%);
+    --railroad-rect-fill: hsl(230, 20%, 20%);
+}
+
+svg.railroad {
+    background-color: var(--railroad-background-color);
+    background-size: 15px 15px;
+    background-image: var(--railroad-background-image);
+}
+
+svg.railroad rect.railroad_canvas {
+    stroke-width: 0px;
+    fill: none;
+}
+
+svg.railroad path {
+    stroke-width: 3px;
+    stroke: var(--railroad-path-stroke);
+    fill: none;
+}
+
+svg.railroad .debug {
+    stroke-width: 1px;
+    stroke: red;
+}
+
+svg.railroad text {
+    font: 14px monospace;
+    text-anchor: middle;
+    fill: var(--railroad-text-fill);
+}
+
+svg.railroad .nonterminal text {
+    font-weight: bold;
+}
+
+svg.railroad text.comment {
+    font: italic 12px monospace;
+}
+
+svg.railroad rect {
+    stroke-width: 3px;
+    stroke: var(--railroad-rect-stroke);
+    fill: var(--railroad-rect-fill);
+}
+
+svg.railroad g.labeledbox>rect {
+    stroke-width: 1px;
+    stroke: grey;
+    stroke-dasharray: 5px;
+    fill: rgba(90, 90, 150, .1);
+}
+
+svg.railroad g.exceptbox > rect {
+    fill:rgba(245, 160, 125, .1);
+}

@@ -2,9 +2,9 @@ r[expr.method]
 # Method-call expressions
 
 r[expr.method.syntax]
-> **<sup>Syntax</sup>**\
-> _MethodCallExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `.` [_PathExprSegment_] `(`[_CallParams_]<sup>?</sup> `)`
+```grammar,expressions
+MethodCallExpression -> Expression `.` PathExprSegment `(`CallParams? `)`
+```
 
 r[expr.method.intro]
 A _method call_ consists of an expression (the *receiver*) followed by a single dot, an expression path segment, and a parenthesized expression-list.
@@ -93,9 +93,6 @@ r[expr.method.edition2021]
 > There is no way to call the inherent method.
 > Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
 
-[_CallParams_]: call-expr.md
-[_Expression_]: ../expressions.md
-[_PathExprSegment_]: ../paths.md#paths-in-expressions
 [visible]: ../visibility-and-privacy.md
 [array type]: ../types/array.md
 [trait objects]: ../types/trait-object.md

@@ -2,14 +2,14 @@ r[items.use]
 # Use declarations
 
 r[items.use.syntax]
-> **<sup>Syntax:</sup>**\
-> _UseDeclaration_ :\
-> &nbsp;&nbsp; `use` _UseTree_ `;`
->
-> _UseTree_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `*`\
-> &nbsp;&nbsp; | ([_SimplePath_]<sup>?</sup> `::`)<sup>?</sup> `{` (_UseTree_ ( `,`  _UseTree_ )<sup>\*</sup> `,`<sup>?</sup>)<sup>?</sup> `}`\
-> &nbsp;&nbsp; | [_SimplePath_]&nbsp;( `as` ( [IDENTIFIER] | `_` ) )<sup>?</sup>
+```grammar,items
+UseDeclaration -> `use` UseTree `;`
+
+UseTree ->
+      (SimplePath? `::`)? `*`
+    | (SimplePath? `::`)? `{` (UseTree ( `,`  UseTree )* `,`?)? `}`
+    | SimplePath ( `as` ( IDENTIFIER | `_` ) )?
+```
 
 r[items.use.intro]
 A _use declaration_ creates one or more local name bindings synonymous with
@@ -108,7 +108,7 @@ r[items.use.path]
 ## `use` Paths
 
 r[items.use.path.intro]
-The [paths] that are allowed in a `use` item follow the [_SimplePath_] grammar and are similar to the paths that may be used in an expression.
+The [paths] that are allowed in a `use` item follow the [SimplePath] grammar and are similar to the paths that may be used in an expression.
 They may create bindings for:
 
 * Nameable [items]
@@ -442,7 +442,6 @@ fn main() {
 }
 ```
 
-[_SimplePath_]: ../paths.md#simple-paths
 [`extern crate`]: extern-crates.md
 [`macro_rules`]: ../macros-by-example.md
 [`self`]: ../paths.md#self
@@ -453,7 +452,6 @@ fn main() {
 [Enum variants]: enumerations.md
 [extern prelude]: ../names/preludes.md#extern-prelude
 [generic parameters]: generics.md
-[IDENTIFIER]: ../identifiers.md
 [items]: ../items.md
 [local variables]: ../variables.md
 [namespace]: ../names/namespaces.md

@@ -19,12 +19,13 @@ r[paths.simple]
 ### Simple Paths
 
 r[paths.simple.syntax]
-> **<sup>Syntax</sup>**\
-> _SimplePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _SimplePathSegment_ (`::` _SimplePathSegment_)<sup>\*</sup>
->
-> _SimplePathSegment_ :\
-> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `crate` | `$crate`
+```grammar,paths
+SimplePath ->
+    `::`? SimplePathSegment (`::` SimplePathSegment)*
+
+SimplePathSegment ->
+    IDENTIFIER | `super` | `self` | `crate` | `$crate`
+```
 
 r[paths.simple.intro]
 Simple paths are used in [visibility] markers, [attributes], [macros][mbe], and [`use`] items.
@@ -42,34 +43,35 @@ r[paths.expr]
 ### Paths in expressions
 
 r[paths.expr.syntax]
-> **<sup>Syntax</sup>**\
-> _PathInExpression_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _PathExprSegment_ (`::` _PathExprSegment_)<sup>\*</sup>
->
-> _PathExprSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::` _GenericArgs_)<sup>?</sup>
->
-> _PathIdentSegment_ :\
-> &nbsp;&nbsp; [IDENTIFIER] | `super` | `self` | `Self` | `crate` | `$crate`
->
-> _GenericArgs_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>`\
-> &nbsp;&nbsp; | `<` ( _GenericArg_ `,` )<sup>\*</sup> _GenericArg_ `,`<sup>?</sup> `>`
->
-> _GenericArg_ :\
-> &nbsp;&nbsp; [_Lifetime_] | [_Type_] | _GenericArgsConst_ | _GenericArgsBinding_ | _GenericArgsBounds_
->
-> _GenericArgsConst_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_BlockExpression_]\
-> &nbsp;&nbsp; | [_LiteralExpression_]\
-> &nbsp;&nbsp; | `-` [_LiteralExpression_]\
-> &nbsp;&nbsp; | [_SimplePathSegment_]
->
-> _GenericArgsBinding_ :\
-> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `=` [_Type_]
->
-> _GenericArgsBounds_ :\
-> &nbsp;&nbsp; [IDENTIFIER] _GenericArgs_<sup>?</sup> `:` [_TypeParamBounds_]
+```grammar,paths
+PathInExpression ->
+    `::`? PathExprSegment (`::` PathExprSegment)*
+
+PathExprSegment ->
+    PathIdentSegment (`::` GenericArgs)?
+
+PathIdentSegment ->
+    IDENTIFIER | `super` | `self` | `Self` | `crate` | `$crate`
+
+GenericArgs ->
+      `<` `>`
+    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
+
+GenericArg ->
+    Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
+
+GenericArgsConst ->
+      BlockExpression
+    | LiteralExpression
+    | `-` LiteralExpression
+    | SimplePathSegment
+
+GenericArgsBinding ->
+    IDENTIFIER GenericArgs? `=` Type
+
+GenericArgsBounds ->
+    IDENTIFIER GenericArgs? `:` TypeParamBounds
+```
 
 r[paths.expr.intro]
 Paths in expressions allow for paths with generic arguments to be specified. They are
@@ -100,15 +102,13 @@ r[paths.qualified]
 ## Qualified paths
 
 r[paths.qualified.syntax]
-> **<sup>Syntax</sup>**\
-> _QualifiedPathInExpression_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _PathExprSegment_)<sup>+</sup>
->
-> _QualifiedPathType_ :\
-> &nbsp;&nbsp; `<` [_Type_] (`as` _TypePath_)<sup>?</sup> `>`
->
-> _QualifiedPathInType_ :\
-> &nbsp;&nbsp; _QualifiedPathType_ (`::` _TypePathSegment_)<sup>+</sup>
+```grammar,paths
+QualifiedPathInExpression -> QualifiedPathType (`::` PathExprSegment)+
+
+QualifiedPathType -> `<` Type (`as` TypePath)? `>`
+
+QualifiedPathInType -> QualifiedPathType (`::` TypePathSegment)+
+```
 
 r[paths.qualified.intro]
 Fully qualified paths allow for disambiguating the path for [trait implementations] and
@@ -137,18 +137,15 @@ r[paths.type]
 ### Paths in types
 
 r[paths.type.syntax]
-> **<sup>Syntax</sup>**\
-> _TypePath_ :\
-> &nbsp;&nbsp; `::`<sup>?</sup> _TypePathSegment_ (`::` _TypePathSegment_)<sup>\*</sup>
->
-> _TypePathSegment_ :\
-> &nbsp;&nbsp; _PathIdentSegment_ (`::`<sup>?</sup> ([_GenericArgs_] | _TypePathFn_))<sup>?</sup>
->
-> _TypePathFn_ :\
-> `(` _TypePathFnInputs_<sup>?</sup> `)` (`->` [_TypeNoBounds_])<sup>?</sup>
->
-> _TypePathFnInputs_ :\
-> [_Type_] (`,` [_Type_])<sup>\*</sup> `,`<sup>?</sup>
+```grammar,paths
+TypePath -> `::`? TypePathSegment (`::` TypePathSegment)*
+
+TypePathSegment -> PathIdentSegment (`::`? (GenericArgs | TypePathFn))?
+
+TypePathFn -> `(` TypePathFnInputs? `)` (`->` TypeNoBounds)?
+
+TypePathFnInputs -> Type (`,` Type)* `,`?
+```
 
 r[paths.type.intro]
 Type paths are used within type definitions, trait bounds, type parameter bounds,
@@ -475,20 +472,10 @@ mod without { // crate::without
 # fn main() {}
 ```
 
-[_BlockExpression_]: expressions/block-expr.md
-[_Expression_]: expressions.md
-[_GenericArgs_]: #paths-in-expressions
-[_Lifetime_]: trait-bounds.md
-[_LiteralExpression_]: expressions/literal-expr.md
-[_SimplePathSegment_]: #simple-paths
-[_Type_]: types.md#type-expressions
-[_TypeNoBounds_]: types.md#type-expressions
-[_TypeParamBounds_]: trait-bounds.md
 [implementations]: items/implementations.md
 [items]: items.md
 [literal]: expressions/literal-expr.md
 [use declarations]: items/use-declarations.md
-[IDENTIFIER]: identifiers.md
 [`Self` scope]: names/scopes.md#self-scope
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md

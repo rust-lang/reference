@@ -2,18 +2,19 @@ r[expr.operator]
 # Operator expressions
 
 r[expr.operator.syntax]
-> **<sup>Syntax</sup>**\
-> _OperatorExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_BorrowExpression_]\
-> &nbsp;&nbsp; | [_DereferenceExpression_]\
-> &nbsp;&nbsp; | [_ErrorPropagationExpression_]\
-> &nbsp;&nbsp; | [_NegationExpression_]\
-> &nbsp;&nbsp; | [_ArithmeticOrLogicalExpression_]\
-> &nbsp;&nbsp; | [_ComparisonExpression_]\
-> &nbsp;&nbsp; | [_LazyBooleanExpression_]\
-> &nbsp;&nbsp; | [_TypeCastExpression_]\
-> &nbsp;&nbsp; | [_AssignmentExpression_]\
-> &nbsp;&nbsp; | [_CompoundAssignmentExpression_]
+```grammar,expressions
+OperatorExpression ->
+      BorrowExpression
+    | DereferenceExpression
+    | ErrorPropagationExpression
+    | NegationExpression
+    | ArithmeticOrLogicalExpression
+    | ComparisonExpression
+    | LazyBooleanExpression
+    | TypeCastExpression
+    | AssignmentExpression
+    | CompoundAssignmentExpression
+```
 
 r[expr.operator.intro]
 Operators are defined for built in types by the Rust language.
@@ -54,12 +55,14 @@ r[expr.operator.int-overflow.shift]
 r[expr.operator.borrow]
 ## Borrow operators
 
-> **<sup>Syntax</sup>**\
-> _BorrowExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; (`&`|`&&`) [_Expression_]\
-> &nbsp;&nbsp; | (`&`|`&&`) `mut` [_Expression_]\
-> &nbsp;&nbsp; | (`&`|`&&`) `raw` `const` [_Expression_]\
-> &nbsp;&nbsp; | (`&`|`&&`) `raw` `mut` [_Expression_]
+r[expr.operator.borrow.syntax]
+```grammar,expressions
+BorrowExpression ->
+      (`&`|`&&`) Expression
+    | (`&`|`&&`) `mut` Expression
+    | (`&`|`&&`) `raw` `const` Expression
+    | (`&`|`&&`) `raw` `mut` Expression
+```
 
 r[expr.operator.borrow.intro]
 The `&` (shared borrow) and `&mut` (mutable borrow) operators are unary prefix operators.
@@ -159,9 +162,9 @@ r[expr.deref]
 ## The dereference operator
 
 r[expr.deref.syntax]
-> **<sup>Syntax</sup>**\
-> _DereferenceExpression_ :\
-> &nbsp;&nbsp; `*` [_Expression_]
+```grammar,expressions
+DereferenceExpression -> `*` Expression
+```
 
 r[expr.deref.intro]
 The `*` (dereference) operator is also a unary prefix operator.
@@ -190,9 +193,9 @@ r[expr.try]
 ## The question mark operator
 
 r[expr.try.syntax]
-> **<sup>Syntax</sup>**\
-> _ErrorPropagationExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `?`
+```grammar,expressions
+ErrorPropagationExpression -> Expression `?`
+```
 
 r[expr.try.intro]
 The question mark operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
@@ -252,10 +255,11 @@ r[expr.negate]
 ## Negation operators
 
 r[expr.negate.syntax]
-> **<sup>Syntax</sup>**\
-> _NegationExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `-` [_Expression_]\
-> &nbsp;&nbsp; | `!` [_Expression_]
+```grammar,expressions
+NegationExpression ->
+      `-` Expression
+    | `!` Expression
+```
 
 r[expr.negate.intro]
 These are the last two unary operators.
@@ -285,18 +289,19 @@ r[expr.arith-logic]
 ## Arithmetic and Logical Binary Operators
 
 r[expr.arith-logic.syntax]
-> **<sup>Syntax</sup>**\
-> _ArithmeticOrLogicalExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `-` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `*` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `/` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `%` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `&` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `|` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `^` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `<<` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `>>` [_Expression_]
+```grammar,expressions
+ArithmeticOrLogicalExpression ->
+      Expression `+` Expression
+    | Expression `-` Expression
+    | Expression `*` Expression
+    | Expression `/` Expression
+    | Expression `%` Expression
+    | Expression `&` Expression
+    | Expression `|` Expression
+    | Expression `^` Expression
+    | Expression `<<` Expression
+    | Expression `>>` Expression
+```
 
 r[expr.arith-logic.intro]
 Binary operators expressions are all written with infix notation.
@@ -347,14 +352,15 @@ r[expr.cmp]
 ## Comparison Operators
 
 r[expr.cmp.syntax]
-> **<sup>Syntax</sup>**\
-> _ComparisonExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `==` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `!=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `>` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `<` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `>=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `<=` [_Expression_]
+```grammar,expressions
+ComparisonExpression ->
+      Expression `==` Expression
+    | Expression `!=` Expression
+    | Expression `>` Expression
+    | Expression `<` Expression
+    | Expression `>=` Expression
+    | Expression `<=` Expression
+```
 
 r[expr.cmp.intro]
 Comparison operators are also defined both for primitive types and many types in the standard library.
@@ -405,10 +411,11 @@ r[expr.bool-logic]
 ## Lazy boolean operators
 
 r[expr.bool-logic.syntax]
-> **<sup>Syntax</sup>**\
-> _LazyBooleanExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `||` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `&&` [_Expression_]
+```grammar,expressions
+LazyBooleanExpression ->
+      Expression `||` Expression
+    | Expression `&&` Expression
+```
 
 r[expr.bool-logic.intro]
 The operators `||` and `&&` may be applied to operands of boolean type.
@@ -427,9 +434,9 @@ r[expr.as]
 ## Type cast expressions
 
 r[expr.as.syntax]
-> **<sup>Syntax</sup>**\
-> _TypeCastExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `as` [_TypeNoBounds_]
+```grammar,expressions
+TypeCastExpression -> Expression `as` TypeNoBounds
+```
 
 r[expr.as.intro]
 A type cast expression is denoted with the binary operator `as`.
@@ -688,9 +695,9 @@ r[expr.assign]
 ## Assignment expressions
 
 r[expr.assign.syntax]
-> **<sup>Syntax</sup>**\
-> _AssignmentExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `=` [_Expression_]
+```grammar,expressions
+AssignmentExpression -> Expression `=` Expression
+```
 
 r[expr.assign.intro]
 An *assignment expression* moves a value into a specified place.
@@ -791,7 +798,7 @@ r[expr.assign.destructure.repeat-ident]
 Identifiers are not forbidden from being used multiple times in a single assignee expression.
 
 r[expr.assign.destructure.discard-value]
-[Underscore expressions][_UnderscoreExpression_] and empty [range expressions][_RangeExpression_] may be used to ignore certain values, without binding them.
+[Underscore expressions] and empty [range expressions] may be used to ignore certain values, without binding them.
 
 r[expr.assign.destructure.default-binding]
 Note that default binding modes do not apply for the desugared expression.
@@ -800,18 +807,19 @@ r[expr.compound-assign]
 ## Compound assignment expressions
 
 r[expr.compound-assign.syntax]
-> **<sup>Syntax</sup>**\
-> _CompoundAssignmentExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] `+=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `-=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `*=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `/=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `%=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `&=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `|=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `^=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `<<=` [_Expression_]\
-> &nbsp;&nbsp; | [_Expression_] `>>=` [_Expression_]
+```grammar,expressions
+CompoundAssignmentExpression ->
+      Expression `+=` Expression
+    | Expression `-=` Expression
+    | Expression `*=` Expression
+    | Expression `/=` Expression
+    | Expression `%=` Expression
+    | Expression `&=` Expression
+    | Expression `|=` Expression
+    | Expression `^=` Expression
+    | Expression `<<=` Expression
+    | Expression `>>=` Expression
+```
 
 r[expr.compound-assign.intro]
 *Compound assignment expressions* combine arithmetic and logical binary operators with assignment expressions.
@@ -898,22 +906,8 @@ Like assignment expressions, compound assignment expressions always produce [the
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [undefined behavior]: ../behavior-considered-undefined.md
-
-[_BorrowExpression_]: #borrow-operators
-[_DereferenceExpression_]: #the-dereference-operator
-[_ErrorPropagationExpression_]: #the-question-mark-operator
-[_NegationExpression_]: #negation-operators
-[_ArithmeticOrLogicalExpression_]: #arithmetic-and-logical-binary-operators
-[_ComparisonExpression_]: #comparison-operators
-[_LazyBooleanExpression_]: #lazy-boolean-operators
-[_TypeCastExpression_]: #type-cast-expressions
-[_AssignmentExpression_]: #assignment-expressions
-[_CompoundAssignmentExpression_]: #compound-assignment-expressions
-
-[_Expression_]: ../expressions.md
-[_TypeNoBounds_]: ../types.md#type-expressions
-[_RangeExpression_]: ./range-expr.md
-[_UnderscoreExpression_]: ./underscore-expr.md
+[Underscore expressions]: ./underscore-expr.md
+[range expressions]: ./range-expr.md
 
 <script>
 (function() {

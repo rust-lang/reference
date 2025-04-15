@@ -2,10 +2,11 @@ r[type.impl-trait]
 # Impl trait
 
 r[type.impl-trait.syntax]
-> **<sup>Syntax</sup>**\
-> _ImplTraitType_ : `impl` [_TypeParamBounds_]
->
-> _ImplTraitTypeOneBound_ : `impl` [_TraitBound_]
+```grammar,types
+ImplTraitType -> `impl` TypeParamBounds
+
+ImplTraitTypeOneBound -> `impl` TraitBound
+```
 
 r[type.impl-trait.intro]
 `impl Trait` provides ways to specify unnamed but concrete types that
@@ -49,10 +50,10 @@ fn with_impl_trait(arg: impl Trait) {
 ```
 
 r[type.impl-trait.param.generic]
-That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [_GenericParams_] list.
+That is, `impl Trait` in argument position is syntactic sugar for a generic type parameter like `<T: Trait>`, except that the type is anonymous and doesn't appear in the [GenericParams] list.
 
 > [!NOTE]
-> For function parameters, generic type parameters and `impl Trait` are not exactly equivalent. With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [_GenericArgs_], for example, `foo::<usize>(1)`. Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
+> For function parameters, generic type parameters and `impl Trait` are not exactly equivalent. With a generic parameter such as `<T: Trait>`, the caller has the option to explicitly specify the generic argument for `T` at the call site using [GenericArgs], for example, `foo::<usize>(1)`. Changing a parameter from either one to the other can constitute a breaking change for the callers of a function, since this changes the number of generic arguments.
 
 r[type.impl-trait.return]
 ## Abstract return types
@@ -181,10 +182,6 @@ r[type.impl-trait.constraint]
 `impl Trait` can only appear as a parameter or return type of a non-`extern` function.
 It cannot be the type of a `let` binding, field type, or appear inside a type alias.
 
-[_GenericArgs_]: ../paths.md#paths-in-expressions
-[_GenericParams_]: ../items/generics.md
-[_TraitBound_]: ../trait-bounds.md
-[_TypeParamBounds_]: ../trait-bounds.md
 [`use<..>` bound]: ../trait-bounds.md#use-bounds
 [closures]: closure.md
 [trait object]: trait-object.md

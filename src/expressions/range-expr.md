@@ -1,33 +1,29 @@
+
 r[expr.range]
 # Range expressions
 
 r[expr.range.syntax]
-> **<sup>Syntax</sup>**\
-> _RangeExpression_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _RangeExpr_\
-> &nbsp;&nbsp; | _RangeFromExpr_\
-> &nbsp;&nbsp; | _RangeToExpr_\
-> &nbsp;&nbsp; | _RangeFullExpr_\
-> &nbsp;&nbsp; | _RangeInclusiveExpr_\
-> &nbsp;&nbsp; | _RangeToInclusiveExpr_
->
-> _RangeExpr_ :\
-> &nbsp;&nbsp; [_Expression_] `..` [_Expression_]
->
-> _RangeFromExpr_ :\
-> &nbsp;&nbsp; [_Expression_] `..`
->
-> _RangeToExpr_ :\
-> &nbsp;&nbsp; `..` [_Expression_]
->
-> _RangeFullExpr_ :\
-> &nbsp;&nbsp; `..`
->
-> _RangeInclusiveExpr_ :\
-> &nbsp;&nbsp; [_Expression_] `..=` [_Expression_]
->
-> _RangeToInclusiveExpr_ :\
-> &nbsp;&nbsp; `..=` [_Expression_]
+```grammar,expressions
+RangeExpression ->
+      RangeExpr
+    | RangeFromExpr
+    | RangeToExpr
+    | RangeFullExpr
+    | RangeInclusiveExpr
+    | RangeToInclusiveExpr
+
+RangeExpr -> Expression `..` Expression
+
+RangeFromExpr -> Expression `..`
+
+RangeToExpr -> `..` Expression
+
+RangeFullExpr -> `..`
+
+RangeInclusiveExpr -> Expression `..=` Expression
+
+RangeToInclusiveExpr -> `..=` Expression
+```
 
 r[expr.range.behavior]
 The `..` and `..=` operators will construct an object of one of the `std::ops::Range` (or `core::ops::Range`) variants, according to the following table:
@@ -70,5 +66,3 @@ for i in 1..11 {
     println!("{}", i);
 }
 ```
-
-[_Expression_]: ../expressions.md

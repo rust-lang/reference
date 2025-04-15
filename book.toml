@@ -12,6 +12,7 @@ smart-punctuation = true
 
 [output.html.search.chapter]
 "test-summary.md" = { enable = false }
+"grammar.md" = { enable = false }
 
 [output.html.redirect]
 "/expressions/enum-variant-expr.html" = "struct-expr.html"

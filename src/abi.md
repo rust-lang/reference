@@ -81,7 +81,7 @@ extern "C" fn foo() {}
 
 The *`link_section` attribute* specifies the section of the object file that a
 [function] or [static]'s content will be placed into. It uses the
-[_MetaNameValueStr_] syntax to specify the section name.
+[MetaNameValueStr] syntax to specify the section name.
 
 This attribute is unsafe as it allows users to place data and code into sections
 of memory not expecting them, such as mutable data into read-only areas.
@@ -99,7 +99,7 @@ pub static VAR1: u32 = 1;
 ## The `export_name` attribute
 
 The *`export_name` attribute* specifies the name of the symbol that will be
-exported on a [function] or [static]. It uses the [_MetaNameValueStr_] syntax
+exported on a [function] or [static]. It uses the [MetaNameValueStr] syntax
 to specify the symbol name.
 
 This attribute is unsafe as a symbol with a custom name may collide with another
@@ -114,7 +114,6 @@ pub fn name_in_rust() { }
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
 
-[_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier

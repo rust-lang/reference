@@ -4,13 +4,13 @@ r[expr.array]
 ## Array expressions
 
 r[expr.array.syntax]
-> **<sup>Syntax</sup>**\
-> _ArrayExpression_ :\
-> &nbsp;&nbsp; `[` _ArrayElements_<sup>?</sup> `]`
->
-> _ArrayElements_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_Expression_] ( `,` [_Expression_] )<sup>\*</sup> `,`<sup>?</sup>\
-> &nbsp;&nbsp; | [_Expression_] `;` [_Expression_]
+```grammar,expressions
+ArrayExpression -> `[` ArrayElements? `]`
+
+ArrayElements ->
+      Expression ( `,` Expression )* `,`?
+    | Expression `;` Expression
+```
 
 r[expr.array.constructor]
 *Array expressions* construct [arrays][array].
@@ -66,9 +66,10 @@ const EMPTY: Vec<i32> = Vec::new();
 r[expr.array.index]
 ## Array and slice indexing expressions
 
-> **<sup>Syntax</sup>**\
-> _IndexExpression_ :\
-> &nbsp;&nbsp; [_Expression_] `[` [_Expression_] `]`
+r[expr.array.index.syntax]
+```grammar,expressions
+IndexExpression -> Expression `[` Expression `]`
+```
 
 r[expr.array.index.array]
 [Array] and [slice]-typed values can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them.
@@ -109,7 +110,6 @@ The array index expression can be implemented for types other than arrays and sl
 [`Copy`]: ../special-types-and-traits.md#copy
 [IndexMut]: std::ops::IndexMut
 [Index]: std::ops::Index
-[_Expression_]: ../expressions.md
 [array]: ../types/array.md
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md

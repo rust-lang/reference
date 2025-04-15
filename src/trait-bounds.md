@@ -2,41 +2,33 @@ r[bound]
 # Trait and lifetime bounds
 
 r[bound.syntax]
-> **<sup>Syntax</sup>**\
-> _TypeParamBounds_ :\
-> &nbsp;&nbsp; _TypeParamBound_ ( `+` _TypeParamBound_ )<sup>\*</sup> `+`<sup>?</sup>
->
-> _TypeParamBound_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ | _TraitBound_ | _UseBound_
->
-> _TraitBound_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; ( `?` |
-> [_ForLifetimes_](#higher-ranked-trait-bounds) )<sup>?</sup> [_TypePath_]\
-> &nbsp;&nbsp; | `(` ( `?` |
-> [_ForLifetimes_](#higher-ranked-trait-bounds) )<sup>?</sup> [_TypePath_] `)`
->
-> _LifetimeBounds_ :\
-> &nbsp;&nbsp; ( _Lifetime_ `+` )<sup>\*</sup> _Lifetime_<sup>?</sup>
->
-> _Lifetime_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; [LIFETIME_OR_LABEL]\
-> &nbsp;&nbsp; | `'static`\
-> &nbsp;&nbsp; | `'_`
->
-> _UseBound_ :\
-> &nbsp;&nbsp; `use` _UseBoundGenericArgs_
->
-> _UseBoundGenericArgs_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `<` `>` \
-> &nbsp;&nbsp; | `<` \
-> &nbsp;&nbsp; &nbsp;&nbsp; ( _UseBoundGenericArg_ `,`)<sup>\*</sup> \
-> &nbsp;&nbsp; &nbsp;&nbsp; _UseBoundGenericArg_ `,`<sup>?</sup> \
-> &nbsp;&nbsp; &nbsp;&nbsp; `>`
->
-> _UseBoundGenericArg_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; _Lifetime_ \
-> &nbsp;&nbsp; | [IDENTIFIER][] \
-> &nbsp;&nbsp; | `Self`
+```grammar,miscellaneous
+TypeParamBounds -> TypeParamBound ( `+` TypeParamBound )* `+`?
+
+TypeParamBound -> Lifetime | TraitBound | UseBound
+
+TraitBound ->
+      ( `?` | ForLifetimes )? TypePath
+    | `(` ( `?` | ForLifetimes )? TypePath `)`
+
+LifetimeBounds -> ( Lifetime `+` )* Lifetime?
+
+Lifetime ->
+      LIFETIME_OR_LABEL
+    | `'static`
+    | `'_`
+
+UseBound -> `use` UseBoundGenericArgs
+
+UseBoundGenericArgs ->
+      `<` `>`
+    | `<` ( UseBoundGenericArg `,`)* UseBoundGenericArg `,`? `>`
+
+UseBoundGenericArg ->
+      Lifetime
+    | IDENTIFIER
+    | `Self`
+```
 
 r[bound.intro]
 [Trait] and lifetime bounds provide a way for [generic items][generic] to
@@ -148,8 +140,9 @@ r[bound.higher-ranked]
 ## Higher-ranked trait bounds
 
 r[bound.higher-ranked.syntax]
-> _ForLifetimes_ :\
-> &nbsp;&nbsp; `for` [_GenericParams_]
+```grammar,miscellaneous
+ForLifetimes -> `for` GenericParams
+```
 
 r[bound.higher-ranked.intro]
 Trait bounds may be *higher ranked* over lifetimes. These bounds specify a bound
@@ -270,14 +263,6 @@ r[bound.use]
 ## Use bounds
 
 Certain bounds lists may include a `use<..>` bound to control which generic parameters are captured by the `impl Trait` [abstract return type].  See [precise capturing] for more details.
-
-[IDENTIFIER]: identifiers.html
-[LIFETIME_OR_LABEL]: tokens.md#lifetimes-and-loop-labels
-[_GenericParams_]: items/generics.md
-[_TypePath_]: paths.md#paths-in-types
-[`Clone`]: special-types-and-traits.md#clone
-[`Copy`]: special-types-and-traits.md#copy
-[`Sized`]: special-types-and-traits.md#sized
 
 [abstract return type]: types/impl-trait.md#abstract-return-types
 [arrays]: types/array.md

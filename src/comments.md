@@ -1,37 +1,40 @@
-r[comments.syntax]
+r[comments]
 # Comments
 
-> **<sup>Lexer</sup>**\
-> LINE_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `//` (~\[`/` `!` `\n`] | `//`) ~`\n`<sup>\*</sup>\
-> &nbsp;&nbsp; | `//`
->
-> BLOCK_COMMENT :\
-> &nbsp;&nbsp; &nbsp;&nbsp; `/*` (~\[`*` `!`] | `**` | _BlockCommentOrDoc_)
->      (_BlockCommentOrDoc_ | ~`*/`)<sup>\*</sup> `*/`\
-> &nbsp;&nbsp; | `/**/`\
-> &nbsp;&nbsp; | `/***/`
->
-> INNER_LINE_DOC :\
-> &nbsp;&nbsp; `//!` ~\[`\n` _IsolatedCR_]<sup>\*</sup>
->
-> INNER_BLOCK_DOC :\
-> &nbsp;&nbsp; `/*!` ( _BlockCommentOrDoc_ | ~\[`*/` _IsolatedCR_] )<sup>\*</sup> `*/`
->
-> OUTER_LINE_DOC :\
-> &nbsp;&nbsp; `///` (~`/` ~\[`\n` _IsolatedCR_]<sup>\*</sup>)<sup>?</sup>
->
-> OUTER_BLOCK_DOC :\
-> &nbsp;&nbsp; `/**` (~`*` | _BlockCommentOrDoc_ )
->              (_BlockCommentOrDoc_ | ~\[`*/` _IsolatedCR_])<sup>\*</sup> `*/`
->
-> _BlockCommentOrDoc_ :\
-> &nbsp;&nbsp; &nbsp;&nbsp; BLOCK_COMMENT\
-> &nbsp;&nbsp; | OUTER_BLOCK_DOC\
-> &nbsp;&nbsp; | INNER_BLOCK_DOC
->
-> _IsolatedCR_ :\
-> &nbsp;&nbsp; \\r
+r[comments.syntax]
+```grammar,lexer
+@root LINE_COMMENT ->
+      `//` (~[`/` `!` LF] | `//`) ~LF*
+    | `//`
+
+BLOCK_COMMENT ->
+      `/*`
+        ( ~[`*` `!`] | `**` | BlockCommentOrDoc )
+        ( BlockCommentOrDoc | ~`*/` )*
+      `*/`
+    | `/**/`
+    | `/***/`
+
+@root INNER_LINE_DOC ->
+    `//!` ~[LF CR]*
+
+INNER_BLOCK_DOC ->
+    `/*!` ( BlockCommentOrDoc | ~[`*/` CR] )* `*/`
+
+@root OUTER_LINE_DOC ->
+    `///` (~`/` ~[LF CR]*)?
+
+OUTER_BLOCK_DOC ->
+    `/**`
+      ( ~`*` | BlockCommentOrDoc )
+      ( BlockCommentOrDoc | ~[`*/` CR] )*
+    `*/`
+
+BlockCommentOrDoc ->
+      BLOCK_COMMENT
+    | OUTER_BLOCK_DOC
+    | INNER_BLOCK_DOC
+```
 
 r[comments.normal]
 ## Non-doc comments

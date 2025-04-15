@@ -2,10 +2,11 @@ r[crate]
 # Crates and source files
 
 r[crate.syntax]
-> **<sup>Syntax</sup>**\
-> _Crate_ :\
-> &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; [_Item_]<sup>\*</sup>
+```grammar,items
+@root Crate ->
+    InnerAttribute*
+    Item*
+```
 
 > [!NOTE]
 > Although Rust, like any other language, can be implemented by an interpreter as well as a compiler, the only existing implementation is a compiler, and the language has always been designed to be compiled. For these reasons, this section assumes a compiler.
@@ -40,7 +41,7 @@ extension `.rs`.
 r[crate.module-def]
 A Rust source file describes a module, the name and location of which &mdash;
 in the module tree of the current crate &mdash; are defined from outside the
-source file: either by an explicit [_Module_][module] item in a referencing
+source file: either by an explicit [Module][grammar-Module] item in a referencing
 source file, or by the name of the crate itself.
 
 r[crate.inline-module]
@@ -49,7 +50,7 @@ module, but not every module needs its own source file: [module
 definitions][module] can be nested within one file.
 
 r[crate.items]
-Each source file contains a sequence of zero or more [_Item_] definitions, and
+Each source file contains a sequence of zero or more [Item] definitions, and
 may optionally begin with any number of [attributes]
 that apply to the containing module, most of which influence the behavior of
 the compiler.
@@ -139,7 +140,7 @@ r[crate.crate_name]
 
 r[crate.crate_name.general]
 The *`crate_name` [attribute]* may be applied at the crate level to specify the
-name of the crate with the [_MetaNameValueStr_] syntax.
+name of the crate with the [MetaNameValueStr] syntax.
 
 ```rust
 #![crate_name = "mycrate"]
@@ -159,9 +160,6 @@ or `_` (U+005F) characters.
 
 [Unicode alphanumeric]: char::is_alphanumeric
 [`!`]: types/never.md
-[_InnerAttribute_]: attributes.md
-[_Item_]: items.md
-[_MetaNameValueStr_]: attributes.md#meta-item-attribute-syntax
 [`ExitCode`]: std::process::ExitCode
 [`Infallible`]: std::convert::Infallible
 [`Termination`]: std::process::Termination

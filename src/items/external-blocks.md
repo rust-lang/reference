@@ -2,20 +2,22 @@ r[items.extern]
 # External blocks
 
 r[items.extern.syntax]
-> **<sup>Syntax</sup>**\
-> _ExternBlock_ :\
-> &nbsp;&nbsp; `unsafe`<sup>?</sup>[^unsafe-2024] `extern` [_Abi_]<sup>?</sup> `{`\
-> &nbsp;&nbsp; &nbsp;&nbsp; [_InnerAttribute_]<sup>\*</sup>\
-> &nbsp;&nbsp; &nbsp;&nbsp; _ExternalItem_<sup>\*</sup>\
-> &nbsp;&nbsp; `}`
->
-> _ExternalItem_ :\
-> &nbsp;&nbsp; [_OuterAttribute_]<sup>\*</sup> (\
-> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [_MacroInvocationSemi_]\
-> &nbsp;&nbsp; &nbsp;&nbsp; | ( [_Visibility_]<sup>?</sup> ( [_StaticItem_] | [_Function_] ) )\
-> &nbsp;&nbsp; )
->
-> [^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
+```grammar,items
+ExternBlock ->
+    `unsafe`?[^unsafe-2024] `extern` Abi? `{`
+        InnerAttribute*
+        ExternalItem*
+    `}`
+
+ExternalItem ->
+    OuterAttribute* (
+        MacroInvocationSemi
+      | Visibility? StaticItem
+      | Visibility? Function
+    )
+```
+
+[^unsafe-2024]: Starting with the 2024 Edition, the `unsafe` keyword is required semantically.
 
 r[items.extern.intro]
 External blocks provide _declarations_ of items that are not _defined_ in the
@@ -194,7 +196,7 @@ The *`link` attribute* specifies the name of a native library that the
 compiler should link with for the items within an `extern` block.
 
 r[items.extern.attributes.link.syntax]
-It uses the [_MetaListNameValueStr_] syntax to specify its inputs. The `name` key is the
+It uses the [MetaListNameValueStr] syntax to specify its inputs. The `name` key is the
 name of the native library to link. The `kind` key is an optional value which
 specifies the kind of library with the following possible values:
 
@@ -392,7 +394,7 @@ The *`link_name` attribute* may be specified on declarations inside an `extern`
 block to indicate the symbol to import for the given function or static.
 
 r[items.extern.attributes.link_name.syntax]
-It uses the [_MetaNameValueStr_] syntax to specify the name of the symbol.
+It uses the [MetaNameValueStr] syntax to specify the name of the symbol.
 
 ```rust
 unsafe extern {
@@ -441,19 +443,9 @@ r[items.extern.attributes.fn-parameters]
 Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].
 
-[IDENTIFIER]: ../identifiers.md
 [PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
 [UEFI]: https://uefi.org/specifications
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
-[_Abi_]: functions.md
-[_Function_]: functions.md
-[_InnerAttribute_]: ../attributes.md
-[_MacroInvocationSemi_]: ../macros.md#macro-invocation
-[_MetaListNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
-[_MetaNameValueStr_]: ../attributes.md#meta-item-attribute-syntax
-[_OuterAttribute_]: ../attributes.md
-[_StaticItem_]: static-items.md
-[_Visibility_]: ../visibility-and-privacy.md
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim

@@ -14,6 +14,7 @@ use std::io;
 use std::ops::Range;
 use std::path::PathBuf;
 
+pub mod grammar;
 mod rules;
 mod std_links;
 mod test_links;
@@ -26,7 +27,7 @@ static ADMONITION_RE: Lazy<Regex> = Lazy::new(|| {
 
 /// A primitive regex to find link reference definitions.
 static MD_LINK_REFERENCE_DEFINITION: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?m)^\[(?<label>[^]]+)]: (?<dest>.*)").unwrap());
+    Lazy::new(|| Regex::new(r"(?m)^\[(?<label>[^]]+)]: +(?<dest>.*)").unwrap());
 
 pub fn handle_preprocessing() -> Result<(), Error> {
     let pre = Spec::new(None)?;
@@ -268,6 +269,7 @@ impl Preprocessor for Spec {
         if diag.deny_warnings && self.rust_root.is_none() {
             bail!("error: SPEC_RUST_ROOT environment variable must be set");
         }
+        let grammar = grammar::load_grammar(&book, &mut diag);
         let rules = self.collect_rules(&book, &mut diag);
         let tests = self.collect_tests(&rules);
         let summary_table = test_links::make_summary_table(&book, &tests, &rules);
@@ -293,6 +295,10 @@ impl Preprocessor for Spec {
             if ch.name == "Test summary" {
                 ch.content = ch.content.replace("{{summary-table}}", &summary_table);
             }
+            if grammar::is_summary(ch) {
+                ch.content = grammar::insert_summary(&grammar, &ch, &mut diag);
+            }
+            ch.content = grammar::insert_grammar(&grammar, &ch, &mut diag);
         });
 
         // Final pass will resolve everything as a std link (or error if the

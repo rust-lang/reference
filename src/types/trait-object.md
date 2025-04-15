@@ -2,12 +2,11 @@ r[type.trait-object]
 # Trait objects
 
 r[type.trait-object.syntax]
-> **<sup>Syntax</sup>**\
-> _TraitObjectType_ :\
-> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TypeParamBounds_]
->
-> _TraitObjectTypeOneBound_ :\
-> &nbsp;&nbsp; `dyn`<sup>?</sup> [_TraitBound_]
+```grammar,types
+TraitObjectType -> `dyn`? TypeParamBounds
+
+TraitObjectTypeOneBound -> `dyn`? TraitBound
+```
 
 r[type.trait-object.intro]
 A *trait object* is an opaque value of another type that implements a set of
@@ -103,8 +102,6 @@ need to be expressed as part of the trait object. This lifetime is written as
 `Trait + 'a`. There are [defaults] that allow this lifetime to usually be
 inferred with a sensible choice.
 
-[_TraitBound_]: ../trait-bounds.md
-[_TypeParamBounds_]: ../trait-bounds.md
 [auto traits]: ../special-types-and-traits.md#auto-traits
 [defaults]: ../lifetime-elision.md#default-trait-object-lifetimes
 [dyn compatible]: ../items/traits.md#dyn-compatibility
