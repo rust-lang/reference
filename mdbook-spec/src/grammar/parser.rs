@@ -263,6 +263,10 @@ impl Parser<'_> {
         } else if let Some(cap) = self.take_re(&RANGE_RE) {
             let a = cap.get(1).map(|m| m.as_str().parse::<u32>().unwrap());
             let b = cap.get(2).map(|m| m.as_str().parse::<u32>().unwrap());
+            match (a, b) {
+                (Some(a), Some(b)) if b < a => bail!(self, "range {a}..{b} is malformed"),
+                _ => {}
+            }
             kind = ExpressionKind::RepeatRange(box_kind(kind), a, b);
         }
 

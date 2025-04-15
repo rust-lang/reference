@@ -93,115 +93,147 @@ impl Expression {
         stack: bool,
         link_map: &HashMap<String, String>,
     ) -> Option<Box<dyn Node>> {
-        let n: Box<dyn Node> = match &self.kind {
-            ExpressionKind::Grouped(e) => {
-                // I don't think this needs anything special. The grouped
-                // expression is usually an Alt or Optional or something like
-                // that which ends up as a distinct railroad node. But I'm not
-                // sure.
-                e.render_railroad(stack, link_map)?
-            }
-            ExpressionKind::Alt(es) => {
-                let choices: Vec<_> = es
-                    .iter()
-                    .map(|e| e.render_railroad(stack, link_map))
-                    .filter_map(|n| n)
-                    .collect();
-                Box::new(Choice::<Box<dyn Node>>::new(choices))
-            }
-            ExpressionKind::Sequence(es) => {
-                let es: Vec<_> = es.iter().collect();
-                let make_seq = |es: &[&Expression]| {
-                    let seq: Vec<_> = es
-                        .iter()
-                        .map(|e| e.render_railroad(stack, link_map))
-                        .filter_map(|n| n)
-                        .collect();
-                    let seq: Sequence<Box<dyn Node>> = Sequence::new(seq);
-                    Box::new(seq)
-                };
-
-                // If `stack` is true, split the sequence on Breaks and stack them vertically.
-                if stack {
-                    // First, trim a Break from the front and back.
-                    let es = if matches!(
-                        es.first(),
-                        Some(e) if e.is_break()
-                    ) {
-                        &es[1..]
-                    } else {
-                        &es[..]
-                    };
-                    let es = if matches!(
-                        es.last(),
-                        Some(e) if e.is_break()
-                    ) {
-                        &es[..es.len() - 1]
-                    } else {
-                        &es[..]
-                    };
-
-                    let mut breaks: Vec<_> =
-                        es.split(|e| e.is_break()).map(|es| make_seq(es)).collect();
-                    // If there aren't any breaks, don't bother stacking.
-                    if breaks.len() == 1 {
-                        breaks.pop().unwrap()
-                    } else {
-                        Box::new(Stack::new(breaks))
+        let mut state;
+        let mut state_ref = &self.kind;
+        let n: Box<dyn Node> = 'l: loop {
+            state_ref = 'cont: {
+                break 'l match state_ref {
+                    // Render grouped nodes and `e{1..1}` repeats directly.
+                    ExpressionKind::Grouped(e)
+                    | ExpressionKind::RepeatRange(e, Some(1), Some(1)) => {
+                        e.render_railroad(stack, link_map)?
                     }
-                } else {
-                    make_seq(&es)
-                }
-            }
-            ExpressionKind::Optional(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                Box::new(Optional::new(n))
-            }
-            ExpressionKind::Repeat(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
-            }
-            ExpressionKind::RepeatNonGreedy(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
-                let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                Box::new(lbox)
-            }
-            ExpressionKind::RepeatPlus(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                Box::new(Repeat::new(n, railroad::Empty))
-            }
-            ExpressionKind::RepeatPlusNonGreedy(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                let r = Repeat::new(n, railroad::Empty);
-                let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                Box::new(lbox)
-            }
-            ExpressionKind::RepeatRange(e, a, b) => {
-                let n = e.render_railroad(stack, link_map)?;
-                let cmt = match (a, b) {
-                    (Some(a), Some(b)) => format!("repeat between {a} and {b} times"),
-                    (None, Some(b)) => format!("repeat at most {b} times"),
-                    (Some(a), None) => format!("repeat at least {a} times"),
-                    (None, None) => panic!("infinite repeat should use *"),
+                    ExpressionKind::Alt(es) => {
+                        let choices: Vec<_> = es
+                            .iter()
+                            .map(|e| e.render_railroad(stack, link_map))
+                            .filter_map(|n| n)
+                            .collect();
+                        Box::new(Choice::<Box<dyn Node>>::new(choices))
+                    }
+                    ExpressionKind::Sequence(es) => {
+                        let es: Vec<_> = es.iter().collect();
+                        let make_seq = |es: &[&Expression]| {
+                            let seq: Vec<_> = es
+                                .iter()
+                                .map(|e| e.render_railroad(stack, link_map))
+                                .filter_map(|n| n)
+                                .collect();
+                            let seq: Sequence<Box<dyn Node>> = Sequence::new(seq);
+                            Box::new(seq)
+                        };
+
+                        // If `stack` is true, split the sequence on Breaks and
+                        // stack them vertically.
+                        if stack {
+                            // First, trim a Break from the front and back.
+                            let es = if matches!(
+                                es.first(),
+                                Some(e) if e.is_break()
+                            ) {
+                                &es[1..]
+                            } else {
+                                &es[..]
+                            };
+                            let es = if matches!(
+                                es.last(),
+                                Some(e) if e.is_break()
+                            ) {
+                                &es[..es.len() - 1]
+                            } else {
+                                &es[..]
+                            };
+
+                            let mut breaks: Vec<_> =
+                                es.split(|e| e.is_break()).map(|es| make_seq(es)).collect();
+                            // If there aren't any breaks, don't bother stacking.
+                            if breaks.len() == 1 {
+                                breaks.pop().unwrap()
+                            } else {
+                                Box::new(Stack::new(breaks))
+                            }
+                        } else {
+                            make_seq(&es)
+                        }
+                    }
+                    // Treat `e?` and `e{..1}` / `e{0..1}` equally.
+                    ExpressionKind::Optional(e)
+                    | ExpressionKind::RepeatRange(e, None | Some(0), Some(1)) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        Box::new(Optional::new(n))
+                    }
+                    // Treat `e*` and `e{..}` / `e{0..}` equally.
+                    ExpressionKind::Repeat(e)
+                    | ExpressionKind::RepeatRange(e, None | Some(0), None) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
+                    }
+                    ExpressionKind::RepeatNonGreedy(e) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
+                        let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
+                        Box::new(lbox)
+                    }
+                    // Treat `e+` and `e{1..}` equally.
+                    ExpressionKind::RepeatPlus(e)
+                    | ExpressionKind::RepeatRange(e, Some(1), None) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        Box::new(Repeat::new(n, railroad::Empty))
+                    }
+                    ExpressionKind::RepeatPlusNonGreedy(e) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        let r = Repeat::new(n, railroad::Empty);
+                        let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
+                        Box::new(lbox)
+                    }
+                    // For `e{a..0}` render an empty node.
+                    ExpressionKind::RepeatRange(_, _, Some(0)) => Box::new(railroad::Empty),
+                    // Treat `e{..b}` / `e{0..b}` as `(e{1..b})?`.
+                    ExpressionKind::RepeatRange(e, None | Some(0), Some(b @ 2..)) => {
+                        state = ExpressionKind::Optional(Box::new(Expression::new_kind(
+                            ExpressionKind::RepeatRange(e.clone(), Some(1), Some(*b)),
+                        )));
+                        break 'cont &state;
+                    }
+                    // Render `e{1..b}` directly.
+                    ExpressionKind::RepeatRange(e, Some(1), Some(b @ 2..)) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        let cmt = format!("at most {b} more times", b = b - 1);
+                        let r = Repeat::new(n, Comment::new(cmt));
+                        Box::new(r)
+                    }
+                    // Treat `e{a..}` as `e{a-1..a-1} e{1..}` and `e{a..b}` as
+                    // `e{a-1..a-1} e{1..b-(a-1)}`, and treat `e{x..x}` for some
+                    // `x` as a sequence of `e` nodes of length `x`.
+                    ExpressionKind::RepeatRange(e, Some(a @ 2..), b) => {
+                        let mut es = Vec::<Expression>::new();
+                        for _ in 0..(a - 1) {
+                            es.push(*e.clone());
+                        }
+                        es.push(Expression::new_kind(ExpressionKind::RepeatRange(
+                            e.clone(),
+                            Some(1),
+                            b.map(|x| x - (a - 1)),
+                        )));
+                        state = ExpressionKind::Sequence(es);
+                        break 'cont &state;
+                    }
+                    ExpressionKind::Nt(nt) => node_for_nt(link_map, nt),
+                    ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
+                    ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
+                    ExpressionKind::Break(_) => return None,
+                    ExpressionKind::Charset(set) => {
+                        let ns: Vec<_> = set.iter().map(|c| c.render_railroad(link_map)).collect();
+                        Box::new(Choice::<Box<dyn Node>>::new(ns))
+                    }
+                    ExpressionKind::NegExpression(e) => {
+                        let n = e.render_railroad(stack, link_map)?;
+                        let ch = node_for_nt(link_map, "CHAR");
+                        Box::new(Except::new(Box::new(ch), n))
+                    }
+                    ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
                 };
-                let r = Repeat::new(n, Comment::new(cmt));
-                Box::new(r)
             }
-            ExpressionKind::Nt(nt) => node_for_nt(link_map, nt),
-            ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
-            ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
-            ExpressionKind::Break(_) => return None,
-            ExpressionKind::Charset(set) => {
-                let ns: Vec<_> = set.iter().map(|c| c.render_railroad(link_map)).collect();
-                Box::new(Choice::<Box<dyn Node>>::new(ns))
-            }
-            ExpressionKind::NegExpression(e) => {
-                let n = e.render_railroad(stack, link_map)?;
-                let ch = node_for_nt(link_map, "CHAR");
-                Box::new(Except::new(Box::new(ch), n))
-            }
-            ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
         };
         if let Some(suffix) = &self.suffix {
             let suffix = strip_markdown(suffix);

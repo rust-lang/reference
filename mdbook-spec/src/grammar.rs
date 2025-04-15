@@ -31,7 +31,7 @@ pub struct Production {
     is_root: bool,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct Expression {
     kind: ExpressionKind,
     /// Suffix is the `_foo_` part that is shown as a subscript.
@@ -40,7 +40,7 @@ struct Expression {
     footnote: Option<String>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 enum ExpressionKind {
     /// `( A B C )`
     Grouped(Box<Expression>),
@@ -78,7 +78,7 @@ enum ExpressionKind {
     Unicode(String),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 enum Characters {
     /// `LF`
     Named(String),
@@ -97,6 +97,14 @@ impl Grammar {
 }
 
 impl Expression {
+    fn new_kind(kind: ExpressionKind) -> Self {
+        Self {
+            kind,
+            suffix: None,
+            footnote: None,
+        }
+    }
+
     fn visit_nt(&self, callback: &mut dyn FnMut(&str)) {
         match &self.kind {
             ExpressionKind::Grouped(e)
