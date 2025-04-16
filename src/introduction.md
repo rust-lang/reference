@@ -1,15 +1,9 @@
 # Introduction
 
 This book is the primary reference for the Rust programming language.
-It provides three kinds of material:
 
-  - Chapters that informally describe each language construct and their use.
-  - Chapters that informally describe the memory model, concurrency model, runtime services, linkage model, and debugging facilities.
-  - Appendix chapters providing rationale and references to languages that influenced the design.
-
-> [!WARNING]
-> This book is incomplete. Documenting everything takes a while.
-> See the [GitHub issues] for what is not documented in this book.
+> [!NOTE]
+> For known bugs in and omissions of this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
 
 ## Rust releases
 
@@ -44,10 +38,6 @@ The reference does not specify what optimizations are allowed or disallowed.
 Instead, think of the compiled program as a black box.
 You can only probe by running it, feeding it input and observing its output.
 Everything that happens that way must conform to what the reference says.
-
-Finally, this book is not normative.
-It may include details that are specific to `rustc` itself, and should not be taken as a specification for the Rust language.
-We intend to produce such a book someday, and until then, the reference is the closest thing we have to one.
 
 ## How to use this book
 
@@ -127,7 +117,7 @@ We welcome contributions of all kinds.
 You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository].
 If this book does not answer your question, and you think its answer is in scope of it, please do not hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on [Zulip].
 Knowing what people use this book for the most helps direct our attention to making those sections the best that they can be.
-We also want the reference to be as normative as possible, so if you see anything that is wrong or is non-normative but not specifically called out, please also [file an issue].
+And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
 
 [book]: ../book/index.html
 [github issues]: https://github.com/rust-lang/reference/issues
