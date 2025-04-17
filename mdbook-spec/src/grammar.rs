@@ -88,6 +88,13 @@ enum Characters {
     Range(char, char),
 }
 
+#[derive(Debug)]
+pub struct RenderCtx {
+    md_link_map: HashMap<String, String>,
+    rr_link_map: HashMap<String, String>,
+    for_summary: bool,
+}
+
 impl Grammar {
     fn visit_nt(&self, callback: &mut dyn FnMut(&str)) {
         for p in self.productions.values() {
@@ -301,7 +308,7 @@ fn render_names(
     output.push_str("<br>\n");
 
     // Convert the link map to add the id.
-    let updated_link_map = |get_id: fn(&str, bool) -> String| -> HashMap<String, String> {
+    let update_link_map = |get_id: fn(&str, bool) -> String| -> HashMap<String, String> {
         link_map
             .iter()
             .map(|(name, path)| {
@@ -316,19 +323,13 @@ fn render_names(
             .collect()
     };
 
-    let markdown_link_map = updated_link_map(render_markdown::markdown_id);
-    // Modify the link map so that it contains the exact destination needed to
-    // link to the railroad productions, and to accommodate the summary
-    // chapter.
-    let railroad_link_map = updated_link_map(render_railroad::railroad_id);
-
-    if let Err(e) = grammar.render_markdown(
-        &names,
-        &markdown_link_map,
-        &railroad_link_map,
-        &mut output,
+    let render_ctx = RenderCtx {
+        md_link_map: update_link_map(render_markdown::markdown_id),
+        rr_link_map: update_link_map(render_railroad::railroad_id),
         for_summary,
-    ) {
+    };
+
+    if let Err(e) = grammar.render_markdown(&render_ctx, &names, &mut output) {
         warn_or_err!(
             diag,
             "grammar failed in chapter {:?}: {e}",
@@ -348,13 +349,7 @@ fn render_names(
          \n",
     );
 
-    if let Err(e) = grammar.render_railroad(
-        &names,
-        &railroad_link_map,
-        &markdown_link_map,
-        &mut output,
-        for_summary,
-    ) {
+    if let Err(e) = grammar.render_railroad(&render_ctx, &names, &mut output) {
         warn_or_err!(
             diag,
             "grammar failed in chapter {:?}: {e}",

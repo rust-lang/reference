@@ -1,29 +1,26 @@
 //! Renders the grammar to markdown.
 
-use super::{Characters, Expression, ExpressionKind, Production};
+use super::{Characters, Expression, ExpressionKind, Production, RenderCtx};
 use crate::grammar::Grammar;
 use anyhow::bail;
 use regex::Regex;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::fmt::Write;
 use std::sync::LazyLock;
 
 impl Grammar {
     pub fn render_markdown(
         &self,
+        cx: &RenderCtx,
         names: &[&str],
-        link_map: &HashMap<String, String>,
-        rr_link_map: &HashMap<String, String>,
         output: &mut String,
-        for_summary: bool,
     ) -> anyhow::Result<()> {
         let mut iter = names.into_iter().peekable();
         while let Some(name) = iter.next() {
             let Some(prod) = self.productions.get(*name) else {
                 bail!("could not find grammar production named `{name}`");
             };
-            prod.render_markdown(link_map, rr_link_map, output, for_summary);
+            prod.render_markdown(cx, output);
             if iter.peek().is_some() {
                 output.push_str("\n");
             }
@@ -42,14 +39,9 @@ pub fn markdown_id(name: &str, for_summary: bool) -> String {
 }
 
 impl Production {
-    fn render_markdown(
-        &self,
-        link_map: &HashMap<String, String>,
-        rr_link_map: &HashMap<String, String>,
-        output: &mut String,
-        for_summary: bool,
-    ) {
-        let dest = rr_link_map
+    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
+        let dest = cx
+            .rr_link_map
             .get(&self.name)
             .map(|path| path.to_string())
             .unwrap_or_else(|| format!("missing"));
@@ -60,12 +52,11 @@ impl Production {
              >\
                [{name}]({dest})\
              </span> → ",
-            id = markdown_id(&self.name, for_summary),
+            id = markdown_id(&self.name, cx.for_summary),
             name = self.name,
         )
         .unwrap();
-        self.expression
-            .render_markdown(link_map, output, for_summary);
+        self.expression.render_markdown(cx, output);
         output.push('\n');
     }
 }
@@ -92,16 +83,11 @@ impl Expression {
         }
     }
 
-    fn render_markdown(
-        &self,
-        link_map: &HashMap<String, String>,
-        output: &mut String,
-        for_summary: bool,
-    ) {
+    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
         match &self.kind {
             ExpressionKind::Grouped(e) => {
                 output.push_str("( ");
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 if !matches!(e.last(), ExpressionKind::Break(_)) {
                     output.push(' ');
                 }
@@ -110,7 +96,7 @@ impl Expression {
             ExpressionKind::Alt(es) => {
                 let mut iter = es.iter().peekable();
                 while let Some(e) = iter.next() {
-                    e.render_markdown(link_map, output, for_summary);
+                    e.render_markdown(cx, output);
                     if iter.peek().is_some() {
                         if !matches!(e.last(), ExpressionKind::Break(_)) {
                             output.push(' ');
@@ -122,34 +108,34 @@ impl Expression {
             ExpressionKind::Sequence(es) => {
                 let mut iter = es.iter().peekable();
                 while let Some(e) = iter.next() {
-                    e.render_markdown(link_map, output, for_summary);
+                    e.render_markdown(cx, output);
                     if iter.peek().is_some() && !matches!(e.last(), ExpressionKind::Break(_)) {
                         output.push(' ');
                     }
                 }
             }
             ExpressionKind::Optional(e) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 output.push_str("<sup>?</sup>");
             }
             ExpressionKind::Repeat(e) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 output.push_str("<sup>\\*</sup>");
             }
             ExpressionKind::RepeatNonGreedy(e) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 output.push_str("<sup>\\* (non-greedy)</sup>");
             }
             ExpressionKind::RepeatPlus(e) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 output.push_str("<sup>+</sup>");
             }
             ExpressionKind::RepeatPlusNonGreedy(e) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 output.push_str("<sup>+ (non-greedy)</sup>");
             }
             ExpressionKind::RepeatRange(e, a, b) => {
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
                 write!(
                     output,
                     "<sup>{}..{}</sup>",
@@ -159,7 +145,7 @@ impl Expression {
                 .unwrap();
             }
             ExpressionKind::Nt(nt) => {
-                let dest = link_map.get(nt).map_or("missing", |d| d.as_str());
+                let dest = cx.md_link_map.get(nt).map_or("missing", |d| d.as_str());
                 write!(output, "<span class=\"grammar-text\">[{nt}]({dest})</span>").unwrap();
             }
             ExpressionKind::Terminal(t) => {
@@ -177,10 +163,10 @@ impl Expression {
                 output.push_str("\\\n");
                 output.push_str(&"&nbsp;".repeat(*indent));
             }
-            ExpressionKind::Charset(set) => charset_render_markdown(set, link_map, output),
+            ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
             ExpressionKind::NegExpression(e) => {
                 output.push('~');
-                e.render_markdown(link_map, output, for_summary);
+                e.render_markdown(cx, output);
             }
             ExpressionKind::Unicode(s) => {
                 output.push_str("U+");
@@ -190,7 +176,7 @@ impl Expression {
         if let Some(suffix) = &self.suffix {
             write!(output, "<sub class=\"grammar-text\">{suffix}</sub>").unwrap();
         }
-        if !for_summary {
+        if !cx.for_summary {
             if let Some(footnote) = &self.footnote {
                 // The `ZeroWidthSpace` is to avoid conflicts with markdown link
                 // references.
@@ -200,15 +186,11 @@ impl Expression {
     }
 }
 
-fn charset_render_markdown(
-    set: &[Characters],
-    link_map: &HashMap<String, String>,
-    output: &mut String,
-) {
+fn charset_render_markdown(cx: &RenderCtx, set: &[Characters], output: &mut String) {
     output.push_str("\\[");
     let mut iter = set.iter().peekable();
     while let Some(chars) = iter.next() {
-        chars.render_markdown(link_map, output);
+        chars.render_markdown(cx, output);
         if iter.peek().is_some() {
             output.push(' ');
         }
@@ -217,10 +199,10 @@ fn charset_render_markdown(
 }
 
 impl Characters {
-    fn render_markdown(&self, link_map: &HashMap<String, String>, output: &mut String) {
+    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
         match self {
             Characters::Named(s) => {
-                let dest = link_map.get(s).map_or("missing", |d| d.as_str());
+                let dest = cx.md_link_map.get(s).map_or("missing", |d| d.as_str());
                 write!(output, "[{s}]({dest})").unwrap();
             }
             Characters::Terminal(s) => write!(
