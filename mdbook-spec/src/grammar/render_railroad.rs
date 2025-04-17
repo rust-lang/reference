@@ -1,29 +1,26 @@
 //! Converts a [`Grammar`] to an SVG railroad diagram.
 
-use super::{Characters, Expression, ExpressionKind, Production};
+use super::{Characters, Expression, ExpressionKind, Production, RenderCtx};
 use crate::grammar::Grammar;
 use anyhow::bail;
 use railroad::*;
 use regex::Regex;
-use std::collections::HashMap;
 use std::fmt::Write;
 use std::sync::LazyLock;
 
 impl Grammar {
     pub fn render_railroad(
         &self,
+        cx: &RenderCtx,
         names: &[&str],
-        link_map: &HashMap<String, String>,
-        md_link_map: &HashMap<String, String>,
         output: &mut String,
-        for_summary: bool,
     ) -> anyhow::Result<()> {
         for name in names {
             let prod = match self.productions.get(*name) {
                 Some(p) => p,
                 None => bail!("could not find grammar production named `{name}`"),
             };
-            prod.render_railroad(link_map, md_link_map, output, for_summary);
+            prod.render_railroad(cx, output);
         }
         Ok(())
     }
@@ -39,20 +36,14 @@ pub fn railroad_id(name: &str, for_summary: bool) -> String {
 }
 
 impl Production {
-    fn render_railroad(
-        &self,
-        link_map: &HashMap<String, String>,
-        md_link_map: &HashMap<String, String>,
-        output: &mut String,
-        for_summary: bool,
-    ) {
-        let mut dia = self.make_diagram(false, link_map, md_link_map);
+    fn render_railroad(&self, cx: &RenderCtx, output: &mut String) {
+        let mut dia = self.make_diagram(cx, false);
         // If the diagram is very wide, try stacking it to reduce the width.
         // This 900 is somewhat arbitrary based on looking at productions that
         // looked too squished. If your diagram is still too squished,
         // consider adding more rules to shorten it.
         if dia.width() > 900 {
-            dia = self.make_diagram(true, link_map, md_link_map);
+            dia = self.make_diagram(cx, true);
         }
         writeln!(
             output,
@@ -60,19 +51,15 @@ impl Production {
                 class=\"railroad-production\" \
                 id=\"{id}\">{dia}</div>",
             width = dia.width(),
-            id = railroad_id(&self.name, for_summary),
+            id = railroad_id(&self.name, cx.for_summary),
         )
         .unwrap();
     }
 
-    fn make_diagram(
-        &self,
-        stack: bool,
-        link_map: &HashMap<String, String>,
-        md_link_map: &HashMap<String, String>,
-    ) -> Diagram<Box<dyn Node>> {
-        let n = self.expression.render_railroad(stack, link_map);
-        let dest = md_link_map
+    fn make_diagram(&self, cx: &RenderCtx, stack: bool) -> Diagram<Box<dyn Node>> {
+        let n = self.expression.render_railroad(cx, stack);
+        let dest = cx
+            .md_link_map
             .get(&self.name)
             .map(|path| path.to_string())
             .unwrap_or_else(|| format!("missing"));
@@ -88,11 +75,7 @@ impl Production {
 }
 
 impl Expression {
-    fn render_railroad(
-        &self,
-        stack: bool,
-        link_map: &HashMap<String, String>,
-    ) -> Option<Box<dyn Node>> {
+    fn render_railroad(&self, cx: &RenderCtx, stack: bool) -> Option<Box<dyn Node>> {
         let mut state;
         let mut state_ref = &self.kind;
         let n: Box<dyn Node> = 'l: loop {
@@ -101,12 +84,12 @@ impl Expression {
                     // Render grouped nodes and `e{1..1}` repeats directly.
                     ExpressionKind::Grouped(e)
                     | ExpressionKind::RepeatRange(e, Some(1), Some(1)) => {
-                        e.render_railroad(stack, link_map)?
+                        e.render_railroad(cx, stack)?
                     }
                     ExpressionKind::Alt(es) => {
                         let choices: Vec<_> = es
                             .iter()
-                            .map(|e| e.render_railroad(stack, link_map))
+                            .map(|e| e.render_railroad(cx, stack))
                             .filter_map(|n| n)
                             .collect();
                         Box::new(Choice::<Box<dyn Node>>::new(choices))
@@ -116,7 +99,7 @@ impl Expression {
                         let make_seq = |es: &[&Expression]| {
                             let seq: Vec<_> = es
                                 .iter()
-                                .map(|e| e.render_railroad(stack, link_map))
+                                .map(|e| e.render_railroad(cx, stack))
                                 .filter_map(|n| n)
                                 .collect();
                             let seq: Sequence<Box<dyn Node>> = Sequence::new(seq);
@@ -159,17 +142,17 @@ impl Expression {
                     // Treat `e?` and `e{..1}` / `e{0..1}` equally.
                     ExpressionKind::Optional(e)
                     | ExpressionKind::RepeatRange(e, None | Some(0), Some(1)) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         Box::new(Optional::new(n))
                     }
                     // Treat `e*` and `e{..}` / `e{0..}` equally.
                     ExpressionKind::Repeat(e)
                     | ExpressionKind::RepeatRange(e, None | Some(0), None) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
                     }
                     ExpressionKind::RepeatNonGreedy(e) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
                         let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                         Box::new(lbox)
@@ -177,11 +160,11 @@ impl Expression {
                     // Treat `e+` and `e{1..}` equally.
                     ExpressionKind::RepeatPlus(e)
                     | ExpressionKind::RepeatRange(e, Some(1), None) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         Box::new(Repeat::new(n, railroad::Empty))
                     }
                     ExpressionKind::RepeatPlusNonGreedy(e) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         let r = Repeat::new(n, railroad::Empty);
                         let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                         Box::new(lbox)
@@ -197,7 +180,7 @@ impl Expression {
                     }
                     // Render `e{1..b}` directly.
                     ExpressionKind::RepeatRange(e, Some(1), Some(b @ 2..)) => {
-                        let n = e.render_railroad(stack, link_map)?;
+                        let n = e.render_railroad(cx, stack)?;
                         let cmt = format!("at most {b} more times", b = b - 1);
                         let r = Repeat::new(n, Comment::new(cmt));
                         Box::new(r)
@@ -218,17 +201,17 @@ impl Expression {
                         state = ExpressionKind::Sequence(es);
                         break 'cont &state;
                     }
-                    ExpressionKind::Nt(nt) => node_for_nt(link_map, nt),
+                    ExpressionKind::Nt(nt) => node_for_nt(cx, nt),
                     ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
                     ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
                     ExpressionKind::Break(_) => return None,
                     ExpressionKind::Charset(set) => {
-                        let ns: Vec<_> = set.iter().map(|c| c.render_railroad(link_map)).collect();
+                        let ns: Vec<_> = set.iter().map(|c| c.render_railroad(cx)).collect();
                         Box::new(Choice::<Box<dyn Node>>::new(ns))
                     }
                     ExpressionKind::NegExpression(e) => {
-                        let n = e.render_railroad(stack, link_map)?;
-                        let ch = node_for_nt(link_map, "CHAR");
+                        let n = e.render_railroad(cx, stack)?;
+                        let ch = node_for_nt(cx, "CHAR");
                         Box::new(Except::new(Box::new(ch), n))
                     }
                     ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
@@ -248,17 +231,18 @@ impl Expression {
 }
 
 impl Characters {
-    fn render_railroad(&self, link_map: &HashMap<String, String>) -> Box<dyn Node> {
+    fn render_railroad(&self, cx: &RenderCtx) -> Box<dyn Node> {
         match self {
-            Characters::Named(s) => node_for_nt(link_map, s),
+            Characters::Named(s) => node_for_nt(cx, s),
             Characters::Terminal(s) => Box::new(Terminal::new(s.clone())),
             Characters::Range(a, b) => Box::new(Terminal::new(format!("{a}-{b}"))),
         }
     }
 }
 
-fn node_for_nt(link_map: &HashMap<String, String>, name: &str) -> Box<dyn Node> {
-    let dest = link_map
+fn node_for_nt(cx: &RenderCtx, name: &str) -> Box<dyn Node> {
+    let dest = cx
+        .rr_link_map
         .get(name)
         .map(|path| path.to_string())
         .unwrap_or_else(|| format!("missing"));
