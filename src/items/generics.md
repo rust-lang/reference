@@ -3,9 +3,7 @@ r[items.generics]
 
 r[items.generics.syntax]
 ```grammar,items
-GenericParams ->
-      `<` `>`
-    | `<` (GenericParam `,`)* GenericParam `,`? `>`
+GenericParams -> `<` ( (GenericParam `,`)* GenericParam `,`? )? `>`
 
 GenericParam -> OuterAttribute* ( LifetimeParam | TypeParam | ConstParam )
 
