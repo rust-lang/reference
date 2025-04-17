@@ -64,7 +64,8 @@ impl Production {
             name = self.name,
         )
         .unwrap();
-        self.expression.render_markdown(link_map, output);
+        self.expression
+            .render_markdown(link_map, output, for_summary);
         output.push('\n');
     }
 }
@@ -91,11 +92,16 @@ impl Expression {
         }
     }
 
-    fn render_markdown(&self, link_map: &HashMap<String, String>, output: &mut String) {
+    fn render_markdown(
+        &self,
+        link_map: &HashMap<String, String>,
+        output: &mut String,
+        for_summary: bool,
+    ) {
         match &self.kind {
             ExpressionKind::Grouped(e) => {
                 output.push_str("( ");
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 if !matches!(e.last(), ExpressionKind::Break(_)) {
                     output.push(' ');
                 }
@@ -104,7 +110,7 @@ impl Expression {
             ExpressionKind::Alt(es) => {
                 let mut iter = es.iter().peekable();
                 while let Some(e) = iter.next() {
-                    e.render_markdown(link_map, output);
+                    e.render_markdown(link_map, output, for_summary);
                     if iter.peek().is_some() {
                         if !matches!(e.last(), ExpressionKind::Break(_)) {
                             output.push(' ');
@@ -116,34 +122,34 @@ impl Expression {
             ExpressionKind::Sequence(es) => {
                 let mut iter = es.iter().peekable();
                 while let Some(e) = iter.next() {
-                    e.render_markdown(link_map, output);
+                    e.render_markdown(link_map, output, for_summary);
                     if iter.peek().is_some() && !matches!(e.last(), ExpressionKind::Break(_)) {
                         output.push(' ');
                     }
                 }
             }
             ExpressionKind::Optional(e) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 output.push_str("<sup>?</sup>");
             }
             ExpressionKind::Repeat(e) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 output.push_str("<sup>\\*</sup>");
             }
             ExpressionKind::RepeatNonGreedy(e) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 output.push_str("<sup>\\* (non-greedy)</sup>");
             }
             ExpressionKind::RepeatPlus(e) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 output.push_str("<sup>+</sup>");
             }
             ExpressionKind::RepeatPlusNonGreedy(e) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 output.push_str("<sup>+ (non-greedy)</sup>");
             }
             ExpressionKind::RepeatRange(e, a, b) => {
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
                 write!(
                     output,
                     "<sup>{}..{}</sup>",
@@ -174,7 +180,7 @@ impl Expression {
             ExpressionKind::Charset(set) => charset_render_markdown(set, link_map, output),
             ExpressionKind::NegExpression(e) => {
                 output.push('~');
-                e.render_markdown(link_map, output);
+                e.render_markdown(link_map, output, for_summary);
             }
             ExpressionKind::Unicode(s) => {
                 output.push_str("U+");
@@ -184,9 +190,12 @@ impl Expression {
         if let Some(suffix) = &self.suffix {
             write!(output, "<sub class=\"grammar-text\">{suffix}</sub>").unwrap();
         }
-        if let Some(footnote) = &self.footnote {
-            // The ZeroWidthSpace is to avoid conflicts with markdown link references.
-            write!(output, "&ZeroWidthSpace;[^{footnote}]").unwrap();
+        if !for_summary {
+            if let Some(footnote) = &self.footnote {
+                // The `ZeroWidthSpace` is to avoid conflicts with markdown link
+                // references.
+                write!(output, "&ZeroWidthSpace;[^{footnote}]").unwrap();
+            }
         }
     }
 }
