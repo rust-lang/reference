@@ -612,7 +612,7 @@ Note that `-1i8`, for example, is analyzed as two tokens: `-` followed by `1i8`.
 Examples of integer literals which are not accepted as literal expressions:
 
 ```rust
-# #[cfg(FALSE)] {
+# #[cfg(false)] {
 0invalidSuffix;
 123AFB43;
 0b010a;
@@ -697,7 +697,7 @@ Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
 Examples of floating-point literals which are not accepted as literal expressions:
 
 ```rust
-# #[cfg(FALSE)] {
+# #[cfg(false)] {
 2.0f80;
 2e5f80;
 2e5e6;
