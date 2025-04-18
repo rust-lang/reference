@@ -3,11 +3,6 @@
 This document is the primary reference for the Rust programming
 language.
 
-This document is not normative. It may include details that are specific
-to `rustc` itself, and should not be taken as a specification for the
-Rust language. We intend to produce such a document someday, but this is
-what we have for now.
-
 ## Dependencies
 
 - Nightly Rust
