@@ -25,12 +25,12 @@ The following procedure is used:
 
 r[expr.method.candidate-receivers]
 The first step is to build a list of candidate receiver types.
-Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion][coerce.unsize] at the end, and adding the result type if that is successful.
+Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsizing coercion][coerce.unsize] at the end, and adding the result type if that is successful.
 
 r[expr.method.candidate-receivers-refs]
 Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
 
-For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsized coercion), `&[i32]`, and finally `&mut [i32]`.
+For instance, if the receiver has type `Box<[i32;2]>`, then the candidate types will be `Box<[i32;2]>`, `&Box<[i32;2]>`, `&mut Box<[i32;2]>`, `[i32; 2]` (by dereferencing), `&[i32; 2]`, `&mut [i32; 2]`, `[i32]` (by unsizing coercion), `&[i32]`, and finally `&mut [i32]`.
 
 r[expr.method.candidate-search]
 Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:

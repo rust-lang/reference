@@ -141,7 +141,7 @@ r[coerce.types.unsize]
     const _: &[u32] = &[0, 1, 2, 3, 4, 5];  // &[u32; 4] -> &[u32]
     ```
 
-    See [unsized coercion](#unsized-coercions) for more details.
+    See [unsizing coercion](#unsizing-coercions) for more details.
 
 r[coerce.types.deref]
 * `&T` or `&mut T` to `&U` if `T` implements `Deref<Target = U>`. For example:
@@ -182,11 +182,11 @@ r[coerce.types.never]
 * `!` to any `T`
 
 r[coerce.unsize]
-### Unsized Coercions
+### Unsizing Coercions
 
 r[coerce.unsize.intro]
-The following coercions are called "unsized coercions", since their targets contain an unsized type.
-unsized coercions apply to pointer-like types which point to types which can lose some of their compile-time known information (such as size or implemented traits). For example:
+The following coercions are called "Unsizing coercions", since their targets contain an unsized type.
+Unsizing coercions apply to pointer-like types which point to types which can lose some of their compile-time known information (such as size or implemented traits). For example:
 
 ```rust
 use std::cell::Cell;
@@ -224,12 +224,12 @@ fn main() {
 
 r[coerce.unsize.confusion]
 > [!NOTE]
-> The term "unsized" might be quite confusing, since the coercion works on sized types (pointers) and the source pointer might point to an unsized type in the first place (`&dyn A -> &dyn Super` in the example above).
+> The term "unsizing" might be quite confusing, since the coercion works on sized types (pointers) and the source pointer might point to an unsized type in the first place (`&dyn A -> &dyn Super` in the example above).
 >
-> "unsized" refers to the main purpose of these coercions --- converting (pointers to) sized types to (pointers to) unsized types. The pointers being not the focus, since unsized types can't exist without them.
+> "Unsizing" refers to the main purpose of these coercions --- converting (pointers to) sized types to (pointers to) unsized types. The pointers being not the focus, since unsized types can't exist without them.
 
 r[coerce.unsize.metadata]
-When performing unsized coercion, the pointer metadata type changes. For example, when unsized `&u32` to `&dyn Debug` metadate type changes from `()` to `DynMetadata<dyn Debug>` (note that exact metadata types are not yet stable). This can also lead to a change in the pointer size -- `&u32` is half the size of `&dyn Debug`.
+When performing unsizing coercion, the pointer metadata type changes. For example, when unsizing `&u32` to `&dyn Debug` metadate type changes from `()` to `DynMetadata<dyn Debug>` (note that exact metadata types are not yet stable). This can also lead to a change in the pointer size -- `&u32` is half the size of `&dyn Debug`.
 
 r[coerce.unsize.traits]
 Three internal traits, [`Unsize`], [`CoerceUnsized`], and [`PinCoerceUnsized`] are used to assist in this process and expose it for library use.
@@ -241,7 +241,7 @@ r[coerce.unsize.traits.coerce-unsized]
 [`CoerceUnsized`] represents the fact that a pointer-like type can be coerced to another pointer-like type, due to `Unsize` being implemented for their pointees. For example, `&T` implements `CoerceUnsized<&U>` when `T: Unsize<U>`.
 
 r[coerce.unsize.traits.pin-coerce-unsized]
-[`PinCoerceUnsized`] is an unsafe marker trait for pointer-like types unsized coercion of which does not break [`Pin`] guarantees. It is a requirement of the `CoerceUnsized` implementation for `Pin`. That is, `&D: PinCoerceUnsized` implies `Pin<&T>: CoerceUnsized<Pin<&U>>`.
+[`PinCoerceUnsized`] is an unsafe marker trait for pointer-like types unsizing coercion of which does not break [`Pin`] guarantees. It is a requirement of the `CoerceUnsized` implementation for `Pin`. That is, `&D: PinCoerceUnsized` implies `Pin<&T>: CoerceUnsized<Pin<&U>>`.
 
 The following implementations of [`Unsize`] are built-in:
 
