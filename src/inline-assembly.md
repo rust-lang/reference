@@ -357,6 +357,7 @@ assert_eq!(y, [3, 2, 0, 1]);
 r[asm.operand-type.supported-operands.label]
 * `label <block>`
   - The address of the block is substituted into the asm template string. The assembly code may jump to the substituted address.
+  - For targets that distinguish between direct jumps and indirect jumps (e.g. x86-64 with `cf-protection` enabled), the assembly code must not jump to the substituted address indirectly.
   - After execution of the block, the `asm!` expression returns.
   - The type of the block must be unit or `!` (never).
   - The block starts a new safety context; unsafe operations within the `label` block must be wrapped in an inner `unsafe` block, even though the entire `asm!` expression is already wrapped in `unsafe`.
@@ -1193,9 +1194,6 @@ unsafe { core::arch::asm!("", options(pure)); }
 r[asm.options.checks.noreturn]
 - It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
 
-r[asm.options.checks.label-with-outputs]
-- It is a compile-time error to have any `label` blocks in an asm block with outputs.
-
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
 let z: i32;
@@ -1205,6 +1203,9 @@ unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
+
+r[asm.options.checks.label-with-outputs]
+- It is a compile-time error to have any `label` blocks in an asm block with outputs.
 
 r[asm.options.global_asm-restriction]
 `global_asm!` only supports the `att_syntax` and `raw` options.
