@@ -49,9 +49,9 @@ r[names.scopes.pattern-bindings.parameter]
 r[names.scopes.pattern-bindings.closure]
 * [Closure parameter] bindings are within the closure body.
 r[names.scopes.pattern-bindings.loop]
-* [`for`] and [`while let`] bindings are within the loop body.
-r[names.scopes.pattern-bindings.if-let]
-* [`if let`] bindings are within the consequent block.
+* [`for`] bindings are within the loop body.
+r[names.scopes.pattern-bindings.let-chains]
+* [`if let`] and [`while let`] bindings are valid in the following conditions as well as the consequent block.
 r[names.scopes.pattern-bindings.match-arm]
 * [`match` arms] bindings are within the [match guard] and the match arm expression.
 
@@ -340,14 +340,14 @@ impl ImplExample {
 [`derive` attribute]: ../attributes/derive.md
 [`for` loop]: ../expressions/loop-expr.md#iterator-loops
 [`for`]: ../expressions/loop-expr.md#iterator-loops
-[`if let`]: ../expressions/if-expr.md#if-let-expressions
+[`if let`]: ../expressions/if-expr.md#if-let-patterns
+[`while let`]: ../expressions/loop-expr.md#while-let-patterns
 [`let` statement]: ../statements.md#let-statements
 [`macro_export`]: ../macros-by-example.md#path-based-scope
 [`macro_use` prelude]: preludes.md#macro_use-prelude
 [`macro_use`]: ../macros-by-example.md#the-macro_use-attribute
 [`match` arms]: ../expressions/match-expr.md
 [`Self`]: ../paths.md#self-1
-[`while let`]: ../expressions/loop-expr.md#predicate-pattern-loops
 [Associated consts]: ../items/associated-items.md#associated-constants
 [associated items]: ../items/associated-items.md
 [Asterisk glob imports]: ../items/use-declarations.md

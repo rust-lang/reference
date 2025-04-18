@@ -41,7 +41,6 @@ ExpressionWithBlock ->
       | UnsafeBlockExpression
       | LoopExpression
       | IfExpression
-      | IfLetExpression
       | MatchExpression
     )
 ```
@@ -311,9 +310,9 @@ They are never allowed before:
 
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
-[`if let`]:             expressions/if-expr.md#if-let-expressions
+[`if let`]:             expressions/if-expr.md#if-let-patterns
 [`Sized`]:              special-types-and-traits.md#sized
-[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]:          expressions/loop-expr.md#while-let-patterns
 [array expressions]:    expressions/array-expr.md
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 [assign]:               expressions/operator-expr.md#assignment-expressions

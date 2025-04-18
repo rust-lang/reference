@@ -144,7 +144,7 @@ let b = Gamma{};  // Exact same value as `a`.
 
 [call expression]: call-expr.md
 [enum variant]: ../items/enumerations.md
-[if let]: if-expr.md#if-let-expressions
+[if let]: if-expr.md#if-let-patterns
 [if]: if-expr.md#if-expressions
 [loop]: loop-expr.md
 [match]: match-expr.md
