@@ -7,6 +7,10 @@ allow-unauthenticated = [
 
 [shortcut]
 
+[no-mentions]
+
+[canonicalize-issue-links]
+
 [merge-conflicts]
 remove = []
 add = ["S-waiting-on-author"]
