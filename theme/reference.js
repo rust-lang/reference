@@ -66,9 +66,9 @@ function update_railroad() {
     const buttons = document.querySelectorAll('.grammar-toggle-railroad');
     buttons.forEach(button => {
         if (grammarRailroad) {
-            button.innerText = "Hide Railroad";
+            button.innerText = "Hide syntax diagram";
         } else {
-            button.innerText = "Show Railroad";
+            button.innerText = "Show syntax diagram";
         }
     });
 }
