@@ -50,28 +50,22 @@ r[attributes.codegen.naked]
 ## The `naked` attribute
 
 r[attributes.codegen.naked.intro]
-The *`naked` [attribute]* prevents the compiler from emitting a function prologue and
-epilogue for the attributed function.
+The *`naked` [attribute]* prevents the compiler from emitting a function prologue and epilogue for the attributed function.
 
 r[attributes.codegen.naked.body]
-The [function body] must consist of exactly one [`naked_asm!`] macro invocation, which
-may be enclosed within an [unsafe block].
+The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
 r[attributes.codegen.naked.prologue-epilogue]
-No function prologue or epilogue are generated for the attributed function: the contents
-of the `naked_asm!` invocation make up the full body of a naked function.
+No function prologue or epilogue are generated for the attributed function: the contents of the `naked_asm!` invocation make up the full body of a naked function.
+
+r[attributes.codegen.naked.unsafe-attribute]
+The `naked` attribute is an [unsafe attribute]. Annotating a function with `#[unsafe(naked)]` comes with the safety obligation that the body respects the function's calling convention, and that the body either returns or diverges.
 
 r[attributes.codegen.naked.call-stack]
-The asm code will have a valid call stack and register state on entry as per the signature and calling convention of the function.
+The assembly code will have a valid call stack and register state on entry as per the signature and calling convention of the function.
 
 r[attributes.codegen.naked.no-duplication]
-The asm code may not be duplicated by the compiler, except when monomorphizing polymorphic functions.
-This property is important for naked functions that define symbols in the assembly code.
-
-r[attributes.codegen.naked.unsafe-function]
-A naked function that makes use of registers in a way that does not conform
-to the specified calling convention imposes additional safety invariants on its caller,
-and therefore must be marked as an [unsafe function].
+The assembly code may not be duplicated by the compiler, except when monomorphizing polymorphic functions. This property is important for naked functions that define symbols in the assembly code.
 
 r[attributes.codegen.naked.unused-variables]
 The [`unused_variables`] lint is suppressed within naked functions.
@@ -552,8 +546,7 @@ trait object whose methods are attributed.
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
-[unsafe block]: ../unsafe-blocks.md
-[unsafe function]: ../unsafe-functions.md
+[unsafe attribute]: ../attributes.md#r-attributes.safety
 [rust-abi]: ../items/external-blocks.md#abi
 [`Location`]: core::panic::Location
 
