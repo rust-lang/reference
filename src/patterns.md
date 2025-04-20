@@ -703,7 +703,7 @@ r[patterns.struct]
 r[patterns.struct.syntax]
 ```grammar,patterns
 StructPattern ->
-    PathInExpression `{`
+    PathExpression `{`
         StructPatternElements ?
     `}`
 
@@ -817,7 +817,7 @@ r[patterns.tuple-struct]
 
 r[patterns.tuple-struct.syntax]
 ```grammar,patterns
-TupleStructPattern -> PathInExpression `(` TupleStructItems? `)`
+TupleStructPattern -> PathExpression `(` TupleStructItems? `)`
 
 TupleStructItems -> Pattern ( `,` Pattern )* `,`?
 ```
