@@ -23,12 +23,9 @@ StructExprField ->
 
 StructBase -> `..` Expression
 
-StructExprTuple ->
-    PathInExpression `(`
-      ( Expression (`,` Expression)* `,`? )?
-    `)`
+StructExprTuple -> CallExpression
 
-StructExprUnit -> PathInExpression
+StructExprUnit -> PathExpression
 ```
 
 r[expr.struct.intro]
@@ -129,6 +126,20 @@ let c = Position;  // `c` is a function that takes 3 arguments.
 let pos = c(8, 6, 7);  // Creates a `Position` value.
 ```
 
+> [!NOTE]
+> While the grammar permits qualified paths, the last segment can't be a type alias:
+>
+> ```rust
+> trait Tr { type T; }
+> impl<T> Tr for T { type T = T; }
+>
+> struct Tuple();
+> enum Enum { Tuple() }
+>
+> // <Unit as Tr>::T(); // causes an error -- `::T` is a type, not a value
+> <Enum as Tr>::T::Tuple(); // OK
+> ```
+
 r[expr.struct.unit]
 ## Unit struct expression
 
@@ -141,6 +152,20 @@ struct Gamma;
 let a = Gamma;  // Gamma unit value.
 let b = Gamma{};  // Exact same value as `a`.
 ```
+
+> [!NOTE]
+> While the grammar permits qualified paths, the last segment can't be a type alias:
+>
+> ```rust
+> trait Tr { type T; }
+> impl<T> Tr for T { type T = T; }
+>
+> struct Unit;
+> enum Enum { Unit }
+>
+> // <Unit as Tr>::T; // causes an error -- `::T` is a type, not a value
+> <Enum as Tr>::T::Unit; // OK
+> ```
 
 [call expression]: call-expr.md
 [enum variant]: ../items/enumerations.md
