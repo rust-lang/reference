@@ -44,8 +44,8 @@ The following attributes are unsafe:
 
 * [`export_name`]
 * [`link_section`]
-* [`no_mangle`]
 * [`naked`]
+* [`no_mangle`]
 
 r[attributes.kind]
 Attributes can be classified into the following kinds:

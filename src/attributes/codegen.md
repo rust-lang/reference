@@ -530,12 +530,12 @@ trait object whose methods are attributed.
 
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
+[`inline`]: #the-inline-attribute
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`naked_asm!`]: ../inline-assembly.md
-[`inline`]: #the-inline-attribute
-[`track_caller`]: #the-track-caller-attribute
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
+[`track_caller`]: #the-track-caller-attribute
 [`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
 [attributes]: ../attributes.md
