@@ -81,8 +81,7 @@ unsafe { core::arch::asm!("/* {} */", in(reg) 0); }
 ```
 
 r[asm.scope.naked_asm]
-With the `naked_asm!` macro, the assembly code is emitted in a function scope and constitutes the full assembly code of a function.
-The `naked_asm!` macro is only allowed in [naked functions](attributes/codegen.md#the-naked-attribute).
+With the `naked_asm!` macro, the assembly code is emitted in a function scope and constitutes the full assembly code of a function. The `naked_asm!` macro is only allowed in [naked functions](attributes/codegen.md#the-naked-attribute).
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -1225,12 +1224,10 @@ unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
 ```
 
 r[asm.options.naked_asm-restriction]
-`naked_asm!` only supports the `att_syntax` and `raw` options.
-The remaining options are not meaningful because the inline assembly defines the whole function body.
+`naked_asm!` only supports the `att_syntax` and `raw` options. The remaining options are not meaningful because the inline assembly defines the whole function body.
 
 r[asm.options.global_asm-restriction]
-`global_asm!` only supports the `att_syntax` and `raw` options.
-The remaining options are not meaningful for global-scope inline assembly.
+`global_asm!` only supports the `att_syntax` and `raw` options. The remaining options are not meaningful for global-scope inline assembly.
 
 ```rust,compile_fail
 # fn main() {}
@@ -1391,16 +1388,15 @@ To avoid undefined behavior, these rules must be followed when using function-sc
 
 r[asm.naked-rules.reg-not-input]
 - Any registers not used for function inputs according to the calling convention and function signature will contain an undefined value on entry to the `naked_asm!` block.
-  - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture.
-    Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
+  - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture. Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
 
 r[asm.naked-rules.reg-not-output]
-- Any callee-saved registers must have the same value upon return as they had on entry, otherwise behavior is undefined.
-  - Caller-saved registes may be used freely, even if they are not used for the return value.
+- Any callee-saved registers must have the same value upon return as they had on entry.
+  - Caller-saved registers may be used freely, even if they are not used for the return value.
 
 r[asm.naked-rules.noreturn]
-- Behavior is undefined if execution falls through to the end of the `naked_asm!` block.
-    - every path through the assembly code is expected to terminate with a return instruction or to diverge
+- Behavior is undefined if execution falls through past the end of the assembly code.
+  - Every path through the assembly code is expected to terminate with a return instruction or to diverge.
 
 r[asm.naked-rules.mem-same-as-ffi]
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
