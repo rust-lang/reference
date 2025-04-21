@@ -1264,7 +1264,6 @@ r[asm.rules.unwind]
 
 r[asm.rules.mem-same-as-ffi]
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
-  - Refer to the unsafe code guidelines for the exact rules.
   - If the `readonly` option is set, then only memory reads are allowed.
   - If the `nomem` option is set then no reads or writes to memory are allowed.
   - These rules do not apply to memory which is private to the assembly code, such as stack space allocated within it.
@@ -1405,8 +1404,6 @@ r[asm.naked-rules.noreturn]
 
 r[asm.naked-rules.mem-same-as-ffi]
 - The set of memory locations that assembly code is allowed to read and write are the same as those allowed for an FFI function.
-  - Refer to the unsafe code guidelines for the exact rules.
-  - These rules do not apply to memory which is private to the assembly code, such as stack space allocated within the `naked_asm!` block.
 
 r[asm.naked-rules.black-box]
 - The compiler cannot assume that the instructions in the `naked_asm!` block are the ones that will actually be executed.
