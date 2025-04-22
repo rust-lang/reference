@@ -1390,9 +1390,11 @@ r[asm.naked-rules.reg-not-input]
 - Any registers not used for function inputs according to the calling convention and function signature will contain an undefined value on entry to the `naked_asm!` block.
   - An "undefined value" in the context of inline assembly means that the register can (non-deterministically) have any one of the possible values allowed by the architecture. Notably it is not the same as an LLVM `undef` which can have a different value every time you read it (since such a concept does not exist in assembly code).
 
-r[asm.naked-rules.reg-not-output]
-- Any callee-saved registers must have the same value upon return as they had on entry.
-  - Caller-saved registers may be used freely, even if they are not used for the return value.
+r[asm.naked-rules.callee-saved-registers]
+- All callee-saved registers must have the same value upon return as they had on entry.
+
+r[asm.naked-rules.caller-saved-registers]
+- Caller-saved registers may be used freely.
 
 r[asm.naked-rules.noreturn]
 - Behavior is undefined if execution falls through past the end of the assembly code.
