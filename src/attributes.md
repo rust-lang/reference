@@ -44,6 +44,7 @@ The following attributes are unsafe:
 
 * [`export_name`]
 * [`link_section`]
+* [`naked`]
 * [`no_mangle`]
 
 r[attributes.kind]
@@ -290,6 +291,7 @@ The following is an index of all built-in attributes.
 - Code generation
   - [`inline`] --- Hint to inline code.
   - [`cold`] --- Hint that a function is unlikely to be called.
+  - [`naked`] - Prevent the compiler from emitting a function prologue.
   - [`no_builtins`] --- Disables use of certain built-in functions.
   - [`target_feature`] --- Configure platform-specific code generation.
   - [`track_caller`] --- Pass the parent call location to `std::panic::Location::caller()`.
@@ -360,6 +362,7 @@ The following is an index of all built-in attributes.
 [`macro_export`]: macros-by-example.md#path-based-scope
 [`macro_use`]: macros-by-example.md#the-macro_use-attribute
 [`must_use`]: attributes/diagnostics.md#the-must_use-attribute
+[`naked`]: attributes/codegen.md#the-naked-attribute
 [`no_builtins`]: attributes/codegen.md#the-no_builtins-attribute
 [`no_implicit_prelude`]: names/preludes.md#the-no_implicit_prelude-attribute
 [`no_link`]: items/extern-crates.md#the-no_link-attribute
