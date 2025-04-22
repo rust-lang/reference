@@ -40,11 +40,11 @@ When such a string in `monospace` font occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
 
-## Railroad visualizations
+## Grammar visualizations
 
-Below each grammar block is a button to toggle the display of a [railroad diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
+Below each grammar block is a button to toggle the display of a [syntax diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
 
-[railroad diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
+[syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 
 ## Common productions
 
