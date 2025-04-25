@@ -4,20 +4,27 @@ r[expr.if]
 r[expr.if.syntax]
 ```grammar,expressions
 IfExpression ->
-    `if` IfConditions BlockExpression
+    `if` Condition BlockExpression
     (`else` ( BlockExpression | IfExpression ) )?
 
-IfConditions -> IfCondition ( `&&` IfCondition )*
+Condition -> Scrutinee | LetChain
 
-IfCondition ->
-      Expression _except [StructExprStruct]_
-    | `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_
+LetChain -> ( LetChainScrutinee | LetExpr ) ( `&&` LetChain )?
+
+LetExpr -> `let` Pattern `=` LetChainScrutinee
+
+LetChainScrutinee -> Scrutinee _except [BinOpsBelowAnd]_
+
+@root BinOpsBelowAnd ->
+      LazyBooleanExpression
+    | RangeExpression
+    | AssignmentExpression
+    | CompoundAssignmentExpression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.if.intro]
-The syntax of an `if` expression is a sequence of one or more condition operands separated by `&&`,
-followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
+An `if` expression is a conditional branch in program control. The syntax of an `if` expression is a condition followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block. The condition may be an expression or a let chain. A let chain is a sequence of operands separated by `&&`.
 
 r[expr.if.condition]
 Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
@@ -110,7 +117,7 @@ r[expr.if.chains.intro]
 Multiple condition operands can be separated with `&&`.
 
 r[expr.if.chains.order]
-Similar to a `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
+Similar to an `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
 in which case the subsequent operands are not evaluated.
 
 r[expr.if.chains.bindings]
@@ -148,7 +155,7 @@ fn nested() {
 ```
 
 r[expr.if.chains.or]
-If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with the `let` scrutinee.
+If any condition operand is a `let` expression, then none of the condition operands can be an `||` [_LazyBooleanOperatorExpression_] or any other binary [operators] with a lower [precedence] than `&&` due to ambiguity and precedence with the `let` scrutinee.
 If a `||` expression is needed, then parentheses can be used. For example:
 
 ```rust
@@ -160,7 +167,8 @@ if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
 ```
 
 r[expr.if.edition2024]
-> **Edition differences**: Before the 2024 edition, let chains are not supported and only a single _IfCondition_ is allowed in an `if` expression.
+> [!EDITION-2024]
+> Before the 2024 edition, let chains are not supported and only a single [_Scrutinee_][grammar-Scrutinee] is allowed as the conditional expression in an `if` expression.
 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
@@ -169,4 +177,6 @@ r[expr.if.edition2024]
 [_Scrutinee_]: match-expr.md
 [`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
+[operators]: expr.operator
+[precedence]: expr.precedence
 [scrutinee]: ../glossary.md#scrutinee
