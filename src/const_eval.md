@@ -107,8 +107,6 @@ r[const-eval.const-expr.loop]
 r[const-eval.const-expr.if-match]
 * [if] and [match] expressions.
 
-expressions.")
-
 r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
