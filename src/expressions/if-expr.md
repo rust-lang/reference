@@ -160,7 +160,8 @@ if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
 ```
 
 r[expr.if.edition2024]
-> **Edition differences**: Before the 2024 edition, let chains are not supported and only a single _IfCondition_ is allowed in an `if` expression.
+> [!EDITION-2024]
+> Before the 2024 edition, let chains are not supported and only a single _IfCondition_ is allowed in an `if` expression.
 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
