@@ -9,7 +9,7 @@ StructExpression ->
     | StructExprUnit
 
 StructExprStruct ->
-    PathInExpression `{` (StructExprFields | StructBase)? `}`
+    PathExpression `{` (StructExprFields | StructBase)? `}`
 
 StructExprFields ->
     StructExprField (`,` StructExprField)* (`,` StructBase | `,`?)
