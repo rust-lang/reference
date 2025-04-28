@@ -4,11 +4,6 @@ r[expr.struct]
 r[expr.struct.syntax]
 ```grammar,expressions
 StructExpression ->
-      StructExprStruct
-    | StructExprTuple
-    | StructExprUnit
-
-StructExprStruct ->
     PathInExpression `{` (StructExprFields | StructBase)? `}`
 
 StructExprFields ->
@@ -22,34 +17,69 @@ StructExprField ->
     )
 
 StructBase -> `..` Expression
-
-StructExprTuple -> CallExpression
-
-StructExprUnit -> PathExpression
 ```
 
 r[expr.struct.intro]
 A *struct expression* creates a struct, enum, or union value.
 It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
-There are three forms of struct expressions: struct, tuple, and unit.
 
 The following are examples of struct expressions:
 
 ```rust
 # struct Point { x: f64, y: f64 }
 # struct NothingInMe { }
-# struct TuplePoint(f64, f64);
 # mod game { pub struct User<'a> { pub name: &'a str, pub age: u32, pub score: usize } }
-# struct Cookie; fn some_fn<T>(t: T) {}
 # enum Enum { Variant {} }
 Point {x: 10.0, y: 20.0};
 NothingInMe {};
-TuplePoint(10.0, 20.0);
-TuplePoint { 0: 10.0, 1: 20.0 }; // Results in the same value as the above line
 let u = game::User {name: "Joe", age: 35, score: 100_000};
 Enum::Variant {};
-some_fn::<Cookie>(Cookie);
 ```
+
+> [!NOTE]
+> Tuple structs and tuple enum variants are typically instantiated using a [call expression][expr.call] referring to the [constructor in the value namespace][items.struct.tuple]. These are distinct from a struct expression using curly braces referring to the constructor in the type namespace.
+>
+> ```rust
+> struct Position(i32, i32, i32);
+> Position(0, 0, 0);  // Typical way of creating a tuple struct.
+> let c = Position;  // `c` is a function that takes 3 arguments.
+> let pos = c(8, 6, 7);  // Creates a `Position` value.
+>
+> enum Version { Triple(i32, i32, i32) };
+> Version::Triple(0, 0, 0);
+> let f = Version::Triple;
+> let ver = f(8, 6, 7);
+> ```
+>
+> The last segment of the call path cannot refer to a type alias:
+>
+> ```rust
+> trait Tr { type T; }
+> impl<T> Tr for T { type T = T; }
+>
+> struct Tuple();
+> enum Enum { Tuple() }
+>
+> // <Unit as Tr>::T(); // causes an error -- `::T` is a type, not a value
+> <Enum as Tr>::T::Tuple(); // OK
+> ```
+>
+> ----
+>
+> Unit structs and unit enum variants are typically instantiated using a [path expression][expr.path] referring to the [constant in the value namespace][items.struct.unit].
+>
+> ```rust
+> struct Gamma;
+> // Gamma unit value, referring to the const in the value namespace.
+> let a = Gamma;
+> // Exact same value as `a`, but constructed using a struct expression
+> // referring to the type namespace.
+> let b = Gamma {};
+>
+> enum ColorSpace { Oklch }
+> let c = ColorSpace::Oklch;
+> let d = ColorSpace::Oklch {};
+> ```
 
 r[expr.struct.field]
 ## Field struct expression
@@ -85,7 +115,7 @@ drop(y_ref);
 ```
 
 r[expr.struct.brace-restricted-positions]
-Struct expressions with curly braces can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
+Struct expressions can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
 However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
 
 r[expr.struct.tuple-field]
@@ -115,70 +145,6 @@ Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
 
-r[expr.struct.tuple]
-## Tuple struct expression
-
-A struct expression with fields enclosed in parentheses constructs a tuple struct or a tuple variant of an enum.
-Though it is listed here as a specific expression for completeness, it is equivalent to a [call expression] to the tuple struct's (enum tuple variant's) constructor. For example:
-
-```rust
-struct Position(i32, i32, i32);
-Position(0, 0, 0);  // Typical way of creating a tuple struct.
-let c = Position;  // `c` is a function that takes 3 arguments.
-let pos = c(8, 6, 7);  // Creates a `Position` value.
-
-enum Version { Triple(i32, i32, i32) };
-Version::Triple(0, 0, 0);
-let f = Version::Triple;
-let ver = f(8, 6, 7);
-```
-
-> [!NOTE]
-> While the grammar permits qualified paths, the last segment can't be a type alias:
->
-> ```rust
-> trait Tr { type T; }
-> impl<T> Tr for T { type T = T; }
->
-> struct Tuple();
-> enum Enum { Tuple() }
->
-> // <Unit as Tr>::T(); // causes an error -- `::T` is a type, not a value
-> <Enum as Tr>::T::Tuple(); // OK
-> ```
-
-r[expr.struct.unit]
-## Unit struct expression
-
-A unit struct expression is just the path to a unit struct item or unit variant of an enum.
-This refers to the unit struct's (enum variant's) implicit constant of its value.
-The unit struct or a unit variant of an enum value can also be constructed with a fieldless struct expression. For example:
-
-```rust
-struct Gamma;
-let a = Gamma;  // Gamma unit value.
-let b = Gamma{};  // Exact same value as `a`.
-
-enum ColorSpace { Oklch }
-let c = ColorSpace::Oklch;
-let d = ColorSpace::Oklch {};
-```
-
-> [!NOTE]
-> While the grammar permits qualified paths, the last segment can't be a type alias:
->
-> ```rust
-> trait Tr { type T; }
-> impl<T> Tr for T { type T = T; }
->
-> struct Unit;
-> enum Enum { Unit }
->
-> // <Unit as Tr>::T; // causes an error -- `::T` is a type, not a value
-> <Enum as Tr>::T::Unit; // OK
-> ```
-
-[call expression]: call-expr.md
 [enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-expressions
 [if]: if-expr.md#if-expressions

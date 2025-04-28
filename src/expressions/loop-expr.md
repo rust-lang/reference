@@ -54,7 +54,7 @@ r[expr.loop.while]
 
 r[expr.loop.while.syntax]
 ```grammar,expressions
-PredicateLoopExpression -> `while` Expression _except [StructExprStruct]_ BlockExpression
+PredicateLoopExpression -> `while` Expression _except [StructExpression]_ BlockExpression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
@@ -148,7 +148,7 @@ r[expr.loop.for]
 r[expr.loop.for.syntax]
 ```grammar,expressions
 IteratorLoopExpression ->
-    `for` Pattern `in` Expression _except [StructExprStruct]_ BlockExpression
+    `for` Pattern `in` Expression _except [StructExpression]_ BlockExpression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 

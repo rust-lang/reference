@@ -9,7 +9,7 @@ MatchExpression ->
         MatchArms?
     `}`
 
-Scrutinee -> Expression _except [StructExprStruct]_
+Scrutinee -> Expression _except [StructExpression]_
 
 MatchArms ->
     ( MatchArm `=>` ( ExpressionWithoutBlock `,` | ExpressionWithBlock `,`? ) )*
