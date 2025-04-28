@@ -171,7 +171,6 @@ As with format strings, positional arguments must appear before named arguments 
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-let x = 5;
 // Named operands need to come after positional ones
 unsafe { core::arch::asm!("/* {x} {} */", x = const 5, in(reg) 5); }
 // ERROR: positional arguments cannot follow named arguments or explicit register arguments
@@ -181,7 +180,6 @@ unsafe { core::arch::asm!("/* {x} {} */", x = const 5, in(reg) 5); }
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-let x = 5;
 // We also can't put explicit registers before positional operands
 unsafe { core::arch::asm!("/* {} */", in("eax") 0, in(reg) 5); }
 // ERROR: positional arguments cannot follow named arguments or explicit register arguments
@@ -194,7 +192,6 @@ Explicit register operands cannot be used by placeholders in the template string
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-let x = 5;
 // Explicit register operands don't get substituted, use `eax` explicitly in the string
 unsafe { core::arch::asm!("/* {} */", in("eax") 5); }
 // ERROR: invalid reference to argument at index 0
@@ -207,7 +204,6 @@ All other named and positional operands must appear at least once in the templat
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-let x = 5;
 // We have to name all of the operands in the format string
 unsafe { core::arch::asm!("", in(reg) 5, x = const 5); }
 // ERROR: multiple unused asm arguments
@@ -407,7 +403,6 @@ Because `global_asm!` exists outside a function, it can only use `sym` and `cons
 
 ```rust,compile_fail
 # fn main() {}
-let x = 5;
 // register operands aren't allowed, since we aren't in a function
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", in(reg) 5);
@@ -469,7 +464,6 @@ Additionally, it is also a compile-time error to use overlapping registers (e.g.
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
-let x = 5;
 // al overlaps with ax, so we can't name both of them.
 unsafe { core::arch::asm!("", in("ax") 5, in("al") 4i8); }
 // ERROR: register `al` conflicts with register `ax`
