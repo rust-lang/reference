@@ -18,7 +18,7 @@ Support for inline assembly is stable on the following architectures:
 - LoongArch
 - s390x
 
-The compiler will emit an error if `asm!` is used on an unsupported target.
+The compiler will emit an error if an assembly macro is used on an unsupported target.
 
 r[asm.example]
 ## Example
