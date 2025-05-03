@@ -181,6 +181,9 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 > [!NOTE]
 > This is a note.
 
+> [!EDITION-2024]
+> This is an edition-specific difference.
+
 > [!EXAMPLE]
 > This is an example.
 ```

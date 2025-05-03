@@ -1,4 +1,13 @@
 //! Support for admonitions using markdown blockquotes.
+//!
+//! To add support for a new admonition:
+//!
+//! 1. Modify the [`admonitions`] function below to include an icon.
+//! 2. Modify `theme/reference.css` to set the color for the different themes.
+//!    Look at one of the other admonitions as a guide.
+//! 3. Update `src/introduction.md` and describe what this new block is for
+//!    with an example.
+//! 4. Update `docs/authoring.md` to show an example of your new admonition.
 
 use crate::{Diagnostics, warn_or_err};
 use mdbook::book::Chapter;
