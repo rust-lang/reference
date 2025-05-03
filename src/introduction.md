@@ -78,6 +78,14 @@ These conventions are documented here.
   > [!NOTE]
   > This is an example note.
 
+* Example blocks show an example that demonstrates some rule or points out some interesting aspect. Some examples may have hidden lines which can be viewed by clicking the eye icon that appears when hovering or tapping the example.
+
+  > [!EXAMPLE]
+  > This is a code example.
+  > ```rust
+  > println!("hello world");
+  > ```
+
 * Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
 
   > [!WARNING]

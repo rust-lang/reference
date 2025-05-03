@@ -180,6 +180,9 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 
 > [!NOTE]
 > This is a note.
+
+> [!EXAMPLE]
+> This is an example.
 ```
 
 The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/mdbook-spec/src/admonitions.rs).

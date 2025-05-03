@@ -62,22 +62,26 @@ See mdbook-spec/src/admonitions.rs.
     --alert-note-color: #0969da;
     --alert-warning-color: #9a6700;
     --alert-edition-color: #1a7f37;
+    --alert-example-color: #8250df;
 }
 .ayu .alert {
     --alert-note-color: #74b9ff;
     --alert-warning-color: #f0b72f;
     --alert-edition-color: #2bd853;
+    --alert-example-color: #d3abff;
 }
 .rust .alert {
     --alert-note-color: #023b95;
     --alert-warning-color: #603700;
     --alert-edition-color: #008200;
+    --alert-example-color: #8250df;
 }
 .coal .alert,
 .navy .alert {
     --alert-note-color: #4493f8;
     --alert-warning-color: #d29922;
     --alert-edition-color: #3fb950;
+    --alert-example-color: #ab7df8;
 }
 .alert-note blockquote {
     border-inline-start-color: var(--alert-note-color);
@@ -87,6 +91,9 @@ See mdbook-spec/src/admonitions.rs.
 }
 .alert-edition blockquote {
     border-inline-start-color: var(--alert-edition-color);
+}
+.alert-example blockquote {
+    border-inline-start-color: var(--alert-example-color);
 }
 .alert-note .alert-title {
     color: var(--alert-note-color);
@@ -105,6 +112,9 @@ See mdbook-spec/src/admonitions.rs.
     border-radius: 15px;
     font-weight: bold;
     color: var(--alert-edition-color);
+}
+.alert-example .alert-title {
+    color: var(--alert-example-color);
 }
 
 /* <kbd> tags can be used to highlight specific character elements. */

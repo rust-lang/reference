@@ -17,6 +17,9 @@ const ICON_NOTE: &str = r#"<path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5
 // This icon is from GitHub, MIT License, see https://github.com/primer/octicons
 const ICON_WARNING: &str = r#"<path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path>"#;
 
+// This icon is from GitHub, MIT License, see https://github.com/primer/octicons
+const ICON_EXAMPLE: &str = r#"<path d="M 5.0693987,1.2383101 11.496127,7.665038 a 0.47311013,0.47311013 0 0 1 0,0.669924 L 5.0693987,14.76169 A 0.47311013,0.47311013 0 0 1 4.2613266,14.426728 V 1.573272 A 0.47311013,0.47311013 0 0 1 5.0693987,1.2383101 Z"></path>"#;
+
 /// Converts blockquotes with special headers into admonitions.
 ///
 /// The blockquote should look something like:
@@ -64,6 +67,7 @@ pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
             let svg = match lower.as_str() {
                 "note" => ICON_NOTE,
                 "warning" => ICON_WARNING,
+                "example" => ICON_EXAMPLE,
                 _ => {
                     warn_or_err!(
                         diag,
