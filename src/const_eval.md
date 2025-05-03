@@ -102,10 +102,10 @@ r[const-eval.const-expr.const-fn]
 * Calls of [const functions] and const methods.
 
 r[const-eval.const-expr.loop]
-* [loop], [while] and [`while let`] expressions.
+* [loop] and [while] expressions.
 
 r[const-eval.const-expr.if-match]
-* [if], [`if let`] and [match] expressions.
+* [if] and [match] expressions.
 
 r[const-eval.const-context]
 ## Const context
@@ -185,7 +185,6 @@ of whether you are building on a `64` bit or a `32` bit system.
 [grouped]:              expressions/grouped-expr.md
 [interior mutability]:  interior-mutability.md
 [if]:                   expressions/if-expr.md#if-expressions
-[`if let`]:             expressions/if-expr.md#if-let-expressions
 [lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
 [let statements]:       statements.md#let-statements
 [literals]:             expressions/literal-expr.md
@@ -202,4 +201,3 @@ of whether you are building on a `64` bit or a `32` bit system.
 [struct]:               expressions/struct-expr.md
 [tuple expressions]:    expressions/tuple-expr.md
 [while]:                expressions/loop-expr.md#predicate-loops
-[`while let`]:          expressions/loop-expr.md#predicate-pattern-loops

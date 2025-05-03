@@ -1,34 +1,55 @@
 r[expr.if]
-# `if` and `if let` expressions
-
-## `if` expressions
+# `if` expressions
 
 r[expr.if.syntax]
 ```grammar,expressions
 IfExpression ->
-    `if` Expression _except [StructExpression]_ BlockExpression
-    (`else` ( BlockExpression | IfExpression | IfLetExpression ) )?
+    `if` Conditions BlockExpression
+    (`else` ( BlockExpression | IfExpression ) )?
+
+Conditions ->
+      Expression _except [StructExpression]_
+    | LetChain
+
+LetChain -> LetChainCondition ( `&&` LetChainCondition )*
+
+LetChainCondition ->
+      Expression _except [ExcludedConditions]_
+    | OuterAttribute* `let` Pattern `=` Scrutinee _except [ExcludedConditions]_
+
+@root ExcludedConditions ->
+      StructExpression
+    | LazyBooleanExpression
+    | RangeExpr
+    | RangeFromExpr
+    | RangeInclusiveExpr
+    | AssignmentExpression
+    | CompoundAssignmentExpression
 ```
-<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
+<!-- TODO: The struct exception above needs clarification, see https://github.com/rust-lang/reference/issues/1808
+     The chain grammar could use some work, see https://github.com/rust-lang/reference/issues/1811
+-->
 
 r[expr.if.intro]
-An `if` expression is a conditional branch in program control.
-The syntax of an `if` expression is a condition operand, followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
+The syntax of an `if` expression is a sequence of one or more condition operands separated by `&&`,
+followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
 
-r[expr.if.condition-bool]
-The condition operands must have the [boolean type].
+r[expr.if.condition]
+Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
 
 r[expr.if.condition-true]
-If a condition operand evaluates to `true`, the consequent block is executed and any subsequent `else if` or `else` block is skipped.
+If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
+the consequent block is executed and any subsequent `else if` or `else` block is skipped.
 
 r[expr.if.else-if]
-If a condition operand evaluates to `false`, the consequent block is skipped and any subsequent `else if` condition is evaluated.
+If any condition operand evaluates to `false` or any `let` pattern does not match its scrutinee,
+the consequent block is skipped and any subsequent `else if` condition is evaluated.
 
 r[expr.if.else]
 If all `if` and `else if` conditions evaluate to `false` then any `else` block is executed.
 
 r[expr.if.result]
-An if expression evaluates to the same value as the executed block, or `()` if no block is evaluated.
+An `if` expression evaluates to the same value as the executed block, or `()` if no block is evaluated.
 
 r[expr.if.type]
 An `if` expression must have the same type in all situations.
@@ -43,6 +64,7 @@ if x == 4 {
     println!("x is something else");
 }
 
+// `if` can be used as an expression.
 let y = if 12 * 15 > 150 {
     "Bigger"
 } else {
@@ -52,31 +74,17 @@ assert_eq!(y, "Bigger");
 ```
 
 r[expr.if.let]
-## `if let` expressions
-
-r[expr.if.let.syntax]
-```grammar,expressions
-IfLetExpression ->
-    `if` `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_ BlockExpression
-    (`else` ( BlockExpression | IfExpression | IfLetExpression ) )?
-```
+## `if let` patterns
 
 r[expr.if.let.intro]
-An `if let` expression is semantically similar to an `if` expression but in place of a condition operand it expects the keyword `let` followed by a pattern, an `=` and a [scrutinee] operand.
+`let` patterns in an `if` condition allow binding new variables into scope when the pattern matches successfully.
 
-r[expr.if.let.pattern]
-If the value of the scrutinee matches the pattern, the corresponding block will execute.
-
-r[expr.if.let.else]
-Otherwise, flow proceeds to the following `else` block if it exists.
-
-r[expr.if.let.result]
-Like `if` expressions, `if let` expressions have a value determined by the block that is evaluated.
+The following examples illustrate bindings using `let` patterns:
 
 ```rust
 let dish = ("Ham", "Eggs");
 
-// this body will be skipped because the pattern is refuted
+// This body will be skipped because the pattern is refuted.
 if let ("Bacon", b) = dish {
     println!("Bacon is served with {}", b);
 } else {
@@ -84,7 +92,7 @@ if let ("Bacon", b) = dish {
     println!("No bacon will be served");
 }
 
-// this body will execute
+// This body will execute.
 if let ("Ham", b) = dish {
     println!("Ham is served with {}", b);
 }
@@ -94,47 +102,9 @@ if let _ = 5 {
 }
 ```
 
-r[expr.if.let.else-if]
-`if` and `if let` expressions can be intermixed:
-
-```rust
-let x = Some(3);
-let a = if let Some(1) = x {
-    1
-} else if x == Some(2) {
-    2
-} else if let Some(y) = x {
-    y
-} else {
-    -1
-};
-assert_eq!(a, 3);
-```
-
-r[expr.if.let.desugaring]
-An `if let` expression is equivalent to a [`match` expression] as follows:
-
-<!-- ignore: expansion example -->
-```rust,ignore
-if let PATS = EXPR {
-    /* body */
-} else {
-    /*else */
-}
-```
-
-is equivalent to
-
-<!-- ignore: expansion example -->
-```rust,ignore
-match EXPR {
-    PATS => { /* body */ },
-    _ => { /* else */ },    // () if there is no else
-}
-```
-
 r[expr.if.let.or-pattern]
-Multiple patterns may be specified with the `|` operator. This has the same semantics as with `|` in `match` expressions:
+Multiple patterns may be specified with the `|` operator.
+This has the same semantics as with `|` in [`match` expressions]:
 
 ```rust
 enum E {
@@ -148,27 +118,85 @@ if let E::X(n) | E::Y(n) = v {
 }
 ```
 
-r[expr.if.let.lazy-bool]
-The expression cannot be a [lazy boolean operator expression][expr.bool-logic].
-Use of a lazy boolean operator is ambiguous with a planned feature change of the language (the implementation of if-let chains - see [eRFC 2947][_eRFCIfLetChain_]).
-When lazy boolean operator expression is desired, this can be achieved by using parenthesis as below:
+r[expr.if.chains]
+## Chains of conditions
 
-<!-- ignore: pseudo code -->
-```rust,ignore
-// Before...
-if let PAT = EXPR && EXPR { .. }
+r[expr.if.chains.intro]
+Multiple condition operands can be separated with `&&`.
 
-// After...
-if let PAT = ( EXPR && EXPR ) { .. }
+r[expr.if.chains.order]
+Similar to a `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
+in which case the subsequent operands are not evaluated.
 
-// Before...
-if let PAT = EXPR || EXPR { .. }
+r[expr.if.chains.bindings]
+The bindings of each pattern are put into scope to be available for the next condition operand and the consequent block.
 
-// After...
-if let PAT = ( EXPR || EXPR ) { .. }
+The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
+
+```rust
+fn single() {
+    let outer_opt = Some(Some(1i32));
+
+    if let Some(inner_opt) = outer_opt
+        && let Some(number) = inner_opt
+        && number == 1
+    {
+        println!("Peek a boo");
+    }
+}
 ```
 
-[_eRFCIfLetChain_]: https://github.com/rust-lang/rfcs/blob/master/text/2497-if-let-chains.md#rollout-plan-and-transitioning-to-rust-2018
-[`match` expression]: match-expr.md
+The above is equivalent to the following without using chains of conditions:
+
+```rust
+fn nested() {
+    let outer_opt = Some(Some(1i32));
+
+    if let Some(inner_opt) = outer_opt {
+        if let Some(number) = inner_opt {
+            if number == 1 {
+                println!("Peek a boo");
+            }
+        }
+    }
+}
+```
+
+r[expr.if.chains.or]
+If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with the `let` scrutinee.
+If a `||` expression is needed, then parentheses can be used. For example:
+
+```rust
+# let foo = Some(123);
+# let condition1 = true;
+# let condition2 = false;
+// Parentheses are required here.
+if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
+```
+
+r[expr.if.edition2024]
+> [!EDITION-2024]
+> Before the 2024 edition, let chains are not supported. That is, the [LetChain] grammar is not allowed in an `if` expression.
+
+[_BlockExpression_]: block-expr.md
+[_Expression_]: ../expressions.md
+[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
+[_Pattern_]: ../patterns.md
+[_Scrutinee_]: match-expr.md
+[`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
+
+<script>
+(function() {
+    var fragments = {
+        "#if-let-expressions": "if-expr.html#if-let-patterns",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>

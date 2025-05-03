@@ -135,13 +135,13 @@ to with certain [path qualifiers] or aliases.
 [*visibility*]: visibility-and-privacy.md
 [`'static`]: keywords.md#weak-keywords
 [`for`]: expressions/loop-expr.md#iterator-loops
-[`if let`]: expressions/if-expr.md#if-let-expressions
+[`if let`]: expressions/if-expr.md#if-let-patterns
 [`let` statement]: statements.md#let-statements
 [`macro_export` attribute]: macros-by-example.md#path-based-scope
 [`macro_rules` declarations]: macros-by-example.md
 [`macro_use` attribute]: macros-by-example.md#the-macro_use-attribute
 [`match`]: expressions/match-expr.md
-[`while let`]: expressions/loop-expr.md#predicate-pattern-loops
+[`while let`]: expressions/loop-expr.md#while-let-patterns
 [associated items]: items/associated-items.md
 [attributes]: attributes.md
 [Boolean type]: types/boolean.md
