@@ -182,7 +182,7 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 > This is a note.
 ```
 
-The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`mdbook-spec/src/lib.rs`](https://github.com/rust-lang/reference/blob/HEAD/mdbook-spec/src/lib.rs).
+The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/mdbook-spec/src/admonitions.rs).
 
 ## Style
 
