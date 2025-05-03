@@ -6,7 +6,7 @@ r[expr.if]
 r[expr.if.syntax]
 ```grammar,expressions
 IfExpression ->
-    `if` Expression _except [StructExprStruct]_ BlockExpression
+    `if` Expression _except [StructExpression]_ BlockExpression
     (`else` ( BlockExpression | IfExpression | IfLetExpression ) )?
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->

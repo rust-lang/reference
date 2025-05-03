@@ -347,8 +347,8 @@ They are never allowed before:
 [Structs]:              expr.struct
 [Temporary values]:     #temporaries
 [tuple expressions]:    expressions/tuple-expr.md
-[Tuple structs]:        expr.struct.tuple
+[Tuple structs]:        items.struct.tuple
 [Tuples]:               expressions/tuple-expr.md
 [Underscores]:          expressions/underscore-expr.md
-[Unit structs]:         expr.struct.unit
+[Unit structs]:         items.struct.unit
 [Variables]:            variables.md
