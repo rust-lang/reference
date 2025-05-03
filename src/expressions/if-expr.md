@@ -4,16 +4,31 @@ r[expr.if]
 r[expr.if.syntax]
 ```grammar,expressions
 IfExpression ->
-    `if` IfConditions BlockExpression
+    `if` Conditions BlockExpression
     (`else` ( BlockExpression | IfExpression ) )?
 
-IfConditions -> IfCondition ( `&&` IfCondition )*
-
-IfCondition ->
+Conditions ->
       Expression _except [StructExpression]_
-    | `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_
+    | LetChain
+
+LetChain -> LetChainCondition ( `&&` LetChainCondition )*
+
+LetChainCondition ->
+      Expression _except [ExcludedConditions]_
+    | OuterAttribute* `let` Pattern `=` Scrutinee _except [ExcludedConditions]_
+
+@root ExcludedConditions ->
+      StructExpression
+    | LazyBooleanExpression
+    | RangeExpr
+    | RangeFromExpr
+    | RangeInclusiveExpr
+    | AssignmentExpression
+    | CompoundAssignmentExpression
 ```
-<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
+<!-- TODO: The struct exception above needs clarification, see https://github.com/rust-lang/reference/issues/1808
+     The chain grammar could use some work, see https://github.com/rust-lang/reference/issues/1811
+-->
 
 r[expr.if.intro]
 The syntax of an `if` expression is a sequence of one or more condition operands separated by `&&`,
@@ -161,7 +176,7 @@ if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
 
 r[expr.if.edition2024]
 > [!EDITION-2024]
-> Before the 2024 edition, let chains are not supported and only a single _IfCondition_ is allowed in an `if` expression.
+> Before the 2024 edition, let chains are not supported. That is, the [LetChain] grammar is not allowed in an `if` expression.
 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md

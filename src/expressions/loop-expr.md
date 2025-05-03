@@ -52,15 +52,8 @@ r[expr.loop.while]
 
 r[expr.loop.while.grammar]
 ```grammar,expressions
-PredicateLoopExpression -> `while` WhileConditions BlockExpression
-
-WhileConditions -> WhileCondition ( `&&` WhileCondition )*
-
-WhileCondition ->
-      Expression _except [StructExpression]_
-    | `let` Pattern `=` Scrutinee _except [LazyBooleanExpression]_
+PredicateLoopExpression -> `while` Conditions BlockExpression
 ```
-<!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
 r[expr.loop.while.intro]
 A `while` loop expression allows repeating the evaluation of a block while a set of conditions remain true.
