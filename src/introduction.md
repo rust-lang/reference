@@ -106,7 +106,7 @@ r[example.rule.label]
   > [!WARNING]
   > The organization of the rules is currently in flux. For the time being, these identifier names are not stable between releases, and links to these rules may fail if they are changed. We intend to stabilize these once the organization has settled so that links to the rule names will not break between releases.
 
-* Rules that have associated tests will include a `Tests` link below them (no narrow screens, the link is `[T]`). Clicking the link will pop up a list of tests, which can be clicked to view the test. For example, see [input.encoding.utf8].
+* Rules that have associated tests will include a `Tests` link below them (on narrow screens, the link is `[T]`). Clicking the link will pop up a list of tests, which can be clicked to view the test. For example, see [input.encoding.utf8].
 
   Linking rules to tests is an ongoing effort. See the [Test summary](test-summary.md) chapter for an overview.
 
