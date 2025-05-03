@@ -11,7 +11,6 @@ static ADMONITION_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
 
-
 // This icon is from GitHub, MIT License, see https://github.com/primer/octicons
 const ICON_NOTE: &str = r#"<path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>"#;
 
@@ -38,16 +37,28 @@ pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
             let blockquote = &caps["blockquote"];
             let initial_spaces = blockquote.chars().position(|ch| ch != ' ').unwrap_or(0);
             let space = &blockquote[..initial_spaces];
-            if lower.starts_with("edition-") {
-                let edition = &lower[8..];
-                return format!("{space}<div class=\"alert alert-edition\">\n\
+
+            let format_div = |class, content| {
+                format!(
+                    "{space}<div class=\"alert alert-{class}\">\n\
                     \n\
                     {space}> <p class=\"alert-title\">\
-                        <span class=\"alert-title-edition\">{edition}</span> Edition differences</p>\n\
+                        {content}</p>\n\
                     {space} >\n\
                     {blockquote}\n\
                     \n\
-                    {space}</div>\n");
+                    {space}</div>\n",
+                )
+            };
+
+            if lower.starts_with("edition-") {
+                let edition = &lower[8..];
+                return format_div(
+                    "edition",
+                    format!(
+                        "<span class=\"alert-title-edition\">{edition}</span> Edition differences"
+                    ),
+                );
             }
 
             let svg = match lower.as_str() {
@@ -62,17 +73,13 @@ pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
                     ""
                 }
             };
-            format!(
-                "{space}<div class=\"alert alert-{lower}\">\n\
-                \n\
-                {space}> <p class=\"alert-title\">\
-                    <svg viewBox=\"0 0 16 16\" width=\"18\" height=\"18\">\
+            format_div(
+                &lower,
+                format!(
+                    "<svg viewBox=\"0 0 16 16\" width=\"18\" height=\"18\">\
                         {svg}\
-                    </svg>{term}</p>\n\
-                {space} >\n\
-                {blockquote}\n\
-                \n\
-                {space}</div>\n",
+                    </svg>{term}"
+                ),
             )
         })
         .to_string()
