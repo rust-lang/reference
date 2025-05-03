@@ -174,14 +174,12 @@ be instantiable with the same set of types for the input type parameters. -->
 r[items.impl.trait.orphan-rule]
 #### Orphan rules
 
-r[items.impl.trait.orphan-rule.rationale]
-The orphan rule helps ensure that other people's code can't break your code, and vice versa.
-If an external crate implements an external trait for an external type, and your crate also
-implements the same trait for the same type, the compiler wouldn't know which implementation
-to use.\
-The orphan rule prevents this by requiring that either the trait or some type in the
-implementation is local to your crate, ensuring only one crate defines the implementation and
-thereby maintaining coherence.
+r[items.impl.trait.orphan-rule.intro]
+The *orphan rule* states that a trait implementation is only allowed if either the trait or at least one of the types in the implementation is defined in the current crate. It prevents conflicting trait implementations across different crates and is key to ensuring coherence.
+
+An orphan implementation is one that implements a foreign trait for a foreign type. If these were freely allowed, two crates could implement the same trait for the same type in incompatible ways, creating a situation where adding or updating a dependency could break compilation due to conflicting implementations.
+
+The orphan rule enables library authors to add new implementations to their traits without fear that they'll break downstream code. Without these restrictions, a library couldn't add an implementation like `impl<T: Display> MyTrait for T` without potentially conflicting with downstream implementations.
 
 r[items.impl.trait.orphan-rule.general]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
