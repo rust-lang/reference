@@ -18,7 +18,7 @@ Support for inline assembly is stable on the following architectures:
 - LoongArch
 - s390x
 
-The compiler will emit an error if `asm!` is used on an unsupported target.
+The compiler will emit an error if an assembly macro is used on an unsupported target.
 
 r[asm.example]
 ## Example
@@ -46,21 +46,62 @@ assert_eq!(x, 4 * 6);
 r[asm.syntax]
 ## Syntax
 
-The following ABNF specifies the general syntax:
+The following grammar specifies the arguments that can be passed to the `asm!`, `global_asm!` and `naked_asm!` macros.
 
-```text
-format_string := STRING_LITERAL / RAW_STRING_LITERAL
-dir_spec := "in" / "out" / "lateout" / "inout" / "inlateout"
-reg_spec := <register class> / "\"" <explicit register> "\""
-operand_expr := expr / "_" / expr "=>" expr / expr "=>" "_"
-reg_operand := [ident "="] dir_spec "(" reg_spec ")" operand_expr / sym <path> / const <expr> / label <block>
-clobber_abi := "clobber_abi(" <abi> *("," <abi>) [","] ")"
-option := "pure" / "nomem" / "readonly" / "preserves_flags" / "noreturn" / "nostack" / "att_syntax" / "raw"
-options := "options(" option *("," option) [","] ")"
-operand := reg_operand / clobber_abi / options
-asm := "asm!(" format_string *("," format_string) *("," operand) [","] ")"
-naked_asm := "naked_asm!(" format_string *("," format_string) *("," operand) [","] ")"
-global_asm := "global_asm!(" format_string *("," format_string) *("," operand) [","] ")"
+```grammar,assembly
+@root AsmArgs -> FormatString (`,` FormatString)* (`,` AsmOperand)* `,`?
+
+FormatString -> STRING_LITERAL | RAW_STRING_LITERAL | MacroInvocation
+
+AsmOperand ->
+      ClobberAbi
+    | AsmOptions
+    | RegOperand
+
+ClobberAbi -> `clobber_abi` `(` Abi (`,` Abi)* `,`? `)`
+
+AsmOptions ->
+    `options` `(` ( AsmOption (`,` AsmOption)* `,`? )? `)`
+
+AsmOption ->
+      `pure`
+    | `nomem`
+    | `readonly`
+    | `preserves_flags`
+    | `noreturn`
+    | `nostack`
+    | `att_syntax`
+    | `raw`
+
+RegOperand -> (ParamName `=`)?
+    (
+          DirSpec `(` RegSpec `)` Expression
+        | DualDirSpec `(` RegSpec `)` DualDirSpecExpression
+        | `sym` PathExpression
+        | `const` Expression
+        | `label` `{` Statements? `}`
+    )
+
+ParamName -> IDENTIFIER_OR_KEYWORD | RAW_IDENTIFIER
+
+DualDirSpecExpression ->
+      Expression
+    | Expression `=>` Expression
+
+RegSpec -> RegisterClass | ExplicitRegister
+
+RegisterClass -> IDENTIFIER_OR_KEYWORD
+
+ExplicitRegister -> STRING_LITERAL
+
+DirSpec ->
+      `in`
+    | `out`
+    | `lateout`
+
+DualDirSpec ->
+      `inout`
+    | `inlateout`
 ```
 
 r[asm.scope]
