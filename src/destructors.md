@@ -468,8 +468,8 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [struct pattern]: patterns.md#struct-patterns
 [tuple pattern]: patterns.md#tuple-patterns
 [tuple struct pattern]: patterns.md#tuple-struct-patterns
-[tuple struct]: struct.md#r-type.struct.tuple
-[tuple variant]: enum.md#r-type.enum.declaration
+[tuple struct]: types/struct.md#r-type.struct.tuple
+[tuple variant]: types/enum.md#r-type.enum.declaration
 
 [array expression]: expressions/array-expr.md#array-expressions
 [block expression]: expressions/block-expr.md
