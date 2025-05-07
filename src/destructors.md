@@ -374,6 +374,7 @@ expression which is one of the following:
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
 * The final expression of any extending [block expression].
+* The arguments to [tuple struct][tuple struct] and [tuple variant][tuple variant] constructors.
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some { 0: &mut 3 }`
 are all extending expressions. The borrows in `&0 + &1` and `Some(&mut 0)` are
@@ -467,6 +468,8 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [struct pattern]: patterns.md#struct-patterns
 [tuple pattern]: patterns.md#tuple-patterns
 [tuple struct pattern]: patterns.md#tuple-struct-patterns
+[tuple struct]: struct.md#r-type.struct.tuple
+[tuple variant]: enum.md#r-type.enum.declaration
 
 [array expression]: expressions/array-expr.md#array-expressions
 [block expression]: expressions/block-expr.md
