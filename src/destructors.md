@@ -221,6 +221,7 @@ r[destructors.scope.temporary.edition2024]
 Some examples:
 
 ```rust
+# #![allow(irrefutable_let_patterns)]
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
@@ -246,6 +247,13 @@ else {
     PrintOnDrop("if let else").0
     // `if let else` dropped here
 };
+
+while let x = PrintOnDrop("while let scrutinee").0 {
+    PrintOnDrop("while let loop body").0;
+    break;
+    // `while let loop body` dropped here.
+    // `while let scrutinee` dropped here.
+}
 
 // Dropped before the first ||
 (PrintOnDrop("first operand").0 == ""
