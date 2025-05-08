@@ -21,8 +21,7 @@ Lifetime ->
 UseBound -> `use` UseBoundGenericArgs
 
 UseBoundGenericArgs ->
-      `<` `>`
-    | `<` ( UseBoundGenericArg `,`)* UseBoundGenericArg `,`? `>`
+    `<` (( UseBoundGenericArg `,`)* UseBoundGenericArg `,`?)? `>`
 
 UseBoundGenericArg ->
       Lifetime

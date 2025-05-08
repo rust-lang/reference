@@ -11,9 +11,8 @@ ExternBlock ->
 
 ExternalItem ->
     OuterAttribute* (
-        MacroInvocationSemi
-      | Visibility? StaticItem
-      | Visibility? Function
+      Visibility? (StaticItem | Function)
+      |  MacroInvocationSemi
     )
 ```
 

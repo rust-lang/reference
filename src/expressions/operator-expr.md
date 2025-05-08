@@ -58,10 +58,7 @@ r[expr.operator.borrow]
 r[expr.operator.borrow.syntax]
 ```grammar,expressions
 BorrowExpression ->
-      (`&`|`&&`) Expression
-    | (`&`|`&&`) `mut` Expression
-    | (`&`|`&&`) `raw` `const` Expression
-    | (`&`|`&&`) `raw` `mut` Expression
+    (`&`|`&&`) ( `mut` | (`raw` (`const` | `mut`))) Expression
 ```
 
 r[expr.operator.borrow.intro]
@@ -291,16 +288,7 @@ r[expr.arith-logic]
 r[expr.arith-logic.syntax]
 ```grammar,expressions
 ArithmeticOrLogicalExpression ->
-      Expression `+` Expression
-    | Expression `-` Expression
-    | Expression `*` Expression
-    | Expression `/` Expression
-    | Expression `%` Expression
-    | Expression `&` Expression
-    | Expression `|` Expression
-    | Expression `^` Expression
-    | Expression `<<` Expression
-    | Expression `>>` Expression
+      Expression ( `+` | `-` | `*` | `/` | `%` | `&` | `|` | `^` | `<<` | `>>` ) Expression
 ```
 
 r[expr.arith-logic.intro]
@@ -354,12 +342,7 @@ r[expr.cmp]
 r[expr.cmp.syntax]
 ```grammar,expressions
 ComparisonExpression ->
-      Expression `==` Expression
-    | Expression `!=` Expression
-    | Expression `>` Expression
-    | Expression `<` Expression
-    | Expression `>=` Expression
-    | Expression `<=` Expression
+      Expression ( `==` | `!=` | `>` | `<` | `>=` | `<=` ) Expression
 ```
 
 r[expr.cmp.intro]
@@ -413,8 +396,7 @@ r[expr.bool-logic]
 r[expr.bool-logic.syntax]
 ```grammar,expressions
 LazyBooleanExpression ->
-      Expression `||` Expression
-    | Expression `&&` Expression
+      Expression (`||` | `&&`) Expression
 ```
 
 r[expr.bool-logic.intro]
@@ -809,16 +791,7 @@ r[expr.compound-assign]
 r[expr.compound-assign.syntax]
 ```grammar,expressions
 CompoundAssignmentExpression ->
-      Expression `+=` Expression
-    | Expression `-=` Expression
-    | Expression `*=` Expression
-    | Expression `/=` Expression
-    | Expression `%=` Expression
-    | Expression `&=` Expression
-    | Expression `|=` Expression
-    | Expression `^=` Expression
-    | Expression `<<=` Expression
-    | Expression `>>=` Expression
+      Expression (`+=` | `-=` | `*=` | `/=` | `%=` | `&=` | `|=` | `^=` | `<<=` | `>>=`) Expression
 ```
 
 r[expr.compound-assign.intro]

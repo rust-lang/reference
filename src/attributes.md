@@ -116,9 +116,7 @@ attributes]. It has the following grammar:
 r[attributes.meta.syntax]
 ```grammar,attributes
 MetaItem ->
-      SimplePath
-    | SimplePath `=` Expression
-    | SimplePath `(` MetaSeq? `)`
+      SimplePath ((`=` Expression) | (`(` MetaSeq? `)`))?
 
 MetaSeq ->
     MetaItemInner ( `,` MetaItemInner )* `,`?

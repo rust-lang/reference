@@ -4,8 +4,7 @@ r[type.tuple]
 r[type.tuple.syntax]
 ```grammar,types
 TupleType ->
-      `(` `)`
-    | `(` ( Type `,` )+ Type? `)`
+    `(` (( Type `,` )+ Type?)? `)`
 ```
 
 r[type.tuple.intro]

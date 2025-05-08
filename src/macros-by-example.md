@@ -7,9 +7,10 @@ MacroRulesDefinition ->
     `macro_rules` `!` IDENTIFIER MacroRulesDef
 
 MacroRulesDef ->
-      `(` MacroRules `)` `;`
-    | `[` MacroRules `]` `;`
-    | `{` MacroRules `}`
+      (  (`(` MacroRules `)`)
+       | (`[` MacroRules `]`)
+      )`;`
+    |    (`{` MacroRules `}`)
 
 MacroRules ->
     MacroRule ( `;` MacroRule )* `;`?
@@ -25,8 +26,8 @@ MacroMatcher ->
 MacroMatch ->
       Token _except `$` and [delimiters][lex.token.delim]_
     | MacroMatcher
-    | `$` ( IDENTIFIER_OR_KEYWORD _except `crate`_ | RAW_IDENTIFIER | `_` ) `:` MacroFragSpec
-    | `$` `(` MacroMatch+ `)` MacroRepSep? MacroRepOp
+    | `$` ((( IDENTIFIER_OR_KEYWORD _except `crate`_ | RAW_IDENTIFIER | `_` ) `:` MacroFragSpec)
+           | (`(` MacroMatch+ `)` MacroRepSep? MacroRepOp))
 
 MacroFragSpec ->
       `block` | `expr` | `expr_2021` | `ident` | `item` | `lifetime` | `literal`

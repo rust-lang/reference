@@ -149,8 +149,7 @@ LiteralPattern ->
     | RAW_BYTE_STRING_LITERAL
     | C_STRING_LITERAL
     | RAW_C_STRING_LITERAL
-    | `-`? INTEGER_LITERAL
-    | `-`? FLOAT_LITERAL
+    | `-`? (INTEGER_LITERAL | FLOAT_LITERAL)
 ```
 
 r[patterns.literal.intro]
@@ -499,8 +498,7 @@ ObsoleteRangePattern ->
 RangePatternBound ->
       CHAR_LITERAL
     | BYTE_LITERAL
-    | `-`? INTEGER_LITERAL
-    | `-`? FLOAT_LITERAL
+    | `-`? (INTEGER_LITERAL | FLOAT_LITERAL)
     | PathExpression
 ```
 
@@ -708,7 +706,7 @@ StructPattern ->
     `}`
 
 StructPatternElements ->
-      StructPatternFields (`,` | `,` StructPatternEtCetera)?
+      StructPatternFields (`,` StructPatternEtCetera?)?
     | StructPatternEtCetera
 
 StructPatternFields ->
@@ -717,8 +715,7 @@ StructPatternFields ->
 StructPatternField ->
     OuterAttribute*
     (
-        TUPLE_INDEX `:` Pattern
-      | IDENTIFIER `:` Pattern
+        (TUPLE_INDEX | IDENTIFIER) `:` Pattern
       | `ref`? `mut`? IDENTIFIER
     )
 
@@ -837,9 +834,8 @@ r[patterns.tuple.syntax]
 TuplePattern -> `(` TuplePatternItems? `)`
 
 TuplePatternItems ->
-      Pattern `,`
+      Pattern (`,` | (`,` Pattern)+ `,`?)
     | RestPattern
-    | Pattern (`,` Pattern)+ `,`?
 ```
 
 r[patterns.tuple.intro]
