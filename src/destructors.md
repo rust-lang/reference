@@ -376,9 +376,8 @@ expression which is one of the following:
 * The final expression of any extending [block expression].
 * The arguments to [tuple struct][tuple struct] and [tuple variant][tuple variant] constructors.
 
-So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some { 0: &mut 3 }`
-are all extending expressions. The borrows in `&0 + &1` and `Some(&mut 0)` are
-not: the latter is syntactically a function call expression.
+So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
+are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
 The operand of any extending borrow expression has its temporary scope
 extended.
