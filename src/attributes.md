@@ -229,6 +229,7 @@ pub fn f() {}
 
 > [!NOTE]
 > `rustc` currently recognizes the tools "clippy", "rustfmt", "diagnostic", "miri" and "rust_analyzer".
+> Additionally, the `rustc` tool, and all tools starting with the literal string "rustc", are reserved for future extensions.
 
 r[attributes.builtin]
 ## Built-in attributes index
