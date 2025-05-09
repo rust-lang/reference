@@ -389,6 +389,11 @@ main > .rule {
     padding-right: 5px;
 }
 
+/* Make it bolder/easier to read when selected. */
+.rule:target .rule-link {
+    color: var(--fg) !important;
+}
+
 /* Dodge » from headings */
 /* Note: Some rules have a .tests-popup in the way, so that's why this selects
          either with or without. */
