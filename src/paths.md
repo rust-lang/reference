@@ -54,16 +54,14 @@ PathIdentSegment ->
     IDENTIFIER | `super` | `self` | `Self` | `crate` | `$crate`
 
 GenericArgs ->
-      `<` `>`
-    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
+    `<` (( GenericArg `,` )* GenericArg `,`?)? `>`
 
 GenericArg ->
     Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
 
 GenericArgsConst ->
       BlockExpression
-    | LiteralExpression
-    | `-` LiteralExpression
+    | `-`? LiteralExpression
     | SimplePathSegment
 
 GenericArgsBinding ->

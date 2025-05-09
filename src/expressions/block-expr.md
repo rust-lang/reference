@@ -10,8 +10,7 @@ BlockExpression ->
     `}`
 
 Statements ->
-      Statement+
-    | Statement+ ExpressionWithoutBlock
+    Statement+ ExpressionWithoutBlock?
     | ExpressionWithoutBlock
 ```
 

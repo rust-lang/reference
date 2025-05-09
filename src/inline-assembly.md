@@ -75,18 +75,18 @@ AsmOption ->
 
 RegOperand -> (ParamName `=`)?
     (
-          DirSpec `(` RegSpec `)` Expression
+          ((DirSpec `(` RegSpec `)`)
+           | `const`
+          ) Expression
         | DualDirSpec `(` RegSpec `)` DualDirSpecExpression
         | `sym` PathExpression
-        | `const` Expression
         | `label` `{` Statements? `}`
     )
 
 ParamName -> IDENTIFIER_OR_KEYWORD | RAW_IDENTIFIER
 
 DualDirSpecExpression ->
-      Expression
-    | Expression `=>` Expression
+    Expression (`=>` Expression)?
 
 RegSpec -> RegisterClass | ExplicitRegister
 

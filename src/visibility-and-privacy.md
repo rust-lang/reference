@@ -4,11 +4,7 @@ r[vis]
 r[vis.syntax]
 ```grammar,items
 Visibility ->
-      `pub`
-    | `pub` `(` `crate` `)`
-    | `pub` `(` `self` `)`
-    | `pub` `(` `super` `)`
-    | `pub` `(` `in` SimplePath `)`
+      `pub` ( `(` (`crate` | `self` | `super` | (`in` SimplePath))  `)` )?
 ```
 
 r[vis.intro]

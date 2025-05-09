@@ -29,9 +29,7 @@ TokenTree ->
     Token _except [delimiters][lex.token.delim]_ | DelimTokenTree
 
 MacroInvocationSemi ->
-      SimplePath `!` `(` TokenTree* `)` `;`
-    | SimplePath `!` `[` TokenTree* `]` `;`
-    | SimplePath `!` `{` TokenTree* `}`
+      SimplePath `!` ( ( ( `(` TokenTree* `)` ) | ( `[` TokenTree* `]` )) `;` | ( `{` TokenTree* `}` ))
 ```
 
 r[macro.invocation.intro]
