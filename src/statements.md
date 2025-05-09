@@ -8,7 +8,7 @@ Statement ->
     | Item
     | LetStatement
     | ExpressionStatement
-    | MacroInvocationSemi
+    | OuterAttribute* MacroInvocationSemi
 ```
 
 r[statement.intro]
