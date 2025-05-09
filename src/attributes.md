@@ -291,7 +291,7 @@ The following is an index of all built-in attributes.
 - Code generation
   - [`inline`] --- Hint to inline code.
   - [`cold`] --- Hint that a function is unlikely to be called.
-  - [`naked`] - Prevent the compiler from emitting a function prologue.
+  - [`naked`] --- Prevent the compiler from emitting a function prologue.
   - [`no_builtins`] --- Disables use of certain built-in functions.
   - [`target_feature`] --- Configure platform-specific code generation.
   - [`track_caller`] --- Pass the parent call location to `std::panic::Location::caller()`.
