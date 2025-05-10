@@ -18,6 +18,7 @@ MatchArms ->
 MatchArm -> OuterAttribute* Pattern MatchArmGuard?
 
 MatchArmGuard -> `if` Expression
+               | `if` `let` Pattern Expression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
@@ -149,6 +150,99 @@ This allows shared borrows to be used inside guards without moving out of the sc
 
 r[expr.match.guard.no-mutation]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
+
+r[expr.match.if.let.guard]
+## If Let Guards
+Match arms can include `if let` guards to allow conditional pattern matching within the guard clause. This feature is currently unstable and requires the attribute. It is tracked in issue [#51114](https://github.com/rust-lang/rust/issues/51114).
+
+r[expr.match.if.let.guard.syntax]
+```rust,ignore
+match expression {
+    pattern if let subpattern = guard_expr => arm_body,
+    ...
+}
+```
+Here, `guard_expr` is evaluated and matched against `subpattern`. If the match succeeds, the guard evaluates to `true` and the arm is selected. Otherwise, pattern matching continues to the next arm.
+
+r[expr.match.if.let.guard.behavior]
+When the pattern matches successfully, the `if let` expression in the guard is evaluated:
+  * If the inner pattern (`subpattern`) matches the result of `guard_expr`, the guard evaluates to `true`.
+  * Otherwise, the next arm is tested.
+
+```rust,ignore
+let value = Some(10);
+
+let msg = match value {
+    Some(x) if let Some(y) = Some(x - 1) => format!("Matched inner value: {}", y),
+    _ => "No match".to_string(),
+};
+
+```
+
+r[expr.match.if.let.guard.scope]
+* The `if let` guard may refer to variables bound by the outer match pattern.
+* New variables bound inside the `if let` guard (e.g., `y` in the example above) are available within the body of the match arm where the guard evaluates to `true`, but are not accessible in other arms or outside the match expression.
+
+```rust,ignore
+let opt = Some(42);
+
+match opt {
+    Some(x) if let Some(y) = Some(x + 1) => {
+        // Both `x` and `y` are available in this arm,
+        // since the pattern matched and the guard evaluated to true.
+        println!("x = {}, y = {}", x, y);
+    }
+    _ => {
+        // `y` is not available here --- it was only bound inside the guard above.
+        // Uncommenting the line below will cause a compile-time error:
+        // println!("{}", y); // error: cannot find value `y` in this scope
+    }
+}
+
+// Outside the match expression, neither `x` nor `y` are in scope.
+```
+
+* The outer pattern variables (`x`) follow the same borrowing behavior as in standard match guards (see below).
+
+r[expr.match.if.let.guard.borrowing]
+Before a guard (including an `if let` guard) is evaluated:
+  1. Pattern bindings are performed first
+      Variables from the outer match pattern (e.g., `x` in `Some(x)`) are bound and initialized. These bindings may involve moving, copying, or borrowing values from   the scrutinee.
+      ```rust,ignore
+      match Some(String::from("hello")) {
+          Some(s) if /* guard */ => { /* s is moved here */ }
+          _ => {}
+      }
+      ```
+  2. Guard evaluation happens after that, and:
+      * It runs using a shared borrow of the scrutinee
+      * You cannot move from the scrutinee inside the guard.
+      * New bindings created inside the guard (e.g., via `if let Some(y) = expr`) are local to the guard and do not persist into the match arm body.
+      ```rust,ignore
+      let val = Some(vec![1, 2, 3]);
+
+      let result = match val {
+          Some(v) if let Some(_) = take(v) => "ok", // ERROR: cannot move out of `v`
+          _ => "nope",
+      };
+
+      ```
+      In the above example, `v` is already bound in the outer pattern, and the guard attempts to move it --- this is not allowed. You can fix it by cloning or borrowing:
+      ```rust,ignore
+      Some(v) if let Some(_) = take(v.clone()) => "ok",
+      ```
+> [!NOTE]
+> Unlike regular if guards, `if let` guards execute only once per match arm, even if the pattern uses the `|` operator to match multiple patterns. This avoids repeated evaluation and potential side effects.
+> ```rust,ignore
+> use std::cell::Cell;
+>
+> let i: Cell<i32> = Cell::new(0);
+> match 1 {
+>     1 | _ if let Some(_) = { i.set(i.get() + 1); Some(1) } => {}
+>     _ => {}
+> }
+> assert_eq!(i.get(), 1); // Guard not executed twice
+> ```
 
 r[expr.match.attributes]
 ## Attributes on match arms
