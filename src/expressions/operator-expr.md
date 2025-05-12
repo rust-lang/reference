@@ -58,7 +58,7 @@ r[expr.operator.borrow]
 r[expr.operator.borrow.syntax]
 ```grammar,expressions
 BorrowExpression ->
-    (`&`|`&&`) ( `mut` | (`raw` (`const` | `mut`))) Expression
+    (`&`|`&&`) ( `mut` | (`raw` (`const` | `mut`)))? Expression
 ```
 
 r[expr.operator.borrow.intro]
