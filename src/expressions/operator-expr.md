@@ -256,8 +256,7 @@ r[expr.negate]
 r[expr.negate.syntax]
 ```grammar,expressions
 NegationExpression ->
-      `-` Expression
-    | `!` Expression
+    ( `-` | `!`)  Expression
 ```
 
 r[expr.negate.intro]

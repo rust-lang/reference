@@ -21,7 +21,7 @@ MaybeNamedParam ->
     OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? Type
 
 MaybeNamedFunctionParametersVariadic ->
-    ( MaybeNamedParam `,` )* MaybeNamedParam `,` OuterAttribute* `...`
+    MaybeNamedParam ( `,` MaybeNamedParam )* `,` OuterAttribute* `...`
 ```
 
 r[type.fn-pointer.intro]

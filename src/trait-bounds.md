@@ -7,9 +7,9 @@ TypeParamBounds -> TypeParamBound ( `+` TypeParamBound )* `+`?
 
 TypeParamBound -> Lifetime | TraitBound | UseBound
 
-TraitBound ->
-      ( `?` | ForLifetimes )? TypePath
-    | `(` ( `?` | ForLifetimes )? TypePath `)`
+TraitBound -> `(` TraitBoundNoParens `)` | TraitBoundNoParens
+
+TraitBoundNoParens ->  ( `?` | ForLifetimes )? TypePath
 
 LifetimeBounds -> ( Lifetime `+` )* Lifetime?
 

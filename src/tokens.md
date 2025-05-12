@@ -659,8 +659,8 @@ r[lex.token.literal.float.syntax]
 FLOAT_LITERAL ->
     DEC_LITERAL (
         `.` _not immediately followed by `.`, `_` or an XID_Start character_
-      | `.` DEC_LITERAL SUFFIX_NO_E?
-      | ( `.` DEC_LITERAL )? FLOAT_EXPONENT SUFFIX?
+      | `.` DEC_LITERAL ( SUFFIX_NO_E? | FLOAT_EXPONENT SUFFIX? )
+      | FLOAT_EXPONENT SUFFIX?
     )
 
 FLOAT_EXPONENT ->
@@ -716,8 +716,11 @@ r[lex.token.literal.reserved.syntax]
 RESERVED_NUMBER ->
       BIN_LITERAL [`2`-`9`]
     | OCT_LITERAL [`8`-`9`]
-    | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` _not immediately followed by `.`, `_` or an XID_Start character_
-    | ( BIN_LITERAL | OCT_LITERAL ) (`e`|`E`)
+    | ( BIN_LITERAL | OCT_LITERAL ) (
+          `.` _not immediately followed by `.`, `_` or an XID_Start character_
+        | (`e`|`E`)
+      )
+    | HEX_LITERAL `.` _not immediately followed by `.`, `_` or an XID_Start character_
     | `0b` `_`* <end of input or not BIN_DIGIT>
     | `0o` `_`* <end of input or not OCT_DIGIT>
     | `0x` `_`* <end of input or not HEX_DIGIT>

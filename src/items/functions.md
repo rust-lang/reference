@@ -16,14 +16,16 @@ ItemSafety -> `safe`[^extern-safe] | `unsafe`
 Abi -> STRING_LITERAL | RAW_STRING_LITERAL
 
 FunctionParameters ->
-      SelfParam `,`?
-    | (SelfParam `,`)? FunctionParam (`,` FunctionParam)* `,`?
+      SelfParam ( `,` FunctionParams? )?
+    | FunctionParams
 
 SelfParam -> OuterAttribute* ( ShorthandSelf | TypedSelf )
 
 ShorthandSelf -> ( `&` Lifetime? )? `mut`? `self`
 
 TypedSelf -> `mut`? `self` `:` Type
+
+FunctionParams -> FunctionParam ( `,` FunctionParam )* `,`?
 
 FunctionParam -> OuterAttribute* ( FunctionParamPattern | `...` | Type[^fn-param-2015] )
 
