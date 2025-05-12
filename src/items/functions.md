@@ -21,7 +21,7 @@ FunctionParameters ->
 
 SelfParam -> OuterAttribute* ( ShorthandSelf | TypedSelf )
 
-ShorthandSelf -> (`&` Lifetime?)? `mut`? `self`
+ShorthandSelf -> ( `&` Lifetime? )? `mut`? `self`
 
 TypedSelf -> `mut`? `self` `:` Type
 

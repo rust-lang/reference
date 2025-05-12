@@ -657,9 +657,11 @@ r[lex.token.literal.float]
 r[lex.token.literal.float.syntax]
 ```grammar,lexer
 FLOAT_LITERAL ->
-      DEC_LITERAL ((`.` _not immediately followed by `.`, `_` or an XID_Start character_ )
-                   | (`.` DEC_LITERAL SUFFIX_NO_E?)
-                   | ((`.` DEC_LITERAL)? FLOAT_EXPONENT SUFFIX?))
+    DEC_LITERAL (
+        `.` _not immediately followed by `.`, `_` or an XID_Start character_
+      | `.` DEC_LITERAL SUFFIX_NO_E?
+      | ( `.` DEC_LITERAL )? FLOAT_EXPONENT SUFFIX?
+    )
 
 FLOAT_EXPONENT ->
     (`e`|`E`) (`+`|`-`)? (DEC_DIGIT|`_`)* DEC_DIGIT (DEC_DIGIT|`_`)*

@@ -8,7 +8,10 @@ r[expr.array.syntax]
 ArrayExpression -> `[` ArrayElements? `]`
 
 ArrayElements ->
-      Expression (( `,` Expression )* `,`? | (`;` Expression ))
+    Expression (
+        ( `,` Expression )* `,`?
+      | `;` Expression
+    )
 ```
 
 r[expr.array.constructor]

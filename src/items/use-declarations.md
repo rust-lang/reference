@@ -6,7 +6,10 @@ r[items.use.syntax]
 UseDeclaration -> `use` UseTree `;`
 
 UseTree ->
-      (SimplePath? `::`)? (`*` | (`{` (UseTree ( `,`  UseTree )* `,`?)? `}`))
+      ( SimplePath? `::` )? (
+          `{` ( UseTree ( `,`  UseTree )* `,`? )? `}`
+        | `*`
+      )
     | SimplePath ( `as` ( IDENTIFIER | `_` ) )?
 ```
 

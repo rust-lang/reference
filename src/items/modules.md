@@ -4,7 +4,10 @@ r[items.mod]
 r[items.mod.syntax]
 ```grammar,items
 Module ->
-      `unsafe`? `mod` IDENTIFIER ( `;` | (`{` InnerAttribute* Item* `}` ))
+    `unsafe`? `mod` IDENTIFIER (
+        `{` InnerAttribute* Item* `}`
+      | `;`
+    )
 ```
 
 r[items.mod.intro]
