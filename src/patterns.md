@@ -139,23 +139,11 @@ r[patterns.literal]
 
 r[patterns.literal.syntax]
 ```grammar,patterns
-LiteralPattern ->
-      `true` | `false`
-    | CHAR_LITERAL
-    | BYTE_LITERAL
-    | STRING_LITERAL
-    | RAW_STRING_LITERAL
-    | BYTE_STRING_LITERAL
-    | RAW_BYTE_STRING_LITERAL
-    | C_STRING_LITERAL
-    | RAW_C_STRING_LITERAL
-    | `-`? INTEGER_LITERAL
-    | `-`? FLOAT_LITERAL
+LiteralPattern -> `-`? LiteralExpression
 ```
 
 r[patterns.literal.intro]
-_Literal patterns_ match exactly the same value as what is created by the literal.
-Since negative numbers are not [literals], literal patterns also accept an optional minus sign before the literal, which acts like the negation operator.
+_Literal patterns_ match exactly the same value as what is created by the literal. Since negative numbers are not [literals], literals in patterns may be prefixed by an optional minus sign, which acts like the negation operator.
 
 > [!WARNING]
 > C string and raw C string literals are accepted in literal patterns, but `&CStr` doesn't implement structural equality (`#[derive(Eq, PartialEq)]`) and therefore any such `match` on a `&CStr` will be rejected with a type error.
