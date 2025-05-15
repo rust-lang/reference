@@ -191,12 +191,32 @@ Feature     | Implicitly Enables | Description
 `aes`       | `sse2`   | [AES] --- Advanced Encryption Standard
 `avx`       | `sse4.2` | [AVX] --- Advanced Vector Extensions
 `avx2`      | `avx`    | [AVX2] --- Advanced Vector Extensions 2
+`avx512bf16`        | `avx512bw`           | [AVX512-BF16] --- Advanced Vector Extensions 512-bit - Bfloat16 Extensions
+`avx512bitalg`      | `avx512bw`           | [AVX512-BITALG] --- Advanced Vector Extensions 512-bit - Bit Algorithms
+`avx512bw`          | `avx512f`            | [AVX512-BW] --- Advanced Vector Extensions 512-bit - Byte and Word Instructions
+`avx512cd`          | `avx512f`            | [AVX512-CD] --- Advanced Vector Extensions 512-bit - Conflict Detection Instructions
+`avx512dq`          | `avx512f`            | [AVX512-DQ] --- Advanced Vector Extensions 512-bit - Doubleword and Quadword Instructions
+`avx512f`           | `avx2`, `fma`, `f16c`| [AVX512-F] --- Advanced Vector Extensions 512-bit - Foundation
+`avx512fp16`        | `avx512bw`           | [AVX512-FP16] --- Advanced Vector Extensions 512-bit - Float16 Extensions
+`avx512ifma`        | `avx512f`            | [AVX512-IFMA] --- Advanced Vector Extensions 512-bit - Integer Fused Multiply Add
+`avx512vbmi`        | `avx512bw`           | [AVX512-VBMI] --- Advanced Vector Extensions 512-bit - Vector Byte Manipulation Instructions
+`avx512vbmi2`       | `avx512bw`           | [AVX512-VBMI2] --- Advanced Vector Extensions 512-bit - Vector Byte Manipulation Instructions 2
+`avx512vl`          | `avx512f`            | [AVX512-VL] --- Advanced Vector Extensions 512-bit - Vector Length Extensions
+`avx512vnni`        | `avx512f`            | [AVX512-VNNI] --- Advanced Vector Extensions 512-bit - Vector Neural Network Instructions
+`avx512vp2intersect`| `avx512f`            | [AVX512-VP2INTERSECT] --- Advanced Vector Extensions 512-bit - Vector Pair Intersection to a Pair of Mask Registers
+`avx512vpopcntdq`   | `avx512f`            | [AVX512-VPOPCNTDQ] --- Advanced Vector Extensions 512-bit - Vector Population Count Instruction
+`avxifma`           | `avx2`               | [AVX-IFMA] --- Advanced Vector Extensions - Integer Fused Multiply Add
+`avxneconvert`      | `avx2`               | [AVX-NE-CONVERT] --- Advanced Vector Extensions - No-Exception Floating-Point conversion Instructions
+`avxvnni`           | `avx2`               | [AVX-VNNI] --- Advanced Vector Extensions - Vector Neural Network Instructions
+`avxvnniint16`      | `avx2`               | [AVX-VNNI-INT16] --- Advanced Vector Extensions - Vector Neural Network Instructions with 16-bit Integers
+`avxvnniint8`       | `avx2`               | [AVX-VNNI-INT8] --- Advanced Vector Extensions - Vector Neural Network Instructions with 8-bit Integers
 `bmi1`      |          | [BMI1] --- Bit Manipulation Instruction Sets
 `bmi2`      |          | [BMI2] --- Bit Manipulation Instruction Sets 2
 `cmpxchg16b`|          | [`cmpxchg16b`] --- Compares and exchange 16 bytes (128 bits) of data atomically
 `f16c`      | `avx`    | [F16C] --- 16-bit floating point conversion instructions
 `fma`       | `avx`    | [FMA3] --- Three-operand fused multiply-add
 `fxsr`      |          | [`fxsave`] and [`fxrstor`] --- Save and restore x87 FPU, MMX Technology, and SSE State
+`gfni`      | `sse2`   | [GFNI] --- Galois Field New Instructions
 `lzcnt`     |          | [`lzcnt`] --- Leading zeros count
 `movbe`     |          | [`movbe`] --- Move data after swapping bytes
 `pclmulqdq` | `sse2`   | [`pclmulqdq`] --- Packed carry-less multiplication quadword
@@ -210,6 +230,8 @@ Feature     | Implicitly Enables | Description
 `sse4.1`    | `ssse3`  | [SSE4.1] --- Streaming SIMD Extensions 4.1
 `sse4.2`    | `sse4.1` | [SSE4.2] --- Streaming SIMD Extensions 4.2
 `ssse3`     | `sse3`   | [SSSE3] --- Supplemental Streaming SIMD Extensions 3
+`vaes`      | `avx2`, `aes`     | [VAES] --- Vector AES Instructions
+`vpclmulqdq`| `avx`, `pclmulqdq`| [VPCLMULQDQ] --- Vector Carry-less multiplication of Quadwords
 `xsave`     |          | [`xsave`] --- Save processor extended states
 `xsavec`    |          | [`xsavec`] --- Save processor extended states with compaction
 `xsaveopt`  |          | [`xsaveopt`] --- Save processor extended states optimized
@@ -221,6 +243,25 @@ Feature     | Implicitly Enables | Description
 [AES]: https://en.wikipedia.org/wiki/AES_instruction_set
 [AVX]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
 [AVX2]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX2
+[AVX512-BF16]: https://en.wikipedia.org/wiki/AVX-512#BF16
+[AVX512-BITALG]: https://en.wikipedia.org/wiki/AVX-512#VPOPCNTDQ_and_BITALG
+[AVX512-BW]: https://en.wikipedia.org/wiki/AVX-512#BW,_DQ_and_VBMI
+[AVX512-CD]: https://en.wikipedia.org/wiki/AVX-512#Conflict_detection
+[AVX512-DQ]: https://en.wikipedia.org/wiki/AVX-512#BW,_DQ_and_VBMI
+[AVX512-F]: https://en.wikipedia.org/wiki/AVX-512
+[AVX512-FP16]: https://en.wikipedia.org/wiki/AVX-512#FP16
+[AVX512-IFMA]: https://en.wikipedia.org/wiki/AVX-512#IFMA
+[AVX512-VBMI]: https://en.wikipedia.org/wiki/AVX-512#BW,_DQ_and_VBMI
+[AVX512-VBMI2]: https://en.wikipedia.org/wiki/AVX-512#VBMI2
+[AVX512-VL]: https://en.wikipedia.org/wiki/AVX-512
+[AVX512-VNNI]: https://en.wikipedia.org/wiki/AVX-512#VNNI
+[AVX512-VP2INTERSECT]: https://en.wikipedia.org/wiki/AVX-512#VP2INTERSECT
+[AVX512-VPOPCNTDQ]:https://en.wikipedia.org/wiki/AVX-512#VPOPCNTDQ_and_BITALG
+[AVX-IFMA]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-VNNI,_AVX-IFMA
+[AVX-NE-CONVERT]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-VNNI,_AVX-IFMA
+[AVX-VNNI]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-VNNI,_AVX-IFMA
+[AVX-VNNI-INT16]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-VNNI,_AVX-IFMA
+[AVX-VNNI-INT8]: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-VNNI,_AVX-IFMA
 [BMI1]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets
 [BMI2]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#BMI2
 [`cmpxchg16b`]: https://www.felixcloutier.com/x86/cmpxchg8b:cmpxchg16b
@@ -228,6 +269,7 @@ Feature     | Implicitly Enables | Description
 [FMA3]: https://en.wikipedia.org/wiki/FMA_instruction_set
 [`fxsave`]: https://www.felixcloutier.com/x86/fxsave
 [`fxrstor`]: https://www.felixcloutier.com/x86/fxrstor
+[GFNI]: https://en.wikipedia.org/wiki/AVX-512#GFNI
 [`lzcnt`]: https://www.felixcloutier.com/x86/lzcnt
 [`movbe`]: https://www.felixcloutier.com/x86/movbe
 [`pclmulqdq`]: https://www.felixcloutier.com/x86/pclmulqdq
@@ -241,6 +283,8 @@ Feature     | Implicitly Enables | Description
 [SSE4.1]: https://en.wikipedia.org/wiki/SSE4#SSE4.1
 [SSE4.2]: https://en.wikipedia.org/wiki/SSE4#SSE4.2
 [SSSE3]: https://en.wikipedia.org/wiki/SSSE3
+[VAES]: https://en.wikipedia.org/wiki/AVX-512#VAES
+[VPCLMULQDQ]: https://en.wikipedia.org/wiki/AVX-512#VPCLMULQDQ
 [`xsave`]: https://www.felixcloutier.com/x86/xsave
 [`xsavec`]: https://www.felixcloutier.com/x86/xsavec
 [`xsaveopt`]: https://www.felixcloutier.com/x86/xsaveopt
