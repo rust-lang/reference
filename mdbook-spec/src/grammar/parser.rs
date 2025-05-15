@@ -1,11 +1,9 @@
 //! A parser of the ENBF-like grammar.
 
 use super::{Characters, Expression, ExpressionKind, Grammar, Production};
-use regex::{Captures, Regex};
 use std::fmt;
 use std::fmt::Display;
 use std::path::Path;
-use std::sync::LazyLock;
 
 struct Parser<'a> {
     input: &'a str,
@@ -74,18 +72,6 @@ impl Parser<'_> {
         }
         self.index += upper;
         &self.input[i..i + upper]
-    }
-
-    /// If the input matches the given regex, it is returned and the head is moved forward.
-    ///
-    /// Note that regexes must start with `^`.
-    fn take_re(&mut self, re: &Regex) -> Option<Captures<'_>> {
-        if let Some(cap) = re.captures(&self.input[self.index..]) {
-            self.index += cap[0].len();
-            Some(cap)
-        } else {
-            None
-        }
     }
 
     /// Returns whether or not the given string is next, and advances the head if it is.
@@ -168,13 +154,12 @@ impl Parser<'_> {
     }
 
     fn parse_expression(&mut self) -> Result<Option<Expression>> {
-        static ALT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^ *\| *").unwrap());
-
         let mut es = Vec::new();
         loop {
             let Some(e) = self.parse_seq()? else { break };
             es.push(e);
-            if self.take_re(&ALT_RE).is_none() {
+            _ = self.space0();
+            if !self.take_str("|") {
                 break;
             }
         }
@@ -268,13 +253,20 @@ impl Parser<'_> {
         Some(ExpressionKind::Nt(nt))
     }
 
+    /// Parse terminal within backticks.
     fn parse_terminal(&mut self) -> Result<ExpressionKind> {
-        static TERMINAL_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^`([^`\n]+)`").unwrap());
-        match self.take_re(&TERMINAL_RE) {
-            Some(cap) => Ok(ExpressionKind::Terminal(cap[1].to_string())),
-            None => bail!(self, "unterminated terminal, expected closing backtick"),
+        Ok(ExpressionKind::Terminal(self.parse_terminal_str()?))
+    }
+
+    /// Parse string within backticks.
+    fn parse_terminal_str(&mut self) -> Result<String> {
+        self.expect("`", "expected opening backtick")?;
+        let term = self.take_while(&|x| !['\n', '`'].contains(&x)).to_string();
+        if term.is_empty() {
+            bail!(self, "expected terminal");
         }
+        self.expect("`", "expected closing backtick")?;
+        Ok(term)
     }
 
     fn parse_charset(&mut self) -> Result<ExpressionKind> {
@@ -282,7 +274,7 @@ impl Parser<'_> {
         let mut characters = Vec::new();
         loop {
             self.space0();
-            let Some(ch) = self.parse_characters() else {
+            let Some(ch) = self.parse_characters()? else {
                 break;
             };
             characters.push(ch);
@@ -295,27 +287,48 @@ impl Parser<'_> {
         Ok(ExpressionKind::Charset(characters))
     }
 
-    fn parse_characters(&mut self) -> Option<Characters> {
-        static RANGE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^`(.)`-`(.)`").unwrap());
-        static TERMINAL_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new("^`([^`\n]+)`").unwrap());
-        if let Some(cap) = self.take_re(&RANGE_RE) {
-            let a = cap[1].chars().next().unwrap();
-            let b = cap[2].chars().next().unwrap();
-            Some(Characters::Range(a, b))
-        } else if let Some(cap) = self.take_re(&TERMINAL_RE) {
-            Some(Characters::Terminal(cap[1].to_string()))
+    /// Parse an element of a character class, e.g.
+    /// `` `a`-`b` `` | `` `term` `` | `` NonTerminal ``.
+    fn parse_characters(&mut self) -> Result<Option<Characters>> {
+        if let Some(b'`') = self.peek() {
+            let recov = self.index;
+            let a = self.parse_terminal_str()?;
+            if self.take_str("-") {
+                //~^ Parse `` `a`-`b` `` character range.
+                if a.len() > 1 {
+                    self.index = recov + 1;
+                    bail!(self, "invalid start terminal in range");
+                }
+                let recov = self.index;
+                let b = self.parse_terminal_str()?;
+                if b.len() > 1 {
+                    self.index = recov + 1;
+                    bail!(self, "invalid end terminal in range");
+                }
+                let a = a.chars().next().unwrap();
+                let b = b.chars().next().unwrap();
+                Ok(Some(Characters::Range(a, b)))
+            } else {
+                //~^ Parse terminal in backticks.
+                Ok(Some(Characters::Terminal(a)))
+            }
+        } else if let Some(name) = self.parse_name() {
+            //~^ Parse nonterminal identifier.
+            Ok(Some(Characters::Named(name)))
         } else {
-            let name = self.parse_name()?;
-            Some(Characters::Named(name))
+            Ok(None)
         }
     }
 
+    /// Parse e.g. `<prose text>`.
     fn parse_prose(&mut self) -> Result<ExpressionKind> {
-        static PROSE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^<([^>\n]+)>").unwrap());
-        match self.take_re(&PROSE_RE) {
-            Some(cap) => Ok(ExpressionKind::Prose(cap[1].to_string())),
-            None => bail!(self, "unterminated prose, expected closing `>`"),
+        self.expect("<", "expected opening `<`")?;
+        let text = self.take_while(&|x| !['\n', '>'].contains(&x)).to_string();
+        if text.is_empty() {
+            bail!(self, "expected prose text");
         }
+        self.expect(">", "expected closing `>`")?;
+        Ok(ExpressionKind::Prose(text))
     }
 
     fn parse_grouped(&mut self) -> Result<ExpressionKind> {
@@ -344,13 +357,19 @@ impl Parser<'_> {
         Ok(ExpressionKind::NegExpression(box_kind(kind)))
     }
 
+    /// Parse e.g. `F00F` after `U+`.
     fn parse_unicode(&mut self) -> Result<ExpressionKind> {
-        static UNICODE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[A-Z0-9]{4}").unwrap());
-
-        match self.take_re(&UNICODE_RE) {
-            Some(s) => Ok(ExpressionKind::Unicode(s[0].to_string())),
-            None => bail!(self, "expected 4 hexadecimal uppercase digits after U+"),
+        let mut xs = Vec::with_capacity(4);
+        for _ in 0..4 {
+            match self.peek() {
+                Some(x @ (b'0'..=b'9' | b'A'..=b'F')) => {
+                    xs.push(x);
+                    self.index += 1;
+                }
+                _ => bail!(self, "expected 4 uppercase hexidecimal digits after `U+`"),
+            }
         }
+        Ok(ExpressionKind::Unicode(String::from_utf8(xs).unwrap()))
     }
 
     /// Parse `?` after expression.
@@ -428,16 +447,17 @@ impl Parser<'_> {
         Ok(Some(self.input[start..self.index - 1].to_string()))
     }
 
+    /// Parse footnote reference, e.g. `[^id]`.
     fn parse_footnote(&mut self) -> Result<Option<String>> {
-        static FOOTNOTE_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^([^\]\n]+)]").unwrap());
         if !self.take_str("[^") {
             return Ok(None);
         }
-        match self.take_re(&FOOTNOTE_RE) {
-            Some(cap) => Ok(Some(cap[1].to_string())),
-            None => bail!(self, "unterminated footnote, expected closing `]`"),
+        let id = self.take_while(&|x| !['\n', ']'].contains(&x)).to_string();
+        if id.is_empty() {
+            bail!(self, "expected footnote id");
         }
+        self.expect("]", "expected closing `]`")?;
+        Ok(Some(id))
     }
 }
 
