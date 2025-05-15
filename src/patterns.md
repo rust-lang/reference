@@ -181,7 +181,7 @@ r[patterns.ident]
 
 r[patterns.ident.syntax]
 ```grammar,patterns
-IdentifierPattern -> `ref`? `mut`? IDENTIFIER (`@` PatternNoTopAlt ) ?
+IdentifierPattern -> `ref`? `mut`? IDENTIFIER ( `@` PatternNoTopAlt )?
 ```
 
 r[patterns.ident.intro]
@@ -704,7 +704,7 @@ r[patterns.struct.syntax]
 ```grammar,patterns
 StructPattern ->
     PathInExpression `{`
-        StructPatternElements ?
+        StructPatternElements?
     `}`
 
 StructPatternElements ->

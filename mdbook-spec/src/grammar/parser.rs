@@ -214,7 +214,7 @@ impl Parser<'_> {
             return Ok(None);
         };
 
-        let mut kind = if self.take_str("U+") {
+        let kind = if self.take_str("U+") {
             self.parse_unicode()?
         } else if self.input[self.index..]
             .chars()
@@ -246,30 +246,13 @@ impl Parser<'_> {
         } else {
             return Ok(None);
         };
-
-        static REPEAT_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^ ?(\*\?|\+\?|\?|\*|\+)").unwrap());
-        static RANGE_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^\{([0-9]+)?\.\.([0-9]+)?\}").unwrap());
-        if let Some(cap) = self.take_re(&REPEAT_RE) {
-            kind = match &cap[1] {
-                "?" => ExpressionKind::Optional(box_kind(kind)),
-                "*" => ExpressionKind::Repeat(box_kind(kind)),
-                "*?" => ExpressionKind::RepeatNonGreedy(box_kind(kind)),
-                "+" => ExpressionKind::RepeatPlus(box_kind(kind)),
-                "+?" => ExpressionKind::RepeatPlusNonGreedy(box_kind(kind)),
-                s => panic!("unexpected `{s}`"),
-            };
-        } else if let Some(cap) = self.take_re(&RANGE_RE) {
-            let a = cap.get(1).map(|m| m.as_str().parse::<u32>().unwrap());
-            let b = cap.get(2).map(|m| m.as_str().parse::<u32>().unwrap());
-            match (a, b) {
-                (Some(a), Some(b)) if b < a => bail!(self, "range {a}..{b} is malformed"),
-                _ => {}
-            }
-            kind = ExpressionKind::RepeatRange(box_kind(kind), a, b);
-        }
-
+        let kind = match self.peek() {
+            Some(b'?') => self.parse_optional(kind)?,
+            Some(b'*') => self.parse_repeat(kind)?,
+            Some(b'+') => self.parse_repeat_plus(kind)?,
+            Some(b'{') => self.parse_repeat_range(kind)?,
+            _ => kind,
+        };
         let suffix = self.parse_suffix()?;
         let footnote = self.parse_footnote()?;
 
@@ -368,6 +351,52 @@ impl Parser<'_> {
             Some(s) => Ok(ExpressionKind::Unicode(s[0].to_string())),
             None => bail!(self, "expected 4 hexadecimal uppercase digits after U+"),
         }
+    }
+
+    /// Parse `?` after expression.
+    fn parse_optional(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
+        self.expect("?", "expected `?`")?;
+        Ok(ExpressionKind::Optional(box_kind(kind)))
+    }
+
+    /// Parse `*` | `*?` after expression.
+    fn parse_repeat(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
+        self.expect("*", "expected `*`")?;
+        Ok(if self.take_str("?") {
+            ExpressionKind::RepeatNonGreedy(box_kind(kind))
+        } else {
+            ExpressionKind::Repeat(box_kind(kind))
+        })
+    }
+
+    /// Parse `+` | `+?` after expression.
+    fn parse_repeat_plus(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
+        self.expect("+", "expected `+`")?;
+        Ok(if self.take_str("?") {
+            ExpressionKind::RepeatPlusNonGreedy(box_kind(kind))
+        } else {
+            ExpressionKind::RepeatPlus(box_kind(kind))
+        })
+    }
+
+    /// Parse `{a..}` | `{..b}` | `{a..b}` after expression.
+    fn parse_repeat_range(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
+        self.expect("{", "expected `{`")?;
+        let a = self.take_while(&|x| x.is_ascii_digit());
+        let Ok(a) = (!a.is_empty()).then(|| a.parse::<u32>()).transpose() else {
+            bail!(self, "malformed range start");
+        };
+        self.expect("..", "expected `..`")?;
+        let b = self.take_while(&|x| x.is_ascii_digit());
+        let Ok(b) = (!b.is_empty()).then(|| b.parse::<u32>()).transpose() else {
+            bail!(self, "malformed range end");
+        };
+        match (a, b) {
+            (Some(a), Some(b)) if b < a => bail!(self, "range {a}..{b} is malformed"),
+            _ => {}
+        }
+        self.expect("}", "expected `}`")?;
+        Ok(ExpressionKind::RepeatRange(box_kind(kind), a, b))
     }
 
     fn parse_suffix(&mut self) -> Result<Option<String>> {
