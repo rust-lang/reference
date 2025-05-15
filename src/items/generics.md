@@ -232,7 +232,7 @@ r[items.generics.where]
 
 r[items.generics.where.syntax]
 ```grammar,items
-WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem ?
+WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem?
 
 WhereClauseItem ->
       LifetimeWhereClauseItem
