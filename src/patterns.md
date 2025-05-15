@@ -485,10 +485,7 @@ ObsoleteRangePattern ->
     RangePatternBound `...` RangePatternBound
 
 RangePatternBound ->
-      CHAR_LITERAL
-    | BYTE_LITERAL
-    | `-`? INTEGER_LITERAL
-    | `-`? FLOAT_LITERAL
+      LiteralPattern
     | PathExpression
 ```
 
@@ -541,7 +538,11 @@ A bound is written as one of:
 
 * A character, byte, integer, or float literal.
 * A `-` followed by an integer or float literal.
-* A [path]
+* A [path].
+
+> [!NOTE]
+>
+> We syntactically accept more than this for a *[RangePatternBound]*. We later reject the other things semantically.
 
 r[patterns.range.constraint-bound-path]
 If a bound is written as a path, after macro resolution, the path must resolve to a constant item of the type `char`, an integer type, or a float type.
