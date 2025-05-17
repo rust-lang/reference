@@ -197,6 +197,7 @@ Feature     | Implicitly Enables | Description
 `f16c`      | `avx`    | [F16C] --- 16-bit floating point conversion instructions
 `fma`       | `avx`    | [FMA3] --- Three-operand fused multiply-add
 `fxsr`      |          | [`fxsave`] and [`fxrstor`] --- Save and restore x87 FPU, MMX Technology, and SSE State
+`kl`        | `sse2`   | [KEYLOCKER] --- Intel Key Locker Instructions
 `lzcnt`     |          | [`lzcnt`] --- Leading zeros count
 `movbe`     |          | [`movbe`] --- Move data after swapping bytes
 `pclmulqdq` | `sse2`   | [`pclmulqdq`] --- Packed carry-less multiplication quadword
@@ -210,6 +211,7 @@ Feature     | Implicitly Enables | Description
 `sse4.1`    | `ssse3`  | [SSE4.1] --- Streaming SIMD Extensions 4.1
 `sse4.2`    | `sse4.1` | [SSE4.2] --- Streaming SIMD Extensions 4.2
 `ssse3`     | `sse3`   | [SSSE3] --- Supplemental Streaming SIMD Extensions 3
+`widekl`    | `kl`     | [KEYLOCKER_WIDE] --- Intel Wide Keylocker Instructions
 `xsave`     |          | [`xsave`] --- Save processor extended states
 `xsavec`    |          | [`xsavec`] --- Save processor extended states with compaction
 `xsaveopt`  |          | [`xsaveopt`] --- Save processor extended states optimized
@@ -228,6 +230,8 @@ Feature     | Implicitly Enables | Description
 [FMA3]: https://en.wikipedia.org/wiki/FMA_instruction_set
 [`fxsave`]: https://www.felixcloutier.com/x86/fxsave
 [`fxrstor`]: https://www.felixcloutier.com/x86/fxrstor
+[KEYLOCKER]: https://en.wikipedia.org/wiki/List_of_x86_cryptographic_instructions#Intel_Key_Locker_instructions
+[KEYLOCKER_WIDE]: https://en.wikipedia.org/wiki/List_of_x86_cryptographic_instructions#Intel_Key_Locker_instructions
 [`lzcnt`]: https://www.felixcloutier.com/x86/lzcnt
 [`movbe`]: https://www.felixcloutier.com/x86/movbe
 [`pclmulqdq`]: https://www.felixcloutier.com/x86/pclmulqdq
