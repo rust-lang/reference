@@ -224,6 +224,9 @@ Feature     | Implicitly Enables | Description
 `rdrand`    |          | [`rdrand`] --- Read random number
 `rdseed`    |          | [`rdseed`] --- Read random seed
 `sha`       | `sse2`   | [SHA] --- Secure Hash Algorithm
+`sha512`    | `avx2`   | [SHA512] --- Secure Hash Algorithm with 512-bit digest
+`sm3`       | `avx`    | [SM3] --- ShangMi 3 Hash Algorithm
+`sm4`       | `avx2`   | [SM4] --- ShangMi 4 Cipher Algorithm
 `sse`       |          | [SSE] --- Streaming <abbr title="Single Instruction Multiple Data">SIMD</abbr> Extensions
 `sse2`      | `sse`    | [SSE2] --- Streaming SIMD Extensions 2
 `sse3`      | `sse2`   | [SSE3] --- Streaming SIMD Extensions 3
@@ -277,6 +280,9 @@ Feature     | Implicitly Enables | Description
 [`rdrand`]: https://en.wikipedia.org/wiki/RdRand
 [`rdseed`]: https://en.wikipedia.org/wiki/RdRand
 [SHA]: https://en.wikipedia.org/wiki/Intel_SHA_extensions
+[SHA512]: https://en.wikipedia.org/wiki/Intel_SHA_extensions
+[SM3]: https://en.wikipedia.org/wiki/List_of_x86_cryptographic_instructions#Intel_SHA_and_SM3_instructions
+[SM4]: https://en.wikipedia.org/wiki/List_of_x86_cryptographic_instructions#Intel_SHA_and_SM3_instructions
 [SSE]: https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions
 [SSE2]: https://en.wikipedia.org/wiki/SSE2
 [SSE3]: https://en.wikipedia.org/wiki/SSE3
