@@ -209,6 +209,7 @@ smallest scope that contains the expression and is one of the following:
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
 * The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
+* The pattern-matching condition and loop body of [`while`].
 * The entirety of the tail expression of a block ([destructors.scope.temporary.edition2024]).
 
 > [!NOTE]
@@ -221,6 +222,7 @@ r[destructors.scope.temporary.edition2024]
 Some examples:
 
 ```rust
+# #![allow(irrefutable_let_patterns)]
 # struct PrintOnDrop(&'static str);
 # impl Drop for PrintOnDrop {
 #     fn drop(&mut self) {
@@ -246,6 +248,13 @@ else {
     PrintOnDrop("if let else").0
     // `if let else` dropped here
 };
+
+while let x = PrintOnDrop("while let scrutinee").0 {
+    PrintOnDrop("while let loop body").0;
+    break;
+    // `while let loop body` dropped here.
+    // `while let scrutinee` dropped here.
+}
 
 // Dropped before the first ||
 (PrintOnDrop("first operand").0 == ""
