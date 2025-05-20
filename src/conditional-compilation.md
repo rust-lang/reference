@@ -55,6 +55,11 @@ r[cfg.predicate.not]
 r[cfg.predicate.literal]
 * `true` or `false` literals, which are always true or false respectively.
 
+r[cfg.predicate.version]
+* `version()` with a version number inside. It is true if the language version
+  the compiler targets is higher or equal to the contained version number.
+  It is false otherwise.
+
 r[cfg.option-spec]
 _Configuration options_ are either names or key-value pairs, and are either set or unset.
 
@@ -299,6 +304,25 @@ r[cfg.proc_macro]
 Set when the crate being compiled is being compiled with the `proc_macro`
 [crate type].
 
+r[cfg.version]
+## The `version()` predicate
+
+r[cfg.version.behaviour]
+The `version()` predicate evaluates to true if both:
+
+* The version number contained inside follows the format and
+* The version number contained inside is less than or equal to the version
+  of the language the compiler targets. Usually the compiler version and
+  language version match. So compiler version `1.50.0` targets language
+  `1.50.0`.
+
+r[cfg.version.format]
+In order for it to be considered of valid format, the version number has to
+follow either the `"a.b.c"` scheme or the `"a.b"` scheme, where `a,b,c` are
+decimal integers between `0` and `65535`, inclusively. Semantically, assume `c`
+to be 0 if not present. Order wise, version numbers behave as if they were
+Rust tuples `(a,b,c)` with `a,b,c` being `u16` integers.
+
 r[cfg.panic]
 ### `panic`
 
@@ -368,6 +392,12 @@ fn on_32bit_unix() {
 // This function is only included when foo is not defined
 #[cfg(not(foo))]
 fn needs_not_foo() {
+  // ...
+}
+
+// This function is only included if the language version is newer than 1.50.0
+#[cfg(version("1.50.0"))]
+fn needs_new_compiler() {
   // ...
 }
 
