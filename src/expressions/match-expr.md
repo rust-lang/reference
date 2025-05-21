@@ -20,8 +20,14 @@ MatchArm ->
     OuterAttribute* Pattern MatchArmGuard?
 
 MatchArmGuard ->
-      `if` Expression
-    | `if` Expression `&&` LetChain
+    `if` MatchConditions
+
+MatchConditions ->
+    MatchCondition ( `&&` MatchCondition )*
+
+MatchCondition ->
+      OuterAttribute* `let` Pattern `=` Scrutinee
+    | Expression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
