@@ -5,6 +5,8 @@ allow-unauthenticated = [
 
 [assign]
 
+[transfer]
+
 [shortcut]
 
 [no-mentions]
