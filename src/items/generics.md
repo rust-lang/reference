@@ -67,36 +67,26 @@ The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
 r[items.generics.const.usage]
-Const parameters can be used anywhere a [const item] can be used, with the
-exception that when used in a [type] or [array repeat expression], it must be
-standalone (as described below). That is, they are allowed in the following
-places:
-
-1. As an applied const to any type which forms a part of the signature of the
-   item in question.
-2. As part of a const expression used to define an [associated const], or as a
-   parameter to an [associated type].
-3. As a value in any runtime expression in the body of any functions in the
-   item.
-4. As a parameter to any type used in the body of any functions in the item.
-5. As a part of the type of any fields in the item.
+Const parameters can be used anywhere in expression position, or as a const argument[^1].
+Uses of const parameters must take place inside the item defining it, and not within
+an inner item that inhibits access to outer generic parameters.
 
 ```rust
 // Examples where const generic parameters can be used.
 
 // Used in the signature of the item itself.
 fn foo<const N: usize>(arr: [i32; N]) {
-    // Used as a type within a function body.
+    // Used within a type within a function body.
     let x: [i32; N];
-    // Used as an expression.
+    // Used within an expression.
     println!("{}", N * 2);
 }
 
-// Used as a field of a struct.
+// Used within a field of a struct.
 struct Foo<const N: usize>([i32; N]);
 
 impl<const N: usize> Foo<N> {
-    // Used as an associated constant.
+    // Used within an associated constant.
     const CONST: usize = N * 4;
 }
 
@@ -105,13 +95,14 @@ trait Trait {
 }
 
 impl<const N: usize> Trait for Foo<N> {
-    // Used as an associated type.
+    // Used within an associated type.
     type Output = [i32; N];
 }
 ```
 
 ```rust,compile_fail
-// Examples where const generic parameters cannot be used.
+// Examples where const generic parameters cannot be used as the uses are
+// within an inner item that inhibits access to outer generic parameters.
 fn foo<const N: usize>() {
     // Cannot use in item definitions within a function body.
     const BAD_CONST: [usize; N] = [1; N];
@@ -123,8 +114,6 @@ fn foo<const N: usize>() {
     struct BadStruct([usize; N]);
 }
 ```
-
-There are limitations around how a const parameter can be used within a const argument ([const generics]).
 
 r[items.generics.const.variance]
 Unlike type and lifetime parameters, const parameters can be declared without
@@ -199,6 +188,8 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
     a: *const H
 }
 ```
+
+[^1]: There are limitations around how a const parameter can be used within a const argument ([const generics]).
 
 [array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md

@@ -6,7 +6,7 @@ A const argument in a [path] specifies the const value to use for that item.
 
 r[const-generics.argument.type]
 The argument must be a [const expression] of the type ascribed to the const
-parameter. 
+parameter.
 
 r[items.generics.const.type-ambiguity]
 When there is ambiguity if a generic argument could be resolved as either a
@@ -47,27 +47,106 @@ fn generic<const B: bool>() {
 }
 ```
 
-r[items.generics.const.standalone]
-As a further restriction, const parameters may only appear as a standalone
-argument inside of a [type] or [array repeat expression]. In those contexts,
-they may only be used as a single segment [path expression], possibly inside a
-[block] (such as `N` or `{N}`). That is, they cannot be combined with other
+r[const-generics.kinds]
+There are three kinds of arguments to a const parameter:
+1. Standalone const parameters
+2. Inferred consts
+3. Arbitrary concrete expressions 
+
+r[const-generics.standalone]
+## Standalone const parameters
+
+A const parameter can only be used in a const argument if it is a standalone usage.
+The argument must be *only* a usage of a const parameter and can be wrapped
+in at most one level of braces. That is, they cannot be combined with other
 expressions.
+```rust
+// Examples of standalone uses of const parameters
 
-```rust,compile_fail
-// Examples where const parameters may not be used.
-
-// Not allowed to combine in other expressions in types, such as the
-// arithmetic expression in the return type here.
-fn bad_function<const N: usize>() -> [u8; {N + 1}] {
-    // Similarly not allowed for array repeat expressions.
-    [1; {N + 1}]
+fn foo<const N: usize>() {
+    let a: [u8; N] = [10; N];
+    let b: [u8; { N }] = a;
+    foo::<N>();
+    foo::<{ N }>();
 }
 ```
 
-The const expression must be a [block expression][block]
-(surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
-or a [literal] (with a possibly leading `-` token).
+Here `a` has type `[u8; N]`, an array with a length of `N`, referring to `foo`'s const parameter.
+
+```rust,compile_fail
+// Examples of non-standalone uses of const parameters
+
+fn foo<const N: usize>() {
+    let a: [u8; {{ N }}] = [10; (N)];
+    foo::<{{ N }}>();
+    foo::<(N)>();
+}
+```
+
+r[const-generics.inferred]
+## Inferred consts
+
+r[const-generics.inferred.syntax]
+```grammar,types
+@root InferredConst -> `_`
+```
+
+The inferred const asks the compiler to infer the const if possible based on
+the surrounding information available.
+
+It cannot be used in item signatures.
+
+It is often used in repeat expressions:
+```rust
+fn make_array() -> [u32; 2] {
+    [Default::default(); _]
+}
+```
+
+r[const-generics.concrete-expr]
+## Concrete expressions
+
+Most const expressions are allowed as const arguments:
+```rust
+// Example of a concrete expressions as an argument
+
+fn make_array() -> [u8; 1 + 10 / 2] {
+    [1; 6]
+}
+```
+
+r[const-generics.concrete-expr.limitations]
+There are a few limitations about what expressions are allowed:
+1. Generic parameters may not be used
+2. In-scope where clauses may not be used
+3. Must be wrapped in braces in some cases
+
+```rust,compile_fail
+// Examples where expressions may not be used as they use generic parameters.
+
+// Not allowed in the const argument for an arrays length
+fn bad_function<const N: usize>() -> [u8; N + 1] {
+    // Similarly not allowed for array repeat expressions' count argument.
+    [1; N + 1]
+}
+
+// Using type parameters is also disallowed
+fn type_parameters_disallowed<T>(_: [u8; size_of::<T>()]) {}
+```
+
+```rust,compile_fail
+// Example where an expression may not be used as it depends on an in-scope
+// where clause
+
+fn bad_function(_: [u8; { let a: [u8]; 1 }])
+where
+    for<'a> [u8]: Sized, {}
+```
+
+The const expression must be a [block expression][block](surrounded with braces) unless it's:
+- a single path segment (an [IDENTIFIER])
+- a [literal] (with a possibly leading `-` token)
+- an array length or repeat expression count
 
 > [!NOTE]
 > This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
