@@ -98,7 +98,10 @@ Async closures always capture all input arguments, regardless of whether or not 
 ## Capture precision
 
 r[type.closure.capture.precision.capture-path]
-A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable.
+A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable, as well as
+any [further projections performed by matching against patterns][pattern-wildcards].
+
+[pattern-wildcards]: type.closure.capture.precision.wildcard
 
 r[type.closure.capture.precision.place-projection]
 A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), or [array or slice index] expression applied to a variable.
@@ -202,7 +205,7 @@ let c = || match x {  // x is not captured
 c();
 ```
 
-This also includes destructuring of tuples, structs, and enums.
+This also includes destructuring of tuples, structs, and single-variant enums.
 Fields matched with the [RestPattern] or [StructPatternEtCetera] are also not considered as read, and thus those fields will not be captured.
 The following illustrates some of these:
 
@@ -263,6 +266,69 @@ let c = || {
 ```
 
 [wildcard pattern]: ../patterns.md#wildcard-pattern
+
+r[type.closure.capture.precision.discriminants]
+### Capturing for discriminant reads
+
+If pattern matching requires inspecting a discriminant, the relevant place will get captured by `ImmBorrow`.
+
+```rust
+enum Example {
+    A(i32),
+    B(i32),
+}
+
+let mut x = (Example::A(21), 37);
+
+let c = || match x { // captures `x.0` by ImmBorrow
+    (Example::A(_), _) => println!("variant A"),
+    (Example::B(_), _) => println!("variant B"),
+};
+x.1 += 1; // x.1 can still be modified
+c();
+```
+
+r[type.closure.capture.precision.discriminants.single-variant]
+Matching against the only variant of an enum does not constitute a discriminant read.
+
+```rust
+enum Example {
+    A(i32),
+}
+
+let mut x = Example::A(42);
+let c = || {
+    let Example::A(_) = x; // does not capture `x`
+};
+x = Example::A(57); // x can be modified while the closure is live
+c();
+```
+
+r[type.closure.capture.precision.discriminants.non-exhaustive]
+If [the `#[non_exhaustive]` attribute][non_exhaustive] is applied to an enum
+defined in an external crate, it is considered to have multiple variants,
+even if only one variant is actually present.
+
+[non_exhaustive]: attributes.type-system.non_exhaustive
+
+r[type.closure.capture.precision.discriminants.uninhabited-variant]
+Even if all other variants are uninhabited, the discriminant read still occurs.
+
+```rust,compile_fail,E0506
+enum Void {}
+
+enum Example {
+    A(i32),
+    B(Void),
+}
+
+let mut x = Example::A(42);
+let c = || {
+    let Example::A(_) = x; // captures `x` by ImmBorrow
+};
+x = Example::A(57); // ERROR: cannot assign to `x` because it is borrowed
+c();
+```
 
 r[type.closure.capture.precision.move-dereference]
 ### Capturing references in move contexts
