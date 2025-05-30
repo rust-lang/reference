@@ -300,7 +300,7 @@ let mut x = Example::A(42);
 let c = || {
     let Example::A(_) = x; // does not capture `x`
 };
-x = Example::A(57); // x can be modified while the closure is live
+x = Example::A(57); // `x` can be modified while the closure is live
 c();
 ```
 
@@ -327,6 +327,55 @@ let c = || {
     let Example::A(_) = x; // captures `x` by ImmBorrow
 };
 x = Example::A(57); // ERROR: cannot assign to `x` because it is borrowed
+c();
+```
+
+r[type.closure.capture.precision.discriminants.range-patterns]
+Matching against a [range pattern][patterns.range] constitutes a discriminant read, even if
+the range matches all possible values.
+
+```rust,compile_fail,E0506
+let mut x = 7_u8;
+let c = || {
+    let 0..=u8::MAX = x; // captures `x` by ImmBorrow
+};
+x += 1; // ERROR: cannot assign to `x` because it is borrowed
+c();
+```
+
+r[type.closure.capture.precision.discriminants.slice-patterns]
+Matching against a [slice pattern][patterns.slice] constitutes a discriminant read if
+the slice pattern needs to inspect the length of the scrutinee.
+
+```rust,compile_fail,E0506
+let mut x: &mut [i32] = &mut [1, 2, 3];
+let c = || match x { // captures `*x` by ImmBorrow
+    [_, _, _] => println!("three elements"),
+    _ => println!("something else"),
+};
+x[0] += 1; // ERROR: cannot assign to `x[_]` because it is borrowed
+c();
+```
+
+Thus, matching against an array doesn't constitute a discriminant read, as the length is fixed.
+
+```rust
+let mut x: [i32; 3] = [1, 2, 3];
+let c = || match x { // does not capture `x`
+    [_, _, _] => println!("three elements, obviously"),
+};
+x[0] += 1; // `x` can be modified while the closure is live
+c();
+```
+
+Likewise, a slice pattern that matches slices of all possible lengths does not constitute a discriminant read.
+
+```rust
+let mut x: &mut [i32] = &mut [1, 2, 3];
+let c = || match x { // does not capture `x`
+    [..] => println!("always matches"),
+};
+x[0] += 1; // `x` can be modified while the closure is live
 c();
 ```
 
