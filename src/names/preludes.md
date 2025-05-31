@@ -157,7 +157,6 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
-[`no_std` attribute]: #the-no_std-attribute
 [attribute]: ../attributes.md
 [Boolean type]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
