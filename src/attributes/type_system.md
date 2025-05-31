@@ -42,7 +42,10 @@ r[attributes.type-system.non_exhaustive.syntax]
 The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
 r[attributes.type-system.non_exhaustive.allowed-positions]
-It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+The `non_exhaustive` attribute may only be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+
+> [!NOTE]
+> `rustc` currently warns in some other positions, but this may be rejected in the future.
 
 r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
