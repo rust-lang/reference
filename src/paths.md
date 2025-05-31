@@ -368,11 +368,11 @@ r[paths.qualifiers.macro-crate]
 ### `$crate`
 
 r[paths.qualifiers.macro-crate.allowed-positions]
-`$crate` is only used within [macro transcribers], and can only be used as the first
+[`$crate`] is only used within [macro transcribers], and can only be used as the first
 segment, without a preceding `::`.
 
 r[paths.qualifiers.macro-crate.hygiene]
-`$crate` will expand to a path to access items from the
+[`$crate`] will expand to a path to access items from the
 top level of the crate where the macro is defined, regardless of which crate the macro is
 invoked.
 
@@ -472,6 +472,7 @@ mod without { // crate::without
 # fn main() {}
 ```
 
+[`$crate`]: macro.decl.hygiene.crate
 [implementations]: items/implementations.md
 [items]: items.md
 [literal]: expressions/literal-expr.md

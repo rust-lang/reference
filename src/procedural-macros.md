@@ -350,7 +350,7 @@ r[macro.proc.token.conversion.to-proc_macro]
 When passed to a proc-macro
 - All multi-character operators are broken into single characters.
 - Lifetimes are broken into a `'` character and an identifier.
-- The keyword metavariable `$crate` is passed as a single identifier.
+- The keyword metavariable [`$crate`] is passed as a single identifier.
 - All other metavariable substitutions are represented as their underlying
   token streams.
     - Such token streams may be wrapped into delimited groups ([`Group`]) with
@@ -377,6 +377,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: #derive-macros
 [Function-like macros]: #function-like-procedural-macros
+[`$crate`]: macro.decl.hygiene.crate
 [`Delimiter::None`]: proc_macro::Delimiter::None
 [`Group`]: proc_macro::Group
 [`TokenStream`]: proc_macro::TokenStream
