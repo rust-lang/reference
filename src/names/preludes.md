@@ -169,6 +169,21 @@ The *`no_implicit_prelude` [attribute]* may be applied at the crate level or on 
 > }
 > ```
 
+r[names.preludes.no_implicit_prelude.syntax]
+The `no_implicit_prelude` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[names.preludes.no_implicit_prelude.allowed-positions]
+The `no_implicit_prelude` attribute may only be applied to the crate level or a module.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[names.preludes.no_implicit_prelude.duplicates]
+Duplicate instances of the `no_implicit_prelude` attribute have no effect.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `no_implicit_prelude` attributes.
+
 r[names.preludes.no_implicit_prelude.lang]
 This attribute does not affect the [language prelude].
 
