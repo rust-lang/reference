@@ -164,8 +164,8 @@ Because a tuple enum variant's constructor's [visibility] is reduced to be no gr
 >   // Cannot match on a non-exhaustive struct enum variant without including a wildcard.
 >   Message::Send { from, to, contents } => { },
 >   // Cannot match on a non-exhaustive tuple or unit enum variant.
->   Message::Reaction(type) => { },
 >   Message::Quit => { },
+>   Message::Reaction(x) => { },
 
 r[attributes.type-system.non_exhaustive.enum-exhaustiveness]
 When using a [`match` expression][expr.match] on a non-exhaustive [`enum`][enum] from an external crate, matching on a variant does not contribute towards the exhaustiveness of the arms. A [`_` wildcard][patterns.wildcard] arm is needed to make the match exhaustive.
