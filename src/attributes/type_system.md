@@ -106,32 +106,32 @@ The implicitly defined same-named constant of a [unit-like struct][struct], or t
 > // Cannot construct an instance of `Config`; if new fields were added in
 > // a new version of `upstream` then this would fail to compile, so it is
 > // disallowed.
-> let config = Config { window_width: 640, window_height: 480 };
+> let config = Config { window_width: 640, window_height: 480 }; // ERROR
 >
 > // Cannot construct an instance of `Token`; if new fields were added, then
 > // it would not be a unit-like struct any more, so the same-named constant
 > // created by it being a unit-like struct is not public outside the crate;
 > // this code fails to compile.
-> let token = Token;
+> let token = Token; // ERROR
 >
 > // Cannot construct an instance of `Id`; if new fields were added, then
 > // its constructor function signature would change, so its constructor
 > // function is not public outside the crate; this code fails to compile.
-> let id = Id(5);
+> let id = Id(5); // ERROR
 >
 > // Can construct an instance of `Error`; new variants being introduced would
 > // not result in this failing to compile.
-> let error = Error::Message("foo".to_string());
+> let error = Error::Message("foo".to_string()); // Ok
 >
 > // Cannot construct an instance of `Message::Send` or `Message::Reaction`;
 > // if new fields were added in a new version of `upstream` then this would
 > // fail to compile, so it is disallowed.
-> let message = Message::Send { from: 0, to: 1, contents: "foo".to_string(), };
-> let message = Message::Reaction(0);
+> let message = Message::Send { from: 0, to: 1, contents: "foo".to_string() }; // ERROR
+> let message = Message::Reaction(0); // ERROR
 >
 > // Cannot construct an instance of `Message::Quit`; if this were converted to
 > // a tuple enum variant `upstream`, this would fail to compile.
-> let message = Message::Quit;
+> let message = Message::Quit; // ERROR
 > ```
 
 r[attributes.type-system.non_exhaustive.match]
@@ -149,23 +149,25 @@ Because a tuple enum variant's constructor's [visibility] is reduced to be no gr
 > use upstream::{Config, Token, Id, Error, Message};
 >
 > // Cannot match on a non-exhaustive struct without a wildcard.
-> if let Ok(Config { window_width, window_height }) = config {
+> if let Ok(Config { window_width, window_height }) = config { // ERROR: `..` required
 >     // would compile with: `..`
 > }
 >
 > // Cannot match a non-exhaustive unit-like or tuple struct except by using
 > // braced struct syntax with a wildcard.
 > // This would compile as `let Token { .. } = token;`
-> let upstream::Token = token;
+> let upstream::Token = token; // ERROR
 > // This would compile as `let Id { 0: id_number, .. } = id;`
-> let Id(id_number) = id;
+> let Id(id_number) = id; // ERROR
 >
 > match message {
 >   // Cannot match on a non-exhaustive struct enum variant without including a wildcard.
->   Message::Send { from, to, contents } => { },
+>   Message::Send { from, to, contents } => { }, // ERROR: `..` required
 >   // Cannot match on a non-exhaustive tuple or unit enum variant.
->   Message::Quit => { },
->   Message::Reaction(x) => { },
+>   Message::Reaction(x) => { }, // ERROR
+>   Message::Quit => { }, // ERROR
+> }
+> ```
 
 r[attributes.type-system.non_exhaustive.enum-exhaustiveness]
 When using a [`match` expression][expr.match] on a non-exhaustive [`enum`][enum] from an external crate, matching on a variant does not contribute towards the exhaustiveness of the arms. A [`_` wildcard][patterns.wildcard] arm is needed to make the match exhaustive.
