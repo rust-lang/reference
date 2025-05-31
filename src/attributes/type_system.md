@@ -88,11 +88,11 @@ Within the defining crate, `non_exhaustive` has no effect.
 > ```
 
 r[attributes.type-system.non_exhaustive.construction]
-Non-exhaustive types cannot be constructed outside of the defining crate:
+`non_exhaustive` applied to a [`struct`][struct] or [`enum` variant][enum] prevents constructing that struct or enum variant outside of the defining crate.
 
-- Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed with a [StructExpression] \(including with [functional update syntax]).
-- The implicitly defined same-named constant of a [unit-like struct][struct], or the same-named constructor function of a [tuple struct][struct], has a [visibility] no greater than `pub(crate)`. That is, if the struct’s visibility is `pub`, then the constant or constructor’s visibility is `pub(crate)`, and otherwise the visibility of the two items is the same (as is the case without `#[non_exhaustive]`).
-- [`enum`][enum] instances can be constructed.
+Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed with a [StructExpression] \(including with [functional update syntax]).
+
+The implicitly defined same-named constant of a [unit-like struct][struct], or the same-named constructor function of a [tuple struct][struct], has a [visibility] no greater than `pub(crate)`. That is, if the struct’s visibility is `pub`, then the constant or constructor’s visibility is `pub(crate)`, and otherwise the visibility of the two items is the same (as is the case without `#[non_exhaustive]`).
 
 > [!EXAMPLE]
 > Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of construction do not compile when outside the defining crate:
