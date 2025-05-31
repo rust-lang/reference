@@ -156,7 +156,7 @@ Because a tuple enum variant's constructor's [visibility] is reduced to be no gr
 > // Cannot match a non-exhaustive unit-like or tuple struct except by using
 > // braced struct syntax with a wildcard.
 > // This would compile as `let Token { .. } = token;`
-> let Token = token;
+> let upstream::Token = token;
 > // This would compile as `let Id { 0: id_number, .. } = id;`
 > let Id(id_number) = id;
 >
