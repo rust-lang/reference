@@ -188,7 +188,7 @@ r[names.preludes.no_implicit_prelude.excluded-preludes]
 The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], and the [tool prelude] from being brought into scope for the module or any of its descendants.
 
 r[names.preludes.no_implicit_prelude.lang]
-This attribute does not affect the [language prelude].
+The `no_implicit_prelude` attribute does not affect the [language prelude].
 
 r[names.preludes.no_implicit_prelude.edition2018]
 > [!EDITION-2018]
