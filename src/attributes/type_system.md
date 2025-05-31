@@ -38,11 +38,11 @@ The *`non_exhaustive` attribute* indicates that a type or variant may have more 
 > }
 > ```
 
-r[attributes.type-system.non_exhaustive.allowed-positions]
-It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
-
 r[attributes.type-system.non_exhaustive.syntax]
 The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.type-system.non_exhaustive.allowed-positions]
+It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
 
 r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
