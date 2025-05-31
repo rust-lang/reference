@@ -109,6 +109,10 @@ By default, the [`std`] crate is injected into the [extern prelude], and all mac
 
 If the `no_std` attribute is specified, then the [`core`] crate is used instead of `std`, and similarly all macros exported from `core` are placed into the [`macro_use` prelude].
 
+r[names.preludes.extern.no_std.edition2018]
+> [!EDITION-2018]
+> Before the 2018 edition, `std` is also injected into the crate root. `core` is injected instead of `std` if `no_std` is specified. Starting with the 2018 edition, these are not injected into the crate root.
+
 r[names.preludes.lang]
 ## Language prelude
 
