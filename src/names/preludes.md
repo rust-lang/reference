@@ -155,10 +155,7 @@ r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
 r[names.preludes.no_implicit_prelude.intro]
-The *`no_implicit_prelude` [attribute]* may be applied at the crate level or
-on a module to indicate that it should not automatically bring the [standard
-library prelude], [extern prelude], or [tool prelude] into scope for that
-module or any of its descendants.
+The *`no_implicit_prelude` [attribute]* may be applied at the crate level or on a module to indicate that it should not automatically bring the [standard library prelude], [extern prelude], or [tool prelude] into scope for that module or any of its descendants.
 
 r[names.preludes.no_implicit_prelude.lang]
 This attribute does not affect the [language prelude].
