@@ -80,7 +80,7 @@ r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-By default, the standard library is automatically included in the crate root module. The [`std`] crate is added to the root, along with an implicit [`macro_use` attribute] pulling in all macros exported from `std` into the [`macro_use` prelude]. Both [`core`] and [`std`] are added to the [extern prelude].
+The *`no_std` [attribute][attributes]* is used to prevent the automatic linking of the [`std`] crate, deferring to [`core`] instead.
 
 > [!EXAMPLE]
 > <!-- ignore: test infrastructure can't handle no_std -->
@@ -98,18 +98,16 @@ r[names.preludes.extern.no_std.syntax]
 The `no_std` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
 r[names.preludes.extern.no_std.allowed-positions]
-The *`no_std` [attribute]* may be applied at the crate level to prevent the [`std`] crate from being automatically added into scope.
+The `no_std` attribute may only be applied to the crate root.
 
-It does three things:
 
-r[names.preludes.extern.no_std.extern]
-* Prevents `std` from being added to the [extern prelude](#extern-prelude).
 r[names.preludes.extern.no_std.module]
-* Affects which module is used to make up the [standard library prelude] (as described above).
-r[names.preludes.extern.no_std.core]
-* Injects the [`core`] crate into the crate root instead of [`std`], and pulls in all macros exported from `core` in the [`macro_use` prelude].
+The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of `std`.
 
+r[names.preludes.extern.no_std.inject]
+By default, the [`std`] crate is injected into the [extern prelude], and all macros exported from `std` are added to the [`macro_use` prelude].
 
+If the `no_std` attribute is specified, then the [`core`] crate is used instead of `std`, and similarly all macros exported from `core` are placed into the [`macro_use` prelude].
 
 r[names.preludes.lang]
 ## Language prelude
