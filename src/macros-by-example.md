@@ -134,7 +134,7 @@ Valid fragment specifiers are:
   * `block`: a [BlockExpression]
   * `expr`: an [Expression]
   * `expr_2021`: an [Expression] except [UnderscoreExpression] and [ConstBlockExpression] (see [macro.decl.meta.edition2024])
-  * `ident`: an [IDENTIFIER_OR_KEYWORD] or [RAW_IDENTIFIER]
+  * `ident`: an [IDENTIFIER_OR_KEYWORD], [RAW_IDENTIFIER], or [`$crate`]
   * `item`: an [Item]
   * `lifetime`: a [LIFETIME_TOKEN]
   * `literal`: matches `-`<sup>?</sup>[LiteralExpression]
@@ -151,10 +151,10 @@ r[macro.decl.meta.transcription]
 In the transcriber, metavariables are referred to simply by `$`_name_, since
 the fragment kind is specified in the matcher. Metavariables are replaced with
 the syntax element that matched them.
+Metavariables can be transcribed more than once or not at all.
 
 r[macro.decl.meta.dollar-crate]
-The keyword metavariable `$crate` can be used to refer to the current crate; see [Hygiene] below. Metavariables can be
-transcribed more than once or not at all.
+The keyword metavariable [`$crate`] can be used to refer to the current crate.
 
 r[macro.decl.meta.edition2021]
 > [!EDITION-2021]
@@ -594,3 +594,4 @@ For more detail, see the [formal specification].
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
 [token]: tokens.md
+[`$crate`]: macro.decl.hygiene.crate
