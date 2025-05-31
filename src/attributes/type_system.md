@@ -135,10 +135,9 @@ The implicitly defined same-named constant of a [unit-like struct][struct], or t
 > ```
 
 r[attributes.type-system.non_exhaustive.match]
-There are limitations when matching on non-exhaustive types outside of the defining crate:
+When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]) from an external crate, a [StructPattern] must be used which must include a [`..` rest pattern][patterns.rest].
 
-- When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]), a [StructPattern] must be used which must include a `..`. A tuple enum variant's constructor's [visibility] is reduced to be no greater than `pub(crate)`.
-- When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not contribute towards the exhaustiveness of the arms.
+Because a tuple enum variant's constructor's [visibility] is reduced to be no greater than `pub(crate)`, a [tuple struct pattern][patterns.tuple-struct] cannot be used in a pattern; a [StructPattern] with tuple indexes must be used instead.
 
 > [!EXAMPLE]
 > Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of matching do not compile when outside the defining crate:
@@ -148,13 +147,6 @@ There are limitations when matching on non-exhaustive types outside of the defin
 > // These are types defined in an upstream crate that have been annotated as
 > // `#[non_exhaustive]`.
 > use upstream::{Config, Token, Id, Error, Message};
->
-> // Cannot match on a non-exhaustive enum without including a wildcard arm.
-> match error {
->   Error::Message(ref s) => { },
->   Error::Other => { },
->   // would compile with: `_ => {},`
-> }
 >
 > // Cannot match on a non-exhaustive struct without a wildcard.
 > if let Ok(Config { window_width, window_height }) = config {
@@ -174,6 +166,24 @@ There are limitations when matching on non-exhaustive types outside of the defin
 >   // Cannot match on a non-exhaustive tuple or unit enum variant.
 >   Message::Reaction(type) => { },
 >   Message::Quit => { },
+
+r[attributes.type-system.non_exhaustive.enum-exhaustiveness]
+When using a [`match` expression][expr.match] on a non-exhaustive [`enum`][enum] from an external crate, matching on a variant does not contribute towards the exhaustiveness of the arms. A [`_` wildcard][patterns.wildcard] arm is needed to make the match exhaustive.
+
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of matching do not compile when outside the defining crate:
+>
+> <!-- ignore: requires external crates -->
+> ```rust, ignore
+> // These are types defined in an upstream crate that have been annotated as
+> // `#[non_exhaustive]`.
+> use upstream::Error;
+>
+> // Cannot match on a non-exhaustive enum without including a wildcard arm.
+> match error {  // ERROR: `_` not covered
+>   Error::Message(ref s) => { },
+>   Error::Other => { },
+>   // would compile with: `_ => {},`
 > }
 > ```
 
