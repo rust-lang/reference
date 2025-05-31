@@ -100,6 +100,11 @@ The `no_std` attribute uses the [MetaWord] syntax and thus does not take any inp
 r[names.preludes.extern.no_std.allowed-positions]
 The `no_std` attribute may only be applied to the crate root.
 
+r[names.preludes.extern.no_std.duplicates]
+Duplicate instances of the `no_std` attribute have no effect.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `no_std` attributes.
 
 r[names.preludes.extern.no_std.module]
 The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of `std`.
