@@ -177,7 +177,8 @@ There are limitations when matching on non-exhaustive types outside of the defin
 > }
 > ```
 
-It's also not allowed to use numeric casts (`as`) on enums that contain any non-exhaustive variants.
+r[attributes.type-system.non_exhaustive.enum-cast]
+It is not allowed to use an [`as` numeric cast][expr.as] to [access the discriminant][items.enum.discriminant.coercion] of an external enum that contains any non-exhaustive variants.
 
 > [!EXAMPLE]
 > The following enum can be cast because it doesn't contain any non-exhaustive variants:
