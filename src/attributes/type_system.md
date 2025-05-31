@@ -212,7 +212,6 @@ It's also not allowed to use numeric casts (`as`) on enums that contain any non-
 r[attributes.type-system.non_exhaustive.inhabited]
 Non-exhaustive types are always considered [inhabited] in downstream crates, even though the constructors are not accessible.
 
-[`match`]: ../expressions/match-expr.md
 [attributes]: ../attributes.md
 [enum]: ../items/enumerations.md
 [functional update syntax]: ../expressions/struct-expr.md#functional-update-syntax
