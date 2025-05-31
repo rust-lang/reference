@@ -47,6 +47,12 @@ The `non_exhaustive` attribute may only be applied to [`struct`s][struct], [`enu
 > [!NOTE]
 > `rustc` currently warns in some other positions, but this may be rejected in the future.
 
+r[attributes.type-system.non_exhaustive.duplicates]
+Duplicate instances of the `non_exhaustive` attribute have no effect.
+
+> [!NOTE]
+> `rustc` warns on subsequent duplicate `non_exhaustive` attributes.
+
 r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
 
