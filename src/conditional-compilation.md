@@ -61,8 +61,13 @@ r[cfg.predicate.literal]
 
 r[cfg.predicate.version]
 * `version()` with a version number inside. It is true if the language version
-  the compiler targets is higher or equal to the contained version number.
-  It is false otherwise.
+  the compiler targets is higher or equal to the contained version number. It is false otherwise.
+
+r[cfg.predicate.version.syntax]
+  The specified version has to follow  either the `"a.b.c"` scheme or the `"a.b"` scheme. Semantically, assume `c` to be 0 if not present. Order wise, version numbers behave as if they were Rust tuples of type `(u16, u16, u16)`.
+
+r[cfg.predicate.version.reserved]
+  Invalid version literals will eval to false. This includes tuples with components that can't be represented as `u16`.
 
 r[cfg.option-spec]
 _Configuration options_ are either names or key-value pairs, and are either set or unset.
@@ -307,19 +312,6 @@ r[cfg.proc_macro]
 
 Set when the crate being compiled is being compiled with the `proc_macro`
 [crate type].
-
-r[cfg.version]
-### `version()`
-
-r[cfg.version.behavior]
-The `version()` predicate evaluates to true if both:
-
-* The version number contained inside follows the format and
-* The version number contained inside is less than or equal to the version
-  of the language the compiler targets.
-
-r[cfg.version.format]
-In order for it to be considered of valid format, the version number has to follow either the `"a.b.c"` scheme or the `"a.b"` scheme. Semantically, assume `c` to be 0 if not present. Order wise, version numbers behave as if they were Rust tuples of type `(u16, u16, u16)`.
 
 r[cfg.panic]
 ### `panic`
