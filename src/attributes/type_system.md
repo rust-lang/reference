@@ -7,7 +7,7 @@ r[attributes.type-system.non_exhaustive]
 ## The `non_exhaustive` attribute
 
 r[attributes.type-system.non_exhaustive.intro]
-The *`non_exhaustive` attribute* indicates that a type or variant may have more fields or variants added in the future.
+The *`non_exhaustive` attribute* indicates that a type or variant may have more fields or variants added in the future. Outside of the defining crate, types annotated with `non_exhaustive` have limitations that preserve backwards compatibility when new fields or variants are added.
 
 > [!EXAMPLE]
 > The following non-exhaustive definitions will be used in the examples that follow.
@@ -77,10 +77,6 @@ Within the defining crate, `non_exhaustive` has no effect.
 >     Message::Quit => { },
 > }
 > ```
-
-
-r[attributes.type-system.non_exhaustive.external-crate]
-Outside of the defining crate, types annotated with `non_exhaustive` have limitations that preserve backwards compatibility when new fields or variants are added.
 
 r[attributes.type-system.non_exhaustive.construction]
 Non-exhaustive types cannot be constructed outside of the defining crate:
