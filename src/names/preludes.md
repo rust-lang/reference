@@ -157,6 +157,18 @@ r[names.preludes.no_implicit_prelude]
 r[names.preludes.no_implicit_prelude.intro]
 The *`no_implicit_prelude` [attribute]* may be applied at the crate level or on a module to indicate that it should not automatically bring the [standard library prelude], [extern prelude], or [tool prelude] into scope for that module or any of its descendants.
 
+> [!EXAMPLE]
+> ```rust
+> // It can be applied to the crate root to apply to all modules.
+> #![no_implicit_prelude]
+>
+> // Or it can be applied to a module to only affect that module or any of its descendants.
+> #[no_implicit_prelude]
+> mod example {
+>     // ...
+> }
+> ```
+
 r[names.preludes.no_implicit_prelude.lang]
 This attribute does not affect the [language prelude].
 
