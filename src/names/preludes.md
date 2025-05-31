@@ -88,6 +88,12 @@ By default, the standard library is automatically included in the crate root mod
 > #![no_std]
 > ```
 
+> [!NOTE]
+> Using `no_std` is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
+
+> [!WARNING]
+> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
+
 r[names.preludes.extern.no_std.syntax]
 The `no_std` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
@@ -103,11 +109,7 @@ r[names.preludes.extern.no_std.module]
 r[names.preludes.extern.no_std.core]
 * Injects the [`core`] crate into the crate root instead of [`std`], and pulls in all macros exported from `core` in the [`macro_use` prelude].
 
-> [!NOTE]
-> Using the core prelude over the standard prelude is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
-> [!WARNING]
-> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 r[names.preludes.lang]
 ## Language prelude
