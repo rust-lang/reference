@@ -37,7 +37,22 @@ more fields or variants added in the future.
 >     #[non_exhaustive] Reaction(u32),
 >     #[non_exhaustive] Quit,
 > }
+> ```
+
+r[attributes.type-system.non_exhaustive.allowed-positions]
+It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+
+r[attributes.type-system.non_exhaustive.syntax]
+The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not
+take any inputs.
+
+r[attributes.type-system.non_exhaustive.same-crate]
+Within the defining crate, `non_exhaustive` has no effect.
+
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples when used within the same crate are allowed without restrictions.
 >
+> ```rust,ignore
 > // Non-exhaustive structs can be constructed as normal within the defining crate.
 > let config = Config { window_width: 640, window_height: 480 };
 > let token = Token;
@@ -65,15 +80,6 @@ more fields or variants added in the future.
 > }
 > ```
 
-r[attributes.type-system.non_exhaustive.allowed-positions]
-It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
-
-r[attributes.type-system.non_exhaustive.syntax]
-The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not
-take any inputs.
-
-r[attributes.type-system.non_exhaustive.same-crate]
-Within the defining crate, `non_exhaustive` has no effect.
 
 r[attributes.type-system.non_exhaustive.external-crate]
 Outside of the defining crate, types annotated with `non_exhaustive` have limitations that
