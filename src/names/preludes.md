@@ -82,6 +82,12 @@ r[names.preludes.extern.no_std]
 r[names.preludes.extern.no_std.intro]
 By default, the standard library is automatically included in the crate root module. The [`std`] crate is added to the root, along with an implicit [`macro_use` attribute] pulling in all macros exported from `std` into the [`macro_use` prelude]. Both [`core`] and [`std`] are added to the [extern prelude].
 
+> [!EXAMPLE]
+> <!-- ignore: test infrastructure can't handle no_std -->
+> ```rust,ignore
+> #![no_std]
+> ```
+
 r[names.preludes.extern.no_std.syntax]
 The `no_std` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
