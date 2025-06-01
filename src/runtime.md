@@ -15,6 +15,11 @@ r[runtime.windows_subsystem]
 r[runtime.windows_subsystem.intro]
 The *`windows_subsystem` attribute* may be applied at the crate level to set the [subsystem] when linking on a Windows target.
 
+> [!EXAMPLE]
+> ```rust
+> #![windows_subsystem = "windows"]
+> ```
+
 r[runtime.windows_subsystem.syntax]
 It uses the [MetaNameValueStr] syntax to specify the subsystem with a value of either `console` or `windows`.
 
@@ -26,10 +31,6 @@ The "console" subsystem is the default. If a console process is run from an exis
 
 r[runtime.windows_subsystem.windows]
 The "windows" subsystem is commonly used by GUI applications that do not want to display a console window on startup. It will run detached from any existing console.
-
-```rust
-#![windows_subsystem = "windows"]
-```
 
 [`GlobalAlloc`]: alloc::alloc::GlobalAlloc
 [crate types]: linkage.md
