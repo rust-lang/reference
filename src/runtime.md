@@ -13,24 +13,19 @@ r[runtime.windows_subsystem]
 ## The `windows_subsystem` attribute
 
 r[runtime.windows_subsystem.intro]
-The *`windows_subsystem` attribute* may be applied at the crate level to set
-the [subsystem] when linking on a Windows target.
+The *`windows_subsystem` attribute* may be applied at the crate level to set the [subsystem] when linking on a Windows target.
 
 r[runtime.windows_subsystem.syntax]
-It uses the [MetaNameValueStr] syntax to specify the subsystem with a value of either
-`console` or `windows`.
+It uses the [MetaNameValueStr] syntax to specify the subsystem with a value of either `console` or `windows`.
 
 r[runtime.windows_subsystem.ignored]
 This attribute is ignored on non-Windows targets, and for non-`bin` [crate types].
 
 r[runtime.windows_subsystem.console]
-The "console" subsystem is the default. If a console process is run from an
-existing console then it will be attached to that console, otherwise a new
-console window will be created.
+The "console" subsystem is the default. If a console process is run from an existing console then it will be attached to that console, otherwise a new console window will be created.
 
 r[runtime.windows_subsystem.windows]
-The "windows" subsystem is commonly used by GUI applications that do not want to
-display a console window on startup. It will run detached from any existing console.
+The "windows" subsystem is commonly used by GUI applications that do not want to display a console window on startup. It will run detached from any existing console.
 
 ```rust
 #![windows_subsystem = "windows"]
