@@ -65,17 +65,13 @@ r[abi.no_mangle]
 ## The `no_mangle` attribute
 
 r[abi.no_mangle.intro]
-The *`no_mangle` attribute* may be used on any [item] to disable standard
-symbol name mangling. The symbol for the item will be the identifier of the
-item's name.
+The *`no_mangle` attribute* may be used on any [item] to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
 r[abi.no_mangle.publicly-exported]
-Additionally, the item will be publicly exported from the produced library or
-object file, similar to the [`used` attribute](#the-used-attribute).
+Additionally, the item will be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
 
 r[abi.no_mangle.unsafe]
-This attribute is unsafe as an unmangled symbol may collide with another symbol
-with the same name (or with a well-known symbol), leading to undefined behavior.
+This attribute is unsafe as an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 ```rust
 #[unsafe(no_mangle)]
