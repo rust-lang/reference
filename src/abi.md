@@ -126,6 +126,23 @@ The *`export_name` [attribute]* specifies the name of the symbol that will be ex
 r[abi.export_name.syntax]
 The `export_name` attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
 
+r[abi.export_name.allowed-positions]
+The `export_name` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+
+> [!NOTE]
+> `rustc` currently ignores `export_name` in some positions, but this may be rejected in the future.
+
+r[abi.export_name.duplicates]
+Only the last instance of `export_name` on an item is honored. Previous `export_name` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on preceding duplicate `export_name` attributes. This may become an error in the future.
+
 r[abi.export_name.unsafe]
 This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
