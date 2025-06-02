@@ -115,7 +115,7 @@ r[abi.export_name]
 ## The `export_name` attribute
 
 r[abi.export_name.intro]
-The *`export_name` attribute* specifies the name of the symbol that will be exported on a [function] or [static].
+The *`export_name` [attribute]* specifies the name of the symbol that will be exported on a [function] or [static].
 
 > [!EXAMPLE]
 > ```rust
