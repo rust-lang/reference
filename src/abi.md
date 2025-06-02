@@ -90,8 +90,7 @@ r[abi.link_section]
 ## The `link_section` attribute
 
 r[abi.link_section.intro]
-The *`link_section` attribute* specifies the section of the object file that a
-[function] or [static]'s content will be placed into.
+The *`link_section` attribute* specifies the section of the object file that a [function] or [static]'s content will be placed into.
 
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
@@ -104,8 +103,7 @@ pub static VAR1: u32 = 1;
 ```
 
 r[abi.link_section.unsafe]
-This attribute is unsafe as it allows users to place data and code into sections
-of memory not expecting them, such as mutable data into read-only areas.
+This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
 r[abi.link_section.edition2024]
 > [!EDITION-2024]
