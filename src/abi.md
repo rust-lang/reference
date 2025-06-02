@@ -67,10 +67,11 @@ r[abi.no_mangle]
 r[abi.no_mangle.intro]
 The *`no_mangle` attribute* may be used on functions and statics to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
-```rust
-#[unsafe(no_mangle)]
-extern "C" fn foo() {}
-```
+> [!EXAMPLE]
+> ```rust
+> #[unsafe(no_mangle)]
+> extern "C" fn foo() {}
+> ```
 
 r[abi.no_mangle.syntax]
 The `no_mangle` attribute uses the [MetaWord] syntax and thus does not take any inputs.
