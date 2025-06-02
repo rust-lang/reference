@@ -90,10 +90,10 @@ r[abi.link_section]
 ## The `link_section` attribute
 
 r[abi.link_section.intro]
-The *`link_section` attribute* specifies the section of the object file that a [function] or [static]'s content will be placed into.
 
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
+The *`link_section` [attribute]* specifies the section of the object file that a [function] or [static]'s content will be placed into.
 
 <!-- no_run: don't link. The format of the section name is platform-specific. -->
 ```rust,no_run
