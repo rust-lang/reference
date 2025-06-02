@@ -115,8 +115,7 @@ r[abi.export_name]
 ## The `export_name` attribute
 
 r[abi.export_name.intro]
-The *`export_name` attribute* specifies the name of the symbol that will be
-exported on a [function] or [static].
+The *`export_name` attribute* specifies the name of the symbol that will be exported on a [function] or [static].
 
 r[abi.export_name.syntax]
 The `export_name `attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
@@ -127,9 +126,7 @@ pub fn name_in_rust() { }
 ```
 
 r[abi.export_name.unsafe]
-This attribute is unsafe as a symbol with a custom name may collide with another
-symbol with the same name (or with a well-known symbol), leading to undefined
-behavior.
+This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 r[abi.export_name.edition2024]
 > [!EDITION-2024]
