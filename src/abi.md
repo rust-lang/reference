@@ -72,6 +72,34 @@ The *`no_mangle` attribute* may be used on functions and statics to disable stan
 extern "C" fn foo() {}
 ```
 
+r[abi.no_mangle.syntax]
+The `no_mangle` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[abi.no_mangle.allowed-positions]
+The `no_mangle` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+
+It may not be used with a [closure].
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+<!-- TODO: Currently it works on a trait function with a body, but generates a warning about being phased out. how do we document that?
+https://github.com/rust-lang/rust/pull/86492#issuecomment-885682960
+-->
+
+<!-- TODO: should this clarify that external block items are already unmangled?, and thus the attribute does nothing? Currently it is "phased out" warning. -->
+
+r[abi.no_mangle.duplicates]
+Only the first instance of `no_mangle` on an item is honored. Subsequent `no_mangle` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `no_mangle` attributes.
+
 r[abi.no_mangle.unsafe]
 The `no_mangle` attribute must be marked with [`unsafe`][attributes.safety] because an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
@@ -133,6 +161,7 @@ r[abi.export_name.edition2024]
 
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
+[closure]: expr.closure
 [extern functions]: items/functions.md#extern-function-qualifier
 [external blocks]: items/external-blocks.md
 [function]: items/functions.md
