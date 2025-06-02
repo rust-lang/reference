@@ -117,13 +117,14 @@ r[abi.export_name]
 r[abi.export_name.intro]
 The *`export_name` attribute* specifies the name of the symbol that will be exported on a [function] or [static].
 
+> [!EXAMPLE]
+> ```rust
+> #[unsafe(export_name = "exported_symbol_name")]
+> pub fn name_in_rust() { }
+> ```
+
 r[abi.export_name.syntax]
 The `export_name `attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
-
-```rust
-#[unsafe(export_name = "exported_symbol_name")]
-pub fn name_in_rust() { }
-```
 
 r[abi.export_name.unsafe]
 This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
