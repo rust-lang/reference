@@ -67,9 +67,6 @@ r[abi.no_mangle]
 r[abi.no_mangle.intro]
 The *`no_mangle` attribute* may be used on any [item] to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
-r[abi.no_mangle.publicly-exported]
-Additionally, the item will be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
-
 r[abi.no_mangle.unsafe]
 This attribute is unsafe as an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
@@ -81,6 +78,9 @@ extern "C" fn foo() {}
 r[abi.no_mangle.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
+
+r[abi.no_mangle.publicly-exported]
+In addition to disabling name mangling, the item will be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
 
 r[abi.link_section]
 ## The `link_section` attribute
