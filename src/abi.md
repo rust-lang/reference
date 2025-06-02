@@ -65,7 +65,7 @@ r[abi.no_mangle]
 ## The `no_mangle` attribute
 
 r[abi.no_mangle.intro]
-The *`no_mangle` attribute* may be used on any [item] to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
+The *`no_mangle` attribute* may be used on functions and statics to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
 ```rust
 #[unsafe(no_mangle)]
