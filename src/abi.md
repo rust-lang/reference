@@ -124,7 +124,7 @@ The *`export_name` [attribute]* specifies the name of the symbol that will be ex
 > ```
 
 r[abi.export_name.syntax]
-The `export_name `attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
+The `export_name` attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
 
 r[abi.export_name.unsafe]
 This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
