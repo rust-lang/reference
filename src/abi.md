@@ -153,6 +153,9 @@ r[abi.export_name.edition2024]
 r[abi.export_name.no_mangle]
 If `export_name` is used with [`no_mangle`][abi.no_mangle], then the `export_name` is used instead.
 
+r[abi.export_name.publicly-exported]
+The `export_name` attribute causes the symbol to be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
+
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
