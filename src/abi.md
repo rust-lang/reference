@@ -100,6 +100,9 @@ Only the first instance of `no_mangle` on an item is honored. Subsequent `no_man
 > [!NOTE]
 > `rustc` currently warns on subsequent duplicate `no_mangle` attributes.
 
+r[abi.no_mangle.export_name]
+If `no_mangle` is used with [`export_name`][abi.export_name], then the `export_name` is used instead.
+
 r[abi.no_mangle.unsafe]
 The `no_mangle` attribute must be marked with [`unsafe`][attributes.safety] because an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
