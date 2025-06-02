@@ -150,6 +150,9 @@ r[abi.export_name.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
 
+r[abi.export_name.no_mangle]
+If `export_name` is used with [`no_mangle`][abi.no_mangle], then the `export_name` is used instead.
+
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
