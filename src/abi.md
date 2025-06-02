@@ -155,7 +155,7 @@ Only the first use of `export_name` on an item has effect.
 > `rustc` lints against any use following the first with a future-compatibility warning. This may become an error in the future.
 
 r[abi.export_name.unsafe]
-This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
+The `export_name` attribute must be marked with [`unsafe`][attributes.safety] because a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 r[abi.export_name.edition2024]
 > [!EDITION-2024]
