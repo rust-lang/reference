@@ -128,6 +128,9 @@ r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
+r[abi.link_section.null]
+The section name must not contain a [NUL] character.
+
 r[abi.export_name]
 ## The `export_name` attribute
 
