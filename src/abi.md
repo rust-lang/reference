@@ -13,7 +13,7 @@ r[abi.used]
 ## The `used` attribute
 
 r[abi.used.intro]
-The *`used` attribute* can only be applied to [`static` items]. This [attribute] forces the compiler to keep the variable in the output object file (.o, .rlib, etc. excluding final binaries) even if the variable is not used, or referenced, by any other item in the crate. However, the linker is still free to remove such an item.
+The *`used` [attribute]* forces a [`static` item][items.static] to be kept in the output object file (.o, .rlib, etc. excluding final binaries) even if the static is never used, or referenced, by an other item in the crate. However, the linker is still free to remove such an item.
 
 Below is an example that shows under what conditions the compiler keeps a `static` item in the output object file.
 
@@ -131,7 +131,6 @@ r[abi.export_name.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
 
-[`static` items]: items/static-items.md
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
 [external blocks]: items/external-blocks.md
