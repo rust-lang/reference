@@ -125,6 +125,25 @@ r[attributes.codegen.naked]
 r[attributes.codegen.naked.intro]
 The *`naked` [attribute]* prevents the compiler from emitting a function prologue and epilogue for the attributed function.
 
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_arch = "x86_64")] {
+> /// Adds 3 to the given number.
+> ///
+> /// SAFETY: The validity of the used registers
+> /// is guaranteed according to the "sysv64" ABI.
+> #[unsafe(naked)]
+> pub extern "sysv64" fn add_n(number: usize) -> usize {
+>     core::arch::naked_asm!(
+>         "add rdi, {}",
+>         "mov rax, rdi",
+>         "ret",
+>         const 3,
+>     )
+> }
+> # }
+> ```
+
 r[attributes.codegen.naked.body]
 The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
