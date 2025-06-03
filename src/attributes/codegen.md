@@ -191,6 +191,11 @@ The [`track_caller`](#the-track_caller-attribute) attribute cannot be applied to
 r[attributes.codegen.naked.testing]
 The [testing attributes](testing.md) cannot be applied to a naked function.
 
+r[attributes.codegen.naked.target_feature]
+The [`target_feature`][attributes.codegen.target_feature] attribute cannot be applied to a naked function.
+
+<!-- TODO: Reflexive rules? -->
+
 <!-- template:attributes -->
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
