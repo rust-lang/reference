@@ -196,6 +196,9 @@ The [`target_feature`][attributes.codegen.target_feature] attribute cannot be ap
 
 <!-- TODO: Reflexive rules? -->
 
+r[attributes.codegen.naked.abi]
+The function cannot have the ["Rust" ABI][items.extern.abi.rust].
+
 <!-- template:attributes -->
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
