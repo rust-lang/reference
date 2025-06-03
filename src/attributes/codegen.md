@@ -85,7 +85,27 @@ The [testing attributes](testing.md) cannot be applied to a naked function.
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
 
-The *`no_builtins` [attribute]* may be applied at the crate level to disable optimizing certain code patterns to invocations of library functions that are assumed to exist.
+r[attributes.codegen.no_builtins.intro]
+The *`no_builtins` [attribute]* disables optimizing certain code patterns to invocations of library functions that are assumed to exist.
+
+<!-- TODO: This needs expanding, see https://github.com/rust-lang/reference/issues/542 -->
+
+> [!EXAMPLE]
+> ```rust
+> #![no_builtins]
+> ```
+
+r[attributes.codegen.no_builtins.syntax]
+The `no_builtins` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.codegen.no_builtins.allowed-positions]
+The `no_builtins` attribute can only be applied to the crate root.
+
+r[attributes.codegen.no_builtins.duplicates]
+Duplicate instances of the `no_builtins` attribute have no effect.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `no_builtins` attributes.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
