@@ -176,7 +176,7 @@ identifier.
 
 ```rust
 unsafe extern "C" {
-    safe fn foo(...);
+    unsafe fn foo(...);
     unsafe fn bar(x: i32, ...);
     unsafe fn with_name(format: *const u8, args: ...);
 }
