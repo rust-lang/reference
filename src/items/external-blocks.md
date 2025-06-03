@@ -179,8 +179,12 @@ unsafe extern "C" {
     unsafe fn foo(...);
     unsafe fn bar(x: i32, ...);
     unsafe fn with_name(format: *const u8, args: ...);
+    safe fn ignores_variadic_arguments(x: i32, ...);
 }
 ```
+
+> [!WARNING]
+> `safe` should only be used in cases where the function does not look at the variadic arguments at all. Passing an unexpected number of arguments or arguments of an unexpected type to a variadic function is [undefined behavior][undefined].
 
 r[items.extern.attributes]
 ## Attributes on extern blocks
