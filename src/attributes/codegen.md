@@ -144,6 +144,23 @@ The *`naked` [attribute]* prevents the compiler from emitting a function prologu
 > # }
 > ```
 
+r[attributes.codegen.naked.syntax]
+The `naked` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.codegen.naked.allowed-positions]
+The `naked` attribute may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+
+r[attributes.codegen.naked.duplicates]
+Duplicate instances of the `naked` attribute have no effect.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `naked` attributes.
+
 r[attributes.codegen.naked.body]
 The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
