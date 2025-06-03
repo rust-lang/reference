@@ -161,14 +161,14 @@ Duplicate instances of the `naked` attribute have no effect.
 > [!NOTE]
 > `rustc` currently warns on subsequent duplicate `naked` attributes.
 
+r[attributes.codegen.naked.unsafe]
+The `naked` attribute must be marked with [`unsafe`][attributes.safety] because the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
+
 r[attributes.codegen.naked.body]
 The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
 r[attributes.codegen.naked.prologue-epilogue]
 No function prologue or epilogue is generated for the attributed function. The assembly code in the `naked_asm!` block constitutes the full body of a naked function.
-
-r[attributes.codegen.naked.unsafe-attribute]
-The `naked` attribute is an [unsafe attribute]. Annotating a function with `#[unsafe(naked)]` comes with the safety obligation that the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
 
 r[attributes.codegen.naked.call-stack]
 The assembly code may assume that the call stack and register state are valid on entry as per the signature and calling convention of the function.
