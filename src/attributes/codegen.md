@@ -85,9 +85,7 @@ The [testing attributes](testing.md) cannot be applied to a naked function.
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
 
-The *`no_builtins` [attribute]* may be applied at the crate level to disable
-optimizing certain code patterns to invocations of library functions that are
-assumed to exist.
+The *`no_builtins` [attribute]* may be applied at the crate level to disable optimizing certain code patterns to invocations of library functions that are assumed to exist.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
