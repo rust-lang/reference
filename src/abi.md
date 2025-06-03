@@ -124,7 +124,7 @@ Only the first use of `link_section` on an item has effect.
 > `rustc` lints against any use following the first with a future-compatibility warning. This may become an error in the future.
 
 r[abi.link_section.unsafe]
-This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
+The `link_section` attribute must be marked with [`unsafe`][attributes.safety] because it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
 r[abi.link_section.edition2024]
 > [!EDITION-2024]
