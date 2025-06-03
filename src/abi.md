@@ -103,6 +103,24 @@ The *`link_section` [attribute]* specifies the section of the object file that a
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
 
+r[abi.link_section.allowed-positions]
+The `link_section` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[abi.link_section.duplicates]
+Only the last instance of `link_section` on an item is honored. Previous `link_section` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on preceding duplicate `link_section` attributes. This may become an error in the future.
+
 r[abi.link_section.unsafe]
 This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
