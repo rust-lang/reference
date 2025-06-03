@@ -58,6 +58,18 @@ The *`used` [attribute]* forces a [`static` item][items.static] to be kept in th
 > 0000000000000000 T foo::quux
 > ```
 
+r[abi.used.syntax]
+The `used` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[abi.used.allowed-positions]
+The `used` attribute may only be applied to [`static` items][items.static].
+
+r[abi.used.duplicates]
+Only the first instance of `used` on an item is honored. Subsequent `used` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `used` attributes.
+
 r[abi.no_mangle]
 ## The `no_mangle` attribute
 
