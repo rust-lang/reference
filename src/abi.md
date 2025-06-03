@@ -15,47 +15,48 @@ r[abi.used]
 r[abi.used.intro]
 The *`used` [attribute]* forces a [`static` item][items.static] to be kept in the output object file (.o, .rlib, etc. excluding final binaries) even if the static is never used, or referenced, by an other item in the crate. However, the linker is still free to remove such an item.
 
-Below is an example that shows under what conditions the compiler keeps a `static` item in the output object file.
-
-``` rust
-// foo.rs
-
-// This is kept because of `#[used]`:
-#[used]
-static FOO: u32 = 0;
-
-// This is removable because it is unused:
-#[allow(dead_code)]
-static BAR: u32 = 0;
-
-// This is kept because it is publicly reachable:
-pub static BAZ: u32 = 0;
-
-// This is kept because it is referenced by a public, reachable function:
-static QUUX: u32 = 0;
-
-pub fn quux() -> &'static u32 {
-    &QUUX
-}
-
-// This is removable because it is referenced by a private, unused (dead) function:
-static CORGE: u32 = 0;
-
-#[allow(dead_code)]
-fn corge() -> &'static u32 {
-    &CORGE
-}
-```
-
-``` console
-$ rustc -O --emit=obj --crate-type=rlib foo.rs
-
-$ nm -C foo.o
-0000000000000000 R foo::BAZ
-0000000000000000 r foo::FOO
-0000000000000000 R foo::QUUX
-0000000000000000 T foo::quux
-```
+> [!EXAMPLE]
+> This example that shows under what conditions the compiler keeps a `static` item in the output object file.
+>
+> ```rust
+> // foo.rs
+>
+> // This is kept because of `#[used]`:
+> #[used]
+> static FOO: u32 = 0;
+>
+> // This is removable because it is unused:
+> #[allow(dead_code)]
+> static BAR: u32 = 0;
+>
+> // This is kept because it is publicly reachable:
+> pub static BAZ: u32 = 0;
+>
+> // This is kept because it is referenced by a public, reachable function:
+> static QUUX: u32 = 0;
+>
+> pub fn quux() -> &'static u32 {
+>     &QUUX
+> }
+>
+> // This is removable because it is referenced by a private, unused (dead) function:
+> static CORGE: u32 = 0;
+>
+> #[allow(dead_code)]
+> fn corge() -> &'static u32 {
+>     &CORGE
+> }
+> ```
+>
+> ```console
+> $ rustc -O --emit=obj --crate-type=rlib foo.rs
+>
+> $ nm -C foo.o
+> 0000000000000000 R foo::BAZ
+> 0000000000000000 r foo::FOO
+> 0000000000000000 R foo::QUUX
+> 0000000000000000 T foo::quux
+> ```
 
 r[abi.no_mangle]
 ## The `no_mangle` attribute
