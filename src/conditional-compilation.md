@@ -358,12 +358,12 @@ The `cfg` [attribute] conditionally includes the thing it is attached to based o
 > ```
 
 r[cfg.attr.syntax]
+The syntax for the `cfg` attribute is:
+
 ```grammar,configuration
 @root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
 ```
 
-r[cfg.attr.syntax-explanation]
-It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
 
 r[cfg.attr.effect]
 If the predicate is true, the thing is rewritten to not have the `cfg` attribute on it. If the predicate is false, the thing is removed from the source code.
