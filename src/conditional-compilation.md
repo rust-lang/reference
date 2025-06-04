@@ -415,6 +415,8 @@ Multiple `cfg_attr` attributes may be specified.
 
 r[cfg.cfg_attr.behaviour]
 When the configuration predicate is true, this attribute expands out to the attributes listed after the predicate. For example, the following module will either be found at `linux.rs` or `windows.rs` based on the target.
+r[cfg.cfg_attr.attr-restriction]
+The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.
 
 
 r[cfg.cfg_attr.attribute-list]
@@ -433,8 +435,6 @@ fn bewitched() {}
 
 > [!NOTE]
 > The `cfg_attr` can expand to another `cfg_attr`. For example, `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]` is valid. This example would be equivalent to `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
-
-The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.
 
 r[cfg.macro]
 ### The `cfg` macro
