@@ -367,13 +367,14 @@ The syntax for the `cfg` attribute is:
 r[cfg.attr.allowed-positions]
 The `cfg` attribute is allowed anywhere attributes are allowed.
 
+r[cfg.attr.duplicates]
+Multiple `cfg` attributes may be specified. The thing will not be included if any of the `cfg` predicates are false.
+
 r[cfg.attr.effect]
 If the predicate is true, the thing is rewritten to not have the `cfg` attribute on it. If the predicate is false, the thing is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
 When a crate-level `cfg` has a false predicate, the behavior is slightly different: any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed. This allows `#![no_std]` and `#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has removed the entire crate.
-
-
 
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
