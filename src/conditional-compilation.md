@@ -362,8 +362,6 @@ r[cfg.attr.syntax]
 @root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
 ```
 
-<!-- should we say they're active attributes here? -->
-
 r[cfg.attr.syntax-explanation]
 It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
 
