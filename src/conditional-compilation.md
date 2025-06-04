@@ -410,6 +410,8 @@ CfgAttrs -> Attr (`,` Attr)* `,`?
 r[cfg.cfg_attr.allowed-positions]
 The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 
+r[cfg.cfg_attr.duplicates]
+Multiple `cfg_attr` attributes may be specified.
 
 r[cfg.cfg_attr.behaviour]
 When the configuration predicate is true, this attribute expands out to the attributes listed after the predicate. For example, the following module will either be found at `linux.rs` or `windows.rs` based on the target.
