@@ -319,7 +319,7 @@ r[cfg.attr]
 ### The `cfg` attribute
 
 r[cfg.attr.intro]
-The `cfg` [attribute] conditionally includes the thing it is attached to based on a configuration predicate.
+The *`cfg` [attribute]* conditionally includes the thing it is attached to based on a configuration predicate.
 
 > [!EXAMPLE]
 > Some examples of using `cfg` on functions:
