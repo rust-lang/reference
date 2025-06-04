@@ -385,6 +385,9 @@ The `cfg` attribute is allowed anywhere attributes are allowed.
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
 
+r[cfg.cfg_attr.intro]
+The *`cfg_attr` [attribute]* conditionally includes attributes based on a configuration predicate.
+
 r[cfg.cfg_attr.syntax]
 ```grammar,configuration
 @root CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
@@ -392,8 +395,6 @@ r[cfg.cfg_attr.syntax]
 CfgAttrs -> Attr (`,` Attr)* `,`?
 ```
 
-r[cfg.cfg_attr.general]
-The `cfg_attr` [attribute] conditionally includes [attributes] based on a configuration predicate.
 
 r[cfg.cfg_attr.behaviour]
 When the configuration predicate is true, this attribute expands out to the attributes listed after the predicate. For example, the following module will either be found at `linux.rs` or `windows.rs` based on the target.
