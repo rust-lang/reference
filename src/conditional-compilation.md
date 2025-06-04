@@ -318,15 +318,15 @@ Example values:
 r[cfg.attr]
 ### The `cfg` attribute
 
+r[cfg.attr.intro]
+The `cfg` [attribute] conditionally includes the thing it is attached to based on a configuration predicate.
+
 r[cfg.attr.syntax]
 ```grammar,configuration
 @root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
 ```
 
 <!-- should we say they're active attributes here? -->
-
-r[cfg.attr.general]
-The `cfg` [attribute] conditionally includes the thing it is attached to based on a configuration predicate.
 
 r[cfg.attr.syntax-explanation]
 It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
