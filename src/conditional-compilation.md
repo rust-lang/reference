@@ -326,22 +326,16 @@ r[cfg.attr.syntax]
 <!-- should we say they're active attributes here? -->
 
 r[cfg.attr.general]
-The `cfg` [attribute] conditionally includes the thing it is attached to based
-on a configuration predicate.
+The `cfg` [attribute] conditionally includes the thing it is attached to based on a configuration predicate.
 
 r[cfg.attr.syntax-explanation]
 It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
 
 r[cfg.attr.effect]
-If the predicate is true, the thing is rewritten to not have the `cfg` attribute
-on it. If the predicate is false, the thing is removed from the source code.
+If the predicate is true, the thing is rewritten to not have the `cfg` attribute on it. If the predicate is false, the thing is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
-When a crate-level `cfg` has a false predicate, the behavior is slightly
-different: any crate attributes preceding the `cfg` are kept, and any crate
-attributes following the `cfg` are removed. This allows `#![no_std]` and
-`#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has
-removed the entire crate.
+When a crate-level `cfg` has a false predicate, the behavior is slightly different: any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed. This allows `#![no_std]` and `#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has removed the entire crate.
 
 Some examples on functions:
 
