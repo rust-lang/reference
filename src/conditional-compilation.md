@@ -413,11 +413,11 @@ The `cfg_attr` attribute is allowed anywhere attributes are allowed.
 r[cfg.cfg_attr.duplicates]
 Multiple `cfg_attr` attributes may be specified.
 
-r[cfg.cfg_attr.behaviour]
-When the configuration predicate is true, this attribute expands out to the attributes listed after the predicate. For example, the following module will either be found at `linux.rs` or `windows.rs` based on the target.
 r[cfg.cfg_attr.attr-restriction]
 The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.
 
+r[cfg.cfg_attr.behavior]
+When the configuration predicate is true, `cfg_attr` expands out to the attributes listed after the predicate.
 
 r[cfg.cfg_attr.attribute-list]
 Zero, one, or more attributes may be listed. Multiple attributes will each be expanded into separate attributes. For example:
