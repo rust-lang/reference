@@ -388,6 +388,16 @@ r[cfg.cfg_attr]
 r[cfg.cfg_attr.intro]
 The *`cfg_attr` [attribute]* conditionally includes attributes based on a configuration predicate.
 
+> [!EXAMPLE]
+> The following module will either be found at `linux.rs` or `windows.rs` based on the target.
+>
+> <!-- ignore: `mod` needs multiple files -->
+> ```rust,ignore
+> #[cfg_attr(target_os = "linux", path = "linux.rs")]
+> #[cfg_attr(windows, path = "windows.rs")]
+> mod os;
+> ```
+
 r[cfg.cfg_attr.syntax]
 ```grammar,configuration
 @root CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
@@ -399,12 +409,6 @@ CfgAttrs -> Attr (`,` Attr)* `,`?
 r[cfg.cfg_attr.behaviour]
 When the configuration predicate is true, this attribute expands out to the attributes listed after the predicate. For example, the following module will either be found at `linux.rs` or `windows.rs` based on the target.
 
-<!-- ignore: `mod` needs multiple files -->
-```rust,ignore
-#[cfg_attr(target_os = "linux", path = "linux.rs")]
-#[cfg_attr(windows, path = "windows.rs")]
-mod os;
-```
 
 r[cfg.cfg_attr.attribute-list]
 Zero, one, or more attributes may be listed. Multiple attributes will each be expanded into separate attributes. For example:
