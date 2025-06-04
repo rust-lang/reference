@@ -420,18 +420,19 @@ r[cfg.cfg_attr.behavior]
 When the configuration predicate is true, `cfg_attr` expands out to the attributes listed after the predicate.
 
 r[cfg.cfg_attr.attribute-list]
-Zero, one, or more attributes may be listed. Multiple attributes will each be expanded into separate attributes. For example:
+Zero, one, or more attributes may be listed. Multiple attributes will each be expanded into separate attributes.
 
-<!-- ignore: fake attributes -->
-```rust,ignore
-#[cfg_attr(feature = "magic", sparkles, crackles)]
-fn bewitched() {}
-
-// When the `magic` feature flag is enabled, the above will expand to:
-#[sparkles]
-#[crackles]
-fn bewitched() {}
-```
+> [!EXAMPLE]
+> <!-- ignore: fake attributes -->
+> ```rust,ignore
+> #[cfg_attr(feature = "magic", sparkles, crackles)]
+> fn bewitched() {}
+>
+> // When the `magic` feature flag is enabled, the above will expand to:
+> #[sparkles]
+> #[crackles]
+> fn bewitched() {}
+> ```
 
 > [!NOTE]
 > The `cfg_attr` can expand to another `cfg_attr`. For example, `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]` is valid. This example would be equivalent to `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
