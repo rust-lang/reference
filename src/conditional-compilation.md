@@ -321,6 +321,42 @@ r[cfg.attr]
 r[cfg.attr.intro]
 The `cfg` [attribute] conditionally includes the thing it is attached to based on a configuration predicate.
 
+> [!EXAMPLE]
+> Some examples of using `cfg` on functions:
+>
+> ```rust
+> // The function is only included in the build when compiling for macOS
+> #[cfg(target_os = "macos")]
+> fn macos_only() {
+>   // ...
+> }
+>
+> // This function is only included when either foo or bar is defined
+> #[cfg(any(foo, bar))]
+> fn needs_foo_or_bar() {
+>   // ...
+> }
+>
+> // This function is only included when compiling for a unixish OS with a 32-bit
+> // architecture
+> #[cfg(all(unix, target_pointer_width = "32"))]
+> fn on_32bit_unix() {
+>   // ...
+> }
+>
+> // This function is only included when foo is not defined
+> #[cfg(not(foo))]
+> fn needs_not_foo() {
+>   // ...
+> }
+>
+> // This function is only included when the panic strategy is set to unwind
+> #[cfg(panic = "unwind")]
+> fn when_unwinding() {
+>   // ...
+> }
+> ```
+
 r[cfg.attr.syntax]
 ```grammar,configuration
 @root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
@@ -337,41 +373,6 @@ If the predicate is true, the thing is rewritten to not have the `cfg` attribute
 r[cfg.attr.crate-level-attrs]
 When a crate-level `cfg` has a false predicate, the behavior is slightly different: any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed. This allows `#![no_std]` and `#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has removed the entire crate.
 
-Some examples on functions:
-
-```rust
-// The function is only included in the build when compiling for macOS
-#[cfg(target_os = "macos")]
-fn macos_only() {
-  // ...
-}
-
-// This function is only included when either foo or bar is defined
-#[cfg(any(foo, bar))]
-fn needs_foo_or_bar() {
-  // ...
-}
-
-// This function is only included when compiling for a unixish OS with a 32-bit
-// architecture
-#[cfg(all(unix, target_pointer_width = "32"))]
-fn on_32bit_unix() {
-  // ...
-}
-
-// This function is only included when foo is not defined
-#[cfg(not(foo))]
-fn needs_not_foo() {
-  // ...
-}
-
-// This function is only included when the panic strategy is set to unwind
-#[cfg(panic = "unwind")]
-fn when_unwinding() {
-  // ...
-}
-
-```
 
 r[cfg.attr.restriction]
 The `cfg` attribute is allowed anywhere attributes are allowed.
