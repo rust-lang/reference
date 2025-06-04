@@ -374,7 +374,21 @@ r[cfg.attr.effect]
 If the predicate is true, the thing is rewritten to not have the `cfg` attribute on it. If the predicate is false, the thing is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
-When a crate-level `cfg` has a false predicate, the behavior is slightly different: any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed. This allows `#![no_std]` and `#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has removed the entire crate.
+When a crate-level `cfg` has a false predicate, the crate itself still exists. Any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed as well as removing all of the following crate contents.
+
+> [!EXAMPLE]
+> The behavior of not removing the preceding attributes allows you to do things such as include `#![no_std]` to avoid linking `std` even if a `#![cfg(...)]` has removed the entire crate. For example:
+>
+> <!-- ignore: test infrastructure can't handle no_std -->
+> ```rust,ignore
+> // This `no_std` attribute is kept even though the crate-level `cfg`
+> // attribute is false.
+> #![no_std]
+> #![cfg(false)]
+>
+> // This function is not included.
+> pub fn example() {}
+> ```
 
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
