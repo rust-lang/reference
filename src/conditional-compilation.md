@@ -399,6 +399,8 @@ The *`cfg_attr` [attribute]* conditionally includes attributes based on a config
 > ```
 
 r[cfg.cfg_attr.syntax]
+The syntax for the `cfg_attr` attribute is:
+
 ```grammar,configuration
 @root CfgAttrAttribute -> `cfg_attr` `(` ConfigurationPredicate `,` CfgAttrs? `)`
 
