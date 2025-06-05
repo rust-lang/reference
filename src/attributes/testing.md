@@ -10,9 +10,6 @@ r[attributes.testing.test]
 ## The `test` attribute
 
 r[attributes.testing.test.intro]
-
-r[attributes.testing.test.enabled]
-These functions are only compiled when in test mode.
 The *`test` [attribute][attributes]* marks a function to be executed as a test.
 
 > [!EXAMPLE]
@@ -44,6 +41,9 @@ Only the first instance of `test` on an function is honored. Subsequent `test` a
 > `rustc` currently warns on duplicate `test` attributes.
 
 <!-- TODO: This is a minor lie. Currently rustc warns that duplicates are ignored, but it then generates multiple test entries with the same name. I would vote for rejecting this in the future. -->
+
+r[attributes.testing.test.enabled]
+These functions are only compiled when in test mode.
 
 > [!NOTE]
 > The test mode is enabled by passing the `--test` argument to `rustc` or using `cargo test`.
