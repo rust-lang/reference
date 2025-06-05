@@ -106,7 +106,7 @@ r[items.static.mut.intro]
 If a static item is declared with the `mut` keyword, then it is allowed to be
 modified by the program. One of Rust's goals is to make concurrency bugs hard
 to run into, and this is obviously a very large source of race conditions or
-other bugs
+other bugs.
 
 r[items.static.mut.safety]
 For this reason, an `unsafe` block is required when either reading
