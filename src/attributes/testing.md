@@ -42,6 +42,9 @@ Only the first instance of `test` on an function is honored. Subsequent `test` a
 
 <!-- TODO: This is a minor lie. Currently rustc warns that duplicates are ignored, but it then generates multiple test entries with the same name. I would vote for rejecting this in the future. -->
 
+r[attributes.testing.test.stdlib]
+The `test` attribute is exported from the standard library prelude as [`std::prelude::v1::test`].
+
 r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
 
