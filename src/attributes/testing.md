@@ -26,6 +26,9 @@ The *`test` [attribute][attributes]* marks a function to be executed as a test.
 > }
 > ```
 
+r[attributes.testing.test.syntax]
+The `test` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
 r[attributes.testing.test.allowed-positions]
 Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
 
