@@ -56,17 +56,18 @@ In particular:
 * Tests that return `ExitCode::SUCCESS` pass, and tests that return `ExitCode::FAILURE` fail.
 * Tests that do not terminate neither pass nor fail.
 
-```rust
-# use std::io;
-# fn setup_the_thing() -> io::Result<i32> { Ok(1) }
-# fn do_the_thing(s: &i32) -> io::Result<()> { Ok(()) }
-#[test]
-fn test_the_thing() -> io::Result<()> {
-    let state = setup_the_thing()?; // expected to succeed
-    do_the_thing(&state)?;          // expected to succeed
-    Ok(())
-}
-```
+> [!EXAMPLE]
+> ```rust
+> # use std::io;
+> # fn setup_the_thing() -> io::Result<i32> { Ok(1) }
+> # fn do_the_thing(s: &i32) -> io::Result<()> { Ok(()) }
+> #[test]
+> fn test_the_thing() -> io::Result<()> {
+>     let state = setup_the_thing()?; // expected to succeed
+>     do_the_thing(&state)?;          // expected to succeed
+>     Ok(())
+> }
+> ```
 
 r[attributes.testing.ignore]
 ## The `ignore` attribute
