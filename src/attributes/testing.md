@@ -10,10 +10,10 @@ r[attributes.testing.test]
 ## The `test` attribute
 
 r[attributes.testing.test.intro]
-The *`test` attribute* marks a function to be executed as a test.
 
 r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
+The *`test` [attribute][attributes]* marks a function to be executed as a test.
 
 r[attributes.testing.test.allowed-positions]
 Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
