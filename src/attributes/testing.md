@@ -30,14 +30,14 @@ r[attributes.testing.test.syntax]
 The `test` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
 r[attributes.testing.test.allowed-positions]
-Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
+The `test` attribute may only be applied to [free functions] that are monomorphic, that take no arguments, and the return type must implement the [`Termination`] trait.
 
-* `()`
-* `Result<T, E> where T: Termination, E: Debug`
-* `!`
+> [!NOTE]
+> Some of types that implement the [`Termination`] trait include:
+> * `()`
+> * `Result<T, E> where T: Termination, E: Debug`
 
-<!-- If the previous section needs updating (from "must take no arguments"
-  onwards, also update it in the crates-and-source-files.md file -->
+
 
 > [!NOTE]
 > The test mode is enabled by passing the `--test` argument to `rustc` or using `cargo test`.
@@ -116,3 +116,4 @@ fn mytest() {
 [`test` conditional compilation option]: ../conditional-compilation.md#test
 [attributes]: ../attributes.md
 [`ExitCode`]: std::process::ExitCode
+[free functions]: ../glossary.md#free-item
