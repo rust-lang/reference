@@ -37,7 +37,13 @@ The `test` attribute may only be applied to [free functions] that are monomorphi
 > * `()`
 > * `Result<T, E> where T: Termination, E: Debug`
 
+r[attributes.testing.test.duplicates]
+Only the first instance of `test` on an function is honored. Subsequent `test` attributes are ignored.
 
+> [!NOTE]
+> `rustc` currently warns on duplicate `test` attributes.
+
+<!-- TODO: This is a minor lie. Currently rustc warns that duplicates are ignored, but it then generates multiple test entries with the same name. I would vote for rejecting this in the future. -->
 
 > [!NOTE]
 > The test mode is enabled by passing the `--test` argument to `rustc` or using `cargo test`.
