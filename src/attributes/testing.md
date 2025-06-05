@@ -15,6 +15,17 @@ r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
 The *`test` [attribute][attributes]* marks a function to be executed as a test.
 
+> [!EXAMPLE]
+> ```rust
+> # pub fn add(left: u64, right: u64) -> u64 { left + right }
+>
+> #[test]
+> fn it_works() {
+>     let result = add(2, 2);
+>     assert_eq!(result, 4);
+> }
+> ```
+
 r[attributes.testing.test.allowed-positions]
 Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
 
