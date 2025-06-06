@@ -3,7 +3,7 @@
 This book is the primary reference for the Rust programming language.
 
 > [!NOTE]
-> For known bugs in and omissions of this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
+> For known bugs and omissions in this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
 
 ## Rust releases
 
