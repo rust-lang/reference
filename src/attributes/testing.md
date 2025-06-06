@@ -52,24 +52,49 @@ r[attributes.testing.ignore]
 ## The `ignore` attribute
 
 r[attributes.testing.ignore.intro]
-A function annotated with the `test` attribute can also be annotated with the
-`ignore` attribute. The *`ignore` attribute* tells the test harness to not
-execute that function as a test. It will still be compiled when in test mode.
+The *`ignore` [attribute][attributes]* can be used with the [`test` attribute][attributes.testing.test] to tell the test harness to not execute that function as a test.
 
-r[attributes.testing.ignore.syntax]
-The `ignore` attribute may optionally be written with the [MetaNameValueStr]
-syntax to specify a reason why the test is ignored.
-
-```rust
-#[test]
-#[ignore = "not yet implemented"]
-fn mytest() {
-    // …
-}
-```
+> [!EXAMPLE]
+> ```rust
+> #[test]
+> #[ignore]
+> fn check_thing() {
+>     // …
+> }
+> ```
 
 > [!NOTE]
 > The `rustc` test harness supports the `--include-ignored` flag to force ignored tests to be run.
+
+r[attributes.testing.ignore.syntax]
+The `ignore` attribute uses either the [MetaWord] or [MetaNameValueStr] syntax.
+
+r[attributes.testing.ignore.reason]
+The [MetaNameValueStr] form of the `ignore` attribute provides a way to specify a reason why the test is ignored.
+
+> [!EXAMPLE]
+> ```rust
+> #[test]
+> #[ignore = "not yet implemented"]
+> fn mytest() {
+>     // …
+> }
+> ```
+
+r[attributes.testing.ignore.allowed-positions]
+The `ignore` attribute may be applied to functions annotated with the `test` attribute.
+
+> [!NOTE]
+> `rustc` currently warns when `ignore` is used in some other situations. This may become an error in the future.
+
+r[attributes.testing.ignore.duplicates]
+Only the first instance of `ignore` on a function is honored.
+
+> [!NOTE]
+> `rustc` currently ignores duplicate `ignore` attributes. This may become an error in the future.
+
+r[attributes.testing.ignore.behavior]
+Ignored tests are still compiled when in test mode, but they are not executed.
 
 r[attributes.testing.should_panic]
 ## The `should_panic` attribute
