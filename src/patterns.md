@@ -973,7 +973,8 @@ r[patterns.const.exhaustive]
 
 r[patterns.const.generic]
 In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
-This means that associated consts that involve generic parameters cannot be used as patterns.
+This means that associated consts that involve generic parameters cannot be used as patterns and neither
+can uses of const parameters.
 
 r[patterns.const.translation]
 After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.

@@ -67,36 +67,26 @@ The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`
 `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
 r[items.generics.const.usage]
-Const parameters can be used anywhere a [const item] can be used, with the
-exception that when used in a [type] or [array repeat expression], it must be
-standalone (as described below). That is, they are allowed in the following
-places:
-
-1. As an applied const to any type which forms a part of the signature of the
-   item in question.
-2. As part of a const expression used to define an [associated const], or as a
-   parameter to an [associated type].
-3. As a value in any runtime expression in the body of any functions in the
-   item.
-4. As a parameter to any type used in the body of any functions in the item.
-5. As a part of the type of any fields in the item.
+Const parameters can be used anywhere in expression position, or as a const argument[^1].
+Uses of const parameters must take place inside the item defining it, and not within
+an inner item that inhibits access to outer generic parameters.
 
 ```rust
 // Examples where const generic parameters can be used.
 
 // Used in the signature of the item itself.
 fn foo<const N: usize>(arr: [i32; N]) {
-    // Used as a type within a function body.
+    // Used within a type within a function body.
     let x: [i32; N];
-    // Used as an expression.
+    // Used within an expression.
     println!("{}", N * 2);
 }
 
-// Used as a field of a struct.
+// Used within a field of a struct.
 struct Foo<const N: usize>([i32; N]);
 
 impl<const N: usize> Foo<N> {
-    // Used as an associated constant.
+    // Used within an associated constant.
     const CONST: usize = N * 4;
 }
 
@@ -105,13 +95,14 @@ trait Trait {
 }
 
 impl<const N: usize> Trait for Foo<N> {
-    // Used as an associated type.
+    // Used within an associated type.
     type Output = [i32; N];
 }
 ```
 
 ```rust,compile_fail
-// Examples where const generic parameters cannot be used.
+// Examples where const generic parameters cannot be used as the uses are
+// within an inner item that inhibits access to outer generic parameters.
 fn foo<const N: usize>() {
     // Cannot use in item definitions within a function body.
     const BAD_CONST: [usize; N] = [1; N];
@@ -122,72 +113,6 @@ fn foo<const N: usize>() {
     type BadAlias = [usize; N];
     struct BadStruct([usize; N]);
 }
-```
-
-r[items.generics.const.standalone]
-As a further restriction, const parameters may only appear as a standalone
-argument inside of a [type] or [array repeat expression]. In those contexts,
-they may only be used as a single segment [path expression], possibly inside a
-[block] (such as `N` or `{N}`). That is, they cannot be combined with other
-expressions.
-
-```rust,compile_fail
-// Examples where const parameters may not be used.
-
-// Not allowed to combine in other expressions in types, such as the
-// arithmetic expression in the return type here.
-fn bad_function<const N: usize>() -> [u8; {N + 1}] {
-    // Similarly not allowed for array repeat expressions.
-    [1; {N + 1}]
-}
-```
-
-r[items.generics.const.argument]
-A const argument in a [path] specifies the const value to use for that item.
-
-r[items.generics.const.argument.const-expr]
-The argument must be a [const expression] of the type ascribed to the const
-parameter. The const expression must be a [block expression][block]
-(surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
-or a [literal] (with a possibly leading `-` token).
-
-> [!NOTE]
-> This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
-
-```rust
-fn double<const N: i32>() {
-    println!("doubled: {}", N * 2);
-}
-
-const SOME_CONST: i32 = 12;
-
-fn example() {
-    // Example usage of a const argument.
-    double::<9>();
-    double::<-123>();
-    double::<{7 + 8}>();
-    double::<SOME_CONST>();
-    double::<{ SOME_CONST + 5 }>();
-}
-```
-
-r[items.generics.const.type-ambiguity]
-When there is ambiguity if a generic argument could be resolved as either a
-type or const argument, it is always resolved as a type. Placing the argument
-in a block expression can force it to be interpreted as a const argument.
-
-<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once
-    namespaces are introduced, and it is clear which namespace each parameter
-    lives in. -->
-
-```rust,compile_fail
-type N = u32;
-struct Foo<const N: usize>;
-// The following is an error, because `N` is interpreted as the type alias `N`.
-fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
-// Can be fixed by wrapping in braces to force it to be interpreted as the `N`
-// const parameter:
-fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
 r[items.generics.const.variance]
@@ -205,26 +130,6 @@ struct Baz<T>;
 struct Biz<'a>;
 struct Unconstrained;
 impl<const N: usize> Unconstrained {}
-```
-
-r[items.generics.const.exhaustiveness]
-When resolving a trait bound obligation, the exhaustiveness of all
-implementations of const parameters is not considered when determining if the
-bound is satisfied. For example, in the following, even though all possible
-const values for the `bool` type are implemented, it is still an error that
-the trait bound is not satisfied:
-
-```rust,compile_fail
-struct Foo<const B: bool>;
-trait Bar {}
-impl Bar for Foo<true> {}
-impl Bar for Foo<false> {}
-
-fn needs_bar(_: impl Bar) {}
-fn generic<const B: bool>() {
-    let v = Foo::<B>;
-    needs_bar(v); // ERROR: trait bound `Foo<B>: Bar` is not satisfied
-}
 ```
 
 r[items.generics.where]
@@ -284,16 +189,18 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 }
 ```
 
+[^1]: There are limitations around how a const parameter can be used within a const argument ([const generics]).
+
 [array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md
 [slices]: ../types/slice.md
 [associated const]: associated-items.md#associated-constants
 [associated type]: associated-items.md#associated-types
 [attributes]: ../attributes.md
-[block]: ../expressions/block-expr.md
 [const contexts]: ../const_eval.md#const-context
 [const expression]: ../const_eval.md#constant-expressions
 [const item]: constant-items.md
+[const generics]: ../const-generics.md
 [enumerations]: enumerations.md
 [functions]: functions.md
 [function pointers]: ../types/function-pointer.md
@@ -303,7 +210,6 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [implementations]: implementations.md
 [item declarations]: ../statements.md#item-declarations
 [item]: ../items.md
-[literal]: ../expressions/literal-expr.md
 [path]: ../paths.md
 [path expression]: ../expressions/path-expr.md
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
