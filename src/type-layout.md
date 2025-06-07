@@ -89,7 +89,7 @@ Pointers to unsized types are sized. The size and alignment is guaranteed to be
 at least equal to the size and alignment of a pointer.
 
 > [!NOTE]
-> Though you should not rely on this, all pointers to <abbr title="Dynamically Sized Types">DSTs</abbr> have the same alignment as usize.
+> Though you should not rely on this, all pointers to <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the size of the size of `usize` and have the same alignment.
 
 r[layout.array]
 ## Array Layout
