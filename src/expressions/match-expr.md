@@ -23,11 +23,25 @@ MatchArmGuard ->
     `if` MatchConditions
 
 MatchConditions ->
-    MatchCondition ( `&&` MatchCondition )*
+     Expression
+   | MatchConditionChain
 
-MatchCondition ->
-      OuterAttribute* `let` Pattern `=` Scrutinee
-    | Expression
+MatchConditionChain ->
+    MatchChainCondition ( `&&` MatchChainCondition )*
+
+MatchChainCondition ->
+     Expression _except [ExcludedMatchConditions]_
+   | OuterAttribute* `let` Pattern `=` MatchGuardScrutinee
+
+MatchGuardScrutinee -> Expression _except [ExcludedMatchConditions]_
+
+@root ExcludedMatchConditions ->
+      LazyBooleanExpression
+    | RangeExpr
+    | RangeFromExpr
+    | RangeInclusiveExpr
+    | AssignmentExpression
+    | CompoundAssignmentExpression
 ```
 <!-- TODO: The exception above isn't accurate, see https://github.com/rust-lang/reference/issues/569 -->
 
@@ -161,71 +175,42 @@ r[expr.match.guard.no-mutation]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
 r[expr.match.if.let.guard]
-## If Let Guards
-Match arms can include `if let` guards to allow conditional pattern matching within the guard clause.
+## If-let Guards
+Match arms can have additional conditions using *if-let guards*. These allow using `if let` expressions within match guard clauses, enabling conditional pattern matching directly in the guard.
 
 r[expr.match.if.let.guard.syntax]
-```rust,ignore
-match expression {
-    pattern if let subpattern = guard_expr => arm_body,
-    ...
+```rust
+enum Command {
+    Run(String),
+    Stop,
+}
+
+match cmd {
+    Command::Run(name) if let Some(first_char) = name.chars().next() => {
+        // Both `name` and `first_char` are available here
+        println!("Running: {} (starts with '{}')", name, first_char);
+    }
+    Command::Run(name) => {
+        println!("Cannot run command: {}", name);
+    }
+    _ => {}
 }
 ```
-Here, `guard_expr` is evaluated and matched against `subpattern`. If the `if let` expression in the guard matches successfully, the arm's body is executed. Otherwise, pattern matching continues to the next arm.
+Here, the guard condition `let Some(first_char) = name.chars().next()` is evaluated. If the `if let` expression successfully matches (i.e., the string has at least one character), the arm's body is executed with both `name` and `first_char` available. Otherwise, pattern matching continues to the next arm.
+
+The key point is that the `if let` guard creates a new binding (`first_char`) that's only available if the guard succeeds, and this binding can be used alongside the original pattern bindings (`name`) in the arm's body.
 
 r[expr.match.if.let.guard.behavior]
 When the pattern matches successfully, the `if let` expression in the guard is evaluated:
   * The guard proceeds if the inner pattern (`subpattern`) matches the result of `guard_expr`.
   * Otherwise, the next arm is tested.
 
-```rust,ignore
-let value = Some(10);
-
-let msg = match value {
-    Some(x) if let Some(y) = Some(x - 1) => format!("Matched inner value: {}", y),
-    _ => "No match".to_string(),
-};
-```
-
 r[expr.match.if.let.guard.scope]
-* The `if let` guard may refer to variables bound by the outer match pattern.
-* New variables bound inside the `if let` guard (e.g., `y` in the example above) are available within the body of the match arm where the guard evaluates to `true`, but are not accessible in other arms or outside the match expression.
+
+For detailed information about variable scope and drop behavior, see the [scope and drop section].
 
 ```rust,ignore
-let opt = Some(42);
-
-match opt {
-    Some(x) if let Some(y) = Some(x + 1) => {
-        // Both `x` and `y` are available in this arm,
-        // since the pattern matched and the guard evaluated to true.
-        println!("x = {}, y = {}", x, y);
-    }
-    _ => {
-        // `y` is not available here --- it was only bound inside the guard above.
-        // Uncommenting the line below will cause a compile-time error:
-        // println!("{}", y); // error: cannot find value `y` in this scope
-    }
-}
-
-// Outside the match expression, neither `x` nor `y` are in scope.
-```
-
-* The outer pattern variables (`x`) follow the same borrowing behavior as in standard match guards (see below).
-
-r[expr.match.if.let.guard.drop]
-
-* Variables bound inside `if let` guards are dropped before evaluating subsequent match arms.
-
-* Temporaries created during guard evaluation follow standard drop semantics and are cleaned up appropriately.
-
-r[expr.match.if.let.guard.borrowing]
-Variables bound by the outer pattern follow the same borrowing rules as standard match guards:
-* A shared reference is taken to pattern variables before guard evaluation
-* Values are moved or copied only when the guard succeeds
-* Moving from outer pattern variables within the guard is restricted
-
-```rust,ignore
-fn take<T>(value: T) -> Option<T> { Some(value) }
+# fn take<T>(value: T) -> Option<T> { Some(value) }
 
 let val = Some(vec![1, 2, 3]);
 match val {
@@ -236,7 +221,7 @@ match val {
 ```
 > [!NOTE]
 > Multiple matches using the `|` operator can cause the pattern guard and the side effects it has to execute multiple times. For example:
-> ```rust,ignore
+> ```rust
 > use std::cell::Cell;
 >
 > let i: Cell<i32> = Cell::new(0);
@@ -268,3 +253,4 @@ r[expr.match.attributes.inner]
 [Range Pattern]: ../patterns.md#range-patterns
 [scrutinee]: ../glossary.md#scrutinee
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
+[scope and drop section]: ../destructors.md#match-guards-and-pattern-binding
