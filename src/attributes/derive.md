@@ -2,16 +2,12 @@ r[attributes.derive]
 # Derive
 
 r[attributes.derive.intro]
-The *`derive` attribute* allows new [items] to be automatically generated for
-data structures.
+The *`derive` attribute* allows new [items] to be automatically generated for data structures.
 
 r[attributes.derive.syntax]
-It uses the [MetaListPaths] syntax to specify a list of
-traits to implement or paths to [derive macros] to process.
+It uses the [MetaListPaths] syntax to specify a list of traits to implement or paths to [derive macros] to process.
 
-For example, the following will create an [`impl` item] for the
-[`PartialEq`] and [`Clone`] traits for `Foo`, and the type parameter `T` will be
-given the `PartialEq` or `Clone` constraints for the appropriate `impl`:
+For example, the following will create an [`impl` item] for the [`PartialEq`] and [`Clone`] traits for `Foo`, and the type parameter `T` will be given the `PartialEq` or `Clone` constraints for the appropriate `impl`:
 
 ```rust
 #[derive(PartialEq, Clone)]
