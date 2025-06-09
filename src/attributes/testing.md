@@ -124,21 +124,61 @@ r[attributes.testing.should_panic]
 ## The `should_panic` attribute
 
 r[attributes.testing.should_panic.intro]
-A function annotated with the `test` attribute that returns `()` can also be annotated with the `should_panic` attribute.
+The *`should_panic` [attribute][attributes]* changes a [test function][attributes.testing.test] so that it passes only if it panics.
 
-r[attributes.testing.should_panic.behavior]
-The *`should_panic` attribute* makes the test only pass if it actually panics.
+> [!EXAMPLE]
+> ```rust
+> #[test]
+> #[should_panic(expected = "values don't match")]
+> fn mytest() {
+>     assert_eq!(1, 2, "values don't match");
+> }
+> ```
 
 r[attributes.testing.should_panic.syntax]
-The `should_panic` attribute may optionally take an input string that must appear within the panic message. If the string is not found in the message, then the test will fail. The string may be passed using the [MetaNameValueStr] syntax or the [MetaListNameValueStr] syntax with an `expected` field.
+The `should_panic` attribute is specified with one of the following forms:
 
-```rust
-#[test]
-#[should_panic(expected = "values don't match")]
-fn mytest() {
-    assert_eq!(1, 2, "values don't match");
-}
-```
+- [MetaWord]
+  > [!EXAMPLE]
+  > ```rust
+  > #[test]
+  > #[should_panic]
+  > fn mytest() { panic!("some message"); }
+  > ```
+
+- [MetaNameValueStr] --- This indicates that the given string should appear within the panic message.
+  > [!EXAMPLE]
+  > ```rust
+  > #[test]
+  > #[should_panic = "some message"]
+  > fn mytest() { panic!("some message"); }
+  > ```
+
+- [MetaListNameValueStr] --- Specified with the key `expected`. Same behavior as [MetaNameValueStr], just with an explicit key.
+  > [!EXAMPLE]
+  > ```rust
+  > #[test]
+  > #[should_panic(expected = "some message")]
+  > fn mytest() { panic!("some message"); }
+  > ```
+
+r[attributes.testing.should_panic.allowed-positions]
+The `should_panic` attribute may be applied to functions annotated with the `test` attribute.
+
+> [!NOTE]
+> `rustc` currently warns in some other positions. This may become a hard error in the future.
+
+r[attributes.testing.should_panic.duplicates]
+Only the first instance of `should_panic` on a function is honored. Subsequent `should_panic` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently ignores subsequent duplicate `should_panic` attributes. This may become an error in the future.
+
+r[attributes.testing.should_panic.expected]
+The string specified with the [MetaNameValueStr] form or the `expected` key in [MetaListNameValueStr] indicates that the string must appear somewhere within the panic message. If the string is not found in the message, then the test will fail.
+
+r[attributes.testing.should_panic.return]
+The return type of the test function must be `()`.
 
 [`Termination`]: std::process::Termination
 [`report`]: std::process::Termination::report
