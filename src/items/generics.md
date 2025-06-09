@@ -227,6 +227,27 @@ fn generic<const B: bool>() {
 }
 ```
 
+r[items.generics.const.inferred]
+
+r[items.generics.const.inferred.syntax]
+```grammar,items
+InferredConst ->
+      `_`
+    | `(` InferredConst `)`
+```
+
+r[items.generics.const.inferred.intro]
+The inferred const asks the compiler to infer the const argument if possible based on the surrounding information available.
+
+```rust
+fn make_buf() -> [u8; 1024] {
+    [0x1; _]
+}
+```
+
+r[items.generics.const.inferred.constraint]
+It cannot be used in item signatures.
+
 r[items.generics.where]
 ## Where clauses
 
