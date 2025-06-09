@@ -124,19 +124,13 @@ r[attributes.testing.should_panic]
 ## The `should_panic` attribute
 
 r[attributes.testing.should_panic.intro]
-A function annotated with the `test` attribute that returns `()` can also be
-annotated with the `should_panic` attribute.
+A function annotated with the `test` attribute that returns `()` can also be annotated with the `should_panic` attribute.
 
 r[attributes.testing.should_panic.behavior]
-The *`should_panic` attribute*
-makes the test only pass if it actually panics.
+The *`should_panic` attribute* makes the test only pass if it actually panics.
 
 r[attributes.testing.should_panic.syntax]
-The `should_panic` attribute may optionally take an input string that must
-appear within the panic message. If the string is not found in the message,
-then the test will fail. The string may be passed using the
-[MetaNameValueStr] syntax or the [MetaListNameValueStr] syntax with an
-`expected` field.
+The `should_panic` attribute may optionally take an input string that must appear within the panic message. If the string is not found in the message, then the test will fail. The string may be passed using the [MetaNameValueStr] syntax or the [MetaListNameValueStr] syntax with an `expected` field.
 
 ```rust
 #[test]
