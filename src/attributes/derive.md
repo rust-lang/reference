@@ -29,6 +29,14 @@ The *`derive` [attribute][attributes]* allows new [items] to be automatically ge
 r[attributes.derive.syntax]
 The `derive` attribute uses the [MetaListPaths] syntax to specify a list of paths to [derive macros] to process.
 
+r[attributes.derive.allowed-positions]
+The `derive` attribute may be applied to [structs][items.struct], [enums][items.enum], and [unions][items.union].
+
+r[attributes.derive.duplicates]
+The `derive` attribute may be specified multiple times on an item, with all entries from all attributes being processed.
+
+r[attributes.derive.stdlib]
+The `derive` attribute is exported in the standard library prelude as [`core::prelude::v1::derive`].
 
 
 r[attributes.derive.automatically_derived]
