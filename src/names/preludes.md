@@ -124,6 +124,7 @@ It includes the following:
     * [floating-point types] --- `f32` and `f64`
 * [Macro namespace]
     * [Built-in attributes]
+    * [Built-in derive macros][attributes.derive.built-in]
 
 r[names.preludes.macro_use]
 ## `macro_use` prelude

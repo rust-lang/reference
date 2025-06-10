@@ -38,6 +38,19 @@ The `derive` attribute may be specified multiple times on an item, with all entr
 r[attributes.derive.stdlib]
 The `derive` attribute is exported in the standard library prelude as [`core::prelude::v1::derive`].
 
+r[attributes.derive.built-in]
+Built-in derives are defined in the [language prelude][names.preludes.lang]. The list of built-in derives are:
+
+- [`Clone`]
+- [`Copy`]
+- [`Debug`]
+- [`Default`]
+- [`Eq`]
+- [`Hash`]
+- [`Ord`]
+- [`PartialEq`]
+- [`PartialOrd`]
+
 
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
