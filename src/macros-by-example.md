@@ -330,9 +330,7 @@ r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
 
 r[macro.decl.scope.macro_use.mod-decl]
-The *`macro_use` attribute* has two purposes. First, it can be used to make a
-module's macro scope not end when the module is closed, by applying it to a
-module:
+The *`macro_use` attribute* has two purposes. First, it can be used to make a module's macro scope not end when the module is closed, by applying it to a module:
 
 ```rust
 #[macro_use]
@@ -346,14 +344,7 @@ m!();
 ```
 
 r[macro.decl.scope.macro_use.prelude]
-Second, it can be used to import macros from another crate, by attaching it to
-an `extern crate` declaration appearing in the crate's root module. Macros
-imported this way are imported into the [`macro_use` prelude], not textually,
-which means that they can be shadowed by any other name. While macros imported
-by `#[macro_use]` can be used before the import statement, in case of a
-conflict, the last macro imported wins. Optionally, a list of macros to import
-can be specified using the [MetaListIdents] syntax; this is not supported
-when `#[macro_use]` is applied to a module.
+Second, it can be used to import macros from another crate, by attaching it to an `extern crate` declaration appearing in the crate's root module. Macros imported this way are imported into the [`macro_use` prelude], not textually, which means that they can be shadowed by any other name. While macros imported by `#[macro_use]` can be used before the import statement, in case of a conflict, the last macro imported wins. Optionally, a list of macros to import can be specified using the [MetaListIdents] syntax; this is not supported when `#[macro_use]` is applied to a module.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
@@ -365,8 +356,7 @@ lazy_static!{}
 ```
 
 r[macro.decl.scope.macro_use.export]
-Macros to be imported with `macro_use` must be exported with
-[`macro_export`][macro.decl.scope.macro_export].
+Macros to be imported with `macro_use` must be exported with [`macro_export`][macro.decl.scope.macro_export].
 
 <!-- template:attributes -->
 r[macro.decl.scope.macro_export]
