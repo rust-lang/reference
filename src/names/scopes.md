@@ -54,8 +54,8 @@ r[names.scopes.pattern-bindings.let-chains]
 * [`if let`] and [`while let`] bindings are valid in the following conditions as well as the consequent block.
 r[names.scopes.pattern-bindings.match-arm]
 * [`match` arms] bindings are within the [match guard] and the match arm expression.
-r[names.scopes.pattern-bindings.match-guard-if-let]
-* [`if let` guard] bindings are within the guard expression and the match arm expression if the guard succeeds.
+r[names.scopes.pattern-bindings.match-guard-let]
+* [`match` guard `let`] bindings are valid in the following guard conditions and the match arm expression if the guard succeeds.
 
 r[names.scopes.pattern-bindings.items]
 Local variable scopes do not extend into item declarations.
@@ -349,7 +349,7 @@ impl ImplExample {
 [`macro_use` prelude]: preludes.md#macro_use-prelude
 [`macro_use`]: ../macros-by-example.md#the-macro_use-attribute
 [`match` arms]: ../expressions/match-expr.md
-[`if let` guard]: ../expressions/match-expr.md#if-let-guards
+[`match` guard `let`]: expr.match.guard.let
 [`Self`]: ../paths.md#self-1
 [Associated consts]: ../items/associated-items.md#associated-constants
 [associated items]: ../items/associated-items.md

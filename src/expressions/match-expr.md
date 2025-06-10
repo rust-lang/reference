@@ -9,27 +9,23 @@ MatchExpression ->
         MatchArms?
     `}`
 
-Scrutinee ->
-    Expression _except_ [StructExpression]
+Scrutinee -> Expression _except_ [StructExpression]
 
 MatchArms ->
     ( MatchArm `=>` ( ExpressionWithoutBlock `,` | ExpressionWithBlock `,`? ) )*
     MatchArm `=>` Expression `,`?
 
-MatchArm ->
-    OuterAttribute* Pattern MatchArmGuard?
+MatchArm -> OuterAttribute* Pattern MatchArmGuard?
 
-MatchArmGuard ->
-    `if` MatchConditions
+MatchArmGuard -> `if` MatchConditions
 
 MatchConditions ->
      Expression
-   | MatchConditionChain
+   | MatchGuardChain
 
-MatchConditionChain ->
-    MatchChainCondition ( `&&` MatchChainCondition )*
+MatchGuardChain -> MatchGuardCondition ( `&&` MatchGuardCondition )*
 
-MatchChainCondition ->
+MatchGuardCondition ->
      Expression _except [ExcludedMatchConditions]_
    | OuterAttribute* `let` Pattern `=` MatchGuardScrutinee
 
@@ -126,12 +122,11 @@ r[expr.match.guard]
 r[expr.match.guard.intro]
 Match arms can accept _match guards_ to further refine the criteria for matching a case.
 
-r[expr.match.guard.type]
-Pattern guards appear after the pattern and consist of a `bool`-typed expression following the `if` keyword.
+r[expr.match.guard.condition]
+Pattern guards appear after the pattern following the `if` keyword and consist of an [Expression] with a [boolean type][type.bool] or a conditional `let` match.
 
 r[expr.match.guard.behavior]
-When the pattern matches successfully, the pattern guard expression is executed.
-If the expression evaluates to true, the pattern is successfully matched against.
+When the pattern matches successfully, the pattern guard is executed. If all of the guard condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s, the match arm is successfully matched against and the arm body is executed.
 
 r[expr.match.guard.next]
 Otherwise, the next pattern, including other matches with the `|` operator in the same arm, is tested.
@@ -168,68 +163,73 @@ Before evaluating the guard, a shared reference is taken to the part of the scru
 While evaluating the guard, this shared reference is then used when accessing the variable.
 
 r[expr.match.guard.value]
-Only when the guard evaluates to true is the value moved, or copied, from the scrutinee into the variable.
+Only when the guard evaluates successfully is the value moved, or copied, from the scrutinee into the variable.
 This allows shared borrows to be used inside guards without moving out of the scrutinee in case guard fails to match.
 
 r[expr.match.guard.no-mutation]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
-r[expr.match.if.let.guard]
-## If-let Guards
-Match arms can have additional conditions using *if-let guards*. These allow using `if let` expressions within match guard clauses, enabling conditional pattern matching directly in the guard.
+r[expr.match.guard.let]
+Guards can use `let` patterns to conditionally match a scrutinee and to bind new variables into scope when the pattern matches successfully.
 
-r[expr.match.if.let.guard.syntax]
-```rust
-enum Command {
-    Run(String),
-    Stop,
-}
-
-match cmd {
-    Command::Run(name) if let Some(first_char) = name.chars().next() => {
-        // Both `name` and `first_char` are available here
-        println!("Running: {} (starts with '{}')", name, first_char);
-    }
-    Command::Run(name) => {
-        println!("Cannot run command: {}", name);
-    }
-    _ => {}
-}
-```
-Here, the guard condition `let Some(first_char) = name.chars().next()` is evaluated. If the `if let` expression successfully matches (i.e., the string has at least one character), the arm's body is executed with both `name` and `first_char` available. Otherwise, pattern matching continues to the next arm.
-
-The key point is that the `if let` guard creates a new binding (`first_char`) that's only available if the guard succeeds, and this binding can be used alongside the original pattern bindings (`name`) in the arm's body.
-
-r[expr.match.if.let.guard.behavior]
-When the pattern matches successfully, the `if let` expression in the guard is evaluated:
-  * The guard proceeds if the inner pattern (`subpattern`) matches the result of `guard_expr`.
-  * Otherwise, the next arm is tested.
-
-r[expr.match.if.let.guard.scope]
-
-For detailed information about variable scope and drop behavior, see the [scope and drop section].
-
-```rust,ignore
-# fn take<T>(value: T) -> Option<T> { Some(value) }
-
-let val = Some(vec![1, 2, 3]);
-match val {
-    Some(v) if let Some(_) = take(v) => "moved", // ERROR: cannot move `v`
-    Some(v) if let Some(_) = take(v.clone()) => "cloned", // OK
-    _ => "none",
-}
-```
-> [!NOTE]
-> Multiple matches using the `|` operator can cause the pattern guard and the side effects it has to execute multiple times. For example:
-> ```rust
-> use std::cell::Cell;
+> [!EXAMPLE]
+> In this example, the guard condition `let Some(first_char) = name.chars().next()` is evaluated. If the `if let` expression successfully matches (i.e., the string has at least one character), the arm's body is executed with both `name` and `first_char` available. Otherwise, pattern matching continues to the next arm.
 >
-> let i: Cell<i32> = Cell::new(0);
-> match 1 {
->     1 | _ if let Some(_) = { i.set(i.get() + 1); Some(1) } => {}
+> The key point is that the `if let` guard creates a new binding (`first_char`) that's only available if the guard succeeds, and this binding can be used alongside the original pattern bindings (`name`) in the arm's body.
+> ```rust
+> # enum Command {
+> #     Run(String),
+> #     Stop,
+> # }
+> let cmd = Command::Run("example".to_string());
+>
+> match cmd {
+>     Command::Run(name) if let Some(first_char) = name.chars().next() => {
+>         // Both `name` and `first_char` are available here
+>         println!("Running: {name} (starts with '{first_char}')");
+>     }
+>     Command::Run(name) => {
+>         println!("{name} is empty");
+>     }
 >     _ => {}
 > }
-> assert_eq!(i.get(), 2); // Guard is executed twice
+> ```
+
+r[expr.match.guard.chains]
+## Match guard chains
+
+r[expr.match.guard.chains.intro]
+Multiple guard condition operands can be separated with `&&`.
+
+> [!EXAMPLE]
+> ```rust
+> # let foo = Some([123]);
+> # let already_checked = false;
+> match foo {
+>     Some(xs) if let [single] = xs && !already_checked => { dbg!(single); }
+>     _ => {}
+> }
+> ```
+
+r[expr.match.guard.chains.order]
+Similar to a `&&` [LazyBooleanExpression], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails, in which case the subsequent operands are not evaluated.
+
+r[expr.match.guard.chains.bindings]
+The bindings of each `let` pattern are put into scope to be available for the next condition operand and the match arm body.
+
+r[expr.match.guard.chains.or]
+If any guard condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee.
+
+> [!EXAMPLE]
+> If a `||` expression is needed, then parentheses can be used. For example:
+>
+> ```rust
+> # let foo = Some(123);
+> match foo {
+>     // Parentheses are required here.
+>     Some(x) if (x < -100 || x > 20) => {}
+>     _ => {}
+> }
 > ```
 
 r[expr.match.attributes]
