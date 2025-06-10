@@ -51,6 +51,8 @@ Built-in derives are defined in the [language prelude][names.preludes.lang]. The
 - [`PartialEq`]
 - [`PartialOrd`]
 
+r[attributes.derive.behavior]
+During macro expansion, for each element in the list of derives, the corresponding derive macro expands to zero or more [items].
 
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
