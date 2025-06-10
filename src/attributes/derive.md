@@ -27,7 +27,7 @@ The *`derive` [attribute][attributes]* allows new [items] to be automatically ge
 > ```
 
 r[attributes.derive.syntax]
-It uses the [MetaListPaths] syntax to specify a list of traits to implement or paths to [derive macros] to process.
+The `derive` attribute uses the [MetaListPaths] syntax to specify a list of paths to [derive macros] to process.
 
 
 
