@@ -66,10 +66,7 @@ During macro expansion, for each element in the list of derives, the correspondi
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
 
-The *`automatically_derived` attribute* is automatically added to
-[implementations] created by the `derive` attribute for built-in traits. It
-has no direct effect, but it may be used by tools and diagnostic lints to
-detect these automatically generated implementations.
+The *`automatically_derived` attribute* is automatically added to [implementations] created by the `derive` attribute for built-in traits. It has no direct effect, but it may be used by tools and diagnostic lints to detect these automatically generated implementations.
 
 [items]: ../items.md
 [derive macros]: ../procedural-macros.md#derive-macros
