@@ -395,6 +395,21 @@ Macros labeled with `#[macro_export]` are always `pub` and can be referred to by
 > }
 > ```
 
+r[macro.decl.scope.macro_export.syntax]
+The `macro_export` attribute uses the [MetaWord] syntax, or the [MetaListIdents] syntax with a single value of [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros].
+
+r[macro.decl.scope.macro_export.allowed-positions]
+The `macro_export` attribute can be applied to `macro_rules` definitions.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[macro.decl.scope.macro_export.duplicates]
+Only the first instance of `macro_export` on a macro is honored. Subsequent `macro_export` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `macro_export` attributes.
+
 r[macro.decl.hygiene]
 ## Hygiene
 
