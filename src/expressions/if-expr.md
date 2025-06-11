@@ -35,7 +35,7 @@ The syntax of an `if` expression is a sequence of one or more condition operands
 followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
 
 r[expr.if.condition]
-Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
+Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match.
 
 r[expr.if.condition-true]
 If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
@@ -178,10 +178,6 @@ r[expr.if.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition, let chains are not supported. That is, the [LetChain] grammar is not allowed in an `if` expression.
 
-[_BlockExpression_]: block-expr.md
-[_Expression_]: ../expressions.md
-[_Pattern_]: ../patterns.md
-[_Scrutinee_]: match-expr.md
 [`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
