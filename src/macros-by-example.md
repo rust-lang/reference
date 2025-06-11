@@ -374,25 +374,26 @@ r[macro.decl.scope.macro_export]
 By default, a macro has no path-based scope. However, if it has the `#[macro_export]` attribute, then it is declared in the crate root scope and can be referred to normally as such:
 r[macro.decl.scope.macro_export.intro]
 
-```rust
-self::m!();
-m!(); // OK: Path-based lookup finds m in the current module.
-
-mod inner {
-    super::m!();
-    crate::m!();
-}
-
-mod mac {
-    #[macro_export]
-    macro_rules! m {
-        () => {};
-    }
-}
-```
 
 r[macro.decl.scope.path.export]
 Macros labeled with `#[macro_export]` are always `pub` and can be referred to by other crates, either by path or by `#[macro_use]` as described above.
+> [!EXAMPLE]
+> ```rust
+> self::m!();
+> m!(); // OK: Path-based lookup finds m in the current module.
+>
+> mod inner {
+>     super::m!();
+>     crate::m!();
+> }
+>
+> mod mac {
+>     #[macro_export]
+>     macro_rules! m {
+>         () => {};
+>     }
+> }
+> ```
 
 r[macro.decl.hygiene]
 ## Hygiene
