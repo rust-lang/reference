@@ -195,10 +195,31 @@ fn check_undefined_nt(grammar: &Grammar, diag: &mut Diagnostics) {
 /// This is intended to help catch any unexpected misspellings, orphaned
 /// productions, or general mistakes.
 fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
+    // `set` starts with every production name.
     let mut set: HashSet<_> = grammar.name_order.iter().map(|s| s.as_str()).collect();
-    grammar.visit_nt(&mut |nt| {
-        set.remove(nt);
-    });
+    fn remove(set: &mut HashSet<&str>, grammar: &Grammar, prod: &Production, root_name: &str) {
+        prod.expression.visit_nt(&mut |nt| {
+            // Leave the root name in the set if we find it recursively.
+            if nt == root_name {
+                return;
+            }
+            if !set.remove(nt) {
+                return;
+            }
+            if let Some(nt_prod) = grammar.productions.get(nt) {
+                remove(set, grammar, nt_prod, root_name);
+            }
+        });
+    }
+    // Walk the productions starting from the root nodes, and remove every
+    // non-terminal from `set`. What's left must be the set of roots.
+    grammar
+        .productions
+        .values()
+        .filter(|prod| prod.is_root)
+        .for_each(|root| {
+            remove(&mut set, grammar, root, &root.name);
+        });
     let expected: HashSet<_> = grammar
         .productions
         .values()
@@ -210,17 +231,18 @@ fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
         if !new.is_empty() {
             warn_or_err!(
                 diag,
-                "New grammar production detected that is not used in any other\n\
+                "New grammar production detected that is not used in any root-accessible\n\
                  production. If this is expected, mark the production with\n\
                  `@root`. If not, make sure it is spelled correctly and used in\n\
-                 another production.\n\
+                 another root-accessible production.\n\
                  \n\
                  The new names are: {new:?}\n"
             );
         } else if !removed.is_empty() {
             warn_or_err!(
                 diag,
-                "Old grammar production root seems to have been removed.\n\
+                "Old grammar production root seems to have been removed\n\
+                 (it is used in some other production that is root-accessible).\n\
                  If this is expected, remove `@root` from the production.\n\
                  \n\
                  The removed names are: {removed:?}\n"
