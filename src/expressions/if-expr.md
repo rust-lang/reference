@@ -125,7 +125,7 @@ r[expr.if.chains.intro]
 Multiple condition operands can be separated with `&&`.
 
 r[expr.if.chains.order]
-Similar to a `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
+Similar to a `&&` [LazyBooleanExpression], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
 in which case the subsequent operands are not evaluated.
 
 r[expr.if.chains.bindings]
@@ -163,7 +163,7 @@ fn nested() {
 ```
 
 r[expr.if.chains.or]
-If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with the `let` scrutinee.
+If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee.
 If a `||` expression is needed, then parentheses can be used. For example:
 
 ```rust
@@ -180,7 +180,6 @@ r[expr.if.edition2024]
 
 [_BlockExpression_]: block-expr.md
 [_Expression_]: ../expressions.md
-[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
 [_Pattern_]: ../patterns.md
 [_Scrutinee_]: match-expr.md
 [`match` expressions]: match-expr.md
