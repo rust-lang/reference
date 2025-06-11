@@ -374,9 +374,6 @@ r[macro.decl.scope.macro_export]
 r[macro.decl.scope.macro_export.intro]
 The *`macro_export` [attribute][attributes]* marks a macro to be publicly exported from the crate, and makes it available in the root of the crate for path-based resolution.
 
-
-r[macro.decl.scope.path.export]
-Macros labeled with `#[macro_export]` are always `pub` and can be referred to by other crates, either by path or by `#[macro_use]` as described above.
 > [!EXAMPLE]
 > ```rust
 > self::m!();
@@ -409,6 +406,53 @@ Only the first instance of `macro_export` on a macro is honored. Subsequent `mac
 
 > [!NOTE]
 > `rustc` currently warns on subsequent duplicate `macro_export` attributes.
+
+r[macro.decl.scope.macro_export.path-based]
+By default, macros only have [textually-based scoping](#textual-scope). When the `macro_export` attribute is used, the macro is reexported in the crate root, and can be referred to using a path to the macro in the crate root.
+
+r[macro.decl.scope.macro_export.export]
+The `macro_export` attribute causes a macro to be publicly exported from the crate root so that it can be referred to by other crates using a path.
+
+> [!EXAMPLE]
+> Given the following defined in a crate named `log`:
+> ```rust
+> #[macro_export]
+> macro_rules! warn {
+>     ($message:expr) => { eprintln!("WARN: {}", $message) };
+> }
+> ```
+> Then you can refer to the macro via a path to the crate:
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> fn main() {
+>     log::warn!("example warning");
+> }
+> ```
+
+r[macro.decl.scope.macro_export.macro_use]
+`macro_export` also allows the use of [`macro_use`][macro.decl.scope.macro_use] on an `extern crate` to import the macro into the [`macro_use` prelude].
+
+> [!EXAMPLE]
+> Given the following defined in a crate named `log`:
+> ```rust
+> #[macro_export]
+> macro_rules! warn {
+>     ($message:expr) => { eprintln!("WARN: {}", $message) };
+> }
+> ```
+> Using `macro_use` in a dependent crate means the macro can be used from the prelude:
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> #[macro_use]
+> extern crate log;
+>
+> pub mod util {
+>     pub fn do_thing() {
+>         // Resolved via macro prelude.
+>         warn!("example warning");
+>     }
+> }
+> ```
 
 r[macro.decl.hygiene]
 ## Hygiene
