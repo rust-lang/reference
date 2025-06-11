@@ -83,7 +83,7 @@ fn first((value, _): (i32, i32)) -> i32 { value }
 ```
 
 r[items.fn.params.self-pat]
-If the first parameter is a _SelfParam_, this indicates that the function is a
+If the first parameter is a [SelfParam], this indicates that the function is a
 [method].
 
 r[items.fn.params.self-restriction]

@@ -153,7 +153,7 @@ and qualified paths.
 
 r[paths.type.turbofish]
 Although the `::` token is allowed before the generics arguments, it is not required
-because there is no ambiguity like there is in _PathInExpression_.
+because there is no ambiguity like there is in [PathInExpression].
 
 ```rust
 # mod ops {
