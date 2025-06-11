@@ -365,8 +365,8 @@ lazy_static!{}
 ```
 
 r[macro.decl.scope.macro_use.export]
-Macros to be imported with `#[macro_use]` must be exported with
-`#[macro_export]`, which is described below.
+Macros to be imported with `macro_use` must be exported with
+[`macro_export`][macro.decl.scope.macro_export].
 
 r[macro.decl.scope.macro_export]
 ### The `macro_export` attribute
