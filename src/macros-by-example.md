@@ -396,7 +396,7 @@ r[macro.decl.scope.macro_export.syntax]
 The `macro_export` attribute uses the [MetaWord] syntax, or the [MetaListIdents] syntax with a single value of [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros].
 
 r[macro.decl.scope.macro_export.allowed-positions]
-The `macro_export` attribute can be applied to `macro_rules` definitions.
+The `macro_export` attribute may be applied to `macro_rules` definitions.
 
 > [!NOTE]
 > `rustc` currently warns in other positions, but this may be rejected in the future.
@@ -451,6 +451,22 @@ r[macro.decl.scope.macro_export.macro_use]
 >         // Resolved via macro prelude.
 >         warn!("example warning");
 >     }
+> }
+> ```
+
+r[macro.decl.scope.macro_export.local_inner_macros]
+Adding `local_inner_macros` to the `macro_export` attribute also causes all single-segment macro invocations in the macro definition to have an implicit `$crate::` prefix. This is intended primarily as a tool to migrate code written before [`$crate`] was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
+
+> [!EXAMPLE]
+> ```rust
+> #[macro_export(local_inner_macros)]
+> macro_rules! helped {
+>     () => { helper!() } // Automatically converted to $crate::helper!().
+> }
+>
+> #[macro_export]
+> macro_rules! helper {
+>     () => { () }
 > }
 > ```
 
@@ -553,22 +569,7 @@ fn foo() {}
 ```
 
 > [!NOTE]
-> Prior to Rust 1.30, `$crate` and `local_inner_macros` (below) were unsupported. They were added alongside path-based imports of macros (described above), to ensure that helper macros did not need to be manually imported by users of a macro-exporting crate. Crates written for earlier versions of Rust that use helper macros need to be modified to use `$crate` or `local_inner_macros` to work well with path-based imports.
-
-r[macro.decl.hygiene.local_inner_macros]
-When a macro is exported, the `#[macro_export]` attribute can have the `local_inner_macros` keyword added to automatically prefix all contained macro invocations with `$crate::`. This is intended primarily as a tool to migrate code written before `$crate` was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
-
-```rust
-#[macro_export(local_inner_macros)]
-macro_rules! helped {
-    () => { helper!() } // Automatically converted to $crate::helper!().
-}
-
-#[macro_export]
-macro_rules! helper {
-    () => { () }
-}
-```
+> Prior to Rust 1.30, `$crate` and [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros] were unsupported. They were added alongside [path-based imports of macros][macro.decl.scope.macro_export], to ensure that helper macros did not need to be manually imported by users of a macro-exporting crate. Crates written for earlier versions of Rust that use helper macros need to be modified to use `$crate` or `local_inner_macros` to work well with path-based imports.
 
 r[macro.decl.follow-set]
 ## Follow-set ambiguity restrictions
