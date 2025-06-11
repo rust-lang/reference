@@ -372,9 +372,7 @@ r[macro.decl.scope.path]
 ### Path-based scope
 
 r[macro.decl.scope.path.intro]
-By default, a macro has no path-based scope. However, if it has the
-`#[macro_export]` attribute, then it is declared in the crate root scope and can
-be referred to normally as such:
+By default, a macro has no path-based scope. However, if it has the `#[macro_export]` attribute, then it is declared in the crate root scope and can be referred to normally as such:
 
 ```rust
 self::m!();
@@ -394,8 +392,7 @@ mod mac {
 ```
 
 r[macro.decl.scope.path.export]
-Macros labeled with `#[macro_export]` are always `pub` and can be referred to
-by other crates, either by path or by `#[macro_use]` as described above.
+Macros labeled with `#[macro_export]` are always `pub` and can be referred to by other crates, either by path or by `#[macro_use]` as described above.
 
 r[macro.decl.hygiene]
 ## Hygiene
@@ -495,20 +492,11 @@ macro_rules! call_foo {
 fn foo() {}
 ```
 
-> **Version differences**: Prior to Rust 1.30, `$crate` and
-> `local_inner_macros` (below) were unsupported. They were added alongside
-> path-based imports of macros (described above), to ensure that helper macros
-> did not need to be manually imported by users of a macro-exporting crate.
-> Crates written for earlier versions of Rust that use helper macros need to be
-> modified to use `$crate` or `local_inner_macros` to work well with path-based
-> imports.
+> [!NOTE]
+> Prior to Rust 1.30, `$crate` and `local_inner_macros` (below) were unsupported. They were added alongside path-based imports of macros (described above), to ensure that helper macros did not need to be manually imported by users of a macro-exporting crate. Crates written for earlier versions of Rust that use helper macros need to be modified to use `$crate` or `local_inner_macros` to work well with path-based imports.
 
 r[macro.decl.hygiene.local_inner_macros]
-When a macro is exported, the `#[macro_export]` attribute can have the
-`local_inner_macros` keyword added to automatically prefix all contained macro
-invocations with `$crate::`. This is intended primarily as a tool to migrate
-code written before `$crate` was added to the language to work with Rust 2018's
-path-based imports of macros. Its use is discouraged in new code.
+When a macro is exported, the `#[macro_export]` attribute can have the `local_inner_macros` keyword added to automatically prefix all contained macro invocations with `$crate::`. This is intended primarily as a tool to migrate code written before `$crate` was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
 
 ```rust
 #[macro_export(local_inner_macros)]
