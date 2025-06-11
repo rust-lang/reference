@@ -371,8 +371,8 @@ Macros to be imported with `macro_use` must be exported with
 r[macro.decl.scope.macro_export]
 ### The `macro_export` attribute
 
-By default, a macro has no path-based scope. However, if it has the `#[macro_export]` attribute, then it is declared in the crate root scope and can be referred to normally as such:
 r[macro.decl.scope.macro_export.intro]
+The *`macro_export` [attribute][attributes]* marks a macro to be publicly exported from the crate, and makes it available in the root of the crate for path-based resolution.
 
 
 r[macro.decl.scope.path.export]
