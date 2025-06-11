@@ -368,11 +368,11 @@ r[macro.decl.scope.macro_use.export]
 Macros to be imported with `#[macro_use]` must be exported with
 `#[macro_export]`, which is described below.
 
-r[macro.decl.scope.path]
-### Path-based scope
+r[macro.decl.scope.macro_export]
+### The `macro_export` attribute
 
-r[macro.decl.scope.path.intro]
 By default, a macro has no path-based scope. However, if it has the `#[macro_export]` attribute, then it is declared in the crate root scope and can be referred to normally as such:
+r[macro.decl.scope.macro_export.intro]
 
 ```rust
 self::m!();
