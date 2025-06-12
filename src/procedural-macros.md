@@ -79,8 +79,9 @@ items in libraries (for example, `::std::option::Option` instead of `Option`) or
 by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
-r[macro.proc.function]
-## Function-like procedural macros
+<!-- TODO: rule name needs improvement -->
+r[macro.proc.proc_macro]
+## The `proc_macro` attribute
 
 r[macro.proc.function.intro]
 *Function-like procedural macros* are procedural macros that are invoked using the macro invocation operator (`!`).
@@ -376,7 +377,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [Attribute macros]: #attribute-macros
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: macro.proc.derive
-[Function-like macros]: #function-like-procedural-macros
+[Function-like macros]: #the-proc_macro-attribute
 [`$crate`]: macro.decl.hygiene.crate
 [`Delimiter::None`]: proc_macro::Delimiter::None
 [`Group`]: proc_macro::Group
