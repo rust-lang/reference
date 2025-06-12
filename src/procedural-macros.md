@@ -86,10 +86,6 @@ r[macro.proc.proc_macro]
 r[macro.proc.proc_macro.intro]
 The *`proc_macro` [attribute][attributes]* defines a procedural macro for [function-like macros][macro.invocation].
 
-r[macro.proc.function.def]
-These macros are defined by a [public]&#32;[function] with the `proc_macro` [attribute] and a signature of `(TokenStream) -> TokenStream`. The input [`TokenStream`] is what is inside the delimiters of the macro invocation and the output [`TokenStream`] replaces the entire macro invocation.
-
-
 > [!EXAMPLE]
 > The following macro definition ignores its input and outputs a function `answer` into its scope.
 >
@@ -119,12 +115,20 @@ These macros are defined by a [public]&#32;[function] with the `proc_macro` [att
 > }
 > ```
 
+r[macro.proc.proc_macro.syntax]
+The `proc_macro` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
+r[macro.proc.proc_macro.allowed-positions]
+The `proc_macro` attribute may only be applied to a function with the signature of `pub fn(TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed.
 
+r[macro.proc.proc_macro.duplicates]
+The `proc_macro` attribute may only be specified once on a function.
 
-r[macro.proc.function.namespace]
+r[macro.proc.proc_macro.namespace]
 The `proc_macro` attribute publicly defines the macro in the [macro namespace] in the root of the crate with the same name as the function.
 
+r[macro.proc.proc_macro.behavior]
+A function-like macro invocation of a function-like procedural macro will pass what is inside the delimiters of the macro invocation as the input [`TokenStream`] argument, and replace the entire macro invocation with the output [`TokenStream`] of the function.
 
 r[macro.proc.function.invocation]
 Function-like procedural macros may be invoked in any macro invocation position, which includes [statements], [expressions], [patterns], [type expressions], [item] positions, including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
