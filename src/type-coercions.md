@@ -186,7 +186,7 @@ r[coerce.unsize]
 
 r[coerce.unsize.intro]
 The following coercions are called "unsized coercions", since their targets contain an unsized type.
-unsized coercions apply to pointer-like types which point to types which can lose some of their compile-time known information (such as size or implemented traits). For example:
+Unsized coercions apply to pointer-like types which point to types which can lose some of their compile-time known information (such as size or implemented traits). For example:
 
 ```rust
 use std::cell::Cell;
@@ -222,14 +222,13 @@ fn main() {
 }
 ```
 
-r[coerce.unsize.confusion]
 > [!NOTE]
 > The term "unsized" might be quite confusing, since the coercion works on sized types (pointers) and the source pointer might point to an unsized type in the first place (`&dyn A -> &dyn Super` in the example above).
 >
 > "unsized" refers to the main purpose of these coercions --- converting (pointers to) sized types to (pointers to) unsized types. The pointers being not the focus, since unsized types can't exist without them.
 
 r[coerce.unsize.metadata]
-When performing unsized coercion, the pointer metadata type changes. For example, when unsized `&u32` to `&dyn Debug` metadate type changes from `()` to `DynMetadata<dyn Debug>` (note that exact metadata types are not yet stable). This can also lead to a change in the pointer size -- `&u32` is half the size of `&dyn Debug`.
+When performing unsized coercion, the pointer metadata type changes. For example, when unsized `&u32` to `&dyn Debug` metadate type changes from `()` to `DynMetadata<dyn Debug>` (note that exact metadata types are not yet stable). This can also lead to a change in the pointer size --- `&u32` is half the size of `&dyn Debug`.
 
 r[coerce.unsize.traits]
 Three internal traits, [`Unsize`], [`CoerceUnsized`], and [`PinCoerceUnsized`] are used to assist in this process and expose it for library use.
@@ -241,22 +240,23 @@ r[coerce.unsize.traits.coerce-unsized]
 [`CoerceUnsized`] represents the fact that a pointer-like type can be coerced to another pointer-like type, due to `Unsize` being implemented for their pointees. For example, `&T` implements `CoerceUnsized<&U>` when `T: Unsize<U>`.
 
 r[coerce.unsize.traits.pin-coerce-unsized]
-[`PinCoerceUnsized`] is an unsafe marker trait for pointer-like types unsized coercion of which does not break [`Pin`] guarantees. It is a requirement of the `CoerceUnsized` implementation for `Pin`. That is, `&D: PinCoerceUnsized` implies `Pin<&T>: CoerceUnsized<Pin<&U>>`.
+[`PinCoerceUnsized`] is an unsafe marker trait for pointer-like types, unsized coercion of which does not break [`Pin`] guarantees. [`PinCoerceUnsized`] being implemented for the pointer is a requirement of the `CoerceUnsized` implementation for `Pin`. That is, `&D: PinCoerceUnsized` implies `Pin<&T>: CoerceUnsized<Pin<&U>>`.
 
+r[coerce.unsize.built-in]
 The following implementations of [`Unsize`] are built-in:
 
-r[coerce.unsize.slice]
+r[coerce.unsize.built-in.slice]
 * `[T; n]: Unsize<[T]>`.
 
-r[coerce.unsize.trait-object]
+r[coerce.unsize.built-in.trait-object]
 * `T: Unsize<dyn U>`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
 
-r[coerce.unsize.trait-upcast]
+r[coerce.unsize.built-in.trait-upcast]
 * `dyn Trait: Unsize<dyn Super>`, when `Super` is one of `Trait`'s [supertraits].
     * This allows dropping auto traits, i.e. `dyn Trait + Auto` to `dyn Super` is allowed.
     * This allows adding auto traits if the principal trait has the auto trait as a super trait, i.e. given `trait Trait: Super + Auto {}`, `dyn Trait` to `dyn Trait + Auto` or to `dyn Super + Auto` coercions are allowed.
 
-r[coerce.unsize.composite]
+r[coerce.unsize.built-in.composite]
 * `S<T...>: Unsize<S<U...>>`, when:
     * `S` is a struct.
     * The type of the last field of `S<T...>` implements `Unsize<X>` where `X` is the type of the last field of `S<U...>`.
@@ -265,7 +265,7 @@ r[coerce.unsize.composite]
 
 r[coerce.unsize.pointer]
 A type `S<T...>` *can* implement `CoerceUnsized<S<U...>>` if
-1. Only one field of `S<T...>` has different type than the same field of `S<U...>` (ignoring fields of type `PhantomData<_>`).
+1. Only one field of `S<T...>` has a different type than the same field of `S<U...>` (ignoring fields of type `PhantomData<_>`).
 2. ... and that field's type implements `CoerceUnsized<X>` where `X` is the type of the same field in `S<U,...>`.
 
 This allows it to provide an unsized coercion to `S<U...>`.
