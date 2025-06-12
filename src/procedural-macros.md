@@ -83,8 +83,8 @@ other functions (like `__internal_foo` instead of `foo`).
 r[macro.proc.proc_macro]
 ## The `proc_macro` attribute
 
-r[macro.proc.function.intro]
-*Function-like procedural macros* are procedural macros that are invoked using the macro invocation operator (`!`).
+r[macro.proc.proc_macro.intro]
+The *`proc_macro` [attribute][attributes]* defines a procedural macro for [function-like macros][macro.invocation].
 
 r[macro.proc.function.def]
 These macros are defined by a [public]&#32;[function] with the `proc_macro` [attribute] and a signature of `(TokenStream) -> TokenStream`. The input [`TokenStream`] is what is inside the delimiters of the macro invocation and the output [`TokenStream`] replaces the entire macro invocation.
