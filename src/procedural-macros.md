@@ -83,20 +83,15 @@ r[macro.proc.function]
 ## Function-like procedural macros
 
 r[macro.proc.function.intro]
-*Function-like procedural macros* are procedural macros that are invoked using
-the macro invocation operator (`!`).
+*Function-like procedural macros* are procedural macros that are invoked using the macro invocation operator (`!`).
 
 r[macro.proc.function.def]
-These macros are defined by a [public]&#32;[function] with the `proc_macro`
-[attribute] and a signature of `(TokenStream) -> TokenStream`. The input
-[`TokenStream`] is what is inside the delimiters of the macro invocation and the
-output [`TokenStream`] replaces the entire macro invocation.
+These macros are defined by a [public]&#32;[function] with the `proc_macro` [attribute] and a signature of `(TokenStream) -> TokenStream`. The input [`TokenStream`] is what is inside the delimiters of the macro invocation and the output [`TokenStream`] replaces the entire macro invocation.
 
 r[macro.proc.function.namespace]
 The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
 
-For example, the following macro definition ignores its input and outputs a
-function `answer` into its scope.
+For example, the following macro definition ignores its input and outputs a function `answer` into its scope.
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
@@ -125,10 +120,7 @@ fn main() {
 ```
 
 r[macro.proc.function.invocation]
-Function-like procedural macros may be invoked in any macro invocation
-position, which includes [statements], [expressions], [patterns], [type
-expressions], [item] positions, including items in [`extern` blocks], inherent
-and trait [implementations], and [trait definitions].
+Function-like procedural macros may be invoked in any macro invocation position, which includes [statements], [expressions], [patterns], [type expressions], [item] positions, including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
 
 <!-- template:attributes -->
 r[macro.proc.derive]
