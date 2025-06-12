@@ -42,15 +42,15 @@ r[macro.proc.error]
 Procedural macros have two ways of reporting errors. The first is to panic. The
 second is to emit a [`compile_error`] macro invocation.
 
-r[macro.proc.proc_macro]
+r[macro.proc.proc_macro-crate]
 ## The `proc_macro` crate
 
-r[macro.proc.proc_macro.intro]
+r[macro.proc.proc_macro-crate.intro]
 Procedural macro crates almost always will link to the compiler-provided
 [`proc_macro` crate]. The `proc_macro` crate provides types required for
 writing procedural macros and facilities to make it easier.
 
-r[macro.proc.proc_macro.token-stream]
+r[macro.proc.proc_macro-crate.token-stream]
 This crate primarily contains a [`TokenStream`] type. Procedural macros operate
 over *token streams* instead of AST nodes, which is a far more stable interface
 over time for both the compiler and for procedural macros to target. A
@@ -59,7 +59,7 @@ can roughly be thought of as lexical token. For example `foo` is an `Ident`
 token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
 type, unlike `Vec<TokenTree>`, is cheap to clone.
 
-r[macro.proc.proc_macro.span]
+r[macro.proc.proc_macro-crate.span]
 All tokens have an associated `Span`. A `Span` is an opaque value that cannot
 be modified but can be manufactured. `Span`s represent an extent of source
 code within a program and are primarily used for error reporting. While you
