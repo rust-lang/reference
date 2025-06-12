@@ -92,33 +92,39 @@ These macros are defined by a [public]&#32;[function] with the `proc_macro` [att
 r[macro.proc.function.namespace]
 The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
 
-For example, the following macro definition ignores its input and outputs a function `answer` into its scope.
+> [!EXAMPLE]
+> The following macro definition ignores its input and outputs a function `answer` into its scope.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> # #![crate_type = "proc-macro"]
+> extern crate proc_macro;
+> use proc_macro::TokenStream;
+>
+> #[proc_macro]
+> pub fn make_answer(_item: TokenStream) -> TokenStream {
+>     "fn answer() -> u32 { 42 }".parse().unwrap()
+> }
+> ```
+>
+> And then we use it in a binary crate to print "42" to standard output.
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> extern crate proc_macro_examples;
+> use proc_macro_examples::make_answer;
+>
+> make_answer!();
+>
+> fn main() {
+>     println!("{}", answer());
+> }
+> ```
 
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-# #![crate_type = "proc-macro"]
-extern crate proc_macro;
-use proc_macro::TokenStream;
 
-#[proc_macro]
-pub fn make_answer(_item: TokenStream) -> TokenStream {
-    "fn answer() -> u32 { 42 }".parse().unwrap()
-}
-```
 
-And then we use it in a binary crate to print "42" to standard output.
 
-<!-- ignore: requires external crates -->
-```rust,ignore
-extern crate proc_macro_examples;
-use proc_macro_examples::make_answer;
 
-make_answer!();
-
-fn main() {
-    println!("{}", answer());
-}
-```
 
 r[macro.proc.function.invocation]
 Function-like procedural macros may be invoked in any macro invocation position, which includes [statements], [expressions], [patterns], [type expressions], [item] positions, including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
