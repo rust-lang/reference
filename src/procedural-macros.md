@@ -130,7 +130,7 @@ The `proc_macro` attribute publicly defines the macro in the [macro namespace] i
 r[macro.proc.proc_macro.behavior]
 A function-like macro invocation of a function-like procedural macro will pass what is inside the delimiters of the macro invocation as the input [`TokenStream`] argument, and replace the entire macro invocation with the output [`TokenStream`] of the function.
 
-r[macro.proc.function.invocation]
+r[macro.proc.proc_macro.invocation]
 Function-like procedural macros may be invoked in any macro invocation position, which includes [statements], [expressions], [patterns], [type expressions], [item] positions, including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
 
 <!-- template:attributes -->
