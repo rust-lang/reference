@@ -89,8 +89,6 @@ The *`proc_macro` [attribute][attributes]* defines a procedural macro for [funct
 r[macro.proc.function.def]
 These macros are defined by a [public]&#32;[function] with the `proc_macro` [attribute] and a signature of `(TokenStream) -> TokenStream`. The input [`TokenStream`] is what is inside the delimiters of the macro invocation and the output [`TokenStream`] replaces the entire macro invocation.
 
-r[macro.proc.function.namespace]
-The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
 
 > [!EXAMPLE]
 > The following macro definition ignores its input and outputs a function `answer` into its scope.
@@ -124,6 +122,8 @@ The `proc_macro` attribute defines the macro in the [macro namespace] in the roo
 
 
 
+r[macro.proc.function.namespace]
+The `proc_macro` attribute publicly defines the macro in the [macro namespace] in the root of the crate with the same name as the function.
 
 
 r[macro.proc.function.invocation]
