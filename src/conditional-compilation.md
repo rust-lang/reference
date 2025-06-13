@@ -8,6 +8,7 @@ ConfigurationPredicate ->
     | ConfigurationAll
     | ConfigurationAny
     | ConfigurationNot
+    | ConfigurationVersion
     | `true`
     | `false`
 
@@ -22,6 +23,9 @@ ConfigurationAny ->
 
 ConfigurationNot ->
     `not` `(` ConfigurationPredicate `)`
+
+ConfigurationVersion ->
+    `version` `(` ( STRING_LITERAL | RAW_STRING_LITERAL ) `)`
 
 ConfigurationPredicateList ->
     ConfigurationPredicate (`,` ConfigurationPredicate)* `,`?
@@ -54,6 +58,16 @@ r[cfg.predicate.not]
 
 r[cfg.predicate.literal]
 * `true` or `false` literals, which are always true or false respectively.
+
+r[cfg.predicate.version]
+* `version()` with a version number inside. It is true if the language version
+  the compiler targets is higher or equal to the contained version number. It is false otherwise.
+
+r[cfg.predicate.version.syntax]
+  The specified version has to follow  either the `"a.b.c"` scheme or the `"a.b"` scheme. Semantically, assume `c` to be 0 if not present. Order wise, version numbers behave as if they were Rust tuples of type `(u16, u16, u16)`.
+
+r[cfg.predicate.version.reserved]
+  Invalid version literals will eval to false. This includes tuples with components that can't be represented as `u16`.
 
 r[cfg.option-spec]
 _Configuration options_ are either names or key-value pairs, and are either set or unset.
@@ -368,6 +382,12 @@ fn on_32bit_unix() {
 // This function is only included when foo is not defined
 #[cfg(not(foo))]
 fn needs_not_foo() {
+  // ...
+}
+
+// This function is only included if the language version is at least 1.50.0
+#[cfg(version("1.50.0"))]
+fn needs_new_compiler() {
   // ...
 }
 
