@@ -92,8 +92,8 @@ Patterns can be used to *destructure* [structs], [enums], and [tuples].
 Destructuring breaks up a value into its component pieces.
 The syntax used is almost the same as when creating such values.
 
-r[patterns.destructure.placeholder]
-In a pattern whose [scrutinee] expression has a `struct`, `enum` or `tuple` type, a placeholder (`_`) stands in for a *single* data field, whereas a wildcard `..`  stands in for *all* the remaining fields of a particular variant.
+r[patterns.destructure.wildcard]
+In a pattern whose [scrutinee] expression has a `struct`, `enum` or `tuple` type, a [wildcard pattern](#wildcard-pattern) (`_`) stands in for a *single* data field, whereas an [et cetera](#grammar-StructPatternEtCetera) or [rest pattern](#rest-patterns) (`..`) stands in for *all* the remaining fields of a particular variant.
 
 r[patterns.destructure.named-field-shorthand]
 When destructuring a data structure with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
