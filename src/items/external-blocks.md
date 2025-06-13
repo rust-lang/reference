@@ -150,7 +150,7 @@ r[items.extern.abi.fastcall]
   `__fastcall` and GCC and clang's `__attribute__((fastcall))`
 
 r[items.extern.abi.thiscall]
-* `unsafe extern "thiscall"` -- The default for C++ member functions on MSVC -- corresponds to MSVC's
+* `unsafe extern "thiscall"` -- The default for C++ member functions on x86\_32 MSVC -- corresponds to MSVC's
   `__thiscall` and GCC and clang's `__attribute__((thiscall))`
 
 r[items.extern.abi.efiapi]
