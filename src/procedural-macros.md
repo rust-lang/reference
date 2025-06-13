@@ -134,25 +134,18 @@ r[macro.proc.derive]
 ## Derive macros
 
 r[macro.proc.derive.intro]
-*Derive macros* define new inputs for the [`derive` attribute]. These macros
-can create new [items] given the token stream of a [struct], [enum], or [union].
-They can also define [derive macro helper attributes].
+*Derive macros* define new inputs for the [`derive` attribute]. These macros can create new [items] given the token stream of a [struct], [enum], or [union]. They can also define [derive macro helper attributes].
 
 r[macro.proc.derive.def]
-Custom derive macros are defined by a [public]&#32;[function] with the
-`proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
+Custom derive macros are defined by a [public]&#32;[function] with the `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 
 r[macro.proc.derive.namespace]
 The `proc_macro_derive` attribute defines the custom derive in the [macro namespace] in the root of the crate.
 
 r[macro.proc.derive.output]
-The input [`TokenStream`] is the token stream of the item that has the `derive`
-attribute on it. The output [`TokenStream`] must be a set of items that are
-then appended to the [module] or [block] that the item from the input
-[`TokenStream`] is in.
+The input [`TokenStream`] is the token stream of the item that has the `derive` attribute on it. The output [`TokenStream`] must be a set of items that are then appended to the [module] or [block] that the item from the input [`TokenStream`] is in.
 
-The following is an example of a derive macro. Instead of doing anything
-useful with its input, it just appends a function `answer`.
+The following is an example of a derive macro. Instead of doing anything useful with its input, it just appends a function `answer`.
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
@@ -185,18 +178,12 @@ r[macro.proc.derive.attributes]
 ### Derive macro helper attributes
 
 r[macro.proc.derive.attributes.intro]
-Derive macros can add additional [attributes] into the scope of the [item]
-they are on. Said attributes are called *derive macro helper attributes*. These
-attributes are [inert], and their only purpose is to be fed into the derive
-macro that defined them. That said, they can be seen by all macros.
+Derive macros can add additional [attributes] into the scope of the [item] they are on. Said attributes are called *derive macro helper attributes*. These attributes are [inert], and their only purpose is to be fed into the derive macro that defined them. That said, they can be seen by all macros.
 
 r[macro.proc.derive.attributes.def]
-The way to define helper attributes is to put an `attributes` key in the
-`proc_macro_derive` macro with a comma separated list of identifiers that are
-the names of the helper attributes.
+The way to define helper attributes is to put an `attributes` key in the `proc_macro_derive` macro with a comma separated list of identifiers that are the names of the helper attributes.
 
-For example, the following derive macro defines a helper attribute
-`helper`, but ultimately doesn't do anything with it.
+For example, the following derive macro defines a helper attribute `helper`, but ultimately doesn't do anything with it.
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
