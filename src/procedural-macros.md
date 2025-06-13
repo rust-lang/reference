@@ -136,8 +136,6 @@ r[macro.proc.derive]
 r[macro.proc.derive.intro]
 The *`proc_macro_derive` [attribute][attributes]* defines a *derive macro* which defines an input for the [`derive` attribute]. These macros can create new [items] given the token stream of a [struct], [enum], or [union]. They can also define [derive macro helper attributes].
 
-r[macro.proc.derive.def]
-Custom derive macros are defined by a [public]&#32;[function] with the `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
 > [!EXAMPLE]
 > The following is an example of a derive macro. Instead of doing anything useful with its input, it just appends a function `answer`.
 >
@@ -173,13 +171,26 @@ The `proc_macro_derive` attribute defines the custom derive in the [macro namesp
 
 r[macro.proc.derive.output]
 The input [`TokenStream`] is the token stream of the item that has the `derive` attribute on it. The output [`TokenStream`] must be a set of items that are then appended to the [module] or [block] that the item from the input [`TokenStream`] is in.
+r[macro.proc.derive.syntax]
+The `proc_macro_derive` attribute uses the following syntax:
 
+```grammar,attributes
+@root ProcMacroDeriveAttribute ->
+    `proc_macro_derive` `(` DeriveMacroName ( `,` DeriveMacroAttributes )? `,`? `)`
 
+DeriveMacroName -> SimplePathSegment
 
+DeriveMacroAttributes ->
+    `attributes` `(` ( SimplePathSegment (`,` SimplePathSegment)* `,`?)? `)`
 ```
 
+The [DeriveMacroName] is the name of the derive macro. The optional `attributes` are described in [macro.proc.derive.attributes].
 
+r[macro.proc.derive.allowed-positions]
+The `proc_macro_derive` attribute may only be applied to a function with the signature of `pub fn(TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed.
 
+r[macro.proc.derive.duplicates]
+The `proc_macro_derive` attribute may only be specified once on a function.
 
 
 r[macro.proc.derive.attributes]
