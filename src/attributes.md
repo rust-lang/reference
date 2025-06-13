@@ -373,7 +373,7 @@ The following is an index of all built-in attributes.
 [`panic_handler`]: panic.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
 [`proc_macro_attribute`]: procedural-macros.md#attribute-macros
-[`proc_macro_derive`]: procedural-macros.md#derive-macros
+[`proc_macro_derive`]: macro.proc.derive
 [`proc_macro`]: procedural-macros.md#function-like-procedural-macros
 [`recursion_limit`]: attributes/limits.md#the-recursion_limit-attribute
 [`repr`]: type-layout.md#representations

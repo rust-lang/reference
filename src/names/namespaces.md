@@ -144,7 +144,7 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [closure]: ../expressions/closure-expr.md
 [Constant item declarations]: ../items/constant-items.md
 [Derive macro helpers]: ../procedural-macros.md#derive-macro-helper-attributes
-[Derive macros]: ../procedural-macros.md#derive-macros
+[Derive macros]: macro.proc.derive
 [entity]: ../glossary.md#entity
 [Enum variant constructors]: ../items/enumerations.md
 [enum]: ../items/enumerations.md

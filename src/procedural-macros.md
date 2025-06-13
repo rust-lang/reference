@@ -131,7 +131,7 @@ expressions], [item] positions, including items in [`extern` blocks], inherent
 and trait [implementations], and [trait definitions].
 
 r[macro.proc.derive]
-## Derive macros
+## The `proc_macro_derive` attribute
 
 r[macro.proc.derive.intro]
 *Derive macros* define new inputs for the [`derive` attribute]. These macros can create new [items] given the token stream of a [struct], [enum], or [union]. They can also define [derive macro helper attributes].
@@ -362,7 +362,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 
 [Attribute macros]: #attribute-macros
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
-[Derive macros]: #derive-macros
+[Derive macros]: macro.proc.derive
 [Function-like macros]: #function-like-procedural-macros
 [`$crate`]: macro.decl.hygiene.crate
 [`Delimiter::None`]: proc_macro::Delimiter::None
@@ -396,3 +396,17 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [type expressions]: types.md#type-expressions
 [type]: types.md
 [union]: items/unions.md
+
+<script>
+(function() {
+    var fragments = {
+        "#derive-macros": "procedural-macros.html#the-proc_macro_derive-attribute",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
