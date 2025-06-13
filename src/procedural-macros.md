@@ -166,11 +166,6 @@ The *`proc_macro_derive` [attribute][attributes]* defines a *derive macro* which
 > }
 > ```
 
-r[macro.proc.derive.namespace]
-The `proc_macro_derive` attribute defines the custom derive in the [macro namespace] in the root of the crate.
-
-r[macro.proc.derive.output]
-The input [`TokenStream`] is the token stream of the item that has the `derive` attribute on it. The output [`TokenStream`] must be a set of items that are then appended to the [module] or [block] that the item from the input [`TokenStream`] is in.
 r[macro.proc.derive.syntax]
 The `proc_macro_derive` attribute uses the following syntax:
 
@@ -192,6 +187,11 @@ The `proc_macro_derive` attribute may only be applied to a function with the sig
 r[macro.proc.derive.duplicates]
 The `proc_macro_derive` attribute may only be specified once on a function.
 
+r[macro.proc.derive.namespace]
+The `proc_macro_derive` attribute publicly defines the custom derive in the [macro namespace] in the root of the crate with the name given in the attribute.
+
+r[macro.proc.derive.output]
+The input [`TokenStream`] is the token stream of the item that has the `derive` attribute on it. The output [`TokenStream`] must be a set of items that are then appended to the [module] or [block] that the item from the input [`TokenStream`] is in.
 
 r[macro.proc.derive.attributes]
 ### Derive macro helper attributes
