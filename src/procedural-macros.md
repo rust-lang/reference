@@ -134,7 +134,7 @@ r[macro.proc.derive]
 ## The `proc_macro_derive` attribute
 
 r[macro.proc.derive.intro]
-*Derive macros* define new inputs for the [`derive` attribute]. These macros can create new [items] given the token stream of a [struct], [enum], or [union]. They can also define [derive macro helper attributes].
+The *`proc_macro_derive` [attribute][attributes]* defines a *derive macro* which defines an input for the [`derive` attribute]. These macros can create new [items] given the token stream of a [struct], [enum], or [union]. They can also define [derive macro helper attributes].
 
 r[macro.proc.derive.def]
 Custom derive macros are defined by a [public]&#32;[function] with the `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
