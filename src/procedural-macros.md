@@ -138,6 +138,35 @@ The *`proc_macro_derive` [attribute][attributes]* defines a *derive macro* which
 
 r[macro.proc.derive.def]
 Custom derive macros are defined by a [public]&#32;[function] with the `proc_macro_derive` attribute and a signature of `(TokenStream) -> TokenStream`.
+> [!EXAMPLE]
+> The following is an example of a derive macro. Instead of doing anything useful with its input, it just appends a function `answer`.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> # #![crate_type = "proc-macro"]
+> extern crate proc_macro;
+> use proc_macro::TokenStream;
+>
+> #[proc_macro_derive(AnswerFn)]
+> pub fn derive_answer_fn(_item: TokenStream) -> TokenStream {
+>     "fn answer() -> u32 { 42 }".parse().unwrap()
+> }
+> ```
+>
+> And then using said derive macro:
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> extern crate proc_macro_examples;
+> use proc_macro_examples::AnswerFn;
+>
+> #[derive(AnswerFn)]
+> struct Struct;
+>
+> fn main() {
+>     assert_eq!(42, answer());
+> }
+> ```
 
 r[macro.proc.derive.namespace]
 The `proc_macro_derive` attribute defines the custom derive in the [macro namespace] in the root of the crate.
@@ -145,34 +174,13 @@ The `proc_macro_derive` attribute defines the custom derive in the [macro namesp
 r[macro.proc.derive.output]
 The input [`TokenStream`] is the token stream of the item that has the `derive` attribute on it. The output [`TokenStream`] must be a set of items that are then appended to the [module] or [block] that the item from the input [`TokenStream`] is in.
 
-The following is an example of a derive macro. Instead of doing anything useful with its input, it just appends a function `answer`.
 
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-# #![crate_type = "proc-macro"]
-extern crate proc_macro;
-use proc_macro::TokenStream;
 
-#[proc_macro_derive(AnswerFn)]
-pub fn derive_answer_fn(_item: TokenStream) -> TokenStream {
-    "fn answer() -> u32 { 42 }".parse().unwrap()
-}
 ```
 
-And then using said derive macro:
 
-<!-- ignore: requires external crates -->
-```rust,ignore
-extern crate proc_macro_examples;
-use proc_macro_examples::AnswerFn;
 
-#[derive(AnswerFn)]
-struct Struct;
 
-fn main() {
-    assert_eq!(42, answer());
-}
-```
 
 r[macro.proc.derive.attributes]
 ### Derive macro helper attributes
@@ -183,29 +191,30 @@ Derive macros can add additional [attributes] into the scope of the [item] they 
 r[macro.proc.derive.attributes.def]
 The way to define helper attributes is to put an `attributes` key in the `proc_macro_derive` macro with a comma separated list of identifiers that are the names of the helper attributes.
 
-For example, the following derive macro defines a helper attribute `helper`, but ultimately doesn't do anything with it.
-
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-# #![crate_type="proc-macro"]
-# extern crate proc_macro;
-# use proc_macro::TokenStream;
-
-#[proc_macro_derive(HelperAttr, attributes(helper))]
-pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
-    TokenStream::new()
-}
-```
-
-And then usage on the derive macro on a struct:
-
-<!-- ignore: requires external crates -->
-```rust,ignore
-#[derive(HelperAttr)]
-struct Struct {
-    #[helper] field: ()
-}
-```
+> [!EXAMPLE]
+> The following derive macro defines a helper attribute `helper`, but ultimately doesn't do anything with it.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> # #![crate_type="proc-macro"]
+> # extern crate proc_macro;
+> # use proc_macro::TokenStream;
+>
+> #[proc_macro_derive(HelperAttr, attributes(helper))]
+> pub fn derive_helper_attr(_item: TokenStream) -> TokenStream {
+>     TokenStream::new()
+> }
+> ```
+>
+> And then usage on the derive macro on a struct:
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> #[derive(HelperAttr)]
+> struct Struct {
+>     #[helper] field: ()
+> }
+> ```
 
 r[macro.proc.attribute]
 ## Attribute macros
