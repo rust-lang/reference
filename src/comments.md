@@ -30,7 +30,7 @@ OUTER_BLOCK_DOC ->
       ( BlockCommentOrDoc | ~[`*/` CR] )*
     `*/`
 
-BlockCommentOrDoc ->
+@root BlockCommentOrDoc ->
       BLOCK_COMMENT
     | OUTER_BLOCK_DOC
     | INNER_BLOCK_DOC
