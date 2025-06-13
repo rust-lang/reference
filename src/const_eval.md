@@ -83,8 +83,9 @@ r[const-eval.const-expr.builtin-arith-logic]
 r[const-eval.const-expr.borrows]
 * All forms of [borrow]s, including raw borrows, with one limitation:
   mutable borrows and shared borrows to values with interior mutability
-  are only allowed to refer to *transient* places. A place is *transient*
+  are only allowed to refer to *transient* places or to *static* places. A place is *transient*
   if its lifetime is strictly contained inside the current [const context].
+  A place is *static* if it is a `static` item or a [promoted expression].
 
 r[const-eval.const-expr.deref]
 * The [dereference operator] except for raw pointers.
@@ -195,6 +196,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [overflow]:             expressions/operator-expr.md#overflow
 [paths]:                expressions/path-expr.md
 [patterns]:             patterns.md
+[promoted expression]:  destructors.md#constant-promotion
 [range expressions]:    expressions/range-expr.md
 [slice]:                types/slice.md
 [statics]:              items/static-items.md
