@@ -60,10 +60,10 @@ A `while` loop expression allows repeating the evaluation of a block while a set
 
 r[expr.loop.while.syntax]
 The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`,
-followed by a [_BlockExpression_].
+followed by a [BlockExpression].
 
 r[expr.loop.while.condition]
-Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
+Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match.
 If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
 then the loop body block executes.
 
@@ -392,8 +392,6 @@ r[expr.loop.break-value.loop]
 In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
 `break` without an expression is considered identical to `break` with expression `()`.
 
-[_BlockExpression_]: block-expr.md
-[_Expression_]: ../expressions.md
 [`if` condition chains]: if-expr.md#chains-of-conditions
 [`if` expressions]: if-expr.md
 [`match` expression]: match-expr.md

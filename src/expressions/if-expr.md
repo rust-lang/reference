@@ -35,7 +35,7 @@ The syntax of an `if` expression is a sequence of one or more condition operands
 followed by a consequent block, any number of `else if` conditions and blocks, and an optional trailing `else` block.
 
 r[expr.if.condition]
-Condition operands must be either an [_Expression_] with a [boolean type] or a conditional `let` match.
+Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match.
 
 r[expr.if.condition-true]
 If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
@@ -125,7 +125,7 @@ r[expr.if.chains.intro]
 Multiple condition operands can be separated with `&&`.
 
 r[expr.if.chains.order]
-Similar to a `&&` [_LazyBooleanOperatorExpression_], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
+Similar to a `&&` [LazyBooleanExpression], each operand is evaluated from left-to-right until an operand evaluates as `false` or a `let` match fails,
 in which case the subsequent operands are not evaluated.
 
 r[expr.if.chains.bindings]
@@ -163,7 +163,7 @@ fn nested() {
 ```
 
 r[expr.if.chains.or]
-If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][_LazyBooleanOperatorExpression_] due to ambiguity and precedence with the `let` scrutinee.
+If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee.
 If a `||` expression is needed, then parentheses can be used. For example:
 
 ```rust
@@ -178,11 +178,6 @@ r[expr.if.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition, let chains are not supported. That is, the [LetChain] grammar is not allowed in an `if` expression.
 
-[_BlockExpression_]: block-expr.md
-[_Expression_]: ../expressions.md
-[_LazyBooleanOperatorExpression_]: operator-expr.md#lazy-boolean-operators
-[_Pattern_]: ../patterns.md
-[_Scrutinee_]: match-expr.md
 [`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee

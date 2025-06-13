@@ -27,7 +27,7 @@ r[items.generics.syntax.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
 r[items.generics.syntax.duplicate-params]
-The same parameter name may not be declared more than once in a _GenericParams_ list.
+The same parameter name may not be declared more than once in a [GenericParams] list.
 
 Some examples of items with type, const, and lifetime parameters:
 

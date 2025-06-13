@@ -69,7 +69,7 @@ TypeNoBounds ->
 ```
 
 r[type.name.intro]
-A _type expression_ as defined in the _Type_ grammar rule above is the syntax
+A _type expression_ as defined in the [Type] grammar rule above is the syntax
 for referring to a type. It may refer to:
 
 r[type.name.sequence]
