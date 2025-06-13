@@ -65,7 +65,6 @@ GenericArgsConst ->
     | LiteralExpression
     | `-` LiteralExpression
     | SimplePathSegment
-    | InferredConst
 
 GenericArgsBinding ->
     IDENTIFIER GenericArgs? `=` Type
