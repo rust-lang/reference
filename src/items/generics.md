@@ -171,6 +171,19 @@ fn example() {
 }
 ```
 
+r[items.generics.const.inferred]
+Where a const argument is expected, an `_` (optionally surrounding by any number of matching parentheses), called the "inferred const", can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
+
+```rust
+fn make_buf() -> [u8; 1024] {
+    [0x1; _]
+    //    ^ Infers `1024`.
+}
+```
+
+r[items.generics.const.inferred.constraint]
+It cannot be used in item signatures.
+
 r[items.generics.const.type-ambiguity]
 When there is ambiguity if a generic argument could be resolved as either a
 type or const argument, it is always resolved as a type. Placing the argument
