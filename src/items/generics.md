@@ -237,11 +237,12 @@ InferredConst ->
 ```
 
 r[items.generics.const.inferred.intro]
-The inferred const asks the compiler to infer the const argument if possible based on the surrounding information available.
+Where a const argument is expected, an `_` (optionally surrounding by any number of matching parentheses), called the "inferred const", can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
 ```rust
 fn make_buf() -> [u8; 1024] {
     [0x1; _]
+    //    ^ Infers `1024`.
 }
 ```
 
