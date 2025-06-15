@@ -244,25 +244,15 @@ r[macro.proc.attribute]
 ## Attribute macros
 
 r[macro.proc.attribute.intro]
-*Attribute macros* define new [outer attributes][attributes] which can be
-attached to [items], including items in [`extern` blocks], inherent and trait
-[implementations], and [trait definitions].
+*Attribute macros* define new [outer attributes][attributes] which can be attached to [items], including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
 
 r[macro.proc.attribute.def]
-Attribute macros are defined by a [public]&#32;[function] with the
-`proc_macro_attribute` [attribute] that has a signature of `(TokenStream,
-TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token
-tree following the attribute's name, not including the outer delimiters. If
-the attribute is written as a bare attribute name, the attribute
-[`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
-including other [attributes] on the [item]. The returned [`TokenStream`]
-replaces the [item] with an arbitrary number of [items].
+Attribute macros are defined by a [public]&#32;[function] with the `proc_macro_attribute` [attribute] that has a signature of `(TokenStream, TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token tree following the attribute's name, not including the outer delimiters. If the attribute is written as a bare attribute name, the attribute [`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item] including other [attributes] on the [item]. The returned [`TokenStream`] replaces the [item] with an arbitrary number of [items].
 
 r[macro.proc.attribute.namespace]
 The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate.
 
-For example, this attribute macro takes the input stream and returns it as is,
-effectively being the no-op of attributes.
+For example, this attribute macro takes the input stream and returns it as is, effectively being the no-op of attributes.
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
@@ -276,9 +266,7 @@ pub fn return_as_is(_attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 ```
 
-This following example shows the stringified [`TokenStream`s] that the attribute
-macros see. The output will show in the output of the compiler. The output is
-shown in the comments after the function prefixed with "out:".
+This following example shows the stringified [`TokenStream`s] that the attribute macros see. The output will show in the output of the compiler. The output is shown in the comments after the function prefixed with "out:".
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
