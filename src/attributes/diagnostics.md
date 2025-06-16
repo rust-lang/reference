@@ -156,7 +156,7 @@ All lint attributes support an additional `reason` parameter, to give context wh
 r[attributes.diagnostics.expect]
 ### The `expect` attribute
 
-r[attributes.diagnostics.expect.intro]
+r[attributes.diagnostics.expect.behavior]
 The `expect(C)` attribute creates a lint expectation for lint `C`. The expectation will be fulfilled, if a `warn(C)` attribute at the same location would result in a lint emission. If the expectation is unfulfilled, because lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will be emitted at the attribute.
 
 ```rust
