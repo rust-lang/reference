@@ -179,6 +179,9 @@ The `expect(C)` attribute creates a lint expectation for lint `C`. The expectati
 > }
 > ```
 
+> [!NOTE]
+> The behavior of `expect(unfulfilled_lint_expectations)` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
+
 r[attributes.diagnostics.expect.fulfillment]
 The lint expectation is only fulfilled by lint emissions which have been suppressed by the `expect` attribute. If the lint level is modified in the scope with other level attributes like `allow` or `warn`, the lint emission will be handled accordingly and the expectation will remain unfulfilled.
 
@@ -230,9 +233,6 @@ If the `expect` attribute contains several lints, each one is expected separatel
 >     println!("Welcome to our community: {link}");
 > }
 > ```
-
-> [!NOTE]
-> The behavior of `expect(unfulfilled_lint_expectations)` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
 
 r[attributes.diagnostics.lint.group]
 ### Lint groups
