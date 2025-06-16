@@ -159,74 +159,77 @@ r[attributes.diagnostics.expect]
 r[attributes.diagnostics.expect.behavior]
 The `expect(C)` attribute creates a lint expectation for lint `C`. The expectation will be fulfilled, if a `warn(C)` attribute at the same location would result in a lint emission. If the expectation is unfulfilled, because lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will be emitted at the attribute.
 
-```rust
-fn main() {
-    // This `#[expect]` attribute creates a lint expectation, that the `unused_variables`
-    // lint would be emitted by the following statement. This expectation is
-    // unfulfilled, since the `question` variable is used by the `println!` macro.
-    // Therefore, the `unfulfilled_lint_expectations` lint will be emitted at the
-    // attribute.
-    #[expect(unused_variables)]
-    let question = "who lives in a pineapple under the sea?";
-    println!("{question}");
-
-    // This `#[expect]` attribute creates a lint expectation that will be fulfilled, since
-    // the `answer` variable is never used. The `unused_variables` lint, that would usually
-    // be emitted, is suppressed. No warning will be issued for the statement or attribute.
-    #[expect(unused_variables)]
-    let answer = "SpongeBob SquarePants!";
-}
-```
+> [!EXAMPLE]
+> ```rust
+> fn main() {
+>     // This `#[expect]` attribute creates a lint expectation, that the `unused_variables`
+>     // lint would be emitted by the following statement. This expectation is
+>     // unfulfilled, since the `question` variable is used by the `println!` macro.
+>     // Therefore, the `unfulfilled_lint_expectations` lint will be emitted at the
+>     // attribute.
+>     #[expect(unused_variables)]
+>     let question = "who lives in a pineapple under the sea?";
+>     println!("{question}");
+>
+>     // This `#[expect]` attribute creates a lint expectation that will be fulfilled, since
+>     // the `answer` variable is never used. The `unused_variables` lint, that would usually
+>     // be emitted, is suppressed. No warning will be issued for the statement or attribute.
+>     #[expect(unused_variables)]
+>     let answer = "SpongeBob SquarePants!";
+> }
+> ```
 
 r[attributes.diagnostics.expect.fulfillment]
 The lint expectation is only fulfilled by lint emissions which have been suppressed by the `expect` attribute. If the lint level is modified in the scope with other level attributes like `allow` or `warn`, the lint emission will be handled accordingly and the expectation will remain unfulfilled.
 
-```rust
-#[expect(unused_variables)]
-fn select_song() {
-    // This will emit the `unused_variables` lint at the warn level
-    // as defined by the `warn` attribute. This will not fulfill the
-    // expectation above the function.
-    #[warn(unused_variables)]
-    let song_name = "Crab Rave";
-
-    // The `allow` attribute suppresses the lint emission. This will not
-    // fulfill the expectation as it has been suppressed by the `allow`
-    // attribute and not the `expect` attribute above the function.
-    #[allow(unused_variables)]
-    let song_creator = "Noisestorm";
-
-    // This `expect` attribute will suppress the `unused_variables` lint emission
-    // at the variable. The `expect` attribute above the function will still not
-    // be fulfilled, since this lint emission has been suppressed by the local
-    // expect attribute.
-    #[expect(unused_variables)]
-    let song_version = "Monstercat Release";
-}
-```
+> [!EXAMPLE]
+> ```rust
+> #[expect(unused_variables)]
+> fn select_song() {
+>     // This will emit the `unused_variables` lint at the warn level
+>     // as defined by the `warn` attribute. This will not fulfill the
+>     // expectation above the function.
+>     #[warn(unused_variables)]
+>     let song_name = "Crab Rave";
+>
+>     // The `allow` attribute suppresses the lint emission. This will not
+>     // fulfill the expectation as it has been suppressed by the `allow`
+>     // attribute and not the `expect` attribute above the function.
+>     #[allow(unused_variables)]
+>     let song_creator = "Noisestorm";
+>
+>     // This `expect` attribute will suppress the `unused_variables` lint emission
+>     // at the variable. The `expect` attribute above the function will still not
+>     // be fulfilled, since this lint emission has been suppressed by the local
+>     // expect attribute.
+>     #[expect(unused_variables)]
+>     let song_version = "Monstercat Release";
+> }
+> ```
 
 r[attributes.diagnostics.expect.independent]
-If the `expect` attribute contains several lints, each one is expected separately. For a lint group it's enough if one lint inside the group has been emitted:
+If the `expect` attribute contains several lints, each one is expected separately. For a lint group it's enough if one lint inside the group has been emitted.
 
-```rust
-// This expectation will be fulfilled by the unused value inside the function
-// since the emitted `unused_variables` lint is inside the `unused` lint group.
-#[expect(unused)]
-pub fn thoughts() {
-    let unused = "I'm running out of examples";
-}
-
-pub fn another_example() {
-    // This attribute creates two lint expectations. The `unused_mut` lint will be
-    // suppressed and with that fulfill the first expectation. The `unused_variables`
-    // wouldn't be emitted, since the variable is used. That expectation will therefore
-    // be unsatisfied, and a warning will be emitted.
-    #[expect(unused_mut, unused_variables)]
-    let mut link = "https://www.rust-lang.org/";
-
-    println!("Welcome to our community: {link}");
-}
-```
+> [!EXAMPLE]
+> ```rust
+> // This expectation will be fulfilled by the unused value inside the function
+> // since the emitted `unused_variables` lint is inside the `unused` lint group.
+> #[expect(unused)]
+> pub fn thoughts() {
+>     let unused = "I'm running out of examples";
+> }
+>
+> pub fn another_example() {
+>     // This attribute creates two lint expectations. The `unused_mut` lint will be
+>     // suppressed and with that fulfill the first expectation. The `unused_variables`
+>     // wouldn't be emitted, since the variable is used. That expectation will therefore
+>     // be unsatisfied, and a warning will be emitted.
+>     #[expect(unused_mut, unused_variables)]
+>     let mut link = "https://www.rust-lang.org/";
+>
+>     println!("Welcome to our community: {link}");
+> }
+> ```
 
 > [!NOTE]
 > The behavior of `expect(unfulfilled_lint_expectations)` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
