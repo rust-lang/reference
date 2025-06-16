@@ -7,10 +7,12 @@ messages during compilation.
 r[attributes.diagnostics.lint]
 ## Lint check attributes
 
-A lint check names a potentially undesirable coding pattern, such as unreachable code or omitted documentation.
+r[attributes.diagnostics.lint.intro]
+A *lint check* names a potentially undesirable coding pattern, such as unreachable code or omitted documentation.
 
 r[attributes.diagnostics.lint.level]
 The lint attributes `allow`, `expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax to specify a list of lint names to change the lint level for the entity to which the attribute applies.
+The *`allow`, `expect`, `warn`, `deny`, and `forbid` [attributes]* control the level of reporting for a lint check.
 
 For any lint check `C`:
 > [!EXAMPLE]
