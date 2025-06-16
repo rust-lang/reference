@@ -34,9 +34,13 @@ For any lint check `C`:
 
 r[attributes.diagnostics.lint.allow]
 * `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
+> [!NOTE]
+> The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
 
 r[attributes.diagnostics.lint.expect]
 * `#[expect(C)]` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled.
+> [!NOTE]
+> `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
 
 r[attributes.diagnostics.lint.warn]
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
@@ -47,8 +51,6 @@ r[attributes.diagnostics.lint.deny]
 r[attributes.diagnostics.lint.forbid]
 * `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint level afterwards,
 
-> [!NOTE]
-> The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
 
 ```
 
@@ -59,8 +61,6 @@ Lint attributes can override the level specified from a previous attribute, as l
 
 
 
-> [!NOTE]
-> `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
 
 r[attributes.diagnostics.lint.reason]
 ### Lint reasons
