@@ -10,11 +10,8 @@ r[attributes.diagnostics.lint]
 r[attributes.diagnostics.lint.intro]
 A *lint check* names a potentially undesirable coding pattern, such as unreachable code or omitted documentation.
 
-r[attributes.diagnostics.lint.level]
-The lint attributes `allow`, `expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax to specify a list of lint names to change the lint level for the entity to which the attribute applies.
 The *`allow`, `expect`, `warn`, `deny`, and `forbid` [attributes]* control the level of reporting for a lint check.
 
-For any lint check `C`:
 > [!EXAMPLE]
 > ```rust
 > pub mod m1 {
@@ -32,42 +29,56 @@ For any lint check `C`:
 > }
 > ```
 
-r[attributes.diagnostics.lint.allow]
-* `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
 > [!NOTE]
 > The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
 
-r[attributes.diagnostics.lint.expect]
-* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled.
 > [!NOTE]
 > `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
+
+r[attributes.diagnostics.lint.syntax]
+The syntax for the lint attributes is:
+
+```grammar,attributes
+@root LintAttribute ->
+      LintAttrName `(` `)`
+    | LintAttrName `(` LintReason `,`? `)`
+    | LintAttrName `(` LintNames (`,` LintReason)? `,`? `)`
+
+LintAttrName -> `allow` | `expect` | `warn` | `deny` | `forbid`
+
+LintNames -> SimplePath (`,` SimplePath)*
+
+LintReason -> `reason` `=` (STRING_LITERAL | RAW_STRING_LITERAL)
+```
+
+The [LintNames] list the lint checks that are affected. The optional [LintReason] is described in [attributes.diagnostics.lint.reason].
+
+r[attributes.diagnostics.lint.allowed-positions]
+The lint attributes are allowed anywhere attributes are allowed.
+
+r[attributes.diagnostics.lint.duplicates]
+When a lint attribute is specified multiple times, it combines the union of all specified lints. The order matters when multiple levels are specified in the same place, which is described in [attributes.diagnostics.lint.override].
+
+r[attributes.diagnostics.lint.level]
+Each lint attribute sets the level of the specified lint checks. The following describes the behavior for each attribute for any lint `C`:
+
+r[attributes.diagnostics.lint.allow]
+* `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
+
+r[attributes.diagnostics.lint.expect]
+* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled. See [attributes.diagnostics.expect] for a complete description.
 
 r[attributes.diagnostics.lint.warn]
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
 
 r[attributes.diagnostics.lint.deny]
-* `#[deny(C)]` signals an error after encountering a violation of `C`,
+* `#[deny(C)]` signals an error after encountering a violation of `C`.
 
 r[attributes.diagnostics.lint.forbid]
-* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint level afterwards,
-
-
-```
+* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint level afterwards.
 
 r[attributes.diagnostics.lint.override]
 Lint attributes can override the level specified from a previous attribute, as long as the level does not attempt to change a forbidden lint (except for `deny`, which is allowed inside a `forbid` context, but ignored). Previous attributes are those from a higher level in the syntax tree, or from a previous attribute on the same entity as listed in left-to-right source order.
-
-
-
-
-
-
-r[attributes.diagnostics.lint.reason]
-### Lint reasons
-
-All lint attributes support an additional `reason` parameter, to give context why a certain attribute was added. This reason will be displayed as part of the lint message if the lint is emitted at the defined level.
-
-
 
 > [!EXAMPLE]
 > This example shows how one can use `allow` and `warn` to toggle a particular check on and off:
@@ -104,7 +115,10 @@ All lint attributes support an additional `reason` parameter, to give context wh
 > }
 > ```
 
+r[attributes.diagnostics.lint.reason]
+### Lint reasons
 
+All lint attributes support an additional `reason` parameter, to give context why a certain attribute was added. This reason will be displayed as part of the lint message if the lint is emitted at the defined level.
 
 > [!EXAMPLE]
 > This example shows a reason explaining why a lint is denied.
