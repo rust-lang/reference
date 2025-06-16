@@ -13,6 +13,22 @@ r[attributes.diagnostics.lint.level]
 The lint attributes `allow`, `expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax to specify a list of lint names to change the lint level for the entity to which the attribute applies.
 
 For any lint check `C`:
+> [!EXAMPLE]
+> ```rust
+> pub mod m1 {
+>     // Missing documentation is ignored here
+>     #[allow(missing_docs)]
+>     pub fn undocumented_one() -> i32 { 1 }
+>
+>     // Missing documentation signals a warning here
+>     #[warn(missing_docs)]
+>     pub fn undocumented_too() -> i32 { 2 }
+>
+>     // Missing documentation signals an error here
+>     #[deny(missing_docs)]
+>     pub fn undocumented_end() -> i32 { 3 }
+> }
+> ```
 
 r[attributes.diagnostics.lint.allow]
 * `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
@@ -32,57 +48,14 @@ r[attributes.diagnostics.lint.forbid]
 > [!NOTE]
 > The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
 
-```rust
-pub mod m1 {
-    // Missing documentation is ignored here
-    #[allow(missing_docs)]
-    pub fn undocumented_one() -> i32 { 1 }
-
-    // Missing documentation signals a warning here
-    #[warn(missing_docs)]
-    pub fn undocumented_too() -> i32 { 2 }
-
-    // Missing documentation signals an error here
-    #[deny(missing_docs)]
-    pub fn undocumented_end() -> i32 { 3 }
-}
 ```
 
 r[attributes.diagnostics.lint.override]
 Lint attributes can override the level specified from a previous attribute, as long as the level does not attempt to change a forbidden lint (except for `deny`, which is allowed inside a `forbid` context, but ignored). Previous attributes are those from a higher level in the syntax tree, or from a previous attribute on the same entity as listed in left-to-right source order.
 
-This example shows how one can use `allow` and `warn` to toggle a particular check on and off:
 
-```rust
-#[warn(missing_docs)]
-pub mod m2 {
-    #[allow(missing_docs)]
-    pub mod nested {
-        // Missing documentation is ignored here
-        pub fn undocumented_one() -> i32 { 1 }
 
-        // Missing documentation signals a warning here,
-        // despite the allow above.
-        #[warn(missing_docs)]
-        pub fn undocumented_two() -> i32 { 2 }
-    }
 
-    // Missing documentation signals a warning here
-    pub fn undocumented_too() -> i32 { 3 }
-}
-```
-
-This example shows how one can use `forbid` to disallow uses of `allow` or `expect` for that lint check:
-
-```rust,compile_fail
-#[forbid(missing_docs)]
-pub mod m3 {
-    // Attempting to toggle warning signals an error here
-    #[allow(missing_docs)]
-    /// Returns 2.
-    pub fn undocumented_too() -> i32 { 2 }
-}
-```
 
 > [!NOTE]
 > `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
@@ -92,35 +65,77 @@ r[attributes.diagnostics.lint.reason]
 
 All lint attributes support an additional `reason` parameter, to give context why a certain attribute was added. This reason will be displayed as part of the lint message if the lint is emitted at the defined level.
 
-```rust,edition2015,compile_fail
-// `keyword_idents` is allowed by default. Here we deny it to
-// avoid migration of identifiers when we update the edition.
-#![deny(
-    keyword_idents,
-    reason = "we want to avoid these idents to be future compatible"
-)]
 
-// This name was allowed in Rust's 2015 edition. We still aim to avoid
-// this to be future compatible and not confuse end users.
-fn dyn() {}
-```
 
-Here is another example, where the lint is allowed with a reason:
+> [!EXAMPLE]
+> This example shows how one can use `allow` and `warn` to toggle a particular check on and off:
+>
+> ```rust
+> #[warn(missing_docs)]
+> pub mod m2 {
+>     #[allow(missing_docs)]
+>     pub mod nested {
+>         // Missing documentation is ignored here
+>         pub fn undocumented_one() -> i32 { 1 }
+>
+>         // Missing documentation signals a warning here,
+>         // despite the allow above.
+>         #[warn(missing_docs)]
+>         pub fn undocumented_two() -> i32 { 2 }
+>     }
+>
+>     // Missing documentation signals a warning here
+>     pub fn undocumented_too() -> i32 { 3 }
+> }
+> ```
 
-```rust
-use std::path::PathBuf;
+> [!EXAMPLE]
+> This example shows how one can use `forbid` to disallow uses of `allow` or `expect` for that lint check:
+>
+> ```rust,compile_fail,E0453
+> #[forbid(missing_docs)]
+> pub mod m3 {
+>     // Attempting to toggle warning signals an error here
+>     #[allow(missing_docs)]
+>     /// Returns 2.
+>     pub fn undocumented_too() -> i32 { 2 }
+> }
+> ```
 
-pub fn get_path() -> PathBuf {
-    // The `reason` parameter on `allow` attributes acts as documentation for the reader.
-    #[allow(unused_mut, reason = "this is only modified on some platforms")]
-    let mut file_name = PathBuf::from("git");
 
-    #[cfg(target_os = "windows")]
-    file_name.set_extension("exe");
 
-    file_name
-}
-```
+> [!EXAMPLE]
+> This example shows a reason explaining why a lint is denied.
+>
+> ```rust,edition2015,compile_fail
+> // `keyword_idents` is allowed by default. Here we deny it to
+> // avoid migration of identifiers when we update the edition.
+> #![deny(
+>     keyword_idents,
+>     reason = "we want to avoid these idents to be future compatible"
+> )]
+>
+> // This name was allowed in Rust's 2015 edition. We still aim to avoid
+> // this to be future compatible and not confuse end users.
+> fn dyn() {}
+> ```
+>
+> Here is another example, where the lint is allowed with a reason:
+>
+> ```rust
+> use std::path::PathBuf;
+>
+> pub fn get_path() -> PathBuf {
+>     // The `reason` parameter on `allow` attributes acts as documentation for the reader.
+>     #[allow(unused_mut, reason = "this is only modified on some platforms")]
+>     let mut file_name = PathBuf::from("git");
+>
+>     #[cfg(target_os = "windows")]
+>     file_name.set_extension("exe");
+>
+>     file_name
+> }
+> ```
 
 r[attributes.diagnostics.expect]
 ### The `#[expect]` attribute
