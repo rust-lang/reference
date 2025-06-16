@@ -63,19 +63,19 @@ r[attributes.diagnostics.lint.level]
 Each lint attribute sets the level of the specified lint checks. The following describes the behavior for each attribute for any lint `C`:
 
 r[attributes.diagnostics.lint.allow]
-* `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
+* `allow(C)` overrides the check for `C` so that violations will go unreported.
 
 r[attributes.diagnostics.lint.expect]
-* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled. See [attributes.diagnostics.expect] for a complete description.
+* `expect(C)` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled. See [attributes.diagnostics.expect] for a complete description.
 
 r[attributes.diagnostics.lint.warn]
-* `#[warn(C)]` warns about violations of `C` but continues compilation.
+* `warn(C)` warns about violations of `C` but continues compilation.
 
 r[attributes.diagnostics.lint.deny]
-* `#[deny(C)]` signals an error after encountering a violation of `C`.
+* `deny(C)` signals an error after encountering a violation of `C`.
 
 r[attributes.diagnostics.lint.forbid]
-* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint level afterwards.
+* `forbid(C)` is the same as `deny(C)`, but also forbids changing the lint level afterwards.
 
 r[attributes.diagnostics.lint.override]
 Lint attributes can override the level specified from a previous attribute, as long as the level does not attempt to change a forbidden lint (except for `deny`, which is allowed inside a `forbid` context, but ignored). Previous attributes are those from a higher level in the syntax tree, or from a previous attribute on the same entity as listed in left-to-right source order.
@@ -154,10 +154,10 @@ All lint attributes support an additional `reason` parameter, to give context wh
 > ```
 
 r[attributes.diagnostics.expect]
-### The `#[expect]` attribute
+### The `expect` attribute
 
 r[attributes.diagnostics.expect.intro]
-The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location would result in a lint emission. If the expectation is unfulfilled, because lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will be emitted at the attribute.
+The `expect(C)` attribute creates a lint expectation for lint `C`. The expectation will be fulfilled, if a `warn(C)` attribute at the same location would result in a lint emission. If the expectation is unfulfilled, because lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will be emitted at the attribute.
 
 ```rust
 fn main() {
@@ -229,7 +229,7 @@ pub fn another_example() {
 ```
 
 > [!NOTE]
-> The behavior of `#[expect(unfulfilled_lint_expectations)]` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
+> The behavior of `expect(unfulfilled_lint_expectations)` is currently defined to always generate the `unfulfilled_lint_expectations` lint.
 
 r[attributes.diagnostics.lint.group]
 ### Lint groups
