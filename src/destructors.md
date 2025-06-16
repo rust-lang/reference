@@ -1,3 +1,4 @@
+r[destructors]
 # Destructors
 
 r[destructors.intro]
