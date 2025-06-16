@@ -303,7 +303,15 @@ r[attributes.diagnostics.deprecated]
 ## The `deprecated` attribute
 
 r[attributes.diagnostics.deprecated.intro]
-The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue warnings on usage of `#[deprecated]` items. `rustdoc` will show item deprecation, including the `since` version and `note`, if available.
+The *`deprecated` [attribute][attributes]* marks an item as deprecated.
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated(since = "5.2.0", note = "foo was rarely used. Users should instead use bar")]
+> pub fn foo() {}
+>
+> pub fn bar() {}
+> ```
 
 r[attributes.diagnostics.deprecated.syntax]
 The `deprecated` attribute has several forms:
@@ -322,14 +330,8 @@ The `deprecated` attribute may be applied to any [item], [trait item], [enum var
 Tuple struct fields are ignored.
 -->
 
-Here is an example:
 
-```rust
-#[deprecated(since = "5.2.0", note = "foo was rarely used. Users should instead use bar")]
-pub fn foo() {}
 
-pub fn bar() {}
-```
 
 The [RFC][1270-deprecation.md] contains motivations and more details.
 
