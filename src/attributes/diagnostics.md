@@ -7,25 +7,18 @@ messages during compilation.
 r[attributes.diagnostics.lint]
 ## Lint check attributes
 
-A lint check names a potentially undesirable coding pattern, such as
-unreachable code or omitted documentation.
+A lint check names a potentially undesirable coding pattern, such as unreachable code or omitted documentation.
 
 r[attributes.diagnostics.lint.level]
-The lint attributes `allow`,
-`expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax
-to specify a list of lint names to change the lint level for the entity
-to which the attribute applies.
+The lint attributes `allow`, `expect`, `warn`, `deny`, and `forbid` use the [MetaListPaths] syntax to specify a list of lint names to change the lint level for the entity to which the attribute applies.
 
 For any lint check `C`:
 
 r[attributes.diagnostics.lint.allow]
-* `#[allow(C)]` overrides the check for `C` so that violations will go
-   unreported.
+* `#[allow(C)]` overrides the check for `C` so that violations will go unreported.
 
 r[attributes.diagnostics.lint.expect]
-* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
-  attribute will suppress the emission of `C` or issue a warning, if the
-  expectation is unfulfilled.
+* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled.
 
 r[attributes.diagnostics.lint.warn]
 * `#[warn(C)]` warns about violations of `C` but continues compilation.
@@ -34,8 +27,7 @@ r[attributes.diagnostics.lint.deny]
 * `#[deny(C)]` signals an error after encountering a violation of `C`,
 
 r[attributes.diagnostics.lint.forbid]
-* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
-   level afterwards,
+* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint level afterwards,
 
 > [!NOTE]
 > The lint checks supported by `rustc` can be found via `rustc -W help`, along with their default settings and are documented in the [rustc book].
@@ -57,14 +49,9 @@ pub mod m1 {
 ```
 
 r[attributes.diagnostics.lint.override]
-Lint attributes can override the level specified from a previous attribute, as
-long as the level does not attempt to change a forbidden lint
-(except for `deny`, which is allowed inside a `forbid` context, but ignored).
-Previous attributes are those from a higher level in the syntax tree, or from a
-previous attribute on the same entity as listed in left-to-right source order.
+Lint attributes can override the level specified from a previous attribute, as long as the level does not attempt to change a forbidden lint (except for `deny`, which is allowed inside a `forbid` context, but ignored). Previous attributes are those from a higher level in the syntax tree, or from a previous attribute on the same entity as listed in left-to-right source order.
 
-This example shows how one can use `allow` and `warn` to toggle a particular
-check on and off:
+This example shows how one can use `allow` and `warn` to toggle a particular check on and off:
 
 ```rust
 #[warn(missing_docs)]
@@ -85,8 +72,7 @@ pub mod m2 {
 }
 ```
 
-This example shows how one can use `forbid` to disallow uses of `allow` or
-`expect` for that lint check:
+This example shows how one can use `forbid` to disallow uses of `allow` or `expect` for that lint check:
 
 ```rust,compile_fail
 #[forbid(missing_docs)]
@@ -104,9 +90,7 @@ pub mod m3 {
 r[attributes.diagnostics.lint.reason]
 ### Lint reasons
 
-All lint attributes support an additional `reason` parameter, to give context why
-a certain attribute was added. This reason will be displayed as part of the lint
-message if the lint is emitted at the defined level.
+All lint attributes support an additional `reason` parameter, to give context why a certain attribute was added. This reason will be displayed as part of the lint message if the lint is emitted at the defined level.
 
 ```rust,edition2015,compile_fail
 // `keyword_idents` is allowed by default. Here we deny it to
@@ -142,11 +126,7 @@ r[attributes.diagnostics.expect]
 ### The `#[expect]` attribute
 
 r[attributes.diagnostics.expect.intro]
-The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
-expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
-would result in a lint emission. If the expectation is unfulfilled, because
-lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will
-be emitted at the attribute.
+The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location would result in a lint emission. If the expectation is unfulfilled, because lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will be emitted at the attribute.
 
 ```rust
 fn main() {
@@ -168,10 +148,7 @@ fn main() {
 ```
 
 r[attributes.diagnostics.expect.fulfillment]
-The lint expectation is only fulfilled by lint emissions which have been suppressed by
-the `expect` attribute. If the lint level is modified in the scope with other level
-attributes like `allow` or `warn`, the lint emission will be handled accordingly and the
-expectation will remain unfulfilled.
+The lint expectation is only fulfilled by lint emissions which have been suppressed by the `expect` attribute. If the lint level is modified in the scope with other level attributes like `allow` or `warn`, the lint emission will be handled accordingly and the expectation will remain unfulfilled.
 
 ```rust
 #[expect(unused_variables)]
@@ -198,8 +175,7 @@ fn select_song() {
 ```
 
 r[attributes.diagnostics.expect.independent]
-If the `expect` attribute contains several lints, each one is expected separately. For a
-lint group it's enough if one lint inside the group has been emitted:
+If the `expect` attribute contains several lints, each one is expected separately. For a lint group it's enough if one lint inside the group has been emitted:
 
 ```rust
 // This expectation will be fulfilled by the unused value inside the function
