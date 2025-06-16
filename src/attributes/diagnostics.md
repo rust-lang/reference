@@ -323,12 +323,33 @@ The `deprecated` attribute has several forms:
   - `note` --- Specifies a string that should be included in the deprecation message. This is typically used to provide an explanation about the deprecation and preferred alternatives.
 
 r[attributes.diagnostic.deprecated.allowed-positions]
-The `deprecated` attribute may be applied to any [item], [trait item], [enum variant], [struct field], [external block item], or [macro definition]. It cannot be applied to [trait implementation items][trait-impl]. When applied to an item containing other items, such as a [module] or [implementation], all child items inherit the deprecation attribute.
+The `deprecated` attribute may be applied to any [item], [trait item], [enum variant], [struct field], [external block item], or [macro definition]. It cannot be applied to [trait implementation items][trait-impl].
 
 <!-- NOTE: It is only rejected for trait impl items
 (AnnotationKind::Prohibited). In all other locations, it is silently ignored.
 Tuple struct fields are ignored.
 -->
+
+r[attributes.diagnostics.deprecated.containers]
+When `deprecated` is applied to an item containing other items, all child items inherit the deprecation attribute. This includes:
+
+- [crate root]
+- [modules]
+- [implementations]
+- [external blocks]
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated = "utility functions are no longer supported and will be removed in the future"]
+> pub mod utils {
+>     pub fn trim() {}
+>     pub fn flush() {}
+> }
+>
+> fn main() {
+>     utils::trim(); // WARNING: deprecated
+> }
+> ```
 
 r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
@@ -652,19 +673,21 @@ The first error message includes a somewhat confusing error message about the re
 [attributes]: ../attributes.md
 [block expression]: ../expressions/block-expr.md
 [call expression]: ../expressions/call-expr.md
+[crate root]: ../crates-and-source-files.md
 [dyn trait]: ../types/trait-object.md
 [enum variant]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
 [expression statement]: ../statements.md#expression-statements
 [expression]: ../expressions.md
 [external block item]: ../items/external-blocks.md
+[external blocks]: ../items/external-blocks.md
 [functions]: ../items/functions.md
 [impl trait]: ../types/impl-trait.md
-[implementation]: ../items/implementations.md
+[implementations]: ../items/implementations.md
 [item]: ../items.md
 [let statement]: ../statements.md#let-statements
 [macro definition]: ../macros-by-example.md
-[module]: ../items/modules.md
+[modules]: ../items/modules.md
 [rustc book]: ../../rustc/lints/index.html
 [rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
 [rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
