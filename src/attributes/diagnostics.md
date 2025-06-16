@@ -349,23 +349,16 @@ r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
 
 r[attributes.diagnostics.must_use.intro]
-The *`must_use` attribute* is used to issue a diagnostic warning when a value
-is not "used".
+The *`must_use` attribute* is used to issue a diagnostic warning when a value is not "used".
 
 r[attributes.diagnostics.must_use.allowed-positions]
-The `must_use` attribute can be applied to user-defined composite types
-([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
-and [traits].
+The `must_use` attribute can be applied to user-defined composite types ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions], and [traits].
 
 r[attributes.diagnostics.must_use.message]
-The `must_use` attribute may include a message by using the
-[MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The
-message will be given alongside the warning.
+The `must_use` attribute may include a message by using the [MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The message will be given alongside the warning.
 
 r[attributes.diagnostics.must_use.type]
-When used on user-defined composite types, if the [expression] of an
-[expression statement] has that type, then the `unused_must_use` lint is
-violated.
+When used on user-defined composite types, if the [expression] of an [expression statement] has that type, then the `unused_must_use` lint is violated.
 
 ```rust
 #[must_use]
@@ -382,9 +375,7 @@ MustUse::new();
 ```
 
 r[attributes.diagnostics.must_use.fn]
-When used on a function, if the [expression] of an [expression statement] is a
-[call expression] to that function, then the `unused_must_use` lint is
-violated.
+When used on a function, if the [expression] of an [expression statement] is a [call expression] to that function, then the `unused_must_use` lint is violated.
 
 ```rust
 #[must_use]
@@ -395,9 +386,7 @@ five();
 ```
 
 r[attributes.diagnostics.must_use.trait]
-When used on a [trait declaration], a [call expression] of an [expression
-statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates
-the `unused_must_use` lint.
+When used on a [trait declaration], a [call expression] of an [expression statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates the `unused_must_use` lint.
 
 ```rust
 #[must_use]
@@ -413,8 +402,7 @@ get_critical();
 ```
 
 r[attributes.diagnostics.must_use.trait-function]
-When used on a function in a trait declaration, then the behavior also applies
-when the call expression is a function from an implementation of the trait.
+When used on a function in a trait declaration, then the behavior also applies when the call expression is a function from an implementation of the trait.
 
 ```rust
 trait Trait {
