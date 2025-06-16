@@ -330,13 +330,6 @@ The `deprecated` attribute may be applied to any [item], [trait item], [enum var
 Tuple struct fields are ignored.
 -->
 
-
-
-
-The [RFC][1270-deprecation.md] contains motivations and more details.
-
-[1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
-
 r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
 
