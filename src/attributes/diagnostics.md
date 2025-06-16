@@ -360,63 +360,67 @@ The `must_use` attribute may include a message by using the [MetaNameValueStr] s
 r[attributes.diagnostics.must_use.type]
 When used on user-defined composite types, if the [expression] of an [expression statement] has that type, then the `unused_must_use` lint is violated.
 
-```rust
-#[must_use]
-struct MustUse {
-    // some fields
-}
-
-# impl MustUse {
-#   fn new() -> MustUse { MustUse {} }
-# }
-#
-// Violates the `unused_must_use` lint.
-MustUse::new();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> struct MustUse {
+>     // some fields
+> }
+>
+> # impl MustUse {
+> #   fn new() -> MustUse { MustUse {} }
+> # }
+> #
+> // Violates the `unused_must_use` lint.
+> MustUse::new();
+> ```
 
 r[attributes.diagnostics.must_use.fn]
 When used on a function, if the [expression] of an [expression statement] is a [call expression] to that function, then the `unused_must_use` lint is violated.
 
-```rust
-#[must_use]
-fn five() -> i32 { 5i32 }
-
-// Violates the unused_must_use lint.
-five();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> fn five() -> i32 { 5i32 }
+>
+> // Violates the unused_must_use lint.
+> five();
+> ```
 
 r[attributes.diagnostics.must_use.trait]
 When used on a [trait declaration], a [call expression] of an [expression statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates the `unused_must_use` lint.
 
-```rust
-#[must_use]
-trait Critical {}
-impl Critical for i32 {}
-
-fn get_critical() -> impl Critical {
-    4i32
-}
-
-// Violates the `unused_must_use` lint.
-get_critical();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> trait Critical {}
+> impl Critical for i32 {}
+>
+> fn get_critical() -> impl Critical {
+>     4i32
+> }
+>
+> // Violates the `unused_must_use` lint.
+> get_critical();
+> ```
 
 r[attributes.diagnostics.must_use.trait-function]
 When used on a function in a trait declaration, then the behavior also applies when the call expression is a function from an implementation of the trait.
 
-```rust
-trait Trait {
-    #[must_use]
-    fn use_me(&self) -> i32;
-}
-
-impl Trait for i32 {
-    fn use_me(&self) -> i32 { 0i32 }
-}
-
-// Violates the `unused_must_use` lint.
-5i32.use_me();
-```
+> [!EXAMPLE]
+> ```rust
+> trait Trait {
+>     #[must_use]
+>     fn use_me(&self) -> i32;
+> }
+>
+> impl Trait for i32 {
+>     fn use_me(&self) -> i32 { 0i32 }
+> }
+>
+> // Violates the `unused_must_use` lint.
+> 5i32.use_me();
+> ```
 
 r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
