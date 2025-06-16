@@ -303,30 +303,20 @@ r[attributes.diagnostics.deprecated]
 ## The `deprecated` attribute
 
 r[attributes.diagnostics.deprecated.intro]
-The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue
-warnings on usage of `#[deprecated]` items. `rustdoc` will show item
-deprecation, including the `since` version and `note`, if available.
+The *`deprecated` attribute* marks an item as deprecated. `rustc` will issue warnings on usage of `#[deprecated]` items. `rustdoc` will show item deprecation, including the `since` version and `note`, if available.
 
 r[attributes.diagnostics.deprecated.syntax]
 The `deprecated` attribute has several forms:
 
 - `deprecated` --- Issues a generic message.
-- `deprecated = "message"` --- Includes the given string in the deprecation
-  message.
+- `deprecated = "message"` --- Includes the given string in the deprecation message.
 - [MetaListNameValueStr] syntax with two optional fields:
-  - `since` --- Specifies a version number when the item was deprecated. `rustc`
-    does not currently interpret the string, but external tools like [Clippy]
-    may check the validity of the value.
-  - `note` --- Specifies a string that should be included in the deprecation
-    message. This is typically used to provide an explanation about the
-    deprecation and preferred alternatives.
+  - `since` --- Specifies a version number when the item was deprecated. `rustc` does not currently interpret the string, but external tools like [Clippy] may check the validity of the value.
+  - `note` --- Specifies a string that should be included in the deprecation message. This is typically used to provide an explanation about the deprecation and preferred alternatives.
 
 r[attributes.diagnostic.deprecated.allowed-positions]
-The `deprecated` attribute may be applied to any [item], [trait item], [enum
-variant], [struct field], [external block item], or [macro definition]. It
-cannot be applied to [trait implementation items][trait-impl]. When applied to an item
-containing other items, such as a [module] or [implementation], all child
-items inherit the deprecation attribute.
+The `deprecated` attribute may be applied to any [item], [trait item], [enum variant], [struct field], [external block item], or [macro definition]. It cannot be applied to [trait implementation items][trait-impl]. When applied to an item containing other items, such as a [module] or [implementation], all child items inherit the deprecation attribute.
+
 <!-- NOTE: It is only rejected for trait impl items
 (AnnotationKind::Prohibited). In all other locations, it is silently ignored.
 Tuple struct fields are ignored.
