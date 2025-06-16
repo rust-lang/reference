@@ -335,6 +335,7 @@ The `deprecated` attribute may be applied to:
 - [struct fields] (not including tuple struct fields)
 - [external block items]
 - [macro definitions]
+- [defaulted generic parameters]
 
 It may not be applied to [trait implementation items][trait-impl].
 
@@ -741,6 +742,7 @@ The first error message includes a somewhat confusing error message about the re
 [block expression]: ../expressions/block-expr.md
 [call expression]: ../expressions/call-expr.md
 [crate root]: ../crates-and-source-files.md
+[defaulted generic parameters]: ../items/generics.md
 [dyn trait]: ../types/trait-object.md
 [enum variants]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
