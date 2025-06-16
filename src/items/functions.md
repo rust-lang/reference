@@ -472,7 +472,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`cfg`]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg_attr`]: ../conditional-compilation.md#the-cfg_attr-attribute
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
-[procedural macro attributes]: ../procedural-macros.md#attribute-macros
+[procedural macro attributes]: macro.proc.attribute
 [testing attributes]: ../attributes/testing.md
 [`cold`]: ../attributes/codegen.md#the-cold-attribute
 [`inline`]: ../attributes/codegen.md#the-inline-attribute
