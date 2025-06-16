@@ -244,10 +244,8 @@ r[macro.proc.attribute]
 ## The `proc_macro_attribute` attribute
 
 r[macro.proc.attribute.intro]
-*Attribute macros* define new [outer attributes][attributes] which can be attached to [items], including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
+The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro* which can be used as an [outer attribute][attributes].
 
-r[macro.proc.attribute.def]
-Attribute macros are defined by a [public]&#32;[function] with the `proc_macro_attribute` [attribute] that has a signature of `(TokenStream, TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token tree following the attribute's name, not including the outer delimiters. If the attribute is written as a bare attribute name, the attribute [`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item] including other [attributes] on the [item]. The returned [`TokenStream`] replaces the [item] with an arbitrary number of [items].
 > [!EXAMPLE]
 > The following attribute macro takes the input stream and returns it as is, effectively being the no-op of attributes.
 >
@@ -263,8 +261,6 @@ Attribute macros are defined by a [public]&#32;[function] with the `proc_macro_a
 > }
 > ```
 
-r[macro.proc.attribute.namespace]
-The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate.
 > [!EXAMPLE]
 > This following example shows the stringified [`TokenStream`s] that the attribute macros see. The output will show in the output of the compiler. The output is shown in the comments after the function prefixed with "out:".
 >
@@ -314,12 +310,32 @@ The `proc_macro_attribute` attribute defines the attribute in the [macro namespa
 > // out: item: "fn invoke4() {}"
 > ```
 
+r[macro.proc.attribute.syntax]
+The `proc_macro_attribute` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
+r[macro.proc.attribute.allowed-positions]
+The `proc_macro_attribute` attribute may only be applied to a function with the signature of `pub fn(TokenStream, TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed.
 
+r[macro.proc.attribute.duplicates]
+The `proc_macro_attribute` attribute may only be specified once on a function.
 
+r[macro.proc.attribute.namespace]
+The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate with the same name as the function.
 
+r[macro.proc.attribute.use-positions]
+Attribute macros can only be used on:
 
+- [items]
+- items in [`extern` blocks]
+- inherent and trait [implementations]
+- [trait definitions]
 
+r[macro.proc.attribute.behavior]
+The first [`TokenStream`] parameter is the delimited token tree following the attribute's name, not including the outer delimiters. If the attribute is written as a bare attribute name, the [`TokenStream`] is empty.
+
+The second [`TokenStream`] is the rest of the [item] including other [attributes] on the [item].
+
+The returned [`TokenStream`] replaces the [item] with an arbitrary number of [items].
 
 r[macro.proc.token]
 ## Declarative macro tokens and procedural macro tokens
