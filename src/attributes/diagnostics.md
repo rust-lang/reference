@@ -316,19 +316,86 @@ The *`deprecated` [attribute][attributes]* marks an item as deprecated.
 r[attributes.diagnostics.deprecated.syntax]
 The `deprecated` attribute has several forms:
 
-- `deprecated` --- Issues a generic message.
-- `deprecated = "message"` --- Includes the given string in the deprecation message.
-- [MetaListNameValueStr] syntax with two optional fields:
-  - `since` --- Specifies a version number when the item was deprecated. `rustc` does not currently interpret the string, but external tools like [Clippy] may check the validity of the value.
-  - `note` --- Specifies a string that should be included in the deprecation message. This is typically used to provide an explanation about the deprecation and preferred alternatives.
+```grammar,attributes
+@root DeprecatedAttribute ->
+      `deprecated` `=` (STRING_LITERAL | RAW_STRING_LITERAL)
+    | `deprecated` `(` ( MetaNameValueStr (`,` MetaNameValueStr)* `,`? )? `)`
+    | `deprecated`
+```
 
-r[attributes.diagnostic.deprecated.allowed-positions]
-The `deprecated` attribute may be applied to any [item], [trait item], [enum variant], [struct field], [external block item], or [macro definition]. It cannot be applied to [trait implementation items][trait-impl].
+- The bare `deprecated` form generates a [generic message][attributes.diagnostics.deprecated.generic-message].
+- The `deprecated = "message"` form allows you to [specify a message][attributes.diagnostics.deprecated.message].
+- The `deprecated()` form allows you to [specify optional fields][attributes.diagnostics.deprecated.fields].
 
-<!-- NOTE: It is only rejected for trait impl items
-(AnnotationKind::Prohibited). In all other locations, it is silently ignored.
-Tuple struct fields are ignored.
--->
+r[attributes.diagnostics.deprecated.allowed-positions]
+The `deprecated` attribute may be applied to:
+- [items]
+- [trait items]
+- [enum variants]
+- [struct fields] (not including tuple struct fields)
+- [external block items]
+- [macro definitions]
+
+It may not be applied to [trait implementation items][trait-impl].
+
+> [!NOTE]
+> `rustc` currently ignores `deprecated` in other positions, but this may be rejected in the future.
+
+r[attributes.diagnostics.deprecated.duplicates]
+The `deprecated` attribute may only be specified once on an item.
+
+r[attributes.diagnostics.deprecated.behavior]
+A warning is emitted when a deprecated item is used.
+
+<!-- TODO: Should we be more specific about what it means to be "used"? -->
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated = "use `bar` instead"]
+> pub fn foo() {}
+>
+> fn main() {
+>     foo();  // WARNING: deprecated
+> }
+> ```
+
+> [!NOTE]
+> [Rustdoc] highlights when an item is deprecated, including the `since` and `note` if available.
+
+r[attributes.diagnostics.deprecated.generic-message]
+The [MetaWord] form of the `deprecated` attribute generates a generic message in the diagnostic when the item is used.
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated]
+> pub fn trim_left() {}
+> ```
+
+r[attributes.diagnostics.deprecated.message]
+The [MetaNameValueStr] form of the `deprecated` attribute includes the given message in the diagnostic when the item is used. This is typically used to provide an explanation about the deprecation and preferred alternatives.
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated = "use `trim_start` instead"]
+> pub fn trim_left() {}
+> ```
+
+r[attributes.diagnostics.deprecated.fields]
+The [MetaListNameValueStr] form of the `deprecated` attribute allows you to specify two optional fields:
+
+- `since` --- Specifies a version number when the item was deprecated.
+- `note` --- Specifies a string that should be included in the deprecation message. This is equivalent to the message specified in the [MetaNameValueStr form][attributes.diagnostics.deprecated.message].
+
+Each of these fields may only be specified at most once.
+
+> [!EXAMPLE]
+> ```rust
+> #[deprecated(since = "1.33.0", note = "use `trim_start` instead")]
+> pub fn trim_left() {}
+> ```
+
+> [!NOTE]
+> `rustc` does not currently interpret the `since` string, but external tools like [Clippy] may check the validity of the value.
 
 r[attributes.diagnostics.deprecated.containers]
 When `deprecated` is applied to an item containing other items, all child items inherit the deprecation attribute. This includes:
@@ -675,27 +742,28 @@ The first error message includes a somewhat confusing error message about the re
 [call expression]: ../expressions/call-expr.md
 [crate root]: ../crates-and-source-files.md
 [dyn trait]: ../types/trait-object.md
-[enum variant]: ../items/enumerations.md
+[enum variants]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
 [expression statement]: ../statements.md#expression-statements
 [expression]: ../expressions.md
-[external block item]: ../items/external-blocks.md
+[external block items]: ../items/external-blocks.md
 [external blocks]: ../items/external-blocks.md
 [functions]: ../items/functions.md
 [impl trait]: ../types/impl-trait.md
 [implementations]: ../items/implementations.md
 [item]: ../items.md
 [let statement]: ../statements.md#let-statements
-[macro definition]: ../macros-by-example.md
+[macro definitions]: ../macros-by-example.md
 [modules]: ../items/modules.md
 [rustc book]: ../../rustc/lints/index.html
 [rustc-lint-caps]: ../../rustc/lints/levels.html#capping-lints
 [rustc-lint-cli]: ../../rustc/lints/levels.html#via-compiler-flag
-[rustdoc]: ../../rustdoc/lints.html
-[struct field]: ../items/structs.md
+[rustdoc]: ../../rustdoc/index.html
+[rustdoc-lints]: ../../rustdoc/lints.html
+[struct fields]: ../items/structs.md
 [struct]: ../items/structs.md
 [trait declaration]: ../items/traits.md
-[trait item]: ../items/traits.md
+[trait items]: ../items/traits.md
 [trait-impl]: ../items/implementations.md#trait-implementations
 [traits]: ../items/traits.md
 [union]: ../items/unions.md
