@@ -349,10 +349,37 @@ r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
 
 r[attributes.diagnostics.must_use.intro]
-The *`must_use` attribute* is used to issue a diagnostic warning when a value is not "used".
+The *`must_use` [attribute][attributes]* is used to issue a diagnostic warning when a value is not used.
+
+r[attributes.diagnostics.must_use.syntax]
+The `must_use` attribute uses either the [MetaWord] syntax or the [MetaNameValueStr] syntax to be able to [specify a message][attributes.diagnostics.must_use.message].
+
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> fn use_me() -> u8 { 0 }
+>
+> #[must_use = "explanation of why it must be used"]
+> fn use_me2() -> u8 { 0 }
+> ```
 
 r[attributes.diagnostics.must_use.allowed-positions]
-The `must_use` attribute can be applied to user-defined composite types ([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions], and [traits].
+The `must_use` attribute may be applied to a:
+
+- [Struct]
+- [Enumeration]
+- [Union]
+- [Function]
+- [Trait]
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[attributes.diagnostics.must_use.duplicates]
+The `must_use` attribute may only be specified once on an item.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `must_use` attributes. This may become an error in the future.
 
 r[attributes.diagnostics.must_use.message]
 The `must_use` attribute may include a message by using the [MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The message will be given alongside the warning.
@@ -661,7 +688,7 @@ The first error message includes a somewhat confusing error message about the re
 [call expression]: ../expressions/call-expr.md
 [dyn trait]: ../types/trait-object.md
 [enum variant]: ../items/enumerations.md
-[enum]: ../items/enumerations.md
+[enumeration]: ../items/enumerations.md
 [expression statement]: ../statements.md#expression-statements
 [expression]: ../expressions.md
 [external block item]: ../items/external-blocks.md
