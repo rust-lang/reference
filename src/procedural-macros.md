@@ -229,7 +229,7 @@ A helper attribute for a derive macro is declared by adding its identifier to th
 > ```
 
 r[macro.proc.attribute]
-## Attribute macros
+## The `proc_macro_attribute` attribute
 
 r[macro.proc.attribute.intro]
 *Attribute macros* define new [outer attributes][attributes] which can be attached to [items], including items in [`extern` blocks], inherent and trait [implementations], and [trait definitions].
@@ -369,7 +369,7 @@ Note that neither declarative nor procedural macros support doc comment tokens
 (e.g. `/// Doc`), so they are always converted to token streams representing
 their equivalent `#[doc = r"str"]` attributes when passed to macros.
 
-[Attribute macros]: #attribute-macros
+[Attribute macros]: #the-proc_macro_attribute-attribute
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: macro.proc.derive
 [Function-like macros]: #function-like-procedural-macros
@@ -405,3 +405,17 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [type expressions]: types.md#type-expressions
 [type]: types.md
 [union]: items/unions.md
+
+<script>
+(function() {
+    var fragments = {
+        "#attribute-macros": "procedural-macros.html#the-proc_macro_attribute-attribute",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
