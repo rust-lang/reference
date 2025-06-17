@@ -1,14 +1,15 @@
-## Behavior not considered `unsafe`
+# Behavior not considered `unsafe`
 
 The Rust compiler does not consider the following behaviors _unsafe_,
 though a programmer may (should) find them undesirable, unexpected,
 or erroneous.
 
-##### Deadlocks
-##### Leaks of memory and other resources
-##### Exiting without calling destructors
-##### Exposing randomized base addresses through pointer leaks
-##### Integer overflow
+- Deadlocks
+- Leaks of memory and other resources
+- Exiting without calling destructors
+- Exposing randomized base addresses through pointer leaks
+
+## Integer overflow
 
 If a program contains arithmetic overflow, the programmer has made an
 error. In the following discussion, we maintain a distinction between
@@ -36,7 +37,7 @@ semantics.
 See [RFC 560] for error conditions, rationale, and more details about
 integer overflow.
 
-##### Logic errors
+## Logic errors
 
 Safe code may impose extra logical constraints that can be checked
 at neither compile-time nor runtime. If a program breaks such

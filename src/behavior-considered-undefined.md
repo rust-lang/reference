@@ -1,5 +1,5 @@
 r[undefined]
-## Behavior considered undefined
+# Behavior considered undefined
 
 r[undefined.general]
 Rust code is incorrect if it exhibits any of the behaviors in the following
@@ -92,12 +92,12 @@ r[undefined.runtime]
 > Undefined behavior affects the entire program. For example, calling a function in C that exhibits undefined behavior of C means your entire program contains undefined behaviour that can also affect the Rust code. And vice versa, undefined behavior in Rust can cause adverse affects on code executed by any FFI calls to other languages.
 
 r[undefined.pointed-to]
-### Pointed-to bytes
+## Pointed-to bytes
 
 The span of bytes a pointer or reference "points to" is determined by the pointer value and the size of the pointee type (using `size_of_val`).
 
 r[undefined.misaligned]
-### Places based on misaligned pointers
+## Places based on misaligned pointers
 [based on a misaligned pointer]: #places-based-on-misaligned-pointers
 
 r[undefined.misaligned.general]
@@ -137,7 +137,7 @@ that being based on an aligned pointer is always sufficient to ensure that the
 new reference is aligned, but it is not always necessary.
 
 r[undefined.dangling]
-### Dangling pointers
+## Dangling pointers
 [dangling]: #dangling-pointers
 
 r[undefined.dangling.general]
@@ -159,7 +159,7 @@ must never exceed `isize::MAX`, since it is impossible for a single allocation
 to be larger than `isize::MAX`.
 
 r[undefined.validity]
-### Invalid values
+## Invalid values
 [invalid-values]: #invalid-values
 
 r[undefined.validity.general]
