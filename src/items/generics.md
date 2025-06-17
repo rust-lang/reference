@@ -146,43 +146,56 @@ r[items.generics.const.argument]
 A const argument in a [path] specifies the const value to use for that item.
 
 r[items.generics.const.argument.const-expr]
-The argument must be a [const expression] of the type ascribed to the const
-parameter. The const expression must be a [block expression][block]
-(surrounded with braces) unless it is a single path segment (an [IDENTIFIER])
-or a [literal] (with a possibly leading `-` token).
+The argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter. The const expression must be a [block expression][block] (surrounded with braces) unless it is a single path segment (an [IDENTIFIER]) or a [literal] (with a possibly leading `-` token).
 
 > [!NOTE]
 > This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
 
 ```rust
-fn double<const N: i32>() {
-    println!("doubled: {}", N * 2);
-}
+struct S<const N: i64>;
+const C: i64 = 1;
+fn f<const N: i64>() -> S<N> { S }
 
-const SOME_CONST: i32 = 12;
-
-fn example() {
-    // Example usage of a const argument.
-    double::<9>();
-    double::<-123>();
-    double::<{7 + 8}>();
-    double::<SOME_CONST>();
-    double::<{ SOME_CONST + 5 }>();
-}
+let _ = f::<1>(); // Literal.
+let _ = f::<-1>(); // Negative literal.
+let _ = f::<{ 1 + 2 }>(); // Constant expression.
+let _ = f::<C>(); // Single segment path.
+let _ = f::<{ C + 1 }>(); // Constant expression.
+let _: S<1> = f::<_>(); // Inferred const.
+let _: S<1> = f::<(((_)))>(); // Inferred const.
 ```
+
+> [!NOTE]
+> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
 
 r[items.generics.const.inferred]
-Where a const argument is expected, an `_` (optionally surrounding by any number of matching parentheses), called the "inferred const", can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
+Where a const argument is expected, an `_` (optionally surrounding by any number of matching parentheses), called the *inferred const* ([path rules][paths.expr.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
 ```rust
-fn make_buf() -> [u8; 1024] {
-    [0x1; _]
-    //    ^ Infers `1024`.
+fn make_buf<const N: usize>() -> [u8; N] {
+    [0; _]
+    //  ^ Infers `N`.
 }
+let _: [u8; 1024] = make_buf::<_>();
+//                             ^ Infers `1024`.
 ```
 
+> [!NOTE]
+> An [inferred const] is not semantically an [expression][Expression] and so is not accepted within braces.
+>
+> ```rust,compile_fail
+> fn f<const N: usize>() -> [u8; N] { [0; _] }
+> let _: [_; 1] = f::<{ _ }>();
+> //                    ^ ERROR `_` not allowed here
+> ```
+
 r[items.generics.const.inferred.constraint]
-It cannot be used in item signatures.
+The inferred const cannot be used in item signatures.
+
+```rust,compile_fail
+fn f<const N: usize>(x: [u8; N]) -> [u8; _] { x }
+//                                       ^ ERROR not allowed
+```
 
 r[items.generics.const.type-ambiguity]
 When there is ambiguity if a generic argument could be resolved as either a
@@ -306,6 +319,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [block]: ../expressions/block-expr.md
 [const contexts]: ../const_eval.md#const-context
 [const expression]: ../const_eval.md#constant-expressions
+[const generic argument]: items.generics.const.argument
 [const item]: constant-items.md
 [enumerations]: enumerations.md
 [functions]: functions.md
@@ -314,6 +328,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [generic parameter scopes]: ../names/scopes.md#generic-parameter-scopes
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
 [implementations]: implementations.md
+[inferred const]: items.generics.const.inferred
 [item declarations]: ../statements.md#item-declarations
 [item]: ../items.md
 [literal]: ../expressions/literal-expr.md
