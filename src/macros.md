@@ -58,7 +58,7 @@ r[macro.invocation.extern]
 * [External blocks]
 
 r[macro.invocation.item-statement]
-When used as an item or a statement, the _MacroInvocationSemi_ form is used
+When used as an item or a statement, the [MacroInvocationSemi] form is used
 where a semicolon is required at the end when not using curly braces.
 [Visibility qualifiers] are never allowed before a macro invocation or
 [`macro_rules`] definition.

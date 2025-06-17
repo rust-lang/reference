@@ -30,12 +30,12 @@ The `..` and `..=` operators will construct an object of one of the `std::ops::R
 
 | Production             | Syntax        | Type                         | Range                 |
 |------------------------|---------------|------------------------------|-----------------------|
-| _RangeExpr_            | start`..`end  | [std::ops::Range]            | start &le; x &lt; end |
-| _RangeFromExpr_        | start`..`     | [std::ops::RangeFrom]        | start &le; x          |
-| _RangeToExpr_          | `..`end       | [std::ops::RangeTo]          |            x &lt; end |
-| _RangeFullExpr_        | `..`          | [std::ops::RangeFull]        |            -          |
-| _RangeInclusiveExpr_   | start`..=`end | [std::ops::RangeInclusive]   | start &le; x &le; end |
-| _RangeToInclusiveExpr_ | `..=`end      | [std::ops::RangeToInclusive] |            x &le; end |
+| [RangeExpr]            | start`..`end  | [std::ops::Range]            | start &le; x &lt; end |
+| [RangeFromExpr]        | start`..`     | [std::ops::RangeFrom]        | start &le; x          |
+| [RangeToExpr]          | `..`end       | [std::ops::RangeTo]          |            x &lt; end |
+| [RangeFullExpr]        | `..`          | [std::ops::RangeFull]        |            -          |
+| [RangeInclusiveExpr]   | start`..=`end | [std::ops::RangeInclusive]   | start &le; x &le; end |
+| [RangeToInclusiveExpr] | `..=`end      | [std::ops::RangeToInclusive] |            x &le; end |
 
 Examples:
 

@@ -110,7 +110,7 @@ r[attributes.meta]
 ## Meta Item Attribute Syntax
 
 r[attributes.meta.intro]
-A "meta item" is the syntax used for the _Attr_ rule by most [built-in
+A "meta item" is the syntax used for the [Attr] rule by most [built-in
 attributes]. It has the following grammar:
 
 r[attributes.meta.syntax]
@@ -185,11 +185,11 @@ Some examples of meta items are:
 
 Style | Example
 ------|--------
-_MetaWord_ | `no_std`
-_MetaNameValueStr_ | `doc = "example"`
-_MetaListPaths_ | `allow(unused, clippy::inline_always)`
-_MetaListIdents_ | `macro_use(foo, bar)`
-_MetaListNameValueStr_ | `link(name = "CoreFoundation", kind = "framework")`
+[MetaWord] | `no_std`
+[MetaNameValueStr] | `doc = "example"`
+[MetaListPaths] | `allow(unused, clippy::inline_always)`
+[MetaListIdents] | `macro_use(foo, bar)`
+[MetaListNameValueStr] | `link(name = "CoreFoundation", kind = "framework")`
 
 r[attributes.activity]
 ## Active and inert attributes

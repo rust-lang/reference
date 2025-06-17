@@ -643,9 +643,7 @@ r[attributes.codegen.instruction_set.behavior]
 This allows mixing more than one instruction set in a single program on CPU architectures that support it.
 
 r[attributes.codegen.instruction_set.syntax]
-It uses the [_MetaListPath_] syntax, and a path comprised of the architecture family name and instruction set name.
-
-[_MetaListPath_]: ../attributes.md#meta-item-attribute-syntax
+It uses the [MetaListPaths] syntax, and a path comprised of the architecture family name and instruction set name.
 
 r[attributes.codegen.instruction_set.target-limits]
 It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
