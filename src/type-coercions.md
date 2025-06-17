@@ -36,8 +36,8 @@ r[coerce.site.value]
 r[coerce.site.argument]
 * Arguments for function calls
 
-  The value being coerced is the actual parameter, and it is coerced to
-  the type of the formal parameter.
+  The value being coerced is the argument, and it is coerced to
+  the type of the parameter.
 
   For example, `&mut 42` is coerced to have type `&i8` in the following:
 
