@@ -249,7 +249,7 @@ r[items.extern.attributes.link]
 ### The `link` attribute
 
 r[items.extern.attributes.link.intro]
-The *`link` attribute* specifies the name of a native library that the compiler should link with for the items within an `extern` block.
+The *`link` [attribute][attributes]* specifies the name of a native library that the compiler should link with for the items within an `extern` block.
 
 r[items.extern.attributes.link.syntax]
 It uses the [MetaListNameValueStr] syntax to specify its inputs. The `name` key is the name of the native library to link. The `kind` key is an optional value which specifies the kind of library with the following possible values:
