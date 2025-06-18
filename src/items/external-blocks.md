@@ -312,7 +312,9 @@ r[items.extern.attributes.link.modifiers.bundle.behavior]
 When building a rlib or staticlib `+bundle` means that the native static library will be packed into the rlib or staticlib archive, and then retrieved from there during linking of the final binary.
 
 r[items.extern.attributes.link.modifiers.bundle.behavior-negative]
-When building a rlib `-bundle` means that the native static library is registered as a dependency of that rlib "by name", and object files from it are included only during linking of the final binary, the file search by that name is also performed during final linking. When building a staticlib `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
+When building a rlib `-bundle` means that the native static library is registered as a dependency of that rlib "by name", and object files from it are included only during linking of the final binary, the file search by that name is also performed during final linking.
+
+When building a staticlib `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
 
 r[items.extern.attributes.link.modifiers.bundle.no-effect]
 This modifier has no effect when building other targets like executables or dynamic libraries.
