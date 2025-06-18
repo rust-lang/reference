@@ -657,11 +657,12 @@ The *`diagnostic::do_not_recommend` [attribute][attributes]* is a hint to the co
 >
 > For example, in an error message about a type not implementing a required trait, the compiler may find a trait implementation that would satisfy the requirements if it weren't for specific bounds in the trait implementation. The compiler may tell the user that there is an impl, but the problem is the bounds in the trait implementation. The `#[diagnostic::do_not_recommend]` attribute can be used to tell the compiler to *not* tell the user about the trait implementation, and instead simply tell the user the type doesn't implement the required trait.
 
+r[attributes.diagnostic.do_not_recommend.syntax]
+The `diagnostic::do_not_recommend` attribute does not accept any arguments, though unexpected arguments are not considered as an error.
+
 r[attributes.diagnostic.do_not_recommend.allowed-positions]
 The attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
 
-r[attributes.diagnostic.do_not_recommend.syntax]
-The attribute does not accept any arguments, though unexpected arguments are not considered as an error.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [`Drop`]: ../special-types-and-traits.md#drop
