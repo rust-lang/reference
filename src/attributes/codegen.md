@@ -668,3 +668,26 @@ Using the `instruction_set` attribute has the following effects:
 
 * If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
 * Any inline assembly in the function must use the specified instruction set instead of the target default.
+
+r[attributes.codegen.align]
+## The `align` attribute
+
+r[attributes.codegen.align.allowed-positions]
+The *`align` [attribute]* may be applied to function items.
+
+r[attributes.codegen.align.behavior]
+This attribute raises the aligmnent of a function's generated code.
+
+```rust
+#[align(32)]
+fn aligned_to_32_bytes() {}
+```
+
+> [!NOTE]
+> Some targets use pointer tagging on function pointers. Consequently, on those targets, a function's address may not be a multiple of its alignment.
+
+r[attributes.codegen.align.minimum]
+The alignment value that is specified is a minimum. The actual alignment may be higher.
+
+r[attributes.codegen.align.syntax]
+The alignment is specified as an integer parameter in the form of `#[align(x)]`. The alignment value must be a power of two from 1 up to 2<sup>29</sup>.
