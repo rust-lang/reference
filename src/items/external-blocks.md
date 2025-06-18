@@ -340,7 +340,7 @@ The default for this modifier is `-whole-archive`.
 More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
 
 r[items.extern.attributes.link.modifiers.verbatim]
-### Linking modifiers: `verbatim`
+#### Linking modifiers: `verbatim`
 
 r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
