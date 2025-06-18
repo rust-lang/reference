@@ -526,6 +526,9 @@ The following keys have the given meaning:
 r[attributes.diagnostic.on_unimplemented.allowed-positions]
 The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
 
+r[attributes.diagnostic.on_unimplemented.duplicates]
+If the `diagnostic::on_unimplemented` attribute is specified multiple times, then it behaves as if all options were specified in a single attribute. Duplicates of some options will be ignored, see [attributes.diagnostic.on_unimplemented.repetition].
+
 r[attributes.diagnostic.on_unimplemented.note-repetition]
 The `note` option can appear several times, which results in several note messages being emitted.
 
