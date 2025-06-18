@@ -661,7 +661,7 @@ r[attributes.diagnostic.do_not_recommend.syntax]
 The `diagnostic::do_not_recommend` attribute does not accept any arguments, though unexpected arguments are not considered as an error.
 
 r[attributes.diagnostic.do_not_recommend.allowed-positions]
-The attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
+The `diagnostic::do_not_recommend` attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
 
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
