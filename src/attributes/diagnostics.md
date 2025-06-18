@@ -553,7 +553,7 @@ r[attributes.diagnostic.do_not_recommend]
 ### The `diagnostic::do_not_recommend` attribute
 
 r[attributes.diagnostic.do_not_recommend.intro]
-The `#[diagnostic::do_not_recommend]` attribute is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.
+The *`diagnostic::do_not_recommend` [attribute][attributes]* is a hint to the compiler to not show the annotated trait implementation as part of a diagnostic message.
 
 > [!NOTE]
 > Suppressing the recommendation can be useful if you know that the recommendation would normally not be useful to the programmer. This often occurs with broad, blanket impls. The recommendation may send the programmer down the wrong path, or the trait implementation may be an internal detail that you don't want to expose, or the bounds may not be able to be satisfied by the programmer.
