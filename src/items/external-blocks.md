@@ -271,7 +271,24 @@ The *`link` [attribute][attributes]* specifies the name of a native library that
 > ```
 
 r[items.extern.attributes.link.syntax]
-It uses the [MetaListNameValueStr] syntax to specify its inputs. The `name` key is the name of the native library to link. The `kind` key is an optional value which specifies the kind of library with the following possible values:
+The `link` attribute uses the [MetaListNameValueStr] syntax to specify its inputs. It accepts the following keys:
+
+- [`name`][items.extern.attributes.link.name] --- the name of the native library to link.
+- [`kind`][items.extern.attributes.link.kinds] --- the kind of library.
+- [`modifiers`][items.extern.attributes.link.modifiers] --- modifiers that change the behavior of how the library is linked.
+- [`wasm_import_module`][items.extern.attributes.link.wasm_import_module] --- specifies the WebAssembly module name.
+- [`import_name_type`][items.extern.attributes.link.import_name_type] --- on x86 Windows, this changes how functions are named.
+
+r[items.extern.attributes.link.name]
+#### The `name` key
+
+<!-- TODO: I think it would be helpful to have an intro here that describes how `name` works with some examples of how it works in various situations or platforms. -->
+
+r[items.extern.attributes.link.name.requirement]
+The `name` key must be included unless `wasm_import_module` is used.
+
+r[items.extern.attributes.link.kinds]
+#### The `kind` key
 
 r[items.extern.attributes.link.dylib]
 - `dylib` --- Indicates a dynamic library. This is the default if `kind` is not specified.
@@ -285,10 +302,10 @@ r[items.extern.attributes.link.framework]
 r[items.extern.attributes.link.raw-dylib]
 - `raw-dylib` --- Indicates a dynamic library where the compiler will generate an import library to link against (see [`dylib` versus `raw-dylib`] below for details). This is only valid for Windows targets.
 
-r[items.extern.attributes.link.name-requirement]
-The `name` key must be included if `kind` is specified.
-
 r[items.extern.attributes.link.modifiers]
+#### The `modifiers` key
+
+r[items.extern.attributes.link.modifiers.intro]
 The optional `modifiers` argument is a way to specify linking modifiers for the library to link.
 
 r[items.extern.attributes.link.modifiers.syntax]
@@ -298,6 +315,9 @@ r[items.extern.attributes.link.modifiers.multiple]
 Specifying multiple `modifiers` arguments in a single `link` attribute, or multiple identical modifiers in the same `modifiers` argument is not currently supported. Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]`.
 
 r[items.extern.attributes.link.wasm_import_module]
+#### The `wasm_import_module` key
+
+r[items.extern.attributes.link.wasm_import_module.behavior]
 The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
 
 r[items.extern.attributes.link.empty-block]
