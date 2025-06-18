@@ -477,7 +477,7 @@ r[attributes.diagnostic.on_unimplemented]
 ### The `diagnostic::on_unimplemented` attribute
 
 r[attributes.diagnostic.on_unimplemented.intro]
-The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
+The *`diagnostic::on_unimplemented` [attribute][attributes]* is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
 
 > [!EXAMPLE]
 > In this example:
