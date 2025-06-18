@@ -251,6 +251,25 @@ r[items.extern.attributes.link]
 r[items.extern.attributes.link.intro]
 The *`link` [attribute][attributes]* specifies the name of a native library that the compiler should link with for the items within an `extern` block.
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "crypto")]
+> unsafe extern {
+>     // …
+> }
+>
+> #[link(name = "CoreFoundation", kind = "framework")]
+> unsafe extern {
+>     // …
+> }
+>
+> #[link(wasm_import_module = "foo")]
+> unsafe extern {
+>     // …
+> }
+> ```
+
 r[items.extern.attributes.link.syntax]
 It uses the [MetaListNameValueStr] syntax to specify its inputs. The `name` key is the name of the native library to link. The `kind` key is an optional value which specifies the kind of library with the following possible values:
 
@@ -280,24 +299,6 @@ Specifying multiple `modifiers` arguments in a single `link` attribute, or multi
 
 r[items.extern.attributes.link.wasm_import_module]
 The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
-
-<!-- ignore: requires extern linking -->
-```rust,ignore
-#[link(name = "crypto")]
-unsafe extern {
-    // …
-}
-
-#[link(name = "CoreFoundation", kind = "framework")]
-unsafe extern {
-    // …
-}
-
-#[link(wasm_import_module = "foo")]
-unsafe extern {
-    // …
-}
-```
 
 r[items.extern.attributes.link.empty-block]
 It is valid to add the `link` attribute on an empty extern block. You can use this to satisfy the linking requirements of extern blocks elsewhere in your code (including upstream crates) instead of adding the attribute to each extern block.
