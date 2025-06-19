@@ -383,11 +383,11 @@ expression which is one of the following:
 * The operand(s) of an extending [array][array expression], [cast][cast
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
+* The arguments to an extending [tuple struct] or [tuple variant] constructor expression.
 * The final expression of any extending [block expression].
 
-So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some { 0: &mut 3 }`
-are all extending expressions. The borrows in `&0 + &1` and `Some(&mut 0)` are
-not: the latter is syntactically a function call expression.
+So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
+are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
 The operand of any extending borrow expression has its temporary scope
 extended.
@@ -405,7 +405,7 @@ Here are some examples where expressions have extended temporary scopes:
 let x = &temp();
 let x = &temp() as &dyn Send;
 let x = (&*&temp(),);
-let x = { [Some { 0: &temp(), }] };
+let x = { [Some(&temp()) ] };
 let ref x = temp();
 let ref x = *&temp();
 # x;
@@ -420,7 +420,7 @@ Here are some examples where expressions don't have extended temporary scopes:
 // The temporary that stores the result of `temp()` only lives until the
 // end of the let statement in these cases.
 
-let x = Some(&temp());         // ERROR
+let x = std::convert::identity(&temp()); // ERROR
 let x = (&temp()).use_temp();  // ERROR
 # x;
 ```
@@ -477,6 +477,8 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [struct pattern]: patterns.md#struct-patterns
 [tuple pattern]: patterns.md#tuple-patterns
 [tuple struct pattern]: patterns.md#tuple-struct-patterns
+[tuple struct]: type.struct.tuple
+[tuple variant]: type.enum.declaration
 
 [array expression]: expressions/array-expr.md#array-expressions
 [block expression]: expressions/block-expr.md
