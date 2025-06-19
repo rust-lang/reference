@@ -274,7 +274,7 @@ r[items.extern.attributes.link.syntax]
 The `link` attribute uses the [MetaListNameValueStr] syntax to specify its inputs. It accepts the following keys:
 
 - [`name`][items.extern.attributes.link.name] --- the name of the native library to link.
-- [`kind`][items.extern.attributes.link.kinds] --- the kind of library.
+- [`kind`][items.extern.attributes.link.kind] --- the kind of library.
 - [`modifiers`][items.extern.attributes.link.modifiers] --- modifiers that change the behavior of how the library is linked.
 - [`wasm_import_module`][items.extern.attributes.link.wasm_import_module] --- specifies the WebAssembly module name.
 - [`import_name_type`][items.extern.attributes.link.import_name_type] --- on x86 Windows, this changes how functions are named.
@@ -306,20 +306,51 @@ The `name` key specifies the name of the library to link.
 r[items.extern.attributes.link.name.requirement]
 The `name` key must be included unless `wasm_import_module` is used.
 
-r[items.extern.attributes.link.kinds]
+r[items.extern.attributes.link.kind]
 #### The `kind` key
 
-r[items.extern.attributes.link.dylib]
-- `dylib` --- Indicates a dynamic library. This is the default if `kind` is not specified.
+r[items.extern.attributes.link.kind.intro]
+The `kind` key specifies the kind of the library.
 
-r[items.extern.attributes.link.static]
-- `static` --- Indicates a static library.
+r[items.extern.attributes.link.kind.dylib]
+The `dylib` kind indicates a dynamic library. This is the default if `kind` is not specified.
 
-r[items.extern.attributes.link.framework]
-- `framework` --- Indicates a macOS framework. This is only valid for macOS targets.
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "dylib")]
+> unsafe extern "C" {}
+> ```
 
-r[items.extern.attributes.link.raw-dylib]
-- `raw-dylib` --- Indicates a dynamic library where the compiler will generate an import library to link against (see [`dylib` versus `raw-dylib`] below for details). This is only valid for Windows targets.
+r[items.extern.attributes.link.kind.static]
+The `static` kind indicates a static library.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "static")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.kind.framework]
+The `framework` kind indicates a macOS framework. This is only valid for macOS targets.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "CoreFoundation", kind = "framework")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.kind.raw-dylib]
+The `raw-dylib` kind indicates a dynamic library where the compiler will generate an import library to link against (see [`dylib` versus `raw-dylib`] below for details). This is only valid for Windows targets.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "raw-dylib")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.modifiers]
 #### The `modifiers` key
