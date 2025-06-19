@@ -296,7 +296,12 @@ It is valid to add the `link` attribute on an empty extern block. You can use th
 r[items.extern.attributes.link.name]
 #### The `name` key
 
-<!-- TODO: I think it would be helpful to have an intro here that describes how `name` works with some examples of how it works in various situations or platforms. -->
+r[items.extern.attributes.link.name.intro]
+The `name` key specifies the name of the library to link.
+
+<!-- TODO: I think it would be helpful to describe how `name` works with some examples of how it works in various situations or platforms (for example, how prefixes and suffixes work). -->
+
+<!-- TODO: Would be good to specify what happens if the same name is specified multiple times in different attributes. My understanding from https://github.com/rust-lang/rust/blob/c68340350c78eea402c4a85f8d9c1b7d3d607635/compiler/rustc_metadata/src/native_libs.rs#L551-L620 is that it de-duplicates it and uses the "last" instance. I'm not sure if we want to explicitly document that? -->
 
 r[items.extern.attributes.link.name.requirement]
 The `name` key must be included unless `wasm_import_module` is used.
