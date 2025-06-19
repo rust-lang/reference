@@ -279,6 +279,8 @@ The `link` attribute uses the [MetaListNameValueStr] syntax to specify its input
 - [`wasm_import_module`][items.extern.attributes.link.wasm_import_module] --- specifies the WebAssembly module name.
 - [`import_name_type`][items.extern.attributes.link.import_name_type] --- on x86 Windows, this changes how functions are named.
 
+None of the keys may be specified more than once.
+
 r[items.extern.attributes.link.empty-block]
 It is valid to add the `link` attribute on an empty extern block. You can use this to satisfy the linking requirements of extern blocks elsewhere in your code (including upstream crates) instead of adding the attribute to each extern block.
 
