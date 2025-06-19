@@ -381,12 +381,6 @@ The `modifiers` argument may only be specified once.
 r[items.extern.attributes.link.modifiers.duplicates]
 Duplicate modifiers are not allowed within a `modifiers` argument.
 
-r[items.extern.attributes.link.wasm_import_module]
-#### The `wasm_import_module` key
-
-r[items.extern.attributes.link.wasm_import_module.behavior]
-The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
-
 r[items.extern.attributes.link.modifiers.bundle]
 #### Linking modifiers: `bundle`
 
@@ -440,8 +434,18 @@ The default for this modifier is `-verbatim`.
 
 More implementation details about this modifier can be found in [`verbatim` documentation for rustc].
 
+r[items.extern.attributes.link.wasm_import_module]
+#### The `wasm_import_module` key
 
+r[items.extern.attributes.link.wasm_import_module.behavior]
+The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(wasm_import_module = "foo")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
