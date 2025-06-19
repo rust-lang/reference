@@ -255,17 +255,17 @@ The *`link` [attribute][attributes]* specifies the name of a native library that
 > <!-- ignore: requires extern linking -->
 > ```rust,ignore
 > #[link(name = "crypto")]
-> unsafe extern {
+> unsafe extern "C" {
 >     // …
 > }
 >
 > #[link(name = "CoreFoundation", kind = "framework")]
-> unsafe extern {
+> unsafe extern "C" {
 >     // …
 > }
 >
 > #[link(wasm_import_module = "foo")]
-> unsafe extern {
+> unsafe extern "C" {
 >     // …
 > }
 > ```
