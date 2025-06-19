@@ -384,6 +384,13 @@ Duplicate modifiers are not allowed within a `modifiers` argument.
 r[items.extern.attributes.link.modifiers.bundle]
 #### Linking modifiers: `bundle`
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+bundle")]
+> unsafe extern "C" {}
+> ```
+
 r[items.extern.attributes.link.modifiers.bundle.allowed-kinds]
 This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
 
@@ -406,6 +413,13 @@ More implementation details about this modifier can be found in [`bundle` docume
 r[items.extern.attributes.link.modifiers.whole-archive]
 #### Linking modifiers: `whole-archive`
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]
+> unsafe extern "C" {}
+> ```
+
 r[items.extern.attributes.link.modifiers.whole-archive.allowed-kinds]
 This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
 
@@ -419,6 +433,13 @@ More implementation details about this modifier can be found in [`whole-archive`
 
 r[items.extern.attributes.link.modifiers.verbatim]
 #### Linking modifiers: `verbatim`
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+verbatim")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
@@ -449,6 +470,13 @@ The `wasm_import_module` key may be used to specify the [WebAssembly module] nam
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "raw-dylib", import_name_type = "undecorated")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.import_name_type.intro]
 On x86 Windows, names of functions are "decorated" (i.e., have a specific prefix and/or suffix added) to indicate their calling convention. For example, a `stdcall` calling convention function with the name `fn1` that has no arguments would be decorated as `_fn1@0`. However, the [PE Format] does also permit names to have no prefix or be undecorated. Additionally, the MSVC and GNU toolchains use different decorations for the same calling conventions which means, by default, some Win32 functions cannot be called using the `raw-dylib` link kind via the GNU toolchain.
