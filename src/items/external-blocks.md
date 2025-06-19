@@ -365,11 +365,21 @@ r[items.extern.attributes.link.modifiers]
 r[items.extern.attributes.link.modifiers.intro]
 The optional `modifiers` argument is a way to specify linking modifiers for the library to link.
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]
+> unsafe extern "C" {}
+> ```
+
 r[items.extern.attributes.link.modifiers.syntax]
 Modifiers are specified as a comma-delimited string with each modifier prefixed with either a `+` or `-` to indicate that the modifier is enabled or disabled, respectively.
 
-r[items.extern.attributes.link.modifiers.multiple]
-Specifying multiple `modifiers` arguments in a single `link` attribute, or multiple identical modifiers in the same `modifiers` argument is not currently supported. Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]`.
+r[items.extern.attributes.link.modifiers.once]
+The `modifiers` argument may only be specified once.
+
+r[items.extern.attributes.link.modifiers.duplicates]
+Duplicate modifiers are not allowed within a `modifiers` argument.
 
 r[items.extern.attributes.link.wasm_import_module]
 #### The `wasm_import_module` key
