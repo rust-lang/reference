@@ -281,6 +281,15 @@ The `link` attribute uses the [MetaListNameValueStr] syntax to specify its input
 
 None of the keys may be specified more than once.
 
+r[items.extern.attributes.link.allowed-positions]
+The `link` attribute may be applied to [`extern` blocks].
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[items.extern.attributes.link.duplicates]
+The `link` attribute may be specified multiple times, and the corresponding linking instructions for each attribute will be passed to the linker.
+
 r[items.extern.attributes.link.empty-block]
 It is valid to add the `link` attribute on an empty extern block. You can use this to satisfy the linking requirements of extern blocks elsewhere in your code (including upstream crates) instead of adding the attribute to each extern block.
 
@@ -492,3 +501,4 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [value namespace]: ../names/namespaces.md
 [win32 api]: https://learn.microsoft.com/en-us/windows/win32/api/
 [`link_ordinal`]: items.extern.attributes.link_ordinal
+[`extern` blocks]: external-blocks.md
