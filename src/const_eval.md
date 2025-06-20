@@ -83,7 +83,9 @@ r[const-eval.const-expr.builtin-arith-logic]
 r[const-eval.const-expr.borrows]
 * All forms of [borrow]s, including raw borrows, with one limitation:
   mutable borrows and shared borrows to values with interior mutability
-  are only allowed to refer to *transient* places, to *indirect* places, or to *static* places.
+  are not allowed to refer to [lifetime-extended temporaries in the top-level scope of a `const` or `static` initializer expression][lifetime-extension-const].
+
+  In other words, they are only allowed to refer to *transient* places, to *indirect* places, or to *static* places.
   A place is *transient* if it is based on a local variable whose lifetime is strictly contained inside the current [const context].
   A place is *indirect* if it is based on a [dereference expression][dereference operator].
   A place is *static* if it is based on a `static` item or a [promoted expression].
@@ -188,6 +190,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [interior mutability]:  interior-mutability.md
 [if]:                   expressions/if-expr.md#if-expressions
 [lazy boolean]:         expressions/operator-expr.md#lazy-boolean-operators
+[lifetime-extension-const]: destructors.md#r-destructors.scope.lifetime-extension.static
 [let statements]:       statements.md#let-statements
 [literals]:             expressions/literal-expr.md
 [logical]:              expressions/operator-expr.md#arithmetic-and-logical-binary-operators

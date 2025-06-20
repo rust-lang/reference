@@ -336,8 +336,9 @@ println!("{}", x);
 ```
 
 r[destructors.scope.lifetime-extension.static]
-Lifetime extension also applies to `static` and `const` items, where it
-makes temporaries live until the end of the program. For example:
+Lifetime extension also applies to the top-level scope of `static` and `const` items,
+where it makes temporaries live until the end of the program.
+For example:
 
 ```rust
 const C: &Vec<i32> = &Vec::new();
