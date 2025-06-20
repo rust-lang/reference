@@ -395,7 +395,7 @@ r[items.extern.attributes.link_name]
 ### The `link_name` attribute
 
 r[items.extern.attributes.link_name.intro]
-The *`link_name` attribute* may be specified on declarations inside an `extern` block to indicate the symbol to import for the given function or static.
+The *`link_name` [attribute][attributes]* may be specified on declarations inside an `extern` block to indicate the symbol to import for the given function or static.
 
 r[items.extern.attributes.link_name.syntax]
 It uses the [MetaNameValueStr] syntax to specify the name of the symbol.
