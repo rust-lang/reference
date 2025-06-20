@@ -429,14 +429,15 @@ The *`link_ordinal` attribute* can be applied on declarations inside an `extern`
 > [!WARNING]
 > `link_ordinal` should only be used in cases where the ordinal of the symbol is known to be stable: if the ordinal of a symbol is not explicitly set when its containing binary is built then one will be automatically assigned to it, and that assigned ordinal may change between builds of the binary.
 
-```rust
-# #[cfg(all(windows, target_arch = "x86"))]
-#[link(name = "exporter", kind = "raw-dylib")]
-unsafe extern "stdcall" {
-    #[link_ordinal(15)]
-    safe fn imported_function_stdcall(i: i32);
-}
-```
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(all(windows, target_arch = "x86"))]
+> #[link(name = "exporter", kind = "raw-dylib")]
+> unsafe extern "stdcall" {
+>     #[link_ordinal(15)]
+>     safe fn imported_function_stdcall(i: i32);
+> }
+> ```
 
 r[items.extern.attributes.link_ordinal.allowed-kinds]
 This attribute is only used with the `raw-dylib` linking kind. Using any other kind will result in a compiler error.
