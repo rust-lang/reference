@@ -439,11 +439,29 @@ The *`link_ordinal` [attribute][attributes]* can be applied on declarations insi
 > }
 > ```
 
-r[items.extern.attributes.link_ordinal.allowed-kinds]
-This attribute is only used with the `raw-dylib` linking kind. Using any other kind will result in a compiler error.
+r[items.extern.attributes.link_ordinal.syntax]
+The syntax for the `link_ordinal` attribute is:
 
-r[items.extern.attributes.link_ordinal.exclusive]
-Using this attribute with the `link_name` attribute will result in a compiler error.
+```grammar,attributes
+@root LinkOrdinalAttribute -> `link_ordinal` `(` LinkOrdinal `)`
+
+LinkOrdinal -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
+```
+
+r[items.extern.attributes.link_ordinal.max]
+The ordinal must be less than or equal to [`u16::MAX`].
+
+r[items.extern.attributes.link_ordinal.allowed-positions]
+The `link_ordinal` attribute may be specified on a function or static in an `extern` block.
+
+r[items.extern.attributes.link_ordinal.duplicates]
+The `link_ordinal` attribute may only be specified once on an item.
+
+r[items.extern.attributes.link_ordinal.allowed-kinds]
+The `link_ordinal` attribute may only be used with the [`raw-dylib` linking kind][items.extern.attributes.link.raw-dylib].
+
+r[items.extern.attributes.link_ordinal.link_name]
+The `link_ordinal` attribute may not be used with the [`link_name`] attribute.
 
 r[items.extern.attributes.fn-parameters]
 ### Attributes on function parameters
@@ -457,6 +475,8 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
 [`extern fn`]: items.fn.extern
+[`link_name`]: items.extern.attributes.link_name
+[`link_ordinal`]: items.extern.attributes.link_ordinal
 [`unsafe` context]: ../unsafe-keyword.md
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
@@ -467,4 +487,3 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [unwind-behavior]: functions.md#unwinding
 [value namespace]: ../names/namespaces.md
 [win32 api]: https://learn.microsoft.com/en-us/windows/win32/api/
-[`link_ordinal`]: items.extern.attributes.link_ordinal
