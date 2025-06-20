@@ -406,10 +406,22 @@ The *`link_name` [attribute][attributes]* may be specified on declarations insid
 > ```
 
 r[items.extern.attributes.link_name.syntax]
-It uses the [MetaNameValueStr] syntax to specify the name of the symbol.
+The `link_name` attribute uses the [MetaNameValueStr] syntax to specify the name of the symbol.
 
-r[items.extern.attributes.link_name.exclusive]
-Using this attribute with the `link_ordinal` attribute will result in a compiler error.
+r[items.extern.attributes.link_name.allowed-positions]
+The `link_name` attribute may be specified on a function or static in an `extern` block.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[items.extern.attributes.link_name.duplicates]
+Only the last instance of `link_name` on an item is used to determine the symbol name.
+
+> [!NOTE]
+> `rustc` currently warns on preceding duplicate `link_name` attributes. This may become an error in the future.
+
+r[items.extern.attributes.link_name.link_ordinal]
+The `link_name` attribute may not be used with the [`link_ordinal`] attribute.
 
 r[items.extern.attributes.link_ordinal]
 ### The `link_ordinal` attribute
@@ -460,3 +472,4 @@ restrictions as [regular function parameters].
 [statics]: static-items.md
 [unwind-behavior]: functions.md#unwinding
 [value namespace]: ../names/namespaces.md
+[`link_ordinal`]: items.extern.attributes.link_ordinal
