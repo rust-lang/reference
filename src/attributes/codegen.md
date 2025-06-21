@@ -7,23 +7,16 @@ r[attributes.codegen.hint]
 ## Optimization hints
 
 r[attributes.codegen.hint.cold-inline]
-The `cold` and `inline` [attributes] give suggestions to generate code in a
-way that may be faster than what it would do without the hint. The attributes
-are only hints, and may be ignored.
+The `cold` and `inline` [attributes] give suggestions to generate code in a way that may be faster than what it would do without the hint. The attributes are only hints, and may be ignored.
 
 r[attributes.codegen.hint.usage]
-Both attributes can be used on [functions]. When applied to a function in a
-[trait], they apply only to that function when used as a default function for
-a trait implementation and not to all trait implementations. The attributes
-have no effect on a trait function without a body.
+Both attributes can be used on [functions]. When applied to a function in a [trait], they apply only to that function when used as a default function for a trait implementation and not to all trait implementations. The attributes have no effect on a trait function without a body.
 
 r[attributes.codegen.inline]
 ### The `inline` attribute
 
 r[attributes.codegen.inline.intro]
-The *`inline` [attribute]* suggests that a copy of the attributed function
-should be placed in the caller, rather than generating code to call the
-function where it is defined.
+The *`inline` [attribute]* suggests that a copy of the attributed function should be placed in the caller, rather than generating code to call the function where it is defined.
 
 > [!NOTE]
 > The `rustc` compiler automatically inlines functions based on internal heuristics. Incorrectly inlining functions can make the program slower, so this attribute should be used with care.
@@ -32,10 +25,8 @@ r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
 
 * `#[inline]` *suggests* performing an inline expansion.
-* `#[inline(always)]` *suggests* that an inline expansion should always be
-  performed.
-* `#[inline(never)]` *suggests* that an inline expansion should never be
-  performed.
+* `#[inline(always)]` *suggests* that an inline expansion should always be performed.
+* `#[inline(never)]` *suggests* that an inline expansion should never be performed.
 
 > [!NOTE]
 > `#[inline]` in every form is a hint, with no *requirements* on the language to place a copy of the attributed function in the caller.
@@ -43,8 +34,7 @@ There are three ways to use the inline attribute:
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
-The *`cold` [attribute]* suggests that the attributed function is unlikely to
-be called.
+The *`cold` [attribute]* suggests that the attributed function is unlikely to be called.
 
 r[attributes.codegen.naked]
 ## The `naked` attribute
