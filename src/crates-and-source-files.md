@@ -112,14 +112,27 @@ The *`no_main` [attribute]* may be applied at the crate level to disable emittin
 r[crate.crate_name]
 ## The `crate_name` attribute
 
-r[crate.crate_name.general]
-The *`crate_name` [attribute]* may be applied at the crate level to specify the name of the crate with the [MetaNameValueStr] syntax.
+r[crate.crate_name.intro]
+The *`crate_name` [attribute]* specifies the name of the crate.
 
-```rust
-#![crate_name = "mycrate"]
-```
+> [!EXAMPLE]
+> ```rust
+> #![crate_name = "mycrate"]
+> ```
 
-r[crate.crate_name.restriction]
+r[crate.crate_name.syntax]
+The `crate_name` attribute uses the [MetaNameValueStr] syntax to specify the name of the crate.
+
+r[crate.crate_name.allowed-positions]
+The `crate_name` attribute may only be applied to the crate root.
+
+r[crate.crate_name.duplicates]
+Only the first `crate_name` attribute is used to determine the crate name.
+
+> [!NOTE]
+> `rustc` currently warns on following duplicate `crate_name` attributes. This may become an error in the future.
+
+r[crate.crate_name.required-format]
 The crate name must not be empty, and must only contain [Unicode alphanumeric] or `_` (U+005F) characters.
 
 [^phase-distinction]: This distinction would also exist in an interpreter. Static checks like syntactic analysis, type checking, and lints should happen before the program is executed regardless of when it is executed.
