@@ -62,6 +62,9 @@ There are three ways to use the inline attribute:
 > [!NOTE]
 > `#[inline]` in every form is a hint, with no *requirements* on the language to place a copy of the attributed function in the caller.
 
+r[attributes.codegen.inline.trait]
+When `inline` is applied to a function in a [trait definition], it applies only to that function when used as a default function for a trait implementation and not to all trait implementations.
+
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
