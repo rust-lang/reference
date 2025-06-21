@@ -65,6 +65,9 @@ There are three ways to use the inline attribute:
 r[attributes.codegen.inline.trait]
 When `inline` is applied to a function in a [trait definition], it applies only to that function when used as a default function for a trait implementation and not to all trait implementations.
 
+r[attributes.codegen.inline.externally-exported]
+The `inline` attribute is ignored if the function is externally exported. This may happen with the [`no_mangle`] or [`export_name`] attribute.
+
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
