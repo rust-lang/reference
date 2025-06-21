@@ -9,8 +9,48 @@ r[attributes.codegen.inline]
 r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests that a copy of the attributed function should be placed in the caller, rather than generating code to call the function where it is defined.
 
+> [!EXAMPLE]
+> ```rust
+> #[inline]
+> pub fn example1() {}
+>
+> #[inline(always)]
+> pub fn example2() {}
+>
+> #[inline(never)]
+> pub fn example3() {}
+> ```
+
 > [!NOTE]
 > The `rustc` compiler automatically inlines functions based on internal heuristics. Incorrectly inlining functions can make the program slower, so this attribute should be used with care.
+
+r[attributes.codegen.inline.syntax]
+The syntax for the `inline` attribute is:
+
+```grammar,attributes
+@root InlineAttribute ->
+      `inline` `(` `always` `)`
+    | `inline` `(` `never` `)`
+    | `inline`
+```
+
+r[attributes.codegen.inline.allowed-positions]
+The `inline` attribute may only be used on:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+- [Closures][expr.closure]
+
+> [!NOTE]
+> `rustc` currently warns when `inline` is used in some other positions. This may become an error in the future.
+
+r[attributes.codegen.inline.duplicates]
+Only the first instance of `inline` on an item is honored. Subsequent `inline` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on duplicate `inline` attributes. This may become an error in the future.
 
 r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
