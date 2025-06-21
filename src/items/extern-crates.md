@@ -76,7 +76,8 @@ into the [`macro_use` prelude].
 r[items.extern-crate.no_link]
 ## The `no_link` attribute
 
-The *`no_link` attribute* may be specified on an `extern crate` item to prevent linking the crate into the output. This is commonly used to load a crate to access only its macros.
+r[items.extern-crate.no_link.intro]
+The *`no_link` [attribute][attributes]* may be specified on an `extern crate` item to prevent linking the crate into the output. This is commonly used to load a crate to access only its macros.
 
 [identifier]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
