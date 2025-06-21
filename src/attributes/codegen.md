@@ -71,7 +71,41 @@ The `inline` attribute is ignored if the function is externally exported. This m
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
+r[attributes.codegen.cold.intro]
 The *`cold` [attribute]* suggests that the attributed function is unlikely to be called.
+
+> [!EXAMPLE]
+> ```rust
+> #[cold]
+> pub fn example() {}
+> ```
+
+r[attributes.codegen.cold.syntax]
+The `cold` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.codegen.cold.allowed-positions]
+The `cold` attribute may only be used on:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+- [External block functions][items.extern.fn]
+- [Closures][expr.closure]
+
+> [!NOTE]
+> `rustc` currently warns when `inline` is used in some other positions. This may become an error in the future.
+
+<!-- TODO: rustc currently seems to allow cold on a trait function without a body, but it appears to be ignored. I think that may be a bug, and it should at least warn if not reject (like inline does). -->
+
+r[attributes.codegen.cold.duplicates]
+Duplicate instances of the `cold` attribute are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on duplicate `cold` attributes.
+
+r[attributes.codegen.cold.trait]
+When `cold` is applied to a function in a [trait definition], it applies only to that function when used as a default function for a trait implementation and not to all trait implementations.
 
 r[attributes.codegen.naked]
 ## The `naked` attribute
@@ -711,10 +745,12 @@ If the address of the function is taken as a function pointer, the low bit of th
 
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
+[`export_name`]: ../abi.md#the-export_name-attribute
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`Location`]: core::panic::Location
 [`naked_asm!`]: ../inline-assembly.md
+[`no_mangle`]: ../abi.md#the-no_mangle-attribute
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
 [`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
@@ -724,5 +760,6 @@ If the address of the function is taken as a function pointer, the low bit of th
 [rust-abi]: ../items/external-blocks.md#abi
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
+[trait definition]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
 [unsafe attribute]: ../attributes.md#r-attributes.safety
