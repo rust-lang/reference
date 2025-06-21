@@ -139,16 +139,14 @@ r[crate.crate_name]
 ## The `crate_name` attribute
 
 r[crate.crate_name.general]
-The *`crate_name` [attribute]* may be applied at the crate level to specify the
-name of the crate with the [MetaNameValueStr] syntax.
+The *`crate_name` [attribute]* may be applied at the crate level to specify the name of the crate with the [MetaNameValueStr] syntax.
 
 ```rust
 #![crate_name = "mycrate"]
 ```
 
 r[crate.crate_name.restriction]
-The crate name must not be empty, and must only contain [Unicode alphanumeric]
-or `_` (U+005F) characters.
+The crate name must not be empty, and must only contain [Unicode alphanumeric] or `_` (U+005F) characters.
 
 [^phase-distinction]: This distinction would also exist in an interpreter.
     Static checks like syntactic analysis, type checking, and lints should
