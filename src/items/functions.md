@@ -421,14 +421,15 @@ The attributes that have meaning on a function are:
 
 - [`cfg_attr`]
 - [`cfg`]
+- [`cold`]
 - [`deprecated`]
 - [`doc`]
 - [`export_name`]
+- [`inline`]
 - [`link_section`]
 - [`must_use`]
 - [`no_mangle`]
 - [Lint check attributes]
-- [Optimization hint attributes]
 - [Procedural macro attributes]
 - [Testing attributes]
 
@@ -483,7 +484,8 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [procedural macro attributes]: ../procedural-macros.md#attribute-macros
 [testing attributes]: ../attributes/testing.md
-[optimization hint attributes]: ../attributes/codegen.md#optimization-hints
+[`cold`]: ../attributes/codegen.md#the-cold-attribute
+[`inline`]: ../attributes/codegen.md#the-inline-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
