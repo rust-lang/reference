@@ -10,7 +10,7 @@ The compiler supports various methods to link crates together both statically an
 [ffi]: ../book/ch20-01-unsafe-rust.html#using-extern-functions-to-call-external-code
 
 r[link.type]
-In one session of compilation, the compiler can generate multiple artifacts through the use of either command line flags or the `crate_type` attribute. If one or more command line flags are specified, all `crate_type` attributes will be ignored in favor of only building the artifacts specified by command line.
+In one session of compilation, the compiler can generate multiple artifacts through the use of either command line flags or the [`crate_type` attribute]. If one or more command line flags are specified, all `crate_type` attributes will be ignored in favor of only building the artifacts specified by command line.
 
 r[link.bin]
 * `--crate-type=bin`, `#![crate_type = "bin"]` - A runnable executable will be produced. This requires that there is a `main` function in the crate which will be run when the program begins executing. This will link in all Rust and native dependencies, producing a single distributable binary. This is the default crate type.
@@ -39,6 +39,10 @@ r[link.proc-macro]
 
 r[link.repetition]
 Note that these outputs are stackable in the sense that if multiple are specified, then the compiler will produce each form of output without having to recompile. However, this only applies for outputs specified by the same method. If only `crate_type` attributes are specified, then they will all be built, but if one or more `--crate-type` command line flags are specified, then only those outputs will be built.
+
+<!-- TODO: Add a rule that combining certain crate types is not allowed.
+https://github.com/rust-lang/rust/blob/5526a2f47cd676ceeedc08cf71ae75ce2e9284ae/compiler/rustc_interface/src/passes.rs#L258-L265
+-->
 
 r[link.dependency]
 With all these different kinds of outputs, if crate A depends on crate B, then the compiler could find B in various different forms throughout the system. The only forms looked for by the compiler, however, are the `rlib` format and the dynamic library format. With these two options for a dependent library, the compiler must at some point make a choice between these two formats. With this in mind, the compiler follows these rules when determining what format of dependencies will be used:
@@ -69,6 +73,26 @@ r[link.dependency-dynamic]
    For most situations, having all libraries available as a dylib is recommended if dynamically linking. For other situations, the compiler will emit a warning if it is unable to determine which formats to link each library with.
 
 In general, `--crate-type=bin` or `--crate-type=lib` should be sufficient for all compilation needs, and the other options are just available if more fine-grained control is desired over the output format of a crate.
+
+r[link.crate_type]
+## The `crate_type` attribute
+
+r[link.crate_type.intro]
+The *`crate_type` [attribute][attributes]* is used to specify the [crate type][link.type] of the crate.
+
+> [!EXAMPLE]
+> ```rust
+> #![crate_type = "lib"]
+> ```
+
+r[link.crate_type.syntax]
+The `crate_type` attribute uses the [MetaNameValueStr] syntax to specify the crate type.
+
+r[link.crate_type.allowed-positions]
+The `crate_type` attribute may only be applied to the crate root.
+
+r[link.crate_type.duplicates]
+If the `crate_type` is specified multiple times, then the crate is built for all of the given crate types.
 
 r[link.crt]
 ## Static and dynamic C runtimes
@@ -181,3 +205,4 @@ If a Rust artifact is potentially unwinding, then all its crates must be built w
 [procedural macros]: procedural-macros.md
 [panic strategy]: panic.md#panic-strategy
 [`-C panic`]: ../rustc/codegen-options/index.html#panic
+[`crate_type` attribute]: link.crate_type
