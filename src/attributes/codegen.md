@@ -3,15 +3,6 @@ r[attributes.codegen]
 
 The following [attributes] are used for controlling code generation.
 
-r[attributes.codegen.hint]
-## Optimization hints
-
-r[attributes.codegen.hint.cold-inline]
-The `cold` and `inline` [attributes] give suggestions to generate code in a way that may be faster than what it would do without the hint. The attributes are only hints, and may be ignored.
-
-r[attributes.codegen.hint.usage]
-Both attributes can be used on [functions]. When applied to a function in a [trait], they apply only to that function when used as a default function for a trait implementation and not to all trait implementations. The attributes have no effect on a trait function without a body.
-
 r[attributes.codegen.inline]
 ### The `inline` attribute
 
