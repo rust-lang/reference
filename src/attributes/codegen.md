@@ -194,6 +194,14 @@ The *`target_feature` [attribute]* may be applied to a function to enable code g
 > fn foo_avx2() {}
 > ```
 
+> [!NOTE]
+> See the [`target_feature` conditional compilation option] for selectively enabling or disabling compilation of code based on compile-time settings. Note that this option is not affected by the `target_feature` attribute, and is only driven by the features enabled for the entire crate.
+>
+> Whether a feature is enabled can be checked at runtime using a platform-specific macro from the standard library, for instance [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`].
+
+> [!NOTE]
+> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
+
 r[attributes.codegen.target_feature.syntax]
 The syntax for the `target_feature` attribute is:
 
@@ -601,18 +609,6 @@ Feature                                | Implicitly Enables                    |
 `miscellaneous-extensions-4`           |                                       | miscellaneous extensions 4
 
 [z/Architecture Principles of Operation]: https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
-
-r[attributes.codegen.target_feature.info]
-### Additional information
-
-r[attributes.codegen.target_feature.remark-cfg]
-See the [`target_feature` conditional compilation option] for selectively enabling or disabling compilation of code based on compile-time settings. Note that this option is not affected by the `target_feature` attribute, and is only driven by the features enabled for the entire crate.
-
-r[attributes.codegen.target_feature.remark-rt]
-Whether a feature is enabled can be checked at runtime using a platform-specific macro from the standard library, for instance [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`].
-
-> [!NOTE]
-> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
