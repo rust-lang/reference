@@ -597,6 +597,9 @@ in the standard library for runtime feature detection on these platforms.
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
 
+r[attributes.codegen.track_caller.intro]
+The *`track_caller` [attribute][attributes]* is used on functions to indicate that the caller should be tracked for the purpose of using [`Location`] to determine the caller.
+
 r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi] with the exception of the entry point `fn main`.
 
