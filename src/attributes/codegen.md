@@ -185,7 +185,7 @@ r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
 
 r[attributes.codegen.target_feature.intro]
-The *`target_feature` [attribute]* may be applied to a function to enable code generation of that function for specific platform architecture features. It uses the [MetaListNameValueStr] syntax with a single key of `enable` whose value is a string of comma-separated feature names to enable.
+The *`target_feature` [attribute]* may be applied to a function to enable code generation of that function for specific platform architecture features.
 
 > [!EXAMPLE]
 > ```rust
@@ -193,6 +193,37 @@ The *`target_feature` [attribute]* may be applied to a function to enable code g
 > #[target_feature(enable = "avx2")]
 > fn foo_avx2() {}
 > ```
+
+r[attributes.codegen.target_feature.syntax]
+The syntax for the `target_feature` attribute is:
+
+```grammar,attributes
+@root TargetFeatureAttribute ->
+    `target_feature` `(` `enable` `=` (STRING_LITERAL | RAW_STRING_LITERAL) `)`
+```
+
+The given string is a comma-separated list of feature names to enable. See [available features](#available-features) for the list of features that are available.
+
+r[attributes.codegen.target_feature.allowed-positions]
+The `target_feature` may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+
+It is not allowed on the following places:
+
+- [the `main` function][crate.main]
+- a [`panic_handler` function][panic.panic_handler]
+- safe trait methods
+- safe default functions in traits
+
+> [!NOTE]
+> `rustc` currently warns on some positions where it is ignored, but this may become an error in the future.
+
+r[attributes.codegen.target_feature.duplicates]
+If the `target_feature` attribute is specified multiple times on an item, then the union of all the specified features are enabled.
 
 r[attributes.codegen.target_feature.arch]
 Each [target architecture] has a set of features that may be enabled. It is an error to specify a feature for a target architecture that the crate is not being compiled for.
@@ -242,14 +273,6 @@ fn bar_sse2() {
 
 r[attributes.codegen.target_feature.fn-traits]
 A function with a `#[target_feature]` attribute *never* implements the `Fn` family of traits, although closures inheriting features from the enclosing function do.
-
-r[attributes.codegen.target_feature.allowed-positions]
-The `#[target_feature]` attribute is not allowed on the following places:
-
-- [the `main` function][crate.main]
-- a [`panic_handler` function][panic.panic_handler]
-- safe trait methods
-- safe default functions in traits
 
 r[attributes.codegen.target_feature.inline]
 Functions marked with `target_feature` are not inlined into a context that does not support the given features. The `#[inline(always)]` attribute may not be used with a `target_feature` attribute.
