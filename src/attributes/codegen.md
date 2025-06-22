@@ -608,19 +608,37 @@ The *`track_caller` [attribute][attributes]* is used on functions to indicate th
 > }
 > ```
 
+r[attributes.codegen.track_caller.syntax]
+The `track_caller` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
 r[attributes.codegen.track_caller.allowed-positions]
-The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi] with the exception of the entry point `fn main`.
+The `track_caller` attribute may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits]
+- [External block functions][items.extern.fn]
+- [Closures][expr.closure]
+
+All functions must have the [`"Rust"` ABI][rust-abi].
+
+It may not be applied to the [the `main` function][crate.main].
+
+r[attributes.codegen.track_caller.duplicates]
+Duplicate instances of the `track_caller` attribute are ignored.
+
+> [!NOTE]
+> `rustc` warns on on duplicate `track_caller` attributes.
 
 r[attributes.codegen.track_caller.traits]
-When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a default implementation with the attribute, then the attribute also applies to override implementations.
+When applied to functions and methods in trait declarations, the `track_caller` attribute applies to all implementations. If the trait provides a default implementation with the attribute, then the attribute also applies to override implementations.
 
 r[attributes.codegen.track_caller.extern]
-When applied to a function in an `extern` block the attribute must also be applied to any linked implementations, otherwise undefined behavior results. When applied to a function which is made available to an `extern` block, the declaration in the `extern` block must also have the attribute, otherwise undefined behavior results.
+When applied to a function in an `extern` block, the `track_caller` attribute must also be applied to any linked implementations, otherwise undefined behavior results. When applied to a function which is made available to an `extern` block, the declaration in the `extern` block must also have the attribute, otherwise undefined behavior results.
 
 r[attributes.codegen.track_caller.behavior]
-### Behavior
-
-Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
+Applying the `track_caller` attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of the *topmost* tracked call that led to `f`'s invocation. At the point of observation, an implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
 
 > [!NOTE]
 > `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
