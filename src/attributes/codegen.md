@@ -187,11 +187,12 @@ r[attributes.codegen.target_feature]
 r[attributes.codegen.target_feature.intro]
 The *`target_feature` [attribute]* may be applied to a function to enable code generation of that function for specific platform architecture features. It uses the [MetaListNameValueStr] syntax with a single key of `enable` whose value is a string of comma-separated feature names to enable.
 
-```rust
-# #[cfg(target_feature = "avx2")]
-#[target_feature(enable = "avx2")]
-fn foo_avx2() {}
-```
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_feature = "avx2")]
+> #[target_feature(enable = "avx2")]
+> fn foo_avx2() {}
+> ```
 
 r[attributes.codegen.target_feature.arch]
 Each [target architecture] has a set of features that may be enabled. It is an error to specify a feature for a target architecture that the crate is not being compiled for.
