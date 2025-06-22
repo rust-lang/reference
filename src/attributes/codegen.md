@@ -600,6 +600,14 @@ r[attributes.codegen.track_caller]
 r[attributes.codegen.track_caller.intro]
 The *`track_caller` [attribute][attributes]* is used on functions to indicate that the caller should be tracked for the purpose of using [`Location`] to determine the caller.
 
+> [!EXAMPLE]
+> ```rust
+> #[track_caller]
+> fn f() {
+>     println!("{}", std::panic::Location::caller());
+> }
+> ```
+
 r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi] with the exception of the entry point `fn main`.
 
@@ -613,13 +621,6 @@ r[attributes.codegen.track_caller.behavior]
 ### Behavior
 
 Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
-
-```rust
-#[track_caller]
-fn f() {
-    println!("{}", std::panic::Location::caller());
-}
-```
 
 > [!NOTE]
 > `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
