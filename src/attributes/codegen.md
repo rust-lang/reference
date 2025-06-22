@@ -598,26 +598,18 @@ r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
 
 r[attributes.codegen.track_caller.allowed-positions]
-The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
-with the exception of the entry point `fn main`.
+The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi] with the exception of the entry point `fn main`.
 
 r[attributes.codegen.track_caller.traits]
-When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a
-default implementation with the attribute, then the attribute also applies to override implementations.
+When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a default implementation with the attribute, then the attribute also applies to override implementations.
 
 r[attributes.codegen.track_caller.extern]
-When applied to a function in an `extern` block the attribute must also be applied to any linked
-implementations, otherwise undefined behavior results. When applied to a function which is made
-available to an `extern` block, the declaration in the `extern` block must also have the attribute,
-otherwise undefined behavior results.
+When applied to a function in an `extern` block the attribute must also be applied to any linked implementations, otherwise undefined behavior results. When applied to a function which is made available to an `extern` block, the declaration in the `extern` block must also have the attribute, otherwise undefined behavior results.
 
 r[attributes.codegen.track_caller.behavior]
 ### Behavior
 
-Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
-the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
-implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
-*unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
+Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
 
 ```rust
 #[track_caller]
@@ -646,8 +638,7 @@ fn calls_f() {
 }
 ```
 
-When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in
-both `f` and `g` observes `g`'s callsite within `calls_g`:
+When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in both `f` and `g` observes `g`'s callsite within `calls_g`:
 
 ```rust
 # #[track_caller]
@@ -665,8 +656,7 @@ fn calls_g() {
 }
 ```
 
-When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code
-in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
+When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
 
 ```rust
 # #[track_caller]
@@ -698,10 +688,7 @@ r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
 
 r[attributes.codegen.track_caller.decay]
-In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which
-appears to observers to have been called at the attributed function's definition site, losing actual
-caller information across virtual calls. A common example of this coercion is the creation of a
-trait object whose methods are attributed.
+In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which appears to observers to have been called at the attributed function's definition site, losing actual caller information across virtual calls. A common example of this coercion is the creation of a trait object whose methods are attributed.
 
 > [!NOTE]
 > The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
