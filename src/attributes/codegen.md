@@ -626,7 +626,7 @@ Applying the attribute to a function `f` allows code within `f` to get a hint of
 > `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
 
 > [!NOTE]
-> Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#limitations) for important caveats.
+> Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#track_caller-limitations) for important caveats.
 
 > [!EXAMPLE]
 > When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
@@ -685,7 +685,7 @@ Applying the attribute to a function `f` allows code within `f` to get a hint of
 > And so on.
 
 r[attributes.codegen.track_caller.limits]
-### Limitations
+### `track_caller` limitations
 
 r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
