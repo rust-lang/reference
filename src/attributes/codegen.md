@@ -102,6 +102,14 @@ The *`target_feature` [attribute]* may be applied to a function to enable code g
 > fn foo_avx2() {}
 > ```
 
+> [!NOTE]
+> See the [`target_feature` conditional compilation option] for selectively enabling or disabling compilation of code based on compile-time settings. Note that this option is not affected by the `target_feature` attribute, and is only driven by the features enabled for the entire crate.
+>
+> See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros in the standard library for runtime feature detection on these platforms.
+
+> [!NOTE]
+> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
+
 r[attributes.codegen.target_feature.syntax]
 The syntax for the `target_feature` attribute is:
 
@@ -482,18 +490,6 @@ Feature               | Implicitly Enables  | Description
 [reference-types]: https://github.com/webassembly/reference-types
 [tail-call]: https://github.com/webassembly/tail-call
 [multivalue]: https://github.com/webassembly/multi-value
-
-r[attributes.codegen.target_feature.info]
-### Additional information
-
-r[attributes.codegen.target_feature.remark-cfg]
-See the [`target_feature` conditional compilation option] for selectively enabling or disabling compilation of code based on compile-time settings. Note that this option is not affected by the `target_feature` attribute, and is only driven by the features enabled for the entire crate.
-
-r[attributes.codegen.target_feature.remark-rt]
-See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros in the standard library for runtime feature detection on these platforms.
-
-> [!NOTE]
-> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
