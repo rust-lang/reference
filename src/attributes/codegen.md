@@ -628,62 +628,61 @@ Applying the attribute to a function `f` allows code within `f` to get a hint of
 > [!NOTE]
 > Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#limitations) for important caveats.
 
-#### Examples
-
-When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-fn calls_f() {
-    f(); // <-- f() prints this location
-}
-```
-
-When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in both `f` and `g` observes `g`'s callsite within `calls_g`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-#[track_caller]
-fn g() {
-    println!("{}", std::panic::Location::caller());
-    f();
-}
-
-fn calls_g() {
-    g(); // <-- g() prints this location twice, once itself and once from f()
-}
-```
-
-When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-# #[track_caller]
-# fn g() {
-#     println!("{}", std::panic::Location::caller());
-#     f();
-# }
-#[track_caller]
-fn h() {
-    println!("{}", std::panic::Location::caller());
-    g();
-}
-
-fn calls_h() {
-    h(); // <-- prints this location three times, once itself, once from g(), once from f()
-}
-```
-
-And so on.
+> [!EXAMPLE]
+> When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> fn calls_f() {
+>     f(); // <-- f() prints this location
+> }
+> ```
+>
+> When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in both `f` and `g` observes `g`'s callsite within `calls_g`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> #[track_caller]
+> fn g() {
+>     println!("{}", std::panic::Location::caller());
+>     f();
+> }
+>
+> fn calls_g() {
+>     g(); // <-- g() prints this location twice, once itself and once from f()
+> }
+> ```
+>
+> When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> # #[track_caller]
+> # fn g() {
+> #     println!("{}", std::panic::Location::caller());
+> #     f();
+> # }
+> #[track_caller]
+> fn h() {
+>     println!("{}", std::panic::Location::caller());
+>     g();
+> }
+>
+> fn calls_h() {
+>     h(); // <-- prints this location three times, once itself, once from g(), once from f()
+> }
+> ```
+>
+> And so on.
 
 r[attributes.codegen.track_caller.limits]
 ### Limitations
