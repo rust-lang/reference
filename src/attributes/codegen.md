@@ -637,33 +637,46 @@ trait object whose methods are attributed.
 r[attributes.codegen.instruction_set]
 ## The `instruction_set` attribute
 
-r[attributes.codegen.instruction_set.allowed-positions]
-The *`instruction_set` [attribute]* may be applied to a function to control which instruction set the function will be generated for.
+r[attributes.codegen.instruction_set.intro]
+The *`instruction_set` [attribute]* specifies the instruction set that a function will use during code generation. This allows mixing more than one instruction set in a single program.
 
-r[attributes.codegen.instruction_set.behavior]
-This allows mixing more than one instruction set in a single program on CPU architectures that support it.
+> [!EXAMPLE]
+> <!-- ignore: arm-only -->
+> ```rust,ignore
+> #[instruction_set(arm::a32)]
+> fn foo_arm_code() {}
+>
+> #[instruction_set(arm::t32)]
+> fn bar_thumb_code() {}
+> ```
 
 r[attributes.codegen.instruction_set.syntax]
-It uses the [MetaListPaths] syntax, and a path comprised of the architecture family name and instruction set name.
+The `instruction_set` attribute uses the [MetaListPaths] syntax, and a path comprised of the architecture family name and instruction set name.
+
+r[attributes.codegen.instruction_set.allowed-positions]
+The `instruction_set` attribute may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+- [Closures][expr.closure]
+
+> [!NOTE]
+> `rustc` currently ignores `instruction_set` in other positions. This may change in the future.
+
+r[attributes.codegen.instruction_set.duplicates]
+The `instruction_set` attribute may only be specified once on an item.
 
 r[attributes.codegen.instruction_set.target-limits]
-It is a compilation error to use the `instruction_set` attribute on a target that does not support it.
+The `instruction_set` attribute may only be used with a target that supports the given value.
 
 r[attributes.codegen.instruction_set.arm]
-### On ARM
+### `instruction_set` on ARM
 
 For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
 * `arm::a32` --- Generate the function as A32 "ARM" code.
 * `arm::t32` --- Generate the function as T32 "Thumb" code.
-
-<!-- ignore: arm-only -->
-```rust,ignore
-#[instruction_set(arm::a32)]
-fn foo_arm_code() {}
-
-#[instruction_set(arm::t32)]
-fn bar_thumb_code() {}
-```
 
 Using the `instruction_set` attribute has the following effects:
 
