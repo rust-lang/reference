@@ -74,7 +74,29 @@ r[items.mod.outlined.path]
 ### The `path` attribute
 
 r[items.mod.outlined.path.intro]
-The directories and files used for loading external file modules can be influenced with the `path` attribute.
+The *`path` [attribute][attributes]* specifies the file to load for a module.
+
+> [!EXAMPLE]
+> <!-- ignore: requires external files -->
+> ```rust,ignore
+> #[path = "other_file.rs"]
+> pub mod example;
+> ```
+
+r[items.mod.outlined.path.syntax]
+The `path` attribute uses the [MetaNameValueStr] syntax to specify the path to the file.
+
+r[items.mod.outlined.path.allowed-positions]
+The `path` attribute may only be applied to module declarations.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[items.mod.outlined.path.duplicates]
+Only the first instance of `path` on a module is honored. Subsequent `path` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on following duplicate `path` attributes. This may become an error in the future.
 
 r[items.mod.outlined.path.search]
 For `path` attributes on modules not inside inline module blocks, the file path is relative to the directory the source file is located. For example, the following code snippet would use the paths shown based on where it is located:
