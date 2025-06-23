@@ -44,7 +44,7 @@ r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 
 r[attributes.limits.type_length_limit.intro]
-The *`type_length_limit` attribute* limits the maximum number of type substitutions made when constructing a concrete type during monomorphization.
+The *`type_length_limit` [attribute][attributes]* limits the maximum number of type substitutions made when constructing a concrete type during monomorphization.
 
 > [!NOTE]
 > In `rustc` this limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
@@ -67,7 +67,19 @@ The *`type_length_limit` attribute* limits the maximum number of type substituti
 > The default in `rustc` is 1048576.
 
 r[attributes.limits.type_length_limit.syntax]
-It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax to set the limit based on the number of type substitutions.
+The `type_length_limit` attribute uses the [MetaNameValueStr] syntax to set the limit. The value in the string must be a non-negative number.
+
+r[attributes.limits.type_length_limit.allowed-positions]
+The `type_length_limit` attribute may only be applied to the crate root.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[attributes.limits.type_length_limit.duplicates]
+Only the first instance of `type_length_limit` on an item is honored. Subsequent `type_length_limit` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on following duplicate `type_length_limit` attributes. This may become an error in the future.
 
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md
