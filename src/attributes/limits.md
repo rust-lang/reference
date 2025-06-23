@@ -7,7 +7,7 @@ r[attributes.limits.recursion_limit]
 ## The `recursion_limit` attribute
 
 r[attributes.limits.recursion_limit.intro]
-The *`recursion_limit` attribute* may be applied at the [crate] level to set the maximum depth for potentially infinitely-recursive compile-time operations like macro expansion or auto-dereference.
+The *`recursion_limit` [attribute][attributes]* sets the maximum depth for potentially infinitely-recursive compile-time operations like macro expansion or auto-dereference.
 
 > [!EXAMPLE]
 > ```rust,compile_fail
@@ -37,7 +37,19 @@ The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 > The default recursion limit in `rustc` is 128.
 
 r[attributes.limits.recursion_limit.syntax]
-It uses the [MetaNameValueStr] syntax to specify the recursion depth.
+The `recursion_limit` attribute uses the [MetaNameValueStr] syntax to specify the recursion depth. The value in the string must be a non-negative integer.
+
+r[attributes.limits.recursion_limit.allowed-positions]
+The `recursion_limit` attribute may only be applied to the crate root.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[attributes.limits.recursion_limit.duplicates]
+Only the first instance of `recursion_limit` on an item is honored. Subsequent `recursion_limit` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on following duplicate `recursion_limit` attributes. This may become an error in the future.
 
 <!-- template:attributes -->
 r[attributes.limits.type_length_limit]
