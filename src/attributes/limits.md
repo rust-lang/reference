@@ -51,21 +51,23 @@ r[attributes.limits.type_length_limit]
 r[attributes.limits.type_length_limit.intro]
 The *`type_length_limit` attribute* limits the maximum number of type substitutions made when constructing a concrete type during monomorphization.
 
+> [!EXAMPLE]
+> <!-- ignore: not enforced without nightly flag -->
+> ```rust,ignore
+> #![type_length_limit = "4"]
+>
+> fn f<T>(x: T) {}
+>
+> // This fails to compile because monomorphizing to
+> // `f::<((((i32,), i32), i32), i32)>` requires more than 4 type elements.
+> f(((((1,), 2), 3), 4));
+> ```
+
 r[attributes.limits.type_length_limit.syntax]
 It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax to set the limit based on the number of type substitutions.
 
 > [!NOTE]
 > The default in `rustc` is 1048576.
-
-```rust,ignore
-#![type_length_limit = "4"]
-
-fn f<T>(x: T) {}
-
-// This fails to compile because monomorphizing to
-// `f::<((((i32,), i32), i32), i32)>` requires more than 4 type elements.
-f(((((1,), 2), 3), 4));
-```
 
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md
