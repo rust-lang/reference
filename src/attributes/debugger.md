@@ -7,11 +7,27 @@ r[attributes.debugger.debugger_visualizer]
 ## The `debugger_visualizer` attribute
 
 r[attributes.debugger.debugger_visualizer.intro]
-The *`debugger_visualizer` attribute* can be used to embed a debugger visualizer file into the debug information.
+The *`debugger_visualizer` [attribute][attributes]* can be used to embed a debugger visualizer file into the debug information.
 This enables an improved debugger experience for displaying values in the debugger.
 
+> [!EXAMPLE]
+> <!-- ignore: requires external files-->
+> ```rust,ignore
+> #![debugger_visualizer(natvis_file = "Example.natvis")]
+> #![debugger_visualizer(gdb_script_file = "example.py")]
+> ```
+
 r[attributes.debugger.debugger_visualizer.syntax]
-It uses the [MetaListNameValueStr] syntax to specify its inputs, and must be specified as a crate attribute.
+The `debugger_visualizer` attribute uses the [MetaListNameValueStr] syntax to specify its inputs. One of the following keys must be specified:
+
+- [`natvis_file`][attributes.debugger.debugger_visualizer.natvis]
+- [`gdb_script_file`][attributes.debugger.debugger_visualizer.gdb]
+
+r[attributes.debugger.debugger_visualizer.allowed-positions]
+The `debugger_visualizer` attribute may only be specified on a [module] or crate root.
+
+r[attributes.debugger.debugger_visualizer.duplicates]
+Duplicate instances of the `debugger_visualizer` attribute will load all of the specified visualizers.
 
 r[attributes.debugger.debugger_visualizer.natvis]
 ### Using `debugger_visualizer` with Natvis
@@ -208,3 +224,4 @@ The `external` behavior is the default for macros that don't have this attribute
 [`-C collapse-macro-debuginfo`]: ../../rustc/codegen-options/index.html#collapse-macro-debuginfo
 [`macro_rules` definition]: ../macros-by-example.md
 [attribute]: ../attributes.md
+[module]: ../items/modules.md
