@@ -7,13 +7,10 @@ r[attributes.limits.recursion_limit]
 ## The `recursion_limit` attribute
 
 r[attributes.limits.recursion_limit.intro]
-The *`recursion_limit` attribute* may be applied at the [crate] level to set the
-maximum depth for potentially infinitely-recursive compile-time operations
-like macro expansion or auto-dereference.
+The *`recursion_limit` attribute* may be applied at the [crate] level to set the maximum depth for potentially infinitely-recursive compile-time operations like macro expansion or auto-dereference.
 
 r[attributes.limits.recursion_limit.syntax]
-It uses the [MetaNameValueStr]
-syntax to specify the recursion depth.
+It uses the [MetaNameValueStr] syntax to specify the recursion depth.
 
 > [!NOTE]
 > The default in `rustc` is 128.
