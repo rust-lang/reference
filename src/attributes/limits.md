@@ -9,33 +9,35 @@ r[attributes.limits.recursion_limit]
 r[attributes.limits.recursion_limit.intro]
 The *`recursion_limit` attribute* may be applied at the [crate] level to set the maximum depth for potentially infinitely-recursive compile-time operations like macro expansion or auto-dereference.
 
+> [!EXAMPLE]
+> ```rust,compile_fail
+> #![recursion_limit = "4"]
+>
+> macro_rules! a {
+>     () => { a!(1); };
+>     (1) => { a!(2); };
+>     (2) => { a!(3); };
+>     (3) => { a!(4); };
+>     (4) => { };
+> }
+>
+> // This fails to expand because it requires a recursion depth greater than 4.
+> a!{}
+> ```
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> #![recursion_limit = "1"]
+>
+> // This fails because it requires two recursive steps to auto-dereference.
+> (|_: &u8| {})(&&&1);
+> ```
+
 r[attributes.limits.recursion_limit.syntax]
 It uses the [MetaNameValueStr] syntax to specify the recursion depth.
 
 > [!NOTE]
 > The default in `rustc` is 128.
-
-```rust,compile_fail
-#![recursion_limit = "4"]
-
-macro_rules! a {
-    () => { a!(1); };
-    (1) => { a!(2); };
-    (2) => { a!(3); };
-    (3) => { a!(4); };
-    (4) => { };
-}
-
-// This fails to expand because it requires a recursion depth greater than 4.
-a!{}
-```
-
-```rust,compile_fail
-#![recursion_limit = "1"]
-
-// This fails because it requires two recursive steps to auto-dereference.
-(|_: &u8| {})(&&&1);
-```
 
 <!-- template:attributes -->
 r[attributes.limits.type_length_limit]
