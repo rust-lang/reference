@@ -33,11 +33,11 @@ The *`recursion_limit` attribute* may be applied at the [crate] level to set the
 > (|_: &u8| {})(&&&1);
 > ```
 
+> [!NOTE]
+> The default recursion limit in `rustc` is 128.
+
 r[attributes.limits.recursion_limit.syntax]
 It uses the [MetaNameValueStr] syntax to specify the recursion depth.
-
-> [!NOTE]
-> The default in `rustc` is 128.
 
 <!-- template:attributes -->
 r[attributes.limits.type_length_limit]
