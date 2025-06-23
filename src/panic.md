@@ -20,7 +20,7 @@ r[panic.panic_handler]
 ## The `panic_handler` attribute
 
 r[panic.panic_handler.intro]
-The *`panic_handler` attribute* can be applied to a function to define the behavior of panics.
+The *`panic_handler` [attribute][attributes]* can be applied to a function to define the behavior of panics.
 
 > [!EXAMPLE]
 > Below is shown a `panic_handler` function that logs the panic message and then halts the thread.
@@ -58,8 +58,17 @@ The *`panic_handler` attribute* can be applied to a function to define the behav
 > [!NOTE]
 > The [`PanicInfo`] struct contains information about the location of the panic.
 
+r[panic.panic_handler.syntax]
+The `panic_handler` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
 r[panic.panic_handler.allowed-positions]
-The `panic_handler` attribute can only be applied to a function with signature `fn(&PanicInfo) -> !`.
+The `panic_handler` attribute may only be applied to a function with signature `fn(&PanicInfo) -> !`.
+
+r[panic.panic_handler.duplicates]
+Duplicate instances of the `panic_handler` attribute on a function are ignored.
+
+> [!NOTE]
+> `rustc` currently warns about unused duplicate `panic_handler` attributes.
 
 r[panic.panic_handler.unique]
 There must be a single `panic_handler` function in the dependency graph.
