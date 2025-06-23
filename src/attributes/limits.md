@@ -49,12 +49,10 @@ r[attributes.limits.type_length_limit]
 > For more information, see <https://github.com/rust-lang/rust/pull/127670>.
 
 r[attributes.limits.type_length_limit.intro]
-The *`type_length_limit` attribute* limits the maximum number of type
-substitutions made when constructing a concrete type during monomorphization.
+The *`type_length_limit` attribute* limits the maximum number of type substitutions made when constructing a concrete type during monomorphization.
 
 r[attributes.limits.type_length_limit.syntax]
-It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax
-to set the limit based on the number of type substitutions.
+It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax to set the limit based on the number of type substitutions.
 
 > [!NOTE]
 > The default in `rustc` is 1048576.
