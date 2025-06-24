@@ -223,6 +223,7 @@ impl Characters {
 
 /// Escapes characters that markdown would otherwise interpret.
 fn markdown_escape(s: &str) -> Cow<'_, str> {
-    static ESC_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"[\\`_*\[\](){}'"]"#).unwrap());
+    static ESC_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#"[\\`_*\[\](){}'".-]"#).unwrap());
     ESC_RE.replace_all(s, r"\$0")
 }
