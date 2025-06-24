@@ -611,28 +611,6 @@ trait object whose methods are attributed.
 > [!NOTE]
 > The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
 
-[`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
-[`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
-[`inline`]: #the-inline-attribute
-[`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
-[`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
-[`naked_asm!`]: ../inline-assembly.md
-[`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
-[`track_caller`]: #the-track-caller-attribute
-[`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
-[attribute]: ../attributes.md
-[attributes]: ../attributes.md
-[FFI-safe]: ../../rustc/lints/listing/warn-by-default.html#improper-ctypes-definitions
-[function body]: ../items/functions.md#function-body
-[functions]: ../items/functions.md
-[rules for inline assembly]: ../inline-assembly.md#rules-for-inline-assembly
-[target architecture]: ../conditional-compilation.md#target_arch
-[trait]: ../items/traits.md
-[undefined behavior]: ../behavior-considered-undefined.md
-[unsafe attribute]: ../attributes.md#r-attributes.safety
-[rust-abi]: ../items/external-blocks.md#abi
-[`Location`]: core::panic::Location
-
 r[attributes.codegen.instruction_set]
 ## The `instruction_set` attribute
 
@@ -668,3 +646,21 @@ Using the `instruction_set` attribute has the following effects:
 
 * If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
 * Any inline assembly in the function must use the specified instruction set instead of the target default.
+
+[`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
+[`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
+[`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
+[`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
+[`Location`]: core::panic::Location
+[`naked_asm!`]: ../inline-assembly.md
+[`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
+[`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
+[attribute]: ../attributes.md
+[attributes]: ../attributes.md
+[function body]: ../items/functions.md#function-body
+[functions]: ../items/functions.md
+[rust-abi]: ../items/external-blocks.md#abi
+[target architecture]: ../conditional-compilation.md#target_arch
+[trait]: ../items/traits.md
+[undefined behavior]: ../behavior-considered-undefined.md
+[unsafe attribute]: ../attributes.md#r-attributes.safety
