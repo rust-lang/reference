@@ -976,7 +976,7 @@ In particular, the value of `C` must be known at pattern-building time (which is
 This means that associated consts that involve generic parameters cannot be used as patterns.
 
 r[patterns.const.immutable]
-Finally, the value of `C` must not contain any references to mutable statics (`static mut` or interior mutable) or `extern` statics.
+The value of `C` must not contain any references to mutable statics (`static mut` items or interior mutable `static` items) or `extern` statics.
 
 r[patterns.const.translation]
 After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
