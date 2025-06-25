@@ -157,6 +157,16 @@ r[attributes.debugger.collapse_debuginfo]
 r[attributes.debugger.collapse_debuginfo.intro]
 The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site, when generating debuginfo for code calling this macro.
 
+> [!EXAMPLE]
+> ```rust
+> #[collapse_debuginfo(yes)]
+> macro_rules! example {
+>     () => {
+>         println!("hello!");
+>     };
+> }
+> ```
+
 r[attributes.debugger.collapse_debuginfo.syntax]
 The attribute uses the [MetaListIdents] syntax to specify its inputs, and can only be applied to macro definitions.
 
@@ -171,14 +181,5 @@ The `external` behavior is the default for macros that don't have this attribute
 
 > [!NOTE]
 > `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
-
-```rust
-#[collapse_debuginfo(yes)]
-macro_rules! example {
-    () => {
-        println!("hello!");
-    };
-}
-```
 
 [attribute]: ../attributes.md
