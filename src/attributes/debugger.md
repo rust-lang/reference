@@ -174,7 +174,22 @@ The *`collapse_debuginfo` [attribute]* controls whether code locations from a ma
 <!-- TODO: I think it would be nice to extend this to explain a little more about why this is useful, and the kinds of scenarios where you would want one vs the other. See https://github.com/rust-lang/rfcs/pull/2117 for some guidance. -->
 
 r[attributes.debugger.collapse_debuginfo.syntax]
-The attribute uses the [MetaListIdents] syntax to specify its inputs, and can only be applied to macro definitions.
+The syntax for the `collapse_debuginfo` attribute is:
+
+```grammar,attributes
+@root CollapseDebuginfoAttribute -> `collapse_debuginfo` `(` CollapseDebuginfoOption `)`
+
+CollapseDebuginfoOption ->
+      `yes`
+    | `no`
+    | `external`
+```
+
+r[attributes.debugger.collapse_debuginfo.allowed-positions]
+The `collapse_debuginfo` attribute may only be applied to a [`macro_rules` definition].
+
+r[attributes.debugger.collapse_debuginfo.duplicates]
+The `collapse_debuginfo` attribute may only be specified once on a macro.
 
 r[attributes.debugger.collapse_debuginfo.options]
 Accepted options:
@@ -188,4 +203,5 @@ The `external` behavior is the default for macros that don't have this attribute
 > [!NOTE]
 > `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
 
+[`macro_rules` definition]: ../macros-by-example.md
 [attribute]: ../attributes.md
