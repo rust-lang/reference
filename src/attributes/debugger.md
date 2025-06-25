@@ -166,6 +166,12 @@ The *`collapse_debuginfo` [attribute]* controls whether code locations from a ma
 >     };
 > }
 > ```
+>
+> When using a debugger, invoking the `example` macro may appear like it is calling a function. That is, when you step to the invocation site, it may show the macro invocation as the next instruction.
+>
+> Without the `collapse_debuginfo` attribute, the invocation site may behave as-if the macro is expanded in place.
+
+<!-- TODO: I think it would be nice to extend this to explain a little more about why this is useful, and the kinds of scenarios where you would want one vs the other. See https://github.com/rust-lang/rfcs/pull/2117 for some guidance. -->
 
 r[attributes.debugger.collapse_debuginfo.syntax]
 The attribute uses the [MetaListIdents] syntax to specify its inputs, and can only be applied to macro definitions.
