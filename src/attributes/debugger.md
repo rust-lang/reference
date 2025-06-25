@@ -201,7 +201,8 @@ r[attributes.debugger.collapse_debuginfo.default]
 The `external` behavior is the default for macros that don't have this attribute, unless they are built-in macros. For built-in macros the default is `yes`.
 
 > [!NOTE]
-> `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
+> `rustc` has a [`-C collapse-macro-debuginfo`] CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
 
+[`-C collapse-macro-debuginfo`]: ../../rustc/codegen-options/index.html#collapse-macro-debuginfo
 [`macro_rules` definition]: ../macros-by-example.md
 [attribute]: ../attributes.md
