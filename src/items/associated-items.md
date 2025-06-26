@@ -24,7 +24,7 @@ Specifically, there are [associated functions] (including methods), [associated 
 [associated constants]: #associated-constants
 
 r[items.associated.related]
-Associated items are useful when the associated item logically is related to the
+Associated items are useful when the associated item is logically related to the
 associating item. For example, the `is_some` method on `Option` is intrinsically
 related to Options, so should be associated.
 
