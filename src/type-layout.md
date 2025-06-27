@@ -303,7 +303,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this struct.
 #[repr(C)]
@@ -377,7 +377,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this union.
 #[repr(C)]
