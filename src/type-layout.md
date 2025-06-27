@@ -135,6 +135,9 @@ The *`repr` [attribute][attributes]* can change the representation and layout of
 > }
 > ```
 
+> [!NOTE]
+> As a consequence of the representation being an attribute on the item, the representation does not depend on generic parameters. Any two types with the same name have the same representation. For example, `Foo<Bar>` and `Foo<Baz>` both have the same representation.
+
 r[layout.repr.align-packed]
 The alignment may be raised or lowered with the `align` and `packed` modifiers respectively. They alter the representation specified in the attribute. If no representation is specified, the default one is altered.
 
@@ -155,9 +158,6 @@ struct AlignedStruct {
     third: i32
 }
 ```
-
-> [!NOTE]
-> As a consequence of the representation being an attribute on the item, the representation does not depend on generic parameters. Any two types with the same name have the same representation. For example, `Foo<Bar>` and `Foo<Baz>` both have the same representation.
 
 r[layout.repr.inter-field]
 The representation of a type can change the padding between fields, but does not change the layout of the fields themselves. For example, a struct with a `C` representation that contains a struct `Inner` with the `Rust` representation will not change the layout of `Inner`.
