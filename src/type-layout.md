@@ -301,7 +301,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this struct.
 #[repr(C)]
@@ -372,7 +372,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this union.
 #[repr(C)]
@@ -537,6 +537,7 @@ r[layout.repr.transparent]
 
 r[layout.repr.transparent.constraint-field]
 The `transparent` representation can only be used on a [`struct`][structs] or an [`enum`][enumerations] with a single variant that has:
+
 - any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]), and
 - at most one other field.
 
