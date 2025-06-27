@@ -118,16 +118,22 @@ The possible representations for a type are:
 - [`transparent`]
 
 r[layout.repr.attribute]
-The representation of a type can be changed by applying the `repr` attribute to it. The following example shows a struct with a `C` representation.
+### The `repr` attribute
 
-```rust
-#[repr(C)]
-struct ThreeInts {
-    first: i16,
-    second: i8,
-    third: i32
-}
-```
+r[layout.repr.attribute.intro]
+The *`repr` [attribute][attributes]* can change the representation and layout of a type.
+
+> [!EXAMPLE]
+> The following example shows a struct with a `C` representation.
+>
+> ```rust
+> #[repr(C)]
+> struct ThreeInts {
+>     first: i16,
+>     second: i8,
+>     third: i32
+> }
+> ```
 
 r[layout.repr.align-packed]
 The alignment may be raised or lowered with the `align` and `packed` modifiers respectively. They alter the representation specified in the attribute. If no representation is specified, the default one is altered.
