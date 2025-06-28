@@ -81,11 +81,81 @@ r[const-eval.const-expr.builtin-arith-logic]
   operators used on integer and floating point types, `bool`, and `char`.
 
 r[const-eval.const-expr.borrows]
-* All forms of [borrow]s, including raw borrows, with one limitation:
-  mutable borrows and shared borrows to values with interior mutability
-  are only allowed to refer to *transient* places or to *static* places. A place is *transient*
-  if its lifetime is strictly contained inside the current [const context].
-  A place is *static* if it is a `static` item or a [promoted expression].
+* All forms of [borrow]s, including raw borrows, with one limitation: mutable borrows and shared borrows of expressions whose temporary scope would be extended (see [temporary lifetime extension]) to the end of the program are not allowed when those borrows refer to values with interior mutability.
+
+  ```rust,compile_fail,E0492
+  # use core::sync::atomic::AtomicU8;
+  const C: &AtomicU8 = &AtomicU8::new(0); // ERROR not allowed
+  ```
+
+  ```rust,compile_fail,E0764
+  # use core::sync::atomic::AtomicU8;
+  const C: &AtomicU8 = &mut AtomicU8::new(0); // ERROR not allowed
+  ```
+
+  ```rust,compile_fail,E0492
+  # use core::sync::atomic::AtomicU8;
+  let _: &'static _ = const { &AtomicU8::new(0) }; // ERROR not allowed
+  ```
+
+  ```rust
+  # use core::sync::atomic::AtomicU8;
+  const C: () = { _ = &AtomicU8::new(0); }; // OK
+  ```
+
+  ```rust
+  # use core::sync::atomic::AtomicU8;
+  static S: AtomicU8 = AtomicU8::new(0);
+  const C: &AtomicU8 = &S; // OK
+  ```
+
+  In other words, they are only allowed to refer to *transient* places, to *indirect* places, or to *static* places. A place is *transient* if it is based on a local variable whose lifetime is strictly contained inside the current [const context].
+
+  ```rust
+  const C: () = {
+      let mut x = 0;
+      let _ = &mut x; // Reference to a transient place.
+  };
+  ```
+
+  A place is *indirect* if it is based on a [dereference expression][dereference operator].
+
+  ```rust
+  const C: () = {
+      let x = &mut 0;
+      let _ = &mut *x; // Reference to an indirect place.
+  };
+  ```
+
+  A place is *static* if it is based on a `static` item or a [promoted expression].
+
+  ```rust
+  static mut S: u8 = 0;
+  # #[allow(static_mut_refs)]
+  const C: &u8 = unsafe { &mut S }; // Borrow of static item.
+  ```
+
+  ```rust
+  static mut S: u8 = 0;
+  # #[allow(static_mut_refs)]
+  const C: () = {
+      let _ = unsafe { &mut S }; // Borrow of static item.
+  };
+  ```
+
+  ```rust
+  const C: &[u8] = &mut []; // Borrow of promoted expression.
+  ```
+
+  ```rust
+  const C: &[u8] = &[]; // Borrow of promoted expression.
+  ```
+
+  ```rust
+  const C: () = {
+      let _: &'static mut [u8] = &mut []; // Borrow of promoted expression.
+  };
+  ```
 
 r[const-eval.const-expr.deref]
 * The [dereference operator] except for raw pointers.
@@ -201,5 +271,6 @@ of whether you are building on a `64` bit or a `32` bit system.
 [slice]:                types/slice.md
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
+[temporary lifetime extension]: destructors.scope.lifetime-extension
 [tuple expressions]:    expressions/tuple-expr.md
 [while]:                expressions/loop-expr.md#predicate-loops
