@@ -60,7 +60,7 @@ An *associated function definition* defines a function associated with another
 type. It is written the same as a [function item].
 
 An example of a common associated function is a `new` function that returns
-a value of the type the associated function is associated with.
+a value of the type the function is associated with.
 
 ```rust
 struct Struct {
