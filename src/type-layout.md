@@ -419,9 +419,6 @@ struct MyCFields { x: u32, y: u8 }
 struct MyDFields;
 ```
 
-> [!NOTE]
-> `union`s with non-`Copy` fields are unstable, see [55149].
-
 r[layout.repr.primitive]
 ### Primitive representations
 
@@ -495,9 +492,6 @@ struct MyVariantC { tag: MyEnumDiscriminant, x: u32, y: u8 }
 #[derive(Clone, Copy)]
 struct MyVariantD(MyEnumDiscriminant);
 ```
-
-> [!NOTE]
-> `union`s with non-`Copy` fields are unstable, see [55149].
 
 r[layout.repr.primitive-c]
 #### Combining primitive representations of enums with fields and `#[repr(C)]`
@@ -668,7 +662,6 @@ used with any other representation.
 [enumerations]: items/enumerations.md
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
-[55149]: https://github.com/rust-lang/rust/issues/55149
 [`PhantomData<T>`]: special-types-and-traits.md#phantomdatat
 [`Rust`]: #the-rust-representation
 [`C`]: #the-c-representation
