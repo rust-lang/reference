@@ -403,7 +403,7 @@ When building a rlib, `-bundle` means that the native static library is register
 When building a staticlib, `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
 
 r[items.extern.attributes.link.modifiers.bundle.no-effect]
-This modifier has no effect when building other targets like executables or dynamic libraries.
+The `bundle` modifier has no effect when building other targets like executables or dynamic libraries.
 
 r[items.extern.attributes.link.modifiers.bundle.default]
 The default for this modifier is `+bundle`.
