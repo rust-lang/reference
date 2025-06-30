@@ -66,7 +66,7 @@ r[attributes.diagnostics.lint.allow]
 * `allow(C)` overrides the check for `C` so that violations will go unreported.
 
 r[attributes.diagnostics.lint.expect]
-* `expect(C)` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning, if the expectation is unfulfilled. See [attributes.diagnostics.expect] for a complete description.
+* `expect(C)` indicates that lint `C` is expected to be emitted. The attribute will suppress the emission of `C` or issue a warning if the expectation is unfulfilled. See [attributes.diagnostics.expect] for a complete description.
 
 r[attributes.diagnostics.lint.warn]
 * `warn(C)` warns about violations of `C` but continues compilation.
