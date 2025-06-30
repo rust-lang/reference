@@ -447,10 +447,10 @@ r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
 
 r[items.extern.attributes.link.modifiers.verbatim.behavior]
-`+verbatim` means that rustc itself won't add any target-specified library prefixes or suffixes (like `lib` or `.a`) to the library name, and will try its best to ask for the same thing from the linker.
+`+verbatim` means that the compiler won't add any target-specified library prefixes or suffixes (like `lib` or `.a`) to the library name, and will try its best to ask for the same thing from the linker.
 
 r[items.extern.attributes.link.modifiers.verbatim.behavior-negative]
-`-verbatim` means that rustc will either add a target-specific prefix and suffix to the library name before passing it to linker, or won't prevent linker from implicitly adding it.
+`-verbatim` means that the compiler will either add a target-specific prefix and suffix to the library name before passing it to linker, or won't prevent linker from implicitly adding it.
 
 r[items.extern.attributes.link.modifiers.verbatim.default]
 The default for this modifier is `-verbatim`.
