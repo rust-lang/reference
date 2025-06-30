@@ -357,7 +357,7 @@ The `raw-dylib` kind indicates a dynamic library where the compiler will generat
 >
 > On Windows, linking against a dynamic library requires that an import library is provided to the linker. This is a special static library that declares all of the symbols exported by the dynamic library in such a way that the linker knows that they have to be dynamically loaded at runtime.
 >
-> Specifying `kind = "dylib"` instructs the Rust compiler to link an import library based on the `name` key. The linker will then use its normal library resolution logic to find that import library. Alternatively, specifying `kind = "raw-dylib"` instructs the compiler to generate an import library during compilation and provide that to the linker instead.
+> Specifying `kind = "dylib"` links an import library based on the `name` key. The linker will then use its normal library resolution logic to find that import library. Alternatively, specifying `kind = "raw-dylib"` generates an import library during compilation and provide that to the linker instead.
 
 r[items.extern.attributes.link.modifiers]
 #### The `modifiers` key
