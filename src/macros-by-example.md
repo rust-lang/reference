@@ -343,6 +343,9 @@ The `macro_use` attribute may be applied to modules or `extern crate`.
 > [!NOTE]
 > `rustc` currently warns in other positions, but this may be rejected in the future.
 
+r[macro.decl.scope.macro_use.extern-crate-self]
+The `macro_use` attribute may not be used on [`extern crate self`].
+
 r[macro.decl.scope.macro_use.duplicates]
 Duplicate instances of `macro_use` that are in the [MetaWord] syntax have no effect if there is already a `macro_use` with the [MetaWord] syntax.
 
@@ -687,6 +690,7 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[`extern crate self`]: items.extern-crate.self
 [`macro_use` prelude]: names/preludes.md#macro_use-prelude
 [block labels]: expressions/loop-expr.md#labelled-block-expressions
 [delimiters]: tokens.md#delimiters
