@@ -161,6 +161,9 @@ The `export_name` attribute causes the symbol to be publicly exported from the p
 r[abi.export_name.null]
 The exported name must not contain a [NUL] character.
 
+r[abi.export_name.generic]
+`export_name` has no effect on generic items.
+
 [attribute]: attributes.md
 [extern functions]: items/functions.md#extern-function-qualifier
 [external blocks]: items/external-blocks.md
