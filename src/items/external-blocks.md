@@ -408,7 +408,8 @@ This modifier has no effect when building other targets like executables or dyna
 r[items.extern.attributes.link.modifiers.bundle.default]
 The default for this modifier is `+bundle`.
 
-More implementation details about this modifier can be found in [`bundle` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`bundle` documentation for rustc].
 
 r[items.extern.attributes.link.modifiers.whole-archive]
 #### Linking modifiers: `whole-archive`
@@ -429,7 +430,8 @@ r[items.extern.attributes.link.modifiers.whole-archive.behavior]
 r[items.extern.attributes.link.modifiers.whole-archive.default]
 The default for this modifier is `-whole-archive`.
 
-More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
 
 r[items.extern.attributes.link.modifiers.verbatim]
 #### Linking modifiers: `verbatim`
@@ -453,7 +455,8 @@ r[items.extern.attributes.link.modifiers.verbatim.behavior-negative]
 r[items.extern.attributes.link.modifiers.verbatim.default]
 The default for this modifier is `-verbatim`.
 
-More implementation details about this modifier can be found in [`verbatim` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`verbatim` documentation for rustc].
 
 r[items.extern.attributes.link.wasm_import_module]
 #### The `wasm_import_module` key
