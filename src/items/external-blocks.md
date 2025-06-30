@@ -340,7 +340,7 @@ r[items.extern.attributes.link.modifiers.bundle]
 > ```
 
 r[items.extern.attributes.link.modifiers.bundle.allowed-kinds]
-This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
+The `bundle` modifier may only be used with [`static` linking].
 
 r[items.extern.attributes.link.modifiers.bundle.behavior]
 When building a rlib or staticlib `+bundle` means that the native static library will be packed into the rlib or staticlib archive, and then retrieved from there during linking of the final binary.
@@ -369,7 +369,7 @@ r[items.extern.attributes.link.modifiers.whole-archive]
 > ```
 
 r[items.extern.attributes.link.modifiers.whole-archive.allowed-kinds]
-This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
+The `whole-archive` modifier may only be used with [`static` linking].
 
 r[items.extern.attributes.link.modifiers.whole-archive.behavior]
 `+whole-archive` means that the static library is linked as a whole archive without throwing any object files away.
@@ -530,3 +530,4 @@ restrictions as [regular function parameters].
 [value namespace]: ../names/namespaces.md
 [`link_ordinal`]: items.extern.attributes.link_ordinal
 [`extern` blocks]: external-blocks.md
+[`static` linking]: link.staticlib
