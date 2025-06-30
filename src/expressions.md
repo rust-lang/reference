@@ -46,10 +46,13 @@ ExpressionWithBlock ->
 ```
 
 r[expr.intro]
-An expression may have two roles: it always produces a *value*, and it may have *effects* (otherwise known as "side effects").
+An expression may have two roles: it produces a *value*, and it may have *effects* (otherwise known as "side effects").
 
 r[expr.evaluation]
 An expression *evaluates to* a value, and has effects during *evaluation*.
+
+> [!NOTE]
+> Some expressions _do not_ produce a value; however, they are exceptions rather than the rule. Examples that do not produce a value are: [`return`][expr.return], [`continue`][expr.loop.continue], [`break`][expr.loop.break] and [`loop`][expr.loop.infinite]. They do have a type, the [never type][Never Type] denoted `!`.
 
 r[expr.operands]
 Many expressions contain sub-expressions, called the *operands* of the expression.
@@ -333,6 +336,7 @@ They are never allowed before:
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
+[Never type]:           types/never.html
 [Outer attributes]:     attributes.md
 [paths]:                expressions/path-expr.md
 [promoted]:             destructors.md#constant-promotion
