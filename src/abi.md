@@ -117,6 +117,9 @@ In addition to disabling name mangling, the item will be publicly exported from 
 r[abi.no_mangle.ascii-only]
 `no_mangle` may only be used on items with a name that only contains ASCII characters.
 
+r[abi.no_mangle.generic]
+`no_mangle` has no effect on generic items.
+
 r[abi.link_section]
 ## The `link_section` attribute
 
