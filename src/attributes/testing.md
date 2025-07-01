@@ -10,20 +10,43 @@ r[attributes.testing.test]
 ## The `test` attribute
 
 r[attributes.testing.test.intro]
-The *`test` attribute* marks a function to be executed as a test.
+The *`test` [attribute][attributes]* marks a function to be executed as a test.
+
+> [!EXAMPLE]
+> ```rust
+> # pub fn add(left: u64, right: u64) -> u64 { left + right }
+>
+> #[test]
+> fn it_works() {
+>     let result = add(2, 2);
+>     assert_eq!(result, 4);
+> }
+> ```
+
+r[attributes.testing.test.syntax]
+The `test` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.testing.test.allowed-positions]
+The `test` attribute may only be applied to [free functions] that are monomorphic, that take no arguments, and where the return type implements the [`Termination`] trait.
+
+> [!NOTE]
+> Some of types that implement the [`Termination`] trait include:
+> * `()`
+> * `Result<T, E> where T: Termination, E: Debug`
+
+r[attributes.testing.test.duplicates]
+Only the first instance of `test` on a function is honored.
+
+> [!NOTE]
+> Subsequent `test` attributes are currently ignored and `rustc` warns about these.
+
+<!-- TODO: This is a minor lie. Currently rustc warns that duplicates are ignored, but it then generates multiple test entries with the same name. I would vote for rejecting this in the future. -->
+
+r[attributes.testing.test.stdlib]
+The `test` attribute is exported from the standard library prelude as [`std::prelude::v1::test`].
 
 r[attributes.testing.test.enabled]
 These functions are only compiled when in test mode.
-
-r[attributes.testing.test.allowed-positions]
-Test functions must be free, monomorphic functions that take no arguments, and the return type must implement the [`Termination`] trait, for example:
-
-* `()`
-* `Result<T, E> where T: Termination, E: Debug`
-* `!`
-
-<!-- If the previous section needs updating (from "must take no arguments"
-  onwards, also update it in the crates-and-source-files.md file -->
 
 > [!NOTE]
 > The test mode is enabled by passing the `--test` argument to `rustc` or using `cargo test`.
@@ -36,17 +59,18 @@ In particular:
 * Tests that return `ExitCode::SUCCESS` pass, and tests that return `ExitCode::FAILURE` fail.
 * Tests that do not terminate neither pass nor fail.
 
-```rust
-# use std::io;
-# fn setup_the_thing() -> io::Result<i32> { Ok(1) }
-# fn do_the_thing(s: &i32) -> io::Result<()> { Ok(()) }
-#[test]
-fn test_the_thing() -> io::Result<()> {
-    let state = setup_the_thing()?; // expected to succeed
-    do_the_thing(&state)?;          // expected to succeed
-    Ok(())
-}
-```
+> [!EXAMPLE]
+> ```rust
+> # use std::io;
+> # fn setup_the_thing() -> io::Result<i32> { Ok(1) }
+> # fn do_the_thing(s: &i32) -> io::Result<()> { Ok(()) }
+> #[test]
+> fn test_the_thing() -> io::Result<()> {
+>     let state = setup_the_thing()?; // expected to succeed
+>     do_the_thing(&state)?;          // expected to succeed
+>     Ok(())
+> }
+> ```
 
 r[attributes.testing.ignore]
 ## The `ignore` attribute
@@ -102,3 +126,4 @@ fn mytest() {
 [`test` conditional compilation option]: ../conditional-compilation.md#test
 [attributes]: ../attributes.md
 [`ExitCode`]: std::process::ExitCode
+[free functions]: ../glossary.md#free-item
