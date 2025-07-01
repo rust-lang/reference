@@ -319,11 +319,9 @@ r[cfg.attr]
 ### The `cfg` attribute
 
 r[cfg.attr.intro]
-The *`cfg` [attribute]* conditionally includes the thing it is attached to based on a configuration predicate.
+The *`cfg` [attribute]* conditionally includes the form to which it is attached based on a configuration predicate.
 
 > [!EXAMPLE]
-> Some examples of using `cfg` on functions:
->
 > ```rust
 > // The function is only included in the build when compiling for macOS
 > #[cfg(target_os = "macos")]
@@ -368,16 +366,16 @@ r[cfg.attr.allowed-positions]
 The `cfg` attribute is allowed anywhere attributes are allowed.
 
 r[cfg.attr.duplicates]
-Multiple `cfg` attributes may be specified. The thing will not be included if any of the `cfg` predicates are false.
+Multiple `cfg` attributes may be specified. The form to which the attribute is attached will not be included if any of the `cfg` predicates are false except as described in [cfg.attr.crate-level-attrs].
 
 r[cfg.attr.effect]
-If the predicate is true, the thing is rewritten to not have the `cfg` attribute on it. If the predicate is false, the thing is removed from the source code.
+If the predicate is true, the form is rewritten to not have the `cfg` attribute on it. If the predicate is false, the form is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
 When a crate-level `cfg` has a false predicate, the crate itself still exists. Any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed as well as removing all of the following crate contents.
 
 > [!EXAMPLE]
-> The behavior of not removing the preceding attributes allows you to do things such as include `#![no_std]` to avoid linking `std` even if a `#![cfg(...)]` has removed the entire crate. For example:
+> The behavior of not removing the preceding attributes allows you to do things such as include `#![no_std]` to avoid linking `std` even if a `#![cfg(...)]` has otherwise removed the contents of the crate. For example:
 >
 > <!-- ignore: test infrastructure can't handle no_std -->
 > ```rust,ignore
