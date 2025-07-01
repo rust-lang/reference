@@ -4,19 +4,19 @@ r[items.enum]
 r[items.enum.syntax]
 ```grammar,items
 Enumeration ->
-    `enum` IDENTIFIER GenericParams? WhereClause? `{` EnumItems? `}`
+    `enum` IDENTIFIER GenericParams? WhereClause? `{` EnumVariants? `}`
 
-EnumItems -> EnumItem ( `,` EnumItem )* `,`?
+EnumVariants -> EnumVariant ( `,` EnumVariant )* `,`?
 
-EnumItem ->
+EnumVariant ->
     OuterAttribute* Visibility?
-    IDENTIFIER ( EnumItemTuple | EnumItemStruct )? EnumItemDiscriminant?
+    IDENTIFIER ( EnumVariantTuple | EnumVariantStruct )? EnumVariantDiscriminant?
 
-EnumItemTuple -> `(` TupleFields? `)`
+EnumVariantTuple -> `(` TupleFields? `)`
 
-EnumItemStruct -> `{` StructFields? `}`
+EnumVariantStruct -> `{` StructFields? `}`
 
-EnumItemDiscriminant -> `=` Expression
+EnumVariantDiscriminant -> `=` Expression
 ```
 
 r[items.enum.intro]
