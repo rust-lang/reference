@@ -318,69 +318,75 @@ Example values:
 r[cfg.attr]
 ### The `cfg` attribute
 
+r[cfg.attr.intro]
+The *`cfg` [attribute]* conditionally includes the form to which it is attached based on a configuration predicate.
+
+> [!EXAMPLE]
+> ```rust
+> // The function is only included in the build when compiling for macOS
+> #[cfg(target_os = "macos")]
+> fn macos_only() {
+>   // ...
+> }
+>
+> // This function is only included when either foo or bar is defined
+> #[cfg(any(foo, bar))]
+> fn needs_foo_or_bar() {
+>   // ...
+> }
+>
+> // This function is only included when compiling for a unixish OS with a 32-bit
+> // architecture
+> #[cfg(all(unix, target_pointer_width = "32"))]
+> fn on_32bit_unix() {
+>   // ...
+> }
+>
+> // This function is only included when foo is not defined
+> #[cfg(not(foo))]
+> fn needs_not_foo() {
+>   // ...
+> }
+>
+> // This function is only included when the panic strategy is set to unwind
+> #[cfg(panic = "unwind")]
+> fn when_unwinding() {
+>   // ...
+> }
+> ```
+
 r[cfg.attr.syntax]
+The syntax for the `cfg` attribute is:
+
 ```grammar,configuration
 @root CfgAttribute -> `cfg` `(` ConfigurationPredicate `)`
 ```
 
-<!-- should we say they're active attributes here? -->
+r[cfg.attr.allowed-positions]
+The `cfg` attribute is allowed anywhere attributes are allowed.
 
-r[cfg.attr.general]
-The `cfg` [attribute] conditionally includes the thing it is attached to based
-on a configuration predicate.
-
-r[cfg.attr.syntax-explanation]
-It is written as `cfg`, `(`, a configuration predicate, and finally `)`.
+r[cfg.attr.duplicates]
+Multiple `cfg` attributes may be specified. The form to which the attribute is attached will not be included if any of the `cfg` predicates are false except as described in [cfg.attr.crate-level-attrs].
 
 r[cfg.attr.effect]
-If the predicate is true, the thing is rewritten to not have the `cfg` attribute
-on it. If the predicate is false, the thing is removed from the source code.
+If the predicate is true, the form is rewritten to not have the `cfg` attribute on it. If the predicate is false, the form is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
-When a crate-level `cfg` has a false predicate, the behavior is slightly
-different: any crate attributes preceding the `cfg` are kept, and any crate
-attributes following the `cfg` are removed. This allows `#![no_std]` and
-`#![no_core]` crates to avoid linking `std`/`core` even if a `#![cfg(...)]` has
-removed the entire crate.
+When a crate-level `cfg` has a false predicate, the crate itself still exists. Any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed as well as removing all of the following crate contents.
 
-Some examples on functions:
-
-```rust
-// The function is only included in the build when compiling for macOS
-#[cfg(target_os = "macos")]
-fn macos_only() {
-  // ...
-}
-
-// This function is only included when either foo or bar is defined
-#[cfg(any(foo, bar))]
-fn needs_foo_or_bar() {
-  // ...
-}
-
-// This function is only included when compiling for a unixish OS with a 32-bit
-// architecture
-#[cfg(all(unix, target_pointer_width = "32"))]
-fn on_32bit_unix() {
-  // ...
-}
-
-// This function is only included when foo is not defined
-#[cfg(not(foo))]
-fn needs_not_foo() {
-  // ...
-}
-
-// This function is only included when the panic strategy is set to unwind
-#[cfg(panic = "unwind")]
-fn when_unwinding() {
-  // ...
-}
-
-```
-
-r[cfg.attr.restriction]
-The `cfg` attribute is allowed anywhere attributes are allowed.
+> [!EXAMPLE]
+> The behavior of not removing the preceding attributes allows you to do things such as include `#![no_std]` to avoid linking `std` even if a `#![cfg(...)]` has otherwise removed the contents of the crate. For example:
+>
+> <!-- ignore: test infrastructure can't handle no_std -->
+> ```rust,ignore
+> // This `no_std` attribute is kept even though the crate-level `cfg`
+> // attribute is false.
+> #![no_std]
+> #![cfg(false)]
+>
+> // This function is not included.
+> pub fn example() {}
+> ```
 
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
