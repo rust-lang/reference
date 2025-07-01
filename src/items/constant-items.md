@@ -48,8 +48,36 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 };
 ```
 
-r[items.const.final-value-immutable]
-The final value of a `const` item cannot contain references to anything mutable.
+r[items.const.no-mut-refs]
+The final value of a `const` item cannot contain any mutable references.
+
+```rust
+# #![allow(static_mut_refs)]
+static mut S: u8 = 0;
+const C: &u8 = unsafe { &mut S }; // OK
+```
+
+```rust
+# use core::sync::atomic::AtomicU8;
+static S: AtomicU8 = AtomicU8::new(0);
+const C: &AtomicU8 = &S; // OK
+```
+
+```rust,compile_fail,E0080
+# #![allow(static_mut_refs)]
+static mut S: u8 = 0;
+const C: &mut u8 = unsafe { &mut S }; // ERROR not allowed
+```
+
+> [!NOTE]
+> We also disallow, in the final value, shared references to mutable statics created in the initializer for a separate reason. Consider:
+>
+> ```rust,compile_fail,E0492
+> # use core::sync::atomic::AtomicU8;
+> const C: &AtomicU8 = &AtomicU8::new(0); // ERROR
+> ```
+>
+> Here, the `AtomicU8` is a temporary that is lifetime extended to `'static` (see [destructors.scope.lifetime-extension.static]), and references to lifetime-extended temporaries with interior mutability are not allowed in the final value of a constant expression (see [const-eval.const-expr.borrows]).
 
 r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
