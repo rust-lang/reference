@@ -27,7 +27,7 @@ r[attributes.testing.test.syntax]
 The `test` attribute uses the [MetaWord] syntax and thus does not take any inputs.
 
 r[attributes.testing.test.allowed-positions]
-The `test` attribute may only be applied to [free functions] that are monomorphic, that take no arguments, and the return type must implement the [`Termination`] trait.
+The `test` attribute may only be applied to [free functions] that are monomorphic, that take no arguments, and where the return type implements the [`Termination`] trait.
 
 > [!NOTE]
 > Some of types that implement the [`Termination`] trait include:
