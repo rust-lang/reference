@@ -169,7 +169,7 @@ let _: S<1> = f::<(((_)))>(); // Inferred const.
 > In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
 
 r[items.generics.const.inferred]
-Where a const argument is expected, an `_` (optionally surrounding by any number of matching parentheses), called the *inferred const* ([path rules][paths.expr.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
+Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([path rules][paths.expr.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
 ```rust
 fn make_buf<const N: usize>() -> [u8; N] {
