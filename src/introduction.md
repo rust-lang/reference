@@ -71,7 +71,7 @@ These conventions are documented here.
 * The main text describes the latest stable edition. Differences to previous editions are separated in edition blocks:
 
   > [!EDITION-2018]
-  > In the 2015 edition, this syntax is valid that is disallowed as of the 2018 edition.
+  > Before the 2018 edition, the behavior was this. As of the 2018 edition, the behavior is that.
 
 * Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in note blocks.
 
