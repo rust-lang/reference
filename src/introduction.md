@@ -70,8 +70,8 @@ These conventions are documented here.
 
 * The main text describes the latest stable edition. Differences to previous editions are separated in edition blocks:
 
-  > [!EDITION-2024]
-  > This is an edition-specific difference.
+  > [!EDITION-2018]
+  > Before the 2018 edition, the behavior was this. As of the 2018 edition, the behavior is that.
 
 * Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in note blocks.
 
