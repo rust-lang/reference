@@ -13,9 +13,8 @@ r[attributes.testing.test.intro]
 The *`test` [attribute][attributes]* marks a function to be executed as a test.
 
 > [!EXAMPLE]
-> ```rust
+> ```rust,no_run
 > # pub fn add(left: u64, right: u64) -> u64 { left + right }
->
 > #[test]
 > fn it_works() {
 >     let result = add(2, 2);
@@ -60,7 +59,7 @@ In particular:
 * Tests that do not terminate neither pass nor fail.
 
 > [!EXAMPLE]
-> ```rust
+> ```rust,no_run
 > # use std::io;
 > # fn setup_the_thing() -> io::Result<i32> { Ok(1) }
 > # fn do_the_thing(s: &i32) -> io::Result<()> { Ok(()) }
@@ -79,7 +78,7 @@ r[attributes.testing.ignore.intro]
 The *`ignore` [attribute][attributes]* can be used with the [`test` attribute][attributes.testing.test] to tell the test harness to not execute that function as a test.
 
 > [!EXAMPLE]
-> ```rust
+> ```rust,no_run
 > #[test]
 > #[ignore]
 > fn check_thing() {
@@ -97,7 +96,7 @@ r[attributes.testing.ignore.reason]
 The [MetaNameValueStr] form of the `ignore` attribute provides a way to specify a reason why the test is ignored.
 
 > [!EXAMPLE]
-> ```rust
+> ```rust,no_run
 > #[test]
 > #[ignore = "not yet implemented"]
 > fn mytest() {
@@ -124,27 +123,64 @@ r[attributes.testing.should_panic]
 ## The `should_panic` attribute
 
 r[attributes.testing.should_panic.intro]
-A function annotated with the `test` attribute that returns `()` can also be
-annotated with the `should_panic` attribute.
+The *`should_panic` [attribute][attributes]* causes a test to pass only if the [test function][attributes.testing.test] to which the attribute is applied panics.
 
-r[attributes.testing.should_panic.behavior]
-The *`should_panic` attribute*
-makes the test only pass if it actually panics.
+> [!EXAMPLE]
+> ```rust,no_run
+> #[test]
+> #[should_panic(expected = "values don't match")]
+> fn mytest() {
+>     assert_eq!(1, 2, "values don't match");
+> }
+> ```
 
 r[attributes.testing.should_panic.syntax]
-The `should_panic` attribute may optionally take an input string that must
-appear within the panic message. If the string is not found in the message,
-then the test will fail. The string may be passed using the
-[MetaNameValueStr] syntax or the [MetaListNameValueStr] syntax with an
-`expected` field.
+The `should_panic` attribute has one of the following forms:
 
-```rust
-#[test]
-#[should_panic(expected = "values don't match")]
-fn mytest() {
-    assert_eq!(1, 2, "values don't match");
-}
-```
+- [MetaWord]
+  > [!EXAMPLE]
+  > ```rust,no_run
+  > #[test]
+  > #[should_panic]
+  > fn mytest() { panic!("error: some message, and more"); }
+  > ```
+
+- [MetaNameValueStr] --- The given string must appear within the panic message for the test to pass.
+  > [!EXAMPLE]
+  > ```rust,no_run
+  > #[test]
+  > #[should_panic = "some message"]
+  > fn mytest() { panic!("error: some message, and more"); }
+  > ```
+
+- [MetaListNameValueStr] --- As with the [MetaNameValueStr] syntax, the given string must appear within the panic message.
+  > [!EXAMPLE]
+  > ```rust,no_run
+  > #[test]
+  > #[should_panic(expected = "some message")]
+  > fn mytest() { panic!("error: some message, and more"); }
+  > ```
+
+  > [!NOTE]
+  > `rustc` currently accepts the [MetaListNameValueStr] form with invalid syntax between the parentheses and emits a future-compatibility warning. This may become a hard error in the future.
+
+r[attributes.testing.should_panic.allowed-positions]
+The `should_panic` attribute may only be applied to functions annotated with the `test` attribute.
+
+> [!NOTE]
+> `rustc` currently accepts this attribute in other positions with a warning. This may become a hard error in the future.
+
+r[attributes.testing.should_panic.duplicates]
+Only the first instance of `should_panic` on a function is honored.
+
+> [!NOTE]
+> `rustc` currently ignores subsequent `should_panic` attributes and emits a future-compatibility warning. This may become a hard error in the future.
+
+r[attributes.testing.should_panic.expected]
+When the [MetaNameValueStr] form or the [MetaListNameValueStr] form with the `expected` key is used, the given string must appear somewhere within the panic message for the test to pass.
+
+r[attributes.testing.should_panic.return]
+The return type of the test function must be `()`.
 
 [`Termination`]: std::process::Termination
 [`report`]: std::process::Termination::report
