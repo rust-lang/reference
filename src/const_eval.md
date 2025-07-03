@@ -81,11 +81,126 @@ r[const-eval.const-expr.builtin-arith-logic]
   operators used on integer and floating point types, `bool`, and `char`.
 
 r[const-eval.const-expr.borrows]
-* All forms of [borrow]s, including raw borrows, with one limitation:
-  mutable borrows and shared borrows to values with interior mutability
-  are only allowed to refer to *transient* places or to *static* places. A place is *transient*
-  if its lifetime is strictly contained inside the current [const context].
-  A place is *static* if it is a `static` item or a [promoted expression].
+* All forms of [borrow]s, including raw borrows, except borrows of expressions whose temporary scopes would be extended (see [temporary lifetime extension]) to the end of the program and which are either:
+  * Mutable borrows.
+  * Shared borrows of expressions that result in values with [interior mutability].
+
+  ```rust,compile_fail,E0764
+  // Due to being in tail position, this borrow extends the scope of the
+  // temporary to the end of the program. Since the borrow is mutable,
+  // this is not allowed in a const expression.
+  const C: &u8 = &mut 0; // ERROR not allowed
+  ```
+
+  ```rust,compile_fail,E0764
+  // Const blocks are similar to initializers of `const` items.
+  let _: &u8 = const { &mut 0 }; // ERROR not allowed
+  ```
+
+  ```rust,compile_fail,E0492
+  # use core::sync::atomic::AtomicU8;
+  // This is not allowed as 1) the temporary scope is extended to the
+  // end of the program and 2) the temporary has interior mutability.
+  const C: &AtomicU8 = &AtomicU8::new(0); // ERROR not allowed
+  ```
+
+  ```rust,compile_fail,E0492
+  # use core::sync::atomic::AtomicU8;
+  // As above.
+  let _: &_ = const { &AtomicU8::new(0) }; // ERROR not allowed
+  ```
+
+  ```rust
+  # #![allow(static_mut_refs)]
+  // Even though this borrow is mutable, it's not of a temporary, so
+  // this is allowed.
+  const C: &u8 = unsafe { static mut S: u8 = 0; &mut S }; // OK
+  ```
+
+  ```rust
+  # use core::sync::atomic::AtomicU8;
+  // Even though this borrow is of a value with interior mutability,
+  // it's not of a temporary, so this is allowed.
+  const C: &AtomicU8 = {
+      static S: AtomicU8 = AtomicU8::new(0); &S // OK
+  };
+  ```
+
+  ```rust
+  # use core::sync::atomic::AtomicU8;
+  // This shared borrow of an interior mutable temporary is allowed
+  // because its scope is not extended.
+  const C: () = { _ = &AtomicU8::new(0); }; // OK
+  ```
+
+  ```rust
+  // Even though the borrow is mutable and the temporary lives to the
+  // end of the program due to promotion, this is allowed because the
+  // borrow is not in tail position and so the scope of the temporary
+  // is not extended via temporary lifetime extension.
+  const C: () = { let _: &'static mut [u8] = &mut []; }; // OK
+  //                                              ~~
+  //                                     Promoted temporary.
+  ```
+
+  > [!NOTE]
+  > In other words -- to focus on what's allowed rather than what's not allowed -- shared borrows of interior mutable data and mutable borrows are only allowed in a [const context] when the borrowed [place expression] is *transient*, *indirect*, or *static*.
+  >
+  > A place expression is *transient* if it is a variable local to the current const context or an expression whose temporary scope is contained inside the current const context.
+  >
+  > ```rust
+  > // The borrow is of a variable local to the initializer, therefore
+  > // this place expresssion is transient.
+  > const C: () = { let mut x = 0; _ = &mut x; };
+  > ```
+  >
+  > ```rust
+  > // The borrow is of a temporary whose scope has not been extended,
+  > // therefore this place expression is transient.
+  > const C: () = { _ = &mut 0u8; };
+  > ```
+  >
+  > ```rust
+  > // When a temporary is promoted but not lifetime extended, its
+  > // place expression is still treated as transient.
+  > const C: () = { let _: &'static mut [u8] = &mut []; };
+  > ```
+  >
+  > A place expression is *indirect* if it is a [dereference expression].
+  >
+  > ```rust
+  > const C: () = { _ = &mut *(&mut 0); };
+  > ```
+  >
+  > A place expression is *static* if it is a `static` item.
+  >
+  > ```rust
+  > # #![allow(static_mut_refs)]
+  > const C: &u8 = unsafe { static mut S: u8 = 0; &mut S };
+  > ```
+
+  > [!NOTE]
+  > One surprising consequence of these rules is that we allow this,
+  >
+  > ```rust
+  > const C: &[u8] = { let x: &mut [u8] = &mut []; x }; // OK
+  > //                                    ~~~~~~~
+  > // Empty arrays are promoted even behind mutable borrows.
+  > ```
+  >
+  > but we disallow this similar code:
+  >
+  > ```rust,compile_fail,E0764
+  > const C: &[u8] = &mut []; // ERROR
+  > //               ~~~~~~~
+  > //           Tail expression.
+  > ```
+  >
+  > The difference between these is that, in the first, the empty array is [promoted] but its scope does not undergo [temporary lifetime extension], so we consider the [place expression] to be transient (even though after promotion the place indeed lives to the end of the program). In the second, the scope of the empty array temporary does undergo lifetime extension, and so it is rejected due to being a mutable borrow of a lifetime-extended temporary (and therefore borrowing a non-transient place expression).
+  >
+  > The effect is surprising because temporary lifetime extension, in this case, causes less code to compile than would without it.
+  >
+  > See [issue #143129](https://github.com/rust-lang/rust/issues/143129) for more details.
 
 r[const-eval.const-expr.deref]
 * The [dereference operator] except for raw pointers.
@@ -175,6 +290,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [const generic parameters]: items/generics.md#const-generics
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
+[dereference expression]: expressions/operator-expr.md#the-dereference-operator
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
 [enum discriminants]:   items/enumerations.md#discriminants
@@ -196,10 +312,13 @@ of whether you are building on a `64` bit or a `32` bit system.
 [overflow]:             expressions/operator-expr.md#overflow
 [paths]:                expressions/path-expr.md
 [patterns]:             patterns.md
+[place expression]:     expr.place-value.place-memory-location
 [promoted expression]:  destructors.md#constant-promotion
+[promoted]:             destructors.md#constant-promotion
 [range expressions]:    expressions/range-expr.md
 [slice]:                types/slice.md
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
+[temporary lifetime extension]: destructors.scope.lifetime-extension
 [tuple expressions]:    expressions/tuple-expr.md
 [while]:                expressions/loop-expr.md#predicate-loops
