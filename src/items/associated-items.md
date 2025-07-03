@@ -59,8 +59,8 @@ r[items.associated.fn.def]
 An *associated function definition* defines a function associated with another
 type. It is written the same as a [function item].
 
-An example of a common associated function is a `new` function that returns
-a value of the type the function is associated with.
+> [!NOTE]
+> A common example is an associated function named `new` that returns a value of the type with which it is associated.
 
 ```rust
 struct Struct {
