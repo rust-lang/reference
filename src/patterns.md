@@ -801,6 +801,9 @@ let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
 r[patterns.struct.refutable]
 A struct pattern is refutable if the [PathInExpression] resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
 
+r[patterns.struct.namespace]
+A struct pattern matches against the struct, union, or enum variant whose constructor is resolved from [PathInExpression] in the [type namespace]. See [patterns.tuple-struct.namespace] for more details.
+
 r[patterns.tuple-struct]
 ## Tuple struct patterns
 
@@ -817,6 +820,46 @@ They are also used to [destructure](#destructuring) a tuple struct or enum value
 
 r[patterns.tuple-struct.refutable]
 A tuple struct pattern is refutable if the [PathInExpression] resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
+
+r[patterns.tuple-struct.namespace]
+A tuple struct pattern matches against the tuple struct or [tuple-like enum variant] whose constructor is resolved from [PathInExpression] in the [value namespace].
+
+> [!NOTE]
+> Conversely, a struct pattern for a tuple struct or [tuple-like enum variant], e.g. `S { 0: _ }`, matches against the tuple struct or variant whose constructor is resolved in the [type namespace].
+>
+> ```rust,no_run
+> enum E1 { V(u16) }
+> enum E2 { V(u32) }
+>
+> // Import `E1::V` from the type namespace only.
+> mod _0 {
+>     const V: () = (); // For namespace masking.
+>     pub(super) use super::E1::*;
+> }
+> use _0::*;
+>
+> // Import `E2::V` from the value namespace only.
+> mod _1 {
+>     struct V {} // For namespace masking.
+>     pub(super) use super::E2::*;
+> }
+> use _1::*;
+>
+> fn f() {
+>     // This struct pattern matches against the tuple-like
+>     // enum variant whose constructor was found in the type
+>     // namespace.
+>     let V { 0: ..=u16::MAX } = (loop {}) else { loop {} };
+>     // This tuple struct pattern matches against the tuple-like
+>     // enum variant whose constructor was found in the value
+>     // namespace.
+>     let V(..=u32::MAX) = (loop {}) else { loop {} };
+> }
+> # // Required due to the odd behavior of `super` within functions.
+> # fn main() {}
+> ```
+>
+> The Lang team has made certain decisions, such as in [PR #138458], that raise questions about the desirability of using the value namespace in this way for patterns, as described in [PR #140593]. It might be prudent to not intentionally rely on this nuance in your code.
 
 r[patterns.tuple]
 ## Tuple patterns
@@ -1035,6 +1078,8 @@ This allows us to reserve syntactic space for a possible future type ascription 
 For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound in all patterns.
 `&A(x) | B(x)` will result in a type mismatch between `x` in the different subpatterns.
 
+[PR #138458]: https://github.com/rust-lang/rust/pull/138458
+[PR #140593]: https://github.com/rust-lang/rust/pull/140593#issuecomment-2972338457
 [`Copy`]: special-types-and-traits.md#copy
 [constant]: items/constant-items.md
 [enums]: items/enumerations.md
@@ -1048,5 +1093,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [structs]: items/structs.md
 [tuples]: types/tuple.md
 [scrutinee]: glossary.md#scrutinee
+[tuple-like enum variant]: items.enum.tuple-expr
 [type coercions]: type-coercions.md
-[value namespace]: names/namespaces.md
+[type namespace]: names.namespaces.kinds
+[value namespace]: names.namespaces.kinds
