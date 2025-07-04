@@ -133,7 +133,26 @@ For more information, see the [panic documentation][panic-docs].
 r[crate.no_main]
 ### The `no_main` attribute
 
+r[crate.no_main.intro]
 The *`no_main` [attribute]* may be applied at the crate level to disable emitting the `main` symbol for an executable binary. This is useful when some other object being linked to defines `main`.
+
+> [!EXAMPLE]
+> <!-- ignore: does not work with test framework -->
+> ```rust,ignore
+> #![no_main]
+> ```
+
+r[crate.no_main.syntax]
+The `no_main` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[crate.no_main.allowed-positions]
+The `no_main` attribute may only be applied to the crate root.
+
+r[crate.no_main.duplicates]
+Duplicate instances of the `no_main` attribute are ignored.
+
+> [!NOTE]
+> `rustc` current warns about unused duplicate `no_main` attributes.
 
 r[crate.crate_name]
 ## The `crate_name` attribute
