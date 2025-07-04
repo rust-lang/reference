@@ -6,8 +6,43 @@ This section documents features that define some aspects of the Rust runtime.
 r[runtime.global_allocator]
 ## The `global_allocator` attribute
 
-The *`global_allocator` attribute* is used on a [static item] implementing the
-[`GlobalAlloc`] trait to set the global allocator.
+r[runtime.global_allocator.intro]
+The *`global_allocator` [attribute][attributes]* is used to define a [memory allocator][std::alloc].
+
+> [!EXAMPLE]
+> ```rust
+> use std::alloc::{GlobalAlloc, System, Layout};
+>
+> struct MyAllocator;
+>
+> unsafe impl GlobalAlloc for MyAllocator {
+>     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+>         unsafe { System.alloc(layout) }
+>     }
+>
+>     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+>         unsafe { System.dealloc(ptr, layout) }
+>     }
+> }
+>
+> #[global_allocator]
+> static GLOBAL: MyAllocator = MyAllocator;
+> ```
+
+r[runtime.global_allocator.syntax]
+The `global_allocator` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[runtime.global_allocator.allowed-positions]
+The `global_allocator` attribute may only be applied to a [static item] that implements the [`GlobalAlloc`] trait.
+
+r[runtime.global_allocator.duplicates]
+The `global_allocator` attribute may only be specified once on an item.
+
+r[runtime.global_allocator.single]
+At most one `global_allocator` may be specified in the crate graph.
+
+r[runtime.global_allocator.stdlib]
+The `global_allocator` attribute is exported in the [standard library prelude][core::prelude::v1].
 
 r[runtime.windows_subsystem]
 ## The `windows_subsystem` attribute
