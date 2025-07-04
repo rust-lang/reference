@@ -144,7 +144,7 @@ r[const-eval.const-expr.borrows]
   ```
 
   > [!NOTE]
-  > In other words -- to focus on what's allowed rather than what's not allowed -- shared borrows of interior mutable data and mutable borrows are only allowed in a [const context] when the borrowed [place expression] is *transient*, *indirect*, or *static*.
+  > In other words --- to focus on what's allowed rather than what's not allowed --- shared borrows of interior mutable data and mutable borrows are only allowed in a [const context] when the borrowed [place expression] is *transient*, *indirect*, or *static*.
   >
   > A place expression is *transient* if it is a variable local to the current const context or an expression whose temporary scope is contained inside the current const context.
   >
