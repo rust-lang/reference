@@ -53,16 +53,16 @@ An array expression of this form creates an array with the length of the value o
 That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
 
 r[expr.array.repeat-copy]
-If the length operand has a value greater than 1 then this requires that the type of the repeat operand is [`Copy`] or that it must be a [path] to a constant item.
+If the length operand has a value greater than 1 then this requires the repeat operand to have a type that implements [`Copy`], to be a [const block expression], or to be a [path] to a constant item.
 
 r[expr.array.repeat-const-item]
-When the repeat operand is a constant item, it is evaluated the length operand's value times.
+When the repeat operand is a const block or a path to a constant item, it is evaluated the number of times specified in the length operand.
 
 r[expr.array.repeat-evaluation-zero]
-If that value is `0`, then the constant item is not evaluated at all.
+If that value is `0`, then the const block or constant item is not evaluated at all.
 
 r[expr.array.repeat-non-const]
-For expressions that are not a constant item, it is evaluated exactly once, and then the result is copied the length operand's value times.
+For expressions that are neither a const block nor a path to a constant item, it is evaluated exactly once, and then the result is copied the length operand's value times.
 
 ```rust
 [1, 2, 3, 4];
@@ -123,6 +123,7 @@ The array index expression can be implemented for types other than arrays and sl
 [Index]: std::ops::Index
 [array]: ../types/array.md
 [const generic argument]: items.generics.const.argument
+[const block expression]: expr.block.const
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
 [inferred const]: items.generics.const.inferred
