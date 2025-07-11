@@ -98,8 +98,7 @@ Async closures always capture all input arguments, regardless of whether or not 
 ## Capture precision
 
 r[type.closure.capture.precision.capture-path]
-A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable, as well as
-any [further projections performed by matching against patterns][pattern-wildcards].
+A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable, as well as any [further projections performed by matching against patterns][pattern-wildcards].
 
 [pattern-wildcards]: type.closure.capture.precision.wildcard
 
@@ -305,9 +304,7 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.non-exhaustive]
-If [the `#[non_exhaustive]` attribute][non_exhaustive] is applied to an enum
-defined in an external crate, it is considered to have multiple variants,
-even if only one variant is actually present.
+If [the `#[non_exhaustive]` attribute][non_exhaustive] is applied to an enum defined in an external crate, it is considered to have multiple variants, even if only one variant is actually present.
 
 [non_exhaustive]: attributes.type-system.non_exhaustive
 
@@ -331,8 +328,7 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.range-patterns]
-Matching against a [range pattern][patterns.range] constitutes a discriminant read, even if
-the range matches all possible values.
+Matching against a [range pattern][patterns.range] performs a read of the place being matched, causing the closure to borrow it by `ImmBorrow`. This is the case even if the range matches all possible values.
 
 ```rust,compile_fail,E0506
 let mut x = 7_u8;
@@ -344,11 +340,10 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.slice-patterns]
-Matching against a [slice pattern][patterns.slice] constitutes a discriminant read if
-the slice pattern needs to inspect the length of the scrutinee.
+Matching against a [slice pattern][patterns.slice] performs a read if the slice pattern needs to inspect the length of the scrutinee. The read will cause the closure to borrow the relevant place by `ImmBorrow`.
 
 ```rust,compile_fail,E0506
-let mut x: &mut [i32] = &mut [1, 2, 3];
+let x: &mut [i32] = &mut [1, 2, 3];
 let c = || match x { // captures `*x` by ImmBorrow
     [_, _, _] => println!("three elements"),
     _ => println!("something else"),
@@ -357,7 +352,7 @@ x[0] += 1; // ERROR: cannot assign to `x[_]` because it is borrowed
 c();
 ```
 
-Thus, matching against an array doesn't constitute a discriminant read, as the length is fixed.
+As such, matching against an array doesn't itself cause any borrows, as the lengthh is fixed and doesn't need to be read.
 
 ```rust
 let mut x: [i32; 3] = [1, 2, 3];
@@ -368,10 +363,10 @@ x[0] += 1; // `x` can be modified while the closure is live
 c();
 ```
 
-Likewise, a slice pattern that matches slices of all possible lengths does not constitute a discriminant read.
+Likewise, a slice pattern that matches slices of all possible lengths does not constitute a read.
 
 ```rust
-let mut x: &mut [i32] = &mut [1, 2, 3];
+let x: &mut [i32] = &mut [1, 2, 3];
 let c = || match x { // does not capture `x`
     [..] => println!("always matches"),
 };
