@@ -137,7 +137,7 @@ to with certain [path qualifiers] or aliases.
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-patterns
 [`let` statement]: statements.md#let-statements
-[`macro_export` attribute]: macros-by-example.md#path-based-scope
+[`macro_export` attribute]: macros-by-example.md#the-macro_export-attribute
 [`macro_rules` declarations]: macros-by-example.md
 [`macro_use` attribute]: macros-by-example.md#the-macro_use-attribute
 [`match`]: expressions/match-expr.md
