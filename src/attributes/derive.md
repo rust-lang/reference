@@ -45,7 +45,7 @@ detect these automatically generated implementations.
 
 [`impl` item]: ../items/implementations.md
 [items]: ../items.md
-[derive macros]: ../procedural-macros.md#derive-macros
+[derive macros]: ../procedural-macros.md#the-proc_macro_derive-attribute
 [implementations]: ../items/implementations.md
 [items]: ../items.md
-[procedural macros]: ../procedural-macros.md#derive-macros
+[procedural macros]: ../procedural-macros.md#the-proc_macro_derive-attribute
