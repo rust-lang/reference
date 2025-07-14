@@ -10,18 +10,18 @@ StaticItem ->
 [^extern-safety]: The `safe` and `unsafe` function qualifiers are only allowed semantically within `extern` blocks.
 
 r[items.static.intro]
-A *static item* is similar to a [constant], except that it represents an allocated object in the
+A *static item* is similar to a [constant], except that it represents an allocation in the
 program that is initialized with the initializer expression. All references and raw pointers to the
-static refer to the same allocated object.
+static refer to the same allocation.
 
 r[items.static.lifetime]
 Static items have the `static` lifetime, which outlives all other lifetimes in a Rust program.
 Static items do not call [`drop`] at the end of the program.
 
 r[items.static.storage-disjointness]
-If the `static` has a size of at least 1 byte, this allocated object is disjoint from all other such
-`static` objects as well as heap allocations and stack-allocated variables. However, the storage of
-immutable `static` items can overlap with objects that do not themselves have a unique address, such
+If the `static` has a size of at least 1 byte, this allocation is disjoint from all other such
+`static` allocations as well as heap allocations and stack-allocated variables. However, the storage of
+immutable `static` items can overlap with allocations that do not themselves have a unique address, such
 as [promoteds] and [`const` items][constant].
 
 r[items.static.namespace]
