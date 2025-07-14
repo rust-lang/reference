@@ -6,7 +6,7 @@ r[expr.operator.syntax]
 OperatorExpression ->
       BorrowExpression
     | DereferenceExpression
-    | ErrorPropagationExpression
+    | TryPropagationExpression
     | NegationExpression
     | ArithmeticOrLogicalExpression
     | ComparisonExpression
@@ -190,15 +190,18 @@ assert_eq!(*y, 11);
 ```
 
 r[expr.try]
-## The question mark operator
+## The try propagation expression
 
 r[expr.try.syntax]
 ```grammar,expressions
-ErrorPropagationExpression -> Expression `?`
+TryPropagationExpression -> Expression `?`
 ```
 
 r[expr.try.intro]
-The question mark operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
+The try propagation operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
+
+> [!NOTE]
+> The try propagation operator is sometimes called *the question mark operator*, *the `?` operator*, or *the try operator*.
 
 r[expr.try.restricted-types]
 It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
@@ -913,6 +916,7 @@ Like assignment expressions, compound assignment expressions always produce [the
 (function() {
     var fragments = {
         "#slice-dst-pointer-to-pointer-cast": "operator-expr.html#pointer-to-pointer-cast",
+        "#the-question-mark-operator": "operator-expr.html#the-try-propagation-expression",
     };
     var target = fragments[window.location.hash];
     if (target) {
