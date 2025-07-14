@@ -200,6 +200,73 @@ TryPropagationExpression -> Expression `?`
 r[expr.try.intro]
 The try propagation operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
 
+> [!EXAMPLE]
+> ```rust
+> # use std::num::ParseIntError;
+> fn try_to_parse() -> Result<i32, ParseIntError> {
+>     let x: i32 = "123".parse()?; // `x` is `123`.
+>     let y: i32 = "24a".parse()?; // Returns an `Err()` immediately.
+>     Ok(x + y)                    // Doesn't run.
+> }
+>
+> let res = try_to_parse();
+> println!("{res:?}");
+> # assert!(res.is_err())
+> ```
+>
+> ```rust
+> fn try_option_some() -> Option<u8> {
+>     let val = Some(1)?;
+>     Some(val)
+> }
+> assert_eq!(try_option_some(), Some(1));
+>
+> fn try_option_none() -> Option<u8> {
+>     let val = None?;
+>     Some(val)
+> }
+> assert_eq!(try_option_none(), None);
+> ```
+>
+> ```rust
+> use std::ops::ControlFlow;
+>
+> pub struct TreeNode<T> {
+>     value: T,
+>     left: Option<Box<TreeNode<T>>>,
+>     right: Option<Box<TreeNode<T>>>,
+> }
+>
+> impl<T> TreeNode<T> {
+>     pub fn traverse_inorder<B>(&self, f: &mut impl FnMut(&T) -> ControlFlow<B>) -> ControlFlow<B> {
+>         if let Some(left) = &self.left {
+>             left.traverse_inorder(f)?;
+>         }
+>         f(&self.value)?;
+>         if let Some(right) = &self.right {
+>             right.traverse_inorder(f)?;
+>         }
+>         ControlFlow::Continue(())
+>     }
+> }
+> #
+> # fn main() {
+> #     let n = TreeNode {
+> #         value: 1,
+> #         left: Some(Box::new(TreeNode{value: 2, left: None, right: None})),
+> #         right: None,
+> #     };
+> #     let v = n.traverse_inorder(&mut |t| {
+> #         if *t == 2 {
+> #             ControlFlow::Break("found")
+> #         } else {
+> #             ControlFlow::Continue(())
+> #         }
+> #     });
+> #     assert_eq!(v, ControlFlow::Break("found"));
+> # }
+> ```
+
 > [!NOTE]
 > The try propagation operator is sometimes called *the question mark operator*, *the `?` operator*, or *the try operator*.
 
@@ -215,19 +282,6 @@ If the value is `Err(e)`, then it will return `Err(From::from(e))` from the encl
 r[expr.try.result-ok]
 If applied to `Ok(x)`, then it will unwrap the value to evaluate to `x`.
 
-```rust
-# use std::num::ParseIntError;
-fn try_to_parse() -> Result<i32, ParseIntError> {
-    let x: i32 = "123".parse()?; // x = 123
-    let y: i32 = "24a".parse()?; // returns an Err() immediately
-    Ok(x + y)                    // Doesn't run.
-}
-
-let res = try_to_parse();
-println!("{:?}", res);
-# assert!(res.is_err())
-```
-
 r[expr.try.behavior-std-option]
 When applied to values of the `Option<T>` type, it propagates `None`s.
 
@@ -236,20 +290,6 @@ If the value is `None`, then it will return `None`.
 
 r[expr.try.result-some]
 If applied to `Some(x)`, then it will unwrap the value to evaluate to `x`.
-
-```rust
-fn try_option_some() -> Option<u8> {
-    let val = Some(1)?;
-    Some(val)
-}
-assert_eq!(try_option_some(), Some(1));
-
-fn try_option_none() -> Option<u8> {
-    let val = None?;
-    Some(val)
-}
-assert_eq!(try_option_none(), None);
-```
 
 r[expr.try.trait]
 `?` cannot be overloaded.
