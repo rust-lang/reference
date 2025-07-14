@@ -198,7 +198,7 @@ TryPropagationExpression -> Expression `?`
 ```
 
 r[expr.try.intro]
-The try propagation operator (`?`) unwraps valid values or returns erroneous values, propagating them to the calling function.
+The try propagation expression uses the value of the inner expression and the [`Try`] trait to decide whether to produce a value, and if so, what value to produce, or whether to return a value to the caller, and if so, what value to return.
 
 > [!EXAMPLE]
 > ```rust
@@ -268,31 +268,47 @@ The try propagation operator (`?`) unwraps valid values or returns erroneous val
 > ```
 
 > [!NOTE]
+> The [`Try`] trait is currently unstable, and thus cannot be implemented for user types.
+>
+> The try propagation expression is currently roughly equivalent to:
+>
+> ```rust
+> # #![ feature(try_trait_v2) ]
+> # fn example() -> Result<(), ()> {
+> # let expr = Ok(());
+> match core::ops::Try::branch(expr) {
+>     core::ops::ControlFlow::Continue(val) => val,
+>     core::ops::ControlFlow::Break(residual) =>
+>         return core::ops::FromResidual::from_residual(residual),
+> }
+> # Ok(())
+> # }
+> ```
+
+> [!NOTE]
 > The try propagation operator is sometimes called *the question mark operator*, *the `?` operator*, or *the try operator*.
 
 r[expr.try.restricted-types]
-It is a unary postfix operator that can only be applied to the types `Result<T, E>` and `Option<T>`.
+The try propagation operator can be applied to expressions with the type of:
 
-r[expr.try.behavior-std-result]
-When applied to values of the `Result<T, E>` type, it propagates errors.
-
-r[expr.try.effects-err]
-If the value is `Err(e)`, then it will return `Err(From::from(e))` from the enclosing function or closure.
-
-r[expr.try.result-ok]
-If applied to `Ok(x)`, then it will unwrap the value to evaluate to `x`.
-
-r[expr.try.behavior-std-option]
-When applied to values of the `Option<T>` type, it propagates `None`s.
-
-r[expr.try.effects-none]
-If the value is `None`, then it will return `None`.
-
-r[expr.try.result-some]
-If applied to `Some(x)`, then it will unwrap the value to evaluate to `x`.
-
-r[expr.try.trait]
-`?` cannot be overloaded.
+- [`Result<T, E>`]
+    - `Result::Ok(val)` evaluates to `val`.
+    - `Result::Err(e)` returns `Result::Err(From::from(e))`.
+- [`Option<T>`]
+    - `Option::Some(val)` evaluates to `val`.
+    - `Option::None` returns `Option::None`.
+- [`ControlFlow<B, C>`][core::ops::ControlFlow]
+    - `ControlFlow::Continue(c)` evaluates to `c`.
+    - `ControlFlow::Break(b)` returns `ControlFlow::Break(b)`.
+- [`Poll<Result<T, E>>`][core::task::Poll]
+    - `Poll::Ready(Ok(val))` evaluates to `Poll::Ready(val)`.
+    - `Poll::Ready(Err(e))` returns `Poll::Ready(Err(From::from(e)))`.
+    - `Poll::Pending` evaluates to `Poll::Pending`.
+- [`Poll<Option<Result<T, E>>>`][`core::task::Poll`]
+    - `Poll::Ready(Some(Ok(val)))` evaluates to `Poll::Ready(Some(val))`.
+    - `Poll::Ready(Some(Err(e)))` returns `Poll::Ready(Some(Err(From::from(e))))`.
+    - `Poll::Ready(None)` evaluates to `Poll::Ready(None)`.
+    - `Poll::Pending` evaluates to `Poll::Pending`.
 
 r[expr.negate]
 ## Negation operators
@@ -926,6 +942,7 @@ Like assignment expressions, compound assignment expressions always produce [the
 > Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
 > See [this test] for an example of using this dependency.
 
+[`Try`]: core::ops::Try
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
