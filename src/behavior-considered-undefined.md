@@ -79,7 +79,7 @@ r[undefined.asm]
 r[undefined.const-transmute-ptr2int]
 * **In [const context](const_eval.md#const-context)**: transmuting or otherwise
   reinterpreting a pointer (reference, raw pointer, or function pointer) into
-  some allocated object as a non-pointer type (such as integers).
+  some allocation as a non-pointer type (such as integers).
   'Reinterpreting' refers to loading the pointer value at integer type without a
   cast, e.g. by doing raw pointer casts or using a union.
 
