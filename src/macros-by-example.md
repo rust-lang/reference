@@ -365,37 +365,110 @@ lazy_static!{}
 ```
 
 r[macro.decl.scope.macro_use.export]
-Macros to be imported with `#[macro_use]` must be exported with
-`#[macro_export]`, which is described below.
+Macros to be imported with `macro_use` must be exported with
+[`macro_export`][macro.decl.scope.macro_export].
 
-r[macro.decl.scope.path]
-### Path-Based Scope
+r[macro.decl.scope.macro_export]
+### The `macro_export` attribute
 
-r[macro.decl.scope.path.intro]
-By default, a macro has no path-based scope. However, if it has the
-`#[macro_export]` attribute, then it is declared in the crate root scope and can
-be referred to normally as such:
+r[macro.decl.scope.macro_export.intro]
+The *`macro_export` [attribute][attributes]* marks a macro to be publicly exported from the crate, and makes it available in the root of the crate for path-based resolution.
 
-```rust
-self::m!();
-m!(); // OK: Path-based lookup finds m in the current module.
+> [!EXAMPLE]
+> ```rust
+> self::m!();
+> m!(); // OK: Path-based lookup finds m in the current module.
+>
+> mod inner {
+>     super::m!();
+>     crate::m!();
+> }
+>
+> mod mac {
+>     #[macro_export]
+>     macro_rules! m {
+>         () => {};
+>     }
+> }
+> ```
 
-mod inner {
-    super::m!();
-    crate::m!();
-}
+r[macro.decl.scope.macro_export.syntax]
+The `macro_export` attribute uses the [MetaWord] syntax, or the [MetaListIdents] syntax with a single value of [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros].
 
-mod mac {
-    #[macro_export]
-    macro_rules! m {
-        () => {};
-    }
-}
-```
+r[macro.decl.scope.macro_export.allowed-positions]
+The `macro_export` attribute may be applied to `macro_rules` definitions.
 
-r[macro.decl.scope.path.export]
-Macros labeled with `#[macro_export]` are always `pub` and can be referred to
-by other crates, either by path or by `#[macro_use]` as described above.
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[macro.decl.scope.macro_export.duplicates]
+Only the first instance of `macro_export` on a macro is honored. Subsequent `macro_export` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on subsequent duplicate `macro_export` attributes.
+
+r[macro.decl.scope.macro_export.path-based]
+By default, macros only have [textually-based scoping](#textual-scope). When the `macro_export` attribute is used, the macro is reexported in the crate root, and can be referred to using a path to the macro in the crate root.
+
+r[macro.decl.scope.macro_export.export]
+The `macro_export` attribute causes a macro to be publicly exported from the crate root so that it can be referred to by other crates using a path.
+
+> [!EXAMPLE]
+> Given the following defined in a crate named `log`:
+> ```rust
+> #[macro_export]
+> macro_rules! warn {
+>     ($message:expr) => { eprintln!("WARN: {}", $message) };
+> }
+> ```
+> Then you can refer to the macro via a path to the crate:
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> fn main() {
+>     log::warn!("example warning");
+> }
+> ```
+
+r[macro.decl.scope.macro_export.macro_use]
+`macro_export` also allows the use of [`macro_use`][macro.decl.scope.macro_use] on an `extern crate` to import the macro into the [`macro_use` prelude].
+
+> [!EXAMPLE]
+> Given the following defined in a crate named `log`:
+> ```rust
+> #[macro_export]
+> macro_rules! warn {
+>     ($message:expr) => { eprintln!("WARN: {}", $message) };
+> }
+> ```
+> Using `macro_use` in a dependent crate means the macro can be used from the prelude:
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> #[macro_use]
+> extern crate log;
+>
+> pub mod util {
+>     pub fn do_thing() {
+>         // Resolved via macro prelude.
+>         warn!("example warning");
+>     }
+> }
+> ```
+
+r[macro.decl.scope.macro_export.local_inner_macros]
+Adding `local_inner_macros` to the `macro_export` attribute also causes all single-segment macro invocations in the macro definition to have an implicit `$crate::` prefix. This is intended primarily as a tool to migrate code written before [`$crate`] was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
+
+> [!EXAMPLE]
+> ```rust
+> #[macro_export(local_inner_macros)]
+> macro_rules! helped {
+>     () => { helper!() } // Automatically converted to $crate::helper!().
+> }
+>
+> #[macro_export]
+> macro_rules! helper {
+>     () => { () }
+> }
+> ```
 
 r[macro.decl.hygiene]
 ## Hygiene
@@ -495,32 +568,8 @@ macro_rules! call_foo {
 fn foo() {}
 ```
 
-> **Version differences**: Prior to Rust 1.30, `$crate` and
-> `local_inner_macros` (below) were unsupported. They were added alongside
-> path-based imports of macros (described above), to ensure that helper macros
-> did not need to be manually imported by users of a macro-exporting crate.
-> Crates written for earlier versions of Rust that use helper macros need to be
-> modified to use `$crate` or `local_inner_macros` to work well with path-based
-> imports.
-
-r[macro.decl.hygiene.local_inner_macros]
-When a macro is exported, the `#[macro_export]` attribute can have the
-`local_inner_macros` keyword added to automatically prefix all contained macro
-invocations with `$crate::`. This is intended primarily as a tool to migrate
-code written before `$crate` was added to the language to work with Rust 2018's
-path-based imports of macros. Its use is discouraged in new code.
-
-```rust
-#[macro_export(local_inner_macros)]
-macro_rules! helped {
-    () => { helper!() } // Automatically converted to $crate::helper!().
-}
-
-#[macro_export]
-macro_rules! helper {
-    () => { () }
-}
-```
+> [!NOTE]
+> Prior to Rust 1.30, `$crate` and [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros] were unsupported. They were added alongside [path-based imports of macros][macro.decl.scope.macro_export], to ensure that helper macros did not need to be manually imported by users of a macro-exporting crate. Crates written for earlier versions of Rust that use helper macros need to be modified to use `$crate` or `local_inner_macros` to work well with path-based imports.
 
 r[macro.decl.follow-set]
 ## Follow-set Ambiguity Restrictions
@@ -595,3 +644,17 @@ For more detail, see the [formal specification].
 [Repetitions]: #repetitions
 [token]: tokens.md
 [`$crate`]: macro.decl.hygiene.crate
+
+<script>
+(function() {
+    var fragments = {
+        "#path-based-scope": "macros-by-example.html#the-macro_export-attribute",
+    };
+    var target = fragments[window.location.hash];
+    if (target) {
+        var url = window.location.toString();
+        var base = url.substring(0, url.lastIndexOf('/'));
+        window.location.replace(base + "/" + target);
+    }
+})();
+</script>
