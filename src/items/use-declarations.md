@@ -448,7 +448,7 @@ fn main() {
 [associated items]: associated-items.md
 [Attributes]: ../attributes.md
 [Built-in types]: ../types.md
-[Derive macros]: ../procedural-macros.md#derive-macros
+[Derive macros]: ../procedural-macros.md#the-proc_macro_derive-attribute
 [Enum variants]: enumerations.md
 [extern prelude]: ../names/preludes.md#extern-prelude
 [generic parameters]: generics.md
