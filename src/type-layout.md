@@ -109,7 +109,7 @@ Slices have the same layout as the section of the array they slice.
 r[layout.str]
 ## `str` Layout
 
-String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`.
+String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`. A reference `&str` has the same layout as a reference `&[u8]`.
 
 r[layout.tuple]
 ## Tuple Layout
