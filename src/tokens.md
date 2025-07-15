@@ -907,7 +907,7 @@ usages and meanings are defined in the linked pages.
 | `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token
 | `#`    | Pound       | [Attributes]
 | `$`    | Dollar      | [Macros]
-| `?`    | Question    | [Question mark operator][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
+| `?`    | Question    | [Try propagation expressions][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
 | `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used
 
 r[lex.token.delim]
@@ -1064,7 +1064,7 @@ r[lex.token.reserved-guards.edition2024]
 [paths]: paths.md
 [patterns]: patterns.md
 [placeholder lifetime]: lifetime-elision.md
-[question]: expressions/operator-expr.md#the-question-mark-operator
+[question]: expressions/operator-expr.md#the-try-propagation-expression
 [range]: expressions/range-expr.md
 [rangepat]: patterns.md#range-patterns
 [raw pointers]: types/pointer.md#raw-pointers-const-and-mut
