@@ -189,6 +189,17 @@ unsafe extern "C" {
 > [!WARNING]
 > The `safe` qualifier should not be used on a function in an `extern` block unless that function guarantees that it will not access the variadic arguments at all. Passing an unexpected number of arguments or arguments of unexpected type to a variadic function may lead to [undefined behavior][undefined].
 
+r[items.extern.variadic.conventions]
+Variadic parameters can only be specified with `extern` blocks with the following ABI strings:
+- `"aapcs"`
+- `"C"`
+- `"cdecl"`
+- `"efiapi"`
+- `"sysv64"`
+- `"win64"`
+
+This also includes the corresponding [`-unwind` variants][items.fn.extern.unwind].
+
 r[items.extern.attributes]
 ## Attributes on extern blocks
 
