@@ -123,7 +123,7 @@
 - [Unsafety](unsafety.md)
     - [The `unsafe` keyword](unsafe-keyword.md)
     - [Behavior considered undefined](behavior-considered-undefined.md)
-    - [Behavior not considered unsafe](behavior-not-considered-unsafe.md)
+    - [Undesirable behavior not considered unsafe](behavior-not-considered-unsafe.md)
 
 - [Constant Evaluation](const_eval.md)
 
