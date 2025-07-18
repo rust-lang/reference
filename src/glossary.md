@@ -64,8 +64,7 @@ root, including through [paths] of public modules.
 
 Dispatch is the mechanism to determine which specific version of code is actually
 run when it involves polymorphism. Two major forms of dispatch are static dispatch and
-dynamic dispatch. While Rust favors static dispatch, it also supports dynamic dispatch
-through a mechanism called ‘trait objects’.
+dynamic dispatch. Rust supports dynamic dispatch through the use of [trait objects][type.trait-object].
 
 ### Dynamically sized type
 
