@@ -382,6 +382,7 @@ unsafe { core::arch::asm!("call {}", sym foo, clobber_abi("C")); }
 # }
 ```
 
+r[asm.operand-type.supported-operands.const]
 * `const <expr>`
   - `<expr>` must be an integer constant expression. This expression follows the same rules as inline `const` blocks.
   - The type of the expression may be any integer type, but defaults to `i32` just like integer literals.
