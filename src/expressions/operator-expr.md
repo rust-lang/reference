@@ -903,11 +903,15 @@ r[expr.compound-assign.operand-order]
 Evaluation of compound assignment expressions depends on the types of the operators.
 
 r[expr.compound-assign.primitive-order]
-If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
+If both types are primitives and the expression is non-generic (i.e., directly uses concrete types), then the modifying operand will be evaluated first followed by the assigned operand.
 It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
 
 > [!NOTE]
 > This is different than other expressions in that the right operand is evaluated before the left one.
+
+> [!NOTE]
+> This right-before-left evaluation only occurs in non-generic code involving primitive types.
+> In all other cases---including generic contexts or non-primitive types---the expression is desugared into a trait method call, and operands are evaluated left to right.
 
 r[expr.compound-assign.trait]
 Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assignment trait of the operator (see the table earlier in this chapter).
@@ -937,9 +941,10 @@ r[expr.compound-assign.result]
 Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
 
 > [!WARNING]
-> The evaluation order of operands swaps depending on the types of the operands:
-> with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
-> Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
+> The evaluation order of operands varies depending on how the expression is desugared.
+> Non-generic primitive assignments may evaluate the right-hand side first.
+> Trait-based assignments, including all generic cases, evaluate left-hand side first.
+> Avoid writing code that depends on operand evaluation order.
 > See [this test] for an example of using this dependency.
 
 [`Try`]: core::ops::Try
