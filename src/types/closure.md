@@ -340,7 +340,7 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.slice-patterns]
-Matching against a [slice pattern][patterns.slice] performs a read if the slice pattern needs to inspect the length of the scrutinee. The read will cause the closure to borrow the relevant place by `ImmBorrow`.
+Matching against a [slice pattern][patterns.slice] that needs to inspect the length of the scrutinee performs a read of the pointer value in order to fetch the length. The read will cause the closure to borrow the relevant place by `ImmBorrow`.
 
 ```rust,compile_fail,E0506
 let x: &mut [i32] = &mut [1, 2, 3];
@@ -352,7 +352,7 @@ x[0] += 1; // ERROR: cannot assign to `x[_]` because it is borrowed
 c();
 ```
 
-As such, matching against an array doesn't itself cause any borrows, as the lengthh is fixed and doesn't need to be read.
+As such, matching against an array doesn't itself cause any borrows, as the lengthh is fixed and the pattern doesn't need to inspect it.
 
 ```rust
 let mut x: [i32; 3] = [1, 2, 3];
