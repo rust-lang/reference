@@ -60,8 +60,6 @@ Literals are tokens used in [literal expressions].
 
 [^nsets]: The number of `#`s on each side of the same literal must be equivalent.
 
-> [!NOTE]
-> Character and string literal tokens never include the sequence of `U+000D` (CR) immediately followed by `U+000A` (LF): this pair would have been previously transformed into a single `U+000A` (LF).
 
 #### ASCII escapes
 
@@ -198,9 +196,9 @@ which must be _escaped_ by a preceding `U+005C` character (`\`).
 
 r[lex.token.literal.str.linefeed]
 Line-breaks, represented by the  character `U+000A` (LF), are allowed in string literals.
+The character `U+000D` (CR) may not appear in a string literal.
 When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
 See [String continuation escapes] for details.
-The character `U+000D` (CR) may not appear in a string literal other than as part of such a string continuation escape.
 
 r[lex.token.literal.char-escape]
 #### Character escapes
@@ -323,9 +321,9 @@ below.
 
 r[lex.token.str-byte.linefeed]
 Line-breaks, represented by the  character `U+000A` (LF), are allowed in byte string literals.
+The character `U+000D` (CR) may not appear in a byte string literal.
 When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
 See [String continuation escapes] for details.
-The character `U+000D` (CR) may not appear in a byte string literal other than as part of such a string continuation escape.
 
 r[lex.token.str-byte.escape]
 Some additional _escapes_ are available in either byte or non-raw byte string
@@ -429,9 +427,9 @@ permitted within a C string.
 
 r[lex.token.str-c.linefeed]
 Line-breaks, represented by the  character `U+000A` (LF), are allowed in C string literals.
+The character `U+000D` (CR) may not appear in a C string literal.
 When an unescaped `U+005C` character (`\`) occurs immediately before a line break, the line break does not appear in the string represented by the token.
 See [String continuation escapes] for details.
-The character `U+000D` (CR) may not appear in a C string literal other than as part of such a string continuation escape.
 
 r[lex.token.str-c.escape]
 Some additional _escapes_ are available in non-raw C string literals. An escape

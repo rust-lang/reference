@@ -24,6 +24,7 @@ r[input.crlf]
 ## CRLF normalization
 
 Each pair of characters `U+000D` (CR) immediately followed by `U+000A` (LF) is replaced by a single `U+000A` (LF).
+This happens once, not repeatedly, so after the normalization, there can still exist `U+000D` (CR) immediately followed by `U+000A` (LF) in the input (e.g. if the raw input contained "CR CR LF LF").
 
 Other occurrences of the character `U+000D` (CR) are left in place (they are treated as [whitespace]).
 
