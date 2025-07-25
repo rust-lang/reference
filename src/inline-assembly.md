@@ -641,9 +641,10 @@ The availability of supported types for a particular register class may depend o
 | RISC-V | `freg` | `f` | `f32` |
 | RISC-V | `freg` | `d` | `f64` |
 | RISC-V | `vreg` | N/A | Only clobbers |
+| LoongArch32 | `reg` | None | `i8`, `i16`, `i32`, `f32` |
 | LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
-| LoongArch64 | `freg` | `f` | `f32` |
-| LoongArch64 | `freg` | `d` | `f64` |
+| LoongArch | `freg` | `f` | `f32` |
+| LoongArch | `freg` | `d` | `f64` |
 | s390x | `reg`, `reg_addr` | None | `i8`, `i16`, `i32`, `i64` |
 | s390x | `freg` | None | `f32`, `f64` |
 | s390x | `vreg` | N/A | Only clobbers |
