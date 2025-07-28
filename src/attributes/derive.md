@@ -2,10 +2,10 @@ r[attributes.derive]
 # Derive
 
 r[attributes.derive.intro]
-The *`derive` [attribute][attributes]* allows new [items] to be automatically generated for data structures. You can implement custom `derive` macros through [procedural macros].
+The *`derive` [attribute][attributes]* invokes one or more [derive macros], allowing new [items] to be automatically generated for data structures. You can create `derive` macros with [procedural macros].
 
 > [!EXAMPLE]
-> The following example will create an [`impl` item] for the [`PartialEq`] and [`Clone`] traits for `Foo`, and the type parameter `T` will be given the `PartialEq` or `Clone` constraints for the appropriate `impl`:
+> The [`PartialEq`][macro@PartialEq] derive macro emits an [implementation] of [`PartialEq`] for `Foo<T> where T: PartialEq`. The [`Clone`][macro@Clone] derive macro does likewise for [`Clone`].
 >
 > ```rust
 > #[derive(PartialEq, Clone)]
@@ -15,7 +15,7 @@ The *`derive` [attribute][attributes]* allows new [items] to be automatically ge
 > }
 > ```
 >
-> The generated `impl` for `PartialEq` is equivalent to
+> The generated `impl` items are equivalent to:
 >
 > ```rust
 > # struct Foo<T> { a: i32, b: T }
@@ -24,16 +24,22 @@ The *`derive` [attribute][attributes]* allows new [items] to be automatically ge
 >         self.a == other.a && self.b == other.b
 >     }
 > }
+>
+> impl<T: Clone> Clone for Foo<T> {
+>     fn clone(&self) -> Self {
+>         Foo { a: self.a.clone(), b: self.b.clone() }
+>     }
+> }
 > ```
 
 r[attributes.derive.syntax]
-The `derive` attribute uses the [MetaListPaths] syntax to specify a list of paths to [derive macros] to process.
+The `derive` attribute uses the [MetaListPaths] syntax to specify a list of paths to [derive macros] to invoke.
 
 r[attributes.derive.allowed-positions]
 The `derive` attribute may be applied to [structs][items.struct], [enums][items.enum], and [unions][items.union].
 
 r[attributes.derive.duplicates]
-The `derive` attribute may be specified multiple times on an item, with all entries from all attributes being processed.
+The `derive` attribute may be specified multiple times on an item, with all derive macros listed in all attributes being invoked.
 
 r[attributes.derive.stdlib]
 The `derive` attribute is exported in the standard library prelude as [`core::prelude::v1::derive`].
@@ -65,7 +71,6 @@ The *`automatically_derived` attribute* is automatically added to
 has no direct effect, but it may be used by tools and diagnostic lints to
 detect these automatically generated implementations.
 
-[`impl` item]: ../items/implementations.md
 [items]: ../items.md
 [derive macros]: ../procedural-macros.md#derive-macros
 [implementations]: ../items/implementations.md
