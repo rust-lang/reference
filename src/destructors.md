@@ -185,9 +185,48 @@ let declared_first = PrintOnDrop("Dropped last in outer scope");
 let declared_last = PrintOnDrop("Dropped first in outer scope");
 ```
 
-r[destructors.scope.bindings.match-pattern-order]
-If multiple patterns are used in the same arm for a `match` expression, then an
-unspecified pattern will be used to determine the drop order.
+r[destructors.scope.bindings.pattern-drop-order]
+If a pattern binds multiple variables, they are dropped in reverse order of declaration.
+
+```rust
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+let (declared_first, declared_last) = (
+    PrintOnDrop("Dropped last"),
+    PrintOnDrop("Dropped first"),
+);
+```
+
+r[destructors.scope.bindings.or-pattern-declaration-order]
+For the purpose of drop order, [or-patterns] declare their bindings in the order given by their first sub-pattern.
+
+```rust
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+// Drops `declared_last`, then `declared_first`.
+fn fixed_variable_drop_order<T>(
+    (Ok([declared_first, declared_last])
+    | Err([declared_last, declared_first])): Result<[T; 2], [T; 2]>
+) {}
+
+fixed_variable_drop_order(Ok([
+    PrintOnDrop("Dropped last"),
+    PrintOnDrop("Dropped first"),
+]));
+
+fixed_variable_drop_order(Err([
+    PrintOnDrop("Dropped first"),
+    PrintOnDrop("Dropped last"),
+]));
+```
 
 r[destructors.scope.temporary]
 ### Temporary scopes
@@ -473,6 +512,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [Trait objects]: types/trait-object.md
 [tuple]: types/tuple.md
 
+[or-patterns]: patterns.md#or-patterns
 [slice pattern]: patterns.md#slice-patterns
 [struct pattern]: patterns.md#struct-patterns
 [tuple pattern]: patterns.md#tuple-patterns
