@@ -715,7 +715,7 @@ r[expr.as.pointer.unsized.trait]
   1. The principal trait must be the same. (you can't cast from `dyn Foo` to `dyn Bar`)
   2. Auto traits may be removed. (you can cast `dyn Foo + Send` to `dyn Foo`)
   3. Auto traits may be added only if they are a super trait of the principal trait. (you can cast `dyn Foo` to `dyn Foo + Send` only if `Send` is a super trait of `Foo`)
-  4. Trailing lifetimes may be changed. (you can cast `dyn Foo + 'a` to `dyn Foo + 'b` for any `'a`,`'b`)
+  4. Trailing lifetimes may only be shortened. (you can cast `dyn Foo + 'long` to `dyn Foo + 'short`, but the opposite is not legal)
   5. Generics (including lifetimes) and associated types must match exactly. (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
   Note that [trait upcasting][coerce.unsize.trait-upcast] (including the addition of auto traits) requires a coercion and is not supported by `as` casts.
