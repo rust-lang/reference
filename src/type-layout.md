@@ -91,7 +91,9 @@ r[layout.tuple]
 ## Tuple layout
 
 r[layout.tuple.def]
-Tuples are laid out according to the [`Rust` representation][`Rust`].
+Tuples are laid out according to the same rules as structs using the [`Rust` representation][`Rust`].
+
+They are laid out like a struct without generic parameters. This means that the last field of the tuple is not guaranteed to be stored at the end.
 
 r[layout.tuple.unit]
 The exception to this is the unit tuple (`()`), which is guaranteed as a [zero-sized type] to have a size of 0 and an alignment of 1.
