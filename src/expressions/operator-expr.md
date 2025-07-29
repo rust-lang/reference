@@ -746,7 +746,7 @@ r[expr.as.pointer.unsized.trait]
 - When `T` and `U` are unsized with trait object metadata, the metadata is compatible only when all of the following holds:
   1. The principal trait must be the same. (you can't cast from `dyn Foo` to `dyn Bar`)
   2. Auto traits may be removed, but not added. (you can cast `dyn Foo + Send` to `dyn Foo`, but the opposite is not legal)
-  3. Trailing lifetimes may be changed. (you can cast `dyn Foo + 'a` to `dyn Foo + 'b` for any `'a`,`'b`)
+  3. Trailing lifetimes may only be shortened. (you can cast `dyn Foo + 'long` to `dyn Foo + 'short`, but the opposite is not legal)
   4. Generics (including lifetimes) and associated types must match exactly. (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
   Note that [trait upcasting][coerce.unsize.trait-upcast] (including the addition of auto traits) requires a coercion and is not supported by `as` casts.
