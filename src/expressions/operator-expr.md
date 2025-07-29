@@ -510,7 +510,7 @@ r[expr.as.coercions]
 | Enumeration           | Integer type          | [Enum cast][expr.as.enum]                             |
 | `bool` or `char`      | Integer type          | [Primitive to integer cast][expr.as.bool-char-as-int] |
 | `u8`                  | `char`                | [`u8` to `char` cast][expr.as.u8-as-char]             |
-| `*T`                  | `*V` [^meta-compat]   | [Pointer to pointer cast][expr.as.pointer]            |
+| `*T`                  | `*V` (when [compatible][expr.as.pointer]) | [Pointer to pointer cast][expr.as.pointer] |
 | `*T` where `T: Sized` | Integer type          | [Pointer to address cast][expr.as.pointer-as-int]     |
 | Integer type          | `*V` where `V: Sized` | [Address to pointer cast][expr.as.int-as-pointer]     |
 | `&m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
@@ -521,13 +521,6 @@ r[expr.as.coercions]
 | [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast                      |
 | [Function pointer]    | Integer               | Function pointer to address cast                      |
 | Closure [^no-capture] | Function pointer      | Closure to function pointer cast                      |
-
-[^meta-compat]: Where `T` and `V` have compatible metadata:
-      * `V: Sized`, or
-      * Both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`), or
-      * Both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`)
-          * **Note**: *adding* auto traits is only allowed if the principal trait has the auto trait as a super trait (given `trait T: Send {}`, `*dyn T` -> `*dyn T + Send` is valid, but `*dyn Debug` -> `*dyn Debug + Send` is not)
-          * **Note**: Generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
 [^lessmut]: Only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to `const` pointer is allowed.
 
@@ -708,13 +701,27 @@ r[expr.as.pointer.behavior]
 r[expr.as.pointer.sized]
 - If `T` and `U` are both sized, the pointer is returned unchanged.
 
-r[expr.as.pointer.unsized]
-- If `T` and `U` are both unsized, the pointer is also returned unchanged. In particular, the metadata is preserved exactly.
-
-  For instance, a cast from `*const [T]` to `*const [U]` preserves the number of elements. Note that, as a consequence, such casts do not necessarily preserve the size of the pointer's referent (e.g., casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refers to an object of half the size of the original). The same holds for `str` and any compound type whose unsized tail is a slice type, such as `struct Foo(i32, [u8])` or `(u64, Foo)`.
-
 r[expr.as.pointer.discard-metadata]
 - If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
+
+r[expr.as.pointer.unsized]
+- If `T` and `U` are both unsized, the pointer is also returned unchanged. In particular, the metadata is preserved exactly. The cast can only be performed if the metadata is compatible according to the below rules:
+
+r[expr.as.pointer.unsized.slice]
+- When `T` and `U` are unsized with slice metadata, they are always compatible. The metadata of a slice is the number of elements, so casting `*[u16] -> *[u8]` is legal but will result in reducing the number of bytes by half.
+
+r[expr.as.pointer.unsized.trait]
+- When `T` and `U` are unsized with trait object metadata, the metadata is compatible only when all of the following holds:
+  1. The principal trait must be the same. (you can't cast from `dyn Foo` to `dyn Bar`)
+  2. Auto traits may be removed. (you can cast `dyn Foo + Send` to `dyn Foo`)
+  3. Auto traits may be added only if they are a super trait of the principal trait. (you can cast `dyn Foo` to `dyn Foo + Send` only if `Send` is a super trait of `Foo`)
+  4. Trailing lifetimes may be changed. (you can cast `dyn Foo + 'a` to `dyn Foo + 'b` for any `'a`,`'b`)
+  5. Generics (including lifetimes) and associated types must match exactly. (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
+
+  Note that [trait upcasting][coerce.unsize.trait-upcast] (including the addition of auto traits) requires a coercion and is not supported by `as` casts.
+
+r[expr.as.pointer.unsized.compound]
+- When `T` or `U` is a struct or tuple type whose last field is unsized, it has the same metadata and compatibility rules as its last field.
 
 r[expr.assign]
 ## Assignment expressions
