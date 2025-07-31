@@ -50,7 +50,7 @@ task2.join();
 # }
 ```
 
-In general, determining whether a program has deadlocked requires to solve the [Halting problem], which is impossible. Even though many instances of deadlocks can be detected automatically, doing so is not always practical. Regardless, many multitasking systems, and especially async frameworks such as [tokio], provide good deadlock detection capabilities.
+In general, determining whether a program has deadlocked requires to solve the [Halting problem], which is impossible. Even though many instances of deadlocks can be detected automatically, doing so is not always practical. Regardless, some multitasking systems provide good deadlock detection capabilities.
 
 r[not-unsafe.livelocks]
 Livelocks are a related issue where no real progress is made in a group of tasks, yet they technically continue to run. For instance, using non-blocking synchronization primitives like spinlocks or atomic variables can quickly lead to livelocks. This is in opposition to deadlocks, where tasks are blocked on resource acquisition, which is relatively easy to discern. Therefore, livelocks are much harder to detect than deadlocks, but equally undesirable.
@@ -152,6 +152,5 @@ Safe code may impose extra logical constraints that can be checked at neither co
 [debug_assertions]: cfg.debug_assertions
 [integer types]: type.numeric.int
 [Halting problem]: https://en.wikipedia.org/wiki/Halting_problem
-[tokio]: https://tokio.rs/
 [Address space layout randomization]: https://en.wikipedia.org/wiki/Address_space_layout_randomization
 [function pointer]: type.fn-pointer
