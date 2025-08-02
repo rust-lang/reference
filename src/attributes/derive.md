@@ -66,13 +66,44 @@ During macro expansion, for each element in the list of derives, the correspondi
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
 
-The *`automatically_derived` attribute* is automatically added to
-[implementations] created by the `derive` attribute for built-in traits. It
-has no direct effect, but it may be used by tools and diagnostic lints to
-detect these automatically generated implementations.
+r[attributes.derive.automatically_derived.intro]
+The *`automatically_derived` [attribute][attributes]* is used to annotate an [implementation] to indicate that it was automatically created by a [derive macro]. It has no direct effect, but it may be used by tools and diagnostic lints to detect these automatically generated implementations.
+
+> [!EXAMPLE]
+> Given [`#[derive(Clone)]`][macro@Clone] on `struct Example`, the [derive macro] may produce:
+>
+> ```rust
+> # struct Example;
+> #[automatically_derived]
+> impl ::core::clone::Clone for Example {
+>     #[inline]
+>     fn clone(&self) -> Self {
+>         Example
+>     }
+> }
+> ```
+
+r[attributes.derive.automatically_derived.syntax]
+The `automatically_derived` attribute uses the [MetaWord] syntax and so does not accept any arguments.
+
+r[attributes.derive.automatically_derived.allowed-positions]
+The `automatically_derived` attribute may be placed on an [implementation].
+
+> [!NOTE]
+> `rustc` currently accepts the attribute in other positions but lints against it.
+
+r[attributes.derive.automatically_derived.duplicates]
+Duplicate instances of the `automatically_derived` attribute on the same implementation have no effect.
+
+> [!NOTE]
+> `rustc` lints against duplicate use of this attribute.
+
+r[attributes.derive.automatically_derived.behavior]
+The `automatically_derived` attribute has no behavior.
 
 [items]: ../items.md
+[derive macro]: macro.proc.derive
 [derive macros]: ../procedural-macros.md#derive-macros
-[implementations]: ../items/implementations.md
+[implementation]: ../items/implementations.md
 [items]: ../items.md
 [procedural macros]: ../procedural-macros.md#derive-macros
