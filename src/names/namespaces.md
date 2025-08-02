@@ -153,7 +153,7 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [field expression]: ../expressions/field-expr.md
 [Function declarations]: ../items/functions.md
 [function parameters]: ../items/functions.md#function-parameters
-[Function-like procedural macros]: ../procedural-macros.md#function-like-procedural-macros
+[Function-like procedural macros]: ../procedural-macros.md#the-proc_macro-attribute
 [Generic const parameters]: ../items/generics.md#const-generics
 [Generic lifetime parameters]: ../items/generics.md
 [Generic type parameters]: ../items/generics.md
