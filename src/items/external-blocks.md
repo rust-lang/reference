@@ -416,31 +416,44 @@ r[items.extern.attributes.link_ordinal]
 ### The `link_ordinal` attribute
 
 r[items.extern.attributes.link_ordinal.intro]
-The *`link_ordinal` attribute* can be applied on declarations inside an `extern`
-block to indicate the numeric ordinal to use when generating the import library
-to link against. An ordinal is a unique number per symbol exported by a dynamic
-library on Windows and can be used when the library is being loaded to find
-that symbol rather than having to look it up by name.
+The *`link_ordinal` [attribute][attributes]* can be applied on declarations inside an `extern` block to indicate the numeric ordinal to use when generating the import library to link against. An ordinal is a unique number per symbol exported by a dynamic library on Windows and can be used when the library is being loaded to find that symbol rather than having to look it up by name.
 
 > [!WARNING]
 > `link_ordinal` should only be used in cases where the ordinal of the symbol is known to be stable: if the ordinal of a symbol is not explicitly set when its containing binary is built then one will be automatically assigned to it, and that assigned ordinal may change between builds of the binary.
 
-```rust
-# #[cfg(all(windows, target_arch = "x86"))]
-#[link(name = "exporter", kind = "raw-dylib")]
-unsafe extern "stdcall" {
-    #[link_ordinal(15)]
-    safe fn imported_function_stdcall(i: i32);
-}
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(all(windows, target_arch = "x86"))]
+> #[link(name = "exporter", kind = "raw-dylib")]
+> unsafe extern "stdcall" {
+>     #[link_ordinal(15)]
+>     safe fn imported_function_stdcall(i: i32);
+> }
+> ```
+
+r[items.extern.attributes.link_ordinal.syntax]
+The syntax for the `link_ordinal` attribute is:
+
+```grammar,attributes
+@root LinkOrdinalAttribute -> `link_ordinal` `(` LinkOrdinal `)`
+
+LinkOrdinal -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
 ```
 
-r[items.extern.attributes.link_ordinal.allowed-kinds]
-This attribute is only used with the `raw-dylib` linking kind.
-Using any other kind will result in a compiler error.
+r[items.extern.attributes.link_ordinal.max]
+The ordinal must be less than or equal to [`u16::MAX`].
 
-r[items.extern.attributes.link_ordinal.exclusive]
-Using this attribute with the `link_name` attribute will result in a
-compiler error.
+r[items.extern.attributes.link_ordinal.allowed-positions]
+The `link_ordinal` attribute may be specified on a function or static in an `extern` block.
+
+r[items.extern.attributes.link_ordinal.duplicates]
+The `link_ordinal` attribute may only be specified once on an item.
+
+r[items.extern.attributes.link_ordinal.allowed-kinds]
+The `link_ordinal` attribute may only be used with the [`raw-dylib` linking kind][items.extern.attributes.link.raw-dylib].
+
+r[items.extern.attributes.link_ordinal.link_name]
+The `link_ordinal` attribute may not be used with the [`link_name`] attribute.
 
 r[items.extern.attributes.fn-parameters]
 ### Attributes on function parameters
@@ -461,3 +474,4 @@ restrictions as [regular function parameters].
 [statics]: static-items.md
 [unwind-behavior]: functions.md#unwinding
 [value namespace]: ../names/namespaces.md
+[`link_name`]: items.extern.attributes.link_name
