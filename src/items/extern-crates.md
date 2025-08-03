@@ -77,7 +77,10 @@ r[items.extern-crate.no_link]
 ## The `no_link` attribute
 
 r[items.extern-crate.no_link.intro]
-The *`no_link` [attribute][attributes]* may be specified on an `extern crate` item to prevent linking the crate into the output. This is commonly used to load a crate to access only its macros.
+The *`no_link` [attribute][attributes]* may be applied to an `extern crate` item to prevent linking the crate.
+
+> [!NOTE]
+> This is helpful, e.g., when only the macros of a crate are needed.
 
 > [!EXAMPLE]
 > <!-- ignore: requires external crates -->
@@ -89,19 +92,19 @@ The *`no_link` [attribute][attributes]* may be specified on an `extern crate` it
 > ```
 
 r[items.extern-crate.no_link.syntax]
-The `no_link` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_link` attribute uses the [MetaWord] syntax and so does not accept any arguments.
 
 r[items.extern-crate.no_link.allowed-positions]
-The `no_link` attribute may be specified on an `extern crate` declaration.
+The `no_link` attribute may only be applied to an `extern crate` declaration.
 
 > [!NOTE]
-> `rustc` currently warns on some positions where it is ignored, but this may become an error in the future.
+> `rustc` currently accepts and ignores the attribute in other positions but lints against it. This may become a hard error in the future.
 
 r[items.extern-crate.no_link.duplicates]
 Duplicate instances of the `no_link` attribute are ignored.
 
 > [!NOTE]
-> `rustc` currently warns about unused duplicate `no_link` attributes.
+> `rustc` lints against duplicate use  of this attribute.
 
 [identifier]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
