@@ -96,7 +96,7 @@ r[attributes.derive.automatically_derived.duplicates]
 Duplicate instances of the `automatically_derived` attribute on the same implementation have no effect.
 
 > [!NOTE]
-> `rustc` lints against duplicate use of this attribute.
+> `rustc` lints against duplicate use of this attribute on uses following the first.
 
 r[attributes.derive.automatically_derived.behavior]
 The `automatically_derived` attribute has no behavior.
