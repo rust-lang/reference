@@ -103,7 +103,7 @@ The `automatically_derived` attribute has no behavior.
 
 [items]: ../items.md
 [derive macro]: macro.proc.derive
-[derive macros]: ../procedural-macros.md#derive-macros
+[derive macros]: macro.proc.derive
 [implementation]: ../items/implementations.md
 [items]: ../items.md
-[procedural macros]: ../procedural-macros.md#derive-macros
+[procedural macros]: macro.proc.derive
