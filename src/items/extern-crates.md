@@ -104,7 +104,7 @@ r[items.extern-crate.no_link.duplicates]
 Duplicate instances of the `no_link` attribute are ignored.
 
 > [!NOTE]
-> `rustc` lints against duplicate use  of this attribute.
+> `rustc` lints against duplicate use of this attribute.
 
 [identifier]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md
