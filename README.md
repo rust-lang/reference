@@ -52,7 +52,7 @@ mdbook test
 
 For authors, consider using the server functionality which supports automatic reload.
 
-To build the Reference locally (in `build/`) and open it in a web
+To build the Reference locally (in `book/`) and open it in a web
 browser, run:
 
 ```sh
