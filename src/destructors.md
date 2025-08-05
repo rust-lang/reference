@@ -185,8 +185,8 @@ let declared_first = PrintOnDrop("Dropped last in outer scope");
 let declared_last = PrintOnDrop("Dropped first in outer scope");
 ```
 
-r[destructors.scope.bindings.pattern-drop-order]
-If a pattern binds multiple variables, they are dropped in reverse order of declaration.
+r[destructors.scope.bindings.patterns]
+Variables in patterns are dropped in reverse order of declaration within the pattern.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -201,8 +201,8 @@ let (declared_first, declared_last) = (
 );
 ```
 
-r[destructors.scope.bindings.or-pattern-declaration-order]
-For the purpose of drop order, [or-patterns] declare their bindings in the order given by their first sub-pattern.
+r[destructors.scope.bindings.or-patterns]
+For the purpose of drop order, [or-patterns] declare bindings in the order given by the first subpattern.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -211,20 +211,31 @@ For the purpose of drop order, [or-patterns] declare their bindings in the order
 #         println!("drop({})", self.0);
 #     }
 # }
-// Drops `declared_last`, then `declared_first`.
-fn fixed_variable_drop_order<T>(
-    (Ok([declared_first, declared_last])
-    | Err([declared_last, declared_first])): Result<[T; 2], [T; 2]>
+// Drops `x` before `y`.
+fn or_pattern_drop_order<T>(
+    (Ok([x, y]) | Err([y, x])): Result<[T; 2], [T; 2]>
+//   ^^^^^^^^^^   ^^^^^^^^^^^ This is the second subpattern.
+//   |
+//   This is the first subpattern.
+//
+//   In the first subpattern, `x` is declared before `y`. Since it is
+//   the first subpattern, that is the order used even if the second
+//   subpattern, where the bindings are declared in the opposite
+//   order, is matched.
 ) {}
 
-fixed_variable_drop_order(Ok([
-    PrintOnDrop("Dropped last"),
-    PrintOnDrop("Dropped first"),
+// Here we match the first subpattern, and the drops happen according
+// to the declaration order in the first subpattern.
+or_pattern_drop_order(Ok([
+    PrintOnDrop("Declared first, dropped last"),
+    PrintOnDrop("Declared last, dropped first"),
 ]));
 
-fixed_variable_drop_order(Err([
-    PrintOnDrop("Dropped first"),
-    PrintOnDrop("Dropped last"),
+// Here we match the second subpattern, and the drops still happen
+// according to the declaration order in the first subpattern.
+or_pattern_drop_order(Err([
+    PrintOnDrop("Declared last, dropped first"),
+    PrintOnDrop("Declared first, dropped last"),
 ]));
 ```
 
