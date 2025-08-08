@@ -185,9 +185,59 @@ let declared_first = PrintOnDrop("Dropped last in outer scope");
 let declared_last = PrintOnDrop("Dropped first in outer scope");
 ```
 
-r[destructors.scope.bindings.match-pattern-order]
-If multiple patterns are used in the same arm for a `match` expression, then an
-unspecified pattern will be used to determine the drop order.
+r[destructors.scope.bindings.patterns]
+Variables in patterns are dropped in reverse order of declaration within the pattern.
+
+```rust
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+let (declared_first, declared_last) = (
+    PrintOnDrop("Dropped last"),
+    PrintOnDrop("Dropped first"),
+);
+```
+
+r[destructors.scope.bindings.or-patterns]
+For the purpose of drop order, [or-patterns] declare bindings in the order given by the first subpattern.
+
+```rust
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+// Drops `x` before `y`.
+fn or_pattern_drop_order<T>(
+    (Ok([x, y]) | Err([y, x])): Result<[T; 2], [T; 2]>
+//   ^^^^^^^^^^   ^^^^^^^^^^^ This is the second subpattern.
+//   |
+//   This is the first subpattern.
+//
+//   In the first subpattern, `x` is declared before `y`. Since it is
+//   the first subpattern, that is the order used even if the second
+//   subpattern, where the bindings are declared in the opposite
+//   order, is matched.
+) {}
+
+// Here we match the first subpattern, and the drops happen according
+// to the declaration order in the first subpattern.
+or_pattern_drop_order(Ok([
+    PrintOnDrop("Declared first, dropped last"),
+    PrintOnDrop("Declared last, dropped first"),
+]));
+
+// Here we match the second subpattern, and the drops still happen
+// according to the declaration order in the first subpattern.
+or_pattern_drop_order(Err([
+    PrintOnDrop("Declared last, dropped first"),
+    PrintOnDrop("Declared first, dropped last"),
+]));
+```
 
 r[destructors.scope.temporary]
 ### Temporary scopes
@@ -473,6 +523,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [Trait objects]: types/trait-object.md
 [tuple]: types/tuple.md
 
+[or-patterns]: patterns.md#or-patterns
 [slice pattern]: patterns.md#slice-patterns
 [struct pattern]: patterns.md#struct-patterns
 [tuple pattern]: patterns.md#tuple-patterns
