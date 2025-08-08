@@ -88,13 +88,32 @@ r[items.mod.outlined.path]
 ### The `path` attribute
 
 r[items.mod.outlined.path.intro]
-The directories and files used for loading external file modules can be
-influenced with the `path` attribute.
+The *`path` [attribute][attributes]* specifies the file to load for a module.
+
+> [!EXAMPLE]
+> <!-- ignore: requires external files -->
+> ```rust,ignore
+> #[path = "other_file.rs"]
+> pub mod example;
+> ```
+
+r[items.mod.outlined.path.syntax]
+The `path` attribute uses the [MetaNameValueStr] syntax to specify the path to the file.
+
+r[items.mod.outlined.path.allowed-positions]
+The `path` attribute may only be applied to module declarations.
+
+> [!NOTE]
+> `rustc` currently warns in other positions, but this may be rejected in the future.
+
+r[items.mod.outlined.path.duplicates]
+Only the first instance of `path` on a module is honored. Subsequent `path` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on following duplicate `path` attributes. This may become an error in the future.
 
 r[items.mod.outlined.path.search]
-For `path` attributes on modules not inside inline module blocks, the file
-path is relative to the directory the source file is located. For example, the
-following code snippet would use the paths shown based on where it is located:
+For `path` attributes on modules not inside inline module blocks, the file path is relative to the directory the source file is located. For example, the following code snippet would use the paths shown based on where it is located:
 
 <!-- ignore: requires external files -->
 ```rust,ignore
@@ -108,16 +127,7 @@ Source File    | `c`'s File Location | `c`'s Module Path
 `src/a/mod.rs` | `src/a/foo.rs`      | `crate::a::c`
 
 r[items.mod.outlined.path.search-nested]
-For `path` attributes inside inline module blocks, the relative location of
-the file path depends on the kind of source file the `path` attribute is
-located in. "mod-rs" source files are root modules (such as `lib.rs` or
-`main.rs`) and modules with files named `mod.rs`. "non-mod-rs" source files
-are all other module files. Paths for `path` attributes inside inline module
-blocks in a mod-rs file are relative to the directory of the mod-rs file
-including the inline module components as directories. For non-mod-rs files,
-it is the same except the path starts with a directory with the name of the
-non-mod-rs module. For example, the following code snippet would use the paths
-shown based on where it is located:
+For `path` attributes inside inline module blocks, the relative location of the file path depends on the kind of source file the `path` attribute is located in. "mod-rs" source files are root modules (such as `lib.rs` or `main.rs`) and modules with files named `mod.rs`. "non-mod-rs" source files are all other module files. Paths for `path` attributes inside inline module blocks in a mod-rs file are relative to the directory of the mod-rs file including the inline module components as directories. For non-mod-rs files, it is the same except the path starts with a directory with the name of the non-mod-rs module. For example, the following code snippet would use the paths shown based on where it is located:
 
 <!-- ignore: requires external files -->
 ```rust,ignore
@@ -132,8 +142,7 @@ Source File    | `inner`'s File Location   | `inner`'s Module Path
 `src/a/b.rs`   | `src/a/b/inline/other.rs` | `crate::a::b::inline::inner`
 `src/a/mod.rs` | `src/a/inline/other.rs`   | `crate::a::inline::inner`
 
-An example of combining the above rules of `path` attributes on inline modules
-and nested modules within (applies to both mod-rs and non-mod-rs files):
+An example of combining the above rules of `path` attributes on inline modules and nested modules within (applies to both mod-rs and non-mod-rs files):
 
 <!-- ignore: requires external files -->
 ```rust,ignore
