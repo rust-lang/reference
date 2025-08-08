@@ -127,6 +127,15 @@ r[destructors.scope.nesting.match-arm]
 * The parent of the expression after the `=>` in a `match` expression is the
   scope of the arm that it's in.
 
+r[destructors.scope.nesting.match-guard-pattern]
+* The parent of an `if let` guard pattern is the scope of the guard expression.
+
+r[destructors.scope.nesting.match-guard-bindings]
+* Variables bound by `if let` guard patterns have their drop scope determined by
+  guard success:
+  - On guard failure: dropped immediately after guard evaluation
+  - On guard success: scope extends to the end of the match arm body
+
 r[destructors.scope.nesting.match]
 * The parent of the arm scope is the scope of the `match` expression that it
   belongs to.
@@ -255,8 +264,8 @@ smallest scope that contains the expression and is one of the following:
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The non-pattern matching condition expression of an `if` or `while` expression,
-  or a `match` guard.
+* The condition expression of an `if` or `while` expression.
+* A `match` guard expression, including `if let` guard patterns.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
 * The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
@@ -473,6 +482,58 @@ Here are some examples where expressions don't have extended temporary scopes:
 let x = std::convert::identity(&temp()); // ERROR
 let x = (&temp()).use_temp();  // ERROR
 # x;
+```
+
+r[destructors.scope.match-guards]
+### Match Guards and Pattern Binding
+
+r[destructors.scope.match-guards.basic]
+Match guard expressions create their own temporary scope. Variables bound within
+guard patterns have conditional drop scopes based on guard evaluation results.
+
+r[destructors.scope.match-guards.if-let]
+For `if let` guards specifically:
+
+1. **Guard pattern evaluation**: The `if let` pattern is evaluated within the
+   guard's temporary scope.
+2. **Conditional binding scope**:
+   - If the pattern matches, bound variables extend their scope to the match arm body
+   - If the pattern fails, bound variables are dropped immediately
+3. **Temporary cleanup**: Temporaries created during guard evaluation are dropped
+   when the guard scope ends, regardless of pattern match success.
+
+r[destructors.scope.match-guards.multiple]
+For multiple guards connected by `&&`:
+- Each guard maintains its own temporary scope
+- Failed guards drop their bindings before subsequent guard evaluation
+- Only successful guard bindings are available in the arm body
+- Guards are evaluated left-to-right with short-circuit semantics
+
+```rust
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+# fn expensive_operation(x: i32) -> Option<PrintOnDrop> {
+#     Some(PrintOnDrop("expensive result"))
+# }
+
+match Some(42) {
+    // Guard creates temporary scope for pattern evaluation
+    Some(x) if let Some(y) = expensive_operation(x) => {
+        // Both x (from main pattern) and y (from guard) are live
+        // y will be dropped at end of this arm
+        println!("Success case");
+    } // y dropped here
+    Some(x) => {
+        // If guard failed, y was already dropped during guard evaluation
+        // expensive_operation result was also dropped
+        println!("Guard failed case");
+    }
+    None => {}
+}
 ```
 
 r[destructors.forget]
