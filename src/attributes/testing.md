@@ -161,9 +161,6 @@ The `should_panic` attribute has one of the following forms:
   > fn mytest() { panic!("error: some message, and more"); }
   > ```
 
-  > [!NOTE]
-  > `rustc` currently accepts the [MetaListNameValueStr] form with invalid syntax between the parentheses and emits a future-compatibility warning. This may become a hard error in the future.
-
 r[attributes.testing.should_panic.allowed-positions]
 The `should_panic` attribute may only be applied to functions annotated with the `test` attribute.
 
