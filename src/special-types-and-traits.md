@@ -204,11 +204,11 @@ r[lang-types.sized]
 r[lang-types.sized.intro]
 The [`Sized`] trait indicates that the size of this type is known at compile-time; that is, it's not a [dynamically sized type].
 
-r[lang-types.sized.implicit-sized]
-[Type parameters] (except `Self` in traits) are `Sized` by default, as are [associated types].
-
 r[lang-types.sized.implicit-impl]
 `Sized` is always implemented automatically by the compiler, not by [implementation items].
+
+r[lang-types.sized.implicit-sized]
+[Type parameters] (except `Self` in traits) are `Sized` by default, as are [associated types].
 
 r[lang-types.sized.relaxation]
 These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound.
