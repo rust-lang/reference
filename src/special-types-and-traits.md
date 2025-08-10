@@ -230,6 +230,10 @@ trait Tr<T> { fn f() { is_sized::<T>() } }
 trait Tr { type Ty; }
 //         ^^^^^^^ Equivalent to `type Ty: Sized`.
 prove! { for<T> { T: Tr } => { <T as Tr>::Ty: Sized } }
+//              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//   Due to the implicit `Sized` item bound on the associated type
+//   in the trait definition, we know that if `T: Tr`, then
+//   `T::Ty: Sized`.
 ```
 
 ```rust
