@@ -211,7 +211,7 @@ r[lang-types.sized.implicit-sized]
 [Type parameters] (except `Self` in traits) are `Sized` by default, as are [associated types].
 
 > [!NOTE]
-> In rustc, implicitly adding `Sized` to bounds is called *sized elaboration*.
+> In rustc, the process of implicitly adding `Sized` to bounds is called *sized elaboration*.
 
 ```rust
 fn is_sized<T: Sized>() {}
