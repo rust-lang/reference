@@ -114,7 +114,7 @@ For implementation simplicity, somewhat more is (incorrectly) accepted than what
 #### Examples
 
 ```rust
-{{#rustdoc_include tools/prove.rs:-1 }}
+{{#rustdoc_include notation/prove.rs:-1 }}
 // Assert that rustc proves that `U: From<T>` implies `T: Into<U>`.
 prove! { for<T, U> { U: From<T> } => { T: Into<U> } }
 //~^               ~~~~~~~~~~~~~~    ~~~~~~~~~~~~~~ Consequent.
@@ -130,13 +130,13 @@ prove! { for<T> { T: ?Sized } ?=> { T: Sized } }
 ```
 
 ```rust,compile_fail
-{{#rustdoc_include tools/prove.rs:-1 }}
+{{#rustdoc_include notation/prove.rs:-1 }}
 // This is an error as it does not logically hold.
 prove! { for<'a, 'b> {} => { 'a: 'b } } //~ ERROR
 ```
 
 ```rust,compile_fail
-{{#rustdoc_include tools/prove.rs:-1 }}
+{{#rustdoc_include notation/prove.rs:-1 }}
 // This is an error as the `?=>` rule treats lifetime bounds as
 // always holding.
 prove! { for<'a, 'b> {} ?=> { 'a: 'b } } //~ ERROR

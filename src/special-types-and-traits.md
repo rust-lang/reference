@@ -221,13 +221,13 @@ trait Tr<T> { fn f() { is_sized::<T>() } }
 ```
 
 ```rust
-{{#rustdoc_include tools/prove.rs:-1 }}
+{{#rustdoc_include notation/prove.rs:-1 }}
 trait Tr { type Ty; }
 prove! { for<T> { T: Tr } => { <T as Tr>::Ty: Sized } }
 ```
 
 ```rust
-{{#rustdoc_include tools/prove.rs:-1 }}
+{{#rustdoc_include notation/prove.rs:-1 }}
 trait Tr { type Ty: ?Sized; }
 prove! { for<T> { T: ?Sized + Tr } ?=> { T: Sized } }
 prove! { for<T> { T: Tr<Ty:> } ?=> { <T as Tr>::Ty: Sized } }
