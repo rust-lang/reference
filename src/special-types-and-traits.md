@@ -276,9 +276,10 @@ trait Tr: ?Sized {} //~ ERROR
 //   this cannot be relaxed.
 ```
 
-```rust,compile_fail
+<!-- ignore: Pending merge of #135331. -->
+```rust,compile_fail,ignore
 trait Tr { type Ty: ?Sized; }
-fn f<T: Tr<Ty: ?Sized>>() {} //~ ERROR as of #135331
+fn f<T: Tr<Ty: ?Sized>>() {} //~ ERROR
 //         ^^^^^^^^^^
 //   On associated type bounds, `Sized` is not implied,
 //   so this cannot be relaxed.
