@@ -221,35 +221,13 @@ trait Tr<T> { fn f() { is_sized::<T>() } }
 ```
 
 ```rust
-# macro_rules! prove {
-#     (for<$($($ps:ident),+ $(,)?)?> { $($antecedents:tt)* }
-#      => { $($consequents:tt)* }
-#     ) => {const _: () = {
-#         trait _Assert<T: ?Sized> { fn _f(); }
-#         impl<$($($ps),+)?> _Assert<($($($ps),+,)?)> for ()
-#         where $($antecedents)*
-#         { fn _f() where $($consequents)* {} }
-#     };};
-# }
+{{#rustdoc_include tools/prove.rs:-1 }}
 trait Tr { type Ty; }
 prove! { for<T> { T: Tr } => { <T as Tr>::Ty: Sized } }
 ```
 
 ```rust
-# macro_rules! prove {
-#     (for<$($($ps:ident),+ $(,)?)?> { $($($antecedents:tt)+)? }
-#      ?=> { $($consequents:tt)* }
-#     ) => {const _: () = {
-#         struct _W<T: ?Sized>(T); struct _True; struct _False;
-#         impl<T: ?Sized> _W<T> { fn _f(&self) -> _False { _False } }
-#         trait _Test { fn _f(&self) -> _True { _True } }
-#         impl<$($($ps),+)?> _Test for &_W<($($($ps),+,)?)>
-#         where $($($antecedents)+,)? $($consequents)* {}
-#         fn _f<$($($ps),+)?>(x: &&_W<($($($ps),+,)?)>) -> _False
-#         where $($($antecedents)+)?
-#         { x._f() }
-#     };};
-# }
+{{#rustdoc_include tools/prove.rs:-1 }}
 trait Tr { type Ty: ?Sized; }
 prove! { for<T> { T: ?Sized + Tr } ?=> { T: Sized } }
 prove! { for<T> { T: Tr<Ty:> } ?=> { <T as Tr>::Ty: Sized } }
