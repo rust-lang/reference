@@ -86,9 +86,9 @@ r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
 
 r[attributes.codegen.no_builtins.intro]
-The *`no_builtins` [attribute]* disables optimizing certain code patterns to invocations of library functions that are assumed to exist.
+The *`no_builtins` [attribute]* disables optimization of certain code patterns related to calls to library functions that are assumed to exist.
 
-<!-- TODO: This needs expanding, see https://github.com/rust-lang/reference/issues/542 -->
+<!-- TODO: This needs expanding, see <https://github.com/rust-lang/reference/issues/542>. -->
 
 > [!EXAMPLE]
 > ```rust
@@ -96,16 +96,16 @@ The *`no_builtins` [attribute]* disables optimizing certain code patterns to inv
 > ```
 
 r[attributes.codegen.no_builtins.syntax]
-The `no_builtins` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_builtins` attribute uses the [MetaWord] syntax.
 
 r[attributes.codegen.no_builtins.allowed-positions]
 The `no_builtins` attribute can only be applied to the crate root.
 
 r[attributes.codegen.no_builtins.duplicates]
-Duplicate instances of the `no_builtins` attribute have no effect.
+Only the first use of the `no_builtins` attribute has effect.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `no_builtins` attributes.
+> `rustc` currently lints against uses following the first.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
