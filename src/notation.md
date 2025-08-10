@@ -84,7 +84,7 @@ For example, if we say `prove! { for<'a, 'b, 'c> { 'a: 'b, 'b: 'c } => { 'a: 'c 
 
 Similarly, if we say `prove! { for<T> { T: ?Sized } ?=> { T: Sized } }`, we mean "for all types `T`, assert that if the `Sized` bound on `T` is relaxed then we do not prove `T: Sized`".
 
-When asserting what is proven by rustc, lifetimes are taken into account. However, when asserting what is not proven by rustc, lifetime bounds are ignored and treated as it they always hold, so asserting lifetime relationships in the consequent with the `?=>` rule will produce misleading results.
+When asserting what is proven by rustc, lifetimes are taken into account. However, when asserting what is not proven by rustc, lifetime bounds are ignored and treated as it they always hold, so asserting lifetime relationships in the consequent with the `?=>` rule will produce misleading results (this book never does that).
 
 #### Syntax
 
