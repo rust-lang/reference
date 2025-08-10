@@ -255,6 +255,9 @@ prove! { for<T> { T: ?Sized + Tr } ?=> { T: Sized } }
 prove! { for<T> { T: Tr<Ty:> } ?=> { <T as Tr>::Ty: Sized } }
 ```
 
+> [!NOTE]
+> See [`prove!`][notation.tools.prove] in [notation] for details on the macro used in these examples.
+
 r[lang-types.sized.relaxation]
 These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound.
 
