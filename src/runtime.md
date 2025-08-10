@@ -7,11 +7,12 @@ r[runtime.global_allocator]
 ## The `global_allocator` attribute
 
 r[runtime.global_allocator.intro]
-The *`global_allocator` [attribute][attributes]* is used to define a [memory allocator][std::alloc].
+The *`global_allocator` [attribute][attributes]* selects a [memory allocator][std::alloc].
 
 > [!EXAMPLE]
 > ```rust
-> use std::alloc::{GlobalAlloc, System, Layout};
+> use core::alloc::{GlobalAlloc, Layout};
+> use std::alloc::System;
 >
 > struct MyAllocator;
 >
@@ -19,7 +20,6 @@ The *`global_allocator` [attribute][attributes]* is used to define a [memory all
 >     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
 >         unsafe { System.alloc(layout) }
 >     }
->
 >     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
 >         unsafe { System.dealloc(ptr, layout) }
 >     }
@@ -30,19 +30,19 @@ The *`global_allocator` [attribute][attributes]* is used to define a [memory all
 > ```
 
 r[runtime.global_allocator.syntax]
-The `global_allocator` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `global_allocator` attribute uses the [MetaWord] syntax.
 
 r[runtime.global_allocator.allowed-positions]
-The `global_allocator` attribute may only be applied to a [static item] that implements the [`GlobalAlloc`] trait.
+The `global_allocator` attribute may only be applied to a [static item] whose type implements the [`GlobalAlloc`] trait.
 
 r[runtime.global_allocator.duplicates]
-The `global_allocator` attribute may only be specified once on an item.
+The `global_allocator` attribute may only be used once on an item.
 
 r[runtime.global_allocator.single]
-At most one `global_allocator` may be specified in the crate graph.
+The `global_allocator` attribute may only be used once in the crate graph.
 
 r[runtime.global_allocator.stdlib]
-The `global_allocator` attribute is exported in the [standard library prelude][core::prelude::v1].
+The `global_allocator` attribute is exported from the [standard library prelude][core::prelude::v1].
 
 r[runtime.windows_subsystem]
 ## The `windows_subsystem` attribute
