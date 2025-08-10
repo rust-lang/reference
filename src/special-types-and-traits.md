@@ -216,36 +216,36 @@ r[lang-types.sized.implicit-sized]
 ```rust
 fn is_sized<T: Sized>() {}
 fn f<T>() { is_sized::<T>() }
-//~  ^ Equivalent to `T: Sized`.
+//   ^ Equivalent to `T: Sized`.
 ```
 
 ```rust
 # fn is_sized<T: Sized>() {}
 trait Tr<T> { fn f() { is_sized::<T>() } }
-//~      ^ Equivalent to `T: Sized`.
+//       ^ Equivalent to `T: Sized`.
 ```
 
 ```rust
 {{#rustdoc_include notation/prove.rs:-1 }}
 trait Tr { type Ty; }
-//~        ^^^^^^^ Equivalent to `type Ty: Sized`.^
+//         ^^^^^^^ Equivalent to `type Ty: Sized`.
 prove! { for<T> { T: Tr } => { <T as Tr>::Ty: Sized } }
 ```
 
 ```rust
 {{#rustdoc_include notation/prove.rs:-1 }}
 trait Tr { type Ty: ?Sized; }
-//~   ^^ No `Sized` supertrait bound is inferred here.
+//    ^^ No `Sized` supertrait bound is inferred here.
 prove! { for<T> { T: ?Sized + Tr } ?=> { T: Sized } }
-//~^              ^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^
-//~|              |           That `T: Tr` does not imply
-//~|              |           that `T: Sized`.
-//~|              |
-//~| We relax the implicit `Sized` bound on the generic parameter.
+//                ^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^
+//                |           That `T: Tr` does not imply
+//                |           that `T: Sized`.
+//                |
+//   We relax the implicit `Sized` bound on the generic parameter.
 prove! { for<T> { T: Tr<Ty:> } ?=> { <T as Tr>::Ty: Sized } }
-//~^              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//~|              An associated type bound does not imply
-//~|              that the associated type is `Sized`.
+//                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//                An associated type bound does not imply
+//                that the associated type is `Sized`.
 ```
 
 > [!NOTE]
@@ -256,36 +256,36 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 
 ```rust
 fn f<T: ?Sized>(_: *const T) {}
-//~  ^^^^^^^^^ This bound can be relaxed as `Sized` was implied.
+//   ^^^^^^^^^ This bound can be relaxed as `Sized` was implied.
 struct S<T: ?Sized>(*const T);
-//~      ^^^^^^^^^ As above.
+//       ^^^^^^^^^ As above.
 trait Tr { type Ty: ?Sized; }
-//~             ^^^^^^^^^^^ As above
+//              ^^^^^^^^^^^ As above
 impl<T: ?Sized> Tr for T { type Ty = *const T; }
-//~  ^^^^^^^^^ As above.
+//   ^^^^^^^^^ As above.
 ```
 
 ```rust,compile_fail
 trait Tr: ?Sized {} //~ ERROR
-//~^  ^^^^^^^^^^
-//~| On supertrait bounds, `Sized` is not implied, so
-//~| this cannot be relaxed.
+//    ^^^^^^^^^^
+//   On supertrait bounds, `Sized` is not implied, so
+//   this cannot be relaxed.
 ```
 
 ```rust,compile_fail
 trait Tr { type Ty: ?Sized; }
 fn f<T: Tr<Ty: ?Sized>>() {} //~ ERROR as of #135331
-//~^       ^^^^^^^^^^
-//~| On associated type bounds, `Sized` is not implied,
-//~| so this cannot be relaxed.
+//         ^^^^^^^^^^
+//   On associated type bounds, `Sized` is not implied,
+//   so this cannot be relaxed.
 ```
 
 ```rust,compile_fail
 trait Tr { type Ty: ?Sized; }
 fn f<T: Tr>() where <T as Tr>::Ty: ?Sized {} //~ ERROR
-//~^                ^^^^^^^^^^^^^^^^^^^^^
-//~| On bounds on associated types, `Sized` is not
-//~| implied, so this cannot be relaxed.
+//                  ^^^^^^^^^^^^^^^^^^^^^
+//   On bounds on associated types, `Sized` is not
+//   implied, so this cannot be relaxed.
 ```
 
 [`Arc<Self>`]: std::sync::Arc
