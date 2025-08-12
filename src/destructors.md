@@ -107,14 +107,6 @@ r[destructors.scope.nesting.match-guard]
 r[destructors.scope.nesting.match-arm]
 * The parent of the expression after the `=>` in a `match` expression is the scope of the arm that it's in.
 
-r[destructors.scope.nesting.match-guard-pattern]
-* The parent of an `if let` guard pattern is the scope of the guard expression.
-
-r[destructors.scope.nesting.match-guard-bindings]
-* Variables bound by `if let` guard patterns have their drop scope determined by guard success:
-  - On guard failure: dropped immediately after guard evaluation
-  - On guard success: scope extends to the end of the match arm body
-
 r[destructors.scope.nesting.match]
 * The parent of the arm scope is the scope of the `match` expression that it belongs to.
 
@@ -149,8 +141,8 @@ patterns_in_parameters(
 r[destructors.scope.bindings]
 ### Scopes of local variables
 
-r[destructors.scope.bindings.intro]
-Local variables declared in a `let` statement are associated to the scope of the block that contains the `let` statement. Local variables declared in a `match` expression are associated to the arm scope of the `match` arm that they are declared in.
+r[destructors.scope.bindings.let]
+Local variables declared in a `let` statement are associated to the scope of the block that contains the `let` statement.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -164,6 +156,49 @@ let declared_first = PrintOnDrop("Dropped last in outer scope");
     let declared_in_block = PrintOnDrop("Dropped in inner scope");
 }
 let declared_last = PrintOnDrop("Dropped first in outer scope");
+```
+
+r[destructors.scope.bindings.match-arm]
+Local variables declared in a `match` expression or pattern-matching `match` guard are associated to the arm scope of the `match` arm that they are declared in.
+
+```rust
+# #![allow(irrefutable_let_patterns)]
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         println!("drop({})", self.0);
+#     }
+# }
+match PrintOnDrop("Dropped last in the first arm's scope") {
+    // When guard evaluation succeeds, control-flow stays in the arm and
+    // values may be moved from the scrutinee into the arm's bindings,
+    // causing them to be dropped in the arm's scope.
+    x if let y = PrintOnDrop("Dropped second in the first arm's scope")
+        && let z = PrintOnDrop("Dropped first in the first arm's scope") =>
+    {
+        let declared_in_block = PrintOnDrop("Dropped in inner scope");
+        // Pattern-matching guards' bindings and temporaries are dropped in
+        // reverse order, dropping each guard condition operand's bindings
+        // before its temporaries. Lastly, variables bound by the arm's
+        // pattern are dropped.
+    }
+    _ => unreachable!(),
+}
+
+match PrintOnDrop("Dropped in the enclosing temporary scope") {
+    // When guard evaluation fails, control-flow leaves the arm scope,
+    // causing bindings and temporaries from earlier pattern-matching
+    // guard condition operands to be dropped. This occurs before evaluating
+    // the next arm's guard or body.
+    _ if let y = PrintOnDrop("Dropped in the first arm's scope")
+        && false => unreachable!(),
+    // When a guard is executed multiple times due to self-overlapping
+    // or-patterns, control-flow leaves the arm scope when the guard fails
+    // and re-enters the arm scope before executing the guard again.
+    _ | _ if let y = PrintOnDrop("Dropped in the second arm's scope twice")
+        && false => unreachable!(),
+    _ => {},
+}
 ```
 
 r[destructors.scope.bindings.patterns]
@@ -233,9 +268,8 @@ Apart from lifetime extension, the temporary scope of an expression is the small
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The condition expression of an `if` or `while` expression.
-* A `match` guard expression, including `if let` guard patterns.
-* The body expression for a match arm.
+* The non-pattern matching condition expression of an `if` or `while` expression or a non-pattern-matching `match` [guard condition operand].
+* The pattern-matching guard, if present, and body expression for a `match` arm.
 * Each operand of a [lazy boolean expression].
 * The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
 * The pattern-matching condition and loop body of [`while`].
@@ -298,8 +332,16 @@ while let x = PrintOnDrop("while let scrutinee").0 {
 // Scrutinee is dropped at the end of the function, before local variables
 // (because this is the tail expression of the function body block).
 match PrintOnDrop("Matched value in final expression") {
-    // Dropped once the condition has been evaluated
+    // Non-pattern-matching guards' temporaries are dropped once the
+    // condition has been evaluated
     _ if PrintOnDrop("guard condition").0 == "" => (),
+    // Pattern-matching guards' temporaries are dropped when leaving the
+    // arm's scope
+    _ if let "guard scrutinee" = PrintOnDrop("guard scrutinee").0 => {
+        let _ = &PrintOnDrop("lifetime-extended temporary in inner scope");
+        // `lifetime-extended temporary in inner scope` is dropped here
+    }
+    // `guard scrutinee` is dropped here
     _ => (),
 }
 ```
@@ -580,55 +622,6 @@ pin!({ &temp() }); // ERROR
 format_args!("{:?}", { &temp() }); // ERROR
 ```
 
-r[destructors.scope.match-guards]
-### Match Guards and Pattern Binding
-
-r[destructors.scope.match-guards.basic]
-Match guard expressions create their own temporary scope. Variables bound within guard patterns have conditional drop scopes based on guard evaluation results.
-
-r[destructors.scope.match-guards.if-let]
-For `if let` guards specifically:
-
-1. **Guard pattern evaluation**: The `if let` pattern is evaluated within the guard's temporary scope.
-2. **Conditional binding scope**:
-   - If the pattern matches, bound variables extend their scope to the match arm body
-   - If the pattern fails, bound variables are dropped immediately
-3. **Temporary cleanup**: Temporaries created during guard evaluation are dropped when the guard scope ends, regardless of pattern match success.
-
-r[destructors.scope.match-guards.multiple]
-For multiple guards connected by `&&`:
-- Each guard maintains its own temporary scope
-- Failed guards drop their bindings before subsequent guard evaluation
-- Only successful guard bindings are available in the arm body
-- Guards are evaluated left-to-right with short-circuit semantics
-
-```rust
-# struct PrintOnDrop(&'static str);
-# impl Drop for PrintOnDrop {
-#     fn drop(&mut self) {
-#         println!("drop({})", self.0);
-#     }
-# }
-# fn expensive_operation(x: i32) -> Option<PrintOnDrop> {
-#     Some(PrintOnDrop("expensive result"))
-# }
-
-match Some(42) {
-    // Guard creates temporary scope for pattern evaluation
-    Some(x) if let Some(y) = expensive_operation(x) => {
-        // Both x (from main pattern) and y (from guard) are live
-        // y will be dropped at end of this arm
-        println!("Success case");
-    } // y dropped here
-    Some(x) => {
-        // If guard failed, y was already dropped during guard evaluation
-        // expensive_operation result was also dropped
-        println!("Guard failed case");
-    }
-    None => {}
-}
-```
-
 r[destructors.forget]
 ## Not running destructors
 
@@ -655,6 +648,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [destructors]: destructors.md
 [destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
+[guard condition operand]: expressions/match-expr.md#match-guard-chains
 [identifier pattern]: patterns.md#identifier-patterns
 [initialized]: glossary.md#initialized
 [interior mutability]: interior-mutability.md
