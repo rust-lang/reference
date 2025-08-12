@@ -55,7 +55,7 @@ r[names.scopes.pattern-bindings.let-chains]
 r[names.scopes.pattern-bindings.match-arm]
 * [`match` arms] bindings are within the [match guard] and the match arm expression.
 r[names.scopes.pattern-bindings.match-guard-let]
-* [`match` guard `let`] bindings are valid in the following guard conditions and the match arm expression if the guard succeeds.
+* [`match` guard `let`] bindings are valid in the following guard conditions and the match arm expression.
 
 r[names.scopes.pattern-bindings.items]
 Local variable scopes do not extend into item declarations.
