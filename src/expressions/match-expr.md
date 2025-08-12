@@ -187,10 +187,9 @@ r[expr.match.guard.let]
 Guards can use `let` patterns to conditionally match a scrutinee and to bind new variables into scope when the pattern matches successfully.
 
 > [!EXAMPLE]
-> In this example, the guard condition `let Some(first_char) = name.chars().next()` is evaluated. If the `if let` expression successfully matches (i.e., the string has at least one character), the arm's body is executed with both `name` and `first_char` available. Otherwise, pattern matching continues to the next arm.
+> In this example, the guard condition `let Some(first_char) = name.chars().next()` is evaluated. If the `let` pattern successfully matches (i.e. the string has at least one character), the arm's body is executed. Otherwise, pattern matching continues to the next arm.
 >
-> The key point is that the `if let` guard creates a new binding (`first_char`) that's only available if the guard succeeds, and this binding can be used alongside the original pattern bindings (`name`) in the arm's body.
->
+> The `let` pattern creates a new binding (`first_char`), which can be used alongside the original pattern bindings (`name`) in the arm's body.
 > ```rust
 > # enum Command {
 > #     Run(String),
@@ -239,10 +238,10 @@ If any guard condition operand is a `let` pattern, then none of the condition op
 > If a `||` expression is needed, then parentheses can be used. For example:
 >
 > ```rust
-> # let foo = Some(123);
+> # let foo = Some([123]);
 > match foo {
 >     // Parentheses are required here.
->     Some(x) if (x < -100 || x > 20) => {}
+>     Some(xs) if let [x] = xs && (x < -100 || x > 20) => {}
 >     _ => {}
 > }
 > ```
