@@ -253,4 +253,3 @@ r[expr.match.attributes.inner]
 [Range Pattern]: ../patterns.md#range-patterns
 [scrutinee]: ../glossary.md#scrutinee
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
-[scope and drop section]: ../destructors.md#match-guards-and-pattern-binding
