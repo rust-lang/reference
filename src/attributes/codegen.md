@@ -251,7 +251,9 @@ Feature     | Implicitly Enables | Description
 `sse3`      | `sse2`   | [SSE3] --- Streaming SIMD Extensions 3
 `sse4.1`    | `ssse3`  | [SSE4.1] --- Streaming SIMD Extensions 4.1
 `sse4.2`    | `sse4.1` | [SSE4.2] --- Streaming SIMD Extensions 4.2
+`sse4a`     | `sse3`   | [SSE4a] --- Streaming SIMD Extensions 4a
 `ssse3`     | `sse3`   | [SSSE3] --- Supplemental Streaming SIMD Extensions 3
+`tbm`       |          | [TBM] --- Trailing Bit Manipulation
 `vaes`      | `avx2`, `aes`     | [VAES] --- Vector AES Instructions
 `vpclmulqdq`| `avx`, `pclmulqdq`| [VPCLMULQDQ] --- Vector Carry-less multiplication of Quadwords
 `widekl`    | `kl`     | [KEYLOCKER_WIDE] --- Intel Wide Keylocker Instructions
@@ -310,7 +312,9 @@ Feature     | Implicitly Enables | Description
 [SSE3]: https://en.wikipedia.org/wiki/SSE3
 [SSE4.1]: https://en.wikipedia.org/wiki/SSE4#SSE4.1
 [SSE4.2]: https://en.wikipedia.org/wiki/SSE4#SSE4.2
+[SSE4a]: https://en.wikipedia.org/wiki/SSE4#SSE4a
 [SSSE3]: https://en.wikipedia.org/wiki/SSSE3
+[TBM]: https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#TBM_(Trailing_Bit_Manipulation)
 [VAES]: https://en.wikipedia.org/wiki/AVX-512#VAES
 [VPCLMULQDQ]: https://en.wikipedia.org/wiki/AVX-512#VPCLMULQDQ
 [`xsave`]: https://www.felixcloutier.com/x86/xsave
