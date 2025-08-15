@@ -248,6 +248,7 @@ r[const-eval.const-context.generic]
 r[const-eval.const-context.block]
 * A [const block]
 
+r[const-eval.const-context.outer-generics]
 Const contexts that are used as parts of types (array type and repeat length
 expressions as well as const generic arguments) can only make restricted use of
 surrounding generic parameters: such an expression must either be a single bare
