@@ -46,7 +46,7 @@ r[const-eval.const-expr.path-static]
   * Reads from `extern` statics are not allowed in any constant evaluation context.
   * If the evaluation is *not* carried out in an initializer of a `static` item, then reads from any mutable `static` are not allowed. A mutable `static` is a `static mut` item, or a `static` item with an interior-mutable type.
 
-These requirements are checked only when the constant is evaluated. In other words, having such accesses syntactically occur in const contexts is allowed as long as they never get executed.
+  These requirements are checked only when the constant is evaluated. In other words, having such accesses syntactically occur in const contexts is allowed as long as they never get executed.
 
 r[const-eval.const-expr.tuple]
 * [Tuple expressions].
