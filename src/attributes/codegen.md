@@ -111,38 +111,68 @@ r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
 
 r[attributes.codegen.target_feature.intro]
-The *`target_feature` [attribute]* may be applied to a function to
-enable code generation of that function for specific platform architecture
-features. It uses the [MetaListNameValueStr] syntax with a single key of
-`enable` whose value is a string of comma-separated feature names to enable.
+The *`target_feature` [attribute]* may be applied to a function to enable code generation of that function for specific platform architecture features.
 
-```rust
-# #[cfg(target_feature = "avx2")]
-#[target_feature(enable = "avx2")]
-fn foo_avx2() {}
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_feature = "avx2")]
+> #[target_feature(enable = "avx2")]
+> fn foo_avx2() {}
+> ```
+
+> [!NOTE]
+> See the [`target_feature` conditional compilation option] for selectively enabling or disabling compilation of code based on compile-time settings. Note that this option is not affected by the `target_feature` attribute, and is only driven by the features enabled for the entire crate.
+>
+> See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros in the standard library for runtime feature detection on these platforms.
+
+> [!NOTE]
+> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
+
+r[attributes.codegen.target_feature.syntax]
+The syntax for the `target_feature` attribute is:
+
+```grammar,attributes
+@root TargetFeatureAttribute ->
+    `target_feature` `(` `enable` `=` (STRING_LITERAL | RAW_STRING_LITERAL) `)`
 ```
 
+The given string is a comma-separated list of feature names to enable. See [available features](#available-features) for the list of features that are available.
+
+r[attributes.codegen.target_feature.allowed-positions]
+The `target_feature` may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+
+It is not allowed on the following places:
+
+- [the `main` function][crate.main]
+- a [`panic_handler` function][panic.panic_handler]
+- safe trait methods
+- safe default functions in traits
+
+> [!NOTE]
+> `rustc` currently warns on some positions where it is ignored, but this may become an error in the future.
+
+r[attributes.codegen.target_feature.duplicates]
+If the `target_feature` attribute is specified multiple times on an item, then the union of all the specified features are enabled.
+
 r[attributes.codegen.target_feature.arch]
-Each [target architecture] has a set of features that may be enabled. It is an
-error to specify a feature for a target architecture that the crate is not
-being compiled for.
+Each [target architecture] has a set of features that may be enabled. It is an error to specify a feature for a target architecture that the crate is not being compiled for.
 
 r[attributes.codegen.target_feature.closures]
-Closures defined within a `target_feature`-annotated function inherit the
-attribute from the enclosing function.
+Closures defined within a `target_feature`-annotated function inherit the attribute from the enclosing function.
 
 r[attributes.codegen.target_feature.target-ub]
-It is [undefined behavior] to call a function that is compiled with a feature
-that is not supported on the current platform the code is running on, *except*
-if the platform explicitly documents this to be safe.
+It is [undefined behavior] to call a function that is compiled with a feature that is not supported on the current platform the code is running on, *except* if the platform explicitly documents this to be safe.
 
 r[attributes.codegen.target_feature.safety-restrictions]
 The following restrictions apply unless otherwise specified by the platform rules below:
 
-- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be safely called within a caller that enables all the `target_feature`s that the callee enables.
-  This restriction does not apply in an `unsafe` context.
-- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be coerced to *safe* function pointers in contexts that enable all the `target_feature`s that the coercee enables.
-  This restriction does not apply to `unsafe` function pointers.
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be safely called within a caller that enables all the `target_feature`s that the callee enables. This restriction does not apply in an `unsafe` context.
+- Safe `#[target_feature]` functions (and closures that inherit the attribute) can only be coerced to *safe* function pointers in contexts that enable all the `target_feature`s that the coercee enables. This restriction does not apply to `unsafe` function pointers.
 
 Implicitly enabled features are included in this rule. For example an `sse2` function can call ones marked with `sse`.
 
@@ -178,18 +208,8 @@ fn bar_sse2() {
 r[attributes.codegen.target_feature.fn-traits]
 A function with a `#[target_feature]` attribute *never* implements the `Fn` family of traits, although closures inheriting features from the enclosing function do.
 
-r[attributes.codegen.target_feature.allowed-positions]
-The `#[target_feature]` attribute is not allowed on the following places:
-
-- [the `main` function][crate.main]
-- a [`panic_handler` function][panic.panic_handler]
-- safe trait methods
-- safe default functions in traits
-
 r[attributes.codegen.target_feature.inline]
-Functions marked with `target_feature` are not inlined into a context that
-does not support the given features. The `#[inline(always)]` attribute may not
-be used with a `target_feature` attribute.
+Functions marked with `target_feature` are not inlined into a context that does not support the given features. The `#[inline(always)]` attribute may not be used with a `target_feature` attribute.
 
 r[attributes.codegen.target_feature.availability]
 ### Available features
@@ -199,9 +219,7 @@ The following is a list of the available feature names.
 r[attributes.codegen.target_feature.x86]
 #### `x86` or `x86_64`
 
-Executing code with unsupported features is undefined behavior on this platform.
-Hence on this platform usage of `#[target_feature]` functions follows the
-[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+Executing code with unsupported features is undefined behavior on this platform. Hence on this platform usage of `#[target_feature]` functions follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Feature     | Implicitly Enables | Description
 ------------|--------------------|-------------------
@@ -325,11 +343,9 @@ Feature     | Implicitly Enables | Description
 r[attributes.codegen.target_feature.aarch64]
 #### `aarch64`
 
-On this platform the usage of `#[target_feature]` functions follows the
-[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+On this platform the usage of `#[target_feature]` functions follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
-Further documentation on these features can be found in the [ARM Architecture
-Reference Manual], or elsewhere on [developer.arm.com].
+Further documentation on these features can be found in the [ARM Architecture Reference Manual], or elsewhere on [developer.arm.com].
 
 [ARM Architecture Reference Manual]: https://developer.arm.com/documentation/ddi0487/latest
 [developer.arm.com]: https://developer.arm.com
@@ -388,8 +404,7 @@ Feature        | Implicitly Enables | Feature Name
 r[attributes.codegen.target_feature.loongarch]
 #### `loongarch`
 
-On this platform the usage of `#[target_feature]` functions follows the
-[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+On this platform the usage of `#[target_feature]` functions follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
@@ -414,12 +429,9 @@ Feature     | Implicitly Enables  | Description
 r[attributes.codegen.target_feature.riscv]
 #### `riscv32` or `riscv64`
 
-On this platform the usage of `#[target_feature]` functions follows the
-[above restrictions][attributes.codegen.target_feature.safety-restrictions].
+On this platform the usage of `#[target_feature]` functions follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
-Further documentation on these features can be found in their respective
-specification. Many specifications are described in the [RISC-V ISA Manual] or
-in another manual hosted on the [RISC-V GitHub Account].
+Further documentation on these features can be found in their respective specification. Many specifications are described in the [RISC-V ISA Manual] or in another manual hosted on the [RISC-V GitHub Account].
 
 [RISC-V ISA Manual]: https://github.com/riscv/riscv-isa-manual
 [RISC-V GitHub Account]: https://github.com/riscv
@@ -475,11 +487,7 @@ Feature     | Implicitly Enables  | Description
 r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
 
-Safe `#[target_feature]` functions may always be used in safe contexts on Wasm
-platforms. It is impossible to cause undefined behavior via the
-`#[target_feature]` attribute because attempting to use instructions
-unsupported by the Wasm engine will fail at load time without the risk of being
-interpreted in a way different from what the compiler expected.
+Safe `#[target_feature]` functions may always be used in safe contexts on Wasm platforms. It is impossible to cause undefined behavior via the `#[target_feature]` attribute because attempting to use instructions unsupported by the Wasm engine will fail at load time without the risk of being interpreted in a way different from what the compiler expected.
 
 Feature               | Implicitly Enables  | Description
 ----------------------|---------------------|-------------------
@@ -504,22 +512,6 @@ Feature               | Implicitly Enables  | Description
 [reference-types]: https://github.com/webassembly/reference-types
 [tail-call]: https://github.com/webassembly/tail-call
 [multivalue]: https://github.com/webassembly/multi-value
-
-r[attributes.codegen.target_feature.info]
-### Additional information
-
-r[attributes.codegen.target_feature.remark-cfg]
-See the [`target_feature` conditional compilation option] for selectively
-enabling or disabling compilation of code based on compile-time settings. Note
-that this option is not affected by the `target_feature` attribute, and is
-only driven by the features enabled for the entire crate.
-
-r[attributes.codegen.target_feature.remark-rt]
-See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros
-in the standard library for runtime feature detection on these platforms.
-
-> [!NOTE]
-> `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
