@@ -44,12 +44,12 @@ r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 
 r[attributes.limits.type_length_limit.intro]
-The *`type_length_limit` [attribute][attributes]* limits the maximum number of type substitutions made when constructing a concrete type during monomorphization.
+The *`type_length_limit` [attribute][attributes]* sets the maximum number of type substitutions allowed when constructing a concrete type during monomorphization.
 
 > [!NOTE]
-> In `rustc` this limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
+> `rustc` only enforces the limit when the nightly `-Zenforce-type-length-limit` flag is active.
 >
-> For more information, see <https://github.com/rust-lang/rust/pull/127670>.
+> For more information, see [Rust PR #127670](https://github.com/rust-lang/rust/pull/127670).
 
 > [!EXAMPLE]
 > <!-- ignore: not enforced without nightly flag -->
@@ -59,27 +59,28 @@ The *`type_length_limit` [attribute][attributes]* limits the maximum number of t
 > fn f<T>(x: T) {}
 >
 > // This fails to compile because monomorphizing to
-> // `f::<((((i32,), i32), i32), i32)>` requires more than 4 type elements.
+> // `f::<((((i32,), i32), i32), i32)>` requires more
+> // than 4 type elements.
 > f(((((1,), 2), 3), 4));
 > ```
 
 > [!NOTE]
-> The default in `rustc` is 1048576.
+> The default value in `rustc` is `1048576`.
 
 r[attributes.limits.type_length_limit.syntax]
-The `type_length_limit` attribute uses the [MetaNameValueStr] syntax to set the limit. The value in the string must be a non-negative number.
+The `type_length_limit` attribute uses the [MetaNameValueStr] syntax. The value in the string must be a non-negative number.
 
 r[attributes.limits.type_length_limit.allowed-positions]
 The `type_length_limit` attribute may only be applied to the crate root.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.limits.type_length_limit.duplicates]
-Only the first instance of `type_length_limit` on an item is honored. Subsequent `type_length_limit` attributes are ignored.
+Only the first use of `type_length_limit` on an item has effect.
 
 > [!NOTE]
-> `rustc` currently warns on following duplicate `type_length_limit` attributes. This may become an error in the future.
+> `rustc` lints against use following the first. This may become an error in the future.
 
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md
