@@ -170,17 +170,3 @@ The built-in attributes that have meaning on a module are [`cfg`],
 [scopes chapter]: ../names/scopes.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [type namespace]: ../names/namespaces.md
-
-<script>
-(function() {
-    var fragments = {
-        "#prelude-items": "../names/preludes.html",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

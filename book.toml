@@ -15,7 +15,19 @@ smart-punctuation = true
 "grammar.md" = { enable = false }
 
 [output.html.redirect]
+"/crates-and-source-files.html#preludes-and-no_std" = "names/preludes.html"
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
+"/expressions/if-expr.html#if-let-expressions" = "if-expr.html#if-let-patterns"
+"/expressions/loop-expr.html#predicate-pattern-loops" = "loop-expr.html#while-let-patterns"
+"/expressions/operator-expr.html#slice-dst-pointer-to-pointer-cast" = "operator-expr.html#pointer-to-pointer-cast"
+"/expressions/operator-expr.html#the-question-mark-operator" = "operator-expr.html#the-try-propagation-expression"
+"/glossary.html#object-safe-traits" = "glossary.html#dyn-compatible-traits"
+"/items/extern-crates.html#extern-prelude" = "../names/preludes.html#extern-prelude"
+"/items/modules.html#prelude-items" = "../names/preludes.html"
+"/items/traits.html#object-safety" = "traits.html#dyn-compatibility"
+"/lifetime-elision.html#static-lifetime-elision" = "lifetime-elision.html#const-and-static-elision"
+"/procedural-macros.html#derive-macros" = "procedural-macros.html#the-proc_macro_derive-attribute"
+"/runtime.html#the-panic_handler-attribute" = "panic.html#the-panic_handler-attribute"
 "/unsafe-blocks.html" = "unsafe-keyword.html"
 "/unsafe-functions.html" = "unsafe-keyword.html"
 

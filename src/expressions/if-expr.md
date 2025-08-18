@@ -181,17 +181,3 @@ r[expr.if.edition2024]
 [`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
-
-<script>
-(function() {
-    var fragments = {
-        "#if-let-expressions": "if-expr.html#if-let-patterns",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

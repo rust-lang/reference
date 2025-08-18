@@ -398,17 +398,3 @@ In the case a `loop` has an associated `break`, it is not considered diverging, 
 [boolean type]: ../types/boolean.md
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
-
-<script>
-(function() {
-    var fragments = {
-        "#predicate-pattern-loops": "loop-expr.html#while-let-patterns",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

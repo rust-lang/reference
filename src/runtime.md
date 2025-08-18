@@ -83,17 +83,3 @@ The `"windows"` subsystem will run detached from any existing console.
 [crate types]: linkage.md
 [static item]: items/static-items.md
 [subsystem]: https://msdn.microsoft.com/en-us/library/fcc1zstk.aspx
-
-<script>
-(function() {
-    var fragments = {
-        "#the-panic_handler-attribute": "panic.html#the-panic_handler-attribute",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

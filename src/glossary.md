@@ -328,17 +328,3 @@ example of an uninhabited type is the [never type] `!`, or an enum with no varia
 [unions]: items/unions.md
 [variable bindings]: patterns.md
 [visibility rules]: visibility-and-privacy.md
-
-<script>
-(function() {
-    var fragments = {
-        "#object-safe-traits": "glossary.html#dyn-compatible-traits",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

@@ -416,17 +416,3 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [type expressions]: types.md#type-expressions
 [type]: types.md
 [union]: items/unions.md
-
-<script>
-(function() {
-    var fragments = {
-        "#derive-macros": "procedural-macros.html#the-proc_macro_derive-attribute",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>
