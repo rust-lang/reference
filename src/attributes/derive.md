@@ -1,3 +1,4 @@
+<!-- template:attributes -->
 r[attributes.derive]
 # Derive
 
@@ -63,6 +64,7 @@ The built-in derives include the [`automatically_derived` attribute][attributes.
 r[attributes.derive.behavior]
 During macro expansion, for each element in the list of derives, the corresponding derive macro expands to zero or more [items].
 
+<!-- template:attributes -->
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
 

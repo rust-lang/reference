@@ -315,6 +315,7 @@ Example values:
 
 ## Forms of conditional compilation
 
+<!-- template:attributes -->
 r[cfg.attr]
 ### The `cfg` attribute
 
@@ -388,6 +389,7 @@ When a crate-level `cfg` has a false predicate, the crate itself still exists. A
 > pub fn example() {}
 > ```
 
+<!-- template:attributes -->
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
 

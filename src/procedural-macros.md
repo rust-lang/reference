@@ -130,6 +130,7 @@ position, which includes [statements], [expressions], [patterns], [type
 expressions], [item] positions, including items in [`extern` blocks], inherent
 and trait [implementations], and [trait definitions].
 
+<!-- template:attributes -->
 r[macro.proc.derive]
 ## The `proc_macro_derive` attribute
 

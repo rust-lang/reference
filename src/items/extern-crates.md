@@ -73,6 +73,7 @@ r[items.extern-crate.underscore.macro_use]
 The [`macro_use` attribute] works as usual and imports the macro names
 into the [`macro_use` prelude].
 
+<!-- template:attributes -->
 r[items.extern-crate.no_link]
 ## The `no_link` attribute
 

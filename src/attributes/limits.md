@@ -40,6 +40,7 @@ a!{}
 (|_: &u8| {})(&&&1);
 ```
 
+<!-- template:attributes -->
 r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 

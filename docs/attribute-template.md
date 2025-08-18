@@ -6,6 +6,7 @@ When an attribute (or a new attribute position in the grammar) is added, be sure
 
 ----
 
+<!-- template:attributes -->
 r[PARENT.example]
 ## The `example` attribute
 

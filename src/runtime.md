@@ -3,6 +3,7 @@ r[runtime]
 
 This section documents features that define some aspects of the Rust runtime.
 
+<!-- template:attributes -->
 r[runtime.global_allocator]
 ## The `global_allocator` attribute
 
@@ -44,6 +45,7 @@ The `global_allocator` attribute may only be used once in the crate graph.
 r[runtime.global_allocator.stdlib]
 The `global_allocator` attribute is exported from the [standard library prelude][core::prelude::v1].
 
+<!-- template:attributes -->
 r[runtime.windows_subsystem]
 ## The `windows_subsystem` attribute
 

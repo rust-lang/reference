@@ -6,6 +6,7 @@ tests. Compiling a crate in "test" mode enables building the test functions
 along with a test harness for executing the tests. Enabling the test mode also
 enables the [`test` conditional compilation option].
 
+<!-- template:attributes -->
 r[attributes.testing.test]
 ## The `test` attribute
 
@@ -71,6 +72,7 @@ In particular:
 > }
 > ```
 
+<!-- template:attributes -->
 r[attributes.testing.ignore]
 ## The `ignore` attribute
 
@@ -119,6 +121,7 @@ Only the first instance of `ignore` on a function is honored.
 r[attributes.testing.ignore.behavior]
 Ignored tests are still compiled when in test mode, but they are not executed.
 
+<!-- template:attributes -->
 r[attributes.testing.should_panic]
 ## The `should_panic` attribute
 

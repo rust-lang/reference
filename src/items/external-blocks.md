@@ -391,6 +391,7 @@ r[items.extern.attributes.link.import_name_type.platform-specific]
 The `import_name_type` key is only supported on x86 Windows. Using it when
 targeting other platforms will result in a compiler error.
 
+<!-- template:attributes -->
 r[items.extern.attributes.link_name]
 ### The `link_name` attribute
 
