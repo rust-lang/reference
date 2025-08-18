@@ -93,19 +93,19 @@ The *`no_link` [attribute][attributes]* may be applied to an `extern crate` item
 > ```
 
 r[items.extern-crate.no_link.syntax]
-The `no_link` attribute uses the [MetaWord] syntax and so does not accept any arguments.
+The `no_link` attribute uses the [MetaWord] syntax.
 
 r[items.extern-crate.no_link.allowed-positions]
 The `no_link` attribute may only be applied to an `extern crate` declaration.
 
 > [!NOTE]
-> `rustc` currently accepts and ignores the attribute in other positions but lints against it. This may become a hard error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[items.extern-crate.no_link.duplicates]
-Duplicate instances of the `no_link` attribute are ignored.
+Only the first use of `no_link` on an `extern crate` declaration has effect.
 
 > [!NOTE]
-> `rustc` lints against duplicate use of this attribute.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 [identifier]: ../identifiers.md
 [RFC 940]: https://github.com/rust-lang/rfcs/blob/master/text/0940-hyphens-considered-harmful.md

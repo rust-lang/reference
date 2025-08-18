@@ -81,7 +81,7 @@ r[attributes.limits.type_length_limit.duplicates]
 Only the first use of `type_length_limit` on an item has effect.
 
 > [!NOTE]
-> `rustc` lints against use following the first. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md

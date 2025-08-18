@@ -106,7 +106,7 @@ r[attributes.codegen.no_builtins.duplicates]
 Only the first use of the `no_builtins` attribute has effect.
 
 > [!NOTE]
-> `rustc` currently lints against uses following the first.
+> `rustc` lints against any use following the first.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute

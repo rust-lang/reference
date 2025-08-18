@@ -413,13 +413,13 @@ r[items.extern.attributes.link_name.allowed-positions]
 The `link_name` attribute may only be applied to a function or static item in an `extern` block.
 
 > [!NOTE]
-> `rustc` currently accepts and ignores the attribute in other positions but lints against it. This may become a hard error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[items.extern.attributes.link_name.duplicates]
-Only the last instance of `link_name` on an item is used to determine the symbol name.
+Only the last use of `link_name` on an item has effect.
 
 > [!NOTE]
-> `rustc` lints against duplicate use of this attribute on uses preceding the last. This may become a hard error in the future.
+> `rustc` lints against any use preceding the last. This may become an error in the future.
 
 r[items.extern.attributes.link_name.link_ordinal]
 The `link_name` attribute may not be used with the [`link_ordinal`] attribute.
