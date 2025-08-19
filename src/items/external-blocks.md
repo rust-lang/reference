@@ -29,7 +29,7 @@ Two kinds of item _declarations_ are allowed in external blocks: [functions] and
 [statics].
 
 r[items.extern.fn-safety]
-Calling functions or accessing statics that are declared in external blocks is only allowed in an `unsafe` context.
+Calling unsafe functions or accessing unsafe statics that are declared in external blocks is only allowed in an `unsafe` context.
 
 r[items.extern.namespace]
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
