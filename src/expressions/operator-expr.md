@@ -900,7 +900,7 @@ r[expr.compound-assign.no-value]
 Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
 r[expr.compound-assign.operand-order]
-Evaluation of compound assignment expressions depends on the types of the operators.
+Evaluation of compound assignment expressions depends on the types of the operands.
 
 r[expr.compound-assign.primitive-order]
 If both types are primitives and the expression is non-generic (i.e., directly uses concrete types), then the modifying operand will be evaluated first followed by the assigned operand.
