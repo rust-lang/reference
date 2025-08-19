@@ -2,14 +2,26 @@ r[unsafe]
 # The `unsafe` keyword
 
 r[unsafe.intro]
-The `unsafe` keyword can occur in several different contexts:
-unsafe functions (`unsafe fn`), unsafe blocks (`unsafe {}`), unsafe traits (`unsafe trait`), unsafe trait implementations (`unsafe impl`), unsafe external blocks (`unsafe extern`), and unsafe attributes (`#[unsafe(attr)]`).
-It plays several different roles, depending on where it is used and whether the `unsafe_op_in_unsafe_fn` lint is enabled:
-- it is used to mark code that *defines* extra safety conditions (`unsafe fn`, `unsafe trait`)
-- it is used to mark code that needs to *satisfy* extra safety conditions (`unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`], `unsafe extern`, `#[unsafe(attr)]`)
+The `unsafe` keyword is used to create or discharge the obligation to prove something safe. Specifically:
+
+- It is used to mark code that *defines* extra safety conditions that must be upheld elsewhere.
+  - This includes `unsafe fn`, `unsafe static`, and `unsafe trait`.
+- It is used to mark code that the programmer *asserts* satisfies safety conditions defined elsewhere.
+  - This includes `unsafe {}`, `unsafe impl`, `unsafe fn` without [`unsafe_op_in_unsafe_fn`], `unsafe extern`, and `#[unsafe(attr)]`.
 
 The following discusses each of these cases.
 See the [keyword documentation][keyword] for some illustrative examples.
+
+r[unsafe.positions]
+The `unsafe` keyword can occur in several different contexts:
+
+- unsafe functions (`unsafe fn`)
+- unsafe blocks (`unsafe {}`)
+- unsafe traits (`unsafe trait`)
+- unsafe trait implementations (`unsafe impl`)
+- unsafe external blocks (`unsafe extern`)
+- unsafe external statics (`unsafe static`)
+- unsafe attributes (`#[unsafe(attr)]`)
 
 r[unsafe.fn]
 ## Unsafe functions (`unsafe fn`)
