@@ -1,3 +1,4 @@
+<!-- template:attributes -->
 r[attributes.derive]
 # Derive
 
@@ -36,10 +37,10 @@ r[attributes.derive.syntax]
 The `derive` attribute uses the [MetaListPaths] syntax to specify a list of paths to [derive macros] to invoke.
 
 r[attributes.derive.allowed-positions]
-The `derive` attribute may be applied to [structs][items.struct], [enums][items.enum], and [unions][items.union].
+The `derive` attribute may only be applied to [structs][items.struct], [enums][items.enum], and [unions][items.union].
 
 r[attributes.derive.duplicates]
-The `derive` attribute may be specified multiple times on an item, with all derive macros listed in all attributes being invoked.
+The `derive` attribute may be used any number of times on an item. All derive macros listed in all attributes are invoked.
 
 r[attributes.derive.stdlib]
 The `derive` attribute is exported in the standard library prelude as [`core::prelude::v1::derive`].
@@ -63,6 +64,7 @@ The built-in derives include the [`automatically_derived` attribute][attributes.
 r[attributes.derive.behavior]
 During macro expansion, for each element in the list of derives, the corresponding derive macro expands to zero or more [items].
 
+<!-- template:attributes -->
 r[attributes.derive.automatically_derived]
 ## The `automatically_derived` attribute
 
@@ -84,19 +86,19 @@ The *`automatically_derived` [attribute][attributes]* is used to annotate an [im
 > ```
 
 r[attributes.derive.automatically_derived.syntax]
-The `automatically_derived` attribute uses the [MetaWord] syntax and so does not accept any arguments.
+The `automatically_derived` attribute uses the [MetaWord] syntax.
 
 r[attributes.derive.automatically_derived.allowed-positions]
-The `automatically_derived` attribute may be placed on an [implementation].
+The `automatically_derived` attribute may only be applied to an [implementation].
 
 > [!NOTE]
-> `rustc` currently accepts the attribute in other positions but lints against it.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.derive.automatically_derived.duplicates]
-Duplicate instances of the `automatically_derived` attribute on the same implementation have no effect.
+Using `automatically_derived` more than once on an implementation has the same effect as using it once.
 
 > [!NOTE]
-> `rustc` lints against duplicate use of this attribute on uses following the first.
+> `rustc` lints against any use following the first.
 
 r[attributes.derive.automatically_derived.behavior]
 The `automatically_derived` attribute has no behavior.

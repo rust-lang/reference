@@ -6,6 +6,7 @@ When an attribute (or a new attribute position in the grammar) is added, be sure
 
 ----
 
+<!-- template:attributes -->
 r[PARENT.example]
 ## The `example` attribute
 
@@ -14,7 +15,8 @@ The *`example` [attribute][attributes]* ...give a high level description.
 
 > [!EXAMPLE]
 > ```rust
-> // This should be a very basic example showing the attribute used in some way.
+> // This should be a very basic example showing the attribute
+> // used in some way.
 > #[example]
 > fn some_meaningful_name() {}
 > ```
@@ -24,11 +26,52 @@ Describe the accepted syntax of this attribute. You can either explain that it u
 
 ----
 
-The `example` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `example` attribute uses the [MetaWord] syntax.
 
 ----
 
 The `example` attribute uses the [MetaListPaths] syntax to specify a list of ...
+
+----
+
+The `example` attribute uses the [MetaWord] and [MetaNameValueStr] syntaxes.
+
+----
+
+The `example` attribute uses the [MetaWord], [MetaListPaths], and [MetaNameValueStr] syntaxes.
+
+----
+
+The `example` attribute uses the [MetaNameValueStr] syntax. Accepted values are `"X"` and `"Y"`.
+
+----
+
+The `example` attribute uses the [MetaNameValueStr] syntax. The value in the string must be ...
+
+----
+
+The `example` attribute has these forms:
+
+- [MetaWord]
+  > [!EXAMPLE]
+  > ```rust
+  > #[example]
+  > fn f() {}
+  > ```
+
+- [MetaNameValueStr] --- The given string must ...
+  > [!EXAMPLE]
+  > ```rust
+  > #[example = "example"]
+  > fn f() {}
+  > ```
+
+- [MetaListNameValueStr] --- As with the [MetaNameValueStr] syntax, the given string must ...
+  > [!EXAMPLE]
+  > ```rust
+  > #[example(inner = "example")]
+  > fn f() {}
+  > ```
 
 ----
 
@@ -37,6 +80,16 @@ The syntax for the `example` attribute is:
 ```grammar,attributes
 @root ExampleAttribute -> `example` `(` ... `)`
 ```
+----
+
+r[PARENT.example.syntax.foo]
+The [MetaNameValueStr] form of the `example` attribute provides a way to specify the foo.
+
+> [!EXAMPLE]
+> ```rust
+> #[example = "example"]
+> fn some_meaningful_name() {}
+> ```
 
 r[PARENT.example.allowed-positions]
 Explain the valid positions where this attribute may be used.
@@ -60,10 +113,7 @@ The `example` attribute is allowed anywhere attributes are allowed.
 If there are unused attribute warnings, or if rustc is incorrectly accepting some positions, include a note about these.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
-
-> [!NOTE]
-> `rustc` currently warns on some positions where it is ignored, but this may become an error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 ----
 
@@ -72,29 +122,40 @@ Explain the behavior if the attribute is specified multiple times on an element.
 
 ----
 
-Duplicate instances of the `example` attribute on the same ... have no effect.
+The `example` attribute may be used any number of times on a form.
 
 ----
 
-The `example` attribute may only be specified once on a [THING].
+Using `example` more than once on a form has the same effect as using it once.
 
 ----
 
-Only the first instance of `example` on an item is honored. Subsequent `example` attributes are ignored.
+The `example` attribute may be used only once on ...
+
+----
+
+Only the first use of `example` on an item has effect.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `example` attributes. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
+
+> [!NOTE]
+> `rustc` lints against any use following the first with a future-compatibility warning. This may become an error in the future.
 
 ----
 
-Only the last instance of `example` on an item is honored. Previous `example` attributes are ignored.
+Only the last use of `example` on an item has effect.
 
 > [!NOTE]
-> `rustc` currently warns on preceding duplicate `example` attributes. This may become an error in the future.
+> `rustc` lints against any use preceding the last. This may become an error in the future.
 
----
+----
 
-If the `example` attribute is specified multiple times on an item, then the combination of all the specified values is used as ...explain how they are merged.
+Only the last use of `example` on an item is used to ...
+
+----
+
+If the `example` attribute is used more than once on an item, then the combination of all the specified values is used as ...explain how they are merged.
 
 ----
 

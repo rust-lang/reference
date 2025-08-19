@@ -6,6 +6,7 @@ tests. Compiling a crate in "test" mode enables building the test functions
 along with a test harness for executing the tests. Enabling the test mode also
 enables the [`test` conditional compilation option].
 
+<!-- template:attributes -->
 r[attributes.testing.test]
 ## The `test` attribute
 
@@ -23,7 +24,7 @@ The *`test` [attribute][attributes]* marks a function to be executed as a test.
 > ```
 
 r[attributes.testing.test.syntax]
-The `test` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `test` attribute uses the [MetaWord] syntax.
 
 r[attributes.testing.test.allowed-positions]
 The `test` attribute may only be applied to [free functions] that are monomorphic, that take no arguments, and where the return type implements the [`Termination`] trait.
@@ -34,10 +35,10 @@ The `test` attribute may only be applied to [free functions] that are monomorphi
 > * `Result<T, E> where T: Termination, E: Debug`
 
 r[attributes.testing.test.duplicates]
-Only the first instance of `test` on a function is honored.
+Only the first use of `test` on a function has effect.
 
 > [!NOTE]
-> Subsequent `test` attributes are currently ignored and `rustc` warns about these.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 <!-- TODO: This is a minor lie. Currently rustc warns that duplicates are ignored, but it then generates multiple test entries with the same name. I would vote for rejecting this in the future. -->
 
@@ -71,6 +72,7 @@ In particular:
 > }
 > ```
 
+<!-- template:attributes -->
 r[attributes.testing.ignore]
 ## The `ignore` attribute
 
@@ -90,7 +92,7 @@ The *`ignore` [attribute][attributes]* can be used with the [`test` attribute][a
 > The `rustc` test harness supports the `--include-ignored` flag to force ignored tests to be run.
 
 r[attributes.testing.ignore.syntax]
-The `ignore` attribute uses either the [MetaWord] or [MetaNameValueStr] syntax.
+The `ignore` attribute uses the [MetaWord] and [MetaNameValueStr] syntaxes.
 
 r[attributes.testing.ignore.reason]
 The [MetaNameValueStr] form of the `ignore` attribute provides a way to specify a reason why the test is ignored.
@@ -105,20 +107,21 @@ The [MetaNameValueStr] form of the `ignore` attribute provides a way to specify 
 > ```
 
 r[attributes.testing.ignore.allowed-positions]
-The `ignore` attribute may be applied to functions annotated with the `test` attribute.
+The `ignore` attribute may only be applied to functions annotated with the `test` attribute.
 
 > [!NOTE]
-> `rustc` currently warns when `ignore` is used in some other situations. This may become an error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.testing.ignore.duplicates]
-Only the first instance of `ignore` on a function is honored.
+Only the first use of `ignore` on a function has effect.
 
 > [!NOTE]
-> `rustc` currently ignores duplicate `ignore` attributes. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 r[attributes.testing.ignore.behavior]
 Ignored tests are still compiled when in test mode, but they are not executed.
 
+<!-- template:attributes -->
 r[attributes.testing.should_panic]
 ## The `should_panic` attribute
 
@@ -135,7 +138,7 @@ The *`should_panic` [attribute][attributes]* causes a test to pass only if the [
 > ```
 
 r[attributes.testing.should_panic.syntax]
-The `should_panic` attribute has one of the following forms:
+The `should_panic` attribute has these forms:
 
 - [MetaWord]
   > [!EXAMPLE]
@@ -165,13 +168,13 @@ r[attributes.testing.should_panic.allowed-positions]
 The `should_panic` attribute may only be applied to functions annotated with the `test` attribute.
 
 > [!NOTE]
-> `rustc` currently accepts this attribute in other positions with a warning. This may become a hard error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.testing.should_panic.duplicates]
-Only the first instance of `should_panic` on a function is honored.
+Only the first use of `should_panic` on a function has effect.
 
 > [!NOTE]
-> `rustc` currently ignores subsequent `should_panic` attributes and emits a future-compatibility warning. This may become a hard error in the future.
+> `rustc` lints against any use following the first with a future-compatibility warning. This may become an error in the future.
 
 r[attributes.testing.should_panic.expected]
 When the [MetaNameValueStr] form or the [MetaListNameValueStr] form with the `expected` key is used, the given string must appear somewhere within the panic message for the test to pass.

@@ -82,6 +82,7 @@ The [`track_caller`](#the-track_caller-attribute) attribute cannot be applied to
 r[attributes.codegen.naked.testing]
 The [testing attributes](testing.md) cannot be applied to a naked function.
 
+<!-- template:attributes -->
 r[attributes.codegen.no_builtins]
 ## The `no_builtins` attribute
 
@@ -105,7 +106,7 @@ r[attributes.codegen.no_builtins.duplicates]
 Only the first use of the `no_builtins` attribute has effect.
 
 > [!NOTE]
-> `rustc` currently lints against uses following the first.
+> `rustc` lints against any use following the first.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute

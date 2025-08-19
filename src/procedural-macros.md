@@ -130,6 +130,7 @@ position, which includes [statements], [expressions], [patterns], [type
 expressions], [item] positions, including items in [`extern` blocks], inherent
 and trait [implementations], and [trait definitions].
 
+<!-- template:attributes -->
 r[macro.proc.derive]
 ## The `proc_macro_derive` attribute
 
@@ -185,7 +186,7 @@ r[macro.proc.derive.allowed-positions]
 The `proc_macro_derive` attribute may only be applied to a `pub` function with the [Rust ABI][items.fn.extern] defined in the root of the crate with a type of `fn(TokenStream) -> TokenStream`  where [`TokenStream`] comes from the [`proc_macro` crate]. The function may be `const` and may use `extern` to explicitly specify the Rust ABI, but it may not use any other [qualifiers][FunctionQualifiers] (e.g. it may not be `async` or `unsafe`).
 
 r[macro.proc.derive.duplicates]
-The `proc_macro_derive` attribute may be specified only once on a function.
+The `proc_macro_derive` attribute may be used only once on a function.
 
 r[macro.proc.derive.namespace]
 The `proc_macro_derive` attribute publicly defines the derive macro in the [macro namespace] in the root of the crate.

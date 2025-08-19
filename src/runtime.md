@@ -3,6 +3,7 @@ r[runtime]
 
 This section documents features that define some aspects of the Rust runtime.
 
+<!-- template:attributes -->
 r[runtime.global_allocator]
 ## The `global_allocator` attribute
 
@@ -44,6 +45,7 @@ The `global_allocator` attribute may only be used once in the crate graph.
 r[runtime.global_allocator.stdlib]
 The `global_allocator` attribute is exported from the [standard library prelude][core::prelude::v1].
 
+<!-- template:attributes -->
 r[runtime.windows_subsystem]
 ## The `windows_subsystem` attribute
 
@@ -62,10 +64,10 @@ r[runtime.windows_subsystem.allowed-positions]
 The `windows_subsystem` attribute may only be applied to the crate root.
 
 r[runtime.windows_subsystem.duplicates]
-Only the first use of `windows_subsystem` is honored.
+Only the first use of `windows_subsystem` has effect.
 
 > [!NOTE]
-> `rustc` currently lints against uses following the first. This may become a hard error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 r[runtime.windows_subsystem.ignored]
 The `windows_subsystem` attribute is ignored on non-Windows targets and non-`bin` [crate types].

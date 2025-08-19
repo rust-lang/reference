@@ -315,6 +315,7 @@ Example values:
 
 ## Forms of conditional compilation
 
+<!-- template:attributes -->
 r[cfg.attr]
 ### The `cfg` attribute
 
@@ -363,13 +364,13 @@ The syntax for the `cfg` attribute is:
 ```
 
 r[cfg.attr.allowed-positions]
-The `cfg` attribute is allowed anywhere attributes are allowed.
+The `cfg` attribute may be used anywhere attributes are allowed.
 
 r[cfg.attr.duplicates]
-Multiple `cfg` attributes may be specified. The form to which the attribute is attached will not be included if any of the `cfg` predicates are false except as described in [cfg.attr.crate-level-attrs].
+The `cfg` attribute may be used any number of times on a form. The form to which the attributes are attached will not be included if any of the `cfg` predicates are false except as described in [cfg.attr.crate-level-attrs].
 
 r[cfg.attr.effect]
-If the predicate is true, the form is rewritten to not have the `cfg` attribute on it. If the predicate is false, the form is removed from the source code.
+If the predicates are true, the form is rewritten to not have the `cfg` attributes on it. If any predicate is false, the form is removed from the source code.
 
 r[cfg.attr.crate-level-attrs]
 When a crate-level `cfg` has a false predicate, the crate itself still exists. Any crate attributes preceding the `cfg` are kept, and any crate attributes following the `cfg` are removed as well as removing all of the following crate contents.
@@ -388,6 +389,7 @@ When a crate-level `cfg` has a false predicate, the crate itself still exists. A
 > pub fn example() {}
 > ```
 
+<!-- template:attributes -->
 r[cfg.cfg_attr]
 ### The `cfg_attr` attribute
 
@@ -414,10 +416,10 @@ CfgAttrs -> Attr (`,` Attr)* `,`?
 ```
 
 r[cfg.cfg_attr.allowed-positions]
-The `cfg_attr` attribute is allowed anywhere attributes are allowed.
+The `cfg_attr` attribute may be used anywhere attributes are allowed.
 
 r[cfg.cfg_attr.duplicates]
-Multiple `cfg_attr` attributes may be specified.
+The `cfg_attr` attribute may be used any number of times on a form.
 
 r[cfg.cfg_attr.attr-restriction]
 The [`crate_type`] and [`crate_name`] attributes cannot be used with `cfg_attr`.

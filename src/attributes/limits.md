@@ -40,34 +40,48 @@ a!{}
 (|_: &u8| {})(&&&1);
 ```
 
+<!-- template:attributes -->
 r[attributes.limits.type_length_limit]
 ## The `type_length_limit` attribute
 
-> [!NOTE]
-> This limit is only enforced when the nightly `-Zenforce-type-length-limit` flag is active.
->
-> For more information, see <https://github.com/rust-lang/rust/pull/127670>.
-
 r[attributes.limits.type_length_limit.intro]
-The *`type_length_limit` attribute* limits the maximum number of type
-substitutions made when constructing a concrete type during monomorphization.
+The *`type_length_limit` [attribute][attributes]* sets the maximum number of type substitutions allowed when constructing a concrete type during monomorphization.
+
+> [!NOTE]
+> `rustc` only enforces the limit when the nightly `-Zenforce-type-length-limit` flag is active.
+>
+> For more information, see [Rust PR #127670](https://github.com/rust-lang/rust/pull/127670).
+
+> [!EXAMPLE]
+> <!-- ignore: not enforced without nightly flag -->
+> ```rust,ignore
+> #![type_length_limit = "4"]
+>
+> fn f<T>(x: T) {}
+>
+> // This fails to compile because monomorphizing to
+> // `f::<((((i32,), i32), i32), i32)>` requires more
+> // than 4 type elements.
+> f(((((1,), 2), 3), 4));
+> ```
+
+> [!NOTE]
+> The default value in `rustc` is `1048576`.
 
 r[attributes.limits.type_length_limit.syntax]
-It is applied at the [crate] level, and uses the [MetaNameValueStr] syntax
-to set the limit based on the number of type substitutions.
+The `type_length_limit` attribute uses the [MetaNameValueStr] syntax. The value in the string must be a non-negative number.
+
+r[attributes.limits.type_length_limit.allowed-positions]
+The `type_length_limit` attribute may only be applied to the crate root.
 
 > [!NOTE]
-> The default in `rustc` is 1048576.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
-```rust,ignore
-#![type_length_limit = "4"]
+r[attributes.limits.type_length_limit.duplicates]
+Only the first use of `type_length_limit` on an item has effect.
 
-fn f<T>(x: T) {}
-
-// This fails to compile because monomorphizing to
-// `f::<((((i32,), i32), i32), i32)>` requires more than 4 type elements.
-f(((((1,), 2), 3), 4));
-```
+> [!NOTE]
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 [attributes]: ../attributes.md
 [crate]: ../crates-and-source-files.md
