@@ -410,17 +410,3 @@ fn main() {
 [`async`]: functions.md#async-functions
 [`const`]: functions.md#const-functions
 [type namespace]: ../names/namespaces.md
-
-<script>
-(function() {
-    var fragments = {
-        "#object-safety": "traits.html#dyn-compatibility",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

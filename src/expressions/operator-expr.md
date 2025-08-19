@@ -968,18 +968,3 @@ Like assignment expressions, compound assignment expressions always produce [the
 [undefined behavior]: ../behavior-considered-undefined.md
 [Underscore expressions]: ./underscore-expr.md
 [range expressions]: ./range-expr.md
-
-<script>
-(function() {
-    var fragments = {
-        "#slice-dst-pointer-to-pointer-cast": "operator-expr.html#pointer-to-pointer-cast",
-        "#the-question-mark-operator": "operator-expr.html#the-try-propagation-expression",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

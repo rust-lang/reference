@@ -172,17 +172,3 @@ or `_` (U+005F) characters.
 [shebang]: input-format.md#shebang-removal
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses
-
-<script>
-(function() {
-    var fragments = {
-        "#preludes-and-no_std": "names/preludes.html",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>

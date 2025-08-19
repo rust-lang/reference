@@ -114,17 +114,3 @@ Only the first use of `no_link` on an `extern crate` declaration has effect.
 [`macro_use` prelude]: ../names/preludes.md#macro_use-prelude
 [`crate_name` attributes]: ../crates-and-source-files.md#the-crate_name-attribute
 [type namespace]: ../names/namespaces.md
-
-<script>
-(function() {
-    var fragments = {
-        "#extern-prelude": "../names/preludes.html#extern-prelude",
-    };
-    var target = fragments[window.location.hash];
-    if (target) {
-        var url = window.location.toString();
-        var base = url.substring(0, url.lastIndexOf('/'));
-        window.location.replace(base + "/" + target);
-    }
-})();
-</script>
