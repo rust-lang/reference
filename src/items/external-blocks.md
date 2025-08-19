@@ -29,7 +29,7 @@ Two kinds of item _declarations_ are allowed in external blocks: [functions] and
 [statics].
 
 r[items.extern.safety]
-Calling unsafe functions or accessing unsafe statics that are declared in external blocks is only allowed in an `unsafe` context.
+Calling unsafe functions or accessing unsafe statics that are declared in external blocks is only allowed in an [`unsafe` context].
 
 r[items.extern.namespace]
 The external block defines its functions and statics in the [value namespace] of the module or block where it is located.
@@ -465,6 +465,7 @@ restrictions as [regular function parameters].
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
+[`unsafe` context]: ../unsafe-keyword.md
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
 [attributes]: ../attributes.md
