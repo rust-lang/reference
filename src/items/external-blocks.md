@@ -28,7 +28,7 @@ r[items.extern.allowed-kinds]
 Two kinds of item _declarations_ are allowed in external blocks: [functions] and
 [statics].
 
-r[items.extern.fn-safety]
+r[items.extern.safety]
 Calling unsafe functions or accessing unsafe statics that are declared in external blocks is only allowed in an `unsafe` context.
 
 r[items.extern.namespace]
