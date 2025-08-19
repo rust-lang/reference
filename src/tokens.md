@@ -624,7 +624,7 @@ r[lex.token.literal.int.tuple-field]
 
 r[lex.token.literal.int.tuple-field.syntax]
 ```grammar,lexer
-TUPLE_INDEX -> INTEGER_LITERAL
+TUPLE_INDEX -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
 ```
 
 r[lex.token.literal.int.tuple-field.intro]
@@ -637,6 +637,8 @@ start with `0` and each successive index increments the value by `1` as a
 decimal value. Thus, only decimal values will match, and the value must not
 have any extra `0` prefix characters.
 
+Tuple indices may not include any suffixes (such as `usize`).
+
 ```rust,compile_fail
 let example = ("dog", "cat", "horse");
 let dog = example.0;
@@ -644,10 +646,9 @@ let cat = example.1;
 // The following examples are invalid.
 let cat = example.01;  // ERROR no field named `01`
 let horse = example.0b10;  // ERROR no field named `0b10`
+let unicorn = example.0usize; // ERROR suffixes on a tuple index are invalid
+let underscore = example.0_0; // ERROR no field `0_0` on type `(&str, &str, &str)`
 ```
-
-> [!NOTE]
-> Tuple indices may include certain suffixes, but this is not intended to be valid, and may be removed in a future version. See <https://github.com/rust-lang/rust/issues/60210> for more information.
 
 r[lex.token.literal.float]
 #### Floating-point literals
