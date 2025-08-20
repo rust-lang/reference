@@ -900,51 +900,116 @@ r[expr.compound-assign.no-value]
 Attempting to use a value expression is a compiler error rather than promoting it to a temporary.
 
 r[expr.compound-assign.operand-order]
-Evaluation of compound assignment expressions depends on the types of the operators.
+Evaluation of compound assignment expressions depends on the types of the operands.
 
-r[expr.compound-assign.primitive-order]
-If both types are primitives, then the modifying operand will be evaluated first followed by the assigned operand.
-It will then set the value of the assigned operand's place to the value of performing the operation of the operator with the values of the assigned operand and modifying operand.
-
-> [!NOTE]
-> This is different than other expressions in that the right operand is evaluated before the left one.
-
-r[expr.compound-assign.trait]
-Otherwise, this expression is syntactic sugar for calling the function of the overloading compound assignment trait of the operator (see the table earlier in this chapter).
-A mutable borrow of the assigned operand is automatically taken.
-
-For example, the following expression statements in `example` are equivalent:
+r[expr.compound-assign.primitives]
+If the types of both operands are known, prior to monomorphization, to be primitive, the right hand side is evaluated first, the left hand side is evaluated next, and the place given by the evaluation of the left hand side is mutated by applying the operator to the values of both sides.
 
 ```rust
-# struct Addable;
-# use std::ops::AddAssign;
+# use core::{num::Wrapping, ops::AddAssign};
+#
+trait Equate {}
+impl<T> Equate for (T, T) {}
 
-impl AddAssign<Addable> for Addable {
-    /* */
-# fn add_assign(&mut self, other: Addable) {}
+fn f1(x: (u8,)) {
+    let mut order = vec![];
+    // The RHS is evaluated first as both operands are of primitive
+    // type.
+    { order.push(2); x }.0 += { order.push(1); x }.0;
+    assert!(order.is_sorted());
 }
 
-fn example() {
-# let (mut a1, a2) = (Addable, Addable);
-  a1 += a2;
+fn f2(x: (Wrapping<u8>,)) {
+    let mut order = vec![];
+    // The LHS is evaluated first as `Wrapping<_>` is not a primitive
+    // type.
+    { order.push(1); x }.0 += { order.push(2); (0u8,) }.0;
+    assert!(order.is_sorted());
+}
 
-# let (mut a1, a2) = (Addable, Addable);
-  AddAssign::add_assign(&mut a1, a2);
+fn f3<T: AddAssign<u8> + Copy>(x: (T,)) where (T, u8): Equate {
+    let mut order = vec![];
+    // The LHS is evaluated first as one of the operands is a generic
+    // parameter, even though that generic parameter can be unified
+    // with a primitive type due to the where clause bound.
+    { order.push(1); x }.0 += { order.push(2); (0u8,) }.0;
+    assert!(order.is_sorted());
+}
+
+fn main() {
+    f1((0u8,));
+    f2((Wrapping(0u8),));
+    // We supply a primitive type as the generic argument, but this
+    // does not affect the evaluation order in `f3` when
+    // monomorphized.
+    f3::<u8>((0u8,));
 }
 ```
 
+> [!NOTE]
+> This is unusual. Elsewhere left to right evaluation is the norm.
+>
+> See the [eval order test] for more examples.
+
+r[expr.compound-assign.trait]
+Otherwise, this expression is syntactic sugar for using the corresponding trait for the operator (see [expr.arith-logic.behavior]) and calling its method with the left hand side as the [receiver] and the right hand side as the next argument.
+
+For example, the following two statements are equivalent:
+
+```rust
+# use std::ops::AddAssign;
+fn f<T: AddAssign + Copy>(mut x: T, y: T) {
+    x += y; // Statement 1.
+    x.add_assign(y); // Statement 2.
+}
+```
+
+> [!NOTE]
+> Surprisingly, desugaring this further to a fully qualified method call is not equivalent, as there is special borrow checker behavior when the mutable reference to the first operand is taken via [autoref].
+>
+> ```rust
+> # use std::ops::AddAssign;
+> fn f<T: AddAssign + Copy>(mut x: T) {
+>     // Here we used `x` as both the LHS and the RHS. Because the
+>     // mutable borrow of the LHS needed to call the trait method
+>     // is taken implicitly by autoref, this is OK.
+>     x += x; //~ OK
+>     x.add_assign(x); //~ OK
+> }
+> ```
+>
+> ```rust,compile_fail,E0503
+> # use std::ops::AddAssign;
+> fn f<T: AddAssign + Copy>(mut x: T) {
+>     // We can't desugar the above to the below, as once we take the
+>     // mutable borrow of `x` to pass the first argument, we can't
+>     // pass `x` by value in the second argument because the mutable
+>     // reference is still live.
+>     <T as AddAssign>::add_assign(&mut x, x);
+>     //~^ ERROR cannot use `x` because it was mutably borrowed
+> }
+> ```
+>
+> ```rust,compile_fail,E0503
+> # use std::ops::AddAssign;
+> fn f<T: AddAssign + Copy>(mut x: T) {
+>     // As above.
+>     (&mut x).add_assign(x);
+>     //~^ ERROR cannot use `x` because it was mutably borrowed
+> }
+> ```
+
 r[expr.compound-assign.result]
-Like assignment expressions, compound assignment expressions always produce [the unit value][unit].
+As with normal assignment expressions, compound assignment expressions always produce [the unit value][unit].
 
 > [!WARNING]
-> The evaluation order of operands swaps depending on the types of the operands:
-> with primitive types the right-hand side will get evaluated first, while with non-primitive types the left-hand side will get evaluated first.
-> Try not to write code that depends on the evaluation order of operands in compound assignment expressions.
-> See [this test] for an example of using this dependency.
+> Avoid writing code that depends on the evaluation order of operands in compound assignments as it can be unusual and surprising.
 
 [`Try`]: core::ops::Try
+[autoref]: expr.method.candidate-receivers-refs
 [copies or moves]: ../expressions.md#moved-and-copied-types
 [dropping]: ../destructors.md
+[eval order test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
 [field-less enums]: ../items/enumerations.md#field-less-enum
 [grouped expression]: grouped-expr.md
@@ -961,10 +1026,10 @@ Like assignment expressions, compound assignment expressions always produce [the
 [Unit-only enums]: ../items/enumerations.md#unit-only-enum
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
 [temporary value]: ../expressions.md#temporaries
-[this test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
+[receiver]: expr.method.intro
 [undefined behavior]: ../behavior-considered-undefined.md
 [Underscore expressions]: ./underscore-expr.md
 [range expressions]: ./range-expr.md
