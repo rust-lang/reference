@@ -509,9 +509,9 @@ Feature               | Implicitly Enables  | Description
 r[attributes.codegen.target_feature.s390x]
 #### `s390x`
 
-On this platform the usage of `#[target_feature]` functions follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
+On `s390x` targets, use of functions with the `#[target_feature]` attribute follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
-Further documentation on these features can be found in the "Additions to z/Architecture" section of Chapter 1 of the [Principles of Operation].
+Further documentation on these features can be found in the "Additions to z/Architecture" section of Chapter 1 of the *[z/Architecture Principles of Operation]*.
 
 Feature                                | Implicitly Enables                    | Description
 ---------------------------------------|---------------------------------------|---------------------
@@ -528,7 +528,7 @@ Feature                                | Implicitly Enables                    |
 `miscellaneous-extensions-3`           |                                       | miscellaneous extensions 3
 `miscellaneous-extensions-4`           |                                       | miscellaneous extensions 4
 
-[Principles of Operation]: https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
+[z/Architecture Principles of Operation]: https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
 
 r[attributes.codegen.target_feature.info]
 ### Additional information
