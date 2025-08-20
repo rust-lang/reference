@@ -151,36 +151,58 @@ When the crate's debug executable is passed into GDB[^rust-gdb], `print bob` wil
 [Natvis documentation]: https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects
 [pretty printing documentation]: https://sourceware.org/gdb/onlinedocs/gdb/Pretty-Printing.html
 
+<!-- template:attributes -->
 r[attributes.debugger.collapse_debuginfo]
 ## The `collapse_debuginfo` attribute
 
 r[attributes.debugger.collapse_debuginfo.intro]
-The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site,
-when generating debuginfo for code calling this macro.
+The *`collapse_debuginfo` [attribute]* controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site when generating debuginfo for code calling this macro.
+
+> [!EXAMPLE]
+> ```rust
+> #[collapse_debuginfo(yes)]
+> macro_rules! example {
+>     () => {
+>         println!("hello!");
+>     };
+> }
+> ```
+>
+> When using a debugger, invoking the `example` macro may appear as though it is calling a function. That is, when you step to the invocation site, it may show the macro invocation rather than the expanded code.
+
+<!-- TODO: I think it would be nice to extend this to explain a little more about why this is useful, and the kinds of scenarios where you would want one vs the other. See https://github.com/rust-lang/rfcs/pull/2117 for some guidance. -->
 
 r[attributes.debugger.collapse_debuginfo.syntax]
-The attribute uses the [MetaListIdents] syntax to specify its inputs, and can only be applied to macro definitions.
+The syntax for the `collapse_debuginfo` attribute is:
 
-r[attributes.debugger.collapse_debuginfo.options]
-Accepted options:
-- `#[collapse_debuginfo(yes)]` --- code locations in debuginfo are collapsed.
-- `#[collapse_debuginfo(no)]` --- code locations in debuginfo are not collapsed.
-- `#[collapse_debuginfo(external)]` --- code locations in debuginfo are collapsed only if the macro comes from a different crate.
+```grammar,attributes
+@root CollapseDebuginfoAttribute -> `collapse_debuginfo` `(` CollapseDebuginfoOption `)`
 
-r[attributes.debugger.collapse_debuginfo.default]
-The `external` behavior is the default for macros that don't have this attribute, unless they are built-in macros.
-For built-in macros the default is `yes`.
-
-> [!NOTE]
-> `rustc` has a `-C collapse-macro-debuginfo` CLI option to override both the default collapsing behavior and `#[collapse_debuginfo]` attributes.
-
-```rust
-#[collapse_debuginfo(yes)]
-macro_rules! example {
-    () => {
-        println!("hello!");
-    };
-}
+CollapseDebuginfoOption ->
+      `yes`
+    | `no`
+    | `external`
 ```
 
+r[attributes.debugger.collapse_debuginfo.allowed-positions]
+The `collapse_debuginfo` attribute may only be applied to a [`macro_rules` definition].
+
+r[attributes.debugger.collapse_debuginfo.duplicates]
+The `collapse_debuginfo` attribute may used only once on a macro.
+
+r[attributes.debugger.collapse_debuginfo.options]
+The `collapse_debuginfo` attribute accepts these options:
+
+- `#[collapse_debuginfo(yes)]` --- Code locations in debuginfo are collapsed.
+- `#[collapse_debuginfo(no)]` --- Code locations in debuginfo are not collapsed.
+- `#[collapse_debuginfo(external)]` --- Code locations in debuginfo are collapsed only if the macro comes from a different crate.
+
+r[attributes.debugger.collapse_debuginfo.default]
+The `external` behavior is the default for macros that don't have this attribute unless they are built-in macros. For built-in macros the default is `yes`.
+
+> [!NOTE]
+> `rustc` has a [`-C collapse-macro-debuginfo`] CLI option to override both the default behavior and the values of any `#[collapse_debuginfo]` attributes.
+
+[`-C collapse-macro-debuginfo`]: ../../rustc/codegen-options/index.html#collapse-macro-debuginfo
+[`macro_rules` definition]: ../macros-by-example.md
 [attribute]: ../attributes.md
