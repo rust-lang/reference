@@ -634,6 +634,7 @@ trait object whose methods are attributed.
 > [!NOTE]
 > The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
 
+<!-- template:attributes -->
 r[attributes.codegen.instruction_set]
 ## The `instruction_set` attribute
 
@@ -644,44 +645,42 @@ The *`instruction_set` [attribute]* specifies the instruction set that a functio
 > <!-- ignore: arm-only -->
 > ```rust,ignore
 > #[instruction_set(arm::a32)]
-> fn foo_arm_code() {}
+> fn arm_code() {}
 >
 > #[instruction_set(arm::t32)]
-> fn bar_thumb_code() {}
+> fn thumb_code() {}
 > ```
 
 r[attributes.codegen.instruction_set.syntax]
-The `instruction_set` attribute uses the [MetaListPaths] syntax, and a path comprised of the architecture family name and instruction set name.
+The `instruction_set` attribute uses the [MetaListPaths] syntax to specify a single path consisting of the architecture family name and instruction set name.
 
 r[attributes.codegen.instruction_set.allowed-positions]
-The `instruction_set` attribute may only be applied to:
-
-- [Free functions][items.fn]
-- [Inherent associated functions][items.associated.fn]
-- [Trait impl functions][items.impl.trait]
-- [Trait definition functions][items.traits] with a body
-- [Closures][expr.closure]
+The `instruction_set` attribute may only be applied to functions, including [closures][expr.closure], [free functions][items.fn], and associated functions defined (i.e. with a body) in [inherent impls][items.associated.fn], [trait impls][items.impl.trait], and [trait definitions][items.traits].
 
 > [!NOTE]
-> `rustc` currently ignores `instruction_set` in other positions. This may change in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.codegen.instruction_set.duplicates]
-The `instruction_set` attribute may only be specified once on an item.
+The `instruction_set` attribute may be used only once on a function.
 
 r[attributes.codegen.instruction_set.target-limits]
 The `instruction_set` attribute may only be used with a target that supports the given value.
 
+r[attributes.codegen.instruction_set.inline-asm]
+When the `instruction_set` attribute is used, any inline assembly in the function must use the specified instruction set instead of the target default.
+
 r[attributes.codegen.instruction_set.arm]
 ### `instruction_set` on ARM
 
-For the `ARMv4T` and `ARMv5te` architectures, the following are supported:
-* `arm::a32` --- Generate the function as A32 "ARM" code.
-* `arm::t32` --- Generate the function as T32 "Thumb" code.
+When targeting the `ARMv4T` and `ARMv5te` architectures, the supported values for `instruction_set` are:
 
-Using the `instruction_set` attribute has the following effects:
+- `arm::a32` --- Generate the function as A32 "ARM" code.
+- `arm::t32` --- Generate the function as T32 "Thumb" code.
 
-* If the address of the function is taken as a function pointer, the low bit of the address will be set to 0 (arm) or 1 (thumb) depending on the instruction set.
-* Any inline assembly in the function must use the specified instruction set instead of the target default.
+If the address of the function is taken as a function pointer, the low bit of the address will depend on the selected instruction set:
+
+- For `arm::a32` ("ARM"), it will be 0.
+- For `arm::t32` ("Thumb"), it will be 1.
 
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
