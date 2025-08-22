@@ -4,6 +4,7 @@ r[crate]
 r[crate.syntax]
 ```grammar,items
 @root Crate ->
+    FRONTMATTER?
     InnerAttribute*
     Item*
 ```
