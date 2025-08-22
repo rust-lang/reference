@@ -3,48 +3,109 @@ r[attributes.codegen]
 
 The following [attributes] are used for controlling code generation.
 
-r[attributes.codegen.hint]
-## Optimization hints
-
-r[attributes.codegen.hint.cold-inline]
-The `cold` and `inline` [attributes] give suggestions to generate code in a
-way that may be faster than what it would do without the hint. The attributes
-are only hints, and may be ignored.
-
-r[attributes.codegen.hint.usage]
-Both attributes can be used on [functions]. When applied to a function in a
-[trait], they apply only to that function when used as a default function for
-a trait implementation and not to all trait implementations. The attributes
-have no effect on a trait function without a body.
-
 r[attributes.codegen.inline]
 ### The `inline` attribute
 
 r[attributes.codegen.inline.intro]
-The *`inline` [attribute]* suggests that a copy of the attributed function
-should be placed in the caller, rather than generating code to call the
-function where it is defined.
+The *`inline` [attribute]* suggests that a copy of the attributed function should be placed in the caller, rather than generating code to call the function where it is defined.
+
+> [!EXAMPLE]
+> ```rust
+> #[inline]
+> pub fn example1() {}
+>
+> #[inline(always)]
+> pub fn example2() {}
+>
+> #[inline(never)]
+> pub fn example3() {}
+> ```
 
 > [!NOTE]
 > The `rustc` compiler automatically inlines functions based on internal heuristics. Incorrectly inlining functions can make the program slower, so this attribute should be used with care.
+
+r[attributes.codegen.inline.syntax]
+The syntax for the `inline` attribute is:
+
+```grammar,attributes
+@root InlineAttribute ->
+      `inline` `(` `always` `)`
+    | `inline` `(` `never` `)`
+    | `inline`
+```
+
+r[attributes.codegen.inline.allowed-positions]
+The `inline` attribute may only be used on:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+- [Closures][expr.closure]
+
+> [!NOTE]
+> `rustc` currently warns when `inline` is used in some other positions. This may become an error in the future.
+
+r[attributes.codegen.inline.duplicates]
+Only the first instance of `inline` on an item is honored. Subsequent `inline` attributes are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on duplicate `inline` attributes. This may become an error in the future.
 
 r[attributes.codegen.inline.modes]
 There are three ways to use the inline attribute:
 
 * `#[inline]` *suggests* performing an inline expansion.
-* `#[inline(always)]` *suggests* that an inline expansion should always be
-  performed.
-* `#[inline(never)]` *suggests* that an inline expansion should never be
-  performed.
+* `#[inline(always)]` *suggests* that an inline expansion should always be performed.
+* `#[inline(never)]` *suggests* that an inline expansion should never be performed.
 
 > [!NOTE]
 > `#[inline]` in every form is a hint, with no *requirements* on the language to place a copy of the attributed function in the caller.
 
+r[attributes.codegen.inline.trait]
+When `inline` is applied to a function in a [trait definition], it applies only to that function when used as a default function for a trait implementation and not to all trait implementations.
+
+r[attributes.codegen.inline.externally-exported]
+The `inline` attribute is ignored if the function is externally exported. This may happen with the [`no_mangle`] or [`export_name`] attribute.
+
 r[attributes.codegen.cold]
 ### The `cold` attribute
 
-The *`cold` [attribute]* suggests that the attributed function is unlikely to
-be called.
+r[attributes.codegen.cold.intro]
+The *`cold` [attribute]* suggests that the attributed function is unlikely to be called.
+
+> [!EXAMPLE]
+> ```rust
+> #[cold]
+> pub fn example() {}
+> ```
+
+r[attributes.codegen.cold.syntax]
+The `cold` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+
+r[attributes.codegen.cold.allowed-positions]
+The `cold` attribute may only be used on:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+- [External block functions][items.extern.fn]
+- [Closures][expr.closure]
+
+> [!NOTE]
+> `rustc` currently warns when `inline` is used in some other positions. This may become an error in the future.
+
+<!-- TODO: rustc currently seems to allow cold on a trait function without a body, but it appears to be ignored. I think that may be a bug, and it should at least warn if not reject (like inline does). -->
+
+r[attributes.codegen.cold.duplicates]
+Duplicate instances of the `cold` attribute are ignored.
+
+> [!NOTE]
+> `rustc` currently warns on duplicate `cold` attributes.
+
+r[attributes.codegen.cold.trait]
+When `cold` is applied to a function in a [trait definition], it applies only to that function when used as a default function for a trait implementation and not to all trait implementations.
 
 r[attributes.codegen.naked]
 ## The `naked` attribute
@@ -684,10 +745,12 @@ If the address of the function is taken as a function pointer, the low bit of th
 
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
+[`export_name`]: ../abi.md#the-export_name-attribute
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`Location`]: core::panic::Location
 [`naked_asm!`]: ../inline-assembly.md
+[`no_mangle`]: ../abi.md#the-no_mangle-attribute
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
 [`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [attribute]: ../attributes.md
@@ -697,5 +760,6 @@ If the address of the function is taken as a function pointer, the low bit of th
 [rust-abi]: ../items/external-blocks.md#abi
 [target architecture]: ../conditional-compilation.md#target_arch
 [trait]: ../items/traits.md
+[trait definition]: ../items/traits.md
 [undefined behavior]: ../behavior-considered-undefined.md
 [unsafe attribute]: ../attributes.md#r-attributes.safety
