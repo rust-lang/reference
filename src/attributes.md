@@ -359,7 +359,7 @@ The following is an index of all built-in attributes.
 [`link_ordinal`]: items/external-blocks.md#the-link_ordinal-attribute
 [`link_section`]: abi.md#the-link_section-attribute
 [`link`]: items/external-blocks.md#the-link-attribute
-[`macro_export`]: macros-by-example.md#path-based-scope
+[`macro_export`]: macros-by-example.md#the-macro_export-attribute
 [`macro_use`]: macros-by-example.md#the-macro_use-attribute
 [`must_use`]: attributes/diagnostics.md#the-must_use-attribute
 [`naked`]: attributes/codegen.md#the-naked-attribute
