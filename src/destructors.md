@@ -412,7 +412,7 @@ An *extending pattern* is either
 
 * An [identifier pattern] that binds by reference or mutable reference.
 * A [struct][struct pattern], [tuple][tuple pattern], [tuple struct][tuple
-  struct pattern], or [slice][slice pattern] pattern where at least one of the
+  struct pattern], [slice][slice pattern], or [or-pattern][or-patterns] where at least one of the
   direct subpatterns is an extending pattern.
 
 So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`,
