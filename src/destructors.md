@@ -474,6 +474,7 @@ let &ref x = &*&temp(); // OK
 r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
+r[destructors.scope.lifetime-extension.exprs.extending]
 For a let statement with an initializer, an *extending expression* is an
 expression which is one of the following:
 
@@ -486,12 +487,18 @@ expression which is one of the following:
 * The final expression of an extending [block expression] except for an [async block expression].
 * The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
 * An arm expression of an extending [`match`] expression.
+* The argument(s) to an extending [`pin!`] or [`format_args!`] [macro invocation] expression.
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
 are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
+r[destructors.scope.lifetime-extension.exprs.borrow]
 The operand of any extending borrow expression has its temporary scope
 extended.
+
+r[destructors.scope.lifetime-extension.exprs.macros]
+The built-in macros [`pin!`] and [`format_args!`] create temporaries.
+Any extending [`pin!`] or [`format_args!`] [macro invocation] expression has an extended temporary scope.
 
 > [!NOTE]
 > `rustc` does not treat [array repeat operands] of extending [array] expressions as extending expressions. Whether it should is an open question.
@@ -504,6 +511,7 @@ Here are some examples where expressions have extended temporary scopes:
 
 ```rust,edition2024
 # use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
+# use std::pin::pin;
 # static X: AtomicU64 = AtomicU64::new(0);
 # struct S;
 # impl Drop for S { fn drop(&mut self) { X.fetch_add(1, Relaxed); } }
@@ -527,6 +535,8 @@ let x = if true { &temp() } else { &temp() };
 //           Final exprs of `if`/`else` blocks.
 # x;
 let x = match () { _ => &temp() }; // `match` arm expression.
+# x;
+let x = pin!(&temp()); // Argument to `pin!`.
 # x;
 //
 // All of the temporaries above are still live here.
@@ -618,6 +628,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [initialized]: glossary.md#initialized
 [interior mutability]: interior-mutability.md
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
+[macro invocation]: macros.md#macro-invocation
 [non-unwinding ABI boundary]: items/functions.md#unwinding
 [panic]: panic.md
 [place context]: expressions.md#place-expressions-and-value-expressions
@@ -664,3 +675,6 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [`match`]: expressions/match-expr.md
 [`while let`]: expressions/loop-expr.md#while-let-patterns
 [`while`]: expressions/loop-expr.md#predicate-loops
+
+[`pin!`]: std::pin::pin
+[`format_args!`]: core::format_args
