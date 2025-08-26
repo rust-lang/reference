@@ -435,6 +435,8 @@ expression which is one of the following:
   expression.
 * The arguments to an extending [tuple struct] or [tuple variant] constructor expression.
 * The final expression of any extending [block expression].
+* The arm(s) of an extending [`match`] expression.
+* The final expressions of an extending [`if`] expression's consequent, `else if`, and `else` blocks.
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
 are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
@@ -458,6 +460,10 @@ let x = (&*&temp(),);
 # x;
 let x = { [Some(&temp()) ] };
 # x;
+let x = match () { _ => &temp() };
+# x;
+let x = if true { &temp() } else { &temp() };
+# x;
 let ref x = temp();
 # x;
 let ref x = *&temp();
@@ -476,6 +482,8 @@ Here are some examples where expressions don't have extended temporary scopes:
 let x = std::convert::identity(&temp()); // ERROR
 # x;
 let x = (&temp()).use_temp();  // ERROR
+# x;
+let x = match &temp() { x => x }; // ERROR
 # x;
 ```
 
