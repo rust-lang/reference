@@ -624,8 +624,8 @@ fn err<const N: usize>(t: &T<N>) -> &[u16] {
 ```
 
 Note: This is a hard error, not a lint. Implementations may determine the
-target’s ABI alignment either directly from the borrowed type, or—when the full
-layout of an array is unavailable in generic contexts—by using the element type’s
+target's ABI alignment either directly from the borrowed type, or---when the full
+layout of an array is unavailable in generic contexts---by using the element type's
 alignment (align([T]) == align(T)). The check must remain conservative and never
 permit creating misaligned references.
 
