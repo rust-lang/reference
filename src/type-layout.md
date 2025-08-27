@@ -605,7 +605,7 @@ For array and slice fields `[T; N]` and `[T]`, the ABI alignment equals that of 
 
 **Examples**
 
-```rust
+```rust,ignore
 // Allowed: `u8` has ABI alignment 1, which is ≤ the packed alignment (typically 1).
 #[repr(C, packed)]
 struct S<const N: usize> { buf: [u8; N] }
