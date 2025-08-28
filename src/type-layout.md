@@ -601,7 +601,10 @@ When borrowing a field of a `repr(packed(...))` struct, Rust must not create a *
 - It is a **hard error** (E0793) to create a reference whose **ABI alignment requirement** is **greater** than the struct’s packed alignment.
 - Borrowing is **allowed** if the target’s ABI alignment is **less than or equal to** the struct’s packed alignment.
 
-For array and slice fields `[T; N]` and `[T]`, the ABI alignment equals that of the element type `T` and **does not depend on the length `N`**. (Sketch: from `&[T]` one can obtain `&T`, hence `align([T]) ≥ align(T)`; from `&T` one can obtain `&[T; 1]` via `std::array::from_ref`, hence `align(T) ≥ align([T])`. Therefore `align([T]) == align(T)`.)
+For array and slice fields `` `[T; N]` `` and `` `[T]` ``, the ABI alignment equals that of the element type `` `T` `` and **does not depend on the length** `` `N` ``.
+*(Sketch: from `` `&[T]` `` one can obtain `` `&T` ``, hence `` `align([T])` `` ≥ `` `align(T)` ``;
+from `` `&T` `` one can obtain `` `&[T; 1]` `` via `` `std::array::from_ref` ``, hence `` `align(T)` `` ≥ `` `align([T])` ``.
+Therefore `` `align([T]) == align(T)` ``.)*
 
 **Examples**
 
