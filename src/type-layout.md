@@ -595,7 +595,7 @@ own, `packed` does not provide any guarantee about field ordering). An
 important consequence of these rules is that a type with `#[repr(packed(1))]`
 (or `#[repr(packed)]`) will have no inter-field padding.
 
-[r[layout.repr.packed.borrowing]]
+r[layout.repr.packed.borrowing]
 When borrowing a field of a `repr(packed(...))` struct, Rust must not create a **misaligned reference** (which would be undefined behavior). Therefore:
 
 - It is a **hard error** (E0793) to create a reference whose **ABI alignment requirement** is **greater** than the struct’s packed alignment.
@@ -629,7 +629,7 @@ fn err<const N: usize>(t: &T<N>) -> &[u16] {
 Note: This is a hard error, not a lint. Implementations may determine the
 target's ABI alignment either directly from the borrowed type, or---when the full
 layout of an array is unavailable in generic contexts---by using the element type's
-alignment (align([T]) == align(T)). The check must remain conservative and never
+alignment (`align([T])` == `align(T)`). The check must remain conservative and never
 permit creating misaligned references.
 
 r[layout.repr.alignment.constraint-exclusive]
