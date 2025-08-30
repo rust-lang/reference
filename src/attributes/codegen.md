@@ -501,9 +501,18 @@ specification. Many specifications are described in the [RISC-V ISA Manual],
 
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
-`a`         |                     | [A][rv-a] --- Atomic instructions
-`c`         |                     | [C][rv-c] --- Compressed instructions
+`a`         | `zaamo`, `zalrsc`   | [A][rv-a] --- Atomic instructions
+`b`         | `zba`, `zbc`, `zbs` | [B][rv-b] --- Bit Manipulation instructions
+`c`         | `zca`               | [C][rv-c] --- Compressed instructions
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
+`za64rs`    | `za128rs`           | [Za64rs][rv-za64rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 64 Bytes
+`za128rs`   |                     | [Za128rs][rv-za128rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 128 Bytes
+`zaamo`     |                     | [Zaamo][rv-zaamo] --- Atomic Memory Operation instructions
+`zabha`     | `zaamo`             | [Zabha][rv-zabha] --- Byte and Halfword Atomic Memory Operation instructions
+`zacas`     | `zaamo`             | [Zacas][rv-zacas] --- Atomic Compare-and-Swap (CAS) instructions
+`zalrsc`    |                     | [Zalrsc][rv-zalrsc] --- Load-Reserved/Store-Conditional instructions
+`zama16b`   |                     | [Zama16b][rv-zama16b] --- Platform Behavior: Misaligned loads, stores, and AMOs to main memory regions that do not cross a naturally aligned 16-byte boundary are atomic
+`zawrs`     |                     | [Zawrs][rv-zawrs] --- Wait-on-Reservation-Set instructions
 `zba`       |                     | [Zba][rv-zba] --- Address Generation instructions
 `zbb`       |                     | [Zbb][rv-zbb] --- Basic bit-manipulation
 `zbc`       | `zbkc`              | [Zbc][rv-zbc] --- Carry-less multiplication
@@ -511,6 +520,25 @@ Feature     | Implicitly Enables  | Description
 `zbkc`      |                     | [Zbkc][rv-zbkc] --- Carry-less multiplication for Cryptography
 `zbkx`      |                     | [Zbkx][rv-zbkx] --- Crossbar permutations
 `zbs`       |                     | [Zbs][rv-zbs] --- Single-bit instructions
+`zca`       |                     | [Zca][rv-zca] --- Compressed instructions: integer part subset
+`zcb`       | `zca`               | [Zcb][rv-zcb] --- Simple Code-size Saving Compressed instructions
+`zcmop`     | `zca`               | [Zcmop][rv-zcmop] --- Compressed May-Be-Operations
+`zic64b`    |                     | [Zic64b][rv-zic64b] --- Platform Behavior: Naturally aligned 64 byte Cache blocks
+`zicbom`    |                     | [Zicbom][rv-zicbom] --- Cache-Block Management instructions
+`zicbop`    |                     | [Zicbop][rv-zicbop] --- Cache-Block Prefetch Hint instructions
+`zicboz`    |                     | [Zicboz][rv-zicboz] --- Cache-Block Zero instruction
+`ziccamoa`  |                     | [Ziccamoa][rv-ziccamoa] --- Platform Behavior: Cacheable and Coherent Main memory supports all basic atomic operations
+`ziccif`    |                     | [Ziccif][rv-ziccif] --- Platform Behavior: Cacheable and Coherent Main memory supports instruction fetch and fetches of naturally aligned power-of-2 sizes up to `min(ILEN,XLEN)` are atomic
+`zicclsm`   |                     | [Zicclsm][rv-zicclsm] --- Platform Behavior: Cacheable and Coherent Main memory supports misaligned load/store accesses
+`ziccrse`   |                     | [Ziccrse][rv-ziccrse] --- Platform Behavior: Cacheable and Coherent Main memory guarantees eventual success on LR/SC sequences
+`zicntr`    | `zicsr`             | [Zicntr][rv-zicntr] --- Base Counters and Timers
+`zicond`    |                     | [Zicond][rv-zicond] --- Integer Conditional Operation instructions
+`zicsr`     |                     | [Zicsr][rv-zicsr] --- Control and Status Register (CSR) instructions
+`zifencei`  |                     | [Zifencei][rv-zifencei] --- Instruction-Fetch Fence instruction
+`zihintntl`   |                   | [Zihintntl][rv-zihintntl] --- Non-Temporal Locality Hint instructions
+`zihintpause` |                   | [Zihintpause][rv-zihintpause] --- Pause Hint instruction
+`zihpm`     | `zicsr`             | [Zihpm][rv-zihpm] --- Hardware Performance Counters
+`zimop`     |                     | [Zimop][rv-zimop] --- May-Be-Operations
 `zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
 `zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
 `zknd`      |                                                    | [Zknd][rv-zknd] --- NIST Suite: AES Decryption
@@ -521,12 +549,22 @@ Feature     | Implicitly Enables  | Description
 `zksed`     |                                                    | [Zksed][rv-zksed] --- ShangMi Suite: SM4 Block Cipher Instructions
 `zksh`      |                                                    | [Zksh][rv-zksh] --- ShangMi Suite: SM3 Hash Function Instructions
 `zkt`       |                                                    | [Zkt][rv-zkt] --- Data Independent Execution Latency Subset
+`ztso`      |                     | [Ztso][rv-ztso] --- Total Store Ordering
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
 [rv-a]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
+[rv-b]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-c]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/c-st-ext.adoc
 [rv-m]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/m-st-ext.adoc
+[rv-za64rs]: https://github.com/riscv/riscv-profiles/blob/rva23-rvb23-ratified/src/rva23-profile.adoc
+[rv-za128rs]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-zaamo]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
+[rv-zabha]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zabha.adoc
+[rv-zacas]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zacas.adoc
+[rv-zalrsc]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
+[rv-zama16b]: https://github.com/riscv/riscv-profiles/blob/rva23-rvb23-ratified/src/rva23-profile.adoc
+[rv-zawrs]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zawrs.adoc
 [rv-zba]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-zbb]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-zbc]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
@@ -534,6 +572,25 @@ Feature     | Implicitly Enables  | Description
 [rv-zbkc]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-zbkx]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-zbs]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zca]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zc.adoc
+[rv-zcb]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zc.adoc
+[rv-zcmop]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zimop.adoc
+[rv-zic64b]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-zicbom]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/cmo.adoc
+[rv-zicbop]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/cmo.adoc
+[rv-zicboz]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/cmo.adoc
+[rv-ziccamoa]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-ziccif]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-zicclsm]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-ziccrse]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
+[rv-zicntr]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/counters.adoc
+[rv-zicond]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zicond.adoc
+[rv-zicsr]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zicsr.adoc
+[rv-zifencei]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zifencei.adoc
+[rv-zihintntl]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zihintntl.adoc
+[rv-zihintpause]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zihintpause.adoc
+[rv-zihpm]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/counters.adoc
+[rv-zimop]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/zimop.adoc
 [rv-zk]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zkn]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zkne]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
@@ -544,6 +601,7 @@ Feature     | Implicitly Enables  | Description
 [rv-zksed]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zksh]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zkt]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-ztso]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/ztso-st-ext.adoc
 
 r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
