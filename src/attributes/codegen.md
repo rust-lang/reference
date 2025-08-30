@@ -428,9 +428,9 @@ in another manual hosted on the [RISC-V GitHub Account].
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
 `a`         |                     | [A][rv-a] --- Atomic instructions
+`b`         | `zba`, `zbc`, `zbs` | [B][rv-b] --- Bit Manipulation instructions
 `c`         |                     | [C][rv-c] --- Compressed instructions
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
-`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] --- Bit Manipulation instructions
 `zba`       |                     | [Zba][rv-zb-zba] --- Address Generation instructions
 `zbb`       |                     | [Zbb][rv-zb-zbb] --- Basic bit-manipulation
 `zbc`       |                     | [Zbc][rv-zb-zbc] --- Carry-less multiplication
@@ -452,9 +452,9 @@ Feature     | Implicitly Enables  | Description
 <!-- Keep links near each table to make it easier to move and update. -->
 
 [rv-a]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/a-st-ext.adoc
+[rv-b]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-c]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/c-st-ext.adoc
 [rv-m]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/m-st-ext.adoc
-[rv-zb]: https://github.com/riscv/riscv-bitmanip
 [rv-zb-zba]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zba.adoc
 [rv-zb-zbb]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbb.adoc
 [rv-zb-zbc]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbc.adoc
