@@ -417,11 +417,21 @@ fn documented() {
 > Except for lints, it is idiomatic to only use outer attributes on function items.
 
 r[items.fn.attributes.builtin-attributes]
-The attributes that have meaning on a function are [`cfg`], [`cfg_attr`], [`deprecated`],
-[`doc`], [`export_name`], [`link_section`], [`no_mangle`], [the lint check
-attributes], [`must_use`], [the procedural macro attributes], [the testing
-attributes], and [the optimization hint attributes]. Functions also accept
-attributes macros.
+The attributes that have meaning on a function are:
+
+- [`cfg_attr`]
+- [`cfg`]
+- [`cold`]
+- [`deprecated`]
+- [`doc`]
+- [`export_name`]
+- [`inline`]
+- [`link_section`]
+- [`must_use`]
+- [`no_mangle`]
+- [Lint check attributes]
+- [Procedural macro attributes]
+- [Testing attributes]
 
 r[items.fn.param-attributes]
 ## Attributes on function parameters
@@ -471,10 +481,11 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [attributes]: ../attributes.md
 [`cfg`]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg_attr`]: ../conditional-compilation.md#the-cfg_attr-attribute
-[the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
-[the procedural macro attributes]: ../procedural-macros.md
-[the testing attributes]: ../attributes/testing.md
-[the optimization hint attributes]: ../attributes/codegen.md#optimization-hints
+[lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
+[procedural macro attributes]: ../procedural-macros.md#attribute-macros
+[testing attributes]: ../attributes/testing.md
+[`cold`]: ../attributes/codegen.md#the-cold-attribute
+[`inline`]: ../attributes/codegen.md#the-inline-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
