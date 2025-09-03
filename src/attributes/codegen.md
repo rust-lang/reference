@@ -74,6 +74,12 @@ The `inline` attribute supports these modes:
 r[attributes.codegen.inline.trait]
 When `inline` is applied to a function in a [trait], it applies only to the code of the [default definition].
 
+r[attributes.codegen.inline.async]
+When `inline` is applied to an [async function] or [async closure], it applies only to the code of the generated `poll` function.
+
+> [!NOTE]
+> For more details, see [Rust issue #129347](https://github.com/rust-lang/rust/issues/129347).
+
 r[attributes.codegen.inline.externally-exported]
 The `inline` attribute is ignored if the function is externally exported with [`no_mangle`] or [`export_name`].
 
@@ -764,6 +770,8 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [associated functions]: items.associated.fn
 [async blocks]: expr.block.async
+[async closure]: expr.closure.async
+[async function]: items.fn.async
 [attribute]: ../attributes.md
 [attributes]: ../attributes.md
 [bodies]: items.fn.body
