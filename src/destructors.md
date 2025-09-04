@@ -408,19 +408,68 @@ r[destructors.scope.lifetime-extension.patterns]
 #### Extending based on patterns
 
 r[destructors.scope.lifetime-extension.patterns.extending]
-An *extending pattern* is either
+An *extending pattern* is either:
 
 * An [identifier pattern] that binds by reference or mutable reference.
-* A [struct][struct pattern], [tuple][tuple pattern], [tuple struct][tuple
-  struct pattern], [slice][slice pattern], or [or-pattern][or-patterns] where at least one of the
-  direct subpatterns is an extending pattern.
 
-So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`,
-`&ref x` and `&(ref x,)` are not.
+  ```rust
+  # fn temp() {}
+  let ref x = temp(); // Binds by reference.
+  # x;
+  let ref mut x = temp(); // Binds by mutable reference.
+  # x;
+  ```
+
+* A [struct][struct pattern], [tuple][tuple pattern], [tuple struct][tuple struct pattern], [slice][slice pattern], or [or-pattern][or-patterns] where at least one of the direct subpatterns is an extending pattern.
+
+  ```rust
+  # use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
+  # static X: AtomicU64 = AtomicU64::new(0);
+  struct W<T>(T);
+  # impl<T> Drop for W<T> { fn drop(&mut self) { X.fetch_add(1, Relaxed); } }
+  let W { 0: ref x } = W(()); // Struct pattern.
+  # x;
+  let W(ref x) = W(()); // Tuple struct pattern.
+  # x;
+  let (W(ref x),) = (W(()),); // Tuple pattern.
+  # x;
+  let [W(ref x), ..] = [W(())]; // Slice pattern.
+  # x;
+  let (Ok(W(ref x)) | Err(&ref x)) = Ok(W(())); // Or pattern.
+  # x;
+  //
+  // All of the temporaries above are still live here.
+  # assert_eq!(0, X.load(Relaxed));
+  ```
+
+So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`, `&ref x` and `&(ref x,)` are not.
 
 r[destructors.scope.lifetime-extension.patterns.let]
 If the pattern in a `let` statement is an extending pattern then the temporary
 scope of the initializer expression is extended.
+
+```rust
+# fn temp() {}
+// This is an extending pattern, so the temporary scope is extended.
+let ref x = *&temp(); // OK
+# x;
+```
+
+```rust,compile_fail,E0716
+# fn temp() {}
+// This is neither an extending pattern nor an extending expression,
+// so the temporary is dropped at the semicolon.
+let &ref x = *&&temp(); // ERROR
+# x;
+```
+
+```rust
+# fn temp() {}
+// This is not an extending pattern but it is an extending expression,
+// so the temporary lives beyond the `let` statement.
+let &ref x = &*&temp(); // OK
+# x;
+```
 
 r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
@@ -479,13 +528,9 @@ let x = if true { &temp() } else { &temp() };
 # x;
 let x = match () { _ => &temp() }; // `match` arm expression.
 # x;
-let ref x = temp(); // Initializer expression.
-# x;
-let ref x = *&temp(); // Initializer expression.
-# x;
 //
 // All of the temporaries above are still live here.
-# assert_eq!(X.load(Relaxed), 0);
+# assert_eq!(0, X.load(Relaxed));
 ```
 
 Here are some examples where expressions don't have extended temporary scopes:
