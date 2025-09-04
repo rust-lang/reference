@@ -862,6 +862,49 @@ r[expr.assign.destructure.discard-value]
 r[expr.assign.destructure.default-binding]
 Note that default binding modes do not apply for the desugared expression.
 
+> [!NOTE]
+> Although basic assignment expressions are not [temporary scopes], the desugaring of destructuring assignments restricts the temporary scope of its assigned value operand.
+> For example:
+>
+> ```rust
+> # fn temp() {}
+> use std::convert::identity;
+>
+> let x;
+> // In a basic assignment, `temp()` is dropped at the end of the
+> // enclosing temporary scope, so `x` can be assigned and used
+> // within the same temporary scope.
+> (x = identity(&temp()), x);
+> ```
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # use std::convert::identity;
+> let x;
+> // In a destructuring assignment, `temp()` is dropped at the end of
+> // the `let` statement in the desugaring, so `x` cannot be assigned.
+> [x] = [identity(&temp())]; // ERROR
+> ```
+>
+> Additionally, [temporary lifetime extension] applies to the `let` statement in a desugared destructuring assignment.
+>
+> ```rust
+> # fn temp() {}
+> # use std::convert::identity;
+> let x;
+> // The temporary scope of `temp()` is extended to the end of the
+> // block in the desugaring, so `x` may be assigned, but it may not
+> // be used.
+> [x] = [&temp()];
+> ```
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # use std::convert::identity;
+> let x;
+> ([x] = [&temp()], x); // ERROR
+> ```
+
 r[expr.compound-assign]
 ## Compound assignment expressions
 
@@ -1025,6 +1068,8 @@ As with normal assignment expressions, compound assignment expressions always pr
 [unit]: ../types/tuple.md
 [Unit-only enums]: ../items/enumerations.md#unit-only-enum
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
+[temporary lifetime extension]: ../destructors.md#temporary-lifetime-extension
+[temporary scopes]: ../destructors.md#temporary-scopes
 [temporary value]: ../expressions.md#temporaries
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [Function pointer]: ../types/function-pointer.md
