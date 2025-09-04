@@ -47,7 +47,7 @@ See <https://rust-lang.github.io/mdBook/format/theme/syntax-highlighting.html#su
 
 Rust examples are tested via rustdoc, and should include the appropriate annotations:
 
-* `edition2015` or `edition2018` --- If it is edition-specific (see `book.toml` for the default).
+* `edition2015`, `edition2018`, etc. --- If it is edition-specific (see `book.toml` for the default).
 * `no_run` --- The example should compile successfully, but should not be executed.
 * `should_panic` --- The example should compile and run, but produce a panic.
 * `compile_fail` --- The example is expected to fail to compile.
