@@ -6,12 +6,6 @@ r[input.syntax]
 @root CHAR -> <a Unicode scalar value>
 
 NUL -> U+0000
-
-TAB -> U+0009
-
-LF -> U+000A
-
-CR -> U+000D
 ```
 
 r[input.intro]
