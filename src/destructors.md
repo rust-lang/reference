@@ -448,15 +448,18 @@ Here are some examples where expressions have extended temporary scopes:
 
 ```rust
 # fn temp() {}
-# trait Use { fn use_temp(&self) -> &Self { self } }
-# impl Use for () {}
 // The temporary that stores the result of `temp()` lives in the same scope
 // as x in these cases.
 let x = &temp();
+# x;
 let x = &temp() as &dyn Send;
+# x;
 let x = (&*&temp(),);
+# x;
 let x = { [Some(&temp()) ] };
+# x;
 let ref x = temp();
+# x;
 let ref x = *&temp();
 # x;
 ```
@@ -471,6 +474,7 @@ Here are some examples where expressions don't have extended temporary scopes:
 // end of the let statement in these cases.
 
 let x = std::convert::identity(&temp()); // ERROR
+# x;
 let x = (&temp()).use_temp();  // ERROR
 # x;
 ```
