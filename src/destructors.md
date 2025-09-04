@@ -434,9 +434,9 @@ expression which is one of the following:
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
 * The arguments to an extending [tuple struct] or [tuple variant] constructor expression.
-* The final expression of any extending [block expression].
-* The arm(s) of an extending [`match`] expression.
-* The final expressions of an extending [`if`] expression's consequent, `else if`, and `else` blocks.
+* The final expression of an extending [block expression] except for an [async block expression].
+* The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
+* An arm expression of an extending [`match`] expression.
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
 are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
@@ -448,42 +448,92 @@ extended.
 
 Here are some examples where expressions have extended temporary scopes:
 
-```rust
-# fn temp() {}
-// The temporary that stores the result of `temp()` lives in the same scope
-// as x in these cases.
-let x = &temp();
+```rust,edition2024
+# use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
+# static X: AtomicU64 = AtomicU64::new(0);
+# struct S;
+# impl Drop for S { fn drop(&mut self) { X.fetch_add(1, Relaxed); } }
+# const fn temp() -> S { S }
+let x = &temp(); // Operand of borrow.
 # x;
-let x = &temp() as &dyn Send;
+let x = &raw const *&temp(); // Operand of raw borrow.
+# assert_eq!(X.load(Relaxed), 0);
+let x = &temp() as &dyn Send; // Operand of cast.
 # x;
-let x = (&*&temp(),);
+let x = (&*&temp(),); // Operand of tuple constructor.
 # x;
-let x = { [Some(&temp()) ] };
+let x = { [Some(&temp())] }; // Final expr of block.
 # x;
-let x = match () { _ => &temp() };
+let x = const { &temp() }; // Final expr of `const` block.
+# x;
+let x = unsafe { &temp() }; // Final expr of `unsafe` block.
 # x;
 let x = if true { &temp() } else { &temp() };
+//              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//           Final exprs of `if`/`else` blocks.
 # x;
-let ref x = temp();
+let x = match () { _ => &temp() }; // `match` arm expression.
 # x;
-let ref x = *&temp();
+let ref x = temp(); // Initializer expression.
 # x;
+let ref x = *&temp(); // Initializer expression.
+# x;
+//
+// All of the temporaries above are still live here.
+# assert_eq!(X.load(Relaxed), 0);
 ```
 
 Here are some examples where expressions don't have extended temporary scopes:
 
-```rust,compile_fail
+```rust,compile_fail,E0716
+# fn temp() {}
+// Arguments to function calls are not extending expressions. The
+// temporary is dropped at the semicolon.
+let x = core::convert::identity(&temp()); // ERROR
+# x;
+```
+
+```rust,compile_fail,E0716
 # fn temp() {}
 # trait Use { fn use_temp(&self) -> &Self { self } }
 # impl Use for () {}
-// The temporary that stores the result of `temp()` only lives until the
-// end of the let statement in these cases.
+// Receivers of method calls are not extending expressions.
+let x = (&temp()).use_temp(); // ERROR
+# x;
+```
 
-let x = std::convert::identity(&temp()); // ERROR
-# x;
-let x = (&temp()).use_temp();  // ERROR
-# x;
+```rust,compile_fail,E0716
+# fn temp() {}
+// Scrutinees of match expressions are not extending expressions.
 let x = match &temp() { x => x }; // ERROR
+# x;
+```
+
+```rust,compile_fail,E0515
+# fn temp() {}
+// Final expressions of `async` blocks are not extending expressions.
+let x = async { &temp() }; // ERROR
+# x;
+```
+
+```rust,compile_fail,E0515
+# fn temp() {}
+// Final expressions of closures are not extending expressions.
+let x = || &temp(); // ERROR
+# x;
+```
+
+```rust,compile_fail,E0716
+# fn temp() {}
+// Operands of loop breaks are not extending expressions.
+let x = loop { break &temp() }; // ERROR
+# x;
+```
+
+```rust,compile_fail,E0716
+# fn temp() {}
+// Operands of breaks to labels are not extending expressions.
+let x = 'a: { break 'a &temp() }; // ERROR
 # x;
 ```
 
@@ -544,6 +594,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [tuple variant]: type.enum.declaration
 
 [array expression]: expressions/array-expr.md#array-expressions
+[async block expression]: expr.block.async
 [block expression]: expressions/block-expr.md
 [borrow expression]: expressions/operator-expr.md#borrow-operators
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
