@@ -444,6 +444,11 @@ are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 The operand of any extending borrow expression has its temporary scope
 extended.
 
+> [!NOTE]
+> `rustc` does not treat [array repeat operands] of extending [array] expressions as extending expressions. Whether it should is an open question.
+>
+> For details, see [Rust issue #146092](https://github.com/rust-lang/rust/issues/146092).
+
 #### Examples
 
 Here are some examples where expressions have extended temporary scopes:
@@ -594,6 +599,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [tuple variant]: type.enum.declaration
 
 [array expression]: expressions/array-expr.md#array-expressions
+[array repeat operands]: expr.array.repeat-operand
 [async block expression]: expr.block.async
 [block expression]: expressions/block-expr.md
 [borrow expression]: expressions/operator-expr.md#borrow-operators
