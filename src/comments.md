@@ -9,8 +9,8 @@ r[comments.syntax]
 
 BLOCK_COMMENT ->
       `/*`
-        ( ~[`*` `!`] | `**` | BlockCommentOrDoc )
-        ( BlockCommentOrDoc | ~`*/` )*
+        ( ~[`*` `!`] | `**` | BLOCK_COMMENT_OR_DOC )
+        ( BLOCK_COMMENT_OR_DOC | ~`*/` )*
       `*/`
     | `/**/`
     | `/***/`
@@ -19,18 +19,18 @@ BLOCK_COMMENT ->
     `//!` ~[LF CR]*
 
 INNER_BLOCK_DOC ->
-    `/*!` ( BlockCommentOrDoc | ~[`*/` CR] )* `*/`
+    `/*!` ( BLOCK_COMMENT_OR_DOC | ~[`*/` CR] )* `*/`
 
 @root OUTER_LINE_DOC ->
     `///` (~`/` ~[LF CR]*)?
 
 OUTER_BLOCK_DOC ->
     `/**`
-      ( ~`*` | BlockCommentOrDoc )
-      ( BlockCommentOrDoc | ~[`*/` CR] )*
+      ( ~`*` | BLOCK_COMMENT_OR_DOC )
+      ( BLOCK_COMMENT_OR_DOC | ~[`*/` CR] )*
     `*/`
 
-@root BlockCommentOrDoc ->
+@root BLOCK_COMMENT_OR_DOC ->
       BLOCK_COMMENT
     | OUTER_BLOCK_DOC
     | INNER_BLOCK_DOC
