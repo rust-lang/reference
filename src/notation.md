@@ -50,27 +50,8 @@ r[notation.grammar.visualizations]
 
 Below each grammar block is a button to toggle the display of a [syntax diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
 
-[syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
-
-r[notation.grammar.common]
-### Common productions
-
-The following are common definitions used in the grammar.
-
-r[input.syntax]
-```grammar,lexer
-@root CHAR -> <a Unicode scalar value>
-
-NUL -> U+0000
-
-TAB -> U+0009
-
-LF -> U+000A
-
-CR -> U+000D
-```
-
 [binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [keywords]: keywords.md
+[syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 [tokens]: tokens.md
 [unary operators]: expressions/operator-expr.md#borrow-operators
