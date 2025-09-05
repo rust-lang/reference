@@ -1,6 +1,10 @@
+r[notation]
 # Notation
 
+r[notation.grammar]
 ## Grammar
+
+r[notation.grammar.syntax]
 
 The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 
@@ -26,7 +30,8 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 
 Sequences have a higher precedence than `|` alternation.
 
-## String table productions
+r[notation.grammar.string-tables]
+### String table productions
 
 Some rules in the grammar &mdash; notably [unary operators], [binary
 operators], and [keywords] &mdash; are given in a simplified form: as a listing
@@ -40,30 +45,13 @@ When such a string in `monospace` font occurs inside the grammar,
 it is an implicit reference to a single member of such a string table
 production. See [tokens] for more information.
 
-## Grammar visualizations
+r[notation.grammar.visualizations]
+### Grammar visualizations
 
 Below each grammar block is a button to toggle the display of a [syntax diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
 
-[syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
-
-## Common productions
-
-The following are common definitions used in the grammar.
-
-r[input.syntax]
-```grammar,lexer
-@root CHAR -> <a Unicode scalar value>
-
-NUL -> U+0000
-
-TAB -> U+0009
-
-LF -> U+000A
-
-CR -> U+000D
-```
-
 [binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [keywords]: keywords.md
+[syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 [tokens]: tokens.md
 [unary operators]: expressions/operator-expr.md#borrow-operators
