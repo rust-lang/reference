@@ -470,7 +470,7 @@ main > .rule {
         2.5em * var(--h2-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h2-em-mult) - 1em) / 2
-    )
+    );
 }
 .rule:has(+ h3, + .tests-popup + h3) {
     /* multiplying by this turns h3's em into .rule's em*/
@@ -484,7 +484,7 @@ main > .rule {
         2.5em * var(--h3-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h3-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h4, + .tests-popup + h4) {
@@ -499,7 +499,7 @@ main > .rule {
         2em * var(--h4-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h4-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h5, + .tests-popup + h5) {
@@ -514,7 +514,7 @@ main > .rule {
         2em * var(--h5-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h5-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h6, + .tests-popup + h6) {
@@ -529,7 +529,7 @@ main > .rule {
         2em * var(--h6-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h6-em-mult) - 1em) / 2
-    )
+    );
 }
 
 /* Sets the color for [!HISTORY] blockquote admonitions. */
@@ -597,10 +597,10 @@ main > .rule {
 }
 
 .light .grammar-literal {
-    background-color: #fafafa
+    background-color: #fafafa;
 }
 .rust .grammar-literal {
-    background-color: #dedede
+    background-color: #dedede;
 }
 .coal .grammar-literal {
     background-color: #1d1f21;
@@ -609,7 +609,7 @@ main > .rule {
     background-color: #1d1f21;
 }
 .ayu .grammar-literal {
-    background-color: #191f26
+    background-color: #191f26;
 }
 
 .grammar-production:target, .railroad-production:target {
