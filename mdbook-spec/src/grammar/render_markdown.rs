@@ -45,6 +45,9 @@ impl Production {
             .get(&self.name)
             .map(|path| path.to_string())
             .unwrap_or_else(|| format!("missing"));
+        for expr in &self.comments {
+            expr.render_markdown(cx, output);
+        }
         write!(
             output,
             "<span class=\"grammar-text grammar-production\" id=\"{id}\" \
@@ -77,6 +80,7 @@ impl Expression {
             | ExpressionKind::Terminal(_)
             | ExpressionKind::Prose(_)
             | ExpressionKind::Break(_)
+            | ExpressionKind::Comment(_)
             | ExpressionKind::Charset(_)
             | ExpressionKind::NegExpression(_)
             | ExpressionKind::Unicode(_) => &self.kind,
@@ -162,6 +166,9 @@ impl Expression {
             ExpressionKind::Break(indent) => {
                 output.push_str("\\\n");
                 output.push_str(&"&nbsp;".repeat(*indent));
+            }
+            ExpressionKind::Comment(s) => {
+                write!(output, "<span class=\"grammar-comment\">// {s}</span>").unwrap();
             }
             ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
             ExpressionKind::NegExpression(e) => {

@@ -24,6 +24,10 @@
     --alert-example-color: #8250df;
     --grammar-literal-bg: #dedede;
 }
+.light, .rust {
+    --grammar-comment-color: lch(from var(--quote-bg) calc(l - 50) 0 0);
+    --inline-code-color: var(--grammar-comment-color);
+}
 .coal, .navy {
     --alert-note-color: #4493f8;
     --alert-warning-color: #d29922;
@@ -39,6 +43,8 @@
     --gramar-literal-bg: #191f26;
 }
 .coal, .navy, .ayu {
+    --grammar-comment-color: lch(from var(--quote-bg) calc(l + 50) 0 0);
+    --inline-code-color: var(--grammar-comment-color);
     --railroad-background-color: hsl(230, 10%, 20%);
     --railroad-background-image:
         linear-gradient(to right, rgba(150, 150, 150, .05) 1px, transparent 1px),
@@ -607,6 +613,15 @@ main > .rule {
 /* English words inside the grammar. */
 .grammar-text {
     font-family: "Open Sans", sans-serif;
+}
+
+/* Comments inside the grammar. */
+.grammar-comment {
+    font-family: "Open Sans", sans-serif;
+    color: var(--grammar-comment-color);
+}
+.grammar-comment code.hljs {
+    background: var(--grammar-literal-bg);
 }
 
 /* Places a box around literals to differentiate from other grammar punctuation like | and ( . */

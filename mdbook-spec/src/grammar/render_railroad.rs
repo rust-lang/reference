@@ -102,8 +102,11 @@ impl Expression {
                                 .map(|e| e.render_railroad(cx, stack))
                                 .filter_map(|n| n)
                                 .collect();
+                            if seq.is_empty() {
+                                return None;
+                            }
                             let seq: Sequence<Box<dyn Node>> = Sequence::new(seq);
-                            Box::new(seq)
+                            Some(Box::new(seq))
                         };
 
                         // If `stack` is true, split the sequence on Breaks and
@@ -127,16 +130,18 @@ impl Expression {
                                 &es[..]
                             };
 
-                            let mut breaks: Vec<_> =
-                                es.split(|e| e.is_break()).map(|es| make_seq(es)).collect();
+                            let mut breaks: Vec<_> = es
+                                .split(|e| e.is_break())
+                                .flat_map(|es| make_seq(es))
+                                .collect();
                             // If there aren't any breaks, don't bother stacking.
-                            if breaks.len() == 1 {
-                                breaks.pop().unwrap()
-                            } else {
-                                Box::new(Stack::new(breaks))
+                            match breaks.len() {
+                                0 => return None,
+                                1 => breaks.pop().unwrap(),
+                                _ => Box::new(Stack::new(breaks)),
                             }
                         } else {
-                            make_seq(&es)
+                            make_seq(&es)?
                         }
                     }
                     // Treat `e?` and `e{..1}` / `e{0..1}` equally.
@@ -205,6 +210,7 @@ impl Expression {
                     ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
                     ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
                     ExpressionKind::Break(_) => return None,
+                    ExpressionKind::Comment(_) => return None,
                     ExpressionKind::Charset(set) => {
                         let ns: Vec<_> = set.iter().map(|c| c.render_railroad(cx)).collect();
                         Box::new(Choice::<Box<dyn Node>>::new(ns))

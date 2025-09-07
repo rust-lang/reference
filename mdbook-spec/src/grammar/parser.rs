@@ -122,6 +122,12 @@ impl Parser<'_> {
     }
 
     fn parse_production(&mut self, category: &str, path: &Path) -> Result<Production> {
+        let mut comments = Vec::new();
+        while let Ok(comment) = self.parse_comment() {
+            self.expect("\n", "expected newline")?;
+            comments.push(Expression::new_kind(comment));
+            comments.push(Expression::new_kind(ExpressionKind::Break(0)));
+        }
         let is_root = self.parse_is_root();
         self.space0();
         let name = self
@@ -133,6 +139,7 @@ impl Parser<'_> {
         };
         Ok(Production {
             name,
+            comments,
             category: category.to_string(),
             expression,
             path: path.to_owned(),
@@ -218,6 +225,8 @@ impl Parser<'_> {
                 bail!(self, "expected indentation on next line");
             }
             ExpressionKind::Break(space.len())
+        } else if next == b'/' {
+            self.parse_comment()?
         } else if next == b'`' {
             self.parse_terminal()?
         } else if next == b'[' {
@@ -267,6 +276,13 @@ impl Parser<'_> {
         }
         self.expect("`", "expected closing backtick")?;
         Ok(term)
+    }
+
+    /// Parse e.g. `// Single line comment.`.
+    fn parse_comment(&mut self) -> Result<ExpressionKind> {
+        self.expect("//", "expected `//`")?;
+        let text = self.take_while(&|x| x != '\n').to_string();
+        Ok(ExpressionKind::Comment(text))
     }
 
     fn parse_charset(&mut self) -> Result<ExpressionKind> {
