@@ -441,11 +441,11 @@ main > .rule {
 
     main > .rule > a.rule-link::before {
         content: "[*]";
-    } 
-    
+    }
+
     .test-link > a::before {
         content: "[T]";
-    } 
+    }
 }
 
 /* Align rules to various siblings */
