@@ -398,11 +398,7 @@ println!("{:?}", C);
 ```
 
 r[destructors.scope.lifetime-extension.sub-expressions]
-If a [borrow][borrow expression], [dereference][dereference expression],
-[field][field expression], or [tuple indexing expression] has an extended
-temporary scope then so does its operand. If an [indexing expression] has an
-extended temporary scope then the indexed expression also has an extended
-temporary scope.
+If a [borrow], [dereference][dereference expression], [field][field expression], or [tuple indexing expression] has an extended temporary scope then so does its operand. If an [indexing expression] has an extended temporary scope then the indexed expression also has an extended temporary scope.
 
 r[destructors.scope.lifetime-extension.patterns]
 #### Extending based on patterns
@@ -479,7 +475,8 @@ For a let statement with an initializer, an *extending expression* is an
 expression which is one of the following:
 
 * The initializer expression.
-* The operand of an extending [borrow expression].
+* The operand of an extending [borrow] expression.
+* The [super operands] of an extending [super macro call] expression.
 * The operand(s) of an extending [array][array expression], [cast][cast
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
@@ -487,18 +484,15 @@ expression which is one of the following:
 * The final expression of an extending [block expression] except for an [async block expression].
 * The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
 * An arm expression of an extending [`match`] expression.
-* The argument(s) to an extending [`pin!`] or [`format_args!`] [macro invocation] expression.
 
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
 are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
-r[destructors.scope.lifetime-extension.exprs.borrow]
-The operand of any extending borrow expression has its temporary scope
-extended.
+r[destructors.scope.lifetime-extension.exprs.borrows]
+The operand of an extending [borrow] expression has its [temporary scope] [extended].
 
-r[destructors.scope.lifetime-extension.exprs.macros]
-The built-in macros [`pin!`] and [`format_args!`] create temporaries.
-Any extending [`pin!`] or [`format_args!`] [macro invocation] expression has an extended temporary scope.
+r[destructors.scope.lifetime-extension.exprs.super-macros]
+The [super temporaries] of an extending [super macro call] expression have their [scopes][temporary scopes] [extended].
 
 > [!NOTE]
 > `rustc` does not treat [array repeat operands] of extending [array] expressions as extending expressions. Whether it should is an open question.
@@ -510,10 +504,10 @@ Any extending [`pin!`] or [`format_args!`] [macro invocation] expression has an 
 Here are some examples where expressions have extended temporary scopes:
 
 ```rust,edition2024
+# use core::pin::pin;
 # use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
-# use std::pin::pin;
 # static X: AtomicU64 = AtomicU64::new(0);
-# struct S;
+# #[derive(Debug)] struct S;
 # impl Drop for S { fn drop(&mut self) { X.fetch_add(1, Relaxed); } }
 # const fn temp() -> S { S }
 let x = &temp(); // Operand of borrow.
@@ -536,7 +530,13 @@ let x = if true { &temp() } else { &temp() };
 # x;
 let x = match () { _ => &temp() }; // `match` arm expression.
 # x;
-let x = pin!(&temp()); // Argument to `pin!`.
+let x = pin!(temp()); // Super operand of super macro call expression.
+# x;
+let x = pin!({ &mut temp() }); // As above.
+# x;
+# // FIXME: Simplify after this PR lands:
+# // <https://github.com/rust-lang/rust/pull/145882>.
+let x = format_args!("{:?}{:?}", (), temp()); // As above.
 # x;
 //
 // All of the temporaries above are still live here.
@@ -597,6 +597,23 @@ let x = 'a: { break 'a &temp() }; // ERROR
 # x;
 ```
 
+```rust,edition2024,compile_fail,E0716
+# use core::pin::pin;
+# fn temp() {}
+// The argument to `pin!` is only an extending expression if the call
+// is an extending expression. Since it's not, the inner block is not
+// an extending expression, so the temporaries in its trailing
+// expression are dropped immediately.
+pin!({ &temp() }); // ERROR
+```
+
+<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
+```rust,edition2024,compile_fail,E0716
+# fn temp() {}
+// As above.
+format_args!("{:?}{:?}", (), { &temp() }); // ERROR
+```
+
 r[destructors.forget]
 ## Not running destructors
 
@@ -628,7 +645,6 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [initialized]: glossary.md#initialized
 [interior mutability]: interior-mutability.md
 [lazy boolean expression]: expressions/operator-expr.md#lazy-boolean-operators
-[macro invocation]: macros.md#macro-invocation
 [non-unwinding ABI boundary]: items/functions.md#unwinding
 [panic]: panic.md
 [place context]: expressions.md#place-expressions-and-value-expressions
@@ -658,12 +674,18 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [array repeat operands]: expr.array.repeat-operand
 [async block expression]: expr.block.async
 [block expression]: expressions/block-expr.md
-[borrow expression]: expressions/operator-expr.md#borrow-operators
+[borrow]: expr.operator.borrow
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
+[extended]: destructors.scope.lifetime-extension
 [field expression]: expressions/field-expr.md
 [indexing expression]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [struct expression]: expressions/struct-expr.md
+[super macro call]: expr.super-macros
+[super operands]: expr.super-macros
+[super temporaries]: expr.super-macros
+[temporary scope]: destructors.scope.temporary
+[temporary scopes]: destructors.scope.temporary
 [tuple expression]: expressions/tuple-expr.md#tuple-expressions
 [tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
 
@@ -675,6 +697,3 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [`match`]: expressions/match-expr.md
 [`while let`]: expressions/loop-expr.md#while-let-patterns
 [`while`]: expressions/loop-expr.md#predicate-loops
-
-[`pin!`]: std::pin::pin
-[`format_args!`]: core::format_args

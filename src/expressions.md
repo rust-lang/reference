@@ -255,6 +255,92 @@ When using a value expression in most place expression contexts, a temporary unn
 The expression evaluates to that location instead, except if [promoted] to a `static`.
 The [drop scope] of the temporary is usually the end of the enclosing statement.
 
+r[expr.super-macros]
+### Super macros
+
+r[expr.super-macros.intro]
+Certain built-in macros may create [temporaries] whose [scopes][temporary scopes] may be [extended]. These temporaries are *super temporaries* and these macros are *super macros*. [Invocations][macro invocations] of these macros are *super macro call expressions*. Arguments to these macros may be *super operands*.
+
+> [!NOTE]
+> When a super macro call expression is an [extending expression], its super operands are [extending expressions] and the [scopes][temporary scopes] of the super temporaries are [extended]. See [destructors.scope.lifetime-extension.exprs].
+
+r[expr.super-macros.format_args]
+#### `format_args!`
+
+r[expr.super-macros.format_args.super-operands]
+Except for the format string argument, all arguments passed to [`format_args!`] are *super operands*.
+
+<!-- FIXME: Remove after https://github.com/rust-lang/rust/pull/145882 lands. -->
+> [!NOTE]
+> When there is only one placeholder, `rustc` does not yet treat the corresponding argument as a super operand. This is a bug.
+>
+> For details, see Rust issue [#145880](https://github.com/rust-lang/rust/issues/145880).
+
+<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
+```rust,edition2024
+# fn temp() -> String { String::from("") }
+// Due to the call being an extending expression and the argument
+// being a super operand, the inner block is an extending expression,
+// so the scope of the temporary created in its trailing expression
+// is extended.
+let _ = format_args!("{:?}{}", (), { &temp() }); // OK
+```
+
+r[expr.super-macros.format_args.super-temporaries]
+The super operands of [`format_args!`] are [implicitly borrowed] and are therefore [place expression contexts]. When a [value expression] is passed as an argument, it creates a *super temporary*.
+
+<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
+```rust
+# fn temp() -> String { String::from("") }
+let x = format_args!("{}{}", temp(), temp());
+x; // <-- The temporaries are extended, allowing use here.
+```
+
+The expansion of a call to [`format_args!`] sometimes creates other internal *super temporaries*.
+
+```rust,compile_fail,E0716
+let x = {
+    // This call creates an internal temporary.
+    let x = format_args!("{:?}", 0);
+    x // <-- The temporary is extended, allowing its use here.
+}; // <-- The temporary is dropped here.
+x; // ERROR
+```
+
+```rust
+// This call doesn't create an internal temporary.
+let x = { let x = format_args!("{}", 0); x };
+x; // OK
+```
+
+> [!NOTE]
+> The details of when [`format_args!`] does or does not create internal temporaries are currently unspecified.
+
+r[expr.super-macros.pin]
+#### `pin!`
+
+r[expr.super-macros.pin.super-operands]
+The argument to [`pin!`] is a *super operand*.
+
+```rust,edition2024
+# use core::pin::pin;
+# fn temp() {}
+// As above for `format_args!`.
+let _ = pin!({ &temp() }); // OK
+```
+
+r[expr.super-macros.pin.super-temporaries]
+The argument to [`pin!`] is a [value expression context] and creates a *super temporary*.
+
+```rust
+# use core::pin::pin;
+# fn temp() {}
+// The argument is evaluated into a super temporary.
+let x = pin!(temp());
+// The temporary is extended, allowing its use here.
+x; // OK
+```
+
 r[expr.implicit-borrow]
 ### Implicit Borrows
 
@@ -285,6 +371,7 @@ Implicit borrows may be taken in the following expressions:
 * Operand of the [dereference operator][deref] (`*`).
 * Operands of [comparison].
 * Left operands of the [compound assignment].
+* Arguments to [`format_args!`] except the format string.
 
 r[expr.overload]
 ## Overloading Traits
@@ -311,6 +398,8 @@ They are never allowed before:
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`if let`]:             expressions/if-expr.md#if-let-patterns
+[`format_args!`]:       core::format_args
+[`pin!`]:               core::pin::pin
 [`Sized`]:              special-types-and-traits.md#sized
 [`while let`]:          expressions/loop-expr.md#while-let-patterns
 [array expressions]:    expressions/array-expr.md
@@ -324,17 +413,23 @@ They are never allowed before:
 [deref]:                expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
+[extended]:             destructors.scope.lifetime-extension
+[extending expression]: destructors.scope.lifetime-extension.exprs
+[extending expressions]: destructors.scope.lifetime-extension.exprs
 [field]:                expressions/field-expr.md
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
 [implicit borrow]:      #implicit-borrows
+[implicitly borrowed]:  expr.implicit-borrow
 [implicitly mutably borrowed]: #implicit-borrows
 [interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
+[macro invocations]:    macro.invocation
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [Outer attributes]:     attributes.md
 [paths]:                expressions/path-expr.md
+[place expression contexts]: expr.place-value
 [promoted]:             destructors.md#constant-promotion
 [Range]:                expressions/range-expr.md
 [raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
@@ -344,10 +439,14 @@ They are never allowed before:
 [static variables]:     items/static-items.md
 [struct]:               expressions/struct-expr.md
 [Structs]:              expr.struct
+[temporaries]:          expr.temporary
+[temporary scopes]:     destructors.scope.temporary
 [Temporary values]:     #temporaries
 [tuple expressions]:    expressions/tuple-expr.md
 [Tuple structs]:        items.struct.tuple
 [Tuples]:               expressions/tuple-expr.md
 [Underscores]:          expressions/underscore-expr.md
 [Unit structs]:         items.struct.unit
+[value expression context]: expr.place-value
+[value expression]:     expr.place-value
 [Variables]:            variables.md
