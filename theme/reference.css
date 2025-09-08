@@ -1,5 +1,60 @@
 /* Custom CSS for the Rust Specification. */
 
+/* Per-theme variables. */
+:root {
+    --railroad-background-color: hsl(30, 20%, 95%);
+    --railroad-background-image:
+        linear-gradient(to right, rgba(30, 30, 30, .05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 30, .05) 1px, transparent 1px);
+    --railroad-path-stroke: black;
+    --railroad-rect-stroke: black;
+    --railroad-rect-fill: hsl(-290, 70%, 90%);
+}
+.light {
+    --alert-note-color: #0969da;
+    --alert-warning-color: #9a6700;
+    --alert-edition-color: #1a7f37;
+    --alert-example-color: #8250df;
+    --gramar-literal-bg: #fafafa;
+}
+.rust {
+    --alert-note-color: #023b95;
+    --alert-warning-color: #603700;
+    --alert-edition-color: #008200;
+    --alert-example-color: #8250df;
+    --grammar-literal-bg: #dedede;
+}
+.light, .rust {
+    --grammar-comment-color: lch(from var(--quote-bg) calc(l - 50) 0 0);
+    --inline-code-color: var(--grammar-comment-color);
+}
+.coal, .navy {
+    --alert-note-color: #4493f8;
+    --alert-warning-color: #d29922;
+    --alert-edition-color: #3fb950;
+    --alert-example-color: #ab7df8;
+    --grammar-literal-bg: #1d1f21;
+}
+.ayu {
+    --alert-note-color: #74b9ff;
+    --alert-warning-color: #f0b72f;
+    --alert-edition-color: #2bd853;
+    --alert-example-color: #d3abff;
+    --gramar-literal-bg: #191f26;
+}
+.coal, .navy, .ayu {
+    --grammar-comment-color: lch(from var(--quote-bg) calc(l + 50) 0 0);
+    --inline-code-color: var(--grammar-comment-color);
+    --railroad-background-color: hsl(230, 10%, 20%);
+    --railroad-background-image:
+        linear-gradient(to right, rgba(150, 150, 150, .05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(150, 150, 150, .05) 1px, transparent 1px);
+    --railroad-path-stroke: hsl(200, 10%, 60%);
+    --railroad-text-fill: hsl(230, 30%, 80%);
+    --railroad-rect-stroke: hsl(200, 10%, 50%);
+    --railroad-rect-fill: hsl(230, 20%, 20%);
+}
+
 /*
 .parenthetical class used to keep e.g. "less-than symbol (<)" from wrapping
 the end parenthesis onto its own line. Use in a span between the last word and
@@ -58,31 +113,6 @@ See mdbook-spec/src/admonitions.rs.
     margin-right: 8px;
 }
 
-.light .alert {
-    --alert-note-color: #0969da;
-    --alert-warning-color: #9a6700;
-    --alert-edition-color: #1a7f37;
-    --alert-example-color: #8250df;
-}
-.ayu .alert {
-    --alert-note-color: #74b9ff;
-    --alert-warning-color: #f0b72f;
-    --alert-edition-color: #2bd853;
-    --alert-example-color: #d3abff;
-}
-.rust .alert {
-    --alert-note-color: #023b95;
-    --alert-warning-color: #603700;
-    --alert-edition-color: #008200;
-    --alert-example-color: #8250df;
-}
-.coal .alert,
-.navy .alert {
-    --alert-note-color: #4493f8;
-    --alert-warning-color: #d29922;
-    --alert-edition-color: #3fb950;
-    --alert-example-color: #ab7df8;
-}
 .alert-note blockquote {
     border-inline-start-color: var(--alert-note-color);
 }
@@ -441,11 +471,11 @@ main > .rule {
 
     main > .rule > a.rule-link::before {
         content: "[*]";
-    } 
-    
+    }
+
     .test-link > a::before {
         content: "[T]";
-    } 
+    }
 }
 
 /* Align rules to various siblings */
@@ -470,7 +500,7 @@ main > .rule {
         2.5em * var(--h2-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h2-em-mult) - 1em) / 2
-    )
+    );
 }
 .rule:has(+ h3, + .tests-popup + h3) {
     /* multiplying by this turns h3's em into .rule's em*/
@@ -484,7 +514,7 @@ main > .rule {
         2.5em * var(--h3-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h3-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h4, + .tests-popup + h4) {
@@ -499,7 +529,7 @@ main > .rule {
         2em * var(--h4-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h4-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h5, + .tests-popup + h5) {
@@ -514,7 +544,7 @@ main > .rule {
         2em * var(--h5-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h5-em-mult) - 1em) / 2
-    )
+    );
 }
 
 .rule:has(+ h6, + .tests-popup + h6) {
@@ -529,7 +559,7 @@ main > .rule {
         2em * var(--h6-em-mult) - 16px
         /* half of the font size difference */
         + (1em * var(--h6-em-mult) - 1em) / 2
-    )
+    );
 }
 
 /* Sets the color for [!HISTORY] blockquote admonitions. */
@@ -585,6 +615,15 @@ main > .rule {
     font-family: "Open Sans", sans-serif;
 }
 
+/* Comments inside the grammar. */
+.grammar-comment {
+    font-family: "Open Sans", sans-serif;
+    color: var(--grammar-comment-color);
+}
+.grammar-comment code.hljs {
+    background: var(--grammar-literal-bg);
+}
+
 /* Places a box around literals to differentiate from other grammar punctuation like | and ( . */
 .grammar-literal {
     font-family: var(--mono-font);
@@ -596,20 +635,8 @@ main > .rule {
     color: var(--inline-code-color);
 }
 
-.light .grammar-literal {
-    background-color: #fafafa
-}
-.rust .grammar-literal {
-    background-color: #dedede
-}
-.coal .grammar-literal {
-    background-color: #1d1f21;
-}
-.navy .grammar-literal {
-    background-color: #1d1f21;
-}
-.ayu .grammar-literal {
-    background-color: #191f26
+.grammar-literal {
+    background-color: var(--grammar-literal-bg);
 }
 
 .grammar-production:target, .railroad-production:target {
@@ -651,25 +678,6 @@ main > .rule {
 /* This is used to toggle the hidden status of the railroad diagrams. */
 .grammar-hidden {
     display: none;
-}
-
-:root {
-    --railroad-background-color: hsl(30, 20%, 95%);
-    --railroad-background-image: linear-gradient(to right, rgba(30, 30, 30, .05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(30, 30, 30, .05) 1px, transparent 1px);
-    --railroad-path-stroke: black;
-    --railroad-rect-stroke: black;
-    --railroad-rect-fill: hsl(-290, 70%, 90%);
-}
-
-.coal, .navy, .ayu {
-    --railroad-background-color: hsl(230, 10%, 20%);
-    --railroad-background-image: linear-gradient(to right, rgba(150, 150, 150, .05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(150, 150, 150, .05) 1px, transparent 1px);
-    --railroad-path-stroke: hsl(200, 10%, 60%);
-    --railroad-text-fill: hsl(230, 30%, 80%);
-    --railroad-rect-stroke: hsl(200, 10%, 50%);
-    --railroad-rect-fill: hsl(230, 20%, 20%);
 }
 
 svg.railroad {

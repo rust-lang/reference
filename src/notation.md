@@ -27,6 +27,7 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | U+xxxx            | U+0060                        | A single unicode character                |
 | \<text\>          | \<any ASCII char except CR\>  | An English description of what should be matched |
 | Rule <sub>suffix</sub> | IDENTIFIER_OR_KEYWORD <sub>_except `crate`_</sub> | A modification to the previous rule |
+| // Comment. | // Single line comment. | A comment extending to the end of the line. |
 
 Sequences have a higher precedence than `|` alternation.
 
