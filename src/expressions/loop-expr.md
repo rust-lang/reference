@@ -296,6 +296,9 @@ A `break` expression is normally associated with the innermost `loop`, `for` or 
 r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
+r[expr.loop.break.type]
+A `break` expression itself has a type of [`!`](../types/never.md).
+
 r[expr.loop.block-labels]
 ## Labeled block expressions
 
@@ -354,6 +357,9 @@ Like `break`, `continue` is normally associated with the innermost enclosing loo
 
 r[expr.loop.continue.in-loop-only]
 A `continue` expression is only permitted in the body of a loop.
+
+r[expr.loop.continue.type]
+A `continue` expression itself has a type of [`!`](../types/never.md).
 
 r[expr.loop.break-value]
 ## `break` and loop values

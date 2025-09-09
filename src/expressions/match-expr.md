@@ -91,6 +91,28 @@ Every binding in each `|` separated pattern must appear in all of the patterns i
 r[expr.match.binding-restriction]
 Every binding of the same name must have the same type, and have the same binding mode.
 
+r[expr.match.type]
+The type of the overall `match` expression is the least upper bound of the individual match arms.
+
+r[expr.match.type.diverging.empty]
+If there are no match arms, then the `match` expression is diverging and the type is [`!`](../types/never.md).
+
+r[expr.match.type.diverging.conditional]
+If either the scrutinee expression or all of the match arms diverge, then the entire `match` expression also diverges.
+
+> [!NOTE]
+> If even the entire `match` expression diverges, its type may not be [`!`](../types/never.md).
+>
+>```rust,compile_fail,E0004
+>    let a = match true {
+>        true => Some(panic!()),
+>        false => None,
+>    };
+>    // Fails to compile because `a` has the type `Option<!>`
+>    // (or, `Option<()>` in edition 2021 and below)
+>    match a {}
+>```
+
 r[expr.match.guard]
 ## Match guards
 

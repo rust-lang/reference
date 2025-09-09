@@ -43,7 +43,7 @@ r[expr.block.result]
 Then the final operand is executed, if given.
 
 r[expr.block.type]
-The type of a block is the type of the final operand, or `()` if the final operand is omitted.
+Typically, the type of a block is the type of the final operand, or `()` if the final operand is omitted.
 
 ```rust
 # fn fn_call() {}
@@ -61,6 +61,9 @@ assert_eq!(5, five);
 
 > [!NOTE]
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
+
+r[expr.block.type.diverging]
+However, if there are any values unconditionally created within a block that are [diverging](../divergence.md), then the block itself is considered diverging.
 
 r[expr.block.value]
 Blocks are always [value expressions] and evaluate the last operand in value expression context.

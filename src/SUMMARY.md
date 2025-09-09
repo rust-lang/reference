@@ -98,6 +98,7 @@
     - [Subtyping and variance](subtyping.md)
     - [Trait and lifetime bounds](trait-bounds.md)
     - [Type coercions](type-coercions.md)
+    - [Divergence](divergence.md)
     - [Destructors](destructors.md)
     - [Lifetime elision](lifetime-elision.md)
 
