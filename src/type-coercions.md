@@ -221,8 +221,9 @@ r[coerce.unsized.composite]
     * T is not part of the type of any other fields.
 
 r[coerce.unsized.pointer]
-Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T`
-implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide an
+Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` if there exists
+exactly one non-`PhantomData` field which depends on the changed generic parameters
+for which `Field<T>: CoerceUnsized<Field<U>>` holds. This allows it to provide an
 unsized coercion to `Foo<U>`.
 
 > [!NOTE]
