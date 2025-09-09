@@ -22,3 +22,6 @@ fn max(a: i32, b: i32) -> i32 {
     return b;
 }
 ```
+
+r[expr.return.type]
+A `return` expression itself has a type of [`!`](../types/never.md).
