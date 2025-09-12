@@ -107,7 +107,7 @@ impl Spec {
                 }
                 format!(
                     "<div class=\"rule\" id=\"r-{rule_id}\">\
-                        <a class=\"rule-link\" href=\"#r-{rule_id}\" title=\"{rule_id}\"><span>[{rule_id_broken}]</span/></a>\n\
+                        <a class=\"rule-link\" href=\"#r-{rule_id}\" title=\"{rule_id}\"><span>[{rule_id_broken}]</span></a>\n\
                         {test_link}\
                      </div>\n\
                      {test_popup}\n",
