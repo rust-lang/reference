@@ -130,30 +130,37 @@ r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
 
 r[items.extern.abi.cdecl]
-* `unsafe extern "cdecl"` -- The default for x86\_32 C code.
+* `unsafe extern "cdecl"` -- The default for x86_32 C code.
+  * Only available on x86_32 targets.
 
 r[items.extern.abi.stdcall]
-* `unsafe extern "stdcall"` -- The default for the Win32 API on x86\_32.
+* `unsafe extern "stdcall"` -- The default for the Win32 API on x86_32.
+  * Only available on x86_32 targets.
 
 r[items.extern.abi.win64]
-* `unsafe extern "win64"` -- The default for C code on x86\_64 Windows.
+* `unsafe extern "win64"` -- The default for C code on x86_64 Windows.
+  * Only available on x86_64 targets.
 
 r[items.extern.abi.sysv64]
-* `unsafe extern "sysv64"` -- The default for C code on non-Windows x86\_64.
+* `unsafe extern "sysv64"` -- The default for C code on non-Windows x86_64.
+  * Only available on x86_64 targets.
 
 r[items.extern.abi.aapcs]
 * `unsafe extern "aapcs"` -- The default for ARM.
+  * Only available on ARM32 targets.
 
 r[items.extern.abi.fastcall]
 * `unsafe extern "fastcall"` -- The `fastcall` ABI -- corresponds to MSVC's
-  `__fastcall` and GCC and clang's `__attribute__((fastcall))`
+  `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
+  * Only available on x86_32 targets.
 
 r[items.extern.abi.thiscall]
-* `unsafe extern "thiscall"` -- The default for C++ member functions on x86\_32 MSVC -- corresponds to MSVC's
-  `__thiscall` and GCC and clang's `__attribute__((thiscall))`
+* `unsafe extern "thiscall"` -- The default for C++ member functions on x86_32 MSVC -- corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
+  * Only available on x86_32 targets.
 
 r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
+  * Only available on x86 and ARM targets (32bit and 64bit).
 
 r[items.extern.abi.platform-unwind-variants]
 Like `"C"` and `"system"`, most platform-specific ABI strings also have a [corresponding `-unwind` variant][unwind-behavior]; specifically, these are:
