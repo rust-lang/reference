@@ -111,55 +111,50 @@ r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
 
 r[items.extern.abi.rust]
-* `unsafe extern "Rust"` -- The default ABI when you write a normal `fn foo()` in any
-  Rust code.
+* `unsafe extern "Rust"` --- The default ABI when you write a normal `fn foo()` in any Rust code.
 
 r[items.extern.abi.c]
-* `unsafe extern "C"` -- This is the same as `extern fn foo()`; whatever the default
-  your C compiler supports.
+* `unsafe extern "C"` --- This is the same as `extern fn foo()`; whatever the default your C compiler supports.
 
 r[items.extern.abi.system]
-* `unsafe extern "system"` -- Usually the same as `extern "C"`, except on Win32, in
-  which case it's `"stdcall"`, or what you should use to link to the Windows
-  API itself
+* `unsafe extern "system"` --- Usually the same as `extern "C"`, except on Win32, in which case it's `"stdcall"`, or what you should use to link to the Windows API itself.
 
 r[items.extern.abi.unwind]
-* `extern "C-unwind"` and `extern "system-unwind"` -- identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
+* `extern "C-unwind"` and `extern "system-unwind"` --- Identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
 
 r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
 
 r[items.extern.abi.cdecl]
-* `unsafe extern "cdecl"` -- The default for x86_32 C code.
+* `unsafe extern "cdecl"` --- The default for x86_32 C code.
   * Only available on x86_32 targets.
 
 r[items.extern.abi.stdcall]
-* `unsafe extern "stdcall"` -- The default for the Win32 API on x86_32.
+* `unsafe extern "stdcall"` --- The default for the Win32 API on x86_32.
   * Only available on x86_32 targets.
 
 r[items.extern.abi.win64]
-* `unsafe extern "win64"` -- The default for C code on x86_64 Windows.
+* `unsafe extern "win64"` --- The default for C code on x86_64 Windows.
   * Only available on x86_64 targets.
 
 r[items.extern.abi.sysv64]
-* `unsafe extern "sysv64"` -- The default for C code on non-Windows x86_64.
+* `unsafe extern "sysv64"` --- The default for C code on non-Windows x86_64.
   * Only available on x86_64 targets.
 
 r[items.extern.abi.aapcs]
-* `unsafe extern "aapcs"` -- The default for ARM.
+* `unsafe extern "aapcs"` --- The default for ARM.
   * Only available on ARM32 targets.
 
 r[items.extern.abi.fastcall]
-* `unsafe extern "fastcall"` -- The `fastcall` ABI -- corresponds to MSVC's
-  `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
+* `unsafe extern "fastcall"` --- The `fastcall` ABI --- corresponds to MSVC's `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
   * Only available on x86_32 targets.
 
 r[items.extern.abi.thiscall]
-* `unsafe extern "thiscall"` -- The default for C++ member functions on x86_32 MSVC -- corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
+* `unsafe extern "thiscall"` --- The default for C++ member functions on x86_32 MSVC --- corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
   * Only available on x86_32 targets.
 
 r[items.extern.abi.efiapi]
-* `unsafe extern "efiapi"` -- The ABI used for [UEFI] functions.
+* `unsafe extern "efiapi"` --- The ABI used for [UEFI] functions.
   * Only available on x86 and ARM targets (32bit and 64bit).
 
 r[items.extern.abi.platform-unwind-variants]
