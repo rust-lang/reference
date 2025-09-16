@@ -11,12 +11,12 @@ that have since been removed):
 * ML Kit, Cyclone: region based memory management
 * Haskell (GHC): typeclasses, type families
 * Newsqueak, Alef, Limbo: channels, concurrency
-* Erlang: message passing, thread failure, <strike>linked thread failure</strike>,
-  <strike>lightweight concurrency</strike>
+* Erlang: message passing, thread failure, ~~linked thread failure~~,
+  ~~lightweight concurrency~~
 * Swift: optional bindings
 * Scheme: hygienic macros
 * C#: attributes
-* Ruby: closure syntax, <strike>block syntax</strike>
-* NIL, Hermes: <strike>typestate</strike>
+* Ruby: closure syntax, ~~block syntax~~
+* NIL, Hermes: ~~typestate~~
 * [Unicode Annex #31](http://www.unicode.org/reports/tr31/): identifier and
   pattern syntax
