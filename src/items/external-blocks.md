@@ -102,15 +102,17 @@ The `extern` keyword can be followed by an optional <abbr title="application bin
 
 > [!EXAMPLE]
 > ```rust
-> // Interface to the Windows API
-> unsafe extern "system" { }
+> // Interface to the Windows API.
+> unsafe extern "system" { /* ... */ }
 > ```
 
 r[items.extern.abi.default]
 If the ABI string is not specified, it defaults to `"C"`.
 
 > [!NOTE]
-> It is recommended to always specify the ABI to make it clear which ABI is used. Future versions of Rust may make this a requirement, see [#134986](https://github.com/rust-lang/rust/issues/134986).
+> The `extern` syntax without an explicit ABI is being phased out, so it's better to always write the ABI explicitly.
+>
+> For more details, see [Rust issue #134986](https://github.com/rust-lang/rust/issues/134986).
 
 r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
