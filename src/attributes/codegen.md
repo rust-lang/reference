@@ -506,7 +506,7 @@ Feature     | Implicitly Enables  | Description
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
 `zba`       |                     | [Zba][rv-zba] --- Address Generation instructions
 `zbb`       |                     | [Zbb][rv-zbb] --- Basic bit-manipulation
-`zbc`       |                     | [Zbc][rv-zbc] --- Carry-less multiplication
+`zbc`       | `zbkc`              | [Zbc][rv-zbc] --- Carry-less multiplication
 `zbkb`      |                     | [Zbkb][rv-zbkb] --- Bit Manipulation Instructions for Cryptography
 `zbkc`      |                     | [Zbkc][rv-zbkc] --- Carry-less multiplication for Cryptography
 `zbkx`      |                     | [Zbkx][rv-zbkx] --- Crossbar permutations
