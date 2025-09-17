@@ -50,7 +50,7 @@ The `unsafe` qualifier indicates that the type's value is an [unsafe
 function], and the `extern` qualifier indicates it is an [extern function].
 
 r[type.fn-pointer.constraint-variadic]
-For the function to be variadic, its `extern` ABI must be on the [list of ABIs that allow variadic calls][items.extern.variadic.conventions].
+For the function to be variadic, its `extern` ABI must be one of those listed in [items.extern.variadic.conventions].
 
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
