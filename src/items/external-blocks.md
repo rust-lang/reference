@@ -98,7 +98,7 @@ r[items.extern.abi]
 ## ABI
 
 r[items.extern.abi.intro]
-The `extern` keyword can be followed by an optional <abbr title="application binary interface">ABI</abbr> string. The ABI specifies the calling convention of the functions in the block. The calling convention defines a low-level interface for functions, such as how arguments are placed in registers or on the stack, how return values are passed, and who is responsible for cleaning up the stack.
+The `extern` keyword can be followed by an optional [ABI] string. The ABI specifies the calling convention of the functions in the block. The calling convention defines a low-level interface for functions, such as how arguments are placed in registers or on the stack, how return values are passed, and who is responsible for cleaning up the stack.
 
 > [!EXAMPLE]
 > ```rust
@@ -479,6 +479,7 @@ r[items.extern.attributes.fn-parameters]
 Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].
 
+[ABI]: glossary.abi
 [PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
 [UEFI]: https://uefi.org/specifications
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
