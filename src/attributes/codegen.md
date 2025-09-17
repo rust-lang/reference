@@ -508,7 +508,7 @@ Feature     | Implicitly Enables  | Description
 `zbb`       |                     | [Zbb][rv-zbb] --- Basic bit-manipulation
 `zbc`       |                     | [Zbc][rv-zbc] --- Carry-less multiplication
 `zbkb`      |                     | [Zbkb][rv-zbkb] --- Bit Manipulation Instructions for Cryptography
-`zbkc`      |                     | [Zbkc][rv-zbc] --- Carry-less multiplication for Cryptography
+`zbkc`      |                     | [Zbkc][rv-zbkc] --- Carry-less multiplication for Cryptography
 `zbkx`      |                     | [Zbkx][rv-zbkx] --- Crossbar permutations
 `zbs`       |                     | [Zbs][rv-zbs] --- Single-bit instructions
 `zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
