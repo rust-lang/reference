@@ -50,10 +50,7 @@ The `unsafe` qualifier indicates that the type's value is an [unsafe
 function], and the `extern` qualifier indicates it is an [extern function].
 
 r[type.fn-pointer.constraint-variadic]
-Variadic parameters can only be specified with [`extern`] function types with
-the `"C"` or `"cdecl"` calling convention.
-
-This also includes the corresponding [`-unwind` variants][items.fn.extern.unwind].
+For the function to be variadic, its `extern` ABI must be one of those listed in [items.extern.variadic.conventions].
 
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
