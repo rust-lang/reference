@@ -185,6 +185,21 @@ A [*path*] is a sequence of one or more path segments used to refer to an
 [entity](#entity) in the current scope or other levels of a
 [namespace](#namespace) hierarchy.
 
+r[glossary.pointer-metadata]
+### Pointer metadata
+
+Pointer metadata is additional information associated with a raw pointer or reference type.
+
+Pointers for statically sized types (that implement the [`Sized`] trait) and `extern` types are said to be "thin" and their metadata is of type `()` (and is zero-sized).
+
+Pointers for [dynamically sized types] (DSTs) are said to be "wide" or "fat" and consist of the data pointer (that contains the memory address of the value) and some non-zero-sized metadata:
+
+* For structs whose last field is a DST, metadata is the metadata for the last field.
+* For the `str` type, metadata is the length in bytes as `usize`.
+* For slice types like `[T]`, metadata is the length in items as `usize`.
+* For trait objects like `dyn SomeTrait`, metadata is [`DynMetadata<Self>`][DynMetadata]
+  (e.g. `DynMetadata<dyn SomeTrait>`).
+
 ### Prelude
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are
@@ -287,6 +302,7 @@ uninhabited type is "empty" in the sense that there are no values of the type. T
 example of an uninhabited type is the [never type] `!`, or an enum with no variants
 `enum Never { }`. Opposite of [Inhabited](#inhabited).
 
+[DynMetadata]: core::ptr::DynMetadata
 [alignment]: type-layout.md#size-and-alignment
 [associated item]: #associated-item
 [attributes]: attributes.md
