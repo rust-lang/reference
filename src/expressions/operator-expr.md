@@ -862,6 +862,84 @@ r[expr.assign.destructure.discard-value]
 r[expr.assign.destructure.default-binding]
 Note that default binding modes do not apply for the desugared expression.
 
+r[expr.assign.destructure.tmp-scopes]
+> [!NOTE]
+> The desugaring restricts the [temporary scope] of the assigned value operand (the RHS) of a destructuring assignment.
+>
+> In a basic assignment, the [temporary] is dropped at the end of the enclosing temporary scope. Below, that's the statement. Therefore, the assignment and use is allowed.
+>
+> ```rust
+> # fn temp() {}
+> fn f<T>(x: T) -> T { x }
+> let x;
+> (x = f(&temp()), x); // OK
+> ```
+>
+> Conversely, in a destructuring assignment, the temporary is dropped at the end of the `let` statement in the desugaring. As that happens before we try to assign to `x`, below, it fails.
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # fn f<T>(x: T) -> T { x }
+> # let x;
+> [x] = [f(&temp())]; // ERROR
+> ```
+>
+> This desugars to:
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # fn f<T>(x: T) -> T { x }
+> # let x;
+> {
+>     let [_x] = [f(&temp())];
+>     //                     ^
+>     //      The temporary is dropped here.
+>     x = _x; // ERROR
+> }
+> ```
+
+r[expr.assign.destructure.tmp-ext]
+> [!NOTE]
+> Due to the desugaring, the assigned value operand (the RHS) of a destructuring assignment is an [extending expression] within a newly-introduced block.
+>
+> Below, because the [temporary scope] is extended to the end of this introduced block, the assignment is allowed.
+>
+> ```rust
+> # fn temp() {}
+> # let x;
+> [x] = [&temp()]; // OK
+> ```
+>
+> This desugars to:
+>
+> ```rust
+> # fn temp() {}
+> # let x;
+> { let [_x] = [&temp()]; x = _x; } // OK
+> ```
+>
+> However, if we try to use `x`, even within the same statement, we'll get an error because the [temporary] is dropped at the end of this introduced block.
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # let x;
+> ([x] = [&temp()], x); // ERROR
+> ```
+>
+> This desugars to:
+>
+> ```rust,compile_fail,E0716
+> # fn temp() {}
+> # let x;
+> (
+>     {
+>         let [_x] = [&temp()];
+>         x = _x;
+>     }, // <-- The temporary is dropped here.
+>     x, // ERROR
+> );
+> ```
+
 r[expr.compound-assign]
 ## Compound assignment expressions
 
@@ -1011,6 +1089,7 @@ As with normal assignment expressions, compound assignment expressions always pr
 [dropping]: ../destructors.md
 [eval order test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
+[extending expression]: destructors.scope.lifetime-extension.exprs
 [field-less enums]: ../items/enumerations.md#field-less-enum
 [grouped expression]: grouped-expr.md
 [literal expression]: literal-expr.md#integer-literal-expressions
@@ -1025,11 +1104,14 @@ As with normal assignment expressions, compound assignment expressions always pr
 [unit]: ../types/tuple.md
 [Unit-only enums]: ../items/enumerations.md#unit-only-enum
 [value expression]: ../expressions.md#place-expressions-and-value-expressions
+[temporary lifetime extension]: destructors.scope.lifetime-extension
+[temporary scope]: destructors.scope.temporary
 [temporary value]: ../expressions.md#temporaries
 [float-float]: https://github.com/rust-lang/rust/issues/15536
 [Function pointer]: ../types/function-pointer.md
 [Function item]: ../types/function-item.md
 [receiver]: expr.method.intro
+[temporary]: expr.temporary
 [undefined behavior]: ../behavior-considered-undefined.md
 [Underscore expressions]: ./underscore-expr.md
 [range expressions]: ./range-expr.md

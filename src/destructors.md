@@ -266,6 +266,9 @@ smallest scope that contains the expression and is one of the following:
 > [!NOTE]
 > The [scrutinee] of a `match` expression is not a temporary scope, so temporaries in the scrutinee can be dropped after the `match` expression. For example, the temporary for `1` in `match 1 { ref mut z => z };` lives until the end of the statement.
 
+> [!NOTE]
+> The desugaring of a [destructuring assignment] restricts the temporary scope of its assigned value operand (the RHS). For details, see [expr.assign.destructure.tmp-scopes].
+
 r[destructors.scope.temporary.edition2024]
 > [!EDITION-2024]
 > The 2024 edition added two new temporary scope narrowing rules: `if let` temporaries are dropped before the `else` block, and temporaries of tail expressions of blocks are dropped immediately after the tail expression is evaluated.
@@ -485,6 +488,9 @@ expression which is one of the following:
 * The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
 * An arm expression of an extending [`match`] expression.
 
+> [!NOTE]
+> The desugaring of a [destructuring assignment] makes its assigned value operand (the RHS) an extending expression within a newly-introduced block. For details, see [expr.assign.destructure.tmp-ext].
+
 So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
 are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
@@ -640,6 +646,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [binding modes]: patterns.md#binding-modes
 [closure]: types/closure.md
 [destructors]: destructors.md
+[destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
 [identifier pattern]: patterns.md#identifier-patterns
 [initialized]: glossary.md#initialized
