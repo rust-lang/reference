@@ -61,6 +61,7 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
+<!-- template:attributes -->
 r[abi.no_mangle]
 ## The `no_mangle` attribute
 
@@ -74,7 +75,7 @@ The *`no_mangle` attribute* may be used on functions and statics to disable stan
 > ```
 
 r[abi.no_mangle.syntax]
-The `no_mangle` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_mangle` attribute uses the [MetaWord] syntax.
 
 r[abi.no_mangle.allowed-positions]
 The `no_mangle` attribute may only be applied to:
@@ -87,7 +88,7 @@ The `no_mangle` attribute may only be applied to:
 It may not be used with a [closure].
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 <!-- TODO: Currently it works on a trait function with a body, but generates a warning about being phased out. how do we document that?
 https://github.com/rust-lang/rust/pull/86492#issuecomment-885682960
@@ -96,10 +97,10 @@ https://github.com/rust-lang/rust/pull/86492#issuecomment-885682960
 <!-- TODO: should this clarify that external block items are already unmangled?, and thus the attribute does nothing? Currently it is "phased out" warning. -->
 
 r[abi.no_mangle.duplicates]
-Only the first instance of `no_mangle` on an item is honored. Subsequent `no_mangle` attributes are ignored.
+The `no_mangle` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `no_mangle` attributes.
+> `rustc` lints against any use following the first.
 
 r[abi.no_mangle.export_name]
 If `no_mangle` is used with [`export_name`][abi.export_name], then the `export_name` is used instead.
