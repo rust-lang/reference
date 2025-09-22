@@ -473,6 +473,7 @@ Unknown attributes in this namespace are accepted, though they may emit warnings
 Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
 This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
+<!-- template:attributes -->
 r[attributes.diagnostic.on_unimplemented]
 ### The `diagnostic::on_unimplemented` attribute
 
@@ -524,7 +525,7 @@ The following keys have the given meaning:
 * `note` --- Provides additional notes.
 
 r[attributes.diagnostic.on_unimplemented.allowed-positions]
-The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+The `diagnostic::on_unimplemented` attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
 
 r[attributes.diagnostic.on_unimplemented.duplicates]
 If the `diagnostic::on_unimplemented` attribute is specified multiple times, then it behaves as if all options were specified in a single attribute. Duplicates of some options will be ignored, see [attributes.diagnostic.on_unimplemented.repetition].
