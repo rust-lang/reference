@@ -16,6 +16,7 @@ There are also language features that provide a level of control over panic beha
 > [!NOTE]
 > The standard library provides the capability to explicitly panic via the [`panic!` macro][panic!].
 
+<!-- template:attributes -->
 r[panic.panic_handler]
 ## The `panic_handler` attribute
 
@@ -59,16 +60,16 @@ The *`panic_handler` [attribute][attributes]* can be applied to a function to de
 > The [`PanicInfo`] struct contains information about the location of the panic.
 
 r[panic.panic_handler.syntax]
-The `panic_handler` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `panic_handler` attribute uses the [MetaWord] syntax.
 
 r[panic.panic_handler.allowed-positions]
 The `panic_handler` attribute may only be applied to a function with signature `fn(&PanicInfo) -> !`.
 
 r[panic.panic_handler.duplicates]
-Duplicate instances of the `panic_handler` attribute on a function are ignored.
+The `panic_handler` attribute may be used any number of times on a function.
 
 > [!NOTE]
-> `rustc` currently warns about unused duplicate `panic_handler` attributes.
+> `rustc` lints against any use following the first.
 
 r[panic.panic_handler.unique]
 There must be a single `panic_handler` function in the dependency graph.
