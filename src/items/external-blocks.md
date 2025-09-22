@@ -420,6 +420,7 @@ Only the last use of `link_name` on an item has effect.
 r[items.extern.attributes.link_name.link_ordinal]
 The `link_name` attribute may not be used with the [`link_ordinal`] attribute.
 
+<!-- template:attributes -->
 r[items.extern.attributes.link_ordinal]
 ### The `link_ordinal` attribute
 
@@ -452,10 +453,10 @@ r[items.extern.attributes.link_ordinal.max]
 The ordinal must be less than or equal to [`u16::MAX`].
 
 r[items.extern.attributes.link_ordinal.allowed-positions]
-The `link_ordinal` attribute may be specified on a function or static in an `extern` block.
+The `link_ordinal` attribute may only be applied to a function or static in an `extern` block.
 
 r[items.extern.attributes.link_ordinal.duplicates]
-The `link_ordinal` attribute may only be specified once on an item.
+The `link_ordinal` attribute may be used only once on an item.
 
 r[items.extern.attributes.link_ordinal.allowed-kinds]
 The `link_ordinal` attribute may only be used with the [`raw-dylib` linking kind][items.extern.attributes.link.raw-dylib].
