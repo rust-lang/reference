@@ -9,6 +9,7 @@ See *[extern functions]* for information on specifying the ABI for exporting
 functions. See *[external blocks]* for information on specifying the ABI for
 linking external libraries.
 
+<!-- template:attributes -->
 r[abi.used]
 ## The `used` attribute
 
@@ -59,16 +60,16 @@ The *`used` [attribute]* forces a [`static` item][items.static] to be kept in th
 > ```
 
 r[abi.used.syntax]
-The `used` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `used` attribute uses the [MetaWord] syntax.
 
 r[abi.used.allowed-positions]
 The `used` attribute may only be applied to [`static` items][items.static].
 
 r[abi.used.duplicates]
-Only the first instance of `used` on an item is honored. Subsequent `used` attributes are ignored.
+The `used` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `used` attributes.
+> `rustc` lints against any use following the first.
 
 r[abi.no_mangle]
 ## The `no_mangle` attribute
