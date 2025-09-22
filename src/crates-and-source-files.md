@@ -109,6 +109,8 @@ r[crate.no_main]
 
 The *`no_main` [attribute]* may be applied at the crate level to disable emitting the `main` symbol for an executable binary. This is useful when some other object being linked to defines `main`.
 
+
+<!-- template:attributes -->
 r[crate.crate_name]
 ## The `crate_name` attribute
 
