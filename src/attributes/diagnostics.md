@@ -345,6 +345,7 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 [1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
 
+<!-- template:attributes -->
 r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
 
@@ -373,13 +374,13 @@ The `must_use` attribute may be applied to a:
 - [Trait]
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.diagnostics.must_use.duplicates]
-The `must_use` attribute may only be specified once on an item.
+The `must_use` attribute may be used only once on an item.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `must_use` attributes. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 r[attributes.diagnostics.must_use.message]
 The `must_use` attribute may include a message by using the [MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The message will be given alongside the warning.
