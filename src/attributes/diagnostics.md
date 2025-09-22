@@ -549,6 +549,7 @@ error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
    = note: Note 2
 ```
 
+<!-- template:attributes -->
 r[attributes.diagnostic.do_not_recommend]
 ### The `diagnostic::do_not_recommend` attribute
 
@@ -664,7 +665,7 @@ r[attributes.diagnostic.do_not_recommend.allowed-positions]
 The `diagnostic::do_not_recommend` attribute should be placed on a [trait implementation item][trait-impl], though it is not an error to be located in other positions.
 
 r[attributes.diagnostic.do_not_recommend.duplicates]
-Duplicate instances of the `diagnostic::do_not_recommend` attribute are ignored.
+The `diagnostic::do_not_recommend` attribute may be used any number of times on a form.
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [`Drop`]: ../special-types-and-traits.md#drop
