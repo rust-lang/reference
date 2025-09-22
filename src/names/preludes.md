@@ -76,6 +76,7 @@ See https://github.com/rust-lang/rust/issues/57288 for more about the
 alloc/test limitation.
 -->
 
+<!-- template:attributes -->
 r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
@@ -95,16 +96,16 @@ The *`no_std` [attribute][attributes]* is used to prevent the automatic linking 
 > Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
 
 r[names.preludes.extern.no_std.syntax]
-The `no_std` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_std` attribute uses the [MetaWord] syntax.
 
 r[names.preludes.extern.no_std.allowed-positions]
 The `no_std` attribute may only be applied to the crate root.
 
 r[names.preludes.extern.no_std.duplicates]
-Duplicate instances of the `no_std` attribute have no effect.
+The `no_std` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `no_std` attributes.
+> `rustc` lints against any use following the first.
 
 r[names.preludes.extern.no_std.module]
 The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of `std`.
