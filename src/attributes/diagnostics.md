@@ -299,6 +299,7 @@ fn foo() {
 > [!NOTE]
 > `rustc` currently recognizes the tool lints for "[clippy]" and "[rustdoc]".
 
+<!-- template:attributes -->
 r[attributes.diagnostics.deprecated]
 ## The `deprecated` attribute
 
@@ -314,7 +315,7 @@ The *`deprecated` [attribute][attributes]* marks an item as deprecated.
 > ```
 
 r[attributes.diagnostics.deprecated.syntax]
-The `deprecated` attribute has several forms:
+The syntax for the `deprecated` attribute is:
 
 ```grammar,attributes
 @root DeprecatedAttribute ->
@@ -340,10 +341,10 @@ The `deprecated` attribute may be applied to:
 It may not be applied to [trait implementation items][trait-impl].
 
 > [!NOTE]
-> `rustc` currently ignores `deprecated` in other positions, but this may be rejected in the future.
+> `rustc` ignores `deprecated` in other positions, but this may be rejected in the future.
 
 r[attributes.diagnostics.deprecated.duplicates]
-The `deprecated` attribute may only be specified once on an item.
+The `deprecated` attribute may only be used once on an item.
 
 r[attributes.diagnostics.deprecated.behavior]
 A warning is emitted when a deprecated item is used.
