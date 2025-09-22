@@ -82,6 +82,7 @@ r[abi.no_mangle.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.link_section]
 ## The `link_section` attribute
 
@@ -111,7 +112,7 @@ The `link_section` attribute may only be applied to:
 - [Trait definition functions][items.traits] with a body
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[abi.link_section.duplicates]
 Only the first use of `link_section` on an item has effect.
