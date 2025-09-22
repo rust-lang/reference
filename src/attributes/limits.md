@@ -3,6 +3,7 @@ r[attributes.limits]
 
 The following [attributes] affect compile-time limits.
 
+<!-- template:attributes -->
 r[attributes.limits.recursion_limit]
 ## The `recursion_limit` attribute
 
@@ -43,13 +44,13 @@ r[attributes.limits.recursion_limit.allowed-positions]
 The `recursion_limit` attribute may only be applied to the crate root.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.limits.recursion_limit.duplicates]
-Only the first instance of `recursion_limit` on an item is honored. Subsequent `recursion_limit` attributes are ignored.
+Only the first use of `recursion_limit` on an item has effect.
 
 > [!NOTE]
-> `rustc` currently warns on following duplicate `recursion_limit` attributes. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 <!-- template:attributes -->
 r[attributes.limits.type_length_limit]
