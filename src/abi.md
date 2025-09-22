@@ -111,6 +111,7 @@ r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.export_name]
 ## The `export_name` attribute
 
@@ -138,7 +139,7 @@ The `export_name` attribute may only be applied to:
 > `rustc` currently ignores `export_name` in some positions, but this may be rejected in the future.
 
 r[abi.export_name.duplicates]
-Only the last instance of `export_name` on an item is honored. Previous `export_name` attributes are ignored.
+Only the last use of `export_name` on an item has effect.
 
 > [!NOTE]
 > `rustc` currently warns on preceding duplicate `export_name` attributes. This may become an error in the future.
