@@ -86,6 +86,7 @@ r[abi.no_mangle.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.link_section]
 ## The `link_section` attribute
 
@@ -113,13 +114,13 @@ The `link_section` attribute may only be applied to:
 - [Trait definition functions][items.traits] with a body
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[abi.link_section.duplicates]
-Only the last instance of `link_section` on an item is honored. Previous `link_section` attributes are ignored.
+Only the last use of `link_section` on an item has effect.
 
 > [!NOTE]
-> `rustc` currently warns on preceding duplicate `link_section` attributes. This may become an error in the future.
+> `rustc` lints against any use preceding the last. This may become an error in the future.
 
 r[abi.link_section.unsafe]
 The `link_section` attribute must be marked with [`unsafe`][attributes.safety] because it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
