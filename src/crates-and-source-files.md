@@ -130,6 +130,7 @@ When a "foreign" unwind (e.g. an exception thrown from C++ code, or a `panic!` i
 
 For more information, see the [panic documentation][panic-docs].
 
+<!-- template:attributes -->
 r[crate.no_main]
 ### The `no_main` attribute
 
@@ -143,16 +144,16 @@ The *`no_main` [attribute]* may be applied at the crate level to disable emittin
 > ```
 
 r[crate.no_main.syntax]
-The `no_main` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_main` attribute uses the [MetaWord] syntax.
 
 r[crate.no_main.allowed-positions]
 The `no_main` attribute may only be applied to the crate root.
 
 r[crate.no_main.duplicates]
-Duplicate instances of the `no_main` attribute are ignored.
+The `no_main` attribute may be used any number of times on the crate root.
 
 > [!NOTE]
-> `rustc` current warns about unused duplicate `no_main` attributes.
+> `rustc` lints against any use following the first.
 
 r[crate.crate_name]
 ## The `crate_name` attribute
