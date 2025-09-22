@@ -326,6 +326,7 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+<!-- template:attributes -->
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
 
@@ -333,21 +334,21 @@ r[macro.decl.scope.macro_use.intro]
 The *`macro_use` [attribute][attributes]* has two purposes. It may be used on modules to extend the scope of macros defined within them, and it may be used on [`extern crate`][items.extern-crate] to import macros from another crate.
 
 r[macro.decl.scope.macro_use.syntax]
-When used on a module, the `macro_use` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+When used on a module, the `macro_use` attribute uses the [MetaWord] syntax.
 
-When used on an `extern crate`, it uses either the [MetaWord] or [MetaListIdents] syntax.
+When used on an `extern crate`, it uses either the [MetaWord] or [MetaListIdents] syntax (described in [macro.decl.scope.macro_use.prelude]).
 
 r[macro.decl.scope.macro_use.allowed-positions]
 The `macro_use` attribute may be applied to modules or `extern crate`.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[macro.decl.scope.macro_use.extern-crate-self]
 The `macro_use` attribute may not be used on [`extern crate self`].
 
 r[macro.decl.scope.macro_use.duplicates]
-Duplicate instances of `macro_use` that are in the [MetaWord] syntax have no effect if there is already a `macro_use` with the [MetaWord] syntax.
+The `macro_use` attribute may be used any number of times on a form.
 
 Multiple instances of `macro_use` that are in the [MetaListIdents] syntax may be specified. The union of all specified macros to import will be imported.
 
@@ -370,7 +371,7 @@ When `macro_use` is used on a module, it causes the module's macro scope to not 
 > ```
 
 r[macro.decl.scope.macro_use.prelude]
-When `macro_use` is used on an `extern crate` declaration in the crate root, it imports exported macros from that crate.
+Specifying `macro_use` on an `extern crate` declaration in the crate root imports exported macros from that crate.
 
 Macros imported this way are imported into the [`macro_use` prelude], not textually, which means that they can be shadowed by any other name. While macros imported by `macro_use` can be used before the import statement, in case of a conflict, the last macro imported wins.
 
