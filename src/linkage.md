@@ -169,6 +169,7 @@ In general, `--crate-type=bin` or `--crate-type=lib` should be sufficient for
 all compilation needs, and the other options are just available if more
 fine-grained control is desired over the output format of a crate.
 
+<!-- template:attributes -->
 r[link.crate_type]
 ## The `crate_type` attribute
 
