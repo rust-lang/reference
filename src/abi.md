@@ -122,6 +122,7 @@ r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.export_name]
 ## The `export_name` attribute
 
