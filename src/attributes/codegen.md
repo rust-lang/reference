@@ -46,6 +46,7 @@ r[attributes.codegen.cold]
 The *`cold` [attribute]* suggests that the attributed function is unlikely to
 be called.
 
+<!-- template:attributes -->
 r[attributes.codegen.naked]
 ## The `naked` attribute
 
@@ -72,7 +73,7 @@ The *`naked` [attribute]* prevents the compiler from emitting a function prologu
 > ```
 
 r[attributes.codegen.naked.syntax]
-The `naked` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `naked` attribute uses the [MetaWord] syntax.
 
 r[attributes.codegen.naked.allowed-positions]
 The `naked` attribute may only be applied to:
@@ -83,10 +84,10 @@ The `naked` attribute may only be applied to:
 - [Trait definition functions][items.traits] with a body
 
 r[attributes.codegen.naked.duplicates]
-Duplicate instances of the `naked` attribute have no effect.
+The `naked` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `naked` attributes.
+> `rustc` lints against any use following the first.
 
 r[attributes.codegen.naked.unsafe]
 The `naked` attribute must be marked with [`unsafe`][attributes.safety] because the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
