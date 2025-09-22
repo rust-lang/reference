@@ -151,6 +151,7 @@ r[names.preludes.tool.intro]
 The tool prelude includes tool names for external tools in the [type
 namespace]. See the [tool attributes] section for more details.
 
+<!-- template:attributes -->
 r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
@@ -170,19 +171,19 @@ The *`no_implicit_prelude` [attribute]* is used to prevent implicit preludes fro
 > ```
 
 r[names.preludes.no_implicit_prelude.syntax]
-The `no_implicit_prelude` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `no_implicit_prelude` attribute uses the [MetaWord] syntax.
 
 r[names.preludes.no_implicit_prelude.allowed-positions]
 The `no_implicit_prelude` attribute may only be applied to the crate level or a module.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[names.preludes.no_implicit_prelude.duplicates]
-Duplicate instances of the `no_implicit_prelude` attribute have no effect.
+The `no_implicit_prelude` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `no_implicit_prelude` attributes.
+> `rustc` lints against any use following the first.
 
 r[names.preludes.no_implicit_prelude.excluded-preludes]
 The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], and the [tool prelude] from being brought into scope for the module or any of its descendants.
