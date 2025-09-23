@@ -11,7 +11,7 @@ dropped.
 r[destructors.operation]
 The destructor of a type `T` consists of:
 
-1. If `T: Drop`, calling [`<T as std::ops::Drop>::drop`](std::ops::Drop::drop)
+1. If `T: Drop`, calling [`<T as core::ops::Drop>::drop`](core::ops::Drop::drop)
 2. Recursively running the destructor of all of its fields.
     * The fields of a [struct] are dropped in declaration order.
     * The fields of the active [enum variant] are dropped in declaration order.
@@ -25,7 +25,7 @@ The destructor of a type `T` consists of:
 
 r[destructors.drop_in_place]
 If a destructor must be run manually, such as when implementing your own smart
-pointer, [`std::ptr::drop_in_place`] can be used.
+pointer, [`core::ptr::drop_in_place`] can be used.
 
 Some examples:
 
@@ -626,12 +626,12 @@ r[destructors.forget]
 r[destructors.manually-suppressing]
 ### Manually suppressing destructors
 
-[`std::mem::forget`] can be used to prevent the destructor of a variable from being run,
-and [`std::mem::ManuallyDrop`] provides a wrapper to prevent a
+[`core::mem::forget`] can be used to prevent the destructor of a variable from being run,
+and [`core::mem::ManuallyDrop`] provides a wrapper to prevent a
 variable or field from being dropped automatically.
 
 > [!NOTE]
-> Preventing a destructor from being run via [`std::mem::forget`] or other means is safe even if it has a type that isn't `'static`. Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.
+> Preventing a destructor from being run via [`core::mem::forget`] or other means is safe even if it has a type that isn't `'static`. Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.
 
 r[destructors.process-termination]
 ### Process termination without unwinding
