@@ -1343,7 +1343,7 @@ r[asm.rules.preserved-registers]
     - Floating-point status (`FPSR` register).
   - RISC-V
     - Floating-point exception flags in `fcsr` (`fflags`).
-    - Vector extension state (`vtype`, `vl`, `vcsr`).
+    - Vector extension state (`vtype`, `vl`, `vxsat`, and `vxrm`).
   - LoongArch
     - Floating-point condition flags in `$fcc[0-7]`.
   - s390x
