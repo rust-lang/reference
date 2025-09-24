@@ -401,7 +401,7 @@ println!("{:?}", C);
 ```
 
 r[destructors.scope.lifetime-extension.sub-expressions]
-If a [borrow], [dereference][dereference expression], [field][field expression], or [tuple indexing expression] has an extended temporary scope then so does its operand. If an [indexing expression] has an extended temporary scope then the indexed expression also has an extended temporary scope.
+If a [borrow], [dereference][dereference expression], [field][field expression], or [tuple indexing expression] has an extended temporary scope, then so does its operand. If an [indexing expression] has an extended temporary scope, then the indexed expression also has an extended temporary scope.
 
 r[destructors.scope.lifetime-extension.patterns]
 #### Extending based on patterns
