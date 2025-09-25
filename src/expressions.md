@@ -270,30 +270,22 @@ r[expr.super-macros.format_args]
 r[expr.super-macros.format_args.super-operands]
 Except for the format string argument, all arguments passed to [`format_args!`] are *super operands*.
 
-<!-- FIXME: Remove after https://github.com/rust-lang/rust/pull/145882 lands. -->
-> [!NOTE]
-> When there is only one placeholder, `rustc` does not yet treat the corresponding argument as a super operand. This is a bug.
->
-> For details, see Rust issue [#145880](https://github.com/rust-lang/rust/issues/145880).
-
-<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
 ```rust,edition2024
 # fn temp() -> String { String::from("") }
 // Due to the call being an extending expression and the argument
 // being a super operand, the inner block is an extending expression,
 // so the scope of the temporary created in its trailing expression
 // is extended.
-let _ = format_args!("{:?}{}", (), { &temp() }); // OK
+let _ = format_args!("{}", { &temp() }); // OK
 ```
 
 r[expr.super-macros.format_args.super-temporaries]
 The super operands of [`format_args!`] are [implicitly borrowed] and are therefore [place expression contexts]. When a [value expression] is passed as an argument, it creates a *super temporary*.
 
-<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
 ```rust
 # fn temp() -> String { String::from("") }
-let x = format_args!("{}{}", temp(), temp());
-x; // <-- The temporaries are extended, allowing use here.
+let x = format_args!("{}", temp());
+x; // <-- The temporary is extended, allowing use here.
 ```
 
 The expansion of a call to [`format_args!`] sometimes creates other internal *super temporaries*.

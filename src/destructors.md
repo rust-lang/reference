@@ -540,9 +540,7 @@ let x = pin!(temp()); // Super operand of super macro call expression.
 # x;
 let x = pin!({ &mut temp() }); // As above.
 # x;
-# // FIXME: Simplify after this PR lands:
-# // <https://github.com/rust-lang/rust/pull/145882>.
-let x = format_args!("{:?}{:?}", (), temp()); // As above.
+let x = format_args!("{:?}", temp()); // As above.
 # x;
 //
 // All of the temporaries above are still live here.
@@ -613,11 +611,10 @@ let x = 'a: { break 'a &temp() }; // ERROR
 pin!({ &temp() }); // ERROR
 ```
 
-<!-- FIXME: Simplify after https://github.com/rust-lang/rust/pull/145882 lands. -->
 ```rust,edition2024,compile_fail,E0716
 # fn temp() {}
 // As above.
-format_args!("{:?}{:?}", (), { &temp() }); // ERROR
+format_args!("{:?}", { &temp() }); // ERROR
 ```
 
 r[destructors.forget]
