@@ -263,7 +263,10 @@ A _const fn_ is a function that one is permitted to call from a const context.
 
 r[const-eval.const-fn.usage]
 Declaring a function
-`const` has no effect on any existing uses, it only restricts the types that arguments and the
+`const` has no effect on any existing uses.
+
+r[const-eval.const-fn.restrictions]
+Declaring a function `const` restricts the types that arguments and the
 return type may use, and restricts the function body to constant expressions.
 
 r[const-eval.const-fn.const-context]
