@@ -473,14 +473,47 @@ Unknown attributes in this namespace are accepted, though they may emit warnings
 Additionally, invalid inputs to known attributes will typically be a warning (see the attribute definitions for details).
 This is meant to allow adding or discarding attributes and changing inputs in the future to allow changes without the need to keep the non-meaningful attributes or options working.
 
+<!-- template:attributes -->
 r[attributes.diagnostic.on_unimplemented]
 ### The `diagnostic::on_unimplemented` attribute
 
 r[attributes.diagnostic.on_unimplemented.intro]
-The `#[diagnostic::on_unimplemented]` attribute is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
+The *`diagnostic::on_unimplemented` [attribute][attributes]* is a hint to the compiler to supplement the error message that would normally be generated in scenarios where a trait is required but not implemented on a type.
 
-r[attributes.diagnostic.on_unimplemented.allowed-positions]
-The attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+> [!EXAMPLE]
+> In this example:
+>
+> ```rust,compile_fail,E0277
+> #[diagnostic::on_unimplemented(
+>     message = "My Message for `ImportantTrait<{A}>` implemented for `{Self}`",
+>     label = "My Label",
+>     note = "Note 1",
+>     note = "Note 2"
+> )]
+> trait ImportantTrait<A> {}
+>
+> fn use_my_trait(_: impl ImportantTrait<i32>) {}
+>
+> fn main() {
+>     use_my_trait(String::new());
+> }
+> ```
+>
+> the compiler may generate an error message which looks like this:
+>
+> ```text
+> error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
+>   --> src/main.rs:14:18
+>    |
+> 14 |     use_my_trait(String::new());
+>    |     ------------ ^^^^^^^^^^^^^ My Label
+>    |     |
+>    |     required by a bound introduced by this call
+>    |
+>    = help: the trait `ImportantTrait<i32>` is not implemented for `String`
+>    = note: Note 1
+>    = note: Note 2
+> ```
 
 r[attributes.diagnostic.on_unimplemented.syntax]
 The attribute uses the [MetaListNameValueStr] syntax to specify its inputs, though any malformed input to the attribute is not considered as an error to provide both forwards and backwards compatibility.
@@ -490,6 +523,12 @@ The following keys have the given meaning:
 * `message` --- The text for the top level error message.
 * `label` --- The text for the label shown inline in the broken code in the error message.
 * `note` --- Provides additional notes.
+
+r[attributes.diagnostic.on_unimplemented.allowed-positions]
+The `diagnostic::on_unimplemented` attribute should be placed on a [trait declaration], though it is not an error to be located in other positions.
+
+r[attributes.diagnostic.on_unimplemented.duplicates]
+If the `diagnostic::on_unimplemented` attribute is specified multiple times, then it behaves as if all options were specified in a single attribute. Duplicates of some options will be ignored, see [attributes.diagnostic.on_unimplemented.repetition].
 
 r[attributes.diagnostic.on_unimplemented.note-repetition]
 The `note` option can appear several times, which results in several note messages being emitted.
@@ -514,40 +553,6 @@ Any other format parameter will generate a warning, but will otherwise be includ
 r[attributes.diagnostic.on_unimplemented.invalid-string]
 Invalid format strings may generate a warning, but are otherwise allowed, but may not display as intended.
 Format specifiers may generate a warning, but are otherwise ignored.
-
-In this example:
-
-```rust,compile_fail,E0277
-#[diagnostic::on_unimplemented(
-    message = "My Message for `ImportantTrait<{A}>` implemented for `{Self}`",
-    label = "My Label",
-    note = "Note 1",
-    note = "Note 2"
-)]
-trait ImportantTrait<A> {}
-
-fn use_my_trait(_: impl ImportantTrait<i32>) {}
-
-fn main() {
-    use_my_trait(String::new());
-}
-```
-
-the compiler may generate an error message which looks like this:
-
-```text
-error[E0277]: My Message for `ImportantTrait<i32>` implemented for `String`
-  --> src/main.rs:14:18
-   |
-14 |     use_my_trait(String::new());
-   |     ------------ ^^^^^^^^^^^^^ My Label
-   |     |
-   |     required by a bound introduced by this call
-   |
-   = help: the trait `ImportantTrait<i32>` is not implemented for `String`
-   = note: Note 1
-   = note: Note 2
-```
 
 r[attributes.diagnostic.do_not_recommend]
 ### The `diagnostic::do_not_recommend` attribute
