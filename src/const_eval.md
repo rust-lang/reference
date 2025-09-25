@@ -256,7 +256,7 @@ const generic parameter, or an arbitrary expression not making use of any
 generics.
 
 r[const-eval.const-fn]
-## Const Functions
+## Const functions
 
 r[const-eval.const-fn.general]
 A _const fn_ is a function that one is permitted to call from a const context.
