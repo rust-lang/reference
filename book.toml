@@ -14,6 +14,9 @@ smart-punctuation = true
 enable = true
 level = 0
 
+[output.html.search]
+use-boolean-and = true
+
 [output.html.search.chapter]
 "test-summary.md" = { enable = false }
 "grammar.md" = { enable = false }
