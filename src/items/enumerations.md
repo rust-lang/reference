@@ -59,7 +59,7 @@ In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
 called an enum variant.
 
 r[items.enum.fieldless]
-An enum where no constructors contain fields are called a
+An enum where no constructors contain fields is called a
 *<span id="field-less-enum">field-less enum</span>*. For example, this is a fieldless enum:
 
 ```rust
