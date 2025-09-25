@@ -629,7 +629,7 @@ TUPLE_INDEX -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
 
 r[lex.token.literal.int.tuple-field.intro]
 A tuple index is used to refer to the fields of [tuples], [tuple structs], and
-[tuple variants].
+[tuple enum variants].
 
 r[lex.token.literal.int.tuple-field.eq]
 Tuple indices are compared with the literal token directly. Tuple indices
@@ -1074,7 +1074,7 @@ r[lex.token.reserved-guards.edition2024]
 [trait bounds]: trait-bounds.md
 [tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
 [tuple structs]: items/structs.md
-[tuple variants]: items/enumerations.md
+[tuple enum variants]: items/enumerations.md
 [tuples]: types/tuple.md
 [unary minus operator]: expressions/operator-expr.md#negation-operators
 [use declarations]: items/use-declarations.md
