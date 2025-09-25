@@ -282,10 +282,12 @@ assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
 r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
-For [field-less enums], the `C` representation has the size and alignment of the default `enum` size and alignment for the target platform's C ABI.
+For [field-less enums], the `C` representation requires the discriminant values to be representable by the `int` type in the target platform's C ABI. Nevertheless, the type of the discriminant is `isize`. The size and alignment of the enum then match that of a C enum with the same discriminant values (and without a fixed underlying type).
 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
+>
+> For maximum portability, it is always preferred to set the size and alignment explicitly using a [primitive representation](#r-layout.repr.primitive.enum) on the Rust side, and a fixed underlying type on the C side.
 
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
@@ -366,7 +368,7 @@ Primitive representations can only be applied to enumerations and have different
 r[layout.repr.primitive.enum]
 #### Primitive representation of field-less enums
 
-For [field-less enums], primitive representations set the size and alignment to be the same as the primitive type of the same name. For example, a field-less enum with a `u8` representation can only have discriminants between 0 and 255 inclusive.
+For [field-less enums], primitive representations set the type of the discriminants to the primitive type of the same name. Furthermore, the enum's size and alignment are guaranteed to match that type. For example, a field-less enum with a `u8` representation has discriminants of type `u8` and hence can only have discriminants between 0 and 255 inclusive.
 
 r[layout.repr.primitive.adt]
 #### Primitive representation of enums with fields
