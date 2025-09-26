@@ -13,6 +13,7 @@ surrounding information available.
 r[type.inferred.constraint]
 It cannot be used in item signatures.
 
+r[type.inferred.usage]
 It is often used in generic arguments:
 
 ```rust
