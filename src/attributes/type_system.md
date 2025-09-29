@@ -124,20 +124,15 @@ let message = Message::Send { from: 0, to: 1, contents: "foo".to_string(), };
 let message = Message::Reaction(0);
 
 // Cannot construct an instance of `Message::Quit`; if this were converted to
-// a tuple-variant `upstream` then this would fail to compile.
+// a tuple enum variant `upstream`, this would fail to compile.
 let message = Message::Quit;
 ```
 
 r[attributes.type-system.non_exhaustive.match]
 There are limitations when matching on non-exhaustive types outside of the defining crate:
 
-- When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]),
-  a [StructPattern] must be used which must include a `..`. A tuple variant's constructor's
-  [visibility] is reduced to be no greater than `pub(crate)`.
-- When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not
-  contribute towards the exhaustiveness of the arms.
-
-The following examples of matching do not compile when outside the defining crate:
+- When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]), a [StructPattern] must be used which must include a `..`. A tuple enum variant's constructor's [visibility] is reduced to be no greater than `pub(crate)`.
+- When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not contribute towards the exhaustiveness of the arms. The following examples of matching do not compile when outside the defining crate:
 
 <!-- ignore: requires external crates -->
 ```rust, ignore
