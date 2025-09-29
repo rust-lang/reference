@@ -492,10 +492,11 @@ On this platform the usage of `#[target_feature]` functions follows the
 [above restrictions][attributes.codegen.target_feature.safety-restrictions].
 
 Further documentation on these features can be found in their respective
-specification. Many specifications are described in the [RISC-V ISA Manual] or
-in another manual hosted on the [RISC-V GitHub Account].
+specification. Many specifications are described in the [RISC-V ISA Manual],
+[version 20250508], or in another manual hosted on the [RISC-V GitHub Account].
 
 [RISC-V ISA Manual]: https://github.com/riscv/riscv-isa-manual
+[version 20250508]: https://github.com/riscv/riscv-isa-manual/tree/20250508
 [RISC-V GitHub Account]: https://github.com/riscv
 
 Feature     | Implicitly Enables  | Description
@@ -503,14 +504,13 @@ Feature     | Implicitly Enables  | Description
 `a`         |                     | [A][rv-a] --- Atomic instructions
 `c`         |                     | [C][rv-c] --- Compressed instructions
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
-`zb`        | `zba`, `zbc`, `zbs` | [Zb][rv-zb] --- Bit Manipulation instructions
-`zba`       |                     | [Zba][rv-zb-zba] --- Address Generation instructions
-`zbb`       |                     | [Zbb][rv-zb-zbb] --- Basic bit-manipulation
-`zbc`       |                     | [Zbc][rv-zb-zbc] --- Carry-less multiplication
-`zbkb`      |                     | [Zbkb][rv-zb-zbkb] --- Bit Manipulation Instructions for Cryptography
-`zbkc`      |                     | [Zbkc][rv-zb-zbc] --- Carry-less multiplication for Cryptography
-`zbkx`      |                     | [Zbkx][rv-zb-zbkx] --- Crossbar permutations
-`zbs`       |                     | [Zbs][rv-zb-zbs] --- Single-bit instructions
+`zba`       |                     | [Zba][rv-zba] --- Address Generation instructions
+`zbb`       |                     | [Zbb][rv-zbb] --- Basic bit-manipulation
+`zbc`       | `zbkc`              | [Zbc][rv-zbc] --- Carry-less multiplication
+`zbkb`      |                     | [Zbkb][rv-zbkb] --- Bit Manipulation Instructions for Cryptography
+`zbkc`      |                     | [Zbkc][rv-zbkc] --- Carry-less multiplication for Cryptography
+`zbkx`      |                     | [Zbkx][rv-zbkx] --- Crossbar permutations
+`zbs`       |                     | [Zbs][rv-zbs] --- Single-bit instructions
 `zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
 `zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
 `zknd`      |                                                    | [Zknd][rv-zknd] --- NIST Suite: AES Decryption
@@ -524,27 +524,26 @@ Feature     | Implicitly Enables  | Description
 
 <!-- Keep links near each table to make it easier to move and update. -->
 
-[rv-a]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/a-st-ext.adoc
-[rv-c]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/c-st-ext.adoc
-[rv-m]: https://github.com/riscv/riscv-isa-manual/blob/de46343a245c6ee1f7b1a40c92fe1a86bd4f4978/src/m-st-ext.adoc
-[rv-zb]: https://github.com/riscv/riscv-bitmanip
-[rv-zb-zba]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zba.adoc
-[rv-zb-zbb]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbb.adoc
-[rv-zb-zbc]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbc.adoc
-[rv-zb-zbkb]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkb.adoc
-[rv-zb-zbkc]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkc.adoc
-[rv-zb-zbkx]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkx.adoc
-[rv-zb-zbs]: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbs.adoc
-[rv-zk]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zk.adoc
-[rv-zkn]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkn.adoc
-[rv-zkne]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkne.adoc
-[rv-zknd]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zknd.adoc
-[rv-zknh]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zknh.adoc
-[rv-zkr]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkr.adoc
-[rv-zks]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zks.adoc
-[rv-zksed]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksed.adoc
-[rv-zksh]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksh.adoc
-[rv-zkt]: https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkt.adoc
+[rv-a]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
+[rv-c]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/c-st-ext.adoc
+[rv-m]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/m-st-ext.adoc
+[rv-zba]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbb]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbc]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbkb]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbkc]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbkx]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zbs]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
+[rv-zk]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zkn]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zkne]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zknd]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zknh]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zkr]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zks]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zksed]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zksh]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zkt]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 
 r[attributes.codegen.target_feature.wasm]
 #### `wasm32` or `wasm64`
