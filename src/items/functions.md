@@ -279,14 +279,7 @@ For other considerations and limitations regarding unwinding across FFI boundari
 r[items.fn.const]
 ## Const functions
 
-r[items.fn.const.intro]
-Functions qualified with the `const` keyword are [const functions], as are [tuple struct] and [tuple enum variant] constructors. _Const functions_  can be called from within [const contexts].
-
-r[items.fn.const.extern]
-Const functions may use the [`extern`] function qualifier.
-
-r[items.fn.const.exclusivity]
-Const functions are not allowed to be [async](#async-functions).
+See [const functions] for the definition of const functions.
 
 r[items.fn.async]
 ## Async functions
@@ -467,9 +460,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 
 [const contexts]: ../const_eval.md#const-context
 [const functions]: ../const_eval.md#const-functions
-[tuple struct]: structs.md
-[tuple enum variant]: enumerations.md
-[`extern`]: #extern-function-qualifier
 [external block]: external-blocks.md
 [path]: ../paths.md
 [block]: ../expressions/block-expr.md

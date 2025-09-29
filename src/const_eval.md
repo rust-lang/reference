@@ -258,20 +258,31 @@ generics.
 r[const-eval.const-fn]
 ## Const functions
 
-r[const-eval.const-fn.general]
-A _const fn_ is a function that one is permitted to call from a const context.
+r[const-eval.const-fn.intro]
+A _const function_ is a function that can be called from a const context. It is defined with the `const` qualifier, and also includes [tuple struct] and [tuple enum variant] constructors.
 
-r[const-eval.const-fn.usage]
-Declaring a function
-`const` has no effect on any existing uses, it only restricts the types that arguments and the
-return type may use, and restricts the function body to constant expressions.
+> [!EXAMPLE]
+> ```rust
+> const fn square(x: i32) -> i32 { x * x }
+>
+> const VALUE: i32 = square(12);
+> ```
 
 r[const-eval.const-fn.const-context]
-When called from a const context, the function is interpreted by the
-compiler at compile time. The interpretation happens in the
-environment of the compilation target and not the host. So `usize` is
-`32` bits if you are compiling against a `32` bit system, irrelevant
-of whether you are building on a `64` bit or a `32` bit system.
+When called from a const context, a const function is interpreted by the compiler at compile time. The interpretation happens in the environment of the compilation target and not the host. So `usize` is `32` bits if you are compiling against a `32` bit system, irrelevant of whether you are building on a `64` bit or a `32` bit system.
+
+r[const-eval.const-fn.outside-context]
+When a const function is called from outside a const context, it behaves the same as if it did not have the `const` qualifier.
+
+r[const-eval.const-fn.body-restriction]
+The body of a const function may only use [constant expressions].
+
+r[const-eval.const-fn.async]
+Const functions are not allowed to be [async].
+
+r[const-eval.const-fn.type-restrictions]
+The types of a const function's parameters and return type are restricted to those that are compatible with a const context.
+<!-- TODO: Define the type restrictions. -->
 
 [arithmetic]:           expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array expressions]:    expressions/array-expr.md
@@ -279,6 +290,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 [array type length expressions]: types/array.md
 [assignment expressions]: expressions/operator-expr.md#assignment-expressions
+[async]:                items/functions.md#async-functions
 [compound assignment expressions]: expressions/operator-expr.md#compound-assignment-expressions
 [block expressions]:    expressions/block-expr.md
 [borrow]:               expressions/operator-expr.md#borrow-operators
@@ -289,6 +301,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [const functions]:      items/functions.md#const-functions
 [const generic argument]: items/generics.md#const-generics
 [const generic parameters]: items/generics.md#const-generics
+[constant expressions]: #constant-expressions
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
@@ -321,5 +334,7 @@ of whether you are building on a `64` bit or a `32` bit system.
 [statics]:              items/static-items.md
 [struct]:               expressions/struct-expr.md
 [temporary lifetime extension]: destructors.scope.lifetime-extension
+[tuple enum variant]:   items/enumerations.md
 [tuple expressions]:    expressions/tuple-expr.md
+[tuple struct]:         items/structs.md
 [while]:                expressions/loop-expr.md#predicate-loops
