@@ -3,6 +3,7 @@ r[attributes.type-system]
 
 The following [attributes] are used for changing how a type can be used.
 
+<!-- template:attributes -->
 r[attributes.type-system.non_exhaustive]
 ## The `non_exhaustive` attribute
 
@@ -39,19 +40,19 @@ The *`non_exhaustive` [attribute][attributes]* indicates that a type or variant 
 > ```
 
 r[attributes.type-system.non_exhaustive.syntax]
-The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `non_exhaustive` attribute uses the [MetaWord] syntax.
 
 r[attributes.type-system.non_exhaustive.allowed-positions]
 The `non_exhaustive` attribute may only be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
 
 > [!NOTE]
-> `rustc` currently warns in some other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.type-system.non_exhaustive.duplicates]
-Duplicate instances of the `non_exhaustive` attribute have no effect.
+The `non_exhaustive` attribute may be used any number of times on a form.
 
 > [!NOTE]
-> `rustc` warns on subsequent duplicate `non_exhaustive` attributes.
+> `rustc` lints against any use following the first.
 
 r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
