@@ -181,6 +181,7 @@ Only the first use of the `no_builtins` attribute has effect.
 > [!NOTE]
 > `rustc` lints against any use following the first.
 
+<!-- template:attributes -->
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
 
@@ -228,7 +229,7 @@ It is not allowed on the following places:
 - safe default functions in traits
 
 > [!NOTE]
-> `rustc` currently warns on some positions where it is ignored, but this may become an error in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[attributes.codegen.target_feature.duplicates]
 If the `target_feature` attribute is specified multiple times on an item, then the union of all the specified features are enabled.
