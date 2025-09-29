@@ -154,7 +154,7 @@ The `naked` attribute may only be applied to:
 - [Free functions][items.fn]
 - [Inherent associated functions][items.associated.fn]
 - [Trait impl functions][items.impl.trait]
-- [Trait definition functions][items.traits] with a body
+- [Trait definition functions][items.traits.associated-item-decls] with a body
 
 r[attributes.codegen.naked.duplicates]
 The `naked` attribute may be used any number of times on a form.
