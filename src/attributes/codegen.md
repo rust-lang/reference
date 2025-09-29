@@ -493,7 +493,7 @@ On this platform the usage of `#[target_feature]` functions follows the
 
 Further documentation on these features can be found in their respective
 specification. Many specifications are described in the [RISC-V ISA Manual],
-[version 20250508] or in another manual hosted on the [RISC-V GitHub Account].
+[version 20250508], or in another manual hosted on the [RISC-V GitHub Account].
 
 [RISC-V ISA Manual]: https://github.com/riscv/riscv-isa-manual
 [version 20250508]: https://github.com/riscv/riscv-isa-manual/tree/20250508
