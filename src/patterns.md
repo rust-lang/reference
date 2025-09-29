@@ -257,6 +257,28 @@ Its objective is exclusively to make the matched binding a reference, instead of
 r[patterns.ident.precedent]
 [Path patterns](#path-patterns) take precedence over identifier patterns.
 
+> [!NOTE]
+> When a pattern is a single-segment identifier, the grammar is ambiguous whether it means an [IdentifierPattern] or a [PathPattern]. This ambiguity can only be resolved after [name resolution]. In the following example, the pattern is disambiguated to mean a PathPattern to a constant:
+>
+> ```rust
+> const EXPECTED_VALUE: i32 = 42;
+>
+> fn check_value(x: i32) -> bool {
+>     match x {
+>         EXPECTED_VALUE => true, // PathPattern - matches the constant 42
+>         _ => false,
+>     }
+> }
+>
+> fn main() {
+>     // If EXPECTED_VALUE were treated as an IdentifierPattern, it would bind
+>     // any value to a new variable, making this function always return true
+>     // regardless of the input.
+>     assert_eq!(check_value(42), true); // correct behavior
+>     assert_eq!(check_value(100), false); // would be true if misinterpreted
+> }
+> ```
+
 r[patterns.ident.constraint]
 It is an error if `ref` or `ref mut` is specified and the identifier shadows a constant.
 
@@ -1085,6 +1107,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [enums]: items/enumerations.md
 [literals]: expressions/literal-expr.md
 [literal expression]: expressions/literal-expr.md
+[name resolution]: names/name-resolution.md
 [negating]: expressions/operator-expr.md#negation-operators
 [path]: expressions/path-expr.md
 [pattern matching on unions]: items/unions.md#pattern-matching-on-unions
