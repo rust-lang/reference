@@ -373,8 +373,7 @@ fn main() {
 [method]: associated-items.md#methods
 [supertraits]: #supertraits
 [implementations]: implementations.md
-[generics]: generics.md
-[where clauses]: generics.md#where-clauses
+[where clauses]: generics.where
 [generic functions]: functions.md#generic-functions
 [unsafe]: ../unsafety.md
 [trait implementation]: implementations.md#trait-implementations

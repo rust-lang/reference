@@ -274,37 +274,35 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 }
 ```
 
-[array repeat expression]: ../expressions/array-expr.md
-[arrays]: ../types/array.md
-[slices]: ../types/slice.md
-[associated const]: associated-items.md#associated-constants
-[associated type]: associated-items.md#associated-types
-[attributes]: ../attributes.md
-[block]: ../expressions/block-expr.md
-[const contexts]: ../const_eval.md#const-context
-[const expression]: ../const_eval.md#constant-expressions
-[const generic argument]: items.generics.const.argument
-[const item]: constant-items.md
-[enumerations]: enumerations.md
-[functions]: functions.md
-[function pointers]: ../types/function-pointer.md
-[generic implementations]: implementations.md#generic-implementations
-[generic parameter scopes]: ../names/scopes.md#generic-parameter-scopes
-[higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
-[implementations]: implementations.md
-[inferred const]: items.generics.const.inferred
-[item declarations]: ../statements.md#item-declarations
-[item]: ../items.md
-[literal]: ../expressions/literal-expr.md
-[path]: ../paths.md
-[path expression]: ../expressions/path-expr.md
-[raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
-[references]: ../types/pointer.md#shared-references-
-[structs]: structs.md
-[tuples]: ../types/tuple.md
-[trait object]: ../types/trait-object.md
-[traits]: traits.md
-[type aliases]: type-aliases.md
-[type]: ../types.md
-[unions]: unions.md
-[value namespace]: ../names/namespaces.md
+[array repeat expression]: expr.array
+[arrays]: type.array
+[associated const]: items.associated.const
+[associated type]: items.associated.type
+[block]: expr.block
+[const contexts]: const-eval.const-context
+[const expression]: const-eval.const-expr
+[const generic argument]: generics.const.argument
+[const item]: items.const
+[enumerations]: items.enum
+[function pointers]: type.fn-pointer
+[functions]: items.fn
+[generic implementations]: items.impl.generics
+[generic parameter scopes]: names.scopes.generic-parameters
+[higher-ranked lifetimes]: bound.higher-ranked
+[implementations]: items.impl
+[inferred const]: generics.const.inferred
+[item declarations]: statement.item
+[item]: items
+[literal]: expr.literal
+[path expression]: expr.path
+[path]: paths
+[raw pointers]: type.pointer.raw
+[references]: type.pointer.reference
+[slices]: type.slice
+[structs]: items.struct
+[trait object]: type.trait-object
+[traits]: items.traits
+[tuples]: type.tuple
+[type aliases]: items.type
+[unions]: items.union
+[value namespace]: names.namespaces

@@ -509,6 +509,6 @@ fn main() {
 [method call operator]: ../expressions/method-call-expr.md
 [path]: ../paths.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
-[generic parameters]: generics.md
-[where clauses]: generics.md#where-clauses
+[generic parameters]: generics
+[where clauses]: generics.where
 [constant evaluation]: ../const_eval.md
