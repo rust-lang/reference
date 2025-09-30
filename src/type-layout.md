@@ -1,5 +1,5 @@
 r[layout]
-# Type Layout
+# Type layout
 
 r[layout.intro]
 The layout of a type is its size, alignment, and the relative offsets of its
@@ -15,7 +15,7 @@ across function boundaries. For function call ABI compatibility of types,
 see [here][fn-abi-compatibility].
 
 r[layout.properties]
-## Size and Alignment
+## Size and alignment
 
 All values have an alignment and size.
 
@@ -44,7 +44,7 @@ size and alignment, we refer to those shared values as the size of the type and
 the alignment of the type respectively.
 
 r[layout.primitive]
-## Primitive Data Layout
+## Primitive data layout
 
 r[layout.primitive.size]
 The size of most primitives is given in this table.
@@ -75,7 +75,7 @@ their size is 16, and on many 32-bit platforms, `i64`, `u64`, and `f64` are only
 aligned to 4 bytes, not 8.
 
 r[layout.pointer]
-## Pointers and References Layout
+## Pointers and references layout
 
 r[layout.pointer.intro]
 Pointers and references have the same layout. Mutability of the pointer or
@@ -92,14 +92,14 @@ at least equal to the size and alignment of a pointer.
 > Though you should not rely on this, all pointers to <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the size of the size of `usize` and have the same alignment.
 
 r[layout.array]
-## Array Layout
+## Array layout
 
 An array of `[T; N]` has a size of `size_of::<T>() * N` and the same alignment
 of `T`. Arrays are laid out so that the zero-based `nth` element of the array
 is offset from the start of the array by `n * size_of::<T>()` bytes.
 
 r[layout.slice]
-## Slice Layout
+## Slice layout
 
 Slices have the same layout as the section of the array they slice.
 
@@ -112,7 +112,7 @@ r[layout.str]
 String slices are a UTF-8 representation of characters that have the same layout as slices of type `[u8]`. A reference `&str` has the same layout as a reference `&[u8]`.
 
 r[layout.tuple]
-## Tuple Layout
+## Tuple layout
 
 r[layout.tuple.general]
 Tuples are laid out according to the [`Rust` representation][`Rust`].
@@ -122,7 +122,7 @@ The exception to this is the unit tuple (`()`), which is guaranteed as a
 zero-sized type to have a size of 0 and an alignment of 1.
 
 r[layout.trait-object]
-## Trait Object Layout
+## Trait object layout
 
 Trait objects have the same layout as the value the trait object is of.
 
@@ -130,7 +130,7 @@ Trait objects have the same layout as the value the trait object is of.
 > This is about the raw trait object types, not pointers (`&dyn Trait`, `Box<dyn Trait>`, etc.) to trait objects.
 
 r[layout.closure]
-## Closure Layout
+## Closure layout
 
 Closures have no layout guarantees.
 
@@ -196,7 +196,7 @@ representation will not change the layout of `Inner`.
 
 <a id="the-default-representation"></a>
 r[layout.repr.rust]
-### The `Rust` Representation
+### The `Rust` representation
 
 r[layout.repr.rust.intro]
 The `Rust` representation is the default representation for nominal types
@@ -231,7 +231,7 @@ r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
 r[layout.repr.c]
-### The `C` Representation
+### The `C` representation
 
 r[layout.repr.c.intro]
 The `C` representation is designed for dual purposes. One purpose is for
@@ -434,7 +434,7 @@ for [zero-variant enums] to have a primitive representation. Combining
 two primitive representations together is an error.
 
 r[layout.repr.primitive.enum]
-#### Primitive Representation of Field-less Enums
+#### Primitive representation of field-less enums
 
 For [field-less enums], primitive representations set the size and alignment to
 be the same as the primitive type of the same name. For example, a field-less
@@ -442,7 +442,7 @@ enum with a `u8` representation can only have discriminants between 0 and 255
 inclusive.
 
 r[layout.repr.primitive.adt]
-#### Primitive Representation of Enums With Fields
+#### Primitive representation of enums with fields
 
 The representation of a primitive representation enum is a `repr(C)` union of
 `repr(C)` structs for each variant with a field. The first field of each struct
@@ -629,7 +629,7 @@ was wrapped in a newtype `struct` with the same `align` modifier.
 > ```
 
 r[layout.repr.transparent]
-### The `transparent` Representation
+### The `transparent` representation
 
 r[layout.repr.transparent.constraint-field]
 The `transparent` representation can only be used on a [`struct`][structs]

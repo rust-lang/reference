@@ -345,7 +345,7 @@ assert_eq!(true, !false);
 ```
 
 r[expr.arith-logic]
-## Arithmetic and Logical Binary Operators
+## Arithmetic and logical binary operators
 
 r[expr.arith-logic.syntax]
 ```grammar,expressions
@@ -408,7 +408,7 @@ assert_eq!(-10 >> 2, -3);
 ```
 
 r[expr.cmp]
-## Comparison Operators
+## Comparison operators
 
 r[expr.cmp.syntax]
 ```grammar,expressions

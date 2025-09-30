@@ -1,5 +1,5 @@
 r[vis]
-# Visibility and Privacy
+# Visibility and privacy
 
 r[vis.syntax]
 ```grammar,items
@@ -236,7 +236,7 @@ fn main() { bar() }
 > This syntax only adds another restriction to the visibility of an item. It does not guarantee that the item is visible within all parts of the specified scope. To access an item, all of its parent items up to the current scope must still be visible as well.
 
 r[vis.reexports]
-## Re-exporting and Visibility
+## Re-exporting and visibility
 
 r[vis.reexports.intro]
 Rust allows publicly re-exporting items through a `pub use` directive. Because

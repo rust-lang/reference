@@ -71,7 +71,7 @@ r[type.pointer.raw.constructor]
 Raw pointers can be created directly using `&raw const` for `*const` pointers and `&raw mut` for `*mut` pointers.
 
 r[type.pointer.smart]
-## Smart Pointers
+## Smart pointers
 
 The standard library contains additional 'smart pointer' types beyond references and raw pointers.
 

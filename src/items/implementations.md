@@ -33,7 +33,7 @@ There are two types of implementations:
 - [trait] implementations
 
 r[items.impl.inherent]
-## Inherent Implementations
+## Inherent implementations
 
 r[items.impl.inherent.intro]
 An inherent implementation is defined as the sequence of the `impl` keyword,
@@ -98,7 +98,7 @@ fn main() {
 ```
 
 r[items.impl.trait]
-## Trait Implementations
+## Trait implementations
 
 r[items.impl.trait.intro]
 A _trait implementation_ is defined like an inherent implementation except that
@@ -158,7 +158,7 @@ impl Shape for Circle {
 ```
 
 r[items.impl.trait.coherence]
-### Trait Implementation Coherence
+### Trait implementation coherence
 
 r[items.impl.trait.coherence.intro]
 A trait implementation is considered incoherent if either the orphan rules check fails
@@ -200,7 +200,7 @@ special. The `T` in `Box<T>` is not considered covered, and `Box<LocalType>`
 is considered local.
 
 r[items.impl.generics]
-## Generic Implementations
+## Generic implementations
 
 r[items.impl.generics.intro]
 An implementation can take [generic parameters], which can be used in the rest
@@ -299,7 +299,7 @@ impl<'a> HasAssocType for Struct {
 ```
 
 r[items.impl.attributes]
-## Attributes on Implementations
+## Attributes on implementations
 
 Implementations may contain outer [attributes] before the `impl` keyword and
 inner [attributes] inside the brackets that contain the associated items. Inner

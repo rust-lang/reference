@@ -71,7 +71,7 @@ r[cfg.option-key-uniqueness]
 Keys do not need to be unique. For example, both `feature = "std"` and `feature = "serde"` can be set at the same time.
 
 r[cfg.options.set]
-## Set Configuration Options
+## Set configuration options
 
 r[cfg.options.general]
 Which configuration options are set is determined statically during the

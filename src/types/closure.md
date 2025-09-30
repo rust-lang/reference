@@ -95,7 +95,7 @@ r[type.closure.async.input]
 
 Async closures always capture all input arguments, regardless of whether or not they are used within the body.
 
-## Capture Precision
+## Capture precision
 
 r[type.closure.capture.precision.capture-path]
 A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable.
@@ -594,7 +594,7 @@ Because captures are often by reference, the following general rules arise:
 [derived]: ../attributes/derive.md
 
 r[type.closure.drop-order]
-## Drop Order
+## Drop order
 
 If a closure captures a field of a composite types such as structs, tuples, and enums by value, the field's lifetime would now be tied to the closure. As a result, it is possible for disjoint fields of a composite types to be dropped at different times.
 

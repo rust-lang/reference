@@ -1,12 +1,12 @@
 r[macro.ambiguity]
-# Appendix: Macro Follow-Set Ambiguity Formal Specification
+# Appendix: Macro follow-set ambiguity formal specification
 
 This page documents the formal specification of the follow rules for [Macros
 By Example]. They were originally specified in [RFC 550], from which the bulk
 of this text is copied, and expanded upon in subsequent RFCs.
 
 r[macro.ambiguity.convention]
-## Definitions & Conventions
+## Definitions & conventions
 
 r[macro.ambiguity.convention.defs]
   - `macro`: anything invocable as `foo!(...)` in source code.
@@ -108,7 +108,7 @@ purposes of the formalism, we will treat `$v:vis` as actually being
 `$($v:vis)?`, with a requirement that the matcher match an empty fragment.
 
 r[macro.ambiguity.invariant]
-### The Matcher Invariants
+### The matcher invariants
 
 r[macro.ambiguity.invariant.list]
 To be valid, a matcher must meet the following three invariants. The definitions

@@ -17,7 +17,7 @@ Team members are given permission to merge changes from other contributors in th
 - Minor changes to the tooling may be made with a review from a team member. This includes bug fixes, minor additions that are unlikely to have objections, and additions that have already been discussed.
 - Major changes, such as a change in how content is authored, or major changes to how the tooling works should be approved by the team without blocking objections.
 
-## Review Process Flowchart
+## Review process flowchart
 
 When reviewing a pull request, ask yourself the following questions:
 

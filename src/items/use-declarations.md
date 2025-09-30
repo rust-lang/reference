@@ -313,7 +313,7 @@ r[items.use.glob.edition2018]
 > In the 2015 edition, paths are relative to the crate root, so an import such as `use *;` is valid, and it means to import everything from the crate root. This cannot be used in the crate root itself.
 
 r[items.use.as-underscore]
-## Underscore Imports
+## Underscore imports
 
 r[items.use.as-underscore.intro]
 Items can be imported without binding to a name by using an underscore with
