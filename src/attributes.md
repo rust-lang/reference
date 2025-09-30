@@ -351,7 +351,7 @@ The following is an index of all built-in attributes.
 [expression statement]: statements.md#expression-statements
 [external blocks]: items/external-blocks.md
 [functions]: items/functions.md
-[generics]: items/generics.md
+[generics]: types/generics.md
 [implementations]: items/implementations.md
 [item declarations]: items.md
 [match expressions]: expressions/match-expr.md

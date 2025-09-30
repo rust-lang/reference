@@ -139,7 +139,7 @@ Additionally, the crate root module does not have a name, but can be referred to
 [floating-point types]: types/numeric.md#floating-point-types
 [Function declarations]: items/functions.md
 [function parameters]: items/functions.md#function-parameters
-[Generic parameters]: items/generics.md
+[Generic parameters]: types/generics.md
 [Higher ranked trait bounds]: trait-bounds.md#higher-ranked-trait-bounds
 [Implementation]: items/implementations.md
 [Integer types]: types/numeric.md#integer-types

@@ -243,7 +243,7 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [associated types]: items/associated-items.md#associated-types
 [hrtb-scopes]: names/scopes.md#higher-ranked-trait-bound-scopes
 [supertraits]: items/traits.md#supertraits
-[generic]: items/generics.md
+[generic]: types/generics.md
 [higher-ranked lifetimes]: #higher-ranked-trait-bounds
 [precise capturing]: types/impl-trait.md#precise-capturing
 [slice]: types/slice.md
@@ -251,4 +251,4 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [trait object]: types/trait-object.md
 [trait objects]: types/trait-object.md
 [type parameters]: types/parameters.md
-[where clause]: items/generics.md#where-clauses
+[where clause]: types/generics.md#where-clauses

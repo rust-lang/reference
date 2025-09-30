@@ -470,12 +470,12 @@ mod without { // crate::without
 [`Self` scope]: names/scopes.md#self-scope
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md
-[const generic argument]: items.generics.const.argument
+[const generic argument]: generics.const.argument
 [enumeration]: items/enumerations.md
 [expressions]: expressions.md
 [extern prelude]: names/preludes.md#extern-prelude
 [implementation]: items/implementations.md
-[inferred const]: items.generics.const.inferred
+[inferred const]: generics.const.inferred
 [macro transcribers]: macros-by-example.md
 [macros]: macros.md
 [mbe]: macros-by-example.md

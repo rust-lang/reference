@@ -368,7 +368,7 @@ r[items.use.restrictions.variant]
 [`self`]: ../paths.md#self
 [associated items]: associated-items.md
 [extern prelude]: ../names/preludes.md#extern-prelude
-[generic parameters]: generics.md
+[generic parameters]: ../types/generics.md
 [items]: ../items.md
 [local variables]: ../variables.md
 [name resolution ambiguities]: names.resolution.expansion.imports.ambiguity

@@ -139,4 +139,4 @@ The crate name must not be empty, and must only contain [Unicode alphanumeric] o
 [panic-docs]: panic.md#unwinding-across-ffi-boundaries
 [shebang]: input-format.md#shebang-removal
 [trait or lifetime bounds]: trait-bounds.md
-[where clauses]: items/generics.md#where-clauses
+[where clauses]: types/generics.md#where-clauses

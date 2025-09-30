@@ -275,36 +275,36 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 ```
 
 [array repeat expression]: ../expressions/array-expr.md
-[arrays]: ../types/array.md
-[slices]: ../types/slice.md
-[associated const]: associated-items.md#associated-constants
-[associated type]: associated-items.md#associated-types
+[arrays]: array.md
+[slices]: slice.md
+[associated const]: ../items/associated-items.md#associated-constants
+[associated type]: ../items/associated-items.md#associated-types
 [attributes]: ../attributes.md
 [block]: ../expressions/block-expr.md
 [const contexts]: ../const_eval.md#const-context
 [const expression]: ../const_eval.md#constant-expressions
-[const generic argument]: items.generics.const.argument
-[const item]: constant-items.md
-[enumerations]: enumerations.md
-[functions]: functions.md
-[function pointers]: ../types/function-pointer.md
-[generic implementations]: implementations.md#generic-implementations
+[const generic argument]: generics.const.argument
+[const item]: ../items/constant-items.md
+[enumerations]: ../items/enumerations.md
+[functions]: ../items/functions.md
+[function pointers]: function-pointer.md
+[generic implementations]: ../items/implementations.md#generic-implementations
 [generic parameter scopes]: ../names/scopes.md#generic-parameter-scopes
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
-[implementations]: implementations.md
-[inferred const]: items.generics.const.inferred
+[implementations]: ../items/implementations.md
+[inferred const]: generics.const.inferred
 [item declarations]: ../statements.md#item-declarations
 [item]: ../items.md
 [literal]: ../expressions/literal-expr.md
 [path]: ../paths.md
 [path expression]: ../expressions/path-expr.md
-[raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
-[references]: ../types/pointer.md#shared-references-
-[structs]: structs.md
-[tuples]: ../types/tuple.md
-[trait object]: ../types/trait-object.md
-[traits]: traits.md
-[type aliases]: type-aliases.md
+[raw pointers]: pointer.md#raw-pointers-const-and-mut
+[references]: pointer.md#shared-references-
+[structs]: ../items/structs.md
+[tuples]: tuple.md
+[trait object]: trait-object.md
+[traits]: ../items/traits.md
+[type aliases]: ../items/type-aliases.md
 [type]: ../types.md
-[unions]: unions.md
+[unions]: ../items/unions.md
 [value namespace]: ../names/namespaces.md
