@@ -478,7 +478,7 @@ r[items.use.restrictions.variant]
 [`self`]: ../paths.md#self
 [associated items]: associated-items.md
 [extern prelude]: ../names/preludes.md#extern-prelude
-[generic parameters]: generics.md
+[generic parameters]: generics
 [items]: ../items.md
 [local variables]: ../variables.md
 [module]: items.mod
