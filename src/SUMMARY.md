@@ -35,7 +35,6 @@
     - [Traits](items/traits.md)
     - [Implementations](items/implementations.md)
     - [External blocks](items/external-blocks.md)
-    - [Generic parameters](items/generics.md)
     - [Associated items](items/associated-items.md)
 
 - [Attributes](attributes.md)
@@ -93,6 +92,7 @@
         - [Impl trait type](types/impl-trait.md)
         - [Type parameters](types/parameters.md)
         - [Inferred type](types/inferred.md)
+    - [Generics](types/generics/index.md)
     - [Dynamically sized types](dynamically-sized-types.md)
     - [Type layout](type-layout.md)
     - [Interior mutability](interior-mutability.md)
