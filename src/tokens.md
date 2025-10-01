@@ -469,7 +469,7 @@ c"\xC3\xA6";
 
 r[lex.token.str-c.edition2021]
 > [!EDITION-2021]
-> C string literals are accepted in the 2021 edition or later. In earlier additions the token `c""` is lexed as `c ""`.
+> C string literals are accepted in the 2021 edition or later. In earlier editions the token `c""` is lexed as `c ""`.
 
 r[lex.token.str-c-raw]
 #### Raw C string literals
@@ -501,7 +501,7 @@ literal) or `U+005C` (`\`) do not have any special meaning.
 
 r[lex.token.str-c-raw.edition2021]
 > [!EDITION-2021]
-> Raw C string literals are accepted in the 2021 edition or later. In earlier additions the token `cr""` is lexed as `cr ""`, and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
+> Raw C string literals are accepted in the 2021 edition or later. In earlier editions the token `cr""` is lexed as `cr ""`, and `cr#""#` is lexed as `cr #""#` (which is non-grammatical).
 
 #### Examples for C string and raw C string literals
 
@@ -791,7 +791,7 @@ It is an error to use the RESERVED_RAW_LIFETIME token `'r#_` in order to avoid c
 
 r[lex.token.life.raw.edition2021]
 > [!EDITION-2021]
-> Raw lifetimes are accepted in the 2021 edition or later. In earlier additions the token `'r#lt` is lexed as `'r # lt`.
+> Raw lifetimes are accepted in the 2021 edition or later. In earlier editions the token `'r#lt` is lexed as `'r # lt`.
 
 r[lex.token.punct]
 ## Punctuation
