@@ -146,7 +146,7 @@ if true {
 ```
 
 r[statement.attribute]
-## Attributes on Statements
+## Attributes on statements
 
 Statements accept [outer attributes].
 The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].

@@ -102,7 +102,7 @@ pub mod m3 {
 > `rustc` allows setting lint levels on the [command-line][rustc-lint-cli], and also supports [setting caps][rustc-lint-caps] on the lints that are reported.
 
 r[attributes.diagnostics.lint.reason]
-### Lint Reasons
+### Lint reasons
 
 All lint attributes support an additional `reason` parameter, to give context why
 a certain attribute was added. This reason will be displayed as part of the lint

@@ -56,7 +56,7 @@ the syntax and make use of the `unsafe` keyword, before removing it from the
 token stream.
 
 r[items.mod.outlined]
-## Module Source Filenames
+## Module source filenames
 
 r[items.mod.outlined.intro]
 A module without a body is loaded from an external file. When the module does
@@ -147,7 +147,7 @@ mod thread {
 ```
 
 r[items.mod.attributes]
-## Attributes on Modules
+## Attributes on modules
 
 r[items.mod.attributes.intro]
 Modules, like all items, accept outer attributes. They also accept inner

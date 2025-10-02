@@ -32,7 +32,7 @@ we welcome PRs to fix them. Additionally, larger editing jobs that help remove
 the number of parentheticals, remove comma splices, italicize term definitions
 and other similar tasks are helpful.
 
-## Adding Examples and Glossary Entries
+## Adding examples and glossary entries
 
 Examples are great. Many people will only read examples and ignore the prose.
 Ideally, every facet of every feature will have an example.
@@ -41,7 +41,7 @@ Likewise, the reference has a glossary. It doesn't need to explain every facet
 of every feature nor contain every definition, but it does need to be expanded
 upon. Ideally entries in the glossary link to the associated documentation.
 
-## Adding Documentation
+## Adding documentation
 
 There are a lot of features that are not documented at all or are documented
 poorly. This is the hardest, but definitely most valuable. Pick an unassigned

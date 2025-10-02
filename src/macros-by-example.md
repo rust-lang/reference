@@ -1,5 +1,5 @@
 r[macro.decl]
-# Macros By Example
+# Macros by example
 
 r[macro.decl.syntax]
 ```grammar,macros
@@ -221,7 +221,7 @@ compiler knows how to expand them properly:
     repetitions.
 
 r[macro.decl.scope]
-## Scoping, Exporting, and Importing
+## Scoping, exporting, and importing
 
 r[macro.decl.scope.intro]
 For historical reasons, the scoping of macros by example does not work entirely
@@ -250,7 +250,7 @@ self::lazy_static!{} // Path-based lookup ignores our macro, finds imported one.
 ```
 
 r[macro.decl.scope.textual]
-### Textual Scope
+### Textual scope
 
 r[macro.decl.scope.textual.intro]
 Textual scope is based largely on the order that things appear in source files,
@@ -369,7 +369,7 @@ Macros to be imported with `#[macro_use]` must be exported with
 `#[macro_export]`, which is described below.
 
 r[macro.decl.scope.path]
-### Path-Based Scope
+### Path-based scope
 
 r[macro.decl.scope.path.intro]
 By default, a macro has no path-based scope. However, if it has the
@@ -523,7 +523,7 @@ macro_rules! helper {
 ```
 
 r[macro.decl.follow-set]
-## Follow-set Ambiguity Restrictions
+## Follow-set ambiguity restrictions
 
 r[macro.decl.follow-set.intro]
 The parser used by the macro system is reasonably powerful, but it is limited in

@@ -151,7 +151,7 @@ Mutable statics have the same restrictions as normal statics, except that the
 type does not have to implement the `Sync` trait.
 
 r[items.static.alternate]
-## Using Statics or Consts
+## Using statics or consts
 
 It can be confusing whether or not you should use a constant item or a static
 item. Constants should, in general, be preferred over statics unless one of the

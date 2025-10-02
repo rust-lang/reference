@@ -147,7 +147,7 @@ assert_eq!(
 > Since this is applied recursively, these expressions are also evaluated from innermost to outermost, ignoring siblings until there are no inner subexpressions.
 
 r[expr.place-value]
-## Place Expressions and Value Expressions
+## Place expressions and value expressions
 
 r[expr.place-value.intro]
 Expressions are divided into two main categories: place expressions and value expressions;
@@ -334,7 +334,7 @@ x; // OK
 ```
 
 r[expr.implicit-borrow]
-### Implicit Borrows
+### Implicit borrows
 
 r[expr.implicit-borrow-intro]
 Certain expressions will treat an expression as a place expression by implicitly borrowing it.
@@ -366,13 +366,13 @@ Implicit borrows may be taken in the following expressions:
 * Arguments to [`format_args!`] except the format string.
 
 r[expr.overload]
-## Overloading Traits
+## Overloading traits
 
 Many of the following operators and expressions can also be overloaded for other types using traits in `std::ops` or `std::cmp`.
 These traits also exist in `core::ops` and `core::cmp` with the same names.
 
 r[expr.attr]
-## Expression Attributes
+## Expression attributes
 
 r[expr.attr.restriction]
 [Outer attributes] before an expression are allowed only in a few specific cases:

@@ -1,5 +1,5 @@
 r[interior-mut]
-# Interior Mutability
+# Interior mutability
 
 r[interior-mut.intro]
 Sometimes a type needs to be mutated while having multiple aliases. In Rust this
