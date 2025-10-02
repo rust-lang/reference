@@ -578,6 +578,30 @@ Feature               | Implicitly Enables  | Description
 [tail-call]: https://github.com/webassembly/tail-call
 [multivalue]: https://github.com/webassembly/multi-value
 
+r[attributes.codegen.target_feature.s390x]
+#### `s390x`
+
+On `s390x` targets, use of functions with the `#[target_feature]` attribute follows the [above restrictions][attributes.codegen.target_feature.safety-restrictions].
+
+Further documentation on these features can be found in the "Additions to z/Architecture" section of Chapter 1 of the *[z/Architecture Principles of Operation]*.
+
+Feature                                | Implicitly Enables                    | Description
+---------------------------------------|---------------------------------------|---------------------
+`vector`                               |                                       | 128-bit vector instructions
+`vector-enhancements-1`                | `vector`                              | vector enhancements 1
+`vector-enhancements-2`                | `vector-enhancements-1`               | vector enhancements 2
+`vector-enhancements-3`                | `vector-enhancements-2`               | vector enhancements 3
+`vector-packed-decimal`                | `vector`                              | vector packed-decimal
+`vector-packed-decimal-enhancement`    | `vector-packed-decimal`               | vector packed-decimal enhancement
+`vector-packed-decimal-enhancement-2`  | `vector-packed-decimal-enhancement-2` | vector packed-decimal enhancement 2
+`vector-packed-decimal-enhancement-3`  | `vector-packed-decimal-enhancement-3` | vector packed-decimal enhancement 3
+`nnp-assist`                           | `vector`                              | nnp assist
+`miscellaneous-extensions-2`           |                                       | miscellaneous extensions 2
+`miscellaneous-extensions-3`           |                                       | miscellaneous extensions 3
+`miscellaneous-extensions-4`           |                                       | miscellaneous extensions 4
+
+[z/Architecture Principles of Operation]: https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
+
 r[attributes.codegen.target_feature.info]
 ### Additional information
 
@@ -588,8 +612,7 @@ that this option is not affected by the `target_feature` attribute, and is
 only driven by the features enabled for the entire crate.
 
 r[attributes.codegen.target_feature.remark-rt]
-See the [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`] macros
-in the standard library for runtime feature detection on these platforms.
+Whether a feature is enabled can be checked at runtime using a platform-specific macro from the standard library, for instance [`is_x86_feature_detected`] or [`is_aarch64_feature_detected`].
 
 > [!NOTE]
 > `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
