@@ -203,8 +203,8 @@ r[cfg.target_abi]
 ### `target_abi`
 
 r[cfg.target_abi.general]
-Key-value option set to further disambiguate the `target_env` or `target_arch`
-with information about the target ABI.
+Key-value option set to further disambiguate the target with information about
+the target ABI.
 
 r[cfg.target_abi.disambiguation]
 For historical reasons, this value is only defined as not the empty-string when actually
