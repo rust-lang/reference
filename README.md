@@ -3,26 +3,14 @@
 This document is the primary reference for the Rust programming
 language.
 
-## Dependencies
+## Contributor docs
 
-- Nightly Rust
-- [mdbook](https://rust-lang.github.io/mdBook/)
+There are several pages for those working on the reference:
 
-## Installing dependencies
-
-First, ensure that you have a recent copy of the nightly Rust compiler
-installed, as this is needed in order to run the tests:
-
-```sh
-rustup toolchain install nightly
-```
-
-Now, ensure you have `mdbook` installed, as this is needed in order to
-build the Reference:
-
-```sh
-cargo install --locked mdbook
-```
+* [Authoring guide](https://github.com/rust-lang/reference/blob/master/docs/authoring.md): Guidelines for writing content.
+* [Review policy](https://github.com/rust-lang/reference/blob/master/docs/review-policy.md): Guidelines for reviewers.
+* [Grammar](https://github.com/rust-lang/reference/blob/master/docs/grammar.md): How the grammar syntax works.
+* [Attribute template](https://github.com/rust-lang/reference/blob/master/docs/attribute-template.md): The standard template for documenting an attribute.
 
 ## Building
 
@@ -30,6 +18,7 @@ To build the Reference, first clone the project:
 
 ```sh
 git clone https://github.com/rust-lang/reference.git
+cd reference
 ```
 
 (Alternatively, if you don't want to use `git`, [download][] a ZIP file
@@ -38,38 +27,41 @@ top-level directory to `reference`.)
 
 [download]: https://github.com/rust-lang/reference/archive/refs/heads/master.zip
 
-Now change your current directory to the working directory:
+### Installing mdbook
+
+The Reference is built using [mdbook].
+
+First, ensure that you have a recent copy of the nightly Rust compiler installed, as this is needed in order to run the tests:
 
 ```sh
-cd reference
+rustup toolchain install nightly
+rustup override set nightly
 ```
 
-To test all of the code examples in the Reference, run:
+Now, ensure you have `mdbook` installed, as this is needed in order to build the Reference:
 
 ```sh
-mdbook test
+cargo install --locked mdbook
 ```
 
-For authors, consider using the server functionality which supports automatic reload.
+[mdbook]: https://rust-lang.github.io/mdBook/
 
-To build the Reference locally (in `book/`) and open it in a web
-browser, run:
+### Running mdbook
 
-```sh
-SPEC_RELATIVE=0 mdbook build --open
-```
+`mdbook` provides a variety of different commands and options to help you work on the book:
 
-This will open a browser with a websocket live-link to automatically reload whenever the source is updated.
+* `mdbook build --open`: Build the book and open it in a web browser.
+* `mdbook serve --open`: Launches a web server on localhost. It also automatically rebuilds the book whenever any file changes and automatically reloads your web browser.
 
-You can also use mdbook's live webserver option, which will automatically rebuild the book and reload your web browser whenever a source file is modified:
-
-```sh
-SPEC_RELATIVE=0 mdbook serve --open
-```
+The book contents are driven by a `SUMMARY.md` file, and every file must be linked there. See <https://rust-lang.github.io/mdBook/> for its usage.
 
 ### `SPEC_RELATIVE`
 
 The `SPEC_RELATIVE=0` environment variable makes links to the standard library go to <https://doc.rust-lang.org/> instead of being relative, which is useful when viewing locally since you normally don't have a copy of the standard library.
+
+```sh
+SPEC_RELATIVE=0 mdbook serve --open
+```
 
 The published site at <https://doc.rust-lang.org/reference/> (or local docs using `rustup doc`) does not set this, which means it will use relative links which supports offline viewing and links to the correct version (for example, links in <https://doc.rust-lang.org/1.81.0/reference/> will stay within the 1.81.0 directory).
 
@@ -80,3 +72,12 @@ The `SPEC_DENY_WARNINGS=1` environment variable will turn all warnings generated
 ### `SPEC_RUST_ROOT`
 
 The `SPEC_RUST_ROOT` can be used to point to the directory of a checkout of <https://github.com/rust-lang/rust>. This is used by the test-linking feature so that it can find tests linked to reference rules. If this is not set, then the tests won't be linked.
+
+## Running tests
+
+There are several different kinds of tests you can run (these are enforced on CI):
+
+* `mdbook test`: This will run the inline Rust codeblocks (internally it uses `rustdoc` to do this).
+* `cargo xtask style-check`: This will validate some style checks (see [authoring guide](docs/authoring.md)).
+* `cargo xtask linkcheck`: This will validate that markdown links aren't broken.
+* `cargo xtask test-all`: Runs all tests.
