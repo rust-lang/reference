@@ -98,14 +98,19 @@ r[items.extern.abi]
 ## ABI
 
 r[items.extern.abi.intro]
-By default external blocks assume that the library they are calling uses the
-standard C ABI on the specific platform. Other ABIs may be specified using an
-`abi` string, as shown here:
+The `extern` keyword can be followed by an optional <abbr title="application binary interface">ABI</abbr> string. The ABI specifies the calling convention of the functions in the block. The calling convention defines a low-level interface for functions, such as how arguments are placed in registers or on the stack, how return values are passed, and who is responsible for cleaning up the stack.
 
-```rust
-// Interface to the Windows API
-unsafe extern "system" { }
-```
+> [!EXAMPLE]
+> ```rust
+> // Interface to the Windows API
+> unsafe extern "system" { }
+> ```
+
+r[items.extern.abi.default]
+If the ABI string is not specified, it defaults to `"C"`.
+
+> [!NOTE]
+> It is recommended to always specify the ABI to make it clear which ABI is used. Future versions of Rust may make this a requirement, see [#134986](https://github.com/rust-lang/rust/issues/134986).
 
 r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
