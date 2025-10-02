@@ -119,20 +119,57 @@ Only the first use of `cold` on a function has effect.
 r[attributes.codegen.cold.trait]
 When `cold` is applied to a function in a [trait], it applies only to the code of the [default definition].
 
+<!-- template:attributes -->
 r[attributes.codegen.naked]
 ## The `naked` attribute
 
 r[attributes.codegen.naked.intro]
 The *`naked` [attribute]* prevents the compiler from emitting a function prologue and epilogue for the attributed function.
 
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_arch = "x86_64")] {
+> /// Adds 3 to the given number.
+> ///
+> /// SAFETY: The validity of the used registers
+> /// is guaranteed according to the "sysv64" ABI.
+> #[unsafe(naked)]
+> pub extern "sysv64" fn add_n(number: usize) -> usize {
+>     core::arch::naked_asm!(
+>         "add rdi, {}",
+>         "mov rax, rdi",
+>         "ret",
+>         const 3,
+>     )
+> }
+> # }
+> ```
+
+r[attributes.codegen.naked.syntax]
+The `naked` attribute uses the [MetaWord] syntax.
+
+r[attributes.codegen.naked.allowed-positions]
+The `naked` attribute may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits.associated-item-decls] with a body
+
+r[attributes.codegen.naked.duplicates]
+The `naked` attribute may be used any number of times on a form.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
+r[attributes.codegen.naked.unsafe]
+The `naked` attribute must be marked with [`unsafe`][attributes.safety] because the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
+
 r[attributes.codegen.naked.body]
 The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
 r[attributes.codegen.naked.prologue-epilogue]
 No function prologue or epilogue is generated for the attributed function. The assembly code in the `naked_asm!` block constitutes the full body of a naked function.
-
-r[attributes.codegen.naked.unsafe-attribute]
-The `naked` attribute is an [unsafe attribute]. Annotating a function with `#[unsafe(naked)]` comes with the safety obligation that the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
 
 r[attributes.codegen.naked.call-stack]
 The assembly code may assume that the call stack and register state are valid on entry as per the signature and calling convention of the function.
@@ -154,6 +191,14 @@ The [`track_caller`](#the-track_caller-attribute) attribute cannot be applied to
 
 r[attributes.codegen.naked.testing]
 The [testing attributes](testing.md) cannot be applied to a naked function.
+
+r[attributes.codegen.naked.target_feature]
+The [`target_feature`][attributes.codegen.target_feature] attribute cannot be applied to a naked function.
+
+<!-- TODO: Reflexive rules? -->
+
+r[attributes.codegen.naked.abi]
+The function cannot have the ["Rust" ABI][items.extern.abi.rust].
 
 <!-- template:attributes -->
 r[attributes.codegen.no_builtins]
