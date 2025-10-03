@@ -350,6 +350,7 @@ or to all be representable by the `unsigned int` type.
 Nevertheless, the type of the discriminant is `isize`.
 The size and alignment of the enum then match that of a C enum with the same
 discriminant values (and without a fixed underlying type).
+Crucially, the equivalent C type is determined based on the discriminant values *after* they have been cast to `isize`.
 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
