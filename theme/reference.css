@@ -260,7 +260,7 @@ dfn {
     padding-left: 0;
     padding-right: 0;
 }
-/* required to accomodate above, somehow... */
+/* required to accommodate above, somehow... */
 #menu-bar {
     margin-left: 0;
 }
@@ -315,7 +315,7 @@ hr {
 }
 
 /* This is quite dumb, ugh.
-   CSS doesn't allow margin colapsing between grid items and anything else
+   CSS doesn't allow margin collapsing between grid items and anything else
    (src: <https://stackoverflow.com/a/37837971>), which means that the margins
    of li's children are not collapsed with ul's margins, adding too much margins.
 
