@@ -345,7 +345,8 @@ r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
 For [field-less enums], the `C` representation requires the discriminant values to
-be representable by the `int` type in the target platform's C ABI.
+either all be representable by the `int` type in the target platform's C ABI,
+or to all be representable by the `unsigned int` type.
 Nevertheless, the type of the discriminant is `isize`.
 The size and alignment of the enum then match that of a C enum with the same
 discriminant values (and without a fixed underlying type).
