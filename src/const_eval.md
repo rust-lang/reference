@@ -150,7 +150,7 @@ r[const-eval.const-expr.borrows]
   >
   > ```rust
   > // The borrow is of a variable local to the initializer, therefore
-  > // this place expresssion is transient.
+  > // this place expression is transient.
   > const C: () = { let mut x = 0; _ = &mut x; };
   > ```
   >

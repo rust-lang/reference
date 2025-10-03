@@ -1355,7 +1355,7 @@ r[asm.rules.x86-df]
 
 r[asm.rules.x86-x87]
 - On x86, the x87 floating-point register stack must remain unchanged unless all of the `st([0-7])` registers have been marked as clobbered with `out("st(0)") _, out("st(1)") _, ...`.
-  - If all x87 registers are clobbered then the x87 register stack is guaranteed to be empty upon entering the assembly code. Assembly code must ensure that the x87 register stack is also empty when exiting the asssembly code.
+  - If all x87 registers are clobbered then the x87 register stack is guaranteed to be empty upon entering the assembly code. Assembly code must ensure that the x87 register stack is also empty when exiting the assembly code.
 
 ```rust
 # #[cfg(target_arch = "x86_64")]
