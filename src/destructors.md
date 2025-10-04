@@ -3,10 +3,11 @@ r[destructors]
 
 r[destructors.intro]
 When an [initialized]&#32;[variable] or [temporary] goes out of
-[scope](#drop-scopes), its *destructor* is run, or it is *dropped*. [Assignment]
-also runs the destructor of its left-hand operand, if it's initialized. If a
-variable has been partially initialized, only its initialized fields are
-dropped.
+[scope](#drop-scopes), it is *dropped*, which means its *destructor* is run.
+(The two terms are used interchangeably here.)
+[Assignment] also runs the destructor of its left-hand operand, if it's
+initialized. If a variable has been partially initialized, only its initialized
+fields are dropped.
 
 r[destructors.operation]
 The destructor of a type `T` consists of:
