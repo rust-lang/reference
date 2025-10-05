@@ -524,6 +524,11 @@ let x = &temp() as &dyn Send; // Operand of cast.
 # x;
 let x = (&*&temp(),); // Operand of tuple constructor.
 # x;
+struct W<T>(T);
+let x = W(&temp()); // Argument to tuple struct constructor.
+# x;
+let x = Some(&temp()); // Argument to tuple enum variant constructor.
+# x;
 let x = { [Some(&temp())] }; // Final expr of block.
 # x;
 let x = const { &temp() }; // Final expr of `const` block.
