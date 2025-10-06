@@ -15,7 +15,7 @@
     --alert-warning-color: #9a6700;
     --alert-edition-color: #1a7f37;
     --alert-example-color: #8250df;
-    --gramar-literal-bg: #fafafa;
+    --grammar-literal-bg: #fafafa;
 }
 .rust {
     --alert-note-color: #023b95;
@@ -40,7 +40,7 @@
     --alert-warning-color: #f0b72f;
     --alert-edition-color: #2bd853;
     --alert-example-color: #d3abff;
-    --gramar-literal-bg: #191f26;
+    --grammar-literal-bg: #191f26;
 }
 .coal, .navy, .ayu {
     --grammar-comment-color: lch(from var(--quote-bg) calc(l + 50) 0 0);
@@ -260,7 +260,7 @@ dfn {
     padding-left: 0;
     padding-right: 0;
 }
-/* required to accomodate above, somehow... */
+/* required to accommodate above, somehow... */
 #menu-bar {
     margin-left: 0;
 }
@@ -315,7 +315,7 @@ hr {
 }
 
 /* This is quite dumb, ugh.
-   CSS doesn't allow margin colapsing between grid items and anything else
+   CSS doesn't allow margin collapsing between grid items and anything else
    (src: <https://stackoverflow.com/a/37837971>), which means that the margins
    of li's children are not collapsed with ul's margins, adding too much margins.
 

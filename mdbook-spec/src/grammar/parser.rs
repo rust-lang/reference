@@ -382,7 +382,7 @@ impl Parser<'_> {
                     xs.push(x);
                     self.index += 1;
                 }
-                _ => bail!(self, "expected 4 uppercase hexidecimal digits after `U+`"),
+                _ => bail!(self, "expected 4 uppercase hexadecimal digits after `U+`"),
             }
         }
         Ok(ExpressionKind::Unicode(String::from_utf8(xs).unwrap()))
