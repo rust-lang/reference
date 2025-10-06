@@ -134,6 +134,15 @@ r[coerce.types.ref-to-pointer]
 r[coerce.types.mut-to-pointer]
 * `&mut T` to `*mut T`
 
+r[coerce.types.unsize]
+* `T` to `U` if `T: CoerceUnsized<U>`. For example:
+    ```rust
+    const _: &dyn std::fmt::Display = &0u8; // &u8 -> &dyn Display
+    const _: &[u32] = &[0, 1, 2, 3, 4, 5];  // &[u32; 4] -> &[u32]
+    ```
+
+    See [unsized coercion](#unsized-coercions) for more details.
+
 r[coerce.types.deref]
 * `&T` or `&mut T` to `&U` if `T` implements `Deref<Target = U>`. For example:
 
@@ -163,20 +172,6 @@ r[coerce.types.deref]
 r[coerce.types.deref-mut]
 * `&mut T` to `&mut U` if `T` implements `DerefMut<Target = U>`.
 
-r[coerce.types.unsize]
-* TyCtor(`T`) to TyCtor(`U`), where TyCtor(`T`) is one of
-    - `&T`
-    - `&mut T`
-    - `*const T`
-    - `*mut T`
-    - `Box<T>`
-
-    and where `U` can be obtained from `T` by [unsized coercion](#unsized-coercions).
-
-    <!--In the future, coerce_inner will be recursively extended to tuples and
-    structs. In addition, coercions from subtraits to supertraits will be
-    added. See [RFC 401] for more details.-->
-
 r[coerce.types.fn]
 * Function item types to `fn` pointers
 
@@ -190,40 +185,148 @@ r[coerce.unsize]
 ### Unsized Coercions
 
 r[coerce.unsize.intro]
-The following coercions are called `unsized coercions`, since they
-relate to converting types to unsized types, and are permitted in a few
-cases where other coercions are not, as described above. They can still happen
-anywhere else a coercion can occur.
+The following coercions are called "unsized coercions", since their targets contain an unsized type. Unsized coercions apply to pointer-like types where some type information known about the referent at compile-time (e.g. its size or traits that it implements) can be *erased*. For example:
 
-r[coerce.unsize.trait]
-Two traits, [`Unsize`] and [`CoerceUnsized`], are used
-to assist in this process and expose it for library use. The following
-coercions are built-ins and, if `T` can be coerced to `U` with one of them, then
-an implementation of `Unsize<U>` for `T` will be provided:
+```rust
+use std::cell::Cell;
 
-r[coerce.unsize.slice]
-* `[T; n]` to `[T]`.
+fn main() {
+    // `&[u8; 0]` can be coerced to `&[u8]`.
+    //
+    // Here `&_` is the pointer-like type, `[u8; 0]` is the original
+    // pointee, and `[u8]` is more erased pointee (losing the length).
+    let _: &[u8] = &[];
 
-r[coerce.unsize.trait-object]
-* `T` to `dyn U`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
+    trait A: Super {}
+    impl A for () {}
 
-r[coerce.unsize.trait-upcast]
-* `dyn T` to `dyn U`, when `U` is one of `T`'s [supertraits].
-    * This allows dropping auto traits, i.e. `dyn T + Auto` to `dyn U` is allowed.
-    * This allows adding auto traits if the principal trait has the auto trait as a super trait, i.e. given `trait T: U + Send {}`, `dyn T` to `dyn T + Send` or to `dyn U + Send` coercions are allowed.
+    trait Super {}
+    impl Super for () {}
 
-r[coerce.unsized.composite]
-* `Foo<..., T, ...>` to `Foo<..., U, ...>`, when:
-    * `Foo` is a struct.
-    * `T` implements `Unsize<U>`.
-    * The last field of `Foo` has a type involving `T`.
-    * If that field has type `Bar<T>`, then `Bar<T>` implements `Unsize<Bar<U>>`.
-    * T is not part of the type of any other fields.
+    // `&()` can be coerced to `&dyn A`, losing the type information.
+    let _: &dyn A = &();
 
-r[coerce.unsized.pointer]
-Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T`
-implements `Unsize<U>` or `CoerceUnsized<Foo<U>>`. This allows it to provide an
-unsized coercion to `Foo<U>`.
+    // `&dyn A` can be coerced to `&dyn Super`, losing the fact that
+    // the underlying type (unit) implements `A` too.
+    let _: &dyn Super = &() as &dyn A;
+
+    // The same coercions work with other pointer-like types and
+    // wrappers over them:
+    let _: Box<[u8]> = Box::<[u8; 0]>::new([]);
+    let _: Cell<Box<[u8]>> = Cell::new(Box::<[u8; 0]>::new([]));
+
+    // The result of the coercion doesn't *have* to be the same
+    // pointer-like type, although this is only allowed for certain
+    // pairs of pointer-like types.
+    let _: *const dyn A = &mut ();
+}
+```
+
+> [!NOTE]
+> The term "unsized" might be confusing, as the coercion works on sized types (the pointer-like type itself) and the source pointer might point to an unsized type in the first place (e.g. `&dyn A -> &dyn Super` in the example above).
+>
+> Here, "unsized" refers to the main purpose of these coercions, which is to produce (pointers to) unsized types. Since unsized types can't exist except behind a pointer, the pointers are deemphasized.
+
+> [!NOTE]
+> When doing an unsized coercion, the internal [pointer metadata] type changes. For example, when coercing `&u32` to `&dyn Debug`, the metadata type changes from `()` to `DynMetadata<dyn Debug>` (these metadata types are not yet stable, see [#81513]). This can also lead to a change in the pointer size --- `&u32` is half the size of `&dyn Debug`.
+
+r[coerce.unsize.traits]
+Three internal traits, [`Unsize`], [`CoerceUnsized`], and [`PinCoerceUnsized`] are used to assist in this process.
+
+r[coerce.unsize.traits.unsize]
+[`Unsize`] represents that the target type is layout compatible with the source type and the [pointer metadata] of the target type can be derived from the metadata of the source. This implies that a pointer to the source type can be converted to a pointer to the target type.
+
+> [!EXAMPLE]
+> Because `[T; N]` implements `Unsize<[T]>`, you can *unsize* `&[T; N]` into `&[T]`.
+
+r[coerce.unsize.traits.coerce-unsized]
+[`CoerceUnsized`] represents that a pointer-like type can be coerced to another pointer-like type when `Unsize` is implemented for the pointee of the source type.
+
+> [!EXAMPLE]
+> `&T` implements `CoerceUnsized<&U>` when `T: Unsize<U>`. So, since `u8: Unsize<dyn Display>`, `&u8: CoerceUnsized<&dyn Display>`.
+>
+> ```rust
+> # #![ feature(coerce_unsized, unsize) ]
+> # use core::{fmt::Display, marker::Unsize, ops::CoerceUnsized};
+> fn f()
+> where
+>     // These bounds are "trivial".
+>     u8: Unsize<dyn Display>,
+>     for<'a> &'a u8: CoerceUnsized<&'a (dyn Display + 'a)>,
+> {
+>     let _: &dyn Display = &0u8;
+> }
+> ```
+>
+> ```rust
+> # #![ feature(coerce_unsized, unsize) ]
+> # use core::{marker::Unsize, ops::CoerceUnsized};
+> fn f<T, U>(x: T)
+> where
+>     T: Unsize<U>,
+>     for<'a> &'a T: CoerceUnsized<&'a U>,
+> {
+>     let _: &U = &x;
+> }
+> ```
+
+r[coerce.unsize.traits.pin-coerce-unsized]
+[`PinCoerceUnsized`] is an unsafe marker trait that is implemented for pointer-like types to indicate it is safe to perform an unsized coercion when the pointee is pinned (and must therefore uphold the [`Pin`] guarantees).
+
+> [!EXAMPLE]
+> ```rust
+> # #![ feature(coerce_unsized, pin_coerce_unsized_trait) ]
+> # use core::{ops::CoerceUnsized, pin::{Pin, PinCoerceUnsized}};
+> trait Tr { fn f(); }
+> impl<T, U> Tr for (T, U)
+> where
+>     // Assuming these are true...
+>     T: CoerceUnsized<U> + PinCoerceUnsized,
+>     U: PinCoerceUnsized,
+> {
+>     // ...we can prove this where clause:
+>     fn f() where Pin<T>: CoerceUnsized<Pin<U>> {}
+> }
+> ```
+>
+> ```rust
+> # #![ feature(coerce_unsized, pin_coerce_unsized_trait) ]
+> # use core::{ops::CoerceUnsized, pin::{Pin, PinCoerceUnsized}};
+> fn f<T, U>(x: Pin<T>)
+> where
+>     T: CoerceUnsized<U> + PinCoerceUnsized,
+>     U: PinCoerceUnsized,
+> {
+>     let _: Pin<U> = x;
+> }
+> ```
+
+r[coerce.unsize.built-in]
+The following implementations of [`Unsize`] are built-in:
+
+r[coerce.unsize.built-in.slice]
+* `[T; n]: Unsize<[T]>`.
+
+r[coerce.unsize.built-in.trait-object]
+* `T: Unsize<dyn U>`, when `T` implements `U + Sized`, and `U` is [dyn compatible].
+
+r[coerce.unsize.built-in.trait-upcast]
+* `dyn Trait: Unsize<dyn Super>`, when `Super` is one of `Trait`'s [supertraits].
+    * This allows dropping auto traits, i.e. `dyn Trait + Auto` to `dyn Super` is allowed.
+    * This allows adding auto traits if the principal trait has the auto trait as a super trait, i.e. given `trait Trait: Super + Auto {}`, `dyn Trait` to `dyn Trait + Auto` or to `dyn Super + Auto` coercions are allowed.
+
+r[coerce.unsize.built-in.composite]
+* `S<A0, .., An, T0, .., Tn, B0, .., Bn>: Unsize<S<A0, .., An, .., U0, .., Un, .., B0, .., Bn>>`, when:
+    * `S<..>` is a struct.
+    * Where `F<..>` is the type of the last field of `S<..>`, `F<T0, .., Tn>: Unsize<F<U0, .., Un>>`.
+
+r[coerce.unsize.pointer]
+A type `S<T0, .., Tn>` *can* implement `CoerceUnsized<S<U0, .., Un>>` if both:
+
+* Only one field of `S<T0, .., Tn>` has a different type than the same field of `S<U0, .., Un>` (ignoring fields of type `PhantomData<_>`).
+* That field's type implements `CoerceUnsized<X>` where `X` is the type of the corresponding field in `S<U0, .., Un>`.
+
+This allows `S<T0, .., Tn>` types to be coerced to `S<U0, .., Un>`.
 
 > [!NOTE]
 > While the definition of the unsized coercions and their implementation has been stabilized, the traits themselves are not yet stable and therefore can't be used directly in stable Rust.
@@ -318,11 +421,15 @@ This description is obviously informal. Making it more precise is expected to
 proceed as part of a general effort to specify the Rust type checker more
 precisely.
 
+[#81513]: https://github.com/rust-lang/rust/issues/81513
 [RFC 401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [RFC 1558]: https://github.com/rust-lang/rfcs/blob/master/text/1558-closure-to-fn-coercion.md
 [subtype]: subtyping.md
 [dyn compatible]: items/traits.md#dyn-compatibility
+[pointer metadata]: glossary.pointer-metadata
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
+[`Pin`]: std::pin::Pin
+[`PinCoerceUnsized`]: std::pin::PinCoerceUnsized
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
 [method-call expressions]: expressions/method-call-expr.md
