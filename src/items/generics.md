@@ -13,7 +13,7 @@ TypeParam -> IDENTIFIER ( `:` TypeParamBounds? )? ( `=` Type )?
 
 ConstParam ->
     `const` IDENTIFIER `:` Type
-    ( `=` BlockExpression | IDENTIFIER | `-`?LiteralExpression )?
+    ( `=` ( BlockExpression | IDENTIFIER | `-`?LiteralExpression ) )?
 ```
 
 r[items.generics.syntax.intro]
