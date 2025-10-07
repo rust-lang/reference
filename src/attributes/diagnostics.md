@@ -4,6 +4,7 @@ r[attributes.diagnostics]
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
+<!-- template:attributes -->
 r[attributes.diagnostics.lint]
 ## Lint check attributes
 
