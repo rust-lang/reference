@@ -16,7 +16,7 @@ x::y::z;
 ## Types of paths
 
 r[paths.simple]
-### Simple Paths
+### Simple paths
 
 r[paths.simple.syntax]
 ```grammar,paths

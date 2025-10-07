@@ -83,7 +83,7 @@ r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
 
 r[items.const.destructor]
-## Constants with Destructors
+## Constants with destructors
 
 Constants can contain destructors. Destructors are run when the value goes out
 of scope.

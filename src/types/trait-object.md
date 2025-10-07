@@ -95,7 +95,7 @@ In this example, the trait `Printable` occurs as a trait object in both the
 type signature of `print`, and the cast expression in `main`.
 
 r[type.trait-object.lifetime-bounds]
-## Trait Object Lifetime Bounds
+## Trait object lifetime bounds
 
 Since a trait object can contain references, the lifetimes of those references
 need to be expressed as part of the trait object. This lifetime is written as

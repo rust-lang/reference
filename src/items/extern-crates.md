@@ -61,7 +61,7 @@ extern crate hello_world; // hyphen replaced with an underscore
 ```
 
 r[items.extern-crate.underscore]
-## Underscore Imports
+## Underscore imports
 
 r[items.extern-crate.underscore.intro]
 An external crate dependency can be declared without binding its name in scope
