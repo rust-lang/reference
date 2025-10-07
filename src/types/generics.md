@@ -1,7 +1,22 @@
 r[generics]
-# Generic parameters
+# Generics
 
-r[generics.syntax]
+r[generics.parameters]
+## Generic parameters
+
+r[generics.parameters.intro]
+[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
+
+> [!EXAMPLE]
+> ```rust
+> fn foo<'a, T>() {}
+> trait A<U> {}
+> struct Ref<'a, T> where T: 'a { r: &'a T }
+> struct InnerArray<T, const N: usize>([T; N]);
+> struct EitherOrderWorks<const N: bool, U>(U);
+> ```
+
+r[generics.parameters.syntax]
 ```grammar,items
 GenericParams -> `<` ( GenericParam (`,` GenericParam)* `,`? )? `>`
 
@@ -16,36 +31,23 @@ ConstParam ->
     ( `=` ( BlockExpression | IDENTIFIER | `-`?LiteralExpression ) )?
 ```
 
-r[generics.syntax.intro]
-[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
-
-r[generics.syntax.decl-order]
+r[generics.parameters.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
-r[generics.syntax.duplicate-params]
+r[generics.parameters.duplicate-params]
 The same parameter name may not be declared more than once in a [GenericParams] list.
 
-Some examples of items with type, const, and lifetime parameters:
-
-```rust
-fn foo<'a, T>() {}
-trait A<U> {}
-struct Ref<'a, T> where T: 'a { r: &'a T }
-struct InnerArray<T, const N: usize>([T; N]);
-struct EitherOrderWorks<const N: bool, U>(U);
-```
-
-r[generics.syntax.scope]
+r[generics.parameters.scope]
 Generic parameters are in scope within the item definition where they are declared. They are not in scope for items declared within the body of a function as described in [item declarations]. See [generic parameter scopes] for more details.
 
-r[generics.builtin-generic-types]
+r[generics.parameters.builtin-generic-types]
 [References], [raw pointers], [arrays], [slices], [tuples], and [function pointers] have lifetime or type parameters as well, but are not referred to with path syntax.
 
-r[generics.invalid-lifetimes]
+r[generics.parameters.invalid-lifetimes]
 `'_` and `'static` are not valid lifetime parameter names.
 
 r[generics.const]
-### Const generics
+## Const generics
 
 r[generics.const.intro]
 *Const generic parameters* allow items to be generic over constant values.
@@ -169,7 +171,7 @@ let _: [u8; 1024] = make_buf::<_>();
 > //                    ^ ERROR `_` not allowed here
 > ```
 
-r[generics.const.inferred.constraint]
+r[generics.parameters.const.inferred.constraint]
 The inferred const cannot be used in item signatures.
 
 ```rust,compile_fail
@@ -257,7 +259,7 @@ where
 }
 ```
 
-r[generics.attributes]
+r[generics.parameters.attributes]
 ## Attributes
 
 Generic lifetime and type parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
