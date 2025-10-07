@@ -80,6 +80,7 @@ by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
 <!-- TODO: rule name needs improvement -->
+<!-- template:attributes -->
 r[macro.proc.proc_macro]
 ## The `proc_macro` attribute
 
@@ -116,7 +117,7 @@ The *`proc_macro` [attribute][attributes]* defines a procedural macro for [funct
 > ```
 
 r[macro.proc.proc_macro.syntax]
-The `proc_macro` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `proc_macro` attribute uses the [MetaWord] syntax.
 
 r[macro.proc.proc_macro.allowed-positions]
 The `proc_macro` attribute may only be applied to a function with the signature of `pub fn(TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed.
