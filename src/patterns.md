@@ -257,6 +257,31 @@ Its objective is exclusively to make the matched binding a reference, instead of
 r[patterns.ident.precedent]
 [Path patterns](#path-patterns) take precedence over identifier patterns.
 
+> [!NOTE]
+> When a pattern is a single-segment identifier, the grammar is ambiguous whether it means an [IdentifierPattern] or a [PathPattern]. This ambiguity can only be resolved after [name resolution].
+>
+> ```rust
+> const EXPECTED_VALUE: u8 = 42;
+> //    ^^^^^^^^^^^^^^ That this constant is in scope affects how the
+> //                   patterns below are treated.
+>
+> fn check_value(x: u8) -> Result<u8, u8> {
+>     match x {
+>         EXPECTED_VALUE => Ok(x),
+>     //  ^^^^^^^^^^^^^^ Parsed as a `PathPattern` that resolves to
+>     //                 the constant `42`.
+>         other_value => Err(x),
+>     //  ^^^^^^^^^^^ Parsed as an `IdentifierPattern`.
+>     }
+> }
+>
+> // If `EXPECTED_VALUE` were treated as an `IdentifierPattern` above,
+> // that pattern would always match, making the function always return
+> // `Ok(_) regardless of the input.
+> assert_eq!(check_value(42), Ok(42));
+> assert_eq!(check_value(43), Err(43));
+> ```
+
 r[patterns.ident.constraint]
 It is an error if `ref` or `ref mut` is specified and the identifier shadows a constant.
 
@@ -1085,6 +1110,7 @@ For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound i
 [enums]: items/enumerations.md
 [literals]: expressions/literal-expr.md
 [literal expression]: expressions/literal-expr.md
+[name resolution]: names/name-resolution.md
 [negating]: expressions/operator-expr.md#negation-operators
 [path]: expressions/path-expr.md
 [pattern matching on unions]: items/unions.md#pattern-matching-on-unions
