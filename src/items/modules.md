@@ -70,6 +70,7 @@ Module filenames may also be the name of the module as a directory with the cont
 > [!NOTE]
 > Prior to `rustc` 1.30, using `mod.rs` files was the way to load a module with nested children. It is encouraged to use the new naming convention as it is more consistent, and avoids having many files named `mod.rs` within a project.
 
+<!-- template:attributes -->
 r[items.mod.outlined.path]
 ### The `path` attribute
 
@@ -90,13 +91,13 @@ r[items.mod.outlined.path.allowed-positions]
 The `path` attribute may only be applied to module declarations.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[items.mod.outlined.path.duplicates]
-Only the first instance of `path` on a module is honored. Subsequent `path` attributes are ignored.
+Only the first use of `path` on a module has effect.
 
 > [!NOTE]
-> `rustc` currently warns on following duplicate `path` attributes. This may become an error in the future.
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 r[items.mod.outlined.path.search]
 For `path` attributes on modules not inside inline module blocks, the file path is relative to the directory the source file is located. For example, the following code snippet would use the paths shown based on where it is located:
