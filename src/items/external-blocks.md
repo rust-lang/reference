@@ -98,14 +98,21 @@ r[items.extern.abi]
 ## ABI
 
 r[items.extern.abi.intro]
-By default external blocks assume that the library they are calling uses the
-standard C ABI on the specific platform. Other ABIs may be specified using an
-`abi` string, as shown here:
+The `extern` keyword can be followed by an optional [ABI] string. The ABI specifies the calling convention of the functions in the block. The calling convention defines a low-level interface for functions, such as how arguments are placed in registers or on the stack, how return values are passed, and who is responsible for cleaning up the stack.
 
-```rust
-// Interface to the Windows API
-unsafe extern "system" { }
-```
+> [!EXAMPLE]
+> ```rust
+> // Interface to the Windows API.
+> unsafe extern "system" { /* ... */ }
+> ```
+
+r[items.extern.abi.default]
+If the ABI string is not specified, it defaults to `"C"`.
+
+> [!NOTE]
+> The `extern` syntax without an explicit ABI is being phased out, so it's better to always write the ABI explicitly.
+>
+> For more details, see [Rust issue #134986](https://github.com/rust-lang/rust/issues/134986).
 
 r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
@@ -472,6 +479,7 @@ r[items.extern.attributes.fn-parameters]
 Attributes on extern function parameters follow the same rules and
 restrictions as [regular function parameters].
 
+[ABI]: glossary.abi
 [PE Format]: https://learn.microsoft.com/windows/win32/debug/pe-format#import-name-type
 [UEFI]: https://uefi.org/specifications
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
