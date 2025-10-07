@@ -245,6 +245,7 @@ r[items.extern.attributes]
 r[items.extern.attributes.intro]
 The following [attributes] control the behavior of external blocks.
 
+<!-- template:attributes -->
 r[items.extern.attributes.link]
 ### The `link` attribute
 
@@ -282,10 +283,10 @@ The `link` attribute uses the [MetaListNameValueStr] syntax to specify its input
 None of the keys may be specified more than once.
 
 r[items.extern.attributes.link.allowed-positions]
-The `link` attribute may be applied to [`extern` blocks].
+The `link` attribute may only be applied to [`extern` blocks].
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[items.extern.attributes.link.duplicates]
 The `link` attribute may be specified multiple times, and the corresponding linking instructions for each attribute will be passed to the linker.
