@@ -117,6 +117,7 @@ The possible representations for a type are:
 - The [primitive representations]
 - [`transparent`]
 
+<!-- template:attributes -->
 r[layout.repr.attribute]
 ### The `repr` attribute
 
