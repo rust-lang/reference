@@ -258,25 +258,28 @@ r[patterns.ident.precedent]
 [Path patterns](#path-patterns) take precedence over identifier patterns.
 
 > [!NOTE]
-> When a pattern is a single-segment identifier, the grammar is ambiguous whether it means an [IdentifierPattern] or a [PathPattern]. This ambiguity can only be resolved after [name resolution]. In the following example, the pattern is disambiguated to mean a PathPattern to a constant:
+> When a pattern is a single-segment identifier, the grammar is ambiguous whether it means an [IdentifierPattern] or a [PathPattern]. This ambiguity can only be resolved after [name resolution].
 >
 > ```rust
-> const EXPECTED_VALUE: i32 = 42;
+> const EXPECTED_VALUE: u8 = 42;
+> //    ^^^^^^^^^^^^^^ That this constant is in scope affects how the
+> //                   patterns below are treated.
 >
-> fn check_value(x: i32) -> bool {
+> fn check_value(x: u8) -> Result<u8, u8> {
 >     match x {
->         EXPECTED_VALUE => true, // PathPattern - matches the constant 42
->         _ => false,
+>         EXPECTED_VALUE => Ok(x),
+>     //  ^^^^^^^^^^^^^^ Parsed as a `PathPattern` that resolves to
+>     //                 the constant `42`.
+>         other_value => Err(x),
+>     //  ^^^^^^^^^^^ Parsed as an `IdentifierPattern`.
 >     }
 > }
 >
-> fn main() {
->     // If EXPECTED_VALUE were treated as an IdentifierPattern, it would bind
->     // any value to a new variable, making this function always return true
->     // regardless of the input.
->     assert_eq!(check_value(42), true); // correct behavior
->     assert_eq!(check_value(100), false); // would be true if misinterpreted
-> }
+> // If `EXPECTED_VALUE` were treated as an `IdentifierPattern` above,
+> // that pattern would always match, making the function always return
+> // `Ok(_) regardless of the input.
+> assert_eq!(check_value(42), Ok(42));
+> assert_eq!(check_value(43), Err(43));
 > ```
 
 r[patterns.ident.constraint]
