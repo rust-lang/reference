@@ -594,6 +594,7 @@ in the standard library for runtime feature detection on these platforms.
 > [!NOTE]
 > `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
+<!-- template:attributes -->
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
 
@@ -609,7 +610,7 @@ The *`track_caller` [attribute][attributes]* is used on functions to indicate th
 > ```
 
 r[attributes.codegen.track_caller.syntax]
-The `track_caller` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `track_caller` attribute uses the [MetaWord] syntax.
 
 r[attributes.codegen.track_caller.allowed-positions]
 The `track_caller` attribute may only be applied to:
@@ -626,10 +627,10 @@ All functions must have the [`"Rust"` ABI][rust-abi].
 It may not be applied to the [the `main` function][crate.main].
 
 r[attributes.codegen.track_caller.duplicates]
-Duplicate instances of the `track_caller` attribute are ignored.
+Only the first use of `track_caller` on an item has effect.
 
 > [!NOTE]
-> `rustc` warns on on duplicate `track_caller` attributes.
+> `rustc` lints against any use following the first.
 
 r[attributes.codegen.track_caller.traits]
 When applied to functions and methods in trait declarations, the `track_caller` attribute applies to all implementations. If the trait provides a default implementation with the attribute, then the attribute also applies to override implementations.
