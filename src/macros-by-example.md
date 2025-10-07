@@ -368,6 +368,7 @@ r[macro.decl.scope.macro_use.export]
 Macros to be imported with `macro_use` must be exported with
 [`macro_export`][macro.decl.scope.macro_export].
 
+<!-- template:attributes -->
 r[macro.decl.scope.macro_export]
 ### The `macro_export` attribute
 
@@ -399,13 +400,13 @@ r[macro.decl.scope.macro_export.allowed-positions]
 The `macro_export` attribute may be applied to `macro_rules` definitions.
 
 > [!NOTE]
-> `rustc` currently warns in other positions, but this may be rejected in the future.
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 r[macro.decl.scope.macro_export.duplicates]
-Only the first instance of `macro_export` on a macro is honored. Subsequent `macro_export` attributes are ignored.
+Only the first use of `macro_export` on a macro has effect.
 
 > [!NOTE]
-> `rustc` currently warns on subsequent duplicate `macro_export` attributes.
+> `rustc` lints against any use following the first.
 
 r[macro.decl.scope.macro_export.path-based]
 By default, macros only have [textually-based scoping](#textual-scope). When the `macro_export` attribute is used, the macro is reexported in the crate root, and can be referred to using a path to the macro in the crate root.
