@@ -118,7 +118,7 @@ r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
 
 r[items.extern.abi.rust]
-* `unsafe extern "Rust"` --- The native calling convention for Rust functions and closures. This is the default when the function's ABI is not specified. The Rust ABI offers no stability guarantees.
+* `unsafe extern "Rust"` --- The native calling convention for Rust functions and closures. This is the default when a function is declared without using [`extern fn`]. The Rust ABI offers no stability guarantees.
 
 r[items.extern.abi.c]
 * `unsafe extern "C"` --- The "C" ABI attempts to match the default ABI chosen by the dominant C compiler for the target.
@@ -519,6 +519,7 @@ restrictions as [regular function parameters].
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
+[`extern fn`]: items.fn.extern
 [`unsafe` context]: ../unsafe-keyword.md
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
