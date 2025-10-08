@@ -141,7 +141,10 @@ r[items.extern.abi.cdecl]
   * Corresponds to MSVC's `__cdecl` and GCC and clang's `__attribute__((cdecl))`.
 
   > [!NOTE]
-  > See <https://learn.microsoft.com/en-us/cpp/cpp/cdecl> and <https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl> for more information.
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/cdecl>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl>
 
 r[items.extern.abi.stdcall]
 * `unsafe extern "stdcall"` --- The calling convention typically used by the [Win32 API] on x86_32.
@@ -149,7 +152,10 @@ r[items.extern.abi.stdcall]
   * Corresponds to MSVC's `__stdcall` and GCC and clang's `__attribute__((stdcall))`.
 
   > [!NOTE]
-  > See <https://learn.microsoft.com/en-us/cpp/cpp/stdcall> and <https://en.wikipedia.org/wiki/X86_calling_conventions#stdcall> for more information.
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/stdcall>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#stdcall>
 
 r[items.extern.abi.win64]
 * `unsafe extern "win64"` --- The Windows x64 ABI.
@@ -158,7 +164,10 @@ r[items.extern.abi.win64]
   * Corresponds to GCC and clang's `__attribute__((ms_abi))`.
 
   > [!NOTE]
-  > See <https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions> and <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_x64_calling_convention> for more information.
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_x64_calling_convention>
 
 r[items.extern.abi.sysv64]
 * `unsafe extern "sysv64"` --- The System V ABI.
@@ -167,7 +176,10 @@ r[items.extern.abi.sysv64]
   * Corresponds to GCC and clang's `__attribute__((sysv_abi))`.
 
   > [!NOTE]
-  > See <https://wiki.osdev.org/System_V_ABI> or <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI> for more information.
+  > For details, see:
+  >
+  > - <https://wiki.osdev.org/System_V_ABI>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI>
 
 r[items.extern.abi.aapcs]
 * `unsafe extern "aapcs"` --- The soft-float ABI for ARM.
@@ -176,7 +188,9 @@ r[items.extern.abi.aapcs]
   * Corresponds to clang's `__attribute__((pcs("aapcs")))`.
 
   > [!NOTE]
-  > See [Arm Procedure Call Standard](https://developer.arm.com/documentation/107656/0101/Getting-started-with-Armv8-M-based-systems/Procedure-Call-Standard-for-Arm-Architecture--AAPCS-) for more information.
+  > For details, see:
+  >
+  > - [Arm Procedure Call Standard](https://developer.arm.com/documentation/107656/0101/Getting-started-with-Armv8-M-based-systems/Procedure-Call-Standard-for-Arm-Architecture--AAPCS-)
 
 r[items.extern.abi.fastcall]
 * `unsafe extern "fastcall"` --- A "fast" variant of stdcall that passes some arguments in registers.
@@ -184,7 +198,10 @@ r[items.extern.abi.fastcall]
   * Corresponds to MSVC's `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
 
   > [!NOTE]
-  > See <https://learn.microsoft.com/en-us/cpp/cpp/fastcall> and <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_fastcall> for more information.
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/fastcall>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_fastcall>
 
 r[items.extern.abi.thiscall]
 * `unsafe extern "thiscall"` --- The calling convention typically used on C++ class member functions on x86_32 MSVC.
@@ -192,7 +209,10 @@ r[items.extern.abi.thiscall]
   * Corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
 
   > [!NOTE]
-  > See <https://en.wikipedia.org/wiki/X86_calling_conventions#thiscall> and <https://learn.microsoft.com/en-us/cpp/cpp/thiscall> for more information.
+  > For details, see:
+  >
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#thiscall>
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/thiscall>
 
 r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` --- The ABI used for [UEFI] functions.
