@@ -118,13 +118,16 @@ r[items.extern.abi.standard]
 The following ABI strings are supported on all platforms:
 
 r[items.extern.abi.rust]
-* `unsafe extern "Rust"` --- The default ABI when you write a normal `fn foo()` in any Rust code.
+* `unsafe extern "Rust"` --- The native calling convention for Rust functions and closures. This is the default when a function is declared without using [`extern fn`]. The Rust ABI offers no stability guarantees.
 
 r[items.extern.abi.c]
-* `unsafe extern "C"` --- This is the same as `extern fn foo()`; whatever the default your C compiler supports.
+* `unsafe extern "C"` --- The "C" ABI matches the default ABI chosen by the dominant C compiler for the target.
 
 r[items.extern.abi.system]
-* `unsafe extern "system"` --- Usually the same as `extern "C"`, except on Win32, in which case it's `"stdcall"`, or what you should use to link to the Windows API itself.
+* `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86_32 where it is equivalent to `"stdcall"`.
+
+  > [!NOTE]
+  > As the correct underlying ABI on Windows is target-specific, it's best to use `extern "system"` when attempting to link Windows API functions that don't use an explicitly defined ABI.
 
 r[items.extern.abi.unwind]
 * `extern "C-unwind"` and `extern "system-unwind"` --- Identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
@@ -133,32 +136,83 @@ r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
 
 r[items.extern.abi.cdecl]
-* `unsafe extern "cdecl"` --- The default for x86_32 C code.
+* `unsafe extern "cdecl"` --- The calling convention typically used with x86_32 C code.
   * Only available on x86_32 targets.
+  * Corresponds to MSVC's `__cdecl` and GCC and clang's `__attribute__((cdecl))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/cdecl>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl>
 
 r[items.extern.abi.stdcall]
-* `unsafe extern "stdcall"` --- The default for the Win32 API on x86_32.
+* `unsafe extern "stdcall"` --- The calling convention typically used by the [Win32 API] on x86_32.
   * Only available on x86_32 targets.
+  * Corresponds to MSVC's `__stdcall` and GCC and clang's `__attribute__((stdcall))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/stdcall>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#stdcall>
 
 r[items.extern.abi.win64]
-* `unsafe extern "win64"` --- The default for C code on x86_64 Windows.
+* `unsafe extern "win64"` --- The Windows x64 ABI.
   * Only available on x86_64 targets.
+  * "win64" is the same as the "C" ABI on Windows x86_64 targets.
+  * Corresponds to GCC and clang's `__attribute__((ms_abi))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_x64_calling_convention>
 
 r[items.extern.abi.sysv64]
-* `unsafe extern "sysv64"` --- The default for C code on non-Windows x86_64.
+* `unsafe extern "sysv64"` --- The System V ABI.
   * Only available on x86_64 targets.
+  * "sysv64" is the same as the "C" ABI on non-Windows x86_64 targets.
+  * Corresponds to GCC and clang's `__attribute__((sysv_abi))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://wiki.osdev.org/System_V_ABI>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI>
 
 r[items.extern.abi.aapcs]
-* `unsafe extern "aapcs"` --- The default for ARM.
+* `unsafe extern "aapcs"` --- The soft-float ABI for ARM.
   * Only available on ARM32 targets.
+  * "aapcs" is the same as the "C" ABI on soft-float ARM32.
+  * Corresponds to clang's `__attribute__((pcs("aapcs")))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - [Arm Procedure Call Standard](https://developer.arm.com/documentation/107656/0101/Getting-started-with-Armv8-M-based-systems/Procedure-Call-Standard-for-Arm-Architecture--AAPCS-)
 
 r[items.extern.abi.fastcall]
-* `unsafe extern "fastcall"` --- The `fastcall` ABI --- corresponds to MSVC's `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
+* `unsafe extern "fastcall"` --- A "fast" variant of stdcall that passes some arguments in registers.
   * Only available on x86_32 targets.
+  * Corresponds to MSVC's `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/fastcall>
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_fastcall>
 
 r[items.extern.abi.thiscall]
-* `unsafe extern "thiscall"` --- The default for C++ member functions on x86_32 MSVC --- corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
+* `unsafe extern "thiscall"` --- The calling convention typically used on C++ class member functions on x86_32 MSVC.
   * Only available on x86_32 targets.
+  * Corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
+
+  > [!NOTE]
+  > For details, see:
+  >
+  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#thiscall>
+  > - <https://learn.microsoft.com/en-us/cpp/cpp/thiscall>
 
 r[items.extern.abi.efiapi]
 * `unsafe extern "efiapi"` --- The ABI used for [UEFI] functions.
@@ -485,6 +539,7 @@ restrictions as [regular function parameters].
 [WebAssembly module]: https://webassembly.github.io/spec/core/syntax/modules.html
 [`bundle` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-bundle
 [`dylib` versus `raw-dylib`]: #dylib-versus-raw-dylib
+[`extern fn`]: items.fn.extern
 [`unsafe` context]: ../unsafe-keyword.md
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
@@ -494,4 +549,5 @@ restrictions as [regular function parameters].
 [statics]: static-items.md
 [unwind-behavior]: functions.md#unwinding
 [value namespace]: ../names/namespaces.md
+[win32 api]: https://learn.microsoft.com/en-us/windows/win32/api/
 [`link_ordinal`]: items.extern.attributes.link_ordinal
