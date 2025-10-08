@@ -77,10 +77,10 @@ Overloaded operators are not distinguished from built-in operators and [binding
 modes] are not considered.
 
 r[destructors.scope.list]
-Given a function, or closure, there are drop scopes for:
+Given a function, closure, [static][static item] or [constant item], or [const block][const block expression], there are drop scopes for:
 
-r[destructors.scope.function]
-* The entire function
+r[destructors.scope.body]
+* The entire function, the body of a static or constant item, or a const block
 
 r[destructors.scope.statement]
 * Each [statement]
@@ -101,11 +101,11 @@ Drop scopes are nested within one another as follows. When multiple scopes are
 left at once, such as when returning from a function, variables are dropped
 from the inside outwards.
 
-r[destructors.scope.nesting.function]
-* The entire function scope is the outer most scope.
+r[destructors.scope.nesting.body]
+* The entire function, static or constant item, or const block scope is the outer most scope.
 
 r[destructors.scope.nesting.function-body]
-* The function body block is contained within the scope of the entire function.
+* For functions, the function body block is contained within the scope of the entire function.
 
 r[destructors.scope.nesting.expr-statement]
 * The parent of the expression in an expression statement is the scope of the
@@ -251,7 +251,7 @@ r[destructors.scope.temporary.enclosing]
 Apart from lifetime extension, the temporary scope of an expression is the
 smallest scope that contains the expression and is one of the following:
 
-* The entire function.
+* The entire body of the function, [static item], [constant item], or [const block][const block expression].
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
@@ -389,15 +389,21 @@ println!("{}", x);
 ```
 
 r[destructors.scope.lifetime-extension.static]
-Lifetime extension also applies to `static` and `const` items, where it
-makes temporaries live until the end of the program. For example:
+Lifetime extension also applies to [static][static item] and [constant items][constant item] and to [const blocks][const block expression], where it
+makes temporaries live until the end of the program. This prevents their destructors from being run. For example:
 
 ```rust
-const C: &Vec<i32> = &Vec::new();
-// Usually this would be a dangling reference as the `Vec` would only
-// exist inside the initializer expression of `C`, but instead the
+# #[derive(Debug)] struct PanicOnDrop;
+# impl Drop for PanicOnDrop { fn drop(&mut self) { panic!() } }
+# const fn temp() -> PanicOnDrop { PanicOnDrop }
+const C: &PanicOnDrop = &temp();
+// Usually this would be a dangling reference as the result of `temp()` would
+// only exist inside the initializer expression of `C`, but instead the
 // borrow gets lifetime-extended so it effectively has `'static` lifetime.
 println!("{:?}", C);
+// `const` blocks may likewise extend temporaries to the end of the program:
+// the result of `temp()` is not dropped.
+println!("{:?}", const { &temp() });
 ```
 
 r[destructors.scope.lifetime-extension.sub-expressions]
@@ -474,17 +480,17 @@ r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
 r[destructors.scope.lifetime-extension.exprs.extending]
-For a let statement with an initializer, an *extending expression* is an
+For a let statement with an initializer, a [static item], a [constant item], or a [const block][const block expression], an *extending expression* is an
 expression which is one of the following:
 
-* The initializer expression.
+* The initializer expression of a let statement, the body of a static or constant item, or the final expression of a const block.
 * The operand of an extending [borrow] expression.
 * The [super operands] of an extending [super macro call] expression.
 * The operand(s) of an extending [array][array expression], [cast][cast
   expression], [braced struct][struct expression], or [tuple][tuple expression]
   expression.
 * The arguments to an extending [tuple struct] or [tuple enum variant] constructor expression.
-* The final expression of an extending [block expression] except for an [async block expression].
+* The final expression of an extending [block expression] except for an [async block expression] or const block expression.
 * The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
 * An arm expression of an extending [`match`] expression.
 
@@ -530,8 +536,6 @@ let x = W(&temp()); // Argument to tuple struct constructor.
 let x = Some(&temp()); // Argument to tuple enum variant constructor.
 # x;
 let x = { [Some(&temp())] }; // Final expr of block.
-# x;
-let x = const { &temp() }; // Final expr of `const` block.
 # x;
 let x = unsafe { &temp() }; // Final expr of `unsafe` block.
 # x;
@@ -647,6 +651,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [Assignment]: expressions/operator-expr.md#assignment-expressions
 [binding modes]: patterns.md#binding-modes
 [closure]: types/closure.md
+[constant item]: items/constant-items.md
 [destructors]: destructors.md
 [destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
@@ -660,6 +665,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [promoted]: destructors.md#constant-promotion
 [scrutinee]: glossary.md#scrutinee
 [statement]: statements.md
+[static item]: items/static-items.md
 [temporary]: expressions.md#temporaries
 [unwinding]: panic.md#unwinding
 [variable]: variables.md
@@ -683,6 +689,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [array repeat operands]: expr.array.repeat-operand
 [async block expression]: expr.block.async
 [block expression]: expressions/block-expr.md
+[const block expression]: expr.block.const
 [borrow]: expr.operator.borrow
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
