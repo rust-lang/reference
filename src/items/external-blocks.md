@@ -121,7 +121,7 @@ r[items.extern.abi.rust]
 * `unsafe extern "Rust"` --- The native calling convention for Rust functions and closures. This is the default when a function is declared without using [`extern fn`]. The Rust ABI offers no stability guarantees.
 
 r[items.extern.abi.c]
-* `unsafe extern "C"` --- The "C" ABI attempts to match the default ABI chosen by the dominant C compiler for the target.
+* `unsafe extern "C"` --- The "C" ABI matches the default ABI chosen by the dominant C compiler for the target.
 
 r[items.extern.abi.system]
 * `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86_32 where it is equivalent to `"stdcall"`.
