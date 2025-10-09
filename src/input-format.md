@@ -69,6 +69,11 @@ The shebang may appear immediately at the start of the file or after the optiona
 r[input.shebang.removal]
 The shebang is removed from the input sequence (and is therefore ignored).
 
+r[input.frontmatter]
+## Frontmatter removal
+
+After some [whitespace], [frontmatter] may next appear in the input.
+
 r[input.tokenization]
 ## Tokenization
 
@@ -79,7 +84,7 @@ The resulting sequence of characters is then converted into tokens as described 
 >
 > - Byte order mark removal.
 > - CRLF normalization.
-> - Shebang removal when invoked in an item context (as opposed to expression or statement contexts).
+> - Shebang and frontmatter removal when invoked in an item context (as opposed to expression or statement contexts).
 >
 > The [`include_str!`] and [`include_bytes!`] macros do not apply these transformations.
 
@@ -88,4 +93,5 @@ The resulting sequence of characters is then converted into tokens as described 
 [comments]: comments.md
 [Crates and source files]: crates-and-source-files.md
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[frontmatter]: frontmatter.md
 [whitespace]: whitespace.md
