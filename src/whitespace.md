@@ -4,7 +4,11 @@ r[lex.whitespace]
 r[whitespace.syntax]
 ```grammar,lexer
 @root WHITESPACE ->
-    // end of line
+      END_OF_LINE
+    | IGNORABLE_CODE_POINT
+    | HORIZONTAL_WHITESPACE
+
+END_OF_LINE ->
       LF
     | U+000B // vertical tabulation
     | U+000C // form feed
@@ -12,11 +16,13 @@ r[whitespace.syntax]
     | U+0085 // Unicode next line
     | U+2028 // Unicode LINE SEPARATOR
     | U+2029 // Unicode PARAGRAPH SEPARATOR
-    // Ignorable Code Point
-    | U+200E // Unicode LEFT-TO-RIGHT MARK
+
+IGNORABLE_CODE_POINT ->
+      U+200E // Unicode LEFT-TO-RIGHT MARK
     | U+200F // Unicode RIGHT-TO-LEFT MARK
-    // horizontal whitespace
-    | TAB
+
+HORIZONTAL_WHITESPACE ->
+      TAB
     | U+0020  // space ' '
 
 TAB -> U+0009  // horizontal tab ('\t')
