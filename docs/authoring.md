@@ -194,7 +194,7 @@ The color and styling is defined in [`theme/reference.css`](https://github.com/r
 
 ## Style
 
-Idioms and styling to avoid:
+Idioms and styling:
 
 * Use American English spelling.
 * Use Oxford commas.
