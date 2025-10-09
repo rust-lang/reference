@@ -8,6 +8,7 @@
     - [Input format](input-format.md)
     - [Keywords](keywords.md)
     - [Identifiers](identifiers.md)
+    - [Frontmatter](frontmatter.md)
     - [Comments](comments.md)
     - [Whitespace](whitespace.md)
     - [Tokens](tokens.md)

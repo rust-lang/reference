@@ -4,23 +4,32 @@ r[lex.whitespace]
 r[whitespace.syntax]
 ```grammar,lexer
 @root WHITESPACE ->
-      U+0009 // Horizontal tab, `'\t'`
-    | U+000A // Line feed, `'\n'`
-    | U+000B // Vertical tab
-    | U+000C // Form feed
-    | U+000D // Carriage return, `'\r'`
-    | U+0020 // Space, `' '`
-    | U+0085 // Next line
-    | U+200E // Left-to-right mark
-    | U+200F // Right-to-left mark
-    | U+2028 // Line separator
-    | U+2029 // Paragraph separator
+      END_OF_LINE
+    | IGNORABLE_CODE_POINT
+    | HORIZONTAL_WHITESPACE
 
-TAB -> U+0009 // Horizontal tab, `'\t'`
+END_OF_LINE ->
+      LF
+    | U+000B // vertical tabulation
+    | U+000C // form feed
+    | CR
+    | U+0085 // Unicode next line
+    | U+2028 // Unicode LINE SEPARATOR
+    | U+2029 // Unicode PARAGRAPH SEPARATOR
 
-LF -> U+000A  // Line feed, `'\n'`
+IGNORABLE_CODE_POINT ->
+      U+200E // Unicode LEFT-TO-RIGHT MARK
+    | U+200F // Unicode RIGHT-TO-LEFT MARK
 
-CR -> U+000D  // Carriage return, `'\r'`
+HORIZONTAL_WHITESPACE ->
+      TAB
+    | U+0020  // space ' '
+
+TAB -> U+0009  // horizontal tab ('\t')
+
+LF -> U+000A  // line feed ('\n')
+
+CR -> U+000D  // carriage return ('\r')
 ```
 
 r[lex.whitespace.intro]
