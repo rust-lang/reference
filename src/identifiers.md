@@ -3,15 +3,13 @@ r[ident]
 
 r[ident.syntax]
 ```grammar,lexer
-IDENTIFIER_OR_KEYWORD ->
-      XID_Start XID_Continue*
-    | `_` XID_Continue+
+IDENTIFIER_OR_KEYWORD -> ( XID_Start | `_` ) XID_Continue*
 
 XID_Start -> <`XID_Start` defined by Unicode>
 
 XID_Continue -> <`XID_Continue` defined by Unicode>
 
-RAW_IDENTIFIER -> `r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self`_
+RAW_IDENTIFIER -> `r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self`, `_`_
 
 NON_KEYWORD_IDENTIFIER -> IDENTIFIER_OR_KEYWORD _except a [strict][lex.keywords.strict] or [reserved][lex.keywords.reserved] keyword_
 
@@ -36,8 +34,6 @@ The profile used from UAX #31 is:
 * Start := [`XID_Start`], plus the underscore character (U+005F)
 * Continue := [`XID_Continue`]
 * Medial := empty
-
-with the additional constraint that a single underscore character is not an identifier.
 
 > [!NOTE]
 > Identifiers starting with an underscore are typically used to indicate an identifier that is intentionally unused, and will silence the unused warning in `rustc`.
