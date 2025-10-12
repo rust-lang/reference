@@ -427,32 +427,44 @@ r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
 r[destructors.scope.lifetime-extension.exprs.extending]
-For a let statement with an initializer, an *extending expression* is an expression which is one of the following:
+An *extending expression* is an expression which is one of the following:
 
-* The initializer expression.
-* The operand of an extending [borrow] expression.
-* The [super operands] of an extending [super macro call] expression.
-* The operand(s) of an extending [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression.
-* The arguments to an extending [tuple struct] or [tuple enum variant] constructor expression.
-* The final expression of an extending [block expression] except for an [async block expression].
-* The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
-* An arm expression of an extending [`match`] expression.
+* The initializer expression of a `let` statement or the body expression of a [static][static item] or [constant item].
+* The operand of a [borrow] expression.
+* The [super operands] of a [super macro call] expression.
+* The operand(s) of an [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression.
+* The arguments to a [tuple struct] or [tuple enum variant] constructor expression.
+* The final expression of a [block expression] except for an [async block expression].
+* The final expression of an [`if`] expression's consequent, `else if`, or `else` block.
+* An arm expression of a [`match`] expression.
 
 > [!NOTE]
 > The desugaring of a [destructuring assignment] makes its assigned value operand (the RHS) an extending expression within a newly-introduced block. For details, see [expr.assign.destructure.tmp-ext].
 
-So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)` are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
-
-r[destructors.scope.lifetime-extension.exprs.borrows]
-The operand of an extending [borrow] expression has its [temporary scope] [extended].
-
-r[destructors.scope.lifetime-extension.exprs.super-macros]
-The [super temporaries] of an extending [super macro call] expression have their [scopes][temporary scopes] [extended].
-
 > [!NOTE]
-> `rustc` does not treat [array repeat operands] of extending [array] expressions as extending expressions. Whether it should is an open question.
+> `rustc` does not treat [array repeat operands] of [array] expressions as extending expressions. Whether it should is an open question.
 >
 > For details, see [Rust issue #146092](https://github.com/rust-lang/rust/issues/146092).
+
+So the borrow expressions in `{ &mut 0 }`, `(&1, &mut 2)`, and `Some(&mut 3)` are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
+
+r[destructors.scope.lifetime-extension.exprs.borrows]
+The [temporary scope] of the operand of a [borrow] expression is *extended through* the scope of the borrow expression.
+
+r[destructors.scope.lifetime-extension.exprs.super-macros]
+The [scopes][temporary scopes] of the [super temporaries] of an extending [super macro call] expression are *extended through* the scope of the super macro call expression.
+
+r[destructors.scope.lifetime-extension.exprs.parent]
+If a temporary scope is extended through the scope of an extending expression, it is extended through that scope's [parent][destructors.scope.nesting].
+
+r[destructors.scope.lifetime-extension.exprs.let]
+A temporary scope extended through a `let` statement scope is [extended] to the scope of the block containing the `let` statement ([destructors.scope.lifetime-extension.let]).
+
+r[destructors.scope.lifetime-extension.exprs.static]
+A temporary scope extended through a [static][static item] or [constant item] scope or a [const block][const block expression] scope is [extended] to the end of the program ([destructors.scope.lifetime-extension.static]).
+
+r[destructors.scope.lifetime-extension.exprs.other]
+A temporary scope extended through the scope of a non-extending expression is [extended] to that expression's [temporary scope].
 
 #### Examples
 
@@ -499,6 +511,19 @@ let x = format_args!("{:?}", temp()); // As above.
 //
 // All of the temporaries above are still live here.
 # assert_eq!(0, X.load(Relaxed));
+```
+
+```rust,edition2024
+# fn temp() {}
+# fn use_temp(_: &()) {}
+// The final expression of a block is extending. Since the block below
+// is not itself extending, the temporary is extended to the block
+// expression's temporary scope, ending at the semicolon.
+use_temp({ &temp() });
+// As above, the final expressions of `if`/`else` blocks are
+// extending, which extends the temporaries to the `if` expression's
+// temporary scope.
+use_temp(if true { &temp() } else { &temp() });
 ```
 
 Here are some examples where expressions don't have extended temporary scopes:
@@ -555,22 +580,6 @@ let x = 'a: { break 'a &temp() }; // ERROR
 # x;
 ```
 
-```rust,edition2024,compile_fail,E0716
-# use core::pin::pin;
-# fn temp() {}
-// The argument to `pin!` is only an extending expression if the call
-// is an extending expression. Since it's not, the inner block is not
-// an extending expression, so the temporaries in its trailing
-// expression are dropped immediately.
-pin!({ &temp() }); // ERROR
-```
-
-```rust,edition2024,compile_fail,E0716
-# fn temp() {}
-// As above.
-format_args!("{:?}", { &temp() }); // ERROR
-```
-
 r[destructors.forget]
 ## Not running destructors
 
@@ -594,6 +603,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [Assignment]: expressions/operator-expr.md#assignment-expressions
 [binding modes]: patterns.md#binding-modes
 [closure]: types/closure.md
+[constant item]: items/constant-items.md
 [destructors]: destructors.md
 [destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
@@ -607,6 +617,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [promoted]: destructors.md#constant-promotion
 [scrutinee]: glossary.md#scrutinee
 [statement]: statements.md
+[static item]: items/static-items.md
 [temporary]: expressions.md#temporaries
 [unwinding]: panic.md#unwinding
 [variable]: variables.md
@@ -632,6 +643,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [block expression]: expressions/block-expr.md
 [borrow]: expr.operator.borrow
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
+[const block expression]: expr.block.const
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
 [extended]: destructors.scope.lifetime-extension
 [field expression]: expressions/field-expr.md
