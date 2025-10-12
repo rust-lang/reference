@@ -133,6 +133,7 @@
 
 - [Appendices](appendices.md)
     - [Grammar summary](grammar.md)
+    - [Syntax index](syntax-index.md)
     - [Macro follow-set ambiguity formal specification](macro-ambiguity.md)
     - [Influences](influences.md)
     - [Test summary](test-summary.md)
