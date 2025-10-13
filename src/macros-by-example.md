@@ -326,6 +326,28 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+* textual scope name bindings for macros may shadow path-based scope bindings
+  to macros
+
+```rust
+macro_rules! m {
+    () => {
+        println!("m");
+    };
+}
+
+#[macro_export]
+macro_rules! m2 {
+    () => {
+        println!("m2");
+    };
+}
+
+use crate::m2 as m;
+
+m!(); // prints "m\n"
+```
+
 <!-- template:attributes -->
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
@@ -479,6 +501,25 @@ By default, macros only have [textual scope][macro.decl.scope.textual] and canno
 > crate::m!(); // OK
 > # fn main() {}
 > ```
+
+r[macro.decl.scope.path.reexport]
+
+* macros can be re-exported to give them path-based scope from a module other than the crate root.
+    * there's some visibility stuff here that may already be mentioned
+      elsewhere. I'm pretty sure that w/o a #[macro_export] the macro being
+      re-exported is implicitly pub(crate) and with one it is implicitly pub.
+      The later is mentioned below, don't remember where I saw the former.
+
+```
+mac::m!(); // OK: Path-based lookup finds m in the mac module.
+
+mod mac {
+    macro_rules! m {
+        () => {};
+    }
+    pub(crate) use m;
+}
+```
 
 r[macro.decl.scope.macro_export.export]
 The `macro_export` attribute causes a macro to be exported from the crate root so that it can be referred to in other crates by path.
