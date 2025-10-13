@@ -261,25 +261,6 @@ println!("{:?}", x.1);
 c();
 ```
 
-```rust
-struct Example {
-    f1: String,
-    f2: String,
-}
-
-let e = Example {
-    f1: String::from("first"),
-    f2: String::from("second"),
-};
-let c = || {
-    let Example { f2, .. } = e; // captures `e.f2` ByValue
-};
-// Field f2 cannot be accessed since it is moved into the closure.
-// Field f1 is still accessible.
-println!("{:?}", e.f1);
-c();
-```
-
 r[type.closure.capture.precision.wildcard.array-slice]
 Partial captures of arrays and slices are not supported; the entire slice or array is always captured even if used with wildcard pattern matching, indexing, or sub-slicing.
 
