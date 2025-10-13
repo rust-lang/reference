@@ -1,5 +1,6 @@
 # Glossary
 
+r[glossary.ast]
 ### Abstract syntax tree
 
 An ‘abstract syntax tree’, or ‘AST’, is an intermediate representation of

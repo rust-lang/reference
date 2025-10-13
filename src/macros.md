@@ -106,15 +106,25 @@ macro_rules! example {
 example!();
 ```
 
+r[macro.invocation.name-resolution]
+
+Macros invocations can be resolved via two kinds of scopes:
+
+* Textual Scope
+    * [Textual scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.textual)
+* Path-based scope
+    * [Path-based scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.path-based)
+    * [Procedural macros]
+
+[External blocks]: items/external-blocks.md
 [Macros by Example]: macros-by-example.md
 [Procedural Macros]: procedural-macros.md
+[`macro_rules`]: macros-by-example.md
 [associated items]: items/associated-items.md
 [delimiters]: tokens.md#delimiters
 [expressions]: expressions.md
 [items]: items.md
-[`macro_rules`]: macros-by-example.md
 [patterns]: patterns.md
 [statements]: statements.md
 [types]: types.md
 [visibility qualifiers]: visibility-and-privacy.md
-[External blocks]: items/external-blocks.md
