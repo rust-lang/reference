@@ -398,6 +398,13 @@ r[items.use.ambiguities]
 r[items.use.ambiguities.intro]
 Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
 
+* except where shadowing is allowed
+r[names.resolution.early.imports.errors.ambiguity.globvsglob]
+* it is an error to name an item through ambiguous use declarations
+    * two globs imports which both have an item matching that name where the items are different
+        * this is still an error even if there is a third non glob binding resolution to an item with the same name
+* it is not an error to have two glob imports which include items which would be ambiguous so long as you do not name one of those items through the ambiguous glob imports
+
 r[items.use.ambiguities.glob]
 Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
 For example:
@@ -442,6 +449,111 @@ fn main() {
 }
 ```
 
+r[names.resolution.early.imports.errors.ambiguity.builtin-attr]
+* it is an error to have a user defined attribute or derive macro with the same name as a builtin attribute (e.g. inline)
+    * I think we may special case this one and allow certain kinds of
+      ambiguities where the builtin-attr is shadowed by a user attribute (not
+      sure if this actually exists or is just proposed, TODO investigate)
+    * TODO example? This ones harder to do concisely afaik
+r[names.resolution.early.imports.errors.ambiguity.derivehelper]
+* derive helpers used before their associated derive may not shadow other attributes or other derive helpers that are otherwise in scope after their derive
+    * TODO example? This ones harder to do concisely afaik
+r[names.resolution.early.imports.errors.ambiguity.textualvspathbasedscope]
+* path-based scope bindings for macros may not shadow textual scope bindings to macros
+    * This is sort of an intersection between macros and imports, because at
+      least in stable rust you can only get path-based macro resolutions from
+      imports of mbe macros (and presumably from proc macro crates), but you
+      can only get textual scope of macros from macro declarations
+    * https://doc.rust-lang.org/nightly/reference/names/namespaces.html#r-names.namespaces.sub-namespaces.use-shadow
+    * [macro.decl.scope.path.ambiguity]
+r[names.resolution.early.imports.errors.ambiguity.globvsouter]
+* it is an error to shadow an outer name binding with a glob import
+    * This seems to only apply to early resolution (duh, I documented this as part of an early resolution codepath)
+        *   // Below we report various ambiguity errors.
+            // We do not need to report them if we are either in speculative resolution,
+            // or in late resolution when everything is already imported and expanded
+            // and no ambiguities exist.
+    * I attempted to produce an example using structs and it allowed the outer import to shadow the inner glob just fine
+```rust
+mod bar {
+    pub struct Name;
+}
+
+mod baz {
+    pub struct Name;
+}
+
+use baz::Name;
+
+pub fn foo() {
+    use bar::*;
+    Name;
+}
+```
+
+* I'd like to have a better understanding of why this doesn't trigger ambiguity errors.
+    * I'm taking a guess but I think it has to do with how and when we resolve
+      names during early resolution. We resolve all the imports but ambiguities
+      only occur when observed, so we'd need to try to resolve Name during
+      early resolution which simply won't happen because it is a struct so it
+      will never be visited for resolution during expansion.
+    * We will end up resolving the imports themselves, but they'll resolve fine
+      because the imports themselves aren't ambiguous
+    * By the time we get to late resolution we no longer expect there to be any
+      ambiguities, so we will happily return the first resolution result and
+      never search for additional ambiguities, so we resolve directly to
+      `bar::Name` through the glob import
+
+    * doing it with macros produced the expected error
+```rust
+mod bar {
+    macro_rules! name {
+        () => {}
+    }
+    pub(crate) use name;
+}
+
+mod baz {
+    macro_rules! name {
+        () => {}
+    }
+    pub(crate) use name;
+}
+
+use baz::name;
+
+pub fn foo() {
+    use bar::*;
+    name!(); // ERROR `name` is ambiguous
+}
+```
+
+* how does it work with imports? The same as macros, same error during early resolution
+
+```rust
+mod bar {
+    pub mod foo {
+        pub struct Name;
+    }
+}
+
+mod baz {
+    pub mod foo {
+        pub struct Name;
+    }
+}
+
+use baz::foo;
+
+pub fn foo() {
+    use bar::*;
+    use foo::Name; // `foo` is ambiguous
+}
+```
+
+r[names.resolution.early.imports.errors.ambiguity.globvsexpanded]
+* Grey Area
+
 [`extern crate`]: extern-crates.md
 [`macro_rules`]: ../macros-by-example.md
 [`self`]: ../paths.md#self
@@ -460,3 +572,4 @@ fn main() {
 [tool attributes]: ../attributes.md#tool-attributes
 [type alias]: type-aliases.md
 [type namespace]: ../names/namespaces.md
+[macro.decl.scope.path.ambiguity]: ../macros-by-example.md#macro.decl.scope.path.ambiguity

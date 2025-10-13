@@ -119,6 +119,7 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 
 r[names.namespaces.sub-namespaces.use-shadow]
 It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
+* TODO revisit
 
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
