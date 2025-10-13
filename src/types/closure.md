@@ -247,8 +247,7 @@ x; // OK: `x` can be moved here.
 c();
 ```
 
-Fields matched with the [RestPattern] or [StructPatternEtCetera] are also not considered as read, and thus those fields will not be captured.
-The following illustrates some of these:
+Fields matched against [RestPattern] (`..`) or [StructPatternEtCetera] (also `..`) are not read, and those fields are not captured.
 
 ```rust
 let x = (String::from("a"), String::from("b"));
