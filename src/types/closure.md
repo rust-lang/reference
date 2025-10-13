@@ -186,9 +186,8 @@ If this were to capture `m`, then the closure would no longer outlive `'static`,
 r[type.closure.capture.precision.wildcard]
 ### Wildcard pattern bindings
 
-Closures only capture data that needs to be read.
-Binding a value with a [wildcard pattern] does not count as a read, and thus won't be captured.
-For example, the following closures will not capture `x`:
+r[type.closure.capture.precision.wildcard.reads]
+Closures only capture data that needs to be read. Binding a value with a [wildcard pattern] does not read the value, so the place is not captured.
 
 ```rust
 let x = String::from("hello");
