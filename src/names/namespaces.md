@@ -117,9 +117,37 @@ This prevents one style from shadowing another.
 
 For example, the [`cfg` attribute] and the [`cfg` macro] are two different entities with the same name in the macro namespace, but they can still be used in their respective context.
 
-r[names.namespaces.sub-namespaces.use-shadow]
-It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
+> [!NOTE]
+> For restrictions on shadowing macro sub-namespaces with [use declaration]s, see [name resolution ambiguity errors].
 
+[Associated const declarations]: ../items/associated-items.md#associated-constants
+[Associated function declarations]: ../items/associated-items.md#associated-functions-and-methods
+[Associated type declarations]: ../items/associated-items.md#associated-types
+[Attribute macros]: ../procedural-macros.md#the-proc_macro_attribute-attribute
+[Block labels]: expr.loop.block-labels
+[Built-in attributes]: ../attributes.md#built-in-attributes-index
+[Constant item declarations]: ../items/constant-items.md
+[Derive macro helpers]: ../procedural-macros.md#derive-macro-helper-attributes
+[Derive macros]: macro.proc.derive
+[Enum variant constructors]: ../items/enumerations.md
+[External crate declarations]: ../items/extern-crates.md
+[External crate prelude]: preludes.md#extern-prelude
+[Function declarations]: ../items/functions.md
+[Function-like procedural macros]: ../procedural-macros.md#the-proc_macro-attribute
+[Generic const parameters]: ../items/generics.md#const-generics
+[Generic lifetime parameters]: ../items/generics.md
+[Generic type parameters]: ../items/generics.md
+[Loop labels]: ../expressions/loop-expr.md#loop-labels
+[Module declarations]: ../items/modules.md
+[Static item declarations]: ../items/static-items.md
+[Struct constructors]: ../items/structs.md
+[Struct]: ../items/structs.md
+[Tool attribute modules]: ../attributes.md#tool-attributes
+[Tool attributes]: ../attributes.md#tool-attributes
+[Trait item declarations]: ../items/traits.md
+[Type aliases]: ../items/type-aliases.md
+[`Self` constructors]: ../paths.md#self-1
+[`Self` type]: ../paths.md#self-1
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
 [`for`]: ../expressions/loop-expr.md#iterator-loops
@@ -127,48 +155,22 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [`let`]: ../statements.md#let-statements
 [`macro_rules` declarations]: ../macros-by-example.md
 [`match`]: ../expressions/match-expr.md
-[`Self` constructors]: ../paths.md#self-1
-[`Self` type]: ../paths.md#self-1
 [`use` import]: ../items/use-declarations.md
 [`while let`]: ../expressions/loop-expr.md#while-let-patterns
-[Associated const declarations]: ../items/associated-items.md#associated-constants
-[Associated function declarations]: ../items/associated-items.md#associated-functions-and-methods
-[Associated type declarations]: ../items/associated-items.md#associated-types
-[Attribute macros]: ../procedural-macros.md#the-proc_macro_attribute-attribute
 [attributes]: ../attributes.md
 [bang-style macros]: ../macros.md
-[Block labels]: expr.loop.block-labels
 [boolean]: ../types/boolean.md
-[Built-in attributes]: ../attributes.md#built-in-attributes-index
 [closure parameters]: ../expressions/closure-expr.md
 [closure]: ../expressions/closure-expr.md
-[Constant item declarations]: ../items/constant-items.md
-[Derive macro helpers]: ../procedural-macros.md#derive-macro-helper-attributes
-[Derive macros]: macro.proc.derive
 [entity]: ../glossary.md#entity
-[Enum variant constructors]: ../items/enumerations.md
 [enum]: ../items/enumerations.md
-[External crate declarations]: ../items/extern-crates.md
-[External crate prelude]: preludes.md#extern-prelude
 [field expression]: ../expressions/field-expr.md
-[Function declarations]: ../items/functions.md
 [function parameters]: ../items/functions.md#function-parameters
-[Function-like procedural macros]: ../procedural-macros.md#the-proc_macro-attribute
-[Generic const parameters]: ../items/generics.md#const-generics
-[Generic lifetime parameters]: ../items/generics.md
-[Generic type parameters]: ../items/generics.md
-[Loop labels]: ../expressions/loop-expr.md#loop-labels
-[Module declarations]: ../items/modules.md
+[name resolution ambiguity errors]: name-resolution.md#r-names.resolution.expansion.imports.ambiguity.pathvstextualmacro
 [name resolution]: name-resolution.md
 [names]: ../names.md
 [numeric]: ../types/numeric.md
-[Static item declarations]: ../items/static-items.md
-[Struct constructors]: ../items/structs.md
-[Struct]: ../items/structs.md
 [textual]: ../types/textual.md
-[Tool attribute modules]: ../attributes.md#tool-attributes
-[Tool attributes]: ../attributes.md#tool-attributes
-[Trait item declarations]: ../items/traits.md
-[Type aliases]: ../items/type-aliases.md
 [union]: ../items/unions.md
 [use declaration]: ../items/use-declarations.md
+
