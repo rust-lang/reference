@@ -117,8 +117,18 @@ This prevents one style from shadowing another.
 
 For example, the [`cfg` attribute] and the [`cfg` macro] are two different entities with the same name in the macro namespace, but they can still be used in their respective context.
 
-r[names.namespaces.sub-namespaces.use-shadow]
-It is still an error for a [`use` import] to shadow another macro, regardless of their sub-namespaces.
+<!-- ignore: requires external crates -->
+> [!NOTE]
+> `use` imports still cannot create duplicate bindings of the same name in a module or block, regardless of sub-namespace.
+>
+> ```rust,ignore
+> #[macro_export]
+> macro_rules! mymac {
+>     () => {};
+> }
+>
+> use myattr::mymac; // error[E0252]: the name `mymac` is defined multiple times.
+> ```
 
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
