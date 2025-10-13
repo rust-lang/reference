@@ -282,7 +282,6 @@ c();
 
 r[type.closure.capture.precision.wildcard.array-slice]
 Partial captures of arrays and slices are not supported; the entire slice or array is always captured even if used with wildcard pattern matching, indexing, or sub-slicing.
-For example:
 
 ```rust,compile_fail,E0382
 #[derive(Debug)]
