@@ -342,7 +342,7 @@ x = Example::A(57); // `x` can be modified while the closure is live
 c();
 ```
 
-r[type.closure.capture.precision.discriminants.non-exhaustive]
+r[type.closure.capture.precision.discriminants.non_exhaustive]
 If [the `#[non_exhaustive]` attribute][non_exhaustive] is applied to an enum defined in an external crate, it is considered to have multiple variants, even if only one variant is actually present.
 
 [non_exhaustive]: attributes.type-system.non_exhaustive
