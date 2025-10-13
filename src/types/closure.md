@@ -202,7 +202,7 @@ let c = || match x {  // x is not captured
 c();
 ```
 
-This also includes destructuring of tuples, structs, and single-variant enums.
+Destructuring tuples, structs, and single-variant enums does not, by itself, cause a read or the place to be captured.
 
 ```rust,no_run
 struct S; // A non-`Copy` type.
