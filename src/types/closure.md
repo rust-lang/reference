@@ -247,6 +247,7 @@ x; // OK: `x` can be moved here.
 c();
 ```
 
+r[type.closure.capture.precision.wildcard.fields]
 Fields matched against [RestPattern] (`..`) or [StructPatternEtCetera] (also `..`) are not read, and those fields are not captured.
 
 ```rust
