@@ -205,6 +205,9 @@ c();
 r[type.closure.capture.precision.wildcard.destructuring]
 Destructuring tuples, structs, and single-variant enums does not, by itself, cause a read or the place to be captured.
 
+> [!NOTE]
+> Enums marked with [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] from other crates are always treated as having multiple variants. See *[type.closure.capture.precision.discriminants.non_exhaustive]*.
+
 ```rust,no_run
 struct S; // A non-`Copy` type.
 
