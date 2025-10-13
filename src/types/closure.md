@@ -202,6 +202,7 @@ let c = || match x {  // x is not captured
 c();
 ```
 
+r[type.closure.capture.precision.wildcard.destructuring]
 Destructuring tuples, structs, and single-variant enums does not, by itself, cause a read or the place to be captured.
 
 ```rust,no_run
