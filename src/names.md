@@ -28,7 +28,6 @@ r[names.namespace]
 Names are segregated into different [*namespaces*], allowing entities in
 different namespaces to share the same name without conflict.
 
-r[names.resolution]
 [*Name resolution*] is the compile-time process of tying paths, identifiers,
 and labels to entity declarations.
 

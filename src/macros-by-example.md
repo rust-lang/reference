@@ -326,6 +326,50 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+* textual scope name bindings for macros may shadow path-based scope bindings
+  to macros
+
+```rust
+macro_rules! m {
+    () => {
+        println!("m");
+    };
+}
+
+#[macro_export]
+macro_rules! m2 {
+    () => {
+        println!("m2");
+    };
+}
+
+use crate::m2 as m;
+
+m!(); // prints "m\n"
+```
+
+r[macro.decl.scope.textual.ambiguity.moreexpandedvsouter]
+* it is an error for name bindings from macro expansions to shadow name bindings from outside of those expansions
+
+```rust
+macro_rules! name {
+    () => {}
+}
+
+macro_rules! define_name {
+    () => {
+        macro_rules! name {
+            () => {}
+        }
+    }
+}
+
+fn foo() {
+    define_name!();
+    name!(); // ERROR `name` is ambiguous
+}
+```
+
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
 
@@ -393,9 +437,53 @@ mod mac {
 }
 ```
 
+r[macro.decl.scope.path.reexport]
+
+* macros can be re-exported to give them path-based scope from a module other than the crate root.
+    * there's some visibility stuff here that may already be mentioned
+      elsewhere. I'm pretty sure that w/o a #[macro_export] the macro being
+      re-exported is implicitly pub(crate) and with one it is implicitly pub.
+      The later is mentioned below, don't remember where I saw the former.
+
+```
+mac::m!(); // OK: Path-based lookup finds m in the mac module.
+
+mod mac {
+    macro_rules! m {
+        () => {};
+    }
+    pub(crate) use m;
+}
+```
+
+
 r[macro.decl.scope.path.export]
 Macros labeled with `#[macro_export]` are always `pub` and can be referred to
 by other crates, either by path or by `#[macro_use]` as described above.
+
+r[macro.decl.scope.path.ambiguity]
+* path-based scope bindings for macros may not shadow textual scope bindings to macros
+    * This is sort of an intersection between macros and imports, because at
+      least in stable rust you can only get path-based macro resolutions from
+      imports of mbe macros (and presumably from proc macro crates), but you
+      can only get textual scope of macros from macro declarations
+    * https://doc.rust-lang.org/nightly/reference/names/namespaces.html#r-names.namespaces.sub-namespaces.use-shadow
+
+```rust
+#[macro_export]
+macro_rules! m2 {
+    () => {}
+}
+
+macro_rules! m {
+    () => {}
+}
+
+pub fn foo() {
+    m!(); // ERROR `m` is ambiguous
+    use crate::m2 as m;
+}
+```
 
 r[macro.decl.hygiene]
 ## Hygiene

@@ -228,6 +228,32 @@ A helper attribute for a derive macro is declared by adding its identifier to th
 > }
 > ```
 
+r[names.resolution.early.imports.errors.ambiguity.derivehelper]
+* derive helpers used before their associated derive may not shadow other attributes or other derive helpers that are otherwise in scope after their derive
+    * TODO example? This ones harder to do concisely afaik
+
+Helper attributes may not be used before the macro that introduces them.
+
+* What happens if two macros introduce the same helper, will the second one not
+  be able to see the attribute of the first anymore, assuming their order is
+  "firstmacro" "helper" "secondmacro"?
+
+> [!NOTE]
+> rustc currently allows derive helpers to be used before their attribute macro
+> introduces them into scope so long as they do not shadow any other attributes
+> or derive helpers that are otherwise correctly in scope. This behavior
+> deprecated and slated for removal.
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> #[helper] // deprecated, hard error in the future
+> #[derive(WithHelperAttr)]
+> struct Struct {
+>     field: (),
+> }
+> ```
+>
+> For more details, see [Rust issue #79202](https://github.com/rust-lang/rust/issues/79202).
+
 r[macro.proc.attribute]
 ## Attribute macros
 
