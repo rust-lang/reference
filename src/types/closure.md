@@ -98,12 +98,10 @@ Async closures always capture all input arguments, regardless of whether or not 
 ## Capture precision
 
 r[type.closure.capture.precision.capture-path]
-A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable, as well as any [further projections performed by matching against patterns][pattern-wildcards].
-
-[pattern-wildcards]: type.closure.capture.precision.wildcard
+A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections from that variable.
 
 r[type.closure.capture.precision.place-projection]
-A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), or [array or slice index] expression applied to a variable.
+A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), [array or slice index] expression, or [pattern destructuring] applied to a variable.
 
 r[type.closure.capture.precision.intro]
 The closure borrows or moves the capture path, which may be truncated based on the rules described below.
@@ -126,6 +124,7 @@ Here the capture path is the local variable `s`, followed by a field access `.f1
 This closure captures an immutable borrow of `s.f1.1`.
 
 [field access]: ../expressions/field-expr.md
+[pattern destructuring]: patterns.destructure
 [tuple index]: ../expressions/tuple-expr.md#tuple-indexing-expressions
 [dereference]: ../expressions/operator-expr.md#the-dereference-operator
 [array or slice index]: ../expressions/array-expr.md#array-and-slice-indexing-expressions
