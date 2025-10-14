@@ -103,6 +103,9 @@ A *capture path* is a sequence starting with a variable from the environment fol
 r[type.closure.capture.precision.place-projection]
 A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), [array or slice index] expression, or [pattern destructuring] applied to a variable.
 
+> [!NOTE]
+> In `rustc`, pattern destructuring desugars into a series of dereferences and field or element accesses.
+
 r[type.closure.capture.precision.intro]
 The closure borrows or moves the capture path, which may be truncated based on the rules described below.
 
