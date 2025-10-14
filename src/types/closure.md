@@ -338,9 +338,7 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.non_exhaustive]
-If [the `#[non_exhaustive]` attribute][non_exhaustive] is applied to an enum defined in an external crate, it is considered to have multiple variants, even if only one variant is actually present.
-
-[non_exhaustive]: attributes.type-system.non_exhaustive
+If [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] is applied to an enum defined in an external crate, the enum is treated as having multiple variants for the purpose of deciding whether a read occurs, even if it actually has only one variant.
 
 r[type.closure.capture.precision.discriminants.uninhabited-variant]
 Even if all other variants are uninhabited, the discriminant read still occurs.
