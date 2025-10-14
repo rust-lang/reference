@@ -402,6 +402,34 @@ let _ = &mut *x; // OK: `*x` can be borrow here.
 c();
 ```
 
+> [!NOTE]
+> Perhaps surprisingly, even though the length is contained in the (wide) *pointer* to the slice, it is the place of the *pointee* (the slice) that is treated as read and is captured.
+>
+> ```rust,no_run
+> fn f<'l: 's, 's>(x: &'s mut &'l [u8]) -> impl Fn() + 'l {
+>     // The closure outlives `'l` because it captures `**x`. If
+>     // instead it captured `*x`, it would not live long enough
+>     // to satisfy the `impl Fn() + 'l` bound.
+>     || match *x { // Captures `**x` by `ImmBorrow`.
+>         &[] => (),
+>         _ => (),
+>     }
+> }
+> ```
+>
+> In this way, the behavior is consistent with dereferencing to the slice in the scrutinee.
+>
+> ```rust,no_run
+> fn f<'l: 's, 's>(x: &'s mut &'l [u8]) -> impl Fn() + 'l {
+>     || match **x { // Captures `**x` by `ImmBorrow`.
+>         [] => (),
+>         _ => (),
+>     }
+> }
+> ```
+>
+> For details, see [Rust PR #138961](https://github.com/rust-lang/rust/pull/138961).
+
 r[type.closure.capture.precision.slice-patterns.arrays]
 As the length of an array is fixed by its type, matching an array against a slice pattern does not by itself capture the place.
 
