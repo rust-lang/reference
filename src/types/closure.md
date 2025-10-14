@@ -325,18 +325,15 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.single-variant]
-Matching against the only variant of an enum does not constitute a discriminant read.
+Matching against the only variant of a single-variant enum does not read the discriminant and does not capture the place.
 
-```rust
-enum Example {
-    A(i32),
-}
-
-let mut x = Example::A(42);
+```rust,no_run
+enum E<T> { V(T) } // A single-variant enum.
+let x = E::V(());
 let c = || {
-    let Example::A(_) = x; // does not capture `x`
+    let E::V(_) = x; // Does not capture `x`.
 };
-x = Example::A(57); // `x` can be modified while the closure is live
+x; // OK: `x` can be moved here.
 c();
 ```
 
