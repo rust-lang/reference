@@ -365,38 +365,42 @@ let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
 c();
 ```
 
-r[type.closure.capture.precision.discriminants.slice-patterns]
-Matching against a [slice pattern][patterns.slice] that needs to inspect the length of the scrutinee performs a read of the pointer value in order to fetch the length. The read will cause the closure to borrow the relevant place by `ImmBorrow`.
+r[type.closure.capture.precision.discriminants.slice-patterns-slices]
+Matching a slice against a [slice pattern][patterns.slice] other than one with only a single [rest pattern][patterns.rest] (i.e. `[..]`) is treated as a read of the length from the slice and captures the slice by `ImmBorrow`.
 
-```rust,compile_fail,E0506
-let x: &mut [i32] = &mut [1, 2, 3];
-let c = || match x { // captures `*x` by ImmBorrow
-    [_, _, _] => println!("three elements"),
-    _ => println!("something else"),
+```rust,compile_fail,E0502
+let x: &mut [u8] = &mut [];
+let c = || match x { // Captures `*x` by `ImmBorrow`.
+    &mut [] => (),
+//       ^^
+// This matches a slice of exactly zero elements. To know whether the
+// scrutinee matches, the length must be read, causing the slice to
+// be captured.
+    _ => (),
 };
-x[0] += 1; // ERROR: cannot assign to `x[_]` because it is borrowed
+let _ = &mut *x; // ERROR: Cannot borrow `*x` as mutable.
 c();
 ```
 
-As such, matching against an array doesn't itself cause any borrows, as the lengthh is fixed and the pattern doesn't need to inspect it.
-
-```rust
-let mut x: [i32; 3] = [1, 2, 3];
-let c = || match x { // does not capture `x`
-    [_, _, _] => println!("three elements, obviously"),
+```rust,no_run
+let x: &mut [u8] = &mut [];
+let c = || match x { // Does not capture `*x`.
+    [..] => (),
+//   ^^ Rest pattern.
 };
-x[0] += 1; // `x` can be modified while the closure is live
+let _ = &mut *x; // OK: `*x` can be borrow here.
 c();
 ```
 
-Likewise, a slice pattern that matches slices of all possible lengths does not constitute a read.
+r[type.closure.capture.precision.discriminants.slice-patterns-arrays]
+As the length of an array is fixed by its type, matching an array against a slice pattern does not by itself capture the place.
 
-```rust
-let x: &mut [i32] = &mut [1, 2, 3];
-let c = || match x { // does not capture `x`
-    [..] => println!("always matches"),
+```rust,no_run
+let x: [u8; 1] = [0];
+let c = || match x { // Does not capture `x`.
+    [_] => (), // Length is fixed.
 };
-x[0] += 1; // `x` can be modified while the closure is live
+x; // OK: `x` can be moved here.
 c();
 ```
 
