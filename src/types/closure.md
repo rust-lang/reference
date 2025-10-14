@@ -288,7 +288,11 @@ let c = || {
 r[type.closure.capture.precision.discriminants]
 ### Capturing for discriminant reads
 
-If pattern matching requires inspecting a discriminant, the relevant place will get captured by `ImmBorrow`.
+r[type.closure.capture.precision.discriminants.reads]
+If pattern matching reads a discriminant, the place containing that discriminant is captured by `ImmBorrow`.
+
+r[type.closure.capture.precision.discriminants.multiple-variant]
+Matching against a variant of an enum that has more than one variant reads the discriminant, capturing the place by `ImmBorrow`.
 
 ```rust
 enum Example {
