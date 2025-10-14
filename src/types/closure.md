@@ -189,16 +189,16 @@ r[type.closure.capture.precision.wildcard]
 r[type.closure.capture.precision.wildcard.reads]
 Closures only capture data that needs to be read. Binding a value with a [wildcard pattern] does not read the value, so the place is not captured.
 
-```rust
-let x = String::from("hello");
+```rust,no_run
+struct S; // A non-`Copy` type.
+let x = S;
 let c = || {
-    let _ = x;  // x is not captured
+    let _ = x;  // Does not capture `x`.
 };
-c();
-
-let c = || match x {  // x is not captured
-    _ => println!("Hello World!")
+let c = || match x {
+    _ => (), // Does not capture `x`.
 };
+x; // OK: `x` can be moved here.
 c();
 ```
 
@@ -250,14 +250,14 @@ c();
 r[type.closure.capture.precision.wildcard.fields]
 Fields matched against [RestPattern] (`..`) or [StructPatternEtCetera] (also `..`) are not read, and those fields are not captured.
 
-```rust
-let x = (String::from("a"), String::from("b"));
+```rust,no_run
+struct S; // A non-`Copy` type.
+let x = (S, S);
 let c = || {
-    let (first, ..) = x;  // captures `x.0` ByValue
+    let (x0, ..) = x;  // Captures `x.0` by `ByValue`.
 };
-// The first tuple field has been moved into the closure.
-// The second tuple field is still accessible.
-println!("{:?}", x.1);
+// Only the first tuple field was captured by the closure.
+x.1; // OK: `x.1` can be moved here.
 c();
 ```
 
@@ -265,24 +265,21 @@ r[type.closure.capture.precision.wildcard.array-slice]
 Partial captures of arrays and slices are not supported; the entire slice or array is always captured even if used with wildcard pattern matching, indexing, or sub-slicing.
 
 ```rust,compile_fail,E0382
-#[derive(Debug)]
-struct Example;
-let x = [Example, Example];
-
+struct S; // A non-`Copy` type.
+let mut x = [S, S];
 let c = || {
-    let [first, _] = x; // captures all of `x` ByValue
+    let [x0, _] = x; // Captures all of `x` by `ByValue`.
 };
-c();
-println!("{:?}", x[1]); // ERROR: borrow of moved value: `x`
+let _ = &mut x[1]; // ERROR: Borrow of moved value.
 ```
 
 r[type.closure.capture.precision.wildcard.initialized]
 Values that are matched with wildcards must still be initialized.
 
 ```rust,compile_fail,E0381
-let x: i32;
+let x: u8;
 let c = || {
-    let _ = x; // ERROR: used binding `x` isn't initialized
+    let _ = x; // ERROR: Binding `x` isn't initialized.
 };
 ```
 
