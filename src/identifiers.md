@@ -9,13 +9,13 @@ XID_Start -> <`XID_Start` defined by Unicode>
 
 XID_Continue -> <`XID_Continue` defined by Unicode>
 
-RAW_IDENTIFIER -> `r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self`, `_`_
+RAW_IDENTIFIER -> `r#` IDENTIFIER_OR_KEYWORD
 
 NON_KEYWORD_IDENTIFIER -> IDENTIFIER_OR_KEYWORD _except a [strict][lex.keywords.strict] or [reserved][lex.keywords.reserved] keyword_
 
 IDENTIFIER -> NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
 
-RESERVED_RAW_IDENTIFIER -> `r#_`
+RESERVED_RAW_IDENTIFIER -> `r#` (`_` | `crate` | `self` | `Self` | `super`)
 ```
 
 <!-- When updating the version, update the UAX links, too. -->
@@ -72,7 +72,7 @@ Unlike a normal identifier, a raw identifier may be any strict or reserved
 keyword except the ones listed above for `RAW_IDENTIFIER`.
 
 r[ident.raw.reserved]
-It is an error to use the [RESERVED_RAW_IDENTIFIER] token `r#_` in order to avoid confusion with the [WildcardPattern].
+It is an error to use the [RESERVED_RAW_IDENTIFIER] token.
 
 [`extern crate`]: items/extern-crates.md
 [`no_mangle`]: abi.md#the-no_mangle-attribute

@@ -4,7 +4,7 @@ r[lex.token]
 r[lex.token.syntax]
 ```grammar,lexer
 Token ->
-      IDENTIFIER_OR_KEYWORD
+      RESERVED_TOKEN
     | RAW_IDENTIFIER
     | CHAR_LITERAL
     | STRING_LITERAL
@@ -18,7 +18,7 @@ Token ->
     | FLOAT_LITERAL
     | LIFETIME_TOKEN
     | PUNCTUATION
-    | RESERVED_TOKEN
+    | IDENTIFIER_OR_KEYWORD
 ```
 
 r[lex.token.intro]
@@ -769,9 +769,9 @@ LIFETIME_OR_LABEL ->
     | RAW_LIFETIME
 
 RAW_LIFETIME ->
-    `'r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self`, `_` and not immediately followed by `'`_
+    `'r#` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
 
-RESERVED_RAW_LIFETIME -> `'r#_` _not immediately followed by `'`_
+RESERVED_RAW_LIFETIME -> `'r#` (`_` | `crate` | `self` | `Self` | `super`) _not immediately followed by `'`_
 ```
 
 r[lex.token.life.intro]
@@ -786,7 +786,7 @@ r[lex.token.life.raw.allowed]
 Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword except the ones listed above for `RAW_LIFETIME`.
 
 r[lex.token.life.raw.reserved]
-It is an error to use the RESERVED_RAW_LIFETIME token `'r#_` in order to avoid confusion with the [placeholder lifetime].
+It is an error to use the [RESERVED_RAW_LIFETIME] token.
 
 r[lex.token.life.raw.edition2021]
 > [!EDITION-2021]
@@ -922,7 +922,7 @@ r[lex.token.reserved]
 ## Reserved tokens
 
 r[lex.token.reserved.intro]
-Several token forms are reserved for future use. It is an error for the source input to match one of these forms.
+Several token forms are reserved for future use or to avoid confusion. It is an error for the source input to match one of these forms.
 
 r[lex.token.reserved.syntax]
 ```grammar,lexer
@@ -1058,7 +1058,6 @@ r[lex.token.reserved-guards.edition2024]
 [numeric types]: types/numeric.md
 [paths]: paths.md
 [patterns]: patterns.md
-[placeholder lifetime]: lifetime-elision.md
 [question]: expressions/operator-expr.md#the-try-propagation-expression
 [range]: expressions/range-expr.md
 [rangepat]: patterns.md#range-patterns
