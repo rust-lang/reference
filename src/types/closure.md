@@ -340,22 +340,16 @@ c();
 r[type.closure.capture.precision.discriminants.non_exhaustive]
 If [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] is applied to an enum defined in an external crate, the enum is treated as having multiple variants for the purpose of deciding whether a read occurs, even if it actually has only one variant.
 
-r[type.closure.capture.precision.discriminants.uninhabited-variant]
-Even if all other variants are uninhabited, the discriminant read still occurs.
+r[type.closure.capture.precision.discriminants.uninhabited-variants]
+Even if all variants but the one being matched against are uninhabited, making the pattern [irrefutable][patterns.refutable], the discriminant is still read if it otherwise would be.
 
-```rust,compile_fail,E0506
-enum Void {}
-
-enum Example {
-    A(i32),
-    B(Void),
-}
-
-let mut x = Example::A(42);
+```rust,compile_fail,E0502
+enum Empty {}
+let mut x = Ok::<_, Empty>(42);
 let c = || {
-    let Example::A(_) = x; // captures `x` by ImmBorrow
+    let Ok(_) = x; // Captures `x` by `ImmBorrow`.
 };
-x = Example::A(57); // ERROR: cannot assign to `x` because it is borrowed
+let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
 c();
 ```
 
