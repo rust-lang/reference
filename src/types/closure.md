@@ -353,7 +353,11 @@ let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
 c();
 ```
 
-r[type.closure.capture.precision.discriminants.range-patterns]
+
+r[type.closure.capture.precision.range-patterns]
+### Capturing and range patterns
+
+r[type.closure.capture.precision.range-patterns.reads]
 Matching against a [range pattern][patterns.range] reads the place being matched, even if the range includes all possible values of the type, and captures the place by `ImmBorrow`.
 
 ```rust,compile_fail,E0502
@@ -365,7 +369,10 @@ let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
 c();
 ```
 
-r[type.closure.capture.precision.discriminants.slice-patterns-slices]
+r[type.closure.capture.precision.slice-patterns]
+### Capturing and slice patterns
+
+r[type.closure.capture.precision.slice-patterns.slices]
 Matching a slice against a [slice pattern][patterns.slice] other than one with only a single [rest pattern][patterns.rest] (i.e. `[..]`) is treated as a read of the length from the slice and captures the slice by `ImmBorrow`.
 
 ```rust,compile_fail,E0502
@@ -392,7 +399,7 @@ let _ = &mut *x; // OK: `*x` can be borrow here.
 c();
 ```
 
-r[type.closure.capture.precision.discriminants.slice-patterns-arrays]
+r[type.closure.capture.precision.slice-patterns.arrays]
 As the length of an array is fixed by its type, matching an array against a slice pattern does not by itself capture the place.
 
 ```rust,no_run
