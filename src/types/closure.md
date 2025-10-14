@@ -378,6 +378,11 @@ r[type.closure.capture.precision.slice-patterns]
 r[type.closure.capture.precision.slice-patterns.slices]
 Matching a slice against a [slice pattern][patterns.slice] other than one with only a single [rest pattern][patterns.rest] (i.e. `[..]`) reads the length from the wide pointer and captures the pointed-to place by `ImmBorrow`.
 
+> [!NOTE]
+> Perhaps surprisingly, even though we read the length from the (wide) *pointer*, it is currently the place of the *pointee* that is captured. However, due to an optimization that reduces the precision of captures, often in practice `rustc` does capture the pointer instead.
+>
+> For details, see the doc comment on [`truncate_capture_for_optimization`](https://doc.rust-lang.org/1.90.0/nightly-rustc/rustc_hir_typeck/upvar/fn.truncate_capture_for_optimization.html).
+
 ```rust,compile_fail,E0502
 let x: &mut [u8] = &mut [];
 let c = || match x { // Captures `*x` by `ImmBorrow`.
