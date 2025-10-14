@@ -294,19 +294,33 @@ If pattern matching reads a discriminant, the place containing that discriminant
 r[type.closure.capture.precision.discriminants.multiple-variant]
 Matching against a variant of an enum that has more than one variant reads the discriminant, capturing the place by `ImmBorrow`.
 
-```rust
-enum Example {
-    A(i32),
-    B(i32),
-}
-
-let mut x = (Example::A(21), 37);
-
-let c = || match x { // captures `x.0` by ImmBorrow
-    (Example::A(_), _) => println!("variant A"),
-    (Example::B(_), _) => println!("variant B"),
+```rust,compile_fail,E0502
+struct S; // A non-`Copy` type.
+let mut x = (Some(S), S);
+let c = || match x {
+    (None, _) => (),
+//   ^^^^
+// This pattern requires reading the discriminant, which
+// causes `x.0` to be captured by `ImmBorrow`.
+    _ => (),
 };
-x.1 += 1; // x.1 can still be modified
+let _ = &mut x.0; // ERROR: Cannot borrow `x.0` as mutable.
+//           ^^^
+// The closure is still live, so `x.0` is still immutably
+// borrowed here.
+c();
+```
+
+```rust,no_run
+# struct S; // A non-`Copy` type.
+# let x = (Some(S), S);
+let c = || match x { // Captures `x.0` by `ImmBorrow`.
+    (None, _) => (),
+    _ => (),
+};
+// Though `x.0` is captured due to the discriminant read,
+// `x.1` is not captured.
+x.1; // OK: `x.1` can be moved here.
 c();
 ```
 
