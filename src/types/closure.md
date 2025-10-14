@@ -354,14 +354,14 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.range-patterns]
-Matching against a [range pattern][patterns.range] performs a read of the place being matched, causing the closure to borrow it by `ImmBorrow`. This is the case even if the range matches all possible values.
+Matching against a [range pattern][patterns.range] reads the place being matched, even if the range includes all possible values of the type, and captures the place by `ImmBorrow`.
 
-```rust,compile_fail,E0506
-let mut x = 7_u8;
+```rust,compile_fail,E0502
+let mut x = 0u8;
 let c = || {
-    let 0..=u8::MAX = x; // captures `x` by ImmBorrow
+    let 0..=u8::MAX = x; // Captures `x` by `ImmBorrow`.
 };
-x += 1; // ERROR: cannot assign to `x` because it is borrowed
+let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
 c();
 ```
 
