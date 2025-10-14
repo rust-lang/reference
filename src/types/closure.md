@@ -135,7 +135,7 @@ This closure captures an immutable borrow of `s.f1.1`.
 r[type.closure.capture.precision.shared-prefix]
 ### Shared prefix
 
-In the case where a capture path and one of the ancestor’s of that path are both captured by a closure, the ancestor path is captured with the highest capture mode among the two captures, `CaptureMode = max(AncestorCaptureMode, DescendantCaptureMode)`, using the strict weak ordering:
+In the case where a capture path and one of the ancestors of that path are both captured by a closure, the ancestor path is captured with the highest capture mode among the two captures, `CaptureMode = max(AncestorCaptureMode, DescendantCaptureMode)`, using the strict weak ordering:
 
 `ImmBorrow < UniqueImmBorrow < MutBorrow < ByValue`
 
