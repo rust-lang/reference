@@ -25,7 +25,7 @@ MacroMatcher ->
 MacroMatch ->
       Token _except `$` and [delimiters][lex.token.delim]_
     | MacroMatcher
-    | `$` ( IDENTIFIER_OR_KEYWORD _except `crate`_ | RAW_IDENTIFIER | `_` ) `:` MacroFragSpec
+    | `$` ( IDENTIFIER_OR_KEYWORD _except `crate`_ | RAW_IDENTIFIER ) `:` MacroFragSpec
     | `$` `(` MacroMatch+ `)` MacroRepSep? MacroRepOp
 
 MacroFragSpec ->
@@ -134,7 +134,7 @@ Valid fragment specifiers are:
   * `block`: a [BlockExpression]
   * `expr`: an [Expression]
   * `expr_2021`: an [Expression] except [UnderscoreExpression] and [ConstBlockExpression] (see [macro.decl.meta.edition2024])
-  * `ident`: an [IDENTIFIER_OR_KEYWORD], [RAW_IDENTIFIER], or [`$crate`]
+  * `ident`: an [IDENTIFIER_OR_KEYWORD] except `_`, [RAW_IDENTIFIER], or [`$crate`]
   * `item`: an [Item]
   * `lifetime`: a [LIFETIME_TOKEN]
   * `literal`: matches `-`<sup>?</sup>[LiteralExpression]

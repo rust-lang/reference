@@ -4,7 +4,7 @@ r[lex.token]
 r[lex.token.syntax]
 ```grammar,lexer
 Token ->
-      IDENTIFIER_OR_KEYWORD
+      RESERVED_TOKEN
     | RAW_IDENTIFIER
     | CHAR_LITERAL
     | STRING_LITERAL
@@ -18,7 +18,7 @@ Token ->
     | FLOAT_LITERAL
     | LIFETIME_TOKEN
     | PUNCTUATION
-    | RESERVED_TOKEN
+    | IDENTIFIER_OR_KEYWORD
 ```
 
 r[lex.token.intro]
@@ -116,7 +116,7 @@ A suffix is a sequence of characters following the primary part of a literal (wi
 
 r[lex.token.literal.suffix.syntax]
 ```grammar,lexer
-SUFFIX -> IDENTIFIER_OR_KEYWORD
+SUFFIX -> IDENTIFIER_OR_KEYWORD _except `_`_
 
 SUFFIX_NO_E -> SUFFIX _not beginning with `e` or `E`_
 ```
@@ -762,7 +762,6 @@ r[lex.token.life.syntax]
 ```grammar,lexer
 LIFETIME_TOKEN ->
       `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
-    | `'_` _not immediately followed by `'`_
     | RAW_LIFETIME
 
 LIFETIME_OR_LABEL ->
@@ -770,9 +769,9 @@ LIFETIME_OR_LABEL ->
     | RAW_LIFETIME
 
 RAW_LIFETIME ->
-    `'r#` IDENTIFIER_OR_KEYWORD _except `crate`, `self`, `super`, `Self` and not immediately followed by `'`_
+    `'r#` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
 
-RESERVED_RAW_LIFETIME -> `'r#_` _not immediately followed by `'`_
+RESERVED_RAW_LIFETIME -> `'r#` (`_` | `crate` | `self` | `Self` | `super`) _not immediately followed by `'`_
 ```
 
 r[lex.token.life.intro]
@@ -787,7 +786,7 @@ r[lex.token.life.raw.allowed]
 Unlike a normal lifetime, a raw lifetime may be any strict or reserved keyword except the ones listed above for `RAW_LIFETIME`.
 
 r[lex.token.life.raw.reserved]
-It is an error to use the RESERVED_RAW_LIFETIME token `'r#_` in order to avoid confusion with the [placeholder lifetime].
+It is an error to use the [RESERVED_RAW_LIFETIME] token.
 
 r[lex.token.life.raw.edition2021]
 > [!EDITION-2021]
@@ -845,7 +844,6 @@ PUNCTUATION ->
     | `#`
     | `$`
     | `?`
-    | `_`
     | `{`
     | `}`
     | `[`
@@ -891,7 +889,6 @@ usages and meanings are defined in the linked pages.
 | `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
 | `<=`   | Le          | [Less than or equal to][comparison]
 | `@`    | At          | [Subpattern binding]
-| `_`    | Underscore  | [Wildcard patterns], [Inferred types], Unnamed items in [constants], [extern crates], [use declarations], and [destructuring assignment]
 | `.`    | Dot         | [Field access][field], [Tuple index]
 | `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns], [Range Patterns][rangepat]
 | `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
@@ -925,7 +922,7 @@ r[lex.token.reserved]
 ## Reserved tokens
 
 r[lex.token.reserved.intro]
-Several token forms are reserved for future use. It is an error for the source input to match one of these forms.
+Several token forms are reserved for future use or to avoid confusion. It is an error for the source input to match one of these forms.
 
 r[lex.token.reserved.syntax]
 ```grammar,lexer
@@ -947,23 +944,23 @@ r[lex.token.reserved-prefix]
 r[lex.token.reserved-prefix.syntax]
 ```grammar,lexer
 RESERVED_TOKEN_DOUBLE_QUOTE ->
-    ( IDENTIFIER_OR_KEYWORD _except `b` or `c` or `r` or `br` or `cr`_ | `_` ) `"`
+    IDENTIFIER_OR_KEYWORD _except `b` or `c` or `r` or `br` or `cr`_ `"`
 
 RESERVED_TOKEN_SINGLE_QUOTE ->
-    ( IDENTIFIER_OR_KEYWORD _except `b`_ | `_` ) `'`
+    IDENTIFIER_OR_KEYWORD _except `b`_ `'`
 
 RESERVED_TOKEN_POUND ->
-    ( IDENTIFIER_OR_KEYWORD _except `r` or `br` or `cr`_ | `_` ) `#`
+    IDENTIFIER_OR_KEYWORD _except `r` or `br` or `cr`_ `#`
 
 RESERVED_TOKEN_LIFETIME ->
-    `'` ( IDENTIFIER_OR_KEYWORD _except `r`_ | `_` ) `#`
+    `'` IDENTIFIER_OR_KEYWORD _except `r`_ `#`
 ```
 
 r[lex.token.reserved-prefix.intro]
 Some lexical forms known as _reserved prefixes_ are reserved for future use.
 
 r[lex.token.reserved-prefix.id]
-Source input which would otherwise be lexically interpreted as a non-raw identifier (or a keyword or `_`) which is immediately followed by a `#`, `'`, or `"` character (without intervening whitespace) is identified as a reserved prefix.
+Source input which would otherwise be lexically interpreted as a non-raw identifier (or a keyword) which is immediately followed by a `#`, `'`, or `"` character (without intervening whitespace) is identified as a reserved prefix.
 
 r[lex.token.reserved-prefix.raw-token]
 Note that raw identifiers, raw string literals, and raw byte string literals may contain a `#` character but are not interpreted as containing a reserved prefix.
@@ -972,7 +969,7 @@ r[lex.token.reserved-prefix.strings]
 Similarly the `r`, `b`, `br`, `c`, and `cr` prefixes used in raw string literals, byte literals, byte string literals, raw byte string literals, C string literals, and raw C string literals are not interpreted as reserved prefixes.
 
 r[lex.token.reserved-prefix.life]
-Source input which would otherwise be lexically interpreted as a non-raw lifetime (or a keyword or `_`) which is immediately followed by a `#` character (without intervening whitespace) is identified as a reserved lifetime prefix.
+Source input which would otherwise be lexically interpreted as a non-raw lifetime (or a keyword) which is immediately followed by a `#` character (without intervening whitespace) is identified as a reserved lifetime prefix.
 
 r[lex.token.reserved-prefix.edition2021]
 > [!EDITION-2021]
@@ -1061,7 +1058,6 @@ r[lex.token.reserved-guards.edition2024]
 [numeric types]: types/numeric.md
 [paths]: paths.md
 [patterns]: patterns.md
-[placeholder lifetime]: lifetime-elision.md
 [question]: expressions/operator-expr.md#the-try-propagation-expression
 [range]: expressions/range-expr.md
 [rangepat]: patterns.md#range-patterns
