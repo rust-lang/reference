@@ -343,7 +343,7 @@ impl ImplExample {
 [`if let`]: ../expressions/if-expr.md#if-let-patterns
 [`while let`]: ../expressions/loop-expr.md#while-let-patterns
 [`let` statement]: ../statements.md#let-statements
-[`macro_export`]: ../macros-by-example.md#path-based-scope
+[`macro_export`]: ../macros-by-example.md#the-macro_export-attribute
 [`macro_use` prelude]: preludes.md#macro_use-prelude
 [`macro_use`]: ../macros-by-example.md#the-macro_use-attribute
 [`match` arms]: ../expressions/match-expr.md
