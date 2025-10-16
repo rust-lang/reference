@@ -61,30 +61,65 @@ $ nm -C foo.o
 0000000000000000 T foo::quux
 ```
 
+<!-- template:attributes -->
 r[abi.no_mangle]
 ## The `no_mangle` attribute
 
 r[abi.no_mangle.intro]
-The *`no_mangle` attribute* may be used on any [item] to disable standard
-symbol name mangling. The symbol for the item will be the identifier of the
-item's name.
+The *`no_mangle` attribute* may be used on functions and statics to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
-r[abi.no_mangle.publicly-exported]
-Additionally, the item will be publicly exported from the produced library or
-object file, similar to the [`used` attribute](#the-used-attribute).
+> [!EXAMPLE]
+> ```rust
+> #[unsafe(no_mangle)]
+> extern "C" fn foo() {}
+> ```
+
+r[abi.no_mangle.syntax]
+The `no_mangle` attribute uses the [MetaWord] syntax.
+
+r[abi.no_mangle.allowed-positions]
+The `no_mangle` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+
+It may not be used with a [closure].
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+<!-- TODO: Currently it works on a trait function with a body, but generates a warning about being phased out. how do we document that?
+https://github.com/rust-lang/rust/pull/86492#issuecomment-885682960
+-->
+
+<!-- TODO: should this clarify that external block items are already unmangled?, and thus the attribute does nothing? Currently it is "phased out" warning. -->
+
+r[abi.no_mangle.duplicates]
+The `no_mangle` attribute may be used any number of times on a form.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
+r[abi.no_mangle.export_name]
+If `no_mangle` is used with [`export_name`][abi.export_name], then the `export_name` is used instead.
 
 r[abi.no_mangle.unsafe]
-This attribute is unsafe as an unmangled symbol may collide with another symbol
-with the same name (or with a well-known symbol), leading to undefined behavior.
-
-```rust
-#[unsafe(no_mangle)]
-extern "C" fn foo() {}
-```
+The `no_mangle` attribute must be marked with [`unsafe`][attributes.safety] because an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 r[abi.no_mangle.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
+
+r[abi.no_mangle.publicly-exported]
+In addition to disabling name mangling, the item will be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
+
+r[abi.no_mangle.ascii-only]
+`no_mangle` may only be used on items with a name that only contains ASCII characters.
+
+r[abi.no_mangle.generic]
+`no_mangle` has no effect on generic items.
 
 r[abi.link_section]
 ## The `link_section` attribute
@@ -137,6 +172,7 @@ r[abi.export_name.edition2024]
 
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
+[closure]: expr.closure
 [extern functions]: items/functions.md#extern-function-qualifier
 [external blocks]: items/external-blocks.md
 [function]: items/functions.md
