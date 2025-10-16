@@ -810,7 +810,7 @@ r[patterns.struct.constraint-union]
 A struct pattern used to match a union must specify exactly one field (see [Pattern matching on unions]).
 
 r[patterns.struct.binding-shorthand]
-The `ref` and/or `mut` [IDENTIFIER] syntax matches any value and binds it to a variable with the same name as the given field.
+The [IDENTIFIER] syntax matches any value and binds it to a variable with the same name as the given field. It is a shorthand for `fieldname: fieldname`. The `ref` and `mut` qualifiers can be included with the behavior as described in [patterns.ident.ref].
 
 ```rust
 # struct Struct {
@@ -820,7 +820,7 @@ The `ref` and/or `mut` [IDENTIFIER] syntax matches any value and binds it to a v
 # }
 # let struct_value = Struct{a: 10, b: 'X', c: false};
 #
-let Struct{a: x, b: y, c: z} = struct_value;          // destructure all fields
+let Struct { a, b, c } = struct_value;
 ```
 
 r[patterns.struct.refutable]
