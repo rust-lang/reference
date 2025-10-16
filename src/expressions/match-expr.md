@@ -147,6 +147,26 @@ r[expr.match.guard.value]
 Only when the guard evaluates to true is the value moved, or copied, from the scrutinee into the variable.
 This allows shared borrows to be used inside guards without moving out of the scrutinee in case guard fails to match.
 
+> [!NOTE]
+> Due to this, the scrutinee may undergo [constant promotion], even if later moved.
+>
+> ```rust
+> struct S;
+> let _y: &'static S;
+> match S {
+> //    ^ 1. The scrutinee is evaluated into a temporary place and
+> //         a shared borrow is taken, causing promotion.
+> //
+>     x if { _y = &x; true } => {}
+> //  ^      ^^^^^^^ 2. This references the promoted value.
+> //  |
+> //  3. The move into `x` happens after the value has been promoted.
+>     _ => (),
+> }
+> ```
+>
+> See [issue #145237](https://github.com/rust-lang/rust/issues/145237) for more details.
+
 r[expr.match.guard.no-mutation]
 Moreover, by holding a shared reference while evaluating the guard, mutation inside guards is also prevented.
 
@@ -163,6 +183,7 @@ r[expr.match.attributes.inner]
 [`cfg`]: ../conditional-compilation.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [binding mode]: ../patterns.md#binding-modes
+[constant promotion]: destructors.scope.const-promotion
 [Inner attributes]: ../attributes.md
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [pattern]: ../patterns.md
