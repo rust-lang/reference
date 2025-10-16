@@ -374,7 +374,7 @@ The following is an index of all built-in attributes.
 [`path`]: items/modules.md#the-path-attribute
 [`proc_macro_attribute`]: procedural-macros.md#attribute-macros
 [`proc_macro_derive`]: macro.proc.derive
-[`proc_macro`]: procedural-macros.md#function-like-procedural-macros
+[`proc_macro`]: procedural-macros.md#the-proc_macro-attribute
 [`recursion_limit`]: attributes/limits.md#the-recursion_limit-attribute
 [`repr`]: type-layout.md#representations
 [`should_panic`]: attributes/testing.md#the-should_panic-attribute
