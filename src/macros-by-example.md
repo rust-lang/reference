@@ -373,12 +373,13 @@ r[macro.decl.scope.macro_export]
 ### The `macro_export` attribute
 
 r[macro.decl.scope.macro_export.intro]
-The *`macro_export` [attribute][attributes]* marks a macro to be publicly exported from the crate, and makes it available in the root of the crate for path-based resolution.
+The *`macro_export` [attribute][attributes]* exports the macro from the crate and makes it available in the root of the crate for path-based resolution.
 
 > [!EXAMPLE]
 > ```rust
 > self::m!();
-> m!(); // OK: Path-based lookup finds m in the current module.
+> //  ^^^^ OK: Path-based lookup finds `m` in the current module.
+> m!(); // As above.
 >
 > mod inner {
 >     super::m!();
@@ -394,7 +395,7 @@ The *`macro_export` [attribute][attributes]* marks a macro to be publicly export
 > ```
 
 r[macro.decl.scope.macro_export.syntax]
-The `macro_export` attribute uses the [MetaWord] syntax, or the [MetaListIdents] syntax with a single value of [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros].
+The `macro_export` attribute uses the [MetaWord] and [MetaListIdents] syntaxes. With the [MetaListIdents] syntax, it accepts a single [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros] value.
 
 r[macro.decl.scope.macro_export.allowed-positions]
 The `macro_export` attribute may be applied to `macro_rules` definitions.
@@ -409,20 +410,47 @@ Only the first use of `macro_export` on a macro has effect.
 > `rustc` lints against any use following the first.
 
 r[macro.decl.scope.macro_export.path-based]
-By default, macros only have [textually-based scoping](#textual-scope). When the `macro_export` attribute is used, the macro is reexported in the crate root, and can be referred to using a path to the macro in the crate root.
-
-r[macro.decl.scope.macro_export.export]
-The `macro_export` attribute causes a macro to be publicly exported from the crate root so that it can be referred to by other crates using a path.
+By default, macros only have [textual scope][macro.decl.scope.textual] and cannot be resolved by path. When the `macro_export` attribute is used, the macro is made available in the crate root and can be referred to by its path.
 
 > [!EXAMPLE]
-> Given the following defined in a crate named `log`:
+> Without `macro_export`, macros only have textual scope, so path-based resolution of the macro fails.
+>
+> ```rust,compile_fail,E0433
+> macro_rules! m {
+>     () => {};
+> }
+> self::m!(); // ERROR
+> crate::m!(); // ERROR
+> # fn main() {}
+> ```
+>
+> With `macro_export`, path-based resolution works.
+>
+> ```rust
+> #[macro_export]
+> macro_rules! m {
+>     () => {};
+> }
+> self::m!(); // OK
+> crate::m!(); // OK
+> # fn main() {}
+> ```
+
+r[macro.decl.scope.macro_export.export]
+The `macro_export` attribute causes a macro to be exported from the crate root so that it can be referred to in other crates by path.
+
+> [!EXAMPLE]
+> Given the following in a `log` crate:
+>
 > ```rust
 > #[macro_export]
 > macro_rules! warn {
 >     ($message:expr) => { eprintln!("WARN: {}", $message) };
 > }
 > ```
-> Then you can refer to the macro via a path to the crate:
+>
+> From another crate, you can refer to the macro by path:
+>
 > <!-- ignore: requires external crates -->
 > ```rust,ignore
 > fn main() {
@@ -431,17 +459,20 @@ The `macro_export` attribute causes a macro to be publicly exported from the cra
 > ```
 
 r[macro.decl.scope.macro_export.macro_use]
-`macro_export` also allows the use of [`macro_use`][macro.decl.scope.macro_use] on an `extern crate` to import the macro into the [`macro_use` prelude].
+`macro_export` allows the use of [`macro_use`][macro.decl.scope.macro_use] on an `extern crate` to import the macro into the [`macro_use` prelude].
 
 > [!EXAMPLE]
-> Given the following defined in a crate named `log`:
+> Given the following in a `log` crate:
+>
 > ```rust
 > #[macro_export]
 > macro_rules! warn {
 >     ($message:expr) => { eprintln!("WARN: {}", $message) };
 > }
 > ```
-> Using `macro_use` in a dependent crate means the macro can be used from the prelude:
+>
+> Using `macro_use` in a dependent crate allows you to use the macro from the prelude:
+>
 > <!-- ignore: requires external crates -->
 > ```rust,ignore
 > #[macro_use]
@@ -456,7 +487,10 @@ r[macro.decl.scope.macro_export.macro_use]
 > ```
 
 r[macro.decl.scope.macro_export.local_inner_macros]
-Adding `local_inner_macros` to the `macro_export` attribute also causes all single-segment macro invocations in the macro definition to have an implicit `$crate::` prefix. This is intended primarily as a tool to migrate code written before [`$crate`] was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
+Adding `local_inner_macros` to the `macro_export` attribute causes all single-segment macro invocations in the macro definition to have an implicit `$crate::` prefix.
+
+> [!NOTE]
+> This is intended primarily as a tool to migrate code written before [`$crate`] was added to the language to work with Rust 2018's path-based imports of macros. Its use is discouraged in new code.
 
 > [!EXAMPLE]
 > ```rust
