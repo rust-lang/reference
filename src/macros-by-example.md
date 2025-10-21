@@ -326,47 +326,86 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+<!-- template:attributes -->
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
 
+r[macro.decl.scope.macro_use.intro]
+The *`macro_use` [attribute][attributes]* has two purposes: it may be used on modules to extend the scope of macros defined within them, and it may be used on [`extern crate`][items.extern-crate] to import macros from another crate into the [`macro_use` prelude].
+
+> [!EXAMPLE]
+> ```rust
+> #[macro_use]
+> mod inner {
+>     macro_rules! m {
+>         () => {};
+>     }
+> }
+> m!();
+> ```
+>
+> ```rust,ignore
+> #[macro_use]
+> extern crate log;
+> ```
+
+r[macro.decl.scope.macro_use.syntax]
+When used on modules, the `macro_use` attribute uses the [MetaWord] syntax.
+
+When used on `extern crate`, it uses the [MetaWord] and [MetaListIdents] syntaxes. For more on how these syntaxes may be used, see [macro.decl.scope.macro_use.prelude].
+
+r[macro.decl.scope.macro_use.allowed-positions]
+The `macro_use` attribute may be applied to modules or `extern crate`.
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+r[macro.decl.scope.macro_use.extern-crate-self]
+The `macro_use` attribute may not be used on [`extern crate self`].
+
+r[macro.decl.scope.macro_use.duplicates]
+The `macro_use` attribute may be used any number of times on a form.
+
+Multiple instances of `macro_use` in the [MetaListIdents] syntax may be specified. The union of all specified macros will be imported.
+
+> [!NOTE]
+> On modules, `rustc` lints against any [MetaWord] `macro_use` attributes following the first.
+>
+> On `extern crate`, `rustc` lints against any `macro_use` attributes that have no effect due to not importing any macros not already imported by another `macro_use` attribute. If two or more [MetaListIdents] `macro_use` attributes import the same macro, the first is linted against. If any [MetaWord] `macro_use` attributes are present, all [MetaListIdents] `macro_use` attributes are linted against. If two or more [MetaWord] `macro_use` attributes are present, the ones following the first are linted against.
+
 r[macro.decl.scope.macro_use.mod-decl]
-The *`macro_use` attribute* has two purposes. First, it can be used to make a
-module's macro scope not end when the module is closed, by applying it to a
-module:
+When `macro_use` is used on a module, the module's macro scope extends beyond the module's lexical scope.
 
-```rust
-#[macro_use]
-mod inner {
-    macro_rules! m {
-        () => {};
-    }
-}
-
-m!();
-```
+> [!EXAMPLE]
+> ```rust
+> #[macro_use]
+> mod inner {
+>     macro_rules! m {
+>         () => {};
+>     }
+> }
+> m!(); // OK
+> ```
 
 r[macro.decl.scope.macro_use.prelude]
-Second, it can be used to import macros from another crate, by attaching it to
-an `extern crate` declaration appearing in the crate's root module. Macros
-imported this way are imported into the [`macro_use` prelude], not textually,
-which means that they can be shadowed by any other name. While macros imported
-by `#[macro_use]` can be used before the import statement, in case of a
-conflict, the last macro imported wins. Optionally, a list of macros to import
-can be specified using the [MetaListIdents] syntax; this is not supported
-when `#[macro_use]` is applied to a module.
+Specifying `macro_use` on an `extern crate` declaration in the crate root imports exported macros from that crate.
 
-<!-- ignore: requires external crates -->
-```rust,ignore
-#[macro_use(lazy_static)] // Or #[macro_use] to import all macros.
-extern crate lazy_static;
+Macros imported this way are imported into the [`macro_use` prelude], not textually, which means that they can be shadowed by any other name. While macros imported by `macro_use` can be used before the import statement, in case of a conflict, the last macro imported wins.
 
-lazy_static!{}
-// self::lazy_static!{} // Error: lazy_static is not defined in `self`
-```
+When using the [MetaWord] syntax, all exported macros are imported. When using the [MetaListIdents] syntax, only the specified macros are imported.
+
+> [!EXAMPLE]
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> #[macro_use(lazy_static)] // Or `#[macro_use]` to import all macros.
+> extern crate lazy_static;
+>
+> lazy_static!{}
+> // self::lazy_static!{} // ERROR: lazy_static is not defined in `self`.
+> ```
 
 r[macro.decl.scope.macro_use.export]
-Macros to be imported with `macro_use` must be exported with
-[`macro_export`][macro.decl.scope.macro_export].
+Macros to be imported with `macro_use` must be exported with [`macro_export`][macro.decl.scope.macro_export].
 
 <!-- template:attributes -->
 r[macro.decl.scope.macro_export]
@@ -669,6 +708,7 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[`extern crate self`]: items.extern-crate.self
 [`macro_use` prelude]: names/preludes.md#macro_use-prelude
 [block labels]: expressions/loop-expr.md#labelled-block-expressions
 [delimiters]: tokens.md#delimiters
