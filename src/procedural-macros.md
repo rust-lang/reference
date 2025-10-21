@@ -240,6 +240,7 @@ A helper attribute for a derive macro is declared by adding its identifier to th
 > }
 > ```
 
+<!-- template:attributes -->
 r[macro.proc.attribute]
 ## The `proc_macro_attribute` attribute
 
@@ -247,7 +248,7 @@ r[macro.proc.attribute.intro]
 The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro* which can be used as an [outer attribute][attributes].
 
 > [!EXAMPLE]
-> The following attribute macro takes the input stream and returns it as is, effectively being the no-op of attributes.
+> This attribute macro takes the input stream and emits it as-is, effectively being a no-op attribute.
 >
 > <!-- ignore: test doesn't support proc-macro -->
 > ```rust,ignore
@@ -262,14 +263,13 @@ The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro
 > ```
 
 > [!EXAMPLE]
-> This following example shows the stringified [`TokenStream`s] that the attribute macros see. The output will show in the output of the compiler. The output is shown in the comments after the function prefixed with "out:".
+> This shows, in the output of the compiler, the stringified [`TokenStream`s] that attribute macros see.
 >
 > <!-- ignore: test doesn't support proc-macro -->
 > ```rust,ignore
 > // my-macro/src/lib.rs
 > # extern crate proc_macro;
 > # use proc_macro::TokenStream;
->
 > #[proc_macro_attribute]
 > pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
 >     println!("attr: \"{attr}\"");
@@ -285,25 +285,25 @@ The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro
 >
 > use my_macro::show_streams;
 >
-> // Example: Basic function
+> // Example: Basic function.
 > #[show_streams]
 > fn invoke1() {}
 > // out: attr: ""
 > // out: item: "fn invoke1() {}"
 >
-> // Example: Attribute with input
+> // Example: Attribute with input.
 > #[show_streams(bar)]
 > fn invoke2() {}
 > // out: attr: "bar"
 > // out: item: "fn invoke2() {}"
 >
-> // Example: Multiple tokens in the input
+> // Example: Multiple tokens in the input.
 > #[show_streams(multiple => tokens)]
 > fn invoke3() {}
 > // out: attr: "multiple => tokens"
 > // out: item: "fn invoke3() {}"
 >
-> // Example:
+> // Example: Delimiters in the input.
 > #[show_streams { delimiters }]
 > fn invoke4() {}
 > // out: attr: "delimiters"
@@ -311,10 +311,10 @@ The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro
 > ```
 
 r[macro.proc.attribute.syntax]
-The `proc_macro_attribute` attribute uses the [MetaWord] syntax and thus does not take any inputs.
+The `proc_macro_attribute` attribute uses the [MetaWord] syntax.
 
 r[macro.proc.attribute.allowed-positions]
-The `proc_macro_attribute` attribute may only be applied to a function with the signature of `pub fn(TokenStream, TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed.
+The `proc_macro_attribute` attribute may only be applied to a `pub` function of type `fn(TokenStream, TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed. It must be located in the root of the crate.
 
 r[macro.proc.attribute.duplicates]
 The `proc_macro_attribute` attribute may only be specified once on a function.
@@ -325,17 +325,17 @@ The `proc_macro_attribute` attribute defines the attribute in the [macro namespa
 r[macro.proc.attribute.use-positions]
 Attribute macros can only be used on:
 
-- [items]
-- items in [`extern` blocks]
-- inherent and trait [implementations]
-- [trait definitions]
+- [Items]
+- Items in [`extern` blocks]
+- Inherent and trait [implementations]
+- [Trait definitions]
 
 r[macro.proc.attribute.behavior]
-The first [`TokenStream`] parameter is the delimited token tree following the attribute's name, not including the outer delimiters. If the attribute is written as a bare attribute name, the [`TokenStream`] is empty.
+The first [`TokenStream`] parameter is the delimited token tree following the attribute's name but not including the outer delimiters. If the applied attribute contains only the attribute name or the attribute name followed by empty delimiters, the [`TokenStream`] is empty.
 
-The second [`TokenStream`] is the rest of the [item] including other [attributes] on the [item].
+The second [`TokenStream`] is the rest of the [item], including other [attributes] on the [item].
 
-The returned [`TokenStream`] replaces the [item] with an arbitrary number of [items].
+The item to which the attribute is applied is replaced by the zero or more items in the returned [`TokenStream`].
 
 r[macro.proc.token]
 ## Declarative macro tokens and procedural macro tokens
