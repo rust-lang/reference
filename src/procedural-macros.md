@@ -42,15 +42,15 @@ r[macro.proc.error]
 Procedural macros have two ways of reporting errors. The first is to panic. The
 second is to emit a [`compile_error`] macro invocation.
 
-r[macro.proc.proc_macro]
+r[macro.proc.proc_macro-crate]
 ## The `proc_macro` crate
 
-r[macro.proc.proc_macro.intro]
+r[macro.proc.proc_macro-crate.intro]
 Procedural macro crates almost always will link to the compiler-provided
 [`proc_macro` crate]. The `proc_macro` crate provides types required for
 writing procedural macros and facilities to make it easier.
 
-r[macro.proc.proc_macro.token-stream]
+r[macro.proc.proc_macro-crate.token-stream]
 This crate primarily contains a [`TokenStream`] type. Procedural macros operate
 over *token streams* instead of AST nodes, which is a far more stable interface
 over time for both the compiler and for procedural macros to target. A
@@ -59,7 +59,7 @@ can roughly be thought of as lexical token. For example `foo` is an `Ident`
 token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
 type, unlike `Vec<TokenTree>`, is cheap to clone.
 
-r[macro.proc.proc_macro.span]
+r[macro.proc.proc_macro-crate.span]
 All tokens have an associated `Span`. A `Span` is an opaque value that cannot
 be modified but can be manufactured. `Span`s represent an extent of source
 code within a program and are primarily used for error reporting. While you
@@ -79,56 +79,68 @@ items in libraries (for example, `::std::option::Option` instead of `Option`) or
 by ensuring that generated functions have names that are unlikely to clash with
 other functions (like `__internal_foo` instead of `foo`).
 
-r[macro.proc.function]
-## Function-like procedural macros
+<!-- TODO: rule name needs improvement -->
+<!-- template:attributes -->
+r[macro.proc.proc_macro]
+## The `proc_macro` attribute
 
-r[macro.proc.function.intro]
-*Function-like procedural macros* are procedural macros that are invoked using
-the macro invocation operator (`!`).
+r[macro.proc.proc_macro.intro]
+The *`proc_macro` [attribute][attributes]* defines a [function-like][macro.invocation] procedural macro.
 
-r[macro.proc.function.def]
-These macros are defined by a [public]&#32;[function] with the `proc_macro`
-[attribute] and a signature of `(TokenStream) -> TokenStream`. The input
-[`TokenStream`] is what is inside the delimiters of the macro invocation and the
-output [`TokenStream`] replaces the entire macro invocation.
+> [!EXAMPLE]
+> This macro definition ignores its input and emits a function `answer` into its scope.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> # #![crate_type = "proc-macro"]
+> extern crate proc_macro;
+> use proc_macro::TokenStream;
+>
+> #[proc_macro]
+> pub fn make_answer(_item: TokenStream) -> TokenStream {
+>     "fn answer() -> u32 { 42 }".parse().unwrap()
+> }
+> ```
+>
+> We can use it in a binary crate to print "42" to standard output.
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> extern crate proc_macro_examples;
+> use proc_macro_examples::make_answer;
+>
+> make_answer!();
+>
+> fn main() {
+>     println!("{}", answer());
+> }
+> ```
 
-r[macro.proc.function.namespace]
-The `proc_macro` attribute defines the macro in the [macro namespace] in the root of the crate.
+r[macro.proc.proc_macro.syntax]
+The `proc_macro` attribute uses the [MetaWord] syntax.
 
-For example, the following macro definition ignores its input and outputs a
-function `answer` into its scope.
+r[macro.proc.proc_macro.allowed-positions]
+The `proc_macro` attribute may only be applied to a `pub` function of type `fn(TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed. It must be located in the root of the crate.
 
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-# #![crate_type = "proc-macro"]
-extern crate proc_macro;
-use proc_macro::TokenStream;
+r[macro.proc.proc_macro.duplicates]
+The `proc_macro` attribute may only be specified once on a function.
 
-#[proc_macro]
-pub fn make_answer(_item: TokenStream) -> TokenStream {
-    "fn answer() -> u32 { 42 }".parse().unwrap()
-}
-```
+r[macro.proc.proc_macro.namespace]
+The `proc_macro` attribute publicly defines the macro in the [macro namespace] in the root of the crate with the same name as the function.
 
-And then we use it in a binary crate to print "42" to standard output.
+r[macro.proc.proc_macro.behavior]
+A function-like macro invocation of a function-like procedural macro will pass what is inside the delimiters of the macro invocation as the input [`TokenStream`] argument and replace the entire macro invocation with the output [`TokenStream`] of the function.
 
-<!-- ignore: requires external crates -->
-```rust,ignore
-extern crate proc_macro_examples;
-use proc_macro_examples::make_answer;
+r[macro.proc.proc_macro.invocation]
+Function-like procedural macros may be invoked in any macro invocation position, which includes:
 
-make_answer!();
-
-fn main() {
-    println!("{}", answer());
-}
-```
-
-r[macro.proc.function.invocation]
-Function-like procedural macros may be invoked in any macro invocation
-position, which includes [statements], [expressions], [patterns], [type
-expressions], [item] positions, including items in [`extern` blocks], inherent
-and trait [implementations], and [trait definitions].
+- [Statements]
+- [Expressions]
+- [Patterns]
+- [Type expressions]
+- [Item] positions, including items in [`extern` blocks]
+- Inherent and trait [implementations]
+- [Trait definitions]
 
 <!-- template:attributes -->
 r[macro.proc.derive]
@@ -384,7 +396,7 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [Attribute macros]: #attribute-macros
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: macro.proc.derive
-[Function-like macros]: #function-like-procedural-macros
+[Function-like macros]: #the-proc_macro-attribute
 [`$crate`]: macro.decl.hygiene.crate
 [`Delimiter::None`]: proc_macro::Delimiter::None
 [`Group`]: proc_macro::Group
