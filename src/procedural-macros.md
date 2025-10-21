@@ -240,91 +240,102 @@ A helper attribute for a derive macro is declared by adding its identifier to th
 > }
 > ```
 
+<!-- template:attributes -->
 r[macro.proc.attribute]
-## Attribute macros
+## The `proc_macro_attribute` attribute
 
 r[macro.proc.attribute.intro]
-*Attribute macros* define new [outer attributes][attributes] which can be
-attached to [items], including items in [`extern` blocks], inherent and trait
-[implementations], and [trait definitions].
+The *`proc_macro_attribute` [attribute][attributes]* defines an *attribute macro* which can be used as an [outer attribute][attributes].
 
-r[macro.proc.attribute.def]
-Attribute macros are defined by a [public]&#32;[function] with the
-`proc_macro_attribute` [attribute] that has a signature of `(TokenStream,
-TokenStream) -> TokenStream`. The first [`TokenStream`] is the delimited token
-tree following the attribute's name, not including the outer delimiters. If
-the attribute is written as a bare attribute name, the attribute
-[`TokenStream`] is empty. The second [`TokenStream`] is the rest of the [item]
-including other [attributes] on the [item]. The returned [`TokenStream`]
-replaces the [item] with an arbitrary number of [items].
+> [!EXAMPLE]
+> This attribute macro takes the input stream and emits it as-is, effectively being a no-op attribute.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> # #![crate_type = "proc-macro"]
+> # extern crate proc_macro;
+> # use proc_macro::TokenStream;
+>
+> #[proc_macro_attribute]
+> pub fn return_as_is(_attr: TokenStream, item: TokenStream) -> TokenStream {
+>     item
+> }
+> ```
+
+> [!EXAMPLE]
+> This shows, in the output of the compiler, the stringified [`TokenStream`s] that attribute macros see.
+>
+> <!-- ignore: test doesn't support proc-macro -->
+> ```rust,ignore
+> // my-macro/src/lib.rs
+> # extern crate proc_macro;
+> # use proc_macro::TokenStream;
+> #[proc_macro_attribute]
+> pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
+>     println!("attr: \"{attr}\"");
+>     println!("item: \"{item}\"");
+>     item
+> }
+> ```
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> // src/lib.rs
+> extern crate my_macro;
+>
+> use my_macro::show_streams;
+>
+> // Example: Basic function.
+> #[show_streams]
+> fn invoke1() {}
+> // out: attr: ""
+> // out: item: "fn invoke1() {}"
+>
+> // Example: Attribute with input.
+> #[show_streams(bar)]
+> fn invoke2() {}
+> // out: attr: "bar"
+> // out: item: "fn invoke2() {}"
+>
+> // Example: Multiple tokens in the input.
+> #[show_streams(multiple => tokens)]
+> fn invoke3() {}
+> // out: attr: "multiple => tokens"
+> // out: item: "fn invoke3() {}"
+>
+> // Example: Delimiters in the input.
+> #[show_streams { delimiters }]
+> fn invoke4() {}
+> // out: attr: "delimiters"
+> // out: item: "fn invoke4() {}"
+> ```
+
+r[macro.proc.attribute.syntax]
+The `proc_macro_attribute` attribute uses the [MetaWord] syntax.
+
+r[macro.proc.attribute.allowed-positions]
+The `proc_macro_attribute` attribute may only be applied to a `pub` function of type `fn(TokenStream, TokenStream) -> TokenStream` where [`TokenStream`] comes from the [`proc_macro` crate]. It must have the ["Rust" ABI][items.fn.extern]. No other function qualifiers are allowed. It must be located in the root of the crate.
+
+r[macro.proc.attribute.duplicates]
+The `proc_macro_attribute` attribute may only be specified once on a function.
 
 r[macro.proc.attribute.namespace]
-The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate.
+The `proc_macro_attribute` attribute defines the attribute in the [macro namespace] in the root of the crate with the same name as the function.
 
-For example, this attribute macro takes the input stream and returns it as is,
-effectively being the no-op of attributes.
+r[macro.proc.attribute.use-positions]
+Attribute macros can only be used on:
 
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-# #![crate_type = "proc-macro"]
-# extern crate proc_macro;
-# use proc_macro::TokenStream;
+- [Items]
+- Items in [`extern` blocks]
+- Inherent and trait [implementations]
+- [Trait definitions]
 
-#[proc_macro_attribute]
-pub fn return_as_is(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    item
-}
-```
+r[macro.proc.attribute.behavior]
+The first [`TokenStream`] parameter is the delimited token tree following the attribute's name but not including the outer delimiters. If the applied attribute contains only the attribute name or the attribute name followed by empty delimiters, the [`TokenStream`] is empty.
 
-This following example shows the stringified [`TokenStream`s] that the attribute
-macros see. The output will show in the output of the compiler. The output is
-shown in the comments after the function prefixed with "out:".
+The second [`TokenStream`] is the rest of the [item], including other [attributes] on the [item].
 
-<!-- ignore: test doesn't support proc-macro -->
-```rust,ignore
-// my-macro/src/lib.rs
-# extern crate proc_macro;
-# use proc_macro::TokenStream;
-
-#[proc_macro_attribute]
-pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
-    println!("attr: \"{attr}\"");
-    println!("item: \"{item}\"");
-    item
-}
-```
-
-<!-- ignore: requires external crates -->
-```rust,ignore
-// src/lib.rs
-extern crate my_macro;
-
-use my_macro::show_streams;
-
-// Example: Basic function
-#[show_streams]
-fn invoke1() {}
-// out: attr: ""
-// out: item: "fn invoke1() {}"
-
-// Example: Attribute with input
-#[show_streams(bar)]
-fn invoke2() {}
-// out: attr: "bar"
-// out: item: "fn invoke2() {}"
-
-// Example: Multiple tokens in the input
-#[show_streams(multiple => tokens)]
-fn invoke3() {}
-// out: attr: "multiple => tokens"
-// out: item: "fn invoke3() {}"
-
-// Example:
-#[show_streams { delimiters }]
-fn invoke4() {}
-// out: attr: "delimiters"
-// out: item: "fn invoke4() {}"
-```
+The item to which the attribute is applied is replaced by the zero or more items in the returned [`TokenStream`].
 
 r[macro.proc.token]
 ## Declarative macro tokens and procedural macro tokens
@@ -393,7 +404,7 @@ Note that neither declarative nor procedural macros support doc comment tokens
 (e.g. `/// Doc`), so they are always converted to token streams representing
 their equivalent `#[doc = r"str"]` attributes when passed to macros.
 
-[Attribute macros]: #attribute-macros
+[Attribute macros]: #the-proc_macro_attribute-attribute
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html
 [Derive macros]: macro.proc.derive
 [Function-like macros]: #the-proc_macro-attribute

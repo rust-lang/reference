@@ -372,7 +372,7 @@ The following is an index of all built-in attributes.
 [`non_exhaustive`]: attributes/type_system.md#the-non_exhaustive-attribute
 [`panic_handler`]: panic.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
-[`proc_macro_attribute`]: procedural-macros.md#attribute-macros
+[`proc_macro_attribute`]: procedural-macros.md#the-proc_macro_attribute-attribute
 [`proc_macro_derive`]: macro.proc.derive
 [`proc_macro`]: procedural-macros.md#the-proc_macro-attribute
 [`recursion_limit`]: attributes/limits.md#the-recursion_limit-attribute
@@ -385,7 +385,7 @@ The following is an index of all built-in attributes.
 [`used`]: abi.md#the-used-attribute
 [`warn`]: attributes/diagnostics.md#lint-check-attributes
 [`windows_subsystem`]: runtime.md#the-windows_subsystem-attribute
-[attribute macros]: procedural-macros.md#attribute-macros
+[attribute macros]: procedural-macros.md#the-proc_macro_attribute-attribute
 [block expressions]: expressions/block-expr.md
 [built-in attributes]: #built-in-attributes-index
 [derive macro helper attributes]: procedural-macros.md#derive-macro-helper-attributes
