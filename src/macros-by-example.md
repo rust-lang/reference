@@ -326,6 +326,50 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+* textual scope name bindings for macros may shadow path-based scope bindings
+  to macros
+
+```rust
+macro_rules! m {
+    () => {
+        println!("m");
+    };
+}
+
+#[macro_export]
+macro_rules! m2 {
+    () => {
+        println!("m2");
+    };
+}
+
+use crate::m2 as m;
+
+m!(); // prints "m\n"
+```
+
+r[macro.decl.scope.textual.ambiguity.moreexpandedvsouter]
+* it is an error for name bindings from macro expansions to shadow name bindings from outside of those expansions
+
+```rust
+macro_rules! name {
+    () => {}
+}
+
+macro_rules! define_name {
+    () => {
+        macro_rules! name {
+            () => {}
+        }
+    }
+}
+
+fn foo() {
+    define_name!();
+    name!(); // ERROR `name` is ambiguous
+}
+```
+
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
 
@@ -504,6 +548,30 @@ Adding `local_inner_macros` to the `macro_export` attribute causes all single-se
 >     () => { () }
 > }
 > ```
+
+r[macro.decl.scope.path.ambiguity]
+* path-based scope bindings for macros may not shadow textual scope bindings to macros
+    * This is sort of an intersection between macros and imports, because at
+      least in stable rust you can only get path-based macro resolutions from
+      imports of mbe macros (and presumably from proc macro crates), but you
+      can only get textual scope of macros from macro declarations
+    * https://doc.rust-lang.org/nightly/reference/names/namespaces.html#r-names.namespaces.sub-namespaces.use-shadow
+
+```rust
+#[macro_export]
+macro_rules! m2 {
+    () => {}
+}
+
+macro_rules! m {
+    () => {}
+}
+
+pub fn foo() {
+    m!(); // ERROR `m` is ambiguous
+    use crate::m2 as m;
+}
+```
 
 r[macro.decl.hygiene]
 ## Hygiene
