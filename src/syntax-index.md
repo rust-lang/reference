@@ -8,58 +8,53 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Symbol | Name        | Usage |
 |--------|-------------|-------|
-| `+`    | Plus        | [Addition][arith], [Trait Bounds], [Macro Kleene Matcher][macros]
-| `-`    | Minus       | [Subtraction][arith], [Negation]
-| `*`    | Star        | [Multiplication][arith], [Dereference], [Raw Pointers], [Macro Kleene Matcher][macros], [Use wildcards]
-| `/`    | Slash       | [Division][arith]
-| `%`    | Percent     | [Remainder][arith]
-| `^`    | Caret       | [Bitwise and Logical XOR][arith]
-| `!`    | Not         | [Bitwise and Logical NOT][negation], [Macro Calls][macros], [Inner Attributes][attributes], [Never Type], [Negative impls]
-| `&`    | And         | [Bitwise and Logical AND][arith], [Borrow], [References], [Reference patterns]
-| <code>\|</code> | Or | [Bitwise and Logical OR][arith], [Closures], Patterns in [match], [if let], and [while let]
-| `&&`   | AndAnd      | [Lazy AND][lazy-bool], [Borrow], [References], [Reference patterns]
-| <code>\|\|</code> | OrOr | [Lazy OR][lazy-bool], [Closures]
-| `<<`   | Shl         | [Shift Left][arith], [Nested Generics][generics]
-| `>>`   | Shr         | [Shift Right][arith], [Nested Generics][generics]
-| `+=`   | PlusEq      | [Addition assignment][compound]
-| `-=`   | MinusEq     | [Subtraction assignment][compound]
-| `*=`   | StarEq      | [Multiplication assignment][compound]
-| `/=`   | SlashEq     | [Division assignment][compound]
-| `%=`   | PercentEq   | [Remainder assignment][compound]
-| `^=`   | CaretEq     | [Bitwise XOR assignment][compound]
-| `&=`   | AndEq       | [Bitwise And assignment][compound]
-| <code>\|=</code> | OrEq | [Bitwise Or assignment][compound]
-| `<<=`  | ShlEq       | [Shift Left assignment][compound]
-| `>>=`  | ShrEq       | [Shift Right assignment][compound], [Nested Generics][generics]
-| `=`    | Eq          | [Assignment], [Attributes], Various type definitions
-| `==`   | EqEq        | [Equal][comparison]
-| `!=`   | Ne          | [Not Equal][comparison]
-| `>`    | Gt          | [Greater than][comparison], [Generics], [Paths]
-| `<`    | Lt          | [Less than][comparison], [Generics], [Paths]
-| `>=`   | Ge          | [Greater than or equal to][comparison], [Generics]
-| `<=`   | Le          | [Less than or equal to][comparison]
-| `@`    | At          | [Subpattern binding]
-| `.`    | Dot         | [Field access][field], [Tuple index]
-| `..`   | DotDot      | [Range][range], [Struct expressions], [Patterns], [Range Patterns][rangepat]
-| `...`  | DotDotDot   | [Variadic functions][extern], [Range patterns]
-| `..=`  | DotDotEq    | [Inclusive Range][range], [Range patterns]
-| `,`    | Comma       | Various separators
-| `;`    | Semi        | Terminator for various items and statements, [Array types]
-| `:`    | Colon       | Various separators
-| `::`   | PathSep     | [Path separator][paths]
-| `->`   | RArrow      | [Function return type][functions], [Closure return type][closures], [Function pointer type]
-| `=>`   | FatArrow    | [Match arms][match], [Macros]
-| `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token
-| `#`    | Pound       | [Attributes]
-| `$`    | Dollar      | [Macros]
-| `?`    | Question    | [Try propagation expressions][question], [Questionably sized][sized], [Macro Kleene Matcher][macros]
-| `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used
+| `+`    | Plus        | [addition][arith], [trait bounds], [macro Kleene matcher][macros]
+| `-`    | Minus       | [subtraction][arith], [negation]
+| `*`    | Star        | [multiplication][arith], [dereference], [raw pointers], [macro Kleene matcher][macros], [use wildcards]
+| `/`    | Slash       | [division][arith]
+| `%`    | Percent     | [remainder][arith]
+| `^`    | Caret       | [bitwise and logical XOR][arith]
+| `!`    | Not         | [bitwise and logical NOT][negation], [macro calls][macros], [inner attributes][attributes], [never type], [negative impls]
+| `&`    | And         | [bitwise and logical AND][arith], [borrow], [references], [reference patterns]
+| <code>\|</code> | Or | [bitwise and logical OR][arith], [closures], patterns in [match], [if let], and [while let]
+| `&&`   | AndAnd      | [lazy AND][lazy-bool], [borrow], [references], [reference patterns]
+| <code>\|\|</code> | OrOr | [lazy OR][lazy-bool], [closures]
+| `<<`   | Shl         | [shift left][arith], [nested generics][generics]
+| `>>`   | Shr         | [shift right][arith], [nested generics][generics]
+| `+=`   | PlusEq      | [addition assignment][compound]
+| `-=`   | MinusEq     | [subtraction assignment][compound]
+| `*=`   | StarEq      | [multiplication assignment][compound]
+| `/=`   | SlashEq     | [division assignment][compound]
+| `%=`   | PercentEq   | [remainder assignment][compound]
+| `^=`   | CaretEq     | [bitwise XOR assignment][compound]
+| `&=`   | AndEq       | [bitwise AND assignment][compound]
+| <code>\|=</code> | OrEq | [bitwise OR assignment][compound]
+| `<<=`  | ShlEq       | [shift left assignment][compound]
+| `>>=`  | ShrEq       | [shift right assignment][compound], [nested generics][generics]
+| `=`    | Eq          | [assignment], [attributes], various type definitions
+| `==`   | EqEq        | [equal][comparison]
+| `!=`   | Ne          | [not equal][comparison]
+| `>`    | Gt          | [greater than][comparison], [generics], [paths]
+| `<`    | Lt          | [less than][comparison], [generics], [paths]
+| `>=`   | Ge          | [greater than or equal to][comparison], [generics]
+| `<=`   | Le          | [less than or equal to][comparison]
+| `@`    | At          | [subpattern binding]
+| `.`    | Dot         | [field access][field], [tuple index]
+| `..`   | DotDot      | [range][range], [struct expressions], [patterns], [range patterns][rangepat]
+| `...`  | DotDotDot   | [variadic functions][extern], [range patterns]
+| `..=`  | DotDotEq    | [inclusive range][range], [range patterns]
+| `,`    | Comma       | various separators
+| `;`    | Semi        | terminator for various items and statements, [array types]
+| `:`    | Colon       | various separators
+| `::`   | PathSep     | [path separator][paths]
+| `->`   | RArrow      | [function return type][functions], [closure return type][closures], [function pointer type]
+| `=>`   | FatArrow    | [match arms][match], [macros]
+| `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token.
+| `#`    | Pound       | [attributes]
+| `$`    | Dollar      | [macros]
+| `?`    | Question    | [try propagation expressions][question], [questionably sized][sized], [macro Kleene matcher][macros]
+| `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used.
 
-[Inferred types]: types/inferred.md
-[Range patterns]: patterns.md#range-patterns
-[Reference patterns]: patterns.md#reference-patterns
-[Subpattern binding]: patterns.md#identifier-patterns
-[Wildcard patterns]: patterns.md#wildcard-pattern
 [arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [array types]: types/array.md
 [assignment]: expressions/operator-expr.md#assignment-expressions
@@ -78,6 +73,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [functions]: items/functions.md
 [generics]: items/generics.md
 [if let]: expressions/if-expr.md#if-let-patterns
+[inferred types]: types/inferred.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
 [macros]: macros-by-example.md
 [match]: expressions/match-expr.md
@@ -87,14 +83,18 @@ This appendix provides an index of tokens and common forms with links to where t
 [paths]: paths.md
 [patterns]: patterns.md
 [question]: expressions/operator-expr.md#the-try-propagation-expression
+[range patterns]: patterns.md#range-patterns
 [range]: expressions/range-expr.md
 [rangepat]: patterns.md#range-patterns
 [raw pointers]: types/pointer.md#raw-pointers-const-and-mut
+[reference patterns]: patterns.md#reference-patterns
 [references]: types/pointer.md
 [sized]: trait-bounds.md#sized
 [struct expressions]: expressions/struct-expr.md
+[subpattern binding]: patterns.md#identifier-patterns
 [trait bounds]: trait-bounds.md
 [tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
 [use declarations]: items/use-declarations.md
 [use wildcards]: items/use-declarations.md
 [while let]: expressions/loop-expr.md#while-let-patterns
+[wildcard patterns]: patterns.md#wildcard-pattern
