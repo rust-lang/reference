@@ -34,8 +34,8 @@ This appendix provides an index of tokens and common forms with links to where t
 | `=`    | Eq          | [assignment], [attributes], various type definitions |
 | `==`   | EqEq        | [equal][comparison] |
 | `!=`   | Ne          | [not equal][comparison] |
-| `>`    | Gt          | [greater than][comparison], [generics], [paths] |
-| `<`    | Lt          | [less than][comparison], [generics], [paths] |
+| `>`    | Gt          | [greater than][comparison], [generics], [paths], [use bounds] |
+| `<`    | Lt          | [less than][comparison], [generics], [paths], [use bounds] |
 | `>=`   | Ge          | [greater than or equal to][comparison], [generics] |
 | `<=`   | Le          | [less than or equal to][comparison] |
 | `@`    | At          | [subpattern binding] |
@@ -95,6 +95,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [subpattern binding]: patterns.md#identifier-patterns
 [trait bounds]: trait-bounds.md
 [tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
+[use bounds]: bound.use
 [use declarations]: items/use-declarations.md
 [use wildcards]: items/use-declarations.md
 [while let]: expressions/loop-expr.md#while-let-patterns
