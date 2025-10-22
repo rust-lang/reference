@@ -26,6 +26,7 @@ be used as the names of:
 r[lex.keywords.strict.list]
 The following keywords are in all editions:
 
+- `_`
 - `as`
 - `async`
 - `await`
