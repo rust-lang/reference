@@ -31,7 +31,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | <code>\|=</code> | OrEq | [bitwise OR assignment][compound] |
 | `<<=`  | ShlEq       | [shift left assignment][compound] |
 | `>>=`  | ShrEq       | [shift right assignment][compound], [nested generics][generics] |
-| `=`    | Eq          | [assignment], [attributes], various type definitions |
+| `=`    | Eq          | [assignment], [let statements], [attributes], various type definitions |
 | `==`   | EqEq        | [equal][comparison] |
 | `!=`   | Ne          | [not equal][comparison] |
 | `>`    | Gt          | [greater than][comparison], [generics], [paths], [use bounds] |
@@ -75,6 +75,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [if let]: expressions/if-expr.md#if-let-patterns
 [inferred types]: types/inferred.md
 [lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[let statements]: statement.let
 [macros]: macros-by-example.md
 [match]: expressions/match-expr.md
 [negation]: expressions/operator-expr.md#negation-operators
