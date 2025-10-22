@@ -390,7 +390,12 @@ When `macro_use` is used on a module, the module's macro scope extends beyond th
 r[macro.decl.scope.macro_use.prelude]
 Specifying `macro_use` on an `extern crate` declaration in the crate root imports exported macros from that crate.
 
-Macros imported this way are imported into the [`macro_use` prelude], not textually, which means that they can be shadowed by any other name. While macros imported by `macro_use` can be used before the import statement, in case of a conflict, the last macro imported wins.
+Macros imported this way are imported into the [`macro_use` prelude], not textually, which means that they can be shadowed by any other name. Macros imported by `macro_use` can be used before the import statement.
+
+> [!NOTE]
+> `rustc` currently prefers the last macro imported in case of conflict. Don't rely on this. This behavior is unusual, as imports in Rust are generally order-independent. This behavior of `macro_use` may change in the future.
+>
+> For details, see [Rust issue #148025](https://github.com/rust-lang/rust/issues/148025).
 
 When using the [MetaWord] syntax, all exported macros are imported. When using the [MetaListIdents] syntax, only the specified macros are imported.
 
