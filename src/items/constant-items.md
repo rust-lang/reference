@@ -49,32 +49,104 @@ const BITS_N_STRINGS: BitsNStrings<'static> = BitsNStrings {
 ```
 
 r[items.const.no-mut-refs]
-The final value of a `const` item cannot contain any mutable references.
+The final value of a `const` item, after the initializer is evaluated to a value that has the declared type of the constant, cannot contain any mutable references except as described below.
 
 ```rust
 # #![allow(static_mut_refs)]
 static mut S: u8 = 0;
-const C: &u8 = unsafe { &mut S }; // OK
+const _: &u8 = unsafe { &mut S }; // OK.
+//                      ^^^^^^
+// Allowed since this is coerced to `&S`.
 ```
 
 ```rust
 # use core::sync::atomic::AtomicU8;
 static S: AtomicU8 = AtomicU8::new(0);
-const C: &AtomicU8 = &S; // OK
+const _: &AtomicU8 = &S; // OK.
+//                   ^^
+// Allowed even though the shared reference is to an interior
+// mutable value.
 ```
 
 ```rust,compile_fail,E0080
 # #![allow(static_mut_refs)]
 static mut S: u8 = 0;
-const C: &mut u8 = unsafe { &mut S }; // ERROR not allowed
+const _: &mut u8 = unsafe { &mut S }; // ERROR.
+//                          ^^^^^^
+// Not allowed as the mutable reference appears in the final value.
 ```
+
+```rust,compile_fail,E0080
+# #![allow(static_mut_refs)]
+static mut S: u8 = 0;
+const _: &dyn Send = &unsafe { &mut S }; // ERROR.
+//                             ^^^^^^
+// Not allowed as the mutable reference appears in the final value,
+// even though type erasure occurs.
+```
+
+Mutable references where the referent is a value of a [zero-sized type] are allowed.
+
+```rust
+# #![allow(static_mut_refs)]
+static mut S: () = ();
+const _: &mut () = unsafe { &mut S }; // OK.
+//            ^^ This is a zero-sized type.
+```
+
+```rust
+# #![allow(static_mut_refs)]
+static mut S: [u8; 0] = [0; 0];
+const _: &mut [u8; 0] = unsafe { &mut S }; // OK.
+//            ^^^^^^^ This is a zero-sized type.
+```
+
+> [!NOTE]
+> This is allowed as, for a value of a zero-sized type, no bytes can actually be mutated. We must accept this as `&mut []` is [promoted].
+
+Values of [union type] are not considered to contain any references; for this purpose, a value of union type is treated as a sequence of untyped bytes.
+
+```rust
+# #![allow(static_mut_refs)]
+union U { f: &'static mut u8 }
+static mut S: u8 = 0;
+const _: U = unsafe { U { f: &mut S }}; // OK.
+//                    ^^^^^^^^^^^^^^^
+// This is treated as a sequence of untyped bytes.
+```
+
+Mutable references contained within a [mutable static] may be referenced in the final value of a constant.
+
+```rust
+# #![allow(static_mut_refs)]
+static mut S: &mut u8 = unsafe { static mut I: u8 = 0; &mut I };
+const _: &&mut u8 = unsafe { &S }; // OK.
+//        ^^^^^^^
+// This mutable reference comes from a `static mut`.
+```
+
+> [!NOTE]
+> This is allowed as it's separately not allowed to read from a mutable static during constant evaluation. See [const-eval.const-expr.path-static].
+
+Mutable references contained within an [external static] may be referenced in the final value of a constant.
+
+```rust
+# #![allow(static_mut_refs)]
+unsafe extern "C" { static S: &'static mut u8; }
+const _: &&mut u8 = unsafe { &S }; // OK.
+//        ^^^^^^^
+// This mutable references comes from an extern static.
+```
+
+> [!NOTE]
+> This is allowed as it's separately not allowed to read from an external static during constant evaluation. See [const-eval.const-expr.path-static].
 
 > [!NOTE]
 > We also disallow, in the final value, shared references to mutable statics created in the initializer for a separate reason. Consider:
 >
 > ```rust,compile_fail,E0492
 > # use core::sync::atomic::AtomicU8;
-> const C: &AtomicU8 = &AtomicU8::new(0); // ERROR
+> const _: &AtomicU8 = &AtomicU8::new(0); // ERROR.
 > ```
 >
 > Here, the `AtomicU8` is a temporary that is lifetime extended to `'static` (see [destructors.scope.lifetime-extension.static]), and references to lifetime-extended temporaries with interior mutability are not allowed in the final value of a constant expression (see [const-eval.const-expr.borrows]).
@@ -154,10 +226,15 @@ fn unused_generic_function<T>() {
 [const_eval]: ../const_eval.md
 [associated constant]: ../items/associated-items.md#associated-constants
 [constant value]: ../const_eval.md#constant-expressions
+[external static]: items.extern.static
 [free]: ../glossary.md#free-item
 [static lifetime elision]: ../lifetime-elision.md#const-and-static-elision
 [trait definition]: traits.md
 [underscore imports]: use-declarations.md#underscore-imports
 [`Copy`]: ../special-types-and-traits.md#copy
 [value namespace]: ../names/namespaces.md
-[promotion]: ../destructors.md#constant-promotion
+[mutable static]: items.static.mut
+[promoted]: destructors.scope.const-promotion
+[promotion]: destructors.scope.const-promotion
+[union type]: type.union
+[zero-sized type]: layout.properties.size
