@@ -115,6 +115,17 @@ This appendix provides an index of tokens and common forms with links to where t
 | `?`    | Question    | [try propagation expressions][question], [questionably sized][sized], [macro Kleene matcher] |
 | `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used. |
 
+## Comments
+
+| Comment  | Usage |
+|----------|-------|
+| `//`     | [line comment][comments] |
+| `//!`    | [inner line comment][comments] |
+| `///`    | [outer line doc comment][comments] |
+| `/*…*/`  | [block comment][comments] |
+| `/*!…*/` | [inner block doc comment][comments] |
+| `/**…*/` | [outer block doc comment][comments] |
+
 [`'static` lifetimes]: bound
 [`if let` patterns]: expr.if.let
 [`self` paths]: paths.qualifiers.mod-self
