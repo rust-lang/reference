@@ -126,6 +126,24 @@ This appendix provides an index of tokens and common forms with links to where t
 | `/*!…*/` | [inner block doc comment][comments] |
 | `/**…*/` | [outer block doc comment][comments] |
 
+## Other tokens
+
+| Token        | Usage |
+|--------------|-------|
+| `ident`      | [identifiers] |
+| `r#ident`    | [raw identifiers] |
+| `'ident`     | [lifetimes and loop labels] |
+| `'r#ident`   | [raw lifetimes and loop labels] |
+| `…u8`, `…i32`, `…f64`, `…usize`, … | [number literals] |
+| `"…"`        | [string literals] |
+| `r"…"`, `r#"…"#`, `r##"…"##`, … | [raw string literals] |
+| `b"…"`       | [byte string literals] |
+| `br"…"`, `br#"…"#`, `br##"…"##`, … | [raw byte string literals] |
+| `'…'`        | [character literals] |
+| `b'…'`       | [byte literals] |
+| `c"…"`       | [C string literals] |
+| `cr"…"`, `cr#"…"#`, `cr##"…"##`, … | [raw C string literals] |
+
 [`'static` lifetimes]: bound
 [`if let` patterns]: expr.if.let
 [`self` paths]: paths.qualifiers.mod-self
@@ -143,6 +161,10 @@ This appendix provides an index of tokens and common forms with links to where t
 [borrow expressions]: expr.operator.borrow
 [borrow]: expr.operator.borrow
 [break expressions]: expr.loop.break
+[byte literals]: lex.token.byte
+[byte string literals]: lex.token.str-byte
+[C string literals]: lex.token.str-c
+[character literals]: lex.token.literal.char
 [closure expressions]: expr.closure
 [closures]: expr.closure
 [comparison]: expr.cmp
@@ -175,6 +197,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [glob imports]: items.use.glob
 [higher-ranked trait bounds]: bound.higher-ranked
 [identifier patterns]: patterns.ident
+[identifiers]: ident
 [if expressions]: expr.if
 [if let]: expr.if.let
 [impl traits]: type.impl-trait
@@ -185,6 +208,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [keywords chapter]: lex.keywords
 [lazy-bool]: expr.bool-logic
 [let statements]: statement.let
+[lifetimes and loop labels]: lex.token.life
 [macro calls]: macro.invocation
 [macro Kleene matcher]: macro.decl.repetition
 [macros by example]: macro.decl
@@ -196,6 +220,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [negation]: expr.negate
 [negative impls]: items.impl
 [never type]: type.never
+[number literals]: lex.token.literal.num
 [or patterns]: patterns.or
 [predicate loops]: expr.loop.while
 [qualified paths]: paths.qualified
@@ -203,9 +228,14 @@ This appendix provides an index of tokens and common forms with links to where t
 [range patterns]: patterns.range
 [raw assembly]: asm.options.supported-options.raw
 [raw borrow operator]: expr.borrow.raw
+[raw byte string literals]: lex.token.str-byte-raw
+[raw C string literals]: lex.token.str-c-raw
+[raw identifiers]: ident.raw
+[raw lifetimes and loop labels]: lex.token.life
 [raw pointer type]: type.pointer.raw
 [raw pointer types]: type.pointer.raw
 [raw pointers]: type.pointer.raw
+[raw string literals]: lex.token.literal.str-raw
 [reference patterns]: patterns.ref
 [reference types]: type.pointer.reference
 [references]: type.pointer.reference
@@ -215,6 +245,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [self parameters]: items.fn.params.self-pat
 [sized]: bound.sized
 [static items]: items.static
+[string literals]: lex.token.literal.str
 [struct expressions]: expr.struct
 [struct patterns]: patterns.struct
 [structs]: items.struct
