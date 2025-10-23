@@ -8,13 +8,13 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Symbol | Name        | Usage |
 |--------|-------------|-------|
-| `+`    | Plus        | [addition][arith], [trait bounds], [macro Kleene matcher][macros] |
+| `+`    | Plus        | [addition][arith], [trait bounds], [macro Kleene matcher] |
 | `-`    | Minus       | [subtraction][arith], [negation] |
-| `*`    | Star        | [multiplication][arith], [dereference], [raw pointers], [macro Kleene matcher][macros], [use wildcards] |
+| `*`    | Star        | [multiplication][arith], [dereference], [raw pointers], [macro Kleene matcher], [glob imports] |
 | `/`    | Slash       | [division][arith] |
 | `%`    | Percent     | [remainder][arith] |
 | `^`    | Caret       | [bitwise and logical XOR][arith] |
-| `!`    | Not         | [bitwise and logical NOT][negation], [macro calls][macros], [inner attributes][attributes], [never type], [negative impls] |
+| `!`    | Not         | [bitwise and logical NOT][negation], [macro calls], [inner attributes][attributes], [never type], [negative impls] |
 | `&`    | And         | [bitwise and logical AND][arith], [borrow], [references], [reference patterns] |
 | <code>\|</code> | Or | [bitwise and logical OR][arith], [closures], [or patterns], [if let], [while let] |
 | `&&`   | AndAnd      | [lazy AND][lazy-bool], [borrow], [references], [reference patterns] |
@@ -40,9 +40,9 @@ This appendix provides an index of tokens and common forms with links to where t
 | `<=`   | Le          | [less than or equal to][comparison] |
 | `@`    | At          | [subpattern binding] |
 | `.`    | Dot         | [field access][field], [tuple index] |
-| `..`   | DotDot      | [range][range], [struct expressions], [patterns], [range patterns][rangepat] |
-| `...`  | DotDotDot   | [variadic functions][extern], [range patterns] |
-| `..=`  | DotDotEq    | [inclusive range][range], [range patterns] |
+| `..`   | DotDot      | [range expressions][expr.range], [struct expressions], [rest patterns], [range patterns], [struct patterns] |
+| `...`  | DotDotDot   | [variadic functions], [range patterns] |
+| `..=`  | DotDotEq    | [inclusive range expressions][expr.range], [range patterns] |
 | `,`    | Comma       | various separators |
 | `;`    | Semi        | terminator for various items and statements, [array types] |
 | `:`    | Colon       | various separators |
@@ -52,52 +52,52 @@ This appendix provides an index of tokens and common forms with links to where t
 | `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token. |
 | `#`    | Pound       | [attributes] |
 | `$`    | Dollar      | [macros] |
-| `?`    | Question    | [try propagation expressions][question], [questionably sized][sized], [macro Kleene matcher][macros] |
+| `?`    | Question    | [try propagation expressions][question], [questionably sized][sized], [macro Kleene matcher] |
 | `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used. |
 
-[arith]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
-[array types]: types/array.md
-[assignment]: expressions/operator-expr.md#assignment-expressions
-[attributes]: attributes.md
-[borrow]: expressions/operator-expr.md#borrow-operators
-[closures]: expressions/closure-expr.md
-[comparison]: expressions/operator-expr.md#comparison-operators
-[compound]: expressions/operator-expr.md#compound-assignment-expressions
-[constants]: items/constant-items.md
-[dereference]: expressions/operator-expr.md#the-dereference-operator
-[destructuring assignment]: expressions/underscore-expr.md
-[extern crates]: items/extern-crates.md
-[extern]: items/external-blocks.md
-[field]: expressions/field-expr.md
-[function pointer type]: types/function-pointer.md
-[functions]: items/functions.md
-[generics]: items/generics.md
-[if let]: expressions/if-expr.md#if-let-patterns
-[inferred types]: types/inferred.md
-[lazy-bool]: expressions/operator-expr.md#lazy-boolean-operators
+[arith]: expr.arith-logic
+[array types]: type.array
+[assignment]: expr.assign
+[borrow]: expr.operator.borrow
+[closures]: expr.closure
+[comparison]: expr.cmp
+[compound]: expr.compound-assign
+[constants]: items.const
+[dereference]: expr.deref
+[destructuring assignment]: expr.placeholder
+[extern crates]: items.extern-crate
+[extern]: items.extern
+[field]: expr.field
+[function pointer type]: type.fn-pointer
+[functions]: items.fn
+[generics]: items.generics
+[glob imports]: items.use.glob
+[if let]: expr.if.let
+[inferred types]: type.inferred
+[lazy-bool]: expr.bool-logic
 [let statements]: statement.let
-[macros]: macros-by-example.md
-[match]: expressions/match-expr.md
-[negation]: expressions/operator-expr.md#negation-operators
-[negative impls]: items/implementations.md
-[never type]: types/never.md
+[macro calls]: macro.invocation
+[macro Kleene matcher]: macro.decl.repetition
+[macros]: macro.decl
+[match]: expr.match
+[negation]: expr.negate
+[negative impls]: items.impl
+[never type]: type.never
 [or patterns]: patterns.or
-[paths]: paths.md
-[patterns]: patterns.md
-[question]: expressions/operator-expr.md#the-try-propagation-expression
-[range patterns]: patterns.md#range-patterns
-[range]: expressions/range-expr.md
-[rangepat]: patterns.md#range-patterns
-[raw pointers]: types/pointer.md#raw-pointers-const-and-mut
-[reference patterns]: patterns.md#reference-patterns
-[references]: types/pointer.md
-[sized]: trait-bounds.md#sized
-[struct expressions]: expressions/struct-expr.md
-[subpattern binding]: patterns.md#identifier-patterns
-[trait bounds]: trait-bounds.md
-[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
+[question]: expr.try
+[range patterns]: patterns.range
+[raw pointers]: type.pointer.raw
+[reference patterns]: patterns.ref
+[references]: type.pointer.reference
+[rest patterns]: patterns.rest
+[sized]: bound.sized
+[struct expressions]: expr.struct
+[struct patterns]: patterns.struct
+[subpattern binding]: patterns.ident.scrutinized
+[trait bounds]: bound
+[tuple index]: expr.tuple-index
 [use bounds]: bound.use
-[use declarations]: items/use-declarations.md
-[use wildcards]: items/use-declarations.md
-[while let]: expressions/loop-expr.md#while-let-patterns
-[wildcard patterns]: patterns.md#wildcard-pattern
+[use declarations]: items.use
+[variadic functions]: items.extern.variadic
+[while let]: expr.loop.while.let
+[wildcard patterns]: patterns.wildcard
