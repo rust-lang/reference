@@ -23,12 +23,10 @@ to name, convention, language, and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
 r[attributes.inner]
-_Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the
-item that the attribute is declared within.
+_Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the item that the attribute is declared within.
 
 r[attributes.outer]
-_Outer attributes_, written without
-the bang after the hash, apply to the thing that follows the attribute.
+_Outer attributes_, written without the bang after the hash, apply to the thing that follows the attribute.
 
 r[attributes.input]
 The attribute consists of a path to the attribute, followed by an optional
