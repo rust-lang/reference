@@ -142,14 +142,22 @@ const _: &&mut u8 = unsafe { &S }; // OK.
 > This is allowed as it's separately not allowed to read from an external static during constant evaluation. See [const-eval.const-expr.path-static].
 
 > [!NOTE]
-> We also disallow, in the final value, shared references to mutable statics created in the initializer for a separate reason. Consider:
+> As described above, we accept, in the final value of constant items, shared references to static items whose values have interior mutability.
+>
+> ```rust
+> # use core::sync::atomic::AtomicU8;
+> static S: AtomicU8 = AtomicU8::new(0);
+> const _: &AtomicU8 = &S; // OK.
+> ```
+>
+> However, we disallow similar code when the interior mutable value is created in the initializer.
 >
 > ```rust,compile_fail,E0492
 > # use core::sync::atomic::AtomicU8;
 > const _: &AtomicU8 = &AtomicU8::new(0); // ERROR.
 > ```
 >
-> Here, the `AtomicU8` is a temporary that is lifetime extended to `'static` (see [destructors.scope.lifetime-extension.static]), and references to lifetime-extended temporaries with interior mutability are not allowed in the final value of a constant expression (see [const-eval.const-expr.borrows]).
+> Here, the `AtomicU8` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.static]). Such temporaries with interior mutability cannot be borrowed in constant expressions (see [const-eval.const-expr.borrows]).
 
 r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
