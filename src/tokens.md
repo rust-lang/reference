@@ -855,6 +855,9 @@ PUNCTUATION ->
     | `)`
 ```
 
+> [!NOTE]
+> See the [syntax index] for links to how punctuation characters are used.
+
 r[lex.token.delim]
 ## Delimiters
 
@@ -977,6 +980,7 @@ r[lex.token.reserved-guards.edition2024]
 [loop labels]: expressions/loop-expr.md
 [macros]: macros-by-example.md
 [String continuation escapes]: expressions/literal-expr.md#string-continuation-escapes
+[syntax index]: syntax-index.md#operators-and-punctuation
 [tuple structs]: items/structs.md
 [tuple enum variants]: items/enumerations.md
 [tuples]: types/tuple.md
