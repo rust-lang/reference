@@ -23,9 +23,44 @@ to name, convention, language, and compiler version. Attributes are modeled
 on Attributes in [ECMA-335], with the syntax coming from [ECMA-334] \(C#).
 
 r[attributes.inner]
-_Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the
-item that the attribute is declared within. _Outer attributes_, written without
-the bang after the hash, apply to the thing that follows the attribute.
+_Inner attributes_, written with a bang (`!`) after the hash (`#`), apply to the form that the attribute is declared within.
+
+> [!EXAMPLE]
+> ```rust
+> // General metadata applied to the enclosing module or crate.
+> #![crate_type = "lib"]
+>
+> // Inner attribute applies to the entire function.
+> fn some_unused_variables() {
+>   #![allow(unused_variables)]
+>
+>   let x = ();
+>   let y = ();
+>   let z = ();
+> }
+> ```
+
+r[attributes.outer]
+_Outer attributes_, written without the bang after the hash, apply to the form that follows the attribute.
+
+> [!EXAMPLE]
+> ```rust
+> // A function marked as a unit test
+> #[test]
+> fn test_foo() {
+>     /* ... */
+> }
+>
+> // A conditionally-compiled module
+> #[cfg(target_os = "linux")]
+> mod bar {
+>     /* ... */
+> }
+>
+> // A lint attribute used to suppress a warning/error
+> #[allow(non_camel_case_types)]
+> type int8_t = i8;
+> ```
 
 r[attributes.input]
 The attribute consists of a path to the attribute, followed by an optional
@@ -56,7 +91,7 @@ Attributes can be classified into the following kinds:
 * [Tool attributes](#tool-attributes)
 
 r[attributes.allowed-position]
-Attributes may be applied to many things in the language:
+Attributes may be applied to many forms in the language:
 
 * All [item declarations] accept outer attributes while [external blocks],
   [functions], [implementations], and [modules] accept inner attributes.
@@ -73,38 +108,6 @@ Attributes may be applied to many things in the language:
 * [Function][functions], [closure] and [function pointer]
   parameters accept outer attributes. This includes attributes on variadic parameters
   denoted with `...` in function pointers and [external blocks][variadic functions].
-
-Some examples of attributes:
-
-```rust
-// General metadata applied to the enclosing module or crate.
-#![crate_type = "lib"]
-
-// A function marked as a unit test
-#[test]
-fn test_foo() {
-    /* ... */
-}
-
-// A conditionally-compiled module
-#[cfg(target_os = "linux")]
-mod bar {
-    /* ... */
-}
-
-// A lint attribute used to suppress a warning/error
-#[allow(non_camel_case_types)]
-type int8_t = i8;
-
-// Inner attribute applies to the entire function.
-fn some_unused_variables() {
-  #![allow(unused_variables)]
-
-  let x = ();
-  let y = ();
-  let z = ();
-}
-```
 
 r[attributes.meta]
 ## Meta item attribute syntax
@@ -196,7 +199,7 @@ r[attributes.activity]
 
 r[attributes.activity.intro]
 An attribute is either active or inert. During attribute processing, *active
-attributes* remove themselves from the thing they are on while *inert attributes*
+attributes* remove themselves from the form they are on while *inert attributes*
 stay on.
 
 The [`cfg`] and [`cfg_attr`] attributes are active.
