@@ -18,8 +18,9 @@ level = 0
 use-boolean-and = true
 
 [output.html.search.chapter]
-"test-summary.md" = { enable = false }
 "grammar.md" = { enable = false }
+"syntax-index.md" = { enable = false }
+"test-summary.md" = { enable = false }
 
 [output.html.redirect]
 "/crates-and-source-files.html#preludes-and-no_std" = "names/preludes.html"
