@@ -7,32 +7,25 @@ the source program, usually via a [path]. Entities include [types], [items],
 [generic parameters], [variable bindings], [loop labels], [lifetimes],
 [fields], [attributes], and [lints].
 
-r[names.decl]
 A *declaration* is a syntactical construct that can introduce a *name* to
 refer to an entity. Entity names are valid within a [*scope*] --- a region of
 source text where that name may be referenced.
 
-r[names.explicit-decl]
 Some entities are [explicitly declared](#explicitly-declared-entities) in the
 source code, and some are [implicitly declared](#implicitly-declared-entities)
 as part of the language or compiler extensions.
 
-r[names.path]
 [*Paths*] are used to refer to an entity, possibly in another module or type.
 
-r[names.lifetime]
 Lifetimes and loop labels use a [dedicated syntax][lifetimes-and-loop-labels] using a
 leading quote.
 
-r[names.namespace]
 Names are segregated into different [*namespaces*], allowing entities in
 different namespaces to share the same name without conflict.
 
-r[names.resolution]
 [*Name resolution*] is the compile-time process of tying paths, identifiers,
 and labels to entity declarations.
 
-r[names.visibility]
 Access to certain names may be restricted based on their [*visibility*].
 
 r[names.explicit]
