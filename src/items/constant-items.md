@@ -76,6 +76,24 @@ const _: &mut u8 = unsafe { &mut S }; // ERROR.
 // Not allowed as the mutable reference appears in the final value.
 ```
 
+> [!NOTE]
+> Constant initializers can be thought of, in most cases, as being inlined wherever the constant appears. If a constant whose value contains a mutable reference to a mutable static were to appear twice, and this were to be allowed, that would create two mutable references, each having `'static` lifetime, to the same place. This could produce undefined behavior.
+>
+> Constants that contain mutable references to temporaries whose scopes have been extended to the end of the program have that same problem and an additional one.
+>
+> ```rust,compile_fail,E0764
+> const _: &mut u8 = &mut 0; // ERROR.
+> //                 ^^^^^^
+> // Not allowed as the mutable reference appears in the final value and
+> // because the constant expression contains a mutable borrow of an
+> // expression whose temporary scope would be extended to the end of
+> // the program.
+> ```
+>
+> Here, the value `0` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.static]). Such temporaries cannot be mutably borrowed in constant expressions (see [const-eval.const-expr.borrows]).
+>
+> To allow this, we'd have to decide whether each use of the constant creates a new `u8` value or whether each use shares the same lifetime-extended temporary. The latter choice, though closer to how `rustc` thinks about this today, would break the conceptual model that, in most cases, the constant initializer can be thought of as being inlined wherever the constant is used. Since we haven't decided, and due to the other problem mentioned, this is not allowed.
+
 ```rust,compile_fail,E0080
 # #![allow(static_mut_refs)]
 static mut S: u8 = 0;
@@ -158,6 +176,8 @@ const _: &&mut u8 = unsafe { &S }; // OK.
 > ```
 >
 > Here, the `AtomicU8` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.static]). Such temporaries with interior mutability cannot be borrowed in constant expressions (see [const-eval.const-expr.borrows]).
+>
+> To allow this, we'd have to decide whether each use of the constant creates a new `AtomicU8` or whether each use shares the same lifetime-extended temporary. The latter choice, though closer to how `rustc` thinks about this today, would break the conceptual model that, in most cases, the constant initializer can be thought of as being inlined wherever the constant is used. Since we haven't decided, this is not allowed.
 
 r[items.const.expr-omission]
 The constant expression may only be omitted in a [trait definition].
