@@ -3,207 +3,232 @@ r[attributes.type-system]
 
 The following [attributes] are used for changing how a type can be used.
 
+<!-- template:attributes -->
 r[attributes.type-system.non_exhaustive]
 ## The `non_exhaustive` attribute
 
 r[attributes.type-system.non_exhaustive.intro]
-The *`non_exhaustive` attribute* indicates that a type or variant may have
-more fields or variants added in the future.
+The *`non_exhaustive` [attribute][attributes]* indicates that a type or variant may have more fields or variants added in the future. Outside of the defining crate, types annotated with `non_exhaustive` have limitations that preserve backwards compatibility when new fields or variants are added.
 
-r[attributes.type-system.non_exhaustive.allowed-positions]
-It can be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+> [!EXAMPLE]
+> The following non-exhaustive definitions will be used in the examples that follow.
+>
+> ```rust
+> #[non_exhaustive]
+> pub struct Config {
+>     pub window_width: u16,
+>     pub window_height: u16,
+> }
+>
+> #[non_exhaustive]
+> pub struct Token;
+>
+> #[non_exhaustive]
+> pub struct Id(pub u64);
+>
+> #[non_exhaustive]
+> pub enum Error {
+>     Message(String),
+>     Other,
+> }
+>
+> pub enum Message {
+>     #[non_exhaustive] Send { from: u32, to: u32, contents: String },
+>     #[non_exhaustive] Reaction(u32),
+>     #[non_exhaustive] Quit,
+> }
+> ```
 
 r[attributes.type-system.non_exhaustive.syntax]
-The `non_exhaustive` attribute uses the [MetaWord] syntax and thus does not
-take any inputs.
+The `non_exhaustive` attribute uses the [MetaWord] syntax.
+
+r[attributes.type-system.non_exhaustive.allowed-positions]
+The `non_exhaustive` attribute may only be applied to [`struct`s][struct], [`enum`s][enum], and `enum` variants.
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+r[attributes.type-system.non_exhaustive.duplicates]
+The `non_exhaustive` attribute may be used any number of times on a form.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
 
 r[attributes.type-system.non_exhaustive.same-crate]
 Within the defining crate, `non_exhaustive` has no effect.
 
-```rust
-#[non_exhaustive]
-pub struct Config {
-    pub window_width: u16,
-    pub window_height: u16,
-}
-
-#[non_exhaustive]
-pub struct Token;
-
-#[non_exhaustive]
-pub struct Id(pub u64);
-
-#[non_exhaustive]
-pub enum Error {
-    Message(String),
-    Other,
-}
-
-pub enum Message {
-    #[non_exhaustive] Send { from: u32, to: u32, contents: String },
-    #[non_exhaustive] Reaction(u32),
-    #[non_exhaustive] Quit,
-}
-
-// Non-exhaustive structs can be constructed as normal within the defining crate.
-let config = Config { window_width: 640, window_height: 480 };
-let token = Token;
-let id = Id(4);
-
-// Non-exhaustive structs can be matched on exhaustively within the defining crate.
-let Config { window_width, window_height } = config;
-let Token = token;
-let Id(id_number) = id;
-
-let error = Error::Other;
-let message = Message::Reaction(3);
-
-// Non-exhaustive enums can be matched on exhaustively within the defining crate.
-match error {
-    Error::Message(ref s) => { },
-    Error::Other => { },
-}
-
-match message {
-    // Non-exhaustive variants can be matched on exhaustively within the defining crate.
-    Message::Send { from, to, contents } => { },
-    Message::Reaction(id) => { },
-    Message::Quit => { },
-}
-```
-
-r[attributes.type-system.non_exhaustive.external-crate]
-Outside of the defining crate, types annotated with `non_exhaustive` have limitations that
-preserve backwards compatibility when new fields or variants are added.
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples when used within the same crate are allowed without restrictions.
+>
+> ```rust,ignore
+> // Non-exhaustive structs can be constructed as normal within the defining crate.
+> let config = Config { window_width: 640, window_height: 480 };
+> let token = Token;
+> let id = Id(4);
+>
+> // Non-exhaustive structs can be matched on exhaustively within the defining crate.
+> let Config { window_width, window_height } = config;
+> let Token = token;
+> let Id(id_number) = id;
+>
+> let error = Error::Other;
+> let message = Message::Reaction(3);
+>
+> // Non-exhaustive enums can be matched on exhaustively within the defining crate.
+> match error {
+>     Error::Message(ref s) => { },
+>     Error::Other => { },
+> }
+>
+> match message {
+>     // Non-exhaustive variants can be matched on exhaustively within the defining crate.
+>     Message::Send { from, to, contents } => { },
+>     Message::Reaction(id) => { },
+>     Message::Quit => { },
+> }
+> ```
 
 r[attributes.type-system.non_exhaustive.construction]
-Non-exhaustive types cannot be constructed outside of the defining crate:
+`non_exhaustive` applied to a [`struct`][struct] or [`enum` variant][enum] prevents constructing that struct or enum variant outside of the defining crate.
 
-- Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed
-  with a [StructExpression] \(including with [functional update syntax]).
-- The implicitly defined same-named constant of a [unit-like struct][struct],
-  or the same-named constructor function of a [tuple struct][struct],
-  has a [visibility] no greater than `pub(crate)`.
-  That is, if the struct’s visibility is `pub`, then the constant or constructor’s visibility
-  is `pub(crate)`, and otherwise the visibility of the two items is the same
-  (as is the case without `#[non_exhaustive]`).
-- [`enum`][enum] instances can be constructed.
+Non-exhaustive variants ([`struct`][struct] or [`enum` variant][enum]) cannot be constructed with a [StructExpression] \(including with [functional update syntax]).
 
-The following examples of construction do not compile when outside the defining crate:
+The implicitly defined same-named constant of a [unit-like struct][struct], or the same-named constructor function of a [tuple struct][struct], has a [visibility] no greater than `pub(crate)`. That is, if the struct’s visibility is `pub`, then the constant or constructor’s visibility is `pub(crate)`, and otherwise the visibility of the two items is the same (as is the case without `#[non_exhaustive]`).
 
-<!-- ignore: requires external crates -->
-```rust,ignore
-// These are types defined in an upstream crate that have been annotated as
-// `#[non_exhaustive]`.
-use upstream::{Config, Token, Id, Error, Message};
-
-// Cannot construct an instance of `Config`; if new fields were added in
-// a new version of `upstream` then this would fail to compile, so it is
-// disallowed.
-let config = Config { window_width: 640, window_height: 480 };
-
-// Cannot construct an instance of `Token`; if new fields were added, then
-// it would not be a unit-like struct any more, so the same-named constant
-// created by it being a unit-like struct is not public outside the crate;
-// this code fails to compile.
-let token = Token;
-
-// Cannot construct an instance of `Id`; if new fields were added, then
-// its constructor function signature would change, so its constructor
-// function is not public outside the crate; this code fails to compile.
-let id = Id(5);
-
-// Can construct an instance of `Error`; new variants being introduced would
-// not result in this failing to compile.
-let error = Error::Message("foo".to_string());
-
-// Cannot construct an instance of `Message::Send` or `Message::Reaction`;
-// if new fields were added in a new version of `upstream` then this would
-// fail to compile, so it is disallowed.
-let message = Message::Send { from: 0, to: 1, contents: "foo".to_string(), };
-let message = Message::Reaction(0);
-
-// Cannot construct an instance of `Message::Quit`; if this were converted to
-// a tuple enum variant `upstream`, this would fail to compile.
-let message = Message::Quit;
-```
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of construction do not compile when outside the defining crate:
+>
+> <!-- ignore: requires external crates -->
+> ```rust,ignore
+> // These are types defined in an upstream crate that have been annotated as
+> // `#[non_exhaustive]`.
+> use upstream::{Config, Token, Id, Error, Message};
+>
+> // Cannot construct an instance of `Config`; if new fields were added in
+> // a new version of `upstream` then this would fail to compile, so it is
+> // disallowed.
+> let config = Config { window_width: 640, window_height: 480 }; // ERROR
+>
+> // Cannot construct an instance of `Token`; if new fields were added, then
+> // it would not be a unit-like struct any more, so the same-named constant
+> // created by it being a unit-like struct is not public outside the crate;
+> // this code fails to compile.
+> let token = Token; // ERROR
+>
+> // Cannot construct an instance of `Id`; if new fields were added, then
+> // its constructor function signature would change, so its constructor
+> // function is not public outside the crate; this code fails to compile.
+> let id = Id(5); // ERROR
+>
+> // Can construct an instance of `Error`; new variants being introduced would
+> // not result in this failing to compile.
+> let error = Error::Message("foo".to_string()); // Ok
+>
+> // Cannot construct an instance of `Message::Send` or `Message::Reaction`;
+> // if new fields were added in a new version of `upstream` then this would
+> // fail to compile, so it is disallowed.
+> let message = Message::Send { from: 0, to: 1, contents: "foo".to_string() }; // ERROR
+> let message = Message::Reaction(0); // ERROR
+>
+> // Cannot construct an instance of `Message::Quit`; if this were converted to
+> // a tuple enum variant `upstream`, this would fail to compile.
+> let message = Message::Quit; // ERROR
+> ```
 
 r[attributes.type-system.non_exhaustive.match]
-There are limitations when matching on non-exhaustive types outside of the defining crate:
+When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]) from an external crate, a [StructPattern] must be used which must include a [`..` rest pattern][patterns.rest].
 
-- When pattern matching on a non-exhaustive variant ([`struct`][struct] or [`enum` variant][enum]), a [StructPattern] must be used which must include a `..`. A tuple enum variant's constructor's [visibility] is reduced to be no greater than `pub(crate)`.
-- When pattern matching on a non-exhaustive [`enum`][enum], matching on a variant does not contribute towards the exhaustiveness of the arms. The following examples of matching do not compile when outside the defining crate:
+Because a tuple enum variant's constructor's [visibility] is reduced to be no greater than `pub(crate)`, a [tuple struct pattern][patterns.tuple-struct] cannot be used in a pattern; a [StructPattern] with tuple indexes must be used instead.
 
-<!-- ignore: requires external crates -->
-```rust, ignore
-// These are types defined in an upstream crate that have been annotated as
-// `#[non_exhaustive]`.
-use upstream::{Config, Token, Id, Error, Message};
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of matching do not compile when outside the defining crate:
+>
+> <!-- ignore: requires external crates -->
+> ```rust, ignore
+> // These are types defined in an upstream crate that have been annotated as
+> // `#[non_exhaustive]`.
+> use upstream::{Config, Token, Id, Error, Message};
+>
+> // Cannot match on a non-exhaustive struct without a wildcard.
+> if let Ok(Config { window_width, window_height }) = config { // ERROR: `..` required
+>     // would compile with: `..`
+> }
+>
+> // Cannot match a non-exhaustive unit-like or tuple struct except by using
+> // braced struct syntax with a wildcard.
+> // This would compile as `let Token { .. } = token;`
+> let upstream::Token = token; // ERROR
+> // This would compile as `let Id { 0: id_number, .. } = id;`
+> let Id(id_number) = id; // ERROR
+>
+> match message {
+>   // Cannot match on a non-exhaustive struct enum variant without including a wildcard.
+>   Message::Send { from, to, contents } => { }, // ERROR: `..` required
+>   // Cannot match on a non-exhaustive tuple or unit enum variant.
+>   Message::Reaction(x) => { }, // ERROR
+>   Message::Quit => { }, // ERROR
+> }
+> ```
 
-// Cannot match on a non-exhaustive enum without including a wildcard arm.
-match error {
-  Error::Message(ref s) => { },
-  Error::Other => { },
-  // would compile with: `_ => {},`
-}
+r[attributes.type-system.non_exhaustive.enum-exhaustiveness]
+When using a [`match` expression][expr.match] on a non-exhaustive [`enum`][enum] from an external crate, matching on a variant does not contribute towards the exhaustiveness of the arms. A [`_` wildcard][patterns.wildcard] arm is needed to make the match exhaustive.
 
-// Cannot match on a non-exhaustive struct without a wildcard.
-if let Ok(Config { window_width, window_height }) = config {
-    // would compile with: `..`
-}
+> [!EXAMPLE]
+> Using the definitions from [above][attributes.type-system.non_exhaustive.intro], the following examples of matching do not compile when outside the defining crate:
+>
+> <!-- ignore: requires external crates -->
+> ```rust, ignore
+> // These are types defined in an upstream crate that have been annotated as
+> // `#[non_exhaustive]`.
+> use upstream::Error;
+>
+> // Cannot match on a non-exhaustive enum without including a wildcard arm.
+> match error {  // ERROR: `_` not covered
+>   Error::Message(ref s) => { },
+>   Error::Other => { },
+>   // would compile with: `_ => {},`
+> }
+> ```
 
-// Cannot match a non-exhaustive unit-like or tuple struct except by using
-// braced struct syntax with a wildcard.
-// This would compile as `let Token { .. } = token;`
-let Token = token;
-// This would compile as `let Id { 0: id_number, .. } = id;`
-let Id(id_number) = id;
+r[attributes.type-system.non_exhaustive.enum-cast]
+It is not allowed to use an [`as` numeric cast][expr.as] to [access the discriminant][items.enum.discriminant.coercion] of an external enum that contains any non-exhaustive variants.
 
-match message {
-  // Cannot match on a non-exhaustive struct enum variant without including a wildcard.
-  Message::Send { from, to, contents } => { },
-  // Cannot match on a non-exhaustive tuple or unit enum variant.
-  Message::Reaction(type) => { },
-  Message::Quit => { },
-}
-```
+> [!EXAMPLE]
+> The following enum can be cast because it doesn't contain any non-exhaustive variants:
+>
+> ```rust
+> #[non_exhaustive]
+> pub enum Example {
+>     First,
+>     Second
+> }
+> ```
+>
+> However, if the enum contains even a single non-exhaustive variant, casting will result in an error. Consider this modified version of the same enum:
+>
+> ```rust
+> #[non_exhaustive]
+> pub enum EnumWithNonExhaustiveVariants {
+>     First,
+>     #[non_exhaustive]
+>     Second
+> }
+> ```
+>
+> <!-- ignore: needs multiple crates -->
+> ```rust,ignore
+> use othercrate::EnumWithNonExhaustiveVariants;
+>
+> // Error: cannot cast an enum with a non-exhaustive variant when it's defined in another crate
+> let _ = EnumWithNonExhaustiveVariants::First as u8;
+> ```
 
-It's also not allowed to use numeric casts (`as`) on enums that contain any non-exhaustive variants.
+r[attributes.type-system.non_exhaustive.inhabited]
+Non-exhaustive types are always considered [inhabited] in downstream crates, even though the constructors are not accessible.
 
-For example, the following enum can be cast because it doesn't contain any non-exhaustive variants:
-
-```rust
-#[non_exhaustive]
-pub enum Example {
-    First,
-    Second
-}
-```
-
-However, if the enum contains even a single non-exhaustive variant, casting will result in an error. Consider this modified version of the same enum:
-
-```rust
-#[non_exhaustive]
-pub enum EnumWithNonExhaustiveVariants {
-    First,
-    #[non_exhaustive]
-    Second
-}
-```
-
-<!-- ignore: needs multiple crates -->
-```rust,ignore
-use othercrate::EnumWithNonExhaustiveVariants;
-
-// Error: cannot cast an enum with a non-exhaustive variant when it's defined in another crate
-let _ = EnumWithNonExhaustiveVariants::First as u8;
-```
-
-Non-exhaustive types are always considered inhabited in downstream crates.
-
-[`match`]: ../expressions/match-expr.md
 [attributes]: ../attributes.md
 [enum]: ../items/enumerations.md
 [functional update syntax]: ../expressions/struct-expr.md#functional-update-syntax
 [struct]: ../items/structs.md
 [visibility]: ../visibility-and-privacy.md
+[inhabited]: ../glossary.md#inhabited
