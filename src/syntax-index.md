@@ -153,6 +153,13 @@ This appendix provides an index of tokens and common forms with links to where t
 | `$ident:kind`                             | [macro fragment specifier] |
 | `$(…)…`                                   | [macro repetition] |
 
+## Attributes
+
+| Syntax     | Usage |
+|------------|-------|
+| `#[meta]`  | [outer attribute] |
+| `#![meta]` | [inner attribute] |
+
 [`'static` lifetimes]: bound
 [`if let` patterns]: expr.if.let
 [`self` paths]: paths.qualifiers.mod-self
@@ -213,6 +220,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [inferred types]: type.inferred
 [infinite loops]: expr.loop.infinite
 [inherent impls]: items.impl.inherent
+[inner attribute]: attributes.inner
 [iterator loops]: expr.loop.for
 [keywords chapter]: lex.keywords
 [lazy-bool]: expr.bool-logic
@@ -235,6 +243,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [never type]: type.never
 [number literals]: lex.token.literal.num
 [or patterns]: patterns.or
+[outer attribute]: attributes.outer
 [predicate loops]: expr.loop.while
 [qualified paths]: paths.qualified
 [question]: expr.try
