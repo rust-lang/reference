@@ -160,18 +160,128 @@ This appendix provides an index of tokens and common forms with links to where t
 | `#[meta]`  | [outer attribute] |
 | `#![meta]` | [inner attribute] |
 
+## Expressions
+
+| Expression                | Usage |
+|---------------------------|-------|
+| <code>\|…\| expr</code>   | [closures] |
+| `ident::…`                | [paths] |
+| `::crate_name::…`         | [explicit crate paths] |
+| `crate::…`                | [crate-relative paths] |
+| `self::…`                 | [module-relative paths] |
+| `super::…`                | [parent module paths] |
+| `Type::…`<br>`<type as trait>::ident` | [associated items] |
+| `<Type>::…`               | [qualified paths] which can be used for types without names such as `<&T>::…`, `<[T]>::…`, etc. |
+| `Trait::method(…)`<br>`Type::method(…)`<br>`<Type as Trait>::method(…)` | [disambiguated method calls] |
+| `Type<…>`                 | [generic arguments] (e.g. `Vec<u8>`) <!-- TODO: fix after generic args reorg --> |
+| `method::<…>(…)`<br>`path::<…>` | [generic arguments], aka turbofish |
+| `Type<ident=Type>`        | [explicit associated type bounds] (e.g. `Iterator<Item=T>`) <!-- undocumented https://github.com/rust-lang/reference/issues/24 --> |
+| `()`                      | [unit] |
+| `(expr)`                  | [parenthesized expressions] |
+| `(expr,)`                 | [single-element tuple expression] |
+| `(expr, …)`               | [tuple expressions] |
+| `expr(expr, …)`           | [call expressions] |
+| `expr.0`, `expr.1`, …     | [tuple indexing expressions] |
+| `expr.ident`              | [field access expressions] |
+| `{…}`                     | [block expressions] |
+| `Type{…}`                 | [struct expressions] |
+| `Type(…)`                 | [tuple struct constructors] |
+| `[…]`                     | [array expressions] |
+| `[expr; len]`             | [repeat array expressions] |
+| `expr[..]`, `expr[a..]`, `expr[..b]`, `expr[a..b]`, `expr[a..=b]`, `expr[..=b]` | [array and slice indexing expressions] |
+| `if expr {…} else {…}`    | [if expressions] |
+| `match expr { pattern => {…} }` | [match expressions] |
+| `loop {…}`                | [infinite loop expressions] |
+| `while expr {…}`          | [predicate loop expressions] |
+| `for pattern in expr {…}` | [iterator loops] |
+| `&expr`<br>`&mut expr`    | [borrow expressions] |
+| `&raw const expr`<br>`&raw mut expr` | [raw borrow expressions] |
+| `*expr`                   | [dereference expressions] |
+| `expr?`                   | [try propagation expressions] |
+| `-expr`                   | [negation expressions] |
+| `!expr`                   | [bitwise and logical NOT expressions] |
+| `expr as Type`            | [type cast expressions] |
+
+## Items
+
+[Items] are declarations in a crate.
+
+| Item                          | Usage |
+|-------------------------------|-------|
+| `mod ident;`<br>`mod ident {…}` | [modules] |
+| `use path;`                   | [use declarations] |
+| `fn ident(…) {…}`             | [functions] |
+| `type Type = Type`            | [type aliases] |
+| `struct ident {…}`            | [structs] |
+| `enum ident {…}`              | [enumerations] |
+| `union ident {…}`             | [unions] |
+| `trait ident {…}`             | [traits] |
+| `impl Type {…}`<br>`impl Type for Trait {…}` | [implementations] |
+| `const ident = expr`          | [constant items] |
+| `static ident = expr`         | [static items] |
+| `extern "C" {…}`              | [external blocks] |
+| `fn ident<…>(…) …`<br>`struct ident<…> {…}`<br>`enum ident<…> {…}`<br>`impl<…> Type<…> {…}` | [generic definitions] |
+
+## Type expressions
+
+[Type expressions] are used to refer to types.
+
+| Type                                  | Usage |
+|---------------------------------------|-------|
+| `bool`, `u8`, `f64`, `char`, `str`    | [primitive types] |
+| `for<…>`                              | [higher-ranked trait bounds] |
+| `T: U`                                | [trait bounds] |
+| `T: 'a`                               | [lifetime bounds] |
+| `T: ?Sized`                           | [relaxed trait bounds] |
+| `'a + Trait`<br>`Trait + Trait`       | [compound type bounds] |
+| `[Type; len]`                         | [array types] |
+| `(Type, …)`                           | [tuple types] |
+| `[Type, …]`                           | [slice types] |
+| `(Type)`                              | [parenthesized types] |
+| `impl Trait`                          | [impl trait types] |
+| `dyn Trait`                           | [trait object types] |
+| `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, aliases, traits, generics, etc.) |
+| `&Type`<br>`&mut Type`                | [reference types] |
+| `*mut Type`<br>`*const Type`          | [raw pointer types] |
+| `fn(…) -> Type`                       | [function pointer types] |
+| `_`                                   | [inferred type] |
+| `!`                                   | [never type] |
+
+## Patterns
+
+[Patterns] are used to match values.
+
+| Pattern                           | Usage |
+|-----------------------------------|-------|
+| `"foo"`, `'a'`, `123`, `2.4`, …   | [literal patterns] |
+| `ident`                           | [identifier patterns] |
+| `_`                               | [wildcard patterns] |
+| `..`                              | [rest patterns] |
+| `&pattern`<br>`&mut pattern`      | [reference patterns] |
+| `path{…}`                         | [struct patterns] |
+| `path(…)`                         | [tuple struct patterns] |
+| `(pattern, …)`                    | [tuple patterns] |
+| `(pattern)`                       | [grouped patterns] |
+| `[pattern, …]`                    | [slice patterns] |
+| `CONST`, `Enum::Variant`, …       | [path patterns] |
+
 [`'static` lifetimes]: bound
 [`if let` patterns]: expr.if.let
 [`self` paths]: paths.qualifiers.mod-self
 [`Self` type paths]: paths.qualifiers.type-self
 [arith]: expr.arith-logic
+[array and slice indexing expressions]: expr.array.index
+[array expressions]: expr.array
 [array types]: type.array
 [assembly operands]: asm.operand-type.supported-operands.in
 [assignment]: expr.assign
+[associated items]: items.associated
 [async blocks]: expr.block.async
 [async closures]: expr.closure.async
 [async functions]: items.fn.async
 [await expressions]: expr.await
+[bitwise and logical NOT expressions]: expr.negate
+[block expressions]: expr.block
 [boolean expressions]: expr.literal
 [boolean type]: type.bool
 [borrow expressions]: expr.operator.borrow
@@ -180,10 +290,12 @@ This appendix provides an index of tokens and common forms with links to where t
 [byte literals]: lex.token.byte
 [byte string literals]: lex.token.str-byte
 [C string literals]: lex.token.str-c
+[call expressions]: expr.call
 [character literals]: lex.token.literal.char
 [closure expressions]: expr.closure
 [closures]: expr.closure
 [comparison]: expr.cmp
+[compound type bounds]: bound
 [compound]: expr.compound-assign
 [configuration predicates]: cfg
 [const assembly operands]: asm.operand-type.supported-operands.const
@@ -191,11 +303,17 @@ This appendix provides an index of tokens and common forms with links to where t
 [const functions]: const-eval.const-fn
 [const generics]: items.generics.const
 [const items]: items.const
+[constant items]: items.const
 [constants]: items.const
 [continue expressions]: expr.loop.continue
+[crate-relative paths]: paths.qualifiers.crate
+[dereference expressions]: expr.deref
 [dereference]: expr.deref
 [destructuring assignment]: expr.placeholder
+[disambiguated method calls]: expr.call.desugar
 [enumerations]: items.enum
+[explicit associated type bounds]: paths.expr
+[explicit crate paths]: paths.qualifiers.global-root
 [extern crate alias]: items.extern-crate.as
 [extern crate]: items.extern-crate
 [extern crates]: items.extern-crate
@@ -205,19 +323,27 @@ This appendix provides an index of tokens and common forms with links to where t
 [external block functions]: items.extern.fn
 [external block statics]: items.extern.static
 [external blocks]: items.extern
+[field access expressions]: expr.field
 [field]: expr.field
 [function pointer type]: type.fn-pointer
 [function pointer types]: type.fn-pointer
 [functions]: items.fn
+[generic arguments]: items.generics
+[generic definitions]: items.generics
 [generics]: items.generics
 [glob imports]: items.use.glob
+[grouped patterns]: patterns.paren
 [higher-ranked trait bounds]: bound.higher-ranked
 [identifier patterns]: patterns.ident
 [identifiers]: ident
 [if expressions]: expr.if
 [if let]: expr.if.let
+[impl trait types]: type.impl-trait
 [impl traits]: type.impl-trait
+[implementations]: items.impl
+[inferred type]: type.inferred
 [inferred types]: type.inferred
+[infinite loop expressions]: expr.loop.infinite
 [infinite loops]: expr.loop.infinite
 [inherent impls]: items.impl.inherent
 [inner attribute]: attributes.inner
@@ -225,7 +351,9 @@ This appendix provides an index of tokens and common forms with links to where t
 [keywords chapter]: lex.keywords
 [lazy-bool]: expr.bool-logic
 [let statements]: statement.let
+[lifetime bounds]: bound.lifetime
 [lifetimes and loop labels]: lex.token.life
+[literal patterns]: patterns.literal
 [macro calls]: macro.invocation
 [macro fragment specifier]: macro.decl.meta.specifier
 [macro fragment substitution]: macro.decl.meta.transcription
@@ -237,18 +365,27 @@ This appendix provides an index of tokens and common forms with links to where t
 [match expressions]: expr.match
 [match guards]: expr.match.guard
 [match]: expr.match
+[module-relative paths]: paths.qualifiers.mod-self
 [modules]: items.mod
+[negation expressions]: expr.negate
 [negation]: expr.negate
 [negative impls]: items.impl
 [never type]: type.never
 [number literals]: lex.token.literal.num
 [or patterns]: patterns.or
 [outer attribute]: attributes.outer
+[parent module paths]: paths.qualifiers.super
+[parenthesized expressions]: expr.paren
+[parenthesized types]: type.name.parenthesized
+[path patterns]: patterns.path
+[predicate loop expressions]: expr.loop.while
 [predicate loops]: expr.loop.while
+[primitive types]: type.kinds
 [qualified paths]: paths.qualified
 [question]: expr.try
 [range patterns]: patterns.range
 [raw assembly]: asm.options.supported-options.raw
+[raw borrow expressions]: expr.borrow.raw
 [raw borrow operator]: expr.borrow.raw
 [raw byte string literals]: lex.token.str-byte-raw
 [raw C string literals]: lex.token.str-c-raw
@@ -261,11 +398,16 @@ This appendix provides an index of tokens and common forms with links to where t
 [reference patterns]: patterns.ref
 [reference types]: type.pointer.reference
 [references]: type.pointer.reference
+[relaxed trait bounds]: bound.sized
+[repeat array expressions]: expr.array
 [reserved keyword]: lex.keywords.reserved
 [rest patterns]: patterns.rest
 [return expressions]: expr.return
 [self parameters]: items.fn.params.self-pat
+[single-element tuple expression]: expr.tuple
 [sized]: bound.sized
+[slice patterns]: patterns.slice
+[slice types]: type.slice
 [static items]: items.static
 [string literals]: lex.token.literal.str
 [struct expressions]: expr.struct
@@ -277,11 +419,24 @@ This appendix provides an index of tokens and common forms with links to where t
 [trait implementations]: items.impl.trait
 [trait impls]: items.impl.trait
 [trait items]: items.traits
+[trait object types]: type.trait-object
 [trait objects]: type.trait-object
+[traits]: items.traits
+[try propagation expressions]: expr.try
+[tuple expressions]: expr.tuple
 [tuple index]: expr.tuple-index
+[tuple indexing expressions]: expr.tuple-index
+[tuple patterns]: patterns.tuple
+[tuple struct constructors]: items.struct.tuple
+[tuple struct patterns]: patterns.tuple-struct
+[tuple types]: type.tuple
 [type aliases]: items.type
 [type cast expressions]: expr.as
+[Type expressions]: type.name
+[type paths]: type.name.path
 [union items]: items.union
+[unions]: items.union
+[unit]: type.tuple.unit
 [unsafe attributes]: attributes.safety
 [unsafe external blocks]: unsafe.extern
 [unsafe external functions]: items.extern.fn.safety
