@@ -6,7 +6,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Keyword       | Usage |
 |---------------|-------|
-| `_`           | [wildcard pattern], [inferred type], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
+| `_`           | [wildcard pattern], [inferred const], [inferred type], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate alias], [use alias], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
@@ -244,7 +244,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `&Type`<br>`&mut Type`                | [reference types] |
 | `*mut Type`<br>`*const Type`          | [raw pointer types] |
 | `fn(…) -> Type`                       | [function pointer types] |
-| `_`                                   | [inferred type] |
+| `_`                                   | [inferred type], [inferred const] |
 | `!`                                   | [never type] |
 
 ## Patterns
@@ -341,6 +341,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [impl trait types]: type.impl-trait
 [impl traits]: type.impl-trait
 [implementations]: items.impl
+[inferred const]: items.generics.const.inferred
 [inferred type]: type.inferred
 [infinite loop expressions]: expr.loop.infinite
 [infinite loops]: expr.loop.infinite
