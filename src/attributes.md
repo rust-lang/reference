@@ -1,4 +1,3 @@
-{{#include attributes-redirect.html}}
 r[attributes]
 # Attributes
 

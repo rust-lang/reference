@@ -22,6 +22,23 @@ use-boolean-and = true
 "grammar.md" = { enable = false }
 
 [output.html.redirect]
+"/attributes.html#cold-attribute" = "attributes/codegen.html#the-cold-attribute"
+"/attributes.html#conditional-compilation" = "conditional-compilation.html"
+"/attributes.html#crate-only-attributes" = "attributes.html#built-in-attributes-index"
+"/attributes.html#deprecation" = "attributes/diagnostics.html#the-deprecated-attribute"
+"/attributes.html#derive" = "attributes/derive.html"
+"/attributes.html#documentation" = "../rustdoc/the-doc-attribute.html"
+"/attributes.html#ffi-attributes" = "attributes.html#built-in-attributes-index"
+"/attributes.html#inline-attribute" = "attributes/codegen.html#the-inline-attribute"
+"/attributes.html#lint-check-attributes" = "attributes/diagnostics.html#lint-check-attributes"
+"/attributes.html#macro-related-attributes" = "attributes.html#built-in-attributes-index"
+"/attributes.html#miscellaneous-attributes" = "attributes.html#built-in-attributes-index"
+"/attributes.html#must_use" = "attributes/diagnostics.html#the-must_use-attribute"
+"/attributes.html#optimization-hints" = "attributes/codegen.html#optimization-hints"
+"/attributes.html#path" = "items/modules.html#the-path-attribute"
+"/attributes.html#preludes" = "crates-and-source-files.html#preludes-and-no_std"
+"/attributes.html#testing" = "attributes/testing.html"
+"/attributes.html#tool-lint-attributes" = "attributes/diagnostics.html#tool-lint-attributes"
 "/crates-and-source-files.html#preludes-and-no_std" = "names/preludes.html"
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
 "/expressions/if-expr.html#if-let-expressions" = "if-expr.html#if-let-patterns"
