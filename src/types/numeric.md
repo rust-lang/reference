@@ -44,7 +44,7 @@ platform's pointer type. It can represent every memory address in the process.
 > For more information, see the documentation for [type cast expressions], [`std::ptr`], and [provenance][std::ptr#provenance] in particular.
 
 r[type.numeric.int.size.isize]
-The `isize` type is a signed integer type with the same number of bits as the
+The `isize` type is a signed two's complement integer type with the same number of bits as the
 platform's pointer type. The theoretical upper bound on object and array size
 is the maximum `isize` value. This ensures that `isize` can be used to calculate
 differences between pointers into an object or array and can address every byte
