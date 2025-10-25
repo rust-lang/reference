@@ -6,7 +6,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Keyword       | Usage |
 |---------------|-------|
-| `_`           | [wildcard patterns], [inferred types], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
+| `_`           | [wildcard pattern], [inferred type], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate alias], [use alias], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
@@ -255,7 +255,7 @@ This appendix provides an index of tokens and common forms with links to where t
 |-----------------------------------|-------|
 | `"foo"`, `'a'`, `123`, `2.4`, …   | [literal patterns] |
 | `ident`                           | [identifier patterns] |
-| `_`                               | [wildcard patterns] |
+| `_`                               | [wildcard pattern] |
 | `..`                              | [rest patterns] |
 | `&pattern`<br>`&mut pattern`      | [reference patterns] |
 | `path{…}`                         | [struct patterns] |
@@ -342,7 +342,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [impl traits]: type.impl-trait
 [implementations]: items.impl
 [inferred type]: type.inferred
-[inferred types]: type.inferred
 [infinite loop expressions]: expr.loop.infinite
 [infinite loops]: expr.loop.infinite
 [inherent impls]: items.impl.inherent
@@ -454,4 +453,4 @@ This appendix provides an index of tokens and common forms with links to where t
 [visibility]: vis
 [where clauses]: items.generics.where
 [while let]: expr.loop.while.let
-[wildcard patterns]: patterns.wildcard
+[wildcard pattern]: patterns.wildcard
