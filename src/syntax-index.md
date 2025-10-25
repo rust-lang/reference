@@ -6,7 +6,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Keyword       | Usage |
 |---------------|-------|
-| `_`           | [wildcard pattern], [inferred const], [inferred type], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
+| `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate alias], [use alias], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
@@ -245,6 +245,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `*mut Type`<br>`*const Type`          | [raw pointer types] |
 | `fn(…) -> Type`                       | [function pointer types] |
 | `_`                                   | [inferred type], [inferred const] |
+| `'_`                                  | [placeholder lifetime] |
 | `!`                                   | [never type] |
 
 ## Patterns
@@ -378,6 +379,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [parenthesized expressions]: expr.paren
 [parenthesized types]: type.name.parenthesized
 [path patterns]: patterns.path
+[placeholder lifetime]: lifetime-elision.function.explicit-placeholder
 [predicate loop expressions]: expr.loop.while
 [predicate loops]: expr.loop.while
 [primitive types]: type.kinds
