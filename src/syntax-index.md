@@ -258,6 +258,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `ident`                           | [identifier patterns] |
 | `_`                               | [wildcard pattern] |
 | `..`                              | [rest patterns] |
+| `a..`, `..b`, `a..b`, `a..=b`, `..=b` | [range patterns] |
 | `&pattern`<br>`&mut pattern`      | [reference patterns] |
 | `path{…}`                         | [struct patterns] |
 | `path(…)`                         | [tuple struct patterns] |
