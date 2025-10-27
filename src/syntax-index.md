@@ -6,7 +6,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Keyword       | Usage |
 |---------------|-------|
-| `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed items in [constants], [extern crates], [use declarations], [destructuring assignment] |
+| `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed [constant items], [extern crates], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate alias], [use alias], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
@@ -306,7 +306,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [const generics]: items.generics.const
 [const items]: items.const
 [constant items]: items.const
-[constants]: items.const
 [continue expressions]: expr.loop.continue
 [crate-relative paths]: paths.qualifiers.crate
 [dereference expressions]: expr.deref
