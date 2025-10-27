@@ -107,7 +107,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `;`    | Semi        | terminator for various items and statements, [array expressions], [array types] |
 | `:`    | Colon       | various separators |
 | `::`   | PathSep     | [path separator][paths] |
-| `->`   | RArrow      | [function return type][functions], [closure return type][closures], [function pointer type] |
+| `->`   | RArrow      | [functions], [closures], [function pointer type] |
 | `=>`   | FatArrow    | [match arms][match], [macros] |
 | `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token. |
 | `#`    | Pound       | [attributes] |
