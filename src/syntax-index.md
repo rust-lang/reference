@@ -28,7 +28,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `for`         | [trait implementations], [iterator loops], [higher-ranked trait bounds] |
 | `gen`         | [reserved keyword] |
 | `if`          | [if expressions], [match guards] |
-| `impl`        | [inherent impls], [trait impls], [impl traits] |
+| `impl`        | [inherent impls], [trait impls], [impl trait types] |
 | `in`          | [visibility], [iterator loops], [assembly operands] |
 | `let`         | [let statements], [`if let` patterns] |
 | `loop`        | [infinite loops] |
@@ -338,7 +338,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [if expressions]: expr.if
 [if let]: expr.if.let
 [impl trait types]: type.impl-trait
-[impl traits]: type.impl-trait
 [implementations]: items.impl
 [inferred const]: items.generics.const.inferred
 [inferred type]: type.inferred
