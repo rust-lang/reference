@@ -170,7 +170,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `crate::…`                | [crate-relative paths] |
 | `self::…`                 | [module-relative paths] |
 | `super::…`                | [parent module paths] |
-| `Type::…`<br>`<type as trait>::ident` | [associated items] |
+| `Type::…`<br>`<Type as Trait>::ident` | [associated items] |
 | `<Type>::…`               | [qualified paths] which can be used for types without names such as `<&T>::…`, `<[T]>::…`, etc. |
 | `Trait::method(…)`<br>`Type::method(…)`<br>`<Type as Trait>::method(…)` | [disambiguated method calls] |
 | `Type<…>`                 | [generic arguments] (e.g. `Vec<u8>`) <!-- TODO: fix after generic args reorg --> |
