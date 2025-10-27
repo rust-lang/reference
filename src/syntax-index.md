@@ -175,7 +175,6 @@ This appendix provides an index of tokens and common forms with links to where t
 | `Trait::method(…)`<br>`Type::method(…)`<br>`<Type as Trait>::method(…)` | [disambiguated method calls] |
 | `Type<…>`                 | [generic arguments] (e.g. `Vec<u8>`) <!-- TODO: fix after generic args reorg --> |
 | `method::<…>(…)`<br>`path::<…>` | [generic arguments], aka turbofish |
-| `Type<ident=Type>`        | [explicit associated type bounds] (e.g. `Iterator<Item=T>`) <!-- undocumented https://github.com/rust-lang/reference/issues/24 --> |
 | `()`                      | [unit] |
 | `(expr)`                  | [parenthesized expressions] |
 | `(expr,)`                 | [single-element tuple expression] |
@@ -241,6 +240,8 @@ This appendix provides an index of tokens and common forms with links to where t
 | `impl Trait`                          | [impl trait types], [anonymous type parameters] |
 | `dyn Trait`                           | [trait object types] |
 | `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, aliases, traits, generics, etc.) |
+| `Trait<ident = Type>`                 | [associated type bindings] (e.g. `Iterator<Item = T>`) |
+| `Trait<ident: …>`                     | [associated type bounds] (e.g. `Iterator<Item: Send>`) |
 | `&Type`<br>`&mut Type`                | [reference types] |
 | `*mut Type`<br>`*const Type`          | [raw pointer types] |
 | `fn(…) -> Type`                       | [function pointer types] |
@@ -279,6 +280,8 @@ This appendix provides an index of tokens and common forms with links to where t
 [assembly operands]: asm.operand-type.supported-operands.in
 [assignment]: expr.assign
 [associated items]: items.associated
+[associated type bindings]: paths.expr
+[associated type bounds]: paths.expr
 [async blocks]: expr.block.async
 [async closures]: expr.closure.async
 [async functions]: items.fn.async
@@ -314,7 +317,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [destructuring assignment]: expr.placeholder
 [disambiguated method calls]: expr.call.desugar
 [enumerations]: items.enum
-[explicit associated type bounds]: paths.expr
 [explicit crate paths]: paths.qualifiers.global-root
 [extern crate]: items.extern-crate
 [extern function pointer types]: type.fn-pointer.qualifiers
