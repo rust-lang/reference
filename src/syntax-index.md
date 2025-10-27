@@ -112,7 +112,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `<-`   | LArrow      | The left arrow symbol has been unused since before Rust 1.0, but it is still treated as a single token. |
 | `#`    | Pound       | [attributes], [raw string literals], [raw byte string literals], [raw C string literals] |
 | `$`    | Dollar      | [macros] |
-| `?`    | Question    | [try propagation expressions][question], [questionably sized][sized], [macro Kleene matcher] |
+| `?`    | Question    | [try propagation expressions][question], [relaxed trait bounds], [macro Kleene matcher] |
 | `~`    | Tilde       | The tilde operator has been unused since before Rust 1.0, but its token may still be used. |
 
 ## Comments
