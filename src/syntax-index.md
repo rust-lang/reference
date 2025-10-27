@@ -8,7 +8,7 @@ This appendix provides an index of tokens and common forms with links to where t
 |---------------|-------|
 | `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed [constant items], [extern crates], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
-| `as`          | [extern crate alias], [use alias], [type cast expressions], [qualified paths] |
+| `as`          | [extern crate][items.extern-crate.as], [use declarations][items.use.forms.as], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
 | `await`       | [await expressions] |
 | `become`      | [reserved keyword] |
@@ -315,7 +315,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [enumerations]: items.enum
 [explicit associated type bounds]: paths.expr
 [explicit crate paths]: paths.qualifiers.global-root
-[extern crate alias]: items.extern-crate.as
 [extern crate]: items.extern-crate
 [extern crates]: items.extern-crate
 [extern function pointer types]: type.fn-pointer.qualifiers
@@ -448,7 +447,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [unsafe static items]: items.static.mut.safety
 [unsafe trait implementations]: items.impl.trait.safety
 [unsafe traits]: items.traits.safety
-[use alias]: items.use.forms.as
 [use bounds]: bound.use
 [use declarations]: items.use
 [use items]: items.use
