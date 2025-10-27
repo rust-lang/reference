@@ -149,7 +149,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | Syntax                                    | Usage |
 |-------------------------------------------|-------|
 | `ident!(…)`<br>`ident!{…}`<br>`ident![…]` | [macro invocations] |
-| `$ident`                                  | [macro fragment substitution] |
+| `$ident`                                  | [macro metavariable] |
 | `$ident:kind`                             | [macro matcher fragment specifier] |
 | `$(…)…`                                   | [macro repetition] |
 
@@ -354,10 +354,10 @@ This appendix provides an index of tokens and common forms with links to where t
 [lifetimes and loop labels]: lex.token.life
 [literal patterns]: patterns.literal
 [macro calls]: macro.invocation
-[macro fragment substitution]: macro.decl.meta.transcription
 [macro invocations]: macro.invocation
 [macro Kleene matcher]: macro.decl.repetition
 [macro matcher fragment specifier]: macro.decl.meta.specifier
+[macro metavariable]: macro.decl.meta
 [macro repetition]: macro.decl.repetition
 [macros by example]: macro.decl
 [macros]: macro.decl
