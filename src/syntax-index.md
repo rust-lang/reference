@@ -173,7 +173,6 @@ This appendix provides an index of tokens and common forms with links to where t
 | `Type::…`<br>`<Type as Trait>::ident` | [associated items] |
 | `<Type>::…`               | [qualified paths] which can be used for types without names such as `<&T>::…`, `<[T]>::…`, etc. |
 | `Trait::method(…)`<br>`Type::method(…)`<br>`<Type as Trait>::method(…)` | [disambiguated method calls] |
-| `Type<…>`                 | [generic arguments] (e.g. `Vec<u8>`) <!-- TODO: fix after generic args reorg --> |
 | `method::<…>(…)`<br>`path::<…>` | [generic arguments], aka turbofish |
 | `()`                      | [unit] |
 | `(expr)`                  | [parenthesized expressions] |
@@ -240,6 +239,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `impl Trait`                          | [impl trait types], [anonymous type parameters] |
 | `dyn Trait`                           | [trait object types] |
 | `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, aliases, traits, generics, etc.) |
+| `Type<…>`<br>`Trait<…>`               | [generic arguments] (e.g. `Vec<u8>`) |
 | `Trait<ident = Type>`                 | [associated type bindings] (e.g. `Iterator<Item = T>`) |
 | `Trait<ident: …>`                     | [associated type bounds] (e.g. `Iterator<Item: Send>`) |
 | `&Type`<br>`&mut Type`                | [reference types] |
