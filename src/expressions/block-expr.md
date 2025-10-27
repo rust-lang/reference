@@ -247,9 +247,9 @@ let a = unsafe { an_unsafe_fn() };
 ```
 
 r[expr.block.label]
-## Labelled block expressions
+## Labeled block expressions
 
-Labelled block expressions are documented in the [Loops and other breakable expressions] section.
+Labeled block expressions are documented in the [Loops and other breakable expressions] section.
 
 r[expr.block.attributes]
 ## Attributes on block expressions
@@ -301,4 +301,4 @@ fn is_unix_platform() -> bool {
 [tuple expressions]: tuple-expr.md
 [unsafe operations]: ../unsafety.md
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
-[Loops and other breakable expressions]: loop-expr.md#labelled-block-expressions
+[Loops and other breakable expressions]: expr.loop.block-labels

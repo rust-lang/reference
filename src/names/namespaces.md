@@ -137,7 +137,7 @@ It is still an error for a [`use` import] to shadow another macro, regardless of
 [Attribute macros]: ../procedural-macros.md#the-proc_macro_attribute-attribute
 [attributes]: ../attributes.md
 [bang-style macros]: ../macros.md
-[Block labels]: ../expressions/loop-expr.md#labelled-block-expressions
+[Block labels]: expr.loop.block-labels
 [boolean]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
 [closure parameters]: ../expressions/closure-expr.md

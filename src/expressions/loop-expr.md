@@ -18,16 +18,16 @@ Rust supports four loop expressions:
 *   A [`loop` expression](#infinite-loops) denotes an infinite loop.
 *   A [`while` expression](#predicate-loops) loops until a predicate is false.
 *   A [`for` expression](#iterator-loops) extracts values from an iterator, looping until the iterator is empty.
-*   A [labelled block expression](#labelled-block-expressions) runs a loop exactly once, but allows exiting the loop early with `break`.
+*   A [labeled block expression][expr.loop.block-labels] runs a loop exactly once, but allows exiting the loop early with `break`.
 
 r[expr.loop.break-label]
 All four types of loop support [`break` expressions](#break-expressions), and [labels](#loop-labels).
 
 r[expr.loop.continue-label]
-All except labelled block expressions support [`continue` expressions](#continue-expressions).
+All except labeled block expressions support [`continue` expressions](#continue-expressions).
 
 r[expr.loop.explicit-result]
-Only `loop` and labelled block expressions support [evaluation to non-trivial values](#break-and-loop-values).
+Only `loop` and labeled block expressions support [evaluation to non-trivial values](#break-and-loop-values).
 
 r[expr.loop.infinite]
 ## Infinite loops
@@ -309,7 +309,7 @@ r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
 r[expr.loop.block-labels]
-## Labelled block expressions
+## Labeled block expressions
 
 r[expr.loop.block-labels.syntax]
 ```grammar,expressions
@@ -317,13 +317,13 @@ LabelBlockExpression -> BlockExpression
 ```
 
 r[expr.loop.block-labels.intro]
-Labelled block expressions are exactly like block expressions, except that they allow using `break` expressions within the block.
+Labeled block expressions are exactly like block expressions, except that they allow using `break` expressions within the block.
 
 r[expr.loop.block-labels.break]
-Unlike loops, `break` expressions within a labelled block expression *must* have a label (i.e. the label is not optional).
+Unlike loops, `break` expressions within a labeled block expression *must* have a label (i.e. the label is not optional).
 
 r[expr.loop.block-labels.label-required]
-Similarly, labelled block expressions *must* begin with a label.
+Similarly, labeled block expressions *must* begin with a label.
 
 ```rust
 # fn do_thing() {}
