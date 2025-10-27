@@ -6,7 +6,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Keyword       | Usage |
 |---------------|-------|
-| `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed [constant items], [extern crates], [use declarations], [destructuring assignment] |
+| `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], unnamed [constant items], [extern crate], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate][items.extern-crate.as], [use declarations][items.use.forms.as], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
@@ -16,7 +16,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `break`       | [break expressions] |
 | `const`       | [const functions], [const items], [const generics], [const blocks], [raw borrow operator], [raw pointer type], [const assembly operands] |
 | `continue`    | [continue expressions] |
-| `crate`       | [extern crates], [visibility], [paths] |
+| `crate`       | [extern crate], [visibility], [paths] |
 | `do`          | [reserved keyword] |
 | `dyn`         | [trait objects] |
 | `else`        | [let statements], [if expressions] |
@@ -45,7 +45,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `ref`         | [identifier patterns], [struct patterns] |
 | `return`      | [return expressions] |
 | `safe`        | [external block functions], [external block statics] |
-| `self`        | [extern crates][items.extern-crate.self], [self parameters], [visibility], [`self` paths] |
+| `self`        | [extern crate][items.extern-crate.self], [self parameters], [visibility], [`self` paths] |
 | `Self`        | [`Self` type paths], [use bounds] |
 | `static`      | [static items], [`'static` lifetimes] |
 | `struct`      | [structs] |
@@ -316,7 +316,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [explicit associated type bounds]: paths.expr
 [explicit crate paths]: paths.qualifiers.global-root
 [extern crate]: items.extern-crate
-[extern crates]: items.extern-crate
 [extern function pointer types]: type.fn-pointer.qualifiers
 [extern function qualifier]: items.fn.extern
 [extern]: items.extern
