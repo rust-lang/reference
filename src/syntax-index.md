@@ -176,7 +176,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `method::<…>(…)`<br>`path::<…>` | [generic arguments], aka turbofish |
 | `()`                      | [unit] |
 | `(expr)`                  | [parenthesized expressions] |
-| `(expr,)`                 | [single-element tuple expression] |
+| `(expr,)`                 | [single-element tuple expressions] |
 | `(expr, …)`               | [tuple expressions] |
 | `expr(expr, …)`           | [call expressions] |
 | `expr.0`, `expr.1`, …     | [tuple indexing expressions] |
@@ -406,7 +406,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [rest patterns]: patterns.rest
 [return expressions]: expr.return
 [self parameters]: items.fn.params.self-pat
-[single-element tuple expression]: expr.tuple
+[single-element tuple expressions]: expr.tuple
 [sized]: bound.sized
 [slice patterns]: patterns.slice
 [slice types]: type.slice
