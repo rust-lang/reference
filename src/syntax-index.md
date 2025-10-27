@@ -104,7 +104,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `...`  | DotDotDot   | [variadic functions], [range patterns] |
 | `..=`  | DotDotEq    | [inclusive range expressions][expr.range], [range patterns] |
 | `,`    | Comma       | various separators |
-| `;`    | Semi        | terminator for various items and statements, [array types] |
+| `;`    | Semi        | terminator for various items and statements, [array expressions], [array types] |
 | `:`    | Colon       | various separators |
 | `::`   | PathSep     | [path separator][paths] |
 | `->`   | RArrow      | [function return type][functions], [closure return type][closures], [function pointer type] |
