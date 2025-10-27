@@ -56,7 +56,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `type`        | [type aliases] |
 | `typeof`      | [reserved keyword] |
 | `union`       | [union items] |
-| `unsafe`      | [unsafe attributes], [unsafe modules], [unsafe functions], [unsafe static items], [unsafe external blocks], [unsafe external functions], [unsafe external statics], [unsafe traits], [unsafe trait implementations] |
+| `unsafe`      | [unsafe attributes], [unsafe modules], [unsafe functions], [unsafe external blocks], [unsafe external functions], [unsafe external statics], [unsafe traits], [unsafe trait implementations] |
 | `unsized`     | [reserved keyword] |
 | `use`         | [use items], [use bounds] |
 | `virtual`     | [reserved keyword] |
@@ -443,7 +443,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [unsafe external statics]: items.extern.static.safety
 [unsafe functions]: unsafe.fn
 [unsafe modules]: items.mod.unsafe
-[unsafe static items]: items.static.mut.safety
 [unsafe trait implementations]: items.impl.trait.safety
 [unsafe traits]: items.traits.safety
 [use bounds]: bound.use
