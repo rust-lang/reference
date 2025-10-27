@@ -28,7 +28,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `for`         | [trait implementations], [iterator loops], [higher-ranked trait bounds] |
 | `gen`         | [reserved keyword] |
 | `if`          | [if expressions], [match guards] |
-| `impl`        | [inherent impls], [trait impls], [impl trait types] |
+| `impl`        | [inherent impls], [trait impls], [impl trait types], [anonymous type parameters] |
 | `in`          | [visibility], [iterator loops], [assembly operands] |
 | `let`         | [let statements], [`if let` patterns] |
 | `loop`        | [infinite loops] |
@@ -238,7 +238,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `(Type, …)`                           | [tuple types] |
 | `[Type, …]`                           | [slice types] |
 | `(Type)`                              | [parenthesized types] |
-| `impl Trait`                          | [impl trait types] |
+| `impl Trait`                          | [impl trait types], [anonymous type parameters] |
 | `dyn Trait`                           | [trait object types] |
 | `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, aliases, traits, generics, etc.) |
 | `&Type`<br>`&mut Type`                | [reference types] |
@@ -271,6 +271,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [`if let` patterns]: expr.if.let
 [`self` paths]: paths.qualifiers.mod-self
 [`Self` type paths]: paths.qualifiers.type-self
+[anonymous type parameters]: type.impl-trait.param
 [arith]: expr.arith-logic
 [array and slice indexing expressions]: expr.array.index
 [array expressions]: expr.array
@@ -337,7 +338,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [identifiers]: ident
 [if expressions]: expr.if
 [if let]: expr.if.let
-[impl trait types]: type.impl-trait
+[impl trait types]: type.impl-trait.return
 [implementations]: items.impl
 [inferred const]: items.generics.const.inferred
 [inferred type]: type.inferred
