@@ -710,7 +710,7 @@ For more detail, see the [formal specification].
 
 [`extern crate self`]: items.extern-crate.self
 [`macro_use` prelude]: names/preludes.md#macro_use-prelude
-[block labels]: expressions/loop-expr.md#labelled-block-expressions
+[block labels]: expr.loop.block-labels
 [delimiters]: tokens.md#delimiters
 [formal specification]: macro-ambiguity.md
 [Hygiene]: #hygiene

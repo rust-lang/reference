@@ -23,8 +23,10 @@ use-boolean-and = true
 
 [output.html.redirect]
 "/crates-and-source-files.html#preludes-and-no_std" = "names/preludes.html"
+"/expressions/block-expr.html#labelled-block-expressions" = "block-expr.html#labeled-block-expressions"
 "/expressions/enum-variant-expr.html" = "struct-expr.html"
 "/expressions/if-expr.html#if-let-expressions" = "if-expr.html#if-let-patterns"
+"/expressions/loop-expr.html#labelled-block-expressions" = "loop-expr.html#labeled-block-expressions"
 "/expressions/loop-expr.html#predicate-pattern-loops" = "loop-expr.html#while-let-patterns"
 "/expressions/operator-expr.html#slice-dst-pointer-to-pointer-cast" = "operator-expr.html#pointer-to-pointer-cast"
 "/expressions/operator-expr.html#the-question-mark-operator" = "operator-expr.html#the-try-propagation-expression"
