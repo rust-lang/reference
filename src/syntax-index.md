@@ -164,7 +164,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Expression                | Usage |
 |---------------------------|-------|
-| <code>\|…\| expr</code>   | [closures] |
+| <code>\|…\| expr</code><br><code>\|…\| -> Type { … }</code> | [closures] |
 | `ident::…`                | [paths] |
 | `::crate_name::…`         | [explicit crate paths] |
 | `crate::…`                | [crate-relative paths] |
