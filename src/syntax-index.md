@@ -226,7 +226,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Type                                  | Usage |
 |---------------------------------------|-------|
-| `bool`, `u8`, `f64`, `char`, `str`    | [primitive types] |
+| `bool`, `u8`, `f64`, `str`, …         | [primitive types] |
 | `for<…>`                              | [higher-ranked trait bounds] |
 | `T: U`                                | [trait bounds] |
 | `T: 'a`                               | [lifetime bounds] |
