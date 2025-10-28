@@ -146,12 +146,12 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Macros
 
-| Syntax                                    | Usage |
-|-------------------------------------------|-------|
-| `ident!(…)`<br>`ident!{…}`<br>`ident![…]` | [macro invocations] |
-| `$ident`                                  | [macro metavariable] |
-| `$ident:kind`                             | [macro matcher fragment specifier] |
-| `$(…)…`                                   | [macro repetition] |
+| Syntax                                     | Usage |
+|--------------------------------------------|-------|
+| `ident!(…)`<br>`ident! {…}`<br>`ident![…]` | [macro invocations] |
+| `$ident`                                   | [macro metavariable] |
+| `$ident:kind`                              | [macro matcher fragment specifier] |
+| `$(…)…`                                    | [macro repetition] |
 
 ## Attributes
 
@@ -182,7 +182,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `expr.0`, `expr.1`, …     | [tuple indexing expressions] |
 | `expr.ident`              | [field access expressions] |
 | `{…}`                     | [block expressions] |
-| `Type{…}`                 | [struct expressions] |
+| `Type {…}`                | [struct expressions] |
 | `Type(…)`                 | [tuple struct constructors] |
 | `[…]`                     | [array expressions] |
 | `[expr; len]`             | [repeat array expressions] |
@@ -261,7 +261,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `..`                              | [rest patterns] |
 | `a..`, `..b`, `a..b`, `a..=b`, `..=b` | [range patterns] |
 | `&pattern`<br>`&mut pattern`      | [reference patterns] |
-| `path{…}`                         | [struct patterns] |
+| `path {…}`                        | [struct patterns] |
 | `path(…)`                         | [tuple struct patterns] |
 | `(pattern, …)`                    | [tuple patterns] |
 | `(pattern)`                       | [grouped patterns] |
