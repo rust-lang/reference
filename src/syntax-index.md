@@ -100,7 +100,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `<=`   | Le          | [less than or equal to][comparison] |
 | `@`    | At          | [subpattern binding] |
 | `.`    | Dot         | [field access][field], [tuple index] |
-| `..`   | DotDot      | [range expressions][expr.range], [struct expressions], [rest patterns], [range patterns], [struct patterns] |
+| `..`   | DotDot      | [range expressions][expr.range], [struct expressions], [rest pattern], [range patterns], [struct patterns] |
 | `...`  | DotDotDot   | [variadic functions], [range patterns] |
 | `..=`  | DotDotEq    | [inclusive range expressions][expr.range], [range patterns] |
 | `,`    | Comma       | various separators |
@@ -258,7 +258,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `"foo"`, `'a'`, `123`, `2.4`, …   | [literal patterns] |
 | `ident`                           | [identifier patterns] |
 | `_`                               | [wildcard pattern] |
-| `..`                              | [rest patterns] |
+| `..`                              | [rest pattern] |
 | `a..`, `..b`, `a..b`, `a..=b`, `..=b` | [range patterns] |
 | `&pattern`<br>`&mut pattern`      | [reference patterns] |
 | `path {…}`                        | [struct patterns] |
@@ -403,7 +403,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [relaxed trait bounds]: bound.sized
 [repeat array expressions]: expr.array
 [reserved keyword]: lex.keywords.reserved
-[rest patterns]: patterns.rest
+[rest pattern]: patterns.rest
 [return expressions]: expr.return
 [self parameters]: items.fn.params.self-pat
 [single-element tuple expressions]: expr.tuple

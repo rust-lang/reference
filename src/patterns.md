@@ -93,7 +93,7 @@ Destructuring breaks up a value into its component pieces.
 The syntax used is almost the same as when creating such values.
 
 r[patterns.destructure.wildcard]
-In a pattern whose [scrutinee] expression has a `struct`, `enum` or `tuple` type, a [wildcard pattern](#wildcard-pattern) (`_`) stands in for a *single* data field, whereas an [et cetera](#grammar-StructPatternEtCetera) or [rest pattern](#rest-patterns) (`..`) stands in for *all* the remaining fields of a particular variant.
+In a pattern whose [scrutinee] expression has a `struct`, `enum` or `tuple` type, a [wildcard pattern](#wildcard-pattern) (`_`) stands in for a *single* data field, whereas an [et cetera](#grammar-StructPatternEtCetera) or [rest pattern][patterns.rest] (`..`) stands in for *all* the remaining fields of a particular variant.
 
 r[patterns.destructure.named-field-shorthand]
 When destructuring a data structure with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
@@ -421,7 +421,7 @@ r[patterns.wildcard.refutable]
 The wildcard pattern is always irrefutable.
 
 r[patterns.rest]
-## Rest patterns
+## Rest pattern
 
 r[patterns.rest.syntax]
 ```grammar,patterns
@@ -470,7 +470,8 @@ if let [.., penultimate, _] = slice {
 }
 
 # let tuple = (1, 2, 3, 4, 5);
-// Rest patterns may also be used in tuple and tuple struct patterns.
+// The rest pattern may also be used in tuple and tuple
+// struct patterns.
 match tuple {
     (1, .., y, z) => println!("y={} z={}", y, z),
     (.., 5) => println!("tail must be 5"),
@@ -974,7 +975,7 @@ r[patterns.slice.refutable-array]
 Slice patterns are irrefutable when matching an array as long as each element is irrefutable.
 
 r[patterns.slice.refutable-slice]
-When matching a slice, it is irrefutable only in the form with a single `..` [rest pattern](#rest-patterns) or [identifier pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
+When matching a slice, it is irrefutable only in the form with a single `..` [rest pattern][patterns.rest] or [identifier pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
 
 r[patterns.slice.restriction]
 Within a slice, a range pattern without both lower and upper bound must be enclosed in parentheses, as in `(a..)`, to clarify it is intended to match against a single slice element.

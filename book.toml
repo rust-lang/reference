@@ -35,6 +35,7 @@ use-boolean-and = true
 "/items/traits.html#object-safety" = "traits.html#dyn-compatibility"
 "/lifetime-elision.html#static-lifetime-elision" = "lifetime-elision.html#const-and-static-elision"
 "/macros-by-example.html#path-based-scope" = "macros-by-example.html#the-macro_export-attribute"
+"/patterns.html#rest-patterns" = "patterns.html#rest-pattern"
 "/procedural-macros.html#attribute-macros" = "procedural-macros.html#the-proc_macro_attribute-attribute"
 "/procedural-macros.html#derive-macros" = "procedural-macros.html#the-proc_macro_derive-attribute"
 "/procedural-macros.html#function-like-procedural-macros" = "procedural-macros.html#the-proc_macro-attribute"
