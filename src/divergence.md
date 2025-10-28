@@ -18,10 +18,13 @@ The following language constructs unconditonally produce a _diverging expression
 * [A `continue` expression](./expressions/loop-expr.md#r-expr.loop.continue.type)
 * [A `return` expression](./expressions/return-expr.md#r-expr.return.type)
 * [A `match` expression with no arms](./expressions/match-expr.md#r-expr.match.type.diverging.empty)
-* [A `block` expression that it itself is diverging.](../expressions/block-expr.md#r-expr.block.type.diverging)
+* [A `block` expression that it itself is diverging.](./expressions/block-expr.md#r-expr.block.type.diverging)
 
 r[divergence.diverging-expressions.conditional]
 In a control flow expression, if all arms diverge, then the entire expression also diverges.
+
+r[divergence.diverging-expressions.place-expressions]
+A place expression of the type [`!`](./types/never.md) is considering _diverging_ only if it is read from.
 
 r[divergence.fallback]
 ## Fallback
