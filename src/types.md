@@ -1,4 +1,3 @@
-{{#include types-redirect.html}}
 r[type]
 # Types
 
