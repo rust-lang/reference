@@ -238,7 +238,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `(Type)`                              | [parenthesized types] |
 | `impl Trait`                          | [impl trait types], [anonymous type parameters] |
 | `dyn Trait`                           | [trait object types] |
-| `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, aliases, traits, generics, etc.) |
+| `ident`<br>`ident::…`                 | [type paths] (can refer to structs, enums, unions, type aliases, traits, generics, etc.) |
 | `Type<…>`<br>`Trait<…>`               | [generic arguments] (e.g. `Vec<u8>`) |
 | `Trait<ident = Type>`                 | [associated type bindings] (e.g. `Iterator<Item = T>`) |
 | `Trait<ident: …>`                     | [associated type bounds] (e.g. `Iterator<Item: Send>`) |
