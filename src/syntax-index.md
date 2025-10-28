@@ -4,8 +4,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Keywords
 
-| Keyword       | Usage |
-|---------------|-------|
+| Keyword       | Use |
+|---------------|-----|
 | `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], [constant items], [extern crate], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
 | `as`          | [extern crate][items.extern-crate.as], [use declarations][items.use.forms.as], [type cast expressions], [qualified paths] |
@@ -66,8 +66,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Operators and punctuation
 
-| Symbol | Name        | Usage |
-|--------|-------------|-------|
+| Symbol | Name        | Use |
+|--------|-------------|-----|
 | `+`    | Plus        | [addition][arith], [trait bounds], [macro Kleene matcher] |
 | `-`    | Minus       | [subtraction][arith], [negation] |
 | `*`    | Star        | [multiplication][arith], [dereference], [raw pointers], [macro Kleene matcher], [glob imports] |
@@ -117,8 +117,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Comments
 
-| Comment  | Usage |
-|----------|-------|
+| Comment  | Use |
+|----------|-----|
 | `//`     | [line comment][comments] |
 | `//!`    | [inner line comment][comments] |
 | `///`    | [outer line doc comment][comments] |
@@ -128,8 +128,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Other tokens
 
-| Token        | Usage |
-|--------------|-------|
+| Token        | Use |
+|--------------|-----|
 | `ident`      | [identifiers] |
 | `r#ident`    | [raw identifiers] |
 | `'ident`     | [lifetimes and loop labels] |
@@ -146,8 +146,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Macros
 
-| Syntax                                     | Usage |
-|--------------------------------------------|-------|
+| Syntax                                     | Use |
+|--------------------------------------------|-----|
 | `ident!(…)`<br>`ident! {…}`<br>`ident![…]` | [macro invocations] |
 | `$ident`                                   | [macro metavariable] |
 | `$ident:kind`                              | [macro matcher fragment specifier] |
@@ -155,15 +155,15 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Attributes
 
-| Syntax     | Usage |
-|------------|-------|
+| Syntax     | Use |
+|------------|-----|
 | `#[meta]`  | [outer attribute] |
 | `#![meta]` | [inner attribute] |
 
 ## Expressions
 
-| Expression                | Usage |
-|---------------------------|-------|
+| Expression                | Use |
+|---------------------------|-----|
 | <code>\|…\| expr</code><br><code>\|…\| -> Type { … }</code> | [closures] |
 | `ident::…`                | [paths] |
 | `::crate_name::…`         | [explicit crate paths] |
@@ -204,8 +204,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 [Items] are the components of a crate.
 
-| Item                          | Usage |
-|-------------------------------|-------|
+| Item                          | Use |
+|-------------------------------|-----|
 | `mod ident;`<br>`mod ident {…}` | [modules] |
 | `use path;`                   | [use declarations] |
 | `fn ident(…) {…}`             | [functions] |
@@ -224,8 +224,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 [Type expressions] are used to refer to types.
 
-| Type                                  | Usage |
-|---------------------------------------|-------|
+| Type                                  | Use |
+|---------------------------------------|-----|
 | `bool`, `u8`, `f64`, `str`, …         | [primitive types] |
 | `for<…>`                              | [higher-ranked trait bounds] |
 | `T: TraitA + TraitB`                  | [trait bounds] |
@@ -253,8 +253,8 @@ This appendix provides an index of tokens and common forms with links to where t
 
 [Patterns] are used to match values.
 
-| Pattern                           | Usage |
-|-----------------------------------|-------|
+| Pattern                           | Use |
+|-----------------------------------|-----|
 | `"foo"`, `'a'`, `123`, `2.4`, …   | [literal patterns] |
 | `ident`                           | [identifier patterns] |
 | `_`                               | [wildcard pattern] |
