@@ -228,10 +228,10 @@ This appendix provides an index of tokens and common forms with links to where t
 |---------------------------------------|-------|
 | `bool`, `u8`, `f64`, `str`, …         | [primitive types] |
 | `for<…>`                              | [higher-ranked trait bounds] |
-| `T: U`                                | [trait bounds] |
-| `T: 'a`                               | [lifetime bounds] |
+| `T: TraitA + TraitB`                  | [trait bounds] |
+| `T: 'a + 'b`                          | [lifetime bounds] |
+| `T: TraitA + 'a`                      | [trait and lifetime bounds] |
 | `T: ?Sized`                           | [relaxed trait bounds] |
-| `'a + Trait`<br>`Trait + Trait`       | [compound type bounds] |
 | `[Type; len]`                         | [array types] |
 | `(Type, …)`                           | [tuple types] |
 | `[Type, …]`                           | [slice types] |
@@ -417,6 +417,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [structs]: items.struct
 [subpattern binding]: patterns.ident.scrutinized
 [super paths]: paths.qualifiers.super
+[trait and lifetime bounds]: bound
 [trait bounds]: bound
 [trait implementations]: items.impl.trait
 [trait impls]: items.impl.trait
