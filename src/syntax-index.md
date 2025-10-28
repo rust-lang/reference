@@ -202,7 +202,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 ## Items
 
-[Items] are declarations in a crate.
+[Items] are the components of a crate.
 
 | Item                          | Usage |
 |-------------------------------|-------|
