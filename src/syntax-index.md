@@ -234,7 +234,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `T: ?Sized`                           | [relaxed trait bounds] |
 | `[Type; len]`                         | [array types] |
 | `(Type, …)`                           | [tuple types] |
-| `[Type, …]`                           | [slice types] |
+| `[Type]`                              | [slice types] |
 | `(Type)`                              | [parenthesized types] |
 | `impl Trait`                          | [impl trait types], [anonymous type parameters] |
 | `dyn Trait`                           | [trait object types] |
