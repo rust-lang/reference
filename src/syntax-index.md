@@ -209,14 +209,14 @@ This appendix provides an index of tokens and common forms with links to where t
 | `mod ident;`<br>`mod ident {…}` | [modules] |
 | `use path;`                   | [use declarations] |
 | `fn ident(…) {…}`             | [functions] |
-| `type Type = Type`            | [type aliases] |
+| `type Type = Type;`           | [type aliases] |
 | `struct ident {…}`            | [structs] |
 | `enum ident {…}`              | [enumerations] |
 | `union ident {…}`             | [unions] |
 | `trait ident {…}`             | [traits] |
 | `impl Type {…}`<br>`impl Type for Trait {…}` | [implementations] |
-| `const ident = expr`          | [constant items] |
-| `static ident = expr`         | [static items] |
+| `const ident = expr;`         | [constant items] |
+| `static ident = expr;`        | [static items] |
 | `extern "C" {…}`              | [external blocks] |
 | `fn ident<…>(…) …`<br>`struct ident<…> {…}`<br>`enum ident<…> {…}`<br>`impl<…> Type<…> {…}` | [generic definitions] |
 
