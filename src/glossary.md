@@ -252,6 +252,12 @@ string slice type is `&str`, while the mutable string slice type is `&mut str`.
 
 Strings slices are always valid UTF-8.
 
+### Symbol
+
+A symbol is a name used to refer to code or data in an executable format (e.g. ELF or Macho).
+
+A `static` emits a data symbol, functions emit code symbols.
+
 ### Trait
 
 A trait is a language item that is used for describing the functionalities a type must provide.
