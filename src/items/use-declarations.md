@@ -396,9 +396,11 @@ r[items.use.ambiguities]
 > This section is incomplete.
 
 r[items.use.ambiguities.intro]
-Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
+Some situations are an error when there is an ambiguity as to which name a
+`use` declaration refers. This happens when there are two name candidates that
+do not resolve to the same entity where neither import is
+[permitted](names.resolution.expansion.imports.shadowing) to shadow the other.
 
-* except where shadowing is allowed
 r[names.resolution.early.imports.errors.ambiguity.globvsglob]
 * it is an error to name an item through ambiguous use declarations
     * two globs imports which both have an item matching that name where the items are different
@@ -408,6 +410,11 @@ r[names.resolution.early.imports.errors.ambiguity.globvsglob]
 r[items.use.ambiguities.glob]
 Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
 For example:
+
+TODO: move this section? It's documenting a situation that _isnt_ an ambiguity
+error. I've been working off of a pattern I think I saw in a few other
+locations, where we have specific error sections that document all of the
+reference relevant error cases associated with an some part of the language.
 
 ```rust
 mod foo {
