@@ -15,7 +15,7 @@ compile time.
 
 r[const-eval.const-expr.const-context]
 In [const contexts](#const-context), these are the only allowed
-expressions, and are always evaluated at compile time.
+expressions, and they are always evaluated at compile time.
 
 r[const-eval.const-expr.runtime-context]
 In other places, such as [let statements], constant expressions *may* be, but are not guaranteed to be, evaluated at compile time.
