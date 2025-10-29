@@ -116,7 +116,7 @@ They may create bindings for:
 * [Built-in types]
 * [Attributes]
 * [Derive macros]
-* [Macros by example]
+* [`macro_rules`]
 
 r[items.use.path.disallowed]
 They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
