@@ -59,6 +59,11 @@ This prevents an [inner attribute] at the start of a source file being removed.
 > [!NOTE]
 > The standard library [`include!`] macro applies byte order mark removal, CRLF normalization, and shebang removal to the file it reads. The [`include_str!`] and [`include_bytes!`] macros do not.
 
+r[input.frontmatter]
+## Frontmatter removal
+
+After some whitespace, [frontmatter] may next appear in the input.
+
 r[input.tokenization]
 ## Tokenization
 
@@ -69,4 +74,5 @@ The resulting sequence of characters is then converted into tokens as described 
 [comments]: comments.md
 [Crates and source files]: crates-and-source-files.md
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[frontmatter]: frontmatter.md
 [whitespace]: whitespace.md
