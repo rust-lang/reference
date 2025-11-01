@@ -282,6 +282,8 @@ for x in 1..100 {
 assert_eq!(last, 12);
 ```
 
+Thus, the `break` expression itself is diverging and has a type of [`!`](../types/never.md).
+
 r[expr.loop.break.label]
 A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression, but a [label](#loop-labels) can be used to specify which enclosing loop is affected. Example:
 
@@ -295,9 +297,6 @@ A `break` expression is normally associated with the innermost `loop`, `for` or 
 
 r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
-
-r[expr.loop.break.type]
-A `break` expression itself has a type of [`!`](../types/never.md).
 
 r[expr.loop.block-labels]
 ## Labeled block expressions
@@ -346,6 +345,8 @@ ContinueExpression -> `continue` LIFETIME_OR_LABEL?
 r[expr.loop.continue.intro]
 When `continue` is encountered, the current iteration of the associated loop body is immediately terminated, returning control to the loop *head*.
 
+Thus, the `continue` expression itself has a type of [`!`](../types/never.md).
+
 r[expr.loop.continue.while]
 In the case of a `while` loop, the head is the conditional operands controlling the loop.
 
@@ -357,9 +358,6 @@ Like `break`, `continue` is normally associated with the innermost enclosing loo
 
 r[expr.loop.continue.in-loop-only]
 A `continue` expression is only permitted in the body of a loop.
-
-r[expr.loop.continue.type]
-A `continue` expression itself has a type of [`!`](../types/never.md).
 
 r[expr.loop.break-value]
 ## `break` and loop values

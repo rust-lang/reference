@@ -70,6 +70,25 @@ let y = if 12 * 15 > 150 {
 assert_eq!(y, "Bigger");
 ```
 
+r[expr.if.diverging]
+An `if` expression diverges if either the condition expression diverges or if all arms diverge.
+
+```rust
+# #![ feature(never_type) ]
+// Diverges because the condition expression diverges
+let x: ! = if { loop {}; true } {
+    ()
+} else {
+    ()
+};
+
+let x: ! = if true {
+    loop {}
+} else {
+    loop {}
+};
+```
+
 r[expr.if.let]
 ## `if let` patterns
 
