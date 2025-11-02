@@ -333,25 +333,14 @@ r[destructors.scope.lifetime-extension]
 > [!NOTE]
 > The exact rules for temporary lifetime extension are subject to change. This is describing the current behavior only.
 
-r[destructors.scope.lifetime-extension.let]
-The temporary scopes for expressions in `let` statements are sometimes *extended* to the scope of the block containing the `let` statement. This is done when the usual temporary scope would be too small, based on certain syntactic rules. For example:
+r[destructors.scope.lifetime-extension.intro]
+The temporary scopes for expressions are sometimes *extended*. This is done when the usual temporary scope would be too small, based on certain syntactic rules. For example:
 
 ```rust
 let x = &mut 0;
 // Usually a temporary would be dropped by now, but the temporary for `0` lives
 // to the end of the block.
 println!("{}", x);
-```
-
-r[destructors.scope.lifetime-extension.static]
-Lifetime extension also applies to `static` and `const` items, where it makes temporaries live until the end of the program. For example:
-
-```rust
-const C: &Vec<i32> = &Vec::new();
-// Usually this would be a dangling reference as the `Vec` would only
-// exist inside the initializer expression of `C`, but instead the
-// borrow gets lifetime-extended so it effectively has `'static` lifetime.
-println!("{:?}", C);
 ```
 
 r[destructors.scope.lifetime-extension.sub-expressions]
@@ -398,7 +387,7 @@ An *extending pattern* is either:
 So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`, `&ref x` and `&(ref x,)` are not.
 
 r[destructors.scope.lifetime-extension.patterns.let]
-If the pattern in a `let` statement is an extending pattern then the temporary scope of the initializer expression is extended.
+If the pattern in a `let` statement is an extending pattern then the temporary scope of the initializer expression is extended to the scope of the block containing the `let` statement.
 
 ```rust
 # fn temp() {}
@@ -458,10 +447,18 @@ r[destructors.scope.lifetime-extension.exprs.parent]
 If a temporary scope is extended through the scope of an extending expression, it is extended through that scope's [parent][destructors.scope.nesting].
 
 r[destructors.scope.lifetime-extension.exprs.let]
-A temporary scope extended through a `let` statement scope is [extended] to the scope of the block containing the `let` statement ([destructors.scope.lifetime-extension.let]).
+A temporary scope extended through a `let` statement scope is [extended] to the scope of the block containing the `let` statement.
 
 r[destructors.scope.lifetime-extension.exprs.static]
-A temporary scope extended through a [static][static item] or [constant item] scope or a [const block][const block expression] scope is [extended] to the end of the program ([destructors.scope.lifetime-extension.static]).
+A temporary scope extended through a [static][static item] or [constant item] scope or a [const block][const block expression] scope is [extended] to the end of the program.
+
+```rust
+const C: &Vec<i32> = &Vec::new();
+// Usually this would be a dangling reference as the `Vec` would only
+// exist inside the initializer expression of `C`, but instead the
+// borrow gets lifetime-extended so it effectively has `'static` lifetime.
+println!("{:?}", C);
+```
 
 r[destructors.scope.lifetime-extension.exprs.other]
 A temporary scope extended through the scope of a non-extending expression is [extended] to that expression's [temporary scope].
