@@ -415,17 +415,22 @@ let &ref x = &*&temp(); // OK
 r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
-r[destructors.scope.lifetime-extension.exprs.extending]
-An *extending expression* is an expression which is one of the following:
+r[destructors.scope.lifetime-extension.exprs.borrows]
+The [temporary scope] of the operand of a [borrow] expression is the *borrow scope* of the operand expression, defined below.
 
-* The initializer expression of a `let` statement or the body expression of a [static][static item] or [constant item].
-* The operand of a [borrow] expression.
-* The [super operands] of a [super macro call] expression.
-* The operand(s) of an [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression.
-* The arguments to a [tuple struct] or [tuple enum variant] constructor expression.
-* The final expression of a [block expression] except for an [async block expression].
-* The final expression of an [`if`] expression's consequent, `else if`, or `else` block.
-* An arm expression of a [`match`] expression.
+r[destructors.scope.lifetime-extension.exprs.super-macros]
+The [scope][temporary scope] of each [super temporary] of a [super macro call] expression is the borrow scope of the super macro call expression.
+
+r[destructors.scope.lifetime-extension.exprs.extending]
+The borrow scope of an expression is defined in terms of *extending expressions* and their *extending parents*. An extending expression is an expression which is one of the following:
+
+* The operand of a [borrow] expression, the extending parent of which is the borrow expression.
+* The [super operands] of a [super macro call] expression, the extending parent of which is the macro call expression.
+* The operand(s) of an [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression, the extending parent of which is the array, cast, braced struct, or tuple expression.
+* The arguments to a [tuple struct] or [tuple enum variant] constructor expression, the extending parent of which is the constructor expression.
+* The final expression of a plain [block expression] or [`unsafe` block expression], the extending parent of which is the block expression.
+* The final expression of an [`if`] expression's consequent, `else if`, or `else` block, the extending parent of which is the `if` expression.
+* An arm expression of a [`match`] expression, the extending parent of which is the `match` expression.
 
 > [!NOTE]
 > The desugaring of a [destructuring assignment] makes its assigned value operand (the RHS) an extending expression within a newly-introduced block. For details, see [expr.assign.destructure.tmp-ext].
@@ -437,20 +442,32 @@ An *extending expression* is an expression which is one of the following:
 
 So the borrow expressions in `{ &mut 0 }`, `(&1, &mut 2)`, and `Some(&mut 3)` are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
-r[destructors.scope.lifetime-extension.exprs.borrows]
-The [temporary scope] of the operand of a [borrow] expression is *extended through* the scope of the borrow expression.
-
-r[destructors.scope.lifetime-extension.exprs.super-macros]
-The [scopes][temporary scopes] of the [super temporaries] of an extending [super macro call] expression are *extended through* the scope of the super macro call expression.
-
 r[destructors.scope.lifetime-extension.exprs.parent]
-If a temporary scope is extended through the scope of an extending expression, it is extended through that scope's [parent][destructors.scope.nesting].
+The borrow scope of an extending expression is the borrow scope of its extending parent.
 
 r[destructors.scope.lifetime-extension.exprs.let]
-A temporary scope extended through a `let` statement scope is [extended] to the scope of the block containing the `let` statement.
+The borrow scope of the initializer expression of a `let` statement is the scope of the block containing the `let` statement.
+
+> [!EXAMPLE]
+> In this example, the temporary value holding the result of `temp()` is extended to the end of the block in which `x` is declared:
+>
+> ```rust,edition2024
+> # fn temp() {}
+> let x = { &temp() };
+> println!("{x:?}");
+> ```
+>
+> `temp()` is the operand of a borrow expression, so its temporary scope is its borrow scope.
+> To determine its borrow scope, look outward:
+>
+> * Since borrow expressions' operands are extending, the borrow scope of `temp()` is the borrow scope of its extending parent, the borrow expression.
+> * `&temp()` is the final expression of a plain block. Since the final expressions of plain blocks are extending, the extended temporary scope of `&temp()` is the borrow scope of its extending parent, the block expression.
+> * `{ &temp() }` is the initializer expression of a `let` statement, so its borrow scope is the scope of the block containg that `let` statement.
+>
+> If not for temporary lifetime extension, the result of `temp()` would be dropped after evaluating the tail expression of the block `{ &temp() }` ([destructors.scope.temporary.enclosing]).
 
 r[destructors.scope.lifetime-extension.exprs.static]
-A temporary scope extended through a [static][static item] or [constant item] scope or a [const block][const block expression] scope is [extended] to the end of the program.
+The borrow scope of the body expression of a [static][static item] or [constant item], and of the final expression of a [const block expression], is the entire program. This prevents destructors from being run.
 
 ```rust
 const C: &Vec<i32> = &Vec::new();
@@ -461,7 +478,26 @@ println!("{:?}", C);
 ```
 
 r[destructors.scope.lifetime-extension.exprs.other]
-A temporary scope extended through the scope of a non-extending expression is [extended] to that expression's [temporary scope].
+The borrow scope of any other expression is its non-extended temporary scope, as defined by [destructors.scope.temporary.enclosing].
+
+> [!EXAMPLE]
+> In this example, the temporary value holding the result of `temp()` is extended to the end of the statement:
+>
+> ```rust,edition2024
+> # fn temp() {}
+> # fn use_temp(_: &()) {}
+> use_temp({ &temp() });
+> ```
+>
+> `temp()` is the operand of a borrow expression, so its temporary scope is its borrow scope.
+> To determine its borrow scope, look outward:
+>
+> * Since borrow expressions' operands are extending, the borrow scope of `temp()` is the borrow scope of its extending parent, the borrow expression.
+> * `&temp()` is the final expression of a plain block. Since the final expressions of plain blocks are extending, the borrow scope of `&temp()` is the borrow scope of its extending parent, the block expression.
+> * `{ &temp() }` is the argument of a call expression, which is not extending. Since no other cases apply, its borrow scope is its temporary scope.
+> * Per [destructors.scope.temporary.enclosing], the temporary scope of `{ &temp() }`, and thus the borrow scope of `temp()`, is the scope of the statement.
+>
+> If not for temporary lifetime extension, the result of `temp()` would be dropped after evaluating the tail expression of the block `{ &temp() }` ([destructors.scope.temporary.enclosing]).
 
 #### Examples
 
@@ -508,19 +544,6 @@ let x = format_args!("{:?}", temp()); // As above.
 //
 // All of the temporaries above are still live here.
 # assert_eq!(0, X.load(Relaxed));
-```
-
-```rust,edition2024
-# fn temp() {}
-# fn use_temp(_: &()) {}
-// The final expression of a block is extending. Since the block below
-// is not itself extending, the temporary is extended to the block
-// expression's temporary scope, ending at the semicolon.
-use_temp({ &temp() });
-// As above, the final expressions of `if`/`else` blocks are
-// extending, which extends the temporaries to the `if` expression's
-// temporary scope.
-use_temp(if true { &temp() } else { &temp() });
 ```
 
 Here are some examples where expressions don't have extended temporary scopes:
@@ -636,7 +659,6 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 
 [array expression]: expressions/array-expr.md#array-expressions
 [array repeat operands]: expr.array.repeat-operand
-[async block expression]: expr.block.async
 [block expression]: expressions/block-expr.md
 [borrow]: expr.operator.borrow
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
@@ -648,11 +670,11 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [struct expression]: expressions/struct-expr.md
 [super macro call]: expr.super-macros
 [super operands]: expr.super-macros
-[super temporaries]: expr.super-macros
+[super temporary]: expr.super-macros
 [temporary scope]: destructors.scope.temporary
-[temporary scopes]: destructors.scope.temporary
 [tuple expression]: expressions/tuple-expr.md#tuple-expressions
 [tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
+[`unsafe` block expression]: expr.block.unsafe
 
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-patterns
