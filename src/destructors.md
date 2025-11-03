@@ -346,6 +346,24 @@ println!("{}", x);
 r[destructors.scope.lifetime-extension.sub-expressions]
 If a [borrow], [dereference][dereference expression], [field][field expression], or [tuple indexing expression] has an extended temporary scope, then so does its operand. If an [indexing expression] has an extended temporary scope, then the indexed expression also has an extended temporary scope.
 
+```rust
+# use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
+# static X: AtomicU64 = AtomicU64::new(0);
+# struct PrintOnDrop(&'static str);
+# impl Drop for PrintOnDrop {
+#     fn drop(&mut self) {
+#         X.fetch_add(1, Relaxed);
+#         println!("{}", self.0);
+#     }
+# }
+let x = &(0, PrintOnDrop("tuple 1 dropped")).0;
+let ref y = (0, PrintOnDrop("tuple 2 dropped")).0;
+// Though only its first field is borrowed, the temporary for the entire tuple
+// lives to the end of the block in both cases.
+println!("{x}, {y}");
+# assert_eq!(0, X.load(Relaxed));
+```
+
 r[destructors.scope.lifetime-extension.patterns]
 #### Extending based on patterns
 
@@ -470,11 +488,18 @@ r[destructors.scope.lifetime-extension.exprs.static]
 The borrow scope of the body expression of a [static][static item] or [constant item], and of the final expression of a [const block expression], is the entire program. This prevents destructors from being run.
 
 ```rust
-const C: &Vec<i32> = &Vec::new();
-// Usually this would be a dangling reference as the `Vec` would only
-// exist inside the initializer expression of `C`, but instead the
-// borrow gets lifetime-extended so it effectively has `'static` lifetime.
+# #[derive(Debug)] struct PanicOnDrop;
+# impl Drop for PanicOnDrop { fn drop(&mut self) { panic!() } }
+# impl PanicOnDrop { const fn new() -> PanicOnDrop { PanicOnDrop } }
+const C: &PanicOnDrop = &PanicOnDrop::new();
+// Usually this would be a dangling reference as the result of
+// `PanicOnDrop::new()` would only exist inside the initializer expression of
+// `C`, but instead the borrow gets lifetime-extended so it effectively has
+// a `'static` lifetime and its destructor is never run.
 println!("{:?}", C);
+// `const` blocks may likewise extend temporaries to the end of the program:
+// the result of `PanicOnDrop::new()` is not dropped.
+println!("{:?}", const { &PanicOnDrop::new() });
 ```
 
 r[destructors.scope.lifetime-extension.exprs.other]
