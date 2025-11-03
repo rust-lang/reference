@@ -862,9 +862,9 @@ r[expr.assign.destructure.tmp-scopes]
 
 r[expr.assign.destructure.tmp-ext]
 > [!NOTE]
-> Due to the desugaring, the assigned value operand (the RHS) of a destructuring assignment is an [extending expression] within a newly-introduced block.
+> Due to the desugaring, the assigned value operand (the RHS) of a destructuring assignment is the initializer expression of a `let` statement within a newly-introduced block.
 >
-> Below, because the [temporary scope] is extended to the end of this introduced block, the assignment is allowed.
+> Below, because the [temporary scope] is [extended] to the end of this introduced block, the assignment is allowed.
 >
 > ```rust
 > # fn temp() {}
@@ -1051,7 +1051,7 @@ As with normal assignment expressions, compound assignment expressions always pr
 [dropping]: ../destructors.md
 [eval order test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
-[extending expression]: destructors.scope.lifetime-extension.exprs
+[extended]: destructors.scope.lifetime-extension.exprs
 [field-less enums]: ../items/enumerations.md#field-less-enum
 [grouped expression]: grouped-expr.md
 [literal expression]: literal-expr.md#integer-literal-expressions
