@@ -133,14 +133,29 @@ const _: U = unsafe { U { f: &mut S }}; // OK.
 // This is treated as a sequence of untyped bytes.
 ```
 
-Mutable references contained within a [mutable static] may be referenced in the final value of a constant.
+Mutable references contained within a mutable `static` may be referenced in the final value of a constant. A mutable `static` is a [`static mut`] item or a [`static`] item with an [interior mutable] type.
 
-```rust
+```rust,no_run
 # #![allow(static_mut_refs)]
 static mut S: &mut u8 = unsafe { static mut I: u8 = 0; &mut I };
 const _: &&mut u8 = unsafe { &S }; // OK.
 //        ^^^^^^^
 // This mutable reference comes from a `static mut`.
+```
+
+```rust,no_run
+# #![allow(static_mut_refs)]
+# use core::cell::UnsafeCell;
+struct PhantomCell { _m: UnsafeCell<()> }
+unsafe impl Sync for PhantomCell {}
+static S: (&mut u8, Option<PhantomCell>) = {
+    static mut I: u8 = 0;
+    (unsafe { &mut I }, None)
+};
+const _: &&mut u8 = &S.0;
+//        ^^^^^^^
+// This mutable reference comes from a `static` with an
+// interior mutable type.
 ```
 
 > [!NOTE]
@@ -251,17 +266,19 @@ fn unused_generic_function<T>() {
 }
 ```
 
+[`static mut`]: items.static.mut
+[`static`]: items.static
 [const_eval]: ../const_eval.md
 [associated constant]: ../items/associated-items.md#associated-constants
 [constant value]: ../const_eval.md#constant-expressions
 [external static]: items.extern.static
 [free]: ../glossary.md#free-item
+[interior mutable]: interior-mut
 [static lifetime elision]: ../lifetime-elision.md#const-and-static-elision
 [trait definition]: traits.md
 [underscore imports]: use-declarations.md#underscore-imports
 [`Copy`]: ../special-types-and-traits.md#copy
 [value namespace]: ../names/namespaces.md
-[mutable static]: items.static.mut
 [promoted]: destructors.scope.const-promotion
 [promotion]: destructors.scope.const-promotion
 [union type]: type.union
