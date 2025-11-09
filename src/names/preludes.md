@@ -79,11 +79,8 @@ alloc/test limitation.
 r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
-r[names.preludes.extern.no_std.intro] By default, the standard library is
-automatically included in the crate root module. The [`std`] crate is added to
-the root. Both [`core`] and [`std`] are added to the [extern prelude]. Standard
-library macros are imported via [use declarations] and are *not* part of the
-[`macro_use` prelude].
+r[names.preludes.extern.no_std.intro]
+By default, the standard library is automatically included in the crate root module. The [`std`] crate is added to the root. Both [`core`] and [`std`] are added to the [extern prelude]. Standard library macros are imported via [use declarations] and are *not* part of the [`macro_use` prelude].
 
 r[names.preludes.extern.no_std.allowed-positions]
 The *`no_std` [attribute]* may be applied at the crate level to prevent the
