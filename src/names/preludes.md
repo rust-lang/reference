@@ -81,7 +81,7 @@ r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-The *`no_std` [attribute][attributes]* is used to prevent the automatic linking of the [`std`] crate, deferring to [`core`] instead.
+The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, deferring to the [`core`] crate instead.
 
 > [!EXAMPLE]
 > <!-- ignore: test infrastructure can't handle no_std -->
