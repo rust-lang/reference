@@ -176,7 +176,7 @@ r[names.preludes.no_implicit_prelude.syntax]
 The `no_implicit_prelude` attribute uses the [MetaWord] syntax.
 
 r[names.preludes.no_implicit_prelude.allowed-positions]
-The `no_implicit_prelude` attribute may only be applied to the crate level or a module.
+The `no_implicit_prelude` attribute may only be applied to the crate or to a module.
 
 > [!NOTE]
 > `rustc` ignores use in other positions but lints against it. This may become an error in the future.
