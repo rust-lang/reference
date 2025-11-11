@@ -151,21 +151,51 @@ r[names.preludes.tool.intro]
 The tool prelude includes tool names for external tools in the [type
 namespace]. See the [tool attributes] section for more details.
 
+<!-- template:attributes -->
 r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
 r[names.preludes.no_implicit_prelude.intro]
-The *`no_implicit_prelude` [attribute]* may be applied at the crate level or
-on a module to indicate that it should not automatically bring the [standard
-library prelude], [extern prelude], or [tool prelude] into scope for that
-module or any of its descendants.
+The *`no_implicit_prelude` [attribute]* is used to prevent implicit preludes from being brought into scope.
+
+> [!EXAMPLE]
+> ```rust
+> // The attribute can be applied to the crate root to affect
+> // all modules.
+> #![no_implicit_prelude]
+>
+> // Or it can be applied to a module to only affect that module
+> // and its descendants.
+> #[no_implicit_prelude]
+> mod example {
+>     // ...
+> }
+> ```
+
+r[names.preludes.no_implicit_prelude.syntax]
+The `no_implicit_prelude` attribute uses the [MetaWord] syntax.
+
+r[names.preludes.no_implicit_prelude.allowed-positions]
+The `no_implicit_prelude` attribute may only be applied to the crate or to a module.
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+r[names.preludes.no_implicit_prelude.duplicates]
+The `no_implicit_prelude` attribute may be used any number of times on a form.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
+r[names.preludes.no_implicit_prelude.excluded-preludes]
+The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module and its descendants.
 
 r[names.preludes.no_implicit_prelude.lang]
-This attribute does not affect the [language prelude].
+The `no_implicit_prelude` attribute does not affect the [language prelude].
 
 r[names.preludes.no_implicit_prelude.edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, the `no_implicit_prelude` attribute does not affect the [`macro_use` prelude], and all macros exported from the standard library are still included in the `macro_use` prelude. Starting in the 2018 edition, it will remove the `macro_use` prelude.
+> In the 2015 edition, the `no_implicit_prelude` attribute does not affect the [`macro_use` prelude], and all macros exported from the standard library are still included in the `macro_use` prelude. Starting in the 2018 edition, the attribute does remove the `macro_use` prelude.
 
 [`extern crate`]: ../items/extern-crates.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
