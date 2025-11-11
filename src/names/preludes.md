@@ -110,10 +110,8 @@ The `no_std` attribute may be used any number of times on a form.
 r[names.preludes.extern.no_std.module]
 The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of the `std` prelude.
 
-r[names.preludes.extern.no_std.inject]
-By default, the [`std`] crate is injected into the [extern prelude], and all macros exported from `std` are added to the [`macro_use` prelude].
-
-If the `no_std` attribute is specified, then the [`core`] crate is used instead of the `std` crate, and similarly all macros exported from `core` are placed into the [`macro_use` prelude].
+r[names.preludes.extern.no_std.macro_use]
+By default, all macros exported from the `std` crate are added to the [`macro_use` prelude]. If the `no_std` attribute is specified, then all macros exported from the `core` crate are placed into the [`macro_use` prelude] instead.
 
 r[names.preludes.extern.no_std.edition2018]
 > [!EDITION-2018]
