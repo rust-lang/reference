@@ -81,7 +81,7 @@ r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, deferring to the [`core`] crate instead.
+The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, the [standard library prelude] to instead use the `core` prelude, and the [`macro_use` prelude] to instead use the macros exported from the `core` crate.
 
 > [!EXAMPLE]
 > <!-- ignore: test infrastructure can't handle no_std -->
@@ -183,7 +183,7 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [Machine-dependent integer types]: ../types/numeric.md#machine-dependent-integer-types
 [Macro namespace]: namespaces.md
 [name resolution]: name-resolution.md
-[Standard library prelude]: #standard-library-prelude
+[standard library prelude]: names.preludes.std
 [Textual types]: ../types/textual.md
 [tool attributes]: ../attributes.md#tool-attributes
 [Tool prelude]: #tool-prelude
