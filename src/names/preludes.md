@@ -76,35 +76,46 @@ See https://github.com/rust-lang/rust/issues/57288 for more about the
 alloc/test limitation.
 -->
 
+<!-- template:attributes -->
 r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-By default, the standard library is automatically included in the crate root
-module. The [`std`] crate is added to the root, along with an implicit
-[`macro_use` attribute] pulling in all macros exported from `std` into the
-[`macro_use` prelude]. Both [`core`] and [`std`] are added to the [extern
-prelude].
+The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, the [standard library prelude] to instead use the `core` prelude, and the [`macro_use` prelude] to instead use the macros exported from the `core` crate.
 
-r[names.preludes.extern.no_std.allowed-positions]
-The *`no_std` [attribute]* may be applied at the crate level to prevent the
-[`std`] crate from being automatically added into scope.
-
-It does three things:
-
-r[names.preludes.extern.no_std.extern]
-* Prevents `std` from being added to the [extern prelude](#extern-prelude).
-r[names.preludes.extern.no_std.module]
-* Affects which module is used to make up the [standard library prelude] (as described above).
-r[names.preludes.extern.no_std.core]
-* Injects the [`core`] crate into the crate root instead of [`std`], and pulls
-  in all macros exported from `core` in the [`macro_use` prelude].
+> [!EXAMPLE]
+> <!-- ignore: test infrastructure can't handle no_std -->
+> ```rust,ignore
+> #![no_std]
+> ```
 
 > [!NOTE]
-> Using the core prelude over the standard prelude is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
+> Using `no_std` is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
 > [!WARNING]
-> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
+> Using `no_std` does not prevent the standard library from being linked. It is still valid to write `extern crate std` in the crate or in one of its dependencies; this will cause the compiler to link the `std` crate into the program.
+
+r[names.preludes.extern.no_std.syntax]
+The `no_std` attribute uses the [MetaWord] syntax.
+
+r[names.preludes.extern.no_std.allowed-positions]
+The `no_std` attribute may only be applied to the crate root.
+
+r[names.preludes.extern.no_std.duplicates]
+The `no_std` attribute may be used any number of times on a form.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
+r[names.preludes.extern.no_std.module]
+The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of the `std` prelude.
+
+r[names.preludes.extern.no_std.macro_use]
+By default, all macros exported from the `std` crate are added to the [`macro_use` prelude]. If the `no_std` attribute is specified, then all macros exported from the `core` crate are placed into the [`macro_use` prelude] instead.
+
+r[names.preludes.extern.no_std.edition2018]
+> [!EDITION-2018]
+> Before the 2018 edition, `std` is injected into the crate root by default. If `no_std` is specified, `core` is injected instead. Starting with the 2018 edition, regardless of `no_std` being specified, neither is injected into the crate root.
 
 r[names.preludes.lang]
 ## Language prelude
@@ -160,7 +171,6 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
-[`no_std` attribute]: #the-no_std-attribute
 [attribute]: ../attributes.md
 [Boolean type]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
@@ -171,7 +181,7 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [Machine-dependent integer types]: ../types/numeric.md#machine-dependent-integer-types
 [Macro namespace]: namespaces.md
 [name resolution]: name-resolution.md
-[Standard library prelude]: #standard-library-prelude
+[standard library prelude]: names.preludes.std
 [Textual types]: ../types/textual.md
 [tool attributes]: ../attributes.md#tool-attributes
 [Tool prelude]: #tool-prelude
