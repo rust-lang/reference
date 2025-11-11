@@ -93,7 +93,7 @@ The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked
 > Using `no_std` is useful when either the crate is targeting a platform that does not support the standard library or is purposefully not using the capabilities of the standard library. Those capabilities are mainly dynamic memory allocation (e.g. `Box` and `Vec`) and file and network capabilities (e.g. `std::fs` and `std::io`).
 
 > [!WARNING]
-> Using `no_std` does not prevent the standard library from being linked in. It is still valid to put `extern crate std;` into the crate and dependencies can also link it in.
+> Using `no_std` does not prevent the standard library from being linked. It is still valid to write `extern crate std` in the crate or in one of its dependencies; this will cause the compiler to link the `std` crate into the program.
 
 r[names.preludes.extern.no_std.syntax]
 The `no_std` attribute uses the [MetaWord] syntax.
