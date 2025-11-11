@@ -108,16 +108,16 @@ The `no_std` attribute may be used any number of times on a form.
 > `rustc` lints against any use following the first.
 
 r[names.preludes.extern.no_std.module]
-The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of `std`.
+The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of the `std` prelude.
 
 r[names.preludes.extern.no_std.inject]
 By default, the [`std`] crate is injected into the [extern prelude], and all macros exported from `std` are added to the [`macro_use` prelude].
 
-If the `no_std` attribute is specified, then the [`core`] crate is used instead of `std`, and similarly all macros exported from `core` are placed into the [`macro_use` prelude].
+If the `no_std` attribute is specified, then the [`core`] crate is used instead of the `std` crate, and similarly all macros exported from `core` are placed into the [`macro_use` prelude].
 
 r[names.preludes.extern.no_std.edition2018]
 > [!EDITION-2018]
-> Before the 2018 edition, `std` is also injected into the crate root. `core` is injected instead of `std` if `no_std` is specified. Starting with the 2018 edition, these are not injected into the crate root.
+> Before the 2018 edition, `std` is injected into the crate root by default. If `no_std` is specified, `core` is injected instead. Starting with the 2018 edition, regardless of `no_std` being specified, neither is injected into the crate root.
 
 r[names.preludes.lang]
 ## Language prelude
