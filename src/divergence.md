@@ -4,7 +4,7 @@ r[divergence]
 r[divergence.intro]
 Divergence is the state where a particular section of code could never be encountered at runtime. Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`](./types/never.md), divergence can also propogate to the surrounding block.
 
-Any expression of type [`!`](./types/never.md) is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(panic!())`).
+Any expression of type [`!`](./types/never.md) is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
 
 r[divergence.fallback]
 ## Fallback
