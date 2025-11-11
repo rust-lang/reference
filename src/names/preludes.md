@@ -188,7 +188,7 @@ The `no_implicit_prelude` attribute may be used any number of times on a form.
 > `rustc` lints against any use following the first.
 
 r[names.preludes.no_implicit_prelude.excluded-preludes]
-The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module or any of its descendants.
+The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module and its descendants.
 
 r[names.preludes.no_implicit_prelude.lang]
 The `no_implicit_prelude` attribute does not affect the [language prelude].
