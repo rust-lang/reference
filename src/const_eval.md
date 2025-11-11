@@ -55,7 +55,7 @@ r[const-eval.const-expr.array]
 * [Array expressions].
 
 r[const-eval.const-expr.constructor]
-* [Struct] expressions.
+* [Struct expressions].
 
 r[const-eval.const-expr.block]
 * [Block expressions], including `unsafe` and `const` blocks.
@@ -332,7 +332,7 @@ The types of a const function's parameters and return type are restricted to tho
 [range expressions]:    expressions/range-expr.md
 [slice]:                types/slice.md
 [statics]:              items/static-items.md
-[struct]:               expressions/struct-expr.md
+[Struct expressions]:   expressions/struct-expr.md
 [temporary lifetime extension]: destructors.scope.lifetime-extension
 [tuple enum variant]:   items/enumerations.md
 [tuple expressions]:    expressions/tuple-expr.md
