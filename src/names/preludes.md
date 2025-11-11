@@ -160,10 +160,12 @@ The *`no_implicit_prelude` [attribute]* is used to prevent implicit preludes fro
 
 > [!EXAMPLE]
 > ```rust
-> // It can be applied to the crate root to apply to all modules.
+> // The attribute can be applied to the crate root to affect
+> // all modules.
 > #![no_implicit_prelude]
 >
-> // Or it can be applied to a module to only affect that module or any of its descendants.
+> // Or it can be applied to a module to only affect that module
+> // and its descendants.
 > #[no_implicit_prelude]
 > mod example {
 >     // ...
