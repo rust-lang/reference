@@ -98,16 +98,15 @@ r[expr.match.empty]
 If there are no match arms, then the `match` expression is diverging and the type is [`!`](../types/never.md).
 
 > [!EXAMPLE]
-```rust
-# fn make<T>() -> T { loop {} }
-enum Empty {}
-
-fn diverging_match_no_arms() -> ! {
-    let e: Empty = make();
-    let 
-    match e {}
-}
-```
+> ```rust
+> # fn make<T>() -> T { loop {} }
+> enum Empty {}
+>
+> fn diverging_match_no_arms() -> ! {
+>     let e: Empty = make();
+>     match e {}
+> }
+> ```
 
 
 r[expr.match.conditional]

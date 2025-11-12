@@ -66,6 +66,7 @@ r[expr.block.type.diverging]
 A block is itself considered to be [diverging](../divergence.md) if all reachable control flow paths contain a [diverging expression](../divergence.md), unless that expression is a [place expression](../expressions.md#r-expr.place-value.place-memory-location) that is not read from.
 
 ```rust,no_run
+# #![ feature(never_type) ]
 # fn make<T>() -> T { loop {} }
 fn no_control_flow() -> ! {
     // There are no conditional statements, so this entire block is diverging.
@@ -94,19 +95,15 @@ struct Foo {
     x: !,
 }
 
-fn diverging_place_read() -> () {
+fn diverging_place_read() -> ! {
     let foo = Foo { x: make() };
-    let _: ! = {
-        // A read of a place expression produces a diverging block
-        let _x = foo.x;
-    };
+    // A read of a place expression produces a diverging block
+    let _x = foo.x;
 }
 fn diverging_place_not_read() -> () {
     let foo = Foo { x: make() };
-    let _: () = {
-        // Asssignment to `_` means the place is not read
-        let _ = foo.x;
-    };
+    // Asssignment to `_` means the place is not read
+    let _ = foo.x;
 }
 ```
 
