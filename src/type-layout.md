@@ -573,8 +573,9 @@ guarantees.
 r[layout.repr.alignment.constraint-alignment]
 The alignment is specified as an integer parameter in the form of
 `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a
-power of two from 1 up to 2<sup>29</sup>. For `packed`, if no value is given,
-as in `#[repr(packed)]`, then the value is 1.
+power of two from 1 up to 2<sup>29</sup> or a target-specific limit. For COFF
+targets the limit is 8192. For `packed`, if no value is given, as in
+`#[repr(packed)]`, then the value is 1.
 
 r[layout.repr.alignment.align]
 For `align`, if the specified alignment is less than the alignment of the type
