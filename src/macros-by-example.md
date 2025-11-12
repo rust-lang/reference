@@ -326,6 +326,59 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+r[macro.decl.scope.textual.shadow.path-based]
+Textual scope name bindings for macros may shadow path-based scope bindings to
+macros.
+
+```rust
+macro_rules! m {
+    () => {
+        println!("m");
+    };
+}
+
+#[macro_export]
+macro_rules! m2 {
+    () => {
+        println!("m2");
+    };
+}
+
+use crate::m2 as m;
+
+m!(); // prints "m\n"
+```
+
+TODO: note that the opposite is not true, link to relevant name-res ambiguity error section
+
+r[macro.decl.scope.path-based]
+### Path-based scope
+
+r[macro.decl.scope.path-based.intro]
+By default, a macro has no path-based scope. Macros can gain path-based scope in two ways:
+
+* [Use declaration re-export]
+* [`#[macro_export]`](macros-by-example.html#the-macro_export-attribute)
+
+r[macro.decl.scope.path.reexport]
+Macros can be re-exported to give them path-based scope from a module other than the crate root.
+
+```rust
+mac::m!(); // OK: Path-based lookup finds m in the mac module.
+
+mod mac {
+    macro_rules! m {
+        () => {};
+    }
+    pub(crate) use m;
+}
+```
+
+r[macro.decl.scope.path-based.visibility]
+* macros have an implicit visibility of `pub(crate)`
+* `#[macro_export]` changes the implicit visibility to `pub`
+* macro definitions do not support direct visibility modifiers
+
 <!-- template:attributes -->
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
@@ -724,3 +777,4 @@ For more detail, see the [formal specification].
 [Repetitions]: #repetitions
 [token]: tokens.md
 [`$crate`]: macro.decl.hygiene.crate
+[Use declaration re-export]: items/use-declarations.html#use-visibility

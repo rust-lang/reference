@@ -116,6 +116,7 @@ They may create bindings for:
 * [Built-in types]
 * [Attributes]
 * [Derive macros]
+* [`macro_rules`]
 
 r[items.use.path.disallowed]
 They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
@@ -389,58 +390,9 @@ r[items.use.restrictions.variant]
   use TypeAlias::MyVariant; //~ ERROR
   ```
 
-r[items.use.ambiguities]
-## Ambiguities
-
-> [!NOTE]
-> This section is incomplete.
-
-r[items.use.ambiguities.intro]
-Some situations are an error when there is an ambiguity as to which name a `use` declaration refers. This happens when there are two name candidates that do not resolve to the same entity.
-
-r[items.use.ambiguities.glob]
-Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used.
-For example:
-
-```rust
-mod foo {
-    pub struct Qux;
-}
-
-mod bar {
-    pub struct Qux;
-}
-
-use foo::*;
-use bar::*; //~ OK, no name conflict.
-
-fn main() {
-    // This would be an error, due to the ambiguity.
-    //let x = Qux;
-}
-```
-
-Multiple glob imports are allowed to import the same name, and that name is allowed to be used, if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports. For example:
-
-```rust
-mod foo {
-    pub struct Qux;
-}
-
-mod bar {
-    pub use super::foo::Qux;
-}
-
-// These both import the same `Qux`. The visibility of `Qux`
-// is `pub` because that is the maximum visibility between
-// these two `use` declarations.
-pub use bar::*;
-use foo::*;
-
-fn main() {
-    let _: Qux = Qux;
-}
-```
+TODO mention ambiguities and link to name-res. Moved to name-res because
+ambiguities are fundamentally a product of the place of use, not the use
+declaration.
 
 [`extern crate`]: extern-crates.md
 [`macro_rules`]: ../macros-by-example.md
