@@ -76,11 +76,13 @@ An `if` expression diverges if either the condition expression diverges or if al
 ```rust,no_run
 fn diverging_condition() -> ! {
     // Diverges because the condition expression diverges
-    if { loop {}; true } {
+    if loop {} {
         ()
     } else {
         ()
-    }
+    };
+    // The semicolon above is important:
+    // The type of the `if` statement is `()`, despite being diverging.
 }
 
 fn diverging_arms() -> ! {

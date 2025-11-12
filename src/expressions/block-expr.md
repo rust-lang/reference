@@ -63,7 +63,7 @@ assert_eq!(5, five);
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
 r[expr.block.type.diverging]
-A block is itself considered to be [diverging](../divergence.md) if all reachable control flow paths contain a [diverging expression](../divergence.md#r-divergence.diverging-expressions), unless that expression is a [place expression](../expressions.md#r-expr.place-value.place-memory-location) that is not read from.
+A block is itself considered to be [diverging](../divergence.md) if all reachable control flow paths contain a [diverging expression](../divergence.md), unless that expression is a [place expression](../expressions.md#r-expr.place-value.place-memory-location) that is not read from.
 
 ```rust,no_run
 # fn make<T>() -> T { loop {} }

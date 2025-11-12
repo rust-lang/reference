@@ -50,7 +50,7 @@ r[items.fn.signature]
 Functions may declare a set of *input* [*variables*][variables] as parameters, through which the caller passes arguments into the function, and the *output* [*type*][type] of the value the function will return to its caller on completion.
 
 r[items.fn.implicit-return]
-If the output type is not explicitly stated, it is the [unit type].
+If the output type is not explicitly stated, it is the [unit type]. However, if the block expression is not [diverging](../divergence.md), then the output type is instead [`!`](../types/never.md).
 
 r[items.fn.fn-item-type]
 When referred to, a _function_ yields a first-class *value* of the corresponding zero-sized [*function item type*], which when called evaluates to a direct call to the function.
