@@ -12,7 +12,7 @@ r[expr.path.intro]
 A [path] used as an expression context denotes either a local variable or an item.
 
 r[expr.path.place]
-Path expressions that resolve to local or static variables are [place expressions], other paths are [value expressions].
+Path expressions that resolve to local or static variables are [place expressions]; other paths are [value expressions].
 
 r[expr.path.safety]
 Using a [`static mut`] variable requires an [`unsafe` block].
