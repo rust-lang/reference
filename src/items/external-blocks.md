@@ -124,7 +124,7 @@ r[items.extern.abi.c]
 * `unsafe extern "C"` --- The "C" ABI matches the default ABI chosen by the dominant C compiler for the target.
 
 r[items.extern.abi.system]
-* `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86_32 where it is equivalent to `"stdcall"`.
+* `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86_32 where it is equivalent to `"stdcall"` for non-variadic functions, and equivalent to `"C"` for variadic functions.
 
   > [!NOTE]
   > As the correct underlying ABI on Windows is target-specific, it's best to use `extern "system"` when attempting to link Windows API functions that don't use an explicitly defined ABI.
@@ -257,6 +257,7 @@ Variadic parameters can only be specified within `extern` blocks with the follow
 - `"C"`
 - `"cdecl"`
 - `"efiapi"`
+- `"system"`
 - `"sysv64"`
 - `"win64"`
 
