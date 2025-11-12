@@ -16,25 +16,25 @@ The lint attributes `allow`,
 to specify a list of lint names to change the lint level for the entity
 to which the attribute applies.
 
-For any lint check `C`:
+For any lint check `lint`:
 
 r[attributes.diagnostics.lint.allow]
-* `#[allow(C)]` overrides the check for `C` so that violations will go
+* `#[allow(lint)]` overrides the check for `lint` so that violations will go
    unreported.
 
 r[attributes.diagnostics.lint.expect]
-* `#[expect(C)]` indicates that lint `C` is expected to be emitted. The
-  attribute will suppress the emission of `C` or issue a warning, if the
+* `#[expect(lint)]` indicates that lint `lint` is expected to be emitted. The
+  attribute will suppress the emission of `lint` or issue a warning, if the
   expectation is unfulfilled.
 
 r[attributes.diagnostics.lint.warn]
-* `#[warn(C)]` warns about violations of `C` but continues compilation.
+* `#[warn(lint)]` warns about violations of `lint` but continues compilation.
 
 r[attributes.diagnostics.lint.deny]
-* `#[deny(C)]` signals an error after encountering a violation of `C`,
+* `#[deny(lint)]` signals an error after encountering a violation of `lint`,
 
 r[attributes.diagnostics.lint.forbid]
-* `#[forbid(C)]` is the same as `deny(C)`, but also forbids changing the lint
+* `#[forbid(lint)]` is the same as `deny(lint)`, but also forbids changing the lint
    level afterwards,
 
 > [!NOTE]
@@ -142,10 +142,10 @@ r[attributes.diagnostics.expect]
 ### The `#[expect]` attribute
 
 r[attributes.diagnostics.expect.intro]
-The `#[expect(C)]` attribute creates a lint expectation for lint `C`. The
-expectation will be fulfilled, if a `#[warn(C)]` attribute at the same location
+The `#[expect(lint)]` attribute creates a lint expectation for lint `lint`. The
+expectation will be fulfilled, if a `#[warn(lint)]` attribute at the same location
 would result in a lint emission. If the expectation is unfulfilled, because
-lint `C` would not be emitted, the `unfulfilled_lint_expectations` lint will
+lint `lint` would not be emitted, the `unfulfilled_lint_expectations` lint will
 be emitted at the attribute.
 
 ```rust
