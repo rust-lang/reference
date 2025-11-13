@@ -44,66 +44,52 @@ certain common cases:
   `trait A { type B: Copy; }` is equivalent to
   `trait A where Self::B: Copy { type B; }`.
 
-r[bound.satisfaction]
-Bounds on an item must be satisfied when using the item. When type checking and
-borrow checking a generic item, the bounds can be used to determine that a
-trait is implemented for a type. For example, given `Ty: Trait`
+r[bound.global]
 
-* In the body of a generic function, methods from `Trait` can be called on `Ty`
-  values. Likewise associated constants on the `Trait` can be used.
-* Associated types from `Trait` can be used.
-* Generic functions and types with a `T: Trait` bounds can be used with `Ty`
-  being used for `T`.
+Bounds which does not use the item's parameters or any higher-ranked lifetimes are considered global.
+
+Global bounds must be satisfiable without relying on any where clauses.
+
+r[bound.satisfaction]
+
+The bounds of an item must be satisfied when using that item.
+
+r[bound.satisfaction.impl]
+
+A trait bound can be satisfied by using an implementation of that trait. An implementation is applicable if
+its generic parameters can be instantiated so that its self type and trait arguments are equal to the trait bound
+and the where-bounds of the impl can be recursively satisfied.
+
+r[bound.satisfaction.bounds]
+
+While inside of a generic item, trait bounds can be satisfied by using the where-bounds of the current item as the item is able to assume that its bounds are satisfied. For this, the where-bound is then equated with the trait bound that needs to be satisfied.
+
+r[bound.satisfaction.candidate-preference]
+
+> This is purely descriptive. Candidate preference behavior may change in future releases and must not be relied upon for correctness or soundness.
+
+If there are multiple ways to satisfy a trait bound, some groups of candidate are preferred over others. In case a single group has multiple different candidates, the bound remains ambiguous. Candidate preference has the following order
+- builtin implementations of `Sized`
+- if there are any non-global where-bounds, all where-bounds
+- impls
+- global where-bounds
 
 ```rust
-# type Surface = i32;
-trait Shape {
-    fn draw(&self, surface: Surface);
-    fn name() -> &'static str;
+struct Container<T> {
+    inner: Vec<T>,
+}
+impl<T: Clone> for Container<T> {
+    fn clone(&self) -> Self {
+        Container { inner: self.inner.clone() }
+    }
 }
 
-fn draw_twice<T: Shape>(surface: Surface, sh: T) {
-    sh.draw(surface);           // Can call method because T: Shape
-    sh.draw(surface);
+fn is_clone<T: Clone>() {}
+fn generic_fn<T: Clone>() {
+    // `Container<T>: Clone` is satisfied via the impl above. This requires
+    // the nested trait bound `T: Clone` which is satisfied via the where-bound.
+    is_clone::<Container<T>>();
 }
-
-fn copy_and_draw_twice<T: Copy>(surface: Surface, sh: T) where T: Shape {
-    let shape_copy = sh;        // doesn't move sh because T: Copy
-    draw_twice(surface, sh);    // Can use generic function because T: Shape
-}
-
-struct Figure<S: Shape>(S, S);
-
-fn name_figure<U: Shape>(
-    figure: Figure<U>,          // Type Figure<U> is well-formed because U: Shape
-) {
-    println!(
-        "Figure of two {}",
-        U::name(),              // Can use associated function
-    );
-}
-```
-
-r[bound.trivial]
-Bounds that don't use the item's parameters or [higher-ranked lifetimes] are checked when the item is defined.
-It is an error for such a bound to be false.
-
-r[bound.special]
-[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type.
-It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice].
-It is an error to have `Sized` as a bound on a trait object or slice.
-
-```rust,compile_fail
-struct A<'a, T>
-where
-    i32: Default,           // Allowed, but not useful
-    i32: Iterator,          // Error: `i32` is not an iterator
-    &'a mut T: Copy,        // (at use) Error: the trait bound is not satisfied
-    [T]: Sized,             // (at use) Error: size cannot be known at compilation
-{
-    f: &'a T,
-}
-struct UsesA<'a, T>(A<'a, T>);
 ```
 
 r[bound.trait-object]
