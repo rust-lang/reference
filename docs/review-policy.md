@@ -1,5 +1,13 @@
 Team members are given permission to merge changes from other contributors in the <https://github.com/rust-lang/reference> repository. There are different guidelines for reviewing based on the kind of changes being made:
 
+## Review Principles
+
+Reviewers and authors should focus on a few key principles during the review process:
+
+* **Understandability**: Language within the reference should be understandable to most members of the project. Contributions should assumes that readers are familiar with the rest of the content of the reference, but wherever possible sections should facilitate that understanding by linking to related content that are needed to build an understanding.
+* **Defensibility**: When the lang-docs team merges a change to the reference they are agreeing to take responsibility for it going forward. Team members need to feel confident defending and explaining the correctness of content within the reference. Whenever possible, changes to the reference should back up any claims they make with concise examples verifying their correctness.
+* **Voice**: Authors are not expected to have specification writer competence when drafting new contributions to the reference. So long as claims are understandable and defensible, it is fine for PRs to be written in a casual tone or with the voice of the author instead of the voice of the reference. Team members are expected to bring editorial experience as part of their reviews and will edit the phrasing to fit the reference before merging if necessary.
+
 ## Policy changes
 
 - Significant changes to the policy of how the team operates, such as changes to this document, should have agreement of the team without any blocking objections.
