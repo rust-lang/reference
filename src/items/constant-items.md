@@ -90,7 +90,7 @@ const _: &mut u8 = unsafe { &mut S }; // ERROR.
 > // the program.
 > ```
 >
-> Here, the value `0` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.static]). Such temporaries cannot be mutably borrowed in constant expressions (see [const-eval.const-expr.borrows]).
+> Here, the value `0` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.exprs.static]). Such temporaries cannot be mutably borrowed in constant expressions (see [const-eval.const-expr.borrows]).
 >
 > To allow this, we'd have to decide whether each use of the constant creates a new `u8` value or whether each use shares the same lifetime-extended temporary. The latter choice, though closer to how `rustc` thinks about this today, would break the conceptual model that, in most cases, the constant initializer can be thought of as being inlined wherever the constant is used. Since we haven't decided, and due to the other problem mentioned, this is not allowed.
 
@@ -175,7 +175,7 @@ const _: &&mut u8 = unsafe { &S }; // OK.
 > const _: &AtomicU8 = &AtomicU8::new(0); // ERROR.
 > ```
 >
-> Here, the `AtomicU8` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.static]). Such temporaries with interior mutability cannot be borrowed in constant expressions (see [const-eval.const-expr.borrows]).
+> Here, the `AtomicU8` is a temporary whose scope is extended to the end of the program (see [destructors.scope.lifetime-extension.exprs.static]). Such temporaries with interior mutability cannot be borrowed in constant expressions (see [const-eval.const-expr.borrows]).
 >
 > To allow this, we'd have to decide whether each use of the constant creates a new `AtomicU8` or whether each use shares the same lifetime-extended temporary. The latter choice, though closer to how `rustc` thinks about this today, would break the conceptual model that, in most cases, the constant initializer can be thought of as being inlined wherever the constant is used. Since we haven't decided, this is not allowed.
 
