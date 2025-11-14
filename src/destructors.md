@@ -551,9 +551,6 @@ println!("{:?}", const { &PanicOnDrop::new() });
 r[destructors.scope.lifetime-extension.exprs.other]
 The extended scope of any other expression is its [temporary scope].
 
-> [!NOTE]
-> In this case, the expression is not extending, meaning it cannot be a borrow expression or a [super operand][super operands] to a [super macro call] expression, so its temporary scope is given by [destructors.scope.temporary.enclosing].
-
 > [!EXAMPLE]
 > In this example, the temporary value holding the result of `temp()` is extended to the end of the statement:
 >
@@ -572,6 +569,26 @@ The extended scope of any other expression is its [temporary scope].
 > * Per [destructors.scope.temporary.enclosing], the temporary scope of `{ &temp() }`, and thus the extended scope of `temp()`, is the scope of the statement.
 >
 > If not for temporary lifetime extension, the result of `temp()` would be dropped after evaluating the tail expression of the block `{ &temp() }` ([destructors.scope.temporary.enclosing]).
+
+> [!EXAMPLE]
+> In this example, the temporary value holding the result of `temp()` is extended to the end of the block:
+>
+> ```rust,edition2024
+> # fn temp() {}
+> let x = &*&temp();
+> # x;
+> ```
+>
+> `temp()` is the operand of a borrow expression, so its temporary scope is its extended scope.
+> To determine its extended scope, look outward:
+>
+> * Since borrow expressions' operands are extending, the extended scope of `temp()` is the extended scope of its extending parent, the borrow expression.
+> * `&temp()` is the operand of a [dereference expression], which is not extending, so its extended scope is its temporary scope.
+> * Per [destructors.scope.lifetime-extension.sub-expressions], the temporary scope of `&temp()` is the temporary scope of the dereference expression, `*&temp()`.
+> * `*&temp()` is the operand of a borrow expression, so its temporary scope is its extended scope. Since borrow expressions' operands are extending, this is the extended scope of `&*&temp()`.
+> * `&*&temp()` is the initializer of a `let` statement, so its extended scope, and thus the extended scope of `temp()`, is the scope of the block containing the `let` statement.
+>
+> If not for temporary lifetime extension, the result of `temp()` would be dropped at the end of the statement ([destructors.scope.temporary.enclosing]).
 
 #### Examples
 
