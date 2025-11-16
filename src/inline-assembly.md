@@ -292,11 +292,12 @@ core::arch::global_asm!(
 r[asm.attributes.starts-with-template]
 Syntactically there must be at least one template string before the first operand.
 
-```rust, ignore
-// This is rejected because `a = out(reg) x` does not parse as a template string.
+```rust,compile_fail
+// This is rejected because `a = out(reg) x` does not parse as a
+// template string.
 core::arch::asm!(
     #[cfg(false)]
-    a = out(reg) x, //~ ERROR expected token: `,`
+    a = out(reg) x, // ERROR.
     "",
 );
 ```
