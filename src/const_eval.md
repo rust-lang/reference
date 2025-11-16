@@ -203,7 +203,23 @@ r[const-eval.const-expr.borrows]
   > See [issue #143129](https://github.com/rust-lang/rust/issues/143129) for more details.
 
 r[const-eval.const-expr.deref]
-* The [dereference operator] except for raw pointers.
+* The [dereference operator].
+
+  ```rust,no_run
+  # use core::cell::UnsafeCell;
+  const _: u8 = unsafe {
+      let x: *mut u8 = &raw mut *&mut 0;
+      //                        ^^^^^^^
+      //             Dereference of mutable reference.
+      *x = 1; // Dereference of mutable pointer.
+      *(x as *const u8) // Dereference of constant pointer.
+  };
+  const _: u8 = unsafe {
+      let x = &UnsafeCell::new(0);
+      *x.get() = 1; // Mutation of interior mutable value.
+      *x.get()
+  };
+  ```
 
 r[const-eval.const-expr.group]
 
