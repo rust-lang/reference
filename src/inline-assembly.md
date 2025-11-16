@@ -276,7 +276,7 @@ r[asm.attributes]
 r[asm.attributes.supported-attributes]
 Only the [`cfg`] and [`cfg_attr`] attributes are accepted semantically on inline assembly template strings and operands. Other attributes are parsed, but rejected when the assembly macro is expanded.
 
-```rust,
+```rust
 # fn main() {}
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!(
