@@ -107,7 +107,7 @@ Attributes may be applied to many forms in the language:
 * [Function][functions], [closure] and [function pointer]
   parameters accept outer attributes. This includes attributes on variadic parameters
   denoted with `...` in function pointers and [external blocks][variadic functions].
-* [Inline assembly] template strings and operands accept outer attributes.
+* [Inline assembly] template strings and operands accept outer attributes. Only certain attributes are accepted semantically; for details, see [asm.attributes.supported-attributes].
 
 r[attributes.meta]
 ## Meta item attribute syntax
