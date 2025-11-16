@@ -289,6 +289,9 @@ core::arch::global_asm!(
 );
 ```
 
+> [!NOTE]
+> In `rustc`, the assembly macros implement handling of these attributes separately from the normal system that handles similar attributes in the language. This accounts for the limited kinds of attributes supported and may give rise to subtle differences in behavior.
+
 r[asm.attributes.starts-with-template]
 Syntactically there must be at least one template string before the first operand.
 
