@@ -203,7 +203,7 @@ r[const-eval.const-expr.borrows]
   > See [issue #143129](https://github.com/rust-lang/rust/issues/143129) for more details.
 
 r[const-eval.const-expr.deref]
-* The [dereference operator].
+* [Dereference expressions].
 
   ```rust,no_run
   # use core::cell::UnsafeCell;
@@ -320,8 +320,8 @@ The types of a const function's parameters and return type are restricted to tho
 [constant expressions]: #constant-expressions
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
-[dereference expression]: expressions/operator-expr.md#the-dereference-operator
-[dereference operator]: expressions/operator-expr.md#the-dereference-operator
+[dereference expression]: expr.deref
+[dereference expressions]: expr.deref
 [destructors]:          destructors.md
 [enum discriminants]:   items/enumerations.md#discriminants
 [expression statements]: statements.md#expression-statements
