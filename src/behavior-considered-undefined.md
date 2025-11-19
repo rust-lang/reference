@@ -223,6 +223,22 @@ r[undefined.validity.const-provenance]
 
   This implies that transmuting or otherwise reinterpreting a pointer (reference, raw pointer, or function pointer) into a non-pointer type (such as integers) is undefined behavior if the pointer had provenance.
 
+  > [!EXAMPLE]
+  > All of the following are UB:
+  > ```rust,compile_fail
+  > const REINTERPRET_PTR_AS_INT: usize = {
+  >     let ptr = &0;
+  >     unsafe { (&raw const ptr as *const usize).read() }
+  > };
+  >
+  > const PTR_BYTES_IN_WRONG_ORDER: &i32 = {
+  >     let mut ptr = &0;
+  >     let ptr_bytes = &raw mut ptr as *mut std::mem::MaybeUninit::<u8>;
+  >     unsafe { std::ptr::swap(ptr_bytes.add(1), ptr_bytes.add(2)) };
+  >     ptr
+  > };
+  > ```
+
 r[undefined.validity.undef]
 **Note:** Uninitialized memory is also implicitly invalid for any type that has
 a restricted set of valid values. In other words, the only cases in which
