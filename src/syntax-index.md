@@ -301,7 +301,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [closure expressions]: expr.closure
 [closures]: expr.closure
 [comparison]: expr.cmp
-[compound type bounds]: bound
 [compound]: expr.compound-assign
 [configuration predicates]: cfg
 [const assembly operands]: asm.operand-type.supported-operands.const
@@ -321,7 +320,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [extern crate]: items.extern-crate
 [extern function pointer types]: type.fn-pointer.qualifiers
 [extern function qualifier]: items.fn.extern
-[extern]: items.extern
 [external block functions]: items.extern.fn
 [external block statics]: items.extern.static
 [external blocks]: items.extern
@@ -349,7 +347,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [inherent impls]: items.impl.inherent
 [inner attribute]: attributes.inner
 [iterator loops]: expr.loop.for
-[keywords chapter]: lex.keywords
 [lazy-bool]: expr.bool-logic
 [let statements]: statement.let
 [lifetime bounds]: bound.lifetime
@@ -407,7 +404,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [return expressions]: expr.return
 [self parameters]: items.fn.params.self-pat
 [single-element tuple expressions]: expr.tuple
-[sized]: bound.sized
 [slice patterns]: patterns.slice
 [slice types]: type.slice
 [static items]: items.static
