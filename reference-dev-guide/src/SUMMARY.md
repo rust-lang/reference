@@ -20,6 +20,5 @@
     - [Wording]()
     - [Language and grammar]()
     - [Punctuation]()
-- [Reviewer guide]()
-    - [Review process flowchart]()
+- [Review policy](review-policy.md)
 - [Resources]()
