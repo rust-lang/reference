@@ -1,29 +1,36 @@
-Team members are given permission to merge changes from other contributors in the <https://github.com/rust-lang/reference> repository. There are different guidelines for reviewing based on the kind of changes being made:
+# Review policy
+
+Team members have permission to merge changes from other contributors in the <https://github.com/rust-lang/reference> repository. There are different guidelines for reviewing based on the kind of changes being made:
 
 ## Review principles
 
 Reviewers and authors should focus on a few key principles during the review process:
 
-* **Understandability**: Language within the Reference should be understandable to most members of the Project. Contributions should assumes that readers are familiar with the rest of the content of the Reference, but, wherever possible, sections should facilitate that understanding by linking to related content.
+* **Understandability**: Language within the Reference should be understandable to most members of the Project. Contributions should assume that readers are familiar with the rest of the content of the Reference, but, wherever possible, sections should facilitate that understanding by linking to related content.
 * **Defensibility**: When the lang-docs team merges a change to the Reference, they are agreeing to take responsibility for it going forward. Team members need to feel confident defending and explaining the correctness of content within the Reference. Whenever possible, changes to the Reference should back up any claims with concise examples to verify correctness.
-* **Voice**: Authors are not expected to have competence as a specification writer when drafting new contributions to the Reference. So long as claims are understandable and defensible, it is fine for PRs to be written in a casual tone or with the voice of the author instead of the voice of the Reference. Team members will bring editorial experience as part of their reviews and will revise the phrasing, organization, style, etc. to fit the Reference before merging if necessary.
+* **Voice**: Authors are not expected to have competence as a specification writer when drafting new contributions to the Reference. As long as claims are understandable and defensible, it is fine for PRs to be written in a casual tone or with the voice of the author instead of the voice of the Reference. Team members will bring editorial experience as part of their reviews and will revise the phrasing, organization, style, etc., to fit the Reference before merging if necessary.
 
 ## Policy changes
 
-- Significant changes to the policy of how the team operates, such as changes to this document, should have agreement of the team without any blocking objections.
-- Minor changes to something like the style enforcement can be made with the review of a team member, as long as there is high confidence that it is unlikely any team member would object (for example, codifying a guideline that is already in practice), and that the change can be easily reversed.
+Significant changes to the policy of how the team operates, such as changes to this document, should have the agreement of the team without any blocking objections.
+
+Minor changes to something like style enforcement can be made with the review from a team member, as long as there is high confidence that it is unlikely any team member would object (for example, codifying a guideline that is already in practice) and that the change can be easily reversed.
 
 ## Meaningful content addition or changes
 
-- When adding or changing content in the spec, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence that the changes are correct, and consider themselves well-versed enough in the topic to understand it, or the relevant experts are the author or have been heavily involved in the process. It is up to the reviewer to use their best judgement when to consult.
-- Content should always follow the guidelines from the [authoring guide].
+When adding or changing content in the spec, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence that the changes are correct and considers themselves well-versed enough in the topic to understand it, or if the relevant experts are the author or have been heavily involved in the process. It is up to the reviewer to use their best judgment on when to consult.
+
+Content should always follow the guidelines in this contributor guide.
 
 ## Minor content changes
-- Minor content changes, such as small cleanups or wording fixes, can be made with the review from a team member without further consultation.
+
+Minor content changes, such as small cleanups or wording fixes, can be made with the review from a team member without further consultation.
 
 ## Tooling changes
-- Minor changes to the tooling may be made with a review from a team member. This includes bug fixes, minor additions that are unlikely to have objections, and additions that have already been discussed.
-- Major changes, such as a change in how content is authored, or major changes to how the tooling works should be approved by the team without blocking objections.
+
+Minor changes to the tooling may be made with a review from a team member. This includes bug fixes, minor additions that are unlikely to have objections, and additions that have already been discussed.
+
+Major changes, such as a change in how content is authored or major changes to how the tooling works, should be approved by the team without blocking objections.
 
 ## Review process flowchart
 
@@ -47,9 +54,7 @@ Some PRs try to "sell" the language too much, or try to explain more (or less) t
 
 ### Is this well written? 
 
-Some PRs are right but are awkwardly worded or have typographical problems. If the changes are small, we'll just add commits to the branch to clean things up, then merge.
+Some PRs are correct but are awkwardly worded or have typographical problems. If the changes are small, we'll just add commits to the branch to clean things up, then merge.
 
 <!-- TODO -->
 This policy does not yet cover the process for getting final approval from the relevant teams.
-
-[authoring guide]: authoring.md
