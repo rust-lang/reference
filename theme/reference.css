@@ -261,7 +261,7 @@ dfn {
     padding-right: 0;
 }
 /* required to accommodate above, somehow... */
-#menu-bar {
+#mdbook-menu-bar {
     margin-left: 0;
 }
 
