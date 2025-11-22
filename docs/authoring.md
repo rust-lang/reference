@@ -223,10 +223,6 @@ r[foo.bar.edition2021]
 > Describe what changed in 2021.
 ```
 
-## Grammar
-
-See [Grammar](grammar.md) for details on how to write grammar rules.
-
 ## Attributes
 
 See the [attribute template](attribute-template.md) for how attributes should be formatted.
