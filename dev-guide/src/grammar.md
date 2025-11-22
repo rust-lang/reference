@@ -1,6 +1,6 @@
-# Grammar
+# Rust grammar
 
-The Reference grammar is written in markdown code blocks using a modified BNF-like syntax (with a blend of regex and other arbitrary things). The `mdbook-spec` extension parses these rules and converts them to a renderable format, including railroad diagrams.
+The Reference grammar is written in markdown code blocks using a modified BNF-like syntax (with a blend of regex and other arbitrary things). The [`mdbook-spec`] extension parses these rules and converts them to a renderable format, including railroad diagrams.
 
 The code block should have a lang string with the word "grammar", a comma, and the category of the grammar, like this:
 
@@ -14,7 +14,7 @@ The category is used to group similar productions on the grammar summary page in
 
 ## Grammar syntax
 
-The syntax for the grammar itself is pretty close to what is described in the [Notation chapter](../src/notation.md), though there are some rendering differences.
+The syntax for the grammar itself is pretty close to what is described in the [Notation chapter], though there are some rendering differences.
 
 A "root" production, marked with `@root`, is one that is not used in any other production.
 
@@ -123,6 +123,9 @@ The general format is a series of productions separated by blank lines. The expr
 
 ## Automatic linking
 
-The plugin automatically adds markdown link definitions for all the production names on every page. If you want to link directly to a production name, all you need to do is surround it in square brackets, like `[ArrayExpression]`.
+The [`mdbook-spec`] plugin automatically adds markdown link definitions for all the production names on every page. If you want to link directly to a production name, all you need to do is surround it in square brackets, like `[ArrayExpression]`.
 
 In some cases there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. You can also do that if you just feel like being more explicit.
+
+[`mdbook-spec`]: tooling/mdbook-spec.md
+[Notation chapter]: https://doc.rust-lang.org/nightly/reference/notation.html
