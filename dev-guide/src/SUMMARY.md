@@ -4,7 +4,7 @@
 - [Contribution process]()
 - [Publishing process]()
 - [Reference tooling]()
-    - [Building the Reference]()
+    - [Building the Reference](tooling/building.md)
     - [mdbook-spec]()
 - [Tests]()
 - [Formatting]()
