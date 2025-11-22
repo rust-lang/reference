@@ -15,7 +15,7 @@
 - [Examples]()
 - [Links]()
 - [Rust grammar](grammar.md)
-- [Attributes]()
+- [Attributes](attributes.md)
 - [Style guide]()
     - [Wording]()
     - [Language and grammar]()
