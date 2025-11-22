@@ -76,9 +76,9 @@ This appendix provides an index of tokens and common forms with links to where t
 | `^`    | Caret       | [bitwise and logical XOR][arith] |
 | `!`    | Not         | [bitwise and logical NOT][negation], [macro calls], [inner attributes][attributes], [never type], [negative impls] |
 | `&`    | And         | [bitwise and logical AND][arith], [borrow], [references], [reference patterns] |
-| <code>\|</code> | Or | [bitwise and logical OR][arith], [closures], [or patterns], [if let], [while let] |
+| `\|`   | Or | [bitwise and logical OR][arith], [closures], [or patterns], [if let], [while let] |
 | `&&`   | AndAnd      | [lazy AND][lazy-bool], [borrow], [references], [reference patterns] |
-| <code>\|\|</code> | OrOr | [lazy OR][lazy-bool], [closures] |
+| `\|\|` | OrOr | [lazy OR][lazy-bool], [closures] |
 | `<<`   | Shl         | [shift left][arith], [nested generics][generics] |
 | `>>`   | Shr         | [shift right][arith], [nested generics][generics] |
 | `+=`   | PlusEq      | [addition assignment][compound] |
@@ -88,7 +88,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `%=`   | PercentEq   | [remainder assignment][compound] |
 | `^=`   | CaretEq     | [bitwise XOR assignment][compound] |
 | `&=`   | AndEq       | [bitwise AND assignment][compound] |
-| <code>\|=</code> | OrEq | [bitwise OR assignment][compound] |
+| `\|=`  | OrEq | [bitwise OR assignment][compound] |
 | `<<=`  | ShlEq       | [shift left assignment][compound] |
 | `>>=`  | ShrEq       | [shift right assignment][compound], [nested generics][generics] |
 | `=`    | Eq          | [assignment], [let statements], [attributes], various type definitions |
@@ -164,7 +164,7 @@ This appendix provides an index of tokens and common forms with links to where t
 
 | Expression                | Use |
 |---------------------------|-----|
-| <code>\|…\| expr</code><br><code>\|…\| -> Type { … }</code> | [closures] |
+| `\|…\| expr`<br>`\|…\| -> Type { … }` | [closures] |
 | `ident::…`                | [paths] |
 | `::crate_name::…`         | [explicit crate paths] |
 | `crate::…`                | [crate-relative paths] |

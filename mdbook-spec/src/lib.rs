@@ -2,10 +2,10 @@
 
 use crate::rules::Rules;
 use anyhow::{Context, Result, bail};
-use mdbook::BookItem;
-use mdbook::book::{Book, Chapter};
-use mdbook::errors::Error;
-use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
+use mdbook_preprocessor::book::BookItem;
+use mdbook_preprocessor::book::{Book, Chapter};
+use mdbook_preprocessor::errors::Error;
+use mdbook_preprocessor::{Preprocessor, PreprocessorContext};
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
@@ -26,17 +26,17 @@ static MD_LINK_REFERENCE_DEFINITION: Lazy<Regex> =
 
 pub fn handle_preprocessing() -> Result<(), Error> {
     let pre = Spec::new(None)?;
-    let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
+    let (ctx, book) = mdbook_preprocessor::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
-    let version_req = VersionReq::parse(mdbook::MDBOOK_VERSION)?;
+    let version_req = VersionReq::parse(mdbook_preprocessor::MDBOOK_VERSION)?;
 
     if !version_req.matches(&book_version) {
         eprintln!(
             "warning: The {} plugin was built against version {} of mdbook, \
              but we're being called from version {}",
             pre.name(),
-            mdbook::MDBOOK_VERSION,
+            mdbook_preprocessor::MDBOOK_VERSION,
             ctx.mdbook_version
         );
     }

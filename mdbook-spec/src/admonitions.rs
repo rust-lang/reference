@@ -10,7 +10,7 @@
 //! 4. Update `docs/authoring.md` to show an example of your new admonition.
 
 use crate::{Diagnostics, warn_or_err};
-use mdbook::book::Chapter;
+use mdbook_preprocessor::book::Chapter;
 use regex::{Captures, Regex};
 use std::sync::LazyLock;
 
