@@ -1,4 +1,4 @@
-# Attribute template
+# Attributes
 
 Attributes should use the following template. Examples are given for phrasing you *should* use, but you should deviate if the attribute doesn't fit any of the examples or if they get in the way of clarity.
 
