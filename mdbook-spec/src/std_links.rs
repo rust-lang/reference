@@ -2,10 +2,9 @@
 
 use crate::{Diagnostics, bug, warn_or_err};
 use anyhow::{Result, bail};
-use mdbook::BookItem;
-use mdbook::book::{Book, Chapter};
+use mdbook::book::{Book, BookItem, Chapter};
+use mdbook_markdown::pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
 use once_cell::sync::Lazy;
-use pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::Write as _;
@@ -171,7 +170,10 @@ fn collect_markdown_links<'a>(chapter: &'a Chapter, diag: &mut Diagnostics) -> V
                 id: _,
             }) => {
                 // Only collect links that are for the standard library.
-                if matches!(link_type, LinkType::Autolink | LinkType::Email) {
+                if matches!(
+                    link_type,
+                    LinkType::Autolink | LinkType::Email | LinkType::WikiLink { .. }
+                ) {
                     continue;
                 }
                 if dest_url.starts_with("http")
@@ -240,7 +242,7 @@ fn run_rustdoc(
                     // These should only happen due to broken link replacements.
                     bug!("unexpected link type unknown {link:?}");
                 }
-                LinkType::Autolink | LinkType::Email => {
+                LinkType::Autolink | LinkType::Email | LinkType::WikiLink { .. } => {
                     bug!("link type should have been filtered {link:?}");
                 }
             }

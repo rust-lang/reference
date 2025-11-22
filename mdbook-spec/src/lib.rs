@@ -2,10 +2,9 @@
 
 use crate::rules::Rules;
 use anyhow::{Context, Result, bail};
-use mdbook::BookItem;
-use mdbook::book::{Book, Chapter};
+use mdbook::book::{Book, BookItem, Chapter};
 use mdbook::errors::Error;
-use mdbook::preprocess::{CmdPreprocessor, Preprocessor, PreprocessorContext};
+use mdbook::{Preprocessor, PreprocessorContext};
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
@@ -26,7 +25,7 @@ static MD_LINK_REFERENCE_DEFINITION: Lazy<Regex> =
 
 pub fn handle_preprocessing() -> Result<(), Error> {
     let pre = Spec::new(None)?;
-    let (ctx, book) = CmdPreprocessor::parse_input(io::stdin())?;
+    let (ctx, book) = mdbook::parse_input(io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
     let version_req = VersionReq::parse(mdbook::MDBOOK_VERSION)?;
