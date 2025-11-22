@@ -222,7 +222,3 @@ r[foo.bar.edition2021]
 > [!EDITION-2021]
 > Describe what changed in 2021.
 ```
-
-## Attributes
-
-See the [attribute template](attribute-template.md) for how attributes should be formatted.
