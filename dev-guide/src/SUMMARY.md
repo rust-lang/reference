@@ -14,7 +14,7 @@
     - [rustc test annotations]()
 - [Examples]()
 - [Links]()
-- [Rust grammar]()
+- [Rust grammar](grammar.md)
 - [Attributes]()
 - [Style guide]()
     - [Wording]()
