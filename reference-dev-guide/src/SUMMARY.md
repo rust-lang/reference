@@ -2,7 +2,7 @@
 
 - [Introduction]()
 - [Contribution process]()
-- [Publishing process]()
+- [Publishing process](publishing.md)
 - [Reference tooling]()
     - [Building the Reference](tooling/building.md)
     - [mdbook-spec]()
