@@ -4,6 +4,20 @@ This chapter explains how links should be handled by the Reference. Several of t
 
 See also the [linkchecker tests](tests.md#linkcheck) for testing links.
 
+## Rule links
+
+[Rules](rules/index.md) can be linked to by their ID using Markdown, with the destination set to the rule ID. Automatic link references allow any rule to be referred to from any page in the book.
+
+```markdown
+Direct label link: [names.preludes.lang]
+
+Destination label link (custom link text): [language prelude][names.preludes.lang]
+
+Definition link: [namespace kinds]
+
+[namespace kinds]: names.namespaces.kinds
+```
+
 ## Standard library links
 
 You should link to the standard library without specifying a URL in a fashion similar to [rustdoc intra-doc links][intra]. Some examples:
@@ -51,3 +65,33 @@ When rendering the Reference locally, by default it uses relative links to confo
 
 [intra]: https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html
 [rel]: tooling/building.md#spec_relative
+
+## Grammar links
+
+Link definitions are automatically generated for all grammar production names. See [grammar automatic linking](grammar.md#automatic-linking) for more.
+
+```markdown
+This attribute uses the [MetaWord] syntax.
+
+Explicit grammar links can have the `grammar-` prefix like [Type][grammar-Type].
+```
+
+## Outside book links
+
+Links to other books published with the Reference should be relative links pointing to the corresponding book. This allows the links to point to the correct version, to work with the offline docs, and to be checked by the linkchecker. For example:
+
+```markdown
+See [`-C panic`].
+
+[`-C panic`]: ../rustc/codegen-options/index.html#panic
+```
+
+## Internal links
+
+When possible, internal links should use [rule links](#rule-links) or [grammar links](#grammar-links). Otherwise, links should be relative to the file path and use the `.md` extension.
+
+```markdown
+- Rule link: [language prelude][names.preludes.lang]
+- Grammar link: [MetaWord]
+- Internal link: [Modules](items/modules.md#attributes-on-modules)
+```
