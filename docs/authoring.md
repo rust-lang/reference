@@ -8,10 +8,8 @@ This document serves as a guide for editors and reviewers. Some conventions and 
 
 Idioms and styling:
 
-* Use American English spelling.
 * Use Oxford commas.
 * Avoid slashes for alternatives ("program/binary"); use conjunctions or rewrite it ("program or binary").
-* Avoid qualifying something as "in Rust"; the entire reference is about Rust.
 
 ## Content guidelines
 
