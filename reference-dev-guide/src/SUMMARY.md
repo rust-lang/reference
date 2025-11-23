@@ -9,7 +9,7 @@
 - [Tests]()
 - [Formatting](formatting/index.md)
     - [Markdown](formatting/markdown.md)
-    - [Admonitions]()
+    - [Admonitions](formatting/admonitions.md)
 - [Language rules]()
     - [rustc test annotations]()
 - [Examples]()
