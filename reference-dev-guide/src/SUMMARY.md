@@ -8,7 +8,7 @@
     - [mdbook-spec](tooling/mdbook-spec.md)
 - [Tests]()
 - [Formatting](formatting/index.md)
-    - [Markdown]()
+    - [Markdown](formatting/markdown.md)
     - [Admonitions]()
 - [Language rules]()
     - [rustc test annotations]()
