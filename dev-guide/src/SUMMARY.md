@@ -16,7 +16,7 @@
 - [Links](links.md)
 - [Rust grammar](grammar.md)
 - [Attributes](attributes.md)
-- [Style guide]()
+- [Style guide](style/index.md)
     - [Wording]()
     - [Language and grammar]()
     - [Punctuation]()
