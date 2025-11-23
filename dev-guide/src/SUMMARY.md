@@ -12,7 +12,7 @@
     - [Admonitions](formatting/admonitions.md)
 - [Language rules]()
     - [rustc test annotations]()
-- [Examples]()
+- [Examples](examples.md)
 - [Links]()
 - [Rust grammar](grammar.md)
 - [Attributes](attributes.md)
