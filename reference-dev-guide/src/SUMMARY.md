@@ -6,7 +6,7 @@
 - [Reference tooling]()
     - [Building the Reference](tooling/building.md)
     - [mdbook-spec](tooling/mdbook-spec.md)
-- [Tests]()
+- [Tests](tests.md)
 - [Formatting](formatting/index.md)
     - [Markdown](formatting/markdown.md)
     - [Admonitions](formatting/admonitions.md)
