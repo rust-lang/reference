@@ -4,14 +4,6 @@ This document serves as a guide for editors and reviewers. Some conventions and 
 
 [introduction]: ../src/introduction.md
 
-### Linkcheck
-
-To verify that links are not broken, run `cargo xtask linkcheck`.
-
-### Running all tests
-
-As a last step before opening a PR, it is recommended to run `cargo xtask test-all`. This will go through and run most of the tests that are required for CI to pass. See `xtask/src/main.rs` for what all this does.
-
 ## Style
 
 Idioms and styling:
