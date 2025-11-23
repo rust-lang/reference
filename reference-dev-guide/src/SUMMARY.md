@@ -5,7 +5,7 @@
 - [Publishing process](publishing.md)
 - [Reference tooling]()
     - [Building the Reference](tooling/building.md)
-    - [mdbook-spec]()
+    - [mdbook-spec](tooling/mdbook-spec.md)
 - [Tests]()
 - [Formatting]()
     - [Markdown]()
