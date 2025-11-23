@@ -69,51 +69,6 @@ We are not expecting 100% coverage at any time. Although it would be nice, it is
 
 [appendix]: https://doc.rust-lang.org/nightly/reference/test-summary.html
 
-### Standard library links
-
-You should link to the standard library without specifying a URL in a fashion similar to [rustdoc intra-doc links][intra]. Some examples:
-
-We can link to the page on `Option`:
-
-```markdown
-[`std::option::Option`]
-```
-
-In these links, generics are ignored and can be included:
-
-```markdown
-[`std::option::Option<T>`]
-```
-
-If we don't want the full path in the text, we can write:
-
-```markdown
-[`Option`](std::option::Option)
-```
-
-Macros can end in `!`. This can be helpful for disambiguation.  For example, this refers to the macro rather than the module:
-
-```markdown
-[`alloc::vec!`]
-```
-
-Explicit namespace disambiguation is also supported:
-
-```markdown
-[`std::vec`](mod@std::vec)
-```
-
-Beware there are some limitations, for example:
-
-- Links to rexports from `std_arch` don't work due to <https://github.com/rust-lang/rust/issues/96506>.
-- Links to keywords aren't supported.
-- Links to trait impls where the trait is not in the prelude doesn't work. Traits must be in scope, and there currently isn't a way to add those.
-- If there are multiple generic implementations, it will link to one randomly (see <https://github.com/rust-lang/rust/issues/76895>).
-
-When running into a rustdoc limitation, consider manually linking to the correct page using a relative link. For example, `../std/arch/macro.is_x86_feature_detected.html`.
-
-[intra]: https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html
-
 ## Style
 
 Idioms and styling:
