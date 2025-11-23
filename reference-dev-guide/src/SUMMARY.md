@@ -3,7 +3,7 @@
 - [Introduction](introduction.md)
 - [Contribution process]()
 - [Publishing process](publishing.md)
-- [Reference tooling]()
+- [Reference tooling](tooling/index.md)
     - [Building the Reference](tooling/building.md)
     - [mdbook-spec](tooling/mdbook-spec.md)
 - [Tests](tests.md)
