@@ -13,7 +13,7 @@
 - [Language rules]()
     - [rustc test annotations]()
 - [Examples](examples.md)
-- [Links]()
+- [Links](links.md)
 - [Rust grammar](grammar.md)
 - [Attributes](attributes.md)
 - [Style guide]()
