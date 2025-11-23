@@ -4,13 +4,6 @@ This document serves as a guide for editors and reviewers. Some conventions and 
 
 [introduction]: ../src/introduction.md
 
-## Style
-
-Idioms and styling:
-
-* Use Oxford commas.
-* Avoid slashes for alternatives ("program/binary"); use conjunctions or rewrite it ("program or binary").
-
 ## Content guidelines
 
 The following are guidelines for the content of the reference.
