@@ -19,6 +19,6 @@
 - [Style guide](style/index.md)
     - [Wording](style/wording.md)
     - [Language and grammar]()
-    - [Punctuation]()
+    - [Punctuation](style/punctuation.md)
 - [Review policy](review-policy.md)
 - [Resources]()
