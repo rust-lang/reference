@@ -21,4 +21,4 @@
     - [Language and grammar]()
     - [Punctuation](style/punctuation.md)
 - [Review policy](review-policy.md)
-- [Resources]()
+- [Resources](resources.md)
