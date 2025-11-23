@@ -7,7 +7,7 @@
     - [Building the Reference](tooling/building.md)
     - [mdbook-spec](tooling/mdbook-spec.md)
 - [Tests]()
-- [Formatting]()
+- [Formatting](formatting/index.md)
     - [Markdown]()
     - [Admonitions]()
 - [Language rules]()
