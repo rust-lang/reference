@@ -1,7 +1,8 @@
 # Summary
 
 - [Introduction](introduction.md)
-- [Contribution process]()
+- [Contribution process](process/index.md)
+    - [Stabilization process](process/stabilization.md)
 - [Publishing process](publishing.md)
 - [Reference tooling](tooling/index.md)
     - [Building the Reference](tooling/building.md)

@@ -30,10 +30,6 @@ Feel free to take information from the standard library and Rustonomicon as appr
 
 Note that we don't write documentation for purely library features such as threads and IO and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `master` branch of the Reference corresponds to what is **stable** on the `master` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want [the Unstable book][unstable].
 
-## Stabilization
-
-When something that alters the language is stabilized, an issue should be opened on the Reference [issue tracker] to track the documentation process. This should include links to any relevant information, such as the stabilization PR, the RFC, the tracking issue, and anything else that would be helpful for writing the documentation.
-
 [Authoring Guide]: docs/authoring.md
 [introduction]: https://doc.rust-lang.org/nightly/reference/introduction.html
 [issue tracker]: https://github.com/rust-lang/reference/issues
