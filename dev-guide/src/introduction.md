@@ -8,7 +8,7 @@ It is encouraged for you to read the [introduction] of the Reference to familiar
 
 ## Critiquing the Reference
 
-This is the easiest way to contribute. Basically, as you read the Reference, if you find something confusing, incorrect, or missing, then you can file an issue against the Reference explaining your concerns.
+This is the easiest way to contribute. As you read the Reference, if you find something confusing, incorrect, or missing, then you can file an issue against the Reference explaining your concerns.
 
 ## Editing the Reference
 
@@ -16,19 +16,19 @@ Typos and incorrect links get through from time to time. Should you find them, w
 
 ## Adding examples and glossary entries
 
-Examples are great. Many people will only read examples and ignore the prose. Ideally, every facet of every feature will have an example.
+Examples are great. Many people will only read examples and ignore the prose. Ideally, every facet of every feature should have an example.
 
-Likewise, the Reference has a glossary. It doesn't need to explain every facet of every feature nor contain every definition, but it does need to be expanded upon. Ideally entries in the glossary link to the associated documentation.
+Likewise, the Reference has a glossary. It doesn't need to explain every facet of every feature nor contain every definition, but it does need to be expanded upon. Ideally, entries in the glossary should link to the associated documentation.
 
 ## Adding documentation
 
-There are a lot of features that are not documented at all or are documented poorly. This is the hardest, but definitely most valuable. Pick an unassigned issue from the [issue tracker], and write about it.
+There are a lot of features that are not documented at all or are documented poorly. This is the hardest task, but definitely the most valuable. Pick an unassigned issue from the [issue tracker], and write about it.
 
 While writing, you may find it handy to have a [playground] open to test out what you are documenting.
 
 Feel free to take information from the standard library and Rustonomicon as appropriate.
 
-Note that we don't write documentation for purely library features such as threads and IO and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `master` branch of the Reference corresponds to what is **stable** on the `master` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want [the Unstable book][unstable].
+Note that we don't write documentation for purely library features, such as threads and IO, and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `master` branch of the Reference corresponds to what is **stable** on the `master` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want [the Unstable book][unstable].
 
 [Authoring Guide]: docs/authoring.md
 [introduction]: https://doc.rust-lang.org/nightly/reference/introduction.html
