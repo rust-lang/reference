@@ -107,6 +107,7 @@ Attributes may be applied to many forms in the language:
 * [Function][functions], [closure] and [function pointer]
   parameters accept outer attributes. This includes attributes on variadic parameters
   denoted with `...` in function pointers and [external blocks][variadic functions].
+* [Inline assembly] template strings and operands accept outer attributes. Only certain attributes are accepted semantically; for details, see [asm.attributes.supported-attributes].
 
 r[attributes.meta]
 ## Meta item attribute syntax
@@ -409,3 +410,4 @@ The following is an index of all built-in attributes.
 [variadic functions]: items/external-blocks.html#variadic-functions
 [`diagnostic::on_unimplemented`]: attributes/diagnostics.md#the-diagnosticon_unimplemented-attribute
 [`diagnostic::do_not_recommend`]: attributes/diagnostics.md#the-diagnosticdo_not_recommend-attribute
+[Inline assembly]: inline-assembly.md
