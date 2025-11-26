@@ -55,7 +55,7 @@ LintReason -> `reason` `=` (STRING_LITERAL | RAW_STRING_LITERAL)
 The [LintNames] list the lint checks that are affected. The optional [LintReason] is described in [attributes.diagnostics.lint.reason].
 
 r[attributes.diagnostics.lint.allowed-positions]
-The lint attributes are allowed anywhere attributes are allowed.
+The lint attributes are allowed anywhere attributes are allowed except for [inline assembly templates].
 
 r[attributes.diagnostics.lint.duplicates]
 When a lint attribute is specified multiple times, it combines the union of all specified lints. The order matters when multiple levels are specified in the same place, which is described in [attributes.diagnostics.lint.override].
@@ -687,6 +687,7 @@ The first error message includes a somewhat confusing error message about the re
 [functions]: ../items/functions.md
 [impl trait]: ../types/impl-trait.md
 [implementation]: ../items/implementations.md
+[inline assembly templates]: asm.attributes
 [item]: ../items.md
 [let statement]: ../statements.md#let-statements
 [macro definition]: ../macros-by-example.md
