@@ -12,12 +12,6 @@ The audience for this book includes:
 
 See the [scope chapter] for a detailed explanation of what constitutes the Reference.
 
-## Rust releases
-
-Rust has a new language release every six weeks. The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on. Tools (`rustc`, `cargo`, etc.) and documentation ([Standard library], this book, etc.) are released with the language release.
-
-The latest release of this book, matching the latest Rust version, can always be found at <https://doc.rust-lang.org/reference/>. Prior versions can be found by adding the Rust version before the "reference" directory. For example, the Reference for Rust 1.49.0 is located at <https://doc.rust-lang.org/1.49.0/reference/>.
-
 ## What *The Reference* is not
 
 This book does not serve as an introduction to the language. Background familiarity with the language is assumed. A separate [book] is available to help acquire such background familiarity.
@@ -44,6 +38,12 @@ That said, there is no wrong way to read this book. Read it however you feel hel
 
 > [!NOTE]
 > For known bugs and omissions in this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
+
+## Rust releases
+
+Rust has a new language release every six weeks. The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on. Tools (`rustc`, `cargo`, etc.) and documentation ([Standard library], this book, etc.) are released with the language release.
+
+The latest release of this book, matching the latest Rust version, can always be found at <https://doc.rust-lang.org/reference/>. Prior versions can be found by adding the Rust version before the "reference" directory. For example, the Reference for Rust 1.49.0 is located at <https://doc.rust-lang.org/1.49.0/reference/>.
 
 ## Contributing
 
