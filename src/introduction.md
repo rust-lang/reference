@@ -51,6 +51,8 @@ We welcome contributions of all kinds.
 
 You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository]. If this book does not answer your question, and you think its answer is in scope of it, please do not hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on [Zulip]. Knowing what people use this book for the most helps direct our attention to making those sections the best that they can be. And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
 
+<!-- TODO: Link to contributing guide -->
+
 [book]: ../book/index.html
 [cargo book]: ../cargo/index.html
 [cargo reference]: ../cargo/reference/index.html
