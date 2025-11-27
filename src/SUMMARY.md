@@ -2,7 +2,7 @@
 
 [Introduction](introduction.md)
 
-- [Notation](notation.md)
+- [Grammar notation](notation.md)
 
 - [Lexical structure](lexical-structure.md)
     - [Input format](input-format.md)
