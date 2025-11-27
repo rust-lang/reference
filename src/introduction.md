@@ -2,6 +2,16 @@
 
 This book is the primary reference for the Rust programming language. It serves as a description of the syntax, semantics, and interpretation of the Rust language.
 
+## Audience
+
+The audience for this book includes:
+
+- Rust users who want to learn about the specifics and details of the language.
+- Tool developers who need to know the syntax and semantics of the language.
+- Language designers who work on the evolution of the language.
+
+See the [scope chapter] for a detailed explanation of what constitutes the Reference.
+
 ## Rust releases
 
 Rust has a new language release every six weeks. The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on. Tools (`rustc`, `cargo`, etc.) and documentation ([Standard library], this book, etc.) are released with the language release.
@@ -110,6 +120,7 @@ You can contribute to this book by opening an issue or sending a pull request to
 [linkage]: linkage.html
 [Notation]: notation.md
 [rustc book]: ../rustc/index.html
+[scope chapter]: scope.md
 [standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
 [Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
