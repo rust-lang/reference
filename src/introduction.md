@@ -59,7 +59,6 @@ You can contribute to this book by opening an issue or sending a pull request to
 [github issues]: https://github.com/rust-lang/reference/issues
 [lifetime of temporaries]: expressions.html#temporaries
 [linkage]: linkage.html
-[Notation]: notation.md
 [rustc book]: ../rustc/index.html
 [scope chapter]: scope.md
 [standard library]: std
