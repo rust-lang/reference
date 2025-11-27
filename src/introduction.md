@@ -1,9 +1,6 @@
 # Introduction
 
-This book is the primary reference for the Rust programming language.
-
-> [!NOTE]
-> For known bugs and omissions in this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
+This book is the primary reference for the Rust programming language. It serves as a description of the syntax, semantics, and interpretation of the Rust language.
 
 ## Rust releases
 
@@ -34,6 +31,9 @@ The first is to answer a specific question. If you know which chapter answers th
 The second is to generally improve your knowledge of a facet of the language. In that case, just browse the table of contents until you see something you want to know more about, and just start reading. If a link looks interesting, click it, and read about that section.
 
 That said, there is no wrong way to read this book. Read it however you feel helps you best.
+
+> [!NOTE]
+> For known bugs and omissions in this book, see our [GitHub issues]. If you see a case where the compiler behavior and the text here do not agree, file an issue so we can think about which is correct.
 
 ### Conventions
 
