@@ -7,64 +7,39 @@ This book is the primary reference for the Rust programming language.
 
 ## Rust releases
 
-Rust has a new language release every six weeks.
-The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on.
-Tools (`rustc`, `cargo`, etc.) and documentation ([Standard library], this book, etc.) are released with the language release.
+Rust has a new language release every six weeks. The first stable release of the language was Rust 1.0.0, followed by Rust 1.1.0 and so on. Tools (`rustc`, `cargo`, etc.) and documentation ([Standard library], this book, etc.) are released with the language release.
 
-The latest release of this book, matching the latest Rust version, can always be found at <https://doc.rust-lang.org/reference/>.
-Prior versions can be found by adding the Rust version before the "reference" directory.
-For example, the Reference for Rust 1.49.0 is located at <https://doc.rust-lang.org/1.49.0/reference/>.
+The latest release of this book, matching the latest Rust version, can always be found at <https://doc.rust-lang.org/reference/>. Prior versions can be found by adding the Rust version before the "reference" directory. For example, the Reference for Rust 1.49.0 is located at <https://doc.rust-lang.org/1.49.0/reference/>.
 
 ## What *The Reference* is not
 
-This book does not serve as an introduction to the language.
-Background familiarity with the language is assumed.
-A separate [book] is available to help acquire such background familiarity.
+This book does not serve as an introduction to the language. Background familiarity with the language is assumed. A separate [book] is available to help acquire such background familiarity.
 
-This book also does not serve as a reference to the [standard library] included in the language distribution.
-Those libraries are documented separately by extracting documentation attributes from their source code.
-Many of the features that one might expect to be language features are library features in Rust, so what you're looking for may be there, not here.
+This book also does not serve as a reference to the [standard library] included in the language distribution. Those libraries are documented separately by extracting documentation attributes from their source code. Many of the features that one might expect to be language features are library features in Rust, so what you're looking for may be there, not here.
 
-Similarly, this book does not usually document the specifics of `rustc` as a tool or of Cargo.
-`rustc` has its own [book][rustc book].
-Cargo has a [book][cargo book] that contains a [reference][cargo reference].
-There are a few pages such as [linkage] that still describe how `rustc` works.
+Similarly, this book does not usually document the specifics of `rustc` as a tool or of Cargo. `rustc` has its own [book][rustc book]. Cargo has a [book][cargo book] that contains a [reference][cargo reference]. There are a few pages such as [linkage] that still describe how `rustc` works.
 
-This book also only serves as a reference to what is available in stable Rust.
-For unstable features being worked on, see the [Unstable Book].
+This book also only serves as a reference to what is available in stable Rust. For unstable features being worked on, see the [Unstable Book].
 
-Rust compilers, including `rustc`, will perform optimizations.
-The reference does not specify what optimizations are allowed or disallowed.
-Instead, think of the compiled program as a black box.
-You can only probe by running it, feeding it input and observing its output.
-Everything that happens that way must conform to what the reference says.
+Rust compilers, including `rustc`, will perform optimizations. The reference does not specify what optimizations are allowed or disallowed. Instead, think of the compiled program as a black box. You can only probe by running it, feeding it input and observing its output. Everything that happens that way must conform to what the reference says.
 
 ## How to use this book
 
-This book does not assume you are reading this book sequentially.
-Each chapter generally can be read standalone, but will cross-link to other chapters for facets of the language they refer to, but do not discuss.
+This book does not assume you are reading this book sequentially. Each chapter generally can be read standalone, but will cross-link to other chapters for facets of the language they refer to, but do not discuss.
 
 There are two main ways to read this document.
 
-The first is to answer a specific question.
-If you know which chapter answers that question, you can jump to that chapter in the table of contents.
-Otherwise, you can press `s` or click the magnifying glass on the top bar to search for keywords related to your question.
-For example, say you wanted to know when a temporary value created in a let statement is dropped.
-If you didn't already know that the [lifetime of temporaries] is defined in the [expressions chapter], you could search "temporary let" and the first search result will take you to that section.
+The first is to answer a specific question. If you know which chapter answers that question, you can jump to that chapter in the table of contents. Otherwise, you can press `s` or click the magnifying glass on the top bar to search for keywords related to your question. For example, say you wanted to know when a temporary value created in a let statement is dropped. If you didn't already know that the [lifetime of temporaries] is defined in the [expressions chapter], you could search "temporary let" and the first search result will take you to that section.
 
-The second is to generally improve your knowledge of a facet of the language.
-In that case, just browse the table of contents until you see something you want to know more about, and just start reading.
-If a link looks interesting, click it, and read about that section.
+The second is to generally improve your knowledge of a facet of the language. In that case, just browse the table of contents until you see something you want to know more about, and just start reading. If a link looks interesting, click it, and read about that section.
 
 That said, there is no wrong way to read this book. Read it however you feel helps you best.
 
 ### Conventions
 
-Like all technical books, this book has certain conventions in how it displays information.
-These conventions are documented here.
+Like all technical books, this book has certain conventions in how it displays information. These conventions are documented here.
 
-* Statements that define a term contain that term in *italics*.
-  Whenever that term is used outside of that chapter, it is usually a link to the section that has this definition.
+* Statements that define a term contain that term in *italics*. Whenever that term is used outside of that chapter, it is usually a link to the section that has this definition.
 
   An *example term* is an example of a term being defined.
 
@@ -122,10 +97,7 @@ r[example.rule.label]
 
 We welcome contributions of all kinds.
 
-You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository].
-If this book does not answer your question, and you think its answer is in scope of it, please do not hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on [Zulip].
-Knowing what people use this book for the most helps direct our attention to making those sections the best that they can be.
-And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
+You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository]. If this book does not answer your question, and you think its answer is in scope of it, please do not hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on [Zulip]. Knowing what people use this book for the most helps direct our attention to making those sections the best that they can be. And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
 
 [book]: ../book/index.html
 [github issues]: https://github.com/rust-lang/reference/issues
