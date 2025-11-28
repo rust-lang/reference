@@ -2,6 +2,8 @@
 
 [Introduction](introduction.md)
 
+- [Scope](scope.md)
+
 - [Notational conventions](conventions.md)
     - [Grammar notation](notation.md)
 

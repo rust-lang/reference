@@ -12,18 +12,6 @@ The audience for this book includes:
 
 See the [scope chapter] for a detailed explanation of what constitutes the Reference.
 
-## What *The Reference* is not
-
-This book does not serve as an introduction to the language. Background familiarity with the language is assumed. A separate [book] is available to help acquire such background familiarity.
-
-This book also does not serve as a reference to the [standard library] included in the language distribution. Those libraries are documented separately by extracting documentation attributes from their source code. Many of the features that one might expect to be language features are library features in Rust, so what you're looking for may be there, not here.
-
-Similarly, this book does not usually document the specifics of `rustc` as a tool or of Cargo. `rustc` has its own [book][rustc book]. Cargo has a [book][cargo book] that contains a [reference][cargo reference]. There are a few pages such as [linkage] that still describe how `rustc` works.
-
-This book also only serves as a reference to what is available in stable Rust. For unstable features being worked on, see the [Unstable Book].
-
-Rust compilers, including `rustc`, will perform optimizations. The reference does not specify what optimizations are allowed or disallowed. Instead, think of the compiled program as a black box. You can only probe by running it, feeding it input and observing its output. Everything that happens that way must conform to what the reference says.
-
 ## How to use this book
 
 This book does not assume you are reading it sequentially. Each chapter generally can be read standalone, but will cross-link to other chapters for facets of the language they refer to but do not discuss.
@@ -53,17 +41,11 @@ You can contribute to this book by opening an issue or sending a pull request to
 
 <!-- TODO: Link to contributing guide -->
 
-[book]: ../book/index.html
-[cargo book]: ../cargo/index.html
-[cargo reference]: ../cargo/reference/index.html
 [expressions chapter]: expressions.html
 [file an issue]: https://github.com/rust-lang/reference/issues
 [github issues]: https://github.com/rust-lang/reference/issues
 [lifetime of temporaries]: expressions.html#temporaries
-[linkage]: linkage.html
-[rustc book]: ../rustc/index.html
 [scope chapter]: scope.md
 [standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
-[Unstable Book]: https://doc.rust-lang.org/nightly/unstable-book/
 [Zulip]: https://rust-lang.zulipchat.com/#narrow/stream/237824-t-lang.2Fdoc
