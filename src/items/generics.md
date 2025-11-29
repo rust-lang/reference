@@ -310,6 +310,14 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 }
 ```
 
+## Instantiation
+
+r[items.generics.instantiation]
+When using an item its generic parameters have to get instantiated.
+
+> [!NOTE]
+> This is a placeholder for future expansion and overlaps with [items.fn.generics.mono].
+
 [array repeat expression]: ../expressions/array-expr.md
 [arrays]: ../types/array.md
 [slices]: ../types/slice.md
