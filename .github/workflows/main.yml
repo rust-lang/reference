@@ -107,6 +107,23 @@ jobs:
       working-directory: ./xtask
       run: cargo fmt --check
 
+  reference-dev-guide:
+    name: reference-dev-guide build check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install mdbook
+      env:
+        MDBOOK_VERSION: 0.5.1
+      run: |
+        mkdir bin
+        curl -sSL https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+        echo "$(pwd)/bin" >> $GITHUB_PATH
+    - name: Check reference-dev-guide build
+      run: |
+        cd reference-dev-guide
+        mdbook build
+
   preview:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -153,6 +170,7 @@ jobs:
       - code-tests
       - style-tests
       - mdbook-spec
+      - reference-dev-guide
       # preview is explicitly excluded here since it doesn't run on merge
     runs-on: ubuntu-latest
     steps:
