@@ -76,13 +76,6 @@ r[undefined.asm]
 * Incorrect use of inline assembly. For more details, refer to the [rules] to
   follow when writing code that uses inline assembly.
 
-r[undefined.const-transmute-ptr2int]
-* **In [const context](const_eval.md#const-context)**: transmuting or otherwise
-  reinterpreting a pointer (reference, raw pointer, or function pointer) into
-  some allocation as a non-pointer type (such as integers).
-  'Reinterpreting' refers to loading the pointer value at integer type without a
-  cast, e.g. by doing raw pointer casts or using a union.
-
 r[undefined.runtime]
 * Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
   * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
@@ -119,7 +112,7 @@ the pointer that was dereferenced, *not* the type of the field that is being
 accessed.
 
 r[undefined.misaligned.load-store]
-Note that a place based on a misaligned pointer only leads to Undefined Behavior
+Note that a place based on a misaligned pointer only leads to undefined behavior
 when it is loaded from or stored to.
 
 r[undefined.misaligned.raw]
@@ -220,6 +213,31 @@ r[undefined.validity.valid-range]
 
   > [!NOTE]
   > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
+
+r[undefined.validity.const-provenance]
+* **In [const context](const_eval.md#const-context)**: In addition to what is described above,
+  further provenance-related requirements apply during const evaluation.
+  Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice metadata) must not carry any provenance.
+  Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance,
+  or all bytes must be fragments of the same original pointer value in the correct order.
+
+  This implies that transmuting or otherwise reinterpreting a pointer (reference, raw pointer, or function pointer) into a non-pointer type (such as integers) is undefined behavior if the pointer had provenance.
+
+  > [!EXAMPLE]
+  > All of the following are UB:
+  > ```rust,compile_fail
+  > const REINTERPRET_PTR_AS_INT: usize = {
+  >     let ptr = &0;
+  >     unsafe { (&raw const ptr as *const usize).read() }
+  > };
+  >
+  > const PTR_BYTES_IN_WRONG_ORDER: &i32 = {
+  >     let mut ptr = &0;
+  >     let ptr_bytes = &raw mut ptr as *mut std::mem::MaybeUninit::<u8>;
+  >     unsafe { std::ptr::swap(ptr_bytes.add(1), ptr_bytes.add(2)) };
+  >     ptr
+  > };
+  > ```
 
 r[undefined.validity.undef]
 **Note:** Uninitialized memory is also implicitly invalid for any type that has
