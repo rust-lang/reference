@@ -81,7 +81,7 @@ r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, the [standard library prelude] to instead use the `core` prelude, and the [`macro_use` prelude] to instead use the macros exported from the `core` crate.
+The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically and the [standard library prelude] to instead use the `core` prelude.
 
 > [!EXAMPLE]
 > <!-- ignore: test infrastructure can't handle no_std -->
@@ -109,9 +109,6 @@ The `no_std` attribute may be used any number of times on a form.
 
 r[names.preludes.extern.no_std.module]
 The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of the `std` prelude.
-
-r[names.preludes.extern.no_std.macro_use]
-By default, all macros exported from the `std` crate are added to the [`macro_use` prelude]. If the `no_std` attribute is specified, then all macros exported from the `core` crate are placed into the [`macro_use` prelude] instead.
 
 r[names.preludes.extern.no_std.edition2018]
 > [!EDITION-2018]
