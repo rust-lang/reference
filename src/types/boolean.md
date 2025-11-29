@@ -61,7 +61,7 @@ r[type.bool.expr.not]
 r[type.bool.expr.or]
 ### Logical or
 
-| `a` | `b` | [<code>a &#124; b</code>][op-or] |
+| `a` | `b` | [`a \| b`][op-or] |
 |- | - | - |
 | `true` | `true` | `true` |
 | `true` | `false` | `true` |

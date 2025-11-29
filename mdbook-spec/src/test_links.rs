@@ -1,7 +1,7 @@
 //! Handling for linking tests in rust's testsuite to rule identifiers.
 
 use crate::{Rules, Spec};
-use mdbook::book::{Book, BookItem};
+use mdbook_preprocessor::book::{Book, BookItem};
 use std::collections::HashMap;
 use std::fmt::Write;
 use std::path::PathBuf;

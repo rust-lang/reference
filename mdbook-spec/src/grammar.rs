@@ -1,7 +1,7 @@
 //! Support for rendering the grammar.
 
 use crate::{Diagnostics, warn_or_err};
-use mdbook::book::{Book, BookItem, Chapter};
+use mdbook_preprocessor::book::{Book, BookItem, Chapter};
 use regex::{Captures, Regex};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write;
