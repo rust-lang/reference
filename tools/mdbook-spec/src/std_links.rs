@@ -1,7 +1,7 @@
 //! Support for translating links to the standard library.
 
-use crate::{Diagnostics, bug, warn_or_err};
 use anyhow::{Result, bail};
+use diagnostics::{Diagnostics, bug, warn_or_err};
 use mdbook_markdown::pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
 use mdbook_preprocessor::book::BookItem;
 use mdbook_preprocessor::book::{Book, Chapter};

@@ -10,6 +10,7 @@ default-run = "mdbook-spec"
 
 [dependencies]
 anyhow = "1.0.79"
+diagnostics.workspace = true
 mdbook-markdown = "0.5.1"
 mdbook-preprocessor = "0.5.1"
 once_cell = "1.19.0"
