@@ -1,7 +1,8 @@
 [package]
 name = "style-check"
+edition.workspace = true
+license.workspace = true
 authors = ["steveklabnik <steve@steveklabnik.com>"]
-edition = "2024"
 
 [dependencies]
 pulldown-cmark = "0.10.0"
