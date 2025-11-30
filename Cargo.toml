@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "tools/*",
+]
+exclude = [
+    "linkchecker"
+]
+resolver = "2"

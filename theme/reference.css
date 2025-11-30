@@ -71,7 +71,7 @@ Admonitions are defined with blockquotes:
 > [!WARNING]
 > This is bad!
 
-See mdbook-spec/src/admonitions.rs.
+See tools/mdbook-spec/src/admonitions.rs.
 */
 .alert blockquote {
     /* Add some padding to make the vertical bar a little taller than the text.*/
