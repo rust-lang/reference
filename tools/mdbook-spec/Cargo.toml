@@ -1,6 +1,5 @@
 [package]
 name = "mdbook-spec"
-version = "0.1.2"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "An mdBook preprocessor to help with the Rust specification."

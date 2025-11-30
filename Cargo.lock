@@ -145,7 +145,7 @@ dependencies = [
 
 [[package]]
 name = "mdbook-spec"
-version = "0.1.2"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "mdbook-markdown",
@@ -371,7 +371,7 @@ dependencies = [
 
 [[package]]
 name = "style-check"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "pulldown-cmark 0.10.3",
 ]
