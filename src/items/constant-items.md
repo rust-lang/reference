@@ -120,20 +120,13 @@ fn unused_generic_function<T>() {
 }
 ```
 
-[`static mut`]: items.static.mut
-[`static`]: items.static
 [const_eval]: ../const_eval.md
 [associated constant]: ../items/associated-items.md#associated-constants
 [constant value]: ../const_eval.md#constant-expressions
-[external static]: items.extern.static
 [free]: ../glossary.md#free-item
-[interior mutable]: interior-mut
 [static lifetime elision]: ../lifetime-elision.md#const-and-static-elision
 [trait definition]: traits.md
 [underscore imports]: use-declarations.md#underscore-imports
 [`Copy`]: ../special-types-and-traits.md#copy
 [value namespace]: ../names/namespaces.md
-[promoted]: destructors.scope.const-promotion
 [promotion]: destructors.scope.const-promotion
-[union type]: type.union
-[zero-sized type]: layout.properties.size
