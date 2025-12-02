@@ -222,15 +222,22 @@ r[undefined.validity.const-provenance]
   > [!EXAMPLE]
   > All of the following are UB:
   > ```rust,compile_fail
-  > const REINTERPRET_PTR_AS_INT: usize = {
+  > # use core::mem::MaybeUninit;
+  > # use core::ptr;
+  > // We cannot reinterpret a pointer with provenance as an integer,
+  > // as then the bytes of the integer will have provenance.
+  > const _: usize = {
   >     let ptr = &0;
   >     unsafe { (&raw const ptr as *const usize).read() }
   > };
   >
-  > const PTR_BYTES_IN_WRONG_ORDER: &i32 = {
+  > // We cannot rearrange the bytes of a pointer with provenance and
+  > // then interpret them as a reference, as then a value holding
+  > // pointer data will have pointer fragments in the wrong order.
+  > const _: &i32 = {
   >     let mut ptr = &0;
-  >     let ptr_bytes = &raw mut ptr as *mut std::mem::MaybeUninit::<u8>;
-  >     unsafe { std::ptr::swap(ptr_bytes.add(1), ptr_bytes.add(2)) };
+  >     let ptr_bytes = &raw mut ptr as *mut MaybeUninit::<u8>;
+  >     unsafe { ptr::swap(ptr_bytes.add(1), ptr_bytes.add(2)) };
   >     ptr
   > };
   > ```
