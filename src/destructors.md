@@ -344,7 +344,15 @@ println!("{}", x);
 ```
 
 r[destructors.scope.lifetime-extension.sub-expressions]
-If a [borrow], [dereference][dereference expression], [field][field expression], or [tuple indexing expression] has an extended temporary scope, then so does its operand. If an [indexing expression] has an extended temporary scope, then the indexed expression also has an extended temporary scope.
+A *place base context* is an expression context that is one of the following:
+
+- The operand of a [dereference][dereference expression], [field][field expression], or [tuple indexing expression].
+- The indexed expression of an [indexing expression].
+- The operand of a [borrow expression] in a place base context.
+
+The *projected expression* of an expression in a place base context is its closest ancestor that is not in a place base context.
+
+The temporary scope of an expression in a place base context is defined to be the temporary scope of its projected expression.
 
 ```rust
 # use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
@@ -434,7 +442,7 @@ r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
 r[destructors.scope.lifetime-extension.exprs.borrows]
-The [temporary scope] of the operand of a [borrow] expression is the *borrow scope* of the operand expression, defined below.
+The [temporary scope] of the operand of a [borrow expression] outside of a [place base context][destructors.scope.lifetime-extension.sub-expressions] is the *borrow scope* of the operand expression, defined below.
 
 r[destructors.scope.lifetime-extension.exprs.super-macros]
 The [scope][temporary scope] of each [super temporary] of a [super macro call] expression is the borrow scope of the super macro call expression.
@@ -442,7 +450,7 @@ The [scope][temporary scope] of each [super temporary] of a [super macro call] e
 r[destructors.scope.lifetime-extension.exprs.extending]
 The borrow scope of an expression is defined in terms of *extending expressions* and their *extending parents*. An extending expression is an expression which is one of the following:
 
-* The operand of a [borrow] expression, the extending parent of which is the borrow expression.
+* The operand of a [borrow expression], the extending parent of which is the borrow expression.
 * The [super operands] of a [super macro call] expression, the extending parent of which is the macro call expression.
 * The operand(s) of an [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression, the extending parent of which is the array, cast, braced struct, or tuple expression.
 * The arguments to a [tuple struct] or [tuple enum variant] constructor expression, the extending parent of which is the constructor expression.
@@ -685,7 +693,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [array expression]: expressions/array-expr.md#array-expressions
 [array repeat operands]: expr.array.repeat-operand
 [block expression]: expressions/block-expr.md
-[borrow]: expr.operator.borrow
+[borrow expression]: expr.operator.borrow
 [cast expression]: expressions/operator-expr.md#type-cast-expressions
 [const block expression]: expr.block.const
 [dereference expression]: expressions/operator-expr.md#the-dereference-operator
