@@ -49,4 +49,3 @@ macro_rules! bug {
         std::process::exit(1);
     };
 }
-

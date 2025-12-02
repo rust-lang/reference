@@ -3,6 +3,9 @@
 use crate::rules::Rules;
 use anyhow::{Context, Result, bail};
 use diagnostics::{Diagnostics, warn_or_err};
+use mdbook_preprocessor::book::{Book, BookItem, Chapter};
+use mdbook_preprocessor::errors::Error;
+use mdbook_preprocessor::{Preprocessor, PreprocessorContext};
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
@@ -11,7 +14,7 @@ use std::ops::Range;
 use std::path::PathBuf;
 
 mod admonitions;
-pub mod grammar;
+mod grammar;
 mod rules;
 mod std_links;
 mod test_links;
@@ -144,7 +147,7 @@ impl Preprocessor for Spec {
         if diag.deny_warnings && self.rust_root.is_none() {
             bail!("error: SPEC_RUST_ROOT environment variable must be set");
         }
-        let grammar = grammar::load_grammar(&book, &mut diag);
+        let grammar = ::grammar::load_grammar(&mut diag);
         let rules = self.collect_rules(&book, &mut diag);
         let tests = self.collect_tests(&rules);
         let summary_table = test_links::make_summary_table(&book, &tests, &rules);

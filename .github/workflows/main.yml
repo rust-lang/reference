@@ -94,7 +94,7 @@ jobs:
         rustc -Vv
     - name: Verify tools workspace lockfile is current
       run: cargo update -p mdbook-spec --locked
-    - name: Test libraries
+    - name: Test tools
       run: cargo test
 
   preview:

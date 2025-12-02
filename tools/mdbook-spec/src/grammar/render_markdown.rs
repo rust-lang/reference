@@ -1,32 +1,31 @@
 //! Renders the grammar to markdown.
 
-use super::{Characters, Expression, ExpressionKind, Production, RenderCtx};
+use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
+use grammar::{Characters, Expression, ExpressionKind, Production};
 use regex::Regex;
 use std::borrow::Cow;
 use std::fmt::Write;
 use std::sync::LazyLock;
 
-impl Grammar {
-    pub fn render_markdown(
-        &self,
-        cx: &RenderCtx,
-        names: &[&str],
-        output: &mut String,
-    ) -> anyhow::Result<()> {
-        let mut iter = names.into_iter().peekable();
-        while let Some(name) = iter.next() {
-            let Some(prod) = self.productions.get(*name) else {
-                bail!("could not find grammar production named `{name}`");
-            };
-            prod.render_markdown(cx, output);
-            if iter.peek().is_some() {
-                output.push_str("\n");
-            }
+pub fn render_markdown(
+    grammar: &Grammar,
+    cx: &RenderCtx,
+    names: &[&str],
+    output: &mut String,
+) -> anyhow::Result<()> {
+    let mut iter = names.into_iter().peekable();
+    while let Some(name) = iter.next() {
+        let Some(prod) = grammar.productions.get(*name) else {
+            bail!("could not find grammar production named `{name}`");
+        };
+        render_production(prod, cx, output);
+        if iter.peek().is_some() {
+            output.push_str("\n");
         }
-        Ok(())
     }
+    Ok(())
 }
 
 /// The HTML id for the production.
@@ -38,157 +37,153 @@ pub fn markdown_id(name: &str, for_summary: bool) -> String {
     }
 }
 
-impl Production {
-    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
-        let dest = cx
-            .rr_link_map
-            .get(&self.name)
-            .map(|path| path.to_string())
-            .unwrap_or_else(|| format!("missing"));
-        for expr in &self.comments {
-            expr.render_markdown(cx, output);
-        }
-        write!(
-            output,
-            "<span class=\"grammar-text grammar-production\" id=\"{id}\" \
-               onclick=\"show_railroad()\"\
-             >\
-               [{name}]({dest})\
-             </span> → ",
-            id = markdown_id(&self.name, cx.for_summary),
-            name = self.name,
-        )
-        .unwrap();
-        self.expression.render_markdown(cx, output);
-        output.push('\n');
+fn render_production(prod: &Production, cx: &RenderCtx, output: &mut String) {
+    let dest = cx
+        .rr_link_map
+        .get(&prod.name)
+        .map(|path| path.to_string())
+        .unwrap_or_else(|| format!("missing"));
+    for expr in &prod.comments {
+        render_expression(expr, cx, output);
+    }
+    write!(
+        output,
+        "<span class=\"grammar-text grammar-production\" id=\"{id}\" \
+           onclick=\"show_railroad()\"\
+         >\
+           [{name}]({dest})\
+         </span> → ",
+        id = markdown_id(&prod.name, cx.for_summary),
+        name = prod.name,
+    )
+    .unwrap();
+    render_expression(&prod.expression, cx, output);
+    output.push('\n');
+}
+
+/// Returns the last [`ExpressionKind`] of this expression.
+fn last_expr(expr: &Expression) -> &ExpressionKind {
+    match &expr.kind {
+        ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => last_expr(es.last().unwrap()),
+        ExpressionKind::Grouped(_)
+        | ExpressionKind::Optional(_)
+        | ExpressionKind::Repeat(_)
+        | ExpressionKind::RepeatNonGreedy(_)
+        | ExpressionKind::RepeatPlus(_)
+        | ExpressionKind::RepeatPlusNonGreedy(_)
+        | ExpressionKind::RepeatRange(_, _, _)
+        | ExpressionKind::Nt(_)
+        | ExpressionKind::Terminal(_)
+        | ExpressionKind::Prose(_)
+        | ExpressionKind::Break(_)
+        | ExpressionKind::Comment(_)
+        | ExpressionKind::Charset(_)
+        | ExpressionKind::NegExpression(_)
+        | ExpressionKind::Unicode(_) => &expr.kind,
     }
 }
 
-impl Expression {
-    /// Returns the last [`ExpressionKind`] of this expression.
-    fn last(&self) -> &ExpressionKind {
-        match &self.kind {
-            ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => es.last().unwrap().last(),
-            ExpressionKind::Grouped(_)
-            | ExpressionKind::Optional(_)
-            | ExpressionKind::Repeat(_)
-            | ExpressionKind::RepeatNonGreedy(_)
-            | ExpressionKind::RepeatPlus(_)
-            | ExpressionKind::RepeatPlusNonGreedy(_)
-            | ExpressionKind::RepeatRange(_, _, _)
-            | ExpressionKind::Nt(_)
-            | ExpressionKind::Terminal(_)
-            | ExpressionKind::Prose(_)
-            | ExpressionKind::Break(_)
-            | ExpressionKind::Comment(_)
-            | ExpressionKind::Charset(_)
-            | ExpressionKind::NegExpression(_)
-            | ExpressionKind::Unicode(_) => &self.kind,
+fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
+    match &expr.kind {
+        ExpressionKind::Grouped(e) => {
+            output.push_str("( ");
+            render_expression(e, cx, output);
+            if !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                output.push(' ');
+            }
+            output.push(')');
         }
-    }
-
-    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
-        match &self.kind {
-            ExpressionKind::Grouped(e) => {
-                output.push_str("( ");
-                e.render_markdown(cx, output);
-                if !matches!(e.last(), ExpressionKind::Break(_)) {
-                    output.push(' ');
-                }
-                output.push(')');
-            }
-            ExpressionKind::Alt(es) => {
-                let mut iter = es.iter().peekable();
-                while let Some(e) = iter.next() {
-                    e.render_markdown(cx, output);
-                    if iter.peek().is_some() {
-                        if !matches!(e.last(), ExpressionKind::Break(_)) {
-                            output.push(' ');
-                        }
-                        output.push_str("| ");
-                    }
-                }
-            }
-            ExpressionKind::Sequence(es) => {
-                let mut iter = es.iter().peekable();
-                while let Some(e) = iter.next() {
-                    e.render_markdown(cx, output);
-                    if iter.peek().is_some() && !matches!(e.last(), ExpressionKind::Break(_)) {
+        ExpressionKind::Alt(es) => {
+            let mut iter = es.iter().peekable();
+            while let Some(e) = iter.next() {
+                render_expression(e, cx, output);
+                if iter.peek().is_some() {
+                    if !matches!(last_expr(e), ExpressionKind::Break(_)) {
                         output.push(' ');
                     }
+                    output.push_str("| ");
                 }
             }
-            ExpressionKind::Optional(e) => {
-                e.render_markdown(cx, output);
-                output.push_str("<sup>?</sup>");
-            }
-            ExpressionKind::Repeat(e) => {
-                e.render_markdown(cx, output);
-                output.push_str("<sup>\\*</sup>");
-            }
-            ExpressionKind::RepeatNonGreedy(e) => {
-                e.render_markdown(cx, output);
-                output.push_str("<sup>\\* (non-greedy)</sup>");
-            }
-            ExpressionKind::RepeatPlus(e) => {
-                e.render_markdown(cx, output);
-                output.push_str("<sup>+</sup>");
-            }
-            ExpressionKind::RepeatPlusNonGreedy(e) => {
-                e.render_markdown(cx, output);
-                output.push_str("<sup>+ (non-greedy)</sup>");
-            }
-            ExpressionKind::RepeatRange(e, a, b) => {
-                e.render_markdown(cx, output);
-                write!(
-                    output,
-                    "<sup>{}..{}</sup>",
-                    a.map(|v| v.to_string()).unwrap_or_default(),
-                    b.map(|v| v.to_string()).unwrap_or_default(),
-                )
-                .unwrap();
-            }
-            ExpressionKind::Nt(nt) => {
-                let dest = cx.md_link_map.get(nt).map_or("missing", |d| d.as_str());
-                write!(output, "<span class=\"grammar-text\">[{nt}]({dest})</span>").unwrap();
-            }
-            ExpressionKind::Terminal(t) => {
-                write!(
-                    output,
-                    "<span class=\"grammar-literal\">{}</span>",
-                    markdown_escape(t)
-                )
-                .unwrap();
-            }
-            ExpressionKind::Prose(s) => {
-                write!(output, "<span class=\"grammar-text\">\\<{s}\\></span>").unwrap();
-            }
-            ExpressionKind::Break(indent) => {
-                output.push_str("\\\n");
-                output.push_str(&"&nbsp;".repeat(*indent));
-            }
-            ExpressionKind::Comment(s) => {
-                write!(output, "<span class=\"grammar-comment\">// {s}</span>").unwrap();
-            }
-            ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
-            ExpressionKind::NegExpression(e) => {
-                output.push('~');
-                e.render_markdown(cx, output);
-            }
-            ExpressionKind::Unicode(s) => {
-                output.push_str("U+");
-                output.push_str(s);
+        }
+        ExpressionKind::Sequence(es) => {
+            let mut iter = es.iter().peekable();
+            while let Some(e) = iter.next() {
+                render_expression(e, cx, output);
+                if iter.peek().is_some() && !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                    output.push(' ');
+                }
             }
         }
-        if let Some(suffix) = &self.suffix {
-            write!(output, "<sub class=\"grammar-text\">{suffix}</sub>").unwrap();
+        ExpressionKind::Optional(e) => {
+            render_expression(e, cx, output);
+            output.push_str("<sup>?</sup>");
         }
-        if !cx.for_summary {
-            if let Some(footnote) = &self.footnote {
-                // The `ZeroWidthSpace` is to avoid conflicts with markdown link
-                // references.
-                write!(output, "&ZeroWidthSpace;[^{footnote}]").unwrap();
-            }
+        ExpressionKind::Repeat(e) => {
+            render_expression(e, cx, output);
+            output.push_str("<sup>\\*</sup>");
+        }
+        ExpressionKind::RepeatNonGreedy(e) => {
+            render_expression(e, cx, output);
+            output.push_str("<sup>\\* (non-greedy)</sup>");
+        }
+        ExpressionKind::RepeatPlus(e) => {
+            render_expression(e, cx, output);
+            output.push_str("<sup>+</sup>");
+        }
+        ExpressionKind::RepeatPlusNonGreedy(e) => {
+            render_expression(e, cx, output);
+            output.push_str("<sup>+ (non-greedy)</sup>");
+        }
+        ExpressionKind::RepeatRange(e, a, b) => {
+            render_expression(e, cx, output);
+            write!(
+                output,
+                "<sup>{}..{}</sup>",
+                a.map(|v| v.to_string()).unwrap_or_default(),
+                b.map(|v| v.to_string()).unwrap_or_default(),
+            )
+            .unwrap();
+        }
+        ExpressionKind::Nt(nt) => {
+            let dest = cx.md_link_map.get(nt).map_or("missing", |d| d.as_str());
+            write!(output, "<span class=\"grammar-text\">[{nt}]({dest})</span>").unwrap();
+        }
+        ExpressionKind::Terminal(t) => {
+            write!(
+                output,
+                "<span class=\"grammar-literal\">{}</span>",
+                markdown_escape(t)
+            )
+            .unwrap();
+        }
+        ExpressionKind::Prose(s) => {
+            write!(output, "<span class=\"grammar-text\">\\<{s}\\></span>").unwrap();
+        }
+        ExpressionKind::Break(indent) => {
+            output.push_str("\\\n");
+            output.push_str(&"&nbsp;".repeat(*indent));
+        }
+        ExpressionKind::Comment(s) => {
+            write!(output, "<span class=\"grammar-comment\">// {s}</span>").unwrap();
+        }
+        ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
+        ExpressionKind::NegExpression(e) => {
+            output.push('~');
+            render_expression(e, cx, output);
+        }
+        ExpressionKind::Unicode(s) => {
+            output.push_str("U+");
+            output.push_str(s);
+        }
+    }
+    if let Some(suffix) = &expr.suffix {
+        write!(output, "<sub class=\"grammar-text\">{suffix}</sub>").unwrap();
+    }
+    if !cx.for_summary {
+        if let Some(footnote) = &expr.footnote {
+            // The `ZeroWidthSpace` is to avoid conflicts with markdown link
+            // references.
+            write!(output, "&ZeroWidthSpace;[^{footnote}]").unwrap();
         }
     }
 }
@@ -197,7 +192,7 @@ fn charset_render_markdown(cx: &RenderCtx, set: &[Characters], output: &mut Stri
     output.push_str("\\[");
     let mut iter = set.iter().peekable();
     while let Some(chars) = iter.next() {
-        chars.render_markdown(cx, output);
+        render_characters(chars, cx, output);
         if iter.peek().is_some() {
             output.push(' ');
         }
@@ -205,26 +200,24 @@ fn charset_render_markdown(cx: &RenderCtx, set: &[Characters], output: &mut Stri
     output.push(']');
 }
 
-impl Characters {
-    fn render_markdown(&self, cx: &RenderCtx, output: &mut String) {
-        match self {
-            Characters::Named(s) => {
-                let dest = cx.md_link_map.get(s).map_or("missing", |d| d.as_str());
-                write!(output, "[{s}]({dest})").unwrap();
-            }
-            Characters::Terminal(s) => write!(
-                output,
-                "<span class=\"grammar-literal\">{}</span>",
-                markdown_escape(s)
-            )
-            .unwrap(),
-            Characters::Range(a, b) => write!(
-                output,
-                "<span class=\"grammar-literal\">{a}\
-                 </span>-<span class=\"grammar-literal\">{b}</span>"
-            )
-            .unwrap(),
+fn render_characters(chars: &Characters, cx: &RenderCtx, output: &mut String) {
+    match chars {
+        Characters::Named(s) => {
+            let dest = cx.md_link_map.get(s).map_or("missing", |d| d.as_str());
+            write!(output, "[{s}]({dest})").unwrap();
         }
+        Characters::Terminal(s) => write!(
+            output,
+            "<span class=\"grammar-literal\">{}</span>",
+            markdown_escape(s)
+        )
+        .unwrap(),
+        Characters::Range(a, b) => write!(
+            output,
+            "<span class=\"grammar-literal\">{a}\
+                 </span>-<span class=\"grammar-literal\">{b}</span>"
+        )
+        .unwrap(),
     }
 }
 

@@ -77,6 +77,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "grammar"
+version = "0.0.0"
+dependencies = [
+ "diagnostics",
+ "pathdiff",
+ "regex",
+ "walkdir",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -153,6 +163,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "diagnostics",
+ "grammar",
  "mdbook-markdown",
  "mdbook-preprocessor",
  "once_cell",

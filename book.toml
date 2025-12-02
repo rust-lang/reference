@@ -100,4 +100,4 @@ edition = "2024"
 command = "cargo run --release --manifest-path tools/mdbook-spec/Cargo.toml"
 
 [build]
-extra-watch-dirs = ["tools/mdbook-spec/src"]
+extra-watch-dirs = ["tools/mdbook-spec/src", "tools/grammar/src"]

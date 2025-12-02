@@ -84,7 +84,7 @@ fn cargo_test() -> Result<()> {
         .status()
         .expect("cargo should be installed");
     if !status.success() {
-        return Err("mdbook-spec test failed".into());
+        return Err("cargo tests failed".into());
     }
     Ok(())
 }

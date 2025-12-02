@@ -1,0 +1,10 @@
+[package]
+name = "grammar"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+diagnostics.workspace = true
+pathdiff.workspace = true
+regex.workspace = true
+walkdir.workspace = true
