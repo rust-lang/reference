@@ -69,12 +69,12 @@ A block is itself considered to be [diverging](../divergence.md) if all reachabl
 # #![ feature(never_type) ]
 # fn make<T>() -> T { loop {} }
 fn no_control_flow() -> ! {
-    // There are no conditional statements, so this entire block is diverging.
+    // There are no conditional statements, so this entire function body is diverging.
     loop {}
 }
 
 fn control_flow_diverging() -> ! {
-    // All paths are diverging, so this entire block is diverging.
+    // All paths are diverging, so this entire function body is diverging.
     if true {
         loop {}
     } else {
