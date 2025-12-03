@@ -98,10 +98,13 @@ Async closures always capture all input arguments, regardless of whether or not 
 ## Capture precision
 
 r[type.closure.capture.precision.capture-path]
-A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections that were applied to that variable.
+A *capture path* is a sequence starting with a variable from the environment followed by zero or more place projections from that variable.
 
 r[type.closure.capture.precision.place-projection]
-A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), or [array or slice index] expression applied to a variable.
+A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), [array or slice index] expression, or [pattern destructuring] applied to a variable.
+
+> [!NOTE]
+> In `rustc`, pattern destructuring desugars into a series of dereferences and field or element accesses.
 
 r[type.closure.capture.precision.intro]
 The closure borrows or moves the capture path, which may be truncated based on the rules described below.
@@ -124,6 +127,7 @@ Here the capture path is the local variable `s`, followed by a field access `.f1
 This closure captures an immutable borrow of `s.f1.1`.
 
 [field access]: ../expressions/field-expr.md
+[pattern destructuring]: patterns.destructure
 [tuple index]: ../expressions/tuple-expr.md#tuple-indexing-expressions
 [dereference]: ../expressions/operator-expr.md#the-dereference-operator
 [array or slice index]: ../expressions/array-expr.md#array-and-slice-indexing-expressions
@@ -131,7 +135,7 @@ This closure captures an immutable borrow of `s.f1.1`.
 r[type.closure.capture.precision.shared-prefix]
 ### Shared prefix
 
-In the case where a capture path and one of the ancestor’s of that path are both captured by a closure, the ancestor path is captured with the highest capture mode among the two captures, `CaptureMode = max(AncestorCaptureMode, DescendantCaptureMode)`, using the strict weak ordering:
+In the case where a capture path and one of the ancestors of that path are both captured by a closure, the ancestor path is captured with the highest capture mode among the two captures, `CaptureMode = max(AncestorCaptureMode, DescendantCaptureMode)`, using the strict weak ordering:
 
 `ImmBorrow < UniqueImmBorrow < MutBorrow < ByValue`
 
@@ -185,84 +189,258 @@ If this were to capture `m`, then the closure would no longer outlive `'static`,
 r[type.closure.capture.precision.wildcard]
 ### Wildcard pattern bindings
 
-Closures only capture data that needs to be read.
-Binding a value with a [wildcard pattern] does not count as a read, and thus won't be captured.
-For example, the following closures will not capture `x`:
+r[type.closure.capture.precision.wildcard.reads]
+Closures only capture data that needs to be read. Binding a value with a [wildcard pattern] does not read the value, so the place is not captured.
 
-```rust
-let x = String::from("hello");
+```rust,no_run
+struct S; // A non-`Copy` type.
+let x = S;
 let c = || {
-    let _ = x;  // x is not captured
+    let _ = x;  // Does not capture `x`.
 };
-c();
-
-let c = || match x {  // x is not captured
-    _ => println!("Hello World!")
+let c = || match x {
+    _ => (), // Does not capture `x`.
 };
-c();
-```
-
-This also includes destructuring of tuples, structs, and enums.
-Fields matched with the [RestPattern] or [StructPatternEtCetera] are also not considered as read, and thus those fields will not be captured.
-The following illustrates some of these:
-
-```rust
-let x = (String::from("a"), String::from("b"));
-let c = || {
-    let (first, ..) = x;  // captures `x.0` ByValue
-};
-// The first tuple field has been moved into the closure.
-// The second tuple field is still accessible.
-println!("{:?}", x.1);
+x; // OK: `x` can be moved here.
 c();
 ```
 
-```rust
-struct Example {
-    f1: String,
-    f2: String,
-}
+r[type.closure.capture.precision.wildcard.destructuring]
+Destructuring tuples, structs, and single-variant enums does not, by itself, cause a read or the place to be captured.
 
-let e = Example {
-    f1: String::from("first"),
-    f2: String::from("second"),
-};
+> [!NOTE]
+> Enums marked with [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] from other crates are always treated as having multiple variants. See *[type.closure.capture.precision.discriminants.non_exhaustive]*.
+
+```rust,no_run
+struct S; // A non-`Copy` type.
+
+// Destructuring tuples does not cause a read or capture.
+let x = (S,);
 let c = || {
-    let Example { f2, .. } = e; // captures `e.f2` ByValue
+    let (..) = x; // Does not capture `x`.
 };
-// Field f2 cannot be accessed since it is moved into the closure.
-// Field f1 is still accessible.
-println!("{:?}", e.f1);
+x; // OK: `x` can be moved here.
+c();
+
+// Destructuring unit structs does not cause a read or capture.
+let x = S;
+let c = || {
+    let S = x; // Does not capture `x`.
+};
+x; // OK: `x` can be moved here.
+c();
+
+// Destructuring structs does not cause a read or capture.
+struct W<T>(T);
+let x = W(S);
+let c = || {
+    let W(..) = x; // Does not capture `x`.
+};
+x; // OK: `x` can be moved here.
+c();
+
+// Destructuring single-variant enums does not cause a read
+// or capture.
+enum E<T> { V(T) }
+let x = E::V(S);
+let c = || {
+    let E::V(..) = x; // Does not capture `x`.
+};
+x; // OK: `x` can be moved here.
+c();
+```
+
+r[type.closure.capture.precision.wildcard.fields]
+Fields matched against [RestPattern] (`..`) or [StructPatternEtCetera] (also `..`) are not read, and those fields are not captured.
+
+```rust,no_run
+struct S; // A non-`Copy` type.
+let x = (S, S);
+let c = || {
+    let (x0, ..) = x;  // Captures `x.0` by `ByValue`.
+};
+// Only the first tuple field was captured by the closure.
+x.1; // OK: `x.1` can be moved here.
 c();
 ```
 
 r[type.closure.capture.precision.wildcard.array-slice]
 Partial captures of arrays and slices are not supported; the entire slice or array is always captured even if used with wildcard pattern matching, indexing, or sub-slicing.
-For example:
 
 ```rust,compile_fail,E0382
-#[derive(Debug)]
-struct Example;
-let x = [Example, Example];
-
+struct S; // A non-`Copy` type.
+let mut x = [S, S];
 let c = || {
-    let [first, _] = x; // captures all of `x` ByValue
+    let [x0, _] = x; // Captures all of `x` by `ByValue`.
 };
-c();
-println!("{:?}", x[1]); // ERROR: borrow of moved value: `x`
+let _ = &mut x[1]; // ERROR: Borrow of moved value.
 ```
 
 r[type.closure.capture.precision.wildcard.initialized]
 Values that are matched with wildcards must still be initialized.
 
 ```rust,compile_fail,E0381
-let x: i32;
+let x: u8;
 let c = || {
-    let _ = x; // ERROR: used binding `x` isn't initialized
+    let _ = x; // ERROR: Binding `x` isn't initialized.
 };
 ```
 
 [wildcard pattern]: ../patterns.md#wildcard-pattern
+
+r[type.closure.capture.precision.discriminants]
+### Capturing for discriminant reads
+
+r[type.closure.capture.precision.discriminants.reads]
+If pattern matching reads a discriminant, the place containing that discriminant is captured by `ImmBorrow`.
+
+r[type.closure.capture.precision.discriminants.multiple-variant]
+Matching against a variant of an enum that has more than one variant reads the discriminant, capturing the place by `ImmBorrow`.
+
+```rust,compile_fail,E0502
+struct S; // A non-`Copy` type.
+let mut x = (Some(S), S);
+let c = || match x {
+    (None, _) => (),
+//   ^^^^
+// This pattern requires reading the discriminant, which
+// causes `x.0` to be captured by `ImmBorrow`.
+    _ => (),
+};
+let _ = &mut x.0; // ERROR: Cannot borrow `x.0` as mutable.
+//           ^^^
+// The closure is still live, so `x.0` is still immutably
+// borrowed here.
+c();
+```
+
+```rust,no_run
+# struct S; // A non-`Copy` type.
+# let x = (Some(S), S);
+let c = || match x { // Captures `x.0` by `ImmBorrow`.
+    (None, _) => (),
+    _ => (),
+};
+// Though `x.0` is captured due to the discriminant read,
+// `x.1` is not captured.
+x.1; // OK: `x.1` can be moved here.
+c();
+```
+
+r[type.closure.capture.precision.discriminants.single-variant]
+Matching against the only variant of a single-variant enum does not read the discriminant and does not capture the place.
+
+```rust,no_run
+enum E<T> { V(T) } // A single-variant enum.
+let x = E::V(());
+let c = || {
+    let E::V(_) = x; // Does not capture `x`.
+};
+x; // OK: `x` can be moved here.
+c();
+```
+
+r[type.closure.capture.precision.discriminants.non_exhaustive]
+If [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] is applied to an enum defined in an external crate, the enum is treated as having multiple variants for the purpose of deciding whether a read occurs, even if it actually has only one variant.
+
+r[type.closure.capture.precision.discriminants.uninhabited-variants]
+Even if all variants but the one being matched against are uninhabited, making the pattern [irrefutable][patterns.refutable], the discriminant is still read if it otherwise would be.
+
+```rust,compile_fail,E0502
+enum Empty {}
+let mut x = Ok::<_, Empty>(42);
+let c = || {
+    let Ok(_) = x; // Captures `x` by `ImmBorrow`.
+};
+let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
+c();
+```
+
+
+r[type.closure.capture.precision.range-patterns]
+### Capturing and range patterns
+
+r[type.closure.capture.precision.range-patterns.reads]
+Matching against a [range pattern][patterns.range] reads the place being matched, even if the range includes all possible values of the type, and captures the place by `ImmBorrow`.
+
+```rust,compile_fail,E0502
+let mut x = 0u8;
+let c = || {
+    let 0..=u8::MAX = x; // Captures `x` by `ImmBorrow`.
+};
+let _ = &mut x; // ERROR: Cannot borrow `x` as mutable.
+c();
+```
+
+r[type.closure.capture.precision.slice-patterns]
+### Capturing and slice patterns
+
+r[type.closure.capture.precision.slice-patterns.slices]
+Matching a slice against a [slice pattern][patterns.slice] other than one with only a single [rest pattern][patterns.rest] (i.e. `[..]`) is treated as a read of the length from the slice and captures the slice by `ImmBorrow`.
+
+```rust,compile_fail,E0502
+let x: &mut [u8] = &mut [];
+let c = || match x { // Captures `*x` by `ImmBorrow`.
+    &mut [] => (),
+//       ^^
+// This matches a slice of exactly zero elements. To know whether the
+// scrutinee matches, the length must be read, causing the slice to
+// be captured.
+    _ => (),
+};
+let _ = &mut *x; // ERROR: Cannot borrow `*x` as mutable.
+c();
+```
+
+```rust,no_run
+let x: &mut [u8] = &mut [];
+let c = || match x { // Does not capture `*x`.
+    [..] => (),
+//   ^^ Rest pattern.
+};
+let _ = &mut *x; // OK: `*x` can be borrow here.
+c();
+```
+
+> [!NOTE]
+> Perhaps surprisingly, even though the length is contained in the (wide) *pointer* to the slice, it is the place of the *pointee* (the slice) that is treated as read and is captured.
+>
+> ```rust,no_run
+> fn f<'l: 's, 's>(x: &'s mut &'l [u8]) -> impl Fn() + 'l {
+>     // The closure outlives `'l` because it captures `**x`. If
+>     // instead it captured `*x`, it would not live long enough
+>     // to satisfy the `impl Fn() + 'l` bound.
+>     || match *x { // Captures `**x` by `ImmBorrow`.
+>         &[] => (),
+>         _ => (),
+>     }
+> }
+> ```
+>
+> In this way, the behavior is consistent with dereferencing to the slice in the scrutinee.
+>
+> ```rust,no_run
+> fn f<'l: 's, 's>(x: &'s mut &'l [u8]) -> impl Fn() + 'l {
+>     || match **x { // Captures `**x` by `ImmBorrow`.
+>         [] => (),
+>         _ => (),
+>     }
+> }
+> ```
+>
+> For details, see [Rust PR #138961](https://github.com/rust-lang/rust/pull/138961).
+
+r[type.closure.capture.precision.slice-patterns.arrays]
+As the length of an array is fixed by its type, matching an array against a slice pattern does not by itself capture the place.
+
+```rust,no_run
+let x: [u8; 1] = [0];
+let c = || match x { // Does not capture `x`.
+    [_] => (), // Length is fixed.
+};
+x; // OK: `x` can be moved here.
+c();
+```
 
 r[type.closure.capture.precision.move-dereference]
 ### Capturing references in move contexts
