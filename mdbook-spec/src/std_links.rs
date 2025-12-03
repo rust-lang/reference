@@ -2,10 +2,10 @@
 
 use crate::{Diagnostics, bug, warn_or_err};
 use anyhow::{Result, bail};
-use mdbook::BookItem;
-use mdbook::book::{Book, Chapter};
+use mdbook_markdown::pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
+use mdbook_preprocessor::book::BookItem;
+use mdbook_preprocessor::book::{Book, Chapter};
 use once_cell::sync::Lazy;
-use pulldown_cmark::{BrokenLink, CowStr, Event, LinkType, Options, Parser, Tag};
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::Write as _;
@@ -243,6 +243,7 @@ fn run_rustdoc(
                 LinkType::Autolink | LinkType::Email => {
                     bug!("link type should have been filtered {link:?}");
                 }
+                LinkType::WikiLink { .. } => panic!("unsupported wikilink"),
             }
         }
     }

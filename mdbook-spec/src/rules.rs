@@ -2,8 +2,7 @@
 
 use crate::test_links::RuleToTests;
 use crate::{Diagnostics, Spec, warn_or_err};
-use mdbook::BookItem;
-use mdbook::book::Book;
+use mdbook_preprocessor::book::{Book, BookItem};
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::collections::{BTreeMap, HashSet};
