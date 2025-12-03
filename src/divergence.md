@@ -6,6 +6,25 @@ Divergence is the state where a particular section of code could never be encoun
 
 Any expression of type [`!`](./types/never.md) is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
 
+> [!NOTE]
+> Though `!` is considered an uninhabited type, a type being uninhabited is not sufficient for it to diverge.
+>
+> ```rust,compile_fail,E0308
+> # #![ feature(never_type) ]
+> # fn make<T>() -> T { loop {} }
+> enum Empty {}
+> fn diverging() -> ! {
+>     // This has a type of `!`.
+>     // So, the entire function is considered diverging
+>     make::<!>();
+> }
+> fn not_diverging() -> ! {
+>     // This type is uninhabited.
+>     // However, the entire function is not considered diverging
+>     make::<Empty>();
+> }
+> ```
+
 r[divergence.fallback]
 ## Fallback
 If a type to be inferred is only unified with diverging expressions, then that type will be inferred to be `!`.
