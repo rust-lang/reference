@@ -326,6 +326,77 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
+r[macro.decl.scope.textual.shadow.path-based]
+Textual scope name bindings for macros shadow path-based scope bindings to macros.
+
+```rust
+#[macro_export]
+macro_rules! m2 {
+    () => {
+        println!("m2");
+    };
+}
+
+m!(); // prints "m2\n"
+
+macro_rules! m {
+    () => {
+        println!("m");
+    };
+}
+
+use crate::m2 as m;
+
+m!(); // prints "m\n"
+```
+
+> [!NOTE]
+>
+> For areas where shadowing is not allowed, see [name resolution ambiguities].
+
+r[macro.decl.scope.path-based]
+### Path-based scope
+
+r[macro.decl.scope.path-based.intro]
+By default, a macro has no path-based scope. Macros can gain path-based scope in two ways:
+
+* [Use declaration re-export]
+* [`macro_export`]
+
+r[macro.decl.scope.path.reexport]
+Macros can be re-exported to give them path-based scope from a module other than the crate root.
+
+```rust
+mac::m!(); // OK: Path-based lookup finds m in the mac module.
+
+mod mac {
+    macro_rules! m {
+        () => {};
+    }
+    pub(crate) use m;
+}
+```
+
+r[macro.decl.scope.path-based.visibility]
+Macros have an implicit visibility of `pub(crate)`. `#[macro_export]` changes the implicit visibility to `pub`.
+
+```rust,compile_fail,E0364
+macro_rules! private_m {
+    () => {};
+}
+
+#[macro_export]
+macro_rules! pub_m {
+    () => {};
+}
+
+pub(crate) use private_m as private_macro; // OK
+pub use pub_m as pub_macro; // OK
+
+pub use private_m; // ERROR: `private_m` is only public within
+                   // the crate and cannot be re-exported outside
+```
+
 <!-- template:attributes -->
 r[macro.decl.scope.macro_use]
 ### The `macro_use` attribute
@@ -713,14 +784,17 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
+[Hygiene]: #hygiene
+[Metavariables]: #metavariables
+[Repetitions]: #repetitions
+[Use declaration re-export]: items/use-declarations.md#use-visibility
+[`macro_export`]: #the-macro_export-attribute
+[`$crate`]: macro.decl.hygiene.crate
 [`extern crate self`]: items.extern-crate.self
 [`macro_use` prelude]: names/preludes.md#macro_use-prelude
 [block labels]: expr.loop.block-labels
 [delimiters]: tokens.md#delimiters
 [formal specification]: macro-ambiguity.md
-[Hygiene]: #hygiene
 [loop labels]: expressions/loop-expr.md#loop-labels
-[Metavariables]: #metavariables
-[Repetitions]: #repetitions
+[name resolution ambiguities]: names/name-resolution.md#r-names.resolution.expansion.imports.ambiguity
 [token]: tokens.md
-[`$crate`]: macro.decl.hygiene.crate
