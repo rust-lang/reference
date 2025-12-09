@@ -215,7 +215,7 @@ r[undefined.validity.valid-range]
   > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
 
 r[undefined.validity.const-provenance]
-* **In [const context](const_eval.md#const-context)**: In addition to what is described above, further provenance-related requirements apply during const evaluation. Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice metadata) must not carry any provenance. Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance, or all bytes must be fragments of the same original pointer value in the correct order.
+* **In [const contexts]**: In addition to what is described above, further provenance-related requirements apply during const evaluation. Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice metadata) must not carry any provenance. Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance, or all bytes must be fragments of the same original pointer value in the correct order.
 
   This implies that transmuting or otherwise reinterpreting a pointer (reference, raw pointer, or function pointer) into a non-pointer type (such as integers) is undefined behavior if the pointer had provenance.
 
@@ -251,6 +251,7 @@ reading uninitialized memory is permitted are inside `union`s and in "padding"
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [abi]: items/external-blocks.md#abi
+[const contexts]: const-eval.const-context
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
 [Rustonomicon]: ../nomicon/index.html
