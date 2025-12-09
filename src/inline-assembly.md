@@ -1226,7 +1226,7 @@ let _: () = unsafe {
 
 r[asm.options.supported-options.nostack]
 - `nostack`: The assembly code does not push data to the stack, or write to the stack red-zone (if supported by the target).
-  If this option is *not* used then the stack pointer is guaranteed to be suitably aligned (according to the target ABI) for a function call.
+  If this option is *not* used then the stack pointer is guaranteed by the compiler at the start of the assembly code to be suitably aligned (according to the target ABI) for a function call.
 
 <!-- no_run: Test has undefined behavior at runtime -->
 ```rust,no_run
