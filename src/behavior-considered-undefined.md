@@ -221,6 +221,7 @@ r[undefined.validity.const-provenance]
 
   > [!EXAMPLE]
   > All of the following are UB:
+  >
   > ```rust,compile_fail
   > # use core::mem::MaybeUninit;
   > # use core::ptr;
