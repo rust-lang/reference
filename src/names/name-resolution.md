@@ -147,9 +147,7 @@ r[names.resolution.expansion.imports.ambiguity]
 #### Ambiguities
 
 r[names.resolution.expansion.imports.ambiguity.intro]
-Some situations are an error when there is an ambiguity as to which macro definition, `use` declaration, or module an import or macro invocation's name refers to. This happens when there are two name candidates that do not resolve to the same entity where neither candidate is [permitted] to shadow the other.
-
-TODO rewrite
+There are certain situations during expansion-time resolution where there are multiple macro definitions, `use` declarations, or modules an import or macro invocation's name could refer to where the compiler cannot consistently determine which candidate should shadow the other. Shadowing cannot be permitted in these situations and the compiler instead emits ambiguity errors.
 
 r[names.resolution.expansion.imports.ambiguity.glob-vs-glob]
 Names may not be resolved through ambiguous glob imports. Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used. Names with conflicting candidates from ambiguous glob imports may still be shadowed by non-glob imports and used without producing an error. The errors occur at time of use, not time of import.
@@ -165,11 +163,13 @@ mod m2 {
     pub struct Ambig;
 }
 
+// OK: This brings conficting names into scope and namespace
+// but they have not been used yet.
 use m1::*;
-use m2::*; // OK: No name conflict.
+use m2::*;
 
 fn ambiguous_use() {
-    let x = Ambig; // ERROR: `Ambig` is ambiguous
+    let x = Ambig; // ERROR: `Ambig` is ambiguous.
 }
 ```
 
@@ -199,38 +199,44 @@ mod m1 {
 }
 
 mod m2 {
+    // This re-exports the same `Ambig` item through a second module.
     pub use super::m1::Ambig;
 }
 
-// These both import the same `Ambig`. The visibility of `Ambig` is
-// `pub` because that is the maximum visibility between these two `use`
-// declarations.
-pub use m2::*;
-use m1::*;
+// These both import the same `Ambig`.
+//
+// The visibility of `Ambig` is `pub` because that is the
+// maximum visibility between these two `use` declarations.
+mod m3 {
+    pub use super::m1::*;
+    use super::m2::*;
+}
 
 fn main() {
-    let _: Ambig = Ambig;
+    // `Ambig` can be used through the m3
+    // globs and still has `pub` visibility.
+    let _ = m3::Ambig;
 }
 ```
-// TODO update example to rely upon visibilty for compilation success
 
 r[names.resolution.expansion.imports.ambiguity.glob-vs-outer]
-Names may not be resolved through glob imports when there is another candidate available in an [outer scope].
+Names in imports and macro invocations may not be resolved through glob imports when there is another candidate available in an [outer scope].
 
 ```rust,compile_fail,E0659
 mod glob {
     pub mod ambig {
-//          ^-- glob `ambig` candidate
         pub struct Name;
     }
 }
 
+// Outer `ambig` candidate.
 pub mod ambig {
-//      ^-- outer `ambig` candidate
     pub struct Name;
 }
 
 const _: () = {
+    // Cannot resolve `ambig` through this glob
+    // because of the outer `ambig` candidate above.
     use glob::*;
     use ambig::Name; // ERROR: `ambig` is ambiguous.
 };
@@ -258,7 +264,7 @@ const _: () = {
 ```
 
 > [!NOTE]
-> These ambiguity errors are specific to imports, even though they are only observed when those imports are used. Having multiple candidates available for a given name during later stages of resolution is not considered an error. So long as none of the imports themselves are ambiguous, there will always be a single unambiguous closest resolution.
+> These ambiguity errors are specific to expansion-time resolution. Having multiple candidates available for a given name during later stages of resolution is not considered an error. So long as none of the imports themselves are ambiguous, there will always be a single unambiguous closest resolution.
 >
 > ```rust
 > mod glob {
@@ -282,26 +288,29 @@ r[names.resolution.expansion.imports.ambiguity.path-vs-textual-macro]
 Names may not be resolved through ambiguous macro re-exports. Macro re-exports are ambiguous when they would shadow a textual macro candidate for the same name in an [outer scope].
 
 ```rust,compile_fail,E0659
+// Textual macro candidate.
 macro_rules! ambig {
-//           ^---- textual macro candidate
     () => {}
 }
 
+// Path-based macro candidate.
 macro_rules! path_based {
-//           ^--- path-based macro candidate
     () => {}
 }
 
 pub fn f() {
+    // This re-export of the `path_based` macro definition
+    // as `ambig` may not shadow the `ambig` macro definition
+    // which is resolved via textual macro scope.
+    use path_based as ambig;
     ambig!(); // ERROR: `ambig` is ambiguous.
-    use path_based as ambig; // In scope for entire function body.
 }
 ```
 
-// [!NOTE]
-// This restriction is needed due to implementation details in the compiler,
-// specifically the current scope visitation logic and the complexity of supporting
-// this behavior. This ambiguity error may be removed in the future.
+> [!NOTE]
+> This restriction is needed due to implementation details in the compiler,
+> specifically the current scope visitation logic and the complexity of supporting
+> this behavior. This ambiguity error may be removed in the future.
 
 r[names.resolution.expansion.macros]
 ### Macros
@@ -345,25 +354,118 @@ r[names.resolution.expansion.macros.ambiguity]
 #### Ambiguities
 
 r[names.resolution.expansion.macros.ambiguity.more-expanded-vs-outer]
-Name bindings from macro expansions may not shadow name bindings from outside of those expansions.
+Names may not be resolved through ambiguous candidates inside of macro expansions. Candidates inside of macro expansions are ambiguous when they would shadow a candidate for the same name from outside of the first candidate's macro expansion and the invocation of the name being resolved is also from outside of the first candidate's macro expansion.
 
 ```rust,compile_fail,E0659
-macro_rules! name {
-    () => {}
-}
-
-macro_rules! define_name {
+macro_rules! define_ambig {
     () => {
-        macro_rules! name {
+        macro_rules! ambig {
             () => {}
         }
     }
 }
 
-fn f() {
-    define_name!();
-    name!(); // ERROR: `name` is ambiguous.
+// Introduce outer candidate definition for `ambig` macro invocation.
+macro_rules! ambig {
+    () => {}
 }
+
+// Introduce a second candidate definition for `ambig` inside of a macro
+// expansion.
+define_ambig!();
+
+// The definition of `ambig` from the second invocation
+// of `define_ambig` is the innermost canadidate.
+//
+// The definition of `ambig` from the first invocation of `define_ambig`
+// is the second candidate.
+//
+// The compiler checks that the first candidate is inside of a macro
+// expansion, that the second candidate is not from within the same
+// macro expansion, and that the name being resolved is not from
+// within the same macro expansion.
+ambig!(); // ERROR: `ambig` is ambiguous.
+```
+
+The reverse is not considered ambiguous.
+
+```rust
+# macro_rules! define_ambig {
+#     () => {
+#         macro_rules! ambig {
+#             () => {}
+#         }
+#     }
+# }
+// Swap order of definitions.
+define_ambig!();
+macro_rules! ambig {
+    () => {}
+}
+// The innermost candidate is now less expanded so it may shadow more
+// the macro expanded definition above it.
+ambig!();
+```
+
+Nor is it ambiguous if the invocation being resolved is within the innermost candidate's expansion.
+
+```rust
+macro_rules! ambig {
+    () => {}
+}
+
+macro_rules! define_and_invoke_ambig {
+    () => {
+        // Define innermost candidate.
+        macro_rules! ambig {
+            () => {}
+        }
+
+        // Invocation of `ambig` is in the same expansion as the
+        // innermost candidate.
+        ambig!(); // OK
+    }
+}
+
+define_and_invoke_ambig!();
+```
+
+It doesn't matter if both definitions come from invocations of the same macro, the outermost candidate is still considered "less expanded" because it is not within the expansion containing the innermost candidate's definition.
+
+```rust,compile_fail,E0659
+# macro_rules! define_ambig {
+#     () => {
+#         macro_rules! ambig {
+#             () => {}
+#         }
+#     }
+# }
+define_ambig!();
+define_ambig!();
+ambig!(); // ERROR: `ambig` is ambiguous.
+```
+
+This also applies to imports, so long as the innermost candidate for the invocation of name is from within a macro expansion.
+
+```rust,compile_fail,E0659
+macro_rules! define_ambig {
+    () => {
+        mod ambig {
+            pub struct Name;
+        }
+    }
+}
+
+mod ambig {
+    pub struct Name;
+}
+
+const _: () = {
+    // Introduce innermost candidate for
+    // `ambig` mod in this macro expansion.
+    define_ambig!();
+    use ambig::Name; // ERROR: `ambig` is ambiguous.
+};
 ```
 
 r[names.resolution.expansion.macros.ambiguity.builtin-attr]
@@ -373,7 +475,6 @@ User defined attributes or derive macros may not shadow builtin non-macro attrib
 ```rust,ignore
 // with-helper/src/lib.rs
 # use proc_macro::TokenStream;
-#
 #[proc_macro_derive(WithHelperAttr, attributes(non_exhaustive))]
 //                                             ^------------- user attr candidate
 ...
@@ -446,7 +547,6 @@ r[names.resolution.type-relative]
 [namespaces]: ../names/namespaces.md
 [outer scope]: #r-names.resolution.general.scopes
 [path-based scope]: ../macros.md#r-macro.invocation.name-resolution
-[permitted]: name-resolution.md#r-names.resolution.expansion.imports.shadowing
 [scope]: ../names/scopes.md
 [sub-namespace]: ../names/namespaces.md#r-names.namespaces.sub-namespaces
 [type-relative paths]: names.resolution.type-relative

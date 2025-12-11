@@ -127,7 +127,7 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 >     () => {};
 > }
 >
-> use myattr::mymac; // error[E0252]: the name `mymac` is defined multiple times
+> use myattr::mymac; // error[E0252]: the name `mymac` is defined multiple times.
 > ```
 
 [Associated const declarations]: ../items/associated-items.md#associated-constants

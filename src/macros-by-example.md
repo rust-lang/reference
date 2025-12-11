@@ -330,23 +330,33 @@ r[macro.decl.scope.textual.shadow.path-based]
 Textual scope name bindings for macros shadow path-based scope bindings to macros.
 
 ```rust
-#[macro_export]
 macro_rules! m2 {
     () => {
         println!("m2");
     };
 }
 
+// Resolves to path-based candidate from use declaration below.
 m!(); // prints "m2\n"
 
+// Introduce second candidate for `m` with textual scope.
+//
+// This shadows path-based candidate from below for the rest of this
+// example.
 macro_rules! m {
     () => {
         println!("m");
     };
 }
 
-use crate::m2 as m;
+// Introduce m2 macro as path-based candidate.
+//
+// This item is in scope for this entire example, not just below the
+// use declaration.
+use m2 as m;
 
+// Resolves to the textual macro candidate from above the use
+// declaration.
 m!(); // prints "m\n"
 ```
 
@@ -370,9 +380,12 @@ Macros can be re-exported to give them path-based scope from a module other than
 mac::m!(); // OK: Path-based lookup finds m in the mac module.
 
 mod mac {
+    // Introduce macro m with textual scope.
     macro_rules! m {
         () => {};
     }
+
+    // Re-export with path-based scope from within m's textual scope.
     pub(crate) use m;
 }
 ```
@@ -380,21 +393,39 @@ mod mac {
 r[macro.decl.scope.path-based.visibility]
 Macros have an implicit visibility of `pub(crate)`. `#[macro_export]` changes the implicit visibility to `pub`.
 
-```rust,compile_fail,E0364
+```rust
+// Implicit visibility is `pub(crate)`.
 macro_rules! private_m {
     () => {};
 }
 
+// Implicit visibility is `pub`.
 #[macro_export]
 macro_rules! pub_m {
     () => {};
 }
 
-pub(crate) use private_m as private_macro; // OK
-pub use pub_m as pub_macro; // OK
+pub(crate) use private_m as private_macro; // OK.
+pub use pub_m as pub_macro; // OK.
+```
 
+```rust,compile_fail,E0364
+# // Implicit visibility is `pub(crate)`.
+# macro_rules! private_m {
+#     () => {};
+# }
+#
+# // Implicit visibility is `pub`.
+# #[macro_export]
+# macro_rules! pub_m {
+#     () => {};
+# }
+#
+# pub(crate) use private_m as private_macro; // OK.
+# pub use pub_m as pub_macro; // OK.
+#
 pub use private_m; // ERROR: `private_m` is only public within
-                   // the crate and cannot be re-exported outside
+                   // the crate and cannot be re-exported outside.
 ```
 
 <!-- template:attributes -->
