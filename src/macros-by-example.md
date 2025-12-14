@@ -207,7 +207,7 @@ compiler knows how to expand them properly:
 1.  A metavariable must appear in exactly the same number, kind, and nesting
     order of repetitions in the transcriber as it did in the matcher. So for the
     matcher `$( $i:ident ),*`, the transcribers `=> { $i }`,
-    `=> { $( $( $i)* )* }`, and `=> { $( $i )+ }` are all illegal, but
+    `=> { $( $( $i )* )* }`, and `=> { $( $i )+ }` are all illegal, but
     `=> { $( $i );* }` is correct and replaces a comma-separated list of
     identifiers with a semicolon-separated list.
 2.  Each repetition in the transcriber must contain at least one metavariable to
