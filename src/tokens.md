@@ -65,7 +65,7 @@ Literals are tokens used in [literal expressions].
 
 |   | Name |
 |---|------|
-| `\x41` | 7-bit character code (exactly 2 digits, up to 0x7F) |
+| `\x41` | 7-bit character code (exactly 2 hex digits, up to 0x7F) |
 | `\n` | Newline |
 | `\r` | Carriage return |
 | `\t` | Tab |
@@ -76,7 +76,7 @@ Literals are tokens used in [literal expressions].
 
 |   | Name |
 |---|------|
-| `\x7F` | 8-bit character code (exactly 2 digits) |
+| `\x7F` | 8-bit character code (exactly 2 hex digits) |
 | `\n` | Newline |
 | `\r` | Carriage return |
 | `\t` | Tab |
@@ -87,7 +87,7 @@ Literals are tokens used in [literal expressions].
 
 |   | Name |
 |---|------|
-| `\u{7FFF}` | 24-bit Unicode character code (up to 6 digits) |
+| `\u{7FFF}` | 24-bit Unicode character code (up to 6 hex digits) |
 
 #### Quote escapes
 
