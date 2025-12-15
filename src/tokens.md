@@ -687,7 +687,7 @@ let x: f64 = 2.;
 ```
 
 This last example is different because it is not possible to use the suffix
-syntax with a floating point literal end.token.ing in a period. `2.f64` would attempt
+syntax with a floating point literal ending in a period. `2.f64` would attempt
 to call a method named `f64` on `2`.
 
 Note that `-1.0`, for example, is analyzed as two tokens: `-` followed by `1.0`.
