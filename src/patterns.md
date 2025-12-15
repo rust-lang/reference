@@ -1059,7 +1059,7 @@ r[patterns.or]
 
 _Or-patterns_ are patterns that match on one of two or more sub-patterns (for example `A | B | C`).
 They can nest arbitrarily.
-Syntactically, or-patterns are allowed in any of the places where other patterns are allowed (represented by the [Pattern] production), with the exceptions of `let`-bindings and function and closure arguments (represented by the [PatternNoTopAlt] production).
+Syntactically, or-patterns are allowed in any of the places where other patterns are allowed (represented by the [Pattern] production), with the exceptions of `let`-bindings and function and closure parameters (represented by the [PatternNoTopAlt] production).
 
 r[patterns.constraints]
 ### Static semantics
