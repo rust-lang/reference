@@ -132,7 +132,7 @@ The *`repr` [attribute][attributes]* can change the representation and layout of
 > struct ThreeInts {
 >     first: i16,
 >     second: i8,
->     third: i32
+>     third: i32,
 > }
 > ```
 
@@ -552,7 +552,7 @@ On their own, `align` and `packed` do not provide guarantees about the order of 
 > struct PackedStruct {
 >     first: i16,
 >     second: i8,
->     third: i32
+>     third: i32,
 > }
 >
 > // C representation, alignment raised to 8
@@ -560,7 +560,7 @@ On their own, `align` and `packed` do not provide guarantees about the order of 
 > struct AlignedStruct {
 >     first: i16,
 >     second: i8,
->     third: i32
+>     third: i32,
 > }
 > ```
 
