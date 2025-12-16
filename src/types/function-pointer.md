@@ -25,8 +25,7 @@ MaybeNamedFunctionParametersVariadic ->
 ```
 
 r[type.fn-pointer.intro]
-Function pointer types, written using the `fn` keyword, refer to a function
-whose identity is not necessarily known at compile-time.
+A function pointer type, written using the `fn` keyword, refers to a function whose identity is not necessarily known at compile-time.
 
 An example where `Binop` is defined as a function pointer type:
 
