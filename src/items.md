@@ -46,7 +46,7 @@ There are several kinds of items:
 * [`extern crate` declarations]
 * [`use` declarations]
 * [function definitions]
-* [type definitions]
+* [type alias definitions]
 * [struct definitions]
 * [enumeration definitions]
 * [union definitions]
@@ -93,5 +93,5 @@ See [item scopes] for information on the scoping rules of items.
 [struct definitions]: items/structs.md
 [trait definitions]: items/traits.md
 [traits]: items/traits.md
-[type definitions]: items/type-aliases.md
+[type alias definitions]: items/type-aliases.md
 [union definitions]: items/unions.md
