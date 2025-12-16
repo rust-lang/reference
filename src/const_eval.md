@@ -20,7 +20,7 @@ r[const-eval.const-expr.evaluation]
 Expressions in const contexts are always evaluated at compile time.
 
 r[const-eval.const-expr.runtime-context]
-In other places, such as [let statements], constant expressions *may* be, but are not guaranteed to be, evaluated at compile time.
+Outside of const contexts, constant expressions *may* be, but are not guaranteed to be, evaluated at compile time.
 
 r[const-eval.const-expr.error]
 Behaviors such as out of bounds [array indexing] or [overflow] are compiler errors if the value
