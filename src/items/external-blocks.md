@@ -70,7 +70,7 @@ r[items.extern.fn.fn-ptr]
 When coerced to a function pointer, a function declared in an extern block has
 type `extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`,
 ... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of
-its parameters, `R` is the declared return type.
+its parameters, and `R` is the declared return type.
 
 r[items.extern.static]
 ## Statics
