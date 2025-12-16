@@ -443,7 +443,7 @@ Zero, one, or more attributes may be listed. Multiple attributes will each be ex
 > ```
 
 > [!NOTE]
-> The `cfg_attr` can expand to another `cfg_attr`. For example, `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]` is valid. This example would be equivalent to `#[cfg_attr(all(target_os = "linux", feature ="multithreaded"), some_other_attribute)]`.
+> The `cfg_attr` can expand to another `cfg_attr`. For example, `#[cfg_attr(target_os = "linux", cfg_attr(feature = "multithreaded", some_other_attribute))]` is valid. This example would be equivalent to `#[cfg_attr(all(target_os = "linux", feature = "multithreaded"), some_other_attribute)]`.
 
 r[cfg.macro]
 ### The `cfg` macro
