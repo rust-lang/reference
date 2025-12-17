@@ -11,8 +11,7 @@ r[lex.keywords.strict]
 ## Strict keywords
 
 r[lex.keywords.strict.intro]
-These keywords can only be used in their correct contexts. They cannot
-be used as the names of:
+These keywords can only be used in their correct contexts. They cannot be used as the names of:
 
 * [Items]
 * [Variables] and function parameters
@@ -78,10 +77,7 @@ r[lex.keywords.reserved]
 ## Reserved keywords
 
 r[lex.keywords.reserved.intro]
-These keywords aren't used yet, but they are reserved for future use. They have
-the same restrictions as strict keywords. The reasoning behind this is to make
-current programs forward compatible with future versions of Rust by forbidding
-them to use these keywords.
+These keywords aren't used yet, but they are reserved for future use. They have the same restrictions as strict keywords. The reasoning behind this is to make current programs forward compatible with future versions of Rust by forbidding them to use these keywords.
 
 r[lex.keywords.reserved.list]
 - `abstract`
@@ -111,8 +107,7 @@ r[lex.keywords.weak]
 ## Weak keywords
 
 r[lex.keywords.weak.intro]
-These keywords have special meaning only in certain contexts. For example, it
-is possible to declare a variable or method with the name `union`.
+These keywords have special meaning only in certain contexts. For example, it is possible to declare a variable or method with the name `union`.
 
 - `'static`
 - `macro_rules`
@@ -124,12 +119,10 @@ r[lex.keywords.weak.macro_rules]
 * `macro_rules` is used to create custom [macros].
 
 r[lex.keywords.weak.union]
-* `union` is used to declare a [union] and is only a keyword when used in a
-  union declaration.
+* `union` is used to declare a [union] and is only a keyword when used in a union declaration.
 
 r[lex.keywords.weak.lifetime-static]
-* `'static` is used for the static lifetime and cannot be used as a [generic
-  lifetime parameter] or [loop label]
+* `'static` is used for the static lifetime and cannot be used as a [generic lifetime parameter] or [loop label]
 
   ```compile_fail
   // error[E0262]: invalid lifetime parameter name: `'static`

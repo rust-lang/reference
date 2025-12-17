@@ -30,8 +30,7 @@ If the first character in the sequence is `U+FEFF` ([BYTE ORDER MARK]), it is re
 r[input.crlf]
 ## CRLF normalization
 
-Each pair of characters `U+000D` (CR) immediately followed by `U+000A` (LF) is replaced by a single `U+000A` (LF).
-This happens once, not repeatedly, so after the normalization, there can still exist `U+000D` (CR) immediately followed by `U+000A` (LF) in the input (e.g. if the raw input contained "CR CR LF LF").
+Each pair of characters `U+000D` (CR) immediately followed by `U+000A` (LF) is replaced by a single `U+000A` (LF). This happens once, not repeatedly, so after the normalization, there can still exist `U+000D` (CR) immediately followed by `U+000A` (LF) in the input (e.g. if the raw input contained "CR CR LF LF").
 
 Other occurrences of the character `U+000D` (CR) are left in place (they are treated as [whitespace]).
 
@@ -53,8 +52,7 @@ fn main() {
 ```
 
 r[input.shebang.inner-attribute]
-As an exception, if the `#!` characters are followed (ignoring intervening [comments] or [whitespace]) by a `[` token, nothing is removed.
-This prevents an [inner attribute] at the start of a source file being removed.
+As an exception, if the `#!` characters are followed (ignoring intervening [comments] or [whitespace]) by a `[` token, nothing is removed. This prevents an [inner attribute] at the start of a source file being removed.
 
 > [!NOTE]
 > The standard library [`include!`] macro applies byte order mark removal, CRLF normalization, and shebang removal to the file it reads. The [`include_str!`] and [`include_bytes!`] macros do not.
