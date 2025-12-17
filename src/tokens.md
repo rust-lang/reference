@@ -215,7 +215,7 @@ r[lex.token.literal.str-raw.syntax]
 RAW_STRING_LITERAL -> `r` RAW_STRING_CONTENT SUFFIX?
 
 RAW_STRING_CONTENT ->
-      `"` ( ~CR )*? `"`
+      `"` ^ ( ~CR )*? `"`
     | `#` RAW_STRING_CONTENT `#`
 ```
 
@@ -249,7 +249,7 @@ r[lex.token.byte]
 r[lex.token.byte.syntax]
 ```grammar,lexer
 BYTE_LITERAL ->
-    `b'` ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX?
+    `b'` ^ ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX?
 
 ASCII_FOR_CHAR ->
     <any ASCII (i.e. 0x00 to 0x7F) except `'`, `\`, LF, CR, or TAB>
@@ -268,7 +268,7 @@ r[lex.token.str-byte]
 r[lex.token.str-byte.syntax]
 ```grammar,lexer
 BYTE_STRING_LITERAL ->
-    `b"` ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )* `"` SUFFIX?
+    `b"` ^ ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )* `"` SUFFIX?
 
 ASCII_FOR_STRING ->
     <any ASCII (i.e 0x00 to 0x7F) except `"`, `\`, or CR>
@@ -304,7 +304,7 @@ RAW_BYTE_STRING_LITERAL ->
     `br` RAW_BYTE_STRING_CONTENT SUFFIX?
 
 RAW_BYTE_STRING_CONTENT ->
-      `"` ASCII_FOR_RAW*? `"`
+      `"` ^ ASCII_FOR_RAW*? `"`
     | `#` RAW_BYTE_STRING_CONTENT `#`
 
 ASCII_FOR_RAW ->
@@ -341,13 +341,12 @@ r[lex.token.str-c]
 r[lex.token.str-c.syntax]
 ```grammar,lexer
 C_STRING_LITERAL ->
-    `c"` (
+    `c"` ^ (
         ~[`"` `\` CR NUL]
       | BYTE_ESCAPE _except `\0` or `\x00`_
       | UNICODE_ESCAPE _except `\u{0}`, `\u{00}`, …, `\u{000000}`_
       | STRING_CONTINUE
     )* `"` SUFFIX?
-
 ```
 
 r[lex.token.str-c.intro]
@@ -400,7 +399,7 @@ RAW_C_STRING_LITERAL ->
     `cr` RAW_C_STRING_CONTENT SUFFIX?
 
 RAW_C_STRING_CONTENT ->
-      `"` ( ~[CR NUL] )*? `"`
+      `"` ^ ( ~[CR NUL] )*? `"`
     | `#` RAW_C_STRING_CONTENT `#`
 ```
 

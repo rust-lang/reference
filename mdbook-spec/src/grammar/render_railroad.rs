@@ -220,6 +220,12 @@ impl Expression {
                         let ch = node_for_nt(cx, "CHAR");
                         Box::new(Except::new(Box::new(ch), n))
                     }
+                    ExpressionKind::Cut(e1, e2) => {
+                        let n1 = e1.render_railroad(cx, stack)?;
+                        let n2 = e2.render_railroad(cx, stack)?;
+                        let lbox = LabeledBox::new(n2, Comment::new("no backtracking".to_string()));
+                        Box::new(Sequence::new(vec![n1, Box::new(lbox)]))
+                    }
                     ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
                 };
             }

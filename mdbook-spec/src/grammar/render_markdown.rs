@@ -83,6 +83,7 @@ impl Expression {
             | ExpressionKind::Comment(_)
             | ExpressionKind::Charset(_)
             | ExpressionKind::NegExpression(_)
+            | ExpressionKind::Cut(_, _)
             | ExpressionKind::Unicode(_) => &self.kind,
         }
     }
@@ -174,6 +175,11 @@ impl Expression {
             ExpressionKind::NegExpression(e) => {
                 output.push('~');
                 e.render_markdown(cx, output);
+            }
+            ExpressionKind::Cut(e1, e2) => {
+                e1.render_markdown(cx, output);
+                output.push_str(" ^ ");
+                e2.render_markdown(cx, output);
             }
             ExpressionKind::Unicode(s) => {
                 output.push_str("U+");

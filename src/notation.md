@@ -24,6 +24,7 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | ~\[ ]              | ~\[`b` `B`]                    | Any characters, except those listed       |
 | ~`string`         | ~`\n`, ~`*/`                  | Any characters, except this sequence      |
 | ( )               | (`,` _Parameter_)<sup>?</sup> | Groups items                              |
+| ^                 | `c"` ^ _CStringRest_          | Commit to an alternative ([cut operator]) |
 | U+xxxx            | U+0060                        | A single unicode character                |
 | \<text\>          | \<any ASCII char except CR\>  | An English description of what should be matched |
 | Rule <sub>suffix</sub> | IDENTIFIER_OR_KEYWORD <sub>_except `crate`_</sub> | A modification to the previous rule |
@@ -52,6 +53,7 @@ r[notation.grammar.visualizations]
 Below each grammar block is a button to toggle the display of a [syntax diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
 
 [binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
+[cut operator]: https://kmizu.github.io/papers/paste513-mizushima.pdf
 [keywords]: keywords.md
 [syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 [tokens]: tokens.md
