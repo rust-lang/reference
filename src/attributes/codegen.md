@@ -558,6 +558,7 @@ Feature               | Implicitly Enables  | Description
 ----------------------|---------------------|-------------------
 `bulk-memory`         |                     | [WebAssembly bulk memory operations proposal][bulk-memory]
 `extended-const`      |                     | [WebAssembly extended const expressions proposal][extended-const]
+`gc`                  | `reference-types`   | [WebAssembly gc proposal][gc]
 `mutable-globals`     |                     | [WebAssembly mutable global proposal][mutable-globals]
 `nontrapping-fptoint` |                     | [WebAssembly non-trapping float-to-int conversion proposal][nontrapping-fptoint]
 `relaxed-simd`        | `simd128`           | [WebAssembly relaxed simd proposal][relaxed-simd]
@@ -569,6 +570,7 @@ Feature               | Implicitly Enables  | Description
 
 [bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
 [extended-const]: https://github.com/WebAssembly/extended-const
+[gc]: https://github.com/WebAssembly/gc
 [mutable-globals]: https://github.com/WebAssembly/mutable-global
 [nontrapping-fptoint]: https://github.com/WebAssembly/nontrapping-float-to-int-conversions
 [relaxed-simd]: https://github.com/WebAssembly/relaxed-simd
