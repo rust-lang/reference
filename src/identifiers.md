@@ -64,12 +64,10 @@ r[ident.raw]
 ## Raw identifiers
 
 r[ident.raw.intro]
-A raw identifier is like a normal identifier, but prefixed by `r#`. (Note that
-the `r#` prefix is not included as part of the actual identifier.)
+A raw identifier is like a normal identifier, but prefixed by `r#`. (Note that the `r#` prefix is not included as part of the actual identifier.)
 
 r[ident.raw.allowed]
-Unlike a normal identifier, a raw identifier may be any strict or reserved
-keyword except the ones listed above for `RAW_IDENTIFIER`.
+Unlike a normal identifier, a raw identifier may be any strict or reserved keyword except the ones listed above for `RAW_IDENTIFIER`.
 
 r[ident.raw.reserved]
 It is an error to use the [RESERVED_RAW_IDENTIFIER] token.
