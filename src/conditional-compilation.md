@@ -439,7 +439,21 @@ println!("I'm running on a {} machine!", machine_kind);
 r[cfg.cfg_select]
 ### The `cfg_select` macro
 
-The built-in `cfg_select` macro expands to the right-hand side of the first configuration predicate that evaluates to `true`.
+r[cfg.cfg_select.syntax]
+```grammar,configuration
+CfgSelect ->
+    cfg_select! `{` CfgSelectBranch* `}`
+
+CfgSelectConfigurationPredicate ->
+    ConfigurationPredicate | `_`
+
+CfgSelectBranch ->
+    CfgSelectConfigurationPredicate `=>` `{` TokenTree `}`
+  | CfgSelectConfigurationPredicate `=>` TokenTree `,`
+```
+
+r[cfg.cfg_select.general]
+The built-in `cfg_select` macro expands to the `TokenTree` on the right-hand side of the first configuration predicate that evaluates to `true`.
 
 For example:
 
@@ -465,7 +479,25 @@ let is_unix_str = cfg_select! {
 };
 ```
 
+r[cfg.cfg_select.wildcard]
 A `_` can be used to write a configuration predicate that always evaluates to `true`.
+
+r[cfg.cfg_select.fallthrough]
+If none of the predicates evaluates to `true`, a compiler error is emitted.
+
+r[cfg.cfg_select.positions]
+The `cfg_select!` macro is accepted in the following macro expansion positions
+
+- items
+- statements
+- expression
+- impl items
+- trait impl items
+- trait items
+- foreign items
+
+r[cfg.cfg_select.well-formed]
+Each right-hand side must syntactically be valid expansion for the position that the macro is invoked in.
 
 [Testing]: attributes/testing.md
 [`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
