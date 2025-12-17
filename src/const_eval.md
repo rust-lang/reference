@@ -2,16 +2,13 @@ r[const-eval]
 # Constant evaluation
 
 r[const-eval.general]
-Constant evaluation is the process of computing the result of
-[expressions] during compilation. Only a subset of all expressions
-can be evaluated at compile-time.
+Constant evaluation is the process of computing the result of [expressions] during compilation. Only a subset of all expressions can be evaluated at compile-time.
 
 r[const-eval.const-expr]
 ## Constant expressions
 
 r[const-eval.const-expr.general]
-Certain forms of expressions, called constant expressions, can be evaluated at
-compile time.
+Certain forms of expressions, called constant expressions, can be evaluated at compile time.
 
 r[const-eval.const-expr.const-context]
 Expressions in a [const context] must be constant expressions.
@@ -23,14 +20,10 @@ r[const-eval.const-expr.runtime-context]
 Outside of const contexts, constant expressions *may* be, but are not guaranteed to be, evaluated at compile time.
 
 r[const-eval.const-expr.error]
-Behaviors such as out of bounds [array indexing] or [overflow] are compiler errors if the value
-must be evaluated at compile time (i.e. in const contexts). Otherwise, these
-behaviors are warnings, but will likely panic at run-time.
+Behaviors such as out of bounds [array indexing] or [overflow] are compiler errors if the value must be evaluated at compile time (i.e. in const contexts). Otherwise, these behaviors are warnings, but will likely panic at run-time.
 
 r[const-eval.const-expr.list]
-The following expressions are constant expressions, so long as any operands are
-also constant expressions and do not cause any [`Drop::drop`][destructors] calls
-to be run.
+The following expressions are constant expressions, so long as any operands are also constant expressions and do not cause any [`Drop::drop`][destructors] calls to be run.
 
 r[const-eval.const-expr.literal]
 * [Literals].
@@ -39,8 +32,7 @@ r[const-eval.const-expr.parameter]
 * [Const parameters].
 
 r[const-eval.const-expr.path-item]
-* [Paths] to [functions] and [constants].
-  Recursively defining constants is not allowed.
+* [Paths] to [functions] and [constants]. Recursively defining constants is not allowed.
 
 r[const-eval.const-expr.path-static]
 * Paths to [statics] with these restrictions:
@@ -79,8 +71,7 @@ r[const-eval.const-expr.closure]
 * [Closure expressions] which don't capture variables from the environment.
 
 r[const-eval.const-expr.builtin-arith-logic]
-* Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean]
-  operators used on integer and floating point types, `bool`, and `char`.
+* Built-in [negation], [arithmetic], [logical], [comparison] or [lazy boolean] operators used on integer and floating point types, `bool`, and `char`.
 
 r[const-eval.const-expr.borrows]
 * All forms of [borrow]s, including raw borrows, except borrows of expressions whose temporary scopes would be extended (see [temporary lifetime extension]) to the end of the program and which are either:
@@ -267,11 +258,7 @@ r[const-eval.const-context.block]
 * A [const block]
 
 r[const-eval.const-context.outer-generics]
-Const contexts that are used as parts of types (array type and repeat length
-expressions as well as const generic arguments) can only make restricted use of
-surrounding generic parameters: such an expression must either be a single bare
-const generic parameter, or an arbitrary expression not making use of any
-generics.
+Const contexts that are used as parts of types (array type and repeat length expressions as well as const generic arguments) can only make restricted use of surrounding generic parameters: such an expression must either be a single bare const generic parameter, or an arbitrary expression not making use of any generics.
 
 r[const-eval.const-fn]
 ## Const functions
