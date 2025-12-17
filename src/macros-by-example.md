@@ -349,7 +349,7 @@ macro_rules! m {
     };
 }
 
-// Introduce m2 macro as path-based candidate.
+// Introduce `m2` macro as path-based candidate.
 //
 // This item is in scope for this entire example, not just below the
 // use declaration.
@@ -361,7 +361,6 @@ m!(); // prints "m\n"
 ```
 
 > [!NOTE]
->
 > For areas where shadowing is not allowed, see [name resolution ambiguities].
 
 r[macro.decl.scope.path-based]
@@ -370,22 +369,22 @@ r[macro.decl.scope.path-based]
 r[macro.decl.scope.path-based.intro]
 By default, a macro has no path-based scope. Macros can gain path-based scope in two ways:
 
-* [Use declaration re-export]
-* [`macro_export`]
+- [Use declaration re-export]
+- [`macro_export`]
 
 r[macro.decl.scope.path.reexport]
 Macros can be re-exported to give them path-based scope from a module other than the crate root.
 
 ```rust
-mac::m!(); // OK: Path-based lookup finds m in the mac module.
+mac::m!(); // OK: Path-based lookup finds `m` in the mac module.
 
 mod mac {
-    // Introduce macro m with textual scope.
+    // Introduce macro `m` with textual scope.
     macro_rules! m {
         () => {};
     }
 
-    // Re-export with path-based scope from within m's textual scope.
+    // Reexport with path-based scope from within `m`'s textual scope.
     pub(crate) use m;
 }
 ```
@@ -815,10 +814,8 @@ expansions, taking separators into account. This means:
 
 For more detail, see the [formal specification].
 
-[Hygiene]: #hygiene
 [Metavariables]: #metavariables
 [Repetitions]: #repetitions
-[Use declaration re-export]: items/use-declarations.md#use-visibility
 [`macro_export`]: #the-macro_export-attribute
 [`$crate`]: macro.decl.hygiene.crate
 [`extern crate self`]: items.extern-crate.self
@@ -829,3 +826,4 @@ For more detail, see the [formal specification].
 [loop labels]: expressions/loop-expr.md#loop-labels
 [name resolution ambiguities]: names/name-resolution.md#r-names.resolution.expansion.imports.ambiguity
 [token]: tokens.md
+[use declaration re-export]: items/use-declarations.md#use-visibility

@@ -450,7 +450,6 @@ their equivalent `#[doc = r"str"]` attributes when passed to macros.
 [items]: items.md
 [macro namespace]: names/namespaces.md
 [module]: items/modules.md
-[name resolution ambiguities]: names/name-resolution.md#r-names.resolution.expansion.imports.ambiguity.derivehelper
 [patterns]: patterns.md
 [public]: visibility-and-privacy.md
 [statements]: statements.md

@@ -304,7 +304,6 @@ mod clashing {
 ```
 
 > [!NOTE]
->
 > For areas where shadowing is not allowed, see [name resolution ambiguities].
 
 r[items.use.glob.last-segment-only]

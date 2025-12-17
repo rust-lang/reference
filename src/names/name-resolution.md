@@ -74,7 +74,7 @@ r[names.resolution.expansion.imports]
 r[names.resolution.expansion.imports.intro]
 All `use` declarations are fully resolved during this stage of resolution. [Type-relative paths] cannot be resolved at this stage and will produce an error.
 
-```rust
+```rust,no_run
 mod m {
     pub const C: () = ();
     pub enum E { V }
@@ -105,8 +105,8 @@ let _ = m::E::C; // OK.
 #     }
 # }
 // Invalid type-relative imports that can't resolve at expansion-time:
-use m::E::C; // ERROR: Unresolved import `m::E::C`.
 use m::A::V; // ERROR: Unresolved import `m::A::V`.
+use m::E::C; // ERROR: Unresolved import `m::E::C`.
 ```
 
 r[names.resolution.expansion.imports.shadowing]
@@ -127,14 +127,14 @@ pub mod m2 {
 
 // This introduces the name `ambig` in the outer scope.
 use m1::ambig;
-fn f() {
+const _: () = {
     // This shadows `ambig` in the inner scope.
     use m2::ambig;
     // The inner candidate is selected here
     // as the resolution of `ambig`.
     use ambig::C;
-    const { assert!(C == 2) };
-}
+    assert!(C == 2);
+};
 ```
 
 r[names.resolution.expansion.imports.shadowing.shared-scope]
@@ -152,8 +152,6 @@ There are certain situations during expansion-time resolution where there are mu
 r[names.resolution.expansion.imports.ambiguity.glob-vs-glob]
 Names may not be resolved through ambiguous glob imports. Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used. Names with conflicting candidates from ambiguous glob imports may still be shadowed by non-glob imports and used without producing an error. The errors occur at time of use, not time of import.
 
-For example:
-
 ```rust,compile_fail,E0659
 mod m1 {
     pub struct Ambig;
@@ -163,17 +161,19 @@ mod m2 {
     pub struct Ambig;
 }
 
-// OK: This brings conficting names into scope and namespace
+// OK: This brings conficting names in the same namespace into scope
 // but they have not been used yet.
 use m1::*;
 use m2::*;
 
-fn ambiguous_use() {
+const _: () = {
+    // The error happens when the name with the conflicting candidates
+    // is used.
     let x = Ambig; // ERROR: `Ambig` is ambiguous.
 }
 ```
 
-```rust
+```rust,no_run
 # mod m1 {
 #     pub struct Ambig;
 # }
@@ -184,39 +184,46 @@ fn ambiguous_use() {
 #
 # use m1::*;
 # use m2::*; // OK: No name conflict.
-fn ambiguous_shadow() {
-    // This is permitted, since resolution is not through the ambiguous globs.
+const _: () = {
+    // This is permitted, since resolution is not through the
+    // ambiguous globs.
     struct Ambig;
-    let x = Ambig;
-}
+    let x = Ambig; // OK.
+};
 ```
 
-Multiple glob imports are allowed to import the same name, and that name is allowed to be used if the imports are of the same item (following re-exports). The visibility of the name is the maximum visibility of the imports.
+Multiple glob imports are allowed to import the same name, and that name is allowed to be used if the imports are of the same item (following reexports). The visibility of the name is the maximum visibility of the imports.
 
-```rust
+```rust,no_run
 mod m1 {
     pub struct Ambig;
 }
 
 mod m2 {
-    // This re-exports the same `Ambig` item through a second module.
+    // This reexports the same `Ambig` item from a second module.
     pub use super::m1::Ambig;
 }
 
-// These both import the same `Ambig`.
-//
-// The visibility of `Ambig` is `pub` because that is the
-// maximum visibility between these two `use` declarations.
 mod m3 {
+    // These both import the same `Ambig`.
+    //
+    // The visibility of `Ambig` is `pub` because that is the
+    // maximum visibility between these two `use` declarations.
     pub use super::m1::*;
     use super::m2::*;
 }
 
-fn main() {
-    // `Ambig` can be used through the m3
-    // globs and still has `pub` visibility.
-    let _ = m3::Ambig;
+mod m4 {
+    // `Ambig` can be used through the `m3` globs and still has
+    // `pub` visibility.
+    pub use crate::m3::Ambig;
 }
+
+const _: () = {
+    // Therefore, we can use it here.
+    let _ = m4::Ambig; // OK.
+};
+# fn main() {}
 ```
 
 r[names.resolution.expansion.imports.ambiguity.glob-vs-outer]
@@ -243,7 +250,7 @@ const _: () = {
 ```
 
 ```rust,compile_fail,E0659
-use m::f as ambig;
+// As above, but with macros.
 pub mod m {
     macro_rules! f {
         () => {};
@@ -257,6 +264,8 @@ pub mod glob {
     pub(crate) use f as ambig;
 }
 
+use m::f as ambig;
+
 const _: () = {
     use glob::*;
     ambig!(); // ERROR: `ambig` is ambiguous.
@@ -266,26 +275,26 @@ const _: () = {
 > [!NOTE]
 > These ambiguity errors are specific to expansion-time resolution. Having multiple candidates available for a given name during later stages of resolution is not considered an error. So long as none of the imports themselves are ambiguous, there will always be a single unambiguous closest resolution.
 >
-> ```rust
+> ```rust,no_run
 > mod glob {
->     pub const AMBIG: bool = true;
+>     pub const AMBIG: u8 = 1;
 > }
 >
 > mod outer {
->     pub const AMBIG: bool = false;
+>     pub const AMBIG: u8 = 2;
 > }
 >
 > use outer::AMBIG;
 >
-> pub fn f() {
+> const C: () = {
 >     use glob::*;
->     assert!(AMBIG);
->     //      ^--- This `AMBIG` is resolved during primary resolution.
-> }
+>     assert!(AMBIG == 1);
+>     //      ^---- This `AMBIG` is resolved during primary resolution.
+> };
 > ```
 
 r[names.resolution.expansion.imports.ambiguity.path-vs-textual-macro]
-Names may not be resolved through ambiguous macro re-exports. Macro re-exports are ambiguous when they would shadow a textual macro candidate for the same name in an [outer scope].
+Names may not be resolved through ambiguous macro reexports. Macro reexports are ambiguous when they would shadow a textual macro candidate for the same name in an [outer scope].
 
 ```rust,compile_fail,E0659
 // Textual macro candidate.
@@ -299,7 +308,7 @@ macro_rules! path_based {
 }
 
 pub fn f() {
-    // This re-export of the `path_based` macro definition
+    // This reexport of the `path_based` macro definition
     // as `ambig` may not shadow the `ambig` macro definition
     // which is resolved via textual macro scope.
     use path_based as ambig;
@@ -329,22 +338,19 @@ The available scope kinds are visited in the following order. Each of these scop
 * [Builtin attributes]
 
 > [!NOTE]
->
 > The compiler will attempt to resolve derive helpers that are used before their associated macro introduces them into scope. This scope is visited after the scope for resolving derive helper candidates that are correctly in scope. This behavior is slated for removal.
 >
 > For more info see [derive helper scope].
 
 > [!NOTE]
->
 > This visitation order may change in the future, such as interleaving the
 > visitation of textual and path-based scope candidates based on their lexical
 > scopes.
 
 > [!EDITION-2018]
->
-> Starting in edition 2018 the `#[macro_use]` prelude is not visited when `#[no_implicit_prelude]` is present.
+> Starting in edition 2018 the `#[macro_use]` prelude is not visited when [`#[no_implicit_prelude]`][names.preludes.no_implicit_prelude] is present.
 
-r[names.resolution.expansion.macros.derivehelpers]
+r[names.resolution.expansion.macros.derive-helpers]
 Derive helper scopes are not visited when resolving derive macros in the parent scope (starting scope).
 
 r[names.resolution.expansion.macros.reserved-names]
@@ -370,15 +376,15 @@ macro_rules! ambig {
     () => {}
 }
 
-// Introduce a second candidate definition for `ambig` inside of a macro
-// expansion.
+// Introduce a second candidate definition for `ambig` inside of a
+// macro expansion.
 define_ambig!();
 
 // The definition of `ambig` from the second invocation
 // of `define_ambig` is the innermost canadidate.
 //
-// The definition of `ambig` from the first invocation of `define_ambig`
-// is the second candidate.
+// The definition of `ambig` from the first invocation of
+// `define_ambig` is the second candidate.
 //
 // The compiler checks that the first candidate is inside of a macro
 // expansion, that the second candidate is not from within the same
@@ -389,7 +395,7 @@ ambig!(); // ERROR: `ambig` is ambiguous.
 
 The reverse is not considered ambiguous.
 
-```rust
+```rust,no_run
 # macro_rules! define_ambig {
 #     () => {
 #         macro_rules! ambig {
@@ -409,7 +415,7 @@ ambig!();
 
 Nor is it ambiguous if the invocation being resolved is within the innermost candidate's expansion.
 
-```rust
+```rust,no_run
 macro_rules! ambig {
     () => {}
 }
@@ -430,7 +436,7 @@ macro_rules! define_and_invoke_ambig {
 define_and_invoke_ambig!();
 ```
 
-It doesn't matter if both definitions come from invocations of the same macro, the outermost candidate is still considered "less expanded" because it is not within the expansion containing the innermost candidate's definition.
+It doesn't matter if both definitions come from invocations of the same macro; the outermost candidate is still considered "less expanded" because it is not within the expansion containing the innermost candidate's definition.
 
 ```rust,compile_fail,E0659
 # macro_rules! define_ambig {
@@ -445,7 +451,7 @@ define_ambig!();
 ambig!(); // ERROR: `ambig` is ambiguous.
 ```
 
-This also applies to imports, so long as the innermost candidate for the invocation of name is from within a macro expansion.
+This also applies to imports so long as the innermost candidate for the name is from within a macro expansion.
 
 ```rust,compile_fail,E0659
 macro_rules! define_ambig {
@@ -468,16 +474,17 @@ const _: () = {
 };
 ```
 
-r[names.resolution.expansion.macros.ambiguity.builtin-attr]
-User defined attributes or derive macros may not shadow builtin non-macro attributes (e.g. inline).
+r[names.resolution.expansion.macros.ambiguity.built-in-attr]
+User-defined attributes or derive macros may not shadow built-in non-macro attributes (e.g. inline).
 
 <!-- ignore: test doesn't support proc-macro -->
 ```rust,ignore
 // with-helper/src/lib.rs
 # use proc_macro::TokenStream;
 #[proc_macro_derive(WithHelperAttr, attributes(non_exhaustive))]
-//                                             ^------------- user attr candidate
-...
+//                                             ^^^^^^^^^^^^^^
+//                                   User-defined attribute candidate.
+// ...
 # pub fn derive_with_helper_attr(_item: TokenStream) -> TokenStream {
 #     TokenStream::new()
 # }
@@ -492,7 +499,7 @@ struct S;
 ```
 
 > [!NOTE]
-> This applies regardless of the name the builtin attribute is a candidate for:
+> This applies regardless of the name the built-in attribute is a candidate for:
 >
 > <!-- ignore: test doesn't support proc-macro -->
 > ```rust,ignore
@@ -500,8 +507,9 @@ struct S;
 > # use proc_macro::TokenStream;
 > #
 > #[proc_macro_derive(WithHelperAttr, attributes(helper))]
-> //                                             ^----- user attr candidate
-> ...
+> //                                             ^^^^^^
+> //                                 User-defined attribute candidate.
+> // ...
 > # pub fn derive_with_helper_attr(_item: TokenStream) -> TokenStream {
 > #     TokenStream::new()
 > # }
@@ -511,7 +519,7 @@ struct S;
 > ```rust,ignore
 > // src/lib.rs
 > use inline as helper;
-> //            ^----- builtin attr candidate via re-export
+> //            ^----- Built-in attribute candidate via reexport.
 >
 > #[derive(with_helper::WithHelperAttr)]
 > #[helper] // ERROR: `helper` is ambiguous.

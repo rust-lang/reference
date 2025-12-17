@@ -110,11 +110,11 @@ r[macro.invocation.name-resolution]
 
 Macros invocations can be resolved via two kinds of scopes:
 
-* Textual Scope
-    * [Textual scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.textual)
-* Path-based scope
-    * [Path-based scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.path-based)
-    * [Procedural macros]
+- Textual Scope
+  - [Textual scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.textual)
+- Path-based scope
+  - [Path-based scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.path-based)
+  - [Procedural macros]
 
 [External blocks]: items/external-blocks.md
 [Macros by Example]: macros-by-example.md
