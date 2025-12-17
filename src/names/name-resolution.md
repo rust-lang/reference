@@ -350,9 +350,6 @@ The available scope kinds are visited in the following order. Each of these scop
 > [!EDITION-2018]
 > Starting in edition 2018 the `#[macro_use]` prelude is not visited when [`#[no_implicit_prelude]`][names.preludes.no_implicit_prelude] is present.
 
-r[names.resolution.expansion.macros.derive-helpers]
-Derive helper scopes are not visited when resolving derive macros in the parent scope (starting scope).
-
 r[names.resolution.expansion.macros.reserved-names]
 The names `cfg` and `cfg_attr` are reserved in the macro attribute [sub-namespace].
 
