@@ -261,7 +261,7 @@ There is an implicit [`Sized`] bound on associated types that can be relaxed usi
 
 r[items.associated.type.def]
 An *associated type definition* defines a type alias for the implementation
-of a trait on a type
+of a trait on a type.
 
 r[items.associated.type.def.restriction]
 They are written similarly to an *associated type declaration*, but cannot contain `Bounds`, but instead must contain a `Type`:
@@ -277,7 +277,7 @@ type Assoc<Params> where WhereBounds = Type; // deprecated, prefer the form abov
 r[items.associated.type.alias]
 If a type `Item` has an associated type `Assoc` from a trait `Trait`, then
 `<Item as Trait>::Assoc` is a type that is an alias of the type specified in the
-associated type definition
+associated type definition.
 
 r[items.associated.type.param]
 Furthermore, if `Item` is a type parameter, then `Item::Assoc` can be used in type parameters.
