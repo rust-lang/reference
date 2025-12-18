@@ -1,8 +1,7 @@
 [package]
 name = "mdbook-spec"
-version = "0.1.2"
-edition = "2024"
-license = "MIT OR Apache-2.0"
+edition.workspace = true
+license.workspace = true
 description = "An mdBook preprocessor to help with the Rust specification."
 repository = "https://github.com/rust-lang/spec/"
 default-run = "mdbook-spec"
@@ -11,13 +10,15 @@ default-run = "mdbook-spec"
 
 [dependencies]
 anyhow = "1.0.79"
+diagnostics.workspace = true
+grammar.workspace = true
 mdbook-markdown = "0.5.1"
 mdbook-preprocessor = "0.5.1"
 once_cell = "1.19.0"
 pathdiff = "0.2.1"
 railroad = { version = "0.3.2", default-features = false }
-regex = "1.9.4"
+regex.workspace = true
 semver = "1.0.21"
 serde_json = "1.0.113"
 tempfile = "3.10.1"
-walkdir = "2.5.0"
+walkdir.workspace = true

@@ -68,11 +68,11 @@ To verify that links are not broken, run `cargo xtask linkcheck`.
 
 ### Running all tests
 
-As a last step before opening a PR, it is recommended to run `cargo xtask test-all`. This will go through and run most of the tests that are required for CI to pass. See `xtask/src/main.rs` for what all this does.
+As a last step before opening a PR, it is recommended to run `cargo xtask test-all`. This will go through and run most of the tests that are required for CI to pass. See `tools/xtask/src/main.rs` for what all this does.
 
 ## Special markdown constructs
 
-The following are extensions provided by [`mdbook-spec`](https://github.com/rust-lang/spec/tree/main/mdbook-spec).
+The following are extensions provided by [`mdbook-spec`](https://github.com/rust-lang/spec/tree/main/tools/mdbook-spec).
 
 ### Rules
 
@@ -190,7 +190,7 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 > This is an example.
 ```
 
-The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/mdbook-spec/src/admonitions.rs).
+The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`tools/mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/tools/mdbook-spec/src/admonitions.rs).
 
 ## Style
 

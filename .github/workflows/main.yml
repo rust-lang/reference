@@ -58,10 +58,8 @@ jobs:
         rustc -Vv
         mdbook --version
     - name: Style checks
-      working-directory: style-check
-      run: cargo run --locked -- ../src
-    - name: Style fmt
-      working-directory: style-check
+      run: cargo xtask style-check
+    - name: Rustfmt check
       run: cargo fmt --check
     - name: Verify the book builds
       env:
@@ -94,18 +92,10 @@ jobs:
       run: |
         rustup --version
         rustc -Vv
-    - name: Verify mdbook-spec lockfile is current
-      working-directory: ./mdbook-spec
+    - name: Verify tools workspace lockfile is current
       run: cargo update -p mdbook-spec --locked
-    - name: Test mdbook-spec
-      working-directory: ./mdbook-spec
+    - name: Test tools
       run: cargo test
-    - name: Rustfmt check
-      working-directory: ./mdbook-spec
-      run: cargo fmt --check
-    - name: Xtask rustfmt check
-      working-directory: ./xtask
-      run: cargo fmt --check
 
   preview:
     if: github.event_name == 'pull_request'

@@ -2,20 +2,19 @@
 
 use crate::rules::Rules;
 use anyhow::{Context, Result, bail};
-use mdbook_preprocessor::book::BookItem;
-use mdbook_preprocessor::book::{Book, Chapter};
+use diagnostics::{Diagnostics, warn_or_err};
+use mdbook_preprocessor::book::{Book, BookItem, Chapter};
 use mdbook_preprocessor::errors::Error;
 use mdbook_preprocessor::{Preprocessor, PreprocessorContext};
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use semver::{Version, VersionReq};
-use std::fmt;
 use std::io;
 use std::ops::Range;
 use std::path::PathBuf;
 
 mod admonitions;
-pub mod grammar;
+mod grammar;
 mod rules;
 mod std_links;
 mod test_links;
@@ -45,54 +44,6 @@ pub fn handle_preprocessing() -> Result<(), Error> {
     serde_json::to_writer(io::stdout(), &processed_book)?;
 
     Ok(())
-}
-
-/// Handler for errors and warnings.
-pub struct Diagnostics {
-    /// Whether or not warnings should be errors (set by SPEC_DENY_WARNINGS
-    /// environment variable).
-    deny_warnings: bool,
-    /// Number of messages generated.
-    count: u32,
-}
-
-impl Diagnostics {
-    fn new() -> Diagnostics {
-        let deny_warnings = std::env::var("SPEC_DENY_WARNINGS").as_deref() == Ok("1");
-        Diagnostics {
-            deny_warnings,
-            count: 0,
-        }
-    }
-
-    /// Displays a warning or error (depending on whether warnings are denied).
-    ///
-    /// Usually you want the [`warn_or_err!`] macro.
-    fn warn_or_err(&mut self, args: fmt::Arguments<'_>) {
-        if self.deny_warnings {
-            eprintln!("error: {args}");
-        } else {
-            eprintln!("warning: {args}");
-        }
-        self.count += 1;
-    }
-}
-
-/// Displays a warning or error (depending on whether warnings are denied).
-#[macro_export]
-macro_rules! warn_or_err {
-    ($diag:expr, $($arg:tt)*) => {
-        $diag.warn_or_err(format_args!($($arg)*));
-    };
-}
-
-/// Displays a message for an internal error, and immediately exits.
-#[macro_export]
-macro_rules! bug {
-    ($($arg:tt)*) => {
-        eprintln!("mdbook-spec internal error: {}", format_args!($($arg)*));
-        std::process::exit(1);
-    };
 }
 
 pub struct Spec {
@@ -196,7 +147,7 @@ impl Preprocessor for Spec {
         if diag.deny_warnings && self.rust_root.is_none() {
             bail!("error: SPEC_RUST_ROOT environment variable must be set");
         }
-        let grammar = grammar::load_grammar(&book, &mut diag);
+        let grammar = ::grammar::load_grammar(&mut diag);
         let rules = self.collect_rules(&book, &mut diag);
         let tests = self.collect_tests(&rules);
         let summary_table = test_links::make_summary_table(&book, &tests, &rules);

@@ -1,0 +1,6 @@
+[package]
+name = "xtask"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]

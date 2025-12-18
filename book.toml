@@ -97,7 +97,7 @@ use-boolean-and = true
 edition = "2024"
 
 [preprocessor.spec]
-command = "cargo run --release --manifest-path mdbook-spec/Cargo.toml"
+command = "cargo run --release --manifest-path tools/mdbook-spec/Cargo.toml"
 
 [build]
-extra-watch-dirs = ["mdbook-spec/src"]
+extra-watch-dirs = ["tools/mdbook-spec/src", "tools/grammar/src"]

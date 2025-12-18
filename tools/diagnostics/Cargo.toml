@@ -1,0 +1,6 @@
+[package]
+name = "diagnostics"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
