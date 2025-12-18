@@ -241,7 +241,7 @@ assert_eq!(2, Enum::Baz as isize);
 ```
 
 r[items.enum.discriminant.coercion.fieldless]
-[Field-less enums] can be casted if they do not have explicit discriminants, or where only unit variants are explicit.
+[Field-less enums] can be cast if they do not have explicit discriminants, or where only unit variants are explicit.
 
 ```rust
 enum Fieldless {

@@ -173,7 +173,7 @@ trait DynIncompatible {
     fn foo() {}  // ERROR: associated function without Sized
     fn returns(&self) -> Self; // ERROR: Self in return type
     fn typed<T>(&self, x: T) {} // ERROR: has generic type parameters
-    fn nested(self: Rc<Box<Self>>) {} // ERROR: nested receiver cannot be downcasted
+    fn nested(self: Rc<Box<Self>>) {} // ERROR: nested receiver cannot be dispatched on
 }
 
 struct S;

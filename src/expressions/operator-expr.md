@@ -549,7 +549,7 @@ reference types and `mut` or `const` in pointer types.
 [^lessmut]: Only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to
 `const` pointer is allowed.
 
-[^no-capture]: Only closures that do not capture (close over) any local variables can be casted to function pointers.
+[^no-capture]: Only closures that do not capture (close over) any local variables can be cast to function pointers.
 
 ### Semantics
 
