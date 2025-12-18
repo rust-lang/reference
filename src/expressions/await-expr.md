@@ -24,7 +24,7 @@ More specifically, an await expression has the following effect.
 2. Evaluate the future to a [future] `tmp`;
 3. Pin `tmp` using [`Pin::new_unchecked`];
 4. This pinned future is then polled by calling the [`Future::poll`] method and passing it the current [task context](#task-context);
-5. If the call to `poll` returns [`Poll::Pending`], then the future returns `Poll::Pending`, suspending its state so that, when the surrounding async context is re-polled,execution returns to step 3;
+5. If the call to `poll` returns [`Poll::Pending`], then the future returns `Poll::Pending`, suspending its state so that, when the surrounding async context is re-polled, execution returns to step 3;
 6. Otherwise the call to `poll` must have returned [`Poll::Ready`], in which case the value contained in the [`Poll::Ready`] variant is used as the result of the `await` expression itself.
 
 r[expr.await.edition2018]
