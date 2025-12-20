@@ -100,11 +100,19 @@ fn diverging_place_read() -> ! {
     // A read of a place expression produces a diverging block
     let _x = foo.x;
 }
-fn diverging_place_not_read() -> () {
+```
+
+```rust,compile_fail,E0308
+# #![ feature(never_type) ]
+# fn make<T>() -> T { loop {} }
+# struct Foo {
+#     x: !,
+# }
+fn diverging_place_not_read() -> ! {
     let foo = Foo { x: make() };
     // Asssignment to `_` means the place is not read
     let _ = foo.x;
-}
+} // ERROR: Mismatched types.
 ```
 
 r[expr.block.value]
