@@ -168,6 +168,9 @@ pub fn insert_summary(grammar: &Grammar, chapter: &Chapter, diag: &mut Diagnosti
         .collect();
     let mut grammar_summary = String::new();
     for category in categories {
+        if category == "example" {
+            continue;
+        }
         let mut chars = category.chars();
         let cap = chars.next().unwrap().to_uppercase().collect::<String>() + chars.as_str();
         write!(grammar_summary, "\n## {cap} summary\n\n").unwrap();
