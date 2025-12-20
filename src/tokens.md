@@ -655,12 +655,12 @@ r[lex.token.life]
 r[lex.token.life.syntax]
 ```grammar,lexer
 LIFETIME_TOKEN ->
-      `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
-    | RAW_LIFETIME
+      RAW_LIFETIME
+    | `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
 
 LIFETIME_OR_LABEL ->
-      `'` NON_KEYWORD_IDENTIFIER _not immediately followed by `'`_
-    | RAW_LIFETIME
+      RAW_LIFETIME
+    | `'` NON_KEYWORD_IDENTIFIER _not immediately followed by `'`_
 
 RAW_LIFETIME ->
     `'r#` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
