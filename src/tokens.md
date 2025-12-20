@@ -441,7 +441,7 @@ r[lex.token.literal.int]
 r[lex.token.literal.int.syntax]
 ```grammar,lexer
 INTEGER_LITERAL ->
-    ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) SUFFIX_NO_E?
+    ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL | DEC_LITERAL ) SUFFIX_NO_E?
 
 DEC_LITERAL -> DEC_DIGIT (DEC_DIGIT|`_`)*
 
