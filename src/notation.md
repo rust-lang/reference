@@ -31,6 +31,18 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 
 Sequences have a higher precedence than `|` alternation.
 
+r[notation.grammar.non-greedy]
+### Non-greedy repetition
+
+Repetition operators marked with "(non-greedy)" indicate that the repetition stops matching as soon as possible rather than matching as much as possible. For example:
+
+```grammar,example
+@root EXAMPLE_STRING ->
+    `"` ~`"`*? `"`
+```
+
+When presented with the input `"one" or "two"`, the EXAMPLE_STRING rule will match `"one"` instead of the entire input.
+
 r[notation.grammar.string-tables]
 ### String table productions
 
