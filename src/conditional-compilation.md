@@ -31,7 +31,7 @@ r[cfg.general]
 *Conditionally compiled source code* is source code that is compiled only under certain conditions.
 
 r[cfg.attributes-macro]
-Source code can be made conditionally compiled using the [`cfg`] and [`cfg_attr`] [attributes] and the built-in [`cfg` macro].
+Source code can be made conditionally compiled using the [`cfg`] and [`cfg_attr`] [attributes] and the built-in [`cfg!`] and [`cfg_select!`] [macros].
 
 r[cfg.conditional]
 Whether to compile can depend on the target architecture of the compiled crate, arbitrary values passed to the compiler, and other things further described below.
@@ -466,11 +466,75 @@ let machine_kind = if cfg!(unix) {
 println!("I'm running on a {} machine!", machine_kind);
 ```
 
+r[cfg.cfg_select]
+### The `cfg_select` macro
+
+r[cfg.cfg_select.syntax]
+```grammar,configuration
+CfgSelect ->
+    cfg_select! `{` CfgSelectBranch* `}`
+
+CfgSelectConfigurationPredicate ->
+    ConfigurationPredicate | `_`
+
+CfgSelectBranch ->
+    CfgSelectConfigurationPredicate `=>` `{` TokenTree `}`
+  | CfgSelectConfigurationPredicate `=>` TokenTree `,`
+```
+
+r[cfg.cfg_select.general]
+The built-in `cfg_select` macro expands to the `TokenTree` on the right-hand side of the first configuration predicate that evaluates to `true`.
+
+For example:
+
+```rust
+cfg_select! {
+    unix => {
+        fn foo() { /* unix specific functionality */ }
+    }
+    target_pointer_width = "32" => {
+        fn foo() { /* non-unix, 32-bit functionality */ }
+    }
+    _ => {
+        fn foo() { /* fallback implementation */ }
+    }
+}
+```
+The `cfg_select` macro can also be used in expression position:
+
+```rust
+let is_unix_str = cfg_select! {
+    unix => "unix",
+    _ => "not unix",
+};
+```
+
+r[cfg.cfg_select.wildcard]
+A `_` can be used to write a configuration predicate that always evaluates to `true`.
+
+r[cfg.cfg_select.fallthrough]
+If none of the predicates evaluates to `true`, a compiler error is emitted.
+
+r[cfg.cfg_select.positions]
+The `cfg_select!` macro is accepted in the following macro expansion positions
+
+- items
+- statements
+- expression
+- impl items
+- trait impl items
+- trait items
+- foreign items
+
+r[cfg.cfg_select.well-formed]
+Each right-hand side must syntactically be valid expansion for the position that the macro is invoked in.
+
 [Testing]: attributes/testing.md
 [`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute
-[`cfg` macro]: #the-cfg-macro
+[`cfg!`]: #the-cfg-macro
+[`cfg_select!`]: #the-cfg_select-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
 [`crate_type`]: linkage.md
@@ -479,4 +543,5 @@ println!("I'm running on a {} machine!", machine_kind);
 [attributes]: attributes.md
 [cargo-feature]: ../cargo/reference/features.html
 [crate type]: linkage.md
+[macros]: macros.md
 [static C runtime]: linkage.md#static-and-dynamic-c-runtimes
