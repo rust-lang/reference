@@ -157,8 +157,10 @@ ASCII_ESCAPE ->
     | `\n` | `\r` | `\t` | `\\` | `\0`
 
 UNICODE_ESCAPE ->
-    `\u{` ( HEX_DIGIT `_`* ){1..6} `}`
+    `\u{` ( HEX_DIGIT `_`* ){1..6} _valid hex char value_ `}`[^valid-hex-char]
 ```
+
+[^valid-hex-char]: See [lex.token.literal.char-escape.unicode].
 
 r[lex.token.literal.char.intro]
 A _character literal_ is a single Unicode character enclosed within two `U+0027` (single-quote) characters, with the exception of `U+0027` itself, which must be _escaped_ by a preceding `U+005C` character (`\`).
@@ -196,7 +198,7 @@ r[lex.token.literal.char-escape.ascii]
 * A _7-bit code point escape_ starts with `U+0078` (`x`) and is followed by exactly two _hex digits_ with value up to `0x7F`. It denotes the ASCII character with value equal to the provided hex value. Higher values are not permitted because it is ambiguous whether they mean Unicode code points or byte values.
 
 r[lex.token.literal.char-escape.unicode]
-* A _24-bit code point escape_ starts with `U+0075` (`u`) and is followed by up to six _hex digits_ surrounded by braces `U+007B` (`{`) and `U+007D` (`}`). It denotes the Unicode code point equal to the provided hex value.
+* A _24-bit code point escape_ starts with `U+0075` (`u`) and is followed by up to six _hex digits_ surrounded by braces `U+007B` (`{`) and `U+007D` (`}`). It denotes the Unicode code point equal to the provided hex value. The value must be a valid Unicode scalar value.
 
 r[lex.token.literal.char-escape.whitespace]
 * A _whitespace escape_ is one of the characters `U+006E` (`n`), `U+0072` (`r`), or `U+0074` (`t`), denoting the Unicode values `U+000A` (LF), `U+000D` (CR) or `U+0009` (HT) respectively.
