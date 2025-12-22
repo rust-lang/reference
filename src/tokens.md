@@ -447,11 +447,11 @@ INTEGER_LITERAL ->
 
 DEC_LITERAL -> DEC_DIGIT (DEC_DIGIT|`_`)*
 
-BIN_LITERAL -> `0b` (BIN_DIGIT|`_`)* BIN_DIGIT (BIN_DIGIT|`_`)*
+BIN_LITERAL -> `0b` `_`* BIN_DIGIT (BIN_DIGIT|`_`)*
 
-OCT_LITERAL -> `0o` (OCT_DIGIT|`_`)* OCT_DIGIT (OCT_DIGIT|`_`)*
+OCT_LITERAL -> `0o` `_`* OCT_DIGIT (OCT_DIGIT|`_`)*
 
-HEX_LITERAL -> `0x` (HEX_DIGIT|`_`)* HEX_DIGIT (HEX_DIGIT|`_`)*
+HEX_LITERAL -> `0x` `_`* HEX_DIGIT (HEX_DIGIT|`_`)*
 
 BIN_DIGIT -> [`0`-`1`]
 
@@ -563,7 +563,7 @@ FLOAT_LITERAL ->
     | DEC_LITERAL (`.` DEC_LITERAL)? FLOAT_EXPONENT SUFFIX?
 
 FLOAT_EXPONENT ->
-    (`e`|`E`) (`+`|`-`)? (DEC_DIGIT|`_`)* DEC_DIGIT (DEC_DIGIT|`_`)*
+    (`e`|`E`) (`+`|`-`)? `_`* DEC_DIGIT (DEC_DIGIT|`_`)*
 ```
 
 r[lex.token.literal.float.form]
