@@ -21,7 +21,7 @@ RESERVED_RAW_IDENTIFIER ->
 
 <!-- When updating the version, update the UAX links, too. -->
 r[ident.unicode]
-Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for Unicode version 16.0, with the additions described below. Some examples of identifiers:
+Identifiers follow the specification in [Unicode Standard Annex #31][UAX31] for Unicode version 17.0, with the additions described below. Some examples of identifiers:
 
 * `foo`
 * `_identifier`
@@ -85,5 +85,5 @@ It is an error to use the [RESERVED_RAW_IDENTIFIER] token.
 [proc-macro]: procedural-macros.md
 [reserved]: keywords.md#reserved-keywords
 [strict]: keywords.md#strict-keywords
-[UAX15]: https://www.unicode.org/reports/tr15/tr15-56.html
-[UAX31]: https://www.unicode.org/reports/tr31/tr31-41.html
+[UAX15]: https://www.unicode.org/reports/tr15/tr15-57.html
+[UAX31]: https://www.unicode.org/reports/tr31/tr31-43.html
