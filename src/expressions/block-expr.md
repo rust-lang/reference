@@ -44,7 +44,7 @@ r[expr.block.result]
 Then the final operand is executed, if given.
 
 r[expr.block.type]
-The type of a block is the type of the final operand, or `()` if the final operand is omitted.
+Except in the case of divergence [(see below)](block-expr.md#r-expr.block.type.diverging), the type of a block is the type of the final operand, or `()` if the final operand is omitted.
 
 ```rust
 # fn fn_call() {}
@@ -62,6 +62,51 @@ assert_eq!(5, five);
 
 > [!NOTE]
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
+
+r[expr.block.type.diverging]
+A block is itself considered to be [diverging](../divergence.md) if all reachable control flow paths contain a [diverging expression](../divergence.md), unless that expression is a [place expression](../expressions.md#r-expr.place-value.place-memory-location) that is not read from.
+
+```rust,no_run
+# #![ feature(never_type) ]
+# fn make<T>() -> T { loop {} }
+fn no_control_flow() -> ! {
+    // There are no conditional statements, so this entire function body is diverging.
+    loop {}
+}
+
+fn control_flow_diverging() -> ! {
+    // All paths are diverging, so this entire function body is diverging.
+    if true {
+        loop {}
+    } else {
+        loop {}
+    }
+}
+
+fn control_flow_not_diverging() -> () {
+    // Some paths are not diverging, so this entire block is not diverging.
+    if true {
+        ()
+    } else {
+        loop {}
+    }
+}
+
+struct Foo {
+    x: !,
+}
+
+fn diverging_place_read() -> ! {
+    let foo = Foo { x: make() };
+    // A read of a place expression produces a diverging block
+    let _x = foo.x;
+}
+fn diverging_place_not_read() -> () {
+    let foo = Foo { x: make() };
+    // Asssignment to `_` means the place is not read
+    let _ = foo.x;
+}
+```
 
 r[expr.block.value]
 Blocks are always [value expressions] and evaluate the last operand in value expression context.
