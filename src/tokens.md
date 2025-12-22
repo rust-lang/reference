@@ -14,8 +14,8 @@ Token ->
     | RAW_BYTE_STRING_LITERAL
     | C_STRING_LITERAL
     | RAW_C_STRING_LITERAL
-    | INTEGER_LITERAL
     | FLOAT_LITERAL
+    | INTEGER_LITERAL
     | LIFETIME_TOKEN
     | PUNCTUATION
     | IDENTIFIER_OR_KEYWORD
@@ -443,7 +443,7 @@ r[lex.token.literal.int]
 r[lex.token.literal.int.syntax]
 ```grammar,lexer
 INTEGER_LITERAL ->
-    ( DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) SUFFIX_NO_E?
+    ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL | DEC_LITERAL ) SUFFIX_NO_E?
 
 DEC_LITERAL -> DEC_DIGIT (DEC_DIGIT|`_`)*
 
@@ -558,9 +558,9 @@ r[lex.token.literal.float]
 r[lex.token.literal.float.syntax]
 ```grammar,lexer
 FLOAT_LITERAL ->
-      DEC_LITERAL `.` _not immediately followed by `.`, `_` or an XID_Start character_
+      DEC_LITERAL (`.` DEC_LITERAL)? FLOAT_EXPONENT SUFFIX?
     | DEC_LITERAL `.` DEC_LITERAL SUFFIX_NO_E?
-    | DEC_LITERAL (`.` DEC_LITERAL)? FLOAT_EXPONENT SUFFIX?
+    | DEC_LITERAL `.` _not immediately followed by `.`, `_` or an XID_Start character_
 
 FLOAT_EXPONENT ->
     (`e`|`E`) (`+`|`-`)? `_`* DEC_DIGIT (DEC_DIGIT|`_`)*
@@ -657,12 +657,12 @@ r[lex.token.life]
 r[lex.token.life.syntax]
 ```grammar,lexer
 LIFETIME_TOKEN ->
-      `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
-    | RAW_LIFETIME
+      RAW_LIFETIME
+    | `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
 
 LIFETIME_OR_LABEL ->
-      `'` NON_KEYWORD_IDENTIFIER _not immediately followed by `'`_
-    | RAW_LIFETIME
+      RAW_LIFETIME
+    | `'` NON_KEYWORD_IDENTIFIER _not immediately followed by `'`_
 
 RAW_LIFETIME ->
     `'r#` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
@@ -695,58 +695,58 @@ Punctuation tokens are used as operators, separators, and other parts of the gra
 r[lex.token.punct.syntax]
 ```grammar,lexer
 PUNCTUATION ->
-      `=`
-    | `<`
-    | `<=`
-    | `==`
-    | `!=`
-    | `>=`
-    | `>`
-    | `&&`
-    | `||`
-    | `!`
-    | `~`
-    | `+`
-    | `-`
-    | `*`
-    | `/`
-    | `%`
-    | `^`
-    | `&`
-    | `|`
-    | `<<`
-    | `>>`
-    | `+=`
-    | `-=`
-    | `*=`
-    | `/=`
-    | `%=`
-    | `^=`
-    | `&=`
-    | `|=`
+      `...`
+    | `..=`
     | `<<=`
     | `>>=`
-    | `@`
-    | `.`
-    | `..`
-    | `...`
-    | `..=`
-    | `,`
-    | `;`
-    | `:`
-    | `::`
+    | `!=`
+    | `%=`
+    | `&&`
+    | `&=`
+    | `*=`
+    | `+=`
+    | `-=`
     | `->`
+    | `..`
+    | `/=`
+    | `::`
     | `<-`
+    | `<<`
+    | `<=`
+    | `==`
     | `=>`
+    | `>=`
+    | `>>`
+    | `>`
+    | `^=`
+    | `|=`
+    | `||`
+    | `!`
     | `#`
     | `$`
-    | `?`
-    | `{`
-    | `}`
-    | `[`
-    | `]`
+    | `%`
+    | `&`
     | `(`
     | `)`
+    | `*`
+    | `+`
+    | `,`
+    | `-`
+    | `.`
+    | `/`
+    | `:`
+    | `;`
+    | `<`
+    | `=`
+    | `?`
+    | `@`
+    | `[`
+    | `]`
+    | `^`
+    | `{`
+    | `|`
+    | `}`
+    | `~`
 ```
 
 > [!NOTE]
