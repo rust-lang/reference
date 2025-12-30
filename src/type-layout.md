@@ -255,7 +255,7 @@ r[layout.repr.c.union.intro]
 A union declared with `#[repr(C)]` will have the same size and alignment as an equivalent C union declaration in the C language for the target platform.
 
 r[layout.repr.c.union.size-align]
-The union will have a size of the maximum size of all of its fields rounded to its alignment, and an alignment of the maximum alignment of all of its fields. These maximums may come from different fields.
+The union will have a size of the maximum size of all of its fields rounded to its alignment, and an alignment of the maximum alignment of all of its fields. These maximums may come from different fields. Each field lives at byte offset 0 from the beginning of the union.
 
 ```rust
 #[repr(C)]
@@ -267,6 +267,9 @@ union Union {
 assert_eq!(std::mem::size_of::<Union>(), 4);  // From f2
 assert_eq!(std::mem::align_of::<Union>(), 2); // From f1
 
+assert_eq!(std::mem::offset_of!(Union, f1), 0);
+assert_eq!(std::mem::offset_of!(Union, f2), 0);
+
 #[repr(C)]
 union SizeRoundedUp {
    a: u32,
@@ -277,6 +280,9 @@ assert_eq!(std::mem::size_of::<SizeRoundedUp>(), 8);  // Size of 6 from b,
                                                       // rounded up to 8 from
                                                       // alignment of a.
 assert_eq!(std::mem::align_of::<SizeRoundedUp>(), 4); // From a
+
+assert_eq!(std::mem::offset_of!(SizeRoundedUp, a), 0);
+assert_eq!(std::mem::offset_of!(SizeRoundedUp, b), 0);
 ```
 
 r[layout.repr.c.enum]
