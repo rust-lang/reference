@@ -1,6 +1,6 @@
 [package]
 name = "xtask"
-edition.workspace = true
-license.workspace = true
+edition = "2024"
+license = "MIT OR Apache-2.0"
 
 [dependencies]

@@ -1,7 +1,7 @@
 [package]
 name = "style-check"
-edition.workspace = true
-license.workspace = true
+edition = "2024"
+license = "MIT OR Apache-2.0"
 authors = ["steveklabnik <steve@steveklabnik.com>"]
 
 [dependencies]

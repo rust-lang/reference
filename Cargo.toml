@@ -6,14 +6,3 @@ exclude = [
     "linkchecker"
 ]
 resolver = "2"
-
-[workspace.package]
-edition = "2024"
-license = "MIT OR Apache-2.0"
-
-[workspace.dependencies]
-diagnostics = { path = "tools/diagnostics" }
-grammar = { path = "tools/grammar" }
-pathdiff =  "0.2.3"
-regex = "1.12.2"
-walkdir = "2.5.0"
