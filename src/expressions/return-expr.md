@@ -12,6 +12,8 @@ Return expressions are denoted with the keyword `return`.
 r[expr.return.behavior]
 Evaluating a `return` expression moves its argument into the designated output location for the current function call, destroys the current function activation frame, and transfers control to the caller frame.
 
+Thus, a `return` expression itself has a type of [`!`](../types/never.md).
+
 An example of a `return` expression:
 
 ```rust
