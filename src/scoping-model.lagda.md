@@ -9,9 +9,8 @@ module scoping-model (FnCtxt ConstCtxt : Set) where
 
 open import Data.Maybe using (Maybe; just; nothing)
 open import Data.Nat using (ℕ)
-open import Function using (_∘_; _|>_)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; [_])
+open import Function using (_|>_)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 ```
 
 ## Reading guide
