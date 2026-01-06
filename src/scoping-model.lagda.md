@@ -9,7 +9,7 @@ module scoping-model (FnCtxt ConstCtxt : Set) where
 
 open import Data.Maybe using (Maybe; just; nothing)
 open import Data.Nat using (ℕ)
-open import Function using (_∘_; _|>_; case_of_)
+open import Function using (_∘_; _|>_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; [_])
 ```
@@ -196,10 +196,9 @@ tempScope-stable (e-inner-ref@(_ ▷ &●) ▷ &●) =
 -- `extendingScope`.  Otherwise, its temporary scope is its enclosing
 -- temporary scope.
 {-# CATCHALL #-}
-tempScope-stable e-operand@(e-ref ▷ &●) =
-  case extendingScope e-ref of λ where
-    (just x-extended) → x-extended
-    nothing → enclosingTempScope e-operand
+tempScope-stable e-operand@(e-ref ▷ &●) with extendingScope e-ref
+… | just x-extended = x-extended
+… | nothing = enclosingTempScope e-operand
 -- Our other contexts don't have extended temporary scopes.  Their
 -- temporary scopes are their enclosing temporary scopes.
 {-# CATCHALL #-}
@@ -221,10 +220,9 @@ tempScope-stable′ (e-indexing ▷ ●⟦…⟧) = tempScope-stable′ e-indexi
 -- it's extending, its temporary scope is extended by
 -- `extendingScope`.  Otherwise, its temporary scope is the same as
 -- its parent's, per the expanded subexpressions rule.
-tempScope-stable′ (e-ref ▷ &●) =
-  case extendingScope e-ref of λ where
-    (just x-extended) → x-extended
-    nothing → tempScope-stable′ e-ref
+tempScope-stable′ (e-ref ▷ &●) with extendingScope e-ref
+… | just x-extended = x-extended
+… | nothing = tempScope-stable′ e-ref
 -- Our other contexts don't have extended temporary scopes.  Their
 -- temporary scopes are their enclosing temporary scopes.
 {-# CATCHALL #-}
