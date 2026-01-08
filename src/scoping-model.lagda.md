@@ -425,6 +425,43 @@ tempScope-refPr′ e-other = enclosingTempScope e-other
 
 This offers a more visual interpretation of extending subexpressions: to find the temporary scope of `&●` within an extending subexpression, imagine moving the `&●` up as though it was in its parent's place. `tempScope-146098` can also be expressed in this way, but it still requires two function definitions or some extra bit of state to encode whether the subexpressions rule has been applied already.
 
+### Proof
+
+```agda
+≡refScope-refPr'|e▷&● : ∀ e
+  → refScope-refPr e ≡ tempScope-refPr′ (e ▷ &●)
+≡tempScope-refPr′ : ∀ e → tempScope-refPr e ≡ tempScope-refPr′ e
+
+≡refScope-refPr'|e▷&● (e ▷ |…|●) = refl
+≡refScope-refPr'|e▷&● (e ▷ const…=●⨾) = refl
+≡refScope-refPr'|e▷&● (e ▷ let…=●⨾ pat) = refl
+≡refScope-refPr'|e▷&● (e ▷ ●⨾) = refl
+≡refScope-refPr'|e▷&● (e ▷ ⦃…⨾●⦄) = ≡refScope-refPr'|e▷&● e
+≡refScope-refPr'|e▷&● (e ▷ …⦅…,●,…⦆ n) = refl
+≡refScope-refPr'|e▷&● (e ▷ ⟦…,●,…⟧ n) = ≡refScope-refPr'|e▷&● e
+≡refScope-refPr'|e▷&● (e ▷ ●⟦…⟧) = ≡tempScope-refPr′ e
+≡refScope-refPr'|e▷&● (e ▷ &●) = ≡refScope-refPr'|e▷&● e
+
+≡tempScope-refPr′ (e ▷ |…|●) = refl
+≡tempScope-refPr′ (e ▷ const…=●⨾) = refl
+≡tempScope-refPr′ (e ▷ let…=●⨾ pat-ext) = refl
+≡tempScope-refPr′ (e ▷ let…=●⨾ pat-non) = refl
+≡tempScope-refPr′ (e ▷ ●⨾) = refl
+≡tempScope-refPr′ (e ▷ ⦃…⨾●⦄) = refl
+≡tempScope-refPr′ (e ▷ …⦅…,●,…⦆ n) = refl
+≡tempScope-refPr′ (e ▷ ⟦…,●,…⟧ n) = refl
+≡tempScope-refPr′ (e ▷ ●⟦…⟧) = ≡tempScope-refPr′ e
+≡tempScope-refPr′ (e ▷ |…|● ▷ &●) = refl
+≡tempScope-refPr′ (e ▷ const…=●⨾ ▷ &●) = refl
+≡tempScope-refPr′ (e ▷ let…=●⨾ pat ▷ &●) = refl
+≡tempScope-refPr′ (e ▷ ●⨾ ▷ &●) = refl
+≡tempScope-refPr′ (e ▷ ⦃…⨾●⦄ ▷ &●) = ≡refScope-refPr'|e▷&● e
+≡tempScope-refPr′ (e ▷ …⦅…,●,…⦆ n ▷ &●) = refl
+≡tempScope-refPr′ (e ▷ ⟦…,●,…⟧ n ▷ &●) = ≡refScope-refPr'|e▷&● e
+≡tempScope-refPr′ (e ▷ ●⟦…⟧ ▷ &●) = ≡tempScope-refPr′ e
+≡tempScope-refPr′ (e ▷ &● ▷ &●) = ≡refScope-refPr'|e▷&● e
+```
+
 [literate Agda]: https://agda.readthedocs.io/en/latest/tools/literate-programming.html
 [Reference PR #2051]: https://github.com/rust-lang/reference/pull/2051
 [Rust PR #146098]: https://github.com/rust-lang/rust/pull/146098
