@@ -31,8 +31,8 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 To focus on scoping, this appendix models a simplified abstract syntax tree (AST).
 
-- `Array` (`⟦…,●,…⟧`) represents all *extending expressions* (structs, tuples, arrays).
-- `Indexing` (`●⟦…⟧`) represents all *place base contexts* (derefs, fields, indexes).
+- ``⟦…,●,…⟧` represents array, tuple, field struct, tuple struct, struct-like variant, and tuple-like variant constructor expressions.
+- `●⟦…⟧` represents array indexing, tuple indexing, and dereference expressions.
 
 The *context* of a syntax-tree node uniquely identifies where in the source it appears. This is defined inductively.
 
