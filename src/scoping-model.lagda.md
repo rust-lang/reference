@@ -248,10 +248,6 @@ lemma-extending (e ▷ ⟦…,●,…⟧ n) p rewrite p = refl
 lemma-extending (e ▷ &●) p = lemma-extending e p
 lemma-extending (s ▷ let…=●⨾ pat) refl = refl
 lemma-extending (c ▷ const…=●⨾) refl = refl
-lemma-extending (fn ▷ |…|●) ()
-lemma-extending (s ▷ ●⨾) ()
-lemma-extending (e ▷ …⦅…,●,…⦆ n) ()
-lemma-extending (e ▷ ●⟦…⟧) ()
 ```
 
 Proof that `tempScope-stable` and `tempScope-stable′` are equivalent.
