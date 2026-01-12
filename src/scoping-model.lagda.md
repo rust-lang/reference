@@ -302,7 +302,7 @@ refScope-146098 (_ ▷ const…=●⨾) = scope ctxt-top
 -- Extending subexpressions preserve `&●`'s temporary scope.
 refScope-146098 (e-block ▷ ⦃…⨾●⦄) = refScope-146098 e-block
 refScope-146098 (e-array ▷ ⟦…,●,…⟧ _) = refScope-146098 e-array
-refScope-146098 (e-ref-outer ▷ &●) = refScope-146098 e-ref-outer
+refScope-146098 (e-ref ▷ &●) = refScope-146098 e-ref
 -- In other contexts, the temp scope of `&●` is the enclosing temp
 -- scope.
 {-# CATCHALL #-}
