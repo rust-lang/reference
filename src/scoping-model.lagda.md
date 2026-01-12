@@ -115,7 +115,7 @@ record Scope : Set where
 
 #### Scope hierarchy
 
-Scopes form a hierarchy. The `Hierarchy` module defines the ancestry relation, where `_≻_` is the parent relation and `_≻*_` is the reflexive transitive closure (ancestor relation).
+Scopes form a hierarchy. The `Hierarchy` module defines the ancestry relation, where `_≻_` is the parent relation and `_≻*_` is the reflexive transitive closure (ancestor relation). Each scope is treated as an ancestor of itself.
 
 ```agda
 module Hierarchy where
@@ -128,6 +128,10 @@ module Hierarchy where
 
   _≻*_ : Scope → Scope → Set
   _≻*_ = Star _≻_
+
+  -- Proof that the ancestry relation is reflexive.
+  ancestry-is-reflexive : ∀ x → x ≻* x
+  ancestry-is-reflexive _ = Star.ε
 ```
 
 ## The enclosing temporary scope
