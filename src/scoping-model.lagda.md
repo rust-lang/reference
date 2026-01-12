@@ -216,8 +216,8 @@ The subexpressions rule can be reinterpreted as applying more broadly and unifor
 tempScope-stable′ : Context Expr → Scope
 -- `let ref x = ●;` has an extended temporary scope.
 tempScope-stable′ (s-let ▷ let…=●⨾ pat-ext) = scope (blockOf s-let)
--- `●[…]` has the same temporary scope as its parent, per the sub-expr
--- rule.
+-- `●[…]` has the same temporary scope as its parent, per the
+-- subexpression rule.
 tempScope-stable′ (e-indexing ▷ ●⟦…⟧) = tempScope-stable′ e-indexing
 -- The scope of `&●` depends on whether the borrow is extending.  If
 -- it's extending, its temporary scope is extended by
