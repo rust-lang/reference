@@ -229,6 +229,38 @@ const _: () = {
 r[names.resolution.expansion.imports.ambiguity.glob-vs-outer]
 Names in imports and macro invocations may not be resolved through glob imports when there is another candidate available in an [outer scope].
 
+r[names.resolution.expansion.imports.ambiguity.panic-hack]
+> [!NOTE]
+> When one of [`core::panic!`] or [`std::panic!`] is brought into scope due to the [standard library prelude], and a user-written [glob import] brings the other into scope, `rustc` currently allows use of `panic!`, even though it is ambiguous. The user-written glob import takes precedence to resolve this ambiguity.
+>
+> In Rust 2021 and later, [`core::panic!`] and [`std::panic!`] operate identically. But in earlier editions, they differ; only [`std::panic!`] accepts a [`String`] as the format argument.
+>
+> E.g., this is an error:
+>
+> ```rust,edition2018,compile_fail,E0308
+> extern crate core;
+> use ::core::prelude::v1::*;
+> fn main() {
+>     panic!(std::string::String::new()); // ERROR.
+> }
+> ```
+>
+> And this is accepted:
+>
+> <!-- ignore: Can't test with `no_std`. -->
+> ```rust,edition2018,ignore
+> #![no_std]
+> extern crate std;
+> use ::std::prelude::v1::*;
+> fn main() {
+>     panic!(std::string::String::new()); // OK.
+> }
+> ```
+>
+> Don't rely on this behavior; the plan is to remove it.
+>
+> For details, see [Rust issue #147319](https://github.com/rust-lang/rust/issues/147319).
+
 ```rust,compile_fail,E0659
 mod glob {
     pub mod ambig {
@@ -545,6 +577,7 @@ r[names.resolution.type-relative]
 [`use` declarations]: ../items/use-declarations.md
 [`use` glob shadowing]: ../items/use-declarations.md#r-items.use.glob.shadowing
 [derive helper scope]: ../procedural-macros.md#r-macro.proc.derive.attributes.scope
+[glob import]: items.use.glob
 [item definitions]: ../items.md
 [macro invocations]: ../macros.md#macro-invocation
 [macro textual scope shadowing]: ../macros-by-example.md#r-macro.decl.scope.textual.shadow

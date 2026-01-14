@@ -40,6 +40,11 @@ Edition | `no_std` not applied        | `no_std` applied
 >
 > [`core::prelude::rust_2015`] and [`core::prelude::rust_2018`] have the same contents as [`core::prelude::v1`].
 
+> [!NOTE]
+> When one of [`core::panic!`] or [`std::panic!`] is brought into scope due to the [standard library prelude], and a user-written [glob import] brings the other into scope, `rustc` currently allows use of `panic!`, even though it is ambiguous. The user-written glob import takes precedence to resolve this ambiguity.
+>
+> For details, see [names.resolution.expansion.imports.ambiguity.panic-hack].
+
 r[names.preludes.extern]
 ## Extern prelude
 
@@ -81,7 +86,7 @@ r[names.preludes.extern.no_std]
 ### The `no_std` attribute
 
 r[names.preludes.extern.no_std.intro]
-The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically, the [standard library prelude] to instead use the `core` prelude, and the [`macro_use` prelude] to instead use the macros exported from the `core` crate.
+The *`no_std` [attribute][attributes]* causes the [`std`] crate to not be linked automatically and the [standard library prelude] to instead use the `core` prelude.
 
 > [!EXAMPLE]
 > <!-- ignore: test infrastructure can't handle no_std -->
@@ -109,9 +114,6 @@ The `no_std` attribute may be used any number of times on a form.
 
 r[names.preludes.extern.no_std.module]
 The `no_std` attribute changes the [standard library prelude] to use the `core` prelude instead of the `std` prelude.
-
-r[names.preludes.extern.no_std.macro_use]
-By default, all macros exported from the `std` crate are added to the [`macro_use` prelude]. If the `no_std` attribute is specified, then all macros exported from the `core` crate are placed into the [`macro_use` prelude] instead.
 
 r[names.preludes.extern.no_std.edition2018]
 > [!EDITION-2018]
@@ -190,6 +192,41 @@ The `no_implicit_prelude` attribute may be used any number of times on a form.
 r[names.preludes.no_implicit_prelude.excluded-preludes]
 The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module and its descendants.
 
+r[names.preludes.no_implicit_prelude.implicitly-imported-macros]
+> [!NOTE]
+> Despite `#![no_implicit_prelude]`, `rustc` currently brings certain macros implicitly into scope. Those macros are:
+>
+> - [`assert!`]
+> - [`cfg!`]
+> - [`cfg_select!`]
+> - [`column!`]
+> - [`compile_error!`]
+> - [`concat!`]
+> - [`concat_bytes!`]
+> - [`env!`]
+> - [`file!`]
+> - [`format_args!`]
+> - [`include!`]
+> - [`include_bytes!`]
+> - [`include_str!`]
+> - [`line!`]
+> - [`module_path!`]
+> - [`option_env!`]
+> - [`panic!`]
+> - [`stringify!`]
+> - [`unreachable!`]
+>
+> E.g., this works:
+>
+> ```rust
+> #![no_implicit_prelude]
+> fn main() { assert!(true); }
+> ```
+>
+> Don't rely on this behavior; it may be removed in the future. Always bring the items you need into scope explicitly when using `#![no_implicit_prelude]`.
+>
+> For details, see [Rust PR #62086](https://github.com/rust-lang/rust/pull/62086) and [Rust PR #139493](https://github.com/rust-lang/rust/pull/139493).
+
 r[names.preludes.no_implicit_prelude.lang]
 The `no_implicit_prelude` attribute does not affect the [language prelude].
 
@@ -206,6 +243,7 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
 [extern prelude]: #extern-prelude
 [floating-point types]: ../types/numeric.md#floating-point-types
+[glob import]: items.use.glob
 [Integer types]: ../types/numeric.md#integer-types
 [Language prelude]: #language-prelude
 [Machine-dependent integer types]: ../types/numeric.md#machine-dependent-integer-types
