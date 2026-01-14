@@ -54,6 +54,11 @@ fn main() {
 r[input.shebang.inner-attribute]
 As an exception, if the `#!` characters are followed (ignoring intervening [comments] or [whitespace]) by a `[` token, nothing is removed. This prevents an [inner attribute] at the start of a source file being removed.
 
+r[input.frontmatter]
+## Frontmatter removal
+
+After some whitespace, [frontmatter] may next appear in the input.
+
 r[input.tokenization]
 ## Tokenization
 
@@ -73,4 +78,5 @@ The resulting sequence of characters is then converted into tokens as described 
 [comments]: comments.md
 [Crates and source files]: crates-and-source-files.md
 [_shebang_]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[frontmatter]: frontmatter.md
 [whitespace]: whitespace.md
