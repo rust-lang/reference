@@ -170,7 +170,7 @@ const _: () = {
     // The error happens when the name with the conflicting candidates
     // is used.
     let x = Ambig; // ERROR: `Ambig` is ambiguous.
-}
+};
 ```
 
 ```rust,no_run
