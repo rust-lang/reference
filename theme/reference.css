@@ -322,11 +322,15 @@ hr {
    Ideally we'd add `<div>`s for each grid cell, so that margin collapsing happens
    as-usual inside of them. But, we don't have that kind of control over mdbook. */
 main > ul > li > *:first-child,
-main > ul > li > pre:first-child > pre.playground {
+main > ul > li > pre:first-child > pre.playground,
+main > ol:not(.footnote-definition) > li > *:first-child,
+main > ol:not(.footnote-definition) > li > pre:first-child > pre.playground {
     margin-top: 0;
 }
 main > ul > li > *:last-child,
-main > ul > li > pre:last-child > pre.playground {
+main > ul > li > pre:last-child > pre.playground,
+main > ol:not(.footnote-definition) > li > *:last-child,
+main > ol:not(.footnote-definition) > li > pre:last-child > pre.playground {
     margin-bottom: 0;
 }
 
@@ -338,7 +342,8 @@ main {
 main > p,
 main > pre,
 main > pre > pre.playground,
-main > ul {
+main > ul,
+main > ol {
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -480,7 +485,8 @@ main > .rule {
 
 /* Align rules to various siblings */
 .rule:has(+ p, + .tests-popup + p),
-.rule:has(+ ul, + .tests-popup + ul) {
+.rule:has(+ ul, + .tests-popup + ul),
+.rule:has(+ ol, + .tests-popup + ol) {
     margin-top: calc((1em - var(--font-size)) / var(--font-size-mult) / 2);
 }
 
