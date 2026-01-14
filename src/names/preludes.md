@@ -192,6 +192,41 @@ The `no_implicit_prelude` attribute may be used any number of times on a form.
 r[names.preludes.no_implicit_prelude.excluded-preludes]
 The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module and its descendants.
 
+r[names.preludes.no_implicit_prelude.implicitly-imported-macros]
+> [!NOTE]
+> Despite `#![no_implicit_prelude]`, `rustc` currently brings certain macros implicitly into scope. Those macros are:
+>
+> - [`assert!`]
+> - [`cfg!`]
+> - [`cfg_select!`]
+> - [`column!`]
+> - [`compile_error!`]
+> - [`concat!`]
+> - [`concat_bytes!`]
+> - [`env!`]
+> - [`file!`]
+> - [`format_args!`]
+> - [`include!`]
+> - [`include_bytes!`]
+> - [`include_str!`]
+> - [`line!`]
+> - [`module_path!`]
+> - [`option_env!`]
+> - [`panic!`]
+> - [`stringify!`]
+> - [`unreachable!`]
+>
+> E.g., this works:
+>
+> ```rust
+> #![no_implicit_prelude]
+> fn main() { assert!(true); }
+> ```
+>
+> Don't rely on this behavior; it may be removed in the future. Always bring the items you need into scope explicitly when using `#![no_implicit_prelude]`.
+>
+> For details, see [Rust PR #62086](https://github.com/rust-lang/rust/pull/62086) and [Rust PR #139493](https://github.com/rust-lang/rust/pull/139493).
+
 r[names.preludes.no_implicit_prelude.lang]
 The `no_implicit_prelude` attribute does not affect the [language prelude].
 
