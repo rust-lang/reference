@@ -40,6 +40,11 @@ Edition | `no_std` not applied        | `no_std` applied
 >
 > [`core::prelude::rust_2015`] and [`core::prelude::rust_2018`] have the same contents as [`core::prelude::v1`].
 
+> [!NOTE]
+> When one of [`core::panic!`] or [`std::panic!`] is brought into scope due to the [standard library prelude], and a user-written [glob import] brings the other into scope, `rustc` currently allows use of `panic!`, even though it is ambiguous. The user-written glob import takes precedence to resolve this ambiguity.
+>
+> For details, see [names.resolution.expansion.imports.ambiguity.panic-hack].
+
 r[names.preludes.extern]
 ## Extern prelude
 
@@ -203,6 +208,7 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
 [extern prelude]: #extern-prelude
 [floating-point types]: ../types/numeric.md#floating-point-types
+[glob import]: items.use.glob
 [Integer types]: ../types/numeric.md#integer-types
 [Language prelude]: #language-prelude
 [Machine-dependent integer types]: ../types/numeric.md#machine-dependent-integer-types
