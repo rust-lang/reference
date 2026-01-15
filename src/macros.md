@@ -2,15 +2,12 @@ r[macro]
 # Macros
 
 r[macro.intro]
-The functionality and syntax of Rust can be extended with custom definitions
-called macros. They are given names, and invoked through a consistent
-syntax: `some_extension!(...)`.
+The functionality and syntax of Rust can be extended with custom definitions called macros. They are given names, and invoked through a consistent syntax: `some_extension!(...)`.
 
 There are two ways to define new macros:
 
 * [Macros by Example] define new syntax in a higher-level, declarative way.
-* [Procedural Macros] define function-like macros, custom derives, and custom
-  attributes using functions that operate on input tokens.
+* [Procedural Macros] define function-like macros, custom derives, and custom attributes using functions that operate on input tokens.
 
 r[macro.invocation]
 ## Macro invocation
@@ -35,9 +32,7 @@ MacroInvocationSemi ->
 ```
 
 r[macro.invocation.intro]
-A macro invocation expands a macro at compile time and replaces the
-invocation with the result of the macro. Macros may be invoked in the
-following situations:
+A macro invocation expands a macro at compile time and replaces the invocation with the result of the macro. Macros may be invoked in the following situations:
 
 r[macro.invocation.expr]
 * [Expressions] and [statements]
@@ -58,10 +53,7 @@ r[macro.invocation.extern]
 * [External blocks]
 
 r[macro.invocation.item-statement]
-When used as an item or a statement, the [MacroInvocationSemi] form is used
-where a semicolon is required at the end when not using curly braces.
-[Visibility qualifiers] are never allowed before a macro invocation or
-[`macro_rules`] definition.
+When used as an item or a statement, the [MacroInvocationSemi] form is used where a semicolon is required at the end when not using curly braces. [Visibility qualifiers] are never allowed before a macro invocation or [`macro_rules`] definition.
 
 ```rust
 // Used as an expression.
