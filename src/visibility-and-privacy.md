@@ -12,27 +12,16 @@ Visibility ->
 ```
 
 r[vis.intro]
-These two terms are often used interchangeably, and what they are attempting to
-convey is the answer to the question "Can this item be used at this location?"
+These two terms are often used interchangeably, and what they are attempting to convey is the answer to the question "Can this item be used at this location?"
 
 r[vis.name-hierarchy]
-Rust's name resolution operates on a global hierarchy of namespaces. Each level
-in the hierarchy can be thought of as some item. The items are one of those
-mentioned above, but also include external crates. Declaring or defining a new
-module can be thought of as inserting a new tree into the hierarchy at the
-location of the definition.
+Rust's name resolution operates on a global hierarchy of namespaces. Each level in the hierarchy can be thought of as some item. The items are one of those mentioned above, but also include external crates. Declaring or defining a new module can be thought of as inserting a new tree into the hierarchy at the location of the definition.
 
 r[vis.privacy]
-To control whether interfaces can be used across modules, Rust checks each use
-of an item to see whether it should be allowed or not. This is where privacy
-warnings are generated, or otherwise "you used a private item of another module
-and weren't allowed to."
+To control whether interfaces can be used across modules, Rust checks each use of an item to see whether it should be allowed or not. This is where privacy warnings are generated, or otherwise "you used a private item of another module and weren't allowed to."
 
 r[vis.default]
-By default, everything is *private*, with two exceptions: Associated
-items in a `pub` Trait are public by default; Enum variants
-in a `pub` enum are also public by default. When an item is declared as `pub`,
-it can be thought of as being accessible to the outside world. For example:
+By default, everything is *private*, with two exceptions: Associated items in a `pub` Trait are public by default; Enum variants in a `pub` enum are also public by default. When an item is declared as `pub`, it can be thought of as being accessible to the outside world. For example:
 
 ```rust
 # fn main() {}
@@ -52,51 +41,25 @@ pub enum State {
 ```
 
 r[vis.access]
-With the notion of an item being either public or private, Rust allows item
-accesses in two cases:
+With the notion of an item being either public or private, Rust allows item accesses in two cases:
 
-1. If an item is public, then it can be accessed externally from some module
-   `m` if you can access all the item's ancestor modules from `m`. You can
-   also potentially be able to name the item through re-exports. See below.
-2. If an item is private, it may be accessed by the current module and its
-   descendants.
+1. If an item is public, then it can be accessed externally from some module `m` if you can access all the item's ancestor modules from `m`. You can also potentially be able to name the item through re-exports. See below.
+2. If an item is private, it may be accessed by the current module and its descendants.
 
-These two cases are surprisingly powerful for creating module hierarchies
-exposing public APIs while hiding internal implementation details. To help
-explain, here's a few use cases and what they would entail:
+These two cases are surprisingly powerful for creating module hierarchies exposing public APIs while hiding internal implementation details. To help explain, here's a few use cases and what they would entail:
 
-* A library developer needs to expose functionality to crates which link
-  against their library. As a consequence of the first case, this means that
-  anything which is usable externally must be `pub` from the root down to the
-  destination item. Any private item in the chain will disallow external
-  accesses.
+* A library developer needs to expose functionality to crates which link against their library. As a consequence of the first case, this means that anything which is usable externally must be `pub` from the root down to the destination item. Any private item in the chain will disallow external accesses.
 
-* A crate needs a global available "helper module" to itself, but it doesn't
-  want to expose the helper module as a public API. To accomplish this, the
-  root of the crate's hierarchy would have a private module which then
-  internally has a "public API". Because the entire crate is a descendant of
-  the root, then the entire local crate can access this private module through
-  the second case.
+* A crate needs a global available "helper module" to itself, but it doesn't want to expose the helper module as a public API. To accomplish this, the root of the crate's hierarchy would have a private module which then internally has a "public API". Because the entire crate is a descendant of the root, then the entire local crate can access this private module through the second case.
 
-* When writing unit tests for a module, it's often a common idiom to have an
-  immediate child of the module to-be-tested named `mod test`. This module
-  could access any items of the parent module through the second case, meaning
-  that internal implementation details could also be seamlessly tested from the
-  child module.
+* When writing unit tests for a module, it's often a common idiom to have an immediate child of the module to-be-tested named `mod test`. This module could access any items of the parent module through the second case, meaning that internal implementation details could also be seamlessly tested from the child module.
 
-In the second case, it mentions that a private item "can be accessed" by the
-current module and its descendants, but the exact meaning of accessing an item
-depends on what the item is.
+In the second case, it mentions that a private item "can be accessed" by the current module and its descendants, but the exact meaning of accessing an item depends on what the item is.
 
 r[vis.usage]
-Accessing a module, for example, would mean looking inside of it (to import more items). On the other hand, accessing a
-function would mean that it is invoked. Additionally, path expressions and
-import statements are considered to access an item in the sense that the
-import/expression is only valid if the destination is in the current visibility
-scope.
+Accessing a module, for example, would mean looking inside of it (to import more items). On the other hand, accessing a function would mean that it is invoked. Additionally, path expressions and import statements are considered to access an item in the sense that the import/expression is only valid if the destination is in the current visibility scope.
 
-Here's an example of a program which exemplifies the three cases outlined
-above:
+Here's an example of a program which exemplifies the three cases outlined above:
 
 ```rust
 // This module is private, meaning that no external crate can access this
@@ -148,33 +111,25 @@ pub mod submodule {
 # fn main() {}
 ```
 
-For a Rust program to pass the privacy checking pass, all paths must be valid
-accesses given the two rules above. This includes all use statements,
-expressions, types, etc.
+For a Rust program to pass the privacy checking pass, all paths must be valid accesses given the two rules above. This includes all use statements, expressions, types, etc.
 
 r[vis.scoped]
 ## `pub(in path)`, `pub(crate)`, `pub(super)`, and `pub(self)`
 
 r[vis.scoped.intro]
-In addition to public and private, Rust allows users to declare an item as
-visible only within a given scope. The rules for `pub` restrictions are as
-follows:
+In addition to public and private, Rust allows users to declare an item as visible only within a given scope. The rules for `pub` restrictions are as follows:
 
 r[vis.scoped.in]
-- `pub(in path)` makes an item visible within the provided `path`.
-  `path` must be a simple path which resolves to an ancestor module of the item whose visibility is being declared.
-  Each identifier in `path` must refer directly to a module (not to a name introduced by a `use` statement).
+- `pub(in path)` makes an item visible within the provided `path`. `path` must be a simple path which resolves to an ancestor module of the item whose visibility is being declared. Each identifier in `path` must refer directly to a module (not to a name introduced by a `use` statement).
 
 r[vis.scoped.crate]
 - `pub(crate)` makes an item visible within the current crate.
 
 r[vis.scoped.super]
-- `pub(super)` makes an item visible to the parent module. This is equivalent
-  to `pub(in super)`.
+- `pub(super)` makes an item visible to the parent module. This is equivalent to `pub(in super)`.
 
 r[vis.scoped.self]
-- `pub(self)` makes an item visible to the current module. This is equivalent
-to `pub(in self)` or not using `pub` at all.
+- `pub(self)` makes an item visible to the current module. This is equivalent to `pub(in self)` or not using `pub` at all.
 
 r[vis.scoped.edition2018]
 > [!EDITION-2018]
@@ -239,10 +194,7 @@ r[vis.reexports]
 ## Re-exporting and visibility
 
 r[vis.reexports.intro]
-Rust allows publicly re-exporting items through a `pub use` directive. Because
-this is a public directive, this allows the item to be used in the current
-module through the rules above. It essentially allows public access into the
-re-exported item. For example, this program is valid:
+Rust allows publicly re-exporting items through a `pub use` directive. Because this is a public directive, this allows the item to be used in the current module through the rules above. It essentially allows public access into the re-exported item. For example, this program is valid:
 
 ```rust
 pub use self::implementation::api;
@@ -256,10 +208,7 @@ mod implementation {
 # fn main() {}
 ```
 
-This means that any external crate referencing `implementation::api::f` would
-receive a privacy violation, while the path `api::f` would be allowed.
+This means that any external crate referencing `implementation::api::f` would receive a privacy violation, while the path `api::f` would be allowed.
 
 r[vis.reexports.private-item]
-When re-exporting a private item, it can be thought of as allowing the "privacy
-chain" being short-circuited through the reexport instead of passing through
-the namespace hierarchy as it normally would.
+When re-exporting a private item, it can be thought of as allowing the "privacy chain" being short-circuited through the reexport instead of passing through the namespace hierarchy as it normally would.

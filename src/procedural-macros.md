@@ -2,21 +2,16 @@ r[macro.proc]
 # Procedural macros
 
 r[macro.proc.intro]
-*Procedural macros* allow creating syntax extensions as execution of a function.
-Procedural macros come in one of three flavors:
+*Procedural macros* allow creating syntax extensions as execution of a function. Procedural macros come in one of three flavors:
 
 * [Function-like macros] - `custom!(...)`
 * [Derive macros] - `#[derive(CustomDerive)]`
 * [Attribute macros] - `#[CustomAttribute]`
 
-Procedural macros allow you to run code at compile time that operates over Rust
-syntax, both consuming and producing Rust syntax. You can sort of think of
-procedural macros as functions from an AST to another AST.
+Procedural macros allow you to run code at compile time that operates over Rust syntax, both consuming and producing Rust syntax. You can sort of think of procedural macros as functions from an AST to another AST.
 
 r[macro.proc.def]
-Procedural macros must be defined in the root of a crate with the [crate type] of
-`proc-macro`.
-The macros may not be used from the crate where they are defined, and can only be used when imported in another crate.
+Procedural macros must be defined in the root of a crate with the [crate type] of `proc-macro`. The macros may not be used from the crate where they are defined, and can only be used when imported in another crate.
 
 > [!NOTE]
 > When using Cargo, Procedural macro crates are defined with the `proc-macro` key in your manifest:
@@ -27,57 +22,31 @@ The macros may not be used from the crate where they are defined, and can only b
 > ```
 
 r[macro.proc.result]
-As functions, they must either return syntax, panic, or loop endlessly. Returned
-syntax either replaces or adds the syntax depending on the kind of procedural
-macro. Panics are caught by the compiler and are turned into a compiler error.
-Endless loops are not caught by the compiler which hangs the compiler.
+As functions, they must either return syntax, panic, or loop endlessly. Returned syntax either replaces or adds the syntax depending on the kind of procedural macro. Panics are caught by the compiler and are turned into a compiler error. Endless loops are not caught by the compiler which hangs the compiler.
 
-Procedural macros run during compilation, and thus have the same resources that
-the compiler has. For example, standard input, error, and output are the same
-that the compiler has access to. Similarly, file access is the same. Because
-of this, procedural macros have the same security concerns that [Cargo's
-build scripts] have.
+Procedural macros run during compilation, and thus have the same resources that the compiler has. For example, standard input, error, and output are the same that the compiler has access to. Similarly, file access is the same. Because of this, procedural macros have the same security concerns that [Cargo's build scripts] have.
 
 r[macro.proc.error]
-Procedural macros have two ways of reporting errors. The first is to panic. The
-second is to emit a [`compile_error`] macro invocation.
+Procedural macros have two ways of reporting errors. The first is to panic. The second is to emit a [`compile_error`] macro invocation.
 
 r[macro.proc.proc_macro-crate]
 ## The `proc_macro` crate
 
 r[macro.proc.proc_macro-crate.intro]
-Procedural macro crates almost always will link to the compiler-provided
-[`proc_macro` crate]. The `proc_macro` crate provides types required for
-writing procedural macros and facilities to make it easier.
+Procedural macro crates almost always will link to the compiler-provided [`proc_macro` crate]. The `proc_macro` crate provides types required for writing procedural macros and facilities to make it easier.
 
 r[macro.proc.proc_macro-crate.token-stream]
-This crate primarily contains a [`TokenStream`] type. Procedural macros operate
-over *token streams* instead of AST nodes, which is a far more stable interface
-over time for both the compiler and for procedural macros to target. A
-*token stream* is roughly equivalent to `Vec<TokenTree>` where a `TokenTree`
-can roughly be thought of as lexical token. For example `foo` is an `Ident`
-token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream`
-type, unlike `Vec<TokenTree>`, is cheap to clone.
+This crate primarily contains a [`TokenStream`] type. Procedural macros operate over *token streams* instead of AST nodes, which is a far more stable interface over time for both the compiler and for procedural macros to target. A *token stream* is roughly equivalent to `Vec<TokenTree>` where a `TokenTree` can roughly be thought of as lexical token. For example `foo` is an `Ident` token, `.` is a `Punct` token, and `1.2` is a `Literal` token. The `TokenStream` type, unlike `Vec<TokenTree>`, is cheap to clone.
 
 r[macro.proc.proc_macro-crate.span]
-All tokens have an associated `Span`. A `Span` is an opaque value that cannot
-be modified but can be manufactured. `Span`s represent an extent of source
-code within a program and are primarily used for error reporting. While you
-cannot modify a `Span` itself, you can always change the `Span` *associated*
-with any token, such as through getting a `Span` from another token.
+All tokens have an associated `Span`. A `Span` is an opaque value that cannot be modified but can be manufactured. `Span`s represent an extent of source code within a program and are primarily used for error reporting. While you cannot modify a `Span` itself, you can always change the `Span` *associated* with any token, such as through getting a `Span` from another token.
 
 r[macro.proc.hygiene]
 ## Procedural macro hygiene
 
-Procedural macros are *unhygienic*. This means they behave as if the output
-token stream was simply written inline to the code it's next to. This means that
-it's affected by external items and also affects external imports.
+Procedural macros are *unhygienic*. This means they behave as if the output token stream was simply written inline to the code it's next to. This means that it's affected by external items and also affects external imports.
 
-Macro authors need to be careful to ensure their macros work in as many contexts
-as possible given this limitation. This often includes using absolute paths to
-items in libraries (for example, `::std::option::Option` instead of `Option`) or
-by ensuring that generated functions have names that are unlikely to clash with
-other functions (like `__internal_foo` instead of `foo`).
+Macro authors need to be careful to ensure their macros work in as many contexts as possible given this limitation. This often includes using absolute paths to items in libraries (for example, `::std::option::Option` instead of `Option`) or by ensuring that generated functions have names that are unlikely to clash with other functions (like `__internal_foo` instead of `foo`).
 
 <!-- TODO: rule name needs improvement -->
 <!-- template:attributes -->
@@ -359,68 +328,47 @@ r[macro.proc.token]
 ## Declarative macro tokens and procedural macro tokens
 
 r[macro.proc.token.intro]
-Declarative `macro_rules` macros and procedural macros use similar, but
-different definitions for tokens (or rather [`TokenTree`s].)
+Declarative `macro_rules` macros and procedural macros use similar, but different definitions for tokens (or rather [`TokenTree`s].)
 
 r[macro.proc.token.macro_rules]
 Token trees in `macro_rules` (corresponding to `tt` matchers) are defined as
 - Delimited groups (`(...)`, `{...}`, etc)
-- All operators supported by the language, both single-character and
-  multi-character ones (`+`, `+=`).
+- All operators supported by the language, both single-character and multi-character ones (`+`, `+=`).
     - Note that this set doesn't include the single quote `'`.
 - Literals (`"string"`, `1`, etc)
-    - Note that negation (e.g. `-1`) is never a part of such literal tokens,
-      but a separate operator token.
+    - Note that negation (e.g. `-1`) is never a part of such literal tokens, but a separate operator token.
 - Identifiers, including keywords (`ident`, `r#ident`, `fn`)
 - Lifetimes (`'ident`)
-- Metavariable substitutions in `macro_rules` (e.g. `$my_expr` in
-  `macro_rules! mac { ($my_expr: expr) => { $my_expr } }` after the `mac`'s
-  expansion, which will be considered a single token tree regardless of the
-  passed expression)
+- Metavariable substitutions in `macro_rules` (e.g. `$my_expr` in `macro_rules! mac { ($my_expr: expr) => { $my_expr } }` after the `mac`'s expansion, which will be considered a single token tree regardless of the passed expression)
 
 r[macro.proc.token.tree]
 Token trees in procedural macros are defined as
 - Delimited groups (`(...)`, `{...}`, etc)
-- All punctuation characters used in operators supported by the language (`+`,
-  but not `+=`), and also the single quote `'` character (typically used in
-  lifetimes, see below for lifetime splitting and joining behavior)
+- All punctuation characters used in operators supported by the language (`+`, but not `+=`), and also the single quote `'` character (typically used in lifetimes, see below for lifetime splitting and joining behavior)
 - Literals (`"string"`, `1`, etc)
-    - Negation (e.g. `-1`) is supported as a part of integer
-      and floating point literals.
+    - Negation (e.g. `-1`) is supported as a part of integer and floating point literals.
 - Identifiers, including keywords (`ident`, `r#ident`, `fn`)
 
 r[macro.proc.token.conversion.intro]
-Mismatches between these two definitions are accounted for when token streams
-are passed to and from procedural macros. \
-Note that the conversions below may happen lazily, so they might not happen if
-the tokens are not actually inspected.
+Mismatches between these two definitions are accounted for when token streams are passed to and from procedural macros. Note that the conversions below may happen lazily, so they might not happen if the tokens are not actually inspected.
 
 r[macro.proc.token.conversion.to-proc_macro]
 When passed to a proc-macro
 - All multi-character operators are broken into single characters.
 - Lifetimes are broken into a `'` character and an identifier.
 - The keyword metavariable [`$crate`] is passed as a single identifier.
-- All other metavariable substitutions are represented as their underlying
-  token streams.
-    - Such token streams may be wrapped into delimited groups ([`Group`]) with
-      implicit delimiters ([`Delimiter::None`]) when it's necessary for
-      preserving parsing priorities.
-    - `tt` and `ident` substitutions are never wrapped into such groups and
-      always represented as their underlying token trees.
+- All other metavariable substitutions are represented as their underlying token streams.
+    - Such token streams may be wrapped into delimited groups ([`Group`]) with implicit delimiters ([`Delimiter::None`]) when it's necessary for preserving parsing priorities.
+    - `tt` and `ident` substitutions are never wrapped into such groups and always represented as their underlying token trees.
 
 r[macro.proc.token.conversion.from-proc_macro]
 When emitted from a proc macro
-- Punctuation characters are glued into multi-character operators
-  when applicable.
+- Punctuation characters are glued into multi-character operators when applicable.
 - Single quotes `'` joined with identifiers are glued into lifetimes.
-- Negative literals are converted into two tokens (the `-` and the literal)
-  possibly wrapped into a delimited group ([`Group`]) with implicit delimiters
-  ([`Delimiter::None`]) when it's necessary for preserving parsing priorities.
+- Negative literals are converted into two tokens (the `-` and the literal) possibly wrapped into a delimited group ([`Group`]) with implicit delimiters ([`Delimiter::None`]) when it's necessary for preserving parsing priorities.
 
 r[macro.proc.token.doc-comment]
-Note that neither declarative nor procedural macros support doc comment tokens
-(e.g. `/// Doc`), so they are always converted to token streams representing
-their equivalent `#[doc = r"str"]` attributes when passed to macros.
+Note that neither declarative nor procedural macros support doc comment tokens (e.g. `/// Doc`), so they are always converted to token streams representing their equivalent `#[doc = r"str"]` attributes when passed to macros.
 
 [Attribute macros]: #the-proc_macro_attribute-attribute
 [Cargo's build scripts]: ../cargo/reference/build-scripts.html

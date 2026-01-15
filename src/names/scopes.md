@@ -2,10 +2,7 @@ r[names.scopes]
 # Scopes
 
 r[names.scopes.intro]
-A *scope* is the region of source text where a named [entity] may be referenced with that name.
-The following sections provide details on the scoping rules and behavior, which depend on the kind of entity and where it is declared.
-The process of how names are resolved to entities is described in the [name resolution] chapter.
-More information on "drop scopes" used for the purpose of running destructors may be found in the [destructors] chapter.
+A *scope* is the region of source text where a named [entity] may be referenced with that name. The following sections provide details on the scoping rules and behavior, which depend on the kind of entity and where it is declared. The process of how names are resolved to entities is described in the [name resolution] chapter. More information on "drop scopes" used for the purpose of running destructors may be found in the [destructors] chapter.
 
 r[names.scopes.items]
 ## Item scopes
@@ -17,22 +14,19 @@ r[names.scopes.items.statement]
 The name of an item declared as a [statement] has a scope that extends from the start of the block the item statement is in until the end of the block.
 
 r[names.scopes.items.duplicate]
-It is an error to introduce an item with a duplicate name of another item in the same [namespace] within the same module or block.
-[Asterisk glob imports] have special behavior for dealing with duplicate names and shadowing, see the linked chapter for more details.
+It is an error to introduce an item with a duplicate name of another item in the same [namespace] within the same module or block. [Asterisk glob imports] have special behavior for dealing with duplicate names and shadowing, see the linked chapter for more details.
 
 r[names.scopes.items.shadow-prelude]
 Items in a module may shadow items in a [prelude](#prelude-scopes).
 
 r[names.scopes.items.nested-modules]
-Item names from outer modules are not in scope within a nested module.
-A [path] may be used to refer to an item in another module.
+Item names from outer modules are not in scope within a nested module. A [path] may be used to refer to an item in another module.
 
 r[names.scopes.associated-items]
 ### Associated item scopes
 
 r[names.scopes.associated-items.scope]
-[Associated items] are not scoped and can only be referred to by using a [path] leading from the type or trait they are associated with.
-[Methods] can also be referred to via [call expressions].
+[Associated items] are not scoped and can only be referred to by using a [path] leading from the type or trait they are associated with. [Methods] can also be referred to via [call expressions].
 
 r[names.scopes.associated-items.duplicate]
 Similar to items within a module or block,  it is an error to introduce an item within a trait or implementation that is a duplicate of another item in the trait or impl in the same namespace.
@@ -86,12 +80,10 @@ r[names.scopes.generic-parameters]
 ## Generic parameter scopes
 
 r[names.scopes.generic-parameters.param-list]
-Generic parameters are declared in a [GenericParams] list.
-The scope of a generic parameter is within the item it is declared on.
+Generic parameters are declared in a [GenericParams] list. The scope of a generic parameter is within the item it is declared on.
 
 r[names.scopes.generic-parameters.order-independent]
-All parameters are in scope within the generic parameter list regardless of the order they are declared.
-The following shows some examples where a parameter may be referenced before it is declared:
+All parameters are in scope within the generic parameter list regardless of the order they are declared. The following shows some examples where a parameter may be referenced before it is declared:
 
 ```rust
 // The 'b bound is referenced before it is declared.
@@ -158,8 +150,7 @@ The `'static` lifetime and [placeholder lifetime] `'_` have a special meaning an
 #### Lifetime generic parameter scopes
 
 r[names.scopes.lifetimes.generic]
-[Constant] and [static] items and [const contexts] only ever allow `'static` lifetime references, so no other lifetime may be in scope within them.
-[Associated consts] do allow referring to lifetimes declared in their trait or implementation.
+[Constant] and [static] items and [const contexts] only ever allow `'static` lifetime references, so no other lifetime may be in scope within them. [Associated consts] do allow referring to lifetimes declared in their trait or implementation.
 
 #### Higher-ranked trait bound scopes
 
@@ -226,9 +217,7 @@ r[names.scopes.loop-label]
 ## Loop label scopes
 
 r[names.scopes.loop-label.scope]
-[Loop labels] may be declared by a [loop expression].
-The scope of a loop label is from the point it is declared till the end of the loop expression.
-The scope does not extend into [items], [closures], [async blocks], [const arguments], [const contexts], and the iterator expression of the defining [`for` loop].
+[Loop labels] may be declared by a [loop expression]. The scope of a loop label is from the point it is declared till the end of the loop expression. The scope does not extend into [items], [closures], [async blocks], [const arguments], [const contexts], and the iterator expression of the defining [`for` loop].
 
 ```rust
 'a: for n in 0..3 {
@@ -258,8 +247,7 @@ The scope does not extend into [items], [closures], [async blocks], [const argum
 ```
 
 r[names.scopes.loop-label.shadow]
-Loop labels may shadow labels of the same name in outer scopes.
-References to a label refer to the closest definition.
+Loop labels may shadow labels of the same name in outer scopes. References to a label refer to the closest definition.
 
 ```rust
 // Loop label shadowing example.
@@ -275,15 +263,13 @@ r[names.scopes.prelude]
 ## Prelude scopes
 
 r[names.scopes.prelude.intro]
-[Preludes] bring entities into scope of every module.
-The entities are not members of the module, but are implicitly queried during [name resolution].
+[Preludes] bring entities into scope of every module. The entities are not members of the module, but are implicitly queried during [name resolution].
 
 r[names.scopes.prelude.shadow]
 The prelude names may be shadowed by declarations in a module.
 
 r[names.scopes.prelude.layers]
-The preludes are layered such that one shadows another if they contain entities of the same name.
-The order that preludes may shadow other preludes is the following where earlier entries may shadow later ones:
+The preludes are layered such that one shadows another if they contain entities of the same name. The order that preludes may shadow other preludes is the following where earlier entries may shadow later ones:
 
 1. [Extern prelude]
 2. [Tool prelude]
@@ -294,15 +280,13 @@ The order that preludes may shadow other preludes is the following where earlier
 r[names.scopes.macro_rules]
 ## `macro_rules` scopes
 
-The scope of `macro_rules` macros is described in the [Macros By Example] chapter.
-The behavior depends on the use of the [`macro_use`] and [`macro_export`] attributes.
+The scope of `macro_rules` macros is described in the [Macros By Example] chapter. The behavior depends on the use of the [`macro_use`] and [`macro_export`] attributes.
 
 r[names.scopes.derive]
 ## Derive macro helper attributes
 
 r[names.scopes.derive.scope]
-[Derive macro helper attributes] are in scope in the item where their corresponding [`derive` attribute] is specified.
-The scope extends from just after the `derive` attribute to the end of the item. <!-- Note: Not strictly true, see https://github.com/rust-lang/rust/issues/79202, but this is the intention. -->
+[Derive macro helper attributes] are in scope in the item where their corresponding [`derive` attribute] is specified. The scope extends from just after the `derive` attribute to the end of the item. <!-- Note: Not strictly true, see https://github.com/rust-lang/rust/issues/79202, but this is the intention. -->
 
 r[names.scopes.derive.shadow]
 Helper attributes shadow other attributes of the same name in scope.
