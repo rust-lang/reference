@@ -180,7 +180,7 @@ An orphan implementation is one that implements a foreign trait for a foreign ty
 
 The orphan rule enables library authors to add new implementations to their traits without fear that they'll break downstream code. Without these restrictions, a library couldn't add an implementation like `impl<T: Display> MyTrait for T` without potentially conflicting with downstream implementations.
 
-r[items.impl.trait.orphan-rule.general]
+r[items.impl.trait.orphan-rule.def]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at
 least one of the following is true:
 

@@ -77,7 +77,7 @@ apply to the crate as a whole.
 r[crate.main]
 ## Main functions
 
-r[crate.main.general]
+r[crate.main.executable]
 A crate that contains a `main` [function] can be compiled to an executable.
 
 r[crate.main.restriction]
