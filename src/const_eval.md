@@ -1,13 +1,13 @@
 r[const-eval]
 # Constant evaluation
 
-r[const-eval.general]
+r[const-eval.intro]
 Constant evaluation is the process of computing the result of [expressions] during compilation. Only a subset of all expressions can be evaluated at compile-time.
 
 r[const-eval.const-expr]
 ## Constant expressions
 
-r[const-eval.const-expr.general]
+r[const-eval.const-expr.intro]
 Certain forms of expressions, called constant expressions, can be evaluated at compile time.
 
 r[const-eval.const-expr.const-context]
@@ -236,7 +236,7 @@ r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
 
-r[const-eval.const-context.general]
+r[const-eval.const-context.def]
 A _const context_ is one of the following:
 
 r[const-eval.const-context.array-length]
