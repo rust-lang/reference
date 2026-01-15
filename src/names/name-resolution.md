@@ -349,9 +349,7 @@ pub fn f() {
 ```
 
 > [!NOTE]
-> This restriction is needed due to implementation details in the compiler,
-> specifically the current scope visitation logic and the complexity of supporting
-> this behavior. This ambiguity error may be removed in the future.
+> This restriction is needed due to implementation details in the compiler, specifically the current scope visitation logic and the complexity of supporting this behavior. This ambiguity error may be removed in the future.
 
 r[names.resolution.expansion.macros]
 ### Macros
@@ -375,9 +373,7 @@ The available scope kinds are visited in the following order. Each of these scop
 > For more info see [derive helper scope].
 
 > [!NOTE]
-> This visitation order may change in the future, such as interleaving the
-> visitation of textual and path-based scope candidates based on their lexical
-> scopes.
+> This visitation order may change in the future, such as interleaving the visitation of textual and path-based scope candidates based on their lexical scopes.
 
 > [!EDITION-2018]
 > Starting in edition 2018 the `#[macro_use]` prelude is not visited when [`#[no_implicit_prelude]`][names.preludes.no_implicit_prelude] is present.
