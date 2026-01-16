@@ -170,6 +170,22 @@ Braces can be used in the last segment of the path to import multiple entities f
 use std::collections::{BTreeSet, hash_map::{self, HashMap}};
 ```
 
+Braces may also import `self` from the current scope when it is explicitly renamed:
+
+```rust
+mod m {
+    pub fn f() {}
+
+    use {f as local_f, self as this_module};
+
+    pub fn g() {
+        local_f();
+        this_module::f();
+    }
+}
+# fn main() {}
+```
+
 r[items.use.multiple-syntax.empty]
 An empty brace does not import anything, though the leading path is validated that it is accessible.
 <!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
@@ -336,16 +352,65 @@ r[items.use.restrictions]
 The following rules are restrictions for valid `use` declarations.
 
 r[items.use.restrictions.crate]
-`use crate;` must use `as` to define the name to which to bind the crate root.
+Importing the crate root (`crate`) must use `as` to define the name to which to bind it.
+
+> [!EXAMPLE]
+> ```rust
+> use crate as root;
+> use crate::{self as root2};
+>
+> // Not allowed:
+> // use crate;
+> // use crate::{self};
+> ```
 
 r[items.use.restrictions.self]
-`use {self};` is an error; there must be a leading segment when using `self`.
+Importing `self` as an entity must use `as` to define the binding name (this does not affect `self` used within a prefixed brace import like `use a::b::{self, c};`).
+
+> [!EXAMPLE]
+> ```rust
+> use {self as this_module};
+> use self as this_module2;
+> use self::{self as this_module3};
+>
+> // Not allowed:
+> // use {self};
+> // use self;
+> // use self::{self};
+> ```
+
+r[items.use.restrictions.super]
+Importing `super` (including repeated `super::super`) as an entity must use `as` to define the binding name (this does not affect importing items from ancestors like `use super::item;`).
+
+> [!EXAMPLE]
+> ```rust
+> use super as parent;
+> use super::{self as parent2};
+> use super::super as grandparent;
+> use super::super::{self as grandparent2};
+>
+> // Not allowed:
+> // use super;
+> // use super::{self};
+> // use super::super;
+> // use super::super::{self};
+> ```
 
 r[items.use.restrictions.duplicate-name]
 As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
 r[items.use.restrictions.macro-crate]
-`use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
+Within a macro transcriber, `$crate` may be used in `use` paths as the first segment (see `$crate` in the paths chapter). Importing `$crate` as an entity must use `as` to define the binding name.
+
+> [!EXAMPLE]
+> ```rust
+> macro_rules! import_crate_root {
+>     () => {
+>         use $crate as my_crate;
+>         use $crate::{self as my_crate2};
+>     };
+> }
+> ```
 
 r[items.use.restrictions.variant]
 `use` paths cannot refer to enum variants through a [type alias].
