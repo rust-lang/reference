@@ -67,7 +67,6 @@ A block is itself considered to be [diverging](../divergence.md) if all reachabl
 
 ```rust,no_run
 # #![ feature(never_type) ]
-# fn make<T>() -> T { loop {} }
 fn no_control_flow() -> ! {
     // There are no conditional statements, so this entire function body is diverging.
     loop {}
@@ -91,9 +90,15 @@ fn control_flow_not_diverging() -> () {
     }
 }
 
+// Note: This makes use of the unstable never type which is only available on
+// Rust's nightly channel. This is done for illustration purposes. It is
+// possible to encounter this scenario in stable Rust, but requires a more
+// convoluted example.
 struct Foo {
     x: !,
 }
+
+fn make<T>() -> T { loop {} }
 
 fn diverging_place_read() -> ! {
     let foo = Foo { x: make() };
