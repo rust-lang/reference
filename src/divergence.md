@@ -2,9 +2,9 @@ r[divergence]
 # Divergence
 
 r[divergence.intro]
-If an expression diverges, then nothing after that expression will execute. Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`](./types/never.md), divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
+If an expression diverges, then nothing after that expression will execute. Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`], divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
 
-Any expression of type [`!`](./types/never.md) is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
+Any expression of type [`!`] is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
 
 > [!NOTE]
 > Though `!` is considered an uninhabited type, a type being uninhabited is not sufficient for it to diverge.
@@ -30,7 +30,8 @@ Any expression of type [`!`](./types/never.md) is a _diverging expression_, but 
 
 r[divergence.fallback]
 ## Fallback
-If a type to be inferred is only unified with diverging expressions, then that type will be inferred to be `!`.
+
+If a type to be inferred is only unified with diverging expressions, then that type will be inferred to be [`!`].
 
 > [!EXAMPLE]
 > ```rust,compile_fail,E0277
@@ -58,3 +59,5 @@ If a type to be inferred is only unified with diverging expressions, then that t
 > ```
 
 <!-- TODO: This last point should likely should be moved to a more general "type inference" section discussing generalization + unification. -->
+
+[`!`]: type.never
