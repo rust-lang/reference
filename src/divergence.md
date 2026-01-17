@@ -30,8 +30,6 @@ See the following rules for specific expression divergence behavior:
 > [!NOTE]
 > The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
 
-Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`], divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
-
 r[divergence.never]
 Any expression of type [`!`] is a diverging expression. However, diverging expressions are not limited to type [`!`]; expressions of other types may also diverge (e.g., `Some(loop {})` has type `Option<!>`).
 
@@ -56,6 +54,9 @@ Any expression of type [`!`] is a diverging expression. However, diverging expre
 >     // ERROR: The type of the body is `()` but expected type `!`.
 > }
 > ```
+
+> [!NOTE]
+> Divergence can propagate to the surrounding block. See [expr.block.diverging].
 
 r[divergence.fallback]
 ## Fallback
