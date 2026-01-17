@@ -97,7 +97,7 @@ struct Foo {
 
 fn diverging_place_read() -> ! {
     let foo = Foo { x: make() };
-    // A read of a place expression produces a diverging block
+    // A read of a place expression produces a diverging block.
     let _x = foo.x;
 }
 ```
@@ -110,7 +110,7 @@ fn diverging_place_read() -> ! {
 # }
 fn diverging_place_not_read() -> ! {
     let foo = Foo { x: make() };
-    // Asssignment to `_` means the place is not read
+    // Assignment to `_` means the place is not read.
     let _ = foo.x;
 } // ERROR: Mismatched types.
 ```
