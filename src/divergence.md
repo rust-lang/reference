@@ -10,18 +10,21 @@ Any expression of type [`!`](./types/never.md) is a _diverging expression_, but 
 > Though `!` is considered an uninhabited type, a type being uninhabited is not sufficient for it to diverge.
 >
 > ```rust,compile_fail,E0308
-> # #![ feature(never_type) ]
-> # fn make<T>() -> T { loop {} }
 > enum Empty {}
+> fn make_never() -> ! {loop{}}
+> fn make_empty() -> Empty {loop{}}
+>
 > fn diverging() -> ! {
 >     // This has a type of `!`.
 >     // So, the entire function is considered diverging
->     make::<!>();
+>     make_never();
+>     // OK: The type of the body is `!` which matches the return type.
 > }
 > fn not_diverging() -> ! {
 >     // This type is uninhabited.
 >     // However, the entire function is not considered diverging
->     make::<Empty>();
+>     make_empty();
+>     // ERROR: The type of the body is `()` but expected type `!`.
 > }
 > ```
 
