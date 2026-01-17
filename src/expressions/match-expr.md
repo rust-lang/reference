@@ -109,7 +109,7 @@ If there are no match arms, then the `match` expression is [diverging] and the t
 > ```
 
 
-r[expr.match.conditional]
+r[expr.match.diverging]
 If either the scrutinee expression or all of the match arms diverge, then the entire `match` expression also diverges.
 
 > [!NOTE]
