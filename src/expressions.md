@@ -8,41 +8,41 @@ Expression ->
     | ExpressionWithBlock
 
 ExpressionWithoutBlock ->
-    OuterAttribute*
-    (
-        LiteralExpression
-      | PathExpression
-      | OperatorExpression
-      | GroupedExpression
-      | ArrayExpression
-      | AwaitExpression
-      | IndexExpression
-      | TupleExpression
-      | TupleIndexingExpression
-      | StructExpression
-      | CallExpression
-      | MethodCallExpression
-      | FieldExpression
-      | ClosureExpression
-      | AsyncBlockExpression
-      | ContinueExpression
-      | BreakExpression
-      | RangeExpression
-      | ReturnExpression
-      | UnderscoreExpression
-      | MacroInvocation
-    )
+    OuterAttribute* ExpressionWithoutBlockNoAttrs
+
+ExpressionWithoutBlockNoAttrs ->
+      LiteralExpression
+    | PathExpression
+    | OperatorExpression
+    | GroupedExpression
+    | ArrayExpression
+    | AwaitExpression
+    | IndexExpression
+    | TupleExpression
+    | TupleIndexingExpression
+    | StructExpression
+    | CallExpression
+    | MethodCallExpression
+    | FieldExpression
+    | ClosureExpression
+    | AsyncBlockExpression
+    | ContinueExpression
+    | BreakExpression
+    | RangeExpression
+    | ReturnExpression
+    | UnderscoreExpression
+    | MacroInvocation
 
 ExpressionWithBlock ->
-    OuterAttribute*
-    (
-        BlockExpression
-      | ConstBlockExpression
-      | UnsafeBlockExpression
-      | LoopExpression
-      | IfExpression
-      | MatchExpression
-    )
+    OuterAttribute* ExpressionWithBlockNoAttrs
+
+ExpressionWithBlockNoAttrs ->
+      BlockExpression
+    | ConstBlockExpression
+    | UnsafeBlockExpression
+    | LoopExpression
+    | IfExpression
+    | MatchExpression
 ```
 
 r[expr.intro]
