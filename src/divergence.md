@@ -2,7 +2,20 @@ r[divergence]
 # Divergence
 
 r[divergence.intro]
-If an expression diverges, then nothing after that expression will execute. Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`], divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
+A *diverging expression* is an expression that never completes normal execution.
+
+```rust
+fn diverges() -> ! {
+    panic!("This function never returns!");
+}
+
+fn example() {
+    let x: i32 = diverges(); // This line never completes.
+    println!("This is never printed: {x}");
+}
+```
+
+Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`], divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
 
 Any expression of type [`!`] is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
 
