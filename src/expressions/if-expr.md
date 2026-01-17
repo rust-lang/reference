@@ -81,8 +81,11 @@ fn diverging_condition() -> ! {
     } else {
         ()
     };
-    // The semicolon above is important:
-    // The type of the `if` statement is `()`, despite being diverging.
+    // The semicolon above is important: The type of the `if` expression is
+    // `()`, despite being diverging. When the final body expression is
+    // elided, the type of the body is inferred to ! because the function body
+    // diverges. Without the semicolon, the `if` would be the tail expression
+    // with type `()`, which would fail to match the return type `!`.
 }
 
 fn diverging_arms() -> ! {
