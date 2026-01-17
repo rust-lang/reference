@@ -41,7 +41,7 @@ r[expr.loop.infinite.intro]
 A `loop` expression repeats execution of its body continuously: `loop { println!("I live."); }`.
 
 r[expr.loop.infinite.diverging]
-A `loop` expression without an associated `break` expression is diverging and has type [`!`](../types/never.md).
+A `loop` expression without an associated `break` expression is [diverging] and has type [`!`].
 
 r[expr.loop.infinite.break]
 A `loop` expression containing associated [`break` expression(s)](#break-expressions) may terminate, and must have type compatible with the value of the `break` expression(s).
@@ -282,7 +282,8 @@ for x in 1..100 {
 assert_eq!(last, 12);
 ```
 
-Thus, the `break` expression itself is diverging and has a type of [`!`](../types/never.md).
+r[expr.loop.break.diverging]
+A `break` expression is [diverging] and has a type of [`!`].
 
 r[expr.loop.break.label]
 A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression, but a [label](#loop-labels) can be used to specify which enclosing loop is affected. Example:
@@ -345,7 +346,8 @@ ContinueExpression -> `continue` LIFETIME_OR_LABEL?
 r[expr.loop.continue.intro]
 When `continue` is encountered, the current iteration of the associated loop body is immediately terminated, returning control to the loop *head*.
 
-Thus, the `continue` expression itself has a type of [`!`](../types/never.md).
+r[expr.loop.continue.diverging]
+A `continue` expression is [diverging] and has a type of [`!`].
 
 r[expr.loop.continue.while]
 In the case of a `while` loop, the head is the conditional operands controlling the loop.
@@ -382,9 +384,11 @@ assert_eq!(result, 13);
 r[expr.loop.break-value.loop]
 In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression. `break` without an expression is considered identical to `break` with expression `()`.
 
+[`!`]: type.never
 [`if` condition chains]: if-expr.md#chains-of-conditions
 [`if` expressions]: if-expr.md
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
+[diverging]: divergence
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
