@@ -43,7 +43,7 @@ r[expr.block.result]
 Then the final operand is executed, if given.
 
 r[expr.block.type]
-Except in the case of divergence [(see below)](block-expr.md#r-expr.block.type.diverging), the type of a block is the type of the final operand, or `()` if the final operand is omitted.
+The type of a block is the type of its final operand; if that operand is omitted, the type is the [unit type], unless the block [diverges][expr.block.type.diverging], in which case it is the [never type].
 
 ```rust
 # fn fn_call() {}
@@ -337,6 +337,7 @@ fn is_unix_platform() -> bool {
 [inner attributes]: ../attributes.md
 [method]: ../items/associated-items.md#methods
 [mutable reference]: ../types/pointer.md#mutables-references-
+[never type]: type.never
 [place expression]: expr.place-value.place-memory-location
 [scopes]: ../names/scopes.md
 [shared references]: ../types/pointer.md#shared-references-
@@ -345,6 +346,7 @@ fn is_unix_platform() -> bool {
 [struct]: struct-expr.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [tuple expressions]: tuple-expr.md
+[unit type]: type.tuple.unit
 [unsafe operations]: ../unsafety.md
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
 [Loops and other breakable expressions]: expr.loop.block-labels
