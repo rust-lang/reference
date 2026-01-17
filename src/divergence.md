@@ -15,6 +15,21 @@ fn example() {
 }
 ```
 
+See the following rules for specific expression divergence behavior:
+
+- [type.never.constraint] --- Function calls returning `!`.
+- [expr.loop.infinite.diverging] --- Infinite `loop` expressions.
+- [expr.loop.break.diverging] --- `break` expressions.
+- [expr.loop.continue.diverging] --- `continue` expressions.
+- [expr.return.diverging] --- `return` expressions.
+- [expr.if.diverging] --- `if` expressions.
+- [expr.match.diverging] --- `match` expressions.
+- [expr.match.empty] --- Empty `match` expressions.
+- [expr.block.diverging] --- Block expressions.
+
+> [!NOTE]
+> The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
+
 Importantly, while there are certain language constructs that immediately produce a _diverging expression_ of the type [`!`], divergence can also propogate to the surrounding block --- where divergence indicates that the block itself will never finish executing.
 
 Any expression of type [`!`] is a _diverging expression_, but there are also diverging expressions which are not of type `!` (e.g. `Some(loop {})` produces a type of `Option<!>`).
