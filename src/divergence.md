@@ -16,13 +16,13 @@ Any expression of type [`!`] is a _diverging expression_, but there are also div
 >
 > fn diverging() -> ! {
 >     // This has a type of `!`.
->     // So, the entire function is considered diverging
+>     // So, the entire function is considered diverging.
 >     make_never();
 >     // OK: The type of the body is `!` which matches the return type.
 > }
 > fn not_diverging() -> ! {
 >     // This type is uninhabited.
->     // However, the entire function is not considered diverging
+>     // However, the entire function is not considered diverging.
 >     make_empty();
 >     // ERROR: The type of the body is `()` but expected type `!`.
 > }
