@@ -43,7 +43,8 @@ If a type to be inferred is only unified with diverging expressions, then that t
 > Before the 2024 edition, the type was inferred to instead be `()`.
 
 > [!NOTE]
-> Importantly, type unification may happen *structurally*, so the fallback `!` may be part of a larger type. The > following compiles:
+> Importantly, type unification may happen *structurally*, so the fallback `!` may be part of a larger type. The following compiles:
+>
 > ```rust
 > fn foo() -> i32 { 22 }
 > // This has the type `Option<!>`, not `!`
