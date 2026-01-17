@@ -441,19 +441,22 @@ r[cfg.cfg_select]
 
 r[cfg.cfg_select.syntax]
 ```grammar,configuration
-CfgSelect ->
-    cfg_select! `{` CfgSelectBranch* `}`
+@root CfgSelect -> CfgSelectArms?
+
+CfgSelectArms ->
+    CfgSelectConfigurationPredicate `=>`
+    (
+        `{` ^ TokenTree `}` CfgSelectArms?
+      | ExpressionWithBlockNoAttrs `,`? CfgSelectArms?
+      | ExpressionWithoutBlockNoAttrs ( `,` CfgSelectArms? )?
+    )
 
 CfgSelectConfigurationPredicate ->
     ConfigurationPredicate | `_`
-
-CfgSelectBranch ->
-    CfgSelectConfigurationPredicate `=>` `{` TokenTree `}`
-  | CfgSelectConfigurationPredicate `=>` TokenTree `,`
 ```
 
 r[cfg.cfg_select.general]
-The built-in `cfg_select` macro expands to the `TokenTree` on the right-hand side of the first configuration predicate that evaluates to `true`.
+The built-in `cfg_select` macro expands to the arm payload of the first configuration predicate that evaluates to `true`. If the payload is wrapped in curly braces, those are removed during expansion.
 
 For example:
 
