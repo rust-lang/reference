@@ -111,8 +111,7 @@ These conventions are documented here.
 
 * The grammar and lexical productions are described in the [Notation] chapter:
 
-  > r[example.rule.label]
-
+r[example.rule.label]
 * Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to and link to a specific rule in the language ([e.g.][example rule]). The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
 
   The rule name can be clicked to link to that rule.
