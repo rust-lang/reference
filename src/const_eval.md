@@ -232,6 +232,12 @@ r[const-eval.const-expr.loop]
 r[const-eval.const-expr.if-match]
 * [if] and [match] expressions.
 
+r[const-eval.const-expr.final-value-provenance]
+The representation of the final value of a constant or static initializer must only contain provenance in whole-pointer groups: if a byte has provenance but is not part of an adjacent group of bytes that form an entire pointer, compilation will fail.
+
+If a byte in the representation of the final value is uninitialized, then it *may* end up having provenance, which can cause compilation to fail.
+As a quality-of-implementation concern, the compiler should only actually fail if the initializer copies or overwrites parts of a pointer and that memory ends up in the final value.
+
 r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
