@@ -63,22 +63,25 @@ That said, there is no wrong way to read this book. Read it however you feel hel
 Like all technical books, this book has certain conventions in how it displays information.
 These conventions are documented here.
 
-* Statements that define a term contain that term in *italics*.
-  Whenever that term is used outside of that chapter, it is usually a link to the section that has this definition.
+* Statements that define a term write that term in italics:
 
-  An *example term* is an example of a term being defined.
+  > A *crab* is an animal with ten legs and a shell.
+
+  Whenever that term is used outside of that chapter, it is usually a link to the section that has this definition:
+
+  > Rust uses a pictogram of a [crab](#) as its logo.
 
 * The main text describes the latest stable edition. Differences to previous editions are separated in edition blocks:
 
   > [!EDITION-2018]
   > Before the 2018 edition, the behavior was this. As of the 2018 edition, the behavior is that.
 
-* Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in note blocks.
+* Notes that contain useful information about the state of the book or point out useful, but mostly out of scope, information are in note blocks:
 
   > [!NOTE]
   > This is an example note.
 
-* Example blocks show an example that demonstrates some rule or points out some interesting aspect. Some examples may have hidden lines which can be viewed by clicking the eye icon that appears when hovering or tapping the example.
+* Example blocks show an example that demonstrates some rule or points out some interesting aspect. Some examples may have hidden lines which can be viewed by clicking the eye icon that appears when hovering or tapping the example:
 
   > [!EXAMPLE]
   > This is a code example.
@@ -86,27 +89,30 @@ These conventions are documented here.
   > println!("hello world");
   > ```
 
-* Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
+* Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box:
 
   > [!WARNING]
   > This is an example warning.
 
-* Code snippets inline in the text are inside `<code>` tags.
+* Code snippets inline in the text are inside `<code>` tags:
 
-  Longer code examples are in a syntax highlighted box that has controls for copying, executing, and showing hidden lines in the top right corner.
+  > To print to the console use the `println!` macro.
 
-  ```rust
-  # // This is a hidden line.
-  fn main() {
-      println!("This is a code example");
-  }
-  ```
+  Longer code examples are in a syntax highlighted box that has controls for copying, executing, and showing hidden lines in the top right corner:
+
+  > ```rust
+  > # // This is a hidden line.
+  > fn main() {
+  >     println!("This is a code example");
+  > }
+  > ```
 
   All examples are written for the latest edition unless otherwise stated.
 
-* The grammar and lexical productions are described in the [Notation] chapter.
+* The grammar and lexical productions are described in the [Notation] chapter:
 
-r[example.rule.label]
+  > r[example.rule.label]
+
 * Rule identifiers appear before each language rule enclosed in square brackets. These identifiers provide a way to refer to and link to a specific rule in the language ([e.g.][example rule]). The rule identifier uses periods to separate sections from most general to most specific ([destructors.scope.nesting.function-body] for example). On narrow screens, the rule name will collapse to display `[*]`.
 
   The rule name can be clicked to link to that rule.
