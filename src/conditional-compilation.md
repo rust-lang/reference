@@ -27,7 +27,7 @@ ConfigurationPredicateList ->
     ConfigurationPredicate (`,` ConfigurationPredicate)* `,`?
 ```
 
-r[cfg.general]
+r[cfg.intro]
 *Conditionally compiled source code* is source code that is compiled only under certain conditions.
 
 r[cfg.attributes-macro]
@@ -72,7 +72,7 @@ Keys do not need to be unique. For example, both `feature = "std"` and `feature 
 r[cfg.options.set]
 ## Set configuration options
 
-r[cfg.options.general]
+r[cfg.options.intro]
 Which configuration options are set is determined statically during the compilation of the crate.
 
 r[cfg.options.target]
@@ -93,7 +93,7 @@ It is not possible to set a configuration option from within the source code of 
 r[cfg.target_arch]
 ### `target_arch`
 
-r[cfg.target_arch.gen]
+r[cfg.target_arch.def]
 Key-value option set once with the target's CPU architecture. The value is similar to the first element of the platform's target triple, but not identical.
 
 r[cfg.target_arch.values]
@@ -110,7 +110,7 @@ Example values:
 r[cfg.target_feature]
 ### `target_feature`
 
-r[cfg.target_feature.general]
+r[cfg.target_feature.def]
 Key-value option set for each platform feature available for the current compilation target.
 
 r[cfg.target_feature.values]
@@ -132,7 +132,7 @@ An additional feature of `crt-static` is available to the `target_feature` optio
 r[cfg.target_os]
 ### `target_os`
 
-r[cfg.target_os.general]
+r[cfg.target_os.def]
 Key-value option set once with the target's operating system. This value is similar to the second and third element of the platform's target triple.
 
 r[cfg.target_os.values]
@@ -152,7 +152,7 @@ Example values:
 r[cfg.target_family]
 ### `target_family`
 
-r[cfg.target_family.general]
+r[cfg.target_family.def]
 Key-value option providing a more generic description of a target, such as the family of the operating systems or architectures that the target generally falls into. Any number of `target_family` key-value pairs can be set.
 
 r[cfg.target_family.values]
@@ -174,7 +174,7 @@ r[cfg.target_family.windows]
 r[cfg.target_env]
 ### `target_env`
 
-r[cfg.target_env.general]
+r[cfg.target_env.def]
 Key-value option set with further disambiguating information about the target platform with information about the ABI or `libc` used. For historical reasons, this value is only defined as not the empty-string when actually needed for disambiguation. Thus, for example, on many GNU platforms, this value will be empty. This value is similar to the fourth element of the platform's target triple. One difference is that embedded ABIs such as `gnueabihf` will simply define `target_env` as `"gnu"`.
 
 r[cfg.target_env.values]
@@ -191,7 +191,7 @@ Example values:
 r[cfg.target_abi]
 ### `target_abi`
 
-r[cfg.target_abi.general]
+r[cfg.target_abi.def]
 Key-value option set to further disambiguate the target with information about the target ABI.
 
 r[cfg.target_abi.disambiguation]
@@ -213,7 +213,7 @@ Key-value option set once with either a value of "little" or "big" depending on 
 r[cfg.target_pointer_width]
 ### `target_pointer_width`
 
-r[cfg.target_pointer_width.general]
+r[cfg.target_pointer_width.def]
 Key-value option set once with the target's pointer width in bits.
 
 r[cfg.target_pointer_width.values]
@@ -226,7 +226,7 @@ Example values:
 r[cfg.target_vendor]
 ### `target_vendor`
 
-r[cfg.target_vendor.general]
+r[cfg.target_vendor.def]
 Key-value option set once with the vendor of the target.
 
 r[cfg.target_vendor.values]
@@ -240,7 +240,7 @@ Example values:
 r[cfg.target_has_atomic]
 ### `target_has_atomic`
 
-r[cfg.target_has_atomic.general]
+r[cfg.target_has_atomic.def]
 Key-value option set for each bit width that the target supports atomic loads, stores, and compare-and-swap operations.
 
 r[cfg.target_has_atomic.stdlib]
@@ -274,7 +274,7 @@ Set when the crate being compiled is being compiled with the `proc_macro` [crate
 r[cfg.panic]
 ### `panic`
 
-r[cfg.panic.general]
+r[cfg.panic.def]
 Key-value option set depending on the [panic strategy]. Note that more values may be added in the future.
 
 r[cfg.panic.values]

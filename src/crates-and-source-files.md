@@ -53,7 +53,7 @@ The anonymous crate module can have additional attributes that apply to the crat
 r[crate.main]
 ## Main functions
 
-r[crate.main.general]
+r[crate.main.executable]
 A crate that contains a `main` [function] can be compiled to an executable.
 
 r[crate.main.restriction]

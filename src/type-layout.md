@@ -114,7 +114,7 @@ String slices are a UTF-8 representation of characters that have the same layout
 r[layout.tuple]
 ## Tuple layout
 
-r[layout.tuple.general]
+r[layout.tuple.def]
 Tuples are laid out according to the [`Rust` representation][`Rust`].
 
 r[layout.tuple.unit]
