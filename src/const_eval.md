@@ -237,8 +237,61 @@ r[const-eval.const-expr.if-match]
 r[const-eval.const-expr.final-value-provenance]
 The representation of the final value of a [constant][constant initializer] or [static initializer] must only contain bytes with provenance in whole-pointer groups. If a byte has provenance but is not part of an adjacent group of bytes that form an entire pointer, compilation will fail.
 
+```rust,compile_fail
+# use core::mem::MaybeUninit;
+#
+#[repr(C, align(32))]
+struct Pair {
+    x: u128,             // Offset  0, 16 bytes.
+    y: MaybeUninit<u64>, // Offset 16,  8 bytes.
+                         // Offset 24,  8 bytes of padding.
+}
+
+const _: Pair = unsafe {
+//    ^^^^^^^ ERROR: Partial pointer in final value of constant.
+    let mut m = MaybeUninit::<Pair>::uninit();
+    // Store pointer that extends halfway into trailing padding.
+    m.as_mut_ptr().byte_add(20).cast::<&u8>().write_unaligned(&0);
+    // Initialize fields.
+    (*m.as_mut_ptr()).x = 0;
+    (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+    // Now `m` contains a pointer fragment in the padding.
+    m.assume_init()
+};
+```
+
 > [!NOTE]
 > If a byte in the representation of the final value is uninitialized, then it *may* end up having provenance, which can cause compilation to fail. `rustc` tries (but does not guarantee) to only actually fail if the initializer copies or overwrites parts of a pointer and those bytes appear in the final value.
+>
+> E.g., `rustc` currently accepts this, even though the padding bytes are uninitialized:
+>
+> ```rust
+> #[repr(C, align(32))]
+> struct Pair { x: u128, y: u64 }
+> // The padding bytes are uninitialized.
+> const _: Pair = Pair { x: 0, y: 0 }; // OK.
+> ```
+>
+> Constant evaluation makes the details of typed copies observable: depending on whether a copy is performed field-by-field or as a memory-block copy, provenance in padding bytes might be discarded or preserved (both in the source and in the destination). The language allows the compiler to reject any final initializer value with an uninitialized padding byte to preserve implementation flexibility (e.g., the compiler may in the future always set padding bytes to uninitialized).
+>
+> Manually initializing (e.g., zeroing) the padding bytes ensures the final value is accepted:
+>
+> ```rust
+> # use std::mem::MaybeUninit;
+> # #[repr(C, align(32))]
+> # struct Pair { x: u128, y: u64 }
+> const _: Pair = unsafe { // OK.
+>     let mut m = Pair { x: 0, y: 0 };
+>     # // Trigger failure if padding were not zeroed.
+>     # let ptr: *const u8 = &0;
+>     # let ptr_bytes = &raw const ptr as *const MaybeUninit<u8>;
+>     # let dst: *mut MaybeUninit<u8> = (&raw mut m).byte_add(31).cast();
+>     # dst.write(ptr_bytes.read());
+>     // Explicitly zero the padding.
+>     (&raw mut m).byte_add(24).cast::<u64>().write_unaligned(0);
+>     m
+> };
+> ```
 
 r[const-eval.const-context]
 ## Const context
