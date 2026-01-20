@@ -40,30 +40,18 @@ MacroTranscriber -> DelimTokenTree
 ```
 
 r[macro.decl.intro]
-`macro_rules` allows users to define syntax extension in a declarative way.  We
-call such extensions "macros by example" or simply "macros".
+`macro_rules` allows users to define syntax extension in a declarative way.  We call such extensions "macros by example" or simply "macros".
 
-Each macro by example has a name, and one or more _rules_. Each rule has two
-parts: a _matcher_, describing the syntax that it matches, and a _transcriber_,
-describing the syntax that will replace a successfully matched invocation. Both
-the matcher and the transcriber must be surrounded by delimiters. Macros can
-expand to expressions, statements, items (including traits, impls, and foreign
-items), types, or patterns.
+Each macro by example has a name, and one or more _rules_. Each rule has two parts: a _matcher_, describing the syntax that it matches, and a _transcriber_, describing the syntax that will replace a successfully matched invocation. Both the matcher and the transcriber must be surrounded by delimiters. Macros can expand to expressions, statements, items (including traits, impls, and foreign items), types, or patterns.
 
 r[macro.decl.transcription]
 ## Transcribing
 
 r[macro.decl.transcription.intro]
-When a macro is invoked, the macro expander looks up macro invocations by name,
-and tries each macro rule in turn. It transcribes the first successful match; if
-this results in an error, then future matches are not tried.
+When a macro is invoked, the macro expander looks up macro invocations by name, and tries each macro rule in turn. It transcribes the first successful match; if this results in an error, then future matches are not tried.
 
 r[macro.decl.transcription.lookahead]
-When matching, no lookahead is performed; if the compiler cannot unambiguously determine how to
-parse the macro invocation one token at a time, then it is an error. In the
-following example, the compiler does not look ahead past the identifier to see
-if the following token is a `)`, even though that would allow it to parse the
-invocation unambiguously:
+When matching, no lookahead is performed; if the compiler cannot unambiguously determine how to parse the macro invocation one token at a time, then it is an error. In the following example, the compiler does not look ahead past the identifier to see if the following token is a `)`, even though that would allow it to parse the invocation unambiguously:
 
 ```rust,compile_fail
 macro_rules! ambiguity {
@@ -74,23 +62,12 @@ ambiguity!(error); // Error: local ambiguity
 ```
 
 r[macro.decl.transcription.syntax]
-In both the matcher and the transcriber, the `$` token is used to invoke special
-behaviours from the macro engine (described below in [Metavariables] and
-[Repetitions]). Tokens that aren't part of such an invocation are matched and
-transcribed literally, with one exception. The exception is that the outer
-delimiters for the matcher will match any pair of delimiters. Thus, for
-instance, the matcher `(())` will match `{()}` but not `{{}}`. The character
-`$` cannot be matched or transcribed literally.
+In both the matcher and the transcriber, the `$` token is used to invoke special behaviours from the macro engine (described below in [Metavariables] and [Repetitions]). Tokens that aren't part of such an invocation are matched and transcribed literally, with one exception. The exception is that the outer delimiters for the matcher will match any pair of delimiters. Thus, for instance, the matcher `(())` will match `{()}` but not `{{}}`. The character `$` cannot be matched or transcribed literally.
 
 r[macro.decl.transcription.fragment]
 ### Forwarding a matched fragment
 
-When forwarding a matched fragment to another macro-by-example, matchers in
-the second macro will see an opaque AST of the fragment type. The second macro
-can't use literal tokens to match the fragments in the matcher, only a
-fragment specifier of the same type. The `ident`, `lifetime`, and `tt`
-fragment types are an exception, and *can* be matched by literal tokens. The
-following illustrates this restriction:
+When forwarding a matched fragment to another macro-by-example, matchers in the second macro will see an opaque AST of the fragment type. The second macro can't use literal tokens to match the fragments in the matcher, only a fragment specifier of the same type. The `ident`, `lifetime`, and `tt` fragment types are an exception, and *can* be matched by literal tokens. The following illustrates this restriction:
 
 ```rust,compile_fail
 macro_rules! foo {
@@ -105,8 +82,7 @@ macro_rules! bar {
 foo!(3);
 ```
 
-The following illustrates how tokens can be directly matched after matching a
-`tt` fragment:
+The following illustrates how tokens can be directly matched after matching a `tt` fragment:
 
 ```rust
 // compiles OK
@@ -125,8 +101,7 @@ r[macro.decl.meta]
 ## Metavariables
 
 r[macro.decl.meta.intro]
-In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax
-fragment of the kind specified and binds it to the metavariable `$`_name_.
+In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax fragment of the kind specified and binds it to the metavariable `$`_name_.
 
 r[macro.decl.meta.specifier]
 Valid fragment specifiers are:
@@ -148,10 +123,7 @@ Valid fragment specifiers are:
   * `vis`: a possibly empty [Visibility] qualifier
 
 r[macro.decl.meta.transcription]
-In the transcriber, metavariables are referred to simply by `$`_name_, since
-the fragment kind is specified in the matcher. Metavariables are replaced with
-the syntax element that matched them.
-Metavariables can be transcribed more than once or not at all.
+In the transcriber, metavariables are referred to simply by `$`_name_, since the fragment kind is specified in the matcher. Metavariables are replaced with the syntax element that matched them. Metavariables can be transcribed more than once or not at all.
 
 r[macro.decl.meta.dollar-crate]
 The keyword metavariable [`$crate`] can be used to refer to the current crate.
@@ -174,15 +146,10 @@ r[macro.decl.repetition]
 ## Repetitions
 
 r[macro.decl.repetition.intro]
-In both the matcher and transcriber, repetitions are indicated by placing the
-tokens to be repeated inside `$(`…`)`, followed by a repetition operator,
-optionally with a separator token between.
+In both the matcher and transcriber, repetitions are indicated by placing the tokens to be repeated inside `$(`…`)`, followed by a repetition operator, optionally with a separator token between.
 
 r[macro.decl.repetition.separator]
-The separator token can be any token
-other than a delimiter or one of the repetition operators, but `;` and `,` are
-the most common. For instance, `$( $i:ident ),*` represents any number of
-identifiers separated by commas. Nested repetitions are permitted.
+The separator token can be any token other than a delimiter or one of the repetition operators, but `;` and `,` are the most common. For instance, `$( $i:ident ),*` represents any number of identifiers separated by commas. Nested repetitions are permitted.
 
 r[macro.decl.repetition.operators]
 The repetition operators are:
@@ -192,50 +159,24 @@ The repetition operators are:
 - `?` --- indicates an optional fragment with zero or one occurrence.
 
 r[macro.decl.repetition.optional-restriction]
-Since `?` represents at most one occurrence, it cannot be used with a
-separator.
+Since `?` represents at most one occurrence, it cannot be used with a separator.
 
 r[macro.decl.repetition.fragment]
-The repeated fragment both matches and transcribes to the specified number of
-the fragment, separated by the separator token. Metavariables are matched to
-every repetition of their corresponding fragment. For instance, the `$( $i:ident
-),*` example above matches `$i` to all of the identifiers in the list.
+The repeated fragment both matches and transcribes to the specified number of the fragment, separated by the separator token. Metavariables are matched to every repetition of their corresponding fragment. For instance, the `$( $i:ident ),*` example above matches `$i` to all of the identifiers in the list.
 
-During transcription, additional restrictions apply to repetitions so that the
-compiler knows how to expand them properly:
+During transcription, additional restrictions apply to repetitions so that the compiler knows how to expand them properly:
 
-1.  A metavariable must appear in exactly the same number, kind, and nesting
-    order of repetitions in the transcriber as it did in the matcher. So for the
-    matcher `$( $i:ident ),*`, the transcribers `=> { $i }`,
-    `=> { $( $( $i )* )* }`, and `=> { $( $i )+ }` are all illegal, but
-    `=> { $( $i );* }` is correct and replaces a comma-separated list of
-    identifiers with a semicolon-separated list.
-2.  Each repetition in the transcriber must contain at least one metavariable to
-    decide how many times to expand it. If multiple metavariables appear in the
-    same repetition, they must be bound to the same number of fragments. For
-    instance, `( $( $i:ident ),* ; $( $j:ident ),* ) => (( $( ($i,$j) ),* ))` must
-    bind the same number of `$i` fragments as `$j` fragments. This means that
-    invoking the macro with `(a, b, c; d, e, f)` is legal and expands to
-    `((a,d), (b,e), (c,f))`, but `(a, b, c; d, e)` is illegal because it does
-    not have the same number. This requirement applies to every layer of nested
-    repetitions.
+1.  A metavariable must appear in exactly the same number, kind, and nesting order of repetitions in the transcriber as it did in the matcher. So for the matcher `$( $i:ident ),*`, the transcribers `=> { $i }`, `=> { $( $( $i )* )* }`, and `=> { $( $i )+ }` are all illegal, but `=> { $( $i );* }` is correct and replaces a comma-separated list of identifiers with a semicolon-separated list.
+2.  Each repetition in the transcriber must contain at least one metavariable to decide how many times to expand it. If multiple metavariables appear in the same repetition, they must be bound to the same number of fragments. For instance, `( $( $i:ident ),* ; $( $j:ident ),* ) => (( $( ($i,$j) ),* ))` must bind the same number of `$i` fragments as `$j` fragments. This means that invoking the macro with `(a, b, c; d, e, f)` is legal and expands to `((a,d), (b,e), (c,f))`, but `(a, b, c; d, e)` is illegal because it does not have the same number. This requirement applies to every layer of nested repetitions.
 
 r[macro.decl.scope]
 ## Scoping, exporting, and importing
 
 r[macro.decl.scope.intro]
-For historical reasons, the scoping of macros by example does not work entirely
-like items. Macros have two forms of scope: textual scope, and path-based scope.
-Textual scope is based on the order that things appear in source files, or even
-across multiple files, and is the default scoping. It is explained further below.
-Path-based scope works exactly the same way that item scoping does. The scoping,
-exporting, and importing of macros is controlled largely by attributes.
+For historical reasons, the scoping of macros by example does not work entirely like items. Macros have two forms of scope: textual scope, and path-based scope. Textual scope is based on the order that things appear in source files, or even across multiple files, and is the default scoping. It is explained further below. Path-based scope works exactly the same way that item scoping does. The scoping, exporting, and importing of macros is controlled largely by attributes.
 
 r[macro.decl.scope.unqualified]
-When a macro is invoked by an unqualified identifier (not part of a multi-part
-path), it is first looked up in textual scoping. If this does not yield any
-results, then it is looked up in path-based scoping. If the macro's name is
-qualified with a path, then it is only looked up in path-based scoping.
+When a macro is invoked by an unqualified identifier (not part of a multi-part path), it is first looked up in textual scoping. If this does not yield any results, then it is looked up in path-based scoping. If the macro's name is qualified with a path, then it is only looked up in path-based scoping.
 
 <!-- ignore: requires external crates -->
 ```rust,ignore
@@ -253,13 +194,7 @@ r[macro.decl.scope.textual]
 ### Textual scope
 
 r[macro.decl.scope.textual.intro]
-Textual scope is based largely on the order that things appear in source files,
-and works similarly to the scope of local variables declared with `let` except
-it also applies at the module level. When `macro_rules!` is used to define a
-macro, the macro enters the scope after the definition (note that it can still
-be used recursively, since names are looked up from the invocation site), up
-until its surrounding scope, typically a module, is closed. This can enter child
-modules and even span across multiple files:
+Textual scope is based largely on the order that things appear in source files, and works similarly to the scope of local variables declared with `let` except it also applies at the module level. When `macro_rules!` is used to define a macro, the macro enters the scope after the definition (note that it can still be used recursively, since names are looked up from the invocation site), up until its surrounding scope, typically a module, is closed. This can enter child modules and even span across multiple files:
 
 <!-- ignore: requires external modules -->
 ```rust,ignore
@@ -283,8 +218,7 @@ m!{} // OK: appears after declaration of m in src/lib.rs
 ```
 
 r[macro.decl.scope.textual.shadow]
-It is not an error to define a macro multiple times; the most recent declaration
-will shadow the previous one unless it has gone out of scope.
+It is not an error to define a macro multiple times; the most recent declaration will shadow the previous one unless it has gone out of scope.
 
 ```rust
 macro_rules! m {
@@ -311,8 +245,7 @@ mod inner {
 m!(1);
 ```
 
-Macros can be declared and used locally inside functions as well, and work
-similarly:
+Macros can be declared and used locally inside functions as well, and work similarly:
 
 ```rust
 fn foo() {
@@ -718,8 +651,7 @@ fn unit() {
 }
 ```
 
-Note that, because `$crate` refers to the current crate, it must be used with a
-fully qualified module path when referring to non-macro items:
+Note that, because `$crate` refers to the current crate, it must be used with a fully qualified module path when referring to non-macro items:
 
 ```rust
 pub mod inner {
@@ -733,11 +665,7 @@ pub mod inner {
 ```
 
 r[macro.decl.hygiene.vis]
-Additionally, even though `$crate` allows a macro to refer to items within its
-own crate when expanding, its use has no effect on visibility. An item or macro
-referred to must still be visible from the invocation site. In the following
-example, any attempt to invoke `call_foo!()` from outside its crate will fail
-because `foo()` is not public.
+Additionally, even though `$crate` allows a macro to refer to items within its own crate when expanding, its use has no effect on visibility. An item or macro referred to must still be visible from the invocation site. In the following example, any attempt to invoke `call_foo!()` from outside its crate will fail because `foo()` is not public.
 
 ```rust
 #[macro_export]
@@ -755,22 +683,12 @@ r[macro.decl.follow-set]
 ## Follow-set ambiguity restrictions
 
 r[macro.decl.follow-set.intro]
-The parser used by the macro system is reasonably powerful, but it is limited in
-order to prevent ambiguity in current or future versions of the language.
+The parser used by the macro system is reasonably powerful, but it is limited in order to prevent ambiguity in current or future versions of the language.
 
 r[macro.decl.follow-set.token-restriction]
-In particular, in addition to the rule about ambiguous expansions, a nonterminal
-matched by a metavariable must be followed by a token which has been decided can
-be safely used after that kind of match.
+In particular, in addition to the rule about ambiguous expansions, a nonterminal matched by a metavariable must be followed by a token which has been decided can be safely used after that kind of match.
 
-As an example, a macro matcher like `$i:expr [ , ]` could in theory be accepted
-in Rust today, since `[,]` cannot be part of a legal expression and therefore
-the parse would always be unambiguous. However, because `[` can start trailing
-expressions, `[` is not a character which can safely be ruled out as coming
-after an expression. If `[,]` were accepted in a later version of Rust, this
-matcher would become ambiguous or would misparse, breaking working code.
-Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and
-`;` are legal expression separators. The specific rules are:
+As an example, a macro matcher like `$i:expr [ , ]` could in theory be accepted in Rust today, since `[,]` cannot be part of a legal expression and therefore the parse would always be unambiguous. However, because `[` can start trailing expressions, `[` is not a character which can safely be ruled out as coming after an expression. If `[,]` were accepted in a later version of Rust, this matcher would become ambiguous or would misparse, breaking working code. Matchers like `$i:expr,` or `$i:expr;` would be legal, however, because `,` and `;` are legal expression separators. The specific rules are:
 
 r[macro.decl.follow-set.token-expr-stmt]
   * `expr` and `stmt` may only be followed by one of: `=>`, `,`, or `;`.
@@ -782,14 +700,10 @@ r[macro.decl.follow-set.token-pat]
   * `pat` may only be followed by one of: `=>`, `,`, `=`, `if`, or `in`.
 
 r[macro.decl.follow-set.token-path-ty]
-  * `path` and `ty` may only be followed by one of: `=>`, `,`, `=`, `|`, `;`,
-    `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block`
-    fragment specifier.
+  * `path` and `ty` may only be followed by one of: `=>`, `,`, `=`, `|`, `;`, `:`, `>`, `>>`, `[`, `{`, `as`, `where`, or a macro variable of `block` fragment specifier.
 
 r[macro.decl.follow-set.token-vis]
-  * `vis` may only be followed by one of: `,`, an identifier other than a
-    non-raw `priv`, any token that can begin a type, or a metavariable with a
-    `ident`, `ty`, or `path` fragment specifier.
+  * `vis` may only be followed by one of: `,`, an identifier other than a non-raw `priv`, any token that can begin a type, or a metavariable with a `ident`, `ty`, or `path` fragment specifier.
 
 r[macro.decl.follow-set.token-other]
   * All other fragment specifiers have no restrictions.
@@ -799,18 +713,12 @@ r[macro.decl.follow-set.edition2021]
 > Before the 2021 edition, `pat` may also be followed by `|`.
 
 r[macro.decl.follow-set.repetition]
-When repetitions are involved, then the rules apply to every possible number of
-expansions, taking separators into account. This means:
+When repetitions are involved, then the rules apply to every possible number of expansions, taking separators into account. This means:
 
-  * If the repetition includes a separator, that separator must be able to
-    follow the contents of the repetition.
-  * If the repetition can repeat multiple times (`*` or `+`), then the contents
-    must be able to follow themselves.
-  * The contents of the repetition must be able to follow whatever comes
-    before, and whatever comes after must be able to follow the contents of the
-    repetition.
-  * If the repetition can match zero times (`*` or `?`), then whatever comes
-    after must be able to follow whatever comes before.
+  * If the repetition includes a separator, that separator must be able to follow the contents of the repetition.
+  * If the repetition can repeat multiple times (`*` or `+`), then the contents must be able to follow themselves.
+  * The contents of the repetition must be able to follow whatever comes before, and whatever comes after must be able to follow the contents of the repetition.
+  * If the repetition can match zero times (`*` or `?`), then whatever comes after must be able to follow whatever comes before.
 
 For more detail, see the [formal specification].
 

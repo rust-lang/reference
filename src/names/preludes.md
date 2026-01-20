@@ -2,13 +2,9 @@ r[names.preludes]
 # Preludes
 
 r[names.preludes.intro]
-A *prelude* is a collection of names that are automatically brought into scope
-of every module in a crate.
+A *prelude* is a collection of names that are automatically brought into scope of every module in a crate.
 
-These prelude names are not part of the module itself: they are implicitly
-queried during [name resolution]. For example, even though something like
-[`Box`] is in scope in every module, you cannot refer to it as `self::Box`
-because it is not a member of the current module.
+These prelude names are not part of the module itself: they are implicitly queried during [name resolution]. For example, even though something like [`Box`] is in scope in every module, you cannot refer to it as `self::Box` because it is not a member of the current module.
 
 r[names.preludes.kinds]
 There are several different preludes:
@@ -49,10 +45,7 @@ r[names.preludes.extern]
 ## Extern prelude
 
 r[names.preludes.extern.intro]
-External crates imported with [`extern crate`] in the root module or provided
-to the compiler (as with the `--extern` flag with `rustc`) are added to the
-*extern prelude*. If imported with an alias such as `extern crate orig_name as
-new_name`, then the symbol `new_name` is instead added to the prelude.
+External crates imported with [`extern crate`] in the root module or provided to the compiler (as with the `--extern` flag with `rustc`) are added to the *extern prelude*. If imported with an alias such as `extern crate orig_name as new_name`, then the symbol `new_name` is instead added to the prelude.
 
 r[names.preludes.extern.core]
 The [`core`] crate is always added to the extern prelude.
@@ -77,8 +70,7 @@ r[names.preludes.extern.edition2018]
 > Cargo does bring in `proc_macro` to the extern prelude for proc-macro crates only.
 
 <!--
-See https://github.com/rust-lang/rust/issues/57288 for more about the
-alloc/test limitation.
+See https://github.com/rust-lang/rust/issues/57288 for more about the alloc/test limitation.
 -->
 
 <!-- template:attributes -->
@@ -123,8 +115,7 @@ r[names.preludes.lang]
 ## Language prelude
 
 r[names.preludes.lang.intro]
-The language prelude includes names of types and attributes that are built-in
-to the language. The language prelude is always in scope.
+The language prelude includes names of types and attributes that are built-in to the language. The language prelude is always in scope.
 
 r[names.preludes.lang.entities]
 It includes the following:
@@ -143,15 +134,13 @@ r[names.preludes.macro_use]
 ## `macro_use` prelude
 
 r[names.preludes.macro_use.intro]
-The `macro_use` prelude includes macros from external crates that were
-imported by the [`macro_use` attribute] applied to an [`extern crate`].
+The `macro_use` prelude includes macros from external crates that were imported by the [`macro_use` attribute] applied to an [`extern crate`].
 
 r[names.preludes.tool]
 ## Tool prelude
 
 r[names.preludes.tool.intro]
-The tool prelude includes tool names for external tools in the [type
-namespace]. See the [tool attributes] section for more details.
+The tool prelude includes tool names for external tools in the [type namespace]. See the [tool attributes] section for more details.
 
 <!-- template:attributes -->
 r[names.preludes.no_implicit_prelude]
