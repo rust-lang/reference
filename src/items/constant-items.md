@@ -12,8 +12,8 @@ A *constant item* is an optionally named _[constant value]_ which is not associa
 with a specific memory location in the program.
 
 r[items.const.behavior]
-Constants are essentially inlined wherever they are used, meaning that they are copied directly into the relevant
-context when used. This includes usage of constants from external crates, and
+Constants are essentially inlined wherever they are used, meaning that their expressions are copied directly into the relevant
+context when used. This includes usage of constants from external crates and
 non-[`Copy`] types. References to the same constant are not necessarily
 guaranteed to refer to the same memory address.
 
