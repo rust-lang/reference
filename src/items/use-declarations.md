@@ -216,6 +216,9 @@ mod example {
 # fn main() {}
 ```
 
+> [!NOTE]
+> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
+
 r[items.use.self.namespace]
 `self` only creates a binding from the [type namespace] of the parent entity. For example, in the following, only the `foo` mod is imported:
 
@@ -233,9 +236,6 @@ fn main() {
     foo(); //~ ERROR `foo` is a module
 }
 ```
-
-> [!NOTE]
-> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
 
 r[items.use.glob]
 ## Glob imports
