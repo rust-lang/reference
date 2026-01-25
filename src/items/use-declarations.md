@@ -170,22 +170,6 @@ Braces can be used in the last segment of the path to import multiple entities f
 use std::collections::{BTreeSet, hash_map::{self, HashMap}};
 ```
 
-Braces may also import `self` from the current scope when it is explicitly renamed:
-
-```rust
-mod m {
-    pub fn f() {}
-
-    use {f as local_f, self as this_module};
-
-    pub fn g() {
-        local_f();
-        this_module::f();
-    }
-}
-# fn main() {}
-```
-
 r[items.use.multiple-syntax.empty]
 An empty brace does not import anything, though the leading path is validated that it is accessible.
 <!-- This is slightly wrong, see: https://github.com/rust-lang/rust/issues/61826 -->
