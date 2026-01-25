@@ -333,31 +333,33 @@ m!(use std as _;);
 r[items.use.restrictions]
 ## Restrictions
 
-The following are restrictions for valid `use` declarations:
+The following rules are restrictions for valid `use` declarations.
 
 r[items.use.restrictions.crate]
-* `use crate;` must use `as` to define the name to which to bind the crate root.
+`use crate;` must use `as` to define the name to which to bind the crate root.
 
 r[items.use.restrictions.self]
-* `use {self};` is an error; there must be a leading segment when using `self`.
+`use {self};` is an error; there must be a leading segment when using `self`.
 
 r[items.use.restrictions.duplicate-name]
-* As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
+As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
 r[items.use.restrictions.macro-crate]
-* `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
+`use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
 
 r[items.use.restrictions.variant]
-* `use` paths cannot refer to enum variants through a [type alias]. For example:
-  ```rust,compile_fail
-  enum MyEnum {
-      MyVariant
-  }
-  type TypeAlias = MyEnum;
+`use` paths cannot refer to enum variants through a [type alias].
 
-  use MyEnum::MyVariant; //~ OK
-  use TypeAlias::MyVariant; //~ ERROR
-  ```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> enum MyEnum {
+>   MyVariant
+> }
+> type TypeAlias = MyEnum;
+>
+> use MyEnum::MyVariant; //~ OK
+> use TypeAlias::MyVariant; //~ ERROR
+> ```
 
 [Attributes]: ../attributes.md
 [Built-in types]: ../types.md
