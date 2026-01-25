@@ -188,6 +188,9 @@ r[paths.qualifiers]
 
 Paths can be denoted with various leading qualifiers to change the meaning of how it is resolved.
 
+> [!NOTE]
+> [`use` declarations] have additional behaviors and restrictions for `self`, `super`, `crate`, and `$crate`.
+
 r[paths.qualifiers.global-root]
 ### `::`
 
@@ -486,5 +489,6 @@ mod without { // crate::without
 [traits]: items/traits.md
 [types]: types.md
 [union]: items/unions.md
+[`use` declarations]: items/use-declarations.md
 [value namespace]: names/namespaces.md
 [visibility]: visibility-and-privacy.md
