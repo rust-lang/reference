@@ -381,16 +381,20 @@ When using `super` to import a parent module, you must use `as` to define the bi
 
 > [!EXAMPLE]
 > ```rust
-> use super as parent;
-> use super::{self as parent2};
-> use super::super as grandparent;
-> use super::super::{self as grandparent2};
+> mod a {
+>     mod b {
+>         use super as parent;
+>         use super::{self as parent2};
+>         use super::super as grandparent;
+>         use super::super::{self as grandparent2};
 >
-> // Not allowed:
-> // use super;
-> // use super::{self};
-> // use super::super;
-> // use super::super::{self};
+>         // Not allowed:
+>         // use super;
+>         // use super::{self};
+>         // use super::super;
+>         // use super::super::{self};
+>     }
+> }
 > ```
 
 r[items.use.restrictions.duplicate-name]
