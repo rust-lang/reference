@@ -348,6 +348,19 @@ Importing the crate root (`crate`) must use `as` to define the name to which to 
 > // use crate::{self};
 > ```
 
+r[items.use.restrictions.macro-crate]
+Within a macro transcriber, `$crate` may be used in `use` paths as the first segment (see `$crate` in the paths chapter). Importing `$crate` as an entity must use `as` to define the binding name.
+
+> [!EXAMPLE]
+> ```rust
+> macro_rules! import_crate_root {
+>     () => {
+>         use $crate as my_crate;
+>         use $crate::{self as my_crate2};
+>     };
+> }
+> ```
+
 r[items.use.restrictions.self]
 Importing `self` as an entity must use `as` to define the binding name (this does not affect `self` used within a prefixed brace import like `use a::b::{self, c};`).
 
@@ -382,19 +395,6 @@ Importing `super` (including repeated `super::super`) as an entity must use `as`
 
 r[items.use.restrictions.duplicate-name]
 As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
-
-r[items.use.restrictions.macro-crate]
-Within a macro transcriber, `$crate` may be used in `use` paths as the first segment (see `$crate` in the paths chapter). Importing `$crate` as an entity must use `as` to define the binding name.
-
-> [!EXAMPLE]
-> ```rust
-> macro_rules! import_crate_root {
->     () => {
->         use $crate as my_crate;
->         use $crate::{self as my_crate2};
->     };
-> }
-> ```
 
 r[items.use.restrictions.variant]
 `use` paths cannot refer to enum variants through a [type alias].
