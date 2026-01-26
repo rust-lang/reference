@@ -395,7 +395,7 @@ r[paths.canonical]
 ## Canonical paths
 
 r[paths.canonical.intro]
-Items defined in a module or implementation have a *canonical path* that corresponds to where within its crate it is defined.
+Each item defined in a module or implementation has a *canonical path* that corresponds to where within its crate it is defined.
 
 r[paths.canonical.alias]
 All other paths to these items are aliases.
