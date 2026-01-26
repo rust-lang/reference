@@ -960,7 +960,7 @@ r[asm.abi-clobbers.many]
 ```rust
 # #[cfg(target_arch = "x86_64")] {
 extern "sysv64" fn foo() -> i32 { 0 }
-extern "win64" fn bar(x: i32) -> i32 { x + 1}
+extern "win64" fn bar(x: i32) -> i32 { x + 1 }
 
 let z: i32;
 // We can even call multiple functions with different conventions and
