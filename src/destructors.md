@@ -2,11 +2,7 @@ r[destructors]
 # Destructors
 
 r[destructors.intro]
-When an [initialized]&#32;[variable] or [temporary] goes out of
-[scope](#drop-scopes), its *destructor* is run or it is *dropped*. [Assignment]
-also runs the destructor of its left-hand operand, if it's initialized. If a
-variable has been partially initialized, only its initialized fields are
-dropped.
+When an [initialized]&#32;[variable] or [temporary] goes out of [scope](#drop-scopes), its *destructor* is run or it is *dropped*. [Assignment] also runs the destructor of its left-hand operand, if it's initialized. If a variable has been partially initialized, only its initialized fields are dropped.
 
 r[destructors.operation]
 The destructor of a type `T` consists of:
@@ -16,16 +12,13 @@ The destructor of a type `T` consists of:
     * The fields of a [struct] are dropped in declaration order.
     * The fields of the active [enum variant] are dropped in declaration order.
     * The fields of a [tuple] are dropped in order.
-    * The elements of an [array] or owned [slice] are dropped from the
-      first element to the last.
-    * The variables that a [closure] captures by move are dropped in an
-      unspecified order.
+    * The elements of an [array] or owned [slice] are dropped from the first element to the last.
+    * The variables that a [closure] captures by move are dropped in an unspecified order.
     * [Trait objects] run the destructor of the underlying type.
     * Other types don't result in any further drops.
 
 r[destructors.drop_in_place]
-If a destructor must be run manually, such as when implementing your own smart
-pointer, [`core::ptr::drop_in_place`] can be used.
+If a destructor must be run manually, such as when implementing your own smart pointer, [`core::ptr::drop_in_place`] can be used.
 
 Some examples:
 
@@ -63,18 +56,13 @@ r[destructors.scope]
 ## Drop scopes
 
 r[destructors.scope.intro]
-Each variable or temporary is associated to a *drop scope*. When control flow
-leaves a drop scope all variables associated to that scope are dropped in
-reverse order of declaration (for variables) or creation (for temporaries).
+Each variable or temporary is associated to a *drop scope*. When control flow leaves a drop scope all variables associated to that scope are dropped in reverse order of declaration (for variables) or creation (for temporaries).
 
 r[destructors.scope.desugaring]
-Drop scopes can be determined by replacing [`for`], [`if`], and [`while`]
-expressions with equivalent expressions using [`match`], [`loop`] and
-`break`.
+Drop scopes can be determined by replacing [`for`], [`if`], and [`while`] expressions with equivalent expressions using [`match`], [`loop`] and `break`.
 
 r[destructors.scope.operators]
-Overloaded operators are not distinguished from built-in operators and [binding
-modes] are not considered.
+Overloaded operators are not distinguished from built-in operators and [binding modes] are not considered.
 
 r[destructors.scope.list]
 Given a function, or closure, there are drop scopes for:
@@ -90,16 +78,13 @@ r[destructors.scope.expression]
 
 r[destructors.scope.block]
 * Each block, including the function body
-    * In the case of a [block expression], the scope for the block and the
-      expression are the same scope.
+    * In the case of a [block expression], the scope for the block and the expression are the same scope.
 
 r[destructors.scope.match-arm]
 * Each arm of a `match` expression
 
 r[destructors.scope.nesting]
-Drop scopes are nested within one another as follows. When multiple scopes are
-left at once, such as when returning from a function, variables are dropped
-from the inside outwards.
+Drop scopes are nested within one another as follows. When multiple scopes are left at once, such as when returning from a function, variables are dropped from the inside outwards.
 
 r[destructors.scope.nesting.function]
 * The entire function scope is the outer most scope.
@@ -108,39 +93,30 @@ r[destructors.scope.nesting.function-body]
 * The function body block is contained within the scope of the entire function.
 
 r[destructors.scope.nesting.expr-statement]
-* The parent of the expression in an expression statement is the scope of the
-  statement.
+* The parent of the expression in an expression statement is the scope of the statement.
 
 r[destructors.scope.nesting.let-initializer]
-* The parent of the initializer of a [`let` statement] is the `let` statement's
-  scope.
+* The parent of the initializer of a [`let` statement] is the `let` statement's scope.
 
 r[destructors.scope.nesting.statement]
-* The parent of a statement scope is the scope of the block that contains the
-  statement.
+* The parent of a statement scope is the scope of the block that contains the statement.
 
 r[destructors.scope.nesting.match-guard]
-* The parent of the expression for a `match` guard is the scope of the arm that
-  the guard is for.
+* The parent of the expression for a `match` guard is the scope of the arm that the guard is for.
 
 r[destructors.scope.nesting.match-arm]
-* The parent of the expression after the `=>` in a `match` expression is the
-  scope of the arm that it's in.
+* The parent of the expression after the `=>` in a `match` expression is the scope of the arm that it's in.
 
 r[destructors.scope.nesting.match]
-* The parent of the arm scope is the scope of the `match` expression that it
-  belongs to.
+* The parent of the arm scope is the scope of the `match` expression that it belongs to.
 
 r[destructors.scope.nesting.other]
-* The parent of all other scopes is the scope of the immediately enclosing
-  expression.
+* The parent of all other scopes is the scope of the immediately enclosing expression.
 
 r[destructors.scope.params]
 ### Scopes of function parameters
 
-All function parameters are in the scope of the entire function body, so are
-dropped last when evaluating the function. Each actual function parameter is
-dropped after any bindings introduced in that parameter's pattern.
+All function parameters are in the scope of the entire function body, so are dropped last when evaluating the function. Each actual function parameter is dropped after any bindings introduced in that parameter's pattern.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -166,10 +142,7 @@ r[destructors.scope.bindings]
 ### Scopes of local variables
 
 r[destructors.scope.bindings.intro]
-Local variables declared in a `let` statement are associated to the scope of
-the block that contains the `let` statement. Local variables declared in a
-`match` expression are associated to the arm scope of the `match` arm that they
-are declared in.
+Local variables declared in a `let` statement are associated to the scope of the block that contains the `let` statement. Local variables declared in a `match` expression are associated to the arm scope of the `match` arm that they are declared in.
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -243,20 +216,16 @@ r[destructors.scope.temporary]
 ### Temporary scopes
 
 r[destructors.scope.temporary.intro]
-The *temporary scope* of an expression is the scope that is used for the
-temporary variable that holds the result of that expression when used in a
-[place context], unless it is [promoted].
+The *temporary scope* of an expression is the scope that is used for the temporary variable that holds the result of that expression when used in a [place context], unless it is [promoted].
 
 r[destructors.scope.temporary.enclosing]
-Apart from lifetime extension, the temporary scope of an expression is the
-smallest scope that contains the expression and is one of the following:
+Apart from lifetime extension, the temporary scope of an expression is the smallest scope that contains the expression and is one of the following:
 
 * The entire function.
 * A statement.
 * The body of an [`if`], [`while`] or [`loop`] expression.
 * The `else` block of an `if` expression.
-* The non-pattern matching condition expression of an `if` or `while` expression,
-  or a `match` guard.
+* The non-pattern matching condition expression of an `if` or `while` expression, or a `match` guard.
 * The body expression for a match arm.
 * Each operand of a [lazy boolean expression].
 * The pattern-matching condition(s) and consequent body of [`if`] ([destructors.scope.temporary.edition2024]).
@@ -329,11 +298,7 @@ match PrintOnDrop("Matched value in final expression") {
 r[destructors.scope.operands]
 ### Operands
 
-Temporaries are also created to hold the result of operands to an expression
-while the other operands are evaluated. The temporaries are associated to the
-scope of the expression with that operand. Since the temporaries are moved from
-once the expression is evaluated, dropping them has no effect unless one of the
-operands to an expression breaks out of the expression, returns, or [panics][panic].
+Temporaries are also created to hold the result of operands to an expression while the other operands are evaluated. The temporaries are associated to the scope of the expression with that operand. Since the temporaries are moved from once the expression is evaluated, dropping them has no effect unless one of the operands to an expression breaks out of the expression, returns, or [panics][panic].
 
 ```rust
 # struct PrintOnDrop(&'static str);
@@ -360,14 +325,7 @@ loop {
 r[destructors.scope.const-promotion]
 ### Constant promotion
 
-Promotion of a value expression to a `'static` slot occurs when the expression
-could be written in a constant and borrowed, and that borrow could be dereferenced
-where
-the expression was originally written, without changing the runtime behavior.
-That is, the promoted expression can be evaluated at compile-time and the
-resulting value does not contain [interior mutability] or [destructors] (these
-properties are determined based on the value where possible, e.g. `&None`
-always has the type `&'static Option<_>`, as it contains nothing disallowed).
+Promotion of a value expression to a `'static` slot occurs when the expression could be written in a constant and borrowed, and that borrow could be dereferenced where the expression was originally written, without changing the runtime behavior. That is, the promoted expression can be evaluated at compile-time and the resulting value does not contain [interior mutability] or [destructors] (these properties are determined based on the value where possible, e.g. `&None` always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
@@ -376,10 +334,7 @@ r[destructors.scope.lifetime-extension]
 > The exact rules for temporary lifetime extension are subject to change. This is describing the current behavior only.
 
 r[destructors.scope.lifetime-extension.let]
-The temporary scopes for expressions in `let` statements are sometimes
-*extended* to the scope of the block containing the `let` statement. This is
-done when the usual temporary scope would be too small, based on certain
-syntactic rules. For example:
+The temporary scopes for expressions in `let` statements are sometimes *extended* to the scope of the block containing the `let` statement. This is done when the usual temporary scope would be too small, based on certain syntactic rules. For example:
 
 ```rust
 let x = &mut 0;
@@ -389,8 +344,7 @@ println!("{}", x);
 ```
 
 r[destructors.scope.lifetime-extension.static]
-Lifetime extension also applies to `static` and `const` items, where it
-makes temporaries live until the end of the program. For example:
+Lifetime extension also applies to `static` and `const` items, where it makes temporaries live until the end of the program. For example:
 
 ```rust
 const C: &Vec<i32> = &Vec::new();
@@ -444,8 +398,7 @@ An *extending pattern* is either:
 So `ref x`, `V(ref x)` and `[ref x, y]` are all extending patterns, but `x`, `&ref x` and `&(ref x,)` are not.
 
 r[destructors.scope.lifetime-extension.patterns.let]
-If the pattern in a `let` statement is an extending pattern then the temporary
-scope of the initializer expression is extended.
+If the pattern in a `let` statement is an extending pattern then the temporary scope of the initializer expression is extended.
 
 ```rust
 # fn temp() {}
@@ -474,15 +427,12 @@ r[destructors.scope.lifetime-extension.exprs]
 #### Extending based on expressions
 
 r[destructors.scope.lifetime-extension.exprs.extending]
-For a let statement with an initializer, an *extending expression* is an
-expression which is one of the following:
+For a let statement with an initializer, an *extending expression* is an expression which is one of the following:
 
 * The initializer expression.
 * The operand of an extending [borrow] expression.
 * The [super operands] of an extending [super macro call] expression.
-* The operand(s) of an extending [array][array expression], [cast][cast
-  expression], [braced struct][struct expression], or [tuple][tuple expression]
-  expression.
+* The operand(s) of an extending [array][array expression], [cast][cast expression], [braced struct][struct expression], or [tuple][tuple expression] expression.
 * The arguments to an extending [tuple struct] or [tuple enum variant] constructor expression.
 * The final expression of an extending [block expression] except for an [async block expression].
 * The final expression of an extending [`if`] expression's consequent, `else if`, or `else` block.
@@ -491,8 +441,7 @@ expression which is one of the following:
 > [!NOTE]
 > The desugaring of a [destructuring assignment] makes its assigned value operand (the RHS) an extending expression within a newly-introduced block. For details, see [expr.assign.destructure.tmp-ext].
 
-So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)`
-are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
+So the borrow expressions in `&mut 0`, `(&1, &mut 2)`, and `Some(&mut 3)` are all extending expressions. The borrows in `&0 + &1` and `f(&mut 0)` are not.
 
 r[destructors.scope.lifetime-extension.exprs.borrows]
 The operand of an extending [borrow] expression has its [temporary scope] [extended].
@@ -628,9 +577,7 @@ r[destructors.forget]
 r[destructors.manually-suppressing]
 ### Manually suppressing destructors
 
-[`core::mem::forget`] can be used to prevent the destructor of a variable from being run,
-and [`core::mem::ManuallyDrop`] provides a wrapper to prevent a
-variable or field from being dropped automatically.
+[`core::mem::forget`] can be used to prevent the destructor of a variable from being run, and [`core::mem::ManuallyDrop`] provides a wrapper to prevent a variable or field from being dropped automatically.
 
 > [!NOTE]
 > Preventing a destructor from being run via [`core::mem::forget`] or other means is safe even if it has a type that isn't `'static`. Besides the places where destructors are guaranteed to run as defined by this document, types may *not* safely rely on a destructor being run for soundness.

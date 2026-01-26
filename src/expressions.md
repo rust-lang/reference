@@ -62,8 +62,7 @@ The meaning of each kind of expression dictates several things:
 * How to combine the operands' values to obtain the value of the expression
 
 r[expr.structure]
-In this way, the structure of expressions dictates the structure of execution.
-Blocks are just another kind of expression, so blocks, statements, expressions, and blocks again can recursively nest inside each other to an arbitrary depth.
+In this way, the structure of expressions dictates the structure of execution. Blocks are just another kind of expression, so blocks, statements, expressions, and blocks again can recursively nest inside each other to an arbitrary depth.
 
 > [!NOTE]
 > We give names to the operands of expressions so that we may discuss them, but these names are not stable and may be changed.
@@ -71,8 +70,7 @@ Blocks are just another kind of expression, so blocks, statements, expressions, 
 r[expr.precedence]
 ## Expression precedence
 
-The precedence of Rust operators and expressions is ordered as follows, going from strong to weak.
-Binary Operators at the same precedence level are grouped in the order given by their associativity.
+The precedence of Rust operators and expressions is ordered as follows, going from strong to weak. Binary Operators at the same precedence level are grouped in the order given by their associativity.
 
 | Operator/Expression         | Associativity       |
 |-----------------------------|---------------------|
@@ -100,8 +98,7 @@ r[expr.operand-order]
 ## Evaluation order of operands
 
 r[expr.operand-order.default]
-The following list of expressions all evaluate their operands the same way, as described after the list.
-Other expressions either don't take operands or evaluate them conditionally as described on their respective pages.
+The following list of expressions all evaluate their operands the same way, as described after the list. Other expressions either don't take operands or evaluate them conditionally as described on their respective pages.
 
 * Dereference expression
 * Error propagation expression
@@ -124,8 +121,7 @@ Other expressions either don't take operands or evaluate them conditionally as d
 * Return expression
 
 r[expr.operand-order.operands-before-primary]
-The operands of these expressions are evaluated prior to applying the effects of the expression.
-Expressions taking multiple operands are evaluated left to right as written in the source code.
+The operands of these expressions are evaluated prior to applying the effects of the expression. Expressions taking multiple operands are evaluated left to right as written in the source code.
 
 > [!NOTE]
 > Which subexpressions are the operands of an expression is determined by expression precedence as per the previous section.
@@ -150,10 +146,7 @@ r[expr.place-value]
 ## Place expressions and value expressions
 
 r[expr.place-value.intro]
-Expressions are divided into two main categories: place expressions and value expressions;
-there is also a third, minor category of expressions called assignee expressions.
-Within each expression, operands may likewise occur in either place context or value context.
-The evaluation of an expression depends both on its own category and the context it occurs within.
+Expressions are divided into two main categories: place expressions and value expressions; there is also a third, minor category of expressions called assignee expressions. Within each expression, operands may likewise occur in either place context or value context. The evaluation of an expression depends both on its own category and the context it occurs within.
 
 r[expr.place-value.place-memory-location]
 A *place expression* is an expression that represents a memory location.
@@ -176,24 +169,21 @@ The following contexts are *place expression* contexts:
 * The indexed operand of an array indexing expression.
 * The operand of any [implicit borrow].
 * The initializer of a [let statement].
-* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`]
-  expression.
+* The [scrutinee] of an [`if let`], [`match`][match], or [`while let`] expression.
 * The base of a [functional update] struct expression.
 
 > [!NOTE]
 > Historically, place expressions were called *lvalues* and value expressions were called *rvalues*.
 
 r[expr.place-value.assignee]
-An *assignee expression* is an expression that appears in the left operand of an [assignment][assign] expression.
-Explicitly, the assignee expressions are:
+An *assignee expression* is an expression that appears in the left operand of an [assignment][assign] expression. Explicitly, the assignee expressions are:
 
 - Place expressions.
 - [Underscores].
 - [Tuples] of assignee expressions.
 - [Slices][expr.array.index] of assignee expressions.
 - [Tuple structs] of assignee expressions.
-- [Structs] of assignee expressions (with optionally named
-  fields).
+- [Structs] of assignee expressions (with optionally named fields).
 - [Unit structs]
 
 r[expr.place-value.parenthesis]
@@ -229,9 +219,7 @@ r[expr.mut]
 ### Mutability
 
 r[expr.mut.intro]
-For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_.
-We call these *mutable place expressions*.
-In contrast, other place expressions are called *immutable place expressions*.
+For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
 
 r[expr.mut.valid-places]
 The following expressions can be mutable place expression contexts:
@@ -241,19 +229,14 @@ The following expressions can be mutable place expression contexts:
 * [Temporary values].
 * [Fields][field]: this evaluates the subexpression in a mutable place expression context.
 * [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`.
-  Note: This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`:
-  this then requires that the value being dereferenced is evaluated in a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`:
-  this then evaluates the value being indexed, but not the index, in mutable place expression context.
+* Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
+* Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
+* [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
 
 r[expr.temporary]
 ### Temporaries
 
-When using a value expression in most place expression contexts, a temporary unnamed memory location is created and initialized to that value.
-The expression evaluates to that location instead, except if [promoted] to a `static`.
-The [drop scope] of the temporary is usually the end of the enclosing statement.
+When using a value expression in most place expression contexts, a temporary unnamed memory location is created and initialized to that value. The expression evaluates to that location instead, except if [promoted] to a `static`. The [drop scope] of the temporary is usually the end of the enclosing statement.
 
 r[expr.super-macros]
 ### Super macros
@@ -337,8 +320,7 @@ r[expr.implicit-borrow]
 ### Implicit borrows
 
 r[expr.implicit-borrow-intro]
-Certain expressions will treat an expression as a place expression by implicitly borrowing it.
-For example, it is possible to compare two unsized [slices][slice] for equality directly, because the `==` operator implicitly borrows its operands:
+Certain expressions will treat an expression as a place expression by implicitly borrowing it. For example, it is possible to compare two unsized [slices][slice] for equality directly, because the `==` operator implicitly borrows its operands:
 
 ```rust
 # let c = [1, 2, 3];
@@ -368,8 +350,7 @@ Implicit borrows may be taken in the following expressions:
 r[expr.overload]
 ## Overloading traits
 
-Many of the following operators and expressions can also be overloaded for other types using traits in `std::ops` or `std::cmp`.
-These traits also exist in `core::ops` and `core::cmp` with the same names.
+Many of the following operators and expressions can also be overloaded for other types using traits in `std::ops` or `std::cmp`. These traits also exist in `core::ops` and `core::cmp` with the same names.
 
 r[expr.attr]
 ## Expression attributes

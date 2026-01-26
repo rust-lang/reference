@@ -20,9 +20,7 @@ EnumVariantDiscriminant -> `=` Expression
 ```
 
 r[items.enum.intro]
-An *enumeration*, also referred to as an *enum*, is a simultaneous definition of a
-nominal [enumerated type] as well as a set of *constructors*, that can be used
-to create or pattern-match values of the corresponding enumerated type.
+An *enumeration*, also referred to as an *enum*, is a simultaneous definition of a nominal [enumerated type] as well as a set of *constructors*, that can be used to create or pattern-match values of the corresponding enumerated type.
 
 r[items.enum.decl]
 Enumerations are declared with the keyword `enum`.
@@ -55,12 +53,10 @@ let mut a: Animal = Animal::Dog("Cocoa".to_string(), 37.2);
 a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 ```
 
-In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply
-called an enum variant.
+In this example, `Cat` is a _struct-like enum variant_, whereas `Dog` is simply called an enum variant.
 
 r[items.enum.fieldless]
-An enum where no constructors contain fields is called a
-*<span id="field-less-enum">field-less enum</span>*. For example, this is a fieldless enum:
+An enum where no constructors contain fields is called a *<span id="field-less-enum">field-less enum</span>*. For example, this is a fieldless enum:
 
 ```rust
 enum Fieldless {
@@ -71,8 +67,7 @@ enum Fieldless {
 ```
 
 r[items.enum.unit-only]
-If a field-less enum only contains unit variants, the enum is called an
-*<span id="unit-only-enum">unit-only enum</span>*. For example:
+If a field-less enum only contains unit variants, the enum is called an *<span id="unit-only-enum">unit-only enum</span>*. For example:
 
 ```rust
 enum Enum {
@@ -86,8 +81,7 @@ r[items.enum.constructor-names]
 Variant constructors are similar to [struct] definitions, and can be referenced by a path from the enumeration name, including in [use declarations].
 
 r[items.enum.constructor-namespace]
-Each variant defines its type in the [type namespace], though that type cannot be used as a type specifier.
-Tuple-like and unit-like variants also define a constructor in the [value namespace].
+Each variant defines its type in the [type namespace], though that type cannot be used as a type specifier. Tuple-like and unit-like variants also define a constructor in the [value namespace].
 
 r[items.enum.struct-expr]
 A struct-like variant can be instantiated with a [struct expression].
@@ -96,8 +90,7 @@ r[items.enum.tuple-expr]
 A tuple-like variant can be instantiated with a [call expression] or a [struct expression].
 
 r[items.enum.path-expr]
-A unit-like variant can be instantiated with a [path expression] or a [struct expression].
-For example:
+A unit-like variant can be instantiated with a [path expression] or a [struct expression]. For example:
 
 ```rust
 enum Examples {
@@ -119,13 +112,10 @@ r[items.enum.discriminant]
 ## Discriminants
 
 r[items.enum.discriminant.intro]
-Each enum instance has a _discriminant_: an integer logically associated to it
-that is used to determine which variant it holds.
+Each enum instance has a _discriminant_: an integer logically associated to it that is used to determine which variant it holds.
 
 r[items.enum.discriminant.repr-rust]
-Under the [`Rust` representation], the discriminant is interpreted as
-an `isize` value. However, the compiler is allowed to use a smaller type (or
-another means of distinguishing variants) in its actual memory layout.
+Under the [`Rust` representation], the discriminant is interpreted as an `isize` value. However, the compiler is allowed to use a smaller type (or another means of distinguishing variants) in its actual memory layout.
 
 ### Assigning discriminant values
 
@@ -133,8 +123,7 @@ r[items.enum.discriminant.explicit]
 #### Explicit discriminants
 
 r[items.enum.discriminant.explicit.intro]
-In two circumstances, the discriminant of a variant may be explicitly set by
-following the variant name with `=` and a [constant expression]:
+In two circumstances, the discriminant of a variant may be explicitly set by following the variant name with `=` and a [constant expression]:
 
 r[items.enum.discriminant.explicit.unit-only]
 1. if the enumeration is "[unit-only]".
@@ -157,10 +146,7 @@ r[items.enum.discriminant.explicit.primitive-repr]
 r[items.enum.discriminant.implicit]
 #### Implicit discriminants
 
-If a discriminant for a variant is not specified, then it is set to one higher
-than the discriminant of the previous variant in the declaration. If the
-discriminant of the first variant in the declaration is unspecified, then
-it is set to zero.
+If a discriminant for a variant is not specified, then it is set to one higher than the discriminant of the previous variant in the declaration. If the discriminant of the first variant in the declaration is unspecified, then it is set to zero.
 
 ```rust
 enum Foo {
@@ -193,8 +179,7 @@ enum SharedDiscriminantError2 {
 ```
 
 r[items.enum.discriminant.restrictions.above-max-discriminant]
-It is also an error to have an unspecified discriminant where the previous
-discriminant is the maximum value for the size of the discriminant.
+It is also an error to have an unspecified discriminant where the previous discriminant is the maximum value for the size of the discriminant.
 
 ```rust,compile_fail
 #[repr(u8)]
@@ -217,16 +202,13 @@ enum OverflowingDiscriminantError2 {
 
 r[items.enum.discriminant.access-opaque]
 
-[`std::mem::discriminant`] returns an opaque reference to the discriminant of
-an enum value which can be compared. This cannot be used to get the value
-of the discriminant.
+[`std::mem::discriminant`] returns an opaque reference to the discriminant of an enum value which can be compared. This cannot be used to get the value of the discriminant.
 
 r[items.enum.discriminant.coercion]
 #### Casting
 
 r[items.enum.discriminant.coercion.intro]
-If an enumeration is [unit-only] (with no tuple and struct variants), then its
-discriminant can be directly accessed with a [numeric cast]; e.g.:
+If an enumeration is [unit-only] (with no tuple and struct variants), then its discriminant can be directly accessed with a [numeric cast]; e.g.:
 
 ```rust
 enum Enum {
@@ -274,8 +256,7 @@ assert_eq!(22, FieldlessWithDiscriminants::Unit as u8);
 
 r[items.enum.discriminant.access-memory]
 
-If the enumeration specifies a [primitive representation], then the
-discriminant may be reliably accessed via unsafe pointer casting:
+If the enumeration specifies a [primitive representation], then the discriminant may be reliably accessed via unsafe pointer casting:
 
 ```rust
 #[repr(u8)]
@@ -304,16 +285,14 @@ r[items.enum.empty]
 ## Zero-variant enums
 
 r[items.enum.empty.intro]
-Enums with zero variants are known as *zero-variant enums*. As they have
-no valid values, they cannot be instantiated.
+Enums with zero variants are known as *zero-variant enums*. As they have no valid values, they cannot be instantiated.
 
 ```rust
 enum ZeroVariants {}
 ```
 
 r[items.enum.empty.uninhabited]
-Zero-variant enums are equivalent to the [never type], but they cannot be
-coerced into other types.
+Zero-variant enums are equivalent to the [never type], but they cannot be coerced into other types.
 
 ```rust,compile_fail
 # enum ZeroVariants {}
@@ -324,9 +303,7 @@ let y: u32 = x; // mismatched type error
 r[items.enum.variant-visibility]
 ## Variant visibility
 
-Enum variants syntactically allow a [Visibility] annotation, but this is
-rejected when the enum is validated. This allows items to be parsed with a
-unified syntax across different contexts where they are used.
+Enum variants syntactically allow a [Visibility] annotation, but this is rejected when the enum is validated. This allows items to be parsed with a unified syntax across different contexts where they are used.
 
 ```rust
 macro_rules! mac_variant {

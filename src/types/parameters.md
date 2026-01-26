@@ -1,8 +1,7 @@
 r[type.generic]
 # Type parameters
 
-Within the body of an item that has type parameter declarations, the names of
-its type parameters are types:
+Within the body of an item that has type parameter declarations, the names of its type parameters are types:
 
 ```rust
 fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
@@ -16,5 +15,4 @@ fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
 }
 ```
 
-Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and
-`rest` has type `Vec<A>`, a vector with element type `A`.
+Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and `rest` has type `Vec<A>`, a vector with element type `A`.

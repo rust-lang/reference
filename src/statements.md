@@ -20,8 +20,7 @@ Rust has two kinds of statement: [declaration statements](#declaration-statement
 r[statement.decl]
 ## Declaration statements
 
-A *declaration statement* is one that introduces one or more *names* into the enclosing statement block.
-The declared names may denote new variables or new [items][item].
+A *declaration statement* is one that introduces one or more *names* into the enclosing statement block. The declared names may denote new variables or new [items][item].
 
 The two kinds of declaration statements are item declarations and `let` statements.
 
@@ -32,16 +31,13 @@ r[statement.item.intro]
 An *item declaration statement* has a syntactic form identical to an [item declaration][item] within a [module].
 
 r[statement.item.scope]
-Declaring an item within a statement block restricts its [scope] to the block containing the statement.
-The item is not given a [canonical path] nor are any sub-items it may declare.
+Declaring an item within a statement block restricts its [scope] to the block containing the statement. The item is not given a [canonical path] nor are any sub-items it may declare.
 
 r[statement.item.associated-scope]
-The exception to this is that associated items defined by [implementations] are still accessible in outer scopes as long as the item and, if applicable, trait are accessible.
-It is otherwise identical in meaning to declaring the item inside a module.
+The exception to this is that associated items defined by [implementations] are still accessible in outer scopes as long as the item and, if applicable, trait are accessible. It is otherwise identical in meaning to declaring the item inside a module.
 
 r[statement.item.outer-generics]
-There is no implicit capture of the containing function's generic parameters, parameters, and local variables.
-For example, `inner` may not access `outer_var`.
+There is no implicit capture of the containing function's generic parameters, parameters, and local variables. For example, `inner` may not access `outer_var`.
 
 ```rust
 fn outer() {
@@ -67,8 +63,7 @@ LetStatement ->
 ```
 
 r[statement.let.intro]
-A *`let` statement* introduces a new set of [variables], given by a [pattern].
-The pattern is followed optionally by a type annotation and then either ends, or is followed by an initializer expression plus an optional `else` block.
+A *`let` statement* introduces a new set of [variables], given by a [pattern]. The pattern is followed optionally by a type annotation and then either ends, or is followed by an initializer expression plus an optional `else` block.
 
 r[statement.let.inference]
 When no type annotation is given, the compiler will infer the type, or signal an error if insufficient type information is available for definite inference.
@@ -77,12 +72,10 @@ r[statement.let.scope]
 Any variables introduced by a variable declaration are visible from the point of declaration until the end of the enclosing block scope, except when they are shadowed by another variable declaration.
 
 r[statement.let.constraint]
-If an `else` block is not present, the pattern must be irrefutable.
-If an `else` block is present, the pattern may be refutable.
+If an `else` block is not present, the pattern must be irrefutable. If an `else` block is present, the pattern may be refutable.
 
 r[statement.let.behavior]
-If the pattern does not match (this requires it to be refutable), the `else` block is executed.
-The `else` block must always diverge (evaluate to the [never type]).
+If the pattern does not match (this requires it to be refutable), the `else` block is executed. The `else` block must always diverge (evaluate to the [never type]).
 
 ```rust
 let (mut v, w) = (vec![1, 2, 3], 42); // The bindings may be mut or const
@@ -106,13 +99,10 @@ ExpressionStatement ->
 ```
 
 r[statement.expr.intro]
-An *expression statement* is one that evaluates an [expression] and ignores its result.
-As a rule, an expression statement's purpose is to trigger the effects of evaluating its expression.
+An *expression statement* is one that evaluates an [expression] and ignores its result. As a rule, an expression statement's purpose is to trigger the effects of evaluating its expression.
 
 r[statement.expr.restriction-semicolon]
-An expression that consists of only a [block expression][block] or control flow expression, if used in a context where a statement is permitted, can omit the trailing semicolon.
-This can cause an ambiguity between it being parsed as a standalone statement and as a part of another expression;
-in this case, it is parsed as a statement.
+An expression that consists of only a [block expression][block] or control flow expression, if used in a context where a statement is permitted, can omit the trailing semicolon. This can cause an ambiguity between it being parsed as a standalone statement and as a part of another expression; in this case, it is parsed as a statement.
 
 r[statement.expr.constraint-block]
 The type of [ExpressionWithBlock] expressions when used as statements must be the unit type.
@@ -148,8 +138,7 @@ if true {
 r[statement.attribute]
 ## Attributes on statements
 
-Statements accept [outer attributes].
-The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].
+Statements accept [outer attributes]. The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].
 
 [block]: expressions/block-expr.md
 [expression]: expressions.md

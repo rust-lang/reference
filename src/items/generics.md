@@ -17,11 +17,7 @@ ConstParam ->
 ```
 
 r[items.generics.syntax.intro]
-[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and
-[implementations] may be *parameterized* by types, constants, and lifetimes. These
-parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>,
-usually immediately after the name of the item and before its definition. For
-implementations, which don't have a name, they come directly after `impl`.
+[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
 
 r[items.generics.syntax.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
@@ -40,15 +36,10 @@ struct EitherOrderWorks<const N: bool, U>(U);
 ```
 
 r[items.generics.syntax.scope]
-Generic parameters are in scope within the item definition where they are
-declared. They are not in scope for items declared within the body of a
-function as described in [item declarations].
-See [generic parameter scopes] for more details.
+Generic parameters are in scope within the item definition where they are declared. They are not in scope for items declared within the body of a function as described in [item declarations]. See [generic parameter scopes] for more details.
 
 r[items.generics.builtin-generic-types]
-[References], [raw pointers], [arrays], [slices], [tuples], and
-[function pointers] have lifetime or type parameters as well, but are not
-referred to with path syntax.
+[References], [raw pointers], [arrays], [slices], [tuples], and [function pointers] have lifetime or type parameters as well, but are not referred to with path syntax.
 
 r[items.generics.invalid-lifetimes]
 `'_` and `'static` are not valid lifetime parameter names.
@@ -63,21 +54,14 @@ r[items.generics.const.namespace]
 The const identifier introduces a name in the [value namespace] for the constant parameter, and all instances of the item must be instantiated with a value of the given type.
 
 r[items.generics.const.allowed-types]
-The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
-`i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
+The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
 r[items.generics.const.usage]
-Const parameters can be used anywhere a [const item] can be used, with the
-exception that when used in a [type] or [array repeat expression], it must be
-standalone (as described below). That is, they are allowed in the following
-places:
+Const parameters can be used anywhere a [const item] can be used, with the exception that when used in a [type] or [array repeat expression], it must be standalone (as described below). That is, they are allowed in the following places:
 
-1. As an applied const to any type which forms a part of the signature of the
-   item in question.
-2. As part of a const expression used to define an [associated const], or as a
-   parameter to an [associated type].
-3. As a value in any runtime expression in the body of any functions in the
-   item.
+1. As an applied const to any type which forms a part of the signature of the item in question.
+2. As part of a const expression used to define an [associated const], or as a parameter to an [associated type].
+3. As a value in any runtime expression in the body of any functions in the item.
 4. As a parameter to any type used in the body of any functions in the item.
 5. As a part of the type of any fields in the item.
 
@@ -125,11 +109,7 @@ fn foo<const N: usize>() {
 ```
 
 r[items.generics.const.standalone]
-As a further restriction, const parameters may only appear as a standalone
-argument inside of a [type] or [array repeat expression]. In those contexts,
-they may only be used as a single segment [path expression], possibly inside a
-[block] (such as `N` or `{N}`). That is, they cannot be combined with other
-expressions.
+As a further restriction, const parameters may only appear as a standalone argument inside of a [type] or [array repeat expression]. In those contexts, they may only be used as a single segment [path expression], possibly inside a [block] (such as `N` or `{N}`). That is, they cannot be combined with other expressions.
 
 ```rust,compile_fail
 // Examples where const parameters may not be used.
@@ -198,13 +178,9 @@ fn f<const N: usize>(x: [u8; N]) -> [u8; _] { x }
 ```
 
 r[items.generics.const.type-ambiguity]
-When there is ambiguity if a generic argument could be resolved as either a
-type or const argument, it is always resolved as a type. Placing the argument
-in a block expression can force it to be interpreted as a const argument.
+When there is ambiguity if a generic argument could be resolved as either a type or const argument, it is always resolved as a type. Placing the argument in a block expression can force it to be interpreted as a const argument.
 
-<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once
-    namespaces are introduced, and it is clear which namespace each parameter
-    lives in. -->
+<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once namespaces are introduced, and it is clear which namespace each parameter lives in. -->
 
 ```rust,compile_fail
 type N = u32;
@@ -217,9 +193,7 @@ fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
 r[items.generics.const.variance]
-Unlike type and lifetime parameters, const parameters can be declared without
-being used inside of a parameterized item, with the exception of
-implementations as described in [generic implementations]:
+Unlike type and lifetime parameters, const parameters can be declared without being used inside of a parameterized item, with the exception of implementations as described in [generic implementations]:
 
 ```rust,compile_fail
 // ok
@@ -234,11 +208,7 @@ impl<const N: usize> Unconstrained {}
 ```
 
 r[items.generics.const.exhaustiveness]
-When resolving a trait bound obligation, the exhaustiveness of all
-implementations of const parameters is not considered when determining if the
-bound is satisfied. For example, in the following, even though all possible
-const values for the `bool` type are implemented, it is still an error that
-the trait bound is not satisfied:
+When resolving a trait bound obligation, the exhaustiveness of all implementations of const parameters is not considered when determining if the bound is satisfied. For example, in the following, even though all possible const values for the `bool` type are implemented, it is still an error that the trait bound is not satisfied:
 
 ```rust,compile_fail
 struct Foo<const B: bool>;
@@ -270,13 +240,10 @@ TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
 ```
 
 r[items.generics.where.intro]
-*Where clauses* provide another way to specify bounds on type and lifetime
-parameters as well as a way to specify bounds on types that aren't type
-parameters.
+*Where clauses* provide another way to specify bounds on type and lifetime parameters as well as a way to specify bounds on types that aren't type parameters.
 
 r[items.generics.where.higher-ranked-lifetimes]
-The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only
-allows [LifetimeParam] parameters.
+The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only allows [LifetimeParam] parameters.
 
 ```rust
 struct A<T>
@@ -293,12 +260,9 @@ where
 r[items.generics.attributes]
 ## Attributes
 
-Generic lifetime and type parameters allow [attributes] on them. There are no
-built-in attributes that do anything in this position, although custom derive
-attributes may give meaning to it.
+Generic lifetime and type parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
 
-This example shows using a custom derive attribute to modify the meaning of a
-generic parameter.
+This example shows using a custom derive attribute to modify the meaning of a generic parameter.
 
 <!-- ignore: requires proc macro derive -->
 ```rust,ignore

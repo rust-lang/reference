@@ -29,8 +29,7 @@ r[expr.tuple.unit]
 Tuple expressions without any tuple initializer operands produce the unit tuple.
 
 r[expr.tuple.fields]
-For other tuple expressions, the first written tuple initializer operand initializes the field `0` and subsequent operands initializes the next highest field.
-For example, in the tuple expression `('a', 'b', 'c')`, `'a'` initializes the value of the field `0`, `'b'` field `1`, and `'c'` field `2`.
+For other tuple expressions, the first written tuple initializer operand initializes the field `0` and subsequent operands initializes the next highest field. For example, in the tuple expression `('a', 'b', 'c')`, `'a'` initializes the value of the field `0`, `'b'` field `1`, and `'c'` field `2`.
 
 Examples of tuple expressions and their types:
 
@@ -55,8 +54,7 @@ A *tuple indexing expression* accesses fields of [tuples][tuple type] and [tuple
 The syntax for a tuple index expression is an expression, called the *tuple operand*, then a `.`, then finally a tuple index.
 
 r[expr.tuple-index.index-syntax]
-The syntax for the *tuple index* is a [decimal literal] with no leading zeros, underscores, or suffix.
-For example `0` and `2` are valid tuple indices but not `01`, `0_`, nor `0i32`.
+The syntax for the *tuple index* is a [decimal literal] with no leading zeros, underscores, or suffix. For example `0` and `2` are valid tuple indices but not `01`, `0_`, nor `0i32`.
 
 r[expr.tuple-index.required-type]
 The type of the tuple operand must be a [tuple type] or a [tuple struct].
@@ -65,8 +63,7 @@ r[expr.tuple-index.index-name-operand]
 The tuple index must be a name of a field of the type of the tuple operand.
 
 r[expr.tuple-index.result]
-Evaluation of tuple index expressions has no side effects beyond evaluation of its tuple operand.
-As a [place expression], it evaluates to the location of the field of the tuple operand with the same name as the tuple index.
+Evaluation of tuple index expressions has no side effects beyond evaluation of its tuple operand. As a [place expression], it evaluates to the location of the field of the tuple operand with the same name as the tuple index.
 
 Examples of tuple indexing expressions:
 

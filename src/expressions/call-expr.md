@@ -9,8 +9,7 @@ CallParams -> Expression ( `,` Expression )* `,`?
 ```
 
 r[expr.call.intro]
-A *call expression* calls a function.
-The syntax of a call expression is an expression, called the *function operand*, followed by a parenthesized comma-separated list of expression, called the *argument operands*.
+A *call expression* calls a function. The syntax of a call expression is an expression, called the *function operand*, followed by a parenthesized comma-separated list of expression, called the *argument operands*.
 
 r[expr.call.convergence]
 If the function eventually returns, then the expression completes.
@@ -23,8 +22,7 @@ For [non-function types], the expression `f(...)` uses the method on one of the 
 - [`FnOnce`] or [`AsyncFnOnce`] --- value.
 
 r[expr.call.autoref-deref]
-An automatic borrow will be taken if needed.
-The function operand will also be [automatically dereferenced] as required.
+An automatic borrow will be taken if needed. The function operand will also be [automatically dereferenced] as required.
 
 Some examples of call expressions:
 
@@ -47,8 +45,7 @@ Function calls may need to be fully qualified, depending on the ambiguity of a c
 > In the past, the terms "Unambiguous Function Call Syntax", "Universal Function Call Syntax", or "UFCS", have been used in documentation, issues, RFCs, and other community writings. However, these terms lack descriptive power and potentially confuse the issue at hand. We mention them here for searchability's sake.
 
 r[expr.call.desugar.limits]
-Several situations often occur which result in ambiguities about the receiver or referent of method or associated function calls.
-These situations may include:
+Several situations often occur which result in ambiguities about the receiver or referent of method or associated function calls. These situations may include:
 
 * Multiple in-scope traits define methods with the same name for the same types
 * Auto-`deref` is undesirable; for example, distinguishing between methods on a smart pointer itself and the pointer's referent

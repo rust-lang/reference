@@ -31,29 +31,18 @@ UseBoundGenericArg ->
 ```
 
 r[bound.intro]
-[Trait] and lifetime bounds provide a way for [generic items][generic] to
-restrict which types and lifetimes are used as their parameters. Bounds can be
-provided on any type in a [where clause]. There are also shorter forms for
-certain common cases:
+[Trait] and lifetime bounds provide a way for [generic items][generic] to restrict which types and lifetimes are used as their parameters. Bounds can be provided on any type in a [where clause]. There are also shorter forms for certain common cases:
 
-* Bounds written after declaring a [generic parameter][generic]:
-  `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
-* In trait declarations as [supertraits]: `trait Circle : Shape {}` is
-  equivalent to `trait Circle where Self : Shape {}`.
-* In trait declarations as bounds on [associated types]:
-  `trait A { type B: Copy; }` is equivalent to
-  `trait A where Self::B: Copy { type B; }`.
+* Bounds written after declaring a [generic parameter][generic]: `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
+* In trait declarations as [supertraits]: `trait Circle : Shape {}` is equivalent to `trait Circle where Self : Shape {}`.
+* In trait declarations as bounds on [associated types]: `trait A { type B: Copy; }` is equivalent to `trait A where Self::B: Copy { type B; }`.
 
 r[bound.satisfaction]
-Bounds on an item must be satisfied when using the item. When type checking and
-borrow checking a generic item, the bounds can be used to determine that a
-trait is implemented for a type. For example, given `Ty: Trait`
+Bounds on an item must be satisfied when using the item. When type checking and borrow checking a generic item, the bounds can be used to determine that a trait is implemented for a type. For example, given `Ty: Trait`
 
-* In the body of a generic function, methods from `Trait` can be called on `Ty`
-  values. Likewise associated constants on the `Trait` can be used.
+* In the body of a generic function, methods from `Trait` can be called on `Ty` values. Likewise associated constants on the `Trait` can be used.
 * Associated types from `Trait` can be used.
-* Generic functions and types with a `T: Trait` bounds can be used with `Ty`
-  being used for `T`.
+* Generic functions and types with a `T: Trait` bounds can be used with `Ty` being used for `T`.
 
 ```rust
 # type Surface = i32;
@@ -85,13 +74,10 @@ fn name_figure<U: Shape>(
 ```
 
 r[bound.trivial]
-Bounds that don't use the item's parameters or [higher-ranked lifetimes] are checked when the item is defined.
-It is an error for such a bound to be false.
+Bounds that don't use the item's parameters or [higher-ranked lifetimes] are checked when the item is defined. It is an error for such a bound to be false.
 
 r[bound.special]
-[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type.
-It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice].
-It is an error to have `Sized` as a bound on a trait object or slice.
+[`Copy`], [`Clone`], and [`Sized`] bounds are also checked for certain generic types when using the item, even if the use does not provide a concrete type. It is an error to have `Copy` or `Clone` as a bound on a mutable reference, [trait object], or [slice]. It is an error to have `Sized` as a bound on a trait object or slice.
 
 ```rust,compile_fail
 struct A<'a, T>
@@ -112,8 +98,7 @@ Trait and lifetime bounds are also used to name [trait objects].
 r[bound.sized]
 ## `?Sized`
 
-`?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types].
-`?Sized` may not be used as a bound for other types.
+`?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types]. `?Sized` may not be used as a bound for other types.
 
 r[bound.lifetime]
 ## Lifetime bounds
@@ -122,8 +107,7 @@ r[bound.lifetime.intro]
 Lifetime bounds can be applied to types or to other lifetimes.
 
 r[bound.lifetime.outlive-lifetime]
-The bound `'a: 'b` is usually read as `'a` *outlives* `'b`.
-`'a: 'b` means that `'a` lasts at least as long as `'b`, so a reference `&'a ()` is valid whenever `&'b ()` is valid.
+The bound `'a: 'b` is usually read as `'a` *outlives* `'b`. `'a: 'b` means that `'a` lasts at least as long as `'b`, so a reference `&'a ()` is valid whenever `&'b ()` is valid.
 
 ```rust
 fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) where 'a: 'b {
@@ -133,8 +117,7 @@ fn f<'a, 'b>(x: &'a i32, mut y: &'b i32) where 'a: 'b {
 ```
 
 r[bound.lifetime.outlive-type]
-`T: 'a` means that all lifetime parameters of `T` outlive `'a`.
-For example, if `'a` is an unconstrained lifetime parameter, then `i32: 'static` and `&'static str: 'a` are satisfied, but `Vec<&'a ()>: 'static` is not.
+`T: 'a` means that all lifetime parameters of `T` outlive `'a`. For example, if `'a` is an unconstrained lifetime parameter, then `i32: 'static` and `&'static str: 'a` are satisfied, but `Vec<&'a ()>: 'static` is not.
 
 r[bound.higher-ranked]
 ## Higher-ranked trait bounds
@@ -145,9 +128,7 @@ ForLifetimes -> `for` GenericParams
 ```
 
 r[bound.higher-ranked.intro]
-Trait bounds may be *higher ranked* over lifetimes. These bounds specify a bound
-that is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T:
-PartialEq<i32>` would require an implementation like
+Trait bounds may be *higher ranked* over lifetimes. These bounds specify a bound that is true *for all* lifetimes. For example, a bound such as `for<'a> &'a T: PartialEq<i32>` would require an implementation like
 
 ```rust
 # struct T;
@@ -169,10 +150,7 @@ fn call_on_ref_zero<F>(f: F) where for<'a> F: Fn(&'a i32) {
 ```
 
 r[bound.higher-ranked.trait]
-Higher-ranked lifetimes may also be specified just before the trait: the only
-difference is the [scope][hrtb-scopes] of the lifetime parameter, which extends only to the
-end of the following trait instead of the whole bound. This function is
-equivalent to the last one.
+Higher-ranked lifetimes may also be specified just before the trait: the only difference is the [scope][hrtb-scopes] of the lifetime parameter, which extends only to the end of the following trait instead of the whole bound. This function is equivalent to the last one.
 
 ```rust
 fn call_on_ref_zero<F>(f: F) where F: for<'a> Fn(&'a i32) {
@@ -191,13 +169,10 @@ Lifetime bounds required for types to be well-formed are sometimes inferred.
 fn requires_t_outlives_a<'a, T>(x: &'a T) {}
 ```
 
-The type parameter `T` is required to outlive `'a` for the type `&'a T` to be well-formed.
-This is inferred because the function signature contains the type `&'a T` which is
-only valid if `T: 'a` holds.
+The type parameter `T` is required to outlive `'a` for the type `&'a T` to be well-formed. This is inferred because the function signature contains the type `&'a T` which is only valid if `T: 'a` holds.
 
 r[bound.implied.context]
-Implied bounds are added for all parameters and outputs of functions. Inside of `requires_t_outlives_a`
-you can assume `T: 'a` to hold even if you don't explicitly specify this:
+Implied bounds are added for all parameters and outputs of functions. Inside of `requires_t_outlives_a` you can assume `T: 'a` to hold even if you don't explicitly specify this:
 
 ```rust
 fn requires_t_outlives_a_not_implied<'a, T: 'a>() {}
@@ -219,8 +194,7 @@ fn not_implied<'a, T>() {
 ```
 
 r[bound.implied.trait]
-Only lifetime bounds are implied, trait bounds still have to be explicitly added.
-The following example therefore causes an error:
+Only lifetime bounds are implied, trait bounds still have to be explicitly added. The following example therefore causes an error:
 
 ```rust,compile_fail,E0277
 use std::fmt::Debug;

@@ -12,8 +12,7 @@ Trait ->
 ```
 
 r[items.traits.intro]
-A _trait_ describes an abstract interface that types can implement. This
-interface consists of [associated items], which come in three varieties:
+A _trait_ describes an abstract interface that types can implement. This interface consists of [associated items], which come in three varieties:
 
 - [functions](associated-items.md#associated-functions-and-methods)
 - [types](associated-items.md#associated-types)
@@ -26,22 +25,13 @@ r[items.traits.associated-item-namespaces]
 Associated items are defined as members of the trait within their respective namespaces. Associated types are defined in the type namespace. Associated constants and associated functions are defined in the value namespace.
 
 r[items.traits.self-param]
-All traits define an implicit type parameter `Self` that refers to "the type
-that is implementing this interface". Traits may also contain additional type
-parameters. These type parameters, including `Self`, may be constrained by
-other traits and so forth [as usual][generics].
+All traits define an implicit type parameter `Self` that refers to "the type that is implementing this interface". Traits may also contain additional type parameters. These type parameters, including `Self`, may be constrained by other traits and so forth [as usual][generics].
 
 r[items.traits.impls]
 Traits are implemented for specific types through separate [implementations].
 
 r[items.traits.associated-item-decls]
-Trait functions may omit the function body by replacing it with a semicolon.
-This indicates that the implementation must define the function. If the trait
-function defines a body, this definition acts as a default for any
-implementation which does not override it. Similarly, associated constants may
-omit the equals sign and expression to indicate implementations must define
-the constant value. Associated types must never define the type, the type may
-only be specified in an implementation.
+Trait functions may omit the function body by replacing it with a semicolon. This indicates that the implementation must define the function. If the trait function defines a body, this definition acts as a default for any implementation which does not override it. Similarly, associated constants may omit the equals sign and expression to indicate implementations must define the constant value. Associated types must never define the type, the type may only be specified in an implementation.
 
 ```rust
 // Examples of associated trait items with and without definitions.
@@ -65,8 +55,7 @@ Generic items may use traits as [bounds] on their type parameters.
 r[items.traits.generic]
 ## Generic traits
 
-Type parameters can be specified for a trait to make it generic. These appear
-after the trait name, using the same syntax used in [generic functions].
+Type parameters can be specified for a trait to make it generic. These appear after the trait name, using the same syntax used in [generic functions].
 
 ```rust
 trait Seq<T> {
@@ -81,8 +70,7 @@ r[items.traits.dyn-compatible]
 ## Dyn compatibility
 
 r[items.traits.dyn-compatible.intro]
-A dyn-compatible trait can be the base trait of a [trait object]. A trait is
-*dyn compatible* if it has the following qualities:
+A dyn-compatible trait can be the base trait of a [trait object]. A trait is *dyn compatible* if it has the following qualities:
 
 r[items.traits.dyn-compatible.supertraits]
 * All [supertraits] must also be dyn compatible.
@@ -207,14 +195,10 @@ r[items.traits.supertraits]
 ## Supertraits
 
 r[items.traits.supertraits.intro]
-**Supertraits** are traits that are required to be implemented for a type to
-implement a specific trait. Furthermore, anywhere a [generic][generics] or [trait object]
-is bounded by a trait, it has access to the associated items of its supertraits.
+**Supertraits** are traits that are required to be implemented for a type to implement a specific trait. Furthermore, anywhere a [generic][generics] or [trait object] is bounded by a trait, it has access to the associated items of its supertraits.
 
 r[items.traits.supertraits.decl]
-Supertraits are declared by trait bounds on the `Self` type of a trait and
-transitively the supertraits of the traits declared in those trait bounds. It is
-an error for a trait to be its own supertrait.
+Supertraits are declared by trait bounds on the `Self` type of a trait and transitively the supertraits of the traits declared in those trait bounds. It is an error for a trait to be its own supertrait.
 
 r[items.traits.supertraits.subtrait]
 The trait with a supertrait is called a **subtrait** of its supertrait.
@@ -233,8 +217,7 @@ trait Shape { fn area(&self) -> f64; }
 trait Circle where Self: Shape { fn radius(&self) -> f64; }
 ```
 
-This next example gives `radius` a default implementation using the `area`
-function from `Shape`.
+This next example gives `radius` a default implementation using the `area` function from `Shape`.
 
 ```rust
 # trait Shape { fn area(&self) -> f64; }
@@ -277,9 +260,7 @@ r[items.traits.safety]
 ## Unsafe traits
 
 r[items.traits.safety.intro]
-Traits items that begin with the `unsafe` keyword indicate that *implementing* the
-trait may be [unsafe]. It is safe to use a correctly implemented unsafe trait.
-The [trait implementation] must also begin with the `unsafe` keyword.
+Traits items that begin with the `unsafe` keyword indicate that *implementing* the trait may be [unsafe]. It is safe to use a correctly implemented unsafe trait. The [trait implementation] must also begin with the `unsafe` keyword.
 
 [`Sync`] and [`Send`] are examples of unsafe traits.
 
@@ -355,11 +336,7 @@ r[items.traits.associated-visibility]
 ## Item visibility
 
 r[items.traits.associated-visibility.intro]
-Trait items syntactically allow a [Visibility] annotation, but this is
-rejected when the trait is validated. This allows items to be parsed with a
-unified syntax across different contexts where they are used. As an example,
-an empty `vis` macro fragment specifier can be used for trait items, where the
-macro rule may be used in other situations where visibility is allowed.
+Trait items syntactically allow a [Visibility] annotation, but this is rejected when the trait is validated. This allows items to be parsed with a unified syntax across different contexts where they are used. As an example, an empty `vis` macro fragment specifier can be used for trait items, where the macro rule may be used in other situations where visibility is allowed.
 
 ```rust
 macro_rules! create_method {

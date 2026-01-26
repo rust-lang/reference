@@ -2,17 +2,12 @@ r[subtype]
 # Subtyping and variance
 
 r[subtype.intro]
-Subtyping is implicit and can occur at any stage in type checking or
-inference.
+Subtyping is implicit and can occur at any stage in type checking or inference.
 
 r[subtype.kinds]
-Subtyping is restricted to two cases:
-variance with respect to lifetimes and between types with higher ranked
-lifetimes. If we were to erase lifetimes from types, then the only subtyping
-would be due to type equality.
+Subtyping is restricted to two cases: variance with respect to lifetimes and between types with higher ranked lifetimes. If we were to erase lifetimes from types, then the only subtyping would be due to type equality.
 
-Consider the following example: string literals always have `'static`
-lifetime. Nevertheless, we can assign `s` to `t`:
+Consider the following example: string literals always have `'static` lifetime. Nevertheless, we can assign `s` to `t`:
 
 ```rust
 fn bar<'a>() {
@@ -21,13 +16,10 @@ fn bar<'a>() {
 }
 ```
 
-Since `'static` outlives the lifetime parameter `'a`, `&'static str` is a
-subtype of `&'a str`.
+Since `'static` outlives the lifetime parameter `'a`, `&'static str` is a subtype of `&'a str`.
 
 r[subtype.higher-ranked]
-[Higher-ranked]&#32;[function pointers] and [trait objects] have another
-subtype relation. They are subtypes of types that are given by substitutions of
-the higher-ranked lifetimes. Some examples:
+[Higher-ranked]&#32;[function pointers] and [trait objects] have another subtype relation. They are subtypes of types that are given by substitutions of the higher-ranked lifetimes. Some examples:
 
 ```rust
 // Here 'a is substituted for 'static
@@ -47,21 +39,16 @@ r[subtyping.variance]
 ## Variance
 
 r[subtyping.variance.intro]
-Variance is a property that generic types have with respect to their arguments.
-A generic type's *variance* in a parameter is how the subtyping of the
-parameter affects the subtyping of the type.
+Variance is a property that generic types have with respect to their arguments. A generic type's *variance* in a parameter is how the subtyping of the parameter affects the subtyping of the type.
 
 r[subtyping.variance.covariant]
-* `F<T>` is *covariant* over `T` if `T` being a subtype of `U` implies that
-  `F<T>` is a subtype of `F<U>` (subtyping "passes through")
+* `F<T>` is *covariant* over `T` if `T` being a subtype of `U` implies that `F<T>` is a subtype of `F<U>` (subtyping "passes through")
 
 r[subtyping.variance.contravariant]
-* `F<T>` is *contravariant* over `T` if `T` being a subtype of `U` implies that
-  `F<U>` is a subtype of `F<T>`
+* `F<T>` is *contravariant* over `T` if `T` being a subtype of `U` implies that `F<U>` is a subtype of `F<T>`
 
 r[subtyping.variance.invariant]
-* `F<T>` is *invariant* over `T` otherwise (no subtyping relation can be
-  derived)
+* `F<T>` is *invariant* over `T` otherwise (no subtyping relation can be derived)
 
 r[subtyping.variance.builtin-types]
 Variance of types is automatically determined as follows
@@ -80,11 +67,7 @@ Variance of types is automatically determined as follows
 | `dyn Trait<T> + 'a`           | covariant         | invariant         |
 
 r[subtyping.variance.user-composite-types]
-The variance of other `struct`, `enum`, and `union` types is decided by
-looking at the variance of the types of their fields. If the parameter is used
-in positions with different variances then the parameter is invariant. For
-example the following struct is covariant in `'a` and `T` and invariant in `'b`, `'c`,
-and `U`.
+The variance of other `struct`, `enum`, and `union` types is decided by looking at the variance of the types of their fields. If the parameter is used in positions with different variances then the parameter is invariant. For example the following struct is covariant in `'a` and `T` and invariant in `'b`, `'c`, and `U`.
 
 ```rust
 use std::cell::UnsafeCell;

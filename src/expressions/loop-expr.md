@@ -38,8 +38,7 @@ InfiniteLoopExpression -> `loop` BlockExpression
 ```
 
 r[expr.loop.infinite.intro]
-A `loop` expression repeats execution of its body continuously:
-`loop { println!("I live."); }`.
+A `loop` expression repeats execution of its body continuously: `loop { println!("I live."); }`.
 
 r[expr.loop.infinite.diverging]
 A `loop` expression without an associated `break` expression is diverging and has type [`!`](../types/never.md).
@@ -59,20 +58,16 @@ r[expr.loop.while.intro]
 A `while` loop expression allows repeating the evaluation of a block while a set of conditions remain true.
 
 r[expr.loop.while.syntax]
-The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`,
-followed by a [BlockExpression].
+The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`, followed by a [BlockExpression].
 
 r[expr.loop.while.condition]
-Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match.
-If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s,
-then the loop body block executes.
+Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match. If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s, then the loop body block executes.
 
 r[expr.loop.while.repeat]
 After the loop body successfully executes, the condition operands are re-evaluated to determine if the body should be executed again.
 
 r[expr.loop.while.exit]
-If any condition operand evaluates to `false` or any `let` pattern does not match its scrutinee,
-the body is not executed and execution continues after the `while` expression.
+If any condition operand evaluates to `false` or any `let` pattern does not match its scrutinee, the body is not executed and execution continues after the `while` expression.
 
 r[expr.loop.while.eval]
 A `while` expression evaluates to `()`.
@@ -92,8 +87,7 @@ r[expr.loop.while.let]
 ### `while let` patterns
 
 r[expr.loop.while.let.intro]
-`let` patterns in a `while` condition allow binding new variables into scope when the pattern matches successfully.
-The following examples illustrate bindings using `let` patterns:
+`let` patterns in a `while` condition allow binding new variables into scope when the pattern matches successfully. The following examples illustrate bindings using `let` patterns:
 
 ```rust
 let mut x = vec![1, 2, 3];
@@ -131,8 +125,7 @@ is equivalent to
 ```
 
 r[expr.loop.while.let.or-pattern]
-Multiple patterns may be specified with the `|` operator.
-This has the same semantics as with `|` in `match` expressions:
+Multiple patterns may be specified with the `|` operator. This has the same semantics as with `|` in `match` expressions:
 
 ```rust
 let mut vals = vec![2, 3, 1, 2, 2];
@@ -146,8 +139,7 @@ r[expr.loop.while.chains]
 ### `while` condition chains
 
 r[expr.loop.while.chains.intro]
-Multiple condition operands can be separated with `&&`.
-These have the same semantics and restrictions as [`if` condition chains].
+Multiple condition operands can be separated with `&&`. These have the same semantics and restrictions as [`if` condition chains].
 
 The following is an example of chaining multiple expressions, mixing `let` bindings and boolean expressions, and with expressions able to reference pattern bindings from previous expressions:
 
@@ -179,8 +171,7 @@ r[expr.loop.for.intro]
 A `for` expression is a syntactic construct for looping over elements provided by an implementation of `std::iter::IntoIterator`.
 
 r[expr.loop.for.condition]
-If the iterator yields a value, that value is matched against the irrefutable pattern, the body of the loop is executed, and then control returns to the head of the `for` loop.
-If the iterator is empty, the `for` expression completes.
+If the iterator yields a value, that value is matched against the irrefutable pattern, the body of the loop is executed, and then control returns to the head of the `for` loop. If the iterator is empty, the `for` expression completes.
 
 An example of a `for` loop over the contents of an array:
 
@@ -252,8 +243,7 @@ r[expr.loop.label.intro]
 A loop expression may optionally have a _label_. The label is written as a lifetime preceding the loop expression, as in `'foo: loop { break 'foo; }`, `'bar: while false {}`, `'humbug: for _ in 0..0 {}`.
 
 r[expr.loop.label.control-flow]
-If a label is present, then labeled `break` and `continue` expressions nested within this loop may exit out of this loop or return control to its head.
-See [break expressions](#break-expressions) and [continue expressions](#continue-expressions).
+If a label is present, then labeled `break` and `continue` expressions nested within this loop may exit out of this loop or return control to its head. See [break expressions](#break-expressions) and [continue expressions](#continue-expressions).
 
 r[expr.loop.label.ref]
 Labels follow the hygiene and shadowing rules of local variables. For example, this code will print "outer loop":
@@ -293,9 +283,7 @@ assert_eq!(last, 12);
 ```
 
 r[expr.loop.break.label]
-A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression,
-but a [label](#loop-labels) can be used to specify which enclosing loop is affected.
-Example:
+A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression, but a [label](#loop-labels) can be used to specify which enclosing loop is affected. Example:
 
 ```rust
 'outer: loop {
@@ -371,8 +359,7 @@ r[expr.loop.break-value]
 ## `break` and loop values
 
 r[expr.loop.break-value.intro]
-When associated with a `loop`, a break expression may be used to return a value from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where `EXPR` is an expression whose result is returned from the `loop`.
-For example:
+When associated with a `loop`, a break expression may be used to return a value from that loop, via one of the forms `break EXPR` or `break 'label EXPR`, where `EXPR` is an expression whose result is returned from the `loop`. For example:
 
 ```rust
 let (mut a, mut b) = (1, 1);
@@ -389,8 +376,7 @@ assert_eq!(result, 13);
 ```
 
 r[expr.loop.break-value.loop]
-In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
-`break` without an expression is considered identical to `break` with expression `()`.
+In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression. `break` without an expression is considered identical to `break` with expression `()`.
 
 [`if` condition chains]: if-expr.md#chains-of-conditions
 [`if` expressions]: if-expr.md

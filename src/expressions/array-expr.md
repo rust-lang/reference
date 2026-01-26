@@ -13,8 +13,7 @@ ArrayElements ->
 ```
 
 r[expr.array.constructor]
-*Array expressions* construct [arrays][array].
-Array expressions come in two forms.
+*Array expressions* construct [arrays][array]. Array expressions come in two forms.
 
 r[expr.array.array]
 The first form lists out every value in the array.
@@ -49,8 +48,7 @@ let _: [u8; C] = [0; (((_)))]; // Inferred const.
 > In an array expression, an [inferred const] is parsed as an [expression][Expression] but then semantically treated as a separate kind of [const generic argument].
 
 r[expr.array.repeat-behavior]
-An array expression of this form creates an array with the length of the value of the length operand with each element being a copy of the repeat operand.
-That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
+An array expression of this form creates an array with the length of the value of the length operand with each element being a copy of the repeat operand. That is, `[a; b]` creates an array containing `b` copies of the value of `a`.
 
 r[expr.array.repeat-copy]
 If the length operand has a value greater than 1 then this requires the repeat operand to have a type that implements [`Copy`], to be a [const block expression], or to be a [path] to a constant item.
@@ -83,19 +81,16 @@ IndexExpression -> Expression `[` Expression `]`
 ```
 
 r[expr.array.index.array]
-[Array] and [slice]-typed values can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them.
-When the array is mutable, the resulting [memory location] can be assigned to.
+[Array] and [slice]-typed values can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them. When the array is mutable, the resulting [memory location] can be assigned to.
 
 r[expr.array.index.trait]
-For other types an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a mutable place expression context.
-Just as with methods, Rust will also insert dereference operations on `a` repeatedly to find an implementation.
+For other types an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a mutable place expression context. Just as with methods, Rust will also insert dereference operations on `a` repeatedly to find an implementation.
 
 r[expr.array.index.zero-index]
 Indices are zero-based for arrays and slices.
 
 r[expr.array.index.const]
-Array access is a [constant expression], so bounds can be checked at compile-time with a constant index value.
-Otherwise a check will be performed at run-time that will put the thread in a [_panicked state_][panic] if it fails.
+Array access is a [constant expression], so bounds can be checked at compile-time with a constant index value. Otherwise a check will be performed at run-time that will put the thread in a [_panicked state_][panic] if it fails.
 
 ```rust,should_panic
 // lint is deny by default.

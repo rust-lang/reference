@@ -16,8 +16,7 @@ r[expr.field.form]
 The syntax for a field expression is an expression, called the *container operand*, then a `.`, and finally an [identifier].
 
 r[expr.field.not-method-call]
-Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression].
-That is, they cannot be the function operand of a [call expression].
+Field expressions cannot be followed by a parenthetical comma-separated list of expressions, as that is instead parsed as a [method call expression]. That is, they cannot be the function operand of a [call expression].
 
 > [!NOTE]
 > Wrap the field expression in a [parenthesized expression] to use it in a call expression.
@@ -46,15 +45,12 @@ foo().x;
 r[expr.field.autoref-deref]
 ## Automatic dereferencing
 
-If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible.
-This process is also called *autoderef* for short.
+If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible. This process is also called *autoderef* for short.
 
 r[expr.field.borrow]
 ## Borrowing
 
-The fields of a struct or a reference to a struct are treated as separate entities when borrowing.
-If the struct does not implement [`Drop`] and is stored in a local variable, this also applies to moving out of each of its fields.
-This also does not apply if automatic dereferencing is done through user-defined types other than [`Box`].
+The fields of a struct or a reference to a struct are treated as separate entities when borrowing. If the struct does not implement [`Drop`] and is stored in a local variable, this also applies to moving out of each of its fields. This also does not apply if automatic dereferencing is done through user-defined types other than [`Box`].
 
 ```rust
 struct A { f1: String, f2: String, f3: String }
