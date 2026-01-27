@@ -16,7 +16,8 @@ The list of types is:
 * Primitive types:
     * [Boolean] --- `bool`
     * [Numeric] --- integer and float
-    * [Textual] --- `char` and `str`
+    * [`char`]
+    * [`str`]
     * [Never] --- `!` --- a type with no values
 * Sequence types:
     * [Tuple]
@@ -72,7 +73,7 @@ r[type.name.sequence]
 
 r[type.name.path]
 * [Type paths] which can reference:
-    * Primitive types ([boolean], [numeric], [textual]).
+    * Primitive types ([boolean], [numeric], [`char`], [`str`]).
     * Paths to an [item] ([struct], [enum], [union], [type alias], [trait]).
     * [`Self` path] where `Self` is the implementing type.
     * Generic [type parameters].
@@ -134,6 +135,8 @@ enum List<T> {
 let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 ```
 
+[`char`]: types/char.md
+[`str`]: types/str.md
 [Array]: types/array.md
 [Boolean]: types/boolean.md
 [Closures]: types/closure.md
@@ -148,7 +151,6 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
 [References]: types/pointer.md#shared-references-
 [Slice]: types/slice.md
 [Struct]: types/struct.md
-[Textual]: types/textual.md
 [Trait objects]: types/trait-object.md
 [Tuple]: types/tuple.md
 [Type paths]: paths.md#paths-in-types

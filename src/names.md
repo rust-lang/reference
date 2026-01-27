@@ -75,7 +75,7 @@ The following entities are implicitly defined by the language, or are introduced
 r[names.implicit.primitive-types]
 * [Language prelude]:
     * [Boolean type] --- `bool`
-    * [Textual types] --- `char` and `str`
+    * Textual types --- [`char`] and [`str`]
     * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
     * [Machine-dependent integer types] --- `usize` and `isize`
     * [floating-point types] --- `f32` and `f64`
@@ -113,6 +113,7 @@ Additionally, the crate root module does not have a name, but can be referred to
 [*scope*]: names/scopes.md
 [*visibility*]: visibility-and-privacy.md
 [`'static`]: keywords.md#weak-keywords
+[`char`]: types/char.md
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-patterns
 [`let` statement]: statements.md#let-statements
@@ -120,6 +121,7 @@ Additionally, the crate root module does not have a name, but can be referred to
 [`macro_rules` declarations]: macros-by-example.md
 [`macro_use` attribute]: macros-by-example.md#the-macro_use-attribute
 [`match`]: expressions/match-expr.md
+[`str`]: types/str.md
 [`while let`]: expressions/loop-expr.md#while-let-patterns
 [associated items]: items/associated-items.md
 [attributes]: attributes.md
@@ -156,7 +158,6 @@ Additionally, the crate root module does not have a name, but can be referred to
 [Standard library prelude]: names/preludes.md#standard-library-prelude
 [Static item declarations]: items/static-items.md
 [struct]: items/structs.md
-[Textual types]: types/textual.md
 [Tool attributes]: attributes.md#tool-attributes
 [tool lint attributes]: attributes/diagnostics.md#tool-lint-attributes
 [Trait item declarations]: items/traits.md

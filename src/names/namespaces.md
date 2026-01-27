@@ -17,7 +17,7 @@ The following is a list of namespaces, with their corresponding entities:
     * [Trait item declarations]
     * [Type aliases]
     * [Associated type declarations]
-    * Built-in types: [boolean], [numeric], and [textual]
+    * Built-in types: [boolean], [numeric], [`char`], and [`str`]
     * [Generic type parameters]
     * [`Self` type]
     * [Tool attribute modules]
@@ -115,6 +115,7 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 
 [`cfg` attribute]: ../conditional-compilation.md#the-cfg-attribute
 [`cfg` macro]: ../conditional-compilation.md#the-cfg-macro
+[`char`]: ../types/char.md
 [`for`]: ../expressions/loop-expr.md#iterator-loops
 [`if let`]: ../expressions/if-expr.md#if-let-patterns
 [`let`]: ../statements.md#let-statements
@@ -122,6 +123,7 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 [`match`]: ../expressions/match-expr.md
 [`Self` constructors]: ../paths.md#self-1
 [`Self` type]: ../paths.md#self-1
+[`str`]: ../types/str.md
 [`use` import]: ../items/use-declarations.md
 [`while let`]: ../expressions/loop-expr.md#while-let-patterns
 [Associated const declarations]: ../items/associated-items.md#associated-constants
@@ -158,7 +160,6 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 [Static item declarations]: ../items/static-items.md
 [Struct constructors]: ../items/structs.md
 [Struct]: ../items/structs.md
-[textual]: ../types/textual.md
 [Tool attribute modules]: ../attributes.md#tool-attributes
 [Tool attributes]: ../attributes.md#tool-attributes
 [Trait item declarations]: ../items/traits.md
