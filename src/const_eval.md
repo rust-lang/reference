@@ -261,6 +261,11 @@ const C: Pair = unsafe {
 ```
 
 > [!NOTE]
+> The bytes with provenance must form a complete pointer in the correct order.  In the example above, the pointer is written at offset 20, but it requires (on 64-bit platforms) 8 bytes.  Four of those bytes fit in the `y` field; the rest extend into the padding at offset 24.  When the fields are initialized, the `y` bytes get overwritten, leaving only a partial pointer (4 bytes) in the padding.  These 4 bytes have provenance but don't form a complete pointer, causing compilation to fail.
+>
+> This restriction ensures that any bytes with provenance in the final value represent complete, valid pointers.  The compiler cannot support pointer fragments because it would be unable to reason about them at compile time.
+
+> [!NOTE]
 > Manually initializing (e.g., zeroing) the padding bytes ensures the final value is accepted:
 >
 > ```rust
