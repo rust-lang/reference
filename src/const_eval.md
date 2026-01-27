@@ -266,6 +266,35 @@ const C: Pair = unsafe {
 > This restriction ensures that any bytes with provenance in the final value represent complete, valid pointers.  The compiler cannot support pointer fragments because it would be unable to reason about them at compile time.
 
 > [!NOTE]
+>
+> Reversing the order of the pointer bytes also causes compilation to fail, even though all bytes are present:
+>
+> ```rust,compile_fail
+> # use std::mem::MaybeUninit;
+> # #[repr(C)]
+> # struct Pair {
+> #     x: u128,
+> #     y: MaybeUninit<u64>,
+> # }
+> const C: Pair = unsafe {
+> //    ^^^^^^^ ERROR: Partial pointer in final value of constant.
+>     let mut m = MaybeUninit::<Pair>::uninit();
+>     let ptr: *const u8 = &0;
+>     let ptr_bytes = &ptr as *const _ as *const MaybeUninit<u8>;
+>     // Write pointer bytes in reverse order into the padding.
+>     let dst = m.as_mut_ptr().cast::<MaybeUninit<u8>>().add(24);
+>     let mut i = 0;
+>     while i < 8 {
+>         dst.add(i).write(ptr_bytes.add(7 - i).read());
+>         i += 1;
+>     }
+>     (*m.as_mut_ptr()).x = 0;
+>     (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+>     m.assume_init()
+> };
+> ```
+
+> [!NOTE]
 > Manually initializing (e.g., zeroing) the padding bytes ensures the final value is accepted:
 >
 > ```rust
