@@ -1351,7 +1351,7 @@ r[asm.rules.stack-below-sp]
 
 r[asm.rules.stack-above-sp]
 - Unless the `nostack` option is set, assembly code is allowed to modify the caller's stack frame in specific cases.
-  - The target ABI requires storing certain values in the caller's frame (e.g saving the `lr` on PowerPC64)
+  - The target ABI requires storing certain values in the caller's frame (e.g., saving the `lr` on PowerPC64).
 
 r[asm.rules.noreturn]
 - If the `noreturn` option is set then behavior is undefined if execution falls through the end of the assembly code.
@@ -1386,7 +1386,7 @@ r[asm.rules.preserved-registers]
     - Floating-point status and sticky bits in the `fpscr` (any field other than DRN, VE, OE, UE, ZE, XE, NI, or RN).
     - Vector status and sticky bits in the `vscr` (any field other than NJ).
   - PowerPC SPE
-    - The sticky and status bits of the `spefscr` (any field other than FINXE, FINVE, FDBZE, FUNFE, FOVFE, or FRMC)
+    - The sticky and status bits of the `spefscr` (any field other than FINXE, FINVE, FDBZE, FUNFE, FOVFE, or FRMC).
   - s390x
     - The condition code register `cc`.
 
