@@ -98,7 +98,7 @@ A place is said to be "based on a misaligned pointer" if the last `*` projection
 during place computation was performed on a pointer that was not aligned for its
 type. (If there is no `*` projection in the place expression, then this is
 accessing the field of a local or `static` and rustc will guarantee proper alignment. If
-there are multiple `*` projection, then each of them incurs a load of the
+there are multiple `*` projections, then each of them incurs a load of the
 pointer-to-be-dereferenced itself from memory, and each of these loads is
 subject to the alignment constraint. Note that some `*` projections can be
 omitted in surface Rust syntax due to automatic dereferencing; we are
