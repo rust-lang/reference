@@ -6,12 +6,10 @@ let b: bool = true;
 ```
 
 r[type.bool.intro]
-The *boolean type* or *bool* is a primitive data type that can take on one of
-two values, called *true* and *false*.
+The *boolean type* or *bool* is a primitive data type that can take on one of two values, called *true* and *false*.
 
 r[type.bool.literal]
-Values of this type may be created using a [literal expression] using the
-keywords `true` and `false` corresponding to the value of the same name.
+Values of this type may be created using a [literal expression] using the keywords `true` and `false` corresponding to the value of the same name.
 
 r[type.bool.namespace]
 This type is a part of the [language prelude] with the [name] `bool`.
@@ -20,9 +18,7 @@ r[type.bool.layout]
 An object with the boolean type has a [size and alignment] of 1 each.
 
 r[type.bool.repr]
-The value false has the bit pattern `0x00` and the value true has the bit pattern
-`0x01`. It is [undefined behavior] for an object with the boolean type to have
-any other bit pattern.
+The value false has the bit pattern `0x00` and the value true has the bit pattern `0x01`. It is [undefined behavior] for an object with the boolean type to have any other bit pattern.
 
 r[type.bool.usage]
 The boolean type is the type of many operands in various [expressions]:
@@ -37,9 +33,7 @@ r[type.bool.usage-lazy-operator]
 > The boolean type acts similarly to but is not an [enumerated type]. In practice, this mostly means that constructors are not associated to the type (e.g. `bool::true`).
 
 r[type.bool.traits]
-Like all primitives, the boolean type [implements][p-impl] the
-[traits][p-traits] [`Clone`][p-clone], [`Copy`][p-copy], [`Sized`][p-sized],
-[`Send`][p-send], and [`Sync`][p-sync].
+Like all primitives, the boolean type [implements][p-impl] the [traits][p-traits] [`Clone`][p-clone], [`Copy`][p-copy], [`Sized`][p-sized], [`Send`][p-send], and [`Sync`][p-sync].
 
 > [!NOTE]
 > See the [standard library docs](bool) for library operations.
@@ -47,8 +41,7 @@ Like all primitives, the boolean type [implements][p-impl] the
 r[type.bool.expr]
 ## Operations on boolean values
 
-When using certain operator expressions with a boolean type for its operands,
-they evaluate using the rules of [boolean logic].
+When using certain operator expressions with a boolean type for its operands, they evaluate using the rules of [boolean logic].
 
 r[type.bool.expr.not]
 ### Logical not
@@ -122,9 +115,7 @@ r[type.bool.expr.cmp.less-eq]
 r[type.bool.validity]
 ## Bit validity
 
-The single byte of a `bool` is guaranteed to be initialized (in other words,
-`transmute::<bool, u8>(...)` is always sound -- but since some bit patterns
-are invalid `bool`s, the inverse is not always sound).
+The single byte of a `bool` is guaranteed to be initialized (in other words, `transmute::<bool, u8>(...)` is always sound -- but since some bit patterns are invalid `bool`s, the inverse is not always sound).
 
 [boolean logic]: https://en.wikipedia.org/wiki/Boolean_algebra
 [enumerated type]: enum.md

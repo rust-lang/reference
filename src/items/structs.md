@@ -37,10 +37,7 @@ let px: i32 = p.x;
 ```
 
 r[items.struct.tuple]
-A _tuple struct_ is a nominal [tuple type], and is also defined with the keyword `struct`.
-In addition to defining a type, it also defines a constructor of the same name in the [value namespace].
-The constructor is a function which can be called to create a new instance of the struct.
-For example:
+A _tuple struct_ is a nominal [tuple type], and is also defined with the keyword `struct`. In addition to defining a type, it also defines a constructor of the same name in the [value namespace]. The constructor is a function which can be called to create a new instance of the struct. For example:
 
 ```rust
 struct Point(i32, i32);
@@ -49,9 +46,7 @@ let px: i32 = match p { Point(x, _) => x };
 ```
 
 r[items.struct.unit]
-A _unit-like struct_ is a struct without any fields, defined by leaving off the
-list of fields entirely. Such a struct implicitly defines a [constant] of its
-type with the same name. For example:
+A _unit-like struct_ is a struct without any fields, defined by leaving off the list of fields entirely. Such a struct implicitly defines a [constant] of its type with the same name. For example:
 
 ```rust
 struct Cookie;
@@ -67,8 +62,7 @@ let c = [Cookie, Cookie {}, Cookie, Cookie {}];
 ```
 
 r[items.struct.layout]
-The precise memory layout of a struct is not specified. One can specify a
-particular layout using the [`repr` attribute].
+The precise memory layout of a struct is not specified. One can specify a particular layout using the [`repr` attribute].
 
 [`repr` attribute]: ../type-layout.md#representations
 [constant]: constant-items.md

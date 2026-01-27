@@ -7,15 +7,13 @@ GroupedExpression -> `(` Expression `)`
 ```
 
 r[expr.paren.intro]
-A *parenthesized expression* wraps a single expression, evaluating to that expression.
-The syntax for a parenthesized expression is a `(`, then an expression, called the *enclosed operand*, and then a `)`.
+A *parenthesized expression* wraps a single expression, evaluating to that expression. The syntax for a parenthesized expression is a `(`, then an expression, called the *enclosed operand*, and then a `)`.
 
 r[expr.paren.evaluation]
 Parenthesized expressions evaluate to the value of the enclosed operand.
 
 r[expr.paren.place-or-value]
-Unlike other expressions, parenthesized expressions are both [place expressions and value expressions][place].
-When the enclosed operand is a place expression, it is a place expression and when the enclosed operand is a value expression, it is a value expression.
+Unlike other expressions, parenthesized expressions are both [place expressions and value expressions][place]. When the enclosed operand is a place expression, it is a place expression and when the enclosed operand is a value expression, it is a value expression.
 
 r[expr.paren.override-precedence]
 Parentheses can be used to explicitly modify the precedence order of subexpressions within an expression.

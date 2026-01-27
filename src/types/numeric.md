@@ -29,26 +29,19 @@ Type   | Minimum            | Maximum
 r[type.numeric.float]
 ## Floating-point types
 
-The IEEE 754-2008 "binary32" and "binary64" floating-point types are `f32` and
-`f64`, respectively.
+The IEEE 754-2008 "binary32" and "binary64" floating-point types are `f32` and `f64`, respectively.
 
 r[type.numeric.int.size]
 ## Machine-dependent integer types
 
 r[type.numeric.int.size.usize]
-The `usize` type is an unsigned integer type with the same number of bits as the
-platform's pointer type. It can represent every memory address in the process.
+The `usize` type is an unsigned integer type with the same number of bits as the platform's pointer type. It can represent every memory address in the process.
 
 > [!NOTE]
-> While a `usize` can represent every *address*, converting a *pointer* to a `usize` is not necessarily a reversible operation.
-> For more information, see the documentation for [type cast expressions], [`std::ptr`], and [provenance][std::ptr#provenance] in particular.
+> While a `usize` can represent every *address*, converting a *pointer* to a `usize` is not necessarily a reversible operation. For more information, see the documentation for [type cast expressions], [`std::ptr`], and [provenance][std::ptr#provenance] in particular.
 
 r[type.numeric.int.size.isize]
-The `isize` type is a signed two's complement integer type with the same number of bits as the
-platform's pointer type. The theoretical upper bound on object and array size
-is the maximum `isize` value. This ensures that `isize` can be used to calculate
-differences between pointers into an object or array and can address every byte
-within an object along with one byte past the end.
+The `isize` type is a signed two's complement integer type with the same number of bits as the platform's pointer type. The theoretical upper bound on object and array size is the maximum `isize` value. This ensures that `isize` can be used to calculate differences between pointers into an object or array and can address every byte within an object along with one byte past the end.
 
 r[type.numeric.int.size.minimum]
 `usize` and `isize` are at least 16-bits wide.
@@ -59,7 +52,6 @@ r[type.numeric.int.size.minimum]
 r[type.numeric.validity]
 ## Bit validity
 
-For every numeric type, `T`, the bit validity of `T` is equivalent to the bit
-validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
+For every numeric type, `T`, the bit validity of `T` is equivalent to the bit validity of `[u8; size_of::<T>()]`. An uninitialized byte is not a valid `u8`.
 
 [type cast expressions]: ../expressions/operator-expr.md#type-cast-expressions

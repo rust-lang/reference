@@ -7,8 +7,7 @@ InferredType -> `_`
 ```
 
 r[type.inferred.intro]
-The inferred type asks the compiler to infer the type if possible based on the
-surrounding information available.
+The inferred type asks the compiler to infer the type if possible based on the surrounding information available.
 
 > [!EXAMPLE]
 > The inferred type is often used in generic arguments:

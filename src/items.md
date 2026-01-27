@@ -30,14 +30,10 @@ MacroItem ->
 ```
 
 r[items.intro]
-An _item_ is a component of a crate. Items are organized within a crate by a
-nested set of [modules]. Every crate has a single "outermost" anonymous module;
-all further items within the crate have [paths] within the module tree of the
-crate.
+An _item_ is a component of a crate. Items are organized within a crate by a nested set of [modules]. Every crate has a single "outermost" anonymous module; all further items within the crate have [paths] within the module tree of the crate.
 
 r[items.static-def]
-Items are entirely determined at compile-time, generally remain fixed during
-execution, and may reside in read-only memory.
+Items are entirely determined at compile-time, generally remain fixed during execution, and may reside in read-only memory.
 
 r[items.kinds]
 There are several kinds of items:

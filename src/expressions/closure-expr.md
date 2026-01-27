@@ -17,8 +17,7 @@ ClosureParam -> OuterAttribute* PatternNoTopAlt ( `:` Type )?
 [^cl-async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 
 r[expr.closure.intro]
-A *closure expression*, also known as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type.
-The syntax for a closure expression is an optional `async` keyword, an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
+A *closure expression*, also known as a lambda expression or a lambda, defines a [closure type] and evaluates to a value of that type. The syntax for a closure expression is an optional `async` keyword, an optional `move` keyword, then a pipe-symbol-delimited (`|`) comma-separated list of [patterns], called the *closure parameters* each optionally followed by a `:` and a type, then an optional `->` and type, called the *return type*, and then an expression, called the *closure body operand*.
 
 r[expr.closure.param-type]
 The optional type after each pattern is a type annotation for the pattern.
@@ -27,8 +26,7 @@ r[expr.closure.explicit-type-body]
 If there is a return type, the closure body must be a [block].
 
 r[expr.closure.parameter-restriction]
-A closure expression denotes a function that maps a list of parameters onto the expression that follows the parameters.
-Just like a [`let` binding], the closure parameters are irrefutable [patterns], whose type annotation is optional and will be inferred from context if not given.
+A closure expression denotes a function that maps a list of parameters onto the expression that follows the parameters. Just like a [`let` binding], the closure parameters are irrefutable [patterns], whose type annotation is optional and will be inferred from context if not given.
 
 r[expr.closure.unique-type]
 Each closure expression has a unique, anonymous type.
@@ -43,15 +41,12 @@ r[expr.closure.capture-mut-ref]
 If needed the compiler will infer that instead mutable references should be taken, or that the values should be moved or copied (depending on their type) from the environment.
 
 r[expr.closure.capture-move]
-A closure can be forced to capture its environment by copying or moving values by prefixing it with the `move` keyword.
-This is often used to ensure that the closure's lifetime is `'static`.
+A closure can be forced to capture its environment by copying or moving values by prefixing it with the `move` keyword. This is often used to ensure that the closure's lifetime is `'static`.
 
 r[expr.closure.trait-impl]
 ## Closure trait implementations
 
-Which traits the closure type implement depends on how variables are captured, the types of the captured variables, and the presence of `async`.
-See the [call traits and coercions] chapter for how and when a closure implements `Fn`, `FnMut`, and `FnOnce`.
-The closure type implements [`Send`] and [`Sync`] if the type of every captured variable also implements the trait.
+Which traits the closure type implement depends on how variables are captured, the types of the captured variables, and the presence of `async`. See the [call traits and coercions] chapter for how and when a closure implements `Fn`, `FnMut`, and `FnOnce`. The closure type implements [`Send`] and [`Sync`] if the type of every captured variable also implements the trait.
 
 r[expr.closure.async]
 ## Async closures

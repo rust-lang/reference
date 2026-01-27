@@ -101,8 +101,7 @@ The escaped value is the character whose [Unicode scalar value] is the result of
 r[expr.literal.continuation]
 ### String continuation escapes
 
-The escape sequence consists of `\` followed immediately by `U+000A` (LF), and all following whitespace characters before the next non-whitespace character.
-For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U+000D` (CR), and `U+0020` (SPACE).
+The escape sequence consists of `\` followed immediately by `U+000A` (LF), and all following whitespace characters before the next non-whitespace character. For this purpose, the whitespace characters are `U+0009` (HT), `U+000A` (LF), `U+000D` (CR), and `U+0020` (SPACE).
 
 The escaped value is an empty sequence of characters.
 
@@ -172,8 +171,7 @@ r[expr.literal.string.intro]
 A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
 
 r[expr.literal.string.type]
-The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type.
-That is, the type is `&'static str`.
+The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type. That is, the type is `&'static str`.
 
 r[expr.literal.string.no-suffix]
 The token must not have a suffix.
@@ -191,8 +189,7 @@ r[expr.literal.string.escape]
     * [Unicode escapes]
     * [String continuation escapes]
 
-  These replacements take place in left-to-right order.
-  For example, the token `"\\x41"` is converted to the characters `\` `x` `4` `1`.
+  These replacements take place in left-to-right order. For example, the token `"\\x41"` is converted to the characters `\` `x` `4` `1`.
 
 r[expr.literal.string.raw]
 * If the token is a [RAW_STRING_LITERAL], the represented string is identical to the literal content.
@@ -261,8 +258,7 @@ r[expr.literal.byte-string.intro]
 A byte string literal expression consists of a single [BYTE_STRING_LITERAL] or [RAW_BYTE_STRING_LITERAL] token.
 
 r[expr.literal.byte-string.type]
-The expression's type is a shared reference (with `static` lifetime) to an array whose element type is [`u8`][numeric types].
-That is, the type is `&'static [u8; N]`, where `N` is the number of bytes in the represented string described below.
+The expression's type is a shared reference (with `static` lifetime) to an array whose element type is [`u8`][numeric types]. That is, the type is `&'static [u8; N]`, where `N` is the number of bytes in the represented string described below.
 
 r[expr.literal.byte-string.no-suffix]
 The token must not have a suffix.
@@ -279,8 +275,7 @@ r[expr.literal.byte-string.escape]
     * [8-bit escapes]
     * [String continuation escapes]
 
-  These replacements take place in left-to-right order.
-  For example, the token `b"\\x41"` is converted to the characters `\` `x` `4` `1`.
+  These replacements take place in left-to-right order. For example, the token `b"\\x41"` is converted to the characters `\` `x` `4` `1`.
 
 r[expr.literal.byte-string.raw]
 * If the token is a [RAW_BYTE_STRING_LITERAL], the represented string is identical to the literal content.
@@ -311,8 +306,7 @@ r[expr.literal.c-string.intro]
 A C string literal expression consists of a single [C_STRING_LITERAL] or [RAW_C_STRING_LITERAL] token.
 
 r[expr.literal.c-string.type]
-The expression's type is a shared reference (with `static` lifetime) to the standard library [CStr] type.
-That is, the type is `&'static core::ffi::CStr`.
+The expression's type is a shared reference (with `static` lifetime) to the standard library [CStr] type. That is, the type is `&'static core::ffi::CStr`.
 
 r[expr.literal.c-string.no-suffix]
 The token must not have a suffix.
@@ -324,8 +318,7 @@ r[expr.literal.c-string.represented]
 The literal expression's _represented bytes_ are a sequence of bytes derived from the literal content as follows:
 
 r[expr.literal.c-string.escape]
-* If the token is a [C_STRING_LITERAL], the literal content is treated as a sequence of items, each of which is either a single Unicode character other than `\` or an [escape].
-The sequence of items is converted to a sequence of bytes as follows:
+* If the token is a [C_STRING_LITERAL], the literal content is treated as a sequence of items, each of which is either a single Unicode character other than `\` or an [escape]. The sequence of items is converted to a sequence of bytes as follows:
   * Each single Unicode character contributes its UTF-8 representation.
   * Each [simple escape] contributes the [Unicode scalar value] of its escaped value.
   * Each [8-bit escape] contributes a single byte containing the [Unicode scalar value] of its escaped value.
@@ -424,8 +417,7 @@ r[expr.literal.int.separators-stripped]
 * Any underscores are removed from the string.
 
 r[expr.literal.int.u128-value]
-* The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix.
-If the value does not fit in `u128`, it is a compiler error.
+* The string is converted to a `u128` value as if by [`u128::from_str_radix`] with the chosen radix. If the value does not fit in `u128`, it is a compiler error.
 
 r[expr.literal.int.cast]
 * The `u128` value is converted to the expression's type via a [numeric cast].

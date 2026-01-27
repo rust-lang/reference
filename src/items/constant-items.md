@@ -8,27 +8,19 @@ ConstantItem ->
 ```
 
 r[items.const.intro]
-A *constant item* is an optionally named _[constant value]_ which is not associated
-with a specific memory location in the program.
+A *constant item* is an optionally named _[constant value]_ which is not associated with a specific memory location in the program.
 
 r[items.const.behavior]
-Constants are essentially inlined wherever they are used, meaning that they are copied directly into the relevant
-context when used. This includes usage of constants from external crates, and
-non-[`Copy`] types. References to the same constant are not necessarily
-guaranteed to refer to the same memory address.
+Constants are essentially inlined wherever they are used, meaning that they are copied directly into the relevant context when used. This includes usage of constants from external crates, and non-[`Copy`] types. References to the same constant are not necessarily guaranteed to refer to the same memory address.
 
 r[items.const.namespace]
 The constant declaration defines the constant value in the [value namespace] of the module or block where it is located.
 
 r[items.const.static]
-Constants must be explicitly typed. The type must have a `'static` lifetime: any
-references in the initializer must have `'static` lifetimes. References
-in the type of a constant default to `'static` lifetime; see [static lifetime
-elision].
+Constants must be explicitly typed. The type must have a `'static` lifetime: any references in the initializer must have `'static` lifetimes. References in the type of a constant default to `'static` lifetime; see [static lifetime elision].
 
 r[items.const.static-temporary]
-A reference to a constant will have `'static` lifetime if the constant value is eligible for
-[promotion]; otherwise, a temporary will be created.
+A reference to a constant will have `'static` lifetime if the constant value is eligible for [promotion]; otherwise, a temporary will be created.
 
 ```rust
 const BIT1: u32 = 1 << 0;
@@ -54,8 +46,7 @@ The constant expression may only be omitted in a [trait definition].
 r[items.const.destructor]
 ## Constants with destructors
 
-Constants can contain destructors. Destructors are run when the value goes out
-of scope.
+Constants can contain destructors. Destructors are run when the value goes out of scope.
 
 ```rust
 struct TypeWithDestructor(i32);
@@ -79,8 +70,7 @@ r[items.const.unnamed]
 ## Unnamed constant
 
 r[items.const.unnamed.intro]
-Unlike an [associated constant], a [free] constant may be unnamed by using
-an underscore instead of the name. For example:
+Unlike an [associated constant], a [free] constant may be unnamed by using an underscore instead of the name. For example:
 
 ```rust
 const _: () =  { struct _SameNameTwice; };
@@ -90,8 +80,7 @@ const _: () =  { struct _SameNameTwice; };
 ```
 
 r[items.const.unnamed.repetition]
-As with [underscore imports], macros may safely emit the same unnamed constant in
-the same scope more than once. For example, the following should not produce an error:
+As with [underscore imports], macros may safely emit the same unnamed constant in the same scope more than once. For example, the following should not produce an error:
 
 ```rust
 macro_rules! m {
@@ -107,8 +96,7 @@ m!(const _: () = (););
 r[items.const.eval]
 ## Evaluation
 
-[Free][free] constants are always [evaluated][const_eval] at compile-time to surface
-panics. This happens even within an unused function:
+[Free][free] constants are always [evaluated][const_eval] at compile-time to surface panics. This happens even within an unused function:
 
 ```rust,compile_fail
 // Compile-time panic

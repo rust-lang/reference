@@ -2,9 +2,7 @@ r[type.closure]
 # Closure types
 
 r[type.closure.intro]
-A [closure expression] produces a closure value with a unique, anonymous type that cannot be written out.
-A closure type is approximately equivalent to a struct which contains the captured values.
-For instance, the following closure:
+A [closure expression] produces a closure value with a unique, anonymous type that cannot be written out. A closure type is approximately equivalent to a struct which contains the captured values. For instance, the following closure:
 
 ```rust
 #[derive(Debug)]
@@ -61,8 +59,7 @@ r[type.closure.capture]
 ## Capture modes
 
 r[type.closure.capture.intro]
-A *capture mode* determines how a [place expression] from the environment is borrowed or moved into the closure.
-The capture modes are:
+A *capture mode* determines how a [place expression] from the environment is borrowed or moved into the closure. The capture modes are:
 
 1. Immutable borrow (`ImmBorrow`) --- The place expression is captured as a [shared reference].
 2. Unique immutable borrow (`UniqueImmBorrow`) --- This is similar to an immutable borrow, but must be unique as described [below](#unique-immutable-borrows-in-captures).
@@ -70,8 +67,7 @@ The capture modes are:
 4. Move (`ByValue`) --- The place expression is captured by [moving the value] into the closure.
 
 r[type.closure.capture.precedence]
-Place expressions from the environment are captured from the first mode that is compatible with how the captured value is used inside the closure body.
-The mode is not affected by the code surrounding the closure, such as the lifetimes of involved variables or fields, or of the closure itself.
+Place expressions from the environment are captured from the first mode that is compatible with how the captured value is used inside the closure body. The mode is not affected by the code surrounding the closure, such as the lifetimes of involved variables or fields, or of the closure itself.
 
 [moving the value]: ../expressions.md#moved-and-copied-types
 [mutable reference]: pointer.md#mutable-references-mut
@@ -123,8 +119,7 @@ let c = || {
 c();
 ```
 
-Here the capture path is the local variable `s`, followed by a field access `.f1`, and then a tuple index `.1`.
-This closure captures an immutable borrow of `s.f1.1`.
+Here the capture path is the local variable `s`, followed by a field access `.f1`, and then a tuple index `.1`. This closure captures an immutable borrow of `s.f1.1`.
 
 [field access]: ../expressions/field-expr.md
 [pattern destructuring]: patterns.destructure
@@ -163,11 +158,9 @@ r[type.closure.capture.precision.dereference-shared]
 
 The capture path is truncated at the rightmost dereference in the capture path if the dereference is applied to a shared reference.
 
-This truncation is allowed because fields that are read through a shared reference will always be read via a shared reference or a copy.
-This helps reduce the size of the capture when the extra precision does not yield any benefit from a borrow checking perspective.
+This truncation is allowed because fields that are read through a shared reference will always be read via a shared reference or a copy. This helps reduce the size of the capture when the extra precision does not yield any benefit from a borrow checking perspective.
 
-The reason it is the *rightmost* dereference is to help avoid a shorter lifetime than is necessary.
-Consider the following example:
+The reason it is the *rightmost* dereference is to help avoid a shorter lifetime than is necessary. Consider the following example:
 
 ```rust
 struct Int(i32);
@@ -445,8 +438,7 @@ c();
 r[type.closure.capture.precision.move-dereference]
 ### Capturing references in move contexts
 
-Because it is not allowed to move fields out of a reference, `move` closures will only capture the prefix of a capture path that runs up to, but not including, the first dereference of a reference.
-The reference itself will be moved into the closure.
+Because it is not allowed to move fields out of a reference, `move` closures will only capture the prefix of a capture path that runs up to, but not including, the first dereference of a reference. The reference itself will be moved into the closure.
 
 ```rust
 struct T(String, String);
@@ -505,9 +497,7 @@ c();
 r[type.closure.capture.precision.unaligned]
 ### Reference into unaligned `struct`s
 
-Because it is [undefined behavior] to create references to unaligned fields in a structure,
-closures will only capture the prefix of the capture path that runs up to, but not including, the first field access into a structure that uses [the `packed` representation].
-This includes all fields, even those that are aligned, to protect against compatibility concerns should any of the fields in the structure change in the future.
+Because it is [undefined behavior] to create references to unaligned fields in a structure, closures will only capture the prefix of the capture path that runs up to, but not including, the first field access into a structure that uses [the `packed` representation]. This includes all fields, even those that are aligned, to protect against compatibility concerns should any of the fields in the structure change in the future.
 
 ```rust
 #[repr(packed)]
@@ -618,9 +608,7 @@ let c_box = move || {
 r[type.closure.unique-immutable]
 ## Unique immutable borrows in captures
 
-Captures can occur by a special kind of borrow called a _unique immutable borrow_,
-which cannot be used anywhere else in the language and cannot be written out explicitly.
-It occurs when modifying the referent of a mutable reference, as in the following example:
+Captures can occur by a special kind of borrow called a _unique immutable borrow_, which cannot be used anywhere else in the language and cannot be written out explicitly. It occurs when modifying the referent of a mutable reference, as in the following example:
 
 ```rust
 let mut b = false;
@@ -637,10 +625,7 @@ c();
 let z = &x;
 ```
 
-In this case, borrowing `x` mutably is not possible, because `x` is not `mut`.
-But at the same time, borrowing `x` immutably would make the assignment illegal,
-because a `& &mut` reference might not be unique, so it cannot safely be used to modify a value.
-So a unique immutable borrow is used: it borrows `x` immutably, but like a mutable borrow, it must be unique.
+In this case, borrowing `x` mutably is not possible, because `x` is not `mut`. But at the same time, borrowing `x` immutably would make the assignment illegal, because a `& &mut` reference might not be unique, so it cannot safely be used to modify a value. So a unique immutable borrow is used: it borrows `x` immutably, but like a mutable borrow, it must be unique.
 
 In the above example, uncommenting the declaration of `y` will produce an error because it would violate the uniqueness of the closure's borrow of `x`; the declaration of z is valid because the closure's lifetime has expired at the end of the block, releasing the borrow.
 
@@ -648,25 +633,19 @@ r[type.closure.call]
 ## Call traits and coercions
 
 r[type.closure.call.intro]
-Closure types all implement [`FnOnce`], indicating that they can be called once
-by consuming ownership of the closure. Additionally, some closures implement
-more specific call traits:
+Closure types all implement [`FnOnce`], indicating that they can be called once by consuming ownership of the closure. Additionally, some closures implement more specific call traits:
 
 r[type.closure.call.fn-mut]
-* A closure which does not move out of any captured variables implements
-  [`FnMut`], indicating that it can be called by mutable reference.
+* A closure which does not move out of any captured variables implements [`FnMut`], indicating that it can be called by mutable reference.
 
 r[type.closure.call.fn]
-* A closure which does not mutate or move out of any captured variables
-  implements [`Fn`], indicating that it can be called by shared reference.
+* A closure which does not mutate or move out of any captured variables implements [`Fn`], indicating that it can be called by shared reference.
 
 > [!NOTE]
 > `move` closures may still implement [`Fn`] or [`FnMut`], even though they capture variables by move. This is because the traits implemented by a closure type are determined by what the closure does with captured values, not how it captures them.
 
 r[type.closure.non-capturing]
-*Non-capturing closures* are closures that don't capture anything from their
-environment. Non-async, non-capturing closures can be coerced to function pointers (e.g., `fn()`)
-with the matching signature.
+*Non-capturing closures* are closures that don't capture anything from their environment. Non-async, non-capturing closures can be coerced to function pointers (e.g., `fn()`) with the matching signature.
 
 ```rust
 let add = |x, y| x + y;
@@ -740,8 +719,7 @@ r[type.closure.traits]
 ### Other traits
 
 r[type.closure.traits.intro]
-All closure types implement [`Sized`]. Additionally, closure types implement the
-following traits if allowed to do so by the types of the captures it stores:
+All closure types implement [`Sized`]. Additionally, closure types implement the following traits if allowed to do so by the types of the captures it stores:
 
 * [`Clone`]
 * [`Copy`]
@@ -749,19 +727,13 @@ following traits if allowed to do so by the types of the captures it stores:
 * [`Send`]
 
 r[type.closure.traits.behavior]
-The rules for [`Send`] and [`Sync`] match those for normal struct types, while
-[`Clone`] and [`Copy`] behave as if [derived]. For [`Clone`], the order of
-cloning of the captured values is left unspecified.
+The rules for [`Send`] and [`Sync`] match those for normal struct types, while [`Clone`] and [`Copy`] behave as if [derived]. For [`Clone`], the order of cloning of the captured values is left unspecified.
 
 Because captures are often by reference, the following general rules arise:
 
 * A closure is [`Sync`] if all captured values are [`Sync`].
-* A closure is [`Send`] if all values captured by non-unique immutable
-  reference are [`Sync`], and all values captured by unique immutable or mutable
-  reference, copy, or move are [`Send`].
-* A closure is [`Clone`] or [`Copy`] if it does not capture any values by
-  unique immutable or mutable reference, and if all values it captures by copy
-  or move are [`Clone`] or [`Copy`], respectively.
+* A closure is [`Send`] if all values captured by non-unique immutable reference are [`Sync`], and all values captured by unique immutable or mutable reference, copy, or move are [`Send`].
+* A closure is [`Clone`] or [`Copy`] if it does not capture any values by unique immutable or mutable reference, and if all values it captures by copy or move are [`Clone`] or [`Copy`], respectively.
 
 [`Clone`]: ../special-types-and-traits.md#clone
 [`Copy`]: ../special-types-and-traits.md#copy
@@ -822,8 +794,7 @@ f(Closure { rect: rect });
 r[type.closure.capture.precision.edition2018.composite]
 ### Capture precision difference
 
-Composite types such as structs, tuples, and enums are always captured in its entirety,
-not by individual fields. As a result, it may be necessary to borrow into a local variable in order to capture a single field:
+Composite types such as structs, tuples, and enums are always captured in its entirety, not by individual fields. As a result, it may be necessary to borrow into a local variable in order to capture a single field:
 
 ```rust
 # use std::collections::HashSet;

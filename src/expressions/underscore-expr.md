@@ -7,8 +7,7 @@ UnderscoreExpression -> `_`
 ```
 
 r[expr.placeholder.intro]
-Underscore expressions, denoted with the symbol `_`, are used to signify a
-placeholder in a destructuring assignment.
+Underscore expressions, denoted with the symbol `_`, are used to signify a placeholder in a destructuring assignment.
 
 r[expr.placeholder.lhs-assignment-only]
 They may only appear in the left-hand side of an assignment.

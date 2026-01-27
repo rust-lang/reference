@@ -20,8 +20,7 @@ StructBase -> `..` Expression
 ```
 
 r[expr.struct.intro]
-A *struct expression* creates a struct, enum, or union value.
-It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
+A *struct expression* creates a struct, enum, or union value. It consists of a path to a [struct], [enum variant], or [union] item followed by the values for the fields of the item.
 
 The following are examples of struct expressions:
 
@@ -85,8 +84,7 @@ r[expr.struct.field]
 ## Field struct expression
 
 r[expr.struct.field.intro]
-A struct expression with fields enclosed in curly braces allows you to specify the value for each individual field in any order.
-The field name is separated from its value with a colon.
+A struct expression with fields enclosed in curly braces allows you to specify the value for each individual field in any order. The field name is separated from its value with a colon.
 
 r[expr.struct.field.union-constraint]
 A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
@@ -115,12 +113,10 @@ drop(y_ref);
 ```
 
 r[expr.struct.brace-restricted-positions]
-Struct expressions can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
-However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
+Struct expressions can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression. However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
 
 r[expr.struct.tuple-field]
-The field names can be decimal integer values to specify indices for constructing tuple structs.
-This can be used with base structs to fill out the remaining indices not specified:
+The field names can be decimal integer values to specify indices for constructing tuple structs. This can be used with base structs to fill out the remaining indices not specified:
 
 ```rust
 struct Color(u8, u8, u8);
@@ -132,9 +128,7 @@ let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
 r[expr.struct.field.named]
 ### Struct field init shorthand
 
-When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
-This allows a compact syntax with less duplication.
-For example:
+When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`. This allows a compact syntax with less duplication. For example:
 
 ```rust
 # struct Point3d { x: i32, y: i32, z: i32 }

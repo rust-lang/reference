@@ -25,16 +25,14 @@ PatternWithoutRange ->
 ```
 
 r[patterns.intro]
-Patterns are used to match values against structures and to, optionally, bind variables to values inside these structures.
-They are also used in variable declarations and parameters for functions and closures.
+Patterns are used to match values against structures and to, optionally, bind variables to values inside these structures. They are also used in variable declarations and parameters for functions and closures.
 
 The pattern in the following example does four things:
 
 * Tests if `person` has the `car` field filled with something.
 * Tests if the person's `age` field is between 13 and 19, and binds its value to the `person_age` variable.
 * Binds a reference to the `name` field to the variable `person_name`.
-* Ignores the rest of the fields of `person`.
-  The remaining fields can have any value and are not bound to any variables.
+* Ignores the rest of the fields of `person`. The remaining fields can have any value and are not bound to any variables.
 
 ```rust
 # struct Car;
@@ -88,9 +86,7 @@ r[patterns.destructure]
 ## Destructuring
 
 r[patterns.destructure.intro]
-Patterns can be used to *destructure* [structs], [enums], and [tuples].
-Destructuring breaks up a value into its component pieces.
-The syntax used is almost the same as when creating such values.
+Patterns can be used to *destructure* [structs], [enums], and [tuples]. Destructuring breaks up a value into its component pieces. The syntax used is almost the same as when creating such values.
 
 r[patterns.destructure.wildcard]
 In a pattern whose [scrutinee] expression has a `struct`, `enum` or `tuple` type, a [wildcard pattern](#wildcard-pattern) (`_`) stands in for a *single* data field, whereas an [et cetera](#grammar-StructPatternEtCetera) or [rest pattern][patterns.rest] (`..`) stands in for *all* the remaining fields of a particular variant.
@@ -120,9 +116,7 @@ match message {
 r[patterns.refutable]
 ## Refutability
 
-A pattern is said to be *refutable* when it has the possibility of not being matched by the value it is being matched against.
-*Irrefutable* patterns, on the other hand, always match the value they are being matched against.
-Examples:
+A pattern is said to be *refutable* when it has the possibility of not being matched by the value it is being matched against. *Irrefutable* patterns, on the other hand, always match the value they are being matched against. Examples:
 
 ```rust
 let (x, y) = (1, 2);               // "(x, y)" is an irrefutable pattern
@@ -179,12 +173,10 @@ r[patterns.ident.unique]
 The identifier must be unique within the pattern.
 
 r[patterns.ident.scope]
-The variable will shadow any variables of the same name in scope.
-The [scope] of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
+The variable will shadow any variables of the same name in scope. The [scope] of the new binding depends on the context of where the pattern is used (such as a `let` binding or a `match` arm).
 
 r[patterns.ident.bare]
-Patterns that consist of only an identifier, possibly with a `mut`, match any value and bind it to that identifier.
-This is the most commonly used pattern in variable declarations and parameters for functions and closures.
+Patterns that consist of only an identifier, possibly with a `mut`, match any value and bind it to that identifier. This is the most commonly used pattern in variable declarations and parameters for functions and closures.
 
 ```rust
 let mut variable = 10;
@@ -194,8 +186,7 @@ fn sum(x: i32, y: i32) -> i32 {
 ```
 
 r[patterns.ident.scrutinized]
-To bind the matched value of a pattern to a variable, use the syntax `variable @ subpattern`.
-For example, the following binds the value 2 to `e` (not the entire range: the range here is a range subpattern).
+To bind the matched value of a pattern to a variable, use the syntax `variable @ subpattern`. For example, the following binds the value 2 to `e` (not the entire range: the range here is a range subpattern).
 
 ```rust
 let x = 2;
@@ -225,10 +216,7 @@ match a {
 }
 ```
 
-In the first match expression, the value is copied (or moved).
-In the second match, a reference to the same memory location is bound to the variable value.
-This syntax is needed because in destructuring subpatterns the `&` operator can't be applied to the value's fields.
-For example, the following is not valid:
+In the first match expression, the value is copied (or moved). In the second match, a reference to the same memory location is bound to the variable value. This syntax is needed because in destructuring subpatterns the `&` operator can't be applied to the value's fields. For example, the following is not valid:
 
 ```rust,compile_fail
 # struct Person {
@@ -251,8 +239,7 @@ if let Person { name: ref person_name, age: 18..=150 } = value { }
 ```
 
 r[patterns.ident.ref-ignored]
-Thus, `ref` is not something that is being matched against.
-Its objective is exclusively to make the matched binding a reference, instead of potentially copying or moving what was matched.
+Thus, `ref` is not something that is being matched against. Its objective is exclusively to make the matched binding a reference, instead of potentially copying or moving what was matched.
 
 r[patterns.ident.precedent]
 [Path patterns](#path-patterns) take precedence over identifier patterns.
@@ -292,9 +279,7 @@ r[patterns.ident.binding]
 ### Binding modes
 
 r[patterns.ident.binding.intro]
-To service better ergonomics, patterns operate in different *binding modes* in order to make it easier to bind references to values.
-When a reference value is matched by a non-reference pattern, it will be automatically treated as a `ref` or `ref mut` binding.
-Example:
+To service better ergonomics, patterns operate in different *binding modes* in order to make it easier to bind references to values. When a reference value is matched by a non-reference pattern, it will be automatically treated as a `ref` or `ref mut` binding. Example:
 
 ```rust
 let x: &Option<i32> = &Some(3);
@@ -352,12 +337,9 @@ r[patterns.ident.binding.mode-limitations-reference.edition2024]
 > Before the 2024 edition, reference patterns could appear even when the default binding mode was not "move", and had both the effect of matching against the scrutinee and of causing the default binding mode to be reset to "move".
 
 r[patterns.ident.binding.mixed]
-Move bindings and reference bindings can be mixed together in the same pattern.
-Doing so will result in partial move of the object bound to and the object cannot be used afterwards.
-This applies only if the type cannot be copied.
+Move bindings and reference bindings can be mixed together in the same pattern. Doing so will result in partial move of the object bound to and the object cannot be used afterwards. This applies only if the type cannot be copied.
 
-In the example below, `name` is moved out of `person`.
-Trying to use `person` as a whole or `person.name` would result in an error because of *partial move*.
+In the example below, `name` is moved out of `person`. Trying to use `person` as a whole or `person.name` would result in an error because of *partial move*.
 
 Example:
 
@@ -380,8 +362,7 @@ WildcardPattern -> `_`
 ```
 
 r[patterns.wildcard.intro]
-The _wildcard pattern_ (an underscore symbol) matches any value.
-It is used to ignore values when they don't matter.
+The _wildcard pattern_ (an underscore symbol) matches any value. It is used to ignore values when they don't matter.
 
 r[patterns.wildcard.struct-matcher]
 Inside other patterns it matches a single data field (as opposed to the `..` which matches the remaining fields).
@@ -432,8 +413,7 @@ r[patterns.rest.intro]
 The _rest pattern_ (the `..` token) acts as a variable-length pattern which matches zero or more elements that haven't been matched already before and after.
 
 r[patterns.rest.allowed-patterns]
-It may only be used in [tuple](#tuple-patterns), [tuple struct](#tuple-struct-patterns), and [slice](#slice-patterns) patterns, and may only appear once as one of the elements in those patterns.
-It is also allowed in an [identifier pattern](#identifier-patterns) for [slice patterns](#slice-patterns) only.
+It may only be used in [tuple](#tuple-patterns), [tuple struct](#tuple-struct-patterns), and [slice](#slice-patterns) patterns, and may only appear once as one of the elements in those patterns. It is also allowed in an [identifier pattern](#identifier-patterns) for [slice patterns](#slice-patterns) only.
 
 r[patterns.rest.refutable]
 The rest pattern is always irrefutable.
@@ -518,39 +498,32 @@ RangePatternBound ->
 [^obsolete-range-edition]: The [ObsoleteRangePattern] syntax has been removed in the 2021 edition.
 
 r[patterns.range.intro]
-*Range patterns* match scalar values within the range defined by their bounds.
-They comprise a *sigil* (`..` or `..=`) and a bound on one or both sides.
+*Range patterns* match scalar values within the range defined by their bounds. They comprise a *sigil* (`..` or `..=`) and a bound on one or both sides.
 
-A bound on the left of the sigil is called a *lower bound*.
-A bound on the right is called an *upper bound*.
+A bound on the left of the sigil is called a *lower bound*. A bound on the right is called an *upper bound*.
 
 r[patterns.range.exclusive]
-The *exclusive range pattern* matches all values from the lower bound up to, but not including the upper bound.
-It is written as its lower bound, followed by `..`, followed by the upper bound.
+The *exclusive range pattern* matches all values from the lower bound up to, but not including the upper bound. It is written as its lower bound, followed by `..`, followed by the upper bound.
 
 For example, a pattern `'m'..'p'` will match only `'m'`, `'n'` and `'o'`, specifically **not** including `'p'`.
 
 r[patterns.range.inclusive]
-The *inclusive range pattern* matches all values from the lower bound up to and including the upper bound.
-It is written as its lower bound, followed by `..=`, followed by the upper bound.
+The *inclusive range pattern* matches all values from the lower bound up to and including the upper bound. It is written as its lower bound, followed by `..=`, followed by the upper bound.
 
 For example, a pattern `'m'..='p'` will match only the values `'m'`, `'n'`, `'o'`, and `'p'`.
 
 r[patterns.range.from]
-The *from range pattern* matches all values greater than or equal to the lower bound.
-It is written as its lower bound followed by `..`.
+The *from range pattern* matches all values greater than or equal to the lower bound. It is written as its lower bound followed by `..`.
 
 For example, `1..` will match any integer greater than or equal to 1, such as 1, 9, or 9001, or 9007199254740991 (if it is of an appropriate size), but not 0, and not negative numbers for signed integers.
 
 r[patterns.range.to-exclusive]
-The *to exclusive range pattern* matches all values less than the upper bound.
-It is written as `..` followed by the upper bound.
+The *to exclusive range pattern* matches all values less than the upper bound. It is written as `..` followed by the upper bound.
 
 For example, `..10` will match any integer less than 10, such as 9, 1, 0, and for signed integer types, all negative values.
 
 r[patterns.range.to-inclusive]
-The *to inclusive range pattern* matches all values less than or equal to the upper bound.
-It is written as `..=` followed by the upper bound.
+The *to inclusive range pattern* matches all values less than or equal to the upper bound. It is written as `..=` followed by the upper bound.
 
 For example, `..=10` will match any integer less than or equal to 10, such as 10, 1, 0, and for signed integer types, all negative values.
 
@@ -666,8 +639,7 @@ println!("{}", match 0xfacade {
 ```
 
 r[patterns.range.refutable]
-Range patterns for fix-width integer and `char` types are irrefutable when they span the entire set of possible values of a type.
-For example, `0u8..=255u8` is irrefutable.
+Range patterns for fix-width integer and `char` types are irrefutable when they span the entire set of possible values of a type. For example, `0u8..=255u8` is irrefutable.
 
 r[patterns.range.refutable-integer]
 The range of values for an integer type is the closed range from its minimum to maximum value.
@@ -676,8 +648,7 @@ r[patterns.range.refutable-char]
 The range of values for a `char` type are precisely those ranges containing all Unicode Scalar Values: `'\u{0000}'..='\u{D7FF}'` and `'\u{E000}'..='\u{10FFFF}'`.
 
 r[patterns.range.constraint-slice]
-[RangeFromPattern] cannot be used as a top-level pattern for subpatterns in [slice patterns](#slice-patterns).
-For example, the pattern `[1.., _]` is not a valid pattern.
+[RangeFromPattern] cannot be used as a top-level pattern for subpatterns in [slice patterns](#slice-patterns). For example, the pattern `[1.., _]` is not a valid pattern.
 
 r[patterns.range.edition2021]
 > [!EDITION-2021]
@@ -743,8 +714,7 @@ StructPatternEtCetera -> `..`
 ```
 
 r[patterns.struct.intro]
-Struct patterns match struct, enum, and union values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a struct, enum, or union value.
+Struct patterns match struct, enum, and union values that match all criteria defined by its subpatterns. They are also used to [destructure](#destructuring) a struct, enum, or union value.
 
 r[patterns.struct.ignore-rest]
 On a struct pattern, the fields are referenced by name, index (in the case of tuple structs) or ignored by use of `..`:
@@ -843,8 +813,7 @@ TupleStructItems -> Pattern ( `,` Pattern )* `,`?
 ```
 
 r[patterns.tuple-struct.intro]
-Tuple struct patterns match tuple struct and enum values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a tuple struct or enum value.
+Tuple struct patterns match tuple struct and enum values that match all criteria defined by its subpatterns. They are also used to [destructure](#destructuring) a tuple struct or enum value.
 
 r[patterns.tuple-struct.refutable]
 A tuple struct pattern is refutable if the [PathInExpression] resolves to a constructor of an enum with more than one variant, or one of its subpatterns is refutable.
@@ -903,8 +872,7 @@ TuplePatternItems ->
 ```
 
 r[patterns.tuple.intro]
-Tuple patterns match tuple values that match all criteria defined by its subpatterns.
-They are also used to [destructure](#destructuring) a tuple.
+Tuple patterns match tuple values that match all criteria defined by its subpatterns. They are also used to [destructure](#destructuring) a tuple.
 
 r[patterns.tuple.rest-syntax]
 The form `(..)` with a single [RestPattern] is a special form that does not require a comma, and matches a tuple of any size.
@@ -931,8 +899,7 @@ GroupedPattern -> `(` Pattern `)`
 ```
 
 r[patterns.paren.intro]
-Enclosing a pattern in parentheses can be used to explicitly control the precedence of compound patterns.
-For example, a reference pattern next to a range pattern such as `&0..=5` is ambiguous and is not allowed, but can be expressed with parentheses.
+Enclosing a pattern in parentheses can be used to explicitly control the precedence of compound patterns. For example, a reference pattern next to a range pattern such as `&0..=5` is ambiguous and is not allowed, but can be expressed with parentheses.
 
 ```rust
 let int_reference = &3;
@@ -980,8 +947,7 @@ r[patterns.slice.refutable-slice]
 When matching a slice, it is irrefutable only in the form with a single `..` [rest pattern][patterns.rest] or [identifier pattern](#identifier-patterns) with the `..` rest pattern as a subpattern.
 
 r[patterns.slice.restriction]
-Within a slice, a range pattern without both lower and upper bound must be enclosed in parentheses, as in `(a..)`, to clarify it is intended to match against a single slice element.
-A range pattern with both lower and upper bound, like `a..=b`, is not required to be enclosed in parentheses.
+Within a slice, a range pattern without both lower and upper bound must be enclosed in parentheses, as in `(a..)`, to clarify it is intended to match against a single slice element. A range pattern with both lower and upper bound, like `a..=b`, is not required to be enclosed in parentheses.
 
 r[patterns.path]
 ## Path patterns
@@ -992,8 +958,7 @@ PathPattern -> PathExpression
 ```
 
 r[patterns.path.intro]
-_Path patterns_ are patterns that refer either to constant values or
-to structs or enum variants that have no fields.
+_Path patterns_ are patterns that refer either to constant values or to structs or enum variants that have no fields.
 
 r[patterns.path.unqualified]
 Unqualified path patterns can refer to:
@@ -1007,8 +972,7 @@ r[patterns.path.qualified]
 Qualified path patterns can only refer to associated constants.
 
 r[patterns.path.refutable]
-Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
-They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.
+Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable. They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.
 
 r[patterns.const]
 ### Constant patterns
@@ -1023,15 +987,13 @@ r[patterns.const.primitive]
 - Integers as well as `str`, `bool` and `char` values always have structural equality.
 
 r[patterns.const.builtin-aggregate]
-- Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
-  (In particular, `()` and `[]` always have structural equality.)
+- Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality. (In particular, `()` and `[]` always have structural equality.)
 
 r[patterns.const.ref]
 - References have structural equality if the value they point to has structural equality.
 
 r[patterns.const.aggregate]
-- A value of `struct` or `enum` type has structural equality if its `PartialEq` instance is derived via `#[derive(PartialEq)]`,
-  and all fields (for enums: of the active variant) have structural equality.
+- A value of `struct` or `enum` type has structural equality if its `PartialEq` instance is derived via `#[derive(PartialEq)]`, and all fields (for enums: of the active variant) have structural equality.
 
 r[patterns.const.pointer]
 - A raw pointer has structural equality if it was defined as a constant integer (and then cast/transmuted).
@@ -1043,23 +1005,18 @@ r[patterns.const.exhaustive]
 - Nothing else has structural equality.
 
 r[patterns.const.generic]
-In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization).
-This means that associated consts that involve generic parameters cannot be used as patterns.
+In particular, the value of `C` must be known at pattern-building time (which is pre-monomorphization). This means that associated consts that involve generic parameters cannot be used as patterns.
 
 r[patterns.const.immutable]
 The value of `C` must not contain any references to mutable statics (`static mut` items or interior mutable `static` items) or `extern` statics.
 
 r[patterns.const.translation]
-After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
-In particular, it fully participates in exhaustiveness checking.
-(For raw pointers, constants are the only way to write such patterns. Only `_` is ever considered exhaustive for these types.)
+After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly. In particular, it fully participates in exhaustiveness checking. (For raw pointers, constants are the only way to write such patterns. Only `_` is ever considered exhaustive for these types.)
 
 r[patterns.or]
 ## Or-patterns
 
-_Or-patterns_ are patterns that match on one of two or more sub-patterns (for example `A | B | C`).
-They can nest arbitrarily.
-Syntactically, or-patterns are allowed in any of the places where other patterns are allowed (represented by the [Pattern] production), with the exceptions of `let`-bindings and function and closure parameters (represented by the [PatternNoTopAlt] production).
+_Or-patterns_ are patterns that match on one of two or more sub-patterns (for example `A | B | C`). They can nest arbitrarily. Syntactically, or-patterns are allowed in any of the places where other patterns are allowed (represented by the [Pattern] production), with the exceptions of `let`-bindings and function and closure parameters (represented by the [PatternNoTopAlt] production).
 
 r[patterns.constraints]
 ### Static semantics
@@ -1074,37 +1031,23 @@ r[patterns.constraints.pattern]
    Unification of types is in all instances aforementioned exact and implicit [type coercions] do not apply.
 
 r[patterns.constraints.match-type-check]
-2. When type checking an expression `match e_s { a_1 => e_1, ... a_n => e_n }`,
-   for each match arm `a_i` which contains a pattern of form `p_i | q_i`,
-   the pattern `p_i | q_i` is considered ill formed if,
-   at the depth `d` where it exists the fragment of `e_s` at depth `d`,
-   the type of the expression fragment does not unify with `p_i | q_i`.
+2. When type checking an expression `match e_s { a_1 => e_1, ... a_n => e_n }`, for each match arm `a_i` which contains a pattern of form `p_i | q_i`, the pattern `p_i | q_i` is considered ill formed if, at the depth `d` where it exists the fragment of `e_s` at depth `d`, the type of the expression fragment does not unify with `p_i | q_i`.
 
 r[patterns.constraints.exhaustiveness-or-pattern]
-3. With respect to exhaustiveness checking, a pattern `p | q` is considered to cover `p` as well as `q`.
-   For some constructor `c(x, ..)` the distributive law applies such that `c(p | q, ..rest)` covers the same set of value as `c(p, ..rest) | c(q, ..rest)` does.
-   This can be applied recursively until there are no more nested patterns of form `p | q` other than those that exist at the top level.
+3. With respect to exhaustiveness checking, a pattern `p | q` is considered to cover `p` as well as `q`. For some constructor `c(x, ..)` the distributive law applies such that `c(p | q, ..rest)` covers the same set of value as `c(p, ..rest) | c(q, ..rest)` does. This can be applied recursively until there are no more nested patterns of form `p | q` other than those that exist at the top level.
 
-   Note that by *"constructor"* we do not refer to tuple struct patterns, but rather we refer to a pattern for any product type.
-   This includes enum variants, tuple structs, structs with named fields, arrays, tuples, and slices.
+   Note that by *"constructor"* we do not refer to tuple struct patterns, but rather we refer to a pattern for any product type. This includes enum variants, tuple structs, structs with named fields, arrays, tuples, and slices.
 
 r[patterns.behavior]
 ### Dynamic semantics
 
 r[patterns.behavior.nested-or-patterns]
-1. The dynamic semantics of pattern matching a scrutinee expression `e_s` against a pattern `c(p | q, ..rest)` at depth `d` where `c` is some constructor,
-   `p` and `q` are arbitrary patterns,
-   and `rest` is optionally any remaining potential factors in `c`,
-   is defined as being the same as that of `c(p, ..rest) | c(q, ..rest)`.
+1. The dynamic semantics of pattern matching a scrutinee expression `e_s` against a pattern `c(p | q, ..rest)` at depth `d` where `c` is some constructor, `p` and `q` are arbitrary patterns, and `rest` is optionally any remaining potential factors in `c`, is defined as being the same as that of `c(p, ..rest) | c(q, ..rest)`.
 
 r[patterns.precedence]
 ### Precedence with other undelimited patterns
 
-As shown elsewhere in this chapter, there are several types of patterns that are syntactically undelimited, including identifier patterns, reference patterns, and or-patterns.
-Or-patterns always have the lowest-precedence.
-This allows us to reserve syntactic space for a possible future type ascription feature and also to reduce ambiguity.
-For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound in all patterns.
-`&A(x) | B(x)` will result in a type mismatch between `x` in the different subpatterns.
+As shown elsewhere in this chapter, there are several types of patterns that are syntactically undelimited, including identifier patterns, reference patterns, and or-patterns. Or-patterns always have the lowest-precedence. This allows us to reserve syntactic space for a possible future type ascription feature and also to reduce ambiguity. For example, `x @ A(..) | B(..)` will result in an error that `x` is not bound in all patterns. `&A(x) | B(x)` will result in a type mismatch between `x` in the different subpatterns.
 
 [PR #138458]: https://github.com/rust-lang/rust/pull/138458
 [PR #140593]: https://github.com/rust-lang/rust/pull/140593#issuecomment-2972338457

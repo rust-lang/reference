@@ -45,8 +45,7 @@ r[type.fn-pointer.coercion]
 Function pointers can be created via a coercion from both [function items] and non-capturing, non-async [closures].
 
 r[type.fn-pointer.qualifiers]
-The `unsafe` qualifier indicates that the type's value is an [unsafe
-function], and the `extern` qualifier indicates it is an [extern function].
+The `unsafe` qualifier indicates that the type's value is an [unsafe function], and the `extern` qualifier indicates it is an [extern function].
 
 r[type.fn-pointer.constraint-variadic]
 For the function to be variadic, its `extern` ABI must be one of those listed in [items.extern.variadic.conventions].
@@ -54,8 +53,7 @@ For the function to be variadic, its `extern` ABI must be one of those listed in
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
 
-Attributes on function pointer parameters follow the same rules and
-restrictions as [regular function parameters].
+Attributes on function pointer parameters follow the same rules and restrictions as [regular function parameters].
 
 [`extern`]: ../items/external-blocks.md
 [closures]: closure.md
