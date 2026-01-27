@@ -235,7 +235,7 @@ r[const-eval.const-expr.if-match]
 ## Const initializers
 
 r[const-eval.const-expr.final-value-provenance]
-The representation of the final value of a [constant][constant initializer] or [static initializer] must only contain bytes with provenance in whole-pointer groups. If a byte has provenance but is not part of an adjacent group of bytes that form an entire pointer, compilation will fail.
+The representation of the final value of a [constant][constant initializer] or [static initializer] must only contain bytes with provenance in whole-pointer groups. If a byte has provenance but is not part of an adjacent group of correctly-ordered bytes that form an entire pointer, compilation will fail.
 
 ```rust,compile_fail
 # use core::mem::MaybeUninit;
