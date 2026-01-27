@@ -261,6 +261,11 @@ const _: Pair = unsafe {
 ```
 
 > [!NOTE]
+> The bytes with provenance must form a complete pointer in the correct order. In the example above, the pointer is written at offset 20, but a pointer requires 8 bytes (assuming an 8-byte pointer). Four of those bytes fit in the `y` field; the rest extend into the padding at offset 24. When the fields are initialized, the `y` bytes get overwritten, leaving only a partial pointer (4 bytes) in the padding. These 4 bytes have provenance but don't form a complete pointer, causing compilation to fail.
+>
+> This restriction ensures that any bytes with provenance in the final value represent complete pointers. Binary formats such as ELF cannot represent pointer fragments, so the compiler cannot emit them in the final binary.
+
+> [!NOTE]
 > If a byte in the representation of the final value is uninitialized, then it *may* end up having provenance, which can cause compilation to fail. `rustc` tries (but does not guarantee) to only actually fail if the initializer copies or overwrites parts of a pointer and those bytes appear in the final value.
 >
 > E.g., `rustc` currently accepts this, even though the padding bytes are uninitialized:
