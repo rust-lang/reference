@@ -20,8 +20,8 @@ MatchArm -> OuterAttribute* Pattern MatchArmGuard?
 MatchArmGuard -> `if` MatchConditions
 
 MatchConditions ->
-     Expression
-   | MatchGuardChain
+     MatchGuardChain
+   | Expression
 
 MatchGuardChain -> MatchGuardCondition ( `&&` MatchGuardCondition )*
 
