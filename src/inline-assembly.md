@@ -1350,8 +1350,7 @@ r[asm.rules.stack-below-sp]
   - The stack pointer must be restored to its original value before leaving the assembly code.
 
 r[asm.rules.stack-above-sp]
-- Unless the `nostack` option is set, assembly code is allowed to modify the caller's stack frame in specific cases.
-  - The target ABI requires storing certain values in the caller's frame (e.g., saving the `lr` on PowerPC64).
+- Unless the `nostack` option is set, assembly code is allowed to modify the caller's stack frame when the target ABI requires storing certain values in the caller's frame (e.g., when saving the `lr` on PowerPC64).
 
 r[asm.rules.noreturn]
 - If the `noreturn` option is set then behavior is undefined if execution falls through the end of the assembly code.
