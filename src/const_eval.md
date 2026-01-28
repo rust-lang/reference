@@ -232,6 +232,104 @@ r[const-eval.const-expr.loop]
 r[const-eval.const-expr.if-match]
 * [if] and [match] expressions.
 
+## Const initializers
+
+r[const-eval.const-expr.final-value-provenance]
+The representation of the final value of a [constant][constant initializer] or [static initializer] must only contain bytes with provenance in whole-pointer groups. If a byte has provenance but is not part of an adjacent group of correctly-ordered bytes that form an entire pointer, compilation will fail.
+
+```rust,compile_fail
+# use core::mem::MaybeUninit;
+#
+#[repr(C)]
+struct Pair {
+    x: u128,
+    y: MaybeUninit<u64>,
+    // 8 bytes of padding at offset 24.
+}
+
+const C: Pair = unsafe {
+//    ^^^^^^^ ERROR: Partial pointer in final value of constant.
+    let mut m = MaybeUninit::<Pair>::uninit();
+    // Store pointer that extends half-way into trailing padding.
+    m.as_mut_ptr().byte_add(20).cast::<&u8>().write_unaligned(&0);
+    // Initialize fields.
+    (*m.as_mut_ptr()).x = 0;
+    (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+    // Now `m` contains a pointer fragment in the padding.
+    m.assume_init()
+};
+```
+
+> [!NOTE]
+> The bytes with provenance must form a complete pointer in the correct order.  In the example above, the pointer is written at offset 20, but it requires (on 64-bit platforms) 8 bytes.  Four of those bytes fit in the `y` field; the rest extend into the padding at offset 24.  When the fields are initialized, the `y` bytes get overwritten, leaving only a partial pointer (4 bytes) in the padding.  These 4 bytes have provenance but don't form a complete pointer, causing compilation to fail.
+>
+> This restriction ensures that any bytes with provenance in the final value represent complete, valid pointers.  The compiler cannot support pointer fragments because it would be unable to reason about them at compile time.
+
+> [!NOTE]
+>
+> Reversing the order of the pointer bytes also causes compilation to fail, even though all bytes are present:
+>
+> ```rust,compile_fail
+> # use std::mem::MaybeUninit;
+> # #[repr(C)]
+> # struct Pair {
+> #     x: u128,
+> #     y: MaybeUninit<u64>,
+> # }
+> const C: Pair = unsafe {
+> //    ^^^^^^^ ERROR: Partial pointer in final value of constant.
+>     let mut m = MaybeUninit::<Pair>::uninit();
+>     let ptr: *const u8 = &0;
+>     let ptr_bytes = &ptr as *const _ as *const MaybeUninit<u8>;
+>     // Write pointer bytes in reverse order into the padding.
+>     let dst = m.as_mut_ptr().cast::<MaybeUninit<u8>>().add(24);
+>     let mut i = 0;
+>     while i < 8 {
+>         dst.add(i).write(ptr_bytes.add(7 - i).read());
+>         i += 1;
+>     }
+>     (*m.as_mut_ptr()).x = 0;
+>     (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+>     m.assume_init()
+> };
+> ```
+
+> [!NOTE]
+> Manually initializing (e.g., zeroing) the padding bytes ensures the final value is accepted:
+>
+> ```rust
+> # use std::mem::MaybeUninit;
+> # #[repr(C)]
+> # struct Pair {
+> #     x: u128,
+> #     y: MaybeUninit<u64>,
+> # }
+> const C: Pair = unsafe {
+>     let mut m = MaybeUninit::<Pair>::uninit();
+>     m.as_mut_ptr().byte_add(20).cast::<&u8>().write_unaligned(&0);
+>     // Explicitly zero the padding.
+>     m.as_mut_ptr().byte_add(24).cast::<u64>().write_unaligned(0);
+>     // As above.
+>     (*m.as_mut_ptr()).x = 0;
+>     (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+>     m.assume_init()
+> };
+> ```
+
+> [!NOTE]
+> If a byte in the representation of the final value is uninitialized, then it *may* end up having provenance, which can cause compilation to fail. `rustc` tries (but does not guarantee) to only actually fail if the initializer copies or overwrites parts of a pointer and those bytes appear in the final value.
+>
+> E.g., `rustc` currently accepts this, even though the padding bytes are uninitialized:
+>
+> ```rust
+> # #[repr(C)]
+> # struct Pair { x: u128, y: u64 }
+> // The padding bytes are uninitialized.
+> const ALLOWED: Pair = Pair { x: 0, y: 0 };
+> ```
+>
+> Constant evaluation makes the details of typed copies observable: depending on whether a copy is performed field-by-field or as a memory-block copy, provenance in padding bytes might be discarded or preserved (both in the source and in the destination). Because the semantics of typed copies are not yet fully specified in Rust --- and to preserve the ability to change how they work in the future in constant evaluation (for example, to always set the padding bytes to uninitialized) --- the language allows the compiler to reject any initializer with an uninitialized padding byte. Since the compiler cannot currently guarantee that an uninitialized byte does not contain a pointer fragment without a full model of typed copies, this allowance is necessary to avoid relying on underspecified details of the language.
+
 r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
@@ -307,6 +405,7 @@ The types of a const function's parameters and return type are restricted to tho
 [const generic argument]: items/generics.md#const-generics
 [const generic parameters]: items/generics.md#const-generics
 [constant expressions]: #constant-expressions
+[constant initializer]: items.const
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
 [dereference expression]: expr.deref
@@ -336,6 +435,7 @@ The types of a const function's parameters and return type are restricted to tho
 [promoted]:             destructors.md#constant-promotion
 [range expressions]:    expressions/range-expr.md
 [slice]:                types/slice.md
+[static initializer]: items.static.init
 [statics]:              items/static-items.md
 [Struct expressions]:   expressions/struct-expr.md
 [temporary lifetime extension]: destructors.scope.lifetime-extension
