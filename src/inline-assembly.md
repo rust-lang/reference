@@ -16,6 +16,7 @@ Support for inline assembly is stable on the following architectures:
 - RISC-V
 - LoongArch
 - s390x
+- PowerPC and PowerPC64
 
 The compiler will emit an error if an assembly macro is used on an unsupported target.
 
@@ -627,11 +628,24 @@ Here is the list of currently supported register classes:
 | s390x | `freg` | `f[0-15]` | `f` |
 | s390x | `vreg` | `v[0-31]` | Only clobbers |
 | s390x | `areg` | `a[2-15]` | Only clobbers |
+| PowerPC | `reg` | `r0`, `r[3-12]`, `r[14-28]` | `r` |
+| PowerPC | `reg_nonzero` | `r[3-12]`, `r[14-28]` | `b` |
+| PowerPC | `spe_acc` | `spe_acc` | Only clobbers |
+| PowerPC64 | `reg` | `r0`, `r[3-12]`, `r[14-29]` | `r` |
+| PowerPC64 | `reg_nonzero` | `r[3-12]`, `r[14-29]` | `b` |
+| PowerPC/PowerPC64 | `freg` | `f[0-31]` | `f` |
+| PowerPC/PowerPC64 | `vreg` | `v[0-31]` | `v` |
+| PowerPC/PowerPC64 | `vsreg` | `vs[0-63]` | `wa` |
+| PowerPC/PowerPC64 | `cr` | `cr[0-7]`, `cr` | Only clobbers |
+| PowerPC/PowerPC64 | `ctr` | `ctr` | Only clobbers |
+| PowerPC/PowerPC64 | `lr` | `lr` | Only clobbers |
+| PowerPC/PowerPC64 | `xer` | `xer` | Only clobbers |
 
 > [!NOTE]
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 > - Some register classes are marked as "Only clobbers" which means that registers in these classes cannot be used for inputs or outputs, only clobbers of the form `out(<explicit register>) _` or `lateout(<explicit register>) _`.
+> - The `spe_acc` register is only available on PowerPC SPE targets.
 
 r[asm.register-operands.value-type-constraints]
 Each register class has constraints on which value types they can be used with. This is necessary because the way a value is loaded into a register depends on its type. For example, on big-endian systems, loading a `i32x4` and a `i8x16` into a SIMD register may result in different register contents even if the byte-wise memory representation of both values is identical. The availability of supported types for a particular register class may depend on what target features are currently enabled.
@@ -671,6 +685,17 @@ Each register class has constraints on which value types they can be used with. 
 | s390x | `freg` | None | `f32`, `f64` |
 | s390x | `vreg` | N/A | Only clobbers |
 | s390x | `areg` | N/A | Only clobbers |
+| PowerPC | `spe_acc` | None | Only clobbers |
+| PowerPC/PowerPC64 | `reg` | None | `i8`, `i16`, `i32`, `i64` (PowerPC64 only) |
+| PowerPC/PowerPC64 | `reg_nonzero` | None | `i8`, `i16`, `i32`, `i64` (PowerPC64 only) |
+| PowerPC/PowerPC64 | `freg` | None | `f32`, `f64` |
+| PowerPC/PowerPC64 | `vreg` | `altivec` | `i8x16`, `i16x8`, `i32x4`, `f32x4` |
+| PowerPC/PowerPC64 | `vreg` | `vsx` | `f32`, `f64`, `i64x2`, `f64x2` |
+| PowerPC/PowerPC64 | `vsreg` | `vsx` | The union of vsx and altivec vreg types |
+| PowerPC/PowerPC64 | `cr` | None | Only clobbers |
+| PowerPC/PowerPC64 | `ctr` | None | Only clobbers |
+| PowerPC/PowerPC64 | `lr` | None | Only clobbers |
+| PowerPC/PowerPC64 | `xer` | None | Only clobbers |
 
 > [!NOTE]
 > For the purposes of the above table pointers, function pointers and `isize`/`usize` are treated as the equivalent integer type (`i16`/`i32`/`i64` depending on the target).
@@ -807,6 +832,10 @@ Some registers have multiple names. These are all treated by the compiler as ide
 | LoongArch | `$f[0-7]` | `$fa[0-7]` |
 | LoongArch | `$f[8-23]` | `$ft[0-15]` |
 | LoongArch | `$f[24-31]` | `$fs[0-7]` |
+| PowerPC/PowerPC64 | `r1` | `sp` |
+| PowerPC/PowerPC64 | `r31` | `fp` |
+| PowerPC/PowerPC64 | `r[0-31]` | `[0-31]` |
+| PowerPC/PowerPC64 | `f[0-31]` | `fr[0-31]`|
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -821,10 +850,10 @@ Some registers cannot be used for input or output operands:
 
 | Architecture | Unsupported register | Reason |
 | ------------ | -------------------- | ------ |
-| All | `sp`, `r15` (s390x) | The stack pointer must be restored to its original value at the end of the assembly code or before jumping to a `label` block. |
-| All | `bp` (x86), `x29` (AArch64 and Arm64EC), `x8` (RISC-V), `$fp` (LoongArch), `r11` (s390x) | The frame pointer cannot be used as an input or output. |
+| All | `sp`, `r15` (s390x), `r1` (PowerPC and PowerPC64) | The stack pointer must be restored to its original value at the end of the assembly code or before jumping to a `label` block. |
+| All | `bp` (x86), `x29` (AArch64 and Arm64EC), `x8` (RISC-V), `$fp` (LoongArch), `r11` (s390x), `fp` (PowerPC and PowerPC64) | The frame pointer cannot be used as an input or output. |
 | ARM | `r7` or `r11` | On ARM the frame pointer can be either `r7` or `r11` depending on the target. The frame pointer cannot be used as an input or output. |
-| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64 and Arm64EC), `x9` (RISC-V), `$s8` (LoongArch) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
+| All | `si` (x86-32), `bx` (x86-64), `r6` (ARM), `x19` (AArch64 and Arm64EC), `x9` (RISC-V), `$s8` (LoongArch), `r29` and `r30` (PowerPC), `r30` (PowerPC64) | This is used internally by LLVM as a "base pointer" for functions with complex stack frames. |
 | x86 | `ip` | This is the program counter, not a real register. |
 | AArch64 | `xzr` | This is a constant zero register which can't be modified. |
 | AArch64 | `x18` | This is an OS-reserved register on some AArch64 targets. |
@@ -840,6 +869,8 @@ Some registers cannot be used for input or output operands:
 | LoongArch | `$r21` | This is reserved by the ABI. |
 | s390x | `c[0-15]` | Reserved by the kernel. |
 | s390x | `a[0-1]` | Reserved for system use. |
+| PowerPC/PowerPC64 | `r2`, `r13` | These are system reserved registers. |
+| PowerPC/PowerPC64 | `vrsave` | The vrsave register cannot be used as an input or output. |
 
 ```rust,compile_fail
 # #[cfg(target_arch = "x86_64")] {
@@ -914,6 +945,11 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | s390x | `reg` | None | `%r0` | None |
 | s390x | `reg_addr` | None | `%r1` | None |
 | s390x | `freg` | None | `%f0` | None |
+| PowerPC/PowerPC64 | `reg` | None | `0` | None |
+| PowerPC/PowerPC64 | `reg_nonzero` | None | `3` | None |
+| PowerPC/PowerPC64 | `freg` | None | `0` | None |
+| PowerPC/PowerPC64 | `vreg` | None | `0` | None |
+| PowerPC/PowerPC64 | `vsreg` | None | `0` | None |
 
 > [!NOTE]
 > - on ARM `e` / `f`: this prints the low or high doubleword register name of a NEON quad (128-bit) register.
@@ -1313,6 +1349,9 @@ r[asm.rules.stack-below-sp]
   - You should adjust the stack pointer when allocating stack memory as required by the target ABI.
   - The stack pointer must be restored to its original value before leaving the assembly code.
 
+r[asm.rules.stack-above-sp]
+- Unless the `nostack` option is set, assembly code is allowed to modify the caller's stack frame when the target ABI requires storing certain values in the caller's frame (e.g., when saving the `lr` on PowerPC64).
+
 r[asm.rules.noreturn]
 - If the `noreturn` option is set then behavior is undefined if execution falls through the end of the assembly code.
 
@@ -1342,6 +1381,11 @@ r[asm.rules.preserved-registers]
     - Vector extension state (`vtype`, `vl`, `vxsat`, and `vxrm`).
   - LoongArch
     - Floating-point condition flags in `$fcc[0-7]`.
+  - PowerPC/PowerPC64
+    - Floating-point status and sticky bits in the `fpscr` (any field other than DRN, VE, OE, UE, ZE, XE, NI, or RN).
+    - Vector status and sticky bits in the `vscr` (any field other than NJ).
+  - PowerPC SPE
+    - The sticky and status bits of the `spefscr` (any field other than FINXE, FINVE, FDBZE, FUNFE, FOVFE, or FRMC).
   - s390x
     - The condition code register `cc`.
 
