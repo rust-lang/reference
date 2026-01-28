@@ -27,7 +27,7 @@ r[dynamic-sized.struct-field]
 
 [sized]: special-types-and-traits.md#sized
 [Slices]: types/slice.md
-[str]: types/textual.md
+[str]: types/str.md
 [trait objects]: types/trait-object.md
 [Pointer types]: types/pointer.md
 [Variables]: variables.md

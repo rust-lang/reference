@@ -122,7 +122,8 @@ It includes the following:
 
 * [Type namespace]
     * [Boolean type] --- `bool`
-    * [Textual types] --- `char` and `str`
+    * [`char`]
+    * [`str`]
     * [Integer types] --- `i8`, `i16`, `i32`, `i64`, `i128`, `u8`, `u16`, `u32`, `u64`, `u128`
     * [Machine-dependent integer types] --- `usize` and `isize`
     * [floating-point types] --- `f32` and `f64`
@@ -223,10 +224,12 @@ r[names.preludes.no_implicit_prelude.edition2018]
 > [!EDITION-2018]
 > In the 2015 edition, the `no_implicit_prelude` attribute does not affect the [`macro_use` prelude], and all macros exported from the standard library are still included in the `macro_use` prelude. Starting in the 2018 edition, the attribute does remove the `macro_use` prelude.
 
+[`char`]: ../types/char.md
 [`extern crate`]: ../items/extern-crates.md
 [`macro_use` attribute]: ../macros-by-example.md#the-macro_use-attribute
 [`macro_use` prelude]: #macro_use-prelude
 [`no_std` attribute]: #the-no_std-attribute
+[`str`]: ../types/str.md
 [attribute]: ../attributes.md
 [Boolean type]: ../types/boolean.md
 [Built-in attributes]: ../attributes.md#built-in-attributes-index
@@ -239,7 +242,6 @@ r[names.preludes.no_implicit_prelude.edition2018]
 [Macro namespace]: namespaces.md
 [name resolution]: name-resolution.md
 [standard library prelude]: names.preludes.std
-[Textual types]: ../types/textual.md
 [tool attributes]: ../attributes.md#tool-attributes
 [Tool prelude]: #tool-prelude
 [Type namespace]: namespaces.md

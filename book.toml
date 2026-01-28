@@ -90,6 +90,7 @@ use-boolean-and = true
 "/types.html#type-parameters" = "types/parameters.html"
 "/types.html#union-types" = "types/union.html"
 "/types.html#unique-immutable-borrows-in-captures" = "types/closure.html#unique-immutable-borrows-in-captures"
+"/types/textual.html" = "char.html"
 "/unsafe-blocks.html" = "unsafe-keyword.html"
 "/unsafe-functions.html" = "unsafe-keyword.html"
 

@@ -129,7 +129,7 @@ r[expr.literal.char.intro]
 A character literal expression consists of a single [CHAR_LITERAL] token.
 
 r[expr.literal.char.type]
-The expression's type is the primitive [`char`][textual types] type.
+The expression's type is the primitive [`char`] type.
 
 r[expr.literal.char.no-suffix]
 The token must not have a suffix.
@@ -150,7 +150,7 @@ r[expr.literal.char.single]
 * Otherwise the represented character is the single character that makes up the literal content.
 
 r[expr.literal.char.result]
-The expression's value is the [`char`][textual types] corresponding to the represented character's [Unicode scalar value].
+The expression's value is the [`char`] corresponding to the represented character's [Unicode scalar value].
 
 > [!NOTE]
 > The permitted forms of a [CHAR_LITERAL] token ensure that these rules always produce a single character.
@@ -171,7 +171,7 @@ r[expr.literal.string.intro]
 A string literal expression consists of a single [STRING_LITERAL] or [RAW_STRING_LITERAL] token.
 
 r[expr.literal.string.type]
-The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`][textual types] type. That is, the type is `&'static str`.
+The expression's type is a shared reference (with `static` lifetime) to the primitive [`str`] type. That is, the type is `&'static str`.
 
 r[expr.literal.string.no-suffix]
 The token must not have a suffix.
@@ -195,7 +195,7 @@ r[expr.literal.string.raw]
 * If the token is a [RAW_STRING_LITERAL], the represented string is identical to the literal content.
 
 r[expr.literal.string.result]
-The expression's value is a reference to a statically allocated [`str`][textual types] containing the UTF-8 encoding of the represented string.
+The expression's value is a reference to a statically allocated [`str`] containing the UTF-8 encoding of the represented string.
 
 Examples of string literal expressions:
 
@@ -513,8 +513,9 @@ The expression's type is the primitive [boolean type], and its value is:
 [suffix]: ../tokens.md#suffixes
 [negation operator]: operator-expr.md#negation-operators
 [overflow]: operator-expr.md#overflow
-[textual types]: ../types/textual.md
 [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value
 [Unicode scalar values]: http://www.unicode.org/glossary/#unicode_scalar_value
+[`char`]: ../types/char.md
 [`f32::from_str`]: ../../core/primitive.f32.md#method.from_str
 [`f64::from_str`]: ../../core/primitive.f64.md#method.from_str
+[`str`]: ../types/str.md
