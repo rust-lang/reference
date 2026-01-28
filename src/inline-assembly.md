@@ -645,7 +645,7 @@ Here is the list of currently supported register classes:
 > - On x86 we treat `reg_byte` differently from `reg` because the compiler can allocate `al` and `ah` separately whereas `reg` reserves the whole register.
 > - On x86-64 the high byte registers (e.g. `ah`) are not available in the `reg_byte` register class.
 > - Some register classes are marked as "Only clobbers" which means that registers in these classes cannot be used for inputs or outputs, only clobbers of the form `out(<explicit register>) _` or `lateout(<explicit register>) _`.
-> - The `spe_acc` register is only available on PowerPC SPE targets
+> - The `spe_acc` register is only available on PowerPC SPE targets.
 
 r[asm.register-operands.value-type-constraints]
 Each register class has constraints on which value types they can be used with. This is necessary because the way a value is loaded into a register depends on its type. For example, on big-endian systems, loading a `i32x4` and a `i8x16` into a SIMD register may result in different register contents even if the byte-wise memory representation of both values is identical. The availability of supported types for a particular register class may depend on what target features are currently enabled.
