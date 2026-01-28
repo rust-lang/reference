@@ -2,7 +2,7 @@ r[type.str]
 # String slice type
 
 r[type.str.intro]
-The `str` type represents a sequence of characters.
+The string slice (`str`) type represents a sequence of characters.
 
 ```rust
 let greeting1: &str = "Hello, world!";
