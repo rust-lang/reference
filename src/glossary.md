@@ -29,6 +29,10 @@ An array, sometimes also called a fixed-size array or an inline array, is a valu
 
 An associated item is an item that is associated with another item. Associated items are defined in [implementations] and declared in [traits]. Only functions, constants, and type aliases can be associated. Contrast to a [free item].
 
+### Atomic types
+
+Atomic types provide primitive shared-memory communication between threads, and are the building blocks of other concurrent types.
+
 ### Blanket implementation
 
 Any implementation where a type appears [uncovered](#uncovered-type). `impl<T> Foo for T`, `impl<T> Bar<T> for T`, `impl<T> Bar<Vec<T>> for T`, and `impl<T> Bar<T> for Vec<T>` are considered blanket impls. However, `impl<T> Bar<Vec<T>> for Vec<T>` is not a blanket impl, as all instances of `T` which appear in this `impl` are covered by `Vec`.
@@ -44,6 +48,10 @@ Combinators are higher-order functions that apply only functions and earlier def
 ### Crate
 
 A crate is the unit of compilation and linking. There are different [types of crates], such as libraries or executables. Crates may link and refer to other library crates, called external crates. A crate has a self-contained tree of [modules], starting from an unnamed root module called the crate root. [Items] may be made visible to other crates by marking them as public in the crate root, including through [paths] of public modules. [More][crate].
+
+### Data race
+
+A data race occurs when multiple threads attempt to access the same shared memory location concurrently.
 
 ### Dispatch
 
@@ -100,6 +108,12 @@ A `trait` which was defined in the current crate. A trait definition is local or
 ### Local type
 
 A `struct`, `enum`, or `union` which was defined in the current crate. This is not affected by applied type arguments. `struct Foo` is considered local, but `Vec<Foo>` is not. `LocalType<ForeignType>` is local. Type aliases do not affect locality.
+
+### Marker trait
+A trait that has no associated items (no methods, no associated types, and no constants)
+and is used only to mark that a type has a particular property.
+Implementing a marker trait does not change a type’s behavior at runtime;
+it simply communicates to the compiler and to other code that the type satisfies some condition.
 
 ### Module
 
