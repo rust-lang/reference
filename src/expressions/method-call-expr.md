@@ -22,7 +22,7 @@ r[expr.method.autoref-deref]
 When looking up a method call, the receiver may be automatically dereferenced or borrowed in order to call a method. This requires a more complex lookup process than for other functions, since there may be a number of possible methods to call. The following procedure is used:
 
 r[expr.method.candidate-receivers]
-The first step is to build a list of candidate receiver types. Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an [unsized coercion] at the end, and adding the result type if that is successful.
+The first step is to build a list of candidate receiver types. Obtain these by repeatedly [dereferencing][dereference] the receiver expression's type, adding each type encountered to the list, then finally attempting an array [unsized coercion] at the end, and adding the result type if that is successful.
 
 r[expr.method.candidate-receivers-refs]
 Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
