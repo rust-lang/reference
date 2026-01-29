@@ -299,6 +299,9 @@ A `break` expression is normally associated with the innermost `loop`, `for` or 
 r[expr.loop.break.value]
 A `break` expression is only permitted in the body of a loop, and has one of the forms `break`, `break 'label` or ([see below](#break-and-loop-values)) `break EXPR` or `break 'label EXPR`.
 
+r[expr.loop.break-value.implicit-value]
+In a [`loop` with break expressions][expr.loop.break-value] or a [labeled block expression], a `break` without an expression is equivalent to `break ()`.
+
 r[expr.loop.block-labels]
 ## Labeled block expressions
 
@@ -382,7 +385,7 @@ assert_eq!(result, 13);
 ```
 
 r[expr.loop.break-value.loop]
-In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression. `break` without an expression is considered identical to `break` with expression `()`.
+In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
 
 [`!`]: type.never
 [`if` condition chains]: if-expr.md#chains-of-conditions
@@ -390,5 +393,6 @@ In the case a `loop` has an associated `break`, it is not considered diverging, 
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
 [diverging]: divergence
+[labeled block expression]: expr.loop.block-labels
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
