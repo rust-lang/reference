@@ -401,15 +401,64 @@ let result = loop {
 assert_eq!(result, 13);
 ```
 
-r[expr.loop.break-value.loop]
-In the case a `loop` has an associated `break`, it is not considered diverging, and the `loop` must have a type compatible with each `break` expression.
+r[expr.loop.break-value.type]
+The type of a `loop` with associated `break` expressions is the [least upper bound] of all of the break operands.
+
+> [!EXAMPLE]
+> ```rust
+> fn example(condition: bool) {
+>     let s = String::from("owned");
+>
+>     let _: &str = loop {
+>         if condition {
+>             break &s; // &String coerced to &str via Deref
+>         }
+>         break "literal"; // &'static str coerced to &str
+>     };
+> }
+> ```
+
+r[expr.loop.break-value.diverging]
+A `loop` with associated `break` expressions does not [diverge] if any of the break operands do not diverge. If all of the `break` operands diverge, then the `loop` expression also diverges.
+
+> [!EXAMPLE]
+> ```rust
+> fn diverging_loop_with_break(condition: bool) -> ! {
+>     // This loop is diverging because all `break` operands are diverging.
+>     loop {
+>         if condition {
+>             break loop {};
+>         } else {
+>             break panic!();
+>         }
+>     }
+> }
+> ```
+>
+> ```rust,compile_fail,E0308
+> fn loop_with_non_diverging_break(condition: bool) -> ! {
+>     // The type of this loop is i32 even though one of the breaks is
+>     // diverging.
+>     loop {
+>         if condition {
+>             break loop {};
+>         } else {
+>             break 123i32;
+>         }
+>     } // ERROR: expected `!`, found `i32`
+> }
+> ```
 
 [`!`]: type.never
 [`if` condition chains]: if-expr.md#chains-of-conditions
 [`if` expressions]: if-expr.md
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
+[diverge]: divergence
 [diverging]: divergence
 [labeled block expression]: expr.loop.block-labels
+[least upper bound]: coerce.least-upper-bound
+[never type]: type.never
 [scrutinee]: ../glossary.md#scrutinee
 [temporary values]: ../expressions.md#temporaries
+[unit type]: type.tuple.unit
