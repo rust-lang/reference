@@ -19,6 +19,8 @@ See the following rules for specific expression divergence behavior:
 
 - [expr.block.diverging] --- Block expressions.
 - [expr.if.diverging] --- `if` expressions.
+- [expr.loop.block-labels.type] --- Labeled block expressions with `break`.
+- [expr.loop.break-value.diverging] --- `loop` expressions with `break`.
 - [expr.loop.break.diverging] --- `break` expressions.
 - [expr.loop.continue.diverging] --- `continue` expressions.
 - [expr.loop.infinite.diverging] --- Infinite `loop` expressions.
