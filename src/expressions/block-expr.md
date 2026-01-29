@@ -43,7 +43,7 @@ r[expr.block.result]
 Then the final operand is executed, if given.
 
 r[expr.block.type]
-The type of a block is the type of the final operand, or `()` if the final operand is omitted.
+The type of a block is the type of its final operand; if that operand is omitted, the type is the [unit type], unless the block [diverges][expr.block.diverging], in which case it is the [never type].
 
 ```rust
 # fn fn_call() {}
@@ -61,6 +61,64 @@ assert_eq!(5, five);
 
 > [!NOTE]
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
+
+r[expr.block.diverging]
+A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is not read from.
+
+```rust,no_run
+# #![ feature(never_type) ]
+fn no_control_flow() -> ! {
+    // There are no conditional statements, so this entire function body is diverging.
+    loop {}
+}
+
+fn control_flow_diverging() -> ! {
+    // All paths are diverging, so this entire function body is diverging.
+    if true {
+        loop {}
+    } else {
+        loop {}
+    }
+}
+
+fn control_flow_not_diverging() -> () {
+    // Some paths are not diverging, so this entire block is not diverging.
+    if true {
+        ()
+    } else {
+        loop {}
+    }
+}
+
+// Note: This makes use of the unstable never type which is only available on
+// Rust's nightly channel. This is done for illustration purposes. It is
+// possible to encounter this scenario in stable Rust, but requires a more
+// convoluted example.
+struct Foo {
+    x: !,
+}
+
+fn make<T>() -> T { loop {} }
+
+fn diverging_place_read() -> ! {
+    let foo = Foo { x: make() };
+    // A read of a place expression produces a diverging block.
+    let _x = foo.x;
+}
+```
+
+```rust,compile_fail,E0308
+# #![ feature(never_type) ]
+# fn make<T>() -> T { loop {} }
+# struct Foo {
+#     x: !,
+# }
+fn diverging_place_not_read() -> ! {
+    let foo = Foo { x: make() };
+    // Assignment to `_` means the place is not read.
+    let _ = foo.x;
+} // ERROR: Mismatched types.
+```
 
 r[expr.block.value]
 Blocks are always [value expressions] and evaluate the last operand in value expression context.
@@ -279,6 +337,8 @@ fn is_unix_platform() -> bool {
 [inner attributes]: ../attributes.md
 [method]: ../items/associated-items.md#methods
 [mutable reference]: ../types/pointer.md#mutables-references-
+[never type]: type.never
+[place expression]: expr.place-value.place-memory-location
 [scopes]: ../names/scopes.md
 [shared references]: ../types/pointer.md#shared-references-
 [statement]: ../statements.md
@@ -286,6 +346,7 @@ fn is_unix_platform() -> bool {
 [struct]: struct-expr.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [tuple expressions]: tuple-expr.md
+[unit type]: type.tuple.unit
 [unsafe operations]: ../unsafety.md
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
 [Loops and other breakable expressions]: expr.loop.block-labels

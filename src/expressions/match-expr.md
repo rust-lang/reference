@@ -91,6 +91,27 @@ Every binding in each `|` separated pattern must appear in all of the patterns i
 r[expr.match.binding-restriction]
 Every binding of the same name must have the same type, and have the same binding mode.
 
+r[expr.match.type]
+The type of the overall `match` expression is the [least upper bound] of the individual match arms.
+
+r[expr.match.empty]
+If there are no match arms, then the `match` expression is [diverging] and the type is [`!`].
+
+> [!EXAMPLE]
+> ```rust
+> # fn make<T>() -> T { loop {} }
+> enum Empty {}
+>
+> fn diverging_match_no_arms() -> ! {
+>     let e: Empty = make();
+>     match e {}
+> }
+> ```
+
+
+r[expr.match.diverging]
+If either the scrutinee expression or all of the match arms diverge, then the entire `match` expression also diverges.
+
 r[expr.match.guard]
 ## Match guards
 
@@ -151,10 +172,13 @@ Outer attributes are allowed on match arms. The only attributes that have meanin
 r[expr.match.attributes.inner]
 [Inner attributes] are allowed directly after the opening brace of the match expression in the same expression contexts as [attributes on block expressions].
 
+[`!`]: type.never
 [`cfg`]: ../conditional-compilation.md
 [attributes on block expressions]: block-expr.md#attributes-on-block-expressions
 [binding mode]: ../patterns.md#binding-modes
+[diverging]: divergence
 [Inner attributes]: ../attributes.md
+[least upper bound]: coerce.least-upper-bound
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [pattern]: ../patterns.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
