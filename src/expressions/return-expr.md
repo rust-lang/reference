@@ -12,6 +12,9 @@ Return expressions are denoted with the keyword `return`.
 r[expr.return.behavior]
 Evaluating a `return` expression moves its argument into the designated output location for the current function call, destroys the current function activation frame, and transfers control to the caller frame.
 
+r[expr.return.diverging]
+A `return` expression is [diverging] and has a type of [`!`].
+
 An example of a `return` expression:
 
 ```rust
@@ -22,3 +25,6 @@ fn max(a: i32, b: i32) -> i32 {
     return b;
 }
 ```
+
+[`!`]: type.never
+[diverging]: divergence
