@@ -338,6 +338,23 @@ let result = 'block: {
 };
 ```
 
+r[expr.loop.block-labels.type]
+The type of a labeled block expression is the [least upper bound] of all of the break operands and the final operand. If the final operand is omitted, the type of the final operand defaults to the [unit type], unless the block [diverges][expr.block.diverging], in which case it is the [never type].
+
+> [!EXAMPLE]
+> ```rust
+> fn example(condition: bool) {
+>     let s = String::from("owned");
+>
+>     let _: &str = 'block: {
+>         if condition {
+>             break 'block &s;  // &String coerced to &str via Deref
+>         }
+>         break 'block "literal";  // &'static str coerced to &str
+>     };
+> }
+> ```
+
 r[expr.loop.continue]
 ## `continue` expressions
 
