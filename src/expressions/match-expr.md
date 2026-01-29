@@ -112,18 +112,6 @@ If there are no match arms, then the `match` expression is [diverging] and the t
 r[expr.match.diverging]
 If either the scrutinee expression or all of the match arms diverge, then the entire `match` expression also diverges.
 
-> [!NOTE]
-> Even if the entire `match` expression diverges, its type may not be [`!`].
->
->```rust,compile_fail,E0004
->    let a = match true {
->        true => Some(panic!()),
->        false => None,
->    };
->    // Fails to compile because `a` has the type `Option<!>`.
->    match a {}
->```
-
 r[expr.match.guard]
 ## Match guards
 
