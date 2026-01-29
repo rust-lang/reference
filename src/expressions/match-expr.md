@@ -92,7 +92,7 @@ r[expr.match.binding-restriction]
 Every binding of the same name must have the same type, and have the same binding mode.
 
 r[expr.match.type]
-The type of the overall `match` expression is the [least upper bound](../type-coercions.md#r-coerce.least-upper-bound) of the individual match arms.
+The type of the overall `match` expression is the [least upper bound] of the individual match arms.
 
 r[expr.match.empty]
 If there are no match arms, then the `match` expression is [diverging] and the type is [`!`].
@@ -190,6 +190,7 @@ r[expr.match.attributes.inner]
 [binding mode]: ../patterns.md#binding-modes
 [diverging]: divergence
 [Inner attributes]: ../attributes.md
+[least upper bound]: coerce.least-upper-bound
 [lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [pattern]: ../patterns.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
