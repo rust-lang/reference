@@ -19,6 +19,7 @@ See the following rules for specific expression divergence behavior:
 
 - [type.never.constraint] --- Function calls returning `!`.
 - [expr.loop.infinite.diverging] --- Infinite `loop` expressions.
+- [expr.loop.break-value.diverging] --- `loop` expressions with `break`.
 - [expr.loop.break.diverging] --- `break` expressions.
 - [expr.loop.continue.diverging] --- `continue` expressions.
 - [expr.return.diverging] --- `return` expressions.
@@ -26,6 +27,7 @@ See the following rules for specific expression divergence behavior:
 - [expr.match.diverging] --- `match` expressions.
 - [expr.match.empty] --- Empty `match` expressions.
 - [expr.block.diverging] --- Block expressions.
+- [expr.loop.block-labels.type] --- Labeled block expressions with `break`.
 
 > [!NOTE]
 > The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
