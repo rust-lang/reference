@@ -859,7 +859,6 @@ r[expr.as.pointer.unsized.trait]
      > ```
 
 
-  Note that [trait upcasting][coerce.unsize.trait-upcast] (including the addition of auto traits) requires a coercion and is not supported by `as` casts.
 
 r[expr.as.pointer.unsized.compound]
 - When `T` or `U` is a struct or tuple type whose last field is unsized, it has the same metadata and compatibility rules as its last field.
