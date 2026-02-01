@@ -70,6 +70,34 @@ let y = if 12 * 15 > 150 {
 assert_eq!(y, "Bigger");
 ```
 
+r[expr.if.diverging]
+An `if` expression [diverges] if either the condition expression diverges or if all arms diverge.
+
+```rust,no_run
+fn diverging_condition() -> ! {
+    // Diverges because the condition expression diverges
+    if loop {} {
+        ()
+    } else {
+        ()
+    };
+    // The semicolon above is important: The type of the `if` expression is
+    // `()`, despite being diverging. When the final body expression is
+    // elided, the type of the body is inferred to ! because the function body
+    // diverges. Without the semicolon, the `if` would be the tail expression
+    // with type `()`, which would fail to match the return type `!`.
+}
+
+fn diverging_arms() -> ! {
+    // Diverges because all arms diverge
+    if true {
+        loop {}
+    } else {
+        loop {}
+    }
+}
+```
+
 r[expr.if.let]
 ## `if let` patterns
 
@@ -174,4 +202,5 @@ r[expr.if.edition2024]
 
 [`match` expressions]: match-expr.md
 [boolean type]: ../types/boolean.md
+[diverges]: divergence
 [scrutinee]: ../glossary.md#scrutinee

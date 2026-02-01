@@ -208,6 +208,8 @@ In some contexts, the compiler must coerce together multiple types to try and fi
 + To find the common type for a series of if branches.
 + To find the common type for a series of match arms.
 + To find the common type for array elements.
++ To find the common type for a [labeled block expression] among the break operands and the final block operand.
++ To find the common type for an [`loop` expression with break expressions] among the break operands.
 + To find the type for the return type of a closure with multiple return statements.
 + To check the type for the return type of a function with multiple return statements.
 
@@ -285,5 +287,7 @@ This description is obviously informal. Making it more precise is expected to pr
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
+[labeled block expression]: expr.loop.block-labels
+[`loop` expression with break expressions]: expr.loop.break-value
 [method-call expressions]: expressions/method-call-expr.md
 [supertraits]: items/traits.md#supertraits
