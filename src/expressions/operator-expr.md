@@ -510,7 +510,7 @@ r[expr.as.coercions]
 | Enumeration           | Integer type          | [Enum cast][expr.as.enum]                             |
 | `bool` or `char`      | Integer type          | [Primitive to integer cast][expr.as.bool-char-as-int] |
 | `u8`                  | `char`                | [`u8` to `char` cast][expr.as.u8-as-char]             |
-| `*T`                  | `*V` [^meta-compat]   | [Pointer to pointer cast][expr.as.pointer]            |
+| `*T`                  | `*V` (when [compatible][expr.as.pointer]) | [Pointer to pointer cast][expr.as.pointer] |
 | `*T` where `T: Sized` | Integer type          | [Pointer to address cast][expr.as.pointer-as-int]     |
 | Integer type          | `*V` where `V: Sized` | [Address to pointer cast][expr.as.int-as-pointer]     |
 | `&m₁ [T; n]`          | `*m₂ T` [^lessmut]    | Array to pointer cast                                 |
@@ -521,13 +521,6 @@ r[expr.as.coercions]
 | [Function pointer]    | `*V` where `V: Sized` | Function pointer to pointer cast                      |
 | [Function pointer]    | Integer               | Function pointer to address cast                      |
 | Closure [^no-capture] | Function pointer      | Closure to function pointer cast                      |
-
-[^meta-compat]: Where `T` and `V` have compatible metadata:
-      * `V: Sized`, or
-      * Both slice metadata (`*[u16]` -> `*[u8]`, `*str` -> `*(u8, [u32])`), or
-      * Both the same trait object metadata, modulo dropping auto traits (`*dyn Debug` -> `*(u16, dyn Debug)`, `*dyn Debug + Send` -> `*dyn Debug`)
-          * **Note**: *adding* auto traits is only allowed if the principal trait has the auto trait as a super trait (given `trait T: Send {}`, `*dyn T` -> `*dyn T + Send` is valid, but `*dyn Debug` -> `*dyn Debug + Send` is not)
-          * **Note**: Generics (including lifetimes) must match (`*dyn T<'a, A>` -> `*dyn T<'b, B>` requires `'a = 'b` and `A = B`)
 
 [^lessmut]: Only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to `const` pointer is allowed.
 
@@ -708,13 +701,183 @@ r[expr.as.pointer.behavior]
 r[expr.as.pointer.sized]
 - If `T` and `U` are both sized, the pointer is returned unchanged.
 
-r[expr.as.pointer.unsized]
-- If `T` and `U` are both unsized, the pointer is also returned unchanged. In particular, the metadata is preserved exactly.
-
-  For instance, a cast from `*const [T]` to `*const [U]` preserves the number of elements. Note that, as a consequence, such casts do not necessarily preserve the size of the pointer's referent (e.g., casting `*const [u16]` to `*const [u8]` will result in a raw pointer which refers to an object of half the size of the original). The same holds for `str` and any compound type whose unsized tail is a slice type, such as `struct Foo(i32, [u8])` or `(u64, Foo)`.
+  > [!EXAMPLE]
+  > ```rust
+  > let x: i32 = 42;
+  > let p1: *const i32 = &x;
+  > let p2: *const u8 = p1 as *const u8;
+  > // The pointer address remains the same.
+  > assert_eq!(p1 as usize, p2 as usize);
+  > ```
 
 r[expr.as.pointer.discard-metadata]
 - If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
+
+  > [!EXAMPLE]
+  > ```rust
+  > let slice: &[i32] = &[1, 2, 3];
+  > let ptr: *const [i32] = slice as *const [i32];
+  > // Cast from wide pointer (*const [i32]) to thin pointer (*const i32)
+  > // discarding the length metadata.
+  > let data_ptr: *const i32 = ptr as *const i32;
+  > assert_eq!(unsafe { *data_ptr }, 1);
+  > ```
+
+r[expr.as.pointer.unsized.unchanged]
+- If `T` and `U` are both unsized, the pointer is also returned unchanged. In particular, the metadata is preserved exactly. The cast can only be performed if the metadata is compatible according to the below rules:
+
+r[expr.as.pointer.unsized.slice]
+- When `T` and `U` are unsized with slice metadata, they are always compatible. The metadata of a slice is the number of elements, so casting `*[u16] -> *[u8]` is legal but will result in reducing the number of bytes by half.
+
+  > [!EXAMPLE]
+  > ```rust
+  > let slice: &[u16] = &[1, 2, 3];
+  > let ptr: *const [u16] = slice as *const [u16];
+  > let byte_ptr: *const [u8] = ptr as *const [u8];
+  > assert_eq!(byte_ptr.len(), 3);
+  > ```
+
+r[expr.as.pointer.unsized.trait]
+- When `T` and `U` are unsized with trait object metadata, the metadata is compatible only when all of the following holds:
+  1. The principal trait must be the same.
+
+     > [!EXAMPLE]
+     > ```rust,compile_fail,E0606
+     > trait Foo {}
+     > trait Bar {}
+     > impl Foo for i32 {}
+     > impl Bar for i32 {}
+     >
+     > let x: i32 = 42;
+     > let ptr_foo: *const dyn Foo = &x as *const dyn Foo;
+     > // You can't cast to a different principal trait.
+     > let ptr_bar: *const dyn Bar = ptr_foo as *const dyn Bar; // ERROR
+     > ```
+
+
+  2. Auto traits may be removed.
+
+     > [!EXAMPLE]
+     > ```rust
+     > trait Foo {}
+     > struct S;
+     > impl Foo for S {}
+     > unsafe impl Send for S {}
+     >
+     > let s = S;
+     > let ptr_send: *const (dyn Foo + Send) = &s;
+     > // Removing an auto trait.
+     > let ptr_no_send: *const dyn Foo = ptr_send as *const dyn Foo;
+     > ```
+
+
+  3. Auto traits may be added only if they are a super trait of the principal trait.
+
+     > [!EXAMPLE]
+     > ```rust
+     > trait Foo: Send {}
+     > struct S;
+     > impl Foo for S {}
+     > unsafe impl Send for S {}
+     >
+     > let s = S;
+     > let ptr_no_send: *const dyn Foo = &s;
+     > // Adding an auto trait.
+     > let ptr_send: *const (dyn Foo + Send) = ptr_no_send as *const (dyn Foo + Send);
+     > ```
+     >
+     > ```rust,compile_fail,E0804
+     > trait Foo {}
+     > # struct S;
+     > # impl Foo for S {}
+     > # unsafe impl Send for S {}
+     > #
+     > # let s = S;
+     > # let ptr_no_send: *const dyn Foo = &s;
+     > // Same as above, except trait Foo does not have Send as a super trait.
+     > let ptr_send: *const (dyn Foo + Send) = ptr_no_send as *const (dyn Foo + Send); // ERROR
+     > ```
+
+
+  4. Trailing lifetimes may only be shortened.
+
+     > [!EXAMPLE]
+     > ```rust
+     > trait Foo {}
+     >
+     > fn shorten_lifetime<'long: 'short, 'short>(
+     >     ptr: *const (dyn Foo + 'long),
+     > ) -> *const (dyn Foo + 'short) {
+     >     // Shortening the lifetime is allowed.
+     >     ptr as *const (dyn Foo + 'short)
+     > }
+     > ```
+     >
+     > ```rust,compile_fail
+     > trait Foo {}
+     >
+     > fn lengthen_lifetime<'long: 'short, 'short>(
+     >     ptr: *const (dyn Foo + 'short),
+     > ) -> *const (dyn Foo + 'long) {
+     >     // It is not allowed to cast to a longer lifetime.
+     >     ptr as *const (dyn Foo + 'long) // ERROR
+     > }
+     > ```
+
+  5. Generics (including lifetimes) and associated types must match exactly.
+
+     > [!EXAMPLE]
+     > ```rust,compile_fail,E0606
+     > trait Generic<T> {}
+     > impl Generic<i32> for () {}
+     > impl Generic<u32> for () {}
+     >
+     > let x = ();
+     > let ptr_i32: *const dyn Generic<i32> = &x;
+     > // You can't cast to a different generic parameter.
+     > let ptr_u32: *const dyn Generic<u32> = ptr_i32 as *const dyn Generic<u32>; // ERROR
+     > ```
+     >
+     > ```rust
+     > trait HasType {
+     >     type Output;
+     > }
+     >
+     > trait Generic<'x, T> {}
+     >
+     > fn cast_via_associated<'a, 'b, A, B>(
+     >     ptr: *const dyn Generic<'a, A::Output>,
+     > ) -> *const dyn Generic<'b, B::Output>
+     > where
+     >     'a: 'b,
+     >     'b: 'a,
+     >     A: HasType,
+     >     B: HasType<Output = A::Output>, // Forces equality
+     > {
+     >     ptr as *const dyn Generic<'b, B::Output>
+     > }
+     > ```
+
+
+
+r[expr.as.pointer.unsized.compound]
+- When `T` or `U` is a struct or tuple type whose last field is unsized, it has the same metadata and compatibility rules as its last field.
+
+  > [!EXAMPLE]
+  > ```rust
+  > struct Wrapper(u32, [u8]);
+  >
+  > let slice: &[u8] = &[1, 2, 3];
+  > let ptr: *const [u8] = slice;
+  >
+  > // The metadata (length 3) is preserved when casting to a struct
+  > // where the last field is the unsized type `[u8]`.
+  > let wrapper_ptr: *const Wrapper = ptr as *const Wrapper;
+  >
+  > // And preserved when casting back.
+  > let ptr_back: *const [u8] = wrapper_ptr as *const [u8];
+  > assert_eq!(ptr_back.len(), 3);
+  > ```
 
 r[expr.assign]
 ## Assignment expressions
