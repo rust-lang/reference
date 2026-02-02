@@ -869,7 +869,7 @@ r[lex.token.reserved-guards.edition2024]
 [Integer literal expressions]: expressions/literal-expr.md#integer-literal-expressions
 [keywords]: keywords.md
 [literal expressions]: expressions/literal-expr.md
-[loop labels]: expressions/loop-expr.md
+[loop labels]: expressions/loop-expr.md#loop-labels
 [macros]: macros-by-example.md
 [String continuation escapes]: expressions/literal-expr.md#string-continuation-escapes
 [syntax index]: syntax-index.md#operators-and-punctuation
