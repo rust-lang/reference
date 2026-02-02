@@ -10,7 +10,7 @@ statically and dynamically. This section will explore the various methods to
 link crates together, and more information about native libraries can be
 found in the [FFI section of the book][ffi].
 
-[ffi]: ../book/ch19-01-unsafe-rust.html#using-extern-functions-to-call-external-code
+[ffi]: ../book/ch20-01-unsafe-rust.html#using-extern-functions-to-call-external-code
 
 r[link.type]
 In one session of compilation, the compiler can generate multiple artifacts
