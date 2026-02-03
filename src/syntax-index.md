@@ -450,6 +450,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [use items]: items.use
 [variadic functions]: items.extern.variadic
 [visibility]: vis
-[where clauses]: generics.where
+[where clauses]: bound.where
 [while let]: expr.loop.while.let
 [wildcard pattern]: patterns.wildcard

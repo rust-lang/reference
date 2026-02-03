@@ -510,5 +510,5 @@ fn main() {
 [path]: ../paths.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [generic parameters]: ../types/generics.md
-[where clauses]: ../types/generics.md#where-clauses
+[where clauses]: bound.where
 [constant evaluation]: ../const_eval.md

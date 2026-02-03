@@ -95,6 +95,40 @@ struct UsesA<'a, T>(A<'a, T>);
 r[bound.trait-object]
 Trait and lifetime bounds are also used to name [trait objects].
 
+r[bound.where]
+## Where clauses
+
+r[bound.where.intro]
+*Where clauses* provide another way to specify bounds on type and lifetime parameters as well as a way to specify bounds on types that aren't type parameters.
+
+r[bound.where.syntax]
+```grammar,items
+WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem?
+
+WhereClauseItem ->
+      LifetimeWhereClauseItem
+    | TypeBoundWhereClauseItem
+
+LifetimeWhereClauseItem -> Lifetime `:` LifetimeBounds
+
+TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
+```
+
+r[bound.where.higher-ranked-lifetimes]
+The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only allows [LifetimeParam] parameters.
+
+```rust
+struct A<T>
+where
+    T: Iterator,            // Could use A<T: Iterator> instead
+    T::Item: Copy,          // Bound on an associated type
+    String: PartialEq<T>,   // Bound on `String`, using the type parameter
+    i32: Default,           // Allowed, but not useful
+{
+    f: T,
+}
+```
+
 r[bound.sized]
 ## `?Sized`
 
@@ -251,4 +285,4 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [trait object]: types/trait-object.md
 [trait objects]: types/trait-object.md
 [type parameters]: types/parameters.md
-[where clause]: types/generics.md#where-clauses
+[where clause]: bound.where

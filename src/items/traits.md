@@ -374,7 +374,7 @@ fn main() {
 [supertraits]: #supertraits
 [implementations]: implementations.md
 [generics]: ../types/generics.md
-[where clauses]: ../types/generics.md#where-clauses
+[where clauses]: bound.where
 [generic functions]: functions.md#generic-functions
 [unsafe]: ../unsafety.md
 [trait implementation]: implementations.md#trait-implementations
