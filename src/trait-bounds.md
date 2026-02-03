@@ -1,6 +1,13 @@
 r[bound]
 # Trait and lifetime bounds
 
+r[bound.intro]
+[Trait] and lifetime bounds provide a way for [generic items][generic] to restrict which types and lifetimes are used as their parameters. Bounds can be provided on any type in a [where clause]. There are also shorter forms for certain common cases:
+
+* Bounds written after declaring a [generic parameter][generic]: `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
+* In trait declarations as [supertraits]: `trait Circle : Shape {}` is equivalent to `trait Circle where Self : Shape {}`.
+* In trait declarations as bounds on [associated types]: `trait A { type B: Copy; }` is equivalent to `trait A where Self::B: Copy { type B; }`.
+
 r[bound.syntax]
 ```grammar,miscellaneous
 TypeParamBounds -> TypeParamBound ( `+` TypeParamBound )* `+`?
@@ -29,13 +36,6 @@ UseBoundGenericArg ->
     | IDENTIFIER
     | `Self`
 ```
-
-r[bound.intro]
-[Trait] and lifetime bounds provide a way for [generic items][generic] to restrict which types and lifetimes are used as their parameters. Bounds can be provided on any type in a [where clause]. There are also shorter forms for certain common cases:
-
-* Bounds written after declaring a [generic parameter][generic]: `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
-* In trait declarations as [supertraits]: `trait Circle : Shape {}` is equivalent to `trait Circle where Self : Shape {}`.
-* In trait declarations as bounds on [associated types]: `trait A { type B: Copy; }` is equivalent to `trait A where Self::B: Copy { type B; }`.
 
 r[bound.satisfaction]
 Bounds on an item must be satisfied when using the item. When type checking and borrow checking a generic item, the bounds can be used to determine that a trait is implemented for a type. For example, given `Ty: Trait`
