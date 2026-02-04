@@ -13,7 +13,7 @@ r[expr.paren.evaluation]
 Parenthesized expressions evaluate to the value of the enclosed operand.
 
 r[expr.paren.place-or-value]
-Unlike other expressions, parenthesized expressions are both [place expressions and value expressions][place]. When the enclosed operand is a place expression, it is a place expression and when the enclosed operand is a value expression, it is a value expression.
+The enclosed operand can be either [a place expression or a value expression][place].
 
 r[expr.paren.override-precedence]
 Parentheses can be used to explicitly modify the precedence order of subexpressions within an expression.
