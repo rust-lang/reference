@@ -16,6 +16,10 @@ WHITESPACE ->
     | U+2028 // Line separator
     | U+2029 // Paragraph separator
 
+HORIZONTAL_WHITESPACE ->
+      U+0009 // Horizontal tab, `'\t'`
+    | U+0020 // Space, `' '`
+
 TAB -> U+0009 // Horizontal tab, `'\t'`
 
 LF -> U+000A  // Line feed, `'\n'`

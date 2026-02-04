@@ -4,27 +4,35 @@ r[frontmatter]
 r[frontmatter.syntax]
 ```grammar,lexer
 @root FRONTMATTER ->
-      FRONTMATTER_FENCE HORIZONTAL_WHITESPACE* INFOSTRING? HORIZONTAL_WHITESPACE* LF
-      (FRONTMATTER_LINE LF )*
-      FRONTMATTER_FENCE[^matched-fence] HORIZONTAL_WHITESPACE* LF
+    WHITESPACE_ONLY_LINE*
+    !FRONTMATTER_INVALID
+    FRONTMATTER_MAIN
 
-FRONTMATTER_FENCE -> `-`{3..255}
+WHITESPACE_ONLY_LINE -> (!LF WHITESPACE)* LF
+
+FRONTMATTER_INVALID -> (!LF WHITESPACE)+ `---` ^ ⊥
+
+FRONTMATTER_MAIN ->
+    `-`{n:3..=255} ^ FRONTMATTER_REST
+
+FRONTMATTER_REST ->
+    FRONTMATTER_FENCE_START
+    FRONTMATTER_LINE*
+    FRONTMATTER_FENCE_END
+
+FRONTMATTER_FENCE_START ->
+    MAYBE_INFOSTRING_OR_WS LF
+
+FRONTMATTER_FENCE_END ->
+    `-`{n} HORIZONTAL_WHITESPACE* ( LF | EOF )
+
+FRONTMATTER_LINE -> !`-`{n} ~[LF CR]* LF
+
+MAYBE_INFOSTRING_OR_WS ->
+    HORIZONTAL_WHITESPACE* INFOSTRING? HORIZONTAL_WHITESPACE*
 
 INFOSTRING -> (XID_Start | `_`) ( XID_Continue | `-` | `.` )*
-
-FRONTMATTER_LINE -> (~INVALID_FRONTMATTER_LINE_START (~INVALID_FRONTMATTER_LINE_CONTINUE)*)?
-
-INVALID_FRONTMATTER_LINE_START -> (FRONTMATTER_FENCE[^escaped-fence] | CR | LF)
-
-INVALID_FRONTMATTER_LINE_CONTINUE -> CR | LF
-
-HORIZONTAL_WHITESPACE ->
-      U+0009  // horizontal tab, `'\t'`
-    | U+0020  // space, `' '`
 ```
-
-[^matched-fence]: The closing fence must have the same number of `-` as the opening fence
-[^escaped-fence]: A `FRONTMATTER_FENCE` at the beginning of a `FRONTMATTER_LINE` is only invalid if it has the same or more `-` as the `FRONTMATTER_FENCE`
 
 r[frontmatter.intro]
 Frontmatter is an optional section for content intended for external tools without requiring these tools to have full knowledge of the Rust grammar.
