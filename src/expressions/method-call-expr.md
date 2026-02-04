@@ -67,7 +67,7 @@ r[expr.method.ambiguous-target]
 If this results in multiple possible candidates, then it is an error, and the receiver must be [converted][disambiguate call] to an appropriate receiver type to make the method call.
 
 r[expr.method.supertrait-shadowing]
-As an exception to the above, if all candidates consist of trait methods and one candidate is a sub-trait of all other candidates then that candidate is selected instead of causing an ambiguity error.
+As an exception to the above, if all candidates consist of trait methods and one candidate is a subtrait of all other candidates then that candidate is selected instead of causing an ambiguity error.
 
 r[expr.method.receiver-constraints]
 This process does not take into account the mutability or lifetime of the receiver, or whether a method is `unsafe`. Once a method is looked up, if it can't be called for one (or more) of those reasons, the result is a compiler error.
