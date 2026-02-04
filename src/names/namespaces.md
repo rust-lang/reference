@@ -85,7 +85,7 @@ The following entities have explicit names, but the names are not a part of any 
 ### Fields
 
 r[names.namespaces.without.fields]
-Even though struct, enum, and union fields are named, the named fields do not live in an explicit namespace. They can only be accessed via a [field expression], which only inspects the field names of the specific type being accessed.
+Even though struct and union fields are named, the named fields do not live in an explicit namespace. They can only be accessed via a [field expression], which only inspects the field names of the specific type being accessed.
 
 ### Use declarations
 
