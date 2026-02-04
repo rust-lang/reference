@@ -117,41 +117,100 @@ The possible representations for a type are:
 - The [primitive representations]
 - [`transparent`]
 
+<!-- template:attributes -->
 r[layout.repr.attribute]
-The representation of a type can be changed by applying the `repr` attribute to it. The following example shows a struct with a `C` representation.
+### The `repr` attribute
 
-```rust
-#[repr(C)]
-struct ThreeInts {
-    first: i16,
-    second: i8,
-    third: i32
-}
-```
+r[layout.repr.attribute.intro]
+The *`repr` [attribute][attributes]* can change the representation and layout of a type.
 
-r[layout.repr.align-packed]
-The alignment may be raised or lowered with the `align` and `packed` modifiers respectively. They alter the representation specified in the attribute. If no representation is specified, the default one is altered.
-
-```rust
-// Default representation, alignment lowered to 2.
-#[repr(packed(2))]
-struct PackedStruct {
-    first: i16,
-    second: i8,
-    third: i32
-}
-
-// C representation, alignment raised to 8
-#[repr(C, align(8))]
-struct AlignedStruct {
-    first: i16,
-    second: i8,
-    third: i32
-}
-```
+> [!EXAMPLE]
+> The following example shows a struct with a `C` representation.
+>
+> ```rust
+> #[repr(C)]
+> struct ThreeInts {
+>     first: i16,
+>     second: i8,
+>     third: i32,
+> }
+> ```
 
 > [!NOTE]
 > As a consequence of the representation being an attribute on the item, the representation does not depend on generic parameters. Any two types with the same name have the same representation. For example, `Foo<Bar>` and `Foo<Baz>` both have the same representation.
+
+r[layout.repr.attribute.syntax]
+The syntax for the `repr` attribute is:
+
+```grammar,attributes
+@root ReprAttribute -> `repr` `(` ( Repr (`,` Repr)* `,`? )? `)`
+
+Repr ->
+      `Rust`
+    | `C`
+    | `transparent`
+    | `i8`
+    | `u8`
+    | `i16`
+    | `u16`
+    | `i32`
+    | `u32`
+    | `i64`
+    | `u64`
+    | `i128`
+    | `u128`
+    | `isize`
+    | `usize`
+    | `align` `(` Alignment `)`
+    | `packed` ( `(` Alignment `)` )?
+
+Alignment -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
+```
+
+The values of the `repr` attribute are described in the following sections:
+
+- `Rust` --- [layout.repr.rust]
+- `C` --- [layout.repr.c]
+- `transparent` --- [layout.repr.transparent]
+- Primitive representations --- [layout.repr.primitive]
+- `align` and `packed` modifiers --- [layout.repr.alignment]
+
+If multiple values are specified, then the combination of all the specified representations is used as specified in [layout.repr.attribute.combinations].
+
+r[layout.repr.attribute.allowed-positions]
+The `repr` attribute may only be applied to a [struct], [enum], or [union].
+
+> [!NOTE]
+> There are some restrictions on which `repr` values can be applied to specific kinds of items. For example, the primitive representations can only be applied to enumerations. The sections for each repr value describes their restrictions.
+
+r[layout.repr.attribute.duplicates]
+If the `repr` attribute is specified multiple times on an item, then the combination of all the specified values is used as specified in [layout.repr.attribute.combinations].
+
+r[layout.repr.attribute.combinations]
+Combinations of `repr` values on the same type are handled as follows:
+
+r[layout.repr.attribute.combinations.transparent]
+- `transparent` --- May not be combined with any other value.
+r[layout.repr.attribute.combinations.rust]
+- `Rust` --- May not be combined with primitive representations or `C`.
+r[layout.repr.attribute.combinations.primitive]
+- Multiple primitive representations are not allowed.
+  <!-- Note: Currently a future-compatible warning. -->
+r[layout.repr.attribute.combinations.primitive-c]
+- A primitive representation with `C` is described in [layout.repr.primitive-c].
+r[layout.repr.attribute.combinations.primitive-unit-only]
+- A primitive representation with `C` on a [unit-only enum] is not allowed.
+  <!-- Note: Currently a future-compatible warning. -->
+r[layout.repr.attribute.combinations.align-packed]
+- `align` and `packed` may not be applied on the same type.
+r[layout.repr.attribute.combinations.align-packed-rust-or-c]
+- `align` and `packed` may only be applied to a type with the `Rust` or `C` representation.
+r[layout.repr.attribute.combinations.align-max]
+- If multiple align values are given, the maximum value is used.
+r[layout.repr.attribute.combinations.packed-min]
+- If multiple packed values are given, the minimum value is used.
+r[layout.repr.attribute.combinations.rust-c-dupe]
+- Duplicate instances of the `Rust` or `C` value are ignored.
 
 r[layout.repr.inter-field]
 The representation of a type can change the padding between fields, but does not change the layout of the fields themselves. For example, a struct with a `C` representation that contains a struct `Inner` with the `Rust` representation will not change the layout of `Inner`.
@@ -319,7 +378,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this struct.
 #[repr(C)]
@@ -364,10 +423,13 @@ r[layout.repr.primitive]
 ### Primitive representations
 
 r[layout.repr.primitive.intro]
-The *primitive representations* are the representations with the same names as the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, and `isize`.
+The *primitive representations* are used to change the representation of an enumeration. They have the same names as the primitive integer types. That is: `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, and `isize`.
 
-r[layout.repr.primitive.constraint]
-Primitive representations can only be applied to enumerations and have different behavior whether the enum has fields or no fields. It is an error for [zero-variant enums] to have a primitive representation. Combining two primitive representations together is an error.
+r[layout.repr.primitive.enum-only]
+Primitive representations can only be applied to enumerations and have different behavior whether the enum has fields or no fields.
+
+r[layout.repr.primitive.zero-variant]
+It is an error for [zero-variant enums] to have a primitive representation.
 
 r[layout.repr.primitive.enum]
 #### Primitive representation of field-less enums
@@ -390,7 +452,7 @@ enum MyEnum {
     B(f32, u64),
     C { x: u32, y: u8 },
     D,
- }
+}
 
 // ... this union.
 #[repr(C)]
@@ -485,7 +547,28 @@ r[layout.repr.alignment]
 ### The alignment modifiers
 
 r[layout.repr.alignment.intro]
-The `align` and `packed` modifiers can be used to respectively raise or lower the alignment of `struct`s and `union`s. `packed` may also alter the padding between fields (although it will not alter the padding inside of any field). On their own, `align` and `packed` do not provide guarantees about the order of fields in the layout of a struct or the layout of an enum variant, although they may be combined with representations (such as `C`) which do provide such guarantees.
+The `align` and `packed` modifiers can be used to respectively raise or lower the alignment of `struct`s and `union`s. `packed` may also alter the padding between fields (although it will not alter the padding inside of any field).
+
+On their own, `align` and `packed` do not provide guarantees about the order of fields in the layout of a struct or the layout of an enum variant, although they may be combined with representations (such as `C`) which do provide such guarantees.
+
+> [!EXAMPLE]
+> ```rust
+> // Default representation, alignment lowered to 2.
+> #[repr(packed(2))]
+> struct PackedStruct {
+>     first: i16,
+>     second: i8,
+>     third: i32,
+> }
+>
+> // C representation, alignment raised to 8
+> #[repr(C, align(8))]
+> struct AlignedStruct {
+>     first: i16,
+>     second: i8,
+>     third: i32,
+> }
+> ```
 
 r[layout.repr.alignment.constraint-alignment]
 The alignment is specified as an integer parameter in the form of `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a power of two from 1 up to 2<sup>29</sup>. For `packed`, if no value is given, as in `#[repr(packed)]`, then the value is 1.
@@ -502,11 +585,14 @@ The alignments of each field, for the purpose of positioning fields, is the smal
 r[layout.repr.alignment.packed-padding]
 Inter-field padding is guaranteed to be the minimum required in order to satisfy each field's (possibly altered) alignment (although note that, on its own, `packed` does not provide any guarantee about field ordering). An important consequence of these rules is that a type with `#[repr(packed(1))]` (or `#[repr(packed)]`) will have no inter-field padding.
 
-r[layout.repr.alignment.constraint-exclusive]
-The `align` and `packed` modifiers cannot be applied on the same type and a `packed` type cannot transitively contain another `align`ed type. `align` and `packed` may only be applied to the [`Rust`] and [`C`] representations.
+r[layout.repr.alignment.pack-transitive-aligned]
+A `packed` type may not transitively contain another `align`ed type.
 
-r[layout.repr.alignment.enum]
-The `align` modifier can also be applied on an `enum`. When it is, the effect on the `enum`'s alignment is the same as if the `enum` was wrapped in a newtype `struct` with the same `align` modifier.
+r[layout.repr.alignment.packed-enum]
+The `packed` modifier may not be used on an `enum`.
+
+r[layout.repr.alignment.align-enum]
+The `align` modifier may be applied on an `enum`. When it is, the effect on the `enum`'s alignment is the same as if the `enum` was wrapped in a newtype `struct` with the same `align` modifier.
 
 > [!NOTE]
 > References to unaligned fields are not allowed because it is [undefined behavior]. When fields are unaligned due to an alignment modifier, consider the following options for using references and dereferences:
@@ -535,7 +621,8 @@ r[layout.repr.transparent]
 ### The `transparent` representation
 
 r[layout.repr.transparent.constraint-field]
-The `transparent` representation can only be used on a [`struct`][structs] or an [`enum`][enumerations] with a single variant that has:
+The `transparent` representation may only be used on a [`struct`][structs] or an [`enum`][enumerations] with a single variant that has:
+
 - any number of fields with size 0 and alignment 1 (e.g. [`PhantomData<T>`]), and
 - at most one other field.
 
@@ -543,9 +630,6 @@ r[layout.repr.transparent.layout-abi]
 Structs and enums with this representation have the same layout and ABI as the only non-size 0 non-alignment 1 field, if present, or unit otherwise.
 
 This is different than the `C` representation because a struct with the `C` representation will always have the ABI of a `C` `struct` while, for example, a struct with the `transparent` representation with a primitive field will have the ABI of the primitive field.
-
-r[layout.repr.transparent.constraint-exclusive]
-Because this representation delegates type layout to another type, it cannot be used with any other representation.
 
 [`align_of_val`]: std::mem::align_of_val
 [`size_of_val`]: std::mem::size_of_val
@@ -566,3 +650,7 @@ Because this representation delegates type layout to another type, it cannot be 
 [structs]: items/structs.md
 [`transparent`]: #the-transparent-representation
 [`Layout`]: std::alloc::Layout
+[struct]: items/structs.md
+[enum]: items/enumerations.md
+[union]: items/unions.md
+[unit-only enum]: items/enumerations.md#unit-only-enum
