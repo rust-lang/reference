@@ -45,6 +45,20 @@ Mizushima et al. introduced [cut operators][cut operator paper] to parsing expre
 
 The hard cut operator is necessary because some tokens in Rust begin with a prefix that is itself a valid token. For example, `c"` begins a C string literal, but `c` alone is a valid identifier. Without the cut, if `c"\0"` failed to lex as a C string literal (because null bytes are not allowed in C strings), the parser could backtrack and lex it as two tokens: the identifier `c` and the string literal `"\0"`. The [cut after `c"`] prevents this --- once the opening delimiter is recognized, the parser cannot go back. The same reasoning applies to [byte literals], [byte string literals], [raw string literals], and other literals with prefixes that are themselves valid tokens.
 
+r[notation.grammar.bottom]
+### The bottom rule
+
+In logic, ⊥ (*bottom*) represents absurdity --- a proposition that is always false. In type theory, it is the *empty type*: a type with no inhabitants. The grammar borrows both senses: the rule ⊥ matches nothing --- not any character, not even the end of input.
+
+```grammar,notation
+// The bottom rule does not match anything.
+⊥ -> !(CHAR | EOF)
+```
+
+Placed after a [hard cut operator], `^ ⊥` makes a rule fail unconditionally once the parser has committed past the cut. This gives the grammar a way to express *recognition without acceptance*: the parser identifies the input, commits so that no other alternative can be tried, and then rejects it. In the frontmatter grammar, for example, [`FRONTMATTER_INVALID`] uses `^ ⊥` to recognize an opening fence preceded by whitespace on the same line --- input that is close enough to frontmatter to rule out other interpretations, but that is not valid.
+
+[`FRONTMATTER_INVALID`]: frontmatter.md#grammar-FRONTMATTER_INVALID
+
 r[notation.grammar.string-tables]
 ### String table productions
 
