@@ -86,30 +86,51 @@ r[abi.no_mangle.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `no_mangle` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.link_section]
 ## The `link_section` attribute
 
 r[abi.link_section.intro]
-The *`link_section` attribute* specifies the section of the object file that a
-[function] or [static]'s content will be placed into.
+The *`link_section` [attribute]* specifies the section of the object file that a [function] or [static]'s content will be placed into.
+
+> [!EXAMPLE]
+> <!-- no_run: don't link. The format of the section name is platform-specific. -->
+> ```rust,no_run
+> #[unsafe(no_mangle)]
+> #[unsafe(link_section = ".example_section")]
+> pub static VAR1: u32 = 1;
+> ```
 
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
 
-<!-- no_run: don't link. The format of the section name is platform-specific. -->
-```rust,no_run
-#[unsafe(no_mangle)]
-#[unsafe(link_section = ".example_section")]
-pub static VAR1: u32 = 1;
-```
+r[abi.link_section.allowed-positions]
+The `link_section` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits] with a body
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+r[abi.link_section.duplicates]
+Only the last use of `link_section` on an item has effect.
+
+> [!NOTE]
+> `rustc` lints against any use preceding the last. This may become an error in the future.
 
 r[abi.link_section.unsafe]
-This attribute is unsafe as it allows users to place data and code into sections
-of memory not expecting them, such as mutable data into read-only areas.
+The `link_section` attribute must be marked with [`unsafe`][attributes.safety] because it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
 r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
+
+r[abi.link_section.null]
+The section name must not contain a [NUL] character.
 
 r[abi.export_name]
 ## The `export_name` attribute
