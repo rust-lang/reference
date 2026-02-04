@@ -59,7 +59,7 @@ r[const-eval.const-expr.block]
     * [expression statements]
 
 r[const-eval.const-expr.field]
-* [Field] expressions.
+* [Field expressions].
 
 r[const-eval.const-expr.index]
 * Index expressions, [array indexing] or [slice] with a `usize`.
@@ -316,7 +316,7 @@ The types of a const function's parameters and return type are restricted to tho
 [expression statements]: statements.md#expression-statements
 [expressions]:          expressions.md
 [`extern` statics]:     items/external-blocks.md#statics
-[field]:                expressions/field-expr.md
+[field expressions]:    expressions/field-expr.md
 [functions]:            items/functions.md
 [grouped]:              expressions/grouped-expr.md
 [interior mutability]:  interior-mutability.md
