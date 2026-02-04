@@ -232,6 +232,94 @@ r[const-eval.const-expr.loop]
 r[const-eval.const-expr.if-match]
 * [if] and [match] expressions.
 
+## Const initializers
+
+r[const-eval.const-expr.final-value-provenance]
+The representation of the final value of a [constant][constant initializer] or [static initializer] must only contain bytes with provenance in whole-pointer groups. If a byte has provenance but is not part of an adjacent group of correctly-ordered bytes that form an entire pointer, compilation will fail.
+
+```rust,compile_fail
+# use core::mem::MaybeUninit;
+#
+#[repr(C, align(32))]
+struct Pair {
+    x: u128,             // Offset  0, 16 bytes.
+    y: MaybeUninit<u64>, // Offset 16,  8 bytes.
+                         // Offset 24,  8 bytes of padding.
+}
+
+const _: Pair = unsafe {
+//    ^^^^^^^ ERROR: Partial pointer in final value of constant.
+    let mut m = MaybeUninit::<Pair>::uninit();
+    // Store pointer that extends halfway into trailing padding.
+    m.as_mut_ptr().byte_add(20).cast::<&u8>().write_unaligned(&0);
+    // Initialize fields.
+    (*m.as_mut_ptr()).x = 0;
+    (*m.as_mut_ptr()).y = MaybeUninit::new(0);
+    // Now `m` contains a pointer fragment in the padding.
+    m.assume_init()
+};
+```
+
+> [!NOTE]
+> The bytes with provenance must form a complete pointer in the correct order. In the example above, the pointer is written at offset 20, but a pointer requires 8 bytes (assuming an 8-byte pointer). Four of those bytes fit in the `y` field; the rest extend into the padding at offset 24. When the fields are initialized, the `y` bytes get overwritten, leaving only a partial pointer (4 bytes) in the padding. These 4 bytes have provenance but don't form a complete pointer, causing compilation to fail.
+>
+> This restriction ensures that any bytes with provenance in the final value represent complete pointers. Binary formats such as ELF cannot represent pointer fragments, so the compiler cannot emit them in the final binary.
+>
+> Reversing the order of the pointer bytes also causes compilation to fail, even though all bytes are present:
+>
+> ```rust,compile_fail
+> # use core::mem::{self, MaybeUninit};
+> const PTR_WIDTH: usize = mem::size_of::<*const u8>();
+> const _: MaybeUninit<u64> = unsafe {
+> //       ^^^^^^^^^^^^^^^^
+> //       ERROR: Partial pointer in final value of constant.
+>     let mut m = MaybeUninit::<u64>::uninit();
+>     let ptr: *const u8 = &0;
+>     let ptr_bytes = &raw const ptr as *const MaybeUninit<u8>;
+>     // Write pointer bytes in reverse order.
+>     let dst: *mut MaybeUninit<u8> = m.as_mut_ptr().cast();
+>     let mut i = 0;
+>     while i < PTR_WIDTH {
+>         dst.add(i).write(ptr_bytes.add(PTR_WIDTH - 1 - i).read());
+>         i += 1;
+>     }
+>     m
+> };
+> ```
+
+> [!NOTE]
+> If a byte in the representation of the final value is uninitialized, then it *may* end up having provenance, which can cause compilation to fail. `rustc` tries (but does not guarantee) to only actually fail if the initializer copies or overwrites parts of a pointer and those bytes appear in the final value.
+>
+> E.g., `rustc` currently accepts this, even though the padding bytes are uninitialized:
+>
+> ```rust
+> #[repr(C, align(32))]
+> struct Pair { x: u128, y: u64 }
+> // The padding bytes are uninitialized.
+> const _: Pair = Pair { x: 0, y: 0 }; // OK.
+> ```
+>
+> Constant evaluation makes the details of typed copies observable: depending on whether a copy is performed field-by-field or as a memory-block copy, provenance in padding bytes might be discarded or preserved (both in the source and in the destination). The language allows the compiler to reject any final initializer value with an uninitialized padding byte to preserve implementation flexibility (e.g., the compiler may in the future always set padding bytes to uninitialized).
+>
+> Manually initializing (e.g., zeroing) the padding bytes ensures the final value is accepted:
+>
+> ```rust
+> # use std::mem::MaybeUninit;
+> # #[repr(C, align(32))]
+> # struct Pair { x: u128, y: u64 }
+> const _: Pair = unsafe { // OK.
+>     let mut m = Pair { x: 0, y: 0 };
+>     # // Trigger failure if padding were not zeroed.
+>     # let ptr: *const u8 = &0;
+>     # let ptr_bytes = &raw const ptr as *const MaybeUninit<u8>;
+>     # let dst: *mut MaybeUninit<u8> = (&raw mut m).byte_add(31).cast();
+>     # dst.write(ptr_bytes.read());
+>     // Explicitly zero the padding.
+>     (&raw mut m).byte_add(24).cast::<u64>().write_unaligned(0);
+>     m
+> };
+> ```
+
 r[const-eval.const-context]
 ## Const context
 [const context]: #const-context
@@ -307,6 +395,7 @@ The types of a const function's parameters and return type are restricted to tho
 [const generic argument]: items/generics.md#const-generics
 [const generic parameters]: items/generics.md#const-generics
 [constant expressions]: #constant-expressions
+[constant initializer]: items.const
 [constants]:            items/constant-items.md
 [Const parameters]:     items/generics.md
 [dereference expression]: expr.deref
@@ -336,6 +425,7 @@ The types of a const function's parameters and return type are restricted to tho
 [promoted]:             destructors.md#constant-promotion
 [range expressions]:    expressions/range-expr.md
 [slice]:                types/slice.md
+[static initializer]: items.static.init
 [statics]:              items/static-items.md
 [Struct expressions]:   expressions/struct-expr.md
 [temporary lifetime extension]: destructors.scope.lifetime-extension
