@@ -488,7 +488,7 @@ r[layout.repr.alignment.intro]
 The `align` and `packed` modifiers can be used to respectively raise or lower the alignment of `struct`s and `union`s. `packed` may also alter the padding between fields (although it will not alter the padding inside of any field). On their own, `align` and `packed` do not provide guarantees about the order of fields in the layout of a struct or the layout of an enum variant, although they may be combined with representations (such as `C`) which do provide such guarantees.
 
 r[layout.repr.alignment.constraint-alignment]
-The alignment is specified as an integer parameter in the form of `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a power of two from 1 up to 2<sup>29</sup>. For `packed`, if no value is given, as in `#[repr(packed)]`, then the value is 1.
+The alignment is specified as an integer parameter in the form of `#[repr(align(x))]` or `#[repr(packed(x))]`. The alignment value must be a power of two from 1 up to 2<sup>29</sup> or a target-specific limit. For COFF targets the limit is 8192. For `packed`, if no value is given, as in `#[repr(packed)]`, then the value is 1.
 
 r[layout.repr.alignment.align]
 For `align`, if the specified alignment is less than the alignment of the type without the `align` modifier, then the alignment is unaffected.
