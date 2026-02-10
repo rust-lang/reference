@@ -15,7 +15,7 @@ The general outline of a contribution is as follows:
 5. [Run the tests.](../tests.md)
 6. [Submit a pull request](#submitting-a-pull-request)
 7. The PR will go through the review process.
-   - There is a [guide](../review-policy.md) for the types of reviews it may undergo.
+   - See **[Review Policy](../review-policy.md)** for the types of reviews it may undergo.
    - This may take a while, as the team has limited time.
 8. Once approved, a team member will merge the change.
    - The team may apply editorial changes before merging.
