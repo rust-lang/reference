@@ -1,6 +1,6 @@
 # rustc test annotations
 
-Tests in <https://github.com/rust-lang/rust> can be linked to rules in the Reference. The rule will include a link to the tests, and there is also an [appendix] which tracks how the rules are currently linked.
+Tests in <https://github.com/rust-lang/rust> can be linked to rules in the Reference. The rule will include a link to the tests, and there is also an [appendix] that tracks how the rules are currently linked.
 
 Tests in the `tests` directory can be annotated with the `//@ reference: x.y.z` header to link them to a rule. The header can be specified multiple times if a single file covers multiple rules.
 

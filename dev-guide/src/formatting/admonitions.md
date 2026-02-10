@@ -1,6 +1,6 @@
 # Admonitions
 
-[`mdbook-spec`](../tooling/mdbook-spec.md) provides admonitions which use a style similar to GitHub-flavored markdown. The style name is placed at the beginning of a blockquote, such as:
+[`mdbook-spec`](../tooling/mdbook-spec.md) provides admonitions that use a style similar to GitHub-flavored markdown. The style name is placed at the beginning of a blockquote, such as:
 
 ```markdown
 > [!WARNING]
