@@ -53,7 +53,7 @@ PathIdentSegment ->
 ```
 
 r[paths.expr.intro]
-Paths in expressions allow for paths with generic arguments to be specified. They are used in various places in [expressions] and [patterns].
+Paths in expressions are used to refer to local variables and items, and they are also used in [patterns][patterns.path]. Optional [generic arguments] can be specified to provide concrete values for generic parameters.
 
 r[paths.expr.turbofish]
 The `::` token is required before the opening `<` for generic arguments to avoid ambiguity with the less-than operator. This is colloquially known as "turbofish" syntax.
@@ -419,13 +419,12 @@ mod without { // crate::without
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md
 [enumeration]: items/enumerations.md
-[expressions]: expressions.md
 [extern prelude]: names/preludes.md#extern-prelude
+[generic arguments]: generics.arguments
 [implementation]: items/implementations.md
 [macro transcribers]: macros-by-example.md
 [macros]: macros.md
 [mbe]: macros-by-example.md
-[patterns]: patterns.md
 [struct]: items/structs.md
 [trait implementations]: items/implementations.md#trait-implementations
 [trait]: items/traits.md
