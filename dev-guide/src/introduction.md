@@ -4,7 +4,7 @@ Thank you for your interest in contributing to **The Rust Reference**. This docu
 
 There are a few ways of helping with the Reference: critiquing the Reference, editing the Reference, fixing incorrect information, adding examples and glossary entries, and documenting new or otherwise undocumented features in Rust.
 
-It is encouraged for you to read the [introduction] of the Reference to familiarize yourself with the kind of content the Reference is expected to contain and the conventions it uses.
+We encourage you to read the [introduction] of the Reference to familiarize yourself with the kind of content the Reference is expected to contain and the conventions it uses.
 
 ## Critiquing the Reference
 
@@ -30,7 +30,6 @@ Feel free to take information from the standard library and Rustonomicon as appr
 
 Note that we don't write documentation for purely library features, such as threads and IO, and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `master` branch of the Reference corresponds to what is **stable** on the `main` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want **[The Unstable Book][unstable]**.
 
-[Authoring Guide]: docs/authoring.md
 [introduction]: https://doc.rust-lang.org/nightly/reference/introduction.html
 [issue tracker]: https://github.com/rust-lang/reference/issues
 [playground]: https://play.rust-lang.org/
