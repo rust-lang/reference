@@ -1,6 +1,6 @@
 # Attributes
 
-Attributes should use the following template. Examples are given for phrasing you *should* use, but you should deviate if the attribute doesn't fit any of the examples or if they get in the way of clarity.
+Attributes should use the following template. Examples are given for phrasing you *should* use, but you should deviate if the attribute doesn't fit any of the examples or if the examples get in the way of clarity.
 
 When an attribute (or a new attribute position in the grammar) is added, be sure to update all the "attributes on" sections that list which attributes can be used in various positions.
 
