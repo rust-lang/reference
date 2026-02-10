@@ -16,7 +16,7 @@
 > This is an example.
 ```
 
-The color and styling is defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/master/theme/reference.css) and the transformation and icons are in [`tools/mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/tools/mdbook-spec/src/admonitions.rs).
+The color and styling are defined in [`theme/reference.css`](https://github.com/rust-lang/reference/blob/HEAD/theme/reference.css) and the transformation and icons are in [`tools/mdbook-spec/src/admonitions.rs`](https://github.com/rust-lang/reference/blob/HEAD/tools/mdbook-spec/src/admonitions.rs).
 
 See the [conventions section] for a description of how these should be used.
 
