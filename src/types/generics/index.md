@@ -1,6 +1,9 @@
 r[generics]
 # Generics
 
+r[generics.intro]
+Generics allow items to be parameterized by types, lifetimes, and constants. This allows definitions to be written in a flexible way that can be reused with different concrete types and values.
+
 r[generics.parameters]
 ## Generic parameters
 
