@@ -104,11 +104,11 @@ The general format is a series of productions separated by blank lines. The expr
 | Comment | // Single line comment. | A comment extending to the end of the line. |
 | Terminal | \`example\` | A sequence of exact characters, surrounded by backticks. |
 | Charset | \[ \`A\`-\`Z\` \`0\`-\`9\` \`_\` \] | A choice from a set of characters, space-separated. There are three different forms. |
-| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters; each character should be in backticks.
+| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters; each character should be in backticks. |
 | CharacterTerminal | \[ \`x\` \] | A single character, surrounded by backticks. |
 | CharacterName | \[ LF \] | A nonterminal, referring to another production. |
 | Prose | \<any ASCII character except CR\> | An English description of what should be matched, surrounded in angle brackets. |
-| Group | (\`,\` Parameter)+ | Groups an expression for the purpose of precedence, such as applying a repetition operator to a sequence of other expressions.
+| Group | (\`,\` Parameter)+ | Groups an expression for the purpose of precedence, such as applying a repetition operator to a sequence of other expressions. |
 | NegativeExpression | ~\[\` \` LF\] | Matches anything except the given Charset, Terminal, or Nonterminal. |
 | Sequence | \`fn\` Name Parameters | A sequence of expressions that must match in order. |
 | Alternation | Expr1 \| Expr2 | Matches only one of the given expressions, separated by the vertical pipe character. |
