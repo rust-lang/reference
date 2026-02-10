@@ -151,7 +151,7 @@ let _: S<1> = f::<(((_)))>(); // Inferred const.
 > In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
 
 r[generics.const.inferred]
-Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([path rules][paths.expr.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
+Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([generic argument rules][generics.arguments.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
 ```rust
 fn make_buf<const N: usize>() -> [u8; N] {
@@ -225,6 +225,81 @@ fn generic<const B: bool>() {
 }
 ```
 
+r[generics.arguments]
+## Generic arguments
+
+r[generics.arguments.intro]
+Generic arguments are the concrete values provided for generic parameters when using a parameterized item. They are specified in angle brackets (`<...>`) following the item's path (see [paths in types] and [paths in expressions]). Generic arguments can include lifetimes, types, and const values corresponding to the generic parameters declared on the item.
+
+```rust
+struct Foo<'a, T, const N: usize> {
+    data: &'a [T; N],
+}
+
+fn make_foo<'a, T, const N: usize>(data: &'a [T; N]) -> Foo<'a, T, N> {
+    Foo { data }
+}
+
+// Generic arguments: lifetime 'static, type i32, const value 3.
+let foo: Foo<'static, i32, 3> = Foo { data: &[1, 2, 3] };
+// Example of a call expression.
+make_foo::<i32, 3>(&[1, 2, 3]);
+```
+
+r[generics.arguments.syntax]
+```grammar,paths
+GenericArgs ->
+      `<` `>`
+    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
+
+GenericArg ->
+    Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
+
+GenericArgsConst ->
+      BlockExpression
+    | LiteralExpression
+    | `-` LiteralExpression
+    | SimplePathSegment
+
+GenericArgsBinding ->
+    IDENTIFIER GenericArgs? `=` Type
+
+GenericArgsBounds ->
+    IDENTIFIER GenericArgs? `:` TypeParamBounds
+```
+
+r[generics.arguments.argument-order]
+The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
+
+r[generics.arguments.complex-const-params]
+Const arguments must be surrounded by braces unless they are a [literal], an [inferred const], or a single segment path. An [inferred const] may not be surrounded by braces.
+
+```rust
+mod m {
+    pub const C: usize = 1;
+}
+const C: usize = m::C;
+fn f<const N: usize>() -> [u8; N] { [0; N] }
+
+let _ = f::<1>(); // Literal.
+let _: [_; 1] = f::<_>(); // Inferred const.
+let _: [_; 1] = f::<(((_)))>(); // Inferred const.
+let _ = f::<C>(); // Single segment path.
+let _ = f::<{ m::C }>(); // Multi-segment path must be braced.
+```
+
+```rust,compile_fail
+fn f<const N: usize>() -> [u8; N] { [0; _] }
+let _: [_; 1] = f::<{ _ }>();
+//                    ^ ERROR `_` not allowed here
+```
+
+> [!NOTE]
+> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
+
+r[generics.arguments.impl-trait-params]
+The synthetic type parameters corresponding to `impl Trait` types are implicit, and these cannot be explicitly specified.
+
 r[generics.parameters.attributes]
 ## Attributes
 
@@ -266,6 +341,8 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [literal]: ../expressions/literal-expr.md
 [path]: ../paths.md
 [path expression]: ../expressions/path-expr.md
+[paths in expressions]: paths.expr
+[paths in types]: paths.type
 [raw pointers]: pointer.md#raw-pointers-const-and-mut
 [references]: pointer.md#shared-references-
 [structs]: ../items/structs.md

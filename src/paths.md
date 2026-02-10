@@ -50,25 +50,6 @@ PathExprSegment ->
 
 PathIdentSegment ->
     IDENTIFIER | `super` | `self` | `Self` | `crate` | `$crate`
-
-GenericArgs ->
-      `<` `>`
-    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
-
-GenericArg ->
-    Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
-
-GenericArgsConst ->
-      BlockExpression
-    | LiteralExpression
-    | `-` LiteralExpression
-    | SimplePathSegment
-
-GenericArgsBinding ->
-    IDENTIFIER GenericArgs? `=` Type
-
-GenericArgsBounds ->
-    IDENTIFIER GenericArgs? `:` TypeParamBounds
 ```
 
 r[paths.expr.intro]
@@ -81,38 +62,6 @@ The `::` token is required before the opening `<` for generic arguments to avoid
 (0..10).collect::<Vec<_>>();
 Vec::<u8>::with_capacity(1024);
 ```
-
-r[paths.expr.argument-order]
-The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
-
-r[paths.expr.complex-const-params]
-Const arguments must be surrounded by braces unless they are a [literal], an [inferred const], or a single segment path. An [inferred const] may not be surrounded by braces.
-
-```rust
-mod m {
-    pub const C: usize = 1;
-}
-const C: usize = m::C;
-fn f<const N: usize>() -> [u8; N] { [0; N] }
-
-let _ = f::<1>(); // Literal.
-let _: [_; 1] = f::<_>(); // Inferred const.
-let _: [_; 1] = f::<(((_)))>(); // Inferred const.
-let _ = f::<C>(); // Single segment path.
-let _ = f::<{ m::C }>(); // Multi-segment path must be braced.
-```
-
-```rust,compile_fail
-fn f<const N: usize>() -> [u8; N] { [0; _] }
-let _: [_; 1] = f::<{ _ }>();
-//                    ^ ERROR `_` not allowed here
-```
-
-> [!NOTE]
-> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
-
-r[paths.expr.impl-trait-params]
-The synthetic type parameters corresponding to `impl Trait` types are implicit, and these cannot be explicitly specified.
 
 r[paths.qualified]
 ## Qualified paths
@@ -465,17 +414,14 @@ mod without { // crate::without
 [`$crate`]: macro.decl.hygiene.crate
 [implementations]: items/implementations.md
 [items]: items.md
-[literal]: expressions/literal-expr.md
 [use declarations]: items/use-declarations.md
 [`Self` scope]: names/scopes.md#self-scope
 [`use`]: items/use-declarations.md
 [attributes]: attributes.md
-[const generic argument]: generics.const.argument
 [enumeration]: items/enumerations.md
 [expressions]: expressions.md
 [extern prelude]: names/preludes.md#extern-prelude
 [implementation]: items/implementations.md
-[inferred const]: generics.const.inferred
 [macro transcribers]: macros-by-example.md
 [macros]: macros.md
 [mbe]: macros-by-example.md
