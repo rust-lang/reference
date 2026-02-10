@@ -10,7 +10,7 @@ There are automated checks for some of these rules. Run [`cargo xtask style-chec
 - Lines must not end with spaces. Double spaces have semantic meaning but can be invisible. Use a trailing backslash if you need a hard line break.
 - If possible, avoid double blank lines.
 - Do not wrap long lines. This helps with reviewing diffs of the source.
-- Use [smart punctuation] instead of Unicode characters. For example, use `---` for an em-dash instead of the Unicode character. Characters such as the em dash can be difficult to see in a fixed-width editor, and some editors may not have easy methods to enter such characters.
+- Use [smart punctuation] instead of Unicode characters. For example, use `---` for an em dash instead of the Unicode character. Characters such as the em dash can be difficult to see in a fixed-width editor, and some editors may not have easy methods to enter such characters.
 - See the [admonitions chapter] for formatting callouts such as notes, edition differences, and warnings.
 
 ## Code blocks
