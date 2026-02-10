@@ -3,15 +3,15 @@
 [`mdbook-spec`] is an mdBook preprocessor that adds features to the Reference. It provides:
 
 - Parsing and generation of [grammar diagrams].
-    - [Automatic grammar production links].
-    - Generation of the [grammar summary appendix].
+  - [Automatic grammar production links].
+  - Generation of the [grammar summary appendix].
 - [Automatic standard library links].
 - Handling of [rule names].
-    - Validation of the names.
-    - Converting rule names to links.
-    - [Automatic rule link references].
-    - Generation of [links to rule tests].
-    - Generation of the [test summary].
+  - Validation of the names.
+  - Converting rule names to links.
+  - [Automatic rule link references].
+  - Generation of [links to rule tests].
+  - Generation of the [test summary].
 - Support for [admonitions].
 
 ## Environment variables
