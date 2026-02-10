@@ -99,7 +99,7 @@ This appendix provides an index of tokens and common forms with links to where t
 | `>=`   | Ge          | [greater than or equal to][comparison], [generics] |
 | `<=`   | Le          | [less than or equal to][comparison] |
 | `@`    | At          | [subpattern binding] |
-| `.`    | Dot         | [field access][field], [tuple index] |
+| `.`    | Dot         | [field access][field], [tuple index], [method calls], [await expressions] |
 | `..`   | DotDot      | [range expressions][expr.range], [struct expressions], [rest pattern], [range patterns], [struct patterns] |
 | `...`  | DotDotDot   | [variadic functions], [range patterns] |
 | `..=`  | DotDotEq    | [inclusive range expressions][expr.range], [range patterns] |
@@ -363,6 +363,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [match expressions]: expr.match
 [match guards]: expr.match.guard
 [match]: expr.match
+[method calls]: expr.method
 [module-relative paths]: paths.qualifiers.mod-self
 [modules]: items.mod
 [negation expressions]: expr.negate
