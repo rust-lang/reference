@@ -2,7 +2,9 @@
 
 New features and changes to the Rust language usually require an update to the Reference to incorporate the change. This can be done at any time before stabilization, and it is usually better to prepare a PR early (assuming the implementation is not expected to change significantly).
 
-An exception to this process occurs when a language change involves a part of the language that is undocumented or a section of the Reference that is incomplete. For example, type inference is currently not documented, so changes to it do not require an update to the Reference.
+An exception to this process occurs when a language change involves a part of the language that is undocumented or a section of the Reference that is incomplete. For example, type inference is currently not documented, so changes to the details of type inference do not require an update to the Reference.
+
+However, when a new feature introduces a rule that can be stated independently of the undocumented material, that rule should still be documented. In this case, add the new rule to the relevant placeholder section. When the section is eventually filled out, the rule will be incorporated into the complete text.
 
 ## Pull request
 
