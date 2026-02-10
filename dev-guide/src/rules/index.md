@@ -1,16 +1,16 @@
 # Language rules
 
-Clauses within the Reference are labeled with a named *rule*. This provides the ability to link and refer to individual clauses, and to [link to the `rustc` test suite](test-annotations.md).
+Clauses within the Reference are labeled with a named *rule*. This provides the ability to link and refer to individual clauses and to [link to the `rustc` test suite](test-annotations.md).
 
 ## Rule labels
 
-Most clauses should be preceded by a rule label. A rule label should be on a line by itself, and should look like this:
+Most clauses should be preceded by a rule label. A rule label should be on a line by itself and should look like this:
 
 ```markdown
 r[foo.bar]
 ```
 
-The rule name should be lowercase, with periods separating components from most general to most specific (like `r[array.repeat.zero]`).
+The rule name should be lowercase, with periods separating components from most general to most specific (e.g., `r[array.repeat.zero]`).
 
 Rules can be linked to by their ID using Markdown such as `[foo.bar]`. There are [automatic link references] so that any rule can be referred to from any page in the book.
 
@@ -32,7 +32,7 @@ When assigning rules to new paragraphs or modifying rule names, use the followin
 5. The following keywords should be used to identify paragraphs when unambiguous:
     - `intro`: The beginning paragraph of each section. It should explain the construct being defined overall.
     - `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used.
-    - `namespace`: For items only, specifies the namespace(s) the item introduces a name in. It may also be used elsewhere when defining a namespace (e.g. `r[attribute.diagnostic.namespace]`).
+    - `namespace`: For items only, specifies the namespace(s) the item introduces a name in. It may also be used elsewhere when defining a namespace (e.g., `r[attribute.diagnostic.namespace]`).
 6. When a rule doesn't fall under the above keywords, or for section rule IDs, name the subrule as follows:
     - If the rule names a specific Rust language construct (e.g., an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s).
     - Other than Rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule".
