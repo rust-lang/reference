@@ -6,9 +6,9 @@ Team members have permission to merge changes from other contributors in the <ht
 
 Reviewers and authors should focus on a few key principles during the review process:
 
-* **Understandability**: Language within the Reference should be understandable to most members of the Project. Contributions should assume that readers are familiar with the rest of the content of the Reference, but, wherever possible, sections should facilitate that understanding by linking to related content.
-* **Defensibility**: When the lang-docs team merges a change to the Reference, they are agreeing to take responsibility for it going forward. Team members need to feel confident defending and explaining the correctness of content within the Reference. Whenever possible, changes to the Reference should back up any claims with concise examples to verify correctness.
-* **Voice**: Authors are not expected to have competence as a specification writer when drafting new contributions to the Reference. As long as claims are understandable and defensible, it is fine for PRs to be written in a casual tone or with the voice of the author instead of the voice of the Reference. Team members will bring editorial experience as part of their reviews and will revise the phrasing, organization, style, etc., to fit the Reference before merging if necessary.
+- **Understandability**: Prose within the Reference should be understandable to most members of the Project. Contributions should assume that readers are familiar with the rest of the content of the Reference, but, wherever possible, sections should facilitate that understanding by linking to related content.
+- **Defensibility**: When the lang-docs team merges a change to the Reference, they are agreeing to take responsibility for it going forward. Team members need to feel confident defending and explaining the correctness of content within the Reference. Whenever possible, changes to the Reference should back up any claims with concise examples to verify correctness.
+- **Voice**: Authors are not expected to have competence as a specification writer when drafting new contributions to the Reference. As long as claims are understandable and defensible, it is fine for PRs to be written in a casual tone or with the voice of the author instead of the voice of the Reference. Team members will bring editorial experience as part of their reviews and will revise the phrasing, organization, style, etc., to fit the Reference before merging if necessary.
 
 ## Policy changes
 
@@ -18,7 +18,7 @@ Minor changes to something like style enforcement can be made with the review fr
 
 ## Meaningful content addition or changes
 
-When adding or changing content in the spec, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence that the changes are correct and considers themselves well-versed enough in the topic to understand it, or if the relevant experts are the author or have been heavily involved in the process. It is up to the reviewer to use their best judgment on when to consult.
+When adding or changing content in the Reference, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence in the correctness of the changes and is well-versed in the topic, or if the relevant experts are the author or have been heavily involved in the process. It is up to the reviewer to use their best judgment on when to consult.
 
 Content should always follow the guidelines in this contributor guide.
 
@@ -52,7 +52,7 @@ There are a number of PRs that might be true, but when we look at them, we think
 
 Some PRs try to "sell" the language too much, or try to explain more (or less) than needed, or give too many (or too few) examples, etc. The PR should match the general flavor of the Reference here.
 
-### Is this well written? 
+### Is this well written?
 
 Some PRs are correct but are awkwardly worded or have typographical problems. If the changes are small, we'll just add commits to the branch to clean things up, then merge.
 
