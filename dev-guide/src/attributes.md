@@ -22,7 +22,7 @@ The *`example` [attribute][attributes]* ...give a high-level description.
 > ```
 
 r[PARENT.example.syntax]
-Describe the accepted syntax of this attribute. You can either explain that it uses one of the pre-existing grammars, like `MetaWord`, or define an explicit grammar. If there are different forms, briefly describe the syntax here and link to the appropriate rules below that explain the behavior of the different forms. Examples:
+Describe the accepted syntax of this attribute. You can either explain that it uses one of the pre-existing grammars, such as `MetaWord`, or define an explicit grammar. If there are different forms, briefly describe the syntax here and link to the appropriate rules below that explain the behavior of the different forms. Examples:
 
 ----
 

@@ -49,7 +49,7 @@ This uses the [`style-check`](https://github.com/rust-lang/reference/tree/HEAD/t
 
 ## Code formatting
 
-CI uses `cargo fmt --check` to verify that all Rust sources for the tools (like `mdbook-spec`) are properly formatted. All code must be formatted with `rustfmt`.
+CI uses `cargo fmt --check` to verify that all Rust sources for the tools (such as `mdbook-spec`) are properly formatted. All code must be formatted with `rustfmt`.
 
 ## mdbook-spec tests
 
