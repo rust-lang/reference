@@ -40,7 +40,7 @@ If we don't want the full path in the text, we can write:
 [`Option`](std::option::Option)
 ```
 
-Macros can end in `!`. This can be helpful for disambiguation.  For example, this refers to the macro rather than the module:
+Macros can end in `!`. This can be helpful for disambiguation. For example, this refers to the macro rather than the module:
 
 ```markdown
 [`alloc::vec!`]
