@@ -15,11 +15,11 @@ The general outline of a contribution is as follows:
 5. [Run the tests.](../tests.md)
 6. [Submit a pull request](#submitting-a-pull-request)
 7. The PR will go through the review process.
-    - There is a [guide](../review-policy.md) for the types of reviews it may undergo.
-    - This may take a while, as the team has limited time.
+   - There is a [guide](../review-policy.md) for the types of reviews it may undergo.
+   - This may take a while, as the team has limited time.
 8. Once approved, a team member will merge the change.
-    - The team may apply editorial changes before merging.
-    - It may take a few weeks for the change to appear on the [nightly website](https://doc.rust-lang.org/nightly/reference/). See [the publishing chapter](../publishing.md) for more details.
+   - The team may apply editorial changes before merging.
+   - It may take a few weeks for the change to appear on the [nightly website](https://doc.rust-lang.org/nightly/reference/). See [the publishing chapter](../publishing.md) for more details.
 
 ## Office hours
 
