@@ -16,7 +16,7 @@
 
 ## Environment variables
 
-There are a few environment variables that `mdbook-spec` uses, described in the [building chapter]:
+There are a few environment variables that `mdbook-spec` uses, described in **[Building the Reference]**:
 
 - [`SPEC_RELATIVE`] --- Can be set to link external books to the live site.
 - [`SPEC_DENY_WARNINGS`] --- Whether warnings should be treated as errors.
@@ -31,7 +31,7 @@ There are a few environment variables that `mdbook-spec` uses, described in the 
 [Automatic grammar production links]: ../grammar.md#automatic-linking
 [Automatic rule link references]: ../links.md#rule-links
 [Automatic standard library links]: ../links.md#standard-library-links
-[Building chapter]: building.md
+[Building the Reference]: building.md
 [grammar diagrams]: ../grammar.md
 [grammar summary appendix]: https://doc.rust-lang.org/nightly/reference/grammar.html
 [links to rule tests]: ../rules/test-annotations.md
