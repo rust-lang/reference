@@ -2,4 +2,4 @@
 
 Use Oxford commas.
 
-Avoid slashes for alternatives ("program/binary"); use conjunctions or rewrite it ("program or binary").
+Avoid slashes for alternatives ("program/binary"); use a conjunction or rewrite the phrase ("program or binary").
