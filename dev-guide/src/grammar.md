@@ -125,7 +125,7 @@ The general format is a series of productions separated by blank lines. The expr
 
 The [`mdbook-spec`] plugin automatically adds Markdown link definitions for all production names on every page. To link directly to a production name, simply surround it in square brackets, like `[ArrayExpression]`.
 
-In some cases, there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. You can also do this if you prefer to be more explicit.
+In some cases, there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. The prefix can also be used when explicitness would aid clarity.
 
 [`mdbook-spec`]: tooling/mdbook-spec.md
 [Notation]: https://doc.rust-lang.org/nightly/reference/notation.html
