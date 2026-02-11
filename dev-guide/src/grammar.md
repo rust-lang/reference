@@ -18,7 +18,7 @@ The syntax for the grammar itself is similar to what is described in **[Notation
 
 A "root" production, marked with `@root`, is one that is not used in any other production.
 
-The syntax for the grammar itself (written in itself, hopefully that's not too confusing) is:
+The syntax for the grammar notation, described here using its own notation, is:
 
 ```
 Grammar -> Production+
