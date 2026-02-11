@@ -35,7 +35,7 @@ cargo install --locked mdbook
 - `mdbook build --open`: Builds the book and opens it in a web browser.
 - `mdbook serve --open`: Launches a web server on localhost. It automatically rebuilds the book whenever any file changes and reloads your web browser.
 
-The book contents are driven by a `SUMMARY.md` file, and every file must be linked there. See <https://rust-lang.github.io/mdBook/> for its usage.
+The book contents are driven by a `SUMMARY.md` file, and every file must be linked there. See <https://rust-lang.github.io/mdBook/> for more information.
 
 ### `SPEC_RELATIVE`
 
