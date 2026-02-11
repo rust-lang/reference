@@ -11,7 +11,7 @@ There are automated checks for some of these rules. Run [`cargo xtask style-chec
 - If possible, avoid double blank lines.
 - Do not wrap long lines. This helps with reviewing diffs of the source.
 - Use [smart punctuation] instead of Unicode characters. For example, use `---` for an em dash instead of the Unicode character. Characters such as the em dash can be difficult to see in a fixed-width editor, and some editors may not have easy methods to enter such characters.
-- See the [admonitions chapter] for formatting callouts such as notes, edition differences, and warnings.
+- See [Admonitions] for formatting callouts such as notes, edition differences, and warnings.
 
 ## Code blocks
 
@@ -20,7 +20,7 @@ There are automated checks for some of these rules. Run [`cargo xtask style-chec
 
 ## Links
 
-See the [links chapter] for more information about linking.
+See [Links] for more information about linking.
 
 - Links to other chapters should be relative and use the `.md` extension.
 - Links to other rust-lang books that are published with the Reference should also be relative so that the linkchecker can validate them. See [outside book links].
@@ -36,9 +36,9 @@ See the [links chapter] for more information about linking.
     ```
 
 [`cargo xtask style-check`]: ../tests.md#style-checks
-[admonitions chapter]: admonitions.md
+[Admonitions]: admonitions.md
 [atx]: https://spec.commonmark.org/0.31.2/#atx-headings
-[links chapter]: ../links.md
+[Links]: ../links.md
 [outside book links]: ../links.md#outside-book-links
 [sentence case]: https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case
 [smart punctuation]: https://rust-lang.github.io/mdBook/format/markdown.html#smart-punctuation
