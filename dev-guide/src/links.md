@@ -54,7 +54,7 @@ Explicit namespace disambiguation is also supported:
 
 Beware of some limitations, for example:
 
-- Links to re-exports from `std_arch` don't work due to <https://github.com/rust-lang/rust/issues/96506>.
+- Links to reexports from `std_arch` don't work due to <https://github.com/rust-lang/rust/issues/96506>.
 - Links to keywords aren't supported.
 - Links to trait impls where the trait is not in the prelude don't work. Traits must be in scope, and currently there is no way to add them.
 - If there are multiple generic implementations, it will link to one randomly (see <https://github.com/rust-lang/rust/issues/76895>).
