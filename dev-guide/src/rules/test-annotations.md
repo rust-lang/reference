@@ -10,6 +10,6 @@ The tests are beneficial for reviewers to see the behavior of a rule. They are a
 
 Always annotate with the most specific rule name available. For example, use `asm.rules.reg-not-input` rather than the broader `asm.rules`.
 
-We do not expect 100% coverage at any time. Although it would be nice, it is unrealistic due to the sequence in which things are developed and the resources available.
+Complete coverage is the goal but is not yet expected.
 
 [appendix]: https://doc.rust-lang.org/nightly/reference/test-summary.html
