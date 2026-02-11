@@ -30,7 +30,7 @@ cargo install --locked mdbook
 
 ## Running mdbook
 
-`mdbook` provides a variety of commands and options to help you work on the book:
+`mdbook` provides several commands and options to help you work on the book:
 
 - `mdbook build --open`: Builds the book and opens it in a web browser.
 - `mdbook serve --open`: Launches a web server on localhost. It automatically rebuilds the book whenever any file changes and reloads your web browser.

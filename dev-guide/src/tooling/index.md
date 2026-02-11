@@ -1,10 +1,10 @@
 # Reference tooling
 
-The Reference uses [mdBook] to convert its source files from Markdown to HTML. See [Building the Reference] for more information. Additionally, there is an mdBook extension called [`mdbook-spec`] that adds a variety of custom features used by the Reference.
+The Reference uses [mdBook] to convert its source files from Markdown to HTML. See [Building the Reference] for more information. The [`mdbook-spec`] extension adds several custom features used by the Reference.
 
-In addition to the book tooling, there is a variety of testing tools documented in the [tests chapter].
+For testing, see [Running Tests].
 
 [`mdbook-spec`]: mdbook-spec.md
 [Building the Reference]: building.md
 [mdbook]: https://rust-lang.github.io/mdBook/
-[tests chapter]: ../tests.md
+[Running Tests]: ../tests.md
