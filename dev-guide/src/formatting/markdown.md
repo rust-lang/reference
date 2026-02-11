@@ -25,7 +25,7 @@ See [Links] for more information about linking.
 - Links to other chapters should be relative and use the `.md` extension.
 - Links to other rust-lang books that are published with the Reference should also be relative so that the linkchecker can validate them. See [outside book links].
 - Links to the standard library should use rustdoc-style links as described in [standard library links].
-- The use of reference links is preferred, with shortcuts if appropriate. Place sorted link reference definitions at the bottom of the file, or at the bottom of a section if there is an unusually large number of links specific to that section.
+- Prefer reference links, with shortcut reference links where appropriate. Place sorted link reference definitions at the bottom of the file, or at the bottom of a section if there is an unusually large number of links specific to that section.
 
     ```markdown
     Example of shortcut link: [enumerations]
