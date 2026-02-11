@@ -18,7 +18,7 @@ Minor changes to something like style enforcement can be made with the review fr
 
 ## Meaningful content addition or changes
 
-When adding or changing content in the Reference, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence in the correctness of the changes and is well-versed in the topic, or if the relevant experts are the author or have been heavily involved in the process. It is up to the reviewer to use their best judgment on when to consult.
+When adding or changing content in the Reference, the reviewer should consult with appropriate experts to validate the changes. This may not be required if the reviewer has high confidence in the correctness of the changes, if the reviewer is well-versed in the topic, or if the relevant experts are already the author of or actively involved in the PR. It is up to the reviewer to use good judgment on when to consult.
 
 Content should always follow the guidelines in this contributor guide.
 
