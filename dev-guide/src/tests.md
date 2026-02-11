@@ -25,7 +25,7 @@ We recommend running this as a last step before opening a PR. This runs most of 
 mdbook test
 ```
 
-This command runs all tests that are inline in the Markdown. Internally, this uses [`rustdoc`](https://doc.rust-lang.org/rustdoc/) to run the tests and supports all the same features. Any code block with the `rust` language will be compiled unless it is ignored. See the [Examples chapter](examples.md) for more.
+This command runs all tests that are inline in the Markdown. Internally, this uses [`rustdoc`](https://doc.rust-lang.org/rustdoc/) to run the tests and supports all the same features. Any code block with the `rust` language will be compiled unless it is ignored. See [Examples] for more.
 
 ## Linkcheck
 
@@ -58,3 +58,5 @@ cargo test --manifest-path mdbook-spec/Cargo.toml
 ```
 
 CI runs `cargo test` on `mdbook-spec` to execute any tests for the tool itself.
+
+[Examples]: examples.md
