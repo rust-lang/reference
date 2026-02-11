@@ -1,6 +1,6 @@
 # Rust grammar
 
-The Reference grammar is written in markdown code blocks using a modified BNF-like syntax (with a blend of regex and other arbitrary things). The [`mdbook-spec`] extension parses these rules and converts them into a renderable format, including railroad diagrams.
+The Reference grammar is written in Markdown code blocks using a modified BNF-like syntax (with a blend of regex and other arbitrary things). The [`mdbook-spec`] extension parses these rules and converts them into a renderable format, including railroad diagrams.
 
 The code block should have a lang string with the word `grammar`, a comma, and the category of the grammar, like this:
 
@@ -112,8 +112,8 @@ The general format is a series of productions separated by blank lines. The expr
 | NegativeExpression | ~\[\` \` LF\] | Matches anything except the given Charset, Terminal, or Nonterminal. |
 | Sequence | \`fn\` Name Parameters | A sequence of expressions that must match in order. |
 | Alternation | Expr1 \| Expr2 | Matches only one of the given expressions, separated by the vertical pipe character. |
-| Suffix | \_except \[LazyBooleanExpression\]\_  | Adds a suffix to the previous expression to provide an additional English description, rendered in subscript. This can contain limited markdown, but try to avoid anything except basics like links. |
-| Footnote | \[^extern-safe\] | Adds a footnote, which can supply extra information that may be helpful to the user. The footnote itself should be defined outside of the code block like a normal markdown footnote. |
+| Suffix | \_except \[LazyBooleanExpression\]\_  | Adds a suffix to the previous expression to provide an additional English description, rendered in subscript. This can contain limited Markdown, but try to avoid anything except basics like links. |
+| Footnote | \[^extern-safe\] | Adds a footnote, which can supply extra information that may be helpful to the user. The footnote itself should be defined outside of the code block like a normal Markdown footnote. |
 | Optional | Expr? | The preceding expression is optional. |
 | Repeat | Expr* | The preceding expression is repeated 0 or more times. |
 | Repeat (non-greedy) | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
@@ -123,7 +123,7 @@ The general format is a series of productions separated by blank lines. The expr
 
 ## Automatic linking
 
-The [`mdbook-spec`] plugin automatically adds markdown link definitions for all production names on every page. To link directly to a production name, simply surround it in square brackets, like `[ArrayExpression]`.
+The [`mdbook-spec`] plugin automatically adds Markdown link definitions for all production names on every page. To link directly to a production name, simply surround it in square brackets, like `[ArrayExpression]`.
 
 In some cases, there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. You can also do this if you prefer to be more explicit.
 

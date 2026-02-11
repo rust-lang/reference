@@ -4,7 +4,7 @@ There are several different kinds of tests you can run (these are enforced in CI
 
 - [`cargo xtask test-all`](#all-tests) --- Runs all tests.
 - [`mdbook test`](#inline-tests) --- Tests the inline Rust code blocks.
-- [`cargo xtask linkcheck`](#linkcheck) --- Validates that markdown links aren't broken.
+- [`cargo xtask linkcheck`](#linkcheck) --- Validates that Markdown links aren't broken.
 - [`cargo xtask style-check`](#style-checks) --- Validates various style checks.
 - [Code formatting](#code-formatting) --- Checks that all Rust tooling code is formatted.
 - [mdbook-spec tests](#mdbook-spec-tests) --- Internal tests for `mdbook-spec`.
