@@ -24,7 +24,7 @@ Content should always follow the guidelines in this contributor guide.
 
 ## Minor content changes
 
-Minor content changes, such as small cleanups or wording fixes, can be made with the review from a team member without further consultation.
+For minor content changes --- such as small cleanups, wording fixes, or formatting corrections --- a maintainer may push fixes directly to the PR branch and merge, without consulting the author or other reviewers.
 
 ## Tooling changes
 
