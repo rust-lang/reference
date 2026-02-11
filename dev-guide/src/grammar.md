@@ -14,7 +14,7 @@ The category is used to group similar productions on the grammar summary page in
 
 ## Grammar syntax
 
-The syntax for the grammar itself is similar to what is described in the [Notation chapter], though there are some rendering differences.
+The syntax for the grammar itself is similar to what is described in **[Notation]**, though there are some rendering differences.
 
 A "root" production, marked with `@root`, is one that is not used in any other production.
 
@@ -128,4 +128,4 @@ The [`mdbook-spec`] plugin automatically adds Markdown link definitions for all 
 In some cases, there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. You can also do this if you prefer to be more explicit.
 
 [`mdbook-spec`]: tooling/mdbook-spec.md
-[Notation chapter]: https://doc.rust-lang.org/nightly/reference/notation.html
+[Notation]: https://doc.rust-lang.org/nightly/reference/notation.html
