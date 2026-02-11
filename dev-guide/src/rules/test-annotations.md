@@ -8,7 +8,7 @@ Compiler developers are not expected to add `reference` annotations to tests. Ho
 
 The tests are beneficial for reviewers to see the behavior of a rule. They are also a benefit to readers who may want to see examples of particular behaviors. When adding new rules, you should wait until the Reference side is approved before submitting a PR to `rust-lang/rust` (to avoid churn if we decide on different names).
 
-Prefixed rule names should not be used in tests. That is, do not use something like `asm.rules` when there are specific rules like `asm.rules.reg-not-input`.
+Always annotate with the most specific rule name available. For example, use `asm.rules.reg-not-input` rather than the broader `asm.rules`.
 
 We do not expect 100% coverage at any time. Although it would be nice, it is unrealistic due to the sequence in which things are developed and the resources available.
 
