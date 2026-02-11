@@ -18,7 +18,7 @@ Rust examples are [tested via rustdoc] and should include the appropriate annota
 - `no_run` --- The example should compile successfully but should not be executed.
 - `should_panic` --- The example should compile and run but produce a panic.
 - `compile_fail` --- The example is expected to fail to compile.
-- `ignore` --- The example shouldn't be built or tested. This should be avoided if possible. Usually, this is only necessary when the testing framework does not support it (such as external crates, modules, or a proc-macro) or when it contains pseudo-code that is not valid Rust. An HTML comment, such as `<!-- ignore: requires extern crate -->`, should be placed before the example to explain why it is ignored.
+- `ignore` --- The example shouldn't be built or tested. This should be avoided if possible. Usually, this is only necessary when the testing framework does not support it (such as external crates, modules, or a proc-macro) or when it contains pseudocode that is not valid Rust. An HTML comment, such as `<!-- ignore: requires extern crate -->`, should be placed before the example to explain why it is ignored.
 - `Exxxx` --- If the example is expected to fail to compile with a specific error code, include that code so that `rustdoc` checks that the expected code is used.
 
 See the [rustdoc documentation] for more detail.
