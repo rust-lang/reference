@@ -168,6 +168,7 @@ The only data layout guarantees made by this representation are those required f
 
  1. The offset of a field is divisible by that field's alignment.
  2. The alignment of the type is at least the maximum alignment of its fields.
+ 3. For any field, its offset plus its size is at most the size of the type.
 
 r[layout.repr.rust.layout.struct]
 For [structs], it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
