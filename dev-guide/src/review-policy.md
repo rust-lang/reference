@@ -42,7 +42,7 @@ If we're not sure and can't easily verify it ourselves, we ask someone who would
 
 ### Does this make any new guarantees about the language?
 
-If this would make a new guarantee about the language, this needs to go through the `lang` team to be accepted (unless the `lang` team has clearly accepted this guarantee elsewhere). Ask @traviscross or @pnkfelix if at all unsure about any of these.
+If this would make a new guarantee about the language, this needs to go through the `lang` team to be accepted (unless the `lang` team has clearly accepted this guarantee elsewhere). Ask @traviscross if at all unsure about any of these.
 
 ### Would we have added this to the Reference ourselves?
 
