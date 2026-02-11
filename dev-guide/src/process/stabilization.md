@@ -21,6 +21,6 @@ Always link to the tracking issue and, if applicable, the stabilization PR. Beyo
 
 ## Inline tests
 
-Because the Reference only documents stabilized features, inline tests will fail. We intend to improve this process in the future (see [#1864]).
+If a PR documents a newly stabilized feature, its inline tests will fail until the stabilization PR is merged and a new nightly compiler is available. We intend to improve this process in the future (see [#1864]).
 
 [#1864]: https://github.com/rust-lang/reference/issues/1864
