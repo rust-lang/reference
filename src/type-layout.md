@@ -164,17 +164,13 @@ r[layout.repr.rust.intro]
 The `Rust` representation is the default representation for nominal types without a `repr` attribute. Using this representation explicitly through a `repr` attribute is guaranteed to be the same as omitting the attribute entirely.
 
 r[layout.repr.rust.layout]
-The only data layout guarantees made by this representation are those required for soundness. They are:
+The only data layout guarantees made by this representation are those required for soundness. These are:
 
- 1. The fields are properly aligned.
- 2. The fields do not overlap.
- 3. The alignment of the type is at least the maximum alignment of its fields.
+ 1. The offset of a field is divisible by that field's alignment.
+ 2. The alignment of the type is at least the maximum alignment of its fields.
 
-r[layout.repr.rust.alignment]
-Formally, the first guarantee means that the offset of any field is divisible by that field's alignment.
-
-r[layout.repr.rust.field-storage]
-The second guarantee means that the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
+r[layout.repr.rust.layout.struct]
+For structs, it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
 
 Be aware that the second guarantee does not imply that the fields have distinct addresses: zero-sized types may have the same address as other fields in the same struct.
 
