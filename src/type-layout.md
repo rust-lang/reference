@@ -172,7 +172,7 @@ The only data layout guarantees made by this representation are those required f
 r[layout.repr.rust.layout.struct]
 For structs, it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
 
-Be aware that the second guarantee does not imply that the fields have distinct addresses: zero-sized types may have the same address as other fields in the same struct.
+Be aware that this guarantee does not imply that the fields have distinct addresses: zero-sized types may have the same address as other fields in the same struct.
 
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
