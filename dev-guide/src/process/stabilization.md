@@ -17,7 +17,7 @@ When opening a PR, please include links to as much information as possible so th
 - The files in `rustc` where it is implemented, if it is isolated to a relatively concise part.
 - The tests in `rust-lang/rust`.
 
-Always link to the tracking issue and, if applicable, the stabilization PR. Beyond those, information that already appears in the tracking issue, stabilization report, or PR does need to be duplicated in the PR description.
+Always link to the tracking issue and, if applicable, the stabilization PR. Beyond those, information that already appears in the tracking issue, stabilization report, or PR does not need to be duplicated in the PR description.
 
 ## Inline tests
 
