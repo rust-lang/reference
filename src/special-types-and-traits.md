@@ -14,8 +14,8 @@ r[lang-types.box.intro]
 defined types.
 
 r[lang-types.box.deref]
-* The [dereference operator] for `Box<T>` produces a place which can be moved
-  from. This means that the `*` operator and the destructor of `Box<T>` are
+* The [dereference operator] for `Box<T>` produces a place which can be [moved
+  from]. This means that the `*` operator and the destructor of `Box<T>` are
   built-in to the language.
 
 r[lang-types.box.receiver]
@@ -239,6 +239,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [main function]: crates-and-source-files.md#main-functions
 [Methods]: items/associated-items.md#associated-functions-and-methods
 [method resolution]: expressions/method-call-expr.md
+[moved from]: expr.move.movable-place
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
 [`static` items]: items/static-items.md
