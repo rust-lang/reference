@@ -16,7 +16,7 @@ NON_KEYWORD_IDENTIFIER -> IDENTIFIER_OR_KEYWORD _except a [strict][lex.keywords.
 IDENTIFIER -> NON_KEYWORD_IDENTIFIER | RAW_IDENTIFIER
 
 RESERVED_RAW_IDENTIFIER ->
-    `r#` (`_` | `crate` | `self` | `Self` | `super`) _not immediately followed by XID_Continue_
+    `r#` (`_` | `crate` | `self` | `Self` | `super`) !XID_Continue
 ```
 
 <!-- When updating the version, update the UAX links, too. -->
