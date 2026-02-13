@@ -67,6 +67,7 @@ fn last_expr(expr: &Expression) -> &ExpressionKind {
         ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => last_expr(es.last().unwrap()),
         ExpressionKind::Grouped(_)
         | ExpressionKind::Optional(_)
+        | ExpressionKind::NegativeLookahead(_)
         | ExpressionKind::Repeat(_)
         | ExpressionKind::RepeatNonGreedy(_)
         | ExpressionKind::RepeatPlus(_)
@@ -118,6 +119,10 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
         ExpressionKind::Optional(e) => {
             render_expression(e, cx, output);
             output.push_str("<sup>?</sup>");
+        }
+        ExpressionKind::NegativeLookahead(e) => {
+            output.push('!');
+            render_expression(e, cx, output);
         }
         ExpressionKind::Repeat(e) => {
             render_expression(e, cx, output);
