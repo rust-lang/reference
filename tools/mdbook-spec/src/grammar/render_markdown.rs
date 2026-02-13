@@ -3,7 +3,7 @@
 use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
-use grammar::{Characters, Expression, ExpressionKind, Production};
+use grammar::{Character, Characters, Expression, ExpressionKind, Production};
 use regex::Regex;
 use std::borrow::Cow;
 use std::fmt::Write;
@@ -186,7 +186,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             output.push_str("^ ");
             render_expression(e, cx, output);
         }
-        ExpressionKind::Unicode(s) => {
+        ExpressionKind::Unicode((_, s)) => {
             output.push_str("U+");
             output.push_str(s);
         }
@@ -227,12 +227,20 @@ fn render_characters(chars: &Characters, cx: &RenderCtx, output: &mut String) {
             markdown_escape(s)
         )
         .unwrap(),
-        Characters::Range(a, b) => write!(
-            output,
-            "<span class=\"grammar-literal\">{a}\
-                 </span>-<span class=\"grammar-literal\">{b}</span>"
-        )
-        .unwrap(),
+        Characters::Range(a, b) => {
+            let write_ch = |ch: &Character, output: &mut String| match ch {
+                Character::Char(ch) => write!(
+                    output,
+                    "<span class=\"grammar-literal\">{}</span>",
+                    markdown_escape(&ch.to_string())
+                )
+                .unwrap(),
+                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
+            };
+            write_ch(a, output);
+            output.push('-');
+            write_ch(b, output);
+        }
     }
 }
 
