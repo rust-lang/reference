@@ -9,12 +9,13 @@ r[comments.syntax]
     | `//` _immediately followed by LF_
 
 BLOCK_COMMENT ->
-      `/*`
+      `/**/`
+    | `/***/`
+    | `/*`
+        ^
         ( ~[`*` `!`] | `**` | BLOCK_COMMENT_OR_DOC )
         ( BLOCK_COMMENT_OR_DOC | ~`*/` )*
       `*/`
-    | `/**/`
-    | `/***/`
 
 @root INNER_LINE_DOC ->
     `//!` ~[LF CR]*
