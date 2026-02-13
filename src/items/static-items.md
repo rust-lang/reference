@@ -85,6 +85,32 @@ blanket_impl: counter was 0
 blanket_impl: counter was 1
 ```
 
+r[items.static.generics.no-params]
+Neither the type, nor the initializer of a static item declared in a generic context may refer to the generic arguments.
+
+```rust,compile_fail,E0401
+use std::marker::PhantomData;
+
+fn f<T>() {
+    static A: PhantomData<T> = PhantomData;
+    //~^ ERROR: can't use generic parameters from outer item
+}
+
+fn g<'a>() {
+    static A: &'a u8 = &0;
+    //~^ ERROR: can't use generic parameters from outer item
+}
+
+trait HasConst {
+    const X: u8 = 0;
+}
+
+fn h<T: HasConst>() {
+    static A: u8 = T::X;
+    //~^ ERROR: can't use generic parameters from outer item
+}
+```
+
 r[items.static.mut]
 ## Mutable statics
 
