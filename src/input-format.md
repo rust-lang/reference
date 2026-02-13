@@ -5,7 +5,7 @@ r[input.syntax]
 ```grammar,lexer
 @root CHAR -> [U+0000-U+D7FF U+E000-U+10FFFF] // a Unicode scalar value
 
-@root ASCII -> [U+0000-U+007F]
+ASCII -> [U+0000-U+007F]
 
 NUL -> U+0000
 ```

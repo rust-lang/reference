@@ -115,7 +115,7 @@ r[lex.token.literal.suffix.syntax]
 ```grammar,lexer
 SUFFIX -> IDENTIFIER_OR_KEYWORD _except `_`_
 
-SUFFIX_NO_E -> SUFFIX _not beginning with `e` or `E`_
+SUFFIX_NO_E -> ![`e` `E`] SUFFIX
 ```
 
 r[lex.token.literal.suffix.validity]
@@ -253,8 +253,7 @@ r[lex.token.byte.syntax]
 BYTE_LITERAL ->
     `b'` ^ ( ASCII_FOR_CHAR | BYTE_ESCAPE )  `'` SUFFIX?
 
-ASCII_FOR_CHAR ->
-    <any ASCII (i.e. 0x00 to 0x7F) except `'`, `\`, LF, CR, or TAB>
+ASCII_FOR_CHAR -> ![`'` `\` LF CR TAB] ASCII
 
 BYTE_ESCAPE ->
       `\x` HEX_DIGIT HEX_DIGIT
@@ -272,8 +271,7 @@ r[lex.token.str-byte.syntax]
 BYTE_STRING_LITERAL ->
     `b"` ^ ( ASCII_FOR_STRING | BYTE_ESCAPE | STRING_CONTINUE )* `"` SUFFIX?
 
-ASCII_FOR_STRING ->
-    <any ASCII (i.e 0x00 to 0x7F) except `"`, `\`, or CR>
+ASCII_FOR_STRING -> ![`"` `\` CR] ASCII
 ```
 
 r[lex.token.str-byte.intro]
@@ -309,8 +307,7 @@ RAW_BYTE_STRING_CONTENT ->
       `"` ^ ASCII_FOR_RAW*? `"`
     | `#` RAW_BYTE_STRING_CONTENT `#`
 
-ASCII_FOR_RAW ->
-    <any ASCII (i.e. 0x00 to 0x7F) except CR>
+ASCII_FOR_RAW -> !CR ASCII
 ```
 
 r[lex.token.str-byte-raw.intro]
@@ -559,7 +556,7 @@ r[lex.token.literal.float.syntax]
 FLOAT_LITERAL ->
       DEC_LITERAL (`.` DEC_LITERAL)? FLOAT_EXPONENT SUFFIX?
     | DEC_LITERAL `.` DEC_LITERAL SUFFIX_NO_E?
-    | DEC_LITERAL `.` _not immediately followed by `.`, `_` or an XID_Start character_
+    | DEC_LITERAL `.` !(`.` | `_` | XID_Start)
 
 FLOAT_EXPONENT ->
     (`e`|`E`) (`+`|`-`)? `_`* DEC_DIGIT (DEC_DIGIT|`_`)*
@@ -608,13 +605,12 @@ r[lex.token.literal.reserved.syntax]
 RESERVED_NUMBER ->
       BIN_LITERAL [`2`-`9`]
     | OCT_LITERAL [`8`-`9`]
-    | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` _not immediately followed by `.`, `_` or an XID_Start character_
+    | ( BIN_LITERAL | OCT_LITERAL | HEX_LITERAL ) `.` !(`.` | `_` | XID_Start)
     | ( BIN_LITERAL | OCT_LITERAL ) (`e`|`E`)
-    | `0b` `_`* <end of input or not BIN_DIGIT>
-    | `0o` `_`* <end of input or not OCT_DIGIT>
-    | `0x` `_`* <end of input or not HEX_DIGIT>
+    | `0b` `_`* !BIN_DIGIT
+    | `0o` `_`* !OCT_DIGIT
+    | `0x` `_`* !HEX_DIGIT
     | DEC_LITERAL ( `.` DEC_LITERAL )? (`e` | `E`) (`+` | `-`)? <end of input or not DEC_DIGIT>
-
 ```
 
 r[lex.token.literal.reserved.intro]
@@ -657,16 +653,16 @@ r[lex.token.life.syntax]
 ```grammar,lexer
 LIFETIME_TOKEN ->
       RAW_LIFETIME
-    | `'` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
+    | `'` IDENTIFIER_OR_KEYWORD !`'`
 
 LIFETIME_OR_LABEL ->
       RAW_LIFETIME
-    | `'` NON_KEYWORD_IDENTIFIER _not immediately followed by `'`_
+    | `'` NON_KEYWORD_IDENTIFIER !`'`
 
 RAW_LIFETIME ->
-    `'r#` IDENTIFIER_OR_KEYWORD _not immediately followed by `'`_
+    `'r#` ^ IDENTIFIER_OR_KEYWORD !`'`
 
-RESERVED_RAW_LIFETIME -> `'r#` (`_` | `crate` | `self` | `Self` | `super`) _not immediately followed by `'`_
+RESERVED_RAW_LIFETIME -> `'r#` (`_` | `crate` | `self` | `Self` | `super`) !(`'` | XID_Continue)
 ```
 
 r[lex.token.life.intro]
