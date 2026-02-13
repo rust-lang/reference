@@ -3,7 +3,15 @@ r[comments]
 
 r[comments.syntax]
 ```grammar,lexer
-@root LINE_COMMENT ->
+@root COMMENT ->
+      LINE_COMMENT
+    | INNER_LINE_DOC
+    | OUTER_LINE_DOC
+    | INNER_BLOCK_DOC
+    | OUTER_BLOCK_DOC
+    | BLOCK_COMMENT
+
+LINE_COMMENT ->
       `//` (~[`/` `!` LF] | `//`) ~LF*
     | `//` EOF
     | `//` _immediately followed by LF_
@@ -17,7 +25,7 @@ BLOCK_COMMENT ->
         ( BLOCK_COMMENT_OR_DOC | ~`*/` )*
       `*/`
 
-@root INNER_LINE_DOC ->
+INNER_LINE_DOC ->
     `//!` ^ LINE_DOC_COMMENT_CONTENT (LF | EOF)
 
 LINE_DOC_COMMENT_CONTENT -> (!CR ~LF)*
@@ -25,7 +33,7 @@ LINE_DOC_COMMENT_CONTENT -> (!CR ~LF)*
 INNER_BLOCK_DOC ->
     `/*!` ^ ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )* `*/`
 
-@root OUTER_LINE_DOC ->
+OUTER_LINE_DOC ->
     `///` ^ LINE_DOC_COMMENT_CONTENT (LF | EOF)
 
 OUTER_BLOCK_DOC ->
@@ -37,7 +45,7 @@ OUTER_BLOCK_DOC ->
 
 BLOCK_CHAR -> (!(`*/` | CR) CHAR)
 
-@root BLOCK_COMMENT_OR_DOC ->
+BLOCK_COMMENT_OR_DOC ->
       BLOCK_COMMENT
     | OUTER_BLOCK_DOC
     | INNER_BLOCK_DOC
