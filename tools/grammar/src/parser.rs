@@ -173,11 +173,7 @@ impl Parser<'_> {
         match es.len() {
             0 => Ok(None),
             1 => Ok(Some(es.pop().unwrap())),
-            _ => Ok(Some(Expression {
-                kind: ExpressionKind::Alt(es),
-                suffix: None,
-                footnote: None,
-            })),
+            _ => Ok(Some(Expression::new_kind(ExpressionKind::Alt(es)))),
         }
     }
 
@@ -185,6 +181,11 @@ impl Parser<'_> {
         let mut es = Vec::new();
         loop {
             self.space0();
+            if self.peek() == Some(b'^') {
+                let cut = self.parse_cut()?;
+                es.push(cut);
+                break;
+            }
             let Some(e) = self.parse_expr1()? else {
                 break;
             };
@@ -199,6 +200,19 @@ impl Parser<'_> {
                 footnote: None,
             })),
         }
+    }
+
+    /// Parse cut (`^`) operator.
+    fn parse_cut(&mut self) -> Result<Expression> {
+        self.expect("^", "expected `^`")?;
+        let Some(rhs) = self.parse_seq()? else {
+            bail!(self, "expected expression after cut operator");
+        };
+        Ok(Expression {
+            kind: ExpressionKind::Cut(Box::new(rhs)),
+            suffix: None,
+            footnote: None,
+        })
     }
 
     fn parse_expr1(&mut self) -> Result<Option<Expression>> {
@@ -506,13 +520,71 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
     ("", line_number + 1, 0)
 }
 
-#[test]
-fn translate_tests() {
-    assert_eq!(translate_position("", 0), ("", 0, 0));
-    assert_eq!(translate_position("test", 0), ("test", 1, 1));
-    assert_eq!(translate_position("test", 3), ("test", 1, 4));
-    assert_eq!(translate_position("test", 4), ("test", 1, 5));
-    assert_eq!(translate_position("test\ntest2", 4), ("test", 1, 5));
-    assert_eq!(translate_position("test\ntest2", 5), ("test2", 2, 1));
-    assert_eq!(translate_position("test\ntest2\n", 11), ("", 3, 0));
+#[cfg(test)]
+mod tests {
+    use crate::parser::{parse_grammar, translate_position};
+    use crate::{ExpressionKind, Grammar};
+    use std::path::Path;
+
+    #[test]
+    fn test_translate() {
+        assert_eq!(translate_position("", 0), ("", 0, 0));
+        assert_eq!(translate_position("test", 0), ("test", 1, 1));
+        assert_eq!(translate_position("test", 3), ("test", 1, 4));
+        assert_eq!(translate_position("test", 4), ("test", 1, 5));
+        assert_eq!(translate_position("test\ntest2", 4), ("test", 1, 5));
+        assert_eq!(translate_position("test\ntest2", 5), ("test2", 2, 1));
+        assert_eq!(translate_position("test\ntest2\n", 11), ("", 3, 0));
+    }
+
+    fn parse(input: &str) -> Result<Grammar, String> {
+        let mut grammar = Grammar::default();
+        parse_grammar(input, &mut grammar, "test", Path::new("test.md"))
+            .map_err(|e| e.to_string())?;
+        Ok(grammar)
+    }
+
+    #[test]
+    fn test_cut() {
+        let input = "Rule -> A ^ B | C";
+        let grammar = parse(input).unwrap();
+        grammar.productions.get("Rule").unwrap();
+    }
+
+    #[test]
+    fn test_cut_captures() {
+        let input = "Rule -> A ^ B C | D";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        // The top-level expression is an alternation: (A ^ B C) | D.
+        let ExpressionKind::Alt(alts) = &rule.expression.kind else {
+            panic!("expected Alt, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(alts.len(), 2);
+        // First alternative is a sequence: A, Cut(Sequence(B, C)).
+        let ExpressionKind::Sequence(seq) = &alts[0].kind else {
+            panic!("expected Sequence, got {:?}", alts[0].kind);
+        };
+        assert_eq!(seq.len(), 2);
+        assert!(matches!(&seq[0].kind, ExpressionKind::Nt(n) if n == "A"));
+        // The cut captures the rest of the sequence (B and C).
+        let ExpressionKind::Cut(cut_inner) = &seq[1].kind else {
+            panic!("expected Cut, got {:?}", seq[1].kind);
+        };
+        let ExpressionKind::Sequence(cut_seq) = &cut_inner.kind else {
+            panic!("expected Sequence inside Cut, got {:?}", cut_inner.kind);
+        };
+        assert_eq!(cut_seq.len(), 2);
+        assert!(matches!(&cut_seq[0].kind, ExpressionKind::Nt(n) if n == "B"));
+        assert!(matches!(&cut_seq[1].kind, ExpressionKind::Nt(n) if n == "C"));
+        // Second alternative is just D.
+        assert!(matches!(&alts[1].kind, ExpressionKind::Nt(n) if n == "D"));
+    }
+
+    #[test]
+    fn test_cut_fail_trailing() {
+        let input = "Rule -> A ^";
+        let err = parse(input).unwrap_err();
+        assert!(err.contains("expected expression after cut operator"));
+    }
 }
