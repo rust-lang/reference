@@ -39,7 +39,11 @@ Sequence ->
         (` `* AdornedExpr)* ` `* Cut
       | (` `* AdornedExpr)+
 
-AdornedExpr -> Expr1 Quantifier? Suffix? Footnote?
+AdornedExpr -> Prefix? Expr1 Quantifier? Suffix? Footnote?
+
+Prefix -> NegativeLookahead
+
+NegativeLookahead -> `!`
 
 Suffix -> ` _` <not underscore, unless in backtick>* `_`
 
@@ -135,6 +139,7 @@ The general format is a series of productions separated by blank lines. The expr
 | Suffix | \_except \[LazyBooleanExpression\]\_  | Adds a suffix to the previous expression to provide an additional English description, rendered in subscript. This can contain limited Markdown, but try to avoid anything except basics like links. |
 | Footnote | \[^extern-safe\] | Adds a footnote, which can supply extra information that may be helpful to the user. The footnote itself should be defined outside of the code block like a normal Markdown footnote. |
 | Optional | Expr? | The preceding expression is optional. |
+| NegativeLookahead | !Expr | Matches if Expr does not follow, without consuming any input. |
 | Repeat | Expr* | The preceding expression is repeated 0 or more times. |
 | RepeatNonGreedy | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
 | RepeatPlus | Expr+ | The preceding expression is repeated 1 or more times. |

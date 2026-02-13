@@ -143,6 +143,12 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                         make_seq(&es)?
                     }
                 }
+                ExpressionKind::NegativeLookahead(e) => {
+                    let forward = render_expression(e, cx, stack)?;
+                    let lbox =
+                        LabeledBox::new(forward, Comment::new("not followed by".to_string()));
+                    Box::new(lbox)
+                }
                 // Treat `e?` and `e{..=1}` / `e{0..=1}` equally.
                 ExpressionKind::Optional(e)
                 | ExpressionKind::RepeatRange {
