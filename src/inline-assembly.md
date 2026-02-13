@@ -1009,7 +1009,8 @@ unsafe {
         sym foo,
         sym bar,
         out("rax") z,
-        clobber_abi("C")
+        clobber_abi("sysv64"),
+        clobber_abi("win64"),
     );
 }
 assert_eq!(z, 1);
