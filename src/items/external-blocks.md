@@ -245,88 +245,185 @@ r[items.extern.attributes]
 r[items.extern.attributes.intro]
 The following [attributes] control the behavior of external blocks.
 
+<!-- template:attributes -->
 r[items.extern.attributes.link]
 ### The `link` attribute
 
 r[items.extern.attributes.link.intro]
-The *`link` attribute* specifies the name of a native library that the compiler should link with for the items within an `extern` block.
+The *`link` [attribute][attributes]* specifies the name of a native library that the compiler should link with for the items within an `extern` block.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "crypto")]
+> unsafe extern "C" {
+>     // …
+> }
+>
+> #[link(name = "CoreFoundation", kind = "framework")]
+> unsafe extern "C" {
+>     // …
+> }
+>
+> #[link(wasm_import_module = "foo")]
+> unsafe extern "C" {
+>     // …
+> }
+> ```
 
 r[items.extern.attributes.link.syntax]
-It uses the [MetaListNameValueStr] syntax to specify its inputs. The `name` key is the name of the native library to link. The `kind` key is an optional value which specifies the kind of library with the following possible values:
+The `link` attribute uses the [MetaListNameValueStr] syntax to specify its inputs. It accepts the following keys:
 
-r[items.extern.attributes.link.dylib]
-- `dylib` --- Indicates a dynamic library. This is the default if `kind` is not specified.
+- [`name`][items.extern.attributes.link.name] --- the name of the native library to link.
+- [`kind`][items.extern.attributes.link.kind] --- the kind of library.
+- [`modifiers`][items.extern.attributes.link.modifiers] --- modifiers that change the behavior of how the library is linked.
+- [`wasm_import_module`][items.extern.attributes.link.wasm_import_module] --- specifies the WebAssembly module name.
+- [`import_name_type`][items.extern.attributes.link.import_name_type] --- on x86 Windows, this changes how functions are named.
 
-r[items.extern.attributes.link.static]
-- `static` --- Indicates a static library.
+None of the keys may be specified more than once.
 
-r[items.extern.attributes.link.framework]
-- `framework` --- Indicates a macOS framework. This is only valid for macOS targets.
+r[items.extern.attributes.link.allowed-positions]
+The `link` attribute may only be applied to [`extern` blocks].
 
-r[items.extern.attributes.link.raw-dylib]
-- `raw-dylib` --- Indicates a dynamic library where the compiler will generate an import library to link against (see [`dylib` versus `raw-dylib`] below for details). This is only valid for Windows targets.
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
-r[items.extern.attributes.link.name-requirement]
-The `name` key must be included if `kind` is specified.
-
-r[items.extern.attributes.link.modifiers]
-The optional `modifiers` argument is a way to specify linking modifiers for the library to link.
-
-r[items.extern.attributes.link.modifiers.syntax]
-Modifiers are specified as a comma-delimited string with each modifier prefixed with either a `+` or `-` to indicate that the modifier is enabled or disabled, respectively.
-
-r[items.extern.attributes.link.modifiers.multiple]
-Specifying multiple `modifiers` arguments in a single `link` attribute, or multiple identical modifiers in the same `modifiers` argument is not currently supported. Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]`.
-
-r[items.extern.attributes.link.wasm_import_module]
-The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
-
-<!-- ignore: requires extern linking -->
-```rust,ignore
-#[link(name = "crypto")]
-unsafe extern {
-    // …
-}
-
-#[link(name = "CoreFoundation", kind = "framework")]
-unsafe extern {
-    // …
-}
-
-#[link(wasm_import_module = "foo")]
-unsafe extern {
-    // …
-}
-```
+r[items.extern.attributes.link.duplicates]
+The `link` attribute may be specified multiple times, and the corresponding linking instructions for each attribute will be passed to the linker.
 
 r[items.extern.attributes.link.empty-block]
 It is valid to add the `link` attribute on an empty extern block. You can use this to satisfy the linking requirements of extern blocks elsewhere in your code (including upstream crates) instead of adding the attribute to each extern block.
 
+r[items.extern.attributes.link.name]
+#### The `name` key
+
+r[items.extern.attributes.link.name.intro]
+The `name` key specifies the name of the library to link.
+
+<!-- TODO: I think it would be helpful to describe how `name` works with some examples of how it works in various situations or platforms (for example, how prefixes and suffixes work). -->
+
+<!-- TODO: Would be good to specify what happens if the same name is specified multiple times in different attributes. My understanding from https://github.com/rust-lang/rust/blob/c68340350c78eea402c4a85f8d9c1b7d3d607635/compiler/rustc_metadata/src/native_libs.rs#L551-L620 is that it de-duplicates it and uses the "last" instance. I'm not sure if we want to explicitly document that? -->
+
+r[items.extern.attributes.link.name.requirement]
+The `name` key must be included unless `wasm_import_module` is used.
+
+r[items.extern.attributes.link.kind]
+#### The `kind` key
+
+r[items.extern.attributes.link.kind.intro]
+The `kind` key specifies the kind of the library.
+
+r[items.extern.attributes.link.kind.dylib]
+The `dylib` kind indicates a dynamic library. This is the default if `kind` is not specified.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "dylib")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.kind.static]
+The `static` kind indicates a static library.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "static")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.kind.framework]
+The `framework` kind indicates a macOS framework. This is only valid for macOS targets.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "CoreFoundation", kind = "framework")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.kind.raw-dylib]
+The `raw-dylib` kind indicates a dynamic library where the compiler will generate an import library to link against (see [`dylib` versus `raw-dylib`] below for details). This is only valid for Windows targets.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "example", kind = "raw-dylib")]
+> unsafe extern "C" {}
+> ```
+
+> [!NOTE]
+> ##### `dylib` versus `raw-dylib`
+>
+> On Windows, linking against a dynamic library requires that an import library is provided to the linker. This is a special static library that declares all of the symbols exported by the dynamic library in such a way that the linker knows that they have to be dynamically loaded at runtime.
+>
+> Specifying `kind = "dylib"` links an import library based on the `name` key. The linker will then use its normal library resolution logic to find that import library. Alternatively, specifying `kind = "raw-dylib"` generates an import library during compilation and provide that to the linker instead.
+
+r[items.extern.attributes.link.modifiers]
+#### The `modifiers` key
+
+r[items.extern.attributes.link.modifiers.intro]
+The optional `modifiers` argument is a way to specify linking modifiers for the library to link.
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]
+> unsafe extern "C" {}
+> ```
+
+r[items.extern.attributes.link.modifiers.syntax]
+Modifiers are specified as a comma-delimited string with each modifier prefixed with either a `+` or `-` to indicate that the modifier is enabled or disabled, respectively.
+
+r[items.extern.attributes.link.modifiers.once]
+The `modifiers` argument may only be specified once.
+
+r[items.extern.attributes.link.modifiers.duplicates]
+Duplicate modifiers are not allowed within a `modifiers` argument.
+
 r[items.extern.attributes.link.modifiers.bundle]
 #### Linking modifiers: `bundle`
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+bundle")]
+> unsafe extern "C" {}
+> ```
+
 r[items.extern.attributes.link.modifiers.bundle.allowed-kinds]
-This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
+The `bundle` modifier may only be used with [`static` linking].
 
 r[items.extern.attributes.link.modifiers.bundle.behavior]
-When building a rlib or staticlib `+bundle` means that the native static library will be packed into the rlib or staticlib archive, and then retrieved from there during linking of the final binary.
+When building a rlib or staticlib, `+bundle` means that the native static library will be packed into the rlib or staticlib archive, and then retrieved from there during linking of the final binary.
 
 r[items.extern.attributes.link.modifiers.bundle.behavior-negative]
-When building a rlib `-bundle` means that the native static library is registered as a dependency of that rlib "by name", and object files from it are included only during linking of the final binary, the file search by that name is also performed during final linking. When building a staticlib `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
+When building a rlib, `-bundle` means that the native static library is registered as a dependency of that rlib "by name", and object files from it are included only during linking of the final binary, the file search by that name is also performed during final linking.
+
+When building a staticlib, `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
 
 r[items.extern.attributes.link.modifiers.bundle.no-effect]
-This modifier has no effect when building other targets like executables or dynamic libraries.
+The `bundle` modifier has no effect when building other targets like executables or dynamic libraries.
 
 r[items.extern.attributes.link.modifiers.bundle.default]
 The default for this modifier is `+bundle`.
 
-More implementation details about this modifier can be found in [`bundle` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`bundle` documentation for rustc].
 
 r[items.extern.attributes.link.modifiers.whole-archive]
 #### Linking modifiers: `whole-archive`
 
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]
+> unsafe extern "C" {}
+> ```
+
 r[items.extern.attributes.link.modifiers.whole-archive.allowed-kinds]
-This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
+The `whole-archive` modifier may only be used with [`static` linking].
 
 r[items.extern.attributes.link.modifiers.whole-archive.behavior]
 `+whole-archive` means that the static library is linked as a whole archive without throwing any object files away.
@@ -334,39 +431,56 @@ r[items.extern.attributes.link.modifiers.whole-archive.behavior]
 r[items.extern.attributes.link.modifiers.whole-archive.default]
 The default for this modifier is `-whole-archive`.
 
-More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
 
 r[items.extern.attributes.link.modifiers.verbatim]
-### Linking modifiers: `verbatim`
+#### Linking modifiers: `verbatim`
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "static", modifiers = "+verbatim")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
 
 r[items.extern.attributes.link.modifiers.verbatim.behavior]
-`+verbatim` means that rustc itself won't add any target-specified library prefixes or suffixes (like `lib` or `.a`) to the library name, and will try its best to ask for the same thing from the linker.
+`+verbatim` means that the compiler won't add any target-specified library prefixes or suffixes (like `lib` or `.a`) to the library name, and will try its best to ask for the same thing from the linker.
 
 r[items.extern.attributes.link.modifiers.verbatim.behavior-negative]
-`-verbatim` means that rustc will either add a target-specific prefix and suffix to the library name before passing it to linker, or won't prevent linker from implicitly adding it.
+`-verbatim` means that the compiler will either add a target-specific prefix and suffix to the library name before passing it to linker, or won't prevent linker from implicitly adding it.
 
 r[items.extern.attributes.link.modifiers.verbatim.default]
 The default for this modifier is `-verbatim`.
 
-More implementation details about this modifier can be found in [`verbatim` documentation for rustc].
+> [!NOTE]
+> More implementation details about this modifier can be found in [`verbatim` documentation for rustc].
 
-r[items.extern.attributes.link.kind-raw-dylib]
-#### `dylib` versus `raw-dylib`
+r[items.extern.attributes.link.wasm_import_module]
+#### The `wasm_import_module` key
 
-r[items.extern.attributes.link.kind-raw-dylib.intro]
-On Windows, linking against a dynamic library requires that an import library is provided to the linker: this is a special static library that declares all of the symbols exported by the dynamic library in such a way that the linker knows that they have to be dynamically loaded at runtime.
+r[items.extern.attributes.link.wasm_import_module.behavior]
+The `wasm_import_module` key may be used to specify the [WebAssembly module] name for the items within an `extern` block when importing symbols from the host environment. The default module name is `env` if `wasm_import_module` is not specified.
 
-r[items.extern.attributes.link.kind-raw-dylib.import]
-Specifying `kind = "dylib"` instructs the Rust compiler to link an import library based on the `name` key. The linker will then use its normal library resolution logic to find that import library. Alternatively, specifying `kind = "raw-dylib"` instructs the compiler to generate an import library during compilation and provide that to the linker instead.
-
-r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
-`raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(wasm_import_module = "foo")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
+
+> [!EXAMPLE]
+> <!-- ignore: requires extern linking -->
+> ```rust,ignore
+> #[link(name = "mylib", kind = "raw-dylib", import_name_type = "undecorated")]
+> unsafe extern "C" {}
+> ```
 
 r[items.extern.attributes.link.import_name_type.intro]
 On x86 Windows, names of functions are "decorated" (i.e., have a specific prefix and/or suffix added) to indicate their calling convention. For example, a `stdcall` calling convention function with the name `fn1` that has no arguments would be decorated as `_fn1@0`. However, the [PE Format] does also permit names to have no prefix or be undecorated. Additionally, the MSVC and GNU toolchains use different decorations for the same calling conventions which means, by default, some Win32 functions cannot be called using the `raw-dylib` link kind via the GNU toolchain.
@@ -467,3 +581,5 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [value namespace]: ../names/namespaces.md
 [win32 api]: https://learn.microsoft.com/en-us/windows/win32/api/
 [`link_ordinal`]: items.extern.attributes.link_ordinal
+[`extern` blocks]: external-blocks.md
+[`static` linking]: link.staticlib
