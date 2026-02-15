@@ -71,7 +71,7 @@ fn last_expr(expr: &Expression) -> &ExpressionKind {
         | ExpressionKind::RepeatNonGreedy(_)
         | ExpressionKind::RepeatPlus(_)
         | ExpressionKind::RepeatPlusNonGreedy(_)
-        | ExpressionKind::RepeatRange(_, _, _)
+        | ExpressionKind::RepeatRange { .. }
         | ExpressionKind::Nt(_)
         | ExpressionKind::Terminal(_)
         | ExpressionKind::Prose(_)
@@ -135,13 +135,18 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             render_expression(e, cx, output);
             output.push_str("<sup>+ (non-greedy)</sup>");
         }
-        ExpressionKind::RepeatRange(e, a, b) => {
-            render_expression(e, cx, output);
+        ExpressionKind::RepeatRange {
+            expr,
+            min,
+            max,
+            limit,
+        } => {
+            render_expression(expr, cx, output);
             write!(
                 output,
-                "<sup>{}..{}</sup>",
-                a.map(|v| v.to_string()).unwrap_or_default(),
-                b.map(|v| v.to_string()).unwrap_or_default(),
+                "<sup>{min}{limit}{max}</sup>",
+                min = min.map(|v| v.to_string()).unwrap_or_default(),
+                max = max.map(|v| v.to_string()).unwrap_or_default(),
             )
             .unwrap();
         }
