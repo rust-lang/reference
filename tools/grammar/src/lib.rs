@@ -3,6 +3,7 @@
 use diagnostics::{Diagnostics, warn_or_err};
 use regex::Regex;
 use std::collections::{HashMap, HashSet};
+use std::fmt::{Display, Formatter};
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use walkdir::WalkDir;
@@ -58,8 +59,13 @@ pub enum ExpressionKind {
     RepeatPlus(Box<Expression>),
     /// `A+?`
     RepeatPlusNonGreedy(Box<Expression>),
-    /// `A{2..4}`
-    RepeatRange(Box<Expression>, Option<u32>, Option<u32>),
+    /// `A{2..4}` or `A{2..=4}`
+    RepeatRange {
+        expr: Box<Expression>,
+        min: Option<u32>,
+        max: Option<u32>,
+        limit: RangeLimit,
+    },
     /// `NonTerminal`
     Nt(String),
     /// `` `string` ``
@@ -80,6 +86,24 @@ pub enum ExpressionKind {
     Cut(Box<Expression>),
     /// `U+0060`
     Unicode(String),
+}
+
+#[derive(Copy, Clone, Debug)]
+pub enum RangeLimit {
+    /// `..`
+    HalfOpen,
+    /// `..=`
+    Closed,
+}
+
+impl Display for RangeLimit {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::result::Result<(), std::fmt::Error> {
+        match self {
+            RangeLimit::HalfOpen => "..",
+            RangeLimit::Closed => "..=",
+        }
+        .fmt(f)
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -117,7 +141,7 @@ impl Expression {
             | ExpressionKind::RepeatNonGreedy(e)
             | ExpressionKind::RepeatPlus(e)
             | ExpressionKind::RepeatPlusNonGreedy(e)
-            | ExpressionKind::RepeatRange(e, _, _)
+            | ExpressionKind::RepeatRange { expr: e, .. }
             | ExpressionKind::NegExpression(e)
             | ExpressionKind::Cut(e) => {
                 e.visit_nt(callback);
