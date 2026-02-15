@@ -19,6 +19,7 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | x<sup>a..b</sup>  | HEX_DIGIT<sup>1..6</sup>      | a to b repetitions of x                   |
 | Rule1 Rule2       | `fn` _Name_ _Parameters_      | Sequence of rules in order                |
 | \|                | `u8` \| `u16`, Block \| Item  | Either one or another                     |
+| !                 | !COMMENT                      | Matches if the expression does not follow, without consuming any input |
 | \[ ]               | \[`b` `B`]                     | Any of the characters listed              |
 | \[ - ]             | \[`a`-`z`]                     | Any of the characters in the range        |
 | ~\[ ]              | ~\[`b` `B`]                    | Any characters, except those listed       |

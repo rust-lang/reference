@@ -1,6 +1,6 @@
 //! A parser of the ENBF-like grammar.
 
-use super::{Characters, Expression, ExpressionKind, Grammar, Production};
+use super::{Character, Characters, Expression, ExpressionKind, Grammar, Production};
 use std::fmt;
 use std::fmt::Display;
 use std::path::Path;
@@ -221,7 +221,7 @@ impl Parser<'_> {
         };
 
         let kind = if self.take_str("U+") {
-            self.parse_unicode()?
+            ExpressionKind::Unicode(self.parse_unicode()?)
         } else if self.input[self.index..]
             .chars()
             .next()
@@ -251,6 +251,8 @@ impl Parser<'_> {
             self.parse_grouped()?
         } else if next == b'~' {
             self.parse_neg_expression()?
+        } else if next == b'!' {
+            self.parse_negative_lookahead()?
         } else {
             return Ok(None);
         };
@@ -320,31 +322,40 @@ impl Parser<'_> {
     /// Parse an element of a character class, e.g.
     /// `` `a`-`b` `` | `` `term` `` | `` NonTerminal ``.
     fn parse_characters(&mut self) -> Result<Option<Characters>> {
-        if let Some(b'`') = self.peek() {
-            let recov = self.index;
-            let a = self.parse_terminal_str()?;
+        if let Some(a) = self.parse_character()? {
             if self.take_str("-") {
-                //~^ Parse `` `a`-`b` `` character range.
-                if a.len() > 1 {
-                    self.index = recov + 1;
-                    bail!(self, "invalid start terminal in range");
-                }
-                let recov = self.index;
-                let b = self.parse_terminal_str()?;
-                if b.len() > 1 {
-                    self.index = recov + 1;
-                    bail!(self, "invalid end terminal in range");
-                }
-                let a = a.chars().next().unwrap();
-                let b = b.chars().next().unwrap();
+                let Some(b) = self.parse_character()? else {
+                    bail!(self, "expected character in range");
+                };
                 Ok(Some(Characters::Range(a, b)))
             } else {
                 //~^ Parse terminal in backticks.
-                Ok(Some(Characters::Terminal(a)))
+                let t = match a {
+                    Character::Char(ch) => ch.to_string(),
+                    Character::Unicode(_) => bail!(self, "unicode not supported"),
+                };
+                Ok(Some(Characters::Terminal(t)))
             }
         } else if let Some(name) = self.parse_name() {
             //~^ Parse nonterminal identifier.
             Ok(Some(Characters::Named(name)))
+        } else {
+            Ok(None)
+        }
+    }
+
+    fn parse_character(&mut self) -> Result<Option<Character>> {
+        if let Some(b'`') = self.peek() {
+            let recov = self.index;
+            let term = self.parse_terminal_str()?;
+            if term.len() > 1 {
+                self.index = recov + 1;
+                bail!(self, "invalid start terminal in range");
+            }
+            let ch = term.chars().next().unwrap();
+            Ok(Some(Character::Char(ch)))
+        } else if self.take_str("U+") {
+            Ok(Some(Character::Unicode(self.parse_unicode()?)))
         } else {
             Ok(None)
         }
@@ -387,10 +398,19 @@ impl Parser<'_> {
         Ok(ExpressionKind::NegExpression(box_kind(kind)))
     }
 
+    fn parse_negative_lookahead(&mut self) -> Result<ExpressionKind> {
+        self.expect("!", "expected !")?;
+        self.space0();
+        let Some(e) = self.parse_expr1()? else {
+            bail!(self, "expected expression after !");
+        };
+        Ok(ExpressionKind::NegativeLookahead(Box::new(e)))
+    }
+
     /// Parse e.g. `F00F` after `U+`.
-    fn parse_unicode(&mut self) -> Result<ExpressionKind> {
-        let mut xs = Vec::with_capacity(4);
-        for _ in 0..4 {
+    fn parse_unicode(&mut self) -> Result<(char, String)> {
+        let mut xs = Vec::with_capacity(6);
+        let mut push_next = || {
             match self.peek() {
                 Some(x @ (b'0'..=b'9' | b'A'..=b'F')) => {
                     xs.push(x);
@@ -398,8 +418,19 @@ impl Parser<'_> {
                 }
                 _ => bail!(self, "expected 4 uppercase hexadecimal digits after `U+`"),
             }
+            Ok(())
+        };
+        for _ in 0..4 {
+            push_next()?;
         }
-        Ok(ExpressionKind::Unicode(String::from_utf8(xs).unwrap()))
+        for _ in 0..2 {
+            if push_next().is_err() {
+                break;
+            }
+        }
+        let s = String::from_utf8(xs).unwrap();
+        let ch = char::from_u32(u32::from_str_radix(&s, 16).unwrap()).unwrap();
+        Ok((ch, s))
     }
 
     /// Parse `?` after expression.

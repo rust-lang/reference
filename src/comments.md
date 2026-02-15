@@ -3,34 +3,49 @@ r[comments]
 
 r[comments.syntax]
 ```grammar,lexer
-@root LINE_COMMENT ->
+@root COMMENT ->
+      LINE_COMMENT
+    | INNER_LINE_DOC
+    | OUTER_LINE_DOC
+    | INNER_BLOCK_DOC
+    | OUTER_BLOCK_DOC
+    | BLOCK_COMMENT
+
+LINE_COMMENT ->
       `//` (~[`/` `!` LF] | `//`) ~LF*
-    | `//`
+    | `//` EOF
+    | `//` _immediately followed by LF_
 
 BLOCK_COMMENT ->
-      `/*`
+      `/**/`
+    | `/***/`
+    | `/*`
+        ^
         ( ~[`*` `!`] | `**` | BLOCK_COMMENT_OR_DOC )
         ( BLOCK_COMMENT_OR_DOC | ~`*/` )*
       `*/`
-    | `/**/`
-    | `/***/`
 
-@root INNER_LINE_DOC ->
-    `//!` ~[LF CR]*
+INNER_LINE_DOC ->
+    `//!` ^ LINE_DOC_COMMENT_CONTENT (LF | EOF)
+
+LINE_DOC_COMMENT_CONTENT -> (!CR ~LF)*
 
 INNER_BLOCK_DOC ->
-    `/*!` ( BLOCK_COMMENT_OR_DOC | ~[`*/` CR] )* `*/`
+    `/*!` ^ ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )* `*/`
 
-@root OUTER_LINE_DOC ->
-    `///` (~`/` ~[LF CR]*)?
+OUTER_LINE_DOC ->
+    `///` ^ LINE_DOC_COMMENT_CONTENT (LF | EOF)
 
 OUTER_BLOCK_DOC ->
-    `/**`
+    `/**` ![`*` `/`]
+      ^
       ( ~`*` | BLOCK_COMMENT_OR_DOC )
-      ( BLOCK_COMMENT_OR_DOC | ~[`*/` CR] )*
+      ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )*
     `*/`
 
-@root BLOCK_COMMENT_OR_DOC ->
+BLOCK_CHAR -> (!(`*/` | CR) CHAR)
+
+BLOCK_COMMENT_OR_DOC ->
       BLOCK_COMMENT
     | OUTER_BLOCK_DOC
     | INNER_BLOCK_DOC
@@ -51,7 +66,7 @@ r[comments.doc.syntax]
 Line doc comments beginning with exactly _three_ slashes (`///`), and block doc comments (`/** ... */`), both outer doc comments, are interpreted as a special syntax for [`doc` attributes].
 
 r[comments.doc.attributes]
-That is, they are equivalent to writing `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into `#[doc="Foo"]` and `/** Bar */` turns into `#[doc="Bar"]`. They must therefore appear before something that accepts an outer attribute.
+That is, they are equivalent to writing `#[doc="..."]` around the body of the comment, i.e., `/// Foo` turns into `#[doc=" Foo"]` and `/** Bar */` turns into `#[doc=" Bar "]`. They must therefore appear before something that accepts an outer attribute.
 
 r[comments.doc.inner-syntax]
 Line comments beginning with `//!` and block comments `/*! ... */` are doc comments that apply to the parent of the comment, rather than the item that follows.

@@ -3,6 +3,7 @@
 use diagnostics::{Diagnostics, warn_or_err};
 use regex::Regex;
 use std::collections::{HashMap, HashSet};
+use std::fmt::{Display, Formatter};
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use walkdir::WalkDir;
@@ -50,6 +51,8 @@ pub enum ExpressionKind {
     Sequence(Vec<Expression>),
     /// `A?`
     Optional(Box<Expression>),
+    /// `!A`
+    NegativeLookahead(Box<Expression>),
     /// `A*`
     Repeat(Box<Expression>),
     /// `A*?`
@@ -79,7 +82,7 @@ pub enum ExpressionKind {
     /// `^ A B C`
     Cut(Box<Expression>),
     /// `U+0060`
-    Unicode(String),
+    Unicode((char, String)),
 }
 
 #[derive(Clone, Debug)]
@@ -89,7 +92,34 @@ pub enum Characters {
     /// `` `_` ``
     Terminal(String),
     /// `` `A`-`Z` ``
-    Range(char, char),
+    Range(Character, Character),
+}
+
+#[derive(Clone, Debug)]
+pub enum Character {
+    Char(char),
+    /// `U+0060`
+    ///
+    /// The `String` is the hex digits after `U+`.
+    Unicode((char, String)),
+}
+
+impl Character {
+    pub fn get_ch(&self) -> char {
+        match self {
+            Character::Char(ch) => *ch,
+            Character::Unicode((ch, _)) => *ch,
+        }
+    }
+}
+
+impl Display for Character {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
+        match self {
+            Character::Char(ch) => write!(f, "`{ch}`"),
+            Character::Unicode((_, s)) => write!(f, "U+{s}"),
+        }
+    }
 }
 
 impl Grammar {
@@ -113,6 +143,7 @@ impl Expression {
         match &self.kind {
             ExpressionKind::Grouped(e)
             | ExpressionKind::Optional(e)
+            | ExpressionKind::NegativeLookahead(e)
             | ExpressionKind::Repeat(e)
             | ExpressionKind::RepeatNonGreedy(e)
             | ExpressionKind::RepeatPlus(e)

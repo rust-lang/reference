@@ -3,7 +3,7 @@
 use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
-use grammar::{Characters, Expression, ExpressionKind, Production};
+use grammar::{Character, Characters, Expression, ExpressionKind, Production};
 use railroad::*;
 use regex::Regex;
 use std::fmt::Write;
@@ -139,6 +139,12 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                         make_seq(&es)?
                     }
                 }
+                ExpressionKind::NegativeLookahead(e) => {
+                    let forward = render_expression(e, cx, stack)?;
+                    let lbox =
+                        LabeledBox::new(forward, Comment::new("not followed by".to_string()));
+                    Box::new(lbox)
+                }
                 // Treat `e?` and `e{..1}` / `e{0..1}` equally.
                 ExpressionKind::Optional(e)
                 | ExpressionKind::RepeatRange(e, None | Some(0), Some(1)) => {
@@ -219,7 +225,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let lbox = LabeledBox::new(rhs, Comment::new("no backtracking".to_string()));
                     Box::new(lbox)
                 }
-                ExpressionKind::Unicode(s) => Box::new(Terminal::new(format!("U+{}", s))),
+                ExpressionKind::Unicode((_, s)) => Box::new(Terminal::new(format!("U+{}", s))),
             };
         }
     };
@@ -238,7 +244,17 @@ fn render_characters(chars: &Characters, cx: &RenderCtx) -> Box<dyn Node> {
     match chars {
         Characters::Named(s) => node_for_nt(cx, s),
         Characters::Terminal(s) => Box::new(Terminal::new(s.clone())),
-        Characters::Range(a, b) => Box::new(Terminal::new(format!("{a}-{b}"))),
+        Characters::Range(a, b) => {
+            let mut s = String::new();
+            let write_ch = |ch: &Character, output: &mut String| match ch {
+                Character::Char(ch) => output.push(*ch),
+                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
+            };
+            write_ch(a, &mut s);
+            s.push('-');
+            write_ch(b, &mut s);
+            Box::new(Terminal::new(s))
+        }
     }
 }
 
