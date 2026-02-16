@@ -49,16 +49,13 @@ A `loop` expression containing associated [`break` expression(s)](#break-express
 r[expr.loop.while]
 ## Predicate loops
 
-r[expr.loop.while.grammar]
+r[expr.loop.while.syntax]
 ```grammar,expressions
 PredicateLoopExpression -> `while` Conditions BlockExpression
 ```
 
 r[expr.loop.while.intro]
 A `while` loop expression allows repeating the evaluation of a block while a set of conditions remain true.
-
-r[expr.loop.while.syntax]
-The syntax of a `while` expression is a sequence of one or more condition operands separated by `&&`, followed by a [BlockExpression].
 
 r[expr.loop.while.condition]
 Condition operands must be either an [Expression] with a [boolean type] or a conditional `let` match. If all of the condition operands evaluate to `true` and all of the `let` patterns successfully match their [scrutinee]s, then the loop body block executes.
