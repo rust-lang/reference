@@ -397,6 +397,21 @@ When using `super` to import a parent module, you must use `as` to define the bi
 > }
 > ```
 
+r[items.use.restrictions.extern-prelude]
+`::` as the [extern prelude] cannot be imported.
+
+> [!EXAMPLE]
+> ```rust,edition2018,compile_fail
+> use ::{self as root}; //~ Error
+> ```
+
+> [!EDITION-2015]
+> In edition 2015, `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`.
+>
+> ```rust,edition2015
+> use ::{self as root}; //~ Ok
+> ```
+
 r[items.use.restrictions.duplicate-name]
 As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
