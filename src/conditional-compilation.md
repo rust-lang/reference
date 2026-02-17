@@ -446,7 +446,7 @@ r[cfg.cfg_select.syntax]
 CfgSelectArms ->
     CfgSelectConfigurationPredicate `=>`
     (
-        `{` ^ TokenTree `}` CfgSelectArms?
+        `{` ^ TokenTree `}` `,`? CfgSelectArms?
       | ExpressionWithBlockNoAttrs `,`? CfgSelectArms?
       | ExpressionWithoutBlockNoAttrs ( `,` CfgSelectArms? )?
     )
