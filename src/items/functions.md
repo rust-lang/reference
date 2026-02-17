@@ -332,6 +332,69 @@ Note that this behavior is a consequence of the desugaring to a function that re
 
 Unsafe is used on an async function in precisely the same way that it is used on other functions: it indicates that the function imposes some additional obligations on its caller to ensure soundness. As in any other unsafe function, these conditions may extend beyond the initial call itself -- in the snippet above, for example, the `unsafe_example` function took a pointer `x` as argument, and then (when awaited) dereferenced that pointer. This implies that `x` would have to be valid until the future is finished executing, and it is the caller's responsibility to ensure that.
 
+r[items.fn.c-variadic]
+## C-variadic functions
+
+r[items.fn.c-variadic.intro]
+A *c-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+
+```rust
+unsafe extern "C" fn example(arg0: i32, ap: ...) { }
+```
+
+This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
+
+> [!WARNING]
+> Passing an unexpected number of arguments or arguments of unexpected type to a variadic function may lead to [undefined behavior][undefined].
+
+r[items.fn.async.desugar-brief]
+A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
+
+
+
+```rust
+// Source
+unsafe extern "C" fn example(mut ap: ...) -> i32 {
+    unsafe { ap.arg::<i32>() }
+}
+```
+
+is roughly equivalent to:
+
+```rust
+# use std::ffi::VaList;
+# use std::mem::MaybeUninit;
+# fn va_start() {}
+// Desugared
+unsafe extern "C" fn example() -> i32 {
+    let mut storage = MaybeUninit::<VaList<'_>>::uninit();
+    va_start(storage.as_mut_ptr()); // Initializes the VaList.
+    let mut ap: &mut VaList<'_> = ap.assume_init_mut();
+
+    unsafe { ap.arg::<i32>() }
+
+    va_end(ap)
+}
+```
+
+r[items.fn.c-variadic.lifetime]
+The lifetime of a `VaList` is that of the function that created it. Hence, the `VaList` value can never outlive the function that created it.
+
+r[items.fn.c-variadic.ffi-compatibility]
+The rust [`VaList`] is ABI-compatible with the C `va_list` type.
+
+r[items.fn.c-variadic.abi]
+Only `extern "C"` and `extern "C-unwind"` functions can accept a variable argument list.
+
+r[items.fn.c-variadic.safety]
+Only `unsafe` functions can accept a variable argument list.
+
+r[items.fn.c-variadic.async]
+A c-variadic functions cannot be `async`
+
+r[items.fn.c-variadic.const]
+A c-variadic functions cannot be `const`
+
 r[items.fn.attributes]
 ## Attributes on functions
 
@@ -426,3 +489,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [value namespace]: ../names/namespaces.md
 [variadic function]: external-blocks.md#variadic-functions
 [`extern` block]: external-blocks.md
+[`VaList`]: std::ffi::VaList
