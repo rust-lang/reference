@@ -46,7 +46,7 @@ r[expr.block.type]
 The type of a block is the type of its final operand; if that operand is omitted, the type is the [unit type], unless the block [diverges][expr.block.diverging], in which case it is the [never type].
 
 r[expr.block.result-value]
-The value of a block is the value of its final operand; if that operand is omitted, the value is the [unit value][type.tuple.unit], unless the block [diverges][expr.block.diverging], in which case the value is unused.
+The value of a block is the value of its final operand; if that operand is omitted, the value is the [unit value][type.tuple.unit], unless the block [diverges][expr.block.diverging], in which case the block has no value as its type is uninhabited.
 
 ```rust
 # fn fn_call() {}
