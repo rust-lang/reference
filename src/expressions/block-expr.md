@@ -46,9 +46,9 @@ r[expr.block.value-trailing-expr]
 When a block contains a [final operand], the block has the type and value of that final operand.
 
 ```rust
-let x: u8 = { 0u8 }; // `0u8` is the final operand.
+let x = { 0u8 }; // `0u8` is the final operand.
 assert_eq!(x, 0);
-let x: u8 = { (); 0u8 }; // As above.
+let x = { (); 0u8 }; // As above.
 assert_eq!(x, 0);
 ```
 
@@ -56,9 +56,9 @@ r[expr.block.value-no-trailing-expr]
 When a block does not contain a [final operand] and the block does not diverge, the block has [unit type] and [unit value].
 
 ```rust
-let x: () = {}; // Has no final operand.
+let x = {}; // Has no final operand.
 assert_eq!(x, ());
-let x: () = { 0u8; }; // As above.
+let x = { 0u8; }; // As above.
 assert_eq!(x, ());
 ```
 
