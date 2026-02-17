@@ -98,10 +98,10 @@ r[lifetime-elision.trait-object.containing-type]
 If the trait object is used as a type argument of a generic type then the containing type is first used to try to infer a bound.
 
 r[lifetime-elision.trait-object.containing-type-unique]
-* If there is a unique bound from the containing type then that is the default
+* If there is a unique bound from the containing type then that is the default.
 
 r[lifetime-elision.trait-object.containing-type-explicit]
-* If there is more than one bound from the containing type then an explicit bound must be specified
+* If there is more than one bound from the containing type then an explicit bound must be specified.
 
 r[lifetime-elision.trait-object.trait-bounds]
 If neither of those rules apply, then the bounds on the trait are used:
