@@ -42,25 +42,42 @@ When evaluating a block expression, each statement, except for item declaration 
 r[expr.block.result]
 Then the final operand is executed, if given.
 
-r[expr.block.type]
-The type of a block is the type of its final operand; if that operand is omitted, the type is the [unit type], unless the block [diverges][expr.block.diverging], in which case it is the [never type].
-
-r[expr.block.result-value]
-The value of a block is the value of its final operand; if that operand is omitted, the value is the [unit value][type.tuple.unit], unless the block [diverges][expr.block.diverging], in which case the block has no value as its type is uninhabited.
+r[expr.block.value-trailing-expr]
+When a block contains a [final operand], the block has the type and value of that final operand.
 
 ```rust
-# fn fn_call() {}
-let _: () = {
-    fn_call();
-};
-
-let five: i32 = {
-    fn_call();
-    5
-};
-
-assert_eq!(5, five);
+let x: u8 = { 0u8 }; // `0u8` is the final operand.
+assert_eq!(x, 0);
+let x: u8 = { (); 0u8 }; // As above.
+assert_eq!(x, 0);
 ```
+
+r[expr.block.value-no-trailing-expr]
+When a block does not contain a [final operand] and the block does not diverge, the block has [unit type] and [unit value].
+
+```rust
+let x: () = {}; // Has no final operand.
+assert_eq!(x, ());
+let x: () = { 0u8; }; // As above.
+assert_eq!(x, ());
+```
+
+r[expr.block.value-diverges-no-trailing-expr]
+When a block does not contain a [final operand] and the block [diverges], the block has the [never type] and has no final value (because its type is [uninhabited]).
+
+```rust,no_run
+fn f() -> ! { loop {}; } // Diverges and has no final operand.
+//          ^^^^^^^^^^^^
+// The body of a function is a block expression.
+```
+
+> [!NOTE]
+> Observe that a block having no final operand is distinct from having an explicit final operand with unit type.  E.g., even though this block diverges, the type of the block is [unit] rather than [never].
+>
+> ```rust,compile_fail,E0308
+> fn f() -> ! { loop {}; () } // ERROR: Mismatched types.
+> //          ^^^^^^^^^^^^^^^ This block has unit type.
+> ```
 
 > [!NOTE]
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
@@ -335,12 +352,15 @@ fn is_unix_platform() -> bool {
 [call expressions]: call-expr.md
 [capture modes]: ../types/closure.md#capture-modes
 [constant items]: ../items/constant-items.md
+[diverges]: expr.block.diverging
+[final operand]: expr.block.inner-attributes
 [free item]: ../glossary.md#free-item
 [function]: ../items/functions.md
 [inner attributes]: ../attributes.md
 [method]: ../items/associated-items.md#methods
 [mutable reference]: ../types/pointer.md#mutables-references-
 [never type]: type.never
+[never]: type.never
 [place expression]: expr.place-value.place-memory-location
 [scopes]: ../names/scopes.md
 [shared references]: ../types/pointer.md#shared-references-
@@ -349,7 +369,10 @@ fn is_unix_platform() -> bool {
 [struct]: struct-expr.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes
 [tuple expressions]: tuple-expr.md
+[uninhabited]: glossary.uninhabited
 [unit type]: type.tuple.unit
+[unit value]: type.tuple.unit
+[unit]: type.tuple.unit
 [unsafe operations]: ../unsafety.md
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
 [Loops and other breakable expressions]: expr.loop.block-labels

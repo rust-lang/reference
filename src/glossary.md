@@ -206,6 +206,7 @@ A type which does not appear as an argument to another type. For example, `T` is
 
 Compile-time or run-time behavior that is not specified. This may result in, but is not limited to: process termination or corruption; improper, incorrect, or unintended computation; or platform-specific results. [More][undefined-behavior].
 
+r[glossary.uninhabited]
 ### Uninhabited
 
 A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] `!`, or an enum with no variants `enum Never { }`. Opposite of [Inhabited](#inhabited).
