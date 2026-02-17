@@ -53,6 +53,14 @@ r[lang-types.phantom-data]
 
 [`std::marker::PhantomData<T>`] is a [zero-sized], minimum alignment, type that is considered to own a `T` for the purposes of [variance], [drop check], and [auto traits](#auto-traits).
 
+r[lang-types.va-list]
+## `VaList<'_>`
+
+[`std::ffi::VaList<'_>`] is used for [c-variadic functions].
+
+> [!NOTE]
+> The Rust `VaList` type is ABI-compatible with the C `va_list` type, see [items.fn.c-variadic.abi-compatibility].
+
 r[lang-types.ops]
 ## Operator traits
 
@@ -189,6 +197,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [Arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [call expressions]: expressions/call-expr.md
+[c-variadic functions]: items/functions.md#c-variadic-functions
 [deref coercions]: type-coercions.md#coercion-types
 [dereference operator]: expressions/operator-expr.md#the-dereference-operator
 [destructor]: destructors.md

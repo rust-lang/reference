@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [variadic function], and may only be used as the last parameter of an [external block] function. The variadic parameter may have an optional identifier, such as `args: ...`.
+A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block], the c-variadic parameter may have an optional pattern, such as `args: ...`, and in a [c-variadic function definition][items.fn.c-variadic], the pattern is mandatory.
 
 r[items.fn.body]
 ## Function body
@@ -332,6 +332,125 @@ Note that this behavior is a consequence of the desugaring to a function that re
 
 Unsafe is used on an async function in precisely the same way that it is used on other functions: it indicates that the function imposes some additional obligations on its caller to ensure soundness. As in any other unsafe function, these conditions may extend beyond the initial call itself -- in the snippet above, for example, the `unsafe_example` function took a pointer `x` as argument, and then (when awaited) dereferenced that pointer. This implies that `x` would have to be valid until the future is finished executing, and it is the caller's responsibility to ensure that.
 
+r[items.fn.c-variadic]
+## C-variadic functions
+
+r[items.fn.c-variadic.intro]
+A *c-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+
+```rust
+unsafe extern "C" fn example(mut ap: ...) -> f64 {
+    unsafe { ap.next_arg::<f64>() }
+}
+```
+
+This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
+
+r[items.fn.c-variadic.c-variadic-parameter-type]
+The type of `pat` in the function body is [`VaList`].
+
+r[items.fn.c-variadic.lifetime]
+The lifetime of a `VaList` is that of the function that created it. Hence, the `VaList` value can never outlive the function that created it.
+
+r[items.fn.c-variadic.desugar-brief]
+A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
+
+```rust
+// Source
+unsafe extern "C" fn example(mut ap: ...) -> i32 {
+    unsafe { ap.next_arg::<i32>() }
+}
+```
+
+is roughly equivalent to:
+
+<!-- no_run: conceptual desugaring -->
+```rust,no_run
+# #![ feature(core_intrinsics) ]
+# #![allow(internal_features)]
+use core::ffi::VaList;
+use core::mem::MaybeUninit;
+use core::intrinsics::{va_arg, va_end};
+// va_start is magic and has no intrinsic.
+fn va_start(ap: *mut VaList<'_>) { /* magic */ }
+// Desugared
+unsafe extern "C" fn example() -> i32 {
+    unsafe {
+        let mut ap: MaybeUninit<VaList<'_>> = MaybeUninit::uninit();
+        va_start(ap.as_mut_ptr());
+        let mut ap = ap.assume_init();
+
+        let x = va_arg::<i32>(&mut ap);
+
+        va_end(&mut ap);
+
+        x
+    }
+}
+```
+
+r[items.fn.c-variadic.next-arg-safety]
+Calling `VaList::next_arg` to read an argument of type `T` is only safe if all of the following conditions are satisfied:
+
+- There is another c-variadic argument to read.
+- The actual type of the argument `U` is compatible with `T` (as defined below).
+- If `U` and `T` are both integer types, then the value passed by the caller must be
+representable in both types.
+
+Types `T` and `U` are compatible when:
+
+- `T` and `U` are the same type (up to free lifetimes).
+- `T` and `U` are integer types of the same size.
+- `T` and `U` are both pointers, and their target types are compatible.
+- `T` is a pointer to `c_void` and `U` is a pointer to `i8` or `u8`, or vice versa.
+
+Examples of compatible types are:
+
+- `u32` and `i32` --- but UB may still occur if the value is not representable in the target type.
+- `u64` and `usize` --- on a 64-bit platform.
+- `*const &'a u32` and `*mut &'static u32` --- these types are equal up to free lifetimes.
+
+Examples of incompatible types are:
+
+- `usize` and `*const _` --- pointers and integers are not compatible.
+- `*const fn(&'static ())` and `*const for<'a> fn(&'a ())` --- these types are not equal up to free lifetimes.
+
+r[items.fn.c-variadic.abi-compatibility]
+[`VaList`] is ABI-compatible with the C `va_list` type.
+
+r[items.fn.c-variadic.abi]
+Only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
+
+r[items.fn.c-variadic.safety]
+Only `unsafe` functions can accept a variable argument list.
+
+r[items.fn.c-variadic.async]
+A c-variadic function cannot be `async`.
+
+r[items.fn.c-variadic.const]
+A c-variadic function cannot be `const`.
+
+r[items.fn.c-variadic.stable-targets]
+Support for c-variadic function definitions is stable on the following target architectures:
+
+- x86 and x86-64
+- ARM
+- AArch64 and Arm64EC
+- RISC-V 32-bit and 64-bit (except when using the ilp32e ABI)
+- LoongArch 32-bit and 64-bit
+- s390x
+- PowerPC and PowerPC64
+- AmdGpu and Nvptx64
+- Wasm32 and Wasm64
+- C-SKY
+- Xtensa
+- Hexagon
+- SPARC64
+- MIPS
+
+> [!NOTE]
+> Some target architectures (e.g. BPF) do not support c-variadic function definitions. The compiler errors in this case.
+
 r[items.fn.attributes]
 ## Attributes on functions
 
@@ -424,6 +543,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
-[variadic function]: external-blocks.md#variadic-functions
+[c-variadic function]: external-blocks.md#variadic-functions
 [`extern` block]: external-blocks.md
 [zero-sized]: glossary.zst
+[`VaList`]: std::ffi::VaList

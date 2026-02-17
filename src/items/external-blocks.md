@@ -212,7 +212,7 @@ Like `"C"` and `"system"`, most platform-specific ABI strings also have a [corre
 r[items.extern.variadic]
 ## Variadic functions
 
-Functions within external blocks may be variadic by specifying `...` as the last argument. The variadic parameter may optionally be specified with an identifier.
+Functions within external blocks may be variadic by specifying `...` as the last argument. The variadic parameter may optionally be specified with a pattern.
 
 ```rust
 unsafe extern "C" {
