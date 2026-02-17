@@ -405,8 +405,8 @@ r[items.use.restrictions.extern-prelude]
 > use ::{self as root}; //~ Error
 > ```
 
-> [!EDITION-2015]
-> In edition 2015, `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`.
+> [!EDITION-2018]
+> In the 2015 edition, the prefix `::` refers to the crate root, so `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`. Starting with the 2018 edition the `::` prefix refers to the extern prelude, which cannot be directly imported.
 >
 > ```rust,edition2015
 > use ::{self as root}; //~ Ok
