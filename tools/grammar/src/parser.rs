@@ -573,7 +573,7 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
 #[cfg(test)]
 mod tests {
     use crate::parser::{parse_grammar, translate_position};
-    use crate::{ExpressionKind, Grammar, RangeLimit};
+    use crate::{Character, Characters, ExpressionKind, Grammar, RangeLimit};
     use std::path::Path;
 
     #[test]
@@ -777,5 +777,334 @@ mod tests {
         assert_eq!(min, Some(0));
         assert_eq!(max, Some(1));
         assert!(matches!(limit, RangeLimit::HalfOpen));
+    }
+
+    // --- Negative lookahead tests ---
+
+    #[test]
+    fn lookahead_simple_nonterminal() {
+        let input = "Rule -> !Foo";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::NegativeLookahead(inner) = &rule.expression.kind else {
+            panic!("expected NegativeLookahead, got {:?}", rule.expression.kind);
+        };
+        assert!(matches!(&inner.kind, ExpressionKind::Nt(n) if n == "Foo"));
+    }
+
+    #[test]
+    fn lookahead_terminal() {
+        let input = "Rule -> !`'` Foo";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Sequence(seq) = &rule.expression.kind else {
+            panic!("expected Sequence, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(seq.len(), 2);
+        let ExpressionKind::NegativeLookahead(inner) = &seq[0].kind else {
+            panic!("expected NegativeLookahead, got {:?}", seq[0].kind);
+        };
+        assert!(matches!(&inner.kind, ExpressionKind::Terminal(t) if t == "'"));
+        assert!(matches!(&seq[1].kind, ExpressionKind::Nt(n) if n == "Foo"));
+    }
+
+    #[test]
+    fn lookahead_charset() {
+        let input = "Rule -> ![`e` `E`] SUFFIX";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Sequence(seq) = &rule.expression.kind else {
+            panic!("expected Sequence, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(seq.len(), 2);
+        let ExpressionKind::NegativeLookahead(inner) = &seq[0].kind else {
+            panic!("expected NegativeLookahead, got {:?}", seq[0].kind);
+        };
+        let ExpressionKind::Charset(chars) = &inner.kind else {
+            panic!("expected Charset inside lookahead, got {:?}", inner.kind);
+        };
+        assert_eq!(chars.len(), 2);
+        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "e"));
+        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "E"));
+    }
+
+    #[test]
+    fn lookahead_grouped() {
+        let input = "Rule -> !(`.` | `_` | XID_Start)";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::NegativeLookahead(inner) = &rule.expression.kind else {
+            panic!("expected NegativeLookahead, got {:?}", rule.expression.kind);
+        };
+        let ExpressionKind::Grouped(grouped) = &inner.kind else {
+            panic!("expected Grouped inside lookahead, got {:?}", inner.kind);
+        };
+        let ExpressionKind::Alt(alts) = &grouped.kind else {
+            panic!("expected Alt inside Grouped, got {:?}", grouped.kind);
+        };
+        assert_eq!(alts.len(), 3);
+        assert!(matches!(&alts[0].kind, ExpressionKind::Terminal(t) if t == "."));
+        assert!(matches!(&alts[1].kind, ExpressionKind::Terminal(t) if t == "_"));
+        assert!(matches!(&alts[2].kind, ExpressionKind::Nt(n) if n == "XID_Start"));
+    }
+
+    #[test]
+    fn lookahead_in_sequence_middle() {
+        let input = "Rule -> A !B C";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Sequence(seq) = &rule.expression.kind else {
+            panic!("expected Sequence, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(seq.len(), 3);
+        assert!(matches!(&seq[0].kind, ExpressionKind::Nt(n) if n == "A"));
+        let ExpressionKind::NegativeLookahead(inner) = &seq[1].kind else {
+            panic!("expected NegativeLookahead, got {:?}", seq[1].kind);
+        };
+        assert!(matches!(&inner.kind, ExpressionKind::Nt(n) if n == "B"));
+        assert!(matches!(&seq[2].kind, ExpressionKind::Nt(n) if n == "C"));
+    }
+
+    #[test]
+    fn lookahead_in_repetition() {
+        let input = "Rule -> (!A B)*";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Repeat(rep) = &rule.expression.kind else {
+            panic!("expected Repeat, got {:?}", rule.expression.kind);
+        };
+        let ExpressionKind::Grouped(grouped) = &rep.kind else {
+            panic!("expected Grouped inside Repeat, got {:?}", rep.kind);
+        };
+        let ExpressionKind::Sequence(seq) = &grouped.kind else {
+            panic!("expected Sequence inside Grouped, got {:?}", grouped.kind);
+        };
+        assert_eq!(seq.len(), 2);
+        assert!(matches!(&seq[0].kind, ExpressionKind::NegativeLookahead(_)));
+        assert!(matches!(&seq[1].kind, ExpressionKind::Nt(n) if n == "B"));
+    }
+
+    #[test]
+    fn lookahead_in_alternation() {
+        let input = "Rule -> !A B | C";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Alt(alts) = &rule.expression.kind else {
+            panic!("expected Alt, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(alts.len(), 2);
+        let ExpressionKind::Sequence(seq) = &alts[0].kind else {
+            panic!("expected Sequence, got {:?}", alts[0].kind);
+        };
+        assert_eq!(seq.len(), 2);
+        assert!(matches!(&seq[0].kind, ExpressionKind::NegativeLookahead(_)));
+        assert!(matches!(&seq[1].kind, ExpressionKind::Nt(n) if n == "B"));
+        assert!(matches!(&alts[1].kind, ExpressionKind::Nt(n) if n == "C"));
+    }
+
+    #[test]
+    fn lookahead_fail_trailing() {
+        let input = "Rule -> !";
+        let err = parse(input).unwrap_err();
+        assert!(err.contains("expected expression after !"));
+    }
+
+    // --- Unicode tests ---
+
+    #[test]
+    fn unicode_4_digit() {
+        let input = "Rule -> U+0009";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Unicode((ch, s)) = &rule.expression.kind else {
+            panic!("expected Unicode, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(*ch, '\t');
+        assert_eq!(s, "0009");
+    }
+
+    #[test]
+    fn unicode_5_digit() {
+        let input = "Rule -> U+E0000";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Unicode((ch, s)) = &rule.expression.kind else {
+            panic!("expected Unicode, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(*ch, '\u{E0000}');
+        assert_eq!(s, "E0000");
+    }
+
+    #[test]
+    fn unicode_6_digit() {
+        let input = "Rule -> U+10FFFF";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Unicode((ch, s)) = &rule.expression.kind else {
+            panic!("expected Unicode, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(*ch, '\u{10FFFF}');
+        assert_eq!(s, "10FFFF");
+    }
+
+    #[test]
+    fn unicode_in_alternation() {
+        let input = "Rule -> U+0009 | U+000A";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Alt(alts) = &rule.expression.kind else {
+            panic!("expected Alt, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(alts.len(), 2);
+        assert!(matches!(
+            &alts[0].kind,
+            ExpressionKind::Unicode((ch, _)) if *ch == '\t'
+        ));
+        assert!(matches!(
+            &alts[1].kind,
+            ExpressionKind::Unicode((ch, _)) if *ch == '\n'
+        ));
+    }
+
+    // --- Character / charset range tests ---
+
+    #[test]
+    fn charset_unicode_range() {
+        let input = "Rule -> [U+0000-U+007F]";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Charset(chars) = &rule.expression.kind else {
+            panic!("expected Charset, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(chars.len(), 1);
+        let Characters::Range(a, b) = &chars[0] else {
+            panic!("expected Range, got {:?}", chars[0]);
+        };
+        assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));
+        assert!(matches!(
+            b,
+            Character::Unicode((ch, _)) if *ch == '\u{7F}'
+        ));
+    }
+
+    #[test]
+    fn charset_char_range() {
+        let input = "Rule -> [`a`-`z`]";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Charset(chars) = &rule.expression.kind else {
+            panic!("expected Charset, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(chars.len(), 1);
+        let Characters::Range(a, b) = &chars[0] else {
+            panic!("expected Range, got {:?}", chars[0]);
+        };
+        assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
+        assert!(matches!(b, Character::Char(ch) if *ch == 'z'));
+    }
+
+    #[test]
+    fn charset_mixed_range() {
+        let input = "Rule -> [`a`-U+007A]";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Charset(chars) = &rule.expression.kind else {
+            panic!("expected Charset, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(chars.len(), 1);
+        let Characters::Range(a, b) = &chars[0] else {
+            panic!("expected Range, got {:?}", chars[0]);
+        };
+        assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
+        assert!(matches!(
+            b,
+            Character::Unicode((ch, _)) if *ch == 'z'
+        ));
+    }
+
+    #[test]
+    fn charset_multiple_unicode_ranges() {
+        let input = "Rule -> [U+0000-U+D7FF U+E000-U+10FFFF]";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Charset(chars) = &rule.expression.kind else {
+            panic!("expected Charset, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(chars.len(), 2);
+        let Characters::Range(a1, b1) = &chars[0] else {
+            panic!("expected Range, got {:?}", chars[0]);
+        };
+        assert!(matches!(a1, Character::Unicode((ch, _)) if *ch == '\0'));
+        assert!(matches!(b1, Character::Unicode((ch, _)) if *ch == '\u{D7FF}'));
+        let Characters::Range(a2, b2) = &chars[1] else {
+            panic!("expected Range, got {:?}", chars[1]);
+        };
+        assert!(matches!(a2, Character::Unicode((ch, _)) if *ch == '\u{E000}'));
+        assert!(matches!(b2, Character::Unicode((ch, _)) if *ch == '\u{10FFFF}'));
+    }
+
+    #[test]
+    fn charset_terminals_and_named() {
+        let input = "Rule -> [`a` `b` Foo]";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Charset(chars) = &rule.expression.kind else {
+            panic!("expected Charset, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(chars.len(), 3);
+        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "a"));
+        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "b"));
+        assert!(matches!(&chars[2], Characters::Named(n) if n == "Foo"));
+    }
+
+    // --- Negative lookahead combined with charset ---
+
+    #[test]
+    fn lookahead_charset_with_named_and_terminals() {
+        // Pattern from tokens.md: ![`'` `\` LF CR TAB] ASCII
+        let input = "Rule -> ![`x` `y` LF] Foo";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Sequence(seq) = &rule.expression.kind else {
+            panic!("expected Sequence, got {:?}", rule.expression.kind);
+        };
+        assert_eq!(seq.len(), 2);
+        let ExpressionKind::NegativeLookahead(inner) = &seq[0].kind else {
+            panic!("expected NegativeLookahead, got {:?}", seq[0].kind);
+        };
+        let ExpressionKind::Charset(chars) = &inner.kind else {
+            panic!("expected Charset, got {:?}", inner.kind);
+        };
+        assert_eq!(chars.len(), 3);
+        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "x"));
+        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "y"));
+        assert!(matches!(&chars[2], Characters::Named(n) if n == "LF"));
+    }
+
+    // --- Negative lookahead combined with Unicode ---
+
+    #[test]
+    fn lookahead_charset_with_unicode_range() {
+        let input = "Rule -> ![U+0000-U+007F] Foo";
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("Rule").unwrap();
+        let ExpressionKind::Sequence(seq) = &rule.expression.kind else {
+            panic!("expected Sequence, got {:?}", rule.expression.kind);
+        };
+        let ExpressionKind::NegativeLookahead(inner) = &seq[0].kind else {
+            panic!("expected NegativeLookahead, got {:?}", seq[0].kind);
+        };
+        let ExpressionKind::Charset(chars) = &inner.kind else {
+            panic!("expected Charset, got {:?}", inner.kind);
+        };
+        assert_eq!(chars.len(), 1);
+        let Characters::Range(a, b) = &chars[0] else {
+            panic!("expected Range, got {:?}", chars[0]);
+        };
+        assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));
+        assert!(matches!(
+            b,
+            Character::Unicode((ch, _)) if *ch == '\u{7F}'
+        ));
     }
 }

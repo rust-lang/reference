@@ -391,7 +391,7 @@ impl Node for Except {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use grammar::{Expression, ExpressionKind, RangeLimit};
+    use grammar::{Character, Characters, Expression, ExpressionKind, RangeLimit};
 
     /// Render an expression to an SVG string fragment.
     fn render_to_svg(expr: &Expression) -> Option<String> {
@@ -410,6 +410,8 @@ mod tests {
             limit,
         })
     }
+
+    // -- RepeatRange tests --
 
     #[test]
     fn test_empty_exclusive_equal() {
@@ -474,6 +476,119 @@ mod tests {
         assert!(
             svg.contains("nonterminal"),
             "expected nonterminal for e{{..=1}}, got: {svg}"
+        );
+    }
+
+    // -- Negative lookahead tests --
+
+    #[test]
+    fn lookahead_nonterminal() {
+        let expr = Expression::new_kind(ExpressionKind::NegativeLookahead(Box::new(
+            Expression::new_kind(ExpressionKind::Nt("CHAR".to_string())),
+        )));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("not followed by"),
+            "should contain the 'not followed by' label"
+        );
+        assert!(svg.contains("CHAR"), "should contain the nonterminal name");
+    }
+
+    #[test]
+    fn lookahead_terminal() {
+        let expr = Expression::new_kind(ExpressionKind::NegativeLookahead(Box::new(
+            Expression::new_kind(ExpressionKind::Terminal("CR".to_string())),
+        )));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("not followed by"));
+        assert!(svg.contains("CR"));
+    }
+
+    #[test]
+    fn lookahead_charset() {
+        let expr = Expression::new_kind(ExpressionKind::NegativeLookahead(Box::new(
+            Expression::new_kind(ExpressionKind::Charset(vec![
+                Characters::Terminal("e".to_string()),
+                Characters::Terminal("E".to_string()),
+            ])),
+        )));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("not followed by"));
+        assert!(svg.contains("e"));
+        assert!(svg.contains("E"));
+    }
+
+    // -- Unicode tests --
+
+    #[test]
+    fn unicode_4_digit() {
+        let expr = Expression::new_kind(ExpressionKind::Unicode(('\t', "0009".to_string())));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("U+0009"), "should render Unicode code point");
+    }
+
+    #[test]
+    fn unicode_6_digit() {
+        let expr = Expression::new_kind(ExpressionKind::Unicode((
+            '\u{10FFFF}',
+            "10FFFF".to_string(),
+        )));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("U+10FFFF"));
+    }
+
+    // -- Charset with ranges --
+
+    #[test]
+    fn charset_unicode_range() {
+        let expr = Expression::new_kind(ExpressionKind::Charset(vec![Characters::Range(
+            Character::Unicode(('\0', "0000".to_string())),
+            Character::Unicode(('\u{007F}', "007F".to_string())),
+        )]));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("U+0000"));
+        assert!(svg.contains("U+007F"));
+    }
+
+    #[test]
+    fn charset_char_range() {
+        let expr = Expression::new_kind(ExpressionKind::Charset(vec![Characters::Range(
+            Character::Char('a'),
+            Character::Char('z'),
+        )]));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(svg.contains("a"));
+        assert!(svg.contains("z"));
+    }
+
+    // -- Cut test --
+
+    #[test]
+    fn cut_rendering() {
+        let expr = Expression::new_kind(ExpressionKind::Cut(Box::new(Expression::new_kind(
+            ExpressionKind::Nt("Foo".to_string()),
+        ))));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("no backtracking"),
+            "cut should render with 'no backtracking' label"
+        );
+        assert!(svg.contains("Foo"));
+    }
+
+    // -- NegExpression test --
+
+    #[test]
+    fn neg_expression_rendering() {
+        let expr = Expression::new_kind(ExpressionKind::NegExpression(Box::new(
+            Expression::new_kind(ExpressionKind::Charset(vec![Characters::Terminal(
+                "a".to_string(),
+            )])),
+        )));
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("with the exception of"),
+            "neg expression should have exception label"
         );
     }
 }
