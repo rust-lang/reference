@@ -17,7 +17,7 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | x<sup>\*</sup>    | _OuterAttribute_<sup>\*</sup> | 0 or more of x                            |
 | x<sup>+</sup>     |  _MacroMatch_<sup>+</sup>     | 1 or more of x                            |
 | x<sup>a..b</sup>  | HEX_DIGIT<sup>1..6</sup>      | a to b repetitions of x, exclusive of b   |
-| x<sup>a..=b</sup> | HEX_DIGIT<sup>1..=6</sup>     | a to b repetitions of x, inclusive of b   |
+| x<sup>a..=b</sup> | HEX_DIGIT<sup>1..=5</sup>     | a to b repetitions of x, inclusive of b   |
 | Rule1 Rule2       | `fn` _Name_ _Parameters_      | Sequence of rules in order                |
 | \|                | `u8` \| `u16`, Block \| Item  | Either one or another                     |
 | \[ ]               | \[`b` `B`]                     | Any of the characters listed              |
