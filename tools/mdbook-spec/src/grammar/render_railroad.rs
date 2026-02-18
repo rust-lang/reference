@@ -189,14 +189,15 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                     Box::new(lbox)
                 }
-                // For `e{a..=0}` or `e{a..0}` or `e{..1}` render an empty node.
+                // For `e{..=0}` / `e{0..=0}` / `e{..0}` or `e{..1}` / `e{0..1}` render an empty node.
                 ExpressionKind::RepeatRange { max: Some(0), .. }
                 | ExpressionKind::RepeatRange {
                     max: Some(1),
                     limit: RangeLimit::HalfOpen,
                     ..
                 } => Box::new(railroad::Empty),
-                // Treat `e{..=b}` / `e{0..=b}` as `(e{1..=b})?`.
+                // Treat `e{..b}` / `e{0..b}` / `e{..=b}` / `e{0..=b}` as
+                // `(e{1..=b})?` (or `(e{1..b})?` for half-open).
                 ExpressionKind::RepeatRange {
                     expr: e,
                     min: None | Some(0),
@@ -213,7 +214,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     )));
                     break 'cont &state;
                 }
-                // Render `e{1..=b}` directly.
+                // Render `e{1..b}` / `e{1..=b}` directly.
                 ExpressionKind::RepeatRange {
                     expr: e,
                     min: Some(1),
@@ -229,11 +230,11 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let r = Repeat::new(n, Comment::new(cmt));
                     Box::new(r)
                 }
-                // Treat:
+                // Decompose ranges with min >= 2 into a fixed prefix
+                // and a remainder:
                 // - `e{a..}` as `e{0..a-1} e{1..}`
                 // - `e{a..=b}` as `e{0..a-1} e{1..=b-(a-1)}`
-                // - `e{a..b} as `e{0..a-1} {e..b-(a-1)}`
-                // - `e{x..=x}` for some `x` as a sequence of `e` nodes of length `x`
+                // - `e{a..b}` as `e{0..a-1} e{1..b-(a-1)}`
                 ExpressionKind::RepeatRange {
                     expr: e,
                     min: Some(a @ 2..),
