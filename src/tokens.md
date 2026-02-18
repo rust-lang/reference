@@ -214,11 +214,13 @@ r[lex.token.literal.str-raw]
 
 r[lex.token.literal.str-raw.syntax]
 ```grammar,lexer
-RAW_STRING_LITERAL -> `r` RAW_STRING_CONTENT SUFFIX?
+RAW_STRING_LITERAL ->
+      `r` `"` ^ RAW_STRING_CONTENT `"` SUFFIX?
+    | `r` `#`{n:1..=255} ^ `"` RAW_STRING_CONTENT_HASHED `"` `#`{n} SUFFIX?
 
-RAW_STRING_CONTENT ->
-      `"` ^ ( ~CR )*? `"`
-    | `#` RAW_STRING_CONTENT `#`
+RAW_STRING_CONTENT -> (!`"` ~CR )*
+
+RAW_STRING_CONTENT_HASHED -> (!(`"` `#`{n}) ~CR )*
 ```
 
 r[lex.token.literal.str-raw.intro]
@@ -301,11 +303,12 @@ r[lex.token.str-byte-raw]
 r[lex.token.str-byte-raw.syntax]
 ```grammar,lexer
 RAW_BYTE_STRING_LITERAL ->
-    `br` RAW_BYTE_STRING_CONTENT SUFFIX?
+      `br` `"` ^ RAW_BYTE_STRING_CONTENT `"` SUFFIX?
+    | `br` `#`{n:1..=255} ^ `"` RAW_BYTE_STRING_CONTENT_HASHED `"` `#`{n} SUFFIX?
 
-RAW_BYTE_STRING_CONTENT ->
-      `"` ^ ASCII_FOR_RAW*? `"`
-    | `#` RAW_BYTE_STRING_CONTENT `#`
+RAW_BYTE_STRING_CONTENT -> (!`"` ASCII_FOR_RAW )*
+
+RAW_BYTE_STRING_CONTENT_HASHED -> (!(`"` `#`{n}) ASCII_FOR_RAW )*
 
 ASCII_FOR_RAW -> !CR ASCII
 ```
@@ -395,11 +398,12 @@ r[lex.token.str-c-raw]
 r[lex.token.str-c-raw.syntax]
 ```grammar,lexer
 RAW_C_STRING_LITERAL ->
-    `cr` RAW_C_STRING_CONTENT SUFFIX?
+      `cr` `"` ^ RAW_C_STRING_CONTENT `"` SUFFIX?
+    | `cr` `#`{n:1..=255} ^ `"` RAW_C_STRING_CONTENT_HASHED `"` `#`{n} SUFFIX?
 
-RAW_C_STRING_CONTENT ->
-      `"` ^ ( ~[CR NUL] )*? `"`
-    | `#` RAW_C_STRING_CONTENT `#`
+RAW_C_STRING_CONTENT -> (!`"` ~[CR NUL] )*
+
+RAW_C_STRING_CONTENT_HASHED -> (!(`"` `#`{n}) ~[CR NUL] )*
 ```
 
 r[lex.token.str-c-raw.intro]
