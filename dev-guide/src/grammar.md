@@ -66,7 +66,7 @@ RepeatPlusNonGreedy -> `+?`
 
 RepeatRange -> `{` Range? `..` Range? `}`
 
-RepeatRangeInclusive -> `{` Range `..=` Range `}`
+RepeatRangeInclusive -> `{` Range? `..=` Range `}`
 
 Range -> [0-9]+
 
@@ -140,7 +140,7 @@ The general format is a series of productions separated by blank lines. The expr
 | RepeatPlus | Expr+ | The preceding expression is repeated 1 or more times. |
 | RepeatPlusNonGreedy | Expr+? | The preceding expression is repeated 1 or more times without being greedy. |
 | RepeatRange | Expr{2..4} | The preceding expression is repeated between the range of times specified. Either bound can be excluded, which works just like Rust ranges. |
-| RepeatRangeInclusive | Expr{2..=4} | The preceding expression is repeated between the range of times specified (inclusive). |
+| RepeatRangeInclusive | Expr{2..=4} | The preceding expression is repeated between the inclusive range of times specified. The lower bound can be omitted. |
 
 ## Automatic linking
 
