@@ -178,7 +178,6 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     min: Some(1),
                     max: None,
                     limit: RangeLimit::HalfOpen,
-                    ..
                 } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Repeat::new(n, railroad::Empty))
