@@ -174,12 +174,6 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
                 }
-                ExpressionKind::RepeatNonGreedy(e) => {
-                    let n = render_expression(e, cx, stack)?;
-                    let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
-                    let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                    Box::new(lbox)
-                }
                 // Treat `e+` and `e{1..}` equally.
                 ExpressionKind::RepeatPlus(e)
                 | ExpressionKind::RepeatRange {
@@ -191,12 +185,6 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Repeat::new(n, railroad::Empty))
-                }
-                ExpressionKind::RepeatPlusNonGreedy(e) => {
-                    let n = render_expression(e, cx, stack)?;
-                    let r = Repeat::new(n, railroad::Empty);
-                    let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                    Box::new(lbox)
                 }
                 // For `e{..=0}` / `e{0..=0}` or `e{..1}` / `e{0..1}` render an empty node.
                 ExpressionKind::RepeatRange { max: Some(0), .. }

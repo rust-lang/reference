@@ -55,12 +55,8 @@ pub enum ExpressionKind {
     NegativeLookahead(Box<Expression>),
     /// `A*`
     Repeat(Box<Expression>),
-    /// `A*?`
-    RepeatNonGreedy(Box<Expression>),
     /// `A+`
     RepeatPlus(Box<Expression>),
-    /// `A+?`
-    RepeatPlusNonGreedy(Box<Expression>),
     /// `A{2..4}` or `A{2..=4}` or `A{name:2..=4}`
     RepeatRange {
         expr: Box<Expression>,
@@ -171,9 +167,7 @@ impl Expression {
             | ExpressionKind::Optional(e)
             | ExpressionKind::NegativeLookahead(e)
             | ExpressionKind::Repeat(e)
-            | ExpressionKind::RepeatNonGreedy(e)
             | ExpressionKind::RepeatPlus(e)
-            | ExpressionKind::RepeatPlusNonGreedy(e)
             | ExpressionKind::RepeatRange { expr: e, .. }
             | ExpressionKind::RepeatRangeNamed(e, _)
             | ExpressionKind::NegExpression(e)

@@ -52,9 +52,7 @@ Footnote -> `[^` ~[`]` LF]+ `]`
 Quantifier ->
       Optional
     | Repeat
-    | RepeatNonGreedy
     | RepeatPlus
-    | RepeatPlusNonGreedy
     | RepeatRange
     | RepeatRangeInclusive
     | RepeatRangeNamed
@@ -63,11 +61,7 @@ Optional -> `?`
 
 Repeat -> `*`
 
-RepeatNonGreedy -> `*?`
-
 RepeatPlus -> `+`
-
-RepeatPlusNonGreedy -> `+?`
 
 RepeatRange -> `{` ( Name `:` )? Range? `..` Range? `}`
 
@@ -148,9 +142,7 @@ The general format is a series of productions separated by blank lines. The expr
 | Optional | Expr? | The preceding expression is optional. |
 | NegativeLookahead | !Expr | Matches if Expr does not follow, without consuming any input. |
 | Repeat | Expr* | The preceding expression is repeated 0 or more times. |
-| RepeatNonGreedy | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
 | RepeatPlus | Expr+ | The preceding expression is repeated 1 or more times. |
-| RepeatPlusNonGreedy | Expr+? | The preceding expression is repeated 1 or more times without being greedy. |
 | RepeatRange | Expr{2..4} | The preceding expression is repeated between the range of times specified. Either bound can be excluded, which works just like Rust ranges. |
 | RepeatRangeInclusive | Expr{2..=4} | The preceding expression is repeated between the inclusive range of times specified. The lower bound can be omitted. |
 | Named RepeatRangeInclusive | Expr{name:2..=4} | If a name precedes the range, then the number of repetitions are stored in a variable with that name that subsequent RepeatRangeNamed expressions can refer to. |
