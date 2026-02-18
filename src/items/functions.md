@@ -395,6 +395,20 @@ A c-variadic functions cannot be `async`
 r[items.fn.c-variadic.const]
 A c-variadic functions cannot be `const`
 
+r[items.fn.c-variadic.platform-support]
+Some ABIs do not support c-variadic function definitions. The compiler errors in this case.
+
+```
+error: the `bpfel` target does not support c-variadic functions
+  --> $DIR/not-supported.rs:23:31
+   |
+LL | unsafe extern "C" fn variadic(_: ...) {}
+   |                               ^^^^^^
+```
+
+r[items.fn.c-variadic.dyn-compat]
+When a trait method is c-variadic, the trait is no longer dyn-compatible.
+
 r[items.fn.attributes]
 ## Attributes on functions
 
