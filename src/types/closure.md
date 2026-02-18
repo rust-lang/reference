@@ -334,7 +334,7 @@ c();
 ```
 
 r[type.closure.capture.precision.discriminants.non_exhaustive]
-If [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] is applied to an enum defined in an external crate, the enum is treated as having multiple variants for the purpose of deciding whether a read occurs, even if it actually has only one variant.
+If [`#[non_exhaustive]`][attributes.type-system.non_exhaustive] is applied to an enum, the enum is treated as having multiple variants for the purpose of deciding whether a read occurs, even if it actually has only one variant.
 
 r[type.closure.capture.precision.discriminants.uninhabited-variants]
 Even if all variants but the one being matched against are uninhabited, making the pattern [irrefutable][patterns.refutable], the discriminant is still read if it otherwise would be.
