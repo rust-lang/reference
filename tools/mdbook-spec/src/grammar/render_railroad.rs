@@ -229,6 +229,15 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let r = Repeat::new(n, Comment::new(cmt));
                     Box::new(r)
                 }
+                // A half-open range where min >= max is empty (e.g.,
+                // `e{2..2}` means zero repetitions).
+                ExpressionKind::RepeatRange {
+                    min: Some(a),
+                    max: Some(b),
+                    limit: RangeLimit::HalfOpen,
+                    ..
+                } if b <= a => Box::new(railroad::Empty),
+
                 // Decompose ranges with min >= 2 into a fixed prefix
                 // and a remainder:
                 // - `e{a..}` as `e{0..a-1} e{1..}`
