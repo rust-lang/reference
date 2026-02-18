@@ -39,7 +39,11 @@ Sequence ->
         (` `* AdornedExpr)* ` `* Cut
       | (` `* AdornedExpr)+
 
-AdornedExpr -> Expr1 Quantifier? Suffix? Footnote?
+AdornedExpr -> Prefix? Expr1 Quantifier? Suffix? Footnote?
+
+Prefix -> NegativeLookahead
+
+NegativeLookahead -> `!`
 
 Suffix -> ` _` <not underscore, unless in backtick>* `_`
 
@@ -81,7 +85,7 @@ Expr1 ->
     | Group
     | NegativeExpression
 
-Unicode -> `U+` [`A`-`Z` `0`-`9`]4..=4
+Unicode -> `U+` [`A`-`Z` `0`-`9`]4..=6
 
 NonTerminal -> Name
 
@@ -98,7 +102,11 @@ Characters ->
     | CharacterTerminal
     | CharacterName
 
-CharacterRange -> BACKTICK <any char> BACKTICK `-` BACKTICK <any char> BACKTICK
+CharacterRange -> Character `-` Character
+
+Character ->
+        BACKTICK <any char> BACKTICK
+      | Unicode
 
 CharacterTerminal -> Terminal
 
@@ -123,7 +131,7 @@ The general format is a series of productions separated by blank lines. The expr
 | Comment | // Single line comment. | A comment extending to the end of the line. |
 | Terminal | \`example\` | A sequence of exact characters, surrounded by backticks. |
 | Charset | \[ \`A\`-\`Z\` \`0\`-\`9\` \`_\` \] | A choice from a set of characters, space-separated. There are three different forms. |
-| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters; each character should be in backticks. |
+| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters. Characters can be a Unicode expression or be a literal character surrounded by backticks. |
 | CharacterTerminal | \[ \`x\` \] | A single character, surrounded by backticks. |
 | CharacterName | \[ LF \] | A nonterminal, referring to another production. |
 | Prose | \<any ASCII character except CR\> | An English description of what should be matched, surrounded in angle brackets. |
@@ -135,6 +143,7 @@ The general format is a series of productions separated by blank lines. The expr
 | Suffix | \_except \[LazyBooleanExpression\]\_  | Adds a suffix to the previous expression to provide an additional English description, rendered in subscript. This can contain limited Markdown, but try to avoid anything except basics like links. |
 | Footnote | \[^extern-safe\] | Adds a footnote, which can supply extra information that may be helpful to the user. The footnote itself should be defined outside of the code block like a normal Markdown footnote. |
 | Optional | Expr? | The preceding expression is optional. |
+| NegativeLookahead | !Expr | Matches if Expr does not follow, without consuming any input. |
 | Repeat | Expr* | The preceding expression is repeated 0 or more times. |
 | RepeatNonGreedy | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
 | RepeatPlus | Expr+ | The preceding expression is repeated 1 or more times. |
