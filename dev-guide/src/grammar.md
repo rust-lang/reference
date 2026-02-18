@@ -39,19 +39,34 @@ Sequence ->
         (` `* AdornedExpr)* ` `* Cut
       | (` `* AdornedExpr)+
 
-AdornedExpr -> ExprRepeat Suffix? Footnote?
+AdornedExpr -> Expr1 Quantifier? Suffix? Footnote?
 
 Suffix -> ` _` <not underscore, unless in backtick>* `_`
 
 Footnote -> `[^` ~[`]` LF]+ `]`
 
-ExprRepeat ->
-      Expr1 `?`
-    | Expr1 `*?`
-    | Expr1 `*`
-    | Expr1 `+?`
-    | Expr1 `+`
-    | Expr1 `{` Range? `..` Range? `}`
+Quantifier ->
+      Optional
+    | Repeat
+    | RepeatNonGreedy
+    | RepeatPlus
+    | RepeatPlusNonGreedy
+    | RepeatRange
+    | RepeatRangeInclusive
+
+Optional -> `?`
+
+Repeat -> `*`
+
+RepeatNonGreedy -> `*?`
+
+RepeatPlus -> `+`
+
+RepeatPlusNonGreedy -> `+?`
+
+RepeatRange -> `{` Range? `..` Range? `}`
+
+RepeatRangeInclusive -> `{` Range? `..=` Range `}`
 
 Range -> [0-9]+
 
@@ -66,7 +81,7 @@ Expr1 ->
     | Group
     | NegativeExpression
 
-Unicode -> `U+` [`A`-`Z` `0`-`9`]4..4
+Unicode -> `U+` [`A`-`Z` `0`-`9`]4..=4
 
 NonTerminal -> Name
 
@@ -121,10 +136,11 @@ The general format is a series of productions separated by blank lines. The expr
 | Footnote | \[^extern-safe\] | Adds a footnote, which can supply extra information that may be helpful to the user. The footnote itself should be defined outside of the code block like a normal Markdown footnote. |
 | Optional | Expr? | The preceding expression is optional. |
 | Repeat | Expr* | The preceding expression is repeated 0 or more times. |
-| Repeat (non-greedy) | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
+| RepeatNonGreedy | Expr*? | The preceding expression is repeated 0 or more times without being greedy. |
 | RepeatPlus | Expr+ | The preceding expression is repeated 1 or more times. |
-| RepeatPlus (non-greedy) | Expr+? | The preceding expression is repeated 1 or more times without being greedy. |
+| RepeatPlusNonGreedy | Expr+? | The preceding expression is repeated 1 or more times without being greedy. |
 | RepeatRange | Expr{2..4} | The preceding expression is repeated between the range of times specified. Either bound can be excluded, which works just like Rust ranges. |
+| RepeatRangeInclusive | Expr{2..=4} | The preceding expression is repeated between the inclusive range of times specified. The lower bound can be omitted. |
 
 ## Automatic linking
 

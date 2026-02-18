@@ -3,7 +3,7 @@
 use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
-use grammar::{Characters, Expression, ExpressionKind, Production};
+use grammar::{Characters, Expression, ExpressionKind, Production, RangeLimit};
 use railroad::*;
 use regex::Regex;
 use std::fmt::Write;
@@ -78,9 +78,13 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
         state_ref = 'cont: {
             break 'l match state_ref {
                 // Render grouped nodes and `e{1..1}` repeats directly.
-                ExpressionKind::Grouped(e) | ExpressionKind::RepeatRange(e, Some(1), Some(1)) => {
-                    render_expression(e, cx, stack)?
-                }
+                ExpressionKind::Grouped(e)
+                | ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: Some(1),
+                    max: Some(1),
+                    limit: RangeLimit::Closed,
+                } => render_expression(e, cx, stack)?,
                 ExpressionKind::Alt(es) => {
                     let choices: Vec<_> = es
                         .iter()
@@ -139,15 +143,25 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                         make_seq(&es)?
                     }
                 }
-                // Treat `e?` and `e{..1}` / `e{0..1}` equally.
+                // Treat `e?` and `e{..=1}` / `e{0..=1}` equally.
                 ExpressionKind::Optional(e)
-                | ExpressionKind::RepeatRange(e, None | Some(0), Some(1)) => {
+                | ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: None | Some(0),
+                    max: Some(1),
+                    limit: RangeLimit::Closed,
+                } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Optional::new(n))
                 }
                 // Treat `e*` and `e{..}` / `e{0..}` equally.
                 ExpressionKind::Repeat(e)
-                | ExpressionKind::RepeatRange(e, None | Some(0), None) => {
+                | ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: None | Some(0),
+                    max: None,
+                    limit: RangeLimit::HalfOpen,
+                } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
                 }
@@ -158,7 +172,13 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     Box::new(lbox)
                 }
                 // Treat `e+` and `e{1..}` equally.
-                ExpressionKind::RepeatPlus(e) | ExpressionKind::RepeatRange(e, Some(1), None) => {
+                ExpressionKind::RepeatPlus(e)
+                | ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: Some(1),
+                    max: None,
+                    limit: RangeLimit::HalfOpen,
+                } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Repeat::new(n, railroad::Empty))
                 }
@@ -168,38 +188,91 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                     Box::new(lbox)
                 }
-                // For `e{a..0}` render an empty node.
-                ExpressionKind::RepeatRange(_, _, Some(0)) => Box::new(railroad::Empty),
-                // Treat `e{..b}` / `e{0..b}` as `(e{1..b})?`.
-                ExpressionKind::RepeatRange(e, None | Some(0), Some(b @ 2..)) => {
+                // For `e{..=0}` / `e{0..=0}` or `e{..1}` / `e{0..1}` render an empty node.
+                ExpressionKind::RepeatRange { max: Some(0), .. }
+                | ExpressionKind::RepeatRange {
+                    max: Some(1),
+                    limit: RangeLimit::HalfOpen,
+                    ..
+                } => Box::new(railroad::Empty),
+                // Treat `e{..b}` / `e{0..b}` / `e{..=b}` / `e{0..=b}` as
+                // `(e{1..=b})?` (or `(e{1..b})?` for half-open).
+                ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: None | Some(0),
+                    max: Some(b @ 2..),
+                    limit,
+                } => {
                     state = ExpressionKind::Optional(Box::new(Expression::new_kind(
-                        ExpressionKind::RepeatRange(e.clone(), Some(1), Some(*b)),
+                        ExpressionKind::RepeatRange {
+                            expr: e.clone(),
+                            min: Some(1),
+                            max: Some(*b),
+                            limit: *limit,
+                        },
                     )));
                     break 'cont &state;
                 }
-                // Render `e{1..b}` directly.
-                ExpressionKind::RepeatRange(e, Some(1), Some(b @ 2..)) => {
+                // Render `e{1..b}` / `e{1..=b}` directly.
+                ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: Some(1),
+                    max: Some(b @ 2..),
+                    limit,
+                } => {
                     let n = render_expression(e, cx, stack)?;
-                    let cmt = format!("at most {b} more times", b = b - 1);
+                    let more = match limit {
+                        RangeLimit::HalfOpen => b - 2,
+                        RangeLimit::Closed => b - 1,
+                    };
+                    let cmt = format!("at most {more} more times");
                     let r = Repeat::new(n, Comment::new(cmt));
                     Box::new(r)
                 }
-                // Treat `e{a..}` as `e{a-1..a-1} e{1..}` and `e{a..b}` as
-                // `e{a-1..a-1} e{1..b-(a-1)}`, and treat `e{x..x}` for some
-                // `x` as a sequence of `e` nodes of length `x`.
-                ExpressionKind::RepeatRange(e, Some(a @ 2..), b) => {
+                // A half-open range where min >= max is empty (e.g.,
+                // `e{2..2}` means zero repetitions).
+                ExpressionKind::RepeatRange {
+                    min: Some(a),
+                    max: Some(b),
+                    limit: RangeLimit::HalfOpen,
+                    ..
+                } if b <= a => Box::new(railroad::Empty),
+
+                // Decompose ranges with min >= 2 into a fixed prefix
+                // and a remainder:
+                // - `e{a..}` as `e{0..a-1} e{1..}`
+                // - `e{a..=b}` as `e{0..a-1} e{1..=b-(a-1)}`
+                // - `e{a..b}` as `e{0..a-1} e{1..b-(a-1)}`
+                ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: Some(a @ 2..),
+                    max: b @ None,
+                    limit,
+                }
+                | ExpressionKind::RepeatRange {
+                    expr: e,
+                    min: Some(a @ 2..),
+                    max: b @ Some(_),
+                    limit,
+                } => {
                     let mut es = Vec::<Expression>::new();
                     for _ in 0..(a - 1) {
                         es.push(*e.clone());
                     }
-                    es.push(Expression::new_kind(ExpressionKind::RepeatRange(
-                        e.clone(),
-                        Some(1),
-                        b.map(|x| x - (a - 1)),
-                    )));
+                    es.push(Expression::new_kind(ExpressionKind::RepeatRange {
+                        expr: e.clone(),
+                        min: Some(1),
+                        max: b.map(|x| x - (a - 1)),
+                        limit: *limit,
+                    }));
                     state = ExpressionKind::Sequence(es);
                     break 'cont &state;
                 }
+                ExpressionKind::RepeatRange {
+                    max: None,
+                    limit: RangeLimit::Closed,
+                    ..
+                } => unreachable!("closed range must have upper bound"),
                 ExpressionKind::Nt(nt) => node_for_nt(cx, nt),
                 ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
                 ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
@@ -296,5 +369,95 @@ impl Node for Except {
 
     fn draw(&self, x: i64, y: i64, h_dir: svg::HDir) -> svg::Element {
         self.inner.draw(x, y, h_dir)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use grammar::{Expression, ExpressionKind, RangeLimit};
+
+    /// Render an expression to an SVG string fragment.
+    fn render_to_svg(expr: &Expression) -> Option<String> {
+        let cx = RenderCtx::for_test();
+        let node = render_expression(expr, &cx, false)?;
+        let svg = node.draw(0, 0, svg::HDir::LTR);
+        Some(svg.to_string())
+    }
+
+    /// Build a `RepeatRange` expression wrapping a nonterminal `e`.
+    fn range_expr(min: Option<u32>, max: Option<u32>, limit: RangeLimit) -> Expression {
+        Expression::new_kind(ExpressionKind::RepeatRange {
+            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("e".to_string()))),
+            min,
+            max,
+            limit,
+        })
+    }
+
+    #[test]
+    fn test_empty_exclusive_equal() {
+        // `e{2..2}` (half-open, min == max) renders as empty.
+        let expr = range_expr(Some(2), Some(2), RangeLimit::HalfOpen);
+        let svg = render_to_svg(&expr).unwrap();
+        // An empty node produces a minimal SVG path with no
+        // nonterminal content.
+        assert!(
+            !svg.contains("nonterminal"),
+            "expected empty rendering for e{{2..2}}, got: {svg}"
+        );
+    }
+
+    #[test]
+    fn test_empty_inverted() {
+        // `e{3..1}` (half-open, max < min) renders as empty.
+        let expr = range_expr(Some(3), Some(1), RangeLimit::HalfOpen);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            !svg.contains("nonterminal"),
+            "expected empty rendering for e{{3..1}}, got: {svg}"
+        );
+    }
+
+    #[test]
+    fn test_closed_exact_one() {
+        // `e{1..=1}` renders as a single `e` (no repeat).
+        let expr = range_expr(Some(1), Some(1), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{1..=1}}, got: {svg}"
+        );
+        // Should not contain "more times" (no repeat comment).
+        assert!(
+            !svg.contains("more times"),
+            "e{{1..=1}} should not show a repeat comment"
+        );
+    }
+
+    #[test]
+    fn test_closed_range() {
+        // `e{2..=4}` renders with repeat indicators.
+        let expr = range_expr(Some(2), Some(4), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{2..=4}}, got: {svg}"
+        );
+        assert!(
+            svg.contains("more times"),
+            "e{{2..=4}} should show a repeat comment"
+        );
+    }
+
+    #[test]
+    fn test_closed_optional() {
+        // `e{..=1}` renders as optional.
+        let expr = range_expr(None, Some(1), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{..=1}}, got: {svg}"
+        );
     }
 }

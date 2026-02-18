@@ -1,6 +1,6 @@
 //! A parser of the ENBF-like grammar.
 
-use super::{Characters, Expression, ExpressionKind, Grammar, Production};
+use super::{Characters, Expression, ExpressionKind, Grammar, Production, RangeLimit};
 use std::fmt;
 use std::fmt::Display;
 use std::path::Path;
@@ -428,24 +428,43 @@ impl Parser<'_> {
         })
     }
 
-    /// Parse `{a..}` | `{..b}` | `{a..b}` after expression.
+    /// Parse `{a..b}` | `{a..=b}` after expression.
     fn parse_repeat_range(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("{", "expected `{`")?;
-        let a = self.take_while(&|x| x.is_ascii_digit());
-        let Ok(a) = (!a.is_empty()).then(|| a.parse::<u32>()).transpose() else {
+        let min = self.take_while(&|x| x.is_ascii_digit());
+        let Ok(min) = (!min.is_empty()).then(|| min.parse::<u32>()).transpose() else {
             bail!(self, "malformed range start");
         };
-        self.expect("..", "expected `..`")?;
-        let b = self.take_while(&|x| x.is_ascii_digit());
-        let Ok(b) = (!b.is_empty()).then(|| b.parse::<u32>()).transpose() else {
+        self.expect("..", "expected `..` or `..=`")?;
+        let limit = if self.take_str("=") {
+            RangeLimit::Closed
+        } else {
+            RangeLimit::HalfOpen
+        };
+        let max = self.take_while(&|x| x.is_ascii_digit());
+        let Ok(max) = (!max.is_empty()).then(|| max.parse::<u32>()).transpose() else {
             bail!(self, "malformed range end");
         };
-        match (a, b) {
-            (Some(a), Some(b)) if b < a => bail!(self, "range {a}..{b} is malformed"),
+        match (min, max, limit) {
+            (Some(min), Some(max), _) if max < min => {
+                bail!(self, "range {min}{limit}{max} is malformed")
+            }
+            (Some(min), Some(max), RangeLimit::HalfOpen) if max <= min => {
+                bail!(self, "half-open range maximum must be greater than minimum")
+            }
+            (None, Some(0), RangeLimit::HalfOpen) => {
+                bail!(self, "half-open range `..0` is empty")
+            }
+            (_, None, RangeLimit::Closed) => bail!(self, "closed range must have an upper bound"),
             _ => {}
         }
         self.expect("}", "expected `}`")?;
-        Ok(ExpressionKind::RepeatRange(box_kind(kind), a, b))
+        Ok(ExpressionKind::RepeatRange {
+            expr: box_kind(kind),
+            min,
+            max,
+            limit,
+        })
     }
 
     fn parse_suffix(&mut self) -> Result<Option<String>> {
@@ -523,7 +542,7 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
 #[cfg(test)]
 mod tests {
     use crate::parser::{parse_grammar, translate_position};
-    use crate::{ExpressionKind, Grammar};
+    use crate::{ExpressionKind, Grammar, RangeLimit};
     use std::path::Path;
 
     #[test]
@@ -586,5 +605,146 @@ mod tests {
         let input = "Rule -> A ^";
         let err = parse(input).unwrap_err();
         assert!(err.contains("expected expression after cut operator"));
+    }
+
+    /// Extract the `RepeatRange` fields from a single-production
+    /// grammar whose rule body is a repeat-range expression.
+    fn repeat_range(input: &str) -> (Option<u32>, Option<u32>, RangeLimit) {
+        let grammar = parse(input).unwrap();
+        let rule = grammar.productions.get("A").unwrap();
+        let ExpressionKind::RepeatRange {
+            min, max, limit, ..
+        } = &rule.expression.kind
+        else {
+            panic!("expected RepeatRange, got {:?}", rule.expression.kind);
+        };
+        (*min, *max, *limit)
+    }
+
+    // -- Valid ranges -----------------------------------------------
+
+    #[test]
+    fn test_range_half_open() {
+        let (min, max, limit) = repeat_range("A -> x{2..5}");
+        assert_eq!(min, Some(2));
+        assert_eq!(max, Some(5));
+        assert!(matches!(limit, RangeLimit::HalfOpen));
+    }
+
+    #[test]
+    fn test_range_half_open_no_min() {
+        let (min, max, limit) = repeat_range("A -> x{..5}");
+        assert_eq!(min, None);
+        assert_eq!(max, Some(5));
+        assert!(matches!(limit, RangeLimit::HalfOpen));
+    }
+
+    #[test]
+    fn test_range_half_open_no_max() {
+        let (min, max, limit) = repeat_range("A -> x{2..}");
+        assert_eq!(min, Some(2));
+        assert_eq!(max, None);
+        assert!(matches!(limit, RangeLimit::HalfOpen));
+    }
+
+    #[test]
+    fn test_range_half_open_unbounded() {
+        let (min, max, limit) = repeat_range("A -> x{..}");
+        assert_eq!(min, None);
+        assert_eq!(max, None);
+        assert!(matches!(limit, RangeLimit::HalfOpen));
+    }
+
+    #[test]
+    fn test_range_closed() {
+        let (min, max, limit) = repeat_range("A -> x{2..=5}");
+        assert_eq!(min, Some(2));
+        assert_eq!(max, Some(5));
+        assert!(matches!(limit, RangeLimit::Closed));
+    }
+
+    #[test]
+    fn test_range_closed_no_min() {
+        let (min, max, limit) = repeat_range("A -> x{..=5}");
+        assert_eq!(min, None);
+        assert_eq!(max, Some(5));
+        assert!(matches!(limit, RangeLimit::Closed));
+    }
+
+    // -- Invalid ranges ---------------------------------------------
+
+    #[test]
+    fn test_range_err_max_less_than_min() {
+        let err = parse("A -> x{3..2}").unwrap_err();
+        assert!(
+            err.contains("malformed"),
+            "expected malformed error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_empty_exclusive_equal() {
+        let err = parse("A -> x{2..2}").unwrap_err();
+        assert!(
+            err.contains("half-open range maximum must be greater"),
+            "expected empty-exclusive error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_empty_exclusive_zero() {
+        let err = parse("A -> x{0..0}").unwrap_err();
+        assert!(
+            err.contains("half-open range maximum must be greater"),
+            "expected empty-exclusive error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_closed_no_upper() {
+        let err = parse("A -> x{..=}").unwrap_err();
+        assert!(
+            err.contains("closed range must have an upper bound"),
+            "expected closed-needs-upper error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_closed_no_upper_with_min() {
+        let err = parse("A -> x{2..=}").unwrap_err();
+        assert!(
+            err.contains("closed range must have an upper bound"),
+            "expected closed-needs-upper error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_half_open_zero_max() {
+        let err = parse("A -> x{..0}").unwrap_err();
+        assert!(
+            err.contains("half-open range `..0` is empty"),
+            "expected half-open-zero error, got: {err}"
+        );
+    }
+
+    // -- Valid edge cases -------------------------------------------
+
+    #[test]
+    fn test_range_closed_exact() {
+        // `x{2..=2}` means exactly 2 — not empty.
+        let (min, max, limit) = repeat_range("A -> x{2..=2}");
+        assert_eq!(min, Some(2));
+        assert_eq!(max, Some(2));
+        assert!(matches!(limit, RangeLimit::Closed));
+    }
+
+    #[test]
+    fn test_range_half_open_zero_to_one() {
+        // `x{0..1}` means exactly 0 repetitions (the half-open
+        // range contains only 0).
+        let (min, max, limit) = repeat_range("A -> x{0..1}");
+        assert_eq!(min, Some(0));
+        assert_eq!(max, Some(1));
+        assert!(matches!(limit, RangeLimit::HalfOpen));
     }
 }

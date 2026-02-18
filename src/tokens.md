@@ -157,7 +157,7 @@ ASCII_ESCAPE ->
     | `\n` | `\r` | `\t` | `\\` | `\0`
 
 UNICODE_ESCAPE ->
-    `\u{` ( HEX_DIGIT `_`* ){1..6} _valid hex char value_ `}`[^valid-hex-char]
+    `\u{` ( HEX_DIGIT `_`* ){1..=6} _valid hex char value_ `}`[^valid-hex-char]
 ```
 
 [^valid-hex-char]: See [lex.token.literal.char-escape.unicode].
