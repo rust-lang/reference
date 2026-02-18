@@ -73,6 +73,7 @@ fn last_expr(expr: &Expression) -> &ExpressionKind {
         | ExpressionKind::RepeatPlus(_)
         | ExpressionKind::RepeatPlusNonGreedy(_)
         | ExpressionKind::RepeatRange { .. }
+        | ExpressionKind::RepeatRangeNamed(_, _)
         | ExpressionKind::Nt(_)
         | ExpressionKind::Terminal(_)
         | ExpressionKind::Prose(_)
@@ -142,6 +143,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
         }
         ExpressionKind::RepeatRange {
             expr,
+            name,
             min,
             max,
             limit,
@@ -149,11 +151,16 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             render_expression(expr, cx, output);
             write!(
                 output,
-                "<sup>{min}{limit}{max}</sup>",
+                "<sup>{name}{min}{limit}{max}</sup>",
+                name = name.as_ref().map(|n| format!("{n}:")).unwrap_or_default(),
                 min = min.map(|v| v.to_string()).unwrap_or_default(),
                 max = max.map(|v| v.to_string()).unwrap_or_default(),
             )
             .unwrap();
+        }
+        ExpressionKind::RepeatRangeNamed(e, name) => {
+            render_expression(e, cx, output);
+            write!(output, "<sup>{name}</sup>").unwrap();
         }
         ExpressionKind::Nt(nt) => {
             let dest = cx.md_link_map.get(nt).map_or("missing", |d| d.as_str());

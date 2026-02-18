@@ -61,13 +61,16 @@ pub enum ExpressionKind {
     RepeatPlus(Box<Expression>),
     /// `A+?`
     RepeatPlusNonGreedy(Box<Expression>),
-    /// `A{2..4}` or `A{2..=4}`
+    /// `A{2..4}` or `A{2..=4}` or `A{name:2..=4}`
     RepeatRange {
         expr: Box<Expression>,
+        name: Option<String>,
         min: Option<u32>,
         max: Option<u32>,
         limit: RangeLimit,
     },
+    /// `A{name}`
+    RepeatRangeNamed(Box<Expression>, String),
     /// `NonTerminal`
     Nt(String),
     /// `` `string` ``
@@ -172,6 +175,7 @@ impl Expression {
             | ExpressionKind::RepeatPlus(e)
             | ExpressionKind::RepeatPlusNonGreedy(e)
             | ExpressionKind::RepeatRange { expr: e, .. }
+            | ExpressionKind::RepeatRangeNamed(e, _)
             | ExpressionKind::NegExpression(e)
             | ExpressionKind::Cut(e) => {
                 e.visit_nt(callback);
