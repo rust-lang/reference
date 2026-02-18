@@ -449,6 +449,9 @@ impl Parser<'_> {
             (Some(min), Some(max), _) if max < min => {
                 bail!(self, "range {min}{limit}{max} is malformed")
             }
+            (Some(min), Some(max), RangeLimit::HalfOpen) if max <= min => {
+                bail!(self, "half-open range maximum must be greater than minimum")
+            }
             (_, None, RangeLimit::Closed) => bail!(self, "closed range must have an upper bound"),
             _ => {}
         }
