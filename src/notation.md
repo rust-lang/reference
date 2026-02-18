@@ -27,7 +27,7 @@ The following notations are used by the *Lexer* and *Syntax* grammar snippets:
 | ~`string`         | ~`\n`, ~`*/`                  | Any characters, except this sequence      |
 | ( )               | (`,` _Parameter_)<sup>?</sup> | Groups items                              |
 | ^                 | `b'` ^ ASCII_FOR_CHAR         | The rest of the sequence must match or parsing fails unconditionally ([hard cut operator]) |
-| U+xxxx            | U+0060                        | A single unicode character                |
+| U+xxxx..xxxxxx    | U+0060                        | A single Unicode character                |
 | \<text\>          | \<any ASCII char except CR\>  | An English description of what should be matched |
 | Rule <sub>suffix</sub> | IDENTIFIER_OR_KEYWORD <sub>_except `crate`_</sub> | A modification to the previous rule |
 | // Comment. | // Single line comment. | A comment extending to the end of the line. |
