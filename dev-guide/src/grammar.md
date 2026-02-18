@@ -131,7 +131,7 @@ The general format is a series of productions separated by blank lines. The expr
 | Comment | // Single line comment. | A comment extending to the end of the line. |
 | Terminal | \`example\` | A sequence of exact characters, surrounded by backticks. |
 | Charset | \[ \`A\`-\`Z\` \`0\`-\`9\` \`_\` \] | A choice from a set of characters, space-separated. There are three different forms. |
-| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters. Characters can be a Unicode expression or be a literal character surrounded in backticks. |
+| CharacterRange | \[ \`A\`-\`Z\` \] | A range of characters. Characters can be a Unicode expression or be a literal character surrounded by backticks. |
 | CharacterTerminal | \[ \`x\` \] | A single character, surrounded by backticks. |
 | CharacterName | \[ LF \] | A nonterminal, referring to another production. |
 | Prose | \<any ASCII character except CR\> | An English description of what should be matched, surrounded in angle brackets. |
