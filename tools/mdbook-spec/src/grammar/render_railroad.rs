@@ -371,3 +371,93 @@ impl Node for Except {
         self.inner.draw(x, y, h_dir)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use grammar::{Expression, ExpressionKind, RangeLimit};
+
+    /// Render an expression to an SVG string fragment.
+    fn render_to_svg(expr: &Expression) -> Option<String> {
+        let cx = RenderCtx::for_test();
+        let node = render_expression(expr, &cx, false)?;
+        let svg = node.draw(0, 0, svg::HDir::LTR);
+        Some(svg.to_string())
+    }
+
+    /// Build a `RepeatRange` expression wrapping a nonterminal `e`.
+    fn range_expr(min: Option<u32>, max: Option<u32>, limit: RangeLimit) -> Expression {
+        Expression::new_kind(ExpressionKind::RepeatRange {
+            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("e".to_string()))),
+            min,
+            max,
+            limit,
+        })
+    }
+
+    #[test]
+    fn test_empty_exclusive_equal() {
+        // `e{2..2}` (half-open, min == max) renders as empty.
+        let expr = range_expr(Some(2), Some(2), RangeLimit::HalfOpen);
+        let svg = render_to_svg(&expr).unwrap();
+        // An empty node produces a minimal SVG path with no
+        // nonterminal content.
+        assert!(
+            !svg.contains("nonterminal"),
+            "expected empty rendering for e{{2..2}}, got: {svg}"
+        );
+    }
+
+    #[test]
+    fn test_empty_inverted() {
+        // `e{3..1}` (half-open, max < min) renders as empty.
+        let expr = range_expr(Some(3), Some(1), RangeLimit::HalfOpen);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            !svg.contains("nonterminal"),
+            "expected empty rendering for e{{3..1}}, got: {svg}"
+        );
+    }
+
+    #[test]
+    fn test_closed_exact_one() {
+        // `e{1..=1}` renders as a single `e` (no repeat).
+        let expr = range_expr(Some(1), Some(1), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{1..=1}}, got: {svg}"
+        );
+        // Should not contain "more times" (no repeat comment).
+        assert!(
+            !svg.contains("more times"),
+            "e{{1..=1}} should not show a repeat comment"
+        );
+    }
+
+    #[test]
+    fn test_closed_range() {
+        // `e{2..=4}` renders with repeat indicators.
+        let expr = range_expr(Some(2), Some(4), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{2..=4}}, got: {svg}"
+        );
+        assert!(
+            svg.contains("more times"),
+            "e{{2..=4}} should show a repeat comment"
+        );
+    }
+
+    #[test]
+    fn test_closed_optional() {
+        // `e{..=1}` renders as optional.
+        let expr = range_expr(None, Some(1), RangeLimit::Closed);
+        let svg = render_to_svg(&expr).unwrap();
+        assert!(
+            svg.contains("nonterminal"),
+            "expected nonterminal for e{{..=1}}, got: {svg}"
+        );
+    }
+}

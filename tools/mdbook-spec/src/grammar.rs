@@ -21,6 +21,17 @@ pub struct RenderCtx {
     for_summary: bool,
 }
 
+#[cfg(test)]
+impl RenderCtx {
+    pub(crate) fn for_test() -> Self {
+        RenderCtx {
+            md_link_map: HashMap::new(),
+            rr_link_map: HashMap::new(),
+            for_summary: false,
+        }
+    }
+}
+
 /// Replaces the text grammar in the given chapter with the rendered version.
 pub fn insert_grammar(grammar: &Grammar, chapter: &Chapter, diag: &mut Diagnostics) -> String {
     let link_map = make_relative_link_map(grammar, chapter);
