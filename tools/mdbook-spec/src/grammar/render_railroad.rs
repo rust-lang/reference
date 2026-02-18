@@ -188,7 +188,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
                     Box::new(lbox)
                 }
-                // For `e{..=0}` / `e{0..=0}` / `e{..0}` or `e{..1}` / `e{0..1}` render an empty node.
+                // For `e{..=0}` / `e{0..=0}` or `e{..1}` / `e{0..1}` render an empty node.
                 ExpressionKind::RepeatRange { max: Some(0), .. }
                 | ExpressionKind::RepeatRange {
                     max: Some(1),

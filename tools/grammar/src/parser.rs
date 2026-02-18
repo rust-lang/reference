@@ -452,6 +452,9 @@ impl Parser<'_> {
             (Some(min), Some(max), RangeLimit::HalfOpen) if max <= min => {
                 bail!(self, "half-open range maximum must be greater than minimum")
             }
+            (None, Some(0), RangeLimit::HalfOpen) => {
+                bail!(self, "half-open range `..0` is empty")
+            }
             (_, None, RangeLimit::Closed) => bail!(self, "closed range must have an upper bound"),
             _ => {}
         }
@@ -712,6 +715,15 @@ mod tests {
         assert!(
             err.contains("closed range must have an upper bound"),
             "expected closed-needs-upper error, got: {err}"
+        );
+    }
+
+    #[test]
+    fn test_range_err_half_open_zero_max() {
+        let err = parse("A -> x{..0}").unwrap_err();
+        assert!(
+            err.contains("half-open range `..0` is empty"),
+            "expected half-open-zero error, got: {err}"
         );
     }
 
