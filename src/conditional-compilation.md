@@ -490,17 +490,6 @@ The configuration predicate `_` always evaluates to true.
 r[cfg.cfg_select.fallthrough]
 If none of the predicates evaluates to `true`, a compiler error is emitted.
 
-r[cfg.cfg_select.positions]
-The `cfg_select!` macro is accepted in the following macro expansion positions
-
-- items
-- statements
-- expression
-- impl items
-- trait impl items
-- trait items
-- foreign items
-
 r[cfg.cfg_select.well-formed]
 Each right-hand side must syntactically be valid expansion for the position that the macro is invoked in.
 
