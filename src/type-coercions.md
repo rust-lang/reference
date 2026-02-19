@@ -69,6 +69,16 @@ r[coerce.site.return]
   }
   ```
 
+r[coerce.site.assignment]
+* Assigned value operands in assignment expressions
+
+  For example, `y` is coerced to have type `&i8` in the following:
+  ```rust
+  let mut x = &0i8;
+  let y = &mut 42i8;
+  x = y;
+  ```
+
 r[coerce.site.subexpr]
 If the expression in one of these coercion sites is a coercion-propagating expression, then the relevant sub-expressions in that expression are also coercion sites. Propagation recurses from these new coercion sites. Propagating expressions and their relevant sub-expressions are:
 
