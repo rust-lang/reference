@@ -488,7 +488,7 @@ r[cfg.cfg_select.wildcard]
 The configuration predicate `_` always evaluates to true.
 
 r[cfg.cfg_select.fallthrough]
-If none of the predicates evaluates to `true`, a compiler error is emitted.
+It is a compile error if none of the predicates evaluate to true.
 
 r[cfg.cfg_select.well-formed]
 Each right-hand side must syntactically be valid expansion for the position that the macro is invoked in.
