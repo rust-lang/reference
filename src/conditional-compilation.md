@@ -491,7 +491,7 @@ r[cfg.cfg_select.fallthrough]
 It is a compile error if none of the predicates evaluate to true.
 
 r[cfg.cfg_select.well-formed]
-Each right-hand side must syntactically be valid expansion for the position that the macro is invoked in.
+Each right-hand side must be a syntactically valid expansion for the position in which the macro is invoked.
 
 [Testing]: attributes/testing.md
 [`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
