@@ -258,7 +258,7 @@ r[const-eval.const-context.block]
 * A [const block]
 
 r[const-eval.const-context.outer-generics]
-Const contexts that are used as parts of types (array type expressions, array repeat length expressions, and const generic arguments) can only make restricted use of surrounding generic parameters: such an expression must either be a single bare const generic parameter, or an arbitrary expression not making use of any generics.
+Array type length expressions, array repeat length expressions, and const generic arguments are restricted in their use of outer generic parameters: such an expression must either be a single const generic parameter, or an expression that does not reference any generic parameters.
 
 r[const-eval.const-fn]
 ## Const functions
