@@ -439,6 +439,29 @@ println!("I'm running on a {} machine!", machine_kind);
 r[cfg.cfg_select]
 ### The `cfg_select` macro
 
+r[cfg.cfg_select.intro]
+The built-in [`cfg_select!`][std::cfg_select] macro can be used to select code at compile-time based on multiple configuration predicates.
+
+> [!EXAMPLE]
+> ```rust
+> cfg_select! {
+>     unix => {
+>         fn foo() { /* unix specific functionality */ }
+>     }
+>     target_pointer_width = "32" => {
+>         fn foo() { /* non-unix, 32-bit functionality */ }
+>     }
+>     _ => {
+>         fn foo() { /* fallback implementation */ }
+>     }
+> }
+>
+> let is_unix_str = cfg_select! {
+>     unix => "unix",
+>     _ => "not unix",
+> };
+> ```
+
 r[cfg.cfg_select.syntax]
 ```grammar,configuration
 @root CfgSelect -> CfgSelectArms?
@@ -455,32 +478,7 @@ CfgSelectConfigurationPredicate ->
     ConfigurationPredicate | `_`
 ```
 
-r[cfg.cfg_select.general]
-The built-in `cfg_select` macro expands to the arm payload of the first configuration predicate that evaluates to `true`. If the payload is wrapped in curly braces, those are removed during expansion.
 
-For example:
-
-```rust
-cfg_select! {
-    unix => {
-        fn foo() { /* unix specific functionality */ }
-    }
-    target_pointer_width = "32" => {
-        fn foo() { /* non-unix, 32-bit functionality */ }
-    }
-    _ => {
-        fn foo() { /* fallback implementation */ }
-    }
-}
-```
-The `cfg_select` macro can also be used in expression position:
-
-```rust
-let is_unix_str = cfg_select! {
-    unix => "unix",
-    _ => "not unix",
-};
-```
 
 r[cfg.cfg_select.wildcard]
 A `_` can be used to write a configuration predicate that always evaluates to `true`.
