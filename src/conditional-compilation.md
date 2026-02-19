@@ -478,7 +478,11 @@ CfgSelectConfigurationPredicate ->
     ConfigurationPredicate | `_`
 ```
 
+r[cfg.cfg_select.first-arm]
+`cfg_select` expands to the payload of the first arm whose configuration predicate evaluates to true.
 
+r[cfg.cfg_select.braces]
+If the entire payload is wrapped in curly braces, the braces are removed during expansion.
 
 r[cfg.cfg_select.wildcard]
 A `_` can be used to write a configuration predicate that always evaluates to `true`.
