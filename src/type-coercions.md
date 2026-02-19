@@ -63,8 +63,7 @@ r[coerce.site.return]
   For example, `x` is coerced to have type `&dyn Display` in the following:
 
   ```rust
-  use std::fmt::Display;
-  fn foo(x: &u32) -> &dyn Display {
+  fn foo(x: &u32) -> &dyn core::fmt::Display {
       x
   }
   ```
