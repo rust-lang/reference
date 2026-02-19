@@ -485,7 +485,7 @@ r[cfg.cfg_select.braces]
 If the entire payload is wrapped in curly braces, the braces are removed during expansion.
 
 r[cfg.cfg_select.wildcard]
-A `_` can be used to write a configuration predicate that always evaluates to `true`.
+The configuration predicate `_` always evaluates to true.
 
 r[cfg.cfg_select.fallthrough]
 If none of the predicates evaluates to `true`, a compiler error is emitted.
