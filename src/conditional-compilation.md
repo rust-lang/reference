@@ -498,8 +498,8 @@ Each right-hand side must be a syntactically valid expansion for the position in
 [`--test`]: ../rustc/command-line-arguments.html#--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute
 [`cfg!`]: #the-cfg-macro
-[`cfg_select!`]: #the-cfg_select-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
+[`cfg_select!`]: #the-cfg_select-macro
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
 [`crate_type`]: linkage.md
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
