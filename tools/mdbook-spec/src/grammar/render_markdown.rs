@@ -65,6 +65,7 @@ fn render_production(prod: &Production, cx: &RenderCtx, output: &mut String) {
 fn last_expr(expr: &Expression) -> &ExpressionKind {
     match &expr.kind {
         ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => last_expr(es.last().unwrap()),
+        ExpressionKind::Cut(e) => last_expr(e),
         ExpressionKind::Grouped(_)
         | ExpressionKind::Optional(_)
         | ExpressionKind::NegativeLookahead(_)
@@ -80,7 +81,6 @@ fn last_expr(expr: &Expression) -> &ExpressionKind {
         | ExpressionKind::Comment(_)
         | ExpressionKind::Charset(_)
         | ExpressionKind::NegExpression(_)
-        | ExpressionKind::Cut(_)
         | ExpressionKind::Unicode(_) => &expr.kind,
     }
 }
