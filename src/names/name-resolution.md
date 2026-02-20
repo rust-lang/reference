@@ -701,7 +701,7 @@ fn main() {
 }
 ```
 
-consider the following:
+Candidate selection depends on inference, the traits which are considered "applicable" are determined via the Self type the name being resolved is relative to. consider the following:
 
 ```rust
 struct Foo;
