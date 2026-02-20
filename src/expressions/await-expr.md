@@ -29,6 +29,9 @@ r[expr.await.edition2018]
 > [!EDITION-2018]
 > Await expressions are only available beginning with Rust 2018.
 
+r[expr.await.diverging]
+An await expression [diverges] if the future's output type is the [never type].
+
 r[expr.await.task]
 ## Task context
 
@@ -63,6 +66,8 @@ where the `yield` pseudo-code returns `Poll::Pending` and, when re-invoked, resu
 [`poll::Pending`]: std::task::Poll::Pending
 [`poll::Ready`]: std::task::Poll::Ready
 [async context]: ../expressions/block-expr.md#async-context
+[diverges]: divergence
 [future]: std::future::Future
+[never type]: type.never
 [`IntoFuture`]: std::future::IntoFuture
 [`IntoFuture::into_future`]: std::future::IntoFuture::into_future

@@ -89,6 +89,9 @@ let [u, v] = [v[0], v[1]] else { // This pattern is irrefutable, so the compiler
 };
 ```
 
+r[statement.let.diverging]
+A let statement [diverges] if its initializer diverges.
+
 r[statement.expr]
 ## Expression statements
 
@@ -142,6 +145,7 @@ r[statement.attribute]
 Statements accept [outer attributes]. The attributes that have meaning on a statement are [`cfg`], and [the lint check attributes].
 
 [block]: expressions/block-expr.md
+[diverges]: divergence
 [expression]: expressions.md
 [function]: items/functions.md
 [item]: items.md

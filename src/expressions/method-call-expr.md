@@ -83,12 +83,17 @@ r[expr.method.edition2021]
 > [!WARNING]
 > For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression. Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method. There is no way to call the inherent method. Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
 
+r[expr.method.diverging]
+A method call expression [diverges] if any of its operands diverges, or if the return type of the method is the [never type].
+
 [visible]: ../visibility-and-privacy.md
 [array type]: ../types/array.md
 [trait objects]: ../types/trait-object.md
 [disambiguate call]: call-expr.md#disambiguating-function-calls
 [disambiguating function call syntax]: call-expr.md#disambiguating-function-calls
 [dereference]: operator-expr.md#the-dereference-operator
+[diverges]: divergence
 [methods]: ../items/associated-items.md#methods
+[never type]: type.never
 [unsized coercion]: ../type-coercions.md#unsized-coercions
 [`IntoIterator`]: std::iter::IntoIterator
