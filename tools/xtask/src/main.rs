@@ -93,7 +93,7 @@ fn linkcheck(args: impl Iterator<Item = String>) -> Result<()> {
     eprintln!("Running linkcheck...");
     let root = root_dir();
     let status = Command::new("curl")
-        .args(["-sSLo", "linkcheck.sh", "https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/linkcheck.sh"])
+        .args(["-sSLo", "linkcheck.sh", "https://raw.githubusercontent.com/rust-lang/rust/main/src/tools/linkchecker/linkcheck.sh"])
         .current_dir(&root)
         .status()
         .expect("curl should be installed");
