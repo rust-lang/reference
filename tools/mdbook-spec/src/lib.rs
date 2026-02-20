@@ -118,7 +118,7 @@ impl Spec {
 /// Determines the git ref used for linking to a particular branch/tag in GitHub.
 fn git_ref(rust_root: &Option<PathBuf>) -> Result<String> {
     let Some(rust_root) = rust_root else {
-        return Ok("master".into());
+        return Ok("main".into());
     };
     let channel = std::fs::read_to_string(rust_root.join("src/ci/channel"))
         .context("failed to read src/ci/channel")?;
@@ -155,7 +155,7 @@ impl Preprocessor for Spec {
             Ok(s) => s,
             Err(e) => {
                 warn_or_err!(&mut diag, "{e:?}");
-                "master".into()
+                "main".into()
             }
         };
 
