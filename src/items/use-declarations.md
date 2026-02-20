@@ -385,12 +385,14 @@ When using `super` to import a parent module, you must use `as` to define the bi
 >     mod b {
 >         use super as parent;
 >         use super::{self as parent2};
+>         use self::super as parent3;
 >         use super::super as grandparent;
 >         use super::super::{self as grandparent2};
 >
 >         // Not allowed:
 >         // use super;
 >         // use super::{self};
+>         // use self::super;
 >         // use super::super;
 >         // use super::super::{self};
 >     }
