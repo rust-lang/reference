@@ -125,7 +125,7 @@ fn git_ref(rust_root: &Option<PathBuf>) -> Result<String> {
     let git_ref = match channel.trim() {
         // nightly/beta are branches, not stable references. Should be ok
         // because we're not expecting those channels to be long-lived.
-        "nightly" => "master".into(),
+        "nightly" => "main".into(),
         "beta" => "beta".into(),
         "stable" => {
             let version = std::fs::read_to_string(rust_root.join("src/version"))
