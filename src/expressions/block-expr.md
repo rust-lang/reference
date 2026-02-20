@@ -191,6 +191,9 @@ The actual data format for this type is unspecified.
 > [!NOTE]
 > The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
 
+r[expr.block.async.diverging]
+An async block expression does not itself [diverge], but evaluating the future (such as through `await`) diverges if the output type is the [never type].
+
 r[expr.block.async.edition2018]
 > [!EDITION-2018]
 > Async blocks are only available beginning with Rust 2018.
@@ -352,6 +355,7 @@ fn is_unix_platform() -> bool {
 [call expressions]: call-expr.md
 [capture modes]: ../types/closure.md#capture-modes
 [constant items]: ../items/constant-items.md
+[diverge]: divergence
 [diverges]: expr.block.diverging
 [final operand]: expr.block.inner-attributes
 [free item]: ../glossary.md#free-item
