@@ -37,7 +37,7 @@ The latest release of this book, matching the latest Rust version, can always be
 
 We welcome contributions of all kinds.
 
-You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository]. If this book does not answer your question and you think its answer is in scope, please do not hesitate to [file an issue] or ask about it in the `t-lang/doc` stream on [Zulip]. Knowing what people use this book for the most helps direct our attention to making those sections the best they can be. And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
+You can contribute to this book by opening an issue or sending a pull request to [the Rust Reference repository]. If this book does not answer your question and you think its answer is in scope, please do not hesitate to [file an issue] or ask about it in the `t-lang-docs` stream on [Zulip]. Knowing what people use this book for the most helps direct our attention to making those sections the best they can be. And of course, if you see anything that is wrong or is non-normative but not specifically called out as such, please also [file an issue].
 
 <!-- TODO: Link to contributing guide -->
 
@@ -48,4 +48,4 @@ You can contribute to this book by opening an issue or sending a pull request to
 [scope chapter]: scope.md
 [standard library]: std
 [the Rust Reference repository]: https://github.com/rust-lang/reference/
-[Zulip]: https://rust-lang.zulipchat.com/#narrow/stream/237824-t-lang.2Fdoc
+[Zulip]: https://rust-lang.zulipchat.com/#narrow/channel/237824-t-lang-docs
