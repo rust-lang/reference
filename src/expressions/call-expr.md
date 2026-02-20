@@ -32,6 +32,9 @@ let three: i32 = add(1i32, 2i32);
 let name: &'static str = (|| "Rust")();
 ```
 
+r[expr.call.diverging]
+A call expression [diverges] if any of its operands diverges, or if the return type of the function is the [never type].
+
 r[expr.call.desugar]
 ## Disambiguating function calls
 
@@ -103,5 +106,7 @@ Refer to [RFC 132] for further details and motivations.
 [`default()`]: std::default::Default::default
 [`size_of()`]: std::mem::size_of
 [automatically dereferenced]: field-expr.md#automatic-dereferencing
+[diverges]: divergence
 [fully-qualified syntax]: ../paths.md#qualified-paths
+[never type]: type.never
 [non-function types]: ../types/function-item.md
