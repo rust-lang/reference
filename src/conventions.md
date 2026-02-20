@@ -13,6 +13,8 @@ The rule name can be clicked to link to that rule.
 
 > [!WARNING]
 > The organization of the rules is currently in flux. For the time being, these identifier names are not stable between releases, and links to these rules may fail if they are changed. We intend to stabilize these once the organization has settled so that links to the rule names will not break between releases.
+>
+> If you need a stable link to a rule, consider linking to the release-specific versions of the specification to ensure that links remain stable. For example, <https://doc.rust-lang.org/1.93.0/reference/input-format.html#r-input.encoding.utf8> links to a rule in the 1.93.0 release.
 
 ### Rule tests
 
