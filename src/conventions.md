@@ -64,7 +64,7 @@ Notes that contain useful information about the state of the book or point out u
 
 ## Warnings
 
-Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in a special warning box.
+Warnings that show unsound behavior in the language or possibly confusing interactions of language features are in special warning boxes.
 
 > [!WARNING]
 > This is an example warning.
