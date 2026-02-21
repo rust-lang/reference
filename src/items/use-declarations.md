@@ -345,7 +345,18 @@ r[items.use.restrictions.duplicate-name]
 * As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
 r[items.use.restrictions.macro-crate]
-* `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
+* `use $crate` is not allowed in a [`macro_rules`] expansion.
+
+  ```rust,compile_fail
+  macro_rules! example {
+      () => {
+          use $crate;  // ERROR: `$crate` may not be imported
+          use $crate as foo; // ERROR: `$crate` may not be imported
+      };
+  }
+
+  example!{}
+  ```
 
 r[items.use.restrictions.variant]
 * `use` paths cannot refer to enum variants through a [type alias]. For example:
