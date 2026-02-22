@@ -90,6 +90,9 @@ Tuples are laid out according to the [`Rust` representation][`Rust`].
 r[layout.tuple.unit]
 The exception to this is the unit tuple (`()`), which is guaranteed as a zero-sized type to have a size of 0 and an alignment of 1.
 
+> [!NOTE]
+> It is not guaranteed that the last field of a tuple is stored at the end. For example, this means that `(i32, [u8; 10])` and `(i32; [u8])` might *not* have compatible layouts.
+
 r[layout.trait-object]
 ## Trait object layout
 
