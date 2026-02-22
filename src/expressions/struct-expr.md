@@ -1,7 +1,9 @@
 r[expr.struct]
+
 # Struct expressions
 
 r[expr.struct.syntax]
+
 ```grammar,expressions
 StructExpression ->
     PathInExpression `{` (StructExprFields | StructBase)? `}`
@@ -16,7 +18,7 @@ StructExprField ->
       | (IDENTIFIER | TUPLE_INDEX) `:` Expression
     )
 
-StructBase -> `..` Expression
+StructBase -> `..` Expression?
 ```
 
 r[expr.struct.intro]
@@ -81,6 +83,7 @@ Enum::Variant {};
 > ```
 
 r[expr.struct.field]
+
 ## Field struct expression
 
 r[expr.struct.field.intro]
@@ -89,7 +92,40 @@ A struct expression with fields enclosed in curly braces allows you to specify t
 r[expr.struct.field.union-constraint]
 A value of a [union] type can only be created using this syntax, and it must specify exactly one field.
 
+r[expr.struct.brace-restricted-positions]
+Struct expressions can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression.
+However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
+
+r[expr.struct.tuple-field]
+The field names can be decimal integer values to specify indices for constructing tuple structs.
+This can be used with base structs to fill out the remaining indices not specified:
+
+```rust
+struct Color(u8, u8, u8);
+let c1 = Color(0, 0, 0);  // Typical way of creating a tuple struct.
+let c2 = Color{0: 255, 1: 127, 2: 0};  // Specifying fields by index.
+let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
+```
+
+r[expr.struct.field.named]
+
+### Struct field init shorthand
+
+When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`.
+This allows a compact syntax with less duplication.
+For example:
+
+```rust
+# struct Point3d { x: i32, y: i32, z: i32 }
+# let x = 0;
+# let y_value = 0;
+# let z = 0;
+Point3d { x: x, y: y_value, z: z };
+Point3d { x, y: y_value, z };
+```
+
 r[expr.struct.update]
+
 ## Functional update syntax
 
 r[expr.struct.update.intro]
@@ -112,31 +148,26 @@ Point3d {y: 0, z: 10, .. base}; // OK, only base.x is accessed
 drop(y_ref);
 ```
 
-r[expr.struct.brace-restricted-positions]
-Struct expressions can't be used directly in a [loop] or [if] expression's head, or in the [scrutinee] of an [if let] or [match] expression. However, struct expressions can be used in these situations if they are within another expression, for example inside [parentheses].
+r[expr.struct.default]
+## Default field syntax
 
-r[expr.struct.tuple-field]
-The field names can be decimal integer values to specify indices for constructing tuple structs. This can be used with base structs to fill out the remaining indices not specified:
+r[expr.struct.default.intro]
+A struct expression that constructs a value of a struct type can terminate with the syntax `..` without a following expression to denote that unlisted fields should be set to their [default values].
 
-```rust
-struct Color(u8, u8, u8);
-let c1 = Color(0, 0, 0);  // Typical way of creating a tuple struct.
-let c2 = Color{0: 255, 1: 127, 2: 0};  // Specifying fields by index.
-let c3 = Color{1: 0, ..c2};  // Fill out all other fields using a base struct.
-```
+r[expr.struct.default.fields]
+All fields without default values must be listed in the expression. The entire expression uses the given values for the fields that were specified and initializes the remaining fields with their respective default values.
 
-r[expr.struct.field.named]
-### Struct field init shorthand
-
-When initializing a data structure (struct, enum, union) with named (but not numbered) fields, it is allowed to write `fieldname` as a shorthand for `fieldname: fieldname`. This allows a compact syntax with less duplication. For example:
+r[expr.struct.default.visibility-constraint]
+As with all struct expressions, all of the fields of the struct must be [visible], even those not explicitly named.
 
 ```rust
-# struct Point3d { x: i32, y: i32, z: i32 }
-# let x = 0;
-# let y_value = 0;
-# let z = 0;
-Point3d { x: x, y: y_value, z: z };
-Point3d { x, y: y_value, z };
+struct Pet {
+    name: Option<String>,
+    age: i128 = 42,
+}
+
+let pet = Pet { name: None, .. };
+assert_eq!(valid.age, 42);
 ```
 
 [enum variant]: ../items/enumerations.md
@@ -149,3 +180,4 @@ Point3d { x, y: y_value, z };
 [union]: ../items/unions.md
 [visible]: ../visibility-and-privacy.md
 [scrutinee]: ../glossary.md#scrutinee
+[default values]: ../items/structs.md#default-field-values
