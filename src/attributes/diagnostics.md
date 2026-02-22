@@ -345,90 +345,110 @@ The [RFC][1270-deprecation.md] contains motivations and more details.
 
 [1270-deprecation.md]: https://github.com/rust-lang/rfcs/blob/master/text/1270-deprecation.md
 
+<!-- template:attributes -->
 r[attributes.diagnostics.must_use]
 ## The `must_use` attribute
 
 r[attributes.diagnostics.must_use.intro]
-The *`must_use` attribute* is used to issue a diagnostic warning when a value
-is not "used".
+The *`must_use` [attribute][attributes]* is used to issue a diagnostic warning when a value is not used.
+
+r[attributes.diagnostics.must_use.syntax]
+The `must_use` attribute uses either the [MetaWord] syntax or the [MetaNameValueStr] syntax to be able to [specify a message][attributes.diagnostics.must_use.message].
+
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> fn use_me() -> u8 { 0 }
+>
+> #[must_use = "explanation of why it must be used"]
+> fn use_me2() -> u8 { 0 }
+> ```
 
 r[attributes.diagnostics.must_use.allowed-positions]
-The `must_use` attribute can be applied to user-defined composite types
-([`struct`s][struct], [`enum`s][enum], and [`union`s][union]), [functions],
-and [traits].
+The `must_use` attribute may be applied to a:
+
+- [Struct]
+- [Enumeration]
+- [Union]
+- [Function]
+- [Trait]
+
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
+
+r[attributes.diagnostics.must_use.duplicates]
+The `must_use` attribute may be used only once on an item.
+
+> [!NOTE]
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 r[attributes.diagnostics.must_use.message]
-The `must_use` attribute may include a message by using the
-[MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The
-message will be given alongside the warning.
+The `must_use` attribute may include a message by using the [MetaNameValueStr] syntax such as `#[must_use = "example message"]`. The message will be given alongside the warning.
 
 r[attributes.diagnostics.must_use.type]
-When used on user-defined composite types, if the [expression] of an
-[expression statement] has that type, then the `unused_must_use` lint is
-violated.
+When used on user-defined composite types, if the [expression] of an [expression statement] has that type, then the `unused_must_use` lint is violated.
 
-```rust
-#[must_use]
-struct MustUse {
-    // some fields
-}
-
-# impl MustUse {
-#   fn new() -> MustUse { MustUse {} }
-# }
-#
-// Violates the `unused_must_use` lint.
-MustUse::new();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> struct MustUse {
+>     // some fields
+> }
+>
+> # impl MustUse {
+> #   fn new() -> MustUse { MustUse {} }
+> # }
+> #
+> // Violates the `unused_must_use` lint.
+> MustUse::new();
+> ```
 
 r[attributes.diagnostics.must_use.fn]
-When used on a function, if the [expression] of an [expression statement] is a
-[call expression] to that function, then the `unused_must_use` lint is
-violated.
+When used on a function, if the [expression] of an [expression statement] is a [call expression] to that function, then the `unused_must_use` lint is violated.
 
-```rust
-#[must_use]
-fn five() -> i32 { 5i32 }
-
-// Violates the unused_must_use lint.
-five();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> fn five() -> i32 { 5i32 }
+>
+> // Violates the unused_must_use lint.
+> five();
+> ```
 
 r[attributes.diagnostics.must_use.trait]
-When used on a [trait declaration], a [call expression] of an [expression
-statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates
-the `unused_must_use` lint.
+When used on a [trait declaration], a [call expression] of an [expression statement] to a function that returns an [impl trait] or a [dyn trait] of that trait violates the `unused_must_use` lint.
 
-```rust
-#[must_use]
-trait Critical {}
-impl Critical for i32 {}
-
-fn get_critical() -> impl Critical {
-    4i32
-}
-
-// Violates the `unused_must_use` lint.
-get_critical();
-```
+> [!EXAMPLE]
+> ```rust
+> #[must_use]
+> trait Critical {}
+> impl Critical for i32 {}
+>
+> fn get_critical() -> impl Critical {
+>     4i32
+> }
+>
+> // Violates the `unused_must_use` lint.
+> get_critical();
+> ```
 
 r[attributes.diagnostics.must_use.trait-function]
-When used on a function in a trait declaration, then the behavior also applies
-when the call expression is a function from an implementation of the trait.
+When used on a function in a trait declaration, then the behavior also applies when the call expression is a function from an implementation of the trait.
 
-```rust
-trait Trait {
-    #[must_use]
-    fn use_me(&self) -> i32;
-}
-
-impl Trait for i32 {
-    fn use_me(&self) -> i32 { 0i32 }
-}
-
-// Violates the `unused_must_use` lint.
-5i32.use_me();
-```
+> [!EXAMPLE]
+> ```rust
+> trait Trait {
+>     #[must_use]
+>     fn use_me(&self) -> i32;
+> }
+>
+> impl Trait for i32 {
+>     fn use_me(&self) -> i32 { 0i32 }
+> }
+>
+> // Violates the `unused_must_use` lint.
+> 5i32.use_me();
+> ```
 
 r[attributes.diagnostics.must_use.trait-impl-function]
 When used on a function in a trait implementation, the attribute does nothing.
@@ -669,7 +689,7 @@ The first error message includes a somewhat confusing error message about the re
 [call expression]: ../expressions/call-expr.md
 [dyn trait]: ../types/trait-object.md
 [enum variant]: ../items/enumerations.md
-[enum]: ../items/enumerations.md
+[enumeration]: ../items/enumerations.md
 [expression statement]: ../statements.md#expression-statements
 [expression]: ../expressions.md
 [external block item]: ../items/external-blocks.md
