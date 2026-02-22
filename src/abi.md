@@ -111,29 +111,57 @@ r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
+<!-- template:attributes -->
 r[abi.export_name]
 ## The `export_name` attribute
 
 r[abi.export_name.intro]
-The *`export_name` attribute* specifies the name of the symbol that will be
-exported on a [function] or [static].
+The *`export_name` [attribute]* specifies the name of the symbol that will be exported on a [function] or [static].
+
+> [!EXAMPLE]
+> ```rust
+> #[unsafe(export_name = "exported_symbol_name")]
+> pub fn name_in_rust() { }
+> ```
 
 r[abi.export_name.syntax]
-The `export_name `attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
+The `export_name` attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
 
-```rust
-#[unsafe(export_name = "exported_symbol_name")]
-pub fn name_in_rust() { }
-```
+r[abi.export_name.allowed-positions]
+The `export_name` attribute may only be applied to:
+
+- [Static items][items.static]
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+
+> [!NOTE]
+> `rustc` currently ignores `export_name` in some positions, but this may be rejected in the future.
+
+r[abi.export_name.duplicates]
+Only the last use of `export_name` on an item has effect.
+
+> [!NOTE]
+> `rustc` currently warns on preceding duplicate `export_name` attributes. This may become an error in the future.
 
 r[abi.export_name.unsafe]
-This attribute is unsafe as a symbol with a custom name may collide with another
-symbol with the same name (or with a well-known symbol), leading to undefined
-behavior.
+The `export_name` attribute must be marked with [`unsafe`][attributes.safety] because a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 r[abi.export_name.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `export_name` attribute without the `unsafe` qualification.
+
+r[abi.export_name.no_mangle]
+If `export_name` is used with [`no_mangle`][abi.no_mangle], then the `export_name` is used instead.
+
+r[abi.export_name.publicly-exported]
+The `export_name` attribute causes the symbol to be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
+
+r[abi.export_name.null]
+The exported name must not contain a [NUL] character.
+
+r[abi.export_name.generic]
+`export_name` has no effect on generic items.
 
 [`static` items]: items/static-items.md
 [attribute]: attributes.md
