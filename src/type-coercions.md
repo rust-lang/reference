@@ -60,11 +60,10 @@ r[coerce.site.constructor]
 r[coerce.site.return]
 * Function results&mdash;either the final line of a block if it is not semicolon-terminated or any expression in a `return` statement
 
-  For example, `x` is coerced to have type `&dyn Display` in the following:
+  For example, `x` is coerced to have type `&dyn core::fmt::Display` in the following:
 
   ```rust
-  use std::fmt::Display;
-  fn foo(x: &u32) -> &dyn Display {
+  fn foo(x: &u32) -> &dyn core::fmt::Display {
       x
   }
   ```
