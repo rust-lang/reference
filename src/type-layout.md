@@ -502,6 +502,43 @@ The alignments of each field, for the purpose of positioning fields, is the smal
 r[layout.repr.alignment.packed-padding]
 Inter-field padding is guaranteed to be the minimum required in order to satisfy each field's (possibly altered) alignment (although note that, on its own, `packed` does not provide any guarantee about field ordering). An important consequence of these rules is that a type with `#[repr(packed(1))]` (or `#[repr(packed)]`) will have no inter-field padding.
 
+r[layout.repr.packed.borrowing]
+When borrowing a field of a `repr(packed(...))` struct, Rust must not create a **misaligned reference** (which would be undefined behavior). Therefore:
+
+- It is a **hard error** (E0793) to create a reference whose **ABI alignment requirement** is **greater** than the struct’s packed alignment.
+- Borrowing is **allowed** if the target’s ABI alignment is **less than or equal to** the struct’s packed alignment.
+
+For array and slice fields `` `[T; N]` `` and `` `[T]` ``, the ABI alignment equals that of the element type `` `T` `` and **does not depend on the length** `` `N` ``.
+*(Sketch: from `` `&[T]` `` one can obtain `` `&T` ``, hence `` `align([T])` `` ≥ `` `align(T)` ``;
+from `` `&T` `` one can obtain `` `&[T; 1]` `` via `` `std::array::from_ref` ``, hence `` `align(T)` `` ≥ `` `align([T])` ``.
+Therefore `` `align([T]) == align(T)` ``.)*
+
+**Examples**
+
+```rust,ignore
+// Allowed: `u8` has ABI alignment 1, which is ≤ the packed alignment (typically 1).
+#[repr(C, packed)]
+struct S<const N: usize> { buf: [u8; N] }
+
+fn ok<const N: usize>(s: &S<N>) -> &[u8] {
+    &s.buf[..]
+}
+
+// Error (E0793): `u16` has ABI alignment 2, which is > the packed alignment.
+#[repr(C, packed)]
+struct T<const N: usize> { buf: [u16; N] }
+
+fn err<const N: usize>(t: &T<N>) -> &[u16] {
+    &t.buf[..] // creates a reference requiring alignment 2 from a packed(1) field
+}
+```
+
+Note: This is a hard error, not a lint. Implementations may determine the
+target's ABI alignment either directly from the borrowed type, or---when the full
+layout of an array is unavailable in generic contexts---by using the element type's
+alignment (`align([T])` == `align(T)`). The check must remain conservative and never
+permit creating misaligned references.
+
 r[layout.repr.alignment.constraint-exclusive]
 The `align` and `packed` modifiers cannot be applied on the same type and a `packed` type cannot transitively contain another `align`ed type. `align` and `packed` may only be applied to the [`Rust`] and [`C`] representations.
 
