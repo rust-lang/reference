@@ -439,29 +439,38 @@ impl Parser<'_> {
         Ok(ExpressionKind::Optional(box_kind(kind)))
     }
 
-    /// Parse `*` | `*?` after expression.
+    /// Parse `*` after expression.
     fn parse_repeat(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("*", "expected `*`")?;
-        Ok(if self.take_str("?") {
-            ExpressionKind::RepeatNonGreedy(box_kind(kind))
-        } else {
-            ExpressionKind::Repeat(box_kind(kind))
-        })
+        Ok(ExpressionKind::Repeat(box_kind(kind)))
     }
 
-    /// Parse `+` | `+?` after expression.
+    /// Parse `+` after expression.
     fn parse_repeat_plus(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("+", "expected `+`")?;
-        Ok(if self.take_str("?") {
-            ExpressionKind::RepeatPlusNonGreedy(box_kind(kind))
-        } else {
-            ExpressionKind::RepeatPlus(box_kind(kind))
-        })
+        Ok(ExpressionKind::RepeatPlus(box_kind(kind)))
     }
 
-    /// Parse `{a..b}` | `{a..=b}` after expression.
+    /// Parse `{a..b}` | `{a..=b}` | `{name:a..=b}` | `{name}` after expression.
+    //
+    // `name:` before the range is a named binding. `{name}` refers to that binding.
     fn parse_repeat_range(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("{", "expected `{`")?;
+        let start = self.index;
+        let name = match (self.parse_name(), self.peek()) {
+            (Some(name), Some(b':')) => {
+                self.index += 1;
+                Some(name)
+            }
+            (Some(name), Some(b'}')) => {
+                self.index += 1;
+                return Ok(ExpressionKind::RepeatRangeNamed(box_kind(kind), name));
+            }
+            _ => {
+                self.index = start;
+                None
+            }
+        };
         let min = self.take_while(&|x| x.is_ascii_digit());
         let Ok(min) = (!min.is_empty()).then(|| min.parse::<u32>()).transpose() else {
             bail!(self, "malformed range start");
@@ -492,6 +501,7 @@ impl Parser<'_> {
         self.expect("}", "expected `}`")?;
         Ok(ExpressionKind::RepeatRange {
             expr: box_kind(kind),
+            name,
             min,
             max,
             limit,

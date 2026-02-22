@@ -81,6 +81,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 ExpressionKind::Grouped(e)
                 | ExpressionKind::RepeatRange {
                     expr: e,
+                    name: _,
                     min: Some(1),
                     max: Some(1),
                     limit: RangeLimit::Closed,
@@ -153,6 +154,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 ExpressionKind::Optional(e)
                 | ExpressionKind::RepeatRange {
                     expr: e,
+                    name: _,
                     min: None | Some(0),
                     max: Some(1),
                     limit: RangeLimit::Closed,
@@ -164,6 +166,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 ExpressionKind::Repeat(e)
                 | ExpressionKind::RepeatRange {
                     expr: e,
+                    name: _,
                     min: None | Some(0),
                     max: None,
                     limit: RangeLimit::HalfOpen,
@@ -171,28 +174,17 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Optional::new(Repeat::new(n, railroad::Empty)))
                 }
-                ExpressionKind::RepeatNonGreedy(e) => {
-                    let n = render_expression(e, cx, stack)?;
-                    let r = Box::new(Optional::new(Repeat::new(n, railroad::Empty)));
-                    let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                    Box::new(lbox)
-                }
                 // Treat `e+` and `e{1..}` equally.
                 ExpressionKind::RepeatPlus(e)
                 | ExpressionKind::RepeatRange {
                     expr: e,
+                    name: _,
                     min: Some(1),
                     max: None,
                     limit: RangeLimit::HalfOpen,
                 } => {
                     let n = render_expression(e, cx, stack)?;
                     Box::new(Repeat::new(n, railroad::Empty))
-                }
-                ExpressionKind::RepeatPlusNonGreedy(e) => {
-                    let n = render_expression(e, cx, stack)?;
-                    let r = Repeat::new(n, railroad::Empty);
-                    let lbox = LabeledBox::new(r, Comment::new("non-greedy".to_string()));
-                    Box::new(lbox)
                 }
                 // For `e{..=0}` / `e{0..=0}` or `e{..1}` / `e{0..1}` render an empty node.
                 ExpressionKind::RepeatRange { max: Some(0), .. }
@@ -205,6 +197,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 // `(e{1..=b})?` (or `(e{1..b})?` for half-open).
                 ExpressionKind::RepeatRange {
                     expr: e,
+                    name,
                     min: None | Some(0),
                     max: Some(b @ 2..),
                     limit,
@@ -212,6 +205,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     state = ExpressionKind::Optional(Box::new(Expression::new_kind(
                         ExpressionKind::RepeatRange {
                             expr: e.clone(),
+                            name: name.clone(),
                             min: Some(1),
                             max: Some(*b),
                             limit: *limit,
@@ -222,6 +216,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 // Render `e{1..b}` / `e{1..=b}` directly.
                 ExpressionKind::RepeatRange {
                     expr: e,
+                    name: _,
                     min: Some(1),
                     max: Some(b @ 2..),
                     limit,
@@ -251,12 +246,14 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 // - `e{a..b}` as `e{0..a-1} e{1..b-(a-1)}`
                 ExpressionKind::RepeatRange {
                     expr: e,
+                    name,
                     min: Some(a @ 2..),
                     max: b @ None,
                     limit,
                 }
                 | ExpressionKind::RepeatRange {
                     expr: e,
+                    name,
                     min: Some(a @ 2..),
                     max: b @ Some(_),
                     limit,
@@ -267,6 +264,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     }
                     es.push(Expression::new_kind(ExpressionKind::RepeatRange {
                         expr: e.clone(),
+                        name: name.clone(),
                         min: Some(1),
                         max: b.map(|x| x - (a - 1)),
                         limit: *limit,
@@ -279,6 +277,12 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     limit: RangeLimit::Closed,
                     ..
                 } => unreachable!("closed range must have upper bound"),
+                ExpressionKind::RepeatRangeNamed(e, name) => {
+                    let n = render_expression(e, cx, stack)?;
+                    let cmt = format!("repeat exactly {name} times");
+                    let lbox = LabeledBox::new(n, Comment::new(cmt));
+                    Box::new(lbox)
+                }
                 ExpressionKind::Nt(nt) => node_for_nt(cx, nt),
                 ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
                 ExpressionKind::Prose(s) => Box::new(Terminal::new(s.clone())),
@@ -405,6 +409,7 @@ mod tests {
     fn range_expr(min: Option<u32>, max: Option<u32>, limit: RangeLimit) -> Expression {
         Expression::new_kind(ExpressionKind::RepeatRange {
             expr: Box::new(Expression::new_kind(ExpressionKind::Nt("e".to_string()))),
+            name: None,
             min,
             max,
             limit,
