@@ -245,7 +245,7 @@ r[expr.super-macros.intro]
 Certain built-in macros may create [temporaries] whose [scopes][temporary scopes] may be [extended]. These temporaries are *super temporaries* and these macros are *super macros*. [Invocations][macro invocations] of these macros are *super macro call expressions*. Arguments to these macros may be *super operands*.
 
 > [!NOTE]
-> When a super macro call expression is an [extending expression], its super operands are [extending expressions] and the [scopes][temporary scopes] of the super temporaries are [extended]. See [destructors.scope.lifetime-extension.exprs].
+> The super operands of a super macro call are [extending expressions] and the [scopes][temporary scopes] of the super temporaries are [extended]. See [destructors.scope.lifetime-extension.exprs].
 
 r[expr.super-macros.format_args]
 #### `format_args!`
@@ -255,10 +255,11 @@ Except for the format string argument, all arguments passed to [`format_args!`] 
 
 ```rust,edition2024
 # fn temp() -> String { String::from("") }
-// Due to the call being an extending expression and the argument
-// being a super operand, the inner block is an extending expression,
-// so the scope of the temporary created in its trailing expression
-// is extended.
+// Due to the argument being a super operand, the inner block is an
+// extending expression, so the scope of the temporary created in its
+// trailing expression is extended to the extended scope of the call.
+// Since the call is the initializer of a `let` statement, this
+// extends it to the end of the surrounding block.
 let _ = format_args!("{}", { &temp() }); // OK
 ```
 
@@ -387,7 +388,6 @@ They are never allowed before:
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 [extended]:             destructors.scope.lifetime-extension
-[extending expression]: destructors.scope.lifetime-extension.exprs
 [extending expressions]: destructors.scope.lifetime-extension.exprs
 [field]:                expressions/field-expr.md
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
