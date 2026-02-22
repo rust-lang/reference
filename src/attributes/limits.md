@@ -3,42 +3,54 @@ r[attributes.limits]
 
 The following [attributes] affect compile-time limits.
 
+<!-- template:attributes -->
 r[attributes.limits.recursion_limit]
 ## The `recursion_limit` attribute
 
 r[attributes.limits.recursion_limit.intro]
-The *`recursion_limit` attribute* may be applied at the [crate] level to set the
-maximum depth for potentially infinitely-recursive compile-time operations
-like macro expansion or auto-dereference.
+The *`recursion_limit` [attribute][attributes]* sets the maximum depth for potentially infinitely-recursive compile-time operations like macro expansion or auto-dereference.
 
-r[attributes.limits.recursion_limit.syntax]
-It uses the [MetaNameValueStr]
-syntax to specify the recursion depth.
+> [!EXAMPLE]
+> ```rust,compile_fail
+> #![recursion_limit = "4"]
+>
+> macro_rules! a {
+>     () => { a!(1); };
+>     (1) => { a!(2); };
+>     (2) => { a!(3); };
+>     (3) => { a!(4); };
+>     (4) => { };
+> }
+>
+> // This fails to expand because it requires a recursion depth greater than 4.
+> a!{}
+> ```
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> #![recursion_limit = "1"]
+>
+> // This fails because it requires two recursive steps to auto-dereference.
+> (|_: &u8| {})(&&&1);
+> ```
 
 > [!NOTE]
-> The default in `rustc` is 128.
+> The default recursion limit in `rustc` is 128.
 
-```rust,compile_fail
-#![recursion_limit = "4"]
+r[attributes.limits.recursion_limit.syntax]
+The `recursion_limit` attribute uses the [MetaNameValueStr] syntax to specify the recursion depth. The value in the string must be a non-negative integer.
 
-macro_rules! a {
-    () => { a!(1); };
-    (1) => { a!(2); };
-    (2) => { a!(3); };
-    (3) => { a!(4); };
-    (4) => { };
-}
+r[attributes.limits.recursion_limit.allowed-positions]
+The `recursion_limit` attribute may only be applied to the crate root.
 
-// This fails to expand because it requires a recursion depth greater than 4.
-a!{}
-```
+> [!NOTE]
+> `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
-```rust,compile_fail
-#![recursion_limit = "1"]
+r[attributes.limits.recursion_limit.duplicates]
+Only the first use of `recursion_limit` on an item has effect.
 
-// This fails because it requires two recursive steps to auto-dereference.
-(|_: &u8| {})(&&&1);
-```
+> [!NOTE]
+> `rustc` lints against any use following the first. This may become an error in the future.
 
 <!-- template:attributes -->
 r[attributes.limits.type_length_limit]
