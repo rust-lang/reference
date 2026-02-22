@@ -122,6 +122,8 @@
 
 - [Inline assembly](inline-assembly.md)
 
+- [Target properties](target-properties.md)
+
 - [Unsafety](unsafety.md)
     - [The `unsafe` keyword](unsafe-keyword.md)
     - [Behavior considered undefined](behavior-considered-undefined.md)
