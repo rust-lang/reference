@@ -675,114 +675,123 @@ Whether a feature is enabled can be checked at runtime using a platform-specific
 > [!NOTE]
 > `rustc` has a default set of features enabled for each target and CPU. The CPU may be chosen with the [`-C target-cpu`] flag. Individual features may be enabled or disabled for an entire crate with the [`-C target-feature`] flag.
 
+<!-- template:attributes -->
 r[attributes.codegen.track_caller]
 ## The `track_caller` attribute
 
+r[attributes.codegen.track_caller.intro]
+The *`track_caller` [attribute][attributes]* is used on functions to indicate that the caller should be tracked for the purpose of using [`Location`] to determine the caller.
+
+> [!EXAMPLE]
+> ```rust
+> #[track_caller]
+> fn f() {
+>     println!("{}", std::panic::Location::caller());
+> }
+> ```
+
+r[attributes.codegen.track_caller.syntax]
+The `track_caller` attribute uses the [MetaWord] syntax.
+
 r[attributes.codegen.track_caller.allowed-positions]
-The `track_caller` attribute may be applied to any function with [`"Rust"` ABI][rust-abi]
-with the exception of the entry point `fn main`.
+The `track_caller` attribute may only be applied to:
+
+- [Free functions][items.fn]
+- [Inherent associated functions][items.associated.fn]
+- [Trait impl functions][items.impl.trait]
+- [Trait definition functions][items.traits]
+- [External block functions][items.extern.fn]
+- [Closures][expr.closure]
+
+All functions must have the [`"Rust"` ABI][rust-abi].
+
+It may not be applied to the [the `main` function][crate.main].
+
+r[attributes.codegen.track_caller.duplicates]
+Only the first use of `track_caller` on an item has effect.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
 
 r[attributes.codegen.track_caller.traits]
-When applied to functions and methods in trait declarations, the attribute applies to all implementations. If the trait provides a
-default implementation with the attribute, then the attribute also applies to override implementations.
+When applied to functions and methods in trait declarations, the `track_caller` attribute applies to all implementations. If the trait provides a default implementation with the attribute, then the attribute also applies to override implementations.
 
 r[attributes.codegen.track_caller.extern]
-When applied to a function in an `extern` block the attribute must also be applied to any linked
-implementations, otherwise undefined behavior results. When applied to a function which is made
-available to an `extern` block, the declaration in the `extern` block must also have the attribute,
-otherwise undefined behavior results.
+When applied to a function in an `extern` block, the `track_caller` attribute must also be applied to any linked implementations, otherwise undefined behavior results. When applied to a function which is made available to an `extern` block, the declaration in the `extern` block must also have the attribute, otherwise undefined behavior results.
 
 r[attributes.codegen.track_caller.behavior]
-### Behavior
-
-Applying the attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of
-the "topmost" tracked call that led to `f`'s invocation. At the point of observation, an
-implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an
-*unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
-
-```rust
-#[track_caller]
-fn f() {
-    println!("{}", std::panic::Location::caller());
-}
-```
+Applying the `track_caller` attribute to a function `f` allows code within `f` to get a hint of the [`Location`] of the *topmost* tracked call that led to `f`'s invocation. At the point of observation, an implementation behaves as if it walks up the stack from `f`'s frame to find the nearest frame of an *unattributed* function `outer`, and it returns the [`Location`] of the tracked call in `outer`.
 
 > [!NOTE]
 > `core` provides [`core::panic::Location::caller`] for observing caller locations. It wraps the [`core::intrinsics::caller_location`] intrinsic implemented by `rustc`.
 
 > [!NOTE]
-> Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#limitations) for important caveats.
+> Because the resulting `Location` is a hint, an implementation may halt its walk up the stack early. See [Limitations](#track_caller-limitations) for important caveats.
 
-#### Examples
-
-When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-fn calls_f() {
-    f(); // <-- f() prints this location
-}
-```
-
-When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in
-both `f` and `g` observes `g`'s callsite within `calls_g`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-#[track_caller]
-fn g() {
-    println!("{}", std::panic::Location::caller());
-    f();
-}
-
-fn calls_g() {
-    g(); // <-- g() prints this location twice, once itself and once from f()
-}
-```
-
-When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code
-in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
-
-```rust
-# #[track_caller]
-# fn f() {
-#     println!("{}", std::panic::Location::caller());
-# }
-# #[track_caller]
-# fn g() {
-#     println!("{}", std::panic::Location::caller());
-#     f();
-# }
-#[track_caller]
-fn h() {
-    println!("{}", std::panic::Location::caller());
-    g();
-}
-
-fn calls_h() {
-    h(); // <-- prints this location three times, once itself, once from g(), once from f()
-}
-```
-
-And so on.
+> [!EXAMPLE]
+> When `f` is called directly by `calls_f`, code in `f` observes its callsite within `calls_f`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> fn calls_f() {
+>     f(); // <-- f() prints this location
+> }
+> ```
+>
+> When `f` is called by another attributed function `g` which is in turn called by `calls_g`, code in both `f` and `g` observes `g`'s callsite within `calls_g`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> #[track_caller]
+> fn g() {
+>     println!("{}", std::panic::Location::caller());
+>     f();
+> }
+>
+> fn calls_g() {
+>     g(); // <-- g() prints this location twice, once itself and once from f()
+> }
+> ```
+>
+> When `g` is called by another attributed function `h` which is in turn called by `calls_h`, all code in `f`, `g`, and `h` observes `h`'s callsite within `calls_h`:
+>
+> ```rust
+> # #[track_caller]
+> # fn f() {
+> #     println!("{}", std::panic::Location::caller());
+> # }
+> # #[track_caller]
+> # fn g() {
+> #     println!("{}", std::panic::Location::caller());
+> #     f();
+> # }
+> #[track_caller]
+> fn h() {
+>     println!("{}", std::panic::Location::caller());
+>     g();
+> }
+>
+> fn calls_h() {
+>     h(); // <-- prints this location three times, once itself, once from g(), once from f()
+> }
+> ```
+>
+> And so on.
 
 r[attributes.codegen.track_caller.limits]
-### Limitations
+### `track_caller` limitations
 
 r[attributes.codegen.track_caller.hint]
 This information is a hint and implementations are not required to preserve it.
 
 r[attributes.codegen.track_caller.decay]
-In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which
-appears to observers to have been called at the attributed function's definition site, losing actual
-caller information across virtual calls. A common example of this coercion is the creation of a
-trait object whose methods are attributed.
+In particular, coercing a function with `#[track_caller]` to a function pointer creates a shim which appears to observers to have been called at the attributed function's definition site, losing actual caller information across virtual calls. A common example of this coercion is the creation of a trait object whose methods are attributed.
 
 > [!NOTE]
 > The aforementioned shim for function pointers is necessary because `rustc` implements `track_caller` in a codegen context by appending an implicit parameter to the function ABI, but this would be unsound for an indirect call because the parameter is not a part of the function's type and a given function pointer type may or may not refer to a function with the attribute. The creation of a shim hides the implicit parameter from callers of the function pointer, preserving soundness.
