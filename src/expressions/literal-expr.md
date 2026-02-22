@@ -24,6 +24,9 @@ A _literal expression_ is an expression consisting of a single token, rather tha
 r[expr.literal.const-expr]
 A literal is a form of [constant expression], so is evaluated (primarily) at compile time.
 
+r[expr.literal.diverging]
+A literal expression does not [diverge].
+
 r[expr.literal.literal-token]
 Each of the lexical [literal][literal tokens] forms described earlier can make up a literal expression, as can the keywords `true` and `false`.
 
@@ -505,6 +508,7 @@ The expression's type is the primitive [boolean type], and its value is:
 [boolean type]: ../types/boolean.md
 [constant expression]: ../const_eval.md#constant-expressions
 [CStr]: core::ffi::CStr
+[diverge]: divergence
 [floating-point types]: ../types/numeric.md#floating-point-types
 [lint check]: ../attributes/diagnostics.md#lint-check-attributes
 [literal tokens]: ../tokens.md#literals

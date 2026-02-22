@@ -33,6 +33,7 @@ When assigning rules to new paragraphs or modifying rule names, use the followin
    - `intro`: The beginning paragraph of each section. It should explain the construct being defined overall.
    - `syntax`: Syntax definitions or explanations when BNF syntax definitions are not used.
    - `namespace`: For items only, specifies the namespace(s) the item introduces a name in. It may also be used elsewhere when defining a namespace (e.g., `r[attribute.diagnostic.namespace]`).
+   - `diverging`: The divergence behavior of an expression. Be sure to update the Divergence chapter, too.
 6. When a rule doesn't fall under the above keywords, or for section rule IDs, name the subrule as follows:
    - If the rule names a specific Rust language construct (e.g., an attribute, standard library type/function, or keyword-introduced concept), use the construct as named in the language, appropriately case-adjusted (but do not replace `_`s with `-`s).
    - Other than Rust language concepts with `_`s in the name, use `-` characters to separate words within a "subrule".
