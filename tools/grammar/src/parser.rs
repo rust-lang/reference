@@ -645,11 +645,11 @@ mod tests {
         let rule = grammar.productions.get("A").unwrap();
         let ExpressionKind::RepeatRange {
             min, max, limit, ..
-        } = &rule.expression.kind
+        } = rule.expression.kind
         else {
             panic!("expected RepeatRange, got {:?}", rule.expression.kind);
         };
-        (*min, *max, *limit)
+        (min, max, limit)
     }
 
     // -- Valid ranges -----------------------------------------------
