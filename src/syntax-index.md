@@ -306,7 +306,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [const assembly operands]: asm.operand-type.supported-operands.const
 [const blocks]: expr.block.const
 [const functions]: const-eval.const-fn
-[const generics]: items.generics.const
+[const generics]: generics.const
 [const items]: items.const
 [constant items]: items.const
 [continue expressions]: expr.loop.continue
@@ -328,9 +328,9 @@ This appendix provides an index of tokens and common forms with links to where t
 [function pointer type]: type.fn-pointer
 [function pointer types]: type.fn-pointer
 [functions]: items.fn
-[generic arguments]: items.generics
-[generic definitions]: items.generics
-[generics]: items.generics
+[generic arguments]: generics
+[generic definitions]: generics
+[generics]: generics
 [glob imports]: items.use.glob
 [grouped patterns]: patterns.paren
 [higher-ranked trait bounds]: bound.higher-ranked
@@ -340,7 +340,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [if let]: expr.if.let
 [impl trait types]: type.impl-trait.return
 [implementations]: items.impl
-[inferred const]: items.generics.const.inferred
+[inferred const]: generics.const.inferred
 [inferred type]: type.inferred
 [infinite loop expressions]: expr.loop.infinite
 [infinite loops]: expr.loop.infinite
@@ -451,6 +451,6 @@ This appendix provides an index of tokens and common forms with links to where t
 [use items]: items.use
 [variadic functions]: items.extern.variadic
 [visibility]: vis
-[where clauses]: items.generics.where
+[where clauses]: bound.where
 [while let]: expr.loop.while.let
 [wildcard pattern]: patterns.wildcard

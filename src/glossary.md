@@ -222,7 +222,7 @@ A type is uninhabited if it has no constructors and therefore can never be insta
 [enums]: items/enumerations.md
 [fields]: expressions/field-expr.md
 [free item]: #free-item
-[generic parameters]: items/generics.md
+[generic parameters]: types/generics.md
 [identifier]: identifiers.md
 [identifiers]: identifiers.md
 [implementation]: items/implementations.md

@@ -280,7 +280,7 @@ Implementations may contain outer [attributes] before the `impl` keyword and inn
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
-[generic parameters]: generics.md
+[generic parameters]: ../types/generics.md
 [methods]: associated-items.md#methods
 [path]: ../paths.md
 [the lint check attributes]: ../attributes/diagnostics.md#lint-check-attributes

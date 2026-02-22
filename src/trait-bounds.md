@@ -1,6 +1,13 @@
 r[bound]
 # Trait and lifetime bounds
 
+r[bound.intro]
+[Trait] and lifetime bounds provide a way for [generic items][generic] to restrict which types and lifetimes are used as their parameters. Bounds can be provided on any type in a [where clause]. There are also shorter forms for certain common cases:
+
+* Bounds written after declaring a [generic parameter][generic]: `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
+* In trait declarations as [supertraits]: `trait Circle : Shape {}` is equivalent to `trait Circle where Self : Shape {}`.
+* In trait declarations as bounds on [associated types]: `trait A { type B: Copy; }` is equivalent to `trait A where Self::B: Copy { type B; }`.
+
 r[bound.syntax]
 ```grammar,miscellaneous
 TypeParamBounds -> TypeParamBound ( `+` TypeParamBound )* `+`?
@@ -29,13 +36,6 @@ UseBoundGenericArg ->
     | IDENTIFIER
     | `Self`
 ```
-
-r[bound.intro]
-[Trait] and lifetime bounds provide a way for [generic items][generic] to restrict which types and lifetimes are used as their parameters. Bounds can be provided on any type in a [where clause]. There are also shorter forms for certain common cases:
-
-* Bounds written after declaring a [generic parameter][generic]: `fn f<A: Copy>() {}` is the same as `fn f<A>() where A: Copy {}`.
-* In trait declarations as [supertraits]: `trait Circle : Shape {}` is equivalent to `trait Circle where Self : Shape {}`.
-* In trait declarations as bounds on [associated types]: `trait A { type B: Copy; }` is equivalent to `trait A where Self::B: Copy { type B; }`.
 
 r[bound.satisfaction]
 Bounds on an item must be satisfied when using the item. When type checking and borrow checking a generic item, the bounds can be used to determine that a trait is implemented for a type. For example, given `Ty: Trait`
@@ -94,6 +94,40 @@ struct UsesA<'a, T>(A<'a, T>);
 
 r[bound.trait-object]
 Trait and lifetime bounds are also used to name [trait objects].
+
+r[bound.where]
+## Where clauses
+
+r[bound.where.intro]
+*Where clauses* provide another way to specify bounds on type and lifetime parameters as well as a way to specify bounds on types that aren't type parameters.
+
+r[bound.where.syntax]
+```grammar,items
+WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem?
+
+WhereClauseItem ->
+      LifetimeWhereClauseItem
+    | TypeBoundWhereClauseItem
+
+LifetimeWhereClauseItem -> Lifetime `:` LifetimeBounds
+
+TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
+```
+
+r[bound.where.higher-ranked-lifetimes]
+The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only allows [LifetimeParam] parameters.
+
+```rust
+struct A<T>
+where
+    T: Iterator,            // Could use A<T: Iterator> instead
+    T::Item: Copy,          // Bound on an associated type
+    String: PartialEq<T>,   // Bound on `String`, using the type parameter
+    i32: Default,           // Allowed, but not useful
+{
+    f: T,
+}
+```
 
 r[bound.sized]
 ## `?Sized`
@@ -243,7 +277,7 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [associated types]: items/associated-items.md#associated-types
 [hrtb-scopes]: names/scopes.md#higher-ranked-trait-bound-scopes
 [supertraits]: items/traits.md#supertraits
-[generic]: items/generics.md
+[generic]: types/generics.md
 [higher-ranked lifetimes]: #higher-ranked-trait-bounds
 [precise capturing]: types/impl-trait.md#precise-capturing
 [slice]: types/slice.md
@@ -251,4 +285,4 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [trait object]: types/trait-object.md
 [trait objects]: types/trait-object.md
 [type parameters]: types/parameters.md
-[where clause]: items/generics.md#where-clauses
+[where clause]: bound.where

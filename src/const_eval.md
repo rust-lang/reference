@@ -303,11 +303,11 @@ The types of a const function's parameters and return type are restricted to tho
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [const block]:          expressions/block-expr.md#const-blocks
 [const functions]:      items/functions.md#const-functions
-[const generic argument]: items/generics.md#const-generics
-[const generic parameters]: items/generics.md#const-generics
+[const generic argument]: types/generics.md#const-generics
+[const generic parameters]: types/generics.md#const-generics
 [constant expressions]: #constant-expressions
 [constants]:            items/constant-items.md
-[Const parameters]:     items/generics.md
+[Const parameters]:     types/generics.md
 [dereference expression]: expr.deref
 [dereference expressions]: expr.deref
 [destructors]:          destructors.md
