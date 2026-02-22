@@ -183,6 +183,30 @@ let y = &mut 9;
 assert_eq!(*y, 11);
 ```
 
+> [!NOTE]
+> The [temporary scopes][temporary scope] of `x` in `*x` and `*std::ops::Deref::deref(&x)` are not always the same in all immutable place expression contexts.
+> Likewise, the temporary scopes of `x` in `*x` and `*std::ops::DerefMut::deref_mut(&mut x)` are not always the same in all mutable place expression contexts.
+>
+> If `*x` has an [extended][temporary lifetime extension] temporary scope, then `x` does as well ([destructors.scope.lifetime-extension.sub-expressions]).
+> However, the same does not apply to `*std::ops::Deref::deref(&x)` or `*std::ops::DerefMut::deref_mut(&mut x)`.
+>
+> For example:
+>
+> ```rust
+> // The temporary holding the result of `String::new()` is extended
+> // to live to the end of the block, so `x` may be used in subsequent
+> // statements.
+> let x = &*String::new();
+> # x;
+> ```
+>
+> ```rust,compile_fail,E0716
+> // The temporary holding the result of `String::new()` is dropped at
+> // the end of the statement, so it's an error to use `y` after.
+> let y = &*std::ops::Deref::deref(&String::new()); // ERROR
+> # y;
+> ```
+
 r[expr.try]
 ## The try propagation expression
 

@@ -86,6 +86,30 @@ r[expr.array.index.array]
 r[expr.array.index.trait]
 For other types an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a mutable place expression context. Just as with methods, Rust will also insert dereference operations on `a` repeatedly to find an implementation.
 
+> [!NOTE]
+> The [temporary scopes] of `a` in `a[b]` and `*std::ops::Index::index(&a, b)` are not always the same in all immutable place expression contexts.
+> Likewise, the temporary scopes of `a` in `a[b]` and `*std::ops::IndexMut::index_mut(&mut a, b)` are not always the same in all mutable place expression contexts.
+>
+> If `a[b]` has an [extended] temporary scope, then `a` does as well ([destructors.scope.lifetime-extension.sub-expressions]).
+> However, the same does not apply to `*std::ops::Index::index(&a, b)` or `*std::ops::IndexMut::index_mut(&mut a, b)`.
+>
+> For example:
+>
+> ```rust
+> // The temporary holding the result of `vec![()]` is extended to
+> // live to the end of the block, so `x` may be used in subsequent
+> // statements.
+> let x = &vec![()][0];
+> # x;
+> ```
+>
+> ```rust,compile_fail,E0716
+> // The temporary holding the result of `vec![()]` is dropped at the
+> // end of the statement, so it's an error to use `y` after.
+> let y = &*std::ops::Index::index(&vec![()], 0); // ERROR
+> # y;
+> ```
+
 r[expr.array.index.zero-index]
 Indices are zero-based for arrays and slices.
 
@@ -121,9 +145,11 @@ The array index expression can be implemented for types other than arrays and sl
 [const block expression]: expr.block.const
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
+[extended]: destructors.scope.lifetime-extension
 [inferred const]: items.generics.const.inferred
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
 [panic]: ../panic.md
 [path]: path-expr.md
 [slice]: ../types/slice.md
+[temporary scopes]: destructors.scope.temporary
