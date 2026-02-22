@@ -368,6 +368,7 @@ They are never allowed before:
 * [Range] expressions.
 * Binary operator expressions ([ArithmeticOrLogicalExpression], [ComparisonExpression], [LazyBooleanExpression], [TypeCastExpression], [AssignmentExpression], [CompoundAssignmentExpression]).
 
+[`Box<T>`]:             special-types-and-traits.md#boxt
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`if let`]:             expressions/if-expr.md#if-let-patterns
