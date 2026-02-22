@@ -31,7 +31,7 @@ r[cfg.intro]
 *Conditionally compiled source code* is source code that is compiled only under certain conditions.
 
 r[cfg.attributes-macro]
-Source code can be made conditionally compiled using the [`cfg`] and [`cfg_attr`] [attributes] and the built-in [`cfg` macro].
+Source code can be made conditionally compiled using the [`cfg`] and [`cfg_attr`] [attributes] and the built-in [`cfg!`] and [`cfg_select!`] [macros].
 
 r[cfg.conditional]
 Whether to compile can depend on the target architecture of the compiled crate, arbitrary values passed to the compiler, and other things further described below.
@@ -436,12 +436,70 @@ let machine_kind = if cfg!(unix) {
 println!("I'm running on a {} machine!", machine_kind);
 ```
 
+r[cfg.cfg_select]
+### The `cfg_select` macro
+
+r[cfg.cfg_select.intro]
+The built-in [`cfg_select!`][std::cfg_select] macro can be used to select code at compile-time based on multiple configuration predicates.
+
+> [!EXAMPLE]
+> ```rust
+> cfg_select! {
+>     unix => {
+>         fn foo() { /* unix specific functionality */ }
+>     }
+>     target_pointer_width = "32" => {
+>         fn foo() { /* non-unix, 32-bit functionality */ }
+>     }
+>     _ => {
+>         fn foo() { /* fallback implementation */ }
+>     }
+> }
+>
+> let is_unix_str = cfg_select! {
+>     unix => "unix",
+>     _ => "not unix",
+> };
+> ```
+
+r[cfg.cfg_select.syntax]
+```grammar,configuration
+@root CfgSelect -> CfgSelectArms?
+
+CfgSelectArms ->
+    CfgSelectConfigurationPredicate `=>`
+    (
+        `{` ^ TokenTree `}` `,`? CfgSelectArms?
+      | ExpressionWithBlockNoAttrs `,`? CfgSelectArms?
+      | ExpressionWithoutBlockNoAttrs ( `,` CfgSelectArms? )?
+    )
+
+CfgSelectConfigurationPredicate ->
+    ConfigurationPredicate | `_`
+```
+
+r[cfg.cfg_select.first-arm]
+`cfg_select` expands to the payload of the first arm whose configuration predicate evaluates to true.
+
+r[cfg.cfg_select.braces]
+If the entire payload is wrapped in curly braces, the braces are removed during expansion.
+
+r[cfg.cfg_select.wildcard]
+The configuration predicate `_` always evaluates to true.
+
+r[cfg.cfg_select.fallthrough]
+It is a compile error if none of the predicates evaluate to true.
+
+r[cfg.cfg_select.well-formed]
+Each right-hand side must be a syntactically valid expansion for the position in which the macro is invoked.
+
 [Testing]: attributes/testing.md
 [`--cfg`]: ../rustc/command-line-arguments.html#--cfg-configure-the-compilation-environment
 [`--test`]: ../rustc/command-line-arguments.html#--test-build-a-test-harness
 [`cfg`]: #the-cfg-attribute
-[`cfg` macro]: #the-cfg-macro
+[`cfg!`]: #the-cfg-macro
 [`cfg_attr`]: #the-cfg_attr-attribute
+[`cfg_select!`]: #the-cfg_select-macro
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
 [`crate_type`]: linkage.md
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
@@ -449,4 +507,5 @@ println!("I'm running on a {} machine!", machine_kind);
 [attributes]: attributes.md
 [cargo-feature]: ../cargo/reference/features.html
 [crate type]: linkage.md
+[macros]: macros.md
 [static C runtime]: linkage.md#static-and-dynamic-c-runtimes
