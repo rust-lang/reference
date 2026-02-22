@@ -200,6 +200,9 @@ mod example {
 # fn main() {}
 ```
 
+> [!NOTE]
+> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
+
 r[items.use.self.namespace]
 `self` only creates a binding from the [type namespace] of the parent entity. For example, in the following, only the `foo` mod is imported:
 
@@ -217,9 +220,6 @@ fn main() {
     foo(); //~ ERROR `foo` is a module
 }
 ```
-
-> [!NOTE]
-> `self` may also be used as the first segment of a path. The usage of `self` as the first segment and inside a `use` brace is logically the same; it means the current module of the parent segment, or the current module if there is no parent segment. See [`self`] in the paths chapter for more information on the meaning of a leading `self`.
 
 r[items.use.glob]
 ## Glob imports
@@ -333,32 +333,105 @@ m!(use std as _;);
 r[items.use.restrictions]
 ## Restrictions
 
-The following are restrictions for valid `use` declarations:
+The following rules are restrictions for valid `use` declarations.
 
-r[items.use.restrictions.crate]
-* `use crate;` must use `as` to define the name to which to bind the crate root.
+r[items.use.restrictions.crate-alias]
+When using `crate` to import the current crate, you must use `as` to define the binding name.
 
-r[items.use.restrictions.self]
-* `use {self};` is an error; there must be a leading segment when using `self`.
+> [!EXAMPLE]
+> ```rust
+> use crate as root;
+> use crate::{self as root2};
+>
+> // Not allowed:
+> // use crate;
+> // use crate::{self};
+> ```
+
+r[items.use.restrictions.macro-crate-alias]
+When using [`$crate`] in a macro transcriber to import the current crate, you must use `as` to define the binding name.
+
+> [!EXAMPLE]
+> ```rust
+> macro_rules! import_crate_root {
+>     () => {
+>         use $crate as my_crate;
+>         use $crate::{self as my_crate2};
+>     };
+> }
+> ```
+
+r[items.use.restrictions.self-alias]
+When using `self` to import the current module, you must use `as` to define the binding name.
+
+> [!EXAMPLE]
+> ```rust
+> use {self as this_module};
+> use self as this_module2;
+> use self::{self as this_module3};
+>
+> // Not allowed:
+> // use {self};
+> // use self;
+> // use self::{self};
+> ```
+
+r[items.use.restrictions.super-alias]
+When using `super` to import a parent module, you must use `as` to define the binding name.
+
+> [!EXAMPLE]
+> ```rust
+> mod a {
+>     mod b {
+>         use super as parent;
+>         use super::{self as parent2};
+>         use self::super as parent3;
+>         use super::super as grandparent;
+>         use super::super::{self as grandparent2};
+>
+>         // Not allowed:
+>         // use super;
+>         // use super::{self};
+>         // use self::super;
+>         // use super::super;
+>         // use super::super::{self};
+>     }
+> }
+> ```
+
+r[items.use.restrictions.extern-prelude]
+`::` as the [extern prelude] cannot be imported.
+
+> [!EXAMPLE]
+> ```rust,edition2018,compile_fail
+> use ::{self as root}; //~ Error
+> ```
+
+> [!EDITION-2018]
+> In the 2015 edition, the prefix `::` refers to the crate root, so `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`. Starting with the 2018 edition the `::` prefix refers to the extern prelude, which cannot be directly imported.
+>
+> ```rust,edition2015
+> use ::{self as root}; //~ Ok
+> ```
 
 r[items.use.restrictions.duplicate-name]
-* As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
-
-r[items.use.restrictions.macro-crate]
-* `use` paths with `$crate` are not allowed in a [`macro_rules`] expansion.
+As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
 
 r[items.use.restrictions.variant]
-* `use` paths cannot refer to enum variants through a [type alias]. For example:
-  ```rust,compile_fail
-  enum MyEnum {
-      MyVariant
-  }
-  type TypeAlias = MyEnum;
+`use` paths cannot refer to enum variants through a [type alias].
 
-  use MyEnum::MyVariant; //~ OK
-  use TypeAlias::MyVariant; //~ ERROR
-  ```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> enum MyEnum {
+>   MyVariant
+> }
+> type TypeAlias = MyEnum;
+>
+> use MyEnum::MyVariant; //~ OK
+> use TypeAlias::MyVariant; //~ ERROR
+> ```
 
+[`$crate`]: paths.qualifiers.macro-crate
 [Attributes]: ../attributes.md
 [Built-in types]: ../types.md
 [Derive macros]: macro.proc.derive
