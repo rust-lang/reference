@@ -61,36 +61,12 @@ fn render_production(prod: &Production, cx: &RenderCtx, output: &mut String) {
     output.push('\n');
 }
 
-/// Returns the last [`ExpressionKind`] of this expression.
-fn last_expr(expr: &Expression) -> &ExpressionKind {
-    match &expr.kind {
-        ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => last_expr(es.last().unwrap()),
-        ExpressionKind::Cut(e) => last_expr(e),
-        ExpressionKind::Grouped(_)
-        | ExpressionKind::Optional(_)
-        | ExpressionKind::NegativeLookahead(_)
-        | ExpressionKind::Repeat(_)
-        | ExpressionKind::RepeatPlus(_)
-        | ExpressionKind::RepeatRange { .. }
-        | ExpressionKind::RepeatRangeNamed(_, _)
-        | ExpressionKind::Nt(_)
-        | ExpressionKind::Terminal(_)
-        | ExpressionKind::Prose(_)
-        | ExpressionKind::Break(_)
-        | ExpressionKind::Comment(_)
-        | ExpressionKind::Charset(_)
-        | ExpressionKind::CharacterRange(..)
-        | ExpressionKind::NegExpression(_)
-        | ExpressionKind::Unicode(_) => &expr.kind,
-    }
-}
-
 fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
     match &expr.kind {
         ExpressionKind::Grouped(e) => {
             output.push_str("( ");
             render_expression(e, cx, output);
-            if !matches!(last_expr(e), ExpressionKind::Break(_)) {
+            if !e.last_expr().is_break() {
                 output.push(' ');
             }
             output.push(')');
@@ -100,7 +76,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             while let Some(e) = iter.next() {
                 render_expression(e, cx, output);
                 if iter.peek().is_some() {
-                    if !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                    if !e.last_expr().is_break() {
                         output.push(' ');
                     }
                     output.push_str("| ");
@@ -111,7 +87,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             let mut iter = es.iter().peekable();
             while let Some(e) = iter.next() {
                 render_expression(e, cx, output);
-                if iter.peek().is_some() && !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                if iter.peek().is_some() && !e.last_expr().is_break() {
                     output.push(' ');
                 }
             }

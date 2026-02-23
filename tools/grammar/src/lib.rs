@@ -192,7 +192,39 @@ impl Expression {
     }
 
     pub fn is_break(&self) -> bool {
-        matches!(self.kind, ExpressionKind::Break(_))
+        self.kind.is_break()
+    }
+
+    /// Returns the last [`ExpressionKind`] of this expression.
+    pub fn last_expr(&self) -> &ExpressionKind {
+        match &self.kind {
+            ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => {
+                es.last().unwrap().last_expr()
+            }
+            ExpressionKind::Cut(e) => e.last_expr(),
+            ExpressionKind::Grouped(_)
+            | ExpressionKind::Optional(_)
+            | ExpressionKind::NegativeLookahead(_)
+            | ExpressionKind::Repeat(_)
+            | ExpressionKind::RepeatPlus(_)
+            | ExpressionKind::RepeatRange { .. }
+            | ExpressionKind::RepeatRangeNamed(_, _)
+            | ExpressionKind::Nt(_)
+            | ExpressionKind::Terminal(_)
+            | ExpressionKind::Prose(_)
+            | ExpressionKind::Break(_)
+            | ExpressionKind::Comment(_)
+            | ExpressionKind::Charset(_)
+            | ExpressionKind::CharacterRange(_, _)
+            | ExpressionKind::NegExpression(_)
+            | ExpressionKind::Unicode(_) => &self.kind,
+        }
+    }
+}
+
+impl ExpressionKind {
+    pub fn is_break(&self) -> bool {
+        matches!(self, ExpressionKind::Break(_))
     }
 }
 
