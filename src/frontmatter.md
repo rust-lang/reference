@@ -57,7 +57,7 @@ r[frontmatter.fence]
 Frontmatter must start and end with a *fence*. Each fence must start at the beginning of a line. The opening fence must consist of at least 3 and no more than 255 hyphens (`-`). The closing fence must have exactly the same number of hyphens as the opening fence. The hyphens of either fence may be followed by horizontal whitespace.
 
 r[frontmatter.infostring]
-Following the opening fence may be an infostring for identifying the intention of the contained content. An infostring may be followed by horizontal whitespace.
+The opening fence, after optional horizontal whitespace, may be followed by an infostring that identifies the format or purpose of the body. An infostring may be followed by horizontal whitespace.
 
 r[frontmatter.body]
 The body of the frontmatter may contain any content except for a line starting with as many or more hyphens (`-`) than in the fences or carriage returns.
