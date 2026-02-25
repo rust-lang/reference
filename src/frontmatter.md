@@ -54,7 +54,7 @@ r[frontmatter.document]
 Frontmatter may only be preceded by a [shebang] and [whitespace].
 
 r[frontmatter.fence]
-The delimiters are referred to as a *fence*. The opening and closing fences must be at the start of a line. They must be a matching pair of hyphens (`-`), from 3 to 255. A fence may be followed by horizontal whitespace.
+Frontmatter must start and end with a *fence*. Each fence must start at the beginning of a line. The opening fence must consist of at least 3 and no more than 255 hyphens (`-`). The closing fence must have exactly the same number of hyphens as the opening fence. The hyphens of either fence may be followed by horizontal whitespace.
 
 r[frontmatter.infostring]
 Following the opening fence may be an infostring for identifying the intention of the contained content. An infostring may be followed by horizontal whitespace.
