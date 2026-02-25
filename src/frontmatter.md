@@ -60,7 +60,7 @@ r[frontmatter.infostring]
 The opening fence, after optional horizontal whitespace, may be followed by an infostring that identifies the format or purpose of the body. An infostring may be followed by horizontal whitespace.
 
 r[frontmatter.body]
-The body of the frontmatter may contain any content except for a line starting with as many or more hyphens (`-`) than in the fences or carriage returns.
+No line in the body may start with a sequence of hyphens (`-`) equal to or longer than the opening fence. The body may not contain carriage returns.
 
 [shebang]: input-format.md#shebang-removal
 [whitespace]: whitespace.md
