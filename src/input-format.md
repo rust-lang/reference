@@ -72,7 +72,21 @@ The shebang is removed from the input sequence (and is therefore ignored).
 r[input.frontmatter]
 ## Frontmatter removal
 
-After some [whitespace], [frontmatter] may next appear in the input.
+r[input.frontmatter.removal]
+If the remaining input begins with a [frontmatter] fence, optionally preceded by lines containing only [whitespace], the [frontmatter] and any preceding whitespace are removed.
+
+For example, given the following file:
+
+<!-- ignore: test runner doesn't support frontmatter -->
+```rust,ignore
+--- cargo
+package.edition = 2024
+---
+
+fn main() {}
+```
+
+The first three lines (the opening fence, body, and closing fence) would be removed, leaving an empty line followed by `fn main() {}`.
 
 r[input.tokenization]
 ## Tokenization
