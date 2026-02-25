@@ -54,13 +54,14 @@ r[frontmatter.document]
 Frontmatter may only be preceded by a [shebang] and [whitespace].
 
 r[frontmatter.fence]
-Frontmatter must start and end with a *fence*. Each fence must start at the beginning of a line. The opening fence must consist of at least 3 and no more than 255 hyphens (`-`). The closing fence must have exactly the same number of hyphens as the opening fence. The hyphens of either fence may be followed by horizontal whitespace.
+Frontmatter must start and end with a *fence*. Each fence must start at the beginning of a line. The opening fence must consist of at least 3 and no more than 255 hyphens (`-`). The closing fence must have exactly the same number of hyphens as the opening fence. The hyphens of either fence may be followed by [horizontal whitespace].
 
 r[frontmatter.infostring]
-The opening fence, after optional horizontal whitespace, may be followed by an infostring that identifies the format or purpose of the body. An infostring may be followed by horizontal whitespace.
+The opening fence, after optional [horizontal whitespace], may be followed by an infostring that identifies the format or purpose of the body. An infostring may be followed by horizontal whitespace.
 
 r[frontmatter.body]
 No line in the body may start with a sequence of hyphens (`-`) equal to or longer than the opening fence. The body may not contain carriage returns.
 
+[horizontal whitespace]: grammar-HORIZONTAL_WHITESPACE
 [shebang]: input-format.md#shebang-removal
 [whitespace]: whitespace.md
