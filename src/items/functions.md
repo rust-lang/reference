@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [variadic function], and may only be used as the last parameter of an [external block] function. The variadic parameter may have an optional identifier, such as `args: ...`.
+A parameter with the `...` token indicates a [c-variadic function]. The variadic parameter may have an optional identifier, such as `args: ...`.
 
 r[items.fn.body]
 ## Function body
@@ -339,7 +339,9 @@ r[items.fn.c-variadic.intro]
 A *c-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
 
 ```rust
-unsafe extern "C" fn example(arg0: i32, ap: ...) { }
+unsafe extern "C" fn example(ap: ...) -> f64 {
+    unsafe { ap.arg::<f64>() }
+}
 ```
 
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
@@ -347,7 +349,10 @@ This parameter stands in for an arbitrary number of arguments that may be passed
 > [!WARNING]
 > Passing an unexpected number of arguments or arguments of unexpected type to a variadic function may lead to [undefined behavior][undefined].
 
-r[items.fn.async.desugar-brief]
+r[items.fn.c-variadic.variadic-parameter-type]
+The type of `pat` in the function body is [`VaList`].
+
+r[items.fn.c-variadic.desugar-brief]
 A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
 
 
@@ -501,6 +506,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
-[variadic function]: external-blocks.md#variadic-functions
+[c-variadic function]: external-blocks.md#variadic-functions
 [`extern` block]: external-blocks.md
 [`VaList`]: std::ffi::VaList
