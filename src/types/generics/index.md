@@ -370,62 +370,64 @@ Const parameters can be used anywhere a [const item] can be used, with the excep
 4. As a parameter to any type used in the body of any functions in the item.
 5. As a part of the type of any fields in the item.
 
-```rust
-// Examples where const generic parameters can be used.
-
-// Used in the signature of the item itself.
-fn foo<const N: usize>(arr: [i32; N]) {
-    // Used as a type within a function body.
-    let x: [i32; N];
-    // Used as an expression.
-    println!("{}", N * 2);
-}
-
-// Used as a field of a struct.
-struct Foo<const N: usize>([i32; N]);
-
-impl<const N: usize> Foo<N> {
-    // Used as an associated constant.
-    const CONST: usize = N * 4;
-}
-
-trait Trait {
-    type Output;
-}
-
-impl<const N: usize> Trait for Foo<N> {
-    // Used as an associated type.
-    type Output = [i32; N];
-}
-```
-
-```rust,compile_fail
-// Examples where const generic parameters cannot be used.
-fn foo<const N: usize>() {
-    // Cannot use in item definitions within a function body.
-    const BAD_CONST: [usize; N] = [1; N];
-    static BAD_STATIC: [usize; N] = [1; N];
-    fn inner(bad_arg: [usize; N]) {
-        let bad_value = N * 2;
-    }
-    type BadAlias = [usize; N];
-    struct BadStruct([usize; N]);
-}
-```
+> [!EXAMPLE]
+> ```rust
+> // Examples where const generic parameters can be used.
+>
+> // Used in the signature of the item itself.
+> fn foo<const N: usize>(arr: [i32; N]) {
+>     // Used as a type within a function body.
+>     let x: [i32; N];
+>     // Used as an expression.
+>     println!("{}", N * 2);
+> }
+>
+> // Used as a field of a struct.
+> struct Foo<const N: usize>([i32; N]);
+>
+> impl<const N: usize> Foo<N> {
+>     // Used as an associated constant.
+>     const CONST: usize = N * 4;
+> }
+>
+> trait Trait {
+>     type Output;
+> }
+>
+> impl<const N: usize> Trait for Foo<N> {
+>     // Used as an associated type.
+>     type Output = [i32; N];
+> }
+> ```
+>
+> ```rust,compile_fail
+> // Examples where const generic parameters cannot be used.
+> fn foo<const N: usize>() {
+>     // Cannot use in item definitions within a function body.
+>     const BAD_CONST: [usize; N] = [1; N];
+>     static BAD_STATIC: [usize; N] = [1; N];
+>     fn inner(bad_arg: [usize; N]) {
+>         let bad_value = N * 2;
+>     }
+>     type BadAlias = [usize; N];
+>     struct BadStruct([usize; N]);
+> }
+> ```
 
 r[generics.const.standalone]
 As a further restriction, const parameters may only appear as a standalone argument inside of a [type] or [array repeat expression]. In those contexts, they may only be used as a single segment [path expression], possibly inside a [block] (such as `N` or `{N}`). That is, they cannot be combined with other expressions.
 
-```rust,compile_fail
-// Examples where const parameters may not be used.
-
-// Not allowed to combine in other expressions in types, such as the
-// arithmetic expression in the return type here.
-fn bad_function<const N: usize>() -> [u8; {N + 1}] {
-    // Similarly not allowed for array repeat expressions.
-    [1; {N + 1}]
-}
-```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> // Examples where const parameters may not be used.
+>
+> // Not allowed to combine in other expressions in types, such as the
+> // arithmetic expression in the return type here.
+> fn bad_function<const N: usize>() -> [u8; {N + 1}] {
+>     // Similarly not allowed for array repeat expressions.
+>     [1; {N + 1}]
+> }
+> ```
 
 r[generics.const.inferred]
 Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([generic argument rules][generics.arguments.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
@@ -459,33 +461,35 @@ fn f<const N: usize>(x: [u8; N]) -> [u8; _] { x }
 r[generics.const.variance]
 Unlike type and lifetime parameters, const parameters can be declared without being used inside of a parameterized item, with the exception of implementations as described in [generic implementations]:
 
-```rust,compile_fail
-// ok
-struct Foo<const N: usize>;
-enum Bar<const M: usize> { A, B }
-
-// ERROR: unused parameter
-struct Baz<T>;
-struct Biz<'a>;
-struct Unconstrained;
-impl<const N: usize> Unconstrained {}
-```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> // ok
+> struct Foo<const N: usize>;
+> enum Bar<const M: usize> { A, B }
+>
+> // ERROR: unused parameter
+> struct Baz<T>;
+> struct Biz<'a>;
+> struct Unconstrained;
+> impl<const N: usize> Unconstrained {}
+> ```
 
 r[generics.const.exhaustiveness]
 When resolving a trait bound obligation, the exhaustiveness of all implementations of const parameters is not considered when determining if the bound is satisfied. For example, in the following, even though all possible const values for the `bool` type are implemented, it is still an error that the trait bound is not satisfied:
 
-```rust,compile_fail
-struct Foo<const B: bool>;
-trait Bar {}
-impl Bar for Foo<true> {}
-impl Bar for Foo<false> {}
-
-fn needs_bar(_: impl Bar) {}
-fn generic<const B: bool>() {
-    let v = Foo::<B>;
-    needs_bar(v); // ERROR: trait bound `Foo<B>: Bar` is not satisfied
-}
-```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> struct Foo<const B: bool>;
+> trait Bar {}
+> impl Bar for Foo<true> {}
+> impl Bar for Foo<false> {}
+>
+> fn needs_bar(_: impl Bar) {}
+> fn generic<const B: bool>() {
+>     let v = Foo::<B>;
+>     needs_bar(v); // ERROR: trait bound `Foo<B>: Bar` is not satisfied
+> }
+> ```
 
 r[generics.const.arguments]
 ### Const arguments
@@ -531,15 +535,16 @@ When there is ambiguity if a generic argument could be resolved as either a type
 
 <!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once namespaces are introduced, and it is clear which namespace each parameter lives in. -->
 
-```rust,compile_fail
-type N = u32;
-struct Foo<const N: usize>;
-// The following is an error, because `N` is interpreted as the type alias `N`.
-fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
-// Can be fixed by wrapping in braces to force it to be interpreted as the `N`
-// const parameter:
-fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
-```
+> [!EXAMPLE]
+> ```rust,compile_fail
+> type N = u32;
+> struct Foo<const N: usize>;
+> // The following is an error, because `N` is interpreted as the type alias `N`.
+> fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
+> // Can be fixed by wrapping in braces to force it to be interpreted as the `N`
+> // const parameter:
+> fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
+> ```
 
 r[generics.parameters.attributes]
 ## Attributes
@@ -548,15 +553,16 @@ Generic parameters allow [attributes] on them. There are no built-in attributes 
 
 This example shows using a custom derive attribute to modify the meaning of a generic parameter.
 
-<!-- ignore: requires proc macro derive -->
-```rust,ignore
-// Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
-// an attribute it understands.
-#[derive(MyFlexibleClone)]
-struct Foo<#[my_flexible_clone(unbounded)] H> {
-    a: *const H
-}
-```
+> [!EXAMPLE]
+> <!-- ignore: requires proc macro derive -->
+> ```rust,ignore
+> // Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
+> // an attribute it understands.
+> #[derive(MyFlexibleClone)]
+> struct Foo<#[my_flexible_clone(unbounded)] H> {
+>     a: *const H
+> }
+> ```
 
 [array repeat expression]: expr.array
 [arrays]: type.array
