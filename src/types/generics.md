@@ -1,7 +1,25 @@
-r[items.generics]
-# Generic parameters
+r[generics]
+# Generics
 
-r[items.generics.syntax]
+r[generics.intro]
+Generics allow items to be parameterized by types, lifetimes, and constants. This allows definitions to be written in a flexible way that can be reused with different concrete types and values.
+
+r[generics.parameters]
+## Generic parameters
+
+r[generics.parameters.intro]
+[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
+
+> [!EXAMPLE]
+> ```rust
+> fn foo<'a, T>() {}
+> trait A<U> {}
+> struct Ref<'a, T> where T: 'a { r: &'a T }
+> struct InnerArray<T, const N: usize>([T; N]);
+> struct EitherOrderWorks<const N: bool, U>(U);
+> ```
+
+r[generics.parameters.syntax]
 ```grammar,items
 GenericParams -> `<` ( GenericParam (`,` GenericParam)* `,`? )? `>`
 
@@ -16,47 +34,34 @@ ConstParam ->
     ( `=` ( BlockExpression | IDENTIFIER | `-`?LiteralExpression ) )?
 ```
 
-r[items.generics.syntax.intro]
-[Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
-
-r[items.generics.syntax.decl-order]
+r[generics.parameters.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
-r[items.generics.syntax.duplicate-params]
+r[generics.parameters.duplicate-params]
 The same parameter name may not be declared more than once in a [GenericParams] list.
 
-Some examples of items with type, const, and lifetime parameters:
-
-```rust
-fn foo<'a, T>() {}
-trait A<U> {}
-struct Ref<'a, T> where T: 'a { r: &'a T }
-struct InnerArray<T, const N: usize>([T; N]);
-struct EitherOrderWorks<const N: bool, U>(U);
-```
-
-r[items.generics.syntax.scope]
+r[generics.parameters.scope]
 Generic parameters are in scope within the item definition where they are declared. They are not in scope for items declared within the body of a function as described in [item declarations]. See [generic parameter scopes] for more details.
 
-r[items.generics.builtin-generic-types]
+r[generics.parameters.builtin-generic-types]
 [References], [raw pointers], [arrays], [slices], [tuples], and [function pointers] have lifetime or type parameters as well, but are not referred to with path syntax.
 
-r[items.generics.invalid-lifetimes]
+r[generics.parameters.invalid-lifetimes]
 `'_` and `'static` are not valid lifetime parameter names.
 
-r[items.generics.const]
-### Const generics
+r[generics.const]
+## Const generics
 
-r[items.generics.const.intro]
+r[generics.const.intro]
 *Const generic parameters* allow items to be generic over constant values.
 
-r[items.generics.const.namespace]
+r[generics.const.namespace]
 The const identifier introduces a name in the [value namespace] for the constant parameter, and all instances of the item must be instantiated with a value of the given type.
 
-r[items.generics.const.allowed-types]
+r[generics.const.allowed-types]
 The only allowed types of const parameters are `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `char` and `bool`.
 
-r[items.generics.const.usage]
+r[generics.const.usage]
 Const parameters can be used anywhere a [const item] can be used, with the exception that when used in a [type] or [array repeat expression], it must be standalone (as described below). That is, they are allowed in the following places:
 
 1. As an applied const to any type which forms a part of the signature of the item in question.
@@ -108,7 +113,7 @@ fn foo<const N: usize>() {
 }
 ```
 
-r[items.generics.const.standalone]
+r[generics.const.standalone]
 As a further restriction, const parameters may only appear as a standalone argument inside of a [type] or [array repeat expression]. In those contexts, they may only be used as a single segment [path expression], possibly inside a [block] (such as `N` or `{N}`). That is, they cannot be combined with other expressions.
 
 ```rust,compile_fail
@@ -122,10 +127,10 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 }
 ```
 
-r[items.generics.const.argument]
+r[generics.const.argument]
 A const argument in a [path] specifies the const value to use for that item.
 
-r[items.generics.const.argument.const-expr]
+r[generics.const.argument.const-expr]
 The argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter. The const expression must be a [block expression][block] (surrounded with braces) unless it is a single path segment (an [IDENTIFIER]) or a [literal] (with a possibly leading `-` token).
 
 > [!NOTE]
@@ -148,8 +153,8 @@ let _: S<1> = f::<(((_)))>(); // Inferred const.
 > [!NOTE]
 > In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
 
-r[items.generics.const.inferred]
-Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([path rules][paths.expr.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
+r[generics.const.inferred]
+Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([generic argument rules][generics.arguments.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
 ```rust
 fn make_buf<const N: usize>() -> [u8; N] {
@@ -169,7 +174,7 @@ let _: [u8; 1024] = make_buf::<_>();
 > //                    ^ ERROR `_` not allowed here
 > ```
 
-r[items.generics.const.inferred.constraint]
+r[generics.parameters.const.inferred.constraint]
 The inferred const cannot be used in item signatures.
 
 ```rust,compile_fail
@@ -177,7 +182,7 @@ fn f<const N: usize>(x: [u8; N]) -> [u8; _] { x }
 //                                       ^ ERROR not allowed
 ```
 
-r[items.generics.const.type-ambiguity]
+r[generics.const.type-ambiguity]
 When there is ambiguity if a generic argument could be resolved as either a type or const argument, it is always resolved as a type. Placing the argument in a block expression can force it to be interpreted as a const argument.
 
 <!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once namespaces are introduced, and it is clear which namespace each parameter lives in. -->
@@ -192,7 +197,7 @@ fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
 fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 ```
 
-r[items.generics.const.variance]
+r[generics.const.variance]
 Unlike type and lifetime parameters, const parameters can be declared without being used inside of a parameterized item, with the exception of implementations as described in [generic implementations]:
 
 ```rust,compile_fail
@@ -207,7 +212,7 @@ struct Unconstrained;
 impl<const N: usize> Unconstrained {}
 ```
 
-r[items.generics.const.exhaustiveness]
+r[generics.const.exhaustiveness]
 When resolving a trait bound obligation, the exhaustiveness of all implementations of const parameters is not considered when determining if the bound is satisfied. For example, in the following, even though all possible const values for the `bool` type are implemented, it is still an error that the trait bound is not satisfied:
 
 ```rust,compile_fail
@@ -223,41 +228,82 @@ fn generic<const B: bool>() {
 }
 ```
 
-r[items.generics.where]
-## Where clauses
+r[generics.arguments]
+## Generic arguments
 
-r[items.generics.where.syntax]
-```grammar,items
-WhereClause -> `where` ( WhereClauseItem `,` )* WhereClauseItem?
-
-WhereClauseItem ->
-      LifetimeWhereClauseItem
-    | TypeBoundWhereClauseItem
-
-LifetimeWhereClauseItem -> Lifetime `:` LifetimeBounds
-
-TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
-```
-
-r[items.generics.where.intro]
-*Where clauses* provide another way to specify bounds on type and lifetime parameters as well as a way to specify bounds on types that aren't type parameters.
-
-r[items.generics.where.higher-ranked-lifetimes]
-The `for` keyword can be used to introduce [higher-ranked lifetimes]. It only allows [LifetimeParam] parameters.
+r[generics.arguments.intro]
+Generic arguments are the concrete values provided for generic parameters when using a parameterized item. They are specified in angle brackets (`<...>`) following the item's path (see [paths in types] and [paths in expressions]). Generic arguments can include lifetimes, types, and const values corresponding to the generic parameters declared on the item.
 
 ```rust
-struct A<T>
-where
-    T: Iterator,            // Could use A<T: Iterator> instead
-    T::Item: Copy,          // Bound on an associated type
-    String: PartialEq<T>,   // Bound on `String`, using the type parameter
-    i32: Default,           // Allowed, but not useful
-{
-    f: T,
+struct Foo<'a, T, const N: usize> {
+    data: &'a [T; N],
 }
+
+fn make_foo<'a, T, const N: usize>(data: &'a [T; N]) -> Foo<'a, T, N> {
+    Foo { data }
+}
+
+// Generic arguments: lifetime 'static, type i32, const value 3.
+let foo: Foo<'static, i32, 3> = Foo { data: &[1, 2, 3] };
+// Example of a call expression.
+make_foo::<i32, 3>(&[1, 2, 3]);
 ```
 
-r[items.generics.attributes]
+r[generics.arguments.syntax]
+```grammar,paths
+GenericArgs ->
+      `<` `>`
+    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
+
+GenericArg ->
+    Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
+
+GenericArgsConst ->
+      BlockExpression
+    | LiteralExpression
+    | `-` LiteralExpression
+    | SimplePathSegment
+
+GenericArgsBinding ->
+    IDENTIFIER GenericArgs? `=` Type
+
+GenericArgsBounds ->
+    IDENTIFIER GenericArgs? `:` TypeParamBounds
+```
+
+r[generics.arguments.argument-order]
+The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
+
+r[generics.arguments.complex-const-params]
+Const arguments must be surrounded by braces unless they are a [literal], an [inferred const], or a single segment path. An [inferred const] may not be surrounded by braces.
+
+```rust
+mod m {
+    pub const C: usize = 1;
+}
+const C: usize = m::C;
+fn f<const N: usize>() -> [u8; N] { [0; N] }
+
+let _ = f::<1>(); // Literal.
+let _: [_; 1] = f::<_>(); // Inferred const.
+let _: [_; 1] = f::<(((_)))>(); // Inferred const.
+let _ = f::<C>(); // Single segment path.
+let _ = f::<{ m::C }>(); // Multi-segment path must be braced.
+```
+
+```rust,compile_fail
+fn f<const N: usize>() -> [u8; N] { [0; _] }
+let _: [_; 1] = f::<{ _ }>();
+//                    ^ ERROR `_` not allowed here
+```
+
+> [!NOTE]
+> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
+
+r[generics.arguments.impl-trait-params]
+The synthetic type parameters corresponding to `impl Trait` types are implicit, and these cannot be explicitly specified.
+
+r[generics.parameters.attributes]
 ## Attributes
 
 Generic lifetime and type parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
@@ -275,36 +321,38 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 ```
 
 [array repeat expression]: ../expressions/array-expr.md
-[arrays]: ../types/array.md
-[slices]: ../types/slice.md
-[associated const]: associated-items.md#associated-constants
-[associated type]: associated-items.md#associated-types
+[arrays]: array.md
+[slices]: slice.md
+[associated const]: ../items/associated-items.md#associated-constants
+[associated type]: ../items/associated-items.md#associated-types
 [attributes]: ../attributes.md
 [block]: ../expressions/block-expr.md
 [const contexts]: ../const_eval.md#const-context
 [const expression]: ../const_eval.md#constant-expressions
-[const generic argument]: items.generics.const.argument
-[const item]: constant-items.md
-[enumerations]: enumerations.md
-[functions]: functions.md
-[function pointers]: ../types/function-pointer.md
-[generic implementations]: implementations.md#generic-implementations
+[const generic argument]: generics.const.argument
+[const item]: ../items/constant-items.md
+[enumerations]: ../items/enumerations.md
+[functions]: ../items/functions.md
+[function pointers]: function-pointer.md
+[generic implementations]: ../items/implementations.md#generic-implementations
 [generic parameter scopes]: ../names/scopes.md#generic-parameter-scopes
 [higher-ranked lifetimes]: ../trait-bounds.md#higher-ranked-trait-bounds
-[implementations]: implementations.md
-[inferred const]: items.generics.const.inferred
+[implementations]: ../items/implementations.md
+[inferred const]: generics.const.inferred
 [item declarations]: ../statements.md#item-declarations
 [item]: ../items.md
 [literal]: ../expressions/literal-expr.md
 [path]: ../paths.md
 [path expression]: ../expressions/path-expr.md
-[raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
-[references]: ../types/pointer.md#shared-references-
-[structs]: structs.md
-[tuples]: ../types/tuple.md
-[trait object]: ../types/trait-object.md
-[traits]: traits.md
-[type aliases]: type-aliases.md
+[paths in expressions]: paths.expr
+[paths in types]: paths.type
+[raw pointers]: pointer.md#raw-pointers-const-and-mut
+[references]: pointer.md#shared-references-
+[structs]: ../items/structs.md
+[tuples]: tuple.md
+[trait object]: trait-object.md
+[traits]: ../items/traits.md
+[type aliases]: ../items/type-aliases.md
 [type]: ../types.md
-[unions]: unions.md
+[unions]: ../items/unions.md
 [value namespace]: ../names/namespaces.md

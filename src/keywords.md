@@ -153,6 +153,6 @@ r[lex.keywords.weak.dyn.edition2018]
 [variants]: items/enumerations.md
 [`dyn`]: types/trait-object.md
 [loop label]: expressions/loop-expr.md#loop-labels
-[generic lifetime parameter]: items/generics.md
+[generic lifetime parameter]: types/generics.md
 [external blocks]: items/external-blocks.md
 [raw borrow operators]: expressions/operator-expr.md#raw-borrow-operators
