@@ -1,6 +1,6 @@
 //! A parser of the ENBF-like grammar.
 
-use super::{Character, Characters, Expression, ExpressionKind, Grammar, Production, RangeLimit};
+use super::{Character, Expression, ExpressionKind, Grammar, Production, RangeLimit};
 use std::fmt;
 use std::fmt::Display;
 use std::path::Path;
@@ -326,7 +326,7 @@ impl Parser<'_> {
             let Some(ch) = self.parse_characters()? else {
                 break;
             };
-            characters.push(ch);
+            characters.push(Expression::new_kind(ch));
         }
         if characters.is_empty() {
             bail!(self, "expected at least one character in character group");
@@ -338,24 +338,24 @@ impl Parser<'_> {
 
     /// Parse an element of a character class, e.g.
     /// `` `a`-`b` `` | `` `term` `` | `` NonTerminal ``.
-    fn parse_characters(&mut self) -> Result<Option<Characters>> {
+    fn parse_characters(&mut self) -> Result<Option<ExpressionKind>> {
         if let Some(a) = self.parse_character()? {
             if self.take_str("-") {
                 let Some(b) = self.parse_character()? else {
                     bail!(self, "expected character in range");
                 };
-                Ok(Some(Characters::Range(a, b)))
+                Ok(Some(ExpressionKind::CharacterRange(a, b)))
             } else {
                 //~^ Parse terminal in backticks.
                 let t = match a {
                     Character::Char(ch) => ch.to_string(),
                     Character::Unicode(_) => bail!(self, "unicode not supported"),
                 };
-                Ok(Some(Characters::Terminal(t)))
+                Ok(Some(ExpressionKind::Terminal(t)))
             }
         } else if let Some(name) = self.parse_name() {
             //~^ Parse nonterminal identifier.
-            Ok(Some(Characters::Named(name)))
+            Ok(Some(ExpressionKind::Nt(name)))
         } else {
             Ok(None)
         }
@@ -600,7 +600,7 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
 #[cfg(test)]
 mod tests {
     use crate::parser::{parse_grammar, translate_position};
-    use crate::{Character, Characters, ExpressionKind, Grammar, RangeLimit};
+    use crate::{Character, ExpressionKind, Grammar, RangeLimit};
     use std::path::Path;
 
     #[test]
@@ -851,8 +851,8 @@ mod tests {
             panic!("expected Charset inside lookahead, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 2);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "e"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "E"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "e"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "E"));
     }
 
     #[test]
@@ -1004,7 +1004,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));
@@ -1023,7 +1023,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
@@ -1039,7 +1039,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
@@ -1058,12 +1058,12 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 2);
-        let Characters::Range(a1, b1) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a1, b1) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a1, Character::Unicode((ch, _)) if *ch == '\0'));
         assert!(matches!(b1, Character::Unicode((ch, _)) if *ch == '\u{D7FF}'));
-        let Characters::Range(a2, b2) = &chars[1] else {
+        let ExpressionKind::CharacterRange(a2, b2) = &chars[1].kind else {
             panic!("expected Range, got {:?}", chars[1]);
         };
         assert!(matches!(a2, Character::Unicode((ch, _)) if *ch == '\u{E000}'));
@@ -1079,9 +1079,9 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 3);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "a"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "b"));
-        assert!(matches!(&chars[2], Characters::Named(n) if n == "Foo"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "a"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "b"));
+        assert!(matches!(&chars[2].kind, ExpressionKind::Nt(n) if n == "Foo"));
     }
 
     // --- Negative lookahead combined with charset ---
@@ -1103,9 +1103,9 @@ mod tests {
             panic!("expected Charset, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 3);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "x"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "y"));
-        assert!(matches!(&chars[2], Characters::Named(n) if n == "LF"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "x"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "y"));
+        assert!(matches!(&chars[2].kind, ExpressionKind::Nt(n) if n == "LF"));
     }
 
     // --- Negative lookahead combined with Unicode ---
@@ -1125,7 +1125,7 @@ mod tests {
             panic!("expected Charset, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));

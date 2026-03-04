@@ -3,7 +3,7 @@
 use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
-use grammar::{Character, Characters, Expression, ExpressionKind, Production};
+use grammar::{Character, Expression, ExpressionKind, Production};
 use regex::Regex;
 use std::borrow::Cow;
 use std::fmt::Write;
@@ -79,6 +79,7 @@ fn last_expr(expr: &Expression) -> &ExpressionKind {
         | ExpressionKind::Break(_)
         | ExpressionKind::Comment(_)
         | ExpressionKind::Charset(_)
+        | ExpressionKind::CharacterRange(..)
         | ExpressionKind::NegExpression(_)
         | ExpressionKind::Unicode(_) => &expr.kind,
     }
@@ -175,6 +176,20 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             write!(output, "<span class=\"grammar-comment\">// {s}</span>").unwrap();
         }
         ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
+        ExpressionKind::CharacterRange(start, end) => {
+            let write_ch = |ch: &Character, output: &mut String| match ch {
+                Character::Char(ch) => write!(
+                    output,
+                    "<span class=\"grammar-literal\">{}</span>",
+                    markdown_escape(&ch.to_string())
+                )
+                .unwrap(),
+                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
+            };
+            write_ch(start, output);
+            output.push('-');
+            write_ch(end, output);
+        }
         ExpressionKind::NegExpression(e) => {
             output.push('~');
             render_expression(e, cx, output);
@@ -200,45 +215,16 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
     }
 }
 
-fn charset_render_markdown(cx: &RenderCtx, set: &[Characters], output: &mut String) {
+fn charset_render_markdown(cx: &RenderCtx, set: &[Expression], output: &mut String) {
     output.push_str("\\[");
     let mut iter = set.iter().peekable();
-    while let Some(chars) = iter.next() {
-        render_characters(chars, cx, output);
+    while let Some(expr) = iter.next() {
+        render_expression(expr, cx, output);
         if iter.peek().is_some() {
             output.push(' ');
         }
     }
     output.push(']');
-}
-
-fn render_characters(chars: &Characters, cx: &RenderCtx, output: &mut String) {
-    match chars {
-        Characters::Named(s) => {
-            let dest = cx.md_link_map.get(s).map_or("missing", |d| d.as_str());
-            write!(output, "[{s}]({dest})").unwrap();
-        }
-        Characters::Terminal(s) => write!(
-            output,
-            "<span class=\"grammar-literal\">{}</span>",
-            markdown_escape(s)
-        )
-        .unwrap(),
-        Characters::Range(a, b) => {
-            let write_ch = |ch: &Character, output: &mut String| match ch {
-                Character::Char(ch) => write!(
-                    output,
-                    "<span class=\"grammar-literal\">{}</span>",
-                    markdown_escape(&ch.to_string())
-                )
-                .unwrap(),
-                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
-            };
-            write_ch(a, output);
-            output.push('-');
-            write_ch(b, output);
-        }
-    }
 }
 
 /// Escapes characters that markdown would otherwise interpret.
@@ -302,8 +288,8 @@ mod tests {
     fn lookahead_charset() {
         let result = render(ExpressionKind::NegativeLookahead(Box::new(
             Expression::new_kind(ExpressionKind::Charset(vec![
-                Characters::Terminal("e".to_string()),
-                Characters::Terminal("E".to_string()),
+                Expression::new_kind(ExpressionKind::Terminal("e".to_string())),
+                Expression::new_kind(ExpressionKind::Terminal("E".to_string())),
             ])),
         )));
         assert!(result.starts_with("!"), "should start with `!`");
@@ -349,9 +335,11 @@ mod tests {
 
     #[test]
     fn charset_unicode_range() {
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Unicode(('\0', "0000".to_string())),
-            Character::Unicode(('\u{007F}', "007F".to_string())),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(
+                Character::Unicode(('\0', "0000".to_string())),
+                Character::Unicode(('\u{007F}', "007F".to_string())),
+            ),
         )]));
         assert!(result.contains("\\["));
         assert!(result.contains("U+0000"));
@@ -361,9 +349,8 @@ mod tests {
 
     #[test]
     fn charset_char_range() {
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Char('a'),
-            Character::Char('z'),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(Character::Char('a'), Character::Char('z')),
         )]));
         assert!(result.contains("\\["));
         assert!(result.contains("grammar-literal"));
@@ -373,9 +360,11 @@ mod tests {
     #[test]
     fn charset_mixed_range() {
         // [`a`-U+007A]
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Char('a'),
-            Character::Unicode(('\u{007A}', "007A".to_string())),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(
+                Character::Char('a'),
+                Character::Unicode(('\u{007A}', "007A".to_string())),
+            ),
         )]));
         assert!(result.contains("grammar-literal"));
         assert!(result.contains("U+007A"));
@@ -398,8 +387,8 @@ mod tests {
     #[test]
     fn neg_expression_rendering() {
         let result = render(ExpressionKind::NegExpression(Box::new(
-            Expression::new_kind(ExpressionKind::Charset(vec![Characters::Terminal(
-                "a".to_string(),
+            Expression::new_kind(ExpressionKind::Charset(vec![Expression::new_kind(
+                ExpressionKind::Terminal("a".to_string()),
             )])),
         )));
         assert!(
