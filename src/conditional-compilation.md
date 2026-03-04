@@ -501,7 +501,7 @@ Each right-hand side must be a syntactically valid expansion for the position in
 [`cfg_attr`]: #the-cfg_attr-attribute
 [`cfg_select!`]: #the-cfg_select-macro
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
-[`crate_type`]: linkage.md
+[`crate_type`]: linkage.md#the-crate_type-attribute
 [`target_feature` attribute]: attributes/codegen.md#the-target_feature-attribute
 [attribute]: attributes.md
 [attributes]: attributes.md
