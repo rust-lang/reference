@@ -37,18 +37,16 @@ INFOSTRING -> (XID_Start | `_`) ( XID_Continue | `-` | `.` )*
 r[frontmatter.intro]
 Frontmatter is an optional section for content intended for external tools without requiring these tools to have full knowledge of the Rust grammar.
 
-```rust
-#!/usr/bin/env cargo
----
-[dependencies]
-fastrand = "2"
----
-
-fn main() {
-    let num = fastrand::i32(..);
-    println!("{num}");
-}
-```
+> [!EXAMPLE]
+> <!-- ignore: test runner doesn't support frontmatter -->
+> ```rust,ignore
+> #!/usr/bin/env cargo
+> --- cargo
+> package.edition = 2024
+> ---
+>
+> fn main() {}
+> ```
 
 r[frontmatter.position]
 Frontmatter may appear at the start of the file (after the optional [byte order mark]) or after a [shebang]. In either case, it may be preceded by [whitespace].
