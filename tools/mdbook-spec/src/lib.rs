@@ -168,6 +168,7 @@ impl Preprocessor for Spec {
             }
             ch.content = admonitions::admonitions(&ch, &mut diag);
             ch.content = self.rule_link_references(&ch, &rules);
+            ch.content = grammar::grammar_link_references(&ch, &grammar);
             ch.content = self.auto_link_references(&ch, &rules);
             ch.content = self.render_rule_definitions(&ch.content, &tests, &git_ref);
             if ch.name == "Test summary" {

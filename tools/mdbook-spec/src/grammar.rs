@@ -75,6 +75,47 @@ pub fn insert_grammar(grammar: &Grammar, chapter: &Chapter, diag: &mut Diagnosti
     content
 }
 
+/// Converts link reference definitions that point to a grammar rule
+/// to the correct link.
+///
+/// For example:
+///
+/// ```markdown
+/// We accept any [token].
+///
+/// [token]: grammar-Token
+/// ```
+///
+/// This will convert the `[token]` definition to point
+/// to the actual link.
+///
+/// This supports both a `grammar-` prefixed form (e.g.
+/// `grammar-Token`) and a bare rule name (e.g. `Token`).
+pub fn grammar_link_references(chapter: &Chapter, grammar: &Grammar) -> String {
+    let current_path = chapter.path.as_ref().unwrap().parent().unwrap();
+    let for_summary = is_summary(chapter);
+    crate::MD_LINK_REFERENCE_DEFINITION
+        .replace_all(&chapter.content, |caps: &Captures<'_>| {
+            let dest = &caps["dest"];
+            let name = dest.strip_prefix("grammar-").unwrap_or(dest);
+            if let Some(production) = grammar.productions.get(name) {
+                let label = &caps["label"];
+                let relative = pathdiff::diff_paths(&production.path, current_path).unwrap();
+                // Adjust paths for Windows.
+                let relative = relative.display().to_string().replace('\\', "/");
+                let id = render_markdown::markdown_id(name, for_summary);
+                if for_summary {
+                    format!("[{label}]: #{id}")
+                } else {
+                    format!("[{label}]: {relative}#{id}")
+                }
+            } else {
+                caps.get(0).unwrap().as_str().to_string()
+            }
+        })
+        .to_string()
+}
+
 /// Creates a map of production name -> relative link path.
 fn make_relative_link_map(grammar: &Grammar, chapter: &Chapter) -> HashMap<String, String> {
     let current_path = chapter.path.as_ref().unwrap().parent().unwrap();
