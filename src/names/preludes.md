@@ -130,6 +130,9 @@ It includes the following:
 * [Macro namespace]
     * [Built-in attributes]
     * [Built-in derive macros][attributes.derive.built-in]
+    * Built-in function-like macros: `assert`, `cfg`, `column`, `compile_error`, `concat`, `env`, `file`, `format_args`,
+    `format_args_nl`, `include`, `include_bytes`, `include_str`, `line`, `log_syntax`, `module_path`, `option_env`,
+    `stringify`, `trace_macros`
 
 r[names.preludes.macro_use]
 ## `macro_use` prelude
