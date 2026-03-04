@@ -50,8 +50,8 @@ fn main() {
 }
 ```
 
-r[frontmatter.document]
-Frontmatter may only be preceded by a [shebang] and [whitespace].
+r[frontmatter.position]
+Frontmatter may appear at the start of the file (after the optional [byte order mark]) or after a [shebang]. In either case, it may be preceded by [whitespace].
 
 r[frontmatter.fence]
 Frontmatter must start and end with a *fence*. Each fence must start at the beginning of a line. The opening fence must consist of at least 3 and no more than 255 hyphens (`-`). The closing fence must have exactly the same number of hyphens as the opening fence. The hyphens of either fence may be followed by [horizontal whitespace].
@@ -62,6 +62,7 @@ The opening fence, after optional [horizontal whitespace], may be followed by an
 r[frontmatter.body]
 No line in the body may start with a sequence of hyphens (`-`) equal to or longer than the opening fence. The body may not contain carriage returns.
 
+[byte order mark]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
 [horizontal whitespace]: grammar-HORIZONTAL_WHITESPACE
 [shebang]: input-format.md#shebang-removal
 [whitespace]: whitespace.md
