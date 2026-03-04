@@ -11,8 +11,13 @@ use std::sync::LazyLock;
 mod render_markdown;
 mod render_railroad;
 
-static NAMES_RE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?m)^(?:@root )?([A-Za-z0-9_]+)(?: \([^)]+\))? ->").unwrap());
+static NAMES_RE: LazyLock<Regex> = LazyLock::new(|| {
+    // For match rule names, we support standard ASCII identifiers
+    // or non-ASCII characters (such as `⊥`).  This must be
+    // kept in sync with `is_name_start` and `is_name_continue` in
+    // `tools/grammar/src/parser.rs`.
+    Regex::new(r"(?m)^(?:@root )?([A-Za-z0-9_]+|[^\x00-\x7F])(?: \([^)]+\))? ->").unwrap()
+});
 
 #[derive(Debug)]
 pub struct RenderCtx {

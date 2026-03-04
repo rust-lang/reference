@@ -38,6 +38,24 @@ macro_rules! bail {
 
 type Result<T> = std::result::Result<T, Error>;
 
+/// Whether a character can start a grammar rule name.
+///
+/// This includes ASCII alphabetic characters, underscores, and
+/// non-ASCII Unicode symbols such as `⊥` (bottom) and `⊤` (top).
+/// ASCII symbols are excluded because characters such as `+`, `|`,
+/// `~`, and `^` are grammar syntax.
+fn is_name_start(ch: char) -> bool {
+    ch.is_alphabetic() || ch == '_' || !ch.is_ascii()
+}
+
+/// Whether a character can continue a grammar rule name.
+///
+/// Accepts alphanumeric characters, underscores, and non-ASCII
+/// characters.
+fn is_name_continue(ch: char) -> bool {
+    ch.is_alphanumeric() || ch == '_' || !ch.is_ascii()
+}
+
 pub fn parse_grammar(
     input: &str,
     grammar: &mut Grammar,
@@ -152,18 +170,11 @@ impl Parser<'_> {
     }
 
     fn parse_name(&mut self) -> Option<String> {
-        // Names must start with an alphabetic character or
-        // underscore.
         let first = self.input[self.index..].chars().next()?;
-        if !first.is_alphabetic() && first != '_' {
+        if !is_name_start(first) {
             return None;
         }
-        let name = self.take_while(&|c: char| c.is_alphanumeric() || c == '_');
-        if name.is_empty() {
-            None
-        } else {
-            Some(name.to_string())
-        }
+        Some(self.take_while(&|c| is_name_continue(c)).to_string())
     }
 
     fn parse_expression(&mut self) -> Result<Option<Expression>> {
@@ -231,7 +242,7 @@ impl Parser<'_> {
         } else if self.input[self.index..]
             .chars()
             .next()
-            .map(|ch| ch.is_alphanumeric())
+            .map(|ch| is_name_start(ch))
             .unwrap_or(false)
         {
             self.parse_nonterminal()
