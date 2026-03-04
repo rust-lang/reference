@@ -80,6 +80,9 @@ Enum::Variant {};
 > let d = ColorSpace::Oklch {};
 > ```
 
+r[expr.struct.diverging]
+A struct expression [diverges] if any of its operands diverges.
+
 r[expr.struct.field]
 ## Field struct expression
 
@@ -139,6 +142,7 @@ Point3d { x: x, y: y_value, z: z };
 Point3d { x, y: y_value, z };
 ```
 
+[diverges]: divergence
 [enum variant]: ../items/enumerations.md
 [if let]: if-expr.md#if-let-patterns
 [if]: if-expr.md#if-expressions

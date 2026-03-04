@@ -80,6 +80,9 @@ while i < 10 {
 }
 ```
 
+r[expr.loop.while.diverging]
+A `while` loop does not [diverge].
+
 r[expr.loop.while.let]
 ### `while let` patterns
 
@@ -227,6 +230,9 @@ The variable names `next`, `iter`, and `val` are for exposition only, they do no
 
 > [!NOTE]
 > The outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished. `next` is declared before being assigned because it results in types being inferred correctly more often.
+
+r[expr.loop.for.diverging]
+A `for` loop [diverges] if the iterator expression diverges.
 
 r[expr.loop.label]
 ## Loop labels
@@ -452,6 +458,7 @@ A `loop` with associated `break` expressions does not [diverge] if any of the br
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
 [diverge]: divergence
+[diverges]: divergence
 [diverging]: divergence
 [labeled block expression]: expr.loop.block-labels
 [least upper bound]: coerce.least-upper-bound

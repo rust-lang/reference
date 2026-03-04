@@ -1722,3 +1722,14 @@ On ARM, the following additional directives are guaranteed to be supported:
 - `.code`
 - `.thumb`
 - `.thumb_func`
+
+## Divergence
+
+r[asm.diverging.noreturn]
+The `asm!` macro [diverges] if it uses the [`noreturn`] option.
+
+r[asm.diverging.naked_asm]
+The `naked_asm!` macro always [diverges].
+
+[`noreturn`]: asm.options.supported-options.noreturn
+[diverges]: divergence

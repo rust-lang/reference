@@ -42,6 +42,43 @@ foo().x;
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
+r[expr.field.diverging]
+A field expression [diverges] if its expression operand diverges or if the type of the field is the [never type] and the value is guaranteed to be read.
+
+> [!EXAMPLE]
+> ```rust
+> struct S<T> {
+>     f: T
+> }
+>
+> fn phantom_place<F: FnOnce() -> T, T>() -> S<T> { loop {} }
+>
+> fn diverging_place_read() -> ! {
+>     // Create a struct with a field with the never type.
+>     let x /* : S<!> */ = phantom_place::<fn() -> !, _>();
+>     // A read of a place expression produces a diverging block.
+>     x.f;
+> }
+> ```
+>
+> The following example contrasts with the above because it does not perform a read. This means it does not diverge, causing a compile error.
+>
+> ```rust,compile_fail
+> # struct S<T> {
+> #     f: T
+> # }
+> #
+> # fn phantom_place<F: FnOnce() -> T, T>() -> S<T> { loop {} }
+> #
+> fn diverging_place_no_read() -> ! {
+>     // Create a struct with a field with the never type.
+>     let x /* : S<!> */ = phantom_place::<fn() -> !, _>();
+>     // This does not constitute a read.
+>     let _ = x.f;
+>     // ERROR: Expected type !, found ()
+> }
+> ```
+
 r[expr.field.autoref-deref]
 ## Automatic dereferencing
 
@@ -71,8 +108,10 @@ let d: String = x.f3;           // Move out of x.f3
 [`drop`]: ../special-types-and-traits.md#drop
 [identifier]: ../identifiers.md
 [call expression]: call-expr.md
+[diverges]: divergence
 [method call expression]: method-call-expr.md
 [mutable]: ../expressions.md#mutability
+[never type]: type.never
 [parenthesized expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [struct]: ../items/structs.md
