@@ -35,7 +35,7 @@ INFOSTRING -> (XID_Start | `_`) ( XID_Continue | `-` | `.` )*
 ```
 
 r[frontmatter.intro]
-Frontmatter is an optional section for content intended for external tools without requiring these tools to have full knowledge of the Rust grammar.
+Frontmatter is an optional section of metadata whose syntax allows external tools to read it without parsing Rust.
 
 > [!EXAMPLE]
 > <!-- ignore: test runner doesn't support frontmatter -->
