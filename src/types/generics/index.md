@@ -547,28 +547,28 @@ When there is ambiguity if a generic argument could be resolved as either a type
 > ```
 
 r[generics.parameters.attributes]
-## Attributes
+## Attributes on generic parameters
 
-Generic parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
-
-This example shows using a custom derive attribute to modify the meaning of a generic parameter.
+The [built-in attributes] that have meaning on a generic parameter are [`cfg`] and [the lint check attributes].
 
 > [!EXAMPLE]
-> <!-- ignore: requires proc macro derive -->
-> ```rust,ignore
-> // Assume that the derive for MyFlexibleClone declared `my_flexible_clone` as
-> // an attribute it understands.
-> #[derive(MyFlexibleClone)]
-> struct Foo<#[my_flexible_clone(unbounded)] H> {
->     a: *const H
-> }
+> ```rust
+> use std::fmt::Debug;
+>
+> struct Wrapper<
+>     T,
+>     #[cfg(feature = "debug")] U: Debug,
+>     #[cfg(not(feature = "debug"))] U,
+> > (T, U);
 > ```
 
+[`cfg`]: cfg.attr
 [array repeat expression]: expr.array
 [arrays]: type.array
 [associated const]: items.associated.const
 [associated type]: items.associated.type
 [block]: expr.block
+[built-in attributes]: attributes.builtin
 [const contexts]: const-eval.const-context
 [const expression]: const-eval.const-expr
 [const generic argument]: generics.const.argument
@@ -595,6 +595,7 @@ This example shows using a custom derive attribute to modify the meaning of a ge
 [references]: type.pointer.reference
 [slices]: type.slice
 [structs]: items.struct
+[the lint check attributes]: attributes.diagnostics.lint
 [trait bound]: bound
 [Trait bounds]: bound
 [trait object]: type.trait-object
