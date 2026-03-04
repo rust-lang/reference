@@ -41,33 +41,8 @@ Other occurrences of the character `U+000D` (CR) are left in place (they are tre
 r[input.shebang]
 ## Shebang removal
 
-r[input.shebang.intro]
-A *[shebang]* is an optional line that is typically used in Unix-like systems to specify an interpreter for executing the file.
-
-> [!EXAMPLE]
-> <!-- ignore: tests don't like shebang -->
-> ```rust,ignore
-> #!/usr/bin/env rustx
->
-> fn main() {
->     println!("Hello!");
-> }
-> ```
-
-r[input.shebang.syntax]
-```grammar,lexer
-@root SHEBANG ->
-    `#!` !((WHITESPACE | LINE_COMMENT | BLOCK_COMMENT)* `[`)
-    ~LF* (LF | EOF)
-```
-
-The shebang starts with the characters `#!` and extends through the first `U+000A` (LF) or through EOF if no LF is present. If the `#!` characters are followed by `[` (ignoring any intervening [comments] or [whitespace]), the line is not considered a shebang (to avoid ambiguity with an [inner attribute]).
-
-r[input.shebang.position]
-The shebang may appear immediately at the start of the file or after the optional [byte order mark].
-
 r[input.shebang.removal]
-The shebang is removed from the input sequence (and is therefore ignored).
+If a [shebang] is present, it is removed from the input sequence (and is therefore ignored).
 
 r[input.tokenization]
 ## Tokenization
@@ -83,9 +58,7 @@ The resulting sequence of characters is then converted into tokens as described 
 >
 > The [`include_str!`] and [`include_bytes!`] macros do not apply these transformations.
 
-[inner attribute]: attributes.md
 [BYTE ORDER MARK]: https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
-[comments]: comments.md
 [Crates and source files]: crates-and-source-files.md
-[shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[shebang]: shebang.md
 [whitespace]: whitespace.md

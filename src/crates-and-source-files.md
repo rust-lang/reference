@@ -137,6 +137,6 @@ The crate name must not be empty, and must only contain [Unicode alphanumeric] o
 [module]: items/modules.md
 [module path]: paths.md
 [panic-docs]: panic.md#unwinding-across-ffi-boundaries
-[shebang]: input-format.md#shebang-removal
+[shebang]: shebang.md
 [trait or lifetime bounds]: trait-bounds.md
 [where clauses]: items/generics.md#where-clauses

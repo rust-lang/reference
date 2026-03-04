@@ -6,6 +6,7 @@
 
 - [Lexical structure](lexical-structure.md)
     - [Input format](input-format.md)
+    - [Shebang](shebang.md)
     - [Keywords](keywords.md)
     - [Identifiers](identifiers.md)
     - [Comments](comments.md)
