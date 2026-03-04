@@ -74,6 +74,10 @@ Link definitions are automatically generated for all grammar production names. S
 This attribute uses the [MetaWord] syntax.
 
 Explicit grammar links can have the `grammar-` prefix like [Type][grammar-Type].
+
+Grammar links can also appear in link reference definitions, e.g. [type].
+
+[type]: grammar-Type
 ```
 
 ## Outside book links

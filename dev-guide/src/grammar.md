@@ -154,5 +154,19 @@ The [`mdbook-spec`] plugin automatically adds Markdown link definitions for all 
 
 In some cases, there might be name collisions with the automatic linking of rule names. In that case, disambiguate with the `grammar-` prefix, such as `[Type][grammar-Type]`. The prefix can also be used when explicitness would aid clarity.
 
+Production names can also be used in link reference definitions to provide custom link text, both with and without the `grammar-` prefix.
+
+```markdown
+We accept any [type].
+
+[type]: grammar-Type
+```
+
+```markdown
+We accept any [type].
+
+[type]: Type
+```
+
 [`mdbook-spec`]: tooling/mdbook-spec.md
 [Notation]: https://doc.rust-lang.org/nightly/reference/notation.html
