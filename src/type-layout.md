@@ -44,6 +44,7 @@ The size of most primitives is given in this table.
 
 r[layout.primitive.size-int]
 `usize` and `isize` have a size big enough to contain every address on the target platform. For example, on a 32 bit target, this is 4 bytes, and on a 64 bit target, this is 8 bytes.
+`usize` and `isize` have the same size and alignment.
 
 r[layout.primitive.align]
 The alignment of primitives is platform-specific. In most cases, their alignment is equal to their size, but it may be less. In particular, `i128` and `u128` are often aligned to 4 or 8 bytes even though their size is 16, and on many 32-bit platforms, `i64`, `u64`, and `f64` are only aligned to 4 bytes, not 8.
