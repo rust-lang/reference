@@ -72,6 +72,9 @@ const EMPTY: Vec<i32> = Vec::new();
 [EMPTY; 2];
 ```
 
+r[expr.array.diverging]
+An array expression [diverges] if any of its operands diverges.
+
 r[expr.array.index]
 ## Array and slice indexing expressions
 
@@ -113,6 +116,35 @@ arr[10];                  // warning: index out of bounds
 r[expr.array.index.trait-impl]
 The array index expression can be implemented for types other than arrays and slices by implementing the [Index] and [IndexMut] traits.
 
+r[expr.array.index.diverging]
+An index expression [diverges] if either of its operands diverges, or if the type of the indexed element is the [never type] and the value is guaranteed to be read.
+
+> [!EXAMPLE]
+> ```rust
+> fn phantom_place<F: FnOnce() -> T, T>() -> [T; 1] { loop {} }
+>
+> fn diverging_place_read() -> ! {
+>     // Create an array with the never type.
+>     let x /* : [!; 1] */ = phantom_place::<fn() -> !, _>();
+>     // A read of a place expression produces a diverging block.
+>     x[0];
+> }
+> ```
+>
+> The following example contrasts with the above because it does not perform a read. This means it does not diverge, causing a compile error.
+>
+> ```rust,compile_fail
+> # fn phantom_place<F: FnOnce() -> T, T>() -> [T; 1] { loop {} }
+> #
+> fn diverging_place_no_read() -> ! {
+>     // Create an array with the never type.
+>     let x /* : [!; 1] */ = phantom_place::<fn() -> !, _>();
+>     // This does not constitute a read.
+>     let _ = x[0];
+>     // ERROR: Expected type !, found ()
+> }
+> ```
+
 [`Copy`]: ../special-types-and-traits.md#copy
 [IndexMut]: std::ops::IndexMut
 [Index]: std::ops::Index
@@ -121,9 +153,11 @@ The array index expression can be implemented for types other than arrays and sl
 [const block expression]: expr.block.const
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
+[diverges]: divergence
 [inferred const]: items.generics.const.inferred
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
+[never type]: type.never
 [panic]: ../panic.md
 [path]: path-expr.md
 [slice]: ../types/slice.md
