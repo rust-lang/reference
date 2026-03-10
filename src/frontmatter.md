@@ -1,6 +1,20 @@
 r[frontmatter]
 # Frontmatter
 
+r[frontmatter.intro]
+Frontmatter is an optional section of metadata whose syntax allows external tools to read it without parsing Rust.
+
+> [!EXAMPLE]
+> <!-- ignore: test runner doesn't support frontmatter -->
+> ```rust,ignore
+> #!/bin/env cargo
+> --- cargo
+> package.edition = "2024"
+> ---
+>
+> fn main() {}
+> ```
+
 r[frontmatter.syntax]
 ```grammar,lexer
 @root FRONTMATTER ->
@@ -33,20 +47,6 @@ MAYBE_INFOSTRING_OR_WS ->
 
 INFOSTRING -> (XID_Start | `_`) ( XID_Continue | `-` | `.` )*
 ```
-
-r[frontmatter.intro]
-Frontmatter is an optional section of metadata whose syntax allows external tools to read it without parsing Rust.
-
-> [!EXAMPLE]
-> <!-- ignore: test runner doesn't support frontmatter -->
-> ```rust,ignore
-> #!/bin/env cargo
-> --- cargo
-> package.edition = "2024"
-> ---
->
-> fn main() {}
-> ```
 
 r[frontmatter.position]
 Frontmatter may appear at the start of the file (after the optional [byte order mark]) or after a [shebang]. In either case, it may be preceded by [whitespace].
