@@ -166,9 +166,15 @@ The `Rust` representation is the default representation for nominal types withou
 r[layout.repr.rust.layout]
 The only data layout guarantees made by this representation are those required for soundness. These are:
 
- 1. The offset of a field is divisible by that field's alignment.
- 2. The alignment of the type is at least the maximum alignment of its fields.
- 3. For any field, its offset plus its size is at most the size of the type.
+ 1. The offset of a constructible field is divisible by that field's alignment.
+ 2. The alignment of the type is at least the maximum alignment of its constructible fields.
+ 3. For any constructible field, its offset plus its size is at most the size of the type.
+
+r[layout.repr.rust.layout.constructible]
+
+A field is considered constructible if it is possible to create a value of the type containing the field.
+
+For example, given `enum E { A { x: u32 }, B { y: u32, z: ! } }`, the field `x` is constructible because you can create the value `E::A { x: 0 }`, but the fields `y` and `z` are not constructible because the type of `z` is uninhabited, so it is impossible to create an `E::B` value.
 
 r[layout.repr.rust.layout.struct]
 For [structs], it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
