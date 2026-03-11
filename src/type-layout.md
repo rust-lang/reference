@@ -166,20 +166,19 @@ The `Rust` representation is the default representation for nominal types withou
 r[layout.repr.rust.layout]
 The only data layout guarantees made by this representation are those required for soundness. These are:
 
- 1. The offset of a constructible field is divisible by that field's alignment.
- 2. The alignment of the type is at least the maximum alignment of its constructible fields.
- 3. For any constructible field, its offset plus its size is at most the size of the type.
+ 1. The offset of a field is divisible by that field's alignment.
+ 2. The alignment of the type is at least the maximum alignment of its fields.
+ 3. For any field, its offset plus its size is at most the size of the type.
 
-r[layout.repr.rust.layout.constructible]
-
-A field is considered constructible if it is possible to create a value of the type containing the field.
-
-For example, given `enum E { A { x: u32 }, B { y: u32, z: ! } }`, the field `x` is constructible because you can create the value `E::A { x: 0 }`, but the fields `y` and `z` are not constructible because the type of `z` is uninhabited, so it is impossible to create an `E::B` value.
+For enums, the above guarantees only apply to fields of inhabited variants.
 
 r[layout.repr.rust.layout.struct]
-For [structs], it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
+For [structs], it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering, or for the last field, the size of the struct. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
 
 Be aware that this guarantee does not imply that the fields have distinct addresses: zero-sized types may have the same address as other fields in the same struct.
+
+r[layout.repr.rust.layout.enum]
+For enums, a variant of the enum is said to be inhabited if all of its fields are [inhabited](glossary.html#inhabited). When an enum variant is inhabited, its fields are laid out according to the same guarantees as a struct. Otherwise, nothing is guaranteed about the fields. This allows the enum to be smaller than fields of uninhabited variants.
 
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
