@@ -340,7 +340,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [if let]: expr.if.let
 [impl trait types]: type.impl-trait.return
 [implementations]: items.impl
-[inferred const]: generics.const.inferred
+[inferred const]: generics.const.arguments.inferred
 [inferred type]: type.inferred
 [infinite loop expressions]: expr.loop.infinite
 [infinite loops]: expr.loop.infinite

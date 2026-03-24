@@ -93,6 +93,7 @@
         - [Type parameters](types/parameters.md)
         - [Inferred type](types/inferred.md)
     - [Generics](types/generics/index.md)
+        - [Generic constants](types/generics/constants.md)
     - [Dynamically sized types](dynamically-sized-types.md)
     - [Type layout](type-layout.md)
     - [Interior mutability](interior-mutability.md)
