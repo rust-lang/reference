@@ -136,7 +136,7 @@ The array index expression can be implemented for types other than arrays and sl
 [const block expression]: expr.block.const
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
-[inferred const]: generics.const.inferred
+[inferred const]: generics.const.arguments.inferred
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
 [panic]: ../panic.md
