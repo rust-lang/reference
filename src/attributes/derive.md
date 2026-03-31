@@ -43,7 +43,7 @@ r[attributes.derive.duplicates]
 The `derive` attribute may be used any number of times on an item. All derive macros listed in all attributes are invoked.
 
 r[attributes.derive.stdlib]
-The `derive` attribute is exported in the standard library prelude as [`core::prelude::v1::derive`].
+The `derive` attribute is exported in the standard library prelude as [`core::derive`].
 
 r[attributes.derive.built-in]
 Built-in derives are defined in the [language prelude][names.preludes.lang]. The list of built-in derives are:
