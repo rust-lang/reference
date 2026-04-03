@@ -204,6 +204,20 @@ pub fn f() {}
 > [!NOTE]
 > `rustc` currently recognizes the tools "clippy", "rustfmt", "diagnostic", "miri", and "rust_analyzer".
 
+r[attributes.tool.inner]
+Tool attributes can be inner attributes.
+
+```rust
+// Tells the rustfmt tool to not format the whole module.
+#![rustfmt::skip]
+
+struct S {
+}
+
+struct K {
+}
+```
+
 r[attributes.builtin]
 ## Built-in attributes index
 
