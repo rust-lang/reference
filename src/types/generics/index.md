@@ -2,7 +2,7 @@ r[generics]
 # Generics
 
 r[generics.intro]
-Generics allow items to be parameterized by types, lifetimes, and [constants]. This allows definitions to be written in a flexible way that can be reused with different concrete types and values.
+Generics allow items to be parameterized by types, [lifetimes], and [constants]. This allows definitions to be written in a flexible way that can be reused with different concrete types and values.
 
 r[generics.parameters]
 ## Generic parameters
@@ -358,6 +358,7 @@ The [built-in attributes] that have meaning on a generic parameter are [`cfg`] a
 [implementations]: items.impl
 [item declarations]: statement.item
 [lifetime elision]: lifetime-elision
+[lifetimes]: generics.lifetimes
 [paths in expressions]: paths.expr
 [paths in types]: paths.type
 [qualified path]: paths.qualified
