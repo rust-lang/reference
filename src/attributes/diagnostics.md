@@ -575,6 +575,9 @@ The `note` option can appear several times, which results in several note messag
 r[attributes.diagnostic.on_unimplemented.repetition]
 If any of the other options appears several times the first occurrence of the relevant option specifies the actually used value. Subsequent occurrences generates a warning.
 
+r[attributes.diagnostic.on_unimplemented.duplicates]
+The `diagnostic::on_unimplemented` attribute may be used any number of times. All keys from all uses of the attribute will be used and are subject to the repetition rules.
+
 r[attributes.diagnostic.on_unimplemented.unknown-keys]
 A warning is generated for any unknown keys.
 
