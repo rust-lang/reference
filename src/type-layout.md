@@ -384,6 +384,9 @@ The representation of a primitive representation enum is a `repr(C)` union of `r
 > [!NOTE]
 > This representation is unchanged if the tag is given its own member in the union, should that make manipulation more clear for you (although to follow the C++ standard the tag member should be wrapped in a `struct`).
 
+> [!NOTE]
+> This representation is quite different from `repr(C)` for enums with fields.
+
 ```rust
 // This enum has the same representation as ...
 #[repr(u8)]
@@ -429,6 +432,10 @@ r[layout.repr.primitive-c]
 #### Combining primitive representations of enums with fields and `#[repr(C)]`
 
 For enums with fields, it is also possible to combine `repr(C)` and a primitive representation (e.g., `repr(C, u8)`). This modifies the [`repr(C)`] by changing the representation of the discriminant enum to the chosen primitive instead. So, if you chose the `u8` representation, then the discriminant enum would have a size and alignment of 1 byte.
+
+> [!NOTE]
+> This means `repr(C, u8)` is quite different from `repr(u8)`!
+> The former is a struct with two fields (tag and a union of variants), the latter is a union where each field starts with the tag.
 
 The discriminant enum from the example [earlier][`repr(C)`] then becomes:
 
