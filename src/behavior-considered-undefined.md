@@ -28,8 +28,7 @@ r[undefined.pointer-access]
   a misaligned pointer].
 
 r[undefined.place-projection]
-* Performing a [place projection][glossary.place-projection] that violates the requirements of [in-bounds
-  pointer arithmetic](pointer#method.offset).
+* Performing a [place projection][glossary.place-projection] that violates the requirements of [in-bounds pointer arithmetic](pointer#method.offset).
 
 r[undefined.alias]
 * Breaking the pointer aliasing rules. The exact aliasing rules are not determined yet, but here is an outline of the general principles:
