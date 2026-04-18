@@ -133,6 +133,14 @@ These were formerly known as *object safe* traits.
 
 A [*path*] is a sequence of one or more path segments used to refer to an [entity](#entity) in the current scope or other levels of a [namespace](#namespace) hierarchy.
 
+### Place projection
+
+r[glossary.place-projection]
+A *place projection* is a [field access], [tuple index], [dereference] (and automatic dereferences), [array or slice index] expression, or [pattern destructuring] applied to a variable.
+
+> [!NOTE]
+> In `rustc`, pattern destructuring desugars into a series of dereferences and field or element accesses.
+
 ### Prelude
 
 Prelude, or The Rust Prelude, is a small collection of items - mostly traits - that are imported into every module of every crate. The traits in the prelude are pervasive.
@@ -211,6 +219,7 @@ r[glossary.uninhabited]
 
 A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] `!`, or an enum with no variants `enum Never { }`. Opposite of [Inhabited](#inhabited).
 
+[array or slice index]: expressions/array-expr.md#array-and-slice-indexing-expressions
 [`extern` blocks]: items.extern
 [`extern fn`]: items.fn.extern
 [alignment]: type-layout.md#size-and-alignment
@@ -218,8 +227,10 @@ A type is uninhabited if it has no constructors and therefore can never be insta
 [attributes]: attributes.md
 [*entity*]: names.md
 [crate]: crates-and-source-files.md
+[dereference]: expressions/operator-expr.md#the-dereference-operator
 [dyn compatibility]: items/traits.md#dyn-compatibility
 [enums]: items/enumerations.md
+[field access]: expressions/field-expr.md
 [fields]: expressions/field-expr.md
 [free item]: #free-item
 [generic parameters]: items/generics.md
@@ -243,11 +254,13 @@ A type is uninhabited if it has no constructors and therefore can never be insta
 [never type]: types/never.md
 [*path*]: paths.md
 [Paths]: paths.md
+[pattern destructuring]: patterns.destructure
 [*scope*]: names/scopes.md
 [structs]: items/structs.md
 [trait object types]: types/trait-object.md
 [traits]: items/traits.md
 [turbofish test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/parser/bastion-of-the-turbofish.rs
+[tuple index]: expressions/tuple-expr.md#tuple-indexing-expressions
 [types of crates]: linkage.md
 [types]: types.md
 [undefined-behavior]: behavior-considered-undefined.md
