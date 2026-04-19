@@ -96,10 +96,10 @@ The *`link_section` attribute* specifies the section of the object file that a
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
 
-<!-- no_run: don't link. The format of the section name is platform-specific. -->
-```rust,no_run
+```rust
 #[unsafe(no_mangle)]
-#[unsafe(link_section = ".example_section")]
+#[cfg_attr(target_os = "linux", unsafe(link_section = ".example_section"))]
+#[cfg_attr(target_os = "macos", unsafe(link_section = "__DATA,example_section"))]
 pub static VAR1: u32 = 1;
 ```
 
