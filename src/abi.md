@@ -121,6 +121,26 @@ r[abi.link_section.format]
 The format of the `link_section` attribute is platform-specific, and the
 supported options varies depending on the underlying object file format.
 
+r[abi.link_section.elf]
+### Link section ELF format
+
+TODO, maybe document `.hash` -> `SHT_HASH` etc.?
+
+Or perhaps just link to <https://www.man7.org/linux/man-pages/man5/elf.5.html#:~:text=Various%20sections%20hold%20program%20and%20control%20information>?
+
+r[abi.link_section.coff]
+### Link section COFF format
+
+TODO. Something like:
+
+r[abi.link_section.coff.syntax]
+```grammar,attributes
+COFFLinkSection -> IDENTIFIER (`$` COFFOrder)?
+COFFOrder -> IDENTIFIER
+```
+
+See <https://learn.microsoft.com/en-us/windows/win32/debug/pe-format>.
+
 r[abi.link_section.mach-o]
 ### Link section Mach-O format
 
@@ -151,6 +171,16 @@ size (if the `symbol_stubs` section type is used).
 
 r[abi.link_section.mach-o.default-type]
 The section type defaults to `regular` if not set.
+
+r[abi.link_section.wasm]
+### Link section WebAssembly format
+
+TODO.
+
+r[abi.link_section.coff]
+### Link section XCOFF format
+
+TODO.
 
 r[abi.export_name]
 ## The `export_name` attribute
