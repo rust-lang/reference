@@ -117,6 +117,41 @@ r[abi.link_section.edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition it is allowed to use the `link_section` attribute without the `unsafe` qualification.
 
+r[abi.link_section.format]
+The format of the `link_section` attribute is platform-specific, and the
+supported options varies depending on the underlying object file format.
+
+r[abi.link_section.mach-o]
+### Link section Mach-O format
+
+<!-- Parsing done by LLVM in https://github.com/llvm/llvm-project/blob/llvmorg-22.1.3/llvm/lib/MC/MCSectionMachO.cpp -->
+r[abi.link_section.mach-o.syntax]
+```grammar,attributes
+MachOLinkSection -> MachOSegment `,` MachOSection (`,` (MachOSectionType (`,` MachOSectionAttributes?)?)?)?
+
+MachOLinkSectionStub -> MachOSegment `,` MachOSection `,` `symbol_stubs` `,` MachOSectionAttributes? `,` MachOSectionStubSize
+
+MachOSegment -> <0 to 16 bytes>
+
+MachOSection -> <1 to 16 bytes>
+
+MachOSectionType -> `regular` | `zerofill` | `cstring_literals` | `4byte_literals` | `8byte_literals` | `literal_pointers` | `non_lazy_symbol_pointers` | `lazy_symbol_pointers` | `mod_init_funcs` | `mod_term_funcs` | `coalesced` | `interposing` | `16byte_literals` | `thread_local_regular` | `thread_local_zerofill` | `thread_local_variables` | `thread_local_variable_pointers` | `thread_local_init_function_pointers`
+
+MachOSectionAttributes -> MachOSectionAttribute (`+` MachOSectionAttribute)*
+
+MachOSectionAttribute -> `pure_instructions` | `no_toc` | `strip_static_syms` | `no_dead_strip` | `live_support` | `self_modifying_code` | `debug`
+
+MachOSectionStubSize -> DEC_DIGIT (DEC_DIGIT)*
+```
+
+r[abi.link_section.mach-o.intro]
+The link section format string on Mach-O has five configurable fields: the
+segment, the section, the section type, the section attributes and the stub
+size (if the `symbol_stubs` section type is used).
+
+r[abi.link_section.mach-o.default-type]
+The section type defaults to `regular` if not set.
+
 r[abi.export_name]
 ## The `export_name` attribute
 
