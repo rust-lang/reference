@@ -340,8 +340,7 @@ r[type.closure.capture.precision.discriminants.uninhabited-variants]
 Even if all variants but the one being matched against are uninhabited, making the pattern [irrefutable][patterns.refutable], the discriminant is still read if it otherwise would be.
 
 ```rust,compile_fail,E0502
-enum Empty {}
-let mut x = Ok::<_, Empty>(42);
+let mut x = Ok::<_, !>(42);
 let c = || {
     let Ok(_) = x; // Captures `x` by `ImmBorrow`.
 };

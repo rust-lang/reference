@@ -114,28 +114,16 @@ fn control_flow_not_diverging() -> () {
     }
 }
 
-struct Foo {
-    x: !,
-}
-
-fn make<T>() -> T { loop {} }
-
-fn diverging_place_read() -> ! {
-    let foo = Foo { x: make() };
+fn diverging_place_read(x: !) -> ! {
     // A read of a place expression produces a diverging block.
-    let _x = foo.x;
+    let _x = x;
 }
 ```
 
 ```rust,compile_fail,E0308
-# fn make<T>() -> T { loop {} }
-# struct Foo {
-#     x: !,
-# }
-fn diverging_place_not_read() -> ! {
-    let foo = Foo { x: make() };
+fn diverging_place_not_read(x: !) -> ! {
     // Assignment to `_` means the place is not read.
-    let _ = foo.x;
+    let _ = x;
 } // ERROR: Mismatched types.
 ```
 
