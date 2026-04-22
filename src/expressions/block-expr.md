@@ -91,7 +91,6 @@ r[expr.block.diverging]
 A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is not read from.
 
 ```rust,no_run
-# #![ feature(never_type) ]
 fn no_control_flow() -> ! {
     // There are no conditional statements, so this entire function body is diverging.
     loop {}
@@ -115,10 +114,6 @@ fn control_flow_not_diverging() -> () {
     }
 }
 
-// Note: This makes use of the unstable never type which is only available on
-// Rust's nightly channel. This is done for illustration purposes. It is
-// possible to encounter this scenario in stable Rust, but requires a more
-// convoluted example.
 struct Foo {
     x: !,
 }
@@ -133,7 +128,6 @@ fn diverging_place_read() -> ! {
 ```
 
 ```rust,compile_fail,E0308
-# #![ feature(never_type) ]
 # fn make<T>() -> T { loop {} }
 # struct Foo {
 #     x: !,
