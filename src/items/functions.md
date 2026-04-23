@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [c-variadic function]. The variadic parameter may have an optional identifier, such as `args: ...`.
+A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block] the c-variadic parameter may have an optional identifier, such as `args: ...`, in a [c-variadic function definition] the identifier is mandatory.
 
 r[items.fn.body]
 ## Function body
@@ -340,27 +340,25 @@ A *c-variadic* function accepts a variable argument list `pat: ...` as its final
 
 ```rust
 unsafe extern "C" fn example(ap: ...) -> f64 {
-    unsafe { ap.arg::<f64>() }
+    unsafe { ap.next_arg::<f64>() }
 }
 ```
 
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
 
 > [!WARNING]
-> Passing an unexpected number of arguments or arguments of unexpected type to a variadic function may lead to [undefined behavior][undefined].
+> Passing an unexpected number of arguments or arguments of unexpected type to a c-variadic function may lead to [undefined behavior][undefined].
 
-r[items.fn.c-variadic.variadic-parameter-type]
+r[items.fn.c-variadic.c-variadic-parameter-type]
 The type of `pat` in the function body is [`VaList`].
 
 r[items.fn.c-variadic.desugar-brief]
 A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
 
-
-
 ```rust
 // Source
 unsafe extern "C" fn example(mut ap: ...) -> i32 {
-    unsafe { ap.arg::<i32>() }
+    unsafe { ap.next_arg::<i32>() }
 }
 ```
 
@@ -368,15 +366,11 @@ is roughly equivalent to:
 
 ```rust
 # use std::ffi::VaList;
-# use std::mem::MaybeUninit;
-# fn va_start() {}
 // Desugared
 unsafe extern "C" fn example() -> i32 {
-    let mut storage = MaybeUninit::<VaList<'_>>::uninit();
-    va_start(storage.as_mut_ptr()); // Initializes the VaList.
-    let mut ap: &mut VaList<'_> = ap.assume_init_mut();
+    let mut ap: VaList<'_> = /* compiler initializes the VaList */;
 
-    unsafe { ap.arg::<i32>() }
+    unsafe { ap.next_arg::<i32>() }
 
     va_end(ap)
 }
@@ -389,7 +383,7 @@ r[items.fn.c-variadic.ffi-compatibility]
 The rust [`VaList`] is ABI-compatible with the C `va_list` type.
 
 r[items.fn.c-variadic.abi]
-Only `extern "C"` and `extern "C-unwind"` functions can accept a variable argument list.
+Only `extern "C"` and `extern "C-unwind"` function defintions can accept a variable argument list.
 
 r[items.fn.c-variadic.safety]
 Only `unsafe` functions can accept a variable argument list.
@@ -403,7 +397,7 @@ A c-variadic functions cannot be `const`
 r[items.fn.c-variadic.platform-support]
 Some ABIs do not support c-variadic function definitions. The compiler errors in this case.
 
-```
+```text
 error: the `bpfel` target does not support c-variadic functions
   --> $DIR/not-supported.rs:23:31
    |
@@ -412,7 +406,7 @@ LL | unsafe extern "C" fn variadic(_: ...) {}
 ```
 
 r[items.fn.c-variadic.dyn-compat]
-When a trait method is c-variadic, the trait is no longer dyn-compatible.
+When a trait method is c-variadic, the trait is no longer [dyn-compatible].
 
 r[items.fn.attributes]
 ## Attributes on functions
@@ -510,3 +504,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`extern` block]: external-blocks.md
 [zero-sized]: glossary.zst
 [`VaList`]: std::ffi::VaList
+[dyn-compatible]: traits.md#dyn-compatibility
