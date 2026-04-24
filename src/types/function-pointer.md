@@ -5,23 +5,17 @@ r[type.fn-pointer.syntax]
 ```grammar,types
 BareFunctionType ->
     ForLifetimes? FunctionTypeQualifiers `fn`
-       `(` FunctionParametersMaybeNamedVariadic? `)` BareFunctionReturnType?
+       `(` MaybeNamedFunctionParameters? `)` BareFunctionReturnType?
 
 FunctionTypeQualifiers -> Safety? (`extern` Abi?)?
 
 BareFunctionReturnType -> `->` TypeNoBounds
 
-FunctionParametersMaybeNamedVariadic ->
-    MaybeNamedFunctionParameters | MaybeNamedFunctionParametersVariadic
-
 MaybeNamedFunctionParameters ->
     MaybeNamedParam ( `,` MaybeNamedParam )* `,`?
 
 MaybeNamedParam ->
-    OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? Type
-
-MaybeNamedFunctionParametersVariadic ->
-    ( MaybeNamedParam `,` )* MaybeNamedParam `,` OuterAttribute* `...`
+    OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? ( Type | `...` )
 ```
 
 r[type.fn-pointer.intro]
