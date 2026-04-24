@@ -7,7 +7,7 @@ BareFunctionType ->
     ForLifetimes? FunctionTypeQualifiers `fn`
        `(` FunctionParametersMaybeNamedVariadic? `)` BareFunctionReturnType?
 
-FunctionTypeQualifiers -> `unsafe`? (`extern` Abi?)?
+FunctionTypeQualifiers -> Safety? (`extern` Abi?)?
 
 BareFunctionReturnType -> `->` TypeNoBounds
 
