@@ -12,7 +12,8 @@ FunctionTypeQualifiers -> Safety? (`extern` Abi?)?
 BareFunctionReturnType -> `->` TypeNoBounds
 
 MaybeNamedFunctionParameters ->
-    MaybeNamedParam ( `,` MaybeNamedParam )* `,`?
+      SelfParam `,`?
+    | (SelfParam `,`)? MaybeNamedParam ( `,` MaybeNamedParam )* `,`?
 
 MaybeNamedParam ->
     OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? ( Type | `...` )
