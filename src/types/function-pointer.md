@@ -16,7 +16,10 @@ MaybeNamedFunctionParameters ->
     | (SelfParam `,`)? MaybeNamedParam ( `,` MaybeNamedParam )* `,`?
 
 MaybeNamedParam ->
-    OuterAttribute* ( ( IDENTIFIER | `_` ) `:` )? ( Type | `...` )
+    OuterAttribute* ( MaybeNamedPattern `:` )? ( Type | `...` )
+
+MaybeNamedPattern ->
+    `mut`? IDENTIFIER | ( `&` | `&&` )? ( `_` | `false` | `true` | IDENTIFIER )
 ```
 
 r[type.fn-pointer.intro]
