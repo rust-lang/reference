@@ -14,59 +14,52 @@ r[abi.used]
 ## The `used` attribute
 
 r[abi.used.intro]
-The *`used` [attribute]* forces a [`static` item][items.static] to be kept in the output object file (.o, .rlib, etc. excluding final binaries) even if the static is never used, or referenced, by an other item in the crate. However, the linker is still free to remove such an item.
+The *`used` [attribute]* forces a [static] to be kept in the output object file (.o, .rlib, etc., excluding final binaries) even if it's never used or referenced by any other item in the crate. The linker, however, is still free to remove it.
 
 > [!EXAMPLE]
-> This example that shows under what conditions the compiler keeps a `static` item in the output object file.
->
 > ```rust
-> // foo.rs
+> // lib.rs
 >
-> // This is kept because of `#[used]`:
+> // This is kept because of `#[used]`.
 > #[used]
-> static FOO: u32 = 0;
+> static S1: u8 = 0;
 >
-> // This is removable because it is unused:
+> // This is removable because it's unused.
 > #[allow(dead_code)]
-> static BAR: u32 = 0;
+> static S2: u8 = 0;
 >
-> // This is kept because it is publicly reachable:
-> pub static BAZ: u32 = 0;
+> // This is kept because it's publicly reachable.
+> pub static S3: u8 = 0;
 >
-> // This is kept because it is referenced by a public, reachable function:
-> static QUUX: u32 = 0;
+> // This is kept because it's referenced by a publicly
+> // reachable function.
+> static S4: u8 = 0;
+> #[unsafe(no_mangle)] pub fn f4() -> &'static u8 { &S4 }
 >
-> pub fn quux() -> &'static u32 {
->     &QUUX
-> }
->
-> // This is removable because it is referenced by a private, unused (dead) function:
-> static CORGE: u32 = 0;
->
+> // This is removable because it's referenced only by a
+> // private, unused (dead) function.
+> static S5: u8 = 0;
 > #[allow(dead_code)]
-> fn corge() -> &'static u32 {
->     &CORGE
-> }
+> fn f5() -> &'static u8 { &S5 }
 > ```
 >
 > ```console
-> $ rustc -O --emit=obj --crate-type=rlib foo.rs
->
-> $ nm -C foo.o
-> 0000000000000000 R foo::BAZ
-> 0000000000000000 r foo::FOO
-> 0000000000000000 R foo::QUUX
-> 0000000000000000 T foo::quux
+> $ rustc -O --emit=obj --crate-type=rlib lib.rs
+> $ LC_ALL=C nm -C lib.o
+> 0000000000000000 R lib::S1
+> 0000000000000000 R lib::S3
+> 0000000000000000 r lib::S4
+> 0000000000000000 T f4
 > ```
 
 r[abi.used.syntax]
 The `used` attribute uses the [MetaWord] syntax.
 
 r[abi.used.allowed-positions]
-The `used` attribute may only be applied to [`static` items][items.static].
+The `used` attribute may only be applied to [`static` items].
 
 r[abi.used.duplicates]
-The `used` attribute may be used any number of times on a form.
+Only the first use of `used` on an item has effect.
 
 > [!NOTE]
 > `rustc` lints against any use following the first.
@@ -164,4 +157,5 @@ r[abi.export_name.edition2024]
 [external blocks]: items/external-blocks.md
 [function]: items/functions.md
 [item]: items.md
+[`static` items]: items.static
 [static]: items/static-items.md
