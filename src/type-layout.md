@@ -209,43 +209,81 @@ For each field in declaration order in the struct, first determine the size and 
 
 Finally, the size of the struct is the current offset rounded up to the nearest multiple of the struct's alignment.
 
-Here is this algorithm described in pseudocode.
+Here is the algorithm:
 
-<!-- ignore: pseudocode -->
-```rust,ignore
-/// Returns the amount of padding needed after `offset` to ensure that the
-/// following address will be aligned to `alignment`.
-fn padding_needed_for(offset: usize, alignment: usize) -> usize {
-    let misalignment = offset % alignment;
-    if misalignment > 0 {
-        // round up to next multiple of `alignment`
-        alignment - misalignment
-    } else {
-        // already a multiple of `alignment`
-        0
+```rust
+# /// A field of a struct
+struct Field {
+    alignment: usize,
+    size: usize,
+}
+# /// User-defined structs
+struct UserStruct {
+#     /// Fields stored in declaration order
+    fields: Vec<Field>,
+#     /// Offset of each field from the start of the struct
+    field_offsets: Vec<usize>,
+#     /// Overall alignment
+    alignment: usize,
+#     /// Overall size
+    size: usize,
+}
+
+impl UserStruct {
+    /// Returns the amount of padding needed after `offset` to ensure that the
+    /// following address will be aligned to `alignment`.
+    fn padding_needed_for(offset: usize, alignment: usize) -> usize {
+        let misalignment = offset % alignment;
+        if misalignment > 0 {
+            // round up to next multiple of `alignment`
+            alignment - misalignment
+        } else {
+            // already a multiple of `alignment`
+            0
+        }
+    }
+
+    /// Fields must be in declaration order!
+    /// By this point, they have already had their alignments and sizes calculated.
+    pub fn from_fields(fields: Vec<Field>) -> Self {
+        // "The alignment of the struct is the alignment of the most-aligned
+        // field in it, or one if there are no fields"
+        let alignment = fields.iter().map(|field| field.alignment).max().unwrap_or(1);
+
+        // "Start with a current offset of 0 bytes."
+        let mut current_offset = 0;
+
+        let mut field_offsets = vec![];
+        for field in &fields {
+            // "If the current offset is not a multiple of the field's alignment,
+            // then add padding bytes to the current offset until it is a multiple
+            // of the field's alignment."
+            current_offset += Self::padding_needed_for(
+                current_offset,
+                field.alignment
+            );
+
+            // "The offset for the field is what the current offset is now."
+            field_offsets.push(current_offset);
+
+            // "Then increase the current offset by the size of the field."
+            current_offset += field.size;
+        }
+
+        // "Finally, the size of the struct is the current offset rounded up to
+        // the nearest multiple of the struct's alignment."
+        let size = current_offset + Self::padding_needed_for(
+            current_offset,
+            alignment
+        );
+
+        UserStruct { fields, field_offsets, alignment, size }
     }
 }
-
-struct.alignment = struct.fields().map(|field| field.alignment).max();
-
-let current_offset = 0;
-
-for field in struct.fields_in_declaration_order() {
-    // Increase the current offset so that it's a multiple of the alignment
-    // of this field. For the first field, this will always be zero.
-    // The skipped bytes are called padding bytes.
-    current_offset += padding_needed_for(current_offset, field.alignment);
-
-    struct[field].offset = current_offset;
-
-    current_offset += field.size;
-}
-
-struct.size = current_offset + padding_needed_for(current_offset, struct.alignment);
 ```
 
 > [!WARNING]
-> This pseudocode uses a naive algorithm that ignores overflow issues for the sake of clarity. To perform memory layout computations in actual code, use [`Layout`].
+> This mock implementation uses a naive algorithm that ignores overflow issues for the sake of clarity. To perform memory layout computations in actual code, use [`Layout`].
 
 > [!NOTE]
 > This algorithm can produce [zero-sized] structs. In C, an empty struct declaration like `struct Foo { }` is illegal. However, both gcc and clang support options to enable such structs, and assign them size zero. C++, in contrast, gives empty structs a size of 1, unless they are inherited from or they are fields that have the `[[no_unique_address]]` attribute, in which case they do not increase the overall size of the struct.
