@@ -94,6 +94,7 @@
         - [Inferred type](types/inferred.md)
     - [Generics](types/generics/index.md)
         - [Generic lifetimes](types/generics/lifetimes.md)
+        - [Generic types](types/generics/types.md)
         - [Generic constants](types/generics/constants.md)
     - [Dynamically sized types](dynamically-sized-types.md)
     - [Type layout](type-layout.md)
