@@ -53,22 +53,29 @@ r[generics.arguments]
 ## Generic arguments
 
 r[generics.arguments.intro]
-Generic arguments are the concrete values provided for generic parameters when using a parameterized item. They are specified in angle brackets (`<...>`) following the item's path (see [paths in types] and [paths in expressions]). Generic arguments can include lifetimes, types, and const values corresponding to the generic parameters declared on the item.
+Generic arguments are the concrete values provided for generic parameters and associated types when using a parameterized item. They are specified in angle brackets (`<...>`) following the item's path (see [paths in types] and [paths in expressions]). Generic arguments consist of:
 
-```rust
-struct Foo<'a, T, const N: usize> {
-    data: &'a [T; N],
-}
+1. *Lifetime arguments* (e.g., `'a`)
+2. *Type arguments* (e.g., `T`, `Vec<i32>`)
+3. *Const arguments* (e.g., `{ N }`, `{ 1 + 2 }`)
+4. *Infer arguments* (`_`)
+5. *Associated item constraints* (e.g., `Item = T`, `Item: Bound`)
 
-fn make_foo<'a, T, const N: usize>(data: &'a [T; N]) -> Foo<'a, T, N> {
-    Foo { data }
-}
-
-// Generic arguments: lifetime 'static, type i32, const value 3.
-let foo: Foo<'static, i32, 3> = Foo { data: &[1, 2, 3] };
-// Example of a call expression.
-make_foo::<i32, 3>(&[1, 2, 3]);
-```
+> [!EXAMPLE]
+> ```rust
+> # struct Foo<'a, T, const N: usize> {
+> #     data: &'a [T; N],
+> # }
+> #
+> # fn make_foo<'a, T, const N: usize>(data: &'a [T; N]) -> Foo<'a, T, N> {
+> #     Foo { data }
+> # }
+> #
+> // Generic arguments in a type path: lifetime 'static, type i32, const value 3.
+> let foo: Foo<'static, i32, 3> = Foo { data: &[1, 2, 3] };
+> // Generic arguments in an expression path.
+> make_foo::<i32, 3>(&[1, 2, 3]);
+> ```
 
 r[generics.arguments.syntax]
 ```grammar,paths
