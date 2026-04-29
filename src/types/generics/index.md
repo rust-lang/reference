@@ -108,32 +108,6 @@ GenericArgsBounds ->
 r[generics.arguments.argument-order]
 The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
 
-r[generics.arguments.complex-const-params]
-Const arguments must be surrounded by braces unless they are a [literal], an [inferred const], or a single segment path. An [inferred const] may not be surrounded by braces.
-
-```rust
-mod m {
-    pub const C: usize = 1;
-}
-const C: usize = m::C;
-fn f<const N: usize>() -> [u8; N] { [0; N] }
-
-let _ = f::<1>(); // Literal.
-let _: [_; 1] = f::<_>(); // Inferred const.
-let _: [_; 1] = f::<(((_)))>(); // Inferred const.
-let _ = f::<C>(); // Single segment path.
-let _ = f::<{ m::C }>(); // Multi-segment path must be braced.
-```
-
-```rust,compile_fail
-fn f<const N: usize>() -> [u8; N] { [0; _] }
-let _: [_; 1] = f::<{ _ }>();
-//                    ^ ERROR `_` not allowed here
-```
-
-> [!NOTE]
-> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
-
 r[generics.arguments.impl-trait-params]
 The synthetic type parameters corresponding to `impl Trait` types are implicit, and these cannot be explicitly specified.
 
@@ -215,29 +189,6 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 }
 ```
 
-r[generics.const.argument.const-expr]
-The argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter. The const expression must be a [block expression][block] (surrounded with braces) unless it is a single path segment (an [IDENTIFIER]) or a [literal] (with a possibly leading `-` token).
-
-> [!NOTE]
-> This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
-
-```rust
-struct S<const N: i64>;
-const C: i64 = 1;
-fn f<const N: i64>() -> S<N> { S }
-
-let _ = f::<1>(); // Literal.
-let _ = f::<-1>(); // Negative literal.
-let _ = f::<{ 1 + 2 }>(); // Constant expression.
-let _ = f::<C>(); // Single segment path.
-let _ = f::<{ C + 1 }>(); // Constant expression.
-let _: S<1> = f::<_>(); // Inferred const.
-let _: S<1> = f::<(((_)))>(); // Inferred const.
-```
-
-> [!NOTE]
-> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
-
 r[generics.const.inferred]
 Where a const argument is expected, an `_` (optionally surrounded by any number of matching parentheses), called the *inferred const* ([generic argument rules][generics.arguments.complex-const-params], [array expression rules][expr.array.length-restriction]), can be used instead. This asks the compiler to infer the const argument if possible based on surrounding information.
 
@@ -318,6 +269,39 @@ r[generics.const.arguments]
 
 r[generics.const.arguments.intro]
 A *const argument* specifies the const value to use for a const parameter.
+
+r[generics.const.arguments.const-expr]
+A const argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter.
+
+> [!NOTE]
+> In a generic argument list, an [inferred const] is parsed as an [inferred type][InferredType] but then semantically treated as a separate kind of [const generic argument].
+
+r[generics.const.arguments.complex-const-params]
+Const argument expressions must be surrounded by braces unless they are a [literal] (with a possibly leading `-` token) or a single segment path.
+
+> [!NOTE]
+> This syntactic restriction is necessary to avoid requiring infinite lookahead when parsing an expression inside of a type.
+
+> [!EXAMPLE]
+> ```rust
+> struct S<const N: i64>;
+> const C: i64 = 1;
+> fn f<const N: i64>() -> S<N> { S }
+>
+> let _ = f::<1>(); // Literal.
+> let _ = f::<-1>(); // Negative literal.
+> let _ = f::<{ 1 + 2 }>(); // Constant expression.
+> let _ = f::<C>(); // Single segment path.
+> let _ = f::<{ C + 1 }>(); // Constant expression.
+> let _: S<1> = f::<_>(); // Inferred const.
+> let _: S<1> = f::<(((_)))>(); // Inferred const.
+> ```
+>
+> ```rust,compile_fail
+> fn f<const N: usize>() -> [u8; N] { [0; _] }
+> let _: [_; 1] = f::<{ _ }>();
+> //                    ^ ERROR `_` not allowed here
+> ```
 
 r[generics.parameters.attributes]
 ## Attributes
