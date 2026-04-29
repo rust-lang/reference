@@ -233,6 +233,82 @@ FCW exists for non-value (function) position, see
 https://doc.rust-lang.org/nightly/rustc/lints/listing/warn-by-default.html#late-bound-lifetime-arguments
 -->
 
+r[generics.associated]
+## Associated item constraints
+
+r[generics.associated.intro]
+An *associated item constraint* constrains an [associated type] of a trait. There are two kinds of associated item constraints: equality constraints and bound constraints.
+
+r[generics.associated.equality]
+An *equality constraint* fixes the associated item to a specific type. It is specified with the [GenericArgsBinding] syntax.
+
+> [!EXAMPLE]
+> ```rust
+> // The `Item` associated item is specified to be `i32`.
+> fn sum_iter(iter: impl Iterator<Item = i32>) -> i32 {
+>     iter.sum()
+> }
+> ```
+
+r[generics.associated.bound]
+A *bound constraint* requires the associated item to satisfy a [trait bound] without fixing it to a concrete type. It is specified with the [GenericArgsBounds] syntax.
+
+> [!EXAMPLE]
+> ```rust
+> # use std::fmt::Display;
+> #
+> // The `Item` associated type is required to implement Display.
+> fn print_iter(iter: impl Iterator<Item: Display>) {
+>     for item in iter {
+>         println!("{item}");
+>     }
+> }
+> ```
+
+r[generics.associated.constraints-position]
+Associated item constraints are only permitted when the path refers to a [trait] in a type position. They are permitted in the following positions:
+
+- [Trait bounds], including inline bounds (`T: Trait<Assoc = Type>`) and `where` clauses
+- [`impl Trait`][impl trait] argument and return types
+- [Trait object] types (`dyn Trait<Assoc = Type>`)
+
+They are not permitted in the following positions:
+
+- On non-trait generic type paths such as structs, enums, or type aliases: `Struct<Assoc = Type>`
+- On the trait reference in an `impl` block header: `impl Trait<Assoc = Type> for OtherType`
+- On the trait segment of a [qualified path]: `<Type as Trait<Assoc = X>>::AssocItem`
+- On an associated item's path segment: `<Type as Trait>::AssocItem<Assoc2 = X>`
+- In expression or method call [turbofish]: `Trait::<Assoc = X>::method()` or `value.method::<Assoc = X>()`
+
+> [!EXAMPLE]
+> The following are invalid uses of associated item constraints:
+>
+> ```rust,compile_fail
+> // ERROR: constraint on a non-trait generic type (struct).
+> struct Container<T>(T);
+> fn f1() {
+>     let _: Container<T = i32>;
+> }
+>
+> // ERROR: constraint on the trait reference in an `impl` block header.
+> trait Produce { type Output; }
+> struct Widget;
+> impl Produce<Output = i32> for Widget {
+>     type Output = i32;
+> }
+>
+> // ERROR: constraint on the trait segment of a qualified type path.
+> trait Source { type Data; }
+> fn f3<I: Source>(_: &<I as Source<Data = ()>>::Data) {}
+>
+> // ERROR: constraint in an expression-position turbofish.
+> trait Create { type Item; fn new() -> i32 { 0 } }
+> fn f4() { Create::<Item = i32>::new(); }
+>
+> // ERROR: constraint in a method call turbofish.
+> fn f5() { 0u32.clone::<T = u32>(); }
+> ```
+
 r[generics.arguments.inference]
 ### Infer arguments
 
@@ -477,6 +553,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [generic implementations]: items.impl.generics
 [generic parameter scopes]: names.scopes.generic-parameters
 [higher-ranked lifetimes]: bound.higher-ranked
+[impl trait]: type.impl-trait
 [implementations]: items.impl
 [inferred const]: generics.const.inferred
 [item declarations]: statement.item
@@ -487,10 +564,13 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [path]: paths
 [paths in expressions]: paths.expr
 [paths in types]: paths.type
+[qualified path]: paths.qualified
 [raw pointers]: type.pointer.raw
 [references]: type.pointer.reference
 [slices]: type.slice
 [structs]: items.struct
+[trait bound]: bound
+[Trait bounds]: bound
 [trait object]: type.trait-object
 [traits]: items.traits
 [tuples]: type.tuple
