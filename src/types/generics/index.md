@@ -524,7 +524,7 @@ fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
 r[generics.parameters.attributes]
 ## Attributes
 
-Generic lifetime and type parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
+Generic parameters allow [attributes] on them. There are no built-in attributes that do anything in this position, although custom derive attributes may give meaning to it.
 
 This example shows using a custom derive attribute to modify the meaning of a generic parameter.
 
