@@ -218,21 +218,6 @@ fn f<const N: usize>(x: [u8; N]) -> [u8; _] { x }
 //                                       ^ ERROR not allowed
 ```
 
-r[generics.const.type-ambiguity]
-When there is ambiguity if a generic argument could be resolved as either a type or const argument, it is always resolved as a type. Placing the argument in a block expression can force it to be interpreted as a const argument.
-
-<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once namespaces are introduced, and it is clear which namespace each parameter lives in. -->
-
-```rust,compile_fail
-type N = u32;
-struct Foo<const N: usize>;
-// The following is an error, because `N` is interpreted as the type alias `N`.
-fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
-// Can be fixed by wrapping in braces to force it to be interpreted as the `N`
-// const parameter:
-fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
-```
-
 r[generics.const.variance]
 Unlike type and lifetime parameters, const parameters can be declared without being used inside of a parameterized item, with the exception of implementations as described in [generic implementations]:
 
@@ -302,6 +287,21 @@ Const argument expressions must be surrounded by braces unless they are a [liter
 > let _: [_; 1] = f::<{ _ }>();
 > //                    ^ ERROR `_` not allowed here
 > ```
+
+r[generics.const.arguments.type-ambiguity]
+When there is ambiguity if a generic argument could be resolved as either a type or const argument, it is always resolved as a type. Placing the argument in a block expression can force it to be interpreted as a const argument.
+
+<!-- TODO: Rewrite the paragraph above to be in terms of namespaces, once namespaces are introduced, and it is clear which namespace each parameter lives in. -->
+
+```rust,compile_fail
+type N = u32;
+struct Foo<const N: usize>;
+// The following is an error, because `N` is interpreted as the type alias `N`.
+fn foo<const N: usize>() -> Foo<N> { todo!() } // ERROR
+// Can be fixed by wrapping in braces to force it to be interpreted as the `N`
+// const parameter:
+fn bar<const N: usize>() -> Foo<{ N }> { todo!() } // ok
+```
 
 r[generics.parameters.attributes]
 ## Attributes
