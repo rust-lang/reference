@@ -215,9 +215,6 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 }
 ```
 
-r[generics.const.argument]
-A const argument in a [path] specifies the const value to use for that item.
-
 r[generics.const.argument.const-expr]
 The argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter. The const expression must be a [block expression][block] (surrounded with braces) unless it is a single path segment (an [IDENTIFIER]) or a [literal] (with a possibly leading `-` token).
 
@@ -315,6 +312,12 @@ fn generic<const B: bool>() {
     needs_bar(v); // ERROR: trait bound `Foo<B>: Bar` is not satisfied
 }
 ```
+
+r[generics.const.arguments]
+### Const arguments
+
+r[generics.const.arguments.intro]
+A *const argument* specifies the const value to use for a const parameter.
 
 r[generics.parameters.attributes]
 ## Attributes
