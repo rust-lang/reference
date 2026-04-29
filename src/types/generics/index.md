@@ -105,11 +105,133 @@ GenericArgsBounds ->
     TypePathSegment `:` Bounds
 ```
 
-r[generics.arguments.argument-order]
-The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
+### Argument ordering and matching
+
+r[generics.arguments.lifetime-order]
+Lifetime arguments must appear before all other argument kinds.
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> struct Foo<'a, T> {
+>     data: &'a T,
+> }
+>
+> // ERROR: lifetime argument `'static` must come before type argument `i32`
+> let _: Foo<i32, 'static>;
+> ```
+
+r[generics.arguments.positional-matching]
+Generic arguments are matched to generic parameters positionally:
+
+- The i<sub>th</sub> lifetime argument corresponds to the i<sub>th</sub> lifetime parameter.
+- The i<sub>th</sub> type or const argument corresponds to the i<sub>th</sub> type or const parameter (counted together in declaration order).
+
+r[generics.arguments.constraint-order]
+Associated item constraints must be listed after all other argument kinds, and may be listed in any order.
+
+> [!EXAMPLE]
+> ```rust
+> use std::fmt::Display;
+>
+> trait Container {
+>     type Item;
+>     type Error;
+> }
+>
+> // Associated item constraints may be listed in any order relative to each other.
+> fn process<C: Container<Error = String, Item = i32>>(_: C) {}
+> ```
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> struct Foo<'a, T> {
+>     data: &'a T,
+> }
+>
+> trait MyTrait {
+>     type Assoc;
+> }
+>
+> // ERROR: associated item constraints must come after all other argument kinds.
+> fn bad<T: MyTrait>(_: &dyn MyTrait<Assoc = i32>) where T: 'static {}
+> let _: std::collections::HashMap<Item = i32, String, String>;
+> ```
+
+r[generics.arguments.lifetime-elision]
+Lifetime arguments may be omitted in the following cases:
+
+- When [lifetime elision] rules apply.
+- In [turbofish] expressions (`::<...>`) where all lifetimes can be inferred.
+
+> [!EXAMPLE]
+> ```rust
+> struct Foo<'a, T> {
+>     data: &'a T,
+> }
+>
+> fn make_foo<'a, T>(data: &'a T) -> Foo<'a, T> {
+>     Foo { data }
+> }
+>
+> // Turbofish: lifetime arguments omitted because they can be inferred.
+> let x = 42i32;
+> let foo = make_foo::<i32>(&x); // `'_` lifetime argument elided in turbofish
+>
+> // Lifetime arguments omitted in a type annotation.
+> let foo: Foo<i32> = Foo { data: &x };
+> ```
+
+r[generics.arguments.all-lifetimes]
+If any lifetime argument is provided, then all lifetime parameters must be specified.
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> struct Foo<'a, 'b, T> {
+>     x: &'a T,
+>     y: &'b T,
+> }
+>
+> fn make_foo<'a, 'b, T>(x: &'a T, y: &'b T) -> Foo<'a, 'b, T> {
+>     Foo { x, y }
+> }
+>
+> let a = 1i32;
+> let b = 2i32;
+>
+> // OK: no lifetime arguments supplied (elided).
+> let _: Foo<i32> = Foo { x: &a, y: &b };
+> // OK: all lifetime arguments supplied.
+> let _: Foo<'static, 'static, i32> = Foo { x: &1, y: &2 };
+> // ERROR: only one of two lifetime arguments provided.
+> let _: Foo<'static, i32> = Foo { x: &1, y: &b };
+> ```
+
+r[generics.arguments.defaults]
+Type and const parameters with default values need not be supplied. A parameter without a default cannot follow one with a default.
+
+When fewer arguments are supplied than parameters exist, the missing trailing arguments use their defaults if available, or are inferred if inference is enabled for that context.
+
+r[generics.arguments.self-param]
+The `Self` parameter (when present, e.g., in [trait definitions][items.traits.self-param]) is implicit and cannot be explicitly specified.
 
 r[generics.arguments.impl-trait-params]
-The synthetic type parameters corresponding to `impl Trait` types are implicit, and these cannot be explicitly specified.
+Synthetic type parameters corresponding to `impl Trait` types are implicit and cannot be explicitly specified.
+
+r[generics.arguments.late-bound-lifetimes]
+It is an error to provide explicit lifetime arguments when late-bound lifetimes are present.
+
+> [!EXAMPLE]
+> ```rust,compile_fail
+> fn foo<'a>(x: &'a str) -> &'a str { x }
+>
+> // ERROR: cannot specify late-bound lifetime arguments explicitly
+> foo::<'static>("hello");
+> ```
+
+<!--
+FCW exists for non-value (function) position, see
+https://doc.rust-lang.org/nightly/rustc/lints/listing/warn-by-default.html#late-bound-lifetime-arguments
+-->
 
 r[generics.const]
 ## Const generics
@@ -339,6 +461,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [inferred const]: generics.const.inferred
 [item declarations]: statement.item
 [item]: items
+[lifetime elision]: lifetime-elision
 [literal]: expr.literal
 [path expression]: expr.path
 [path]: paths
@@ -351,6 +474,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [trait object]: type.trait-object
 [traits]: items.traits
 [tuples]: type.tuple
+[turbofish]: paths.expr.turbofish
 [type aliases]: items.type
 [unions]: items.union
 [value namespace]: names.namespaces
