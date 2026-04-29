@@ -233,6 +233,26 @@ FCW exists for non-value (function) position, see
 https://doc.rust-lang.org/nightly/rustc/lints/listing/warn-by-default.html#late-bound-lifetime-arguments
 -->
 
+r[generics.arguments.inference]
+### Infer arguments
+
+r[generics.arguments.inference.intro]
+The placeholder `_` may be used for type or const arguments when the compiler can infer the value.
+
+> [!EXAMPLE]
+> ```rust
+> let v: Vec<_> = vec![1, 2, 3]; // _ inferred as i32
+>
+> type T<const N: usize> = [i32; N];
+> let x: T<_> = [1]; // _ inferred as 1
+> ```
+
+> [!NOTE]
+> The `_` placeholder cannot be used for lifetime arguments; use `'_` for elided lifetimes instead.
+
+r[generics.arguments.inference.parentheses]
+Infer arguments may be surrounded by any number of matching parentheses.
+
 r[generics.const]
 ## Const generics
 
