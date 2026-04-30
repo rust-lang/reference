@@ -186,15 +186,20 @@ fn nested() {
 ```
 
 r[expr.if.chains.or]
-If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee. If a `||` expression is needed, then parentheses can be used. For example:
+If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee.
 
-```rust
-# let foo = Some(123);
-# let condition1 = true;
-# let condition2 = false;
-// Parentheses are required here.
-if let Some(x) = foo && (condition1 || condition2) { /*...*/ }
-```
+> [!EXAMPLE]
+> If a `||` expression is needed, then parentheses must be used. For example:
+>
+> ```rust
+> # let foo = Some(123);
+> # let condition1 = true;
+> # let condition2 = false;
+> if let Some(x) = foo
+>     // Parentheses are required here.
+>     && (condition1 || condition2)
+> {}
+> ```
 
 r[expr.if.edition2024]
 > [!EDITION-2024]
