@@ -52,8 +52,14 @@ PathIdentSegment ->
     IDENTIFIER | `super` | `self` | `Self` | `crate` | `$crate`
 
 GenericArgs ->
-      `<` `>`
-    | `<` ( GenericArg `,` )* GenericArg `,`? `>`
+      `<` GenericArgList? `>`
+    | `(` TypeList? `)` (`->` TypeNoBounds)?
+
+GenericArgList ->
+    ( GenericArg `,` )* GenericArg `,`?
+
+TypeList ->
+    ( Type `,` )* Type `,`?
 
 GenericArg ->
     Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
@@ -154,11 +160,7 @@ r[paths.type.syntax]
 ```grammar,paths
 TypePath -> `::`? TypePathSegment (`::` TypePathSegment)*
 
-TypePathSegment -> PathIdentSegment (`::`? (GenericArgs | TypePathFn))?
-
-TypePathFn -> `(` TypePathFnInputs? `)` (`->` TypeNoBounds)?
-
-TypePathFnInputs -> Type (`,` Type)* `,`?
+TypePathSegment -> PathIdentSegment (`::`? GenericArgs)?
 ```
 
 r[paths.type.intro]
