@@ -28,10 +28,8 @@ r[undefined.pointer-access]
   a misaligned pointer].
 
 r[undefined.place-projection]
-* Performing a place projection that violates the requirements of [in-bounds
-  pointer arithmetic](pointer#method.offset). A place projection is a [field
-  expression][project-field], a [tuple index expression][project-tuple], or an
-  [array/slice index expression][project-slice].
+* Performing an offsetting place projection that violates the requirements of [in-bounds pointer arithmetic](pointer#method.offset).
+  An offsetting place projection is a [field expression][project-field], a [tuple index expression][project-tuple], or an [array/slice index expression][project-slice].
 
 r[undefined.alias]
 * Breaking the pointer aliasing rules. The exact aliasing rules are not determined yet, but here is an outline of the general principles:
