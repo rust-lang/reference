@@ -18,6 +18,7 @@ fn main() -> Result<()> {
             cargo_test()?;
             eprintln!("all tests passed!");
         }
+        Some("doctest") => mdbook_test()?,
         Some("linkcheck") => linkcheck(args)?,
         Some("style-check") => style_check()?,
         Some("-h" | "--help") => eprintln!("valid options: {OPTIONS}"),
