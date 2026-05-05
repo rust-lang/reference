@@ -37,7 +37,9 @@ r[type.trait-object.syntax-edition2021]
 
 r[type.trait-object.syntax-edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, if the first bound of the trait object is a path that starts with `::`, then the `dyn` will be treated as a part of the path. The first path can be put in parenthesis to get around this. As such, if you want a trait object with the trait `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
+> In the 2015 edition, `dyn` must be followed by [PathIdentSegment], [LIFETIME_TOKEN], `for`, `(` or `?` to be interpreted as a keyword instead of a regular identifier.
+>
+> Most notably, `dyn`, `dyn::T` and `dyn<T>` will all be treated as type paths. As such, if you want a trait object type with the trait `::module::Trait`, you need to put the path in parentheses and write it as `dyn (::module::Trait)`.
 >
 > Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in paths, so the parentheses are not necessary.
 
