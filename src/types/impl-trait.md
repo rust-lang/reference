@@ -3,9 +3,9 @@ r[type.impl-trait]
 
 r[type.impl-trait.syntax]
 ```grammar,types
-ImplTraitType -> `impl` Bounds
+ImplTraitType -> `impl` Bounds?
 
-ImplTraitTypeOneBound -> `impl` TraitBound
+ImplTraitTypeOneBound -> `impl` TraitBound?
 ```
 
 r[type.impl-trait.intro]

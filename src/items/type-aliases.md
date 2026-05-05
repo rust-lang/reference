@@ -4,7 +4,7 @@ r[items.type]
 r[items.type.syntax]
 ```grammar,items
 TypeAlias ->
-    `type` IDENTIFIER GenericParams? ( `:` Bounds )?
+    `type` IDENTIFIER GenericParams? ( `:` Bounds? )?
         WhereClause?
         ( `=` Type WhereClause?)? `;`
 ```
