@@ -7,7 +7,7 @@ When an [initialized]&#32;[variable] or [temporary] goes out of [scope](#drop-sc
 r[destructors.operation]
 The destructor of a type `T` consists of:
 
-1. If `T: Drop`, calling [`<T as core::ops::Drop>::drop`](core::ops::Drop::drop)
+1. If `T:` [`Drop`](core::ops::Drop), calling `<T as core::ops::Drop>::drop`
 2. Recursively running the destructor of all of its fields.
     * The fields of a [struct] are dropped in declaration order.
     * The fields of the active [enum variant] are dropped in declaration order.
