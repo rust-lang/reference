@@ -3,7 +3,7 @@ r[type.trait-object]
 
 r[type.trait-object.syntax]
 ```grammar,types
-TraitObjectType -> `dyn`? TypeParamBounds
+TraitObjectType -> `dyn`? Bounds
 
 TraitObjectTypeOneBound -> `dyn`? TraitBound
 ```

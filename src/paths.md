@@ -68,7 +68,7 @@ GenericArgsBinding ->
     IDENTIFIER GenericArgs? `=` Type
 
 GenericArgsBounds ->
-    IDENTIFIER GenericArgs? `:` TypeParamBounds
+    IDENTIFIER GenericArgs? `:` Bounds
 ```
 
 r[paths.expr.intro]
@@ -162,7 +162,7 @@ TypePathFnInputs -> Type (`,` Type)* `,`?
 ```
 
 r[paths.type.intro]
-Type paths are used within type definitions, trait bounds, type parameter bounds, and qualified paths.
+Type paths are used within type definitions, trait bounds, and qualified paths.
 
 r[paths.type.turbofish]
 Although the `::` token is allowed before the generics arguments, it is not required because there is no ambiguity like there is in [PathInExpression].

@@ -9,7 +9,7 @@ GenericParam -> OuterAttribute* ( LifetimeParam | TypeParam | ConstParam )
 
 LifetimeParam -> Lifetime ( `:` LifetimeBounds )?
 
-TypeParam -> IDENTIFIER ( `:` TypeParamBounds? )? ( `=` Type )?
+TypeParam -> IDENTIFIER ( `:` Bounds? )? ( `=` Type )?
 
 ConstParam ->
     `const` IDENTIFIER `:` Type
@@ -236,7 +236,7 @@ WhereClauseItem ->
 
 LifetimeWhereClauseItem -> Lifetime `:` LifetimeBounds
 
-TypeBoundWhereClauseItem -> ForLifetimes? Type `:` TypeParamBounds?
+TypeBoundWhereClauseItem -> ForLifetimes? Type `:` Bounds?
 ```
 
 r[items.generics.where.intro]
