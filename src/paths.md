@@ -71,10 +71,10 @@ GenericArgsConst ->
     | SimplePathSegment
 
 GenericArgsBinding ->
-    IDENTIFIER GenericArgs? `=` Type
+    TypePathSegment `=` Type
 
 GenericArgsBounds ->
-    IDENTIFIER GenericArgs? `:` Bounds
+    TypePathSegment `:` Bounds
 ```
 
 r[paths.expr.intro]
