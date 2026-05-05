@@ -57,7 +57,7 @@ r[items.extern.fn.safety]
 A function declared in an extern block is implicitly `unsafe` unless the `safe` function qualifier is present.
 
 r[items.extern.fn.fn-ptr]
-When coerced to a function pointer, a function declared in an extern block has type `extern "abi" for<'l1, ..., 'lm> fn(A1, ..., An) -> R`, where `'l1`, ... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of its parameters, and `R` is the declared return type.
+When coerced to a function pointer, a function declared in an extern block has type `for<'l1, ..., 'lm> extern "abi" fn(A1, ..., An) -> R`, where `'l1`, ... `'lm` are its lifetime parameters, `A1`, ..., `An` are the declared types of its parameters, and `R` is the declared return type.
 
 r[items.extern.static]
 ## Statics
