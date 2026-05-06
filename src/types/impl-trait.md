@@ -3,7 +3,7 @@ r[type.impl-trait]
 
 r[type.impl-trait.syntax]
 ```grammar,types
-ImplTraitType -> `impl` TypeParamBounds
+ImplTraitType -> `impl` Bounds
 
 ImplTraitTypeOneBound -> `impl` TraitBound
 ```

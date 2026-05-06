@@ -4,7 +4,7 @@ r[items.traits]
 r[items.traits.syntax]
 ```grammar,items
 Trait ->
-    `unsafe`? `trait` IDENTIFIER GenericParams? ( `:` TypeParamBounds? )? WhereClause?
+    `unsafe`? `trait` IDENTIFIER GenericParams? ( `:` Bounds? )? WhereClause?
     `{`
         InnerAttribute*
         AssociatedItem*

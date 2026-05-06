@@ -3,9 +3,9 @@ r[bound]
 
 r[bound.syntax]
 ```grammar,miscellaneous
-TypeParamBounds -> TypeParamBound ( `+` TypeParamBound )* `+`?
+Bounds -> Bound ( `+` Bound )* `+`?
 
-TypeParamBound -> Lifetime | TraitBound | UseBound
+Bound -> Lifetime | TraitBound | UseBound
 
 TraitBound ->
       ( `?` | ForLifetimes )? TypePath

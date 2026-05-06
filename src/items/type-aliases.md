@@ -4,7 +4,7 @@ r[items.type]
 r[items.type.syntax]
 ```grammar,items
 TypeAlias ->
-    `type` IDENTIFIER GenericParams? ( `:` TypeParamBounds )?
+    `type` IDENTIFIER GenericParams? ( `:` Bounds )?
         WhereClause?
         ( `=` Type WhereClause?)? `;`
 ```
@@ -33,13 +33,13 @@ let _ = TypeAlias(5); // Doesn't work
 ```
 
 r[items.type.associated-type]
-A type alias, when not used as an [associated type], must include a [Type][grammar-Type] and may not include [TypeParamBounds].
+A type alias, when not used as an [associated type], must include a [Type][grammar-Type] and may not include [Bounds].
 
 r[items.type.associated-trait]
-A type alias, when used as an [associated type] in a [trait], must not include a [Type][grammar-Type] specification but may include [TypeParamBounds].
+A type alias, when used as an [associated type] in a [trait], must not include a [Type][grammar-Type] specification but may include [Bounds].
 
 r[items.type.associated-impl]
-A type alias, when used as an [associated type] in a [trait impl], must include a [Type][grammar-Type] specification and may not include [TypeParamBounds].
+A type alias, when used as an [associated type] in a [trait impl], must include a [Type][grammar-Type] specification and may not include [Bounds].
 
 r[items.type.deprecated]
 Where clauses before the equals sign on a type alias in a [trait impl] (like `type TypeAlias<T> where T: Foo = Bar<T>`) are deprecated. Where clauses after the equals sign (like `type TypeAlias<T> = Bar<T> where T: Foo`) are preferred.
