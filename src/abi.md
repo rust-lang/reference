@@ -168,8 +168,8 @@ If `export_name` is used with [`no_mangle`][abi.no_mangle], then the `export_nam
 r[abi.export_name.publicly-exported]
 The `export_name` attribute causes the symbol to be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
 
-r[abi.export_name.null]
-The exported name must not contain a [NUL] character.
+r[abi.export_name.invalid-names]
+The exported name must not be the empty string, and must not contain any `U+0000` (NUL) bytes.
 
 r[abi.export_name.generic]
 `export_name` has no effect on generic items.
