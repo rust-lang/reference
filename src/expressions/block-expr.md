@@ -9,6 +9,11 @@ BlockExpression ->
         Statements?
     `}`
 
+BlockExpressionNoInnerAttributes ->
+    `{`
+        Statements?
+    `}`
+
 Statements ->
       Statement+
     | Statement+ ExpressionWithoutBlock

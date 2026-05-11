@@ -4,8 +4,8 @@ r[expr.if]
 r[expr.if.syntax]
 ```grammar,expressions
 IfExpression ->
-    `if` Conditions BlockExpression
-    (`else` ( BlockExpression | IfExpression ) )?
+    `if` Conditions BlockExpressionNoInnerAttributes
+    (`else` ( BlockExpressionNoInnerAttributes | IfExpression ) )?
 
 Conditions ->
       Expression _except [StructExpression]_
