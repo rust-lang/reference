@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block] the c-variadic parameter may have an optional identifier, such as `args: ...`, in a [c-variadic function definition] the identifier is mandatory.
+A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block], the c-variadic parameter may have an optional identifier, such as `args: ...`, and in a [c-variadic function definition], the identifier is mandatory.
 
 r[items.fn.body]
 ## Function body
