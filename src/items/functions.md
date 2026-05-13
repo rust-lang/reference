@@ -349,6 +349,24 @@ This parameter stands in for an arbitrary number of arguments that may be passed
 > [!WARNING]
 > Passing an unexpected number of arguments or arguments of unexpected type to a c-variadic function may lead to [undefined behavior][undefined].
 
+[items.fn.c-variadic.stable-targets]
+Support for c-variadic function definitions is stable on the following architectures:
+
+- x86 and x86-64
+- ARM
+- AArch64 and Arm64EC
+- RISC-V (except when using the ilp32e ABI)
+- LoongArch
+- s390x
+- PowerPC and PowerPC64
+- AmdGpu and Nvptx64
+- wasm32 and wasm64
+- csky
+- xtensa
+- hexagon
+- sparc64
+- mips
+
 r[items.fn.c-variadic.c-variadic-parameter-type]
 The type of `pat` in the function body is [`VaList`].
 
