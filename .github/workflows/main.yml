@@ -6,6 +6,9 @@ on:
 env:
   MDBOOK_VERSION: 0.5.2
 
+permissions:
+  contents: read
+
 jobs:
   code-tests:
     runs-on: ubuntu-latest
