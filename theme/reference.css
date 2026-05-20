@@ -11,15 +11,11 @@
     --railroad-rect-fill: hsl(-290, 70%, 90%);
 }
 .light {
-    --alert-note-color: #0969da;
-    --alert-warning-color: #9a6700;
     --alert-edition-color: #1a7f37;
     --alert-example-color: #8250df;
     --grammar-literal-bg: #fafafa;
 }
 .rust {
-    --alert-note-color: #023b95;
-    --alert-warning-color: #603700;
     --alert-edition-color: #008200;
     --alert-example-color: #8250df;
     --grammar-literal-bg: #dedede;
@@ -29,15 +25,11 @@
     --inline-code-color: var(--grammar-comment-color);
 }
 .coal, .navy {
-    --alert-note-color: #4493f8;
-    --alert-warning-color: #d29922;
     --alert-edition-color: #3fb950;
     --alert-example-color: #ab7df8;
     --grammar-literal-bg: #1d1f21;
 }
 .ayu {
-    --alert-note-color: #74b9ff;
-    --alert-warning-color: #f0b72f;
     --alert-edition-color: #2bd853;
     --alert-example-color: #d3abff;
     --grammar-literal-bg: #191f26;
@@ -68,12 +60,18 @@ the parenthetical. So for this example, you'd use
 /*
 Admonitions are defined with blockquotes:
 
-> [!WARNING]
+> [!EXAMPLE]
 > This is bad!
 
-See tools/mdbook-spec/src/admonitions.rs.
+The admonitions from tools/mdbook-spec/src/admonitions.rs are custom ones for
+the reference (e.g. examples), upstream mdbook also provides some (like for
+`[!WARNING]`, use consistent styles for both).
+
+Some of the styles specified below for the upstream admonitions already match
+the upstream styles but are included for consistency.
 */
-.alert blockquote {
+.alert blockquote,
+blockquote.blockquote-tag {
     /* Add some padding to make the vertical bar a little taller than the text.*/
     padding: 8px 0px 8px 20px;
     /* Add a solid color bar on the left side. */
@@ -84,54 +82,40 @@ See tools/mdbook-spec/src/admonitions.rs.
     /* Disable border blocks from mdbook. */
     border-block-start: none;
     border-block-end: none;
-    /* Reduce margin from mdbook, it uses a lot of space. */
-    margin: 10px 0;
+    /* Reduce margin from mdbook, it uses a lot of space.
+      Important to override `main > ul > li > *:last-child` rule. */
+    margin: 10px 0 !important;
 }
 
-.alert-title {
-    /* Slightly increase the weight for more emphasis. */
-    font-weight: 600;
-    /* Vertically center the icon with the text. */
-    display: flex;
-    align-items: center;
+.blockquote-tag-title {
     /* Remove default large margins for a more compact display.
        Important to override .alert p rule. */
     margin: 0 0 8px 0 !important;
 }
-.alert blockquote > :nth-child(2) {
+.alert blockquote > :nth-child(2),
+blockquote.blockquote-tag > :nth-child(2) {
     /* Default margins of content just below the label add too much space. */
     margin-top: 0;
 }
-.alert blockquote > :last-child {
+.alert blockquote > :last-child,
+blockquote.blockquote-tag > :last-child {
     /* Default margins of content add too much space. */
     margin-bottom: 0;
 }
 
-.alert-title svg {
+.blockquote-tag-title svg {
     fill: currentColor;
     /* Add some space between the icon and the text. */
     margin-right: 8px;
 }
 
-.alert-note blockquote {
-    border-inline-start-color: var(--alert-note-color);
-}
-.alert-warning blockquote {
-    border-inline-start-color: var(--alert-warning-color);
-}
 .alert-edition blockquote {
     border-inline-start-color: var(--alert-edition-color);
 }
 .alert-example blockquote {
     border-inline-start-color: var(--alert-example-color);
 }
-.alert-note .alert-title {
-    color: var(--alert-note-color);
-}
-.alert-warning .alert-title {
-    color: var(--alert-warning-color);
-}
-.alert-edition .alert-title {
+.alert-edition .blockquote-tag-title {
     color: var(--alert-edition-color);
 }
 /* Puts a rounded rectangle around the edition date. */
@@ -143,7 +127,7 @@ See tools/mdbook-spec/src/admonitions.rs.
     font-weight: bold;
     color: var(--alert-edition-color);
 }
-.alert-example .alert-title {
+.alert-example .blockquote-tag-title {
     color: var(--alert-example-color);
 }
 
