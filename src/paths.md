@@ -74,7 +74,7 @@ GenericArgsBinding ->
     TypePathSegment `=` Type
 
 GenericArgsBounds ->
-    TypePathSegment `:` Bounds
+    TypePathSegment `:` Bounds?
 ```
 
 r[paths.expr.intro]
