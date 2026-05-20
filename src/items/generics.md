@@ -11,9 +11,7 @@ LifetimeParam -> Lifetime ( `:` LifetimeBounds )?
 
 TypeParam -> IDENTIFIER ( `:` Bounds? )? ( `=` Type )?
 
-ConstParam ->
-    `const` IDENTIFIER `:` Type
-    ( `=` ( BlockExpression | IDENTIFIER | `-`?LiteralExpression ) )?
+ConstParam -> `const` IDENTIFIER `:` Type ( `=` ConstArg )?
 ```
 
 r[items.generics.syntax.intro]
