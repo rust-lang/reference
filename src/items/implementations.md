@@ -156,7 +156,7 @@ The *orphan rule* states that a trait implementation is only allowed if either t
 
 An orphan implementation is one that implements a foreign trait for a foreign type. If these were freely allowed, two crates could implement the same trait for the same type in incompatible ways, creating a situation where adding or updating a dependency could break compilation due to conflicting implementations.
 
-The orphan rule enables library authors to add new implementations to their traits without fear that they'll break downstream code. Without these restrictions, a library couldn't add an implementation like `impl<T: Display> MyTrait for T` without potentially conflicting with downstream implementations.
+The orphan rule enables library authors to add new implementations to their traits without fear that they'll break downstream code. Without these restrictions, a library couldn't add an implementation like `impl<T: Display> Trait for LocalGenericType<T>` without potentially conflicting with downstream implementations.
 
 r[items.impl.trait.orphan-rule.def]
 Given `impl<P1..=Pn> Trait<T1..=Tn> for T0`, an `impl` is valid only if at least one of the following is true:
