@@ -106,7 +106,7 @@ In the matcher, `$` _name_ `:` _fragment-specifier_ matches a Rust syntax fragme
 r[macro.decl.meta.specifier]
 Valid fragment specifiers are:
 
-  * `block`: a [BlockExpression]
+  * `block`: a [BlockExpressionNoInnerAttributes]
   * `expr`: an [Expression]
   * `expr_2021`: an [Expression] except [UnderscoreExpression] and [ConstBlockExpression] (see [macro.decl.meta.edition2024])
   * `ident`: an [IDENTIFIER_OR_KEYWORD] except `_`, [RAW_IDENTIFIER], or [`$crate`]

@@ -58,7 +58,8 @@ LetStatement ->
     OuterAttribute* `let` PatternNoTopAlt ( `:` Type )?
     (
           `=` Expression
-        | `=` Expression _except [LazyBooleanExpression] or end with a `}`_ `else` BlockExpression
+        | `=` Expression _except [LazyBooleanExpression] or end with a `}`_
+              `else` BlockExpressionNoInnerAttributes
     )? `;`
 ```
 
