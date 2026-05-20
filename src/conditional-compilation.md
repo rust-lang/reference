@@ -256,6 +256,25 @@ Possible values:
 * `"128"`
 * `"ptr"`
 
+r[cfg.target_has_atomic_primitive_alignment]
+### `target_has_atomic_primitive_alignment`
+
+r[cfg.target_has_atomic_primitive_alignment.def]
+Key-value option set for each bit width where the corresponding [atomic][core::sync::atomic] type has the same alignment as the equivalent integer type.
+
+> [!NOTE]
+> The alignment is usually the same for a given bit width. However, on some targets such as 32-bit x86, 64-bit atomic types such as [`AtomicI64`][core::sync::atomic::AtomicI64] have an alignment of 8 bytes while `i64` is only aligned to 4 bytes. In this situation, `target_has_atomic_primitive_alignment = "64"` is not set.
+
+r[cfg.target_has_atomic_primitive_alignment.values]
+Possible values:
+
+* `"8"`
+* `"16"`
+* `"32"`
+* `"64"`
+* `"128"`
+* `"ptr"`
+
 r[cfg.test]
 ### `test`
 
