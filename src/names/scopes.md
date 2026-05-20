@@ -342,9 +342,9 @@ impl ImplExample {
 [call expressions]: ../expressions/call-expr.md
 [Closure parameter]: ../expressions/closure-expr.md
 [closures]: ../expressions/closure-expr.md
-[const arguments]: ../items/generics.md#const-generics
+[const arguments]: generics.const
 [const contexts]: ../const_eval.md#const-context
-[Const generic parameters]: ../items/generics.md#const-generics
+[Const generic parameters]: generics.const
 [Const items]: ../items/constant-items.md
 [Constant]: ../items/constant-items.md
 [Derive macro helper attributes]: ../procedural-macros.md#derive-macro-helper-attributes
