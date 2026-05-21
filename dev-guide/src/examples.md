@@ -29,9 +29,9 @@ When demonstrating success cases, multiple cases may be included in a single cod
 
 ## Testing examples
 
-The Rust code blocks are tested in CI. You can verify that the samples pass by running [`mdbook test`].
+The Rust code blocks are tested in CI. You can verify that the samples pass by running [`cargo xtask mdbook-test`].
 
-[`mdbook test`]: tests.md#inline-tests
+[`cargo xtask mdbook-test`]: tests.md#inline-tests
 [mdBook supported languages]: https://rust-lang.github.io/mdBook/format/theme/syntax-highlighting.html#supported-languages
 [rustdoc documentation]: https://doc.rust-lang.org/rustdoc/documentation-tests.html
 [tested via rustdoc]: tests.md#inline-tests

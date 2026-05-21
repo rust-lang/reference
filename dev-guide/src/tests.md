@@ -3,7 +3,7 @@
 There are several different kinds of tests you can run (these are enforced in CI):
 
 - [`cargo xtask test-all`](#all-tests) --- Runs all tests.
-- [`mdbook test`](#inline-tests) --- Tests the inline Rust code blocks.
+- [`cargo xtask mdbook-test`](#inline-tests) --- Tests the inline Rust code blocks.
 - [`cargo xtask linkcheck`](#linkcheck) --- Validates that Markdown links aren't broken.
 - [`cargo xtask style-check`](#style-checks) --- Validates various style checks.
 - [Code formatting](#code-formatting) --- Checks that all Rust tooling code is formatted.
@@ -22,10 +22,12 @@ We recommend running this as a last step before opening a PR. This runs most of 
 ## Inline tests
 
 ```sh
-mdbook test
+cargo xtask mdbook-test
 ```
 
 This command runs all tests that are inline in the Markdown. Internally, this uses [`rustdoc`](https://doc.rust-lang.org/rustdoc/) to run the tests and supports all the same features. Any code block with the `rust` language will be compiled unless it is ignored. See [Examples] for more.
+
+Previous versions of this guide suggested `mdbook test`, but this only works reliably if your default toolchain is nightly.
 
 ## Linkcheck
 

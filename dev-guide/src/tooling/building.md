@@ -17,7 +17,6 @@ First, ensure that you have a recent copy of the nightly Rust compiler installed
 
 ```sh
 rustup toolchain install nightly
-rustup override set nightly
 ```
 
 Now, ensure you have `mdbook` installed, as this is needed to build the Reference:

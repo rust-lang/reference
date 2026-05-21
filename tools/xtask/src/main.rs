@@ -8,7 +8,7 @@ type Result<T> = std::result::Result<T, Box<dyn Error>>;
 fn main() -> Result<()> {
     let mut args = std::env::args().skip(1);
     let cmd = args.next();
-    const OPTIONS: &str = "linkcheck, style-check, test-all";
+    const OPTIONS: &str = "mdbook-test, linkcheck, style-check, test-all";
     match cmd.as_deref() {
         Some("test-all") => {
             mdbook_test()?;
@@ -18,6 +18,7 @@ fn main() -> Result<()> {
             cargo_test()?;
             eprintln!("all tests passed!");
         }
+        Some("mdbook-test") => mdbook_test()?,
         Some("linkcheck") => linkcheck(args)?,
         Some("style-check") => style_check()?,
         Some("-h" | "--help") => eprintln!("valid options: {OPTIONS}"),
