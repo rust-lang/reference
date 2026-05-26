@@ -240,8 +240,9 @@ If any guard condition operand is a `let` pattern, then none of the condition op
 > ```rust
 > # let foo = Some([123]);
 > match foo {
->     // Parentheses are required here.
->     Some(xs) if let [x] = xs && (x < -100 || x > 20) => {}
+>     Some(xs) if let [x] = xs
+>         // Parentheses are required here.
+>         && (x < -100 || x > 20) => {}
 >     _ => {}
 > }
 > ```
