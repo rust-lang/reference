@@ -405,6 +405,9 @@ The *`link_name` [attribute][attributes]* may be applied to declarations inside 
 r[items.extern.attributes.link_name.syntax]
 The `link_name` attribute uses the [MetaNameValueStr] syntax.
 
+r[items.extern.attributes.link_name.invalid-names]
+The symbol name must not be the empty string or contain any `U+0000` (NUL) bytes.
+
 r[items.extern.attributes.link_name.allowed-positions]
 The `link_name` attribute may only be applied to a function or static item in an `extern` block.
 
