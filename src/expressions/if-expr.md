@@ -189,7 +189,7 @@ r[expr.if.chains.or]
 If any condition operand is a `let` pattern, then none of the condition operands can be a `||` [lazy boolean operator expression][expr.bool-logic] due to ambiguity and precedence with the `let` scrutinee.
 
 > [!EXAMPLE]
-> If a `||` expression is needed, then parentheses must be used. For example:
+> If a `||` expression is needed, then parentheses can be used. For example:
 >
 > ```rust
 > # let foo = Some(123);
