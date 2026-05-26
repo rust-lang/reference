@@ -198,7 +198,7 @@ r[layout.repr.c.struct]
 #### `#[repr(C)]` Structs
 
 r[layout.repr.c.struct.align]
-The alignment of the struct is the alignment of the most-aligned field in it.
+The alignment of the struct is the alignment of the most-aligned field in it, or one if there are no fields.
 
 r[layout.repr.c.struct.size-field-offset]
 The size and offset of fields is determined by the following algorithm.
