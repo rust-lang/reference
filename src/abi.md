@@ -2,12 +2,9 @@ r[abi]
 # Application binary interface (ABI)
 
 r[abi.intro]
-This section documents features that affect the ABI of the compiled output of
-a crate.
+This section documents features that affect the ABI of the compiled output of a crate.
 
-See *[extern functions]* for information on specifying the ABI for exporting
-functions. See *[external blocks]* for information on specifying the ABI for
-linking external libraries.
+See *[extern functions]* for information on specifying the ABI for exporting functions. See *[external blocks]* for information on specifying the ABI for linking external libraries.
 
 <!-- template:attributes -->
 r[abi.used]
@@ -68,17 +65,13 @@ r[abi.no_mangle]
 ## The `no_mangle` attribute
 
 r[abi.no_mangle.intro]
-The *`no_mangle` attribute* may be used on any [item] to disable standard
-symbol name mangling. The symbol for the item will be the identifier of the
-item's name.
+The *`no_mangle` attribute* may be used on any [item] to disable standard symbol name mangling. The symbol for the item will be the identifier of the item's name.
 
 r[abi.no_mangle.publicly-exported]
-Additionally, the item will be publicly exported from the produced library or
-object file, similar to the [`used` attribute](#the-used-attribute).
+Additionally, the item will be publicly exported from the produced library or object file, similar to the [`used` attribute](#the-used-attribute).
 
 r[abi.no_mangle.unsafe]
-This attribute is unsafe as an unmangled symbol may collide with another symbol
-with the same name (or with a well-known symbol), leading to undefined behavior.
+This attribute is unsafe as an unmangled symbol may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 ```rust
 #[unsafe(no_mangle)]
@@ -93,8 +86,7 @@ r[abi.link_section]
 ## The `link_section` attribute
 
 r[abi.link_section.intro]
-The *`link_section` attribute* specifies the section of the object file that a
-[function] or [static]'s content will be placed into.
+The *`link_section` attribute* specifies the section of the object file that a [function] or [static]'s content will be placed into.
 
 r[abi.link_section.syntax]
 The `link_section` attribute uses the [MetaNameValueStr] syntax to specify the section name.
@@ -109,8 +101,7 @@ pub static VAR1: u32 = 1;
 ```
 
 r[abi.link_section.unsafe]
-This attribute is unsafe as it allows users to place data and code into sections
-of memory not expecting them, such as mutable data into read-only areas.
+This attribute is unsafe as it allows users to place data and code into sections of memory not expecting them, such as mutable data into read-only areas.
 
 r[abi.link_section.duplicates]
 Only the first use of `link_section` on an item has effect.
@@ -126,8 +117,7 @@ r[abi.export_name]
 ## The `export_name` attribute
 
 r[abi.export_name.intro]
-The *`export_name` attribute* specifies the name of the symbol that will be
-exported on a [function] or [static].
+The *`export_name` attribute* specifies the name of the symbol that will be exported on a [function] or [static].
 
 r[abi.export_name.syntax]
 The `export_name `attribute uses the [MetaNameValueStr] syntax to specify the symbol name.
@@ -138,9 +128,7 @@ pub fn name_in_rust() { }
 ```
 
 r[abi.export_name.unsafe]
-This attribute is unsafe as a symbol with a custom name may collide with another
-symbol with the same name (or with a well-known symbol), leading to undefined
-behavior.
+This attribute is unsafe as a symbol with a custom name may collide with another symbol with the same name (or with a well-known symbol), leading to undefined behavior.
 
 r[abi.export_name.duplicates]
 Only the first use of `export_name` on an item has effect.

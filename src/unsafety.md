@@ -2,12 +2,10 @@ r[safety]
 # Unsafety
 
 r[safety.intro]
-Unsafe operations are those that can potentially violate the memory-safety
-guarantees of Rust's static semantics.
+Unsafe operations are those that can potentially violate the memory-safety guarantees of Rust's static semantics.
 
 r[safety.unsafe-ops]
-The following language level features cannot be used in the safe subset of
-Rust:
+The following language level features cannot be used in the safe subset of Rust:
 
 r[safety.unsafe-deref]
 - Dereferencing a [raw pointer].
