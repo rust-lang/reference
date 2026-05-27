@@ -23,6 +23,10 @@ fn foo(arg: impl Trait) {
 fn bar() -> impl Trait {
 }
 ```
+
+r[type.impl-trait.bounds]
+There must be at least one trait bound, no more than one `use<..>` bound, and no more than one opt-out bound (e.g., `?Sized`).
+
 r[type.impl-trait.param]
 ## Anonymous type parameters
 
