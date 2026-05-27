@@ -15,10 +15,10 @@ r[type.trait-object.impls]
 Trait objects implement the base trait, its auto traits, and any [supertraits] of the base trait.
 
 r[type.trait-object.name]
-Trait objects are written as the keyword `dyn` followed by a set of trait bounds, but with the following restrictions on the trait bounds.
+Trait object types are written as the keyword `dyn` followed by a set of bounds, but with the following restrictions on the bounds:
 
-r[type.trait-object.constraint]
-There may not be more than one non-auto trait, no more than one lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore, paths to traits may be parenthesized.
+r[type.trait-object.bounds]
+There must be at least one trait bound, there may not be more than one non-auto trait, no more than one lifetime, and opt-out bounds (e.g. `?Sized`) and `use<..>` bounds are not allowed. Furthermore, paths to traits may be parenthesized.
 
 For example, given a trait `Trait`, the following are all trait objects:
 
