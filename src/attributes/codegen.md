@@ -119,41 +119,80 @@ Only the first use of `cold` on a function has effect.
 r[attributes.codegen.cold.trait]
 When `cold` is applied to a function in a [trait], it applies only to the code of the [default definition].
 
+<!-- template:attributes -->
 r[attributes.codegen.naked]
 ## The `naked` attribute
 
 r[attributes.codegen.naked.intro]
-The *`naked` [attribute]* prevents the compiler from emitting a function prologue and epilogue for the attributed function.
+The *`naked` [attribute]* prevents the compiler from emitting a function prologue and epilogue for the attributed function --- a *naked function*.
+
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_arch = "x86_64")] {
+> /// Adds 3 to the given number.
+> // SAFETY: The body respects the "sysv64" calling convention,
+> // upholds the signature, and does not fall through.
+> #[unsafe(naked)]
+> pub extern "sysv64" fn add_n(number: u64) -> u64 {
+>     core::arch::naked_asm!(
+>         "add rdi, {}",
+>         "mov rax, rdi",
+>         "ret",
+>         const 3,
+>     )
+> }
+> # }
+> ```
+
+r[attributes.codegen.naked.syntax]
+The `naked` attribute uses the [MetaWord] syntax.
+
+r[attributes.codegen.naked.allowed-positions]
+The `naked` attribute may only be applied to [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition] when those functions have a [default definition].
+
+r[attributes.codegen.naked.duplicates]
+Only the first use of `naked` on a function has effect.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
+r[attributes.codegen.naked.unsafe]
+The `naked` attribute must be marked with [`unsafe`][attributes.safety] because the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
 
 r[attributes.codegen.naked.body]
 The [function body] must consist of exactly one [`naked_asm!`] macro invocation.
 
 r[attributes.codegen.naked.prologue-epilogue]
-No function prologue or epilogue is generated for the attributed function. The assembly code in the `naked_asm!` block constitutes the full body of a naked function.
-
-r[attributes.codegen.naked.unsafe-attribute]
-The `naked` attribute is an [unsafe attribute]. Annotating a function with `#[unsafe(naked)]` comes with the safety obligation that the body must respect the function's calling convention, uphold its signature, and either return or diverge (i.e., not fall through past the end of the assembly code).
+The compiler emits no prologue or epilogue for a naked function: the assembly code in the [`naked_asm!`] invocation constitutes its entire body.
 
 r[attributes.codegen.naked.call-stack]
-The assembly code may assume that the call stack and register state are valid on entry as per the signature and calling convention of the function.
+On entry the assembly code may assume that the call stack and register state are valid per the function's signature and calling convention.
 
 r[attributes.codegen.naked.no-duplication]
-The assembly code may not be duplicated by the compiler except when monomorphizing polymorphic functions.
+The compiler may not duplicate the assembly code except when monomorphizing a polymorphic function.
 
 > [!NOTE]
-> Guaranteeing when the assembly code may or may not be duplicated is important for naked functions that define symbols.
+> This guarantee matters for naked functions that define symbols.
 
 r[attributes.codegen.naked.unused-variables]
-The [`unused_variables`] lint is suppressed within naked functions.
+The [`unused_variables` lint] is suppressed in naked functions.
 
 r[attributes.codegen.naked.inline]
-The [`inline`](#the-inline-attribute) attribute cannot by applied to a naked function.
+The [`inline` attribute] cannot be applied to a naked function.
 
 r[attributes.codegen.naked.track_caller]
-The [`track_caller`](#the-track_caller-attribute) attribute cannot be applied to a naked function.
+The [`track_caller` attribute] cannot be applied to a naked function.
 
 r[attributes.codegen.naked.testing]
-The [testing attributes](testing.md) cannot be applied to a naked function.
+The [testing attributes] cannot be applied to a naked function.
+
+r[attributes.codegen.naked.target_feature]
+The [`target_feature` attribute] cannot be applied to a naked function.
+
+<!-- TODO: Reflexive rules? -->
+
+r[attributes.codegen.naked.abi]
+A naked function cannot use the ["Rust" ABI].
 
 <!-- template:attributes -->
 r[attributes.codegen.no_builtins]
@@ -851,13 +890,16 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`export_name`]: abi.export_name
+[`inline` attribute]: attributes.codegen.inline
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
 [`Location`]: core::panic::Location
-[`naked_asm!`]: ../inline-assembly.md
+[`naked_asm!`]: asm
 [`no_mangle`]: abi.no_mangle
+[`target_feature` attribute]: attributes.codegen.target_feature
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
-[`unused_variables`]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
+[`track_caller` attribute]: attributes.codegen.track_caller
+[`unused_variables` lint]: ../../rustc/lints/listing/warn-by-default.html#unused-variables
 [associated functions]: items.associated.fn
 [async blocks]: expr.block.async
 [async closure]: expr.closure.async
@@ -868,11 +910,13 @@ If the address of the function is taken as a function pointer, the low bit of th
 [closures]: expr.closure
 [default definition]: items.traits.associated-item-decls
 [free functions]: items.fn
-[function body]: ../items/functions.md#function-body
+[function body]: items.fn.body
 [functions]: ../items/functions.md
 [inherent impl]: items.impl.inherent
+["Rust" ABI]: items.extern.abi.rust
 [rust-abi]: ../items/external-blocks.md#abi
 [target architecture]: ../conditional-compilation.md#target_arch
+[testing attributes]: attributes.testing
 [trait]: items.traits
 [trait definition]: items.traits
 [trait impl]: items.impl.trait
