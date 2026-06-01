@@ -220,6 +220,51 @@ Only the first use of the `no_builtins` attribute has effect.
 > [!NOTE]
 > `rustc` lints against any use following the first.
 
+<!-- template:attributes -->
+r[attributes.codegen.optimize]
+## The `optimize` attribute
+
+r[attributes.codegen.optimize.intro]
+The *`optimize` [attribute]* suggests whether a function, inherent method, trait method, or closure should be optimized for size or speed.
+
+> [!EXAMPLE]
+> ```rust
+> #[optimize(size)]
+> pub fn example1() {}
+>
+> #[optimize(none)]
+> pub fn example2() {}
+>
+> #[optimize(speed)]
+> pub fn example3() {}
+> ```
+
+r[attributes.codegen.optimize.syntax]
+The syntax for the `optimize` attribute is:
+
+```grammar,attributes
+@root OptimizeAttribute ->
+      `optimize` `(` `size` `)`
+    | `optimize` `(` `speed` `)`
+    | `optimize` `(` `none` `)`
+```
+
+r[attributes.codegen.optimize.allowed-positions]
+The `optimize` attribute may only be applied to [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition].
+
+r[attributes.codegen.optimize.duplicates]
+Applying multiple `optimize` attributes to the same function is an error.
+
+r[attributes.codegen.optimize.modes]
+The `optimize` attribute supports these modes:
+
+- `#[optimize(size)]` suggests prioritizing minimizing code size, potentially at the cost of execution performance.
+- `#[optimize(speed)]` suggests prioritizing execution performance, potentially at the cost of code size.
+- `#[optimize(none)]` suggests disabling as many optimizations as possible.
+
+> [!NOTE]
+> In every form the attribute is a hint. The compiler may ignore it.
+
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
 
