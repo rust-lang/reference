@@ -423,9 +423,6 @@ LL | unsafe extern "C" fn variadic(_: ...) {}
    |                               ^^^^^^
 ```
 
-r[items.fn.c-variadic.dyn-compat]
-When a trait method is c-variadic, the trait is no longer [dyn-compatible].
-
 r[items.fn.attributes]
 ## Attributes on functions
 
@@ -522,4 +519,3 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`extern` block]: external-blocks.md
 [zero-sized]: glossary.zst
 [`VaList`]: std::ffi::VaList
-[dyn-compatible]: traits.md#dyn-compatibility
