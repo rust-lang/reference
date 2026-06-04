@@ -97,15 +97,25 @@ r[cfg.target_arch.def]
 Key-value option set once with the target's CPU architecture. The value is similar to the first element of the platform's target triple, but not identical.
 
 r[cfg.target_arch.values]
-Example values:
+Example values (Note that not all of these are available on stable rust):
 
 * `"x86"`
 * `"x86_64"`
+* `"arm"`
+* `"aarch64"`
+* `"amdgpu"`
+* `"hexagon"`
+* `"riscv32"`
+* `"riscv64"`
 * `"mips"`
 * `"powerpc"`
 * `"powerpc64"`
-* `"arm"`
-* `"aarch64"`
+* `"nvptx"`
+* `"wasm"`
+* `"loongarch32"`
+* `"loongarch64"`
+* `"s390x"`
+
 
 r[cfg.target_feature]
 ### `target_feature`
