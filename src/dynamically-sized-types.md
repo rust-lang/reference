@@ -25,10 +25,17 @@ r[dynamic-sized.struct-field]
 > [!NOTE]
 > [Variables], function parameters, [const] items, and [static] items must be `Sized`.
 
+r[dynamic-sized.tail]
+The *unsized tail* of a type is the dynamically sized component that the [metadata] of a pointer to the type describes. A [slice] (`[T]`) and a [`str`] are each their own unsized tail, described by a length; a [trait object] (`dyn Trait`) is its own unsized tail, described by a pointer to a vtable. When a struct (per [dynamic-sized.struct-field]) or a tuple has an unsized last field, its unsized tail is the unsized tail of that field. A sized type has no unsized tail.
+
+[metadata]: dynamic-sized.pointer-types
 [sized]: special-types-and-traits.md#sized
 [Slices]: types/slice.md
+[slice]: types/slice.md
 [str]: types/str.md
+[`str`]: types/str.md
 [trait objects]: types/trait-object.md
+[trait object]: types/trait-object.md
 [Pointer types]: types/pointer.md
 [Variables]: variables.md
 [const]: items/constant-items.md
