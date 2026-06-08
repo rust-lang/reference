@@ -3,9 +3,9 @@ r[type.impl-trait]
 
 r[type.impl-trait.syntax]
 ```grammar,types
-ImplTraitType -> `impl` Bounds
+ImplTraitType -> `impl` Bounds?
 
-ImplTraitTypeOneBound -> `impl` TraitBound
+ImplTraitTypeOneBound -> `impl` TraitBound?
 ```
 
 r[type.impl-trait.intro]
@@ -23,6 +23,14 @@ fn foo(arg: impl Trait) {
 fn bar() -> impl Trait {
 }
 ```
+
+r[type.impl-trait.name]
+
+`impl Trait` types are written as the keyword `impl` followed by a set of bounds, but with the following restrictions on the bounds:
+
+r[type.impl-trait.bounds]
+There must be at least one trait bound, no more than one `use<..>` bound, and no more than one opt-out bound (e.g. `?Sized`).
+
 r[type.impl-trait.param]
 ## Anonymous type parameters
 

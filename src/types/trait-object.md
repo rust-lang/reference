@@ -3,9 +3,9 @@ r[type.trait-object]
 
 r[type.trait-object.syntax]
 ```grammar,types
-TraitObjectType -> `dyn`? Bounds
+TraitObjectType -> Bounds | `dyn` Bounds?
 
-TraitObjectTypeOneBound -> `dyn`? TraitBound
+TraitObjectTypeOneBound -> TraitBound | `dyn` TraitBound?
 ```
 
 r[type.trait-object.intro]
@@ -15,10 +15,10 @@ r[type.trait-object.impls]
 Trait objects implement the base trait, its auto traits, and any [supertraits] of the base trait.
 
 r[type.trait-object.name]
-Trait objects are written as the keyword `dyn` followed by a set of trait bounds, but with the following restrictions on the trait bounds.
+Trait object types are written as the keyword `dyn` followed by a set of bounds, but with the following restrictions on the bounds:
 
-r[type.trait-object.constraint]
-There may not be more than one non-auto trait, no more than one lifetime, and opt-out bounds (e.g. `?Sized`) are not allowed. Furthermore, paths to traits may be parenthesized.
+r[type.trait-object.bounds]
+There must be at least one trait bound, there may not be more than one non-auto trait, no more than one lifetime, and opt-out bounds (e.g. `?Sized`) and `use<..>` bounds are not allowed. Furthermore, paths to traits may be parenthesized.
 
 For example, given a trait `Trait`, the following are all trait objects:
 
@@ -37,7 +37,9 @@ r[type.trait-object.syntax-edition2021]
 
 r[type.trait-object.syntax-edition2018]
 > [!EDITION-2018]
-> In the 2015 edition, if the first bound of the trait object is a path that starts with `::`, then the `dyn` will be treated as a part of the path. The first path can be put in parenthesis to get around this. As such, if you want a trait object with the trait `::your_module::Trait`, you should write it as `dyn (::your_module::Trait)`.
+> In the 2015 edition, `dyn` must be followed by [PathIdentSegment], [LIFETIME_OR_LABEL], `for`, `(` or `?` to be interpreted as the start of a trait object type. Otherwise, it will be interpreted as a regular identifier.
+>
+> Most notably, `dyn`, `dyn::T` and `dyn<T>` will all be treated as type paths. As such, if you want a trait object type with the trait `::module::Trait`, you need to put the path in parentheses and write it as `dyn (::module::Trait)`.
 >
 > Beginning in the 2018 edition, `dyn` is a true keyword and is not allowed in paths, so the parentheses are not necessary.
 
