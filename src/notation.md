@@ -1,5 +1,5 @@
 r[notation]
-# Notation
+# Grammar notation
 
 r[notation.grammar]
 ## Grammar
