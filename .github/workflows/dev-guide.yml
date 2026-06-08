@@ -2,7 +2,7 @@ name: Deploy dev-guide
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   MDBOOK_VERSION: 0.5.2
