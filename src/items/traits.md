@@ -100,6 +100,7 @@ r[items.traits.dyn-compatible.associated-functions]
             * Not be an `async fn` (which has a hidden `Future` type).
             * Not have a return position `impl Trait` type (`fn example(&self) -> impl Trait`).
         * Not have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
+        * Not have a c-variadic argument `_: ...`.
     * Explicitly non-dispatchable functions require:
         * Have a `where Self: Sized` bound (receiver type of `Self` (i.e. `self`) implies this).
 

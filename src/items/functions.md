@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [variadic function], and may only be used as the last parameter of an [external block] function. The variadic parameter may have an optional identifier, such as `args: ...`.
+A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block], the c-variadic parameter may have an optional identifier, such as `args: ...`, and in a [c-variadic function definition], the identifier is mandatory.
 
 r[items.fn.body]
 ## Function body
@@ -332,6 +332,97 @@ Note that this behavior is a consequence of the desugaring to a function that re
 
 Unsafe is used on an async function in precisely the same way that it is used on other functions: it indicates that the function imposes some additional obligations on its caller to ensure soundness. As in any other unsafe function, these conditions may extend beyond the initial call itself -- in the snippet above, for example, the `unsafe_example` function took a pointer `x` as argument, and then (when awaited) dereferenced that pointer. This implies that `x` would have to be valid until the future is finished executing, and it is the caller's responsibility to ensure that.
 
+r[items.fn.c-variadic]
+## C-variadic functions
+
+r[items.fn.c-variadic.intro]
+A *c-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+
+```rust
+unsafe extern "C" fn example(ap: ...) -> f64 {
+    unsafe { ap.next_arg::<f64>() }
+}
+```
+
+This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
+
+> [!WARNING]
+> Passing an unexpected number of arguments or arguments of unexpected type to a c-variadic function may lead to [undefined behavior][undefined].
+
+[items.fn.c-variadic.stable-targets]
+Support for c-variadic function definitions is stable on the following architectures:
+
+- x86 and x86-64
+- ARM
+- AArch64 and Arm64EC
+- RISC-V (except when using the ilp32e ABI)
+- LoongArch
+- s390x
+- PowerPC and PowerPC64
+- AmdGpu and Nvptx64
+- wasm32 and wasm64
+- csky
+- xtensa
+- hexagon
+- sparc64
+- mips
+
+r[items.fn.c-variadic.c-variadic-parameter-type]
+The type of `pat` in the function body is [`VaList`].
+
+r[items.fn.c-variadic.desugar-brief]
+A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
+
+```rust
+// Source
+unsafe extern "C" fn example(mut ap: ...) -> i32 {
+    unsafe { ap.next_arg::<i32>() }
+}
+```
+
+is roughly equivalent to:
+
+```rust
+# use std::ffi::VaList;
+// Desugared
+unsafe extern "C" fn example() -> i32 {
+    let mut ap: VaList<'_> = /* compiler initializes the VaList */;
+
+    unsafe { ap.next_arg::<i32>() }
+
+    va_end(ap)
+}
+```
+
+r[items.fn.c-variadic.lifetime]
+The lifetime of a `VaList` is that of the function that created it. Hence, the `VaList` value can never outlive the function that created it.
+
+r[items.fn.c-variadic.ffi-compatibility]
+The rust [`VaList`] is ABI-compatible with the C `va_list` type.
+
+r[items.fn.c-variadic.abi]
+Only `extern "C"` and `extern "C-unwind"` function defintions can accept a variable argument list.
+
+r[items.fn.c-variadic.safety]
+Only `unsafe` functions can accept a variable argument list.
+
+r[items.fn.c-variadic.async]
+A c-variadic functions cannot be `async`
+
+r[items.fn.c-variadic.const]
+A c-variadic functions cannot be `const`
+
+r[items.fn.c-variadic.platform-support]
+Some ABIs do not support c-variadic function definitions. The compiler errors in this case.
+
+```text
+error: the `bpfel` target does not support c-variadic functions
+  --> $DIR/not-supported.rs:23:31
+   |
+LL | unsafe extern "C" fn variadic(_: ...) {}
+   |                               ^^^^^^
+```
+
 r[items.fn.attributes]
 ## Attributes on functions
 
@@ -424,6 +515,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
-[variadic function]: external-blocks.md#variadic-functions
+[c-variadic function]: external-blocks.md#variadic-functions
 [`extern` block]: external-blocks.md
 [zero-sized]: glossary.zst
+[`VaList`]: std::ffi::VaList
