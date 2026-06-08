@@ -94,17 +94,8 @@ These default object lifetime bounds are used instead of the lifetime parameter 
 r[lifetime-elision.trait-object.explicit-placeholder]
 If `'_` is used as the lifetime bound then the bound follows the usual elision rules.
 
-r[lifetime-elision.trait-object.containing-type]
-If the trait object is used as a type argument of a generic type then the containing type is first used to try to infer a bound.
-
-r[lifetime-elision.trait-object.containing-type-unique]
-* If there is a unique bound from the containing type then that is the default.
-
-r[lifetime-elision.trait-object.containing-type-explicit]
-* If there is more than one bound from the containing type then an explicit bound must be specified.
-
 r[lifetime-elision.trait-object.trait-bounds]
-If neither of those rules apply, then the bounds on the trait are used:
+The bounds on the trait are used:
 
 r[lifetime-elision.trait-object.trait-unique]
 * If the trait is defined with a single lifetime _bound_ then that bound is used.
@@ -112,8 +103,17 @@ r[lifetime-elision.trait-object.trait-unique]
 r[lifetime-elision.trait-object.static-lifetime]
 * If `'static` is used for any lifetime bound then `'static` is used.
 
+r[lifetime-elision.trait-object.containing-type]
+If neither of those rules apply and the trait object is used as a type argument of a generic type then the containing type is first used to try to infer a bound.
+
+r[lifetime-elision.trait-object.containing-type-unique]
+* If there is a unique bound from the containing type then that is the default.
+
+r[lifetime-elision.trait-object.containing-type-explicit]
+* If there is more than one bound from the containing type then an explicit bound must be specified.
+
 r[lifetime-elision.trait-object.default]
-* If the trait has no lifetime bounds, then the lifetime is inferred in expressions and is `'static` outside of expressions.
+* If there is no such container, then the lifetime is inferred in expressions and is `'static` outside of expressions.
 
 ```rust
 // For the following trait...
