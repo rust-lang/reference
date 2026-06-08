@@ -311,6 +311,16 @@ fn compute_replacements<'a>(
     for (url, link) in urls.iter().zip(links) {
         let Some(cap) = ANCHOR_URL.captures(url) else {
             let line = super::line_from_range(&chapter.content, &link.range);
+            // `[!NOTE]` and `[!WARNING]` will be handled by the admonitions
+            // support upstream
+            let initial_spaces = line.chars().position(|ch| ch != ' ').unwrap_or(0);
+            let after_spaces = &line[initial_spaces..];
+            if after_spaces == "> [!NOTE]" {
+                continue;
+            }
+            if after_spaces == "> [!WARNING]" {
+                continue;
+            }
             warn_or_err!(
                 diag,
                 "broken markdown link found in {}\n\

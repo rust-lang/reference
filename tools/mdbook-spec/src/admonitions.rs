@@ -15,16 +15,10 @@ use regex::{Captures, Regex};
 use std::sync::LazyLock;
 
 /// The Regex for the syntax for blockquotes that have a specific CSS class,
-/// like `> [!WARNING]`.
+/// like `> [!EXAMPLE]`.
 static ADMONITION_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?m)^ *> \[!(?<admon>[^]]+)\]\n(?<blockquote>(?: *>.*\n)+)").unwrap()
 });
-
-// This icon is from GitHub, MIT License, see https://github.com/primer/octicons
-const ICON_NOTE: &str = r#"<path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>"#;
-
-// This icon is from GitHub, MIT License, see https://github.com/primer/octicons
-const ICON_WARNING: &str = r#"<path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path>"#;
 
 // This icon is from GitHub, MIT License, see https://github.com/primer/octicons
 const ICON_EXAMPLE: &str = r#"<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm4.879-2.773 4.264 2.559a.25.25 0 0 1 0 .428l-4.264 2.559A.25.25 0 0 1 6 10.559V5.442a.25.25 0 0 1 .379-.215Z"></path>"#;
@@ -34,11 +28,11 @@ const ICON_EXAMPLE: &str = r#"<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a
 /// The blockquote should look something like:
 ///
 /// ```markdown
-/// > [!WARNING]
+/// > [!EXAMPLE]
 /// > ...
 /// ```
 ///
-/// This will add a `<div class="alert alert-warning">` around the
+/// This will add a `<div class="alert alert-example">` around the
 /// blockquote so that it can be styled differently, and injects an icon.
 /// The actual styling needs to be added in the `reference.css` CSS file.
 pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
@@ -54,7 +48,7 @@ pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
                 format!(
                     "{space}<div class=\"alert alert-{class}\">\n\
                     \n\
-                    {space}> <p class=\"alert-title\">\
+                    {space}> <p class=\"blockquote-tag-title\">\
                         {content}</p>\n\
                     {space} >\n\
                     {blockquote}\n\
@@ -73,9 +67,13 @@ pub fn admonitions(chapter: &Chapter, diag: &mut Diagnostics) -> String {
                 );
             }
 
+            match lower.as_str() {
+                "note" => return caps[0].to_string(),
+                "warning" => return caps[0].to_string(),
+                _ => (),
+            };
+
             let svg = match lower.as_str() {
-                "note" => ICON_NOTE,
-                "warning" => ICON_WARNING,
                 "example" => ICON_EXAMPLE,
                 _ => {
                     warn_or_err!(
