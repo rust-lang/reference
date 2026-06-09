@@ -147,7 +147,7 @@ r[undefined.validity.reference-box]
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
   * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`. (For raw pointers, this requirement remains a subject of some debate.)
-  * Slice (`[T]`) metadata must be a valid `usize`. Furthermore, for wide references and [`Box<T>`], slice metadata is invalid if it makes the total size of the pointed-to value bigger than `isize::MAX`.
+  * Slice (`[T]`) and `str` metadata must be a valid `usize`. Furthermore, for wide references and [`Box<T>`], this metadata is invalid if it makes the total size of the pointed-to value bigger than `isize::MAX`.
 
 r[undefined.validity.valid-range]
 * If a type has a custom range of a valid values, then a valid value must be in that range. In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
