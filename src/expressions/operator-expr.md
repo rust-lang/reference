@@ -732,7 +732,7 @@ r[expr.as.pointer.sized]
   > ```
 
 r[expr.as.pointer.discard-metadata]
-- If `T` is unsized and `U` is sized, the cast discards all metadata that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
+- If `T` is unsized and `U` is sized, the cast discards all [metadata] that completes the wide pointer `T` and produces a thin pointer `U` consisting of the data part of the unsized pointer.
 
   > [!EXAMPLE]
   > ```rust
@@ -1244,6 +1244,7 @@ As with normal assignment expressions, compound assignment expressions always pr
 [logical not]: ../types/boolean.md#logical-not
 [logical or]: ../types/boolean.md#logical-or
 [logical xor]: ../types/boolean.md#logical-xor
+[metadata]: dynamic-sized.pointer-types
 [moved from]: expr.move.movable-place
 [mutable]: ../expressions.md#mutability
 [place expression]: ../expressions.md#place-expressions-and-value-expressions

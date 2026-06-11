@@ -8,9 +8,10 @@ r[dynamic-sized.restriction]
 Such types can only be used in certain cases:
 
 r[dynamic-sized.pointer-types]
-* [Pointer types] to <abbr title="dynamically sized types">DSTs</abbr> are sized but have twice the size of pointers to sized types
-    * Pointers to slices and `str` also store the number of elements.
-    * Pointers to trait objects also store a pointer to a vtable.
+* [Pointer types] to <abbr title="dynamically sized types">DSTs</abbr> are sized but have twice the size of pointers to sized types, since they also store *metadata*:
+    * Pointers to slices store the number of elements; pointers to `str` store the length in bytes.
+    * Pointers to trait objects store a pointer to a vtable.
+    * Pointers to a struct or tuple with an [unsized tail] store the same metadata as a pointer to that tail.
 
 r[dynamic-sized.question-sized]
 * <abbr title="dynamically sized types">DSTs</abbr> can be provided as type arguments to generic type parameters having the special `?Sized` bound. They can also be used for associated type definitions when the corresponding associated type declaration has a `?Sized` bound. By default, any type parameter or associated type has a `Sized` bound, unless it is relaxed using `?Sized`.
@@ -25,10 +26,18 @@ r[dynamic-sized.struct-field]
 > [!NOTE]
 > [Variables], function parameters, [const] items, and [static] items must be `Sized`.
 
+r[dynamic-sized.tail]
+The *unsized tail* of a type is the dynamically sized component that the [metadata] of a pointer to the type describes. A [slice] (`[T]`) and a [`str`] are each their own unsized tail, described by a length; a [trait object] (`dyn Trait`) is its own unsized tail, described by a pointer to a vtable. When a struct (per [dynamic-sized.struct-field]) or a tuple has an unsized last field, its unsized tail is the unsized tail of that field. A sized type has no unsized tail.
+
+[metadata]: dynamic-sized.pointer-types
 [sized]: special-types-and-traits.md#sized
+[unsized tail]: dynamic-sized.tail
 [Slices]: types/slice.md
+[slice]: types/slice.md
 [str]: types/str.md
+[`str`]: types/str.md
 [trait objects]: types/trait-object.md
+[trait object]: types/trait-object.md
 [Pointer types]: types/pointer.md
 [Variables]: variables.md
 [const]: items/constant-items.md
