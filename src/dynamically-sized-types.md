@@ -11,6 +11,7 @@ r[dynamic-sized.pointer-types]
 * [Pointer types] to <abbr title="dynamically sized types">DSTs</abbr> are sized but have twice the size of pointers to sized types, since they also store *metadata*:
     * Pointers to slices store the number of elements; pointers to `str` store the length in bytes.
     * Pointers to trait objects store a pointer to a vtable.
+    * Pointers to a struct or tuple with an [unsized tail] store the same metadata as a pointer to that tail.
 
 r[dynamic-sized.question-sized]
 * <abbr title="dynamically sized types">DSTs</abbr> can be provided as type arguments to generic type parameters having the special `?Sized` bound. They can also be used for associated type definitions when the corresponding associated type declaration has a `?Sized` bound. By default, any type parameter or associated type has a `Sized` bound, unless it is relaxed using `?Sized`.
@@ -30,6 +31,7 @@ The *unsized tail* of a type is the dynamically sized component that the [metada
 
 [metadata]: dynamic-sized.pointer-types
 [sized]: special-types-and-traits.md#sized
+[unsized tail]: dynamic-sized.tail
 [Slices]: types/slice.md
 [slice]: types/slice.md
 [str]: types/str.md
