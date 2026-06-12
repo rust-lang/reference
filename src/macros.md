@@ -108,14 +108,30 @@ Macros invocations can be resolved via two kinds of scopes:
   - [Path-based scope `macro_rules`](macros-by-example.md#r-macro.decl.scope.path-based)
   - [Procedural macros]
 
+r[macro.invocation.attr]
+### Derive and attribute macro invocation
+
+r[macro.invocation.attr.intro]
+The item a [derive macro] or [attribute macro] is applied to must be syntactically valid.
+
+r[macro.invocation.attr.mod]
+Any [module items] present in the macro's input, including [outlined modules], are passed to the macro as written in the input source:
+
+- If the module has a body, the body is part of the input.
+- If the module does not have a body (the module is [outlined][outlined modules]), the body is not part of the input.
+
 [External blocks]: items/external-blocks.md
 [Macros by Example]: macros-by-example.md
 [Procedural Macros]: procedural-macros.md
 [`macro_rules`]: macros-by-example.md
 [associated items]: items/associated-items.md
+[attribute macro]: procedural-macros.md#r-macro.proc.attribute
 [delimiters]: tokens.md#delimiters
+[derive macro]: procedural-macros.md#r-macro.proc.derive
 [expressions]: expressions.md
 [items]: items.md
+[module items]: items/modules.md
+[outlined modules]: items/modules.md#r-items.mod.outlined
 [patterns]: patterns.md
 [statements]: statements.md
 [types]: types.md
