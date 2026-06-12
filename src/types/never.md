@@ -12,9 +12,6 @@ The never type `!` is a type with no values, representing the result of computat
 r[type.never.coercion]
 Expressions of type `!` can be coerced into any other type.
 
-r[type.never.constraint]
-The `!` type can **only** appear in function return types presently, indicating it is a diverging function that never returns.
-
 ```rust
 fn foo() -> ! {
     panic!("This call never returns.");

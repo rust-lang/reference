@@ -27,7 +27,6 @@ See the following rules for specific expression divergence behavior:
 - [expr.match.diverging] --- `match` expressions.
 - [expr.match.empty] --- Empty `match` expressions.
 - [expr.return.diverging] --- `return` expressions.
-- [type.never.constraint] --- Function calls returning `!`.
 
 > [!NOTE]
 > The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
