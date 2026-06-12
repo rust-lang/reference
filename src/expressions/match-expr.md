@@ -119,11 +119,7 @@ If there are no match arms, then the `match` expression is [diverging] and the t
 
 > [!EXAMPLE]
 > ```rust
-> # fn make<T>() -> T { loop {} }
-> enum Empty {}
->
-> fn diverging_match_no_arms() -> ! {
->     let e: Empty = make();
+> fn diverging_match_no_arms(e: !) -> ! {
 >     match e {}
 > }
 > ```
