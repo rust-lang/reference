@@ -74,9 +74,6 @@ If a type to be inferred is only unified with diverging expressions, then that t
 > };
 > ```
 
-> [!EDITION-2024]
-> Before the 2024 edition, the type was inferred to instead be `()`.
-
 > [!NOTE]
 > Importantly, type unification may happen *structurally*, so the fallback `!` may be part of a larger type. The following compiles:
 >
