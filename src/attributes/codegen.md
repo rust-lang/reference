@@ -225,7 +225,7 @@ r[attributes.codegen.optimize]
 ## The `optimize` attribute
 
 r[attributes.codegen.optimize.intro]
-The *`optimize` [attribute]* suggests whether a function, inherent method, trait method, or closure should be optimized for size or speed.
+The *`optimize` [attribute]* suggests whether a function should be optimized for size, speed, or with optimizations disabled.
 
 > [!EXAMPLE]
 > ```rust
