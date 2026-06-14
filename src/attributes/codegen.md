@@ -250,7 +250,7 @@ The syntax for the `optimize` attribute is:
 ```
 
 r[attributes.codegen.optimize.allowed-positions]
-The `optimize` attribute may only be applied to [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition].
+The `optimize` attribute may only be applied to [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition] with a default body.
 
 r[attributes.codegen.optimize.duplicates]
 Applying multiple `optimize` attributes to the same function is an error.
