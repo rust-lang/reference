@@ -150,7 +150,7 @@ r[undefined.validity.wide]
   * Slice (`[T]`) metadata must be a valid `usize`. Furthermore, for wide references and [`Box<T>`], slice metadata is invalid if it makes the total size of the pointed-to value bigger than `isize::MAX`.
 
 r[undefined.validity.valid-range]
-* If a type has a custom range of a valid values, then a valid value must be in that range. In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
+* If a type has a custom range of valid values, then a valid value must be in that range. In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
 
   > [!NOTE]
   > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
