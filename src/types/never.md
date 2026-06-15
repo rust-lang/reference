@@ -48,7 +48,7 @@ NeverType -> `!`
 ```
 
 r[type.never.coercion]
-Expressions of type `!` can be coerced into any other type.
+Expressions of type `!` can be coerced into any type.
 
 > [!NOTE]
 > The standard library type [`Infallible`] is a type alias for `!`.
