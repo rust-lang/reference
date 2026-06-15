@@ -2,7 +2,7 @@ r[type.never]
 # Never type
 
 r[type.never.intro]
-The never type `!` is a type with no values, representing the result of computations that never complete.
+The never type `!` is a type with no values, representing computations that never complete, also known as [diverging][divergence] computations.
 
 > [!EXAMPLE]
 > ```rust
