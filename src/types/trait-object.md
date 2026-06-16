@@ -3,10 +3,13 @@ r[type.trait-object]
 
 r[type.trait-object.syntax]
 ```grammar,types
-TraitObjectType -> Bounds | `dyn` Bounds?
+TraitObjectType -> Bounds[^bare-2021] | `dyn`[^dyn-2018] Bounds?
 
-TraitObjectTypeOneBound -> TraitBound | `dyn` TraitBound?
+TraitObjectTypeOneBound -> TraitBound[^bare-2021] | `dyn`[^dyn-2018] TraitBound?
 ```
+
+[^bare-2021]: See [type.trait-object.syntax-edition2021].
+[^dyn-2018]: See [type.trait-object.syntax-edition2018].
 
 r[type.trait-object.intro]
 A *trait object* is an opaque value of another type that implements a set of traits. The set of traits is made up of a [dyn compatible] *base trait* plus any number of [auto traits].
@@ -30,7 +33,7 @@ For example, given a trait `Trait`, the following are all trait objects:
 
 r[type.trait-object.syntax-edition2021]
 > [!EDITION-2021]
-> Before the 2021 edition, the `dyn` keyword may be omitted.
+> Before the 2021 edition, the `dyn` keyword may be omitted. In the 2021 edition and beyond, the `dyn` keyword is required semantically.
 
 r[type.trait-object.syntax-edition2018]
 > [!EDITION-2018]
