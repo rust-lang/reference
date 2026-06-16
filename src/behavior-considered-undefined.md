@@ -100,7 +100,7 @@ r[undefined.dangling.zero-size]
 If the [size is 0][zero-sized], then the pointer is trivially never "dangling" (even if it is a null pointer).
 
 r[undefined.dangling.dynamic-size]
-Note that dynamically sized types (such as slices and strings) point to their entire range, so it is important that the length metadata is never too large.
+Note that dynamically sized types (such as slices and strings) point to their entire range, so it is important that the length [metadata] is never too large.
 
 r[undefined.dangling.alloc-limit]
 In particular, the dynamic size of a Rust value (as determined by `size_of_val`) must never exceed `isize::MAX`, since it is impossible for a single allocation to be larger than `isize::MAX`.
@@ -142,10 +142,10 @@ r[undefined.validity.union]
 * For a `union`, the exact validity requirements are not decided yet. Obviously, all values that can be created entirely in safe code are valid. If the union has a [zero-sized] field, then every possible value is valid. Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
 
 r[undefined.validity.reference-box]
-* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the metadata). Note that the last point (about pointing to a valid value) remains a subject of some debate.
+* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of some debate.
 
 r[undefined.validity.wide]
-* The metadata of a wide reference, [`Box<T>`], or raw pointer must match the type of the unsized tail:
+* The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the unsized tail:
   * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`. (For raw pointers, this requirement remains a subject of some debate.)
   * Slice (`[T]`) metadata must be a valid `usize`. Furthermore, for wide references and [`Box<T>`], slice metadata is invalid if it makes the total size of the pointed-to value bigger than `isize::MAX`.
 
@@ -156,7 +156,7 @@ r[undefined.validity.valid-range]
   > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
 
 r[undefined.validity.const-provenance]
-* **In [const contexts]**: In addition to what is described above, further provenance-related requirements apply during const evaluation. Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice metadata) must not carry any provenance. Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance, or all bytes must be fragments of the same original pointer value in the correct order.
+* **In [const contexts]**: In addition to what is described above, further provenance-related requirements apply during const evaluation. Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice [metadata]) must not carry any provenance. Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance, or all bytes must be fragments of the same original pointer value in the correct order.
 
   This implies that transmuting or otherwise reinterpreting a pointer (reference, raw pointer, or function pointer) into a non-pointer type (such as integers) is undefined behavior if the pointer had provenance.
 
@@ -194,6 +194,7 @@ r[undefined.validity.undef]
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
 [Rustonomicon]: ../nomicon/index.html
+[metadata]: dynamic-sized.pointer-types
 [`NonNull<T>`]: core::ptr::NonNull
 [`NonZero<T>`]: core::num::NonZero
 [place expression context]: expressions.md#place-expressions-and-value-expressions
