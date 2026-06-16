@@ -3,9 +3,9 @@ r[type.trait-object]
 
 r[type.trait-object.syntax]
 ```grammar,types
-TraitObjectType -> `dyn`? Bounds
+TraitObjectType -> Bounds | `dyn` Bounds?
 
-TraitObjectTypeOneBound -> `dyn`? TraitBound
+TraitObjectTypeOneBound -> TraitBound | `dyn` TraitBound?
 ```
 
 r[type.trait-object.intro]
