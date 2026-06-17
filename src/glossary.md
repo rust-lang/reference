@@ -223,6 +223,7 @@ A type is zero sized (a ZST) if its size is 0. Such types have at most one possi
 - `repr(Rust)` [structs] with no fields or where all fields are zero sized (see [layout.repr.rust.struct-zst]).
 - `repr(C)` [structs] with no fields or where all fields are zero-sized (see [layout.repr.c.struct.size-field-offset]).
 - `repr(transparent)` [structs] with no fields or where all fields are zero-sized (see [layout.repr.transparent.layout-abi]).
+- `repr(Rust)` [enums] (without a [primitive representation] specified) with no variants (see [layout.repr.rust.enum-empty-zst])
 - `repr(Rust)` [enums] (without a [primitive representation] specified) with a single [field-struct-like variant], a single [unit-struct-like variant], or a single [tuple-struct-like variant] and where the struct-like thing has no fields or where all of the fields are zero sized (see [layout.repr.rust.enum-struct-like-zst]).
 - [Arrays] of zero-sized types (see [layout.array]).
 - [Arrays] of length zero (see [layout.array]).
@@ -284,6 +285,8 @@ enum E5 {
 enum E6 {
     V1 (),
 }
+# /// An enum with no variants.
+enum E7 {}
 
 assert_eq!(0, size_of::<()>());
 assert_eq!(0, size_of_val(&f));
@@ -304,6 +307,7 @@ assert_eq!(0, size_of::<E3>());
 assert_eq!(0, size_of::<E4>());
 assert_eq!(0, size_of::<E5>());
 assert_eq!(0, size_of::<E6>());
+assert_eq!(0, size_of::<E7>());
 ```
 
 [`extern` blocks]: items.extern
