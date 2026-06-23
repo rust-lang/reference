@@ -39,6 +39,8 @@ The never type `!` is a type with no values, representing computations that neve
 >     }
 > }
 >
+> // This does not need to check for the `Err` variant because
+> // `FromStr::Err` is the never type.
 > let Ok(s) = Anything::from_str("example");
 > ```
 
