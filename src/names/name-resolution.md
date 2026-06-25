@@ -558,8 +558,205 @@ r[names.resolution.primary]
 
 r[names.resolution.type-relative]
 ## Type-relative resolution
-> [!NOTE]
-> This is a placeholder for future expansion about type-dependent resolution.
+
+r[names.resolution.type-relative.intro]
+_Type-relative resolution_ is the process of tying paths that depend on type
+information to the declarations of those entities once that type information is
+available in the compiler. This stage of name resolution exclusively applies to
+a subset of [Qualified Paths].
+
+Specifically, Qualified Paths from:
+
+- Types
+- Expressions
+- Patterns
+- Structs & Tuple Structs
+    - these include enums variant structs
+
+Type relative paths fall into the following two categories
+
+- Associated Items
+- Variants
+
+`Trait::assoc_item`, `<Type as Trait>::assoc_item` and `Enum::Variant` are
+resolved during late resolution. This works because the resolver tracks an
+associated `Module` for enums and traits where it can directly lookup these
+candidates purely based on information within the enum/trait's original
+definition.
+
+`Type::assoc_item`, `<Type>::assoc_item`, `<Enum>::Variant` and
+`EnumTyAlias::Variant` are resolved during type checking. These cannot be
+resolved earlier because the type checker needs to resolve the trait an
+associated item comes from or the definition an alias points to.
+
+r[names.resolution.type-relative.stages]
+These type relative paths are resolved separately in item definitions and in function bodies.
+
+r[names.resolution.type-relative.stages.items]
+Items:
+
+Type::AssocTy
+
+```rust
+// ty path
+fn foo<T: Trait>() -> T::AssocTy { .. } // AssocTy can come from a trait and it could be ambiguous with an enum variant
+                                        // or an inherent associated type (on unstable)
+```
+
+r[names.resolution.type-relative.stages.bodies]
+fn bodies:
+
+r[names.resolution.type-relative.stages.bodies.path-expressions]
+Path expressions
+
+r[names.resolution.type-relative.stages.bodies.path-expressions.enum-variant-via-alias]
+enum variant via alias
+
+```rust
+enum Enum {
+    Variant,
+}
+type Alias = Enum;
+fn main() {
+    match Enum::Variant {
+        Alias::Variant => {}
+    }
+}
+```
+
+Fully qualified paths for enums are also resolved as type relative names. This
+is mainly because the implementation is simpler this way not because this
+information would not otherwise be available during primary resolution.
+
+```rust
+<Enum>::Variant
+```
+
+r[names.resolution.type-relative.stages.bodies.path-expressions.associated-const]
+associated consts
+
+```rust
+struct Foo;
+
+impl Foo {
+    const C: u8 = 8;
+}
+
+fn eight() -> u8 {
+    Foo::C
+}
+```
+
+When enum variants share the same name as associated types or consts, the enum variant candidate is given preference during resolution
+
+
+r[names.resolution.type-relative.stages.bodies.call-expressions]
+fully qualified call expressions:
+
+```rust
+Type::assoc_func();
+```
+
+- Call expressions
+    - inherent associated functions
+    - trait associated functions
+    - methods via fqcs
+        - No autoderefs are performed
+        - static methods are included
+        - lookup is done based on the type each implementation is for
+            - what does this actually mean?
+
+r[names.resolution.type-relative.stages.bodies.call-expressions.differences-from-method-resolution]
+
+- https://doc.rust-lang.org/reference/expressions/method-call-expr.html
+
+r[names.resolution.type-relative.stages.bodies.call-expressions.candidate-selection]
+
+- https://doc.rust-lang.org/reference/expressions/call-expr.html#disambiguating-function-calls
+
+Similar to method resolution, we look at all impls applicable for Type. Where
+"all impls applicable" is a mess.
+
+- we only consider trait items for <_> but also consider - and prefer - inherent impls if the self type is not an infer var
+    - This is necessary because otherwise there would be no way to refer to inherent associated items, we lack a disambiguation syntax in their favor.
+
+```rust
+struct Foo;
+impl Foo {
+    fn overlap(x: Foo) {
+        println!("inherent");
+    }
+}
+
+trait Trait: Sized {
+    fn overlap(x: Self) {
+        println!("trait");
+    }
+}
+impl Trait for Foo {}
+
+fn main() {
+    <_>::overlap(Foo); // trait
+    <Foo>::overlap(Foo); // inherent
+}
+```
+
+Candidate selection depends on inference, the traits which are considered "applicable" are determined via the Self type the name being resolved is relative to. consider the following:
+
+```rust
+struct Foo;
+impl Foo {
+    fn inherent_func() {}
+}
+
+trait Trait: Sized {
+    fn trait_method() -> Self {
+        todo!();
+    }
+}
+impl Trait for Foo {}
+
+fn main() {
+    //<_>::inherent_func(); // ERROR: unable to get the assoc item
+    //<_>::trait_method(); // ERROR: chose trait method, unable to infer the self type
+    let _: Foo = <_>::trait_method(); // OK
+}
+```
+
+- as types and traits are in the same namespace, their disambiguation is only relevant for inherent methods of trait objects without dyn i think
+- candidate preference is a mess, the trait candidate for dyn Trait gets treated as an inherent candidate instead of a trait candidate wrt to candidate preference
+
+```rust
+trait Trait {
+    fn assoc(&self) {
+        println!("trait");
+    }
+}
+impl Trait for i32 {}
+impl dyn Trait {
+    fn assoc(&self) {
+        println!("inherent");
+    }
+}
+
+fn main() {
+    let x: &dyn Trait = &1;
+    Trait::assoc(x); // trait
+    <Trait>::assoc(x); // ambiguous
+    <Trait as Trait>::assoc(x); // trait
+    x.assoc(); // ambiguous
+}
+```
+
+struct literals?
+
+https://github.com/rust-lang/rust/blob/main/compiler/rustc_hir_typeck/src/method/mod.rs#L494
+https://github.com/rust-lang/rust/blob/main/compiler/rustc_hir_analysis/src/hir_ty_lowering/mod.rs#L295-L299
+https://github.com/rust-lang/rust/blob/main/compiler/rustc_resolve/src/late.rs#L475-L490
+https://github.com/rust-lang/rust/blob/main/compiler/rustc_hir_analysis/src/hir_ty_lowering/mod.rs#L1371
+- If you chase down where `QPath::TypeRelative` gets constructed you primarily
+  end up at the callers of `lower_qpath`
+    - lower_pat_mut for PatKinds TupleStruct, Path, and Struct
 
 [AST]: glossary.ast
 [Builtin attributes]: ./preludes.md#r-names.preludes.lang
