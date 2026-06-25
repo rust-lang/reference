@@ -173,7 +173,7 @@ The only data layout guarantees made by this representation are those required f
 For enums, the above guarantees only apply to fields of inhabited variants.
 
 r[layout.repr.rust.layout.struct]
-For [structs], it is further guaranteed that the fields do not overlap. That is, the fields can be ordered such that the offset plus the size of any field is less than or equal to the offset of the next field in the ordering, or for the last field, the size of the struct. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
+For [structs], it is further guaranteed that the fields do not overlap. That is, if we take the fields ordered by their offset, then for each field its offset plus its size is less than or equal to the offset of the next field in the ordering, or for the last field, the size of the struct. The ordering does not have to be the same as the order in which the fields are specified in the declaration of the type.
 
 Be aware that this guarantee does not imply that the fields have distinct addresses: zero-sized types may have the same address as other fields in the same struct.
 
