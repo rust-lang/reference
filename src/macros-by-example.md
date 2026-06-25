@@ -109,7 +109,7 @@ Valid fragment specifiers are:
   * `block`: a [BlockExpressionNoInnerAttributes]
   * `expr`: an [Expression]
   * `expr_2021`: an [Expression] except [UnderscoreExpression] and [ConstBlockExpression] (see [macro.decl.meta.edition2024])
-  * `ident`: an [IDENTIFIER_OR_KEYWORD] except `_`, [RAW_IDENTIFIER], or [`$crate`]
+  * `ident`: an [IDENTIFIER_OR_KEYWORD] (except `_`), a [RAW_IDENTIFIER], or an [initially replaced `$crate`]
   * `item`: an [Item]
   * `lifetime`: a [LIFETIME_TOKEN]
   * `literal`: matches `-`<sup>?</sup>[LiteralExpression]
@@ -664,6 +664,48 @@ pub mod inner {
 }
 ```
 
+r[macro.decl.hygiene.crate.replaced]
+The raw syntax of `$crate` consists of two tokens (`$` followed by `crate`). When used as a metavariable within a macro definition, this syntax is initially replaced with a single token (also called&nbsp;"`$crate`"), which can be used an identifier.
+
+```rust
+macro_rules! print_tokens {
+    ($($token:tt)*) => {
+        $(
+            println!("* token {:?}", stringify!($token));
+        )*
+    }
+}
+
+// first, calling print_tokens!($crate) directly:
+println!("raw syntax:");
+print_tokens!($crate);
+// +--- OUTPUT -------+
+// | raw syntax:      |
+// | * token "$"      |
+// | * token "crate"  |
+// +------------------+
+
+println!(); // ==================================
+
+// next, calling print_tokens!($crate)
+// from within a macro definition's transcriber:
+macro_rules! print_dollar_crate {
+    () => {
+        print_tokens!($crate);
+    }
+}
+
+println!("replaced token:");
+print_dollar_crate!();
+// +--- OUTPUT -------+
+// | replaced token:  |
+// | * token "$crate" |
+// +------------------+
+```
+
+The semantic meaning of this token, referring to the crate defining this macro, only comes into effect *later* in compilation, after all macro-expansion is completed.
+It makes use of the hygiene information that is attached to the "`$crate`" token during the initial replacement.
+
 r[macro.decl.hygiene.vis]
 Additionally, even though `$crate` allows a macro to refer to items within its own crate when expanding, its use has no effect on visibility. An item or macro referred to must still be visible from the invocation site. In the following example, any attempt to invoke `call_foo!()` from outside its crate will fail because `foo()` is not public.
 
@@ -675,6 +717,8 @@ macro_rules! call_foo {
 
 fn foo() {}
 ```
+
+However, the crate being referred to does *not* itself need to be visible from the invocation site as a directly declared dependency. A main purpose of `$crate` is to offer a way of reliably naming crates (and their public items) in macro-generated code, even if the only exists as a transitive dependency (i.e. "dependency of a dependency") from the invocation site.
 
 > [!NOTE]
 > Prior to Rust 1.30, `$crate` and [`local_inner_macros`][macro.decl.scope.macro_export.local_inner_macros] were unsupported. They were added alongside [path-based imports of macros][macro.decl.scope.macro_export], to ensure that helper macros did not need to be manually imported by users of a macro-exporting crate. Crates written for earlier versions of Rust that use helper macros need to be modified to use `$crate` or `local_inner_macros` to work well with path-based imports.
@@ -726,6 +770,7 @@ For more detail, see the [formal specification].
 [Repetitions]: #repetitions
 [`macro_export`]: #the-macro_export-attribute
 [`$crate`]: macro.decl.hygiene.crate
+[initially replaced `$crate`]: macro.decl.hygiene.crate.replaced
 [`extern crate self`]: items.extern-crate.self
 [`macro_use` prelude]: names/preludes.md#macro_use-prelude
 [block labels]: expr.loop.block-labels
