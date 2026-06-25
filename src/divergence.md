@@ -27,7 +27,6 @@ See the following rules for specific expression divergence behavior:
 - [expr.match.diverging] --- `match` expressions.
 - [expr.match.empty] --- Empty `match` expressions.
 - [expr.return.diverging] --- `return` expressions.
-- [type.never.constraint] --- Function calls returning `!`.
 
 > [!NOTE]
 > The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
@@ -74,9 +73,6 @@ If a type to be inferred is only unified with diverging expressions, then that t
 >     _ => return,
 > };
 > ```
-
-> [!EDITION-2024]
-> Before the 2024 edition, the type was inferred to instead be `()`.
 
 > [!NOTE]
 > Importantly, type unification may happen *structurally*, so the fallback `!` may be part of a larger type. The following compiles:

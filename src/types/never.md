@@ -1,28 +1,58 @@
 r[type.never]
 # Never type
 
+r[type.never.intro]
+The never type `!` is a type with no values, representing computations that never complete, also known as [diverging][divergence] computations.
+
+> [!EXAMPLE]
+> ```rust
+> fn foo() -> ! {
+>     loop {}
+> }
+> ```
+>
+> ```rust
+> unsafe extern "C" {
+>     pub safe fn no_return_extern_func() -> !;
+> }
+> ```
+>
+> ```rust,no_run
+> let _: ! = loop {};
+> ```
+>
+> ```rust
+> fn always_ok() -> Result<u32, !> {
+>     Ok(42)
+> }
+> ```
+>
+> ```rust
+> # use std::str::FromStr;
+> struct Anything(String);
+>
+> impl FromStr for Anything {
+>     type Err = !;
+>
+>     fn from_str(s: &str) -> Result<Self, !> {
+>         Ok(Anything(s.to_owned()))
+>     }
+> }
+>
+> // This does not need to check for the `Err` variant because
+> // `FromStr::Err` is the never type.
+> let Ok(s) = Anything::from_str("example");
+> ```
+
 r[type.never.syntax]
 ```grammar,types
 NeverType -> `!`
 ```
 
-r[type.never.intro]
-The never type `!` is a type with no values, representing the result of computations that never complete.
-
 r[type.never.coercion]
-Expressions of type `!` can be coerced into any other type.
+Expressions of type `!` can be coerced into any type.
 
-r[type.never.constraint]
-The `!` type can **only** appear in function return types presently, indicating it is a diverging function that never returns.
+> [!NOTE]
+> The standard library type [`Infallible`] is a type alias for `!`.
 
-```rust
-fn foo() -> ! {
-    panic!("This call never returns.");
-}
-```
-
-```rust
-unsafe extern "C" {
-    pub safe fn no_return_extern_func() -> !;
-}
-```
+[`Infallible`]: core::convert::Infallible
