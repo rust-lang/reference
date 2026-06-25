@@ -164,6 +164,7 @@ r[bound.implied]
 
 r[bound.implied.intro]
 Lifetime bounds required for types to be well-formed are sometimes inferred.
+The detailed rules are in [RFC 1214] (for functions and implementations) and [RFC 2093] (for structures).
 
 ```rust
 fn requires_t_outlives_a<'a, T>(x: &'a T) {}
@@ -233,6 +234,34 @@ trait Trait<'a, T: 'a> {}
 impl<'a, T> Trait<'a, T> for &'a T {}
 ```
 
+r[bound.implied.assoc]
+For associated type references such as `<T as MakeRef<'a>>::Type`, only `T` itself is checked to be well-formed, and no lifetime bounds are inferred based on the lifetime requirements of the associated type `MakeRef<'a>::Type`.
+An explicit bound is still required to ensure that any lifetime requirements of the associated type are met:
+
+```rust
+trait MakeRef<'a> { type Type; }
+
+impl<'a, T> MakeRef<'a> for Vec<T>
+    where T: 'a
+{
+    type Type = &'a T;
+}
+
+struct UsesMakeRef<'a, T>
+    where T: 'a   // Not inferred: only `Vec<T>` is checked to be well-formed
+{
+    foo: <Vec<T> as MakeRef<'a>>::Type
+}
+```
+
+In contrast, `<T as Iterator>::Item: 'a` is inferred below, because `'a` is part of the type of the reference, not part of the associated type `<T as Iterator>::Item`:
+
+```rust
+struct RefAssocType1<'a, T: Iterator>(&'a T::Item);     // inferred
+struct RefAssocType2<'a, T: Iterator>(&'a T::Item)
+    where <T as Iterator>::Item: 'a;                    // explicit
+```
+
 r[bound.use]
 ## Use bounds
 
@@ -252,3 +281,5 @@ Certain bounds lists may include a `use<..>` bound to control which generic para
 [trait objects]: types/trait-object.md
 [type parameters]: types/parameters.md
 [where clause]: items/generics.md#where-clauses
+[RFC 1214]: https://rust-lang.github.io/rfcs/1214-projections-lifetimes-and-wf.html
+[RFC 2093]: https://rust-lang.github.io/rfcs/2093-infer-outlives.html
