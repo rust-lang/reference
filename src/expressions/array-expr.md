@@ -132,11 +132,11 @@ The array index expression can be implemented for types other than arrays and sl
 [IndexMut]: std::ops::IndexMut
 [Index]: std::ops::Index
 [array]: ../types/array.md
-[const generic argument]: items.generics.const.argument
+[const generic argument]: generics.const.arguments
 [const block expression]: expr.block.const
 [constant expression]: ../const_eval.md#constant-expressions
 [constant item]: ../items/constant-items.md
-[inferred const]: items.generics.const.inferred
+[inferred const]: generics.const.arguments.inferred
 [literal]: ../tokens.md#literals
 [memory location]: ../expressions.md#place-expressions-and-value-expressions
 [panic]: ../panic.md
