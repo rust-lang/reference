@@ -346,9 +346,6 @@ unsafe extern "C" fn example(ap: ...) -> f64 {
 
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
 
-> [!WARNING]
-> Passing an unexpected number of arguments or arguments of unexpected type to a c-variadic function may lead to [undefined behavior][undefined].
-
 [items.fn.c-variadic.stable-targets]
 Support for c-variadic function definitions is stable on the following architectures:
 
@@ -396,6 +393,32 @@ unsafe extern "C" fn example() -> i32 {
 
 r[items.fn.c-variadic.lifetime]
 The lifetime of a `VaList` is that of the function that created it. Hence, the `VaList` value can never outlive the function that created it.
+
+r[items.fn.c-variadic.next-arg-safety]
+Calling `VaList::next_arg` to read an argument of type `T` is only safe if all of the following conditions are satisfied:
+
+- There is another c-variadic argument to read.
+- The actual type of the argument `U` is compatible with `T` (as defined below).
+- If `U` and `T` are both integer types, then the value passed by the caller must be
+representable in both types.
+
+Types `T` and `U` are compatible when:
+
+- `T` and `U` are the same type (up to free lifetimes).
+- `T` and `U` are integer types of the same size.
+- `T` and `U` are both pointers, and their target types are compatible.
+- `T` is a pointer to `c_void` and `U` is a pointer to `i8` or `u8`, or vice versa.
+
+Examples of compatible types are:
+
+- `u32` and `i32`, but UB may still occur if the value is not representable in the target type.
+- `u64` and `usize`, on a 64-bit platform.
+- `*const &'a u32` and `*mut &'static u32`, these type are equal up to free lifetimes.
+
+Examples of incompatible types are:
+
+- `usize` and `*const _`, pointers and integers are not compatible.
+- `*const fn(&'static ())` and `*const for<'a> fn(&'a ())`, these types are not equal up to free lifetimes.
 
 r[items.fn.c-variadic.ffi-compatibility]
 The rust [`VaList`] is ABI-compatible with the C `va_list` type.
