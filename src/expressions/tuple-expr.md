@@ -40,6 +40,9 @@ Examples of tuple expressions and their types:
 | `("x".to_string(), )` | `(String, )`  |
 | `("a", 4usize, true)`| `(&'static str, usize, bool)` |
 
+r[expr.tuple.diverging]
+A tuple expression [diverges] if any of its operands diverges.
+
 r[expr.tuple-index]
 ## Tuple indexing expressions
 
@@ -85,9 +88,13 @@ assert_eq!(point.1, 0.0);
 > [!NOTE]
 > Although arrays and slices also have elements, you must use an [array or slice indexing expression] or a [slice pattern] to access their elements.
 
+r[expr.tuple-index.diverging]
+A tuple indexing expression [diverges] if its expression operand diverges.
+
 [array or slice indexing expression]: array-expr.md#array-and-slice-indexing-expressions
 [call expression]: ./call-expr.md
 [decimal literal]: ../tokens.md#integer-literals
+[diverges]: divergence
 [field access expressions]: ./field-expr.html#field-access-expressions
 [operands]: ../expressions.md
 [parenthetical expression]: grouped-expr.md
