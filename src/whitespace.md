@@ -16,6 +16,10 @@ WHITESPACE ->
     | U+2028 // Line separator
     | U+2029 // Paragraph separator
 
+HORIZONTAL_WHITESPACE ->
+      U+0009 // Horizontal tab, `'\t'`
+    | U+0020 // Space, `' '`
+
 TAB -> U+0009 // Horizontal tab, `'\t'`
 
 LF -> U+000A  // Line feed, `'\n'`
@@ -26,6 +30,9 @@ CR -> U+000D  // Carriage return, `'\r'`
 r[lex.whitespace.intro]
 Whitespace is any non-empty string containing only characters that have the [`Pattern_White_Space`] Unicode property.
 
+r[lex.whitespace.horizontal]
+[HORIZONTAL_WHITESPACE] is the horizontal space subset of [`Pattern_White_Space`] as categorized by [UAX #31, Section 4.1][uax31-4.1].
+
 r[lex.whitespace.token-sep]
 Rust is a "free-form" language, meaning that all forms of whitespace serve only to separate _tokens_ in the grammar, and have no semantic significance.
 
@@ -33,3 +40,4 @@ r[lex.whitespace.replacement]
 A Rust program has identical meaning if each whitespace element is replaced with any other legal whitespace element, such as a single space character.
 
 [`Pattern_White_Space`]: https://www.unicode.org/reports/tr31/
+[uax31-4.1]: https://www.unicode.org/reports/tr31/#Whitespace_and_Syntax
