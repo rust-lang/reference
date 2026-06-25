@@ -330,9 +330,6 @@ r[items.use.as-underscore]
 r[items.use.as-underscore.intro]
 Items can be imported without binding to a name by using an underscore with the form `use path as _`. This is particularly useful to import a trait so that its methods may be used without importing the trait's symbol, for example if the trait's symbol may conflict with another symbol. Another example is to link an external crate without importing its name.
 
-r[items.use.as-underscore.glob]
-Asterisk glob imports will import items imported with `_` in their unnameable form.
-
 ```rust
 mod foo {
     pub trait Zoo {
@@ -350,6 +347,9 @@ fn main() {
     z.zoo();
 }
 ```
+
+r[items.use.as-underscore.glob]
+Asterisk glob imports will import items imported with `_` in their unnameable form.
 
 r[items.use.as-underscore.macro]
 The unique, unnameable symbols are created after macro expansion so that macros may safely emit multiple references to `_` imports. For example, the following should not produce an error:
