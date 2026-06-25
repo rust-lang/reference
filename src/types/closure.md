@@ -391,7 +391,7 @@ let c = || match x { // Does not capture `*x`.
     [..] => (),
 //   ^^ Rest pattern.
 };
-let _ = &mut *x; // OK: `*x` can be borrow here.
+let _ = &mut *x; // OK
 c();
 ```
 
