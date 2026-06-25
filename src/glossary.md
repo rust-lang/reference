@@ -220,8 +220,11 @@ A type is zero sized (a ZST) if its size is 0. Such types have at most one possi
 - [Function items] (see [type.fn-item.intro]).
 - The constructors of [tuple-like structs] (see [type.fn-item.intro]).
 - The constructors of [tuple-like enum variants] (see [type.fn-item.intro]).
+- `repr(Rust)` [structs] with no fields or where all fields are zero-sized (see [layout.repr.rust.struct-zst]).
 - `repr(C)` [structs] with no fields or where all fields are zero-sized (see [layout.repr.c.struct.size-field-offset]).
 - `repr(transparent)` [structs] with no fields or where all fields are zero-sized (see [layout.repr.transparent.layout-abi]).
+- `repr(Rust)` [enums] (without a primitive representation specified) with zero variants (see [layout.repr.rust.enum-empty-zst])
+- `repr(Rust)` [enums] (without a primitive representation specified) with a single struct-like variant with no fields or where all fields are zero-sized (see [layout.repr.rust.enum-struct-like-zst])
 - [Arrays] of zero-sized types (see [layout.array]).
 - [Arrays] of length zero (see [layout.array]).
 - [Unions] of zero-sized types (see [items.union.common-storage]).
@@ -231,6 +234,13 @@ A type is zero sized (a ZST) if its size is 0. Such types have at most one possi
 fn f() {}
 struct S(u8);
 enum E { V(u8) }
+struct UnitLike;
+struct NoFields {}
+struct OnlyZST {
+    f1: (),
+    f2: [(); 10],
+    f3: [u8; 0],
+}
 #[repr(C)]
 struct C1 {}
 #[repr(C)]
@@ -253,10 +263,17 @@ union U {
     f2: [(); 10],
     f3: [u8; 0],
 }
+enum E2 {
+    V1 { f1: (), f2: [(); 10 ] },
+}
+enum E3 {}
 assert_eq!(0, size_of::<()>());
 assert_eq!(0, size_of_val(&f));
 assert_eq!(0, size_of_val(&S));
 assert_eq!(0, size_of_val(&E::V));
+assert_eq!(0, size_of::<UnitLike>());
+assert_eq!(0, size_of::<NoFields>());
+assert_eq!(0, size_of::<OnlyZST>());
 assert_eq!(0, size_of::<C1>());
 assert_eq!(0, size_of::<C2>());
 assert_eq!(0, size_of::<T1>());
@@ -264,6 +281,8 @@ assert_eq!(0, size_of::<T2>());
 assert_eq!(0, size_of::<[(); 10]>());
 assert_eq!(0, size_of::<[u8; 0]>());
 assert_eq!(0, size_of::<U>());
+assert_eq!(0, size_of::<E2>());
+assert_eq!(0, size_of::<E3>());
 ```
 
 [`extern` blocks]: items.extern

@@ -180,6 +180,15 @@ For [structs], it is further guaranteed that the fields do not overlap. That is,
 
 Be aware that this guarantee does not imply that the fields have distinct addresses: [zero-sized types] may have the same address as other fields in the same struct.
 
+r[layout.repr.rust.struct-zst]
+For [structs] with no fields, or where all fields are [zero-sized], it is further guaranteed that the structs are themselves [zero-sized].
+
+r[layout.repr.rust.enum-empty-zst]
+For [enums] (without a primitive representation specified) with no variants, the enum itself is [zero-sized].
+
+r[layout.repr.rust.enum-struct-like-zst]
+For [enums] (without a primitive representation specified) with a single struct-like variant with no fields or where all fields are [zero-sized], the enum itself is [zero-sized].
+
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
@@ -621,6 +630,7 @@ Because this representation delegates type layout to another type, it cannot be 
 [`Sized`]: std::marker::Sized
 [`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
+[enums]: items/enumerations.md
 [field-less enums]: items/enumerations.md#field-less-enum
 [fn-abi-compatibility]: ../core/primitive.fn.md#abi-compatibility
 [enumerations]: items/enumerations.md
