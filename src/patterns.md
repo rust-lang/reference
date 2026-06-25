@@ -292,7 +292,7 @@ if let Some(y) = x {
 ```
 
 r[patterns.ident.binding.non-reference]
-*Non-reference patterns* include all patterns except bindings, [wildcard patterns](#wildcard-pattern) (`_`), [`const` patterns](#path-patterns) of reference types, and [reference patterns](#reference-patterns).
+*Non-reference patterns* include all patterns except bindings, [wildcard patterns](#wildcard-pattern) (`_`), [`const` patterns](#constant-patterns) of reference types, and [reference patterns](#reference-patterns).
 
 r[patterns.ident.binding.default-mode]
 If a binding pattern does not explicitly have `ref`, `ref mut`, or `mut`, then it uses the *default binding mode* to determine how the variable is bound.
