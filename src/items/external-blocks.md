@@ -48,7 +48,7 @@ r[items.extern.fn.param-patterns]
 Patterns are not allowed in parameters, only [IDENTIFIER] or `_` may be used.
 
 r[items.extern.fn.qualifiers]
-The `safe` and `unsafe` function qualifiers are allowed, but other function qualifiers (e.g. `const`, `async`, `extern`) are not.
+The `safe` and `unsafe` function qualifiers are allowed, but other function qualifiers (e.g. `const`, `async`, `extern`) are not. The `safe` qualifier is rejected in `extern "custom"` blocks.
 
 r[items.extern.fn.foreign-abi]
 Functions within external blocks may be called by Rust code, just like functions defined in Rust. The Rust compiler automatically translates between the Rust ABI and the foreign ABI.
@@ -111,6 +111,9 @@ r[items.extern.abi.system]
 
 r[items.extern.abi.unwind]
 * `extern "C-unwind"` and `extern "system-unwind"` --- Identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
+
+r[items.extern.abi.custom]
+* `unsafe extern "custom"` --- A custom ABI that is not known to the rust compiler.
 
 r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
