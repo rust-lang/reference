@@ -378,6 +378,17 @@ r[destructors.scope.const-promotion]
 
 Promotion of a value expression to a `'static` slot occurs when the expression could be written in a constant and borrowed, and that borrow could be dereferenced where the expression was originally written, without changing the runtime behavior. That is, the promoted expression can be evaluated at compile-time and the resulting value does not contain [interior mutability] or [destructors] (these properties are determined based on the value where possible, e.g. `&None` always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
+r[destructors.scope.const-promotion.extern-static]
+A borrow of an [`extern` static] cannot be promoted, even if the resulting reference is never read from.
+
+```rust,compile_fail
+unsafe extern "C" {
+    static X: i32;
+}
+
+static mut FOO: *const &i32 = [unsafe { &X }].as_ptr();
+```
+
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
 
@@ -648,6 +659,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [destructors]: destructors.md
 [destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
+[`extern` static]: items/external-blocks.md#statics
 [guard condition operand]: expressions/match-expr.md#match-guard-chains
 [identifier pattern]: patterns.md#identifier-patterns
 [initialized]: glossary.md#initialized
