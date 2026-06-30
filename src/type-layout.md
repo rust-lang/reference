@@ -184,7 +184,7 @@ r[layout.repr.rust.struct-zst]
 For [structs] with no fields, or where all fields are [zero-sized], it is further guaranteed that the structs are themselves [zero-sized].
 
 r[layout.repr.rust.enum-struct-like-zst]
-For [enums] (without a primitive representation specified) with a single struct-like variant with no fields or where all fields are [zero-sized], the enum itself is [zero-sized].
+For [enums] (without a primitive representation specified) with a single field-struct-like variant, a single unit-struct-like variant, or a single tuple-struct-like variant where the struct-like thing has no fields or where all of the fields are [zero-sized], the enum itself is [zero-sized].
 
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
