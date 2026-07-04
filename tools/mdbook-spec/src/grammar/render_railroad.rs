@@ -9,6 +9,12 @@ use regex::Regex;
 use std::fmt::Write;
 use std::sync::LazyLock;
 
+/// Maximum number of rows per column in a `ExpressionKind::Alt`/`ExpressionKind::Charset`
+const CHOICE_MAX_ROWS_PER_COLUMN: usize = 5;
+/// Maximum number of columns in a `ExpressionKind::Alt`/`ExpressionKind::Charset`. Above that, we give up and
+/// use as many rows as necessary
+const CHOICE_MAX_COLUMNS: usize = 4;
+
 pub fn render_railroad(
     grammar: &Grammar,
     cx: &RenderCtx,
@@ -92,7 +98,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                         .map(|e| render_expression(e, cx, stack))
                         .filter_map(|n| n)
                         .collect();
-                    Box::new(Choice::<Box<dyn Node>>::new(choices))
+                    Box::new(bounded_multichoice(choices))
                 }
                 ExpressionKind::Sequence(es) => {
                     let es: Vec<_> = es.iter().collect();
@@ -290,7 +296,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 ExpressionKind::Comment(_) => return None,
                 ExpressionKind::Charset(set) => {
                     let ns: Vec<_> = set.iter().map(|c| render_characters(c, cx)).collect();
-                    Box::new(Choice::<Box<dyn Node>>::new(ns))
+                    Box::new(bounded_multichoice(ns))
                 }
                 ExpressionKind::NegExpression(e) => {
                     let n = render_expression(e, cx, stack)?;
@@ -327,6 +333,20 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
     // on a vertical stack or a LabeledBox or something like that, but I
     // don't feel like bothering.
     Some(n)
+}
+
+fn bounded_multichoice(inp: Vec<Box<dyn Node>>) -> MultiChoice<Box<dyn Node>> {
+    let hard_max_columns = std::cmp::min(
+        CHOICE_MAX_COLUMNS,
+        inp.len().div_ceil(CHOICE_MAX_ROWS_PER_COLUMN),
+    );
+    let soft_max_rows = inp.len().div_ceil(hard_max_columns);
+    let mut choices_iter = inp.into_iter();
+    let groups = std::iter::from_fn(move || {
+        let group: Vec<_> = choices_iter.by_ref().take(soft_max_rows).collect();
+        (!group.is_empty()).then_some(group)
+    });
+    MultiChoice::new(groups.collect())
 }
 
 fn render_characters(chars: &Characters, cx: &RenderCtx) -> Box<dyn Node> {
