@@ -6,8 +6,8 @@ The functionality and syntax of Rust can be extended with custom definitions cal
 
 There are two ways to define new macros:
 
-* [Macros by Example] define new syntax in a higher-level, declarative way.
-* [Procedural Macros] define function-like macros, custom derives, and custom attributes using functions that operate on input tokens.
+* [Macros by example] define new syntax in a higher-level, declarative way.
+* [Procedural macros] define function-like macros, custom derives, and custom attributes using functions that operate on input tokens.
 
 r[macro.invocation]
 ## Macro invocation
