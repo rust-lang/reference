@@ -180,6 +180,12 @@ For [structs], it is further guaranteed that the fields do not overlap. That is,
 
 Be aware that this guarantee does not imply that the fields have distinct addresses: [zero-sized types] may have the same address as other fields in the same struct.
 
+r[layout.repr.rust.struct-zst]
+For [structs] with no fields or where all fields are [zero sized], it is further guaranteed that the structs are themselves [zero sized].
+
+r[layout.repr.rust.enum-struct-like-zst]
+For [enums] (without a [primitive representation] specified) with a single [field-struct-like variant], a single [unit-struct-like variant], or a single [tuple-struct-like variant] and where the struct-like thing has no fields or where all of the fields are [zero sized], the enums themselves are [zero sized].
+
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
@@ -621,18 +627,24 @@ Because this representation delegates type layout to another type, it cannot be 
 [`Sized`]: std::marker::Sized
 [`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
+[enums]: items/enumerations.md
 [field-less enums]: items/enumerations.md#field-less-enum
+[field-struct-like variant]: EnumVariantStruct
 [fn-abi-compatibility]: ../core/primitive.fn.md#abi-compatibility
 [enumerations]: items/enumerations.md
 [zero-variant enums]: items/enumerations.md#zero-variant-enums
 [undefined behavior]: behavior-considered-undefined.md
+[zero sized]: glossary.zst
 [zero-sized]: glossary.zst
 [zero-sized type]: glossary.zst
 [zero-sized types]: glossary.zst
 [`PhantomData<T>`]: special-types-and-traits.md#phantomdatat
 [`Rust`]: #the-rust-representation
 [`C`]: #the-c-representation
+[primitive representation]: #primitive-representations
 [primitive representations]: #primitive-representations
 [structs]: items/structs.md
 [`transparent`]: #the-transparent-representation
+[tuple-struct-like variant]: EnumVariantTuple
+[unit-struct-like variant]: EnumVariant
 [`Layout`]: std::alloc::Layout
