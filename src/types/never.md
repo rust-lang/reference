@@ -55,4 +55,7 @@ Expressions of type `!` can be coerced into any type.
 > [!NOTE]
 > The standard library type [`Infallible`] is a type alias for `!`.
 
+r[type.never.layout]
+The `!` type has a size of 0 and an alignment of 1.
+
 [`Infallible`]: core::convert::Infallible

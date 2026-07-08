@@ -217,6 +217,7 @@ r[glossary.zst]
 A type is zero sized (a ZST) if its size is 0. Such types have at most one possible value. Examples include:
 
 - The [unit type] (see [layout.tuple.unit]).
+- The [never type] `!` (see [type.never.layout]).
 - [Function items] (see [type.fn-item.intro]).
 - The constructors of [tuple-like structs] (see [type.fn-item.intro]).
 - The constructors of [tuple-like enum variants] (see [type.fn-item.intro]).
