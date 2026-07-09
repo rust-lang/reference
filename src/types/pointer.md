@@ -63,6 +63,23 @@ r[type.pointer.smart]
 
 The standard library contains additional 'smart pointer' types beyond references and raw pointers.
 
+r[type.pointer.transmute]
+## Transmutation
+
+r[type.pointer.transmute.cast]
+When `*const T` and `*const U` have the same layout (per [layout.pointer.parametric]), transmuting a `*const T` to a `*const U` reinterprets the pointer value --- its address and [metadata] --- unchanged. When `T` and `U` are both sized or both have a slice or `str` as their [unsized tail], this produces the same value as a [pointer-to-pointer cast] from `*const T` to `*const U` (where such a cast is permitted), since the cast copies the metadata unchanged. The same holds between `*mut T` and `*mut U`. Transmuting between the reference types `&T` and `&U`, or between `&mut T` and `&mut U`, reinterprets the pointer value the same way, but is sound only when the result is aligned for the target type and points to a valid value of it, as required by [undefined.validity.reference-box] and [undefined.validity.wide].
+
+```rust
+let ptr: *const i8 = &1;
+let cast = ptr as *const u8;
+// Transmuting this pointer is equivalent to casting it with `as`.
+let transmuted = unsafe { *(&raw const ptr as *const *const u8) };
+assert_eq!(cast, transmuted);
+```
+
+> [!NOTE]
+> This equivalence with the cast does not extend to trait objects. The conversions permitted for `as` casts between trait-object pointers --- adding or removing an auto trait, and a [trait object upcast] (converting `*const dyn Sub` to `*const dyn Super` when `Super` is a supertrait of `Sub`) --- are [unsized coercions][unsized coercion], not pointer-to-pointer casts. The conversion builds a vtable for the target type, whereas a transmute keeps the source vtable. For an auto-trait change the kept vtable is still valid, so the transmute is sound but does not necessarily produce the same pointer value as the cast. For an upcast, the kept vtable is `Sub`'s, which is not valid for `Super`, so the transmuted pointer is invalid.
+
 r[type.pointer.validity]
 ## Bit validity
 
@@ -75,5 +92,10 @@ For thin raw pointers (i.e., for `P = *const T` or `P = *mut T` for `T: Sized`),
 [Interior mutability]: ../interior-mutability.md
 [`unsafe` operation]: ../unsafety.md
 [dynamically sized types]: ../dynamically-sized-types.md
+[metadata]: dynamic-sized.pointer-types
+[pointer-to-pointer cast]: expr.as.pointer
 [size zero]: glossary.zst
+[unsized tail]: dynamic-sized.tail
 [temporary value]: ../expressions.md#temporaries
+[trait object upcast]: coerce.unsize.trait-upcast
+[unsized coercion]: coerce.unsize
