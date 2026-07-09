@@ -24,7 +24,9 @@ r[undefined.place-projection]
 r[undefined.alias]
 * Breaking the pointer aliasing rules. The exact aliasing rules are not determined yet, but here is an outline of the general principles:
 
-  `&T` must point to memory that is not mutated while they are live (except for data inside an [`UnsafeCell<U>`]), and `&mut T` must point to memory that is not read or written by any pointer not derived from the reference and that no other reference points to while they are live. `Box<T>` is treated similar to `&'static mut T` for the purpose of these rules. The exact liveness duration is not specified, but some bounds exist:
+  `&T` must point to memory that is not mutated while they are live (except for data inside an [`UnsafeCell<U>`]), and `&mut T` must point to memory that is not read or written by any pointer not derived from the reference and that no other reference points to while they are live (with no exceptions). `Box<T>` is treated similar to `&'static mut T` for the purpose of these rules. These rules apply to *all* references and `Box<T>`, including those stored inside private fields (e.g., if your type has a private field of type `&mut`, that reference must be unique in the sense described above for as long as values of your type are live).
+
+  The exact liveness duration is not specified, but some bounds exist:
 
   * For references, the liveness duration is upper-bounded by the syntactic lifetime assigned by the borrow checker; it cannot be live any *longer* than that lifetime.
   * Each time a reference or box is dereferenced or reborrowed, it is considered live.
