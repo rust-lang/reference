@@ -401,11 +401,10 @@ As an exception to [attributes.diagnostics.must_use.type], the lint does not fir
 ```rust
 #![deny(unused_must_use)]
 # use core::ops::ControlFlow;
-enum Empty {}
-fn f1() -> Result<(), Empty> { Ok(()) }
-f1(); // OK: `Empty` is uninhabited.
-fn f2() -> ControlFlow<Empty, ()> { ControlFlow::Continue(()) }
-f2(); // OK: `Empty` is uninhabited.
+fn f1() -> Result<(), !> { Ok(()) }
+f1(); // OK: `!` is uninhabited.
+fn f2() -> ControlFlow<!, ()> { ControlFlow::Continue(()) }
+f2(); // OK: `!` is uninhabited.
 ```
 
 r[attributes.diagnostics.must_use.fn]
