@@ -124,35 +124,36 @@ fn f(u: MyUnion) {
 }
 ```
 
-r[items.union.pattern.subpattern]
-Pattern matching may match a union as a field of a larger structure. In particular, when using a Rust union to implement a C tagged union via FFI, this allows matching on the tag and the corresponding field simultaneously:
-
-```rust
-#[repr(u32)]
-enum Tag { I, F }
-
-#[repr(C)]
-union U {
-    i: i32,
-    f: f32,
-}
-
-#[repr(C)]
-struct Value {
-    tag: Tag,
-    u: U,
-}
-
-fn is_zero(v: Value) -> bool {
-    unsafe {
-        match v {
-            Value { tag: Tag::I, u: U { i: 0 } } => true,
-            Value { tag: Tag::F, u: U { f: num } } if num == 0.0 => true,
-            _ => false,
-        }
-    }
-}
-```
+> [!WARNING]
+> The order in which the subpatterns of a pattern are tested is not specified. A union field named in a pattern may be read even when the pattern as a whole does not match. Reading a union field is undefined behavior unless it holds a valid value of its type (see [items.union.fields.validity]). Nothing else in the pattern can be relied on to prevent the read.
+>
+> In particular, when implementing a C-style tagged union, avoid matching the tag and the corresponding union field within a single pattern: the union field may be read even when the tag does not match.
+>
+> To read a union field only when a condition holds, test the condition and read the field in separate steps whose evaluation order is specified. For a C tagged union, match on the tag first and read the union field within the matched arm:
+>
+> ```rust
+> #[repr(u32)]
+> enum Tag { I, F }
+>
+> #[repr(C)]
+> union U {
+>     i: i32,
+>     f: f32,
+> }
+>
+> #[repr(C)]
+> struct Value {
+>     tag: Tag,
+>     u: U,
+> }
+>
+> fn is_zero(v: Value) -> bool {
+>     match v.tag {
+>         Tag::I => unsafe { v.u.i == 0 },
+>         Tag::F => unsafe { v.u.f == 0.0 },
+>     }
+> }
+> ```
 
 r[items.union.ref]
 ## References to union fields
