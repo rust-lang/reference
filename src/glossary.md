@@ -320,7 +320,7 @@ assert_eq!(0, size_of::<E6>());
 [fields]: expressions/field-expr.md
 [free item]: #free-item
 [function items]: type.fn-item
-[generic parameters]: items/generics.md
+[generic parameters]: generics
 [identifier]: identifiers.md
 [identifiers]: identifiers.md
 [implementation]: items/implementations.md
