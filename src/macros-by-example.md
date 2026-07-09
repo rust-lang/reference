@@ -625,6 +625,30 @@ m!(define);
 m!(refer);
 ```
 
+And local variables has higher priority than items:
+
+```rust
+// example 1:
+let f0 = || 42;
+fn f0() -> i32 { 8 }
+
+macro_rules! m0 {
+    () => { f0() }
+}
+
+assert_eq!(m0!(), 42);
+
+// example 2:
+fn f1() -> i32 { 8 }
+let f1 = || 42;
+
+macro_rules! m1 {
+    () => { f1() }
+}
+
+assert_eq!(m1!(), 42);
+```
+
 r[macro.decl.hygiene.crate]
 A special case is the `$crate` metavariable. It refers to the crate defining the macro, and can be used at the start of the path to look up items or macros which are not in scope at the invocation site.
 
