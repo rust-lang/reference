@@ -69,6 +69,40 @@ Pointers to unsized types are sized. The size and alignment of a pointer to an u
 > [!NOTE]
 > Though you should not rely on this, all pointers to <abbr title="Dynamically Sized Types">DSTs</abbr> are currently twice the size of the size of `usize` and have the same alignment.
 
+r[layout.pointer.parametric]
+The raw pointer types `*const T` and `*const U` have the same layout, as do `*mut T` and `*mut U`, the shared references `&T` and `&U`, and the mutable references `&mut T` and `&mut U`, in each of the following cases:
+
+- `T` and `U` are both sized types.
+- `T` and `U` both have a [slice] or [`str`] as their [unsized tail].
+- `T` and `U` both have a [trait object] as their unsized tail.
+
+```rust
+# use core::alloc::Layout;
+macro_rules! assert_layout_eq {
+    ($a:ty, $b:ty) => {
+        assert_eq!(Layout::new::<$a>(), Layout::new::<$b>())
+    };
+}
+trait Tr1 {}
+trait Tr2 {}
+struct W<T: ?Sized> {
+    head: u8,
+    tail: T,
+}
+// Pointers to two types share a layout when the types are both sized,
+// both have a slice or `str` tail, or both have a trait object tail.
+assert_layout_eq!(*const u8, *const u64);
+assert_layout_eq!(*const [u8], *const [u64]);
+assert_layout_eq!(*const str, *const [u8]);
+assert_layout_eq!(*const dyn Tr1, *const dyn Tr2);
+assert_layout_eq!(*const W<[u8]>, *const W<[u64]>);
+// References share a layout on the same terms.
+assert_layout_eq!(&u8, &u64);
+# assert_layout_eq!(&str, &[u8]);
+# assert_layout_eq!(&dyn Tr1, &dyn Tr2);
+# assert_layout_eq!(&W<[u8]>, &W<[u64]>);
+```
+
 r[layout.array]
 ## Array layout
 
@@ -648,3 +682,7 @@ Because this representation delegates type layout to another type, it cannot be 
 [tuple-struct-like variant]: EnumVariantTuple
 [unit-struct-like variant]: EnumVariant
 [`Layout`]: std::alloc::Layout
+[slice]: types/slice.md
+[`str`]: types/str.md
+[trait object]: types/trait-object.md
+[unsized tail]: dynamic-sized.tail
