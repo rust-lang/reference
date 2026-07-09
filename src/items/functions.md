@@ -239,6 +239,15 @@ With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding A
 
 For other considerations and limitations regarding unwinding across FFI boundaries, see the [relevant section in the Panic documentation][panic-ffi].
 
+r[items.fn.extern.custom]
+An `extern "custom"` function has an unknown, custom ABI. The only way to call such a function is via [inline assembly].
+
+r[items.fn.extern.custom.safety]
+An `extern "custom"` function must be `unsafe`.
+
+r[items.fn.extern.custom.naked]
+An `extern "custom"` function definition must be a [naked function].
+
 [forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
 [panic handler]: ../panic.md#the-panic_handler-attribute
 [panic-ffi]: ../panic.md#unwinding-across-ffi-boundaries
@@ -411,6 +420,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [testing attributes]: ../attributes/testing.md
 [`cold`]: ../attributes/codegen.md#the-cold-attribute
 [`inline`]: ../attributes/codegen.md#the-inline-attribute
+[naked function]: ../attributes/codegen.md#the-naked-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
@@ -427,3 +437,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [variadic function]: external-blocks.md#variadic-functions
 [`extern` block]: external-blocks.md
 [zero-sized]: glossary.zst
+[inline assembly]: ../inline-assembly.md
