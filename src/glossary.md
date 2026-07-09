@@ -179,6 +179,12 @@ A string slice is the most primitive string type in Rust, written as `str`. It i
 
 Strings slices are always valid UTF-8.
 
+### Symbol
+
+A symbol is a name used to refer to code or data in an executable format (e.g. ELF or Macho).
+
+A `static` emits a data symbol, functions emit code symbols.
+
 ### Trait
 
 A trait is a language item that is used for describing the functionalities a type must provide. It allows a type to make certain promises about its behavior.
