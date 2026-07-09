@@ -41,6 +41,7 @@ The size of most primitives is given in this table.
 | `f32`             | 4                  |
 | `f64`             | 8                  |
 | `char`            | 4                  |
+| [`!`][never-type] | 0                  |
 
 r[layout.primitive.size-minimum]
 `usize` and `isize` have a size big enough to contain every address on the target platform. For example, on a 32 bit target, this is 4 bytes, and on a 64 bit target, this is 8 bytes.
@@ -648,3 +649,4 @@ Because this representation delegates type layout to another type, it cannot be 
 [tuple-struct-like variant]: EnumVariantTuple
 [unit-struct-like variant]: EnumVariant
 [`Layout`]: std::alloc::Layout
+[never-type]: types/never.md
