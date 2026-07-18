@@ -658,9 +658,9 @@ Each register class has constraints on which value types they can be used with. 
 | x86-32 | `reg` | None | `i16`, `i32`, `f32` |
 | x86-64 | `reg` | None | `i16`, `i32`, `f32`, `i64`, `f64` |
 | x86 | `reg_byte` | None | `i8` |
-| x86 | `xmm_reg` | `sse` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
-| x86 | `ymm_reg` | `avx` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` |
-| x86 | `zmm_reg` | `avx512f` | `i32`, `f32`, `i64`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` <br> `i8x64`, `i16x32`, `i32x16`, `i64x8`, `f32x16`, `f64x8` |
+| x86 | `xmm_reg` | `sse` | `i32`, `f32`, `i64`, `f64`, i128, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+| x86 | `ymm_reg` | `avx` | `i32`, `f32`, `i64`, `f64`, i128, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` |
+| x86 | `zmm_reg` | `avx512f` | `i32`, `f32`, `i64`, `f64`, `i128`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` <br> `i8x64`, `i16x32`, `i32x16`, `i64x8`, `f32x16`, `f64x8` |
 | x86 | `kreg` | `avx512f` | `i8`, `i16` |
 | x86 | `kreg` | `avx512bw` | `i32`, `i64` |
 | x86 | `mmx_reg` | N/A | Only clobbers |
