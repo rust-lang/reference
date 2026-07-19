@@ -42,17 +42,14 @@ The `inline` attribute may only be applied to functions with [bodies] --- [closu
 > `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 > [!NOTE]
-> Though the attribute can be applied to [closures] and [async blocks], the usefulness of this is limited as we do not yet support attributes on expressions.
+> Attributes are supported on closure expressions, but remain restricted on other
+> expressions such as [async blocks].
 >
 > ```rust
-> // We allow attributes on statements.
-> #[inline] || (); // OK
-> #[inline] async {}; // OK
-> ```
+> let f = #[inline] || (); // OK
 >
-> ```rust,compile_fail,E0658
-> // We don't yet allow attributes on expressions.
-> let f = #[inline] || (); // ERROR
+> // We also allow attributes on statements.
+> #[inline] async {}; // OK
 > ```
 
 r[attributes.codegen.inline.duplicates]
@@ -106,7 +103,8 @@ The `cold` attribute may only be applied to functions with [bodies] --- [closure
 > `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 > [!NOTE]
-> Though the attribute can be applied to [closures] and [async blocks], the usefulness of this is limited as we do not yet support attributes on expressions.
+> Attributes are supported on closure expressions, but remain restricted on other
+> expressions such as [async blocks].
 
 <!-- TODO: rustc currently seems to allow cold on a trait function without a body, but it appears to be ignored. I think that may be a bug, and it should at least warn if not reject (like inline does). -->
 
@@ -872,7 +870,8 @@ The `instruction_set` attribute may only be applied to functions with [bodies] -
 > `rustc` ignores use in other positions but lints against it. This may become an error in the future.
 
 > [!NOTE]
-> Though the attribute can be applied to [closures] and [async blocks], the usefulness of this is limited as we do not yet support attributes on expressions.
+> Attributes are supported on closure expressions, but remain restricted on other
+> expressions such as [async blocks].
 
 r[attributes.codegen.instruction_set.duplicates]
 The `instruction_set` attribute may be used only once on a function.
