@@ -422,7 +422,14 @@ r[items.fn.c-variadic.abi]
 Only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
 
 r[items.fn.c-variadic.safety]
-Only `unsafe` functions can accept a variable argument list.
+When a variable argument list is used in the signature:
+
+- Function definitions must be `unsafe`.
+- Function declarations within trait definitions must be `unsafe`.
+- Function declarations in `extern` blocks may be `safe`.
+
+> [!NOTE]
+> For `safe` function declarations in an `extern` block, see the warning in [items.extern.variadic].
 
 r[items.fn.c-variadic.async]
 A c-variadic function cannot be `async`.
