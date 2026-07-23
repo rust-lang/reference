@@ -83,7 +83,7 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [c-variadic function], and may only be used as the last parameter. In an [`extern` block], the c-variadic parameter may have an optional pattern, such as `args: ...`, and in a [c-variadic function definition][items.fn.c-variadic], the pattern is mandatory.
+A parameter with the `...` token indicates a [C-variadic function] and may only be used as the last parameter. In an [`extern` block], the C-variadic parameter may have a pattern, such as `args: ...`, and in a [C-variadic function definition], the pattern is mandatory.
 
 r[items.fn.body]
 ## Function body
@@ -336,7 +336,7 @@ r[items.fn.c-variadic]
 ## C-variadic functions
 
 r[items.fn.c-variadic.intro]
-A *c-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+A *C-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
 
 ```rust
 unsafe extern "C" fn example(mut ap: ...) -> f64 {
@@ -346,44 +346,39 @@ unsafe extern "C" fn example(mut ap: ...) -> f64 {
 
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
 
-r[items.fn.c-variadic.c-variadic-parameter-type]
-The type of `pat` in the function body is [`VaList`].
+r[items.fn.c-variadic.parameter-type]
+The type of `pat` in the function body is [`VaList<'_>`].
 
 r[items.fn.c-variadic.lifetime]
-The lifetime of a `VaList` is that of the function that created it. Hence, the `VaList` value can never outlive the function that created it.
+The lifetime of a `VaList` is that of the function call that created it.
 
 r[items.fn.c-variadic.desugar-brief]
-A c-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
+A C-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
 
 ```rust
-// Source
 unsafe extern "C" fn example(mut ap: ...) -> i32 {
     unsafe { ap.next_arg::<i32>() }
 }
 ```
 
-is roughly equivalent to:
+Roughly desugars to:
 
 <!-- no_run: conceptual desugaring -->
 ```rust,no_run
 # #![ feature(core_intrinsics) ]
 # #![allow(internal_features)]
-use core::ffi::VaList;
-use core::mem::MaybeUninit;
+# use core::ffi::VaList;
+# use core::mem::MaybeUninit;
 use core::intrinsics::{va_arg, va_end};
-// va_start is magic and has no intrinsic.
+// `va_start` is magic and has no intrinsic.
 fn va_start(ap: *mut VaList<'_>) { /* magic */ }
-// Desugared
 unsafe extern "C" fn example() -> i32 {
     unsafe {
         let mut ap: MaybeUninit<VaList<'_>> = MaybeUninit::uninit();
         va_start(ap.as_mut_ptr());
         let mut ap = ap.assume_init();
-
         let x = va_arg::<i32>(&mut ap);
-
         va_end(&mut ap);
-
         x
     }
 }
@@ -392,7 +387,7 @@ unsafe extern "C" fn example() -> i32 {
 r[items.fn.c-variadic.next-arg-safety]
 Calling `VaList::next_arg` to read an argument of type `T` is only safe if all of the following conditions are satisfied:
 
-- There is another c-variadic argument to read.
+- There is another C-variadic argument to read.
 - The actual type of the argument `U` is compatible with `T` (as defined below).
 - If `U` and `T` are both integer types, then the value passed by the caller must be
 representable in both types.
@@ -401,7 +396,7 @@ Types `T` and `U` are compatible when:
 
 - `T` and `U` are the same type (up to free lifetimes).
 - `T` and `U` are integer types of the same size.
-- `T` and `U` are both pointers, and their target types are compatible.
+- `T` and `U` are both pointers and their target types are compatible.
 - `T` is a pointer to `c_void` and `U` is a pointer to `i8` or `u8`, or vice versa.
 
 Examples of compatible types are:
@@ -416,7 +411,7 @@ Examples of incompatible types are:
 - `*const fn(&'static ())` and `*const for<'a> fn(&'a ())` --- these types are not equal up to free lifetimes.
 
 r[items.fn.c-variadic.abi-compatibility]
-[`VaList`] is ABI-compatible with the C `va_list` type.
+[`VaList`] is ABI compatible with the C `va_list` type.
 
 r[items.fn.c-variadic.abi]
 Only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
@@ -432,13 +427,13 @@ When a variable argument list is used in the signature:
 > For `safe` function declarations in an `extern` block, see the warning in [items.extern.variadic].
 
 r[items.fn.c-variadic.async]
-A c-variadic function cannot be `async`.
+A C-variadic function cannot be `async`.
 
 r[items.fn.c-variadic.const]
-A c-variadic function cannot be `const`.
+A C-variadic function cannot be `const`.
 
 r[items.fn.c-variadic.stable-targets]
-Support for c-variadic function definitions is stable on the following target architectures:
+Support for C-variadic function definitions is stable on the following target architectures:
 
 - x86 and x86-64
 - ARM
@@ -447,7 +442,7 @@ Support for c-variadic function definitions is stable on the following target ar
 - LoongArch 32-bit and 64-bit
 - s390x
 - PowerPC and PowerPC64
-- AmdGpu and Nvptx64
+- AMDGPU and NVPTX
 - Wasm32 and Wasm64
 - C-SKY
 - Xtensa
@@ -456,7 +451,7 @@ Support for c-variadic function definitions is stable on the following target ar
 - MIPS
 
 > [!NOTE]
-> Some target architectures (e.g. BPF) do not support c-variadic function definitions. The compiler errors in this case.
+> Some target architectures (e.g., BPF) do not support C-variadic function definitions. The compiler will emit an error if such a definition is used on an unsupported target.
 
 r[items.fn.attributes]
 ## Attributes on functions
@@ -550,7 +545,9 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
-[c-variadic function]: external-blocks.md#variadic-functions
+[C-variadic function]: items.fn.c-variadic.intro
+[C-variadic function definition]: items.fn.c-variadic
 [`extern` block]: external-blocks.md
+[`VaList<'_>`]: lang-types.va-list
+[`VaList`]: lang-types.va-list
 [zero-sized]: glossary.zst
-[`VaList`]: std::ffi::VaList
