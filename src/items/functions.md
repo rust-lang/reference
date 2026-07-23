@@ -350,7 +350,36 @@ r[items.fn.c-variadic.parameter-type]
 The type of `pat` in the function body is [`VaList<'_>`].
 
 r[items.fn.c-variadic.lifetime]
-The lifetime of a `VaList` is that of the function call that created it.
+A C-variadic function definition is implicitly generic over the lifetime of its variadic parameter, as if the parameter had type `VaList<'x>` for a fresh, unnameable lifetime `'x`. Because the function must be valid for any such lifetime, the `VaList` cannot be proved to outlive any caller-provided lifetime (and so cannot escape the call) and no caller-provided lifetime can be proved to outlive it.
+
+```rust,compile_fail
+# use core::ffi::VaList;
+fn b_outlives_a<'a, 'b: 'a>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
+unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
+    b_outlives_a(&mut ap, &mut r); // ERROR: Lifetime may not live long enough.
+}
+```
+
+```rust,compile_fail
+# use core::ffi::VaList;
+fn a_outlives_b<'a: 'b, 'b>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
+unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
+    a_outlives_b(&mut ap, &mut r); // ERROR: Lifetime may not live long enough.
+}
+```
+
+> [!NOTE]
+> This is different than if the data were a stack variable: any caller-provided lifetime can be proved to outlive a borrow of a callee stack variable.
+>
+> ```rust
+> struct MockVaList<'data>(&'data u8);
+> fn b_outlives_a<'a, 'b: 'a>(_: &mut MockVaList<'a>, _: &mut &'b mut u8) {}
+> unsafe extern "C" fn f(mut r: &mut u8) {
+>     let data = 0;
+>     let mut ap = MockVaList(&data);
+>     b_outlives_a(&mut ap, &mut r); // OK.
+> }
+> ```
 
 r[items.fn.c-variadic.desugar-brief]
 A C-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
@@ -383,6 +412,9 @@ unsafe extern "C" fn example() -> i32 {
     }
 }
 ```
+
+> [!NOTE]
+> In an actual C-variadic function definition, the lifetime in `VaList<'_>` is different from what this code would suggest. See [items.fn.c-variadic.lifetime].
 
 r[items.fn.c-variadic.next-arg-safety]
 Calling `VaList::next_arg` to read an argument of type `T` is only safe if all of the following conditions are satisfied:
