@@ -339,15 +339,26 @@ r[items.fn.c-variadic.intro]
 A *C-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
 
 ```rust
-unsafe extern "C" fn example(mut ap: ...) -> f64 {
+unsafe extern "C" fn f(mut ap: ...) -> f64 {
     unsafe { ap.next_arg::<f64>() }
 }
+```
+
+```rust,compile_fail
+unsafe extern "C" fn f(ap: ..., _: ()) {} // ERROR: `...` must be last.
 ```
 
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
 
 r[items.fn.c-variadic.parameter-type]
 The type of `pat` in the function body is [`VaList<'_>`].
+
+```rust
+# use core::ffi::VaList;
+unsafe extern "C" fn f(ap: ...) {
+    let _: VaList<'_> = ap;
+}
+```
 
 r[items.fn.c-variadic.lifetime]
 A C-variadic function definition is implicitly generic over the lifetime of its variadic parameter, as if the parameter had type `VaList<'x>` for a fresh, unnameable lifetime `'x`. Because the function must be valid for any such lifetime, the `VaList` cannot be proved to outlive any caller-provided lifetime (and so cannot escape the call) and no caller-provided lifetime can be proved to outlive it.
@@ -356,7 +367,7 @@ A C-variadic function definition is implicitly generic over the lifetime of its 
 # use core::ffi::VaList;
 fn b_outlives_a<'a, 'b: 'a>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
 unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
-    b_outlives_a(&mut ap, &mut r); // ERROR: Lifetime may not live long enough.
+    b_outlives_a(&mut ap, &mut r); // ERROR: May not live long enough.
 }
 ```
 
@@ -364,7 +375,7 @@ unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
 # use core::ffi::VaList;
 fn a_outlives_b<'a: 'b, 'b>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
 unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
-    a_outlives_b(&mut ap, &mut r); // ERROR: Lifetime may not live long enough.
+    a_outlives_b(&mut ap, &mut r); // ERROR: May not live long enough.
 }
 ```
 
@@ -385,7 +396,7 @@ r[items.fn.c-variadic.desugar-brief]
 A C-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
 
 ```rust
-unsafe extern "C" fn example(mut ap: ...) -> i32 {
+unsafe extern "C" fn f(mut ap: ...) -> i32 {
     unsafe { ap.next_arg::<i32>() }
 }
 ```
@@ -401,7 +412,7 @@ Roughly desugars to:
 use core::intrinsics::{va_arg, va_end};
 // `va_start` is magic and has no intrinsic.
 fn va_start(ap: *mut VaList<'_>) { /* magic */ }
-unsafe extern "C" fn example() -> i32 {
+unsafe extern "C" fn f() -> i32 {
     unsafe {
         let mut ap: MaybeUninit<VaList<'_>> = MaybeUninit::uninit();
         va_start(ap.as_mut_ptr());
@@ -445,8 +456,32 @@ Examples of incompatible types are:
 r[items.fn.c-variadic.abi-compatibility]
 [`VaList`] is ABI compatible with the C `va_list` type.
 
+```rust
+# use core::ffi::{c_char, c_int, VaList};
+unsafe extern "C" {
+    // The C `vprintf` function is:
+    //
+    //     int vprintf(const char *format, va_list ap);
+    //
+    unsafe fn vprintf(fmt: *const c_char, ap: VaList<'_>) -> c_int;
+}
+
+unsafe extern "C" fn print(fmt: *const c_char, ap: ...) -> c_int {
+    // The `VaList` is passed directly to the C function.
+    unsafe { vprintf(fmt, ap) }
+}
+```
+
 r[items.fn.c-variadic.abi]
 Only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
+
+```rust,compile_fail
+unsafe fn f(ap: ...) {} // ERROR: Not supported.
+```
+
+```rust,compile_fail
+unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
+```
 
 r[items.fn.c-variadic.safety]
 When a variable argument list is used in the signature:
@@ -455,14 +490,38 @@ When a variable argument list is used in the signature:
 - Function declarations within trait definitions must be `unsafe`.
 - Function declarations in `extern` blocks may be `safe`.
 
+```rust,compile_fail
+extern "C" fn f(ap: ...) {} // ERROR: Must be `unsafe`.
+```
+
+```rust,compile_fail
+trait Tr {
+    extern "C" fn f(ap: ...); // ERROR: Must be `unsafe`.
+}
+```
+
+```rust
+unsafe extern "C" {
+    safe fn f(ap: ...); // OK.
+}
+```
+
 > [!NOTE]
 > For `safe` function declarations in an `extern` block, see the warning in [items.extern.variadic].
 
 r[items.fn.c-variadic.async]
 A C-variadic function cannot be `async`.
 
+```rust,compile_fail
+async unsafe extern "C" fn f(ap: ...) {} // ERROR: Cannot be `async`.
+```
+
 r[items.fn.c-variadic.const]
 A C-variadic function cannot be `const`.
+
+```rust,compile_fail,E0658
+const unsafe extern "C" fn f(ap: ...) {} // ERROR: Cannot be `const`.
+```
 
 r[items.fn.c-variadic.stable-targets]
 Support for C-variadic function definitions is stable on the following target architectures:
