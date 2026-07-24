@@ -83,7 +83,30 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [C-variadic function] and may only be used as the last parameter. In an [`extern` block], the C-variadic parameter may have a pattern, such as `args: ...`, and in a [C-variadic function definition], the pattern is mandatory.
+A parameter with the `...` token indicates a [C-variadic function] and may only be used as the last parameter. In a function declaration in an [`extern` block], the C-variadic parameter may have a pattern, such as `ap: ...`, and in a [C-variadic function] definition or C-variadic associated function declaration in a trait definition, the pattern is mandatory.
+
+```rust
+unsafe extern "C" {
+    unsafe fn f1(...);
+    unsafe fn f2(ap: ...);
+}
+
+unsafe extern "C" fn f3(ap: ...) {}
+
+trait Tr {
+    unsafe extern "C" fn f4(ap: ...);
+}
+```
+
+```rust,compile_fail
+unsafe extern "C" fn f(...) {} // ERROR: Missing pattern.
+```
+
+```rust,compile_fail
+trait Tr {
+    unsafe extern "C" fn f(...); // ERROR: Missing pattern.
+}
+```
 
 r[items.fn.body]
 ## Function body
@@ -637,7 +660,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
 [C-variadic function]: items.fn.c-variadic.intro
-[C-variadic function definition]: items.fn.c-variadic
 [`extern` block]: external-blocks.md
 [`VaList<'_>`]: lang-types.va-list
 [`VaList`]: lang-types.va-list
