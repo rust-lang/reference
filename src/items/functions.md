@@ -83,7 +83,45 @@ r[items.fn.params.self-restriction]
 Functions with a self parameter may only appear as an [associated function] in a [trait] or [implementation].
 
 r[items.fn.params.varargs]
-A parameter with the `...` token indicates a [variadic function], and may only be used as the last parameter of an [external block] function. The variadic parameter may have an optional identifier, such as `args: ...`.
+A parameter with the `...` token indicates a [C-variadic function] and may only be used as the last parameter. In a function declaration in an [`extern` block], the C-variadic parameter may have a pattern, such as `ap: ...`, and in a [C-variadic function] definition or C-variadic associated function declaration in a trait definition, the pattern is mandatory.
+
+```rust
+unsafe extern "C" {
+    unsafe fn f1(...);
+    unsafe fn f2(ap: ...);
+}
+
+unsafe extern "C" fn f3(ap: ...) {}
+
+trait Tr {
+    unsafe extern "C" fn f4(ap: ...);
+}
+```
+
+```rust,compile_fail
+unsafe extern "C" fn f(...) {} // ERROR: Missing pattern.
+```
+
+```rust,compile_fail
+trait Tr {
+    unsafe extern "C" fn f(...); // ERROR: Missing pattern.
+}
+```
+
+> [!NOTE]
+> `rustc` currently accepts `...` without a pattern in function definitions and associated function declarations in trait definitions while linting against it. This will become an error in the future.
+>
+> ```rust
+> #![allow(varargs_without_pattern)]
+> unsafe extern "C" fn f(...) {} // OK.
+> ```
+>
+> ```rust
+> #![allow(varargs_without_pattern)]
+> trait Tr {
+>     unsafe extern "C" fn f(...); // OK.
+> }
+> ```
 
 r[items.fn.body]
 ## Function body
@@ -332,6 +370,218 @@ Note that this behavior is a consequence of the desugaring to a function that re
 
 Unsafe is used on an async function in precisely the same way that it is used on other functions: it indicates that the function imposes some additional obligations on its caller to ensure soundness. As in any other unsafe function, these conditions may extend beyond the initial call itself -- in the snippet above, for example, the `unsafe_example` function took a pointer `x` as argument, and then (when awaited) dereferenced that pointer. This implies that `x` would have to be valid until the future is finished executing, and it is the caller's responsibility to ensure that.
 
+r[items.fn.c-variadic]
+## C-variadic functions
+
+r[items.fn.c-variadic.intro]
+A *C-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+
+```rust
+unsafe extern "C" fn f(mut ap: ...) -> f64 {
+    unsafe { ap.next_arg::<f64>() }
+}
+```
+
+```rust,compile_fail
+unsafe extern "C" fn f(ap: ..., _: ()) {} // ERROR: `...` must be last.
+```
+
+This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
+
+r[items.fn.c-variadic.parameter-type]
+The type of `pat` in the function body is [`VaList<'_>`].
+
+```rust
+# use core::ffi::VaList;
+unsafe extern "C" fn f(ap: ...) {
+    let _: VaList<'_> = ap;
+}
+```
+
+r[items.fn.c-variadic.lifetime]
+A C-variadic function definition is implicitly generic over the lifetime of its variadic parameter, as if the parameter had type `VaList<'x>` for a fresh, unnameable lifetime `'x`. Because the function must be valid for any such lifetime, the `VaList` cannot be proved to outlive any caller-provided lifetime (and so cannot escape the call) and no caller-provided lifetime can be proved to outlive it.
+
+```rust,compile_fail
+# use core::ffi::VaList;
+fn b_outlives_a<'a, 'b: 'a>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
+unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
+    b_outlives_a(&mut ap, &mut r); // ERROR: May not live long enough.
+}
+```
+
+```rust,compile_fail
+# use core::ffi::VaList;
+fn a_outlives_b<'a: 'b, 'b>(_: &mut VaList<'a>, _: &mut &'b mut u8) {}
+unsafe extern "C" fn f(mut r: &mut u8, mut ap: ...) {
+    a_outlives_b(&mut ap, &mut r); // ERROR: May not live long enough.
+}
+```
+
+> [!NOTE]
+> This is different than if the data were a stack variable: any caller-provided lifetime can be proved to outlive a borrow of a callee stack variable.
+>
+> ```rust
+> struct MockVaList<'data>(&'data u8);
+> fn b_outlives_a<'a, 'b: 'a>(_: &mut MockVaList<'a>, _: &mut &'b mut u8) {}
+> unsafe extern "C" fn f(mut r: &mut u8) {
+>     let data = 0;
+>     let mut ap = MockVaList(&data);
+>     b_outlives_a(&mut ap, &mut r); // OK.
+> }
+> ```
+
+r[items.fn.c-variadic.desugar-brief]
+A C-variadic function definition is roughly equivalent to a function operating on a [`VaList`].
+
+```rust
+unsafe extern "C" fn f(mut ap: ...) -> i32 {
+    unsafe { ap.next_arg::<i32>() }
+}
+```
+
+Roughly desugars to:
+
+<!-- no_run: conceptual desugaring -->
+```rust,no_run
+# #![ feature(core_intrinsics) ]
+# #![allow(internal_features)]
+# use core::ffi::VaList;
+# use core::mem::MaybeUninit;
+use core::intrinsics::{va_arg, va_end};
+// `va_start` is magic and has no intrinsic.
+fn va_start(ap: *mut VaList<'_>) { /* magic */ }
+unsafe extern "C" fn f() -> i32 {
+    unsafe {
+        let mut ap: MaybeUninit<VaList<'_>> = MaybeUninit::uninit();
+        va_start(ap.as_mut_ptr());
+        let mut ap = ap.assume_init();
+        let x = va_arg::<i32>(&mut ap);
+        va_end(&mut ap);
+        x
+    }
+}
+```
+
+> [!NOTE]
+> In an actual C-variadic function definition, the lifetime in `VaList<'_>` is different from what this code would suggest. See [items.fn.c-variadic.lifetime].
+
+r[items.fn.c-variadic.next-arg-safety]
+Calling `VaList::next_arg` to read an argument of type `T` is only safe if all of the following conditions are satisfied:
+
+- There is another C-variadic argument to read.
+- The actual type of the argument `U` is compatible with `T` (as defined below).
+- If `U` and `T` are both integer types, then the value passed by the caller must be
+representable in both types.
+
+Types `T` and `U` are compatible when:
+
+- `T` and `U` are the same type (up to free lifetimes).
+- `T` and `U` are integer types of the same size.
+- `T` and `U` are both pointers and their target types are compatible.
+- `T` is a pointer to `c_void` and `U` is a pointer to `i8` or `u8`, or vice versa.
+
+Examples of compatible types are:
+
+- `u32` and `i32` --- but UB may still occur if the value is not representable in the target type.
+- `u64` and `usize` --- on a 64-bit platform.
+- `*const &'a u32` and `*mut &'static u32` --- these types are equal up to free lifetimes.
+
+Examples of incompatible types are:
+
+- `usize` and `*const _` --- pointers and integers are not compatible.
+- `*const fn(&'static ())` and `*const for<'a> fn(&'a ())` --- these types are not equal up to free lifetimes.
+
+r[items.fn.c-variadic.abi-compatibility]
+[`VaList`] is ABI compatible with the C `va_list` type.
+
+```rust
+# use core::ffi::{c_char, c_int, VaList};
+unsafe extern "C" {
+    // The C `vprintf` function is:
+    //
+    //     int vprintf(const char *format, va_list ap);
+    //
+    unsafe fn vprintf(fmt: *const c_char, ap: VaList<'_>) -> c_int;
+}
+
+unsafe extern "C" fn print(fmt: *const c_char, ap: ...) -> c_int {
+    // The `VaList` is passed directly to the C function.
+    unsafe { vprintf(fmt, ap) }
+}
+```
+
+r[items.fn.c-variadic.abi]
+Only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
+
+```rust,compile_fail
+unsafe fn f(ap: ...) {} // ERROR: Not supported.
+```
+
+```rust,compile_fail
+unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
+```
+
+r[items.fn.c-variadic.safety]
+When a variable argument list is used in the signature:
+
+- Function definitions must be `unsafe`.
+- Function declarations within trait definitions must be `unsafe`.
+- Function declarations in `extern` blocks may be `safe`.
+
+```rust,compile_fail
+extern "C" fn f(ap: ...) {} // ERROR: Must be `unsafe`.
+```
+
+```rust,compile_fail
+trait Tr {
+    extern "C" fn f(ap: ...); // ERROR: Must be `unsafe`.
+}
+```
+
+```rust
+unsafe extern "C" {
+    safe fn f(ap: ...); // OK.
+}
+```
+
+> [!NOTE]
+> For `safe` function declarations in an `extern` block, see the warning in [items.extern.variadic].
+
+r[items.fn.c-variadic.async]
+A C-variadic function cannot be `async`.
+
+```rust,compile_fail
+async unsafe extern "C" fn f(ap: ...) {} // ERROR: Cannot be `async`.
+```
+
+r[items.fn.c-variadic.const]
+A C-variadic function cannot be `const`.
+
+```rust,compile_fail,E0658
+const unsafe extern "C" fn f(ap: ...) {} // ERROR: Cannot be `const`.
+```
+
+r[items.fn.c-variadic.stable-targets]
+Support for C-variadic function definitions is stable on the following target architectures:
+
+- x86 and x86-64
+- ARM
+- AArch64 and Arm64EC
+- RISC-V 32-bit and 64-bit (except when using the ilp32e ABI)
+- LoongArch 32-bit and 64-bit
+- s390x
+- PowerPC and PowerPC64
+- AMDGPU and NVPTX
+- Wasm32 and Wasm64
+- C-SKY
+- Xtensa
+- Hexagon
+- SPARC64
+- MIPS
+
+> [!NOTE]
+> Some target architectures (e.g., BPF) do not support C-variadic function definitions. The compiler will emit an error if such a definition is used on an unsupported target.
+
 r[items.fn.attributes]
 ## Attributes on functions
 
@@ -424,6 +674,8 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [associated function]: associated-items.md#associated-functions-and-methods
 [implementation]: implementations.md
 [value namespace]: ../names/namespaces.md
-[variadic function]: external-blocks.md#variadic-functions
+[C-variadic function]: items.fn.c-variadic.intro
 [`extern` block]: external-blocks.md
+[`VaList<'_>`]: lang-types.va-list
+[`VaList`]: lang-types.va-list
 [zero-sized]: glossary.zst
