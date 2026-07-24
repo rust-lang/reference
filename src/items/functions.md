@@ -108,6 +108,21 @@ trait Tr {
 }
 ```
 
+> [!NOTE]
+> `rustc` currently accepts `...` without a pattern in function definitions and associated function declarations in trait definitions while linting against it. This will become an error in the future.
+>
+> ```rust
+> #![allow(varargs_without_pattern)]
+> unsafe extern "C" fn f(...) {} // OK.
+> ```
+>
+> ```rust
+> #![allow(varargs_without_pattern)]
+> trait Tr {
+>     unsafe extern "C" fn f(...); // OK.
+> }
+> ```
+
 r[items.fn.body]
 ## Function body
 
