@@ -317,6 +317,9 @@ Attribute macros can only be used on:
 - Inherent and trait [implementations]
 - [Trait definitions]
 
+r[macro.proc.attribute.outline-mod]
+For any [outline modules] present in the macro's input, only the tokens of the module declaration are passed; the file contents of the module are not loaded or included in the input.
+
 r[macro.proc.attribute.behavior]
 The first [`TokenStream`] parameter is the delimited token tree following the attribute's name but not including the outer delimiters. If the applied attribute contains only the attribute name or the attribute name followed by empty delimiters, the [`TokenStream`] is empty.
 
@@ -398,6 +401,7 @@ Note that neither declarative nor procedural macros support doc comment tokens (
 [items]: items.md
 [macro namespace]: names/namespaces.md
 [module]: items/modules.md
+[outline modules]: items.mod.outlined
 [patterns]: patterns.md
 [public]: visibility-and-privacy.md
 [statements]: statements.md
