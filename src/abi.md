@@ -84,8 +84,6 @@ The `no_mangle` attribute may only be applied to:
 - [Inherent associated functions][items.associated.fn]
 - [Trait impl functions][items.impl.trait]
 
-It may not be used with a [closure].
-
 > [!NOTE]
 > `rustc` currently warns in other positions, but this may be rejected in the future.
 
@@ -94,6 +92,12 @@ https://github.com/rust-lang/rust/pull/86492#issuecomment-885682960
 -->
 
 <!-- TODO: should this clarify that external block items are already unmangled?, and thus the attribute does nothing? Currently it is "phased out" warning. -->
+
+r[abi.no_mangle.closures]
+`no_mangle` may not be used with a [closure].
+
+r[abi.no_mangle.generics]
+`no_mangle` may not be used on an item with generic parameters.
 
 r[abi.no_mangle.duplicates]
 Only the first instance of `no_mangle` on an item is honored. Subsequent `no_mangle` attributes are ignored.
@@ -116,9 +120,6 @@ In addition to disabling name mangling, the item will be publicly exported from 
 
 r[abi.no_mangle.ascii-only]
 `no_mangle` may only be used on items with a name that only contains ASCII characters.
-
-r[abi.no_mangle.generic]
-`no_mangle` has no effect on generic items.
 
 r[abi.link_section]
 ## The `link_section` attribute
