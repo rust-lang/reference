@@ -473,7 +473,7 @@ Calling `VaList::next_arg` to read an argument of type `T` is only safe if all o
 - If `U` and `T` are both integer types, then the value passed by the caller must be
 representable in both types.
 
-Types `T` and `U` are compatible when:
+Types `T` and `U` are compatible when one of the following is true:
 
 - `T` and `U` are the same type (up to free lifetimes).
 - `T` and `U` are integer types of the same size.
