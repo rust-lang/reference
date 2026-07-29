@@ -113,7 +113,7 @@ r[items.extern.abi.unwind]
 * `extern "C-unwind"` and `extern "system-unwind"` --- Identical to `"C"` and `"system"`, respectively, but with [different behavior][unwind-behavior] when the callee unwinds (by panicking or throwing a C++ style exception).
 
 r[items.extern.abi.custom]
-* `unsafe extern "custom"` --- A custom ABI that is not known to the rust compiler.
+* `unsafe extern "custom"` --- A custom ABI that is not known to the compiler.
 
 r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
