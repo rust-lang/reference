@@ -245,6 +245,12 @@ An `extern "custom"` function has an unknown, custom ABI. The only way to call s
 r[items.fn.extern.custom.safety]
 An `extern "custom"` function must be `unsafe`.
 
+r[items.fn.extern.custom.parameters]
+An `extern "custom"` function does not have any parameters.
+
+r[items.fn.extern.custom.return-type]
+An `extern "custom"` function must return the [unit type].
+
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
 
