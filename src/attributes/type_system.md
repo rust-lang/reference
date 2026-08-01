@@ -3,6 +3,52 @@ r[attributes.type-system]
 
 The following [attributes] are used for changing how a type can be used.
 
+r[attributes.type-system.must_implement_one_of]
+## The `must_implement_one_of` attribute
+
+r[attributes.type-system.must_implement_one_of.into]
+The *`must_implement_one_of` attribute* on a trait requires implementations of
+the trait to implement at least one of the specified methods. This is
+particularly useful for methods that can be implemented in terms of each other,
+but where the implementation must provide one of them to avoid mutual
+recursion.
+
+r[attributes.type-system.must_implement_one_of.syntax]
+The syntax for the `must_implement_one_of` attribute is:
+
+```grammar,attributes
+@root MustImplementOneOfAttribute ->
+      `must_implement_one_of` `(` IDENTIFIER `,` IDENTIFIER ( `,` IDENTIFIER )? `,`? `)`
+```
+
+r[attributes.type-system.must_implement_one_of.example]
+> [!EXAMPLE]
+> ```rust
+> #[must_implement_one_of(m1, m2)]
+> trait Trait {
+>     fn m1(&self) -> usize {
+>         self.m2() + 1
+>     }
+>
+>     fn m2(&self) -> usize {
+>         self.m1() + 1
+>     }
+> }
+>
+> struct S;
+>
+> impl Trait for S {
+>     // This impl will produce an error because it doesn't define either `m1` or `m2`.
+> }
+> ```
+
+r[attributes.type-system.must_implement_one_of.defaults]
+Every method named in the `must_implement_one_of` attribute must have a default
+method body in the trait definition.
+> [!NOTE]
+> Any method without a default method body must have an implementation, making
+> `must_implement_one_of` redundant.
+
 r[attributes.type-system.non_exhaustive]
 ## The `non_exhaustive` attribute
 
