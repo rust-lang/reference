@@ -70,6 +70,8 @@ jobs:
         SPEC_RUST_ROOT: ${{ github.workspace }}/rust
       run: mdbook build
     - name: Check for broken links
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         curl -sSLo linkcheck.sh \
           https://raw.githubusercontent.com/rust-lang/rust/master/src/tools/linkchecker/linkcheck.sh
