@@ -240,6 +240,9 @@ With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding A
 For other considerations and limitations regarding unwinding across FFI boundaries, see the [relevant section in the Panic documentation][panic-ffi].
 
 r[items.fn.extern.custom]
+### Extern "custom"
+
+r[items.fn.extern.custom.intro]
 An `extern "custom"` function has an unknown, custom ABI. The only way to call such a function is via [inline assembly].
 
 r[items.fn.extern.custom.safety]
