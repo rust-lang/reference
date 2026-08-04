@@ -383,18 +383,18 @@ A borrow of an [`extern` static] cannot be promoted, even if the resulting refer
 
 ```rust,compile_fail
 unsafe extern "C" {
-    static X: i32;
+    static X: u8;
 }
 
-// The array is a temporary, so it would have to be promoted to a
-// `'static` slot in order to be used in a static initializer.
-// However, since it borrows an `extern` static, it is not eligible
-// for promotion.
-static mut FOO: *const &i32 = [unsafe { &X }].as_ptr(); // ERROR
+// The array is a temporary, so it would have to be promoted to
+// a `'static` slot in order to be used in a static initializer.
+// But since it borrows from an `extern` static, it is not
+// eligible for promotion.
+static mut S: *const &u8 = [unsafe { &X }].as_ptr(); // ERROR.
 ```
 
 > [!NOTE]
-> Only expressions that cannot fail to evaluate can be promoted. The value of an `extern` static cannot be known at compile time, so any expression that uses an `extern` static is rejected, even if it never reads the static's value. To borrow an `extern` static in a const context, use a [const block] instead.
+> Only expressions that cannot fail to evaluate can be promoted. The value of an `extern` static cannot be known at compile time, so any expression that uses an `extern` static is rejected by promotion, even if the code never reads the static's value. To borrow from an `extern` static in a const context, use a [const block] instead.
 
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
