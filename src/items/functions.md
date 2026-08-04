@@ -245,6 +245,39 @@ r[items.fn.extern.custom]
 r[items.fn.extern.custom.intro]
 An `extern "custom"` function has an unknown, custom ABI. The only way to call such a function is via [inline assembly].
 
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_arch = "x86_64")] {
+> # use core::arch::{asm, naked_asm};
+> #
+> /// Adds 1 to `rax`.
+> ///
+> /// This function uses a custom calling convention: the argument is
+> /// passed in `rax`, the result is returned in `rax`, the flags may
+> /// be clobbered, and all other registers are preserved.
+> #[unsafe(naked)]
+> unsafe extern "custom" fn increment() {
+>     naked_asm!(
+>         "add rax, 1",
+>         "ret",
+>     )
+> }
+>
+> let mut x: u64 = 41;
+> // SAFETY: The inline assembly respects the calling convention of
+> // `increment`: the argument is passed in `rax`, the result is read
+> // from `rax`, and no other registers are affected.
+> unsafe {
+>     asm!(
+>         "call {}",
+>         sym increment,
+>         inout("rax") x,
+>     );
+> }
+> assert_eq!(x, 42);
+> # }
+> ```
+
 r[items.fn.extern.custom.signature]
 An `extern "custom"` function must:
 
