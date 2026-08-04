@@ -249,7 +249,7 @@ r[items.fn.extern.custom.safety]
 An `extern "custom"` function must be `unsafe`.
 
 r[items.fn.extern.custom.parameters]
-An `extern "custom"` function does not have any parameters.
+An `extern "custom"` function must not have any parameters.
 
 r[items.fn.extern.custom.return-type]
 An `extern "custom"` function must return the [unit type].
