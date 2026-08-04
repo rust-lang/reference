@@ -245,14 +245,12 @@ r[items.fn.extern.custom]
 r[items.fn.extern.custom.intro]
 An `extern "custom"` function has an unknown, custom ABI. The only way to call such a function is via [inline assembly].
 
-r[items.fn.extern.custom.safety]
-An `extern "custom"` function must be `unsafe`.
+r[items.fn.extern.custom.signature]
+An `extern "custom"` function must:
 
-r[items.fn.extern.custom.parameters]
-An `extern "custom"` function must not have any parameters.
-
-r[items.fn.extern.custom.return-type]
-An `extern "custom"` function must return the [unit type].
+- Be `unsafe`.
+- Not have any parameters.
+- Return the [unit type].
 
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
