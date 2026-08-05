@@ -394,7 +394,17 @@ static mut S: *const &u8 = [unsafe { &X }].as_ptr(); // ERROR.
 ```
 
 > [!NOTE]
-> Only expressions that cannot fail to evaluate can be promoted. The value of an `extern` static cannot be known at compile time, so any expression that uses an `extern` static is rejected by promotion, even if the code never reads the static's value. To borrow from an `extern` static in a const context, use a [const block] instead.
+> Only expressions that cannot fail to evaluate can be promoted. The value of an `extern` static cannot be known at compile time, so any expression that uses an `extern` static is rejected by promotion, even if the code never reads the static's value. To borrow from an `extern` static in a const context, use a [const block] instead:
+>
+> ```rust
+> unsafe extern "C" {
+>     static X: u8;
+> }
+>
+> // The array is evaluated as a constant, giving it a `'static`
+> // slot without promotion.
+> static mut S: *const &u8 = const { [unsafe { &X }] }.as_ptr();
+> ```
 
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
