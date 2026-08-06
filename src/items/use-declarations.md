@@ -96,12 +96,13 @@ The [paths] that are allowed in a `use` item follow the [SimplePath] grammar and
 * Nameable [items]
 * [Enum variants]
 * [Built-in types]
+* [Associated items] of traits
 * [Attributes]
 * [Derive macros]
 * [`macro_rules`]
 
 r[items.use.path.disallowed]
-They cannot import [associated items], [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
+They cannot import associated items of structs or enums, [generic parameters], [local variables], paths with [`Self`], or [tool attributes]. More restrictions are described below.
 
 r[items.use.path.namespace]
 `use` will create bindings for all [namespaces] from the imported entities, with the exception that a `self` import will only import from the type namespace (as described below). For example, the following illustrates creating bindings for the same name in two namespaces:
@@ -467,6 +468,7 @@ r[items.use.restrictions.variant]
 > ```
 
 [`$crate`]: paths.qualifiers.macro-crate
+[Associated items]: associated-items.md
 [Attributes]: ../attributes.md
 [brace syntax]: items.use.multiple-syntax
 [Built-in types]: ../types.md
@@ -476,7 +478,6 @@ r[items.use.restrictions.variant]
 [`extern crate`]: extern-crates.md
 [`macro_rules`]: ../macros-by-example.md
 [`self`]: ../paths.md#self
-[associated items]: associated-items.md
 [extern prelude]: ../names/preludes.md#extern-prelude
 [generic parameters]: generics.md
 [items]: ../items.md
