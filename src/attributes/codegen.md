@@ -144,6 +144,9 @@ The *`naked` [attribute]* prevents the compiler from emitting a function prologu
 > # }
 > ```
 
+> [!NOTE]
+> The assembly code of a naked function often does not follow the calling convention of any ABI known to the compiler. Such a function should be declared as an [`extern "custom"` function][items.fn.extern.custom].
+
 r[attributes.codegen.naked.syntax]
 The `naked` attribute uses the [MetaWord] syntax.
 
