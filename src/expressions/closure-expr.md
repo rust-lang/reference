@@ -38,7 +38,7 @@ r[expr.closure.capture-inference]
 Without the `move` keyword, the closure expression [infers how it captures each variable from its environment](../types/closure.md#capture-modes), preferring to capture by shared reference, effectively borrowing all outer variables mentioned inside the closure's body.
 
 r[expr.closure.capture-mut-ref]
-If needed the compiler will infer that instead mutable references should be taken, or that the values should be moved or copied (depending on their type) from the environment.
+If needed, the compiler will instead infer that mutable references should be taken, or that the values should be moved or copied (depending on their type) from the environment.
 
 r[expr.closure.capture-move]
 A closure can be forced to capture its environment by copying or moving values by prefixing it with the `move` keyword. This is often used to ensure that the closure's lifetime is `'static`.
