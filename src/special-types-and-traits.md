@@ -21,6 +21,33 @@ r[lang-types.box.fundamental]
 
 <!-- Editor Note: This is nowhere close to an exhaustive list -->
 
+r[lang-types.box.transmute]
+For types `T` and `U` such that `*mut T` and `*mut U` have the same layout (per [layout.pointer.parametric]) and a [pointer-to-pointer cast] from `*mut T` to `*mut U` is permitted, transmuting a `Box<T>` to a `Box<U>`, where both boxes use the global allocator, is sound when both of the following hold:
+
+- The pointee has the same [size] and [alignment] whether viewed as `T` or as `U`.
+- The pointee is a valid value of `U`.
+
+```rust
+# use core::mem::transmute;
+let boxed: Box<i8> = Box::new(1);
+let addr = (&raw const *boxed).addr();
+// SAFETY: `i8` and `u8` have the same size and the same alignment, so
+// `boxed`'s allocation is valid for `u8`.
+let reboxed: Box<u8> = unsafe { transmute(boxed) };
+// The transmute reuses the same allocation.
+assert_eq!((&raw const *reboxed).addr(), addr);
+assert_eq!(*reboxed, 1);
+
+// The pointee may also be unsized.
+assert_eq!(size_of::<u32>(), size_of::<f32>());
+assert_eq!(align_of::<u32>(), align_of::<f32>());
+let slice: Box<[u32]> = Box::new([1, 2, 3]);
+// SAFETY: Every bit pattern is a valid `f32`, and transmuting the box
+// preserves the slice's length.
+let floats: Box<[f32]> = unsafe { transmute(slice) };
+assert_eq!(floats.len(), 3);
+```
+
 r[lang-types.rc]
 ## `Rc<T>`
 
@@ -186,6 +213,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`UnwindSafe`]: std::panic::UnwindSafe
 [`Unpin`]: std::marker::Unpin
 
+[alignment]: layout.properties.align
 [Arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [call expressions]: expressions/call-expr.md
@@ -205,6 +233,8 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [moved from]: expr.move.movable-place
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
+[pointer-to-pointer cast]: expr.as.pointer
+[size]: layout.properties.size
 [`static` items]: items/static-items.md
 [test functions]: attributes/testing.md#the-test-attribute
 [the standard library]: std
