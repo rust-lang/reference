@@ -378,6 +378,34 @@ r[destructors.scope.const-promotion]
 
 Promotion of a value expression to a `'static` slot occurs when the expression could be written in a constant and borrowed, and that borrow could be dereferenced where the expression was originally written, without changing the runtime behavior. That is, the promoted expression can be evaluated at compile-time and the resulting value does not contain [interior mutability] or [destructors] (these properties are determined based on the value where possible, e.g. `&None` always has the type `&'static Option<_>`, as it contains nothing disallowed).
 
+r[destructors.scope.const-promotion.extern-static]
+A borrow of an [`extern` static] cannot be promoted, even if the resulting reference is never read from.
+
+```rust,compile_fail
+unsafe extern "C" {
+    static X: u8;
+}
+
+// The array is a temporary, so it would have to be promoted to
+// a `'static` slot in order to be used in a static initializer.
+// But since it borrows from an `extern` static, it is not
+// eligible for promotion.
+static mut S: *const &u8 = [unsafe { &X }].as_ptr(); // ERROR.
+```
+
+> [!NOTE]
+> Only expressions that cannot fail to evaluate can be promoted. The value of an `extern` static cannot be known at compile time, so any expression that uses an `extern` static is rejected by promotion, even if the code never reads the static's value. To borrow from an `extern` static in a const context, use a [const block] instead:
+>
+> ```rust
+> unsafe extern "C" {
+>     static X: u8;
+> }
+>
+> // The array is evaluated as a constant, giving it a `'static`
+> // slot without promotion.
+> static mut S: *const &u8 = const { [unsafe { &X }] }.as_ptr();
+> ```
+
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
 
@@ -645,9 +673,11 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [Assignment]: expressions/operator-expr.md#assignment-expressions
 [binding modes]: patterns.md#binding-modes
 [closure]: types/closure.md
+[const block]: expressions/block-expr.md#const-blocks
 [destructors]: destructors.md
 [destructuring assignment]: expr.assign.destructure
 [expression]: expressions.md
+[`extern` static]: items/external-blocks.md#statics
 [guard condition operand]: expressions/match-expr.md#match-guard-chains
 [identifier pattern]: patterns.md#identifier-patterns
 [initialized]: glossary.md#initialized
