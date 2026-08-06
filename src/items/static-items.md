@@ -28,10 +28,13 @@ r[items.static.read-only]
 Non-`mut` static items that contain a type that is not [interior mutable] may be placed in read-only memory.
 
 r[items.static.safety]
-All access to a static is safe, but there are a number of restrictions on statics:
+All access to a static is safe, but the type is restricted, and must either:
 
 r[items.static.sync]
-* The type must have the [`Sync`](std::marker::Sync) trait bound to allow thread-safe access.
+* Implement the [`Sync`](std::marker::Sync) trait to allow thread-safe access.
+
+r[items.static.unsafecell]
+* Be [`UnsafeCell<T>`](std::cell::UnsafeCell), where `T` implements the [`Sync`](std::marker::Sync) trait.
 
 r[items.static.init.omission]
 The initializer expression must be omitted in an [external block], and must be provided for free static items.
@@ -126,7 +129,7 @@ fn bump_levels_safe() -> u32 {
 ```
 
 r[items.static.mut.sync]
-Mutable statics have the same restrictions as normal statics, except that the type does not have to implement the `Sync` trait.
+Mutable statics have the same restrictions as normal statics, except that there are no no restrictions on the type (for example, the type does not have to implement the `Sync` trait).
 
 r[items.static.alternate]
 ## Using statics or consts
