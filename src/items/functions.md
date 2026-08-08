@@ -753,5 +753,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`VaList`]: lang-types.va-list
 [zero-sized]: glossary.zst
 [inline assembly]: ../inline-assembly.md
-[items.extern.variadic.conventions]: ../items/external-blocks.md#items.extern.variadic.conventions
-[naked functions]: ../attributes.md#attributes.codegen.naked
+[naked functions]: attributes.codegen.naked
