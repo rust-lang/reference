@@ -567,6 +567,31 @@ unsafe fn f(ap: ...) {} // ERROR: Not supported.
 unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
 ```
 
+A variable argument list is only accepted on [naked functions] for the ABI strings that are listed in [items.extern.variadic.conventions].
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+/// SAFETY: must be passed a variadic argument of type `u32`.
+#[unsafe(naked)]
+unsafe extern "win64" fn variadic_win64(_: i32, _: ...) -> u32 {
+    core::arch::naked_asm!(
+        r#"
+        push    rax
+        mov     qword ptr [rsp + 40], r9
+        mov     qword ptr [rsp + 24], rdx
+        mov     qword ptr [rsp + 32], r8
+        lea     rax, [rsp + 40]
+        mov     qword ptr [rsp], rax
+        lea     eax, [rdx + rcx]
+        add     eax, r8d
+        pop     rcx
+        ret
+    "#,
+    )
+}
+# }
+```
+
 r[items.fn.c-variadic.safety]
 When a variable argument list is used in the signature:
 
@@ -727,3 +752,5 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`VaList`]: lang-types.va-list
 [zero-sized]: glossary.zst
 [inline assembly]: ../inline-assembly.md
+[items.extern.variadic.conventions]: ../items/external-blocks.md#items.extern.variadic.conventions
+[naked functions]: ../attributes.md#attributes.codegen.naked
