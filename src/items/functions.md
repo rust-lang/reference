@@ -573,18 +573,19 @@ A variable argument list is only accepted on [naked functions] for the ABI strin
 # #[cfg(target_arch = "x86_64")] {
 /// SAFETY: must be passed a variadic argument of type `u32`.
 #[unsafe(naked)]
-unsafe extern "win64" fn variadic_win64(_: i32, _: ...) -> u32 {
+unsafe extern "sysv64" fn variadic_win64(_: i32, _: ...) -> u32 {
     core::arch::naked_asm!(
         r#"
-        push    rax
-        mov     qword ptr [rsp + 40], r9
-        mov     qword ptr [rsp + 24], rdx
-        mov     qword ptr [rsp + 32], r8
-        lea     rax, [rsp + 40]
-        mov     qword ptr [rsp], rax
-        lea     eax, [rdx + rcx]
-        add     eax, r8d
-        pop     rcx
+        lea     rax, [rsp+8]
+        mov     qword ptr [rsp-32], rdx
+        mov     qword ptr [rsp-64], rax
+        lea     rax, [rsp-48]
+        mov     qword ptr [rsp-56], rax
+        mov     eax, dword ptr [rsp-32]
+        mov     qword ptr [rsp-40], rsi
+        add     edi, dword ptr [rsp-40]
+        mov     dword ptr [rsp-72], 8
+        add     eax, edi
         ret
     "#,
     )
