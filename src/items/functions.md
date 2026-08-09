@@ -557,7 +557,7 @@ unsafe extern "C" fn print(fmt: *const c_char, ap: ...) -> c_int {
 ```
 
 r[items.fn.c-variadic.abi]
-Except on naked functions, only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
+Except on [naked functions], only `extern "C"` and `extern "C-unwind"` function definitions can accept a variable argument list.
 
 ```rust,compile_fail
 unsafe fn f(ap: ...) {} // ERROR: Not supported.
@@ -567,7 +567,7 @@ unsafe fn f(ap: ...) {} // ERROR: Not supported.
 unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
 ```
 
-A variable argument list is only accepted on [naked functions] for the ABI strings that are listed in [items.extern.variadic.conventions].
+A variable argument list is only accepted on naked functions for the ABI strings that are listed in [items.extern.variadic.conventions].
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
