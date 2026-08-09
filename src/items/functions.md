@@ -567,7 +567,7 @@ unsafe fn f(ap: ...) {} // ERROR: Not supported.
 unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
 ```
 
-A naked function can accept a variable argument list only if its ABI string is listed in [items.extern.variadic.conventions].
+A naked function can accept a variable argument list only if its ABI string is accepted under [items.extern.variadic.conventions].
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
