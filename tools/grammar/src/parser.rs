@@ -93,8 +93,7 @@ impl Parser<'_> {
     fn take_while(&mut self, f: &dyn Fn(char) -> bool) -> &str {
         let mut upper = 0;
         let i = self.index;
-        let mut ci = self.input[i..].chars();
-        while let Some(ch) = ci.next() {
+        for ch in self.input[i..].chars() {
             if !f(ch) {
                 break;
             }
@@ -191,8 +190,7 @@ impl Parser<'_> {
 
     fn parse_expression(&mut self) -> Result<Option<Expression>> {
         let mut es = Vec::new();
-        loop {
-            let Some(e) = self.parse_seq()? else { break };
+        while let Some(e) = self.parse_seq()? {
             es.push(e);
             _ = self.space0();
             if !self.take_str("|") {
