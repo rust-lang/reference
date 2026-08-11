@@ -8,6 +8,7 @@ use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use walkdir::WalkDir;
 
+mod display;
 mod parser;
 
 #[derive(Debug, Default)]
