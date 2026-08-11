@@ -10,6 +10,7 @@ struct Parser<'a> {
     index: usize,
 }
 
+#[derive(Debug)]
 pub struct Error {
     message: String,
     line: String,
