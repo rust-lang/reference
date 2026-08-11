@@ -16,6 +16,8 @@ pub struct Grammar {
     pub productions: HashMap<String, Production>,
     /// The order that the production names were discovered.
     pub name_order: Vec<String>,
+    /// Counter for generating unique expression IDs.
+    pub next_id: u32,
 }
 
 #[derive(Debug)]
@@ -40,6 +42,8 @@ pub struct Expression {
     pub suffix: Option<String>,
     /// A footnote is a markdown footnote link.
     pub footnote: Option<String>,
+    /// Unique ID of the expression.
+    pub id: u32,
 }
 
 #[derive(Clone, Debug)]
@@ -145,6 +149,13 @@ impl Display for Character {
 }
 
 impl Grammar {
+    /// Generates a new unique expression ID.
+    pub fn next_id(&mut self) -> u32 {
+        let id = self.next_id;
+        self.next_id += 1;
+        id
+    }
+
     fn visit_nt(&self, callback: &mut dyn FnMut(&str)) {
         for p in self.productions.values() {
             p.expression.visit_nt(callback);
@@ -153,11 +164,12 @@ impl Grammar {
 }
 
 impl Expression {
-    pub fn new_kind(kind: ExpressionKind) -> Self {
+    pub fn new_kind(kind: ExpressionKind, id: u32) -> Self {
         Self {
             kind,
             suffix: None,
             footnote: None,
+            id,
         }
     }
 
