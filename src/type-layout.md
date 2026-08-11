@@ -184,7 +184,7 @@ r[layout.repr.rust.struct-zst]
 For [structs] with no fields or where all fields are [zero sized], it is further guaranteed that the structs are themselves [zero sized].
 
 r[layout.repr.rust.enum-empty-zst]
-For [enums] (without a [primitive representation] specified) with no variants, the enums themselves are [zero sized].
+[Enums] (without a [primitive representation] specified) with no variants are [zero sized].
 
 > [!NOTE]
 > Such enums are [uninhabited].
