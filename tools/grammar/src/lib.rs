@@ -9,7 +9,10 @@ use std::sync::LazyLock;
 use walkdir::WalkDir;
 
 mod display;
+mod frontmatter;
 mod parser;
+
+pub use frontmatter::load_grammar_with_frontmatter;
 
 #[derive(Debug, Default)]
 pub struct Grammar {
@@ -149,6 +152,12 @@ impl Display for Character {
 }
 
 impl Grammar {
+    pub fn grammar_from_str(input: &str, category: &str) -> Result<Grammar, parser::Error> {
+        let mut grammar = Grammar::default();
+        parser::parse_grammar(input, &mut grammar, category, Path::new(""))?;
+        Ok(grammar)
+    }
+
     /// Generates a new unique expression ID.
     pub fn next_id(&mut self) -> u32 {
         let id = self.next_id;

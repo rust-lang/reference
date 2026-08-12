@@ -1,0 +1,12 @@
+[package]
+name = "parser"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+diagnostics = { path = "../diagnostics" }
+grammar = { path = "../grammar" }
+tracing = "0.1.43"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+tracing-tree = "0.4.1"
+unicode-ident = "1.0.22"
