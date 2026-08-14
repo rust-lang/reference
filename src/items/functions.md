@@ -287,6 +287,15 @@ An `extern "custom"` function must:
 
 > [!NOTE]
 > The rule is syntactic. The return type may not be a type alias, even one defined to be the [unit type].
+>
+> ```rust,compile_fail
+> type Unit = ();
+>
+> #[unsafe(naked)]
+> unsafe extern "custom" fn f() -> Unit { // ERROR: Not explicit `()`.
+>     core::arch::naked_asm!("ret")
+> }
+> ```
 
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
