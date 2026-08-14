@@ -283,13 +283,16 @@ An `extern "custom"` function must:
 
 - Be `unsafe`.
 - Not have any parameters.
-- Return the [unit type], either by omitting a return type, or by explicitly returning `()`.
+- Return the [unit type], with the return type either omitted or written explicitly as `()`.
+
+> [!NOTE]
+> The rule is syntactic. The return type may not be a type alias, even one defined to be the [unit type].
 
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
 
-r[attributes.codegen.naked.inline]
-The [`cold` attribute] cannot be applied to an `extern "custom"` function.
+r[items.fn.extern.custom.cold]
+The [`cold` attribute] may not be applied to an `extern "custom"` function.
 
 [forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
 [panic handler]: ../panic.md#the-panic_handler-attribute
@@ -462,7 +465,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [procedural macro attributes]: macro.proc.attribute
 [testing attributes]: ../attributes/testing.md
 [`cold`]: ../attributes/codegen.md#the-cold-attribute
-[`cold` attribute]: ../attributes/codegen.md#the-cold-attribute
+[`cold` attribute]: attributes.codegen.cold
 [`inline`]: ../attributes/codegen.md#the-inline-attribute
 [naked function]: ../attributes/codegen.md#the-naked-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
