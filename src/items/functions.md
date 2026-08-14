@@ -291,9 +291,6 @@ An `extern "custom"` function must:
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
 
-r[items.fn.extern.custom.cold]
-The [`cold` attribute] may not be applied to an `extern "custom"` function.
-
 [forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
 [panic handler]: ../panic.md#the-panic_handler-attribute
 [panic-ffi]: ../panic.md#unwinding-across-ffi-boundaries
@@ -465,7 +462,6 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [procedural macro attributes]: macro.proc.attribute
 [testing attributes]: ../attributes/testing.md
 [`cold`]: ../attributes/codegen.md#the-cold-attribute
-[`cold` attribute]: attributes.codegen.cold
 [`inline`]: ../attributes/codegen.md#the-inline-attribute
 [naked function]: ../attributes/codegen.md#the-naked-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute

@@ -110,6 +110,9 @@ The `cold` attribute may only be applied to functions with [bodies] --- [closure
 
 <!-- TODO: rustc currently seems to allow cold on a trait function without a body, but it appears to be ignored. I think that may be a bug, and it should at least warn if not reject (like inline does). -->
 
+r[attributes.codegen.cold.extern-custom]
+The `cold` attribute may not be applied to an [`extern "custom"` function].
+
 r[attributes.codegen.cold.duplicates]
 Only the first use of `cold` on a function has effect.
 
@@ -903,6 +906,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`export_name`]: abi.export_name
+[`extern "custom"` function]: items.fn.extern.custom
 [`inline` attribute]: attributes.codegen.inline
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
