@@ -283,7 +283,7 @@ An `extern "custom"` function must:
 
 - Be `unsafe`.
 - Not have any parameters.
-- Return the [unit type].
+- Return the [unit type], either by omitting a return type, or by explicitly returning `()`.
 
 r[items.fn.extern.custom.naked]
 An `extern "custom"` function definition must be a [naked function].
