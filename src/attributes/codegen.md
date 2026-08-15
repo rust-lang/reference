@@ -113,6 +113,14 @@ The `cold` attribute may only be applied to functions with [bodies] --- [closure
 r[attributes.codegen.cold.extern-custom]
 The `cold` attribute may not be applied to an [`extern "custom"` function].
 
+```rust,compile_fail
+#[cold] // ERROR: Not allowed.
+#[unsafe(naked)]
+unsafe extern "custom" fn f() {
+    core::arch::naked_asm!("ret")
+}
+```
+
 r[attributes.codegen.cold.duplicates]
 Only the first use of `cold` on a function has effect.
 
