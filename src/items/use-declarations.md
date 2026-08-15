@@ -443,11 +443,13 @@ r[items.use.restrictions.extern-prelude]
 > ```
 
 > [!EDITION-2018]
-> In the 2015 edition, the prefix `::` refers to the crate root, so `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`. Starting with the 2018 edition the `::` prefix refers to the extern prelude, which cannot be directly imported.
+> In the 2015 edition, the prefix `::` refers to the crate root, so `use ::{self as root};` is allowed because it is same as `use crate::{self as root};`.
 >
 > ```rust,edition2015
-> use ::{self as root}; //~ Ok
+> use ::{self as root}; //~ Ok in 2015 edition
 > ```
+> 
+> Starting with the 2018 edition, the `::` prefix refers to the extern prelude, which cannot be directly imported.
 
 r[items.use.restrictions.duplicate-name]
 As with any item definition, `use` imports cannot create duplicate bindings of the same name in the same namespace in a module or block.
