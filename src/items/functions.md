@@ -262,6 +262,67 @@ With `panic=unwind`, when a `panic` is turned into an abort by a non-unwinding A
 
 For other considerations and limitations regarding unwinding across FFI boundaries, see the [relevant section in the Panic documentation][panic-ffi].
 
+r[items.fn.extern.custom]
+### Extern "custom"
+
+r[items.fn.extern.custom.intro]
+An `extern "custom"` function has an unknown, custom ABI. The only way to call such a function is via [inline assembly].
+
+> [!EXAMPLE]
+> ```rust
+> # #[cfg(target_arch = "x86_64")] {
+> # use core::arch::{asm, naked_asm};
+> #
+> /// Adds 1 to `rax`.
+> ///
+> /// This function uses a custom calling convention: the argument is
+> /// passed in `rax`, the result is returned in `rax`, the flags may
+> /// be clobbered, and all other registers are preserved.
+> #[unsafe(naked)]
+> unsafe extern "custom" fn increment() {
+>     naked_asm!(
+>         "add rax, 1",
+>         "ret",
+>     )
+> }
+>
+> let mut x: u64 = 41;
+> // SAFETY: The inline assembly respects the calling convention of
+> // `increment`: the argument is passed in `rax`, the result is read
+> // from `rax`, and no other registers are affected.
+> unsafe {
+>     asm!(
+>         "call {}",
+>         sym increment,
+>         inout("rax") x,
+>     );
+> }
+> assert_eq!(x, 42);
+> # }
+> ```
+
+r[items.fn.extern.custom.signature]
+An `extern "custom"` function must:
+
+- Be `unsafe`.
+- Not have any parameters.
+- Return the [unit type], with the return type either omitted or written explicitly as `()`.
+
+> [!NOTE]
+> The rule is syntactic. The return type may not be a type alias, even one defined to be the [unit type].
+>
+> ```rust,compile_fail
+> type Unit = ();
+>
+> #[unsafe(naked)]
+> unsafe extern "custom" fn f() -> Unit { // ERROR: Not explicit `()`.
+>     core::arch::naked_asm!("ret")
+> }
+> ```
+
+r[items.fn.extern.custom.naked]
+An `extern "custom"` function definition must be a [naked function].
+
 [forced-unwinding]: https://rust-lang.github.io/rfcs/2945-c-unwind-abi.html#forced-unwinding
 [panic handler]: ../panic.md#the-panic_handler-attribute
 [panic-ffi]: ../panic.md#unwinding-across-ffi-boundaries
@@ -646,6 +707,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [testing attributes]: ../attributes/testing.md
 [`cold`]: ../attributes/codegen.md#the-cold-attribute
 [`inline`]: ../attributes/codegen.md#the-inline-attribute
+[naked function]: ../attributes/codegen.md#the-naked-attribute
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
 [`must_use`]: ../attributes/diagnostics.md#the-must_use-attribute
@@ -664,3 +726,4 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`VaList<'_>`]: lang-types.va-list
 [`VaList`]: lang-types.va-list
 [zero-sized]: glossary.zst
+[inline assembly]: ../inline-assembly.md

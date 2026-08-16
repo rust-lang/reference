@@ -110,6 +110,17 @@ The `cold` attribute may only be applied to functions with [bodies] --- [closure
 
 <!-- TODO: rustc currently seems to allow cold on a trait function without a body, but it appears to be ignored. I think that may be a bug, and it should at least warn if not reject (like inline does). -->
 
+r[attributes.codegen.cold.extern-custom]
+The `cold` attribute may not be applied to an [`extern "custom"` function].
+
+```rust,compile_fail
+#[cold] // ERROR: Not allowed.
+#[unsafe(naked)]
+unsafe extern "custom" fn f() {
+    core::arch::naked_asm!("ret")
+}
+```
+
 r[attributes.codegen.cold.duplicates]
 Only the first use of `cold` on a function has effect.
 
@@ -143,6 +154,9 @@ The *`naked` [attribute]* prevents the compiler from emitting a function prologu
 > }
 > # }
 > ```
+
+> [!NOTE]
+> The assembly code of a naked function often does not follow the calling convention of any ABI known to the compiler. Such a function should be declared as an [`extern "custom"` function][items.fn.extern.custom].
 
 r[attributes.codegen.naked.syntax]
 The `naked` attribute uses the [MetaWord] syntax.
@@ -900,6 +914,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`-C target-cpu`]: ../../rustc/codegen-options/index.html#target-cpu
 [`-C target-feature`]: ../../rustc/codegen-options/index.html#target-feature
 [`export_name`]: abi.export_name
+[`extern "custom"` function]: items.fn.extern.custom
 [`inline` attribute]: attributes.codegen.inline
 [`is_aarch64_feature_detected`]: ../../std/arch/macro.is_aarch64_feature_detected.html
 [`is_x86_feature_detected`]: ../../std/arch/macro.is_x86_feature_detected.html
