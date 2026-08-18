@@ -5,7 +5,7 @@
 //! both valid and invalid inputs (particularly those that are truncated).
 //!
 //! It generates representative inputs for some of the expressions. For
-//! example, a a repetition generates an output that includes 0, 1, or 2
+//! example, a repetition generates an output that includes 0, 1, or 2
 //! repetitions of the expression. Or something like "Identifier" just does a
 //! few representative values like "a", "ab", and "abb" (with the assumption
 //! that the Identifier grammar is already correct).
