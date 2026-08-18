@@ -72,7 +72,16 @@ pub fn insert_grammar(grammar: &Grammar, chapter: &Chapter, diag: &mut Diagnosti
             .unwrap();
         }
     }
-    content
+
+    // Inject the stylesheets for railroad diagrams if necessary
+    if content.contains("class=\"railroad\"") {
+        format!(
+            "<style type=\"text/css\">\n{}\n</style>\n\n{content}",
+            render_railroad::themed_stylesheets()
+        )
+    } else {
+        content
+    }
 }
 
 /// Converts link reference definitions that point to a grammar rule

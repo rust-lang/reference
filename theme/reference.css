@@ -1,15 +1,6 @@
 /* Custom CSS for the Rust Specification. */
 
 /* Per-theme variables. */
-:root {
-    --railroad-background-color: hsl(30, 20%, 95%);
-    --railroad-background-image:
-        linear-gradient(to right, rgba(30, 30, 30, .05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(30, 30, 30, .05) 1px, transparent 1px);
-    --railroad-path-stroke: black;
-    --railroad-rect-stroke: black;
-    --railroad-rect-fill: hsl(-290, 70%, 90%);
-}
 .light {
     --alert-note-color: #0969da;
     --alert-warning-color: #9a6700;
@@ -45,14 +36,6 @@
 .coal, .navy, .ayu {
     --grammar-comment-color: lch(from var(--quote-bg) calc(l + 50) 0 0);
     --inline-code-color: var(--grammar-comment-color);
-    --railroad-background-color: hsl(230, 10%, 20%);
-    --railroad-background-image:
-        linear-gradient(to right, rgba(150, 150, 150, .05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(150, 150, 150, .05) 1px, transparent 1px);
-    --railroad-path-stroke: hsl(200, 10%, 60%);
-    --railroad-text-fill: hsl(230, 30%, 80%);
-    --railroad-rect-stroke: hsl(200, 10%, 50%);
-    --railroad-rect-fill: hsl(230, 20%, 20%);
 }
 
 /*
@@ -686,55 +669,25 @@ main > .rule {
     display: none;
 }
 
-svg.railroad {
-    background-color: var(--railroad-background-color);
-    background-size: 15px 15px;
-    background-image: var(--railroad-background-image);
+/*
+The theme-specific railroad backgrounds intentionally match mdBook's page
+backgrounds. Offset only their lightness here so embedded diagrams remain
+visually distinct while retaining each theme's hue and saturation. The Light
+railroad theme already provides this contrast itself.
+
+Including `html` makes these selectors more specific than the stylesheets
+embedded by mdbook-spec.
+*/
+html.rust svg.railroad {
+    background-color: hsl(from var(--bg) h s calc(l - 5));
+}
+html.coal svg.railroad,
+html.navy svg.railroad,
+html.ayu svg.railroad {
+    background-color: hsl(from var(--bg) h s calc(l + 5));
 }
 
-svg.railroad rect.railroad_canvas {
-    stroke-width: 0px;
-    fill: none;
-}
-
-svg.railroad path {
-    stroke-width: 3px;
-    stroke: var(--railroad-path-stroke);
-    fill: none;
-}
-
-svg.railroad .debug {
-    stroke-width: 1px;
-    stroke: red;
-}
-
-svg.railroad text {
-    font: 14px monospace;
-    text-anchor: middle;
-    fill: var(--railroad-text-fill);
-}
-
-svg.railroad .nonterminal text {
-    font-weight: bold;
-}
-
-svg.railroad text.comment {
-    font: italic 12px monospace;
-}
-
-svg.railroad rect {
-    stroke-width: 3px;
-    stroke: var(--railroad-rect-stroke);
-    fill: var(--railroad-rect-fill);
-}
-
-svg.railroad g.labeledbox>rect {
-    stroke-width: 1px;
-    stroke: grey;
-    stroke-dasharray: 5px;
-    fill: rgba(90, 90, 150, .1);
-}
-
+/* Styling specific to the Reference's negative-lookahead railroad node. */
 svg.railroad g.exceptbox > rect {
     fill:rgba(245, 160, 125, .1);
 }

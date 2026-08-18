@@ -15,6 +15,30 @@ const CHOICE_MAX_ROWS_PER_COLUMN: usize = 5;
 /// use as many rows as necessary
 const CHOICE_MAX_COLUMNS: usize = 4;
 
+/// Returns the railroad stylesheets, scoped to their corresponding mdBook themes.
+///
+/// mdBook selects a theme by placing its lowercase name on the root element. Scoping
+/// each railroad stylesheet to that class lets the diagrams follow theme changes at
+/// runtime without duplicating the styles in every SVG.
+pub(super) fn themed_stylesheets() -> String {
+    const THEMES: [(&str, Stylesheet); 5] = [
+        ("light", Stylesheet::Light),
+        ("rust", Stylesheet::Rust),
+        ("coal", Stylesheet::Coal),
+        ("navy", Stylesheet::Navy),
+        ("ayu", Stylesheet::Ayu),
+    ];
+
+    let mut css = String::new();
+    for (theme, stylesheet) in THEMES {
+        let selector = format!(".{theme} svg.railroad");
+        // Re-scope the selectors in each stylesheet, so they are scoped only to the selected theme
+        let scoped = stylesheet.stylesheet().replace("svg.railroad", &selector);
+        writeln!(css, "/* mdBook {theme} theme. */\n{scoped}").unwrap();
+    }
+    css
+}
+
 pub fn render_railroad(
     grammar: &Grammar,
     cx: &RenderCtx,
@@ -446,6 +470,23 @@ mod tests {
             max,
             limit,
         })
+    }
+
+    #[test]
+    fn railroad_stylesheets_are_scoped_to_mdbook_themes() {
+        let css = themed_stylesheets();
+
+        for theme in ["light", "rust", "coal", "navy", "ayu"] {
+            assert!(
+                css.contains(&format!(".{theme} svg.railroad {{")),
+                "missing stylesheet for the {theme} theme"
+            );
+        }
+        assert!(
+            css.lines()
+                .all(|line| !line.trim_start().starts_with("svg.railroad")),
+            "railroad styles must not leak into the other mdBook themes"
+        );
     }
 
     // -- RepeatRange tests --
