@@ -21,6 +21,8 @@ TAB -> U+0009 // Horizontal tab, `'\t'`
 LF -> U+000A  // Line feed, `'\n'`
 
 CR -> U+000D  // Carriage return, `'\r'`
+
+SP -> U+0020  // Space, `' '`
 ```
 
 r[lex.whitespace.intro]
