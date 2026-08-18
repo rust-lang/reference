@@ -73,6 +73,8 @@ assert_eq!(y, "Bigger");
 r[expr.if.diverging]
 An `if` expression [diverges] if either the condition expression diverges or if all arms diverge.
 
+The condition expression diverges if the leftmost condition in the `&&` chain diverges, where `let` patterns are considered to diverge if the scrutinee diverges.
+
 ```rust,no_run
 fn diverging_condition() -> ! {
     // Diverges because the condition expression diverges
