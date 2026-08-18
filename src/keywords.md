@@ -11,7 +11,7 @@ r[lex.keywords.strict]
 ## Strict keywords
 
 r[lex.keywords.strict.intro]
-These keywords can only be used in their correct contexts. They cannot be used as the names of:
+Strict keywords can only be used in their correct contexts. They cannot be used as the names of:
 
 * [Items]
 * [Variables] and function parameters
@@ -22,48 +22,49 @@ These keywords can only be used in their correct contexts. They cannot be used a
 * [Macro placeholders]
 * [Crates]
 
-r[lex.keywords.strict.list]
-The following keywords are in all editions:
-
-- `_`
-- `as`
-- `async`
-- `await`
-- `break`
-- `const`
-- `continue`
-- `crate`
-- `dyn`
-- `else`
-- `enum`
-- `extern`
-- `false`
-- `fn`
-- `for`
-- `if`
-- `impl`
-- `in`
-- `let`
-- `loop`
-- `match`
-- `mod`
-- `move`
-- `mut`
-- `pub`
-- `ref`
-- `return`
-- `self`
-- `Self`
-- `static`
-- `struct`
-- `super`
-- `trait`
-- `true`
-- `type`
-- `unsafe`
-- `use`
-- `where`
-- `while`
+r[lex.keywords.strict.syntax]
+```grammar,lexer
+@root STRICT_KEYWORDS ->
+      `_`
+    | `as`
+    | `async`
+    | `await`
+    | `break`
+    | `const`
+    | `continue`
+    | `crate`
+    | `dyn`
+    | `else`
+    | `enum`
+    | `extern`
+    | `false`
+    | `fn`
+    | `for`
+    | `if`
+    | `impl`
+    | `in`
+    | `let`
+    | `loop`
+    | `match`
+    | `mod`
+    | `move`
+    | `mut`
+    | `pub`
+    | `ref`
+    | `return`
+    | `self`
+    | `Self`
+    | `static`
+    | `struct`
+    | `super`
+    | `trait`
+    | `true`
+    | `type`
+    | `unsafe`
+    | `use`
+    | `where`
+    | `while`
+```
 
 r[lex.keywords.strict.edition2018]
 > [!EDITION-2018]
@@ -77,23 +78,26 @@ r[lex.keywords.reserved]
 ## Reserved keywords
 
 r[lex.keywords.reserved.intro]
-These keywords aren't used yet, but they are reserved for future use. They have the same restrictions as strict keywords. The reasoning behind this is to make current programs forward compatible with future versions of Rust by forbidding them to use these keywords.
+Reserved keywords aren't used yet, but they are reserved for future use. They have the same restrictions as strict keywords. The reasoning behind this is to make current programs forward compatible with future versions of Rust by forbidding them to use these keywords.
 
-r[lex.keywords.reserved.list]
-- `abstract`
-- `become`
-- `box`
-- `do`
-- `final`
-- `gen`
-- `macro`
-- `override`
-- `priv`
-- `try`
-- `typeof`
-- `unsized`
-- `virtual`
-- `yield`
+r[lex.keywords.reserved.syntax]
+```grammar,lexer
+@root RESERVED_KEYWORDS ->
+      `abstract`
+    | `become`
+    | `box`
+    | `do`
+    | `final`
+    | `gen`
+    | `macro`
+    | `override`
+    | `priv`
+    | `try`
+    | `typeof`
+    | `unsized`
+    | `virtual`
+    | `yield`
+```
 
 r[lex.keywords.reserved.edition2018]
 > [!EDITION-2018]
@@ -107,13 +111,17 @@ r[lex.keywords.weak]
 ## Weak keywords
 
 r[lex.keywords.weak.intro]
-These keywords have special meaning only in certain contexts. For example, it is possible to declare a variable or method with the name `union`.
+Weak keywords have special meaning only in certain contexts. For example, it is possible to declare a variable or method with the name `union`.
 
-- `'static`
-- `macro_rules`
-- `raw`
-- `safe`
-- `union`
+r[lex.keywords.weak.syntax]
+```grammar,lexer
+@root WEAK_KEYWORDS ->
+      `'static`
+    | `macro_rules`
+    | `raw`
+    | `safe`
+    | `union`
+```
 
 r[lex.keywords.weak.macro_rules]
 * `macro_rules` is used to create custom [macros].

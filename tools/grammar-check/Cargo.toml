@@ -1,0 +1,24 @@
+[package]
+name = "grammar-check"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+clap = "4.5.53"
+ctrlc = "3.5.1"
+diagnostics = { path = "../diagnostics" }
+grammar = { path = "../grammar" }
+indicatif = "0.18.3"
+parser = { path = "../parser" }
+proc-macro2 = { version = "1.0.103", features = ["span-locations"] }
+regex = "1.12.2"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+tracing = "0.1.43"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+tracing-tree = "0.4.1"
+unicode-ident = "1.0.22"
+walkdir = "2.5.0"
+
+[package.metadata.rust-analyzer]
+rustc_private = true

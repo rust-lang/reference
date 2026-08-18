@@ -1,6 +1,6 @@
 //! A parser of the ENBF-like grammar.
 
-use super::{Character, Characters, Expression, ExpressionKind, Grammar, Production, RangeLimit};
+use super::{Character, Expression, ExpressionKind, Grammar, Production, RangeLimit};
 use std::fmt;
 use std::fmt::Display;
 use std::path::Path;
@@ -8,8 +8,10 @@ use std::path::Path;
 struct Parser<'a> {
     input: &'a str,
     index: usize,
+    grammar: &'a mut Grammar,
 }
 
+#[derive(Debug)]
 pub struct Error {
     message: String,
     line: String,
@@ -62,11 +64,15 @@ pub fn parse_grammar(
     category: &str,
     path: &Path,
 ) -> Result<()> {
-    let mut parser = Parser { input, index: 0 };
+    let mut parser = Parser {
+        input,
+        index: 0,
+        grammar,
+    };
     loop {
         let p = parser.parse_production(category, path)?;
-        grammar.name_order.push(p.name.clone());
-        if let Some(dupe) = grammar.productions.insert(p.name.clone(), p) {
+        parser.grammar.name_order.push(p.name.clone());
+        if let Some(dupe) = parser.grammar.productions.insert(p.name.clone(), p) {
             bail!(parser, "duplicate production {} in grammar", dupe.name);
         }
         parser.take_while(&|ch| ch == '\n');
@@ -78,11 +84,16 @@ pub fn parse_grammar(
 }
 
 impl Parser<'_> {
+    /// Helper to create a new expression with a unique ID.
+    fn new_expr(&mut self, kind: ExpressionKind) -> Expression {
+        let id = self.grammar.next_id();
+        Expression::new_kind(kind, id)
+    }
+
     fn take_while(&mut self, f: &dyn Fn(char) -> bool) -> &str {
         let mut upper = 0;
         let i = self.index;
-        let mut ci = self.input[i..].chars();
-        while let Some(ch) = ci.next() {
+        for ch in self.input[i..].chars() {
             if !f(ch) {
                 break;
             }
@@ -143,8 +154,8 @@ impl Parser<'_> {
         let mut comments = Vec::new();
         while let Ok(comment) = self.parse_comment() {
             self.expect("\n", "expected newline")?;
-            comments.push(Expression::new_kind(comment));
-            comments.push(Expression::new_kind(ExpressionKind::Break(0)));
+            comments.push(self.new_expr(comment));
+            comments.push(self.new_expr(ExpressionKind::Break(0)));
         }
         let is_root = self.parse_is_root();
         self.space0();
@@ -179,8 +190,7 @@ impl Parser<'_> {
 
     fn parse_expression(&mut self) -> Result<Option<Expression>> {
         let mut es = Vec::new();
-        loop {
-            let Some(e) = self.parse_seq()? else { break };
+        while let Some(e) = self.parse_seq()? {
             es.push(e);
             _ = self.space0();
             if !self.take_str("|") {
@@ -190,7 +200,7 @@ impl Parser<'_> {
         match es.len() {
             0 => Ok(None),
             1 => Ok(Some(es.pop().unwrap())),
-            _ => Ok(Some(Expression::new_kind(ExpressionKind::Alt(es)))),
+            _ => Ok(Some(self.new_expr(ExpressionKind::Alt(es)))),
         }
     }
 
@@ -211,11 +221,7 @@ impl Parser<'_> {
         match es.len() {
             0 => Ok(None),
             1 => Ok(Some(es.pop().unwrap())),
-            _ => Ok(Some(Expression {
-                kind: ExpressionKind::Sequence(es),
-                suffix: None,
-                footnote: None,
-            })),
+            _ => Ok(Some(self.new_expr(ExpressionKind::Sequence(es)))),
         }
     }
 
@@ -225,11 +231,7 @@ impl Parser<'_> {
         let Some(rhs) = self.parse_seq()? else {
             bail!(self, "expected expression after cut operator");
         };
-        Ok(Expression {
-            kind: ExpressionKind::Cut(Box::new(rhs)),
-            suffix: None,
-            footnote: None,
-        })
+        Ok(self.new_expr(ExpressionKind::Cut(Box::new(rhs))))
     }
 
     fn parse_expr1(&mut self) -> Result<Option<Expression>> {
@@ -283,11 +285,10 @@ impl Parser<'_> {
         let suffix = self.parse_suffix()?;
         let footnote = self.parse_footnote()?;
 
-        Ok(Some(Expression {
-            kind,
-            suffix,
-            footnote,
-        }))
+        let mut expr = self.new_expr(kind);
+        expr.suffix = suffix;
+        expr.footnote = footnote;
+        Ok(Some(expr))
     }
 
     fn parse_nonterminal(&mut self) -> Option<ExpressionKind> {
@@ -326,7 +327,7 @@ impl Parser<'_> {
             let Some(ch) = self.parse_characters()? else {
                 break;
             };
-            characters.push(ch);
+            characters.push(self.new_expr(ch));
         }
         if characters.is_empty() {
             bail!(self, "expected at least one character in character group");
@@ -338,24 +339,24 @@ impl Parser<'_> {
 
     /// Parse an element of a character class, e.g.
     /// `` `a`-`b` `` | `` `term` `` | `` NonTerminal ``.
-    fn parse_characters(&mut self) -> Result<Option<Characters>> {
+    fn parse_characters(&mut self) -> Result<Option<ExpressionKind>> {
         if let Some(a) = self.parse_character()? {
             if self.take_str("-") {
                 let Some(b) = self.parse_character()? else {
                     bail!(self, "expected character in range");
                 };
-                Ok(Some(Characters::Range(a, b)))
+                Ok(Some(ExpressionKind::CharacterRange(a, b)))
             } else {
                 //~^ Parse terminal in backticks.
                 let t = match a {
                     Character::Char(ch) => ch.to_string(),
                     Character::Unicode(_) => bail!(self, "unicode not supported"),
                 };
-                Ok(Some(Characters::Terminal(t)))
+                Ok(Some(ExpressionKind::Terminal(t)))
             }
         } else if let Some(name) = self.parse_name() {
             //~^ Parse nonterminal identifier.
-            Ok(Some(Characters::Named(name)))
+            Ok(Some(ExpressionKind::Nt(name)))
         } else {
             Ok(None)
         }
@@ -412,7 +413,8 @@ impl Parser<'_> {
                 self.error("expected a charset, terminal, or name after ~ negation".to_string())
             })?,
         };
-        Ok(ExpressionKind::NegExpression(box_kind(kind)))
+        let inner_expr = self.new_expr(kind);
+        Ok(ExpressionKind::NegExpression(Box::new(inner_expr)))
     }
 
     fn parse_negative_lookahead(&mut self) -> Result<ExpressionKind> {
@@ -453,19 +455,22 @@ impl Parser<'_> {
     /// Parse `?` after expression.
     fn parse_optional(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("?", "expected `?`")?;
-        Ok(ExpressionKind::Optional(box_kind(kind)))
+        let inner_expr = self.new_expr(kind);
+        Ok(ExpressionKind::Optional(Box::new(inner_expr)))
     }
 
     /// Parse `*` after expression.
     fn parse_repeat(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("*", "expected `*`")?;
-        Ok(ExpressionKind::Repeat(box_kind(kind)))
+        let inner_expr = self.new_expr(kind);
+        Ok(ExpressionKind::Repeat(Box::new(inner_expr)))
     }
 
     /// Parse `+` after expression.
     fn parse_repeat_plus(&mut self, kind: ExpressionKind) -> Result<ExpressionKind> {
         self.expect("+", "expected `+`")?;
-        Ok(ExpressionKind::RepeatPlus(box_kind(kind)))
+        let inner_expr = self.new_expr(kind);
+        Ok(ExpressionKind::RepeatPlus(Box::new(inner_expr)))
     }
 
     /// Parse `{a..b}` | `{a..=b}` | `{name:a..=b}` | `{name}` after expression.
@@ -481,7 +486,8 @@ impl Parser<'_> {
             }
             (Some(name), Some(b'}')) => {
                 self.index += 1;
-                return Ok(ExpressionKind::RepeatRangeNamed(box_kind(kind), name));
+                let inner_expr = self.new_expr(kind);
+                return Ok(ExpressionKind::RepeatRangeNamed(Box::new(inner_expr), name));
             }
             _ => {
                 self.index = start;
@@ -516,8 +522,9 @@ impl Parser<'_> {
             _ => {}
         }
         self.expect("}", "expected `}`")?;
+        let inner_expr = self.new_expr(kind);
         Ok(ExpressionKind::RepeatRange {
-            expr: box_kind(kind),
+            expr: Box::new(inner_expr),
             name,
             min,
             max,
@@ -568,14 +575,6 @@ impl Parser<'_> {
     }
 }
 
-fn box_kind(kind: ExpressionKind) -> Box<Expression> {
-    Box::new(Expression {
-        kind,
-        suffix: None,
-        footnote: None,
-    })
-}
-
 /// Helper to translate a byte index to a `(line, line_no, col_no)` (1-based).
 fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
     if input.is_empty() {
@@ -600,7 +599,7 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
 #[cfg(test)]
 mod tests {
     use crate::parser::{parse_grammar, translate_position};
-    use crate::{Character, Characters, ExpressionKind, Grammar, RangeLimit};
+    use crate::{Character, ExpressionKind, Grammar, RangeLimit};
     use std::path::Path;
 
     #[test]
@@ -851,8 +850,8 @@ mod tests {
             panic!("expected Charset inside lookahead, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 2);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "e"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "E"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "e"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "E"));
     }
 
     #[test]
@@ -1004,7 +1003,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));
@@ -1023,7 +1022,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
@@ -1039,7 +1038,7 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Char(ch) if *ch == 'a'));
@@ -1058,12 +1057,12 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 2);
-        let Characters::Range(a1, b1) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a1, b1) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a1, Character::Unicode((ch, _)) if *ch == '\0'));
         assert!(matches!(b1, Character::Unicode((ch, _)) if *ch == '\u{D7FF}'));
-        let Characters::Range(a2, b2) = &chars[1] else {
+        let ExpressionKind::CharacterRange(a2, b2) = &chars[1].kind else {
             panic!("expected Range, got {:?}", chars[1]);
         };
         assert!(matches!(a2, Character::Unicode((ch, _)) if *ch == '\u{E000}'));
@@ -1079,9 +1078,9 @@ mod tests {
             panic!("expected Charset, got {:?}", rule.expression.kind);
         };
         assert_eq!(chars.len(), 3);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "a"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "b"));
-        assert!(matches!(&chars[2], Characters::Named(n) if n == "Foo"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "a"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "b"));
+        assert!(matches!(&chars[2].kind, ExpressionKind::Nt(n) if n == "Foo"));
     }
 
     // --- Negative lookahead combined with charset ---
@@ -1103,9 +1102,9 @@ mod tests {
             panic!("expected Charset, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 3);
-        assert!(matches!(&chars[0], Characters::Terminal(t) if t == "x"));
-        assert!(matches!(&chars[1], Characters::Terminal(t) if t == "y"));
-        assert!(matches!(&chars[2], Characters::Named(n) if n == "LF"));
+        assert!(matches!(&chars[0].kind, ExpressionKind::Terminal(t) if t == "x"));
+        assert!(matches!(&chars[1].kind, ExpressionKind::Terminal(t) if t == "y"));
+        assert!(matches!(&chars[2].kind, ExpressionKind::Nt(n) if n == "LF"));
     }
 
     // --- Negative lookahead combined with Unicode ---
@@ -1125,7 +1124,7 @@ mod tests {
             panic!("expected Charset, got {:?}", inner.kind);
         };
         assert_eq!(chars.len(), 1);
-        let Characters::Range(a, b) = &chars[0] else {
+        let ExpressionKind::CharacterRange(a, b) = &chars[0].kind else {
             panic!("expected Range, got {:?}", chars[0]);
         };
         assert!(matches!(a, Character::Unicode((ch, _)) if *ch == '\0'));

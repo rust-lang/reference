@@ -97,6 +97,22 @@ jobs:
       run: |
         rustup --version
         rustc -Vv
+
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Update rustup
+      run: rustup self update
+    - name: Install Rust nightly
+      run: |
+        rustup set profile minimal
+        rustup toolchain install nightly -c rustc-dev -c llvm-tools
+        rustup default nightly
+    - name: Report versions
+      run: |
+        rustup --version
+        rustc -Vv
     - name: Verify tools workspace lockfile is current
       run: cargo update -p mdbook-spec --locked
     - name: Test tools
@@ -165,6 +181,7 @@ jobs:
       - code-tests
       - style-tests
       - mdbook-spec
+      - tools
       - dev-guide
       # preview is explicitly excluded here since it doesn't run on merge
     runs-on: ubuntu-latest

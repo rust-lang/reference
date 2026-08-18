@@ -3,7 +3,7 @@
 use super::RenderCtx;
 use crate::grammar::Grammar;
 use anyhow::bail;
-use grammar::{Character, Characters, Expression, ExpressionKind, Production};
+use grammar::{Character, Expression, ExpressionKind, Production};
 use regex::Regex;
 use std::borrow::Cow;
 use std::fmt::Write;
@@ -61,35 +61,12 @@ fn render_production(prod: &Production, cx: &RenderCtx, output: &mut String) {
     output.push('\n');
 }
 
-/// Returns the last [`ExpressionKind`] of this expression.
-fn last_expr(expr: &Expression) -> &ExpressionKind {
-    match &expr.kind {
-        ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => last_expr(es.last().unwrap()),
-        ExpressionKind::Cut(e) => last_expr(e),
-        ExpressionKind::Grouped(_)
-        | ExpressionKind::Optional(_)
-        | ExpressionKind::NegativeLookahead(_)
-        | ExpressionKind::Repeat(_)
-        | ExpressionKind::RepeatPlus(_)
-        | ExpressionKind::RepeatRange { .. }
-        | ExpressionKind::RepeatRangeNamed(_, _)
-        | ExpressionKind::Nt(_)
-        | ExpressionKind::Terminal(_)
-        | ExpressionKind::Prose(_)
-        | ExpressionKind::Break(_)
-        | ExpressionKind::Comment(_)
-        | ExpressionKind::Charset(_)
-        | ExpressionKind::NegExpression(_)
-        | ExpressionKind::Unicode(_) => &expr.kind,
-    }
-}
-
 fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
     match &expr.kind {
         ExpressionKind::Grouped(e) => {
             output.push_str("( ");
             render_expression(e, cx, output);
-            if !matches!(last_expr(e), ExpressionKind::Break(_)) {
+            if !e.last_expr().is_break() {
                 output.push(' ');
             }
             output.push(')');
@@ -99,7 +76,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             while let Some(e) = iter.next() {
                 render_expression(e, cx, output);
                 if iter.peek().is_some() {
-                    if !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                    if !e.last_expr().is_break() {
                         output.push(' ');
                     }
                     output.push_str("| ");
@@ -110,7 +87,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             let mut iter = es.iter().peekable();
             while let Some(e) = iter.next() {
                 render_expression(e, cx, output);
-                if iter.peek().is_some() && !matches!(last_expr(e), ExpressionKind::Break(_)) {
+                if iter.peek().is_some() && !e.last_expr().is_break() {
                     output.push(' ');
                 }
             }
@@ -175,6 +152,20 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
             write!(output, "<span class=\"grammar-comment\">// {s}</span>").unwrap();
         }
         ExpressionKind::Charset(set) => charset_render_markdown(cx, set, output),
+        ExpressionKind::CharacterRange(start, end) => {
+            let write_ch = |ch: &Character, output: &mut String| match ch {
+                Character::Char(ch) => write!(
+                    output,
+                    "<span class=\"grammar-literal\">{}</span>",
+                    markdown_escape(&ch.to_string())
+                )
+                .unwrap(),
+                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
+            };
+            write_ch(start, output);
+            output.push('-');
+            write_ch(end, output);
+        }
         ExpressionKind::NegExpression(e) => {
             output.push('~');
             render_expression(e, cx, output);
@@ -200,45 +191,16 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, output: &mut String) {
     }
 }
 
-fn charset_render_markdown(cx: &RenderCtx, set: &[Characters], output: &mut String) {
+fn charset_render_markdown(cx: &RenderCtx, set: &[Expression], output: &mut String) {
     output.push_str("\\[");
     let mut iter = set.iter().peekable();
-    while let Some(chars) = iter.next() {
-        render_characters(chars, cx, output);
+    while let Some(expr) = iter.next() {
+        render_expression(expr, cx, output);
         if iter.peek().is_some() {
             output.push(' ');
         }
     }
     output.push(']');
-}
-
-fn render_characters(chars: &Characters, cx: &RenderCtx, output: &mut String) {
-    match chars {
-        Characters::Named(s) => {
-            let dest = cx.md_link_map.get(s).map_or("missing", |d| d.as_str());
-            write!(output, "[{s}]({dest})").unwrap();
-        }
-        Characters::Terminal(s) => write!(
-            output,
-            "<span class=\"grammar-literal\">{}</span>",
-            markdown_escape(s)
-        )
-        .unwrap(),
-        Characters::Range(a, b) => {
-            let write_ch = |ch: &Character, output: &mut String| match ch {
-                Character::Char(ch) => write!(
-                    output,
-                    "<span class=\"grammar-literal\">{}</span>",
-                    markdown_escape(&ch.to_string())
-                )
-                .unwrap(),
-                Character::Unicode((_, s)) => write!(output, "U+{s}").unwrap(),
-            };
-            write_ch(a, output);
-            output.push('-');
-            write_ch(b, output);
-        }
-    }
 }
 
 /// Escapes characters that markdown would otherwise interpret.
@@ -266,7 +228,7 @@ mod tests {
     /// Renders a single expression to a markdown string.
     fn render(kind: ExpressionKind) -> String {
         let cx = test_cx();
-        let expr = Expression::new_kind(kind);
+        let expr = Expression::new_kind(kind, 0);
         let mut output = String::new();
         render_expression(&expr, &cx, &mut output);
         output
@@ -277,7 +239,7 @@ mod tests {
     #[test]
     fn lookahead_nonterminal() {
         let result = render(ExpressionKind::NegativeLookahead(Box::new(
-            Expression::new_kind(ExpressionKind::Nt("CHAR".to_string())),
+            Expression::new_kind(ExpressionKind::Nt("CHAR".to_string()), 0),
         )));
         assert!(result.contains("!"), "should contain `!` prefix");
         assert!(
@@ -289,7 +251,7 @@ mod tests {
     #[test]
     fn lookahead_terminal() {
         let result = render(ExpressionKind::NegativeLookahead(Box::new(
-            Expression::new_kind(ExpressionKind::Terminal("'".to_string())),
+            Expression::new_kind(ExpressionKind::Terminal("'".to_string()), 0),
         )));
         assert!(result.starts_with("!"), "should start with `!`");
         assert!(
@@ -301,10 +263,13 @@ mod tests {
     #[test]
     fn lookahead_charset() {
         let result = render(ExpressionKind::NegativeLookahead(Box::new(
-            Expression::new_kind(ExpressionKind::Charset(vec![
-                Characters::Terminal("e".to_string()),
-                Characters::Terminal("E".to_string()),
-            ])),
+            Expression::new_kind(
+                ExpressionKind::Charset(vec![
+                    Expression::new_kind(ExpressionKind::Terminal("e".to_string()), 0),
+                    Expression::new_kind(ExpressionKind::Terminal("E".to_string()), 0),
+                ]),
+                0,
+            ),
         )));
         assert!(result.starts_with("!"), "should start with `!`");
         assert!(
@@ -316,13 +281,15 @@ mod tests {
     #[test]
     fn lookahead_grouped() {
         // !( `.` | `_` )
-        let inner =
-            ExpressionKind::Grouped(Box::new(Expression::new_kind(ExpressionKind::Alt(vec![
-                Expression::new_kind(ExpressionKind::Terminal(".".to_string())),
-                Expression::new_kind(ExpressionKind::Terminal("_".to_string())),
-            ]))));
+        let inner = ExpressionKind::Grouped(Box::new(Expression::new_kind(
+            ExpressionKind::Alt(vec![
+                Expression::new_kind(ExpressionKind::Terminal(".".to_string()), 0),
+                Expression::new_kind(ExpressionKind::Terminal("_".to_string()), 0),
+            ]),
+            0,
+        )));
         let result = render(ExpressionKind::NegativeLookahead(Box::new(
-            Expression::new_kind(inner),
+            Expression::new_kind(inner, 0),
         )));
         assert!(result.starts_with("!("));
         assert!(result.contains("|"));
@@ -349,9 +316,12 @@ mod tests {
 
     #[test]
     fn charset_unicode_range() {
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Unicode(('\0', "0000".to_string())),
-            Character::Unicode(('\u{007F}', "007F".to_string())),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(
+                Character::Unicode(('\0', "0000".to_string())),
+                Character::Unicode(('\u{007F}', "007F".to_string())),
+            ),
+            0,
         )]));
         assert!(result.contains("\\["));
         assert!(result.contains("U+0000"));
@@ -361,9 +331,9 @@ mod tests {
 
     #[test]
     fn charset_char_range() {
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Char('a'),
-            Character::Char('z'),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(Character::Char('a'), Character::Char('z')),
+            0,
         )]));
         assert!(result.contains("\\["));
         assert!(result.contains("grammar-literal"));
@@ -373,9 +343,12 @@ mod tests {
     #[test]
     fn charset_mixed_range() {
         // [`a`-U+007A]
-        let result = render(ExpressionKind::Charset(vec![Characters::Range(
-            Character::Char('a'),
-            Character::Unicode(('\u{007A}', "007A".to_string())),
+        let result = render(ExpressionKind::Charset(vec![Expression::new_kind(
+            ExpressionKind::CharacterRange(
+                Character::Char('a'),
+                Character::Unicode(('\u{007A}', "007A".to_string())),
+            ),
+            0,
         )]));
         assert!(result.contains("grammar-literal"));
         assert!(result.contains("U+007A"));
@@ -388,6 +361,7 @@ mod tests {
     fn cut_rendering() {
         let result = render(ExpressionKind::Cut(Box::new(Expression::new_kind(
             ExpressionKind::Nt("Foo".to_string()),
+            0,
         ))));
         assert!(result.starts_with("^ "), "cut should render as `^ ` prefix");
         assert!(result.contains("Foo"));
@@ -398,9 +372,13 @@ mod tests {
     #[test]
     fn neg_expression_rendering() {
         let result = render(ExpressionKind::NegExpression(Box::new(
-            Expression::new_kind(ExpressionKind::Charset(vec![Characters::Terminal(
-                "a".to_string(),
-            )])),
+            Expression::new_kind(
+                ExpressionKind::Charset(vec![Expression::new_kind(
+                    ExpressionKind::Terminal("a".to_string()),
+                    0,
+                )]),
+                0,
+            ),
         )));
         assert!(
             result.starts_with("~"),
@@ -432,7 +410,7 @@ mod tests {
     fn repeat_range_with_name() {
         // A RepeatRange with a name renders as `<sup>n:1..=255</sup>`.
         let result = render(ExpressionKind::RepeatRange {
-            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()))),
+            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()), 0)),
             name: Some("n".to_string()),
             min: Some(1),
             max: Some(255),
@@ -449,7 +427,7 @@ mod tests {
         // A RepeatRange without a name renders with no spurious
         // colon -- just `<sup>2..5</sup>`.
         let result = render(ExpressionKind::RepeatRange {
-            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()))),
+            expr: Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()), 0)),
             name: None,
             min: Some(2),
             max: Some(5),
@@ -469,7 +447,7 @@ mod tests {
     fn repeat_range_named_reference() {
         // A RepeatRangeNamed renders as `<sup>n</sup>`.
         let result = render(ExpressionKind::RepeatRangeNamed(
-            Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()))),
+            Box::new(Expression::new_kind(ExpressionKind::Nt("x".to_string()), 0)),
             "n".to_string(),
         ));
         assert!(

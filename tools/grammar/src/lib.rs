@@ -8,13 +8,19 @@ use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use walkdir::WalkDir;
 
+mod display;
+mod frontmatter;
 mod parser;
+
+pub use frontmatter::load_grammar_with_frontmatter;
 
 #[derive(Debug, Default)]
 pub struct Grammar {
     pub productions: HashMap<String, Production>,
     /// The order that the production names were discovered.
     pub name_order: Vec<String>,
+    /// Counter for generating unique expression IDs.
+    pub next_id: u32,
 }
 
 #[derive(Debug)]
@@ -39,6 +45,8 @@ pub struct Expression {
     pub suffix: Option<String>,
     /// A footnote is a markdown footnote link.
     pub footnote: Option<String>,
+    /// Unique ID of the expression.
+    pub id: u32,
 }
 
 #[derive(Clone, Debug)]
@@ -80,12 +88,21 @@ pub enum ExpressionKind {
     /// `// Single line comment.`
     Comment(String),
     /// ``[`A`-`Z` `_` LF]``
-    Charset(Vec<Characters>),
+    ///
+    /// This should only contain expressions that are valid inside brackets
+    /// (`Terminal`, `Nt`, and `CharacterRange`).
+    Charset(Vec<Expression>),
+    /// `` `A`-`Z` `` used in a character set.
+    ///
+    /// This should only appear inside a `Charset`.
+    CharacterRange(Character, Character),
     /// ``~[` ` LF]``
     NegExpression(Box<Expression>),
     /// `^ A B C`
     Cut(Box<Expression>),
     /// `U+0060`
+    ///
+    /// The `String` is the hex digits after `U+`.
     Unicode((char, String)),
 }
 
@@ -105,16 +122,6 @@ impl Display for RangeLimit {
         }
         .fmt(f)
     }
-}
-
-#[derive(Clone, Debug)]
-pub enum Characters {
-    /// `LF`
-    Named(String),
-    /// `` `_` ``
-    Terminal(String),
-    /// `` `A`-`Z` ``
-    Range(Character, Character),
 }
 
 #[derive(Clone, Debug)]
@@ -145,6 +152,19 @@ impl Display for Character {
 }
 
 impl Grammar {
+    pub fn grammar_from_str(input: &str, category: &str) -> Result<Grammar, parser::Error> {
+        let mut grammar = Grammar::default();
+        parser::parse_grammar(input, &mut grammar, category, Path::new(""))?;
+        Ok(grammar)
+    }
+
+    /// Generates a new unique expression ID.
+    pub fn next_id(&mut self) -> u32 {
+        let id = self.next_id;
+        self.next_id += 1;
+        id
+    }
+
     fn visit_nt(&self, callback: &mut dyn FnMut(&str)) {
         for p in self.productions.values() {
             p.expression.visit_nt(callback);
@@ -153,11 +173,12 @@ impl Grammar {
 }
 
 impl Expression {
-    pub fn new_kind(kind: ExpressionKind) -> Self {
+    pub fn new_kind(kind: ExpressionKind, id: u32) -> Self {
         Self {
             kind,
             suffix: None,
             footnote: None,
+            id,
         }
     }
 
@@ -174,32 +195,60 @@ impl Expression {
             | ExpressionKind::Cut(e) => {
                 e.visit_nt(callback);
             }
-            ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => {
+            ExpressionKind::Alt(es)
+            | ExpressionKind::Sequence(es)
+            | ExpressionKind::Charset(es) => {
                 for e in es {
                     e.visit_nt(callback);
                 }
             }
+
             ExpressionKind::Nt(nt) => {
-                callback(&nt);
+                callback(nt);
             }
             ExpressionKind::Terminal(_)
             | ExpressionKind::Prose(_)
             | ExpressionKind::Break(_)
             | ExpressionKind::Comment(_)
-            | ExpressionKind::Unicode(_) => {}
-            ExpressionKind::Charset(set) => {
-                for ch in set {
-                    match ch {
-                        Characters::Named(s) => callback(s),
-                        Characters::Terminal(_) | Characters::Range(_, _) => {}
-                    }
-                }
-            }
+            | ExpressionKind::Unicode(_)
+            | ExpressionKind::CharacterRange(..) => {}
         }
     }
 
     pub fn is_break(&self) -> bool {
-        matches!(self.kind, ExpressionKind::Break(_))
+        self.kind.is_break()
+    }
+
+    /// Returns the last [`ExpressionKind`] of this expression.
+    pub fn last_expr(&self) -> &ExpressionKind {
+        match &self.kind {
+            ExpressionKind::Alt(es) | ExpressionKind::Sequence(es) => {
+                es.last().unwrap().last_expr()
+            }
+            ExpressionKind::Cut(e) => e.last_expr(),
+            ExpressionKind::Grouped(_)
+            | ExpressionKind::Optional(_)
+            | ExpressionKind::NegativeLookahead(_)
+            | ExpressionKind::Repeat(_)
+            | ExpressionKind::RepeatPlus(_)
+            | ExpressionKind::RepeatRange { .. }
+            | ExpressionKind::RepeatRangeNamed(_, _)
+            | ExpressionKind::Nt(_)
+            | ExpressionKind::Terminal(_)
+            | ExpressionKind::Prose(_)
+            | ExpressionKind::Break(_)
+            | ExpressionKind::Comment(_)
+            | ExpressionKind::Charset(_)
+            | ExpressionKind::CharacterRange(_, _)
+            | ExpressionKind::NegExpression(_)
+            | ExpressionKind::Unicode(_) => &self.kind,
+        }
+    }
+}
+
+impl ExpressionKind {
+    pub fn is_break(&self) -> bool {
+        matches!(self, ExpressionKind::Break(_))
     }
 }
 
@@ -274,7 +323,8 @@ fn check_unexpected_roots(grammar: &Grammar, diag: &mut Diagnostics) {
     let expected: HashSet<_> = grammar
         .productions
         .values()
-        .filter_map(|p| p.is_root.then(|| p.name.as_str()))
+        .filter(|&p| p.is_root)
+        .map(|p| p.name.as_str())
         .collect();
     if set != expected {
         let new: Vec<_> = set.difference(&expected).collect();

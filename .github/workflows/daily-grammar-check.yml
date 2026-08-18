@@ -1,0 +1,70 @@
+name: Daily Grammar Check
+on:
+  schedule:
+    # Run at 4am UTC every day
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  grammar-check:
+    if: github.repository == 'rust-lang/reference'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout reference repository
+      uses: actions/checkout@v7
+
+    - name: Checkout rust-lang/rust (shallow clone)
+      uses: actions/checkout@v7
+      with:
+        repository: rust-lang/rust
+        path: rust
+        fetch-depth: 1
+
+    - name: Update rustup
+      run: rustup self update
+
+    - name: Install Rust nightly
+      run: |
+        rustup set profile minimal
+        rustup toolchain install nightly -c rustc-dev -c llvm-tools
+        rustup default nightly
+
+    - name: Report versions
+      run: |
+        rustup --version
+        rustc -Vv
+
+    - name: Run grammar check
+      id: grammar-check
+      continue-on-error: true
+      run: |
+        cargo run --release -p grammar-check -- lex-compare --path rust
+        cargo run --release -p grammar-check -- lex-compare --permute Token
+
+    - name: Check for existing open issues
+      if: steps.grammar-check.outcome == 'failure'
+      id: check-issues
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        # Check if there's already an open issue with the label 'daily-grammar-check'
+        ISSUE_COUNT=$(gh issue list --label "daily-grammar-check" --state open --json number --jq 'length')
+        echo "open_issues=$ISSUE_COUNT" >> $GITHUB_OUTPUT
+
+    - name: Create issue on failure
+      if: steps.grammar-check.outcome == 'failure' && steps.check-issues.outputs.open_issues == '0'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh issue create \
+          --title "Daily Grammar Check Failed - $(date +%Y-%m-%d)" \
+          --label "daily-grammar-check" \
+          --body "The daily grammar check failed on $(date +%Y-%m-%d).
+        
+        **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        
+        **Command:** \`cargo run --release -p grammar-check -- lex-compare --path rust/tests\`
+        
+        Please investigate the failure and update the reference as needed.
+        
+        This issue was automatically created by the daily grammar check workflow."
