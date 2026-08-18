@@ -17,7 +17,7 @@ LINE_COMMENT ->
     | `//` _immediately followed by LF_
 
 BLOCK_COMMENT ->
-    `/*` ^
+    `/*` !(`!` | `*` ![`*` `/`]) ^
       ( BLOCK_COMMENT_OR_DOC | (!`*/` CHAR) )*
     `*/`
 
@@ -35,7 +35,7 @@ OUTER_LINE_DOC ->
 OUTER_BLOCK_DOC ->
     `/**` ![`*` `/`]
       ^
-      ( ~`*` | BLOCK_COMMENT_OR_DOC )
+      ( ~[`*` CR] | BLOCK_COMMENT_OR_DOC )
       ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )*
     `*/`
 

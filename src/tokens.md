@@ -179,7 +179,7 @@ STRING_LITERAL ->
       | STRING_CONTINUE
     )* `"` SUFFIX?
 
-STRING_CONTINUE -> `\` LF
+STRING_CONTINUE -> `\` LF [TAB LF CR SP]*
 ```
 
 r[lex.token.literal.str.intro]
