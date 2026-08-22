@@ -114,8 +114,8 @@ r[items.enum.discriminant]
 r[items.enum.discriminant.intro]
 Each enum instance has a _discriminant_: an integer logically associated to it that is used to determine which variant it holds.
 
-r[items.enum.discriminant.repr-rust]
-Under the [`Rust` representation], the discriminant is interpreted as an `isize` value. However, the compiler is allowed to use a smaller type (or another means of distinguishing variants) in its actual memory layout.
+r[items.enum.discriminant.type]
+Enums without a [primitive representation] have discriminants of type `isize`. However, the compiler may use a smaller type (or another means of distinguishing variants) in the actual memory layout.
 
 ### Assigning discriminant values
 
@@ -357,7 +357,6 @@ enum E {
 [numeric cast]: ../expressions/operator-expr.md#semantics
 [path expression]: ../expressions/path-expr.md
 [primitive representation]: ../type-layout.md#primitive-representations
-[`Rust` representation]: ../type-layout.md#the-rust-representation
 [struct expression]: ../expressions/struct-expr.md
 [struct]: structs.md
 [type namespace]: ../names/namespaces.md

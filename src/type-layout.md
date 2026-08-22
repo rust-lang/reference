@@ -367,7 +367,14 @@ assert_eq!(std::mem::offset_of!(SizeRoundedUp, b), 0);
 r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
-For [field-less enums], the `C` representation requires the discriminant values to either all be representable by the `int` type in the target platform's C ABI, or to all be representable by the `unsigned int` type. Nevertheless, the type of the discriminant is `isize`. The size and alignment of the enum then match that of a C enum with the same discriminant values (and without a fixed underlying type). Crucially, the equivalent C type is determined based on the discriminant values *after* they have been cast to `isize`.
+r[layout.repr.c.enum.discriminant]
+For a [field-less enum] with the `C` representation, the discriminant values must either all be representable by the `int` type in the target platform's C ABI or all be representable by its `unsigned int` type.
+
+> [!NOTE]
+> `repr(C)` enums without a primitive representation have discriminant values of type `isize`. See [items.enum.discriminant.type]. The size and alignment are determined from the discriminant values (according to the rule below) *after* they have been cast to `isize`.
+
+r[layout.repr.c.enum.size-align]
+A [field-less enum] with the `C` representation has the same size and alignment as a C enum with the same discriminant values and no fixed underlying type.
 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
@@ -643,6 +650,7 @@ Because this representation delegates type layout to another type, it cannot be 
 [`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
 [enums]: items/enumerations.md
+[field-less enum]: items.enum.fieldless
 [field-less enums]: items/enumerations.md#field-less-enum
 [field-struct-like variant]: EnumVariantStruct
 [fn-abi-compatibility]: ../core/primitive.fn.md#abi-compatibility
