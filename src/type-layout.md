@@ -463,7 +463,10 @@ Primitive representations can only be applied to enumerations and have different
 r[layout.repr.primitive.enum]
 #### Primitive representation of field-less enums
 
-For [field-less enums], primitive representations set the type of the discriminants to the primitive type of the same name. Furthermore, the enum's size and alignment are guaranteed to match that type. For example, a field-less enum with a `u8` representation has discriminants of type `u8` and hence can only have discriminants between 0 and 255 inclusive.
+A [field-less enum] with a primitive representation has the same size and alignment as the primitive type of the same name.
+
+> [!NOTE]
+> Enums with a primitive representation have discriminant values of the type named by the representation. See [items.enum.discriminant.type-primitive].
 
 r[layout.repr.primitive.adt]
 #### Primitive representation of enums with fields

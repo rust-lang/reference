@@ -117,6 +117,9 @@ Each enum instance has a _discriminant_: an integer logically associated to it t
 r[items.enum.discriminant.type]
 Enums without a [primitive representation] have discriminants of type `isize`. However, the compiler may use a smaller type (or another means of distinguishing variants) in the actual memory layout.
 
+r[items.enum.discriminant.type-primitive]
+Enums with a [primitive representation] have discriminants of the type named by the representation. This also applies to enums that combine the `C` representation with a primitive representation (see [layout.repr.primitive-c]). For example, an enum with a `u8` representation can only have discriminant values between 0 and 255 inclusive.
+
 ### Assigning discriminant values
 
 r[items.enum.discriminant.explicit]
