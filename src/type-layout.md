@@ -373,6 +373,9 @@ For a [field-less enum] with the `C` representation, the discriminant values mus
 > [!NOTE]
 > `repr(C)` enums without a primitive representation have discriminant values of type `isize`. See [items.enum.discriminant.type]. The size and alignment are determined from the discriminant values (according to the rule below) *after* they have been cast to `isize`.
 
+> [!NOTE]
+> `rustc` accepts enums whose discriminant values do not meet this requirement but lints against them. This will become an error in the future.
+
 r[layout.repr.c.enum.size-align]
 A [field-less enum] with the `C` representation has the same size and alignment as a C enum with the same discriminant values and no fixed underlying type.
 
