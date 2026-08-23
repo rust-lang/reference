@@ -382,7 +382,7 @@ A [field-less enum] with the `C` representation has the same size and alignment 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
 >
-> For maximum portability, it is always preferred to set the size and alignment explicitly using a [primitive representation](#r-layout.repr.primitive.enum) on the Rust side, and a fixed underlying type on the C side.
+> For maximum portability, it is always preferred to set the size and alignment explicitly using a [primitive representation] on the Rust side, and a fixed underlying type on the C side.
 
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
