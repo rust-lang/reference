@@ -145,10 +145,13 @@ r[undefined.validity.struct]
 * A `struct`, tuple, and array requires all fields/elements to be valid at their respective type.
 
 r[undefined.validity.union]
-* For a `union`, the exact validity requirements are not decided yet. Obviously, all values that can be created entirely in safe code are valid. If the union has a [zero-sized] field, then every possible value is valid. Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
+* For a `union`, there are no validity requirements. All byte sequences are valid union values.
 
 r[undefined.validity.reference-box]
-* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of some debate.
+* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and the pointee type `T` must be *inhabited*.
+
+  The exact classification of inhabited types is unspecified, similar to the size and alignment of types.
+  However, types that can be constructed from safe code are definitely inhabited.
 
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
@@ -195,8 +198,11 @@ r[undefined.validity.const-provenance]
   > };
   > ```
 
-r[undefined.validity.undef]
-**Note:** Uninitialized memory is also implicitly invalid for any type that has a restricted set of valid values. In other words, the only cases in which reading uninitialized memory is permitted are inside `union`s and in "padding" (the gaps between the fields of a type).
+> [!NOTE]
+> The definition above implies that uninitialized memory is invalid everywhere except inside `union`s and in "padding" (the gaps between the fields of a type).
+
+> [!WARNING]
+> Just because a value is *valid* does not mean that it is *safe to use*. A value being *valid* merely means that creating the value does not cause immediate undefined behavior; such UB can still be caused later, even by safe operations. For instance, consider that `&str` pointing to initialized non-UTF8 data is *valid* as defined above, but passing such a value to a safe function can cause undefined behavior. As a more extreme example, consider that `&[u8]` pointing to allocated but uninitialized memory is *valid*, but one can trivially cause UB simply by accessing an element of the slice. Generally, only values you can construct in safe code are *safe to use*.
 
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
