@@ -152,6 +152,8 @@ r[undefined.validity.reference-box]
 
   The exact classification of inhabited types is unspecified, similar to the size and alignment of types.
   However, types that can be constructed from safe code are definitely inhabited.
+  For unsized types, this check considers dynamic information from the metadata:
+  In particular, if `T` has an unsized tail of slice type `[U]`, and if `U` is uninhabited, and if the length encoded in the metadata is non-zero, then the pointee is uninhabited.
 
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
