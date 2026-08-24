@@ -75,7 +75,7 @@ r[items.extern.static.read-only]
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for the static to be initialized before Rust code reads from it. Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB, except if the mutation happens to bytes inside of an `UnsafeCell`.
 
 r[items.extern.static.size]
-The actual memory that the extern static resolves to must have *at least* the size and alignment of the type that it was declared with in the extern block.
+The actual memory that the extern static resolves to [must have][extern-static-ub] *at least* the size and alignment of the type that it was declared with in the extern block.
 If the actual memory is bigger, then it is permitted to access that extra memory.
 
 r[items.extern.abi]
@@ -470,6 +470,7 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
 [attributes]: ../attributes.md
+[extern-static-ub]: ../behavior-considered-undefined.md#r-undefined.extern-static
 [functions]: functions.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [statics]: static-items.md

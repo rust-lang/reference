@@ -61,6 +61,9 @@ r[undefined.invalid]
 r[undefined.asm]
 * Incorrect use of inline assembly. For more details, refer to the [rules] to follow when writing code that uses inline assembly.
 
+r[undefined.extern-static]
+* Declaring an `extern static` with some size/alignment/mutability, when the actual symbol this resolves to is smaller / less aligned / less mutable.
+
 r[undefined.runtime]
 * Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
   * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
