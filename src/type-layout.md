@@ -192,6 +192,35 @@ r[layout.repr.rust.enum-empty-zst]
 r[layout.repr.rust.enum-struct-like-zst]
 For [enums] (without a [primitive representation] specified) with a single [field-struct-like variant], a single [unit-struct-like variant], or a single [tuple-struct-like variant] and where the struct-like thing has no fields or where all of the fields are [zero sized], the enums themselves are [zero sized].
 
+```rust
+# use core::mem::size_of;
+enum E1 {
+    V {},
+}
+
+enum E2 {
+    V { f: () },
+}
+
+enum E3 {
+    V,
+}
+
+enum E4 {
+    V(),
+}
+
+enum E5 {
+    V(()),
+}
+
+assert_eq!(size_of::<E1>(), 0);
+assert_eq!(size_of::<E2>(), 0);
+assert_eq!(size_of::<E3>(), 0);
+assert_eq!(size_of::<E4>(), 0);
+assert_eq!(size_of::<E5>(), 0);
+```
+
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
@@ -378,6 +407,22 @@ For a [field-less enum] with the `C` representation, the discriminant values mus
 
 r[layout.repr.c.enum.size-align]
 A [field-less enum] with the `C` representation has the same size and alignment as a C enum with the same discriminant values and no fixed underlying type.
+
+```rust
+# use core::ffi::c_int;
+# use core::mem::{align_of, size_of};
+#[repr(C)]
+enum E {
+    V1,
+    V2,
+}
+
+#[cfg(target_arch = "x86_64")]
+{
+    assert_eq!(size_of::<E>(), size_of::<c_int>());
+    assert_eq!(align_of::<E>(), align_of::<c_int>());
+}
+```
 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
