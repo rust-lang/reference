@@ -192,6 +192,35 @@ r[layout.repr.rust.enum-empty-zst]
 r[layout.repr.rust.enum-struct-like-zst]
 For [enums] (without a [primitive representation] specified) with a single [field-struct-like variant], a single [unit-struct-like variant], or a single [tuple-struct-like variant] and where the struct-like thing has no fields or where all of the fields are [zero sized], the enums themselves are [zero sized].
 
+```rust
+# use core::mem::size_of;
+enum E1 {
+    V {},
+}
+
+enum E2 {
+    V { f: () },
+}
+
+enum E3 {
+    V,
+}
+
+enum E4 {
+    V(),
+}
+
+enum E5 {
+    V(()),
+}
+
+assert_eq!(size_of::<E1>(), 0);
+assert_eq!(size_of::<E2>(), 0);
+assert_eq!(size_of::<E3>(), 0);
+assert_eq!(size_of::<E4>(), 0);
+assert_eq!(size_of::<E5>(), 0);
+```
+
 r[layout.repr.rust.unspecified]
 There are no other guarantees of data layout made by this representation.
 
@@ -367,10 +396,38 @@ assert_eq!(std::mem::offset_of!(SizeRoundedUp, b), 0);
 r[layout.repr.c.enum]
 #### `#[repr(C)]` Field-less Enums
 
-For [field-less enums], the `C` representation has the size and alignment of the default `enum` size and alignment for the target platform's C ABI.
+r[layout.repr.c.enum.discriminant]
+For a [field-less enum] with the `C` representation, the discriminant values must either all be representable by the `int` type in the target platform's C ABI or all be representable by its `unsigned int` type.
+
+> [!NOTE]
+> `repr(C)` enums without a primitive representation have discriminant values of type `isize`. See [items.enum.discriminant.type]. The size and alignment are determined from the discriminant values (according to the rule below) *after* they have been cast to `isize`.
+
+> [!NOTE]
+> `rustc` accepts enums whose discriminant values do not meet this requirement but lints against them. This will become an error in the future.
+
+r[layout.repr.c.enum.size-align]
+A [field-less enum] with the `C` representation has the same size and alignment as a C enum with the same discriminant values and no fixed underlying type.
+
+```rust
+# use core::ffi::c_int;
+# use core::mem::{align_of, size_of};
+#[repr(C)]
+enum E {
+    V1,
+    V2,
+}
+
+#[cfg(target_arch = "x86_64")]
+{
+    assert_eq!(size_of::<E>(), size_of::<c_int>());
+    assert_eq!(align_of::<E>(), align_of::<c_int>());
+}
+```
 
 > [!NOTE]
 > The enum representation in C is implementation defined, so this is really a "best guess". In particular, this may be incorrect when the C code of interest is compiled with certain flags.
+>
+> For maximum portability, prefer setting the size and alignment explicitly using a [primitive representation] on the Rust side and a fixed underlying type (introduced in C23) on the C side.
 
 > [!WARNING]
 > There are crucial differences between an `enum` in the C language and Rust's [field-less enums] with this representation. An `enum` in C is mostly a `typedef` plus some named constants; in other words, an object of an `enum` type can hold any integer value. For example, this is often used for bitflags in `C`. In contrast, Rust’s [field-less enums] can only legally hold the discriminant values, everything else is [undefined behavior]. Therefore, using a field-less enum in FFI to model a C `enum` is often wrong.
@@ -451,7 +508,10 @@ Primitive representations can only be applied to enumerations and have different
 r[layout.repr.primitive.enum]
 #### Primitive representation of field-less enums
 
-For [field-less enums], primitive representations set the size and alignment to be the same as the primitive type of the same name. For example, a field-less enum with a `u8` representation can only have discriminants between 0 and 255 inclusive.
+A [field-less enum] with a primitive representation has the same size and alignment as the primitive type of the same name.
+
+> [!NOTE]
+> Enums with a primitive representation have discriminant values of the type named by the representation. See [items.enum.discriminant.type-primitive].
 
 r[layout.repr.primitive.adt]
 #### Primitive representation of enums with fields
@@ -641,6 +701,7 @@ Because this representation delegates type layout to another type, it cannot be 
 [`Copy`]: std::marker::Copy
 [dynamically sized types]: dynamically-sized-types.md
 [enums]: items/enumerations.md
+[field-less enum]: items.enum.fieldless
 [field-less enums]: items/enumerations.md#field-less-enum
 [field-struct-like variant]: EnumVariantStruct
 [fn-abi-compatibility]: ../core/primitive.fn.md#abi-compatibility
