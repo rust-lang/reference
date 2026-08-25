@@ -448,7 +448,7 @@ r[items.use.restrictions.extern-prelude]
 > ```rust,edition2015
 > use ::{self as root}; //~ OK in the 2015 edition.
 > ```
-> 
+>
 > Starting with the 2018 edition, the `::` prefix refers to the extern prelude, which cannot be directly imported.
 
 r[items.use.restrictions.duplicate-name]
