@@ -115,7 +115,7 @@ r[items.enum.discriminant.intro]
 Each enum instance has a _discriminant_: an integer logically associated to it that is used to determine which variant it holds.
 
 r[items.enum.discriminant.type]
-Enums without a [primitive representation] have discriminants of type `isize`. However, the compiler may use a smaller type (or another means of distinguishing variants) in the actual memory layout.
+Enums without a [primitive representation] have discriminants of type `isize`. However, the compiler may use a smaller type or another means of distinguishing variants in the actual memory layout.
 
 ```rust
 # use core::mem::size_of;
