@@ -16,5 +16,8 @@ Union field types are also restricted to a subset of types which ensures that th
 r[type.union.layout]
 The memory layout of a `union` is undefined by default (in particular, fields do *not* have to be at offset 0), but the `#[repr(...)]` attribute can be used to fix a layout.
 
+r[type.union.safe-construction]
+Although unions have no validity requirements, the values of union types that can be created exclusively in safe contexts are limited. Specifically, safe contexts cannot create values of union types that have uninitialized bytes at an offset where none of the fields permit uninitialized bytes.
+
 [`Copy`]: ../special-types-and-traits.md#copy
 [item]: ../items/unions.md
