@@ -372,6 +372,9 @@ Specifying `kind = "dylib"` instructs the Rust compiler to link an import librar
 r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
 
+r[items.extern.attributes.link.kind-raw-dylib.size]
+Unlike regular external statics, a `raw-dylib` static is *not* allowed to be bigger than its declared size.
+
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
 
