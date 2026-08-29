@@ -84,7 +84,7 @@ r[destructors.scope.match-arm]
 * Each arm of a `match` expression
 
 r[destructors.scope.nesting]
-Drop scopes are nested within one another as follows. When multiple scopes are left at once, such as when returning from a function, variables are dropped from the inside outwards.
+Drop scopes are nested within one another as follows:
 
 r[destructors.scope.nesting-function]
 * The entire function scope is the outer most scope.
@@ -112,6 +112,9 @@ r[destructors.scope.nesting-match]
 
 r[destructors.scope.nesting-other]
 * The parent of all other scopes is the scope of the immediately enclosing expression.
+
+r[destructors.scope.nesting-drop-order]
+When multiple scopes are left at once, such as when returning from a function, variables are dropped from the inside outwards.
 
 r[destructors.scope.params]
 ### Scopes of function parameters
