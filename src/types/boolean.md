@@ -1,11 +1,11 @@
 r[type.bool]
 # Boolean type
 
+r[type.bool.intro]
 ```rust
 let b: bool = true;
 ```
 
-r[type.bool.intro]
 The *boolean type* or *bool* is a primitive data type that can take on one of two values, called *true* and *false*.
 
 r[type.bool.literal]
