@@ -229,9 +229,11 @@ pub fn another_example() {
 r[attributes.diagnostics.lint.group]
 ### Lint groups
 
-Lints may be organized into named groups so that the level of related lints
-can be adjusted together. Using a named group is equivalent to listing out the
-lints within that group.
+r[attributes.diagnostics.lint.group.intro]
+Lints may be organized into named groups so that the level of related lints can be adjusted together.
+
+r[attributes.diagnostics.lint.group.equivalence]
+Using a named group is equivalent to listing out the lints within that group.
 
 ```rust,compile_fail
 // This allows all lints in the "unused" group.
