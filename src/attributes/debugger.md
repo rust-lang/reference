@@ -1,6 +1,7 @@
 r[attributes.debugger]
 # Debugger attributes
 
+r[attributes.debugger.intro]
 The following [attributes] are used for enhancing the debugging experience when using third-party debuggers like GDB or WinDbg.
 
 <!-- template:attributes -->

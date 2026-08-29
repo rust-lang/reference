@@ -73,6 +73,7 @@ Unsafe trait implementations are the logical dual to unsafe traits: where unsafe
 r[unsafe.extern]
 ## Unsafe external blocks (`unsafe extern`)
 
+r[unsafe.extern.intro]
 The programmer who declares an [external block] must assure that the signatures of the items contained within are correct. Failing to do so may lead to undefined behavior.  That this obligation has been met is indicated by writing `unsafe extern`.
 
 r[unsafe.extern.edition2024]

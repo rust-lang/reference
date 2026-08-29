@@ -1,6 +1,7 @@
 r[runtime]
 # The Rust runtime
 
+r[runtime.intro]
 This section documents features that define some aspects of the Rust runtime.
 
 <!-- template:attributes -->

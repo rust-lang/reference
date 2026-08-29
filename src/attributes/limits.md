@@ -1,6 +1,7 @@
 r[attributes.limits]
 # Limits
 
+r[attributes.limits.intro]
 The following [attributes] affect compile-time limits.
 
 r[attributes.limits.recursion_limit]

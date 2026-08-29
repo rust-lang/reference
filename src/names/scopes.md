@@ -34,6 +34,7 @@ Similar to items within a module or block,  it is an error to introduce an item 
 r[names.scopes.pattern-bindings]
 ## Pattern binding scopes
 
+r[names.scopes.pattern-bindings.intro]
 The scope of a local variable [pattern] binding depends on where it is used:
 
 r[names.scopes.pattern-bindings.let]
@@ -144,6 +145,7 @@ trait SomeTrait<'a, T, const N: usize> {
 r[names.scopes.lifetimes]
 ### Lifetime scopes
 
+r[names.scopes.lifetimes.intro]
 Lifetime parameters are declared in a [GenericParams] list and [higher-ranked trait bounds][hrtb].
 
 r[names.scopes.lifetimes.special]

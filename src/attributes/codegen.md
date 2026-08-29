@@ -1,6 +1,7 @@
 r[attributes.codegen]
 # Code generation attributes
 
+r[attributes.codegen.intro]
 The following [attributes] are used for controlling code generation.
 
 <!-- template:attributes -->

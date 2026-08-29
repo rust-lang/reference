@@ -1,6 +1,7 @@
 r[attributes.type-system]
 # Type system attributes
 
+r[attributes.type-system.intro]
 The following [attributes] are used for changing how a type can be used.
 
 r[attributes.type-system.non_exhaustive]

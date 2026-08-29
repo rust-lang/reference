@@ -1,6 +1,7 @@
 r[attributes.testing]
 # Testing attributes
 
+r[attributes.testing.intro]
 The following [attributes] are used for specifying functions for performing
 tests. Compiling a crate in "test" mode enables building the test functions
 along with a test harness for executing the tests. Enabling the test mode also

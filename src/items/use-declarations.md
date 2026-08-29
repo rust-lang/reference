@@ -368,6 +368,7 @@ m!(use std as _;);
 r[items.use.restrictions]
 ## Restrictions
 
+r[items.use.restrictions.intro]
 The following rules are restrictions for valid `use` declarations.
 
 r[items.use.restrictions.crate-alias]

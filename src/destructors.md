@@ -381,6 +381,7 @@ Promotion of a value expression to a `'static` slot occurs when the expression c
 r[destructors.scope.lifetime-extension]
 ### Temporary lifetime extension
 
+r[destructors.scope.lifetime-extension.intro]
 > [!NOTE]
 > The exact rules for temporary lifetime extension are subject to change. This is describing the current behavior only.
 

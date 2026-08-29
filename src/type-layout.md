@@ -12,6 +12,7 @@ Note that even types with the same layout can still differ in how they are passe
 r[layout.properties]
 ## Size and alignment
 
+r[layout.properties.intro]
 All values have an alignment and size.
 
 r[layout.properties.align]

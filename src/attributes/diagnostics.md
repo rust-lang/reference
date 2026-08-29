@@ -1,12 +1,14 @@
 r[attributes.diagnostics]
 # Diagnostic attributes
 
+r[attributes.diagnostics.intro]
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
 r[attributes.diagnostics.lint]
 ## Lint check attributes
 
+r[attributes.diagnostics.lint.intro]
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation.
 

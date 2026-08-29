@@ -188,6 +188,7 @@ type G = std::boxed::Box<dyn std::ops::FnOnce(isize) -> isize>;
 r[paths.qualifiers]
 ## Path qualifiers
 
+r[paths.qualifiers.intro]
 Paths can be denoted with various leading qualifiers to change the meaning of how it is resolved.
 
 > [!NOTE]
