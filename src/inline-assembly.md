@@ -305,7 +305,7 @@ r[asm.operand-type]
 r[asm.operand-type.supported-operands]
 Several types of operands are supported:
 
-r[asm.operand-type.supported-operands.in]
+r[asm.operand-type.supported-operands-in]
 * `in(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
   - The allocated register will contain the value of `<expr>` at the start of the assembly code.
@@ -321,7 +321,7 @@ unsafe { core::arch::asm!("/* {} */", in(reg) 5); }
 > [!NOTE]
 > If the value's type is smaller than the register, the value of the upper bits is platform-specific. Some targets zero out the upper bits, while others leave them untouched.
 
-r[asm.operand-type.supported-operands.out]
+r[asm.operand-type.supported-operands-out]
 * `out(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
   - The allocated register will contain an undefined value at the start of the assembly code.
@@ -336,7 +336,7 @@ unsafe { core::arch::asm!("/* {} */", out(reg) x); }
 # }
 ```
 
-r[asm.operand-type.supported-operands.lateout]
+r[asm.operand-type.supported-operands-lateout]
 * `lateout(<reg>) <expr>`
   - Identical to `out` except that the register allocator can reuse a register allocated to an `in`.
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
@@ -352,7 +352,7 @@ assert_eq!(x, 5)
 # }
 ```
 
-r[asm.operand-type.supported-operands.inout]
+r[asm.operand-type.supported-operands-inout]
 * `inout(<reg>) <expr>`
   - `<reg>` can refer to a register class or an explicit register. The allocated register name is substituted into the asm template string.
   - The allocated register will contain the value of `<expr>` at the start of the assembly code.
@@ -367,7 +367,7 @@ assert_eq!(x, 5);
 # }
 ```
 
-r[asm.operand-type.supported-operands.inout-arrow]
+r[asm.operand-type.supported-operands-inout-arrow]
 * `inout(<reg>) <in expr> => <out expr>`
   - Same as `inout` except that the initial value of the register is taken from the value of `<in expr>`.
   - `<out expr>` must be a (possibly uninitialized) place expression, to which the contents of the allocated register are written at the end of the assembly code.
@@ -383,7 +383,7 @@ assert_eq!(x, 5);
 # }
 ```
 
-r[asm.operand-type.supported-operands.inlateout]
+r[asm.operand-type.supported-operands-inlateout]
 * `inlateout(<reg>) <expr>` / `inlateout(<reg>) <in expr> => <out expr>`
   - Identical to `inout` except that the register allocator can reuse a register allocated to an `in` (this can happen if the compiler knows the `in` has the same initial value as the `inlateout`).
   - You should only write to the register after all inputs are read, otherwise you may clobber an input.
@@ -397,7 +397,7 @@ assert_eq!(x, 5);
 # }
 ```
 
-r[asm.operand-type.supported-operands.sym]
+r[asm.operand-type.supported-operands-sym]
 * `sym <path>`
   - `<path>` must refer to a `fn` or `static`.
   - A mangled symbol name referring to the item is substituted into the asm template string.
@@ -415,7 +415,7 @@ unsafe { core::arch::asm!("call {}", sym foo, clobber_abi("C")); }
 # }
 ```
 
-r[asm.operand-type.supported-operands.const]
+r[asm.operand-type.supported-operands-const]
 * `const <expr>`
   - `<expr>` must be an integer constant expression. This expression follows the same rules as inline `const` blocks.
   - The type of the expression may be any integer type, but defaults to `i32` just like integer literals.
@@ -439,7 +439,7 @@ assert_eq!(y, [3, 2, 0, 1]);
 # }
 ```
 
-r[asm.operand-type.supported-operands.label]
+r[asm.operand-type.supported-operands-label]
 * `label <block>`
   - The address of the block is substituted into the asm template string. The assembly code may jump to the substituted address.
   - For targets that distinguish between direct jumps and indirect jumps (e.g. x86-64 with `cf-protection` enabled), the assembly code must not jump to the substituted address indirectly.
@@ -1075,7 +1075,7 @@ r[asm.options]
 r[asm.options.supported-options]
 Flags are used to further influence the behavior of the inline assembly code. Currently the following options are defined:
 
-r[asm.options.supported-options.pure]
+r[asm.options.supported-options-pure]
 - `pure`: The assembly code has no side effects, must eventually return, and its outputs depend only on its direct inputs (i.e. the values themselves, not what they point to) or values read from memory (unless the `nomem` options is also set). This allows the compiler to execute the assembly code fewer times than specified in the program (e.g. by hoisting it out of a loop) or even eliminate it entirely if the outputs are not used. The `pure` option must be combined with either the `nomem` or `readonly` options, otherwise a compile-time error is emitted.
 
 ```rust
@@ -1101,7 +1101,7 @@ assert_eq!(z, 0);
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
-r[asm.options.supported-options.nomem]
+r[asm.options.supported-options-nomem]
 - `nomem`: The assembly code does not read from or write to any memory accessible outside of the assembly code. This allows the compiler to cache the values of modified global variables in registers across execution of the assembly code since it knows that they are not read from or written to by it. The compiler also assumes that the assembly code does not perform any kind of synchronization with other threads, e.g. via fences.
 
 <!-- no_run: This test has unpredictable or undefined behavior at runtime -->
@@ -1147,7 +1147,7 @@ assert_eq!(z, 1);
 # }
 ```
 
-r[asm.options.supported-options.readonly]
+r[asm.options.supported-options-readonly]
 - `readonly`: The assembly code does not write to any memory accessible outside of the assembly code. This allows the compiler to cache the values of unmodified global variables in registers across execution of the assembly code since it knows that they are not written to by it. The compiler also assumes that this assembly code does not perform any kind of synchronization with other threads, e.g. via fences.
 
 <!-- no_run: This test has undefined behaviour at runtime -->
@@ -1191,10 +1191,10 @@ assert_eq!(z, 1);
 # }
 ```
 
-r[asm.options.supported-options.preserves_flags]
+r[asm.options.supported-options-preserves_flags]
 - `preserves_flags`: The assembly code does not modify the flags register (defined in the rules below). This allows the compiler to avoid recomputing the condition flags after execution of the assembly code.
 
-r[asm.options.supported-options.noreturn]
+r[asm.options.supported-options-noreturn]
 - `noreturn`: The assembly code does not fall through; behavior is undefined if it does. It may still jump to `label` blocks. If any `label` blocks return unit, the `asm!` block will return unit. Otherwise it will return `!` (never). As with a call to a function that does not return, local variables in scope are not dropped before execution of the assembly code.
 
 <!-- no_run: This test aborts at runtime -->
@@ -1226,7 +1226,7 @@ let _: () = unsafe {
 };
 ```
 
-r[asm.options.supported-options.nostack]
+r[asm.options.supported-options-nostack]
 - `nostack`: The assembly code does not push data to the stack, or write to the stack red-zone (if supported by the target). If this option is *not* used then the stack pointer is guaranteed by the compiler at the start of the assembly code to be suitably aligned (according to the target ABI) for a function call.
 
 <!-- no_run: Test has undefined behavior at runtime -->
@@ -1237,7 +1237,7 @@ unsafe { core::arch::asm!("push rax", "pop rax", options(nostack)); }
 # }
 ```
 
-r[asm.options.supported-options.att_syntax]
+r[asm.options.supported-options-att_syntax]
 - `att_syntax`: This option is only valid on x86, and causes the assembler to use the `.att_syntax prefix` mode of the GNU assembler. Register operands are substituted in with a leading `%`.
 
 ```rust
@@ -1256,13 +1256,13 @@ assert_eq!(x, y);
 # }
 ```
 
-r[asm.options.supported-options.raw]
+r[asm.options.supported-options-raw]
 - `raw`: This causes the template string to be parsed as a raw assembly string, with no special handling for `{` and `}`. This is primarily useful when including raw assembly code from an external file using `include_str!`.
 
 r[asm.options.checks]
 The compiler performs some additional checks on options:
 
-r[asm.options.checks.mutually-exclusive]
+r[asm.options.checks-mutually-exclusive]
 - The `nomem` and `readonly` options are mutually exclusive: it is a compile-time error to specify both.
 
 ```rust,compile_fail
@@ -1274,7 +1274,7 @@ unsafe { core::arch::asm!("", options(nomem, readonly)); }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
-r[asm.options.checks.pure]
+r[asm.options.checks-pure]
 - It is a compile-time error to specify `pure` on an asm block with no outputs or only discarded outputs (`_`).
 
 ```rust,compile_fail
@@ -1286,7 +1286,7 @@ unsafe { core::arch::asm!("", options(pure)); }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
-r[asm.options.checks.noreturn]
+r[asm.options.checks-noreturn]
 - It is a compile-time error to specify `noreturn` on an asm block with outputs and without labels.
 
 ```rust,compile_fail
@@ -1299,7 +1299,7 @@ unsafe { core::arch::asm!("mov {:e}, 1", out(reg) z, options(noreturn)); }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
-r[asm.options.checks.label-with-outputs]
+r[asm.options.checks-label-with-outputs]
 - It is a compile-time error to have any `label` blocks in an asm block with outputs.
 
 r[asm.options.naked_asm-restriction]

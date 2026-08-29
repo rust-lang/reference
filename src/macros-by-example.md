@@ -259,7 +259,7 @@ fn foo() {
 // m!(); // Error: m is not in scope.
 ```
 
-r[macro.decl.scope.textual.shadow.path-based]
+r[macro.decl.scope.textual.shadow-path-based]
 Textual scope name bindings for macros shadow path-based scope bindings to macros.
 
 ```rust

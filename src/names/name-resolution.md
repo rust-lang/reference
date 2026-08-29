@@ -137,7 +137,7 @@ const _: () = {
 };
 ```
 
-r[names.resolution.expansion.imports.shadowing.shared-scope]
+r[names.resolution.expansion.imports.shadowing-shared-scope]
 Shadowing of names introduced via `use` declarations within a single scope is permitted in the following situations:
 
 - [`use` glob shadowing]

@@ -39,19 +39,19 @@ Whether to compile can depend on the target architecture of the compiled crate, 
 r[cfg.predicate]
 Each form of conditional compilation takes a _configuration predicate_ that evaluates to true or false. The predicate is one of the following:
 
-r[cfg.predicate.option]
+r[cfg.predicate-option]
 * A configuration option. The predicate is true if the option is set, and false if it is unset.
 
-r[cfg.predicate.all]
+r[cfg.predicate-all]
 * `all()` with a comma-separated list of configuration predicates. It is true if all of the given predicates are true, or if the list is empty.
 
-r[cfg.predicate.any]
+r[cfg.predicate-any]
 * `any()` with a comma-separated list of configuration predicates. It is true if at least one of the given predicates is true. If there are no predicates, it is false.
 
-r[cfg.predicate.not]
+r[cfg.predicate-not]
 * `not()` with a configuration predicate. It is true if its predicate is false and false if its predicate is true.
 
-r[cfg.predicate.literal]
+r[cfg.predicate-literal]
 * `true` or `false` literals, which are always true or false respectively.
 
 r[cfg.option-spec]
