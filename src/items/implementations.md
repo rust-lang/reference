@@ -41,7 +41,7 @@ The nominal type is called the _implementing type_ and the associable items are 
 r[items.impl.inherent.associated-items]
 Inherent implementations associate the contained items to the implementing type.
 
-r[items.impl.inherent.associated-items.allowed-items]
+r[items.impl.inherent.allowed-items]
 Inherent implementations can contain [associated functions] (including [methods]) and [associated constants].
 
 r[items.impl.inherent.type-alias]

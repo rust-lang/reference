@@ -399,7 +399,7 @@ struct MustUse();
 MustUse(); // ERROR: Unused value that must be used.
 ```
 
-r[attributes.diagnostics.must_use.type.uninhabited]
+r[attributes.diagnostics.must_use.type-uninhabited]
 As an exception to [attributes.diagnostics.must_use.type], the lint does not fire for `Result<(), E>` when `E` is [uninhabited] or for `ControlFlow<B, ()>` when `B` is [uninhabited]. A `#[non_exhaustive]` type from an external crate is not considered uninhabited for this purpose, because it may gain constructors in the future.
 
 ```rust

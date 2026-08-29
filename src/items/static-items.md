@@ -33,7 +33,7 @@ All access to a static is safe, but there are a number of restrictions on static
 r[items.static.sync]
 * The type must have the [`Sync`](std::marker::Sync) trait bound to allow thread-safe access.
 
-r[items.static.init.omission]
+r[items.static.init-omission]
 The initializer expression must be omitted in an [external block], and must be provided for free static items.
 
 r[items.static.safety-qualifiers]
