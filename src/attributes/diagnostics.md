@@ -321,7 +321,7 @@ The `deprecated` attribute has several forms:
     message. This is typically used to provide an explanation about the
     deprecation and preferred alternatives.
 
-r[attributes.diagnostic.deprecated.allowed-positions]
+r[attributes.diagnostics.deprecated.allowed-positions]
 The `deprecated` attribute may be applied to any [item], [trait item], [enum
 variant], [struct field], [external block item], or [macro definition]. It
 cannot be applied to [trait implementation items][trait-impl]. When applied to an item
