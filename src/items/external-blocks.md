@@ -275,10 +275,10 @@ The `name` key must be included if `kind` is specified.
 r[items.extern.attributes.link.modifiers]
 The optional `modifiers` argument is a way to specify linking modifiers for the library to link.
 
-r[items.extern.attributes.link.modifiers.syntax]
+r[items.extern.attributes.link.modifiers-syntax]
 Modifiers are specified as a comma-delimited string with each modifier prefixed with either a `+` or `-` to indicate that the modifier is enabled or disabled, respectively.
 
-r[items.extern.attributes.link.modifiers.multiple]
+r[items.extern.attributes.link.modifiers-multiple]
 Specifying multiple `modifiers` arguments in a single `link` attribute, or multiple identical modifiers in the same `modifiers` argument is not currently supported. Example: `#[link(name = "mylib", kind = "static", modifiers = "+whole-archive")]`.
 
 r[items.extern.attributes.link.wasm_import_module]
@@ -305,53 +305,53 @@ unsafe extern {
 r[items.extern.attributes.link.empty-block]
 It is valid to add the `link` attribute on an empty extern block. You can use this to satisfy the linking requirements of extern blocks elsewhere in your code (including upstream crates) instead of adding the attribute to each extern block.
 
-r[items.extern.attributes.link.modifiers.bundle]
+r[items.extern.attributes.link.modifiers-bundle]
 #### Linking modifiers: `bundle`
 
-r[items.extern.attributes.link.modifiers.bundle.allowed-kinds]
+r[items.extern.attributes.link.modifiers-bundle.allowed-kinds]
 This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
 
-r[items.extern.attributes.link.modifiers.bundle.behavior]
+r[items.extern.attributes.link.modifiers-bundle.behavior]
 When building a rlib or staticlib `+bundle` means that the native static library will be packed into the rlib or staticlib archive, and then retrieved from there during linking of the final binary.
 
-r[items.extern.attributes.link.modifiers.bundle.behavior-negative]
+r[items.extern.attributes.link.modifiers-bundle.behavior-negative]
 When building a rlib `-bundle` means that the native static library is registered as a dependency of that rlib "by name", and object files from it are included only during linking of the final binary, the file search by that name is also performed during final linking. When building a staticlib `-bundle` means that the native static library is simply not included into the archive and some higher level build system will need to add it later during linking of the final binary.
 
-r[items.extern.attributes.link.modifiers.bundle.no-effect]
+r[items.extern.attributes.link.modifiers-bundle.no-effect]
 This modifier has no effect when building other targets like executables or dynamic libraries.
 
-r[items.extern.attributes.link.modifiers.bundle.default]
+r[items.extern.attributes.link.modifiers-bundle.default]
 The default for this modifier is `+bundle`.
 
 More implementation details about this modifier can be found in [`bundle` documentation for rustc].
 
-r[items.extern.attributes.link.modifiers.whole-archive]
+r[items.extern.attributes.link.modifiers-whole-archive]
 #### Linking modifiers: `whole-archive`
 
-r[items.extern.attributes.link.modifiers.whole-archive.allowed-kinds]
+r[items.extern.attributes.link.modifiers-whole-archive.allowed-kinds]
 This modifier is only compatible with the `static` linking kind. Using any other kind will result in a compiler error.
 
-r[items.extern.attributes.link.modifiers.whole-archive.behavior]
+r[items.extern.attributes.link.modifiers-whole-archive.behavior]
 `+whole-archive` means that the static library is linked as a whole archive without throwing any object files away.
 
-r[items.extern.attributes.link.modifiers.whole-archive.default]
+r[items.extern.attributes.link.modifiers-whole-archive.default]
 The default for this modifier is `-whole-archive`.
 
 More implementation details about this modifier can be found in [`whole-archive` documentation for rustc].
 
-r[items.extern.attributes.link.modifiers.verbatim]
+r[items.extern.attributes.link.modifiers-verbatim]
 #### Linking modifiers: `verbatim`
 
-r[items.extern.attributes.link.modifiers.verbatim.allowed-kinds]
+r[items.extern.attributes.link.modifiers-verbatim.allowed-kinds]
 This modifier is compatible with all linking kinds.
 
-r[items.extern.attributes.link.modifiers.verbatim.behavior]
+r[items.extern.attributes.link.modifiers-verbatim.behavior]
 `+verbatim` means that rustc itself won't add any target-specified library prefixes or suffixes (like `lib` or `.a`) to the library name, and will try its best to ask for the same thing from the linker.
 
-r[items.extern.attributes.link.modifiers.verbatim.behavior-negative]
+r[items.extern.attributes.link.modifiers-verbatim.behavior-negative]
 `-verbatim` means that rustc will either add a target-specific prefix and suffix to the library name before passing it to linker, or won't prevent linker from implicitly adding it.
 
-r[items.extern.attributes.link.modifiers.verbatim.default]
+r[items.extern.attributes.link.modifiers-verbatim.default]
 The default for this modifier is `-verbatim`.
 
 More implementation details about this modifier can be found in [`verbatim` documentation for rustc].

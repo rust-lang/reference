@@ -8,7 +8,7 @@ This appendix provides an index of tokens and common forms with links to where t
 |---------------|-----|
 | `_`           | [wildcard pattern], [inferred const], [inferred type], [placeholder lifetime], [constant items], [extern crate], [use declarations], [destructuring assignment] |
 | `abstract`    | [reserved keyword] |
-| `as`          | [extern crate][items.extern-crate.as], [use declarations][items.use.forms.as], [type cast expressions], [qualified paths] |
+| `as`          | [extern crate][items.extern-crate.as], [use declarations][items.use.forms-as], [type cast expressions], [qualified paths] |
 | `async`       | [async functions], [async blocks], [async closures] |
 | `await`       | [await expressions] |
 | `become`      | [reserved keyword] |
@@ -277,7 +277,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [array and slice indexing expressions]: expr.array.index
 [array expressions]: expr.array
 [array types]: type.array
-[assembly operands]: asm.operand-type.supported-operands.in
+[assembly operands]: asm.operand-type.supported-operands-in
 [assignment]: expr.assign
 [associated items]: items.associated
 [associated type bindings]: paths.expr
@@ -303,7 +303,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [comparison]: expr.cmp
 [compound]: expr.compound-assign
 [configuration predicates]: cfg
-[const assembly operands]: asm.operand-type.supported-operands.const
+[const assembly operands]: asm.operand-type.supported-operands-const
 [const blocks]: expr.block.const
 [const functions]: const-eval.const-fn
 [const generics]: items.generics.const
@@ -384,7 +384,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [qualified paths]: paths.qualified
 [question]: expr.try
 [range patterns]: patterns.range
-[raw assembly]: asm.options.supported-options.raw
+[raw assembly]: asm.options.supported-options-raw
 [raw borrow expressions]: expr.borrow.raw
 [raw borrow operator]: expr.borrow.raw
 [raw byte string literals]: lex.token.str-byte-raw

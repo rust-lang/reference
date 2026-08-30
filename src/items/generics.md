@@ -125,7 +125,7 @@ fn bad_function<const N: usize>() -> [u8; {N + 1}] {
 r[items.generics.const.argument]
 A const argument in a [path] specifies the const value to use for that item.
 
-r[items.generics.const.argument.const-expr]
+r[items.generics.const.argument-const-expr]
 The argument must either be an [inferred const] or be a [const expression] of the type ascribed to the const parameter. The const expression must be a [block expression][block] (surrounded with braces) unless it is a single path segment (an [IDENTIFIER]) or a [literal] (with a possibly leading `-` token).
 
 > [!NOTE]
@@ -169,7 +169,7 @@ let _: [u8; 1024] = make_buf::<_>();
 > //                    ^ ERROR `_` not allowed here
 > ```
 
-r[items.generics.const.inferred.constraint]
+r[items.generics.const.inferred-constraint]
 The inferred const cannot be used in item signatures.
 
 ```rust,compile_fail

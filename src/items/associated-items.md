@@ -231,7 +231,7 @@ There is an implicit [`Sized`] bound on associated types that can be relaxed usi
 r[items.associated.type.def]
 An *associated type definition* defines a type alias for the implementation of a trait on a type.
 
-r[items.associated.type.def.restriction]
+r[items.associated.type.def-restriction]
 They are written similarly to an *associated type declaration*, but cannot contain `Bounds`, but instead must contain a `Type`:
 
 <!-- ignore: illustrative example forms -->

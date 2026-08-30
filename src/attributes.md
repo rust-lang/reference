@@ -142,7 +142,7 @@ fn foo() {}
 r[attributes.meta.builtin]
 Various built-in attributes use different subsets of the meta item syntax to specify their inputs. The following grammar rules show some commonly used forms:
 
-r[attributes.meta.builtin.syntax]
+r[attributes.meta.builtin-syntax]
 ```grammar,attributes
 @root MetaWord ->
     IDENTIFIER

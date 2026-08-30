@@ -21,19 +21,19 @@ A _use declaration_ creates one or more local name bindings synonymous with some
 r[items.use.forms]
 Use declarations support a number of convenient shortcuts:
 
-r[items.use.forms.multiple]
+r[items.use.forms-multiple]
 * Simultaneously binding a list of paths with a common prefix, using the brace syntax `use a::b::{c, d, e::f, g::h::i};`
 
-r[items.use.forms.self]
+r[items.use.forms-self]
 * Simultaneously binding a list of paths with a common prefix and their common parent module, using the `self` keyword, such as `use a::b::{self, c, d::e};`
 
-r[items.use.forms.as]
+r[items.use.forms-as]
 * Rebinding the target name as a new local name, using the syntax `use p::q::r as x;`. This can also be used with the last two features: `use a::b::{self as ab, c as abc}`.
 
-r[items.use.forms.glob]
+r[items.use.forms-glob]
 * Binding all paths matching a given prefix, using the asterisk wildcard syntax `use a::b::*;`.
 
-r[items.use.forms.nesting]
+r[items.use.forms-nesting]
 * Nesting groups of the previous features multiple times, such as `use a::b::{self as ab, c, d::{*, e::f}};`
 
 An example of `use` declarations:

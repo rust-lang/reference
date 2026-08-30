@@ -86,31 +86,31 @@ r[destructors.scope.match-arm]
 r[destructors.scope.nesting]
 Drop scopes are nested within one another as follows. When multiple scopes are left at once, such as when returning from a function, variables are dropped from the inside outwards.
 
-r[destructors.scope.nesting.function]
+r[destructors.scope.nesting-function]
 * The entire function scope is the outer most scope.
 
-r[destructors.scope.nesting.function-body]
+r[destructors.scope.nesting-function-body]
 * The function body block is contained within the scope of the entire function.
 
-r[destructors.scope.nesting.expr-statement]
+r[destructors.scope.nesting-expr-statement]
 * The parent of the expression in an expression statement is the scope of the statement.
 
-r[destructors.scope.nesting.let-initializer]
+r[destructors.scope.nesting-let-initializer]
 * The parent of the initializer of a [`let` statement] is the `let` statement's scope.
 
-r[destructors.scope.nesting.statement]
+r[destructors.scope.nesting-statement]
 * The parent of a statement scope is the scope of the block that contains the statement.
 
-r[destructors.scope.nesting.match-guard]
+r[destructors.scope.nesting-match-guard]
 * The parent of the expression for a `match` guard is the scope of the arm that the guard is for.
 
-r[destructors.scope.nesting.match-arm]
+r[destructors.scope.nesting-match-arm]
 * The parent of the expression after the `=>` in a `match` expression is the scope of the arm that it's in.
 
-r[destructors.scope.nesting.match]
+r[destructors.scope.nesting-match]
 * The parent of the arm scope is the scope of the `match` expression that it belongs to.
 
-r[destructors.scope.nesting.other]
+r[destructors.scope.nesting-other]
 * The parent of all other scopes is the scope of the immediately enclosing expression.
 
 r[destructors.scope.params]
