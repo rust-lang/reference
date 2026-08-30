@@ -149,9 +149,9 @@ For example, the [`cfg` attribute] and the [`cfg` macro] are two different entit
 [Function declarations]: ../items/functions.md
 [function parameters]: ../items/functions.md#function-parameters
 [Function-like procedural macros]: ../procedural-macros.md#the-proc_macro-attribute
-[Generic const parameters]: ../items/generics.md#const-generics
-[Generic lifetime parameters]: ../items/generics.md
-[Generic type parameters]: ../items/generics.md
+[Generic const parameters]: generics.const
+[Generic lifetime parameters]: generics
+[Generic type parameters]: generics
 [Loop labels]: ../expressions/loop-expr.md#loop-labels
 [Module declarations]: ../items/modules.md
 [name resolution]: name-resolution.md
