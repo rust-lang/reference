@@ -1,6 +1,7 @@
 r[lex.keywords]
 # Keywords
 
+r[lex.keywords.intro]
 Rust divides keywords into three categories:
 
 * [strict](#strict-keywords)

@@ -576,7 +576,7 @@ r[names.resolution.type-relative]
 [glob import]: items.use.glob
 [item definitions]: ../items.md
 [macro invocations]: ../macros.md#macro-invocation
-[macro textual scope shadowing]: ../macros-by-example.md#r-macro.decl.scope.textual.shadow
+[macro textual scope shadowing]: macro.decl.scope.textual.shadow-path-based
 [name resolution ambiguities]: #r-names.resolution.expansion.imports.ambiguity
 [namespaces]: ../names/namespaces.md
 [outer scope]: #r-names.resolution.general.scopes

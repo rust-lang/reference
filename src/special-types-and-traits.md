@@ -143,6 +143,7 @@ The [`Termination`] trait indicates the acceptable return types for the [main fu
 r[lang-types.auto-traits]
 ## Auto traits
 
+r[lang-types.auto-traits.intro]
 The [`Send`], [`Sync`], [`Unpin`], [`UnwindSafe`], and [`RefUnwindSafe`] traits are _auto traits_. Auto traits have special properties.
 
 r[lang-types.auto-traits.auto-impl]

@@ -16,13 +16,13 @@ ConstParam ->
     ( `=` ( BlockExpression | IDENTIFIER | `-`?LiteralExpression ) )?
 ```
 
-r[items.generics.syntax.intro]
+r[items.generics.intro]
 [Functions], [type aliases], [structs], [enumerations], [unions], [traits], and [implementations] may be *parameterized* by types, constants, and lifetimes. These parameters are listed in angle <span class="parenthetical">brackets (`<...>`)</span>, usually immediately after the name of the item and before its definition. For implementations, which don't have a name, they come directly after `impl`.
 
-r[items.generics.syntax.decl-order]
+r[items.generics.decl-order]
 The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
 
-r[items.generics.syntax.duplicate-params]
+r[items.generics.duplicate-params]
 The same parameter name may not be declared more than once in a [GenericParams] list.
 
 Some examples of items with type, const, and lifetime parameters:
@@ -35,7 +35,7 @@ struct InnerArray<T, const N: usize>([T; N]);
 struct EitherOrderWorks<const N: bool, U>(U);
 ```
 
-r[items.generics.syntax.scope]
+r[items.generics.scope]
 Generic parameters are in scope within the item definition where they are declared. They are not in scope for items declared within the body of a function as described in [item declarations]. See [generic parameter scopes] for more details.
 
 r[items.generics.builtin-generic-types]

@@ -38,6 +38,7 @@ Within this documentation's grammar, "simple" tokens are given in [string table 
 r[lex.token.literal]
 ## Literals
 
+r[lex.token.literal.intro]
 Literals are tokens used in [literal expressions].
 
 ### Examples

@@ -30,10 +30,10 @@ There must be at least one trait bound, no more than one `use<..>` bound, and no
 r[type.impl-trait.param]
 ## Anonymous type parameters
 
+r[type.impl-trait.param.intro]
 > [!NOTE]
 > This is often called "impl Trait in argument position". (The term "parameter" is more correct here, but "impl Trait in argument position" is the phrasing used during the development of this feature, and it remains in parts of the implementation.)
 
-r[type.impl-trait.param.intro]
 Functions can use `impl` followed by a set of trait bounds to declare a parameter as having an anonymous type. The caller must provide a type that satisfies the bounds declared by the anonymous type parameter, and the function can only use the methods available through the trait bounds of the anonymous type parameter.
 
 For example, these two forms are almost equivalent:
@@ -59,10 +59,10 @@ That is, `impl Trait` in argument position is syntactic sugar for a generic type
 r[type.impl-trait.return]
 ## Abstract return types
 
+r[type.impl-trait.return.intro]
 > [!NOTE]
 > This is often called "impl Trait in return position".
 
-r[type.impl-trait.return.intro]
 Functions can use `impl Trait` to return an abstract return type. These types stand in for another concrete type where the caller may only use the methods declared by the specified `Trait`.
 
 r[type.impl-trait.return.constraint-body]

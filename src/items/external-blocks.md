@@ -215,6 +215,7 @@ Like `"C"` and `"system"`, most platform-specific ABI strings also have a [corre
 r[items.extern.variadic]
 ## Variadic functions
 
+r[items.extern.variadic.syntax]
 Functions within external blocks may be made variadic by specifying `...` as the last parameter. The variadic parameter may be specified with a pattern.
 
 ```rust

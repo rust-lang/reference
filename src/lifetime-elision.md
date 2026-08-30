@@ -1,6 +1,7 @@
 r[lifetime-elision]
 # Lifetime elision
 
+r[lifetime-elision.intro]
 Rust has rules that allow lifetimes to be elided in various places where the compiler can infer a sensible default choice.
 
 r[lifetime-elision.function]

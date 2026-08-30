@@ -324,7 +324,7 @@ let [ref x] = &[()]; //~ ERROR
 let [ref mut x] = &mut [()]; //~ ERROR
 ```
 
-r[patterns.ident.binding.mode-limitations.edition2024]
+r[patterns.ident.binding.mode-limitations-binding-edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition, bindings could explicitly specify a `ref` or `ref mut` binding mode even when the default binding mode was not "move", and they could specify mutability on such bindings with `mut`. In these editions, specifying `mut` on a binding set the binding mode to "move" regardless of the current default binding mode.
 
@@ -335,7 +335,7 @@ Similarly, a reference pattern may only appear when the default binding mode is 
 let [&x] = &[&()]; //~ ERROR
 ```
 
-r[patterns.ident.binding.mode-limitations-reference.edition2024]
+r[patterns.ident.binding.mode-limitations-reference-edition2024]
 > [!EDITION-2024]
 > Before the 2024 edition, reference patterns could appear even when the default binding mode was not "move", and had both the effect of matching against the scrutinee and of causing the default binding mode to be reset to "move".
 

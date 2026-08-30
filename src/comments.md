@@ -50,6 +50,7 @@ BLOCK_COMMENT_OR_DOC ->
 r[comments.normal]
 ## Non-doc comments
 
+r[comments.normal.intro]
 Comments follow the general C++ style of line (`//`) and block (`/* ... */`) comment forms. Nested block comments are supported.
 
 r[comments.normal.tokenization]

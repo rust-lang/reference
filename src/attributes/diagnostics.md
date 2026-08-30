@@ -1,12 +1,14 @@
 r[attributes.diagnostics]
 # Diagnostic attributes
 
+r[attributes.diagnostics.intro]
 The following [attributes] are used for controlling or generating diagnostic
 messages during compilation.
 
 r[attributes.diagnostics.lint]
 ## Lint check attributes
 
+r[attributes.diagnostics.lint.intro]
 A lint check names a potentially undesirable coding pattern, such as
 unreachable code or omitted documentation.
 
@@ -227,9 +229,11 @@ pub fn another_example() {
 r[attributes.diagnostics.lint.group]
 ### Lint groups
 
-Lints may be organized into named groups so that the level of related lints
-can be adjusted together. Using a named group is equivalent to listing out the
-lints within that group.
+r[attributes.diagnostics.lint.group.intro]
+Lints may be organized into named groups so that the level of related lints can be adjusted together.
+
+r[attributes.diagnostics.lint.group.equivalence]
+Using a named group is equivalent to listing out the lints within that group.
 
 ```rust,compile_fail
 // This allows all lints in the "unused" group.
@@ -395,7 +399,7 @@ struct MustUse();
 MustUse(); // ERROR: Unused value that must be used.
 ```
 
-r[attributes.diagnostics.must_use.type.uninhabited]
+r[attributes.diagnostics.must_use.type-uninhabited]
 As an exception to [attributes.diagnostics.must_use.type], the lint does not fire for `Result<(), E>` when `E` is [uninhabited] or for `ControlFlow<B, ()>` when `B` is [uninhabited]. A `#[non_exhaustive]` type from an external crate is not considered uninhabited for this purpose, because it may gain constructors in the future.
 
 ```rust

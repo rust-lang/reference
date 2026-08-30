@@ -245,6 +245,7 @@ mod inner {
 m!(1);
 ```
 
+r[macro.decl.scope.textual.function-local]
 Macros can be declared and used locally inside functions as well, and work similarly:
 
 ```rust

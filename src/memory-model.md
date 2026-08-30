@@ -1,6 +1,7 @@
 r[memory]
 # Memory model
 
+r[memory.intro]
 > [!WARNING]
 > The memory model of Rust is incomplete and not fully decided.
 

@@ -1,10 +1,10 @@
 r[link]
 # Linkage
 
+r[link.intro]
 > [!NOTE]
 > This section is described more in terms of the compiler than of the language.
 
-r[link.intro]
 The compiler supports various methods to link crates together both statically and dynamically. This section will explore the various methods to link crates together, and more information about native libraries can be found in the [FFI section of the book][ffi].
 
 [ffi]: ../book/ch20-01-unsafe-rust.html#using-extern-functions-to-call-external-code

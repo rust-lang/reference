@@ -80,6 +80,7 @@ fn example<'Foo>(f: Foo) {
 r[names.namespaces.without]
 ## Named entities without a namespace
 
+r[names.namespaces.without.intro]
 The following entities have explicit names, but the names are not a part of any specific namespace.
 
 ### Fields
