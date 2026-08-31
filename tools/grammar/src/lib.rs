@@ -259,7 +259,7 @@ pub static GRAMMAR_RE: LazyLock<Regex> =
 pub fn load_grammar(diag: &mut Diagnostics) -> Grammar {
     let mut grammar = Grammar::default();
     let base = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../src");
-    for entry in WalkDir::new(&base) {
+    for entry in WalkDir::new(&base).sort_by_file_name() {
         let entry = entry.unwrap();
         let path = entry.path();
         if path.extension().and_then(|s| s.to_str()) != Some("md") {
