@@ -43,6 +43,8 @@ cases! {
         "/** outer block doc */"
     comment::cr_starting_block_doc =>
         "/**\r CR starting block doc comment */"
+    comment::cr_starting_inner_block_doc =>
+        "/*!\r CR starting inner block doc comment */"
 
     comment::block::nested_cr1 =>
         "/* /**\r*/ */"
@@ -56,6 +58,10 @@ cases! {
         "/*! /*\r*/ */"
     comment::block::nested_cr6 =>
         "/** /* x\r y */ */"
+    comment::block::nested_cr7 =>
+        "/** /* /*\r*/ */ */"
+    comment::block::nested_cr8 =>
+        "/* /* /**\r*/ */ */"
 
     reserved::pounds =>
         "##"
