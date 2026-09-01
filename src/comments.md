@@ -44,7 +44,7 @@ BLOCK_CHAR -> !`*/` CHAR
 DOC_BLOCK_CHAR -> (!(`*/` | CR) CHAR)
 
 NESTED_BLOCK_DOC_COMMENT ->
-    `/*` (NESTED_BLOCK_DOC_COMMENT | DOC_BLOCK_CHAR)* `*/`
+    `/*` ( NESTED_BLOCK_DOC_COMMENT | DOC_BLOCK_CHAR )* `*/`
 ```
 
 r[comments.normal]
