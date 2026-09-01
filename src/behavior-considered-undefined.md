@@ -100,16 +100,13 @@ r[undefined.dangling]
 [dangling]: #dangling-pointers
 
 r[undefined.dangling.def]
-A reference/pointer is "dangling" if not all of the bytes it [points to] are part of the same live allocation (so in particular they all have to be part of *some* allocation).
+A reference/pointer is "dangling" if not all of the bytes it [points to] are part of the same live [allocation] (so in particular they all have to be part of *some* allocation).
 
-r[undefined.dangling.zero-size]
-If the [size is 0][zero-sized], then the pointer is trivially never "dangling" (even if it is a null pointer).
+> [!NOTE]
+> This implies that the dynamic size of a Rust value (as determined by `size_of_val`) must never exceed `isize::MAX`, since it is impossible for a single allocation to be larger than `isize::MAX`.
 
-r[undefined.dangling.dynamic-size]
-Note that dynamically sized types (such as slices and strings) point to their entire range, so it is important that the length [metadata] is never too large.
-
-r[undefined.dangling.alloc-limit]
-In particular, the dynamic size of a Rust value (as determined by `size_of_val`) must never exceed `isize::MAX`, since it is impossible for a single allocation to be larger than `isize::MAX`.
+> [!NOTE]
+> This also implies that if the [size is 0][zero-sized], then the pointer is trivially never "dangling" (even if it is a null pointer).
 
 r[undefined.validity]
 ## Invalid values
@@ -201,6 +198,7 @@ r[undefined.validity.undef]
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [abi]: items/external-blocks.md#abi
+[allocation]: core::ptr#allocation
 [const contexts]: const-eval.const-context
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
