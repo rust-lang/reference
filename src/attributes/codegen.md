@@ -721,6 +721,7 @@ Feature                                | Implicitly Enables                    |
 `miscellaneous-extensions-2`           |                                       | miscellaneous extensions 2
 `miscellaneous-extensions-3`           |                                       | miscellaneous extensions 3
 `miscellaneous-extensions-4`           |                                       | miscellaneous extensions 4
+`backchain`                            |                                       | store the caller's frame address in the callee's stack frame backchain slot
 
 [z/Architecture Principles of Operation]: https://publibfp.dhe.ibm.com/epubs/pdf/a227832d.pdf
 
