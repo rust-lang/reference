@@ -35,7 +35,7 @@ OUTER_LINE_DOC ->
 OUTER_BLOCK_DOC ->
     `/**` ![`*` `/`]
       ^
-      ( ~[`*` CR] | NESTED_BLOCK_DOC_COMMENT )
+      ~[`*` CR]
       ( NESTED_BLOCK_DOC_COMMENT | DOC_BLOCK_CHAR )*
     `*/`
 
