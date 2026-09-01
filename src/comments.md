@@ -18,7 +18,7 @@ LINE_COMMENT ->
 
 BLOCK_COMMENT ->
     `/*` !(`!` | `*` ![`*` `/`]) ^
-      ( BLOCK_COMMENT_OR_DOC | (!`*/` CHAR) )*
+      ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )*
     `*/`
 
 INNER_LINE_DOC ->
@@ -27,7 +27,7 @@ INNER_LINE_DOC ->
 LINE_DOC_COMMENT_CONTENT -> (!CR ~LF)*
 
 INNER_BLOCK_DOC ->
-    `/*!` ^ ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )* `*/`
+    `/*!` ^ ( BLOCK_COMMENT_OR_DOC | DOC_BLOCK_CHAR )* `*/`
 
 OUTER_LINE_DOC ->
     `///` ^ LINE_DOC_COMMENT_CONTENT (LF | EOF)
@@ -36,10 +36,12 @@ OUTER_BLOCK_DOC ->
     `/**` ![`*` `/`]
       ^
       ( ~[`*` CR] | BLOCK_COMMENT_OR_DOC )
-      ( BLOCK_COMMENT_OR_DOC | BLOCK_CHAR )*
+      ( BLOCK_COMMENT_OR_DOC | DOC_BLOCK_CHAR )*
     `*/`
 
-BLOCK_CHAR -> (!(`*/` | CR) CHAR)
+BLOCK_CHAR -> !`*/` CHAR
+
+DOC_BLOCK_CHAR -> (!(`*/` | CR) CHAR)
 
 BLOCK_COMMENT_OR_DOC ->
       INNER_BLOCK_DOC
