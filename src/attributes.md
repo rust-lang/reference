@@ -301,7 +301,7 @@ The following is an index of all built-in attributes.
 [`cold`]: attributes/codegen.md#the-cold-attribute
 [`collapse_debuginfo`]: attributes/debugger.md#the-collapse_debuginfo-attribute
 [`crate_name`]: crates-and-source-files.md#the-crate_name-attribute
-[`crate_type`]: linkage.md
+[`crate_type`]: linkage.md#the-crate_type-attribute
 [`debugger_visualizer`]: attributes/debugger.md#the-debugger_visualizer-attribute
 [`deny`]: attributes/diagnostics.md#lint-check-attributes
 [`deprecated`]: attributes/diagnostics.md#the-deprecated-attribute
