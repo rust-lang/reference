@@ -198,7 +198,7 @@ r[undefined.validity.undef]
 [`bool`]: types/boolean.md
 [`const`]: items/constant-items.md
 [abi]: items/external-blocks.md#abi
-[allocation]: ../std/ptr/index.html#allocation
+[allocation]: core::ptr#allocation
 [const contexts]: const-eval.const-context
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
