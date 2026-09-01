@@ -44,6 +44,19 @@ cases! {
     comment::cr_starting_block_doc =>
         "/**\r CR starting block doc comment */"
 
+    comment::block::nested_cr1 =>
+        "/* /**\r*/ */"
+    comment::block::nested_cr2 =>
+        "/* /*!\r*/ */"
+    comment::block::nested_cr3 =>
+        "/* /** x\r y */ */"
+    comment::block::nested_cr4 =>
+        "/** /*\r*/ */"
+    comment::block::nested_cr5 =>
+        "/*! /*\r*/ */"
+    comment::block::nested_cr6 =>
+        "/** /* x\r y */ */"
+
     reserved::pounds =>
         "##"
         "###"
