@@ -688,6 +688,7 @@ Feature               | Implicitly Enables  | Description
 `multivalue`          |                     | [WebAssembly multivalue proposal][multivalue]
 `reference-types`     |                     | [WebAssembly reference-types proposal][reference-types]
 `tail-call`           |                     | [WebAssembly tail-call proposal][tail-call]
+`wide-arithmetic`     |                     | [WebAssembly wide-arithmetic proposal][wide-arithmetic]
 
 [bulk-memory]: https://github.com/WebAssembly/bulk-memory-operations
 [extended-const]: https://github.com/WebAssembly/extended-const
@@ -699,6 +700,7 @@ Feature               | Implicitly Enables  | Description
 [reference-types]: https://github.com/webassembly/reference-types
 [tail-call]: https://github.com/webassembly/tail-call
 [multivalue]: https://github.com/webassembly/multi-value
+[wide-arithmetic]: https://github.com/webassembly/wide-arithmetic
 
 r[attributes.codegen.target_feature.s390x]
 #### `s390x`
