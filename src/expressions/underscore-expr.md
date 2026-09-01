@@ -37,3 +37,8 @@ _ = 2 + 2;
 // equivalent technique using a wildcard pattern in a let-binding
 let _ = 2 + 2;
 ```
+
+r[expr.placeholder.diverging]
+An underscore expression does not [diverge].
+
+[diverge]: divergence
