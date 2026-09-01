@@ -41,6 +41,8 @@ cases! {
         "/// ☃"
     comment::outer_block_doc =>
         "/** outer block doc */"
+    comment::cr_starting_block_doc =>
+        "/**\r CR starting block doc comment */"
 
     reserved::pounds =>
         "##"
@@ -54,6 +56,9 @@ cases! {
         "'x'"
     string =>
         "\"string\""
+    string::continuation::bare_carriage =>
+        "\"string\\\n\n\r\tcontinuation\""
+
     raw_string =>
         "r\"raw string\""
         "r#\"raw string\"#"
@@ -81,4 +86,7 @@ cases! {
     identifier =>
         "ident"
         "fn"
+
+    shebang::doc_comment =>
+        "#! /** doc */ [attr]\n"
 }
