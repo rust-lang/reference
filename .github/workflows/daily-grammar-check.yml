@@ -39,7 +39,7 @@ jobs:
       continue-on-error: true
       run: |
         cargo run --release -p grammar-check -- lex-compare --path rust
-        cargo run --release -p grammar-check -- lex-compare --permute Token
+        cargo run --release -p grammar-check -- lex-compare --permute Token --tool rustc_parse
 
     - name: Check for existing open issues
       if: steps.grammar-check.outcome == 'failure'
