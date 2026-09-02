@@ -74,6 +74,10 @@ Extern statics can be either immutable or mutable just like [statics] outside of
 r[items.extern.static.read-only]
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for the static to be initialized before Rust code reads from it. Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB, except if the mutation happens to bytes inside of an `UnsafeCell`.
 
+r[items.extern.static.size]
+The actual memory that the extern static resolves to [must have][extern-static-ub] *at least* the size and alignment of the type that it was declared within the extern block.
+If the actual memory is bigger, then it is permitted to access that extra memory.
+
 r[items.extern.abi]
 ## ABI
 
@@ -369,6 +373,9 @@ Specifying `kind = "dylib"` instructs the Rust compiler to link an import librar
 r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
 
+r[items.extern.attributes.link.kind-raw-dylib.size]
+Unlike regular external statics, a `raw-dylib` static is *not* allowed to be bigger than its declared size. The size needs to match exactly.
+
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
 
@@ -467,6 +474,7 @@ Attributes on extern function parameters follow the same rules and restrictions 
 [`verbatim` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-verbatim
 [`whole-archive` documentation for rustc]: ../../rustc/command-line-arguments.html#linking-modifiers-whole-archive
 [attributes]: ../attributes.md
+[extern-static-ub]: ../behavior-considered-undefined.md#r-undefined.extern-static
 [functions]: functions.md
 [regular function parameters]: functions.md#attributes-on-function-parameters
 [statics]: static-items.md
