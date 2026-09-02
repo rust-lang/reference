@@ -419,6 +419,7 @@ fn translate_position(input: &str, index: usize) -> (&str, usize, usize) {
 
 fn display_line(src: &str, range: &Range<usize>) -> String {
     let (line, line_no, col_no) = translate_position(src, range.start);
+    let line = line.replace('\r', "␍");
     let prefix = format!("{line_no}: ");
     let indent = col_no.saturating_sub(1);
     let len = (range.end - range.start).min(line.len().saturating_sub(indent));

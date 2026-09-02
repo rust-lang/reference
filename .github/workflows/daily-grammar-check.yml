@@ -41,6 +41,7 @@ jobs:
         cargo run --release -p grammar-check -- lex-compare --path rust
         cargo run --release -p grammar-check -- lex-compare --permute Token --tool rustc_parse
         cargo run --release -p grammar-check -- lex-compare --permute three
+        cargo run --release -p grammar-check -- lex-compare --tool rustc_parse
 
     - name: Check for existing open issues
       if: steps.grammar-check.outcome == 'failure'

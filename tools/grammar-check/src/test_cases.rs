@@ -41,6 +41,27 @@ cases! {
         "/// ☃"
     comment::outer_block_doc =>
         "/** outer block doc */"
+    comment::cr_starting_block_doc =>
+        "/**\r CR starting block doc comment */"
+    comment::cr_starting_inner_block_doc =>
+        "/*!\r CR starting inner block doc comment */"
+
+    comment::block::nested_cr1 =>
+        "/* /**\r*/ */"
+    comment::block::nested_cr2 =>
+        "/* /*!\r*/ */"
+    comment::block::nested_cr3 =>
+        "/* /** x\r y */ */"
+    comment::block::nested_cr4 =>
+        "/** /*\r*/ */"
+    comment::block::nested_cr5 =>
+        "/*! /*\r*/ */"
+    comment::block::nested_cr6 =>
+        "/** /* x\r y */ */"
+    comment::block::nested_cr7 =>
+        "/** /* /*\r*/ */ */"
+    comment::block::nested_cr8 =>
+        "/* /* /**\r*/ */ */"
 
     reserved::pounds =>
         "##"
@@ -54,6 +75,9 @@ cases! {
         "'x'"
     string =>
         "\"string\""
+    string::continuation::bare_carriage =>
+        "\"string\\\n\n\r\tcontinuation\""
+
     raw_string =>
         "r\"raw string\""
         "r#\"raw string\"#"
@@ -81,4 +105,7 @@ cases! {
     identifier =>
         "ident"
         "fn"
+
+    shebang::doc_comment =>
+        "#! /** doc */ [attr]\n"
 }
