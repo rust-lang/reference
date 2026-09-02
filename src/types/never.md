@@ -52,7 +52,6 @@ NeverType -> `!`
 r[type.never.coercion]
 Expressions of type `!` can be coerced into any type.
 
-
 r[type.never.layout]
 The `!` type has a size of 0 and an alignment of 1.
 

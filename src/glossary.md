@@ -341,6 +341,7 @@ enum E6 {
 enum E7 {}
 
 assert_eq!(0, size_of::<()>());
+assert_eq!(0, size_of::<!>());
 assert_eq!(0, size_of_val(&f));
 assert_eq!(0, size_of_val(&S));
 assert_eq!(0, size_of_val(&E::V));
