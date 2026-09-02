@@ -373,7 +373,7 @@ r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
 
 r[items.extern.attributes.link.kind-raw-dylib.size]
-Unlike regular external statics, a `raw-dylib` static is *not* allowed to be bigger than its declared size.
+Unlike regular external statics, a `raw-dylib` static is *not* allowed to be bigger than its declared size. The size needs to match exactly.
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
