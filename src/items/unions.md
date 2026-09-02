@@ -124,6 +124,15 @@ fn f(u: MyUnion) {
 }
 ```
 
+`unsafe` is only required if the union field is accessed, in whole or in part, by the pattern, including any of its sub-patterns. For the purpose of this requirement, the following patterns are considered to perform an access:
+
+- [Literal patterns](../patterns.md#literal-patterns)
+- [Identifier patterns](../patterns.md#identifier-patterns)
+- [Range patterns](../patterns.md#range-patterns)
+- [Reference patterns](../patterns.md#reference-patterns)
+- [Struct](../patterns.md#struct-patterns) and [tuple struct](../patterns.md#tuple-struct-patterns) patterns which correspond to an enum variant
+- [Path patterns](../patterns.md#path-patterns), if the result of expanding the constant into a pattern contains one of the above.
+
 > [!WARNING]
 > The order in which the subpatterns of a pattern are tested is not specified. A union field named in a pattern may be read even when the pattern as a whole does not match. Reading a union field is undefined behavior unless it holds a valid value of its type (see [items.union.fields.validity]). Nothing else in the pattern can be relied on to prevent the read.
 >
