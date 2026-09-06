@@ -161,7 +161,7 @@ r[undefined.validity.valid-range]
 * If a type has a custom range of valid values, then a valid value must be in that range. In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
 
   > [!NOTE]
-  > `rustc` achieves this with the unstable `rustc_layout_scalar_valid_range_*` attributes.
+  > `rustc` achieves this with pattern types (which are unstable).
 
 r[undefined.validity.const-provenance]
 * **In [const contexts]**: In addition to what is described above, further provenance-related requirements apply during const evaluation. Any value that holds pure integer data (the `i*`/`u*`/`f*` types as well as `bool` and `char`, enum discriminants, and slice [metadata]) must not carry any provenance. Any value that holds pointer data (references, raw pointers, function pointers, and `dyn Trait` metadata) must either carry no provenance, or all bytes must be fragments of the same original pointer value in the correct order.
