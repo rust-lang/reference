@@ -145,11 +145,11 @@ r[undefined.validity.union]
 * For a `union`, the exact validity requirements are not decided yet. Obviously, all values that can be created entirely in safe code are valid. If the union has a [zero-sized] field, then every possible value is valid. Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
 
 r[undefined.validity.reference-box]
-* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of some debate.
+* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of [some debate](https://github.com/rust-lang/unsafe-code-guidelines/issues/414).
 
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
-  * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`. (For raw pointers, this requirement remains a subject of some debate.)
+  * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`. (For raw pointers, this requirement remains a subject of [some debate](https://github.com/rust-lang/unsafe-code-guidelines/issues/516).)
   * Slice (`[T]`) and `str` metadata must be a valid `usize`.
 
   In addition, for a wide reference or [`Box<T>`], the metadata is invalid if it makes the total size of the pointed-to value (as determined by `size_of_val`) bigger than `isize::MAX`.
