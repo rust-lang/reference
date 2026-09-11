@@ -563,6 +563,13 @@ specification. Many specifications are described in the [RISC-V ISA Manual],
 [version 20250508]: https://github.com/riscv/riscv-isa-manual/tree/20250508
 [RISC-V GitHub Account]: https://github.com/riscv
 
+> [!NOTE]
+> Some RISC-V standard extensions can be enabled (1) or disabled (0) via their corresponding bits in the [Machine ISA][rv-machine] (`misa`) register.
+> For example, the [A][rv-a] and [M][rv-m] bits being cleared means atomic instructions and integer multiplication/division instructions are unimplemented.
+>
+> Rust code compiled with a RISC-V target feature of the same name as an extension assumes the extension will always be available.
+> It is undefined behaviour to execute it in an environment where the extension is disabled (bit is 0 in `misa`).
+
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
 `a`         | `zaamo`, `zalrsc`   | [A][rv-a] --- Atomic instructions
@@ -621,6 +628,7 @@ Feature     | Implicitly Enables  | Description
 [rv-b]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-c]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/c-st-ext.adoc
 [rv-m]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/m-st-ext.adoc
+[rv-machine]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/machine.adoc#machine-isa-misa-register
 [rv-za64rs]: https://github.com/riscv/riscv-profiles/blob/rva23-rvb23-ratified/src/rva23-profile.adoc
 [rv-za128rs]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
 [rv-zaamo]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
