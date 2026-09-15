@@ -283,6 +283,7 @@ The following is an index of all built-in attributes.
 
 - Type System
   - [`non_exhaustive`] --- Indicate that a type will have more fields/variants added in future.
+  - [`must_implement_one_of`] --- On a trait definition, specify that implementations of the trait must implement at least one of the specified methods.
 
 - Debugger
   - [`debugger_visualizer`] --- Embeds a file that specifies debugger output for a type.
@@ -319,6 +320,7 @@ The following is an index of all built-in attributes.
 [`link`]: items/external-blocks.md#the-link-attribute
 [`macro_export`]: macros-by-example.md#the-macro_export-attribute
 [`macro_use`]: macros-by-example.md#the-macro_use-attribute
+[`must_implement_one_of`]: attributes/type_system.md#the-must_implement_one_of-attribute
 [`must_use`]: attributes/diagnostics.md#the-must_use-attribute
 [`naked`]: attributes/codegen.md#the-naked-attribute
 [`no_builtins`]: attributes/codegen.md#the-no_builtins-attribute
