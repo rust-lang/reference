@@ -16,53 +16,63 @@ There are also language features that provide a level of control over panic beha
 > [!NOTE]
 > The standard library provides the capability to explicitly panic via the [`panic!` macro][panic!].
 
+<!-- template:attributes -->
 r[panic.panic_handler]
 ## The `panic_handler` attribute
 
 r[panic.panic_handler.intro]
-The *`panic_handler` attribute* can be applied to a function to define the behavior of panics.
+The *`panic_handler` [attribute][attributes]* can be applied to a function to define the behavior of panics.
 
-r[panic.panic_handler.allowed-positions]
-The `panic_handler` attribute can only be applied to a function with signature `fn(&PanicInfo) -> !`.
+> [!EXAMPLE]
+> Below is shown a `panic_handler` function that logs the panic message and then halts the thread.
+> <!-- ignore: test infrastructure can't handle no_std -->
+> ```rust,ignore
+> #![no_std]
+>
+> use core::fmt::{self, Write};
+> use core::panic::PanicInfo;
+>
+> struct Sink {
+>     // ..
+> #    _0: (),
+> }
+> #
+> # impl Sink {
+> #     fn new() -> Sink { Sink { _0: () }}
+> # }
+> #
+> # impl fmt::Write for Sink {
+> #     fn write_str(&mut self, _: &str) -> fmt::Result { Ok(()) }
+> # }
+>
+> #[panic_handler]
+> fn panic(info: &PanicInfo) -> ! {
+>     let mut sink = Sink::new();
+>
+>     // logs "panicked at '$reason', src/main.rs:27:4" to some `sink`
+>     let _ = writeln!(sink, "{}", info);
+>
+>     loop {}
+> }
+> ```
 
 > [!NOTE]
 > The [`PanicInfo`] struct contains information about the location of the panic.
 
+r[panic.panic_handler.syntax]
+The `panic_handler` attribute uses the [MetaWord] syntax.
+
+r[panic.panic_handler.allowed-positions]
+The `panic_handler` attribute may only be applied to a function with signature `fn(&PanicInfo) -> !`.
+
+r[panic.panic_handler.duplicates]
+The `panic_handler` attribute may be used any number of times on a function.
+
+> [!NOTE]
+> `rustc` lints against any use following the first.
+
 r[panic.panic_handler.unique]
 There must be a single `panic_handler` function in the dependency graph.
-
-Below is shown a `panic_handler` function that logs the panic message and then halts the thread.
-
-<!-- ignore: test infrastructure can't handle no_std -->
-```rust,ignore
-#![no_std]
-
-use core::fmt::{self, Write};
-use core::panic::PanicInfo;
-
-struct Sink {
-    // ..
-#    _0: (),
-}
-#
-# impl Sink {
-#     fn new() -> Sink { Sink { _0: () }}
-# }
-#
-# impl fmt::Write for Sink {
-#     fn write_str(&mut self, _: &str) -> fmt::Result { Ok(()) }
-# }
-
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    let mut sink = Sink::new();
-
-    // logs "panicked at '$reason', src/main.rs:27:4" to some `sink`
-    let _ = writeln!(sink, "{}", info);
-
-    loop {}
-}
-```
 
 r[panic.panic_handler.std]
 ### Standard behavior
