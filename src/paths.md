@@ -89,7 +89,10 @@ Vec::<u8>::with_capacity(1024);
 ```
 
 r[paths.expr.argument-order]
-The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then equality constraints.
+The order of generic arguments is restricted to lifetime arguments, then type arguments, then const arguments, then [equality constraints][bound.equality].
+
+r[paths.expr.generic-bindings]
+[GenericArgsBinding]s are currently only allowed for [equality constraints][bound.equality].
 
 r[paths.expr.complex-const-params]
 Const arguments must be surrounded by braces unless they are a [literal], an [inferred const], or a single segment path. An [inferred const] may not be surrounded by braces.
