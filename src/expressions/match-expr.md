@@ -151,7 +151,7 @@ fn match_some_arms_diverge(x: i32) -> ! {
 ```
 
 r[expr.match.scrutinee.diverging]
-A `match` expression diverges if the scrutinee diverges unless the scrutinee is a place expression and not every arm's pattern constitutes a read of that place.
+A `match` expression diverges if the scrutinee diverges unless the scrutinee is a place expression and not every arm's pattern constitutes a read of that place (see [divergence.place-read.patterns]).
 
 ```rust
 fn match_scrutinee_diverges(x: !) -> ! {

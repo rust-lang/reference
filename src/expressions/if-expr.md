@@ -160,7 +160,7 @@ if let E::X(n) | E::Y(n) = v {
 ```
 
 r[expr.if.let.diverging]
-A `let` pattern causes the condition to diverge if the initializer diverges unless the initializer is a place that is not read.
+A `let` pattern causes the condition to diverge if the initializer diverges unless the initializer is a place [that is not read][divergence.place-read.patterns].
 
 ```rust
 fn if_let_diverging(x: !) -> ! {

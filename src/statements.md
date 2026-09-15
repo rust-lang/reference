@@ -90,7 +90,7 @@ let [u, v] = [v[0], v[1]] else { // This pattern is irrefutable, so the compiler
 ```
 
 r[statement.let.diverging]
-A let statement [diverges] if its initializer diverges unless the initializer is a place that is not read.
+A let statement [diverges] if its initializer diverges unless the initializer is a place [that is not read][divergence.place-read.patterns].
 
 ```rust
 fn let_diverging(x: !) -> ! {

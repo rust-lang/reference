@@ -57,7 +57,7 @@ fn field_diverge(x: !) -> ! {
 ```
 
 > [!NOTE]
-> A field expression also diverges if the type of the field is the [never type] and the value is guaranteed to be read (see [divergence.never]).
+> A field expression also diverges if the type of the field is the [never type] and the value is [guaranteed to be read][divergence.place-read] (see [divergence.never]).
 >
 > ```rust
 > struct S<T> {

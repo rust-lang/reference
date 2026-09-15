@@ -45,7 +45,7 @@ fn path_diverges(x: !) -> ! {
 ```
 
 > [!NOTE]
-> A path expression does not diverge if it is a place expression that is not guaranteed to be read.
+> A path expression does not diverge if it is a place expression that is not [guaranteed to be read][divergence.place-read].
 >
 > ```rust,compile_fail,E0308
 > fn path_not_read(x: !) -> ! {

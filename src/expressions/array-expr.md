@@ -154,7 +154,7 @@ fn index_diverges(a: [i32; 1]) -> ! {
 ```
 
 > [!NOTE]
-> An index expression also diverges if the type of the indexed element is the [never type] and the value is guaranteed to be read (see [divergence.never]).
+> An index expression also diverges if the type of the indexed element is the [never type] and the value is [guaranteed to be read][divergence.place-read] (see [divergence.never]).
 >
 > ```rust
 > fn diverging_place_read(x: [!; 1]) -> ! {

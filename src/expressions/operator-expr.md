@@ -238,7 +238,7 @@ fn dereference_diverges() -> ! {
 ```
 
 > [!NOTE]
-> A dereference expression also diverges if the type of the dereferenced value is the [never type] and the value is guaranteed to be read.
+> A dereference expression also diverges if the type of the dereferenced value is the [never type] and the value is [guaranteed to be read][divergence.place-read].
 >
 > ```rust
 > fn dereferenced_read(x: &!) -> ! {
