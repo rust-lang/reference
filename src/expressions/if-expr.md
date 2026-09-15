@@ -73,6 +73,8 @@ assert_eq!(y, "Bigger");
 r[expr.if.diverging]
 An `if` expression [diverges] if either the condition expression diverges or if all arms diverge.
 
+The condition expression diverges if the leftmost condition in the `&&` chain diverges, where `let` patterns are considered to diverge if the scrutinee diverges.
+
 ```rust,no_run
 fn diverging_condition() -> ! {
     // Diverges because the condition expression diverges
@@ -139,6 +141,23 @@ enum E {
 let v = E::Y(12);
 if let E::X(n) | E::Y(n) = v {
     assert_eq!(n, 12);
+}
+```
+
+r[expr.if.let.diverging]
+A `let` pattern causes the condition to diverge if the initializer diverges unless the initializer is a place [that is not read][divergence.place-read.patterns].
+
+```rust
+fn if_let_diverging(x: !) -> ! {
+    // OK: The let pattern is read causing this to diverge.
+    if let a = x {};
+}
+```
+
+```rust,compile_fail,E0308
+fn if_let_diverging_not_read(x: !) -> ! {
+    if let _ = x {};
+    // ERROR: expected `!`, found `()`
 }
 ```
 
