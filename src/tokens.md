@@ -563,7 +563,7 @@ r[lex.token.literal.int.tuple-field]
 
 r[lex.token.literal.int.tuple-field.syntax]
 ```grammar,lexer
-TUPLE_INDEX -> DEC_LITERAL | BIN_LITERAL | OCT_LITERAL | HEX_LITERAL
+TUPLE_INDEX -> DEC_DIGIT+
 ```
 
 r[lex.token.literal.int.tuple-field.intro]
