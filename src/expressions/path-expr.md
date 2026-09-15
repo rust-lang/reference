@@ -35,7 +35,21 @@ r[expr.path.const]
 Evaluation of associated constants is handled the same way as [`const` blocks].
 
 r[expr.path.diverging]
-A path expression [diverges] if the path resolves to a value with the [never type] and it is a place expression that is guaranteed to be read.
+A path expression [diverges] if the path resolves to a value with the [never type] and it is a place expression that is guaranteed [to be read][divergence.place-read].
+
+```rust
+fn never_path(x: !) -> ! {
+    // OK: This diverges.
+    x;
+}
+```
+
+```rust,compile_fail,E0308
+fn never_path_not_read(x: !) -> ! {
+    let _ = x;
+    // ERROR: Expected type !, found ()
+}
+```
 
 [diverges]: divergence
 [never type]: type.never

@@ -132,7 +132,7 @@ r[expr.array.index.trait-impl]
 The array index expression can be implemented for types other than arrays and slices by implementing the [Index] and [IndexMut] traits.
 
 r[expr.array.index.diverging]
-An index expression [diverges] if either of its operands diverges, or if the type of the indexed element is the [never type] and the value is guaranteed to be read.
+An index expression [diverges] if either of its operands diverges, or if the type of the indexed element is the [never type] and the value is guaranteed [to be read][divergence.place-read].
 
 ```rust
 fn diverging_place_read(x: [!; 1]) -> ! {

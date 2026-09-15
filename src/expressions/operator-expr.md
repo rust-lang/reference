@@ -106,7 +106,22 @@ let a = & & & & mut 10;
 ```
 
 r[expr.borrow.diverging]
-A borrow expression [diverges] if its operand diverges.
+A borrow expression [diverges] if its operand diverges unless the operand is a place expression.
+
+```rust
+fn borrow_with_diverging_expression() -> ! {
+    // OK: Operand diverges and is not a place, thus this statement also diverges.
+    &{ loop {} };
+}
+```
+
+```rust,compile_fail,E0308
+fn borrow_operand_with_never_type(x: !) -> ! {
+    // An operand of a place with the never type is not considered to diverge.
+    &x;
+    // ERROR: expected `!`, found `()`
+}
+```
 
 r[expr.borrow.raw]
 ### Raw borrow operators
@@ -208,7 +223,7 @@ let y = &*std::ops::Deref::deref(&String::new()); // ERROR
 ```
 
 r[expr.deref.diverging]
-A dereference expression [diverges] if its operand diverges, or if the type of the dereferenced value is the [never type] and the value is guaranteed to be read.
+A dereference expression [diverges] if its operand diverges, or if the type of the dereferenced value is the [never type] and the value is guaranteed [to be read][divergence.place-read].
 
 ```rust
 fn diverging_place_read(x: &!) -> ! {

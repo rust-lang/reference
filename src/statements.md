@@ -90,7 +90,21 @@ let [u, v] = [v[0], v[1]] else { // This pattern is irrefutable, so the compiler
 ```
 
 r[statement.let.diverging]
-A let statement [diverges] if its initializer diverges.
+A let statement [diverges] if its initializer diverges unless the initializer is a place [that is not read][divergence.place-read.patterns].
+
+```rust
+fn let_diverging(x: !) -> ! {
+    // OK: The let pattern is read causing this to diverge.
+    let a = x;
+}
+```
+
+```rust,compile_fail,E0308
+fn let_diverging_not_read(x: !) -> ! {
+    let _ = x;
+    // ERROR: expected `!`, found `()`
+}
+```
 
 r[statement.expr]
 ## Expression statements

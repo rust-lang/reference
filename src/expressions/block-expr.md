@@ -88,7 +88,7 @@ fn f() -> ! { loop {}; } // Diverges and has no final operand.
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
 r[expr.block.diverging]
-A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is not read from.
+A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is [not read from][divergence.place-read].
 
 ```rust,no_run
 fn no_control_flow() -> ! {

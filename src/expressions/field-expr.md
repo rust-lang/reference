@@ -43,7 +43,7 @@ foo().x;
 ```
 
 r[expr.field.diverging]
-A field expression [diverges] if its expression operand diverges or if the type of the field is the [never type] and the value is guaranteed to be read.
+A field expression [diverges] if its expression operand diverges or if the type of the field is the [never type] and the value is guaranteed [to be read][divergence.place-read].
 
 ```rust
 struct S<T> {
