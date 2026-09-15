@@ -617,6 +617,18 @@ Feature     | Implicitly Enables  | Description
 `zkt`       |                                                    | [Zkt][rv-zkt] --- Data Independent Execution Latency Subset
 `ztso`      |                     | [Ztso][rv-ztso] --- Total Store Ordering
 
+
+r[attributes.codegen.target_feature.riscv.misa]
+Some targets implement the [Machine ISA] (`misa`) register. Whether a single-letter extension (`A`, `B`, ...) is present can be queried from the corresponding bit of this register.
+The RISC-V specification allows implementations to have a writable `misa` and change the set of supported extensions at runtime.
+
+Rust code compiled with any target feature, including single-letter target features, requires the feature to be available during execution.
+It is [undefined behaviour][ub-target-feature] to violate this requirement.
+
+
+[Machine ISA]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/machine.adoc#machine-isa-misa-register
+[ub-target-feature]: undefined.target-feature
+
 <!-- Keep links near each table to make it easier to move and update. -->
 
 [rv-a]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
