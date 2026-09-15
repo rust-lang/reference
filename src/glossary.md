@@ -105,6 +105,48 @@ A `struct`, `enum`, or `union` which was defined in the current crate. This is n
 
 A module is a container for zero or more [items]. Modules are organized in a tree, starting from an unnamed module at the root called the crate root or the root module. [Paths] may be used to refer to items from other modules, which may be restricted by [visibility rules]. [More][modules]
 
+r[glossary.n-zst]
+#### N-aligned zero-sized type (n-ZST)
+
+An *n-ZST* refers to a type that is zero sized (a [ZST]) and has an [alignment] of *n*. For example, a *1-ZST* is a zero-sized type with alignment 1.
+
+Examples of 1-ZSTs include:
+
+- The [unit type] (see [layout.tuple.unit]).
+- `repr(C)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.c.struct.align] and [layout.repr.c.struct.size-field-offset]).
+- `repr(transparent)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.transparent.layout-abi]).
+- [Arrays] of 1-ZSTs (see [layout.array]).
+
+```rust
+# use core::mem::{align_of, size_of};
+#[repr(C)]
+struct C1 {}
+#[repr(C)]
+struct C2 {
+    f1: (),
+    f2: [(); 10],
+    f3: C1,
+}
+#[repr(transparent)]
+struct T1 {}
+#[repr(transparent)]
+struct T2 {
+    f1: (),
+    f2: [(); 10],
+}
+
+fn is_1_zst<T>() -> bool {
+    size_of::<T>() == 0 && align_of::<T>() == 1
+}
+
+assert!(is_1_zst::<()>());
+assert!(is_1_zst::<C1>());
+assert!(is_1_zst::<C2>());
+assert!(is_1_zst::<[(); 10]>());
+assert!(is_1_zst::<T1>());
+assert!(is_1_zst::<T2>());
+```
+
 ### Name
 
 A [*name*] is an [identifier] or [lifetime or loop label] that refers to an [entity](#entity). A *name binding* is when an entity declaration introduces an identifier or label associated with that entity. [Paths], identifiers, and labels are used to refer to an entity.
@@ -366,3 +408,4 @@ assert_eq!(0, size_of::<E7>());
 [variable bindings]: patterns.md
 [visibility rules]: visibility-and-privacy.md
 [zero sized]: glossary.zst
+[ZST]: glossary.zst
