@@ -568,6 +568,8 @@ Feature     | Implicitly Enables  | Description
 `a`         | `zaamo`, `zalrsc`   | [A][rv-a] --- Atomic instructions
 `b`         | `zba`, `zbc`, `zbs` | [B][rv-b] --- Bit Manipulation instructions
 `c`         | `zca`               | [C][rv-c] --- Compressed instructions
+`d`         | `f`                 | [D][rv-d] --- Double-Precision Floating-Point
+`f`         | `zicsr`             | [F][rv-f] --- Single-Precision Floating-Point
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
 `za64rs`    | `za128rs`           | [Za64rs][rv-za64rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 64 Bytes
 `za128rs`   |                     | [Za128rs][rv-za128rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 128 Bytes
@@ -620,6 +622,8 @@ Feature     | Implicitly Enables  | Description
 [rv-a]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/a-st-ext.adoc
 [rv-b]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/b-st-ext.adoc
 [rv-c]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/c-st-ext.adoc
+[rv-d]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/d-st-ext.adoc
+[rv-f]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/f-st-ext.adoc
 [rv-m]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/m-st-ext.adoc
 [rv-za64rs]: https://github.com/riscv/riscv-profiles/blob/rva23-rvb23-ratified/src/rva23-profile.adoc
 [rv-za128rs]: https://github.com/riscv/riscv-profiles/blob/v1.0/profiles.adoc
