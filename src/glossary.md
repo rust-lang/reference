@@ -105,6 +105,11 @@ A `struct`, `enum`, or `union` which was defined in the current crate. This is n
 
 A module is a container for zero or more [items]. Modules are organized in a tree, starting from an unnamed module at the root called the crate root or the root module. [Paths] may be used to refer to items from other modules, which may be restricted by [visibility rules]. [More][modules]
 
+r[glossary.n-zst]
+#### N-aligned zero-sized type (n-ZST)
+
+An *n-ZST* refers to a type that is zero sized (a [ZST]) and has an [alignment] of *n*. For example, a *1-ZST* is a zero-sized type with alignment 1.
+
 ### Name
 
 A [*name*] is an [identifier] or [lifetime or loop label] that refers to an [entity](#entity). A *name binding* is when an entity declaration introduces an identifier or label associated with that entity. [Paths], identifiers, and labels are used to refer to an entity.
@@ -366,3 +371,4 @@ assert_eq!(0, size_of::<E7>());
 [variable bindings]: patterns.md
 [visibility rules]: visibility-and-privacy.md
 [zero sized]: glossary.zst
+[ZST]: glossary.zst
