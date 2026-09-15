@@ -105,6 +105,9 @@ let a = && && mut 10;
 let a = & & & & mut 10;
 ```
 
+r[expr.borrow.diverging]
+A borrow expression [diverges] if its operand diverges.
+
 r[expr.borrow.raw]
 ### Raw borrow operators
 
@@ -202,6 +205,24 @@ let x = &*String::new();
 // the end of the statement, so it's an error to use `y` after.
 let y = &*std::ops::Deref::deref(&String::new()); // ERROR
 # y;
+```
+
+r[expr.deref.diverging]
+A dereference expression [diverges] if its operand diverges, or if the type of the dereferenced value is the [never type] and the value is guaranteed to be read.
+
+```rust
+fn diverging_place_read(x: &!) -> ! {
+    // OK: A read of a place expression produces a diverging block.
+    let a = *x;
+}
+```
+
+```rust,compile_fail,E0308
+fn diverging_place_no_read(x: &!) -> ! {
+    // This does not constitute a read, and thus does not diverge.
+    let _ = *x;
+    // ERROR: Expected type !, found ()
+}
 ```
 
 r[expr.try]
@@ -325,6 +346,9 @@ The try propagation operator can be applied to expressions with the type of:
     - `Poll::Ready(None)` evaluates to `Poll::Ready(None)`.
     - `Poll::Pending` evaluates to `Poll::Pending`.
 
+r[expr.try.diverging]
+A try propagation expression [diverges] if its operand diverges.
+
 r[expr.negate]
 ## Negation operators
 
@@ -356,6 +380,9 @@ assert_eq!(-x, -6);
 assert_eq!(!x, -7);
 assert_eq!(true, !false);
 ```
+
+r[expr.negate.diverging]
+A negation expression [diverges] if its operand diverges.
 
 r[expr.arith-logic]
 ## Arithmetic and logical binary operators
@@ -417,6 +444,9 @@ assert_eq!(13 << 3, 104);
 assert_eq!(-10 >> 2, -3);
 ```
 
+r[expr.arith-logic.diverging]
+An arithmetic or logical expression [diverges] if either of its operands diverges.
+
 r[expr.cmp]
 ## Comparison operators
 
@@ -475,6 +505,9 @@ assert!('A' <= 'B');
 assert!("World" >= "Hello");
 ```
 
+r[expr.cmp.diverging]
+A comparison expression [diverges] if either of its operands diverges.
+
 r[expr.bool-logic]
 ## Lazy boolean operators
 
@@ -495,6 +528,9 @@ They differ from `|` and `&` in that the right-hand operand is only evaluated wh
 let x = false || true; // true
 let y = false && panic!(); // false, doesn't evaluate `panic!()`
 ```
+
+r[expr.bool-logic.diverging]
+A lazy boolean expression [diverges] only if its left-hand operand diverges.
 
 r[expr.as]
 ## Type cast expressions
@@ -546,6 +582,9 @@ r[expr.as.coercions]
 [^lessmut]: Only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to `const` pointer is allowed.
 
 [^no-capture]: Only closures that do not capture (close over) any local variables can be cast to function pointers.
+
+r[expr.as.diverging]
+A type cast expression [diverges] if its expression operand diverges.
 
 ### Semantics
 
@@ -920,6 +959,9 @@ In its most basic form, an assignee expression is a [place expression], and we d
 r[expr.assign.behavior-destructuring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
+r[expr.assign.diverging]
+An assignment expression [diverges] if either of its operands diverges.
+
 r[expr.assign.basic]
 ### Basic assignments
 
@@ -1229,10 +1271,14 @@ As with normal assignment expressions, compound assignment expressions always pr
 > [!WARNING]
 > Avoid writing code that depends on the evaluation order of operands in compound assignments as it can be unusual and surprising.
 
+r[expr.compound-assign.diverging]
+A compound assignment expression [diverges] if either of its operands diverges.
+
 [`Box`]: ../special-types-and-traits.md#boxt
 [`Try`]: core::ops::Try
 [autoref]: expr.method.candidate-receivers-refs
 [copies or moves]: ../expressions.md#moved-and-copied-types
+[diverges]: divergence
 [dropping]: ../destructors.md
 [eval order test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
@@ -1247,6 +1293,7 @@ As with normal assignment expressions, compound assignment expressions always pr
 [metadata]: dynamic-sized.pointer-types
 [moved from]: expr.move.movable-place
 [mutable]: ../expressions.md#mutability
+[never type]: type.never
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [assignee expression]: ../expressions.md#place-expressions-and-value-expressions
 [undefined behavior]: ../behavior-considered-undefined.md
