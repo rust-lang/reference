@@ -10,7 +10,7 @@ r[expr.method.intro]
 A _method call_ consists of an expression (the *receiver*) followed by a single dot, an expression path segment, and a parenthesized expression-list.
 
 r[expr.method.target]
-Method calls are resolved to associated [methods] on specific traits, either statically dispatching to a method if the exact `self`-type of the left-hand-side is known, or dynamically dispatching if the left-hand-side expression is an indirect [trait object](../types/trait-object.md).
+Method calls are resolved to associated [methods] on specific traits, either statically dispatching to a method if the exact `self`-type of the left-hand-side is known, or dynamically dispatching if the left-hand-side expression is an indirect [trait object].
 
 ```rust
 let pi: Result<f32, _> = "3.14".parse();
@@ -33,7 +33,7 @@ r[expr.method.candidate-search]
 Then, for each candidate type `T`, search for a [visible] method with a receiver of that type in the following places:
 
 1. `T`'s inherent methods (methods implemented directly on `T`).
-1. Any of the methods provided by a [visible] trait implemented by `T`. If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first. Then all remaining methods in scope are looked up.
+1. Any of the methods provided by a [visible] trait implemented by `T`. If `T` is a type parameter, methods provided by trait bounds on `T` are looked up first; if it is a [trait object], methods provided by its base trait (and supertraits of its base trait) are looked up first. Then all remaining methods in scope are looked up.
 
 > [!NOTE]
 > The lookup is done for each type in order, which can occasionally lead to surprising results. The below code will print "In trait impl!", because `&self` methods are looked up first, the trait method is found before the struct's `&mut self` method is found.
@@ -80,12 +80,9 @@ r[expr.method.edition2021]
 >
 > This special case may be removed in the future.
 
-> [!WARNING]
-> For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression. Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method. There is no way to call the inherent method. Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
-
 [visible]: ../visibility-and-privacy.md
 [array type]: ../types/array.md
-[trait objects]: ../types/trait-object.md
+[trait object]: ../types/trait-object.md
 [disambiguate call]: call-expr.md#disambiguating-function-calls
 [disambiguating function call syntax]: call-expr.md#disambiguating-function-calls
 [dereference]: operator-expr.md#the-dereference-operator
