@@ -116,7 +116,7 @@ jobs:
     - name: Verify tools workspace lockfile is current
       run: cargo update -p mdbook-spec --locked
     - name: Test tools
-      run: cargo test
+      run: cargo test --workspace --exclude grammar-check
 
   dev-guide:
     name: dev-guide build check
