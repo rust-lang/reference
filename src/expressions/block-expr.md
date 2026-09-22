@@ -88,7 +88,7 @@ fn f() -> ! { loop {}; } // Diverges and has no final operand.
 > As a control flow expression, if a block expression is the outer expression of an expression statement, the expected type is `()` unless it is followed immediately by a semicolon.
 
 r[expr.block.diverging]
-A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is not read from.
+A block is considered to be [diverging][divergence] if all reachable control flow paths contain a diverging expression, unless that expression is a [place expression] that is [not read from][divergence.place-read].
 
 ```rust,no_run
 fn no_control_flow() -> ! {
@@ -177,6 +177,9 @@ The actual data format for this type is unspecified.
 
 > [!NOTE]
 > The future type that rustc generates is roughly equivalent to an enum with one variant per `await` point, where each variant stores the data needed to resume from its corresponding point.
+
+r[expr.block.async.diverging]
+An async block expression does not itself [diverge], but evaluating the future (such as through `await`) diverges if the output type is the [never type].
 
 r[expr.block.async.edition2018]
 > [!EDITION-2018]
@@ -339,6 +342,7 @@ fn is_unix_platform() -> bool {
 [call expressions]: call-expr.md
 [capture modes]: ../types/closure.md#capture-modes
 [constant items]: ../items/constant-items.md
+[diverge]: divergence
 [diverges]: expr.block.diverging
 [final operand]: expr.block.inner-attributes
 [free item]: ../glossary.md#free-item

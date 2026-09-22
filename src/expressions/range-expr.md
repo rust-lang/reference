@@ -65,3 +65,8 @@ for i in 1..11 {
     println!("{}", i);
 }
 ```
+
+r[expr.range.diverging]
+A range expression [diverges] if any of its operands diverges.
+
+[diverges]: divergence
