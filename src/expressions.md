@@ -208,7 +208,7 @@ Only the following place expressions may be moved out of:
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
 * [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
-* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
+* The result of [dereferencing][deref] an expression with type [`Box<T, A>`] and that can also be moved out of.
 
 r[expr.move.deinitialization]
 After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
@@ -369,7 +369,7 @@ They are never allowed before:
 * [Range] expressions.
 * Binary operator expressions ([ArithmeticOrLogicalExpression], [ComparisonExpression], [LazyBooleanExpression], [TypeCastExpression], [AssignmentExpression], [CompoundAssignmentExpression]).
 
-[`Box<T>`]:             special-types-and-traits.md#boxt
+[`Box<T, A>`]:          special-types-and-traits.md#boxt
 [`Copy`]:               special-types-and-traits.md#copy
 [`Drop`]:               special-types-and-traits.md#drop
 [`if let`]:             expressions/if-expr.md#if-let-patterns
