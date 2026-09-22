@@ -11,7 +11,7 @@ extern crate rustc_span;
 
 use parser::{Edition, Node, ParseError};
 use rustc_ast::ast::AttrStyle;
-use rustc_ast::token::{CommentKind, IdentIsRaw, TokenKind};
+use rustc_ast::token::{CommentKind, IdentKind, TokenKind};
 use rustc_errors::emitter::HumanReadableErrorType;
 use rustc_errors::json::JsonEmitter;
 use rustc_errors::{ColorConfig, DiagCtxt};
@@ -222,8 +222,8 @@ fn to_reference_name(kind: &TokenKind) -> String {
             // Diagnostics handle this below.
             rustc_ast::token::LitKind::Err(_) => "Literal Error",
         },
-        TokenKind::Ident(_, IdentIsRaw::No) => "IDENTIFIER_OR_KEYWORD",
-        TokenKind::Ident(_, IdentIsRaw::Yes) => "RAW_IDENTIFIER",
+        TokenKind::Ident(_, IdentKind::Normal) => "IDENTIFIER_OR_KEYWORD",
+        TokenKind::Ident(_, IdentKind::Raw) => "RAW_IDENTIFIER",
         TokenKind::NtIdent(..) => panic!("unexpected NtIdent"),
         TokenKind::Lifetime(..) => "LIFETIME_TOKEN",
         TokenKind::NtLifetime(..) => panic!("unexpected NtLifetime"),
