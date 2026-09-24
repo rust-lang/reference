@@ -31,6 +31,9 @@ r[safety.unsafe-extern]
 r[safety.unsafe-attribute]
 - Applying an [unsafe attribute] to an item.
 
+r[safety.unsafe-asm]
+- Using the [`asm!`] macro.
+
 [^extern-2024]: Prior to the 2024 edition, extern blocks were allowed to be declared without `unsafe`.
 
 [`extern`]: items/external-blocks.md
@@ -40,3 +43,4 @@ r[safety.unsafe-attribute]
 [raw pointer]: types/pointer.md
 [unsafe trait]: items/traits.md#unsafe-traits
 [unsafe attribute]: attributes.md
+[`asm!`]: inline-assembly.md
