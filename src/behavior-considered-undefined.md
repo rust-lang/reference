@@ -148,12 +148,17 @@ r[undefined.validity.union]
 * For a `union`, there are no validity requirements. All byte sequences are valid union values.
 
 r[undefined.validity.reference-box]
-* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and the pointee type `T` must be *inhabited*.
+* A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and the pointee type `T` (for unsized pointees: the actual runtime pointee type as determined by the metadata) must be *inhabited*.
 
   The exact classification of inhabited types is unspecified, similar to the size and alignment of types.
   However, types that can be constructed from safe code are definitely inhabited.
-  For unsized types, this check considers dynamic information from the metadata:
-  In particular, if `T` has an unsized tail of slice type `[U]`, and if `U` is uninhabited, and if the length encoded in the metadata is non-zero, then the pointee is uninhabited.
+  For unsized types, whether they are inhabited depends on runtime information from the metadata:
+  - An unsized tail of slice type `[U]` is treated like an array `[U; N]` where `N` is the number of elements as given in the metadata.
+  - An unsized tail of `str` type is treated like an array `[u8; N]` where `N` is the number of elements as given in the metadata.
+  - An unsized tail of `dyn Trait` type is treated like a field of type `U` where `U` is the type for which the vtable in the metadata was generated.
+
+  > [!NOTE]
+  > This implies that `&[!]` is only valid if the length metadata is 0.
 
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
