@@ -1567,6 +1567,9 @@ extern "sysv64-unwind" fn may_panic() {
 r[asm.validity]
 ### Correctness and validity
 
+r[asm.validity.unsafe]
+Using `asm!` requires `unsafe`, and the programmer is responsible for ensuring that the assembly code is correct and valid.
+
 r[asm.validity.necessary-but-not-sufficient]
 In addition to all of the previous rules, the string argument to `asm!` must ultimately become---after all other arguments are evaluated, formatting is performed, and operands are translated---assembly that is both syntactically correct and semantically valid for the target architecture. The formatting rules allow the compiler to generate assembly with correct syntax. Rules concerning operands permit valid translation of Rust operands into and out of the assembly code. Adherence to these rules is necessary, but not sufficient, for the final expanded assembly to be both correct and valid. For instance:
 
