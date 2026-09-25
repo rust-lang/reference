@@ -49,6 +49,12 @@ A crate is the unit of compilation and linking. There are different [types of cr
 
 Dispatch is the mechanism to determine which specific version of code is actually run when it involves polymorphism. Two major forms of dispatch are static dispatch and dynamic dispatch. Rust supports dynamic dispatch through the use of [trait objects][type.trait-object].
 
+### Dyn-compatible traits
+
+[Traits] that can be used in [trait object types] (`dyn Trait`). Only traits that follow specific [rules][dyn compatibility] are *dyn compatible*.
+
+These were formerly known as *object safe* traits.
+
 ### Dynamically sized type
 
 A dynamically sized type (DST) is a type without a statically known size or alignment.
@@ -164,12 +170,6 @@ Within a namespace, names are organized in a hierarchy, where each level of the 
 ### Nominal types
 
 Types that can be referred to by a path directly. Specifically [enums], [structs], [unions], and [trait object types].
-
-### Dyn-compatible traits
-
-[Traits] that can be used in [trait object types] (`dyn Trait`). Only traits that follow specific [rules][dyn compatibility] are *dyn compatible*.
-
-These were formerly known as *object safe* traits.
 
 ### Path
 
