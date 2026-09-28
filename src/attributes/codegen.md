@@ -617,7 +617,7 @@ Feature     | Implicitly Enables  | Description
 
 
 r[attributes.codegen.target_feature.riscv.misa]
-Some targets implement the [Machine ISA] (`misa`) register. Whether a single-letter extension (`A`, `B`, ...) is present can be queried from the corresponding bit of this register.
+Some RISC-V targets implement the [Machine ISA] (`misa`) register. Whether a single-letter extension (`A`, `B`, ...) is present can be queried from the corresponding bit of this register.
 The RISC-V specification allows implementations to have a writable `misa` and change the set of supported extensions at runtime.
 
 Rust code compiled with a single-letter target feature requires the feature to be available during execution and enabled in the `misa` register, if applicable.
