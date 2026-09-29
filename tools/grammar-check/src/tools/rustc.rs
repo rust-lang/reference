@@ -102,7 +102,16 @@ pub fn tokenize(src: &str, edition: Edition) -> Result<Vec<Node>, ParseError> {
                     .original_relative_byte_pos(parser.token.span.hi())
                     .0 as usize;
 
-                let token = Node::new(to_reference_name(&parser.token.kind), Range { start, end });
+                let token = match to_reference_name(&parser.token.kind) {
+                    Ok(name) => Node::new(name, Range { start, end }),
+                    Err(message) => {
+                        psess
+                            .dcx()
+                            .struct_span_err(parser.token.span, message)
+                            .emit();
+                        FatalError.raise();
+                    }
+                };
                 tokens.push(token);
                 parser.bump();
             }
@@ -149,8 +158,8 @@ pub fn tokenize(src: &str, edition: Edition) -> Result<Vec<Node>, ParseError> {
     })
 }
 
-fn to_reference_name(kind: &TokenKind) -> String {
-    match kind {
+fn to_reference_name(kind: &TokenKind) -> Result<String, &'static str> {
+    let reference_name = match kind {
         TokenKind::Eq
         | TokenKind::Lt
         | TokenKind::Le
@@ -223,6 +232,9 @@ fn to_reference_name(kind: &TokenKind) -> String {
             rustc_ast::token::LitKind::Err(_) => "Literal Error",
         },
         TokenKind::Ident(_, IdentKind::Normal) => "IDENTIFIER_OR_KEYWORD",
+        TokenKind::Ident(_, IdentKind::ForcedKeyword) => {
+            return Err("Reference does not support forced keywords");
+        }
         TokenKind::Ident(_, IdentKind::Raw) => "RAW_IDENTIFIER",
         TokenKind::NtIdent(..) => panic!("unexpected NtIdent"),
         TokenKind::Lifetime(..) => "LIFETIME_TOKEN",
@@ -232,8 +244,8 @@ fn to_reference_name(kind: &TokenKind) -> String {
         TokenKind::DocComment(CommentKind::Block, AttrStyle::Inner, ..) => "INNER_BLOCK_DOC",
         TokenKind::DocComment(CommentKind::Block, AttrStyle::Outer, ..) => "OUTER_BLOCK_DOC",
         TokenKind::Eof => panic!("unexpected EOF"),
-    }
-    .to_string()
+    };
+    Ok(reference_name.to_string())
 }
 
 fn diagnostics(output: &[u8]) -> Vec<Diagnostic> {
