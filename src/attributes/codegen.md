@@ -278,12 +278,20 @@ The `optimize` attribute may be used only once on a function.
 r[attributes.codegen.optimize.modes]
 The `optimize` attribute supports these modes:
 
-- `#[optimize(size)]` suggests prioritizing minimizing code size, potentially at the cost of execution performance.
-- `#[optimize(speed)]` suggests prioritizing execution performance, potentially at the cost of code size.
-- `#[optimize(none)]` suggests not optimizing the function, with similar effects to applying -Copt-level=0 locally.
+- `#[optimize(size)]` suggests optimizing for smaller code, even at the cost of execution speed.
+- `#[optimize(speed)]` suggests optimizing for faster execution, even at the cost of code size.
+- `#[optimize(none)]` suggests compiling the function as though no optimization had been requested for it, disregarding what was requested for the crate as a whole.
 
 > [!NOTE]
 > In every form the attribute is a hint. The compiler may ignore it.
+
+> [!WARNING]
+> `#[optimize(none)]` does not make the function opaque to the optimizer. In addition to ignoring the attribute, the compiler may still optimize the function's callers using what it knows about the function and may still change the function itself in other ways, so the attribute cannot be relied on to keep a computation from being optimized away.
+
+> [!NOTE]
+> `rustc` currently optimizes a function with `#[optimize(none)]` much as it would at `-C opt-level=0`, regardless of the crate's optimization level, and does not inline it into its callers.
+>
+> Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
