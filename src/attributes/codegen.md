@@ -223,6 +223,18 @@ The [testing attributes] cannot be applied to a naked function.
 r[attributes.codegen.naked.target_feature]
 The [`target_feature` attribute] cannot be applied to a naked function.
 
+r[attributes.codegen.naked.optimize]
+The [`optimize` attribute] cannot be applied to a naked function. (See [attributes.codegen.optimize.naked].)
+
+```rust,compile_fail,E0736
+# use core::arch::naked_asm;
+#[optimize(size)] // ERROR: Not allowed on a naked function.
+#[unsafe(naked)]
+pub extern "C" fn f() {
+    naked_asm!("ret")
+}
+```
+
 <!-- TODO: Reflexive rules? -->
 
 r[attributes.codegen.naked.abi]
@@ -325,6 +337,18 @@ A closure or async block that inherits `optimize(none)` may still be marked with
 pub fn f() {
     #[inline] || (); // Inherits `optimize(none)`.
     #[inline(always)] async {}; // Inherits `optimize(none)`.
+}
+```
+
+r[attributes.codegen.optimize.naked]
+The `optimize` attribute cannot be applied to a [naked function]. (See [attributes.codegen.naked.optimize].)
+
+```rust,compile_fail,E0736
+# use core::arch::naked_asm;
+#[optimize(size)] // ERROR: Not allowed on a naked function.
+#[unsafe(naked)]
+pub extern "C" fn f() {
+    naked_asm!("ret")
 }
 ```
 
@@ -1045,6 +1069,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`Location`]: core::panic::Location
 [`naked_asm!`]: asm
 [`no_mangle`]: abi.no_mangle
+[`optimize` attribute]: attributes.codegen.optimize
 [`target_feature` attribute]: attributes.codegen.target_feature
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
 [`track_caller` attribute]: attributes.codegen.track_caller
@@ -1063,6 +1088,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [function body]: items.fn.body
 [functions]: ../items/functions.md
 [inherent impl]: items.impl.inherent
+[naked function]: attributes.codegen.naked
 ["Rust" ABI]: items.extern.abi.rust
 [rust-abi]: ../items/external-blocks.md#abi
 [target architecture]: ../conditional-compilation.md#target_arch
