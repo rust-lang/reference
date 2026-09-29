@@ -765,7 +765,7 @@ fn foo_oof(#[some_inert_attribute] arg: u8) {
 [`export_name`]: ../abi.md#the-export_name-attribute
 [`link_section`]: ../abi.md#the-link_section-attribute
 [`no_mangle`]: ../abi.md#the-no_mangle-attribute
-[`optimize`]: ../attributes/codegen.md#the-optimize-attribute
+[`optimize`]: attributes.codegen.optimize
 [built-in attributes]: ../attributes.md#built-in-attributes-index
 [trait item]: traits.md
 [method]: associated-items.md#methods
