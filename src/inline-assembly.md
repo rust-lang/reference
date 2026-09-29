@@ -1726,3 +1726,50 @@ On ARM, the following additional directives are guaranteed to be supported:
 - `.code`
 - `.thumb`
 - `.thumb_func`
+
+## Divergence
+
+r[asm.diverging.noreturn]
+The `asm!` macro [diverges] if it uses the [`noreturn`] option and no `label` block returns unit.
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+fn noreturn_diverges() -> ! {
+    // OK, expression diverges.
+    unsafe { core::arch::asm!("ud2", options(noreturn)); }
+}
+# }
+```
+
+```rust,compile_fail,E0308
+fn noreturn_label_unit_does_not_diverge() -> ! {
+    // This expression does not diverge, thus the body does not diverge.
+    core::arch::asm!("jmp {}", label {}, options(noreturn));
+    // ERROR: Expected type !, found ()
+}
+```
+
+```rust
+fn noreturn_label_never_diverges() -> ! {
+    unsafe {
+        // OK, expression diverges.
+        core::arch::asm!("jmp {}", label { loop {}; }, options(noreturn));
+    }
+}
+```
+
+r[asm.diverging.naked_asm]
+The `naked_asm!` macro always [diverges].
+
+```rust
+# #[cfg(target_arch = "x86_64")] {
+#[unsafe(naked)]
+extern "C" fn wrapper() -> ! {
+    // OK, expression diverges.
+    core::arch::naked_asm!("/* {} */", const 0);
+}
+# }
+```
+
+[`noreturn`]: asm.options.supported-options-noreturn
+[diverges]: divergence

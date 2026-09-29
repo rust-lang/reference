@@ -83,12 +83,51 @@ r[expr.method.edition2021]
 > [!WARNING]
 > For [trait objects], if there is an inherent method of the same name as a trait method, it will give a compiler error when trying to call the method in a method call expression. Instead, you can call the method using [disambiguating function call syntax], in which case it calls the trait method, not the inherent method. There is no way to call the inherent method. Just don't define inherent methods on trait objects with the same name as a trait method and you'll be fine.
 
+r[expr.method.diverging]
+A method call expression [diverges] if any of its operands diverges.
+
+```rust
+struct S;
+
+impl S {
+    fn f(&self, a: i32) {}
+}
+
+fn callee_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    (x as S).f(123);
+}
+
+fn argument_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    S.f(x);
+}
+```
+
+> [!NOTE]
+> If the return type of the called method is the [never type], then the resulting value will have the never type, and per [divergence.never] the resulting expression diverges.
+>
+> ```rust
+> struct S;
+>
+> impl S {
+>     fn returns_never(&self) -> ! { loop {} }
+> }
+>
+> fn return_value_is_never() -> ! {
+>     // OK, expression diverges.
+>     S.returns_never();
+> }
+> ```
+
 [visible]: ../visibility-and-privacy.md
 [array type]: ../types/array.md
 [trait objects]: ../types/trait-object.md
 [disambiguate call]: call-expr.md#disambiguating-function-calls
 [disambiguating function call syntax]: call-expr.md#disambiguating-function-calls
 [dereference]: operator-expr.md#the-dereference-operator
+[diverges]: divergence
 [methods]: ../items/associated-items.md#methods
+[never type]: type.never
 [unsized coercion]: ../type-coercions.md#unsized-coercions
 [`IntoIterator`]: std::iter::IntoIterator

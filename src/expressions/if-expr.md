@@ -98,6 +98,23 @@ fn diverging_arms() -> ! {
 }
 ```
 
+r[expr.if.chains.diverging]
+The condition expression diverges if the leftmost condition in the `&&` chain diverges.
+
+```rust
+fn if_cond_chain_lhs_diverge(x: !) -> ! {
+    // OK, expression diverges.
+    if x && false {};
+}
+```
+
+```rust,compile_fail,E0308
+fn if_cond_chain_rhs_diverge(x: !) -> ! {
+    if false && x {};
+    // ERROR: Expected type !, found ()
+}
+```
+
 r[expr.if.let]
 ## `if let` patterns
 
@@ -139,6 +156,23 @@ enum E {
 let v = E::Y(12);
 if let E::X(n) | E::Y(n) = v {
     assert_eq!(n, 12);
+}
+```
+
+r[expr.if.let.diverging]
+A `let` pattern causes the condition to diverge if the initializer diverges unless the initializer is a place that is not read.
+
+```rust
+fn if_let_diverging(x: !) -> ! {
+    // OK: The let pattern is read causing this to diverge.
+    if let a = x {};
+}
+```
+
+```rust,compile_fail,E0308
+fn if_let_diverging_not_read(x: !) -> ! {
+    if let _ = x {};
+    // ERROR: expected `!`, found `()`
 }
 ```
 

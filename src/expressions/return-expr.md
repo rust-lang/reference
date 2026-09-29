@@ -15,6 +15,18 @@ Evaluating a `return` expression moves its argument into the designated output l
 r[expr.return.diverging]
 A `return` expression is [diverging] and has a type of [`!`].
 
+```rust
+fn return_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    return x;
+}
+
+fn return_no_value_diverges() {
+    // OK, expression diverges.
+    let _: ! = return;
+}
+```
+
 An example of a `return` expression:
 
 ```rust
