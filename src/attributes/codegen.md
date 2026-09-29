@@ -308,6 +308,24 @@ pub async fn g() {
 }
 ```
 
+r[attributes.codegen.optimize.trait]
+When `optimize` is applied to a function in a [trait], it applies only to the code of the [default definition].
+
+```rust
+pub trait Tr {
+    // The default definition is optimized for size.
+    #[optimize(size)]
+    fn f(&self) {}
+}
+
+pub struct S;
+impl Tr for S {
+    // This implementation of `Tr::f` does not inherit the trait's
+    // `optimize(size)`; it uses the crate's optimization level.
+    fn f(&self) {}
+}
+```
+
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
 
