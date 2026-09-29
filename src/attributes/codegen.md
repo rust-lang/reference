@@ -269,9 +269,6 @@ The syntax for the `optimize` attribute is:
 r[attributes.codegen.optimize.allowed-positions]
 The `optimize` attribute may only be applied to functions with [bodies] --- [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition] when those functions have a [default definition].
 
-r[attributes.codegen.optimize.closures]
-Unless overridden, [closures] inherit the `optimize` attribute of the enclosing function.
-
 r[attributes.codegen.optimize.duplicates]
 The `optimize` attribute may be used only once on a function.
 
@@ -292,6 +289,24 @@ The `optimize` attribute supports these modes:
 > `rustc` currently optimizes a function with `#[optimize(none)]` much as it would at `-C opt-level=0`, regardless of the crate's optimization level, and does not inline it into its callers.
 >
 > Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
+
+r[attributes.codegen.optimize.closures]
+Closures and [async blocks] without an `optimize` attribute of their own inherit the attribute in effect on the innermost enclosing function, closure, or async block, which may itself be one inherited rather than one written directly. The body of an [async function] inherits the attribute in effect on the function, and the body of an [async closure] inherits the attribute in effect on the closure. Items and [const blocks] within a function do not inherit the attribute in effect on the function, nor do the closures and async blocks within them.
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    // This closure has no `optimize` attribute of its own, so its
+    // body inherits `optimize(none)` from `f`.
+    let c = || 1 + 2;
+    c();
+}
+
+#[optimize(size)]
+pub async fn g() {
+    // This body inherits `optimize(size)` from `g`.
+}
+```
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
@@ -986,6 +1001,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [attributes]: ../attributes.md
 [bodies]: items.fn.body
 [closures]: expr.closure
+[const blocks]: expr.block.const
 [default definition]: items.traits.associated-item-decls
 [free functions]: items.fn
 [function body]: items.fn.body
