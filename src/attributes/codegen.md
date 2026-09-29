@@ -84,6 +84,25 @@ When `inline` is applied to an [async function] or [async closure], it applies o
 r[attributes.codegen.inline.externally-exported]
 The `inline` attribute is ignored if the function is externally exported with [`no_mangle`] or [`export_name`].
 
+r[attributes.codegen.inline.optimize]
+`#[inline]` and `#[inline(always)]` may not be used with `#[optimize(none)]` on the same function. (See [attributes.codegen.optimize.inline].)
+
+```rust,compile_fail
+#[optimize(none)]
+#[inline] // ERROR: Not allowed.
+fn f() {}
+```
+
+`#[inline]` and `#[inline(always)]` may still be used on a closure or async block that inherits `optimize(none)`. (See [attributes.codegen.optimize.closures].)
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    #[inline] || (); // Inherits `optimize(none)`.
+    #[inline(always)] async {}; // Inherits `optimize(none)`.
+}
+```
+
 <!-- template:attributes -->
 r[attributes.codegen.cold]
 ### The `cold` attribute
@@ -289,6 +308,25 @@ The `optimize` attribute supports these modes:
 > `rustc` currently optimizes a function with `#[optimize(none)]` much as it would at `-C opt-level=0`, regardless of the crate's optimization level, and does not inline it into its callers.
 >
 > Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
+
+r[attributes.codegen.optimize.inline]
+`#[optimize(none)]` may not be used with `#[inline]` or `#[inline(always)]` on the same function. It may be used with `#[inline(never)]`. (See [attributes.codegen.inline.optimize].)
+
+```rust,compile_fail
+#[optimize(none)]
+#[inline] // ERROR: Not allowed.
+fn f() {}
+```
+
+A closure or async block that inherits `optimize(none)` may still be marked with `#[inline]` or `#[inline(always)]`. (See [attributes.codegen.optimize.closures].)
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    #[inline] || (); // Inherits `optimize(none)`.
+    #[inline(always)] async {}; // Inherits `optimize(none)`.
+}
+```
 
 r[attributes.codegen.optimize.closures]
 Closures and [async blocks] without an `optimize` attribute of their own inherit the attribute in effect on the innermost enclosing function, closure, or async block, which may itself be one inherited rather than one written directly. The body of an [async function] inherits the attribute in effect on the function, and the body of an [async closure] inherits the attribute in effect on the closure. Items and [const blocks] within a function do not inherit the attribute in effect on the function, nor do the closures and async blocks within them.
