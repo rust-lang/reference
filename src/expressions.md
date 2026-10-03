@@ -217,6 +217,9 @@ When a place expression is evaluated in a value expression context, or is bound 
 r[expr.move.copy]
 If the type of that value implements [`Copy`], then the value will be copied.
 
+r[expr.move.mut-ref]
+If the type of that value is `&mut T`, and the place expression is mutable, then the value will be reborrowed. This is equivalent to applying `&mut *` (a [dereference][deref] and then a [mutable borrow][borrow]) to the place.
+
 r[expr.move.requires-sized]
 In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
 
