@@ -190,6 +190,24 @@ An *assignee expression* is an expression that appears in the left operand of an
 r[expr.place-value.parenthesis]
 Arbitrary parenthesisation is permitted inside assignee expressions.
 
+r[expr.mut]
+### Mutability
+
+r[expr.mut.intro]
+For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
+
+r[expr.mut.valid-places]
+The following expressions can be mutable place expression contexts:
+
+* Mutable [variables] which are not currently borrowed.
+* [Mutable `static` items].
+* [Temporary values].
+* [Fields][field]: this evaluates the subexpression in a mutable place expression context.
+* [Dereferences][deref] of a `*mut T` pointer.
+* Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
+* Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
+* [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
+
 r[expr.move]
 ### Moved and copied types
 
@@ -215,24 +233,6 @@ After moving out of a place expression that evaluates to a local variable, the l
 
 r[expr.move.place-invalid]
 In all other cases, trying to use a place expression in a value expression context is an error.
-
-r[expr.mut]
-### Mutability
-
-r[expr.mut.intro]
-For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
-
-r[expr.mut.valid-places]
-The following expressions can be mutable place expression contexts:
-
-* Mutable [variables] which are not currently borrowed.
-* [Mutable `static` items].
-* [Temporary values].
-* [Fields][field]: this evaluates the subexpression in a mutable place expression context.
-* [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
 
 r[expr.temporary]
 ### Temporaries
