@@ -480,7 +480,7 @@ union U {
 let u = U { a: (123, 456) };
 
 let c = || {
-    let x = unsafe { u.a.0 }; // captures `u` ByValue
+    let x = unsafe { u.a.0 }; // captures `u` with ImmBorrow
 };
 c();
 
