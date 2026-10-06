@@ -94,7 +94,19 @@ r[divergence.place-read]
 ## Place expression reads for never types
 
 r[divergence.place-read.intro]
-When a [place expression] is used in a context that calls for a value, the place is *read*. However, certain situations take the place itself without reading its value. In these situations, when the place's type is the [never type], then the expression is not considered to diverge.
+When a [place expression] is used in a context that calls for a value, the place expression is *read*. But certain situations take the place itself without reading its value. In these situations, a place expression of the [never type] does not diverge only due to its type.
+
+```rust,compile_fail,E0308
+fn f(x: !) -> ! {
+    let _: &! = &x;
+} // ERROR: Mismatched types.
+```
+
+```rust
+fn f() -> ! {
+    let _: &! = &*&loop {};
+} // OK.
+```
 
 r[divergence.place-read.non-place]
 A non-place expression always constitutes a read for divergence calculation.
