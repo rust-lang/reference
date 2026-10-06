@@ -51,7 +51,7 @@ It also ensures that [`static` items] which have a type with interior mutability
 r[lang-types.phantom-data]
 ## `PhantomData<T>`
 
-[`std::marker::PhantomData<T>`] is a [zero-sized], minimum alignment, type that is considered to own a `T` for the purposes of [variance], [drop check], and [auto traits](#auto-traits).
+[`std::marker::PhantomData<T>`] is a [zero-sized], [1-aligned] type that is considered to own a `T` for the purposes of [variance], [drop check], and [auto traits](#auto-traits).
 
 r[lang-types.va-list]
 ## `VaList<'_>`
@@ -195,6 +195,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`UnwindSafe`]: std::panic::UnwindSafe
 [`Unpin`]: std::marker::Unpin
 
+[1-aligned]: layout.properties.align
 [Arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [call expressions]: expressions/call-expr.md
