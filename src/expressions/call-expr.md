@@ -50,7 +50,7 @@ fn argument_diverges(x: !) -> ! {
 ```
 
 > [!NOTE]
-> If the return type of the called function is the [never type], then the resulting value will have the never type, and per [divergence.never] the resulting expression diverges.
+> If the return type of the called function is the [never type], then the resulting value will have the never type, and per [divergence.never-value] the resulting expression diverges.
 >
 > ```rust
 > fn exit() -> ! {

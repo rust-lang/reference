@@ -189,7 +189,7 @@ async fn async_block_does_not_diverge() -> ! {
 ```
 
 > [!NOTE]
-> Evaluating the future such that the output type is the [never type] will result in a value whose type is the never type, and per [divergence.never] the expression diverges.
+> Evaluating the future such that the output type is the [never type] will result in a value whose type is the never type, and per [divergence.never-value] the expression diverges.
 >
 > ```rust
 > async fn async_block_await_diverge() -> ! {

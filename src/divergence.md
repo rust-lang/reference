@@ -62,8 +62,43 @@ See the following rules for specific expression divergence behavior:
 > [!NOTE]
 > The [`panic!`] macro and related panic-generating macros like [`unreachable!`] also have the type [`!`] and are diverging.
 
-r[divergence.never]
-Any expression of type [`!`] is a diverging expression. However, diverging expressions are not limited to type [`!`]; expressions of other types may also diverge (e.g., `Some(loop {})` has type `Option<!>`).
+r[divergence.never-value]
+[Value expressions] of type [`!`] are diverging expressions.
+
+```rust
+fn f() -> ! { let _: ! = loop {}; } // OK.
+//                       ^^^^^^^ Diverging value expression.
+```
+
+r[divergence.never-place]
+[Place expressions] of type [`!`] that are [read][divergence.place-read] are diverging expressions.
+
+```rust
+fn f(x: !) -> ! { let _x = x; }
+//                         ^
+//     Reading this place expression of type `!` makes it diverge.
+```
+
+```rust,compile_fail,E0308
+fn f(x: !) -> ! { let _: ! = x; } // ERROR: Mismatched types.
+//                           ^
+//     This place expression is not read and does not diverge.
+```
+
+> [!NOTE]
+> Other expressions, including expressions of other types, may also be diverging expressions when they contain diverging expressions.
+>
+> ```rust
+> fn f1() -> ! { let _: Option<!> = Some(loop {}); } // OK.
+> //                                ^^^^^^^^^^^^^
+> //     This value expression diverges despite not being of type `!`.
+> fn f2() -> ! { let _: &! = &*&loop {}; } // OK.
+> //                          ^^^^^^^^^
+> //     This place expression is not read but diverges anyway.
+> fn f3() -> ! { *{loop {}; &mut 0u8} = 0u8; } // OK.
+> //             ^^^^^^^^^^^^^^^^^^^^
+> //      This assignee expression is diverging.
+> ```
 
 > [!NOTE]
 > Though `!` is considered an uninhabited type, a type being uninhabited is not sufficient for it to diverge.
@@ -223,4 +258,6 @@ If a type to be inferred is only unified with diverging expressions, then that t
 [never type]: type.never
 [or-pattern]: patterns.or
 [place expression]: expr.place-value.place-memory-location
+[place expressions]: expr.place-value.place-memory-location
+[value expressions]: expr.place-value.value-result
 [wildcard pattern]: patterns.wildcard.intro

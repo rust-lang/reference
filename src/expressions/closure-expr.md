@@ -42,7 +42,7 @@ fn closure_does_not_diverge() -> ! {
 ```
 
 > [!NOTE]
-> If the return type of the closure is the [never type], and the closure is called, then the resulting value will have the never type, and per [divergence.never] the resulting expression diverges.
+> If the return type of the closure is the [never type], and the closure is called, then the resulting value will have the never type, and per [divergence.never-value] the resulting expression diverges.
 >
 > ```rust
 > fn closure_call_diverge() -> ! {
