@@ -1742,19 +1742,23 @@ fn noreturn_diverges() -> ! {
 ```
 
 ```rust,compile_fail,E0308
+# #[cfg(target_arch = "x86_64")] {
 fn noreturn_label_unit_does_not_diverge() -> ! {
     // This expression does not diverge, thus the body does not diverge.
     unsafe { core::arch::asm!("jmp {}", label {}, options(noreturn)); }
 } // ERROR: Expected type !, found ()
+# }
 ```
 
 ```rust
+# #[cfg(target_arch = "x86_64")] {
 fn noreturn_label_never_diverges() -> ! {
     unsafe {
         // OK, expression diverges.
         core::arch::asm!("jmp {}", label { loop {}; }, options(noreturn));
     }
 }
+# }
 ```
 
 r[asm.diverging.naked_asm]
