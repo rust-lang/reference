@@ -106,27 +106,26 @@ let a = & & & & mut 10;
 ```
 
 r[expr.borrow.diverging]
-A borrow expression [diverges] if its operand diverges unless the operand is a [place expression].
+A borrow expression [diverges] if its operand diverges.
 
 ```rust
 fn borrow_with_diverging_expression() -> ! {
-    // OK: Operand diverges and is not a place, thus this statement also diverges.
     &{ loop {} };
 }
 
 fn raw_borrow_diverges() -> ! {
-    // OK, expression diverges.
     &raw const *{ loop {}; &() };
 }
 ```
 
-```rust,compile_fail,E0308
-fn borrow_operand_with_never_type(x: !) -> ! {
-    // An operand of a place with the never type is not considered to diverge.
-    &x;
-    // ERROR: expected `!`, found `()`
-}
-```
+> [!NOTE]
+> A borrow expression does not [read][divergence.place-read] its operand, so a place operand of the [never type] does not diverge on account of its type. In the following example, neither `x` nor the borrow expression diverges.
+>
+> ```rust,compile_fail,E0308
+> fn borrow_operand_with_never_type(x: !) -> ! {
+>     &x;
+> } // ERROR: expected `!`, found `()`
+> ```
 
 r[expr.borrow.raw]
 ### Raw borrow operators

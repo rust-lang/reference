@@ -151,27 +151,28 @@ fn match_some_arms_diverge(x: i32) -> ! {
 ```
 
 r[expr.match.scrutinee.diverging]
-A `match` expression diverges if the scrutinee diverges unless the scrutinee is a place expression and not every arm's pattern constitutes a read of that place (see [divergence.place-read.patterns]).
+A `match` expression diverges if the scrutinee diverges.
 
 ```rust
 fn match_scrutinee_diverges(x: !) -> ! {
-    // OK: Scrutinee diverges, and it is read, thus the match diverges.
     match x {
         a => ()
     };
 }
 ```
 
-```rust,compile_fail,E0308
-fn match_scrutinee_diverges_not_read(x: !) -> ! {
-    // Diverging scrutinee is not read in all arms, thus the match does not diverge.
-    match x {
-        value => (),
-        _ => (),
-    };
-    // ERROR: expected `!`, found `()`
-}
-```
+> [!NOTE]
+> A scrutinee that is a place expression of the never type does not diverge on account of its type unless every arm's pattern [constitutes a read][divergence.place-read.patterns] of it; see [divergence.place-read].
+>
+> ```rust,compile_fail,E0308
+> fn match_scrutinee_diverges_not_read(x: !) -> ! {
+>     // The wildcard arm does not read the scrutinee, so the scrutinee does not diverge, and neither does the match.
+>     match x {
+>         value => (),
+>         _ => (),
+>     }; // ERROR: expected `!`, found `()`
+> }
+> ```
 
 r[expr.match.guard]
 ## Match guards

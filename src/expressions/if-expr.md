@@ -160,21 +160,22 @@ if let E::X(n) | E::Y(n) = v {
 ```
 
 r[expr.if.let.diverging]
-A `let` pattern causes the condition to diverge if the initializer diverges unless the initializer is a place [that is not read][divergence.place-read.patterns].
+A `let` condition operand [diverges] if its [scrutinee] diverges.
 
 ```rust
 fn if_let_diverging(x: !) -> ! {
-    // OK: The let pattern is read causing this to diverge.
     if let a = x {};
 }
 ```
 
-```rust,compile_fail,E0308
-fn if_let_diverging_not_read(x: !) -> ! {
-    if let _ = x {};
-    // ERROR: expected `!`, found `()`
-}
-```
+> [!NOTE]
+> A scrutinee that is a place expression of the never type does not diverge on account of its type unless the pattern [constitutes a read][divergence.place-read.patterns] of it; see [divergence.place-read].
+>
+> ```rust,compile_fail,E0308
+> fn if_let_diverging_not_read(x: !) -> ! {
+>     if let _ = x {};
+> } // ERROR: expected `!`, found `()`
+> ```
 
 r[expr.if.chains]
 ## Chains of conditions
