@@ -30,14 +30,24 @@ r[expr.await.edition2018]
 > Await expressions are only available beginning with Rust 2018.
 
 r[expr.await.diverging]
-An await expression [diverges] if the future's output type is the [never type].
+An await expression [diverges] if its future operand diverges.
 
 ```rust
-async fn await_diverge(x: impl Future<Output = !>) -> ! {
-    // OK, expression diverges.
-    x.await;
-}
+async fn await_operand_diverges() -> ! {
+    // The future operand diverges, so the await expression diverges.
+    { loop {}; async {} }.await;
+} // OK.
 ```
+
+> [!NOTE]
+> If the output type of the future is the [never type], then the await expression has that type, and per [divergence.never-value] it diverges. For a future whose output type is left to inference, see [expr.block.async.diverging].
+>
+> ```rust,edition2024
+> async fn await_output_never(x: impl Future<Output = !>) -> ! {
+>     // The output type is `!`, so the await expression diverges.
+>     x.await;
+> } // OK.
+> ```
 
 r[expr.await.task]
 ## Task context
