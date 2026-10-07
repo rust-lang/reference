@@ -19,7 +19,7 @@ r[type.pointer.reference.shared.intro]
 Shared references point to memory which is owned by some other value.
 
 r[type.pointer.reference.shared.constraint-mutation]
-When a shared reference to a value is created, it prevents direct mutation of the value. [Interior mutability] provides an exception for this in certain circumstances. As the name suggests, any number of shared references to a value may exist. A shared reference type is written `&type`, or `&'a type` when you need to specify an explicit lifetime.
+When a shared reference to a value is created, it prevents direct mutation of the value. [Interior mutability] provides an exception for this in certain circumstances. As the name suggests, any number of shared references to a value may exist.
 
 r[type.pointer.reference.shared.copy]
 Copying a reference is a "shallow" operation: it involves only copying the pointer itself, that is, pointers are `Copy`. Releasing a reference has no effect on the value it points to, but referencing of a [temporary value] will keep it alive during the scope of the reference itself.
@@ -28,7 +28,7 @@ r[type.pointer.reference.mut]
 ### Mutable references (`&mut`)
 
 r[type.pointer.reference.mut.intro]
-Mutable references point to memory which is owned by some other value. A mutable reference type is written `&mut type` or `&'a mut type`.
+Mutable references point to memory which is owned by some other value.
 
 r[type.pointer.reference.mut.copy]
 A mutable reference (that hasn't been borrowed) is the only way to access the value it points to, so is not `Copy`.
@@ -42,7 +42,10 @@ RawPointerType -> `*` ( `mut` | `const` ) TypeNoBounds
 ```
 
 r[type.pointer.raw.intro]
-Raw pointers are pointers without safety or liveness guarantees. Raw pointers are written as `*const T` or `*mut T`. For example `*const i32` means a raw pointer to a 32-bit integer.
+Raw pointers are pointers without safety or liveness guarantees.
+
+> [!NOTE]
+> `*const i32` means a raw pointer to a 32-bit integer.
 
 r[type.pointer.raw.copy]
 Copying or dropping a raw pointer has no effect on the lifecycle of any other value.
