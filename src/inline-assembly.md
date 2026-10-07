@@ -138,6 +138,8 @@ core::arch::naked_asm!("/* {} */", const 0);
 r[asm.scope.global_asm]
 With the `global_asm!` macro, the assembly code is emitted in a global scope, outside a function. This can be used to hand-write entire functions using assembly code, and generally provides much more freedom to use arbitrary registers and assembler directives.
 
+The `global_asm!` macro may only appear in [Item] position --- that is, in the crate root or a module, or as a statement.
+
 ```rust
 # fn main() {}
 # #[cfg(target_arch = "x86_64")]
