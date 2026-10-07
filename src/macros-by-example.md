@@ -695,7 +695,7 @@ r[macro.decl.follow-set.token-expr-stmt]
   * `expr` and `stmt` may only be followed by one of: `=>`, `,`, or `;`.
 
 r[macro.decl.follow-set.token-pat_param]
-  * `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `if`, or `in`.
+  * `pat_param` may only be followed by one of: `=>`, `,`, `=`, `|`, `:`, `if`, or `in`.
 
 r[macro.decl.follow-set.token-pat]
   * `pat` may only be followed by one of: `=>`, `,`, `=`, `if`, or `in`.
