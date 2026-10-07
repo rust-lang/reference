@@ -363,7 +363,6 @@ assert_eq!(0, size_of::<E7>());
 assert_eq!(0, size_of::<PhantomData<()>>());
 # // `PhantomData` for a type that is not a ZST.
 assert_eq!(0, size_of::<PhantomData<u16>>());
-
 ```
 
 [`extern` blocks]: items.extern
