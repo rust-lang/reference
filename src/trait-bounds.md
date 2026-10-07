@@ -100,6 +100,63 @@ r[bound.sized]
 
 `?` is only used to relax the implicit [`Sized`] trait bound for [type parameters] or [associated types]. `?Sized` may not be used as a bound for other types.
 
+r[bound.equality]
+## Equality constraints
+A trait bound that includes a [GenericArgsBinding] expresses an equality constraint on an associated type of a trait.
+
+```rust
+trait Tr { type Output; }
+struct S {}
+impl Tr for S { type Output = S; }
+fn foo<T: Tr<Output=S>>() {}
+```
+
+Equality constraints cannot currently be expressed using a [WhereClause].
+
+```rust,compile_fail
+# trait Tr { type Output; }
+# struct S {}
+# impl Tr for S { type Output = S; }
+// error: equality constraints are not yet supported in `where` clauses
+fn uses_where<T>() where T::Output = S {}
+```
+
+Equality constraints must come after any input types (type parameters of a trait) in [GenericArgs].
+
+```rust,compile_fail
+trait Tr<T> { type Output; fn foo(x: T); }
+struct S {}
+impl<T> Tr<T> for S { type Output = S; fn foo(x: T) {} }
+// error: generic arguments must come before the first constraint
+fn wrong_order<T: Tr<Output=S, ()>>() {}
+```
+
+Equality constraints cannot be used in a [QualifiedPathType].
+
+```rust,compile_fail,E0229
+# trait Tr<T> { type Output; fn foo(x: T); }
+# struct S {}
+# impl<T> Tr<T> for S { type Output = S; fn foo(x: T) {} }
+// error[E0229]: associated item constraints are not allowed here
+fn uses_qualified_path() { <S as Tr<(), Output=S>>::foo(()); }
+```
+
+r[bound.equality.trait-object]
+Equality constraints are *required* for generic [trait objects].
+
+```rust,compile_fail,E0191
+trait Foo<Input1, Input2> {
+    type Output1;
+    type Output2;
+}
+// correct: not a trait object
+fn uses_foo<T: Foo<u8, u16>>(x: T) {}
+// error[E0191]: the value of the associated types `Output1` and `Output2` in `Foo<u8, u16>` must be specified
+fn uses_foo_obj(x: Box<dyn Foo<u8, u16>>) {}
+// correct: all associated types constrained
+fn also_foo_obj(x: Box<dyn Foo<u8, u16, Output1=u8, Output2=u16>>) {}
+```
+
 r[bound.lifetime]
 ## Lifetime bounds
 
