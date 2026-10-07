@@ -42,6 +42,46 @@ foo().x;
 (mystruct.function_field)() // Call expression containing a field expression
 ```
 
+r[expr.field.diverging]
+A field expression [diverges] if its expression operand diverges.
+
+```rust
+struct S {
+    f1: i32
+}
+
+fn field_diverge(x: !) -> ! {
+    // OK, expression diverges.
+    (x as S).f1;
+}
+```
+
+> [!NOTE]
+> A field expression also diverges if the type of the field is the [never type] and the value is [guaranteed to be read][divergence.place-read] (see [divergence.never-place]).
+>
+> ```rust
+> struct S<T> {
+>     f: T
+> }
+>
+> fn diverging_place_read(x: S<!>) -> ! {
+>     // OK: A read of a place expression diverges.
+>     let a = x.f;
+> }
+> ```
+>
+> ```rust,compile_fail,E0308
+> # struct S<T> {
+> #     f: T
+> # }
+> #
+> fn diverging_place_no_read(x: S<!>) -> ! {
+>     // This does not constitute a read.
+>     let _ = x.f;
+>     // ERROR: Expected type !, found ()
+> }
+> ```
+
 r[expr.field.autoref-deref]
 ## Automatic dereferencing
 
@@ -71,8 +111,10 @@ let d: String = x.f3;           // Move out of x.f3
 [`drop`]: ../special-types-and-traits.md#drop
 [identifier]: ../identifiers.md
 [call expression]: call-expr.md
+[diverges]: divergence
 [method call expression]: method-call-expr.md
 [mutable]: ../expressions.md#mutability
+[never type]: type.never
 [parenthesized expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [struct]: ../items/structs.md

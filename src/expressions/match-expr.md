@@ -117,18 +117,61 @@ The type of the overall `match` expression is the [least upper bound] of the ind
 r[expr.match.empty]
 If there are no match arms, then the `match` expression is [diverging] and the type is [`!`].
 
-> [!EXAMPLE]
-> ```rust
-> enum Empty {}
->
-> fn diverging_match_no_arms(e: Empty) -> ! {
->     match e {}
-> }
-> ```
+```rust
+enum Empty {}
 
+fn diverging_match_no_arms(e: Empty) -> ! {
+    // OK, expression diverges.
+    match e {};
+}
+```
 
-r[expr.match.diverging]
-If either the scrutinee expression or all of the match arms diverge, then the entire `match` expression also diverges.
+r[expr.match.arms.diverging]
+A `match` expression diverges if all of the match arms diverge.
+
+```rust
+fn match_all_arms_diverge(x: i32) -> ! {
+    // OK: All arms diverge, thus the match diverges.
+    match x {
+        1 => loop {},
+        _ => loop {},
+    };
+}
+```
+
+```rust,compile_fail,E0308
+fn match_some_arms_diverge(x: i32) -> ! {
+    // Not all arms diverge, thus the match does not diverge.
+    match x {
+        1 => loop {},
+        _ => (),
+    };
+    // ERROR: expected `!`, found `()`
+}
+```
+
+r[expr.match.scrutinee.diverging]
+A `match` expression diverges if the scrutinee diverges unless the scrutinee is a place expression and not every arm's pattern constitutes a read of that place (see [divergence.place-read.patterns]).
+
+```rust
+fn match_scrutinee_diverges(x: !) -> ! {
+    // OK: Scrutinee diverges, and it is read, thus the match diverges.
+    match x {
+        a => ()
+    };
+}
+```
+
+```rust,compile_fail,E0308
+fn match_scrutinee_diverges_not_read(x: !) -> ! {
+    // Diverging scrutinee is not read in all arms, thus the match does not diverge.
+    match x {
+        value => (),
+        _ => (),
+    };
+    // ERROR: expected `!`, found `()`
+}
+```
 
 r[expr.match.guard]
 ## Match guards

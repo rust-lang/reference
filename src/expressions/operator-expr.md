@@ -105,6 +105,29 @@ let a = && && mut 10;
 let a = & & & & mut 10;
 ```
 
+r[expr.borrow.diverging]
+A borrow expression [diverges] if its operand diverges unless the operand is a [place expression].
+
+```rust
+fn borrow_with_diverging_expression() -> ! {
+    // OK: Operand diverges and is not a place, thus this statement also diverges.
+    &{ loop {} };
+}
+
+fn raw_borrow_diverges() -> ! {
+    // OK, expression diverges.
+    &raw const *{ loop {}; &() };
+}
+```
+
+```rust,compile_fail,E0308
+fn borrow_operand_with_never_type(x: !) -> ! {
+    // An operand of a place with the never type is not considered to diverge.
+    &x;
+    // ERROR: expected `!`, found `()`
+}
+```
+
 r[expr.borrow.raw]
 ### Raw borrow operators
 
@@ -203,6 +226,34 @@ let x = &*String::new();
 let y = &*std::ops::Deref::deref(&String::new()); // ERROR
 # y;
 ```
+
+r[expr.deref.diverging]
+A dereference expression [diverges] if its operand diverges.
+
+```rust
+fn dereference_diverges() -> ! {
+    // OK, expression diverges.
+    *{loop {}; &123};
+}
+```
+
+> [!NOTE]
+> A dereference expression also diverges if the type of the dereferenced value is the [never type] and the value is [guaranteed to be read][divergence.place-read].
+>
+> ```rust
+> fn dereferenced_read(x: &!) -> ! {
+>     // OK, expression diverges.
+>     *x;
+> }
+> ```
+>
+> ```rust,compile_fail,E0308
+> fn dereferenced_not_read(x: &!) -> ! {
+>     // This does not constitute a read, and thus does not diverge.
+>     let _ = *x;
+>     // ERROR: Expected type !, found ()
+> }
+> ```
 
 r[expr.try]
 ## The try propagation expression
@@ -325,6 +376,26 @@ The try propagation operator can be applied to expressions with the type of:
     - `Poll::Ready(None)` evaluates to `Poll::Ready(None)`.
     - `Poll::Pending` evaluates to `Poll::Pending`.
 
+r[expr.try.diverging]
+A try propagation expression [diverges] if its operand diverges.
+
+```rust
+fn try_diverges() -> Option<i32> {
+    // OK, this diverges.
+    let _: ! = { loop {}; None }?;
+}
+```
+
+> [!NOTE]
+> A try propagation expression also diverges if the type of the unwrapped element is the [never type].
+>
+> ```rust
+> fn try_type_is_never(x: Option<!>) -> Option<!> {
+>     // OK, expression diverges.
+>     x?;
+> }
+> ```
+
 r[expr.negate]
 ## Negation operators
 
@@ -355,6 +426,21 @@ let x = 6;
 assert_eq!(-x, -6);
 assert_eq!(!x, -7);
 assert_eq!(true, !false);
+```
+
+r[expr.negate.diverging]
+A negation expression [diverges] if its operand diverges.
+
+```rust
+fn neg_diverges() -> ! {
+    // OK, expression diverges.
+    -{ loop {}; 1 };
+}
+
+fn not_diverges() -> ! {
+    // OK, expression diverges.
+    !{ loop {}; true};
+}
 ```
 
 r[expr.arith-logic]
@@ -417,6 +503,21 @@ assert_eq!(13 << 3, 104);
 assert_eq!(-10 >> 2, -3);
 ```
 
+r[expr.arith-logic.diverging]
+An arithmetic or logical expression [diverges] if either of its operands diverges.
+
+```rust
+fn plus_lhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    x as i32 + 1;
+}
+
+fn plus_rhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    1 + x as i32;
+}
+```
+
 r[expr.cmp]
 ## Comparison operators
 
@@ -475,6 +576,21 @@ assert!('A' <= 'B');
 assert!("World" >= "Hello");
 ```
 
+r[expr.cmp.diverging]
+A comparison expression [diverges] if either of its operands diverges.
+
+```rust
+fn cmp_lhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    (x as i32) < 1;
+}
+
+fn cmp_rhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    1 < (x as i32);
+}
+```
+
 r[expr.bool-logic]
 ## Lazy boolean operators
 
@@ -494,6 +610,24 @@ They differ from `|` and `&` in that the right-hand operand is only evaluated wh
 ```rust
 let x = false || true; // true
 let y = false && panic!(); // false, doesn't evaluate `panic!()`
+```
+
+r[expr.bool-logic.diverging]
+A lazy boolean expression [diverges] only if its left-hand operand diverges.
+
+```rust
+fn lazy_bool_lhs(x: !) -> ! {
+    // OK, expression diverges.
+    x || true;
+}
+```
+
+```rust,compile_fail,E0308
+fn lazy_bool_rhs(x: !) -> ! {
+    // This expression does not diverge, thus the body does not diverge.
+    false || x;
+    // ERROR: Expected type !, found ()
+}
 ```
 
 r[expr.as]
@@ -546,6 +680,16 @@ r[expr.as.coercions]
 [^lessmut]: Only when `m₁` is `mut` or `m₂` is `const`. Casting `mut` reference/pointer to `const` pointer is allowed.
 
 [^no-capture]: Only closures that do not capture (close over) any local variables can be cast to function pointers.
+
+r[expr.as.diverging]
+A type cast expression [diverges] if its expression operand diverges.
+
+```rust
+fn cast_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    x as i32;
+}
+```
 
 ### Semantics
 
@@ -920,6 +1064,23 @@ In its most basic form, an assignee expression is a [place expression], and we d
 r[expr.assign.behavior-destructuring]
 The more general case of destructuring assignment is discussed below, but this case always decomposes into sequential assignments to place expressions, which may be considered the more fundamental case.
 
+r[expr.assign.diverging]
+An assignment expression [diverges] if either of its operands diverges.
+
+```rust
+fn assign_lhs_diverges() -> ! {
+    let a;
+    // OK, expression diverges.
+    *({loop {}; &a}) = 1;
+}
+
+fn assign_rhs_diverges(x: !) -> ! {
+    let a: i32;
+    // OK, expression diverges.
+    a = x;
+}
+```
+
 r[expr.assign.basic]
 ### Basic assignments
 
@@ -1229,10 +1390,28 @@ As with normal assignment expressions, compound assignment expressions always pr
 > [!WARNING]
 > Avoid writing code that depends on the evaluation order of operands in compound assignments as it can be unusual and surprising.
 
+r[expr.compound-assign.diverging]
+A compound assignment expression [diverges] if either of its operands diverges.
+
+```rust
+fn compound_assign_lhs_diverges() -> ! {
+    let a: i32;
+    // OK, expression diverges.
+    *({loop {}; &a}) += 1;
+}
+
+fn compound_assign_rhs_diverges(x: !) -> ! {
+    let a: i32;
+    // OK, expression diverges.
+    a += x as i32;
+}
+```
+
 [`Box`]: ../special-types-and-traits.md#boxt
 [`Try`]: core::ops::Try
 [autoref]: expr.method.candidate-receivers-refs
 [copies or moves]: ../expressions.md#moved-and-copied-types
+[diverges]: divergence
 [dropping]: ../destructors.md
 [eval order test]: https://github.com/rust-lang/rust/blob/1.58.0/src/test/ui/expr/compound-assignment/eval-order.rs
 [explicit discriminants]: ../items/enumerations.md#explicit-discriminants
@@ -1247,6 +1426,7 @@ As with normal assignment expressions, compound assignment expressions always pr
 [metadata]: dynamic-sized.pointer-types
 [moved from]: expr.move.movable-place
 [mutable]: ../expressions.md#mutability
+[never type]: type.never
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
 [assignee expression]: ../expressions.md#place-expressions-and-value-expressions
 [undefined behavior]: ../behavior-considered-undefined.md

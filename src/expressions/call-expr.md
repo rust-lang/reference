@@ -32,6 +32,37 @@ let three: i32 = add(1i32, 2i32);
 let name: &'static str = (|| "Rust")();
 ```
 
+r[expr.call.diverging]
+A call expression [diverges] if any of its operands diverges.
+
+```rust
+fn callee_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    {x}();
+}
+
+fn takes_argument(_: i32) {}
+
+fn argument_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    takes_argument(x);
+}
+```
+
+> [!NOTE]
+> If the return type of the called function is the [never type], then the resulting value will have the never type, and per [divergence.never-value] the resulting expression diverges.
+>
+> ```rust
+> fn exit() -> ! {
+>     loop {}
+> }
+>
+> fn return_value_is_never() -> ! {
+>     // OK, expression diverges.
+>     exit();
+> }
+> ```
+
 r[expr.call.desugar]
 ## Disambiguating function calls
 
@@ -103,5 +134,7 @@ Refer to [RFC 132] for further details and motivations.
 [`default()`]: std::default::Default::default
 [`size_of()`]: std::mem::size_of
 [automatically dereferenced]: field-expr.md#automatic-dereferencing
+[diverges]: divergence
 [fully-qualified syntax]: ../paths.md#qualified-paths
+[never type]: type.never
 [non-function types]: ../types/function-item.md
