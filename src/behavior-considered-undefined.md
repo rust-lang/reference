@@ -39,6 +39,18 @@ r[undefined.alias]
 
   All this also applies when values of these types are passed in a (nested) field of a compound type, but not behind pointer indirections.
 
+r[undefined.subobject]
+* Using a pointer or reference outside the subrange of memory it is allowed to access.
+
+  Generally, a reference may only access the memory it [points to].
+  This restriction also applies to all raw pointers derived from this reference.
+  The one exception is that a reference to an element of an array or slice may be used to access other elements of the same array or slice without immediately causing undefined behavior.
+  This exception also applies for nested arrays, but not for fields of values inside arrays.
+
+  Furthermore, a reference to a field of an enum may not be used to change the discriminant of said enum.
+  If the tag lies inside the range of memory accessible by the reference (as in the previous paragraph), then the reference may be used to *temporarily* change the discriminant of the enum without immediately causing undefined behavior, but the original discriminant must be restored before the lifetime of the reference ends.
+  This restriction also applies to all raw pointers derived from this reference.
+
 r[undefined.immutable]
 * Mutating immutable bytes. All bytes reachable through a [const-promoted] expression are immutable, as well as bytes reachable through borrows in `static` and `const` initializers that have been [lifetime-extended] to `'static`. The bytes owned by an immutable binding or immutable `static` are immutable, unless those bytes are part of an [`UnsafeCell<U>`].
 
