@@ -28,7 +28,7 @@ While writing, you may find it handy to have a [playground] open to test out wha
 
 Feel free to take information from the standard library and Rustonomicon as appropriate.
 
-Note that we don't write documentation for purely library features, such as threads and IO, and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `master` branch of the Reference corresponds to what is **stable** on the `main` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want **[The Unstable Book][unstable]**.
+Note that we don't write documentation for purely library features, such as threads and IO, and we don't write about Rust in the future. Documentation is written as if the current stable release of Rust is the last release. The `main` branch of the Reference corresponds to what is **stable** on the `main` branch ("nightly") of [rust-lang/rust]. If you want to write about Rust in the future, you want **[The Unstable Book][unstable]**.
 
 [introduction]: https://doc.rust-lang.org/nightly/reference/introduction.html
 [issue tracker]: https://github.com/rust-lang/reference/issues
