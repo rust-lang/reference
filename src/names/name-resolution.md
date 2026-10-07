@@ -561,6 +561,8 @@ r[names.resolution.type-relative]
 > [!NOTE]
 > This is a placeholder for future expansion about type-dependent resolution.
 
+- Type-relative name resolution of qualified path expressions shares the shadowing behavior documented in r[expr.method.supertrait-shadowing] on method resolution.
+
 [AST]: glossary.ast
 [Builtin attributes]: ./preludes.md#r-names.preludes.lang
 [Derive helpers]: ../procedural-macros.md#r-macro.proc.derive.attributes
