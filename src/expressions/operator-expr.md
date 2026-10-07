@@ -912,7 +912,7 @@ r[expr.assign.intro]
 An *assignment expression* moves a value into a specified place.
 
 r[expr.assign.assignee]
-An assignment expression consists of a [mutable] [assignee expression], the *assignee operand*, followed by an equals sign (`=`) and a [value expression], the *assigned value operand*.
+An assignment expression consists of a [mutable] [assignee expression], the *assignee operand*, followed by an equals sign (`=`) and an *assigned value operand*.
 
 r[expr.assign.behavior-basic]
 In its most basic form, an assignee expression is a [place expression], and we discuss this case first.
