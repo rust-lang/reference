@@ -147,15 +147,14 @@ r[undefined.validity.union]
 r[undefined.validity.reference-box]
 * A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of some debate.
 
+  > [!NOTE]
+  > The non-[dangling] requirement implies that the total size of the [pointed-to][points to] value (fixed-size prefix plus [unsized tail]) must be no bigger than `isize::MAX`.
+  > This bound is on the size of the entire pointed-to value, not just its unsized tail, and it constrains `dyn Trait` metadata just as it does a slice or `str` length. A valid vtable describes an erased type no larger than `isize::MAX`, but a sized prefix can still carry the total past the limit.
+
 r[undefined.validity.wide]
 * The [metadata] of a wide reference, [`Box<T>`], or raw pointer must match the type of the [unsized tail]:
   * `dyn Trait` metadata must be a pointer to a compiler-generated vtable for `Trait`. (For raw pointers, this requirement remains a subject of some debate.)
   * Slice (`[T]`) and `str` metadata must be a valid `usize`.
-
-  In addition, for a wide reference or [`Box<T>`], the metadata is invalid if it makes the total size of the pointed-to value (as determined by `size_of_val`) bigger than `isize::MAX`.
-
-  > [!NOTE]
-  > This bound is on the size of the entire pointed-to value, not just its unsized tail, and it constrains `dyn Trait` metadata just as it does a slice or `str` length. A valid vtable describes an erased type no larger than `isize::MAX`, but a sized prefix can still carry the total past the limit.
 
 r[undefined.validity.valid-range]
 * If a type has a custom range of valid values, then a valid value must be in that range. In the standard library, this affects [`NonNull<T>`] and [`NonZero<T>`].
