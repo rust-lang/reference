@@ -211,25 +211,25 @@ The following expressions can be mutable place expression contexts:
 r[expr.move]
 ### Moved and copied types
 
+r[expr.move.intro]
+When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
+
+r[expr.move.copy]
+If the type of the value implements [`Copy`], then the value will be copied.
+
+r[expr.move.mut-ref]
+If the type of the value is `&mut T`, and the place expression is either a local variable, a (nested) field of a local variable, or a mutable place expression, then the value will be reborrowed. This is equivalent to applying `&mut *` (a [dereference][deref] and then a [mutable borrow][borrow]) to the place.
+
+r[expr.move.requires-sized]
+In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
+
 r[expr.move.movable-place]
-The following section relies on the concept of *movable place expressions*. The following expressions can be movable place expression contexts:
+Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
 * [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
-
-r[expr.move.intro]
-When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
-
-r[expr.move.copy]
-If the type of that value implements [`Copy`], then the value will be copied.
-
-r[expr.move.mut-ref]
-If the type of that value is `&mut T`, and the place expression is either mutable or movable, then the value will be reborrowed. This is equivalent to applying `&mut *` (a [dereference][deref] and then a [mutable borrow][borrow]) to the place.
-
-r[expr.move.requires-sized]
-In the remaining situations, if the type is [`Sized`], and the place expression is movable, then it is possible to move the value.
 
 r[expr.move.deinitialization]
 After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
