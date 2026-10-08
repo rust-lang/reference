@@ -190,32 +190,6 @@ An *assignee expression* is an expression that appears in the left operand of an
 r[expr.place-value.parenthesis]
 Arbitrary parenthesisation is permitted inside assignee expressions.
 
-r[expr.move]
-### Moved and copied types
-
-r[expr.move.intro]
-When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
-
-r[expr.move.copy]
-If the type of that value implements [`Copy`], then the value will be copied.
-
-r[expr.move.requires-sized]
-In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
-
-r[expr.move.movable-place]
-Only the following place expressions may be moved out of:
-
-* [Variables] which are not currently borrowed.
-* [Temporary values](#temporaries).
-* [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
-* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
-
-r[expr.move.deinitialization]
-After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
-
-r[expr.move.place-invalid]
-In all other cases, trying to use a place expression in a value expression context is an error.
-
 r[expr.mut]
 ### Mutability
 
@@ -233,6 +207,35 @@ The following expressions can be mutable place expression contexts:
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
 * [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
+
+r[expr.move]
+### Moved and copied types
+
+r[expr.move.intro]
+When a place expression is evaluated in a value expression context, or is bound by value in a pattern, it denotes the value held _in_ that memory location.
+
+r[expr.move.copy]
+If the type of the value implements [`Copy`], then the value will be copied.
+
+r[expr.move.mut-ref]
+If the type of the value is `&mut T`, and the place expression is either a local variable, a (nested) field of a local variable, or a mutable place expression, then the value will be reborrowed. This is equivalent to applying `&mut *` (a [dereference][deref] and then a [mutable borrow][borrow]) to the place.
+
+r[expr.move.requires-sized]
+In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
+
+r[expr.move.movable-place]
+Only the following place expressions may be moved out of:
+
+* [Variables] which are not currently borrowed.
+* [Temporary values](#temporaries).
+* [Fields][field] of a place expression which can be moved out of and doesn't implement [`Drop`].
+* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
+
+r[expr.move.deinitialization]
+After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
+
+r[expr.move.place-invalid]
+In all other cases, trying to use a place expression in a value expression context is an error.
 
 r[expr.temporary]
 ### Temporaries
