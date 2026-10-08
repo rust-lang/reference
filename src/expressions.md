@@ -228,7 +228,7 @@ Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
-* [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
+* [Fields][field] of a place expression which can be moved out of and doesn't implement [`Drop`].
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
 
 r[expr.move.deinitialization]
