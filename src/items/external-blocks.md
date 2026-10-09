@@ -165,15 +165,16 @@ r[items.extern.abi.sysv64]
   > - <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI>
 
 r[items.extern.abi.aapcs]
-* `unsafe extern "aapcs"` --- The soft-float ABI for ARM.
+* `unsafe extern "aapcs"` --- The soft-float ABI for 32-bit ARM.
   * Only available on ARM32 targets.
-  * "aapcs" is the same as the "C" ABI on soft-float ARM32.
+  * "aapcs" is the same as the "C" ABI on soft-float ARM32. Note that the hard-float ABI is also called "AAPCS" (sometimes AAPCS-VFP), but `extern "aapcs"` always enables the soft-float version.
   * Corresponds to clang's `__attribute__((pcs("aapcs")))`.
 
   > [!NOTE]
   > For details, see:
   >
   > - [Arm Procedure Call Standard](https://developer.arm.com/documentation/107656/0101/Getting-started-with-Armv8-M-based-systems/Procedure-Call-Standard-for-Arm-Architecture--AAPCS-)
+  > - [AAPCS32 source](https://github.com/ARM-software/abi-aa/blob/main/aapcs32/aapcs32.rst#vfp-register-usage-conventions)
 
 r[items.extern.abi.fastcall]
 * `unsafe extern "fastcall"` --- A "fast" variant of stdcall that passes some arguments in registers.
