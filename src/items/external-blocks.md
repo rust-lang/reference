@@ -104,7 +104,7 @@ r[items.extern.abi.c]
 * `unsafe extern "C"` --- The "C" ABI matches the default ABI chosen by the dominant C compiler for the target.
 
 r[items.extern.abi.system]
-* `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86_32 where it is equivalent to `"stdcall"` for non-variadic functions, and equivalent to `"C"` for variadic functions.
+* `unsafe extern "system"` --- This is equivalent to `extern "C"` except on Windows x86-32 where it is equivalent to `"stdcall"` for non-variadic functions, and equivalent to `"C"` for variadic functions.
 
   > [!NOTE]
   > As the correct underlying ABI on Windows is target-specific, it's best to use `extern "system"` when attempting to link Windows API functions that don't use an explicitly defined ABI.
@@ -119,8 +119,8 @@ r[items.extern.abi.platform]
 There are also some platform-specific ABI strings:
 
 r[items.extern.abi.cdecl]
-* `unsafe extern "cdecl"` --- The calling convention typically used with x86_32 C code.
-  * Only available on x86_32 targets.
+* `unsafe extern "cdecl"` --- The calling convention typically used with x86-32 C code.
+  * Only available on x86-32 targets.
   * Corresponds to MSVC's `__cdecl` and GCC and clang's `__attribute__((cdecl))`.
 
   > [!NOTE]
@@ -130,8 +130,8 @@ r[items.extern.abi.cdecl]
   > - <https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl>
 
 r[items.extern.abi.stdcall]
-* `unsafe extern "stdcall"` --- The calling convention typically used by the [Win32 API] on x86_32.
-  * Only available on x86_32 targets.
+* `unsafe extern "stdcall"` --- The calling convention typically used by the [Win32 API] on x86-32.
+  * Only available on x86-32 targets.
   * Corresponds to MSVC's `__stdcall` and GCC and clang's `__attribute__((stdcall))`.
 
   > [!NOTE]
@@ -142,8 +142,8 @@ r[items.extern.abi.stdcall]
 
 r[items.extern.abi.win64]
 * `unsafe extern "win64"` --- The Windows x64 ABI.
-  * Only available on x86_64 targets.
-  * "win64" is the same as the "C" ABI on Windows x86_64 targets.
+  * Only available on x86-64 targets.
+  * "win64" is the same as the "C" ABI on Windows x86-64 targets.
   * Corresponds to GCC and clang's `__attribute__((ms_abi))`.
 
   > [!NOTE]
@@ -154,8 +154,8 @@ r[items.extern.abi.win64]
 
 r[items.extern.abi.sysv64]
 * `unsafe extern "sysv64"` --- The System V ABI.
-  * Only available on x86_64 targets.
-  * "sysv64" is the same as the "C" ABI on non-Windows x86_64 targets.
+  * Only available on x86-64 targets.
+  * "sysv64" is the same as the "C" ABI on non-Windows x86-64 targets.
   * Corresponds to GCC and clang's `__attribute__((sysv_abi))`.
 
   > [!NOTE]
@@ -177,7 +177,7 @@ r[items.extern.abi.aapcs]
 
 r[items.extern.abi.fastcall]
 * `unsafe extern "fastcall"` --- A "fast" variant of stdcall that passes some arguments in registers.
-  * Only available on x86_32 targets.
+  * Only available on x86-32 targets.
   * Corresponds to MSVC's `__fastcall` and GCC and clang's `__attribute__((fastcall))`.
 
   > [!NOTE]
@@ -187,8 +187,8 @@ r[items.extern.abi.fastcall]
   > - <https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_fastcall>
 
 r[items.extern.abi.thiscall]
-* `unsafe extern "thiscall"` --- The calling convention typically used on C++ class member functions on x86_32 MSVC.
-  * Only available on x86_32 targets.
+* `unsafe extern "thiscall"` --- The calling convention typically used on C++ class member functions on x86-32 MSVC.
+  * Only available on x86-32 targets.
   * Corresponds to MSVC's `__thiscall` and GCC and clang's `__attribute__((thiscall))`.
 
   > [!NOTE]
