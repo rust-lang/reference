@@ -161,8 +161,13 @@ r[items.extern.abi.sysv64]
   > [!NOTE]
   > For details, see:
   >
-  > - <https://wiki.osdev.org/System_V_ABI>
-  > - <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI>
+  > - System V ABI overview: <https://wiki.osdev.org/System_V_ABI>
+  > - ARM64 calling convention: <https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst>
+  > - RISC-V psABI: <https://github.com/riscv-non-isa/riscv-elf-psabi-doc>
+  > - x86-64 psABI: <https://gitlab.com/x86-psABIs/x86-64-ABI>
+  > - x86-64 psABI reference: <https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI>
+  > - Apple extensions to the ARM64 ABI <https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms>
+  > - Apple extensions to the x86-64 ABI <https://developer.apple.com/documentation/xcode/writing-64-bit-intel-code-for-apple-platforms>
 
 r[items.extern.abi.aapcs]
 * `unsafe extern "aapcs"` --- The soft-float ABI for 32-bit ARM.
