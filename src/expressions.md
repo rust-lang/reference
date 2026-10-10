@@ -146,13 +146,13 @@ r[expr.place-value]
 ## Place expressions and value expressions
 
 r[expr.place-value.intro]
-Expressions are divided into two main categories: place expressions and value expressions; there is also a third, minor category of expressions called assignee expressions. Within each expression, operands may likewise occur in either place context or value context. The evaluation of an expression depends both on its own category and the context it occurs within.
+Expressions are divided into two main categories: place expressions and value expressions; there is also a third, minor category of expressions called assignee expressions. Within each expression, operands may likewise occur in either place context or value context. The evaluation of an expression depends on both its own category and the context it occurs within.
 
 r[expr.place-value.place-memory-location]
 A *place expression* is an expression that represents a memory location.
 
 r[expr.place-value.place-expr-kinds]
-These expressions are [paths] which refer to [variables] or [static variables], [dereferences] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`), [tuple indexing] expressions (`expr.0`), and parenthesized place expressions.
+These expressions are [paths] that refer to [variables] or [static variables], [dereferences] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`), [tuple indexing] expressions (`expr.0`), and parenthesized place expressions.
 
 r[expr.place-value.value-expr-kinds]
 All other expressions are value expressions.
@@ -164,7 +164,7 @@ r[expr.place-value.place-context]
 The following contexts are *place expression* contexts:
 
 * The left operand of a [compound assignment] expression.
-* The operand of a unary [borrow], [raw borrow] or [dereference][deref] operator.
+* The operand of a unary [borrow], [raw borrow], or [dereference] operator.
 * The operand of a [field expression].
 * The indexed operand of an [array indexing expression].
 * The tuple operand of a [tuple indexing expression].
@@ -185,10 +185,10 @@ An *assignee expression* is an expression that appears in the left operand of an
 - [Slices][expr.array.index] of assignee expressions.
 - [Tuple structs] of assignee expressions.
 - [Structs] of assignee expressions (with optionally named fields).
-- [Unit structs]
+- [Unit structs].
 
 r[expr.place-value.parenthesis]
-Arbitrary parenthesisation is permitted inside assignee expressions.
+Arbitrary parenthesization is permitted inside assignee expressions.
 
 r[expr.move]
 ### Moved and copied types
