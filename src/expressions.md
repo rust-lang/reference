@@ -224,7 +224,7 @@ Only the following place expressions may be moved out of:
   let y = x.0; // ERROR: Cannot move a field out of a type that implements `Drop`.
   ```
 
-* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
+* The result of [dereferencing] an expression of type [`Box<T>`] that can itself be moved out of.
 
 r[expr.move.deinitialization]
 After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
@@ -403,6 +403,7 @@ They are never allowed before:
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
+[dereferencing]:        expr.deref
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 [extended]:             destructors.scope.lifetime-extension
