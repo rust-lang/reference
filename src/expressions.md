@@ -224,6 +224,18 @@ Only the following place expressions may be moved out of:
   let y = x.0; // ERROR: Cannot move a field out of a type that implements `Drop`.
   ```
 
+* Elements or subarrays of an array that can be moved out of, when bound by value in a [slice pattern].
+
+  ```rust
+  let x = [String::new(), String::new()];
+  let [a, _] = x; // OK: Moves the first element out of `x`.
+  ```
+
+  ```rust,compile_fail,E0508
+  let x = [String::new()];
+  let a = x[0]; // ERROR: An index expression cannot be moved out of.
+  ```
+
 * [Parenthesized expressions] whose enclosed operand can be moved out of.
 * The result of [dereferencing] an expression of type [`Box<T>`] that can itself be moved out of.
 
@@ -294,6 +306,7 @@ Only the following place expressions are mutable place expressions. Most entries
 * [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
 * [Parenthesized expressions]: mutable when the enclosed operand is.
 * [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
+* Elements or subslices of an array or slice matched by a [slice pattern]: mutable when the array or slice is.
 * [Dereferences] of a `*mut T` pointer.
 * Dereferences of a `Box<T>`: mutable when the operand is.
 * Dereferences that use [`DerefMut`] (see [expr.mut.operands]): mutable when the operand is.
