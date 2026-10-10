@@ -68,7 +68,7 @@ r[expr.operator.borrow.result]
 When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
 
 r[expr.operator.borrow.lifetime]
-The memory location is also placed into a borrowed state for the duration of the reference. For a shared borrow (`&`), this implies that the place may not be mutated, but it may be read or shared again. For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
+The memory location is also placed into a borrowed state for the duration of the reference. For a shared borrow (`&`), this implies that the place may not be mutated or moved out of, but it may be read or shared again. For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
 
 r[expr.operator.borrow.mut]
 `&mut` evaluates its operand in a mutable place expression context.

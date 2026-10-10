@@ -205,7 +205,7 @@ In the remaining situations, if that type is [`Sized`], then it may be possible 
 r[expr.move.movable-place]
 Only the following place expressions may be moved out of:
 
-* [Variables] which are not currently borrowed.
+* [Variables].
 * [Temporary values](#temporaries).
 * [Fields][field] of a place expression that can be moved out of and whose type does not implement [`Drop`].
 
@@ -225,6 +225,9 @@ Only the following place expressions may be moved out of:
   ```
 
 * The result of [dereferencing] an expression of type [`Box<T>`] that can itself be moved out of.
+
+> [!NOTE]
+> A place expression cannot be moved out of while it is borrowed. See [expr.operator.borrow.lifetime].
 
 r[expr.move.deinitialization]
 After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
@@ -283,7 +286,7 @@ let _ = r;
 r[expr.mut.valid-places]
 Only the following place expressions are mutable place expressions.
 
-* Mutable [variables] which are not currently borrowed.
+* Mutable [variables].
 * [Mutable `static` items].
 * [Temporary values].
 * [Fields][field]: this evaluates the subexpression in a mutable place expression context.
@@ -311,6 +314,9 @@ fn f(r: &&mut (u8,)) {
     *x = 1;
 }
 ```
+
+> [!NOTE]
+> A mutable place expression also cannot be mutated while it is borrowed. See [expr.operator.borrow.lifetime].
 
 r[expr.temporary]
 ### Temporaries
