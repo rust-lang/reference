@@ -296,7 +296,7 @@ Only the following place expressions are mutable place expressions.
 * [Dereferences][deref] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
+* [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
 
 r[expr.mut.invalid-places]
 Using any other place expression in one of the contexts listed in [expr.mut.intro] is an error.
@@ -495,6 +495,7 @@ They are never allowed before:
 [implicit mutable borrow]: expr.implicit-borrow
 [implicitly borrowed]:  expr.implicit-borrow
 [index expression]:     expr.array.index
+[indexing]:             expr.array.index
 [inline assembly]:      asm
 [interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
