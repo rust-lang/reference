@@ -207,7 +207,23 @@ Only the following place expressions may be moved out of:
 
 * [Variables] which are not currently borrowed.
 * [Temporary values](#temporaries).
-* [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
+* [Fields][field] of a place expression that can be moved out of and whose type does not implement [`Drop`].
+
+  ```rust
+  struct D;
+  impl Drop for D { fn drop(&mut self) {} }
+  struct S(D);
+  let x = S(D);
+  let y = x.0; // OK: `S` does not implement `Drop`, though `D` does.
+  ```
+
+  ```rust,compile_fail,E0509
+  struct S(String);
+  impl Drop for S { fn drop(&mut self) {} }
+  let x = S(String::new());
+  let y = x.0; // ERROR: Cannot move a field out of a type that implements `Drop`.
+  ```
+
 * The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
 
 r[expr.move.deinitialization]
