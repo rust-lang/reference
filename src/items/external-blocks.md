@@ -77,6 +77,9 @@ An immutable static *must* be initialized before any Rust code is executed. It i
 r[items.extern.static.size]
 The allocation that an extern static resolves to must have at least the size and alignment of the type it is declared with (see [undefined.extern-static]). If the allocation is larger, accessing the extra bytes is allowed.
 
+> [!NOTE]
+> See [items.extern.attributes.link.kind-raw-dylib.size] for an exception to this rule.
+
 r[items.extern.abi]
 ## ABI
 
@@ -372,7 +375,7 @@ r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
 
 r[items.extern.attributes.link.kind-raw-dylib.size]
-Unlike regular external statics, a `raw-dylib` static is not allowed to be larger than its declared size. The size needs to match exactly.
+Unlike other extern statics, a `raw-dylib` static must resolve to an allocation whose size is exactly that of the type it is declared with (see [undefined.extern-static-raw-dylib]).
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
