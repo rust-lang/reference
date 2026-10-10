@@ -287,6 +287,7 @@ r[expr.mut.valid-places]
 Only the following place expressions are mutable place expressions.
 
 * Mutable [variables].
+* [Variables] not yet initialized on any control flow path reaching the context that initializes them (see [variable.init]).
 * [Mutable `static` items].
 * [Temporary values].
 * [Fields][field]: this evaluates the subexpression in a mutable place expression context.
