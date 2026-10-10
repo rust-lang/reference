@@ -152,7 +152,7 @@ r[expr.place-value.place-memory-location]
 A *place expression* is an expression that represents a memory location.
 
 r[expr.place-value.place-expr-kinds]
-These expressions are [paths] which refer to local variables, [static variables], [dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized place expressions.
+These expressions are [paths] which refer to [variables], [static variables], [dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized place expressions.
 
 r[expr.place-value.value-expr-kinds]
 All other expressions are value expressions.
@@ -243,7 +243,7 @@ Only the following place expressions may be moved out of:
 > A place expression cannot be moved out of while it is borrowed. See [expr.operator.borrow.lifetime].
 
 r[expr.move.deinitialization]
-After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
+After moving out of a place expression that evaluates to a variable, the location is deinitialized and cannot be read from again until it is reinitialized.
 
 r[expr.move.place-invalid]
 In all other cases, trying to use a place expression in a value expression context is an error.

@@ -933,7 +933,7 @@ For destructuring assignment, subexpressions of the assignee expression are eval
 > This is different than other expressions in that the right operand is evaluated before the left one.
 
 r[expr.assign.drop-target]
-It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
+It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized variable or an uninitialized field of a variable.
 
 r[expr.assign.behavior]
 Next it either [copies or moves] the assigned value to the assigned place.
