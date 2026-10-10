@@ -62,7 +62,7 @@ r[undefined.asm]
 * Incorrect use of inline assembly. For more details, refer to the [rules] to follow when writing code that uses inline assembly.
 
 r[undefined.extern-static]
-* Declaring an `extern static` with some size/alignment/mutability, when the allocation the extern static resolves to is smaller / less aligned / less mutable / located at address 0.
+* Declaring an `extern static` when the allocation it resolves to is located at address 0 or is smaller, less aligned, or less mutable than declared.
 
 r[undefined.extern-static-raw-dylib]
 * Declaring an `extern static` imported with the [`raw-dylib` link kind] when the allocation it resolves to does not have the same size as the type it is declared with.
