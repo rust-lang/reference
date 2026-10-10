@@ -333,6 +333,9 @@ Only the following place expressions are mutable place expressions. Most entries
 r[expr.mut.invalid-places]
 Using any other place expression in one of the contexts listed in [expr.mut.intro] is an error.
 
+> [!NOTE]
+> In particular, the dereference of a shared reference or of a `*const T` pointer is never a mutable place expression, and neither is a field, element, or dereference reached through one unless a dereference of a `*mut T` pointer intervenes.
+
 r[expr.mut.other-borrows]
 The place that a `ref mut` binding mode borrows (see [patterns.ident.binding]) must also be a mutable place expression. That borrow is not a mutable place expression context, so it does not cause an index or dereference within the place to use `IndexMut` or `DerefMut` (see [expr.mut.operands]).
 
