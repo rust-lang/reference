@@ -285,7 +285,7 @@ let _ = r;
 ```
 
 r[expr.mut.valid-places]
-Only the following place expressions are mutable place expressions.
+Only the following place expressions are mutable place expressions. Most entries make a place expression mutable exactly when the operand it is built on is; the dereference of a `*mut T` is mutable whatever its operand, and so, under the conditions of its entry, is the dereference of a `&mut T`.
 
 * Mutable [variables].
 * [Variables] not yet initialized on any control flow path reaching the context that initializes them (see [variable.init]).
@@ -293,11 +293,42 @@ Only the following place expressions are mutable place expressions.
 * [Temporary values].
 * [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
 * [Parenthesized expressions]: mutable when the enclosed operand is.
-* [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`.
+* [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
+* [Dereferences] of a `*mut T` pointer.
 * Dereferences of a `Box<T>`: mutable when the operand is.
 * Dereferences that use [`DerefMut`] (see [expr.mut.operands]): mutable when the operand is.
-* [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
+* Dereferences of a place expression of type `&mut T`, where that place expression is a mutable place expression, is a variable, or is obtained from one of those by any sequence of the following operations:
+  * Parenthesization.
+  * Dereferencing, by an expression or by a pattern, of a place of type `&mut U` or `Box<U>`.
+  * Access to a field, by a [field] or [tuple indexing] expression or by a pattern, or to an element or subslice of an array or slice, by indexing with a value of type `usize` or by a [slice pattern], in either case possibly after automatic dereferencing where that dereferencing is of an expression of type `&mut U` or `Box<U>`.
+
+  ```rust
+  struct S<'a>(&'a mut u8);
+  fn f(x: &mut u8, q: &mut &mut u8, s: S<'_>, b: Box<&mut u8>, c: Box<S<'_>>, a: [&mut u8; 1], o: Option<&mut S<'_>>) {
+      *x = 1;    // OK: `x` is a variable, though not declared `mut`.
+      **q = 1;   // OK: `*q` is a dereference of a `&mut` held by a variable.
+      *s.0 = 1;  // OK: `s.0` is a field of a variable.
+      **b = 1;   // OK: `*b` is a dereference of a `Box` held by a variable.
+      *c.0 = 1;  // OK: `c.0` is a field of the dereference of a `Box` held by a variable.
+      *a[0] = 1; // OK: `a[0]` is an element of an array held by a variable.
+      if let Some(S(y)) = o { **y = 1; } // OK: The `ref mut` binding mode borrows a field reached through a `&mut` held by a variable.
+  }
+  ```
+
+  ```rust,compile_fail,E0594
+  fn f(r: &&mut u8) {
+      **r = 1; // ERROR: `*r` is reached through a shared reference.
+  }
+  ```
+
+  ```rust,compile_fail,E0596
+  fn f(v: Vec<&mut u8>) {
+      *v[0] = 1; // ERROR: `v[0]` indexes through `IndexMut`, which mutably borrows `v`, so `v` must be mutable.
+  }
+  ```
+
+> [!NOTE]
+> The `mut` on a variable governs assignment to and mutable borrows of the variable and the places it owns, such as its fields and the contents of a `Box` it holds. A mutable reference is the only way to access its referent (see [type.pointer.reference.mut.copy]), so a `&mut T` can be written through whether or not the variable holding it is declared `mut`. The contents of a `Box<T>` take the mutability of the place that holds the box, but a `&mut U` among those contents is still the only way to access its own referent. Indexing or dereferencing through [`IndexMut`] or [`DerefMut`] mutably borrows the operand (see [expr.mut.operands]), so the operand must itself be mutable even when the place reached through it is the referent of a `&mut`. Indexing an array or slice by a `usize` and dereferencing a `&mut` reference or a `Box` take no such borrow, so they may lie on the path from a variable to a `&mut T` without any `mut` being required.
 
 r[expr.mut.invalid-places]
 Using any other place expression in one of the contexts listed in [expr.mut.intro] is an error.
@@ -483,6 +514,7 @@ They are never allowed before:
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
 [dereference]:          expr.deref
+[dereferences]:         expr.deref
 [dereferencing]:        expr.deref
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
@@ -515,6 +547,7 @@ They are never allowed before:
 [rust-lang/rust#44848]: https://github.com/rust-lang/rust/issues/44848
 [scrutinee]:            glossary.md#scrutinee
 [slice]:                types/slice.md
+[slice pattern]:        patterns.slice
 [statement]:            statements.md
 [static variables]:     items/static-items.md
 [struct]:               expressions/struct-expr.md
