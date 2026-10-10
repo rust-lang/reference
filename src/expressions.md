@@ -152,7 +152,7 @@ r[expr.place-value.place-memory-location]
 A *place expression* is an expression that represents a memory location.
 
 r[expr.place-value.place-expr-kinds]
-These expressions are [paths] which refer to [variables], [static variables], [dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized place expressions.
+These expressions are [paths] which refer to [variables] or [static variables], [dereferences] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`), [tuple indexing] expressions (`expr.0`), and parenthesized place expressions.
 
 r[expr.place-value.value-expr-kinds]
 All other expressions are value expressions.
@@ -207,7 +207,7 @@ Only the following place expressions may be moved out of:
 
 * [Variables].
 * [Temporary values](#temporaries).
-* [Fields][field] of a place expression that can be moved out of and whose type does not implement [`Drop`].
+* Fields of a struct, union, tuple, or enum variant, whether accessed by a [field] or [tuple indexing] expression or matched by a pattern, of a place expression that can be moved out of and whose type does not implement [`Drop`].
 
   ```rust
   struct D;
@@ -303,7 +303,7 @@ Only the following place expressions are mutable place expressions. Most entries
 * [Variables] not yet initialized on any control flow path reaching the context that initializes them (see [variable.init]).
 * [Mutable `static` items].
 * [Temporary values].
-* [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
+* Fields of a struct, union, tuple, or enum variant, whether accessed by a [field] or [tuple indexing] expression or matched by a pattern: mutable when the place expression that holds the struct, union, tuple, or enum, after automatic dereferencing (see [expr.field.autoref-deref]), is.
 * [Parenthesized expressions]: mutable when the enclosed operand is.
 * [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
 * Elements or subslices of an array or slice matched by a [slice pattern]: mutable when the array or slice is.
