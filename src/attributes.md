@@ -255,6 +255,7 @@ The following is an index of all built-in attributes.
   - [`cold`] --- Hint that a function is unlikely to be called.
   - [`naked`] --- Prevent the compiler from emitting a function prologue and epilogue.
   - [`no_builtins`] --- Disables use of certain built-in functions.
+  - [`optimize`] --- Controls the level of optimization to be applied to the function.
   - [`target_feature`] --- Configure platform-specific code generation.
   - [`track_caller`] --- Pass the parent call location to `std::panic::Location::caller()`.
   - [`instruction_set`] --- Specify the instruction set used to generate a function's code.
@@ -328,6 +329,7 @@ The following is an index of all built-in attributes.
 [`no_mangle`]: abi.md#the-no_mangle-attribute
 [`no_std`]: names/preludes.md#the-no_std-attribute
 [`non_exhaustive`]: attributes/type_system.md#the-non_exhaustive-attribute
+[`optimize`]: attributes/codegen.md#the-optimize-attribute
 [`panic_handler`]: panic.md#the-panic_handler-attribute
 [`path`]: items/modules.md#the-path-attribute
 [`proc_macro_attribute`]: procedural-macros.md#the-proc_macro_attribute-attribute
