@@ -16,12 +16,16 @@ r[coerce.site.intro]
 A coercion can only occur at certain coercion sites in a program; these are typically places where the desired type is explicit or can be derived by propagation from explicit types (without type inference). Possible coercion sites are:
 
 r[coerce.site.let]
-* `let` statements where an explicit type is given.
+* `let` statements where an explicit type is given, unless `ref` or `ref mut` is written in the pattern.
 
    For example, `&mut 42` is coerced to have type `&i8` in the following:
 
    ```rust
    let _: &i8 = &mut 42;
+   ```
+
+   ```rust,compile_fail,E0308
+   let ref x: &i8 = &mut 42; // ERROR: `ref` is written in the pattern, so `&mut 42` is not coerced to `&i8`.
    ```
 
 r[coerce.site.value]
