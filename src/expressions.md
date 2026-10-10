@@ -236,10 +236,52 @@ r[expr.mut]
 ### Mutability
 
 r[expr.mut.intro]
-For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
+The following contexts are *mutable place expression contexts*:
+
+* The left operand of an [assignment] or [compound assignment] expression and, in a destructuring assignment, each place expression it assigns to (see [expr.assign.destructure]).
+* The operand of a mutable [borrow] expression (`&mut`) or a mutable [raw borrow] expression (`&raw mut`).
+* The operand of an [implicit mutable borrow].
+* The output operands of an [inline assembly] expression.
+* The place matched by a [`ref mut` binding] whose `ref mut` is written in the pattern.
+
+The *mutable place expressions*, the place expressions that may be used in these contexts, are listed in [expr.mut.valid-places]. All other place expressions are *immutable place expressions*.
+
+> [!NOTE]
+> A `ref mut` [binding mode] that arises from matching a reference with a non-reference pattern does not put the scrutinee in a mutable place expression context, so it does not cause an index or dereference within the scrutinee to use `IndexMut` or `DerefMut`. This behavior is settled: [rust-lang/rust#44848], which tracked it, was closed with the current handling judged adequate and stabilized. The place that the binding borrows must nonetheless be a mutable place expression (see [expr.mut.other-borrows]).
+>
+> ```rust,compile_fail,E0596
+> # let mut a = (0u8,);
+> let mut v: Vec<Option<&mut (u8,)>> = vec![Some(&mut a)];
+> if let Some((x,)) = v[0] { *x = 1; } // ERROR: `v[0]` uses `Index`, so the field that `x` borrows is not mutable.
+> ```
+>
+> ```rust
+> # let mut a = (0u8,);
+> let mut v: Vec<Option<&mut (u8,)>> = vec![Some(&mut a)];
+> if let Some(&mut (ref mut x,)) = v[0] { *x = 1; } // OK: The written `ref mut` makes `v[0]` use `IndexMut`.
+> ```
+
+r[expr.mut.operands]
+When a place expression is in a mutable place expression context, so is each place expression it is built on, after automatic dereferencing: the enclosed operand of a [parenthesized expression], the container operand of a [field] or [tuple indexing] expression, the indexed operand of an [index expression], the operand of a [dereference], whether written or automatic, and the scrutinee that a pattern destructures. In such a context, an index expression that is not built in (see [expr.array.index.array]) uses [`IndexMut`] when its operand's type implements `IndexMut` for the index type of the [`Index`] implementation it uses, and `Index` otherwise; a dereference, written or automatic, of a type other than a reference, raw pointer, or `Box<T>` (see [expr.deref.traits]) uses [`DerefMut`] when that type implements it, and [`Deref`] otherwise. The implicit mutable borrow that `IndexMut` and `DerefMut` take is a mutable place expression context for their operand.
+
+```rust
+# use std::rc::Rc;
+# let mut a = 0u8;
+struct P { p: *mut u8 }
+let rc = Rc::new(P { p: &mut a });
+unsafe { *rc.p = 1; } // OK: `Rc` does not implement `DerefMut`, so `*rc` uses `Deref`, and `*rc.p` is mutable because `rc.p` is a `*mut u8`.
+```
+
+```rust,compile_fail,E0502
+# let mut a = 0u8;
+let mut v: Vec<&mut u8> = vec![&mut a];
+let r = &v;
+*v[0] = 1; // ERROR: `v[0]` uses `IndexMut`, which mutably borrows `v` while `r` borrows it.
+let _ = r;
+```
 
 r[expr.mut.valid-places]
-The following expressions can be mutable place expression contexts:
+Only the following place expressions are mutable place expressions.
 
 * Mutable [variables] which are not currently borrowed.
 * [Mutable `static` items].
@@ -249,6 +291,26 @@ The following expressions can be mutable place expression contexts:
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
 * [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
+
+r[expr.mut.invalid-places]
+Using any other place expression in one of the contexts listed in [expr.mut.intro] is an error.
+
+r[expr.mut.other-borrows]
+The place that a `ref mut` binding mode borrows (see [patterns.ident.binding]) must also be a mutable place expression. That borrow is not a mutable place expression context, so it does not cause an index or dereference within the place to use `IndexMut` or `DerefMut` (see [expr.mut.operands]).
+
+```rust
+fn f(r: &mut &mut (u8,)) {
+    let (x,) = *r; // OK: The `ref mut` binding mode borrows `(**r).0`, which is mutable.
+    *x = 1;
+}
+```
+
+```rust,compile_fail,E0596
+fn f(r: &&mut (u8,)) {
+    let (x,) = *r; // ERROR: The `ref mut` binding mode borrows `(**r).0`, which is reached through a shared reference.
+    *x = 1;
+}
+```
 
 r[expr.temporary]
 ### Temporaries
@@ -386,23 +448,31 @@ They are never allowed before:
 * Binary operator expressions ([ArithmeticOrLogicalExpression], [ComparisonExpression], [LazyBooleanExpression], [TypeCastExpression], [AssignmentExpression], [CompoundAssignmentExpression]).
 
 [`Box<T>`]:             special-types-and-traits.md#boxt
+[binding mode]:         patterns.ident.binding
 [`Copy`]:               special-types-and-traits.md#copy
+[`Deref`]:              lang-types.deref
+[`DerefMut`]:           lang-types.deref
 [`Drop`]:               special-types-and-traits.md#drop
 [`if let`]:             expressions/if-expr.md#if-let-patterns
+[`Index`]:              std::ops::Index
+[`IndexMut`]:           std::ops::IndexMut
 [`format_args!`]:       core::format_args
 [`pin!`]:               core::pin::pin
+[`ref mut` binding]:    patterns.ident.ref
 [`Sized`]:              special-types-and-traits.md#sized
 [`while let`]:          expressions/loop-expr.md#while-let-patterns
 [array expressions]:    expressions/array-expr.md
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 [array indexing expression]: expr.array.index
 [assign]:               expressions/operator-expr.md#assignment-expressions
+[assignment]:           expr.assign
 [block expressions]:    expressions/block-expr.md
 [borrow]:               expressions/operator-expr.md#borrow-operators
 [call expressions]:     expressions/call-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
+[dereference]:          expr.deref
 [dereferencing]:        expr.deref
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
@@ -413,8 +483,10 @@ They are never allowed before:
 [field expression]:     expr.field
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
 [implicit borrow]:      #implicit-borrows
+[implicit mutable borrow]: expr.implicit-borrow
 [implicitly borrowed]:  expr.implicit-borrow
-[implicitly mutably borrowed]: #implicit-borrows
+[index expression]:     expr.array.index
+[inline assembly]:      asm
 [interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
 [macro invocations]:    macro.invocation
@@ -422,11 +494,13 @@ They are never allowed before:
 [method-call]:          expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [Outer attributes]:     attributes.md
+[parenthesized expression]: expr.paren
 [paths]:                expressions/path-expr.md
 [place expression contexts]: expr.place-value
 [promoted]:             destructors.md#constant-promotion
 [Range]:                expressions/range-expr.md
 [raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
+[rust-lang/rust#44848]: https://github.com/rust-lang/rust/issues/44848
 [scrutinee]:            glossary.md#scrutinee
 [slice]:                types/slice.md
 [statement]:            statements.md
@@ -437,6 +511,7 @@ They are never allowed before:
 [temporary scopes]:     destructors.scope.temporary
 [Temporary values]:     #temporaries
 [tuple expressions]:    expressions/tuple-expr.md
+[tuple indexing]:       expr.tuple-index
 [tuple indexing expression]: expr.tuple-index
 [Tuple structs]:        items.struct.tuple
 [Tuples]:               expressions/tuple-expr.md
