@@ -10,7 +10,7 @@ r[expr.field.intro]
 A *field expression* is a [place expression] that evaluates to the location of a field of a [struct] or [union].
 
 r[expr.field.mut]
-When the operand is [mutable], the field expression is also mutable.
+A field expression can be assigned to or mutably borrowed when it is a [mutable] place expression (see [expr.mut.valid-places]).
 
 r[expr.field.form]
 The syntax for a field expression is an expression, called the *container operand*, then a `.`, and finally an [identifier].
@@ -45,7 +45,7 @@ foo().x;
 r[expr.field.autoref-deref]
 ## Automatic dereferencing
 
-If the type of the container operand implements [`Deref`] or [`DerefMut`][`Deref`] depending on whether the operand is [mutable], it is *automatically dereferenced* as many times as necessary to make the field access possible. This process is also called *autoderef* for short.
+If the type of the container operand implements [`Deref`], it is *automatically dereferenced* as many times as necessary to make the field access possible; when the field expression is in a [mutable place expression context], each of those dereferences is evaluated in one too (see [expr.deref.traits]). This process is also called *autoderef* for short. For the rules on [place expressions], such as which of them are [mutable], the field access applies to the dereferenced operand.
 
 r[expr.field.borrow]
 ## Borrowing
@@ -73,7 +73,9 @@ let d: String = x.f3;           // Move out of x.f3
 [call expression]: call-expr.md
 [method call expression]: method-call-expr.md
 [mutable]: ../expressions.md#mutability
+[mutable place expression context]: expr.mut.intro
 [parenthesized expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[place expressions]: expr.place-value
 [struct]: ../items/structs.md
 [union]: ../items/unions.md

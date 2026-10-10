@@ -290,7 +290,7 @@ Only the following place expressions are mutable place expressions.
 * [Variables] not yet initialized on any control flow path reaching the context that initializes them (see [variable.init]).
 * [Mutable `static` items].
 * [Temporary values].
-* [Fields][field]: this evaluates the subexpression in a mutable place expression context.
+* [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
 * [Dereferences][deref] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
