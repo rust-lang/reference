@@ -294,8 +294,9 @@ Only the following place expressions are mutable place expressions.
 * [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
 * [Parenthesized expressions]: mutable when the enclosed operand is.
 * [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
+* Dereference of a variable, or field of a variable, with type `&mut T`.
+* Dereferences of a `Box<T>`: mutable when the operand is.
+* Dereferences that use [`DerefMut`] (see [expr.mut.operands]): mutable when the operand is.
 * [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
 
 r[expr.mut.invalid-places]
