@@ -686,8 +686,3 @@ html.navy svg.railroad,
 html.ayu svg.railroad {
     background-color: hsl(from var(--bg) h s calc(l + 5));
 }
-
-/* Styling specific to the Reference's negative-lookahead railroad node. */
-svg.railroad g.exceptbox > rect {
-    fill:rgba(245, 160, 125, .1);
-}
