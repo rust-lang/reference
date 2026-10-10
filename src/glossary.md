@@ -119,6 +119,7 @@ An *n-ZST* refers to a type that is zero sized (a [ZST]) and has an [alignment] 
 Examples of 1-ZSTs include:
 
 - The [unit type] (see [layout.tuple.unit]).
+- The [never type] (see [type.never.layout]).
 - `repr(C)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.c.struct.align] and [layout.repr.c.struct.size-field-offset]).
 - `repr(transparent)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.transparent.layout-abi]).
 - [Arrays] of 1-ZSTs (see [layout.array]).
@@ -148,6 +149,7 @@ fn is_1_zst<T>() -> bool {
 }
 
 assert!(is_1_zst::<()>());
+assert!(is_1_zst::<!>());
 assert!(is_1_zst::<C1>());
 assert!(is_1_zst::<C2>());
 assert!(is_1_zst::<[(); 10]>());
