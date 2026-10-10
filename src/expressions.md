@@ -202,6 +202,9 @@ If the type of that value implements [`Copy`], then the value will be copied.
 r[expr.move.requires-sized]
 In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
 
+> [!NOTE]
+> A `&mut T` coerced to a type known to be a reference or raw pointer type is reborrowed rather than moved. See [coerce.reborrow].
+
 r[expr.move.movable-place]
 Only the following place expressions may be moved out of:
 
@@ -246,7 +249,7 @@ r[expr.move.deinitialization]
 After moving out of a place expression that evaluates to a variable, the location is deinitialized and cannot be read from again until it is reinitialized.
 
 r[expr.move.place-invalid]
-In all other cases, trying to use a place expression in a value expression context is an error.
+In all other cases, trying to use a place expression in a value expression context is an error, unless the expression is reborrowed (see [coerce.reborrow]).
 
 r[expr.mut]
 ### Mutability
@@ -350,7 +353,7 @@ Using any other place expression in one of the contexts listed in [expr.mut.intr
 > In particular, the dereference of a shared reference or of a `*const T` pointer is never a mutable place expression, and neither is a field, element, or dereference reached through one unless a dereference of a `*mut T` pointer intervenes.
 
 r[expr.mut.other-borrows]
-The place that a `ref mut` binding mode borrows (see [patterns.ident.binding]) must also be a mutable place expression. That borrow is not a mutable place expression context, so it does not cause an index or dereference within the place to use `IndexMut` or `DerefMut` (see [expr.mut.operands]).
+The place that a `ref mut` binding mode borrows (see [patterns.ident.binding]), and the place `*e` that a coercion of a `&mut T` to a `*mut U` borrows (see [coerce.reborrow]), must also be mutable place expressions. Neither borrow is a mutable place expression context, so neither causes an index or dereference within the place to use `IndexMut` or `DerefMut` (see [expr.mut.operands]).
 
 ```rust
 fn f(r: &mut &mut (u8,)) {
@@ -363,6 +366,20 @@ fn f(r: &mut &mut (u8,)) {
 fn f(r: &&mut (u8,)) {
     let (x,) = *r; // ERROR: The `ref mut` binding mode borrows `(**r).0`, which is reached through a shared reference.
     *x = 1;
+}
+```
+
+```rust
+fn f(r: &mut &mut u8) -> *mut u8 {
+    let p: *mut u8 = *r; // OK: The coercion borrows `**r`, which is mutable.
+    p
+}
+```
+
+```rust,compile_fail,E0596
+fn f(r: &&mut u8) -> *mut u8 {
+    let p: *mut u8 = *r; // ERROR: The coercion borrows `**r`, which is reached through a shared reference.
+    p
 }
 ```
 
@@ -482,6 +499,7 @@ Implicit borrows may be taken in the following expressions:
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 * Arguments to [`format_args!`] except the format string.
+* The referent of an expression of type `&mut T` reborrowed by a coercion to a reference type (see [coerce.reborrow]).
 
 r[expr.overload]
 ## Overloading traits
