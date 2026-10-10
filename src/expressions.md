@@ -224,6 +224,7 @@ Only the following place expressions may be moved out of:
   let y = x.0; // ERROR: Cannot move a field out of a type that implements `Drop`.
   ```
 
+* [Parenthesized expressions] whose enclosed operand can be moved out of.
 * The result of [dereferencing] an expression of type [`Box<T>`] that can itself be moved out of.
 
 > [!NOTE]
@@ -291,6 +292,7 @@ Only the following place expressions are mutable place expressions.
 * [Mutable `static` items].
 * [Temporary values].
 * [Fields][field]: mutable when the container operand, after automatic dereferencing (see [expr.field.autoref-deref]), is.
+* [Parenthesized expressions]: mutable when the enclosed operand is.
 * [Dereferences][deref] of a `*mut T` pointer.
 * Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
 * Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
@@ -502,6 +504,7 @@ They are never allowed before:
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [Outer attributes]:     attributes.md
 [parenthesized expression]: expr.paren
+[parenthesized expressions]: expr.paren
 [paths]:                expressions/path-expr.md
 [place expression contexts]: expr.place-value
 [promoted]:             destructors.md#constant-promotion
