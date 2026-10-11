@@ -63,7 +63,7 @@ r[undefined.asm]
 
 r[undefined.extern-static]
 * Declaring an `extern static` with some size/alignment/mutability, when the allocation the extern static resolves to is smaller / less aligned / less mutable / located at address 0.
-  For `extern static` with `raw-dylib` linkage, the allocation must have *exactly* the declared size.
+  For `extern static` with `raw-dylib` linkage, the allocation must have exactly the declared size.
 
 r[undefined.runtime]
 * Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
