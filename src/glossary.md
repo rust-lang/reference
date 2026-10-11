@@ -255,7 +255,7 @@ Compile-time or run-time behavior that is not specified. This may result in, but
 r[glossary.uninhabited]
 ### Uninhabited
 
-A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] `!`, or an enum with no variants `enum Never { }`. Opposite of [Inhabited](#inhabited).
+A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] (`!`), or an enum with no variants (e.g., `enum Never { }`). Opposite of [Inhabited](#inhabited).
 
 > [!NOTE]
 > Uninhabited types are not necessarily [zero sized]. For example, `enum Never { }` is uninhabited and zero sized, but `(u8, Never)` is uninhabited and not zero sized.
@@ -266,7 +266,7 @@ r[glossary.zst]
 A type is zero sized (a ZST) if its size is 0. Such types have at most one possible value. Examples include:
 
 - The [unit type] (see [layout.tuple.unit]).
-- The [never type] `!` (see [type.never.layout]).
+- The [never type] (see [type.never.layout]).
 - [Function items] (see [type.fn-item.intro]).
 - The constructors of [tuple-like structs] (see [type.fn-item.intro]).
 - The constructors of [tuple-like enum variants] (see [type.fn-item.intro]).
