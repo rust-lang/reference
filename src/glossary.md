@@ -119,6 +119,7 @@ An *n-ZST* refers to a type that is zero sized (a [ZST]) and has an [alignment] 
 Examples of 1-ZSTs include:
 
 - The [unit type] (see [layout.tuple.unit]).
+- The [never type] (see [type.never.layout]).
 - `repr(C)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.c.struct.align] and [layout.repr.c.struct.size-field-offset]).
 - `repr(transparent)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.transparent.layout-abi]).
 - [Arrays] of 1-ZSTs (see [layout.array]).
@@ -148,6 +149,7 @@ fn is_1_zst<T>() -> bool {
 }
 
 assert!(is_1_zst::<()>());
+assert!(is_1_zst::<!>());
 assert!(is_1_zst::<C1>());
 assert!(is_1_zst::<C2>());
 assert!(is_1_zst::<[(); 10]>());
@@ -255,7 +257,7 @@ Compile-time or run-time behavior that is not specified. This may result in, but
 r[glossary.uninhabited]
 ### Uninhabited
 
-A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] `!`, or an enum with no variants `enum Never { }`. Opposite of [Inhabited](#inhabited).
+A type is uninhabited if it has no constructors and therefore can never be instantiated. An uninhabited type is "empty" in the sense that there are no values of the type. The canonical example of an uninhabited type is the [never type] (`!`), or an enum with no variants (e.g., `enum Never { }`). Opposite of [Inhabited](#inhabited).
 
 > [!NOTE]
 > Uninhabited types are not necessarily [zero sized]. For example, `enum Never { }` is uninhabited and zero sized, but `(u8, Never)` is uninhabited and not zero sized.
@@ -266,6 +268,7 @@ r[glossary.zst]
 A type is zero sized (a ZST) if its size is 0. Such types have at most one possible value. Examples include:
 
 - The [unit type] (see [layout.tuple.unit]).
+- The [never type] (see [type.never.layout]).
 - [Function items] (see [type.fn-item.intro]).
 - The constructors of [tuple-like structs] (see [type.fn-item.intro]).
 - The constructors of [tuple-like enum variants] (see [type.fn-item.intro]).
@@ -340,6 +343,7 @@ enum E6 {
 enum E7 {}
 
 assert_eq!(0, size_of::<()>());
+assert_eq!(0, size_of::<!>());
 assert_eq!(0, size_of_val(&f));
 assert_eq!(0, size_of_val(&S));
 assert_eq!(0, size_of_val(&E::V));
