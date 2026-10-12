@@ -75,7 +75,7 @@ r[items.extern.static.read-only]
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for the static to be initialized before Rust code reads from it. Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB, except if the mutation happens to bytes inside of an `UnsafeCell`.
 
 r[items.extern.static.size]
-The allocation that an extern static resolves to must have at least the size and alignment of the type it is declared with (see [undefined.extern-static]). If the allocation is larger, accessing the extra bytes is allowed.
+An extern static resolves to an allocation that starts at the address of the static; the allocation must have at least the size and alignment of the type it is declared with (see [undefined.extern-static]). If the allocation is larger, accessing the extra bytes is allowed.
 
 > [!NOTE]
 > See [items.extern.attributes.link.kind-raw-dylib.size] for an exception to this rule.
