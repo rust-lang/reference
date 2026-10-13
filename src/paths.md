@@ -62,12 +62,11 @@ TypeList ->
     ( Type `,` )* Type `,`?
 
 GenericArg ->
-    Lifetime | Type | GenericArgsConst | GenericArgsBinding | GenericArgsBounds
+    Lifetime | Type | ConstArg | GenericArgsBinding | GenericArgsBounds
 
-GenericArgsConst ->
+ConstArg ->
       BlockExpression
-    | LiteralExpression
-    | `-` LiteralExpression
+    | `-`? LiteralExpression
     | SimplePathSegment
 
 GenericArgsBinding ->
