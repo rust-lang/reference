@@ -19,7 +19,7 @@ See the following rules for specific expression divergence behavior:
 
 - [asm.diverging.naked_asm] --- `naked_asm!`.
 - [asm.diverging.noreturn] --- `noreturn` in `asm!`.
-- [expr.arith-logic.diverging] --- Arithmetic and logic expressions.
+- [expr.arith-logic.diverging] --- Arithmetic and logical expressions.
 - [expr.array.diverging] --- Array expressions.
 - [expr.array.index.diverging] --- Index expressions.
 - [expr.as.diverging] --- `as` expressions.
@@ -35,17 +35,20 @@ See the following rules for specific expression divergence behavior:
 - [expr.compound-assign.diverging] --- Compound assignment expressions.
 - [expr.deref.diverging] --- Dereference expressions.
 - [expr.field.diverging] --- Field expressions.
+- [expr.if.chains.diverging] --- `if` condition chains.
 - [expr.if.diverging] --- `if` expressions.
+- [expr.if.let.diverging] --- `if let` conditions.
 - [expr.literal.diverging] --- Literal expressions.
 - [expr.loop.block-labels.type] --- Labeled block expressions with `break`.
 - [expr.loop.break-value.diverging] --- `loop` expressions with `break`.
 - [expr.loop.break.diverging] --- `break` expressions.
 - [expr.loop.continue.diverging] --- `continue` expressions.
-- [expr.loop.for.diverging] --- `for` expressions.
+- [expr.loop.for.diverging] --- `for` loop expressions.
 - [expr.loop.infinite.diverging] --- Infinite `loop` expressions.
-- [expr.loop.while.diverging] --- `while` expressions.
-- [expr.match.arms.diverging] and [expr.match.scrutinee.diverging] --- `match` expressions.
+- [expr.loop.while.diverging] --- `while` loop expressions.
+- [expr.match.arms.diverging] --- Arms of `match` expressions.
 - [expr.match.empty] --- Empty `match` expressions.
+- [expr.match.scrutinee.diverging] --- Scrutinees of `match` expressions.
 - [expr.method.diverging] --- Method call expressions.
 - [expr.negate.diverging] --- Negation expressions.
 - [expr.paren.diverging] --- Parenthesized expressions.
