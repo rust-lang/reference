@@ -36,9 +36,11 @@ r[expr.call.diverging]
 A call expression [diverges] if any of its operands diverges.
 
 ```rust
-fn callee_diverges(x: !) -> ! {
-    // OK, expression diverges.
-    {x}();
+fn f() {}
+
+fn callee_diverges() -> ! {
+    // OK: The expression diverges.
+    ({ loop {}; f })();
 }
 
 fn takes_argument(_: i32) {}
