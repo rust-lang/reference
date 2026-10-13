@@ -101,6 +101,9 @@ The trait is known as the _implemented trait_. The implementing type implements 
 r[items.impl.trait.def-requirement]
 A trait implementation must define all non-default associated items declared by the implemented trait, may redefine default associated items defined by the implemented trait, and cannot define any other items.
 
+r[items.impl.trait.def-requirement.must-implement-one-of]
+If a trait definition uses the [`must_implement_one_of`] attribute, implementations of that trait must define at least one of the methods specified in that attribute.
+
 r[items.impl.trait.associated-item-path]
 The path to the associated items is `<` followed by a path to the implementing type followed by `as` followed by a path to the trait followed by `>` as a path component followed by the associated item's path component.
 
@@ -280,6 +283,7 @@ Implementations may contain outer [attributes] before the `impl` keyword and inn
 [`cfg`]: ../conditional-compilation.md
 [`deprecated`]: ../attributes/diagnostics.md#the-deprecated-attribute
 [`doc`]: ../../rustdoc/the-doc-attribute.html
+[`must_implement_one_of`]: ../attributes/type_system.md#the-must_implement_one_of-attribute
 [generic parameters]: generics.md
 [methods]: associated-items.md#methods
 [path]: ../paths.md
