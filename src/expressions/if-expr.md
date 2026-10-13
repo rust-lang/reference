@@ -98,6 +98,23 @@ fn diverging_arms() -> ! {
 }
 ```
 
+r[expr.if.chains.diverging]
+The condition expression diverges if the leftmost condition in the `&&` chain diverges.
+
+```rust
+fn if_cond_chain_lhs_diverge(x: !) -> ! {
+    // OK, expression diverges.
+    if x && false {};
+}
+```
+
+```rust,compile_fail,E0308
+fn if_cond_chain_rhs_diverge(x: !) -> ! {
+    if false && x {};
+    // ERROR: Expected type !, found ()
+}
+```
+
 r[expr.if.let]
 ## `if let` patterns
 
@@ -141,6 +158,24 @@ if let E::X(n) | E::Y(n) = v {
     assert_eq!(n, 12);
 }
 ```
+
+r[expr.if.let.diverging]
+A `let` condition operand [diverges] if its [scrutinee] diverges.
+
+```rust
+fn if_let_diverging(x: !) -> ! {
+    if let a = x {};
+}
+```
+
+> [!NOTE]
+> A scrutinee that is a place expression of the never type does not diverge on account of its type unless the pattern [constitutes a read][divergence.place-read.patterns] of it; see [divergence.place-read].
+>
+> ```rust,compile_fail,E0308
+> fn if_let_diverging_not_read(x: !) -> ! {
+>     if let _ = x {};
+> } // ERROR: expected `!`, found `()`
+> ```
 
 r[expr.if.chains]
 ## Chains of conditions

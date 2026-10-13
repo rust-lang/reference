@@ -44,4 +44,15 @@ assert_eq!( a.f (), "The method f");
 assert_eq!((a.f)(), "The field f");
 ```
 
+r[expr.paren.diverging]
+A parenthesized expression [diverges] if its operand diverges.
+
+```rust
+fn parenthesized_diverge(x: !) -> ! {
+    // OK, expression diverges.
+    (x);
+}
+```
+
+[diverges]: divergence
 [place]: ../expressions.md#place-expressions-and-value-expressions
