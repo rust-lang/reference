@@ -5,19 +5,19 @@ r[lang-types.intro]
 Certain types and traits that exist in [the standard library] are known to the Rust compiler. This chapter documents the special features of these types and traits.
 
 r[lang-types.box]
-## `Box<T>`
+## `Box<T, A>`
 
 r[lang-types.box.intro]
-[`Box<T>`] has a few special features that Rust doesn't currently allow for user defined types.
+[`Box<T, A>`] (or, where `A` is `Global`, `Box<T>`) has a few special features that Rust doesn't currently allow for user defined types.
 
 r[lang-types.box.deref]
-* The [dereference operator] for `Box<T>` produces a place which can be [moved from]. This means that the `*` operator and the destructor of `Box<T>` are built-in to the language.
+* The [dereference operator] for `Box<T, A>` produces a place which can be [moved from]. This means that the `*` operator and the destructor of `Box<T, A>` are built-in to the language.
 
 r[lang-types.box.receiver]
 * [Methods] can take `Box<Self>` as a receiver.
 
 r[lang-types.box.fundamental]
-* A trait may be implemented for `Box<T>` in the same crate as `T`, which the [orphan rules] prevent for other generic types.
+* A trait may be implemented for `Box<T, A>` in the same crate as `T`, which the [orphan rules] prevent for other generic types.
 
 <!-- Editor Note: This is nowhere close to an exhaustive list -->
 
@@ -188,6 +188,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`Arc<Self>`]: std::sync::Arc
 [`Deref`]: std::ops::Deref
 [`DerefMut`]: std::ops::DerefMut
+[`Global`]: std::alloc::Global
 [`Pin<P>`]: std::pin::Pin
 [`Rc<Self>`]: std::rc::Rc
 [`RefUnwindSafe`]: std::panic::RefUnwindSafe
