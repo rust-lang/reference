@@ -626,6 +626,8 @@ Here is the list of currently supported register classes:
 | RISC-V | `vreg` | `v[0-31]` | Only clobbers |
 | LoongArch | `reg` | `$r1`, `$r[4-20]`, `$r[23,30]` | `r` |
 | LoongArch | `freg` | `$f[0-31]` | `f` |
+| LoongArch | `vreg` | `$vr[0-31]` | `f` |
+| LoongArch | `xreg` | `$xr[0-31]` | `f` |
 | s390x | `reg` | `r[0-10]`, `r[12-14]` | `r` |
 | s390x | `reg_addr` | `r[1-10]`, `r[12-14]` | `a` |
 | s390x | `freg` | `f[0-15]` | `f` |
@@ -683,7 +685,9 @@ Each register class has constraints on which value types they can be used with. 
 | LoongArch32 | `reg` | None | `i8`, `i16`, `i32`, `f32` |
 | LoongArch64 | `reg` | None | `i8`, `i16`, `i32`, `i64`, `f32`, `f64` |
 | LoongArch | `freg` | `f` | `f32` |
-| LoongArch | `freg` | `d` | `f64` |
+| LoongArch | `freg` | `d` | `f32`, `f64` |
+| LoongArch | `vreg` | `lsx` | `f32`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
+| LoongArch | `xreg` | `lasx` | `f32`, `f64`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2`, <br> `i8x32`, `i16x16`, `i32x8`, `i64x4`, `f32x8`, `f64x4` |
 | s390x | `reg`, `reg_addr` | None | `i8`, `i16`, `i32`, `i64` |
 | s390x | `freg` | None | `f32`, `f64` |
 | s390x | `vreg` | `vector` | `i32`, `f32`, `i64`, `f64`, `i128`, <br> `i8x16`, `i16x8`, `i32x4`, `i64x2`, `f32x4`, `f64x2` |
@@ -832,9 +836,9 @@ Some registers have multiple names. These are all treated by the compiler as ide
 | LoongArch | `$r21` | |
 | LoongArch | `$r22` | `$fp`, `$s9` |
 | LoongArch | `$r[23-31]` | `$s[0-8]` |
-| LoongArch | `$f[0-7]` | `$fa[0-7]` |
-| LoongArch | `$f[8-23]` | `$ft[0-15]` |
-| LoongArch | `$f[24-31]` | `$fs[0-7]` |
+| LoongArch | `$f[0-7]` | `$fa[0-7]`, `$vr[0-7]`, `$xr[0-7]` |
+| LoongArch | `$f[8-23]` | `$ft[0-15]`, `$vr[8-23]`, `$xr[8-23]` |
+| LoongArch | `$f[24-31]` | `$fs[0-7]`, `$vr[24-31]`, `$xr[24-31]` |
 | PowerPC/PowerPC64 | `r1` | `sp` |
 | PowerPC/PowerPC64 | `r31` | `fp` |
 | PowerPC/PowerPC64 | `r[0-31]` | `[0-31]` |
@@ -945,6 +949,12 @@ The supported modifiers are a subset of LLVM's (and GCC's) [asm template argumen
 | RISC-V | `freg` | None | `f0` | None |
 | LoongArch | `reg` | None | `$r1` | None |
 | LoongArch | `freg` | None | `$f0` | None |
+| LoongArch | `freg` | `w` | `$vr0` | `w` |
+| LoongArch | `freg` | `u` | `$xr0` | `u` |
+| LoongArch | `vreg` | None | `$vr0` | `w` |
+| LoongArch | `vreg` | `u` | `$xr0` | `u` |
+| LoongArch | `xreg` | None | `$xr0` | `u` |
+| LoongArch | `xreg` | `w` | `$vr0` | `w` |
 | s390x | `reg` | None | `%r0` | None |
 | s390x | `reg_addr` | None | `%r1` | None |
 | s390x | `freg` | None | `%f0` | None |
