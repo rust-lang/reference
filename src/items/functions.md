@@ -567,6 +567,7 @@ unsafe fn f(ap: ...) {} // ERROR: Not supported.
 unsafe extern "sysv64" fn f(ap: ...) {} // ERROR: Not supported.
 ```
 
+r[items.fn.c-variadic.abi-naked-restriction]
 A naked function can accept a variable argument list only if its ABI string is accepted under [items.extern.variadic.conventions].
 
 ```rust
