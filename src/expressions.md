@@ -146,13 +146,13 @@ r[expr.place-value]
 ## Place expressions and value expressions
 
 r[expr.place-value.intro]
-Expressions are divided into two main categories: place expressions and value expressions; there is also a third, minor category of expressions called assignee expressions. Within each expression, operands may likewise occur in either place context or value context. The evaluation of an expression depends both on its own category and the context it occurs within.
+Expressions are divided into two main categories: place expressions and value expressions; there is also a third, minor category of expressions called assignee expressions. Within each expression, operands may likewise occur in either place context or value context. The evaluation of an expression depends on both its own category and the context it occurs within.
 
 r[expr.place-value.place-memory-location]
 A *place expression* is an expression that represents a memory location.
 
 r[expr.place-value.place-expr-kinds]
-These expressions are [paths] which refer to local variables, [static variables], [dereferences][deref] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`) and parenthesized place expressions.
+These expressions are [paths] that refer to [variables] or [static variables], [dereferences] (`*expr`), [array indexing] expressions (`expr[expr]`), [field] references (`expr.f`), [tuple indexing] expressions (`expr.0`), and parenthesized place expressions.
 
 r[expr.place-value.value-expr-kinds]
 All other expressions are value expressions.
@@ -164,7 +164,7 @@ r[expr.place-value.place-context]
 The following contexts are *place expression* contexts:
 
 * The left operand of a [compound assignment] expression.
-* The operand of a unary [borrow], [raw borrow] or [dereference][deref] operator.
+* The operand of a unary [borrow], [raw borrow], or [dereference] operator.
 * The operand of a [field expression].
 * The indexed operand of an [array indexing expression].
 * The tuple operand of a [tuple indexing expression].
@@ -185,10 +185,10 @@ An *assignee expression* is an expression that appears in the left operand of an
 - [Slices][expr.array.index] of assignee expressions.
 - [Tuple structs] of assignee expressions.
 - [Structs] of assignee expressions (with optionally named fields).
-- [Unit structs]
+- [Unit structs].
 
 r[expr.place-value.parenthesis]
-Arbitrary parenthesisation is permitted inside assignee expressions.
+Arbitrary parenthesization is permitted inside assignee expressions.
 
 r[expr.move]
 ### Moved and copied types
@@ -202,37 +202,189 @@ If the type of that value implements [`Copy`], then the value will be copied.
 r[expr.move.requires-sized]
 In the remaining situations, if that type is [`Sized`], then it may be possible to move the value.
 
+> [!NOTE]
+> A `&mut T` coerced to a type known to be a reference or raw pointer type is reborrowed rather than moved. See [coerce.reborrow].
+
 r[expr.move.movable-place]
 Only the following place expressions may be moved out of:
 
-* [Variables] which are not currently borrowed.
+* [Variables].
 * [Temporary values](#temporaries).
-* [Fields][field] of a place expression which can be moved out of and don't implement [`Drop`].
-* The result of [dereferencing][deref] an expression with type [`Box<T>`] and that can also be moved out of.
+* Fields of a struct, union, tuple, or enum variant, whether accessed by a [field] or [tuple indexing] expression or matched by a pattern, of a place expression that can be moved out of and whose type does not implement [`Drop`].
+
+  ```rust
+  struct D;
+  impl Drop for D { fn drop(&mut self) {} }
+  struct S(D);
+  let x = S(D);
+  let y = x.0; // OK: `S` does not implement `Drop`, though `D` does.
+  ```
+
+  ```rust,compile_fail,E0509
+  struct S(String);
+  impl Drop for S { fn drop(&mut self) {} }
+  let x = S(String::new());
+  let y = x.0; // ERROR: Cannot move a field out of a type that implements `Drop`.
+  ```
+
+* Elements or subarrays of an array that can be moved out of, when bound by value in a [slice pattern].
+
+  ```rust
+  let x = [String::new(), String::new()];
+  let [a, _] = x; // OK: Moves the first element out of `x`.
+  ```
+
+  ```rust,compile_fail,E0508
+  let x = [String::new()];
+  let a = x[0]; // ERROR: An index expression cannot be moved out of.
+  ```
+
+* [Parenthesized expressions] whose enclosed operand can be moved out of.
+* The result of [dereferencing] an expression of type [`Box<T>`] that can itself be moved out of.
+
+> [!NOTE]
+> A place expression cannot be moved out of while it is borrowed. See [expr.operator.borrow.lifetime].
 
 r[expr.move.deinitialization]
-After moving out of a place expression that evaluates to a local variable, the location is deinitialized and cannot be read from again until it is reinitialized.
+After moving out of a place expression that evaluates to a variable, the location is deinitialized and cannot be read from again until it is reinitialized.
 
 r[expr.move.place-invalid]
-In all other cases, trying to use a place expression in a value expression context is an error.
+In all other cases, trying to use a place expression in a value expression context is an error, unless the expression is reborrowed (see [coerce.reborrow]).
 
 r[expr.mut]
 ### Mutability
 
 r[expr.mut.intro]
-For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
+The following contexts are *mutable place expression contexts*:
+
+* The left operand of an [assignment] or [compound assignment] expression and, in a destructuring assignment, each place expression it assigns to (see [expr.assign.destructure]).
+* The operand of a mutable [borrow] expression (`&mut`) or a mutable [raw borrow] expression (`&raw mut`).
+* The operand of an [implicit mutable borrow].
+* The output operands of an [inline assembly] expression.
+* The place matched by a [`ref mut` binding] whose `ref mut` is written in the pattern.
+
+The *mutable place expressions*, the place expressions that may be used in these contexts, are listed in [expr.mut.valid-places]. All other place expressions are *immutable place expressions*.
+
+> [!NOTE]
+> A `ref mut` [binding mode] that arises from matching a reference with a non-reference pattern does not put the scrutinee in a mutable place expression context, so it does not cause an index or dereference within the scrutinee to use `IndexMut` or `DerefMut`. This behavior is settled: [rust-lang/rust#44848], which tracked it, was closed with the current handling judged adequate and stabilized. The place that the binding borrows must nonetheless be a mutable place expression (see [expr.mut.other-borrows]).
+>
+> ```rust,compile_fail,E0596
+> # let mut a = (0u8,);
+> let mut v: Vec<Option<&mut (u8,)>> = vec![Some(&mut a)];
+> if let Some((x,)) = v[0] { *x = 1; } // ERROR: `v[0]` uses `Index`, so the field that `x` borrows is not mutable.
+> ```
+>
+> ```rust
+> # let mut a = (0u8,);
+> let mut v: Vec<Option<&mut (u8,)>> = vec![Some(&mut a)];
+> if let Some(&mut (ref mut x,)) = v[0] { *x = 1; } // OK: The written `ref mut` makes `v[0]` use `IndexMut`.
+> ```
+
+r[expr.mut.operands]
+When a place expression is in a mutable place expression context, so is each place expression it is built on, after automatic dereferencing: the enclosed operand of a [parenthesized expression], the container operand of a [field] or [tuple indexing] expression, the indexed operand of an [index expression], the operand of a [dereference], whether written or automatic, and the scrutinee that a pattern destructures. In such a context, an index expression that is not built in (see [expr.array.index.array]) uses [`IndexMut`] when its operand's type implements `IndexMut` for the index type of the [`Index`] implementation it uses, and `Index` otherwise; a dereference, written or automatic, of a type other than a reference, raw pointer, or `Box<T>` (see [expr.deref.traits]) uses [`DerefMut`] when that type implements it, and [`Deref`] otherwise. The implicit mutable borrow that `IndexMut` and `DerefMut` take is a mutable place expression context for their operand.
+
+```rust
+# use std::rc::Rc;
+# let mut a = 0u8;
+struct P { p: *mut u8 }
+let rc = Rc::new(P { p: &mut a });
+unsafe { *rc.p = 1; } // OK: `Rc` does not implement `DerefMut`, so `*rc` uses `Deref`, and `*rc.p` is mutable because `rc.p` is a `*mut u8`.
+```
+
+```rust,compile_fail,E0502
+# let mut a = 0u8;
+let mut v: Vec<&mut u8> = vec![&mut a];
+let r = &v;
+*v[0] = 1; // ERROR: `v[0]` uses `IndexMut`, which mutably borrows `v` while `r` borrows it.
+let _ = r;
+```
 
 r[expr.mut.valid-places]
-The following expressions can be mutable place expression contexts:
+Only the following place expressions are mutable place expressions. Most entries make a place expression mutable exactly when the operand it is built on is; the dereference of a `*mut T` is mutable whatever its operand, and so, under the conditions of its entry, is the dereference of a `&mut T`.
 
-* Mutable [variables] which are not currently borrowed.
+* Mutable [variables].
+* [Variables] not yet initialized on any control flow path reaching the context that initializes them (see [variable.init]).
 * [Mutable `static` items].
 * [Temporary values].
-* [Fields][field]: this evaluates the subexpression in a mutable place expression context.
-* [Dereferences][deref] of a `*mut T` pointer.
-* Dereference of a variable, or field of a variable, with type `&mut T`. Note: This is an exception to the requirement of the next rule.
-* Dereferences of a type that implements `DerefMut`: this then requires that the value being dereferenced is evaluated in a mutable place expression context.
-* [Array indexing] of a type that implements `IndexMut`: this then evaluates the value being indexed, but not the index, in mutable place expression context.
+* Fields of a struct, union, tuple, or enum variant, whether accessed by a [field] or [tuple indexing] expression or matched by a pattern: mutable when the place expression that holds the struct, union, tuple, or enum, after automatic dereferencing (see [expr.field.autoref-deref]), is.
+* [Parenthesized expressions]: mutable when the enclosed operand is.
+* [Indexing] of an array or slice by a value of type `usize`, or indexing that uses [`IndexMut`] (see [expr.mut.operands]): mutable when the indexed operand, after automatic dereferencing (see [expr.array.index.autoderef]), is.
+* Elements or subslices of an array or slice matched by a [slice pattern]: mutable when the array or slice is.
+* [Dereferences] of a `*mut T` pointer.
+* Dereferences of a `Box<T>`: mutable when the operand is.
+* Dereferences that use [`DerefMut`] (see [expr.mut.operands]): mutable when the operand is.
+* Dereferences of a place expression of type `&mut T`, where that place expression is a mutable place expression, is a variable, or is obtained from one of those by any sequence of the following operations:
+  * Parenthesization.
+  * Dereferencing, by an expression or by a pattern, of a place of type `&mut U` or `Box<U>`.
+  * Access to a field, by a [field] or [tuple indexing] expression or by a pattern, or to an element or subslice of an array or slice, by indexing with a value of type `usize` or by a [slice pattern], in either case possibly after automatic dereferencing where that dereferencing is of an expression of type `&mut U` or `Box<U>`.
+
+  ```rust
+  struct S<'a>(&'a mut u8);
+  fn f(x: &mut u8, q: &mut &mut u8, s: S<'_>, b: Box<&mut u8>, c: Box<S<'_>>, a: [&mut u8; 1], o: Option<&mut S<'_>>) {
+      *x = 1;    // OK: `x` is a variable, though not declared `mut`.
+      **q = 1;   // OK: `*q` is a dereference of a `&mut` held by a variable.
+      *s.0 = 1;  // OK: `s.0` is a field of a variable.
+      **b = 1;   // OK: `*b` is a dereference of a `Box` held by a variable.
+      *c.0 = 1;  // OK: `c.0` is a field of the dereference of a `Box` held by a variable.
+      *a[0] = 1; // OK: `a[0]` is an element of an array held by a variable.
+      if let Some(S(y)) = o { **y = 1; } // OK: The `ref mut` binding mode borrows a field reached through a `&mut` held by a variable.
+  }
+  ```
+
+  ```rust,compile_fail,E0594
+  fn f(r: &&mut u8) {
+      **r = 1; // ERROR: `*r` is reached through a shared reference.
+  }
+  ```
+
+  ```rust,compile_fail,E0596
+  fn f(v: Vec<&mut u8>) {
+      *v[0] = 1; // ERROR: `v[0]` indexes through `IndexMut`, which mutably borrows `v`, so `v` must be mutable.
+  }
+  ```
+
+> [!NOTE]
+> The `mut` on a variable governs assignment to and mutable borrows of the variable and the places it owns, such as its fields and the contents of a `Box` it holds. A mutable reference is the only way to access its referent (see [type.pointer.reference.mut.copy]), so a `&mut T` can be written through whether or not the variable holding it is declared `mut`. The contents of a `Box<T>` take the mutability of the place that holds the box, but a `&mut U` among those contents is still the only way to access its own referent. Indexing or dereferencing through [`IndexMut`] or [`DerefMut`] mutably borrows the operand (see [expr.mut.operands]), so the operand must itself be mutable even when the place reached through it is the referent of a `&mut`. Indexing an array or slice by a `usize` and dereferencing a `&mut` reference or a `Box` take no such borrow, so they may lie on the path from a variable to a `&mut T` without any `mut` being required.
+
+r[expr.mut.invalid-places]
+Using any other place expression in one of the contexts listed in [expr.mut.intro] is an error.
+
+> [!NOTE]
+> In particular, the dereference of a shared reference or of a `*const T` pointer is never a mutable place expression, and neither is a field, element, or dereference reached through one unless a dereference of a `*mut T` pointer intervenes.
+
+r[expr.mut.other-borrows]
+The place that a `ref mut` binding mode borrows (see [patterns.ident.binding]), and the place `*e` that a coercion of a `&mut T` to a `*mut U` borrows (see [coerce.reborrow]), must also be mutable place expressions. Neither borrow is a mutable place expression context, so neither causes an index or dereference within the place to use `IndexMut` or `DerefMut` (see [expr.mut.operands]).
+
+```rust
+fn f(r: &mut &mut (u8,)) {
+    let (x,) = *r; // OK: The `ref mut` binding mode borrows `(**r).0`, which is mutable.
+    *x = 1;
+}
+```
+
+```rust,compile_fail,E0596
+fn f(r: &&mut (u8,)) {
+    let (x,) = *r; // ERROR: The `ref mut` binding mode borrows `(**r).0`, which is reached through a shared reference.
+    *x = 1;
+}
+```
+
+```rust
+fn f(r: &mut &mut u8) -> *mut u8 {
+    let p: *mut u8 = *r; // OK: The coercion borrows `**r`, which is mutable.
+    p
+}
+```
+
+```rust,compile_fail,E0596
+fn f(r: &&mut u8) -> *mut u8 {
+    let p: *mut u8 = *r; // ERROR: The coercion borrows `**r`, which is reached through a shared reference.
+    p
+}
+```
+
+> [!NOTE]
+> A mutable place expression also cannot be mutated while it is borrowed. See [expr.operator.borrow.lifetime].
 
 r[expr.temporary]
 ### Temporaries
@@ -347,6 +499,7 @@ Implicit borrows may be taken in the following expressions:
 * Operands of [comparison].
 * Left operands of the [compound assignment].
 * Arguments to [`format_args!`] except the format string.
+* The referent of an expression of type `&mut T` reborrowed by a coercion to a reference type (see [coerce.reborrow]).
 
 r[expr.overload]
 ## Overloading traits
@@ -370,23 +523,33 @@ They are never allowed before:
 * Binary operator expressions ([ArithmeticOrLogicalExpression], [ComparisonExpression], [LazyBooleanExpression], [TypeCastExpression], [AssignmentExpression], [CompoundAssignmentExpression]).
 
 [`Box<T>`]:             special-types-and-traits.md#boxt
+[binding mode]:         patterns.ident.binding
 [`Copy`]:               special-types-and-traits.md#copy
+[`Deref`]:              lang-types.deref
+[`DerefMut`]:           lang-types.deref
 [`Drop`]:               special-types-and-traits.md#drop
 [`if let`]:             expressions/if-expr.md#if-let-patterns
+[`Index`]:              std::ops::Index
+[`IndexMut`]:           std::ops::IndexMut
 [`format_args!`]:       core::format_args
 [`pin!`]:               core::pin::pin
+[`ref mut` binding]:    patterns.ident.ref
 [`Sized`]:              special-types-and-traits.md#sized
 [`while let`]:          expressions/loop-expr.md#while-let-patterns
 [array expressions]:    expressions/array-expr.md
 [array indexing]:       expressions/array-expr.md#array-and-slice-indexing-expressions
 [array indexing expression]: expr.array.index
 [assign]:               expressions/operator-expr.md#assignment-expressions
+[assignment]:           expr.assign
 [block expressions]:    expressions/block-expr.md
 [borrow]:               expressions/operator-expr.md#borrow-operators
 [call expressions]:     expressions/call-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
+[dereference]:          expr.deref
+[dereferences]:         expr.deref
+[dereferencing]:        expr.deref
 [destructors]:          destructors.md
 [drop scope]:           destructors.md#drop-scopes
 [extended]:             destructors.scope.lifetime-extension
@@ -396,8 +559,11 @@ They are never allowed before:
 [field expression]:     expr.field
 [functional update]:    expressions/struct-expr.md#functional-update-syntax
 [implicit borrow]:      #implicit-borrows
+[implicit mutable borrow]: expr.implicit-borrow
 [implicitly borrowed]:  expr.implicit-borrow
-[implicitly mutably borrowed]: #implicit-borrows
+[index expression]:     expr.array.index
+[indexing]:             expr.array.index
+[inline assembly]:      asm
 [interior mutability]:  interior-mutability.md
 [let statement]:        statements.md#let-statements
 [macro invocations]:    macro.invocation
@@ -405,13 +571,17 @@ They are never allowed before:
 [method-call]:          expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [Outer attributes]:     attributes.md
+[parenthesized expression]: expr.paren
+[parenthesized expressions]: expr.paren
 [paths]:                expressions/path-expr.md
 [place expression contexts]: expr.place-value
 [promoted]:             destructors.md#constant-promotion
 [Range]:                expressions/range-expr.md
 [raw borrow]:           expressions/operator-expr.md#raw-borrow-operators
+[rust-lang/rust#44848]: https://github.com/rust-lang/rust/issues/44848
 [scrutinee]:            glossary.md#scrutinee
 [slice]:                types/slice.md
+[slice pattern]:        patterns.slice
 [statement]:            statements.md
 [static variables]:     items/static-items.md
 [struct]:               expressions/struct-expr.md
@@ -420,6 +590,7 @@ They are never allowed before:
 [temporary scopes]:     destructors.scope.temporary
 [Temporary values]:     #temporaries
 [tuple expressions]:    expressions/tuple-expr.md
+[tuple indexing]:       expr.tuple-index
 [tuple indexing expression]: expr.tuple-index
 [Tuple structs]:        items.struct.tuple
 [Tuples]:               expressions/tuple-expr.md

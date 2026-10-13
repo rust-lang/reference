@@ -56,6 +56,16 @@ The syntax for a tuple index expression is an expression, called the *tuple oper
 r[expr.tuple-index.index-syntax]
 The syntax for the *tuple index* is a [decimal literal] with no leading zeros, underscores, or suffix. For example `0` and `2` are valid tuple indices but not `01`, `0_`, nor `0i32`.
 
+r[expr.tuple-index.autoderef]
+The tuple operand is automatically dereferenced as the container operand of a [field expression] is (see [expr.field.autoref-deref]). The following rules apply to the dereferenced operand.
+
+```rust
+let mut pair = (0u8, 0u8);
+let p: &mut (u8, u8) = &mut pair;
+p.0 = 1; // Assigns to `(*p).0`.
+assert_eq!(pair, (1, 0));
+```
+
 r[expr.tuple-index.required-type]
 The type of the tuple operand must be a [tuple type] or a [tuple struct].
 
@@ -89,6 +99,7 @@ assert_eq!(point.1, 0.0);
 [call expression]: ./call-expr.md
 [decimal literal]: ../tokens.md#integer-literals
 [field access expressions]: ./field-expr.html#field-access-expressions
+[field expression]: expr.field
 [operands]: ../expressions.md
 [parenthetical expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions

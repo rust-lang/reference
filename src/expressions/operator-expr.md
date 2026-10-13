@@ -68,7 +68,7 @@ r[expr.operator.borrow.result]
 When applied to a [place expression], this expressions produces a reference (pointer) to the location that the value refers to.
 
 r[expr.operator.borrow.lifetime]
-The memory location is also placed into a borrowed state for the duration of the reference. For a shared borrow (`&`), this implies that the place may not be mutated, but it may be read or shared again. For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
+The memory location is also placed into a borrowed state for the duration of the reference. For a shared borrow (`&`), this implies that the place may not be mutated or moved out of, but it may be read or shared again. For a mutable borrow (`&mut`), the place may not be accessed in any way until the borrow expires.
 
 r[expr.operator.borrow.mut]
 `&mut` evaluates its operand in a mutable place expression context.
@@ -164,10 +164,10 @@ r[expr.deref.intro]
 The `*` (dereference) operator is also a unary prefix operator.
 
 r[expr.deref.result]
-When applied to a [pointer](../types/pointer.md) or [`Box`], it denotes the pointed-to location.
+When applied to a [reference], [raw pointer], or [`Box`], it denotes the pointed-to location.
 
 r[expr.deref.mut]
-If the expression is of type `&mut T`, `*mut T`, or `Box<T>`, and is either a local variable, a (nested) field of a local variable or is a mutable [place expression], then the resulting memory location can be assigned to.
+The resulting memory location can be assigned to when the dereference expression is a mutable [place expression] (see [expr.mut.valid-places]).
 
 r[expr.deref.box]
 When applied to a [`Box`], the resultant place may be [moved from].
@@ -176,7 +176,7 @@ r[expr.deref.safety]
 Dereferencing a raw pointer requires `unsafe`.
 
 r[expr.deref.traits]
-On non-pointer types `*x` is equivalent to `*std::ops::Deref::deref(&x)` in an [immutable place expression context](../expressions.md#mutability) and `*std::ops::DerefMut::deref_mut(&mut x)` in a mutable place expression context, except that when `*x` undergoes [temporary lifetime extension], the dereferenced expression `x` also has its [temporary scope] extended.
+On types other than references, raw pointers, and [`Box`], `*x` is equivalent to `*std::ops::Deref::deref(&x)`, or to `*std::ops::DerefMut::deref_mut(&mut x)` in a [mutable place expression context] when the type of `x` implements `DerefMut`, except that when `*x` undergoes [temporary lifetime extension], the dereferenced expression `x` also has its [temporary scope] extended.
 
 ```rust
 # struct NoCopy;
@@ -933,7 +933,7 @@ For destructuring assignment, subexpressions of the assignee expression are eval
 > This is different than other expressions in that the right operand is evaluated before the left one.
 
 r[expr.assign.drop-target]
-It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized local variable or an uninitialized field of a local variable.
+It then has the effect of first [dropping] the value at the assigned place, unless the place is an uninitialized variable or an uninitialized field of a variable.
 
 r[expr.assign.behavior]
 Next it either [copies or moves] the assigned value to the assigned place.
@@ -1247,7 +1247,10 @@ As with normal assignment expressions, compound assignment expressions always pr
 [metadata]: dynamic-sized.pointer-types
 [moved from]: expr.move.movable-place
 [mutable]: ../expressions.md#mutability
+[mutable place expression context]: expr.mut.intro
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
+[raw pointer]: type.pointer.raw
+[reference]: type.pointer.reference
 [assignee expression]: ../expressions.md#place-expressions-and-value-expressions
 [undefined behavior]: ../behavior-considered-undefined.md
 [unit]: ../types/tuple.md
