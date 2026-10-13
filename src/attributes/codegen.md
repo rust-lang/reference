@@ -571,6 +571,7 @@ Feature     | Implicitly Enables  | Description
 `d`         | `f`                 | [D][rv-d] --- Double-Precision Floating-Point
 `f`         | `zicsr`             | [F][rv-f] --- Single-Precision Floating-Point
 `m`         |                     | [M][rv-m] --- Integer Multiplication and Division instructions
+`relax`     |                     | Enables emission of linker relaxations by LLVM
 `za64rs`    | `za128rs`           | [Za64rs][rv-za64rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 64 Bytes
 `za128rs`   |                     | [Za128rs][rv-za128rs] --- Platform Behavior: Naturally aligned Reservation sets with ≦ 128 Bytes
 `zaamo`     |                     | [Zaamo][rv-zaamo] --- Atomic Memory Operation instructions
