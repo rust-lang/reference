@@ -5,6 +5,7 @@ license = "MIT OR Apache-2.0"
 description = "An mdBook preprocessor to help with the Rust specification."
 repository = "https://github.com/rust-lang/spec/"
 default-run = "mdbook-spec"
+publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
