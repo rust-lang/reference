@@ -15,7 +15,7 @@ fn example() {
 }
 ```
 
-See the following rules for specific expression divergence behavior:
+See the following rules for specific divergence behavior:
 
 - [asm.diverging.naked_asm] --- `naked_asm!`.
 - [asm.diverging.noreturn] --- `noreturn` in `asm!`.
