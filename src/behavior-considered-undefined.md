@@ -4,6 +4,10 @@ r[undefined]
 r[undefined.intro]
 Rust code is incorrect if it exhibits any of the behaviors in the following list. This includes code within `unsafe` blocks and `unsafe` functions. `unsafe` only means that avoiding undefined behavior is on the programmer; it does not change anything about the fact that Rust programs must never cause undefined behavior.
 
+r[undefined.behavior]
+When a Rust program encounters undefined behavior, the program may perform arbitrary operations, including but not limited to jumping to arbitrary other code (even dead code) elsewhere in the program, performing arbitrary syscalls, or jumping into memory that does not hold valid machine code.
+However, undefined behavior does not "time travel": if an observable operation (I/O or a volatile accesses) occurs before the point in the source execution order where undefined behavior was triggered, that observable operation is guaranteed to be executed before the program encounters undefined behavior.
+
 r[undefined.soundness]
 It is the programmer's responsibility when writing `unsafe` code to ensure that any safe code interacting with the `unsafe` code cannot trigger these behaviors. `unsafe` code that satisfies this property for any safe client is called *sound*; if `unsafe` code can be misused by safe code to exhibit undefined behavior, it is *unsound*.
 
