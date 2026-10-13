@@ -598,9 +598,9 @@ r[expr.as.numeric.float-as-int]
   assert_eq!(42.9f32 as i32, 42);
   assert_eq!(-42.9f32 as i32, -42);
   assert_eq!(42_000_000f32 as i32, 42_000_000);
-  assert_eq!(std::f32::NAN as i32, 0);
+  assert_eq!(f32::NAN as i32, 0);
   assert_eq!(1_000_000_000_000_000f32 as i32, 0x7fffffffi32);
-  assert_eq!(std::f32::NEG_INFINITY as i32, -0x80000000i32);
+  assert_eq!(f32::NEG_INFINITY as i32, -0x80000000i32);
   ```
 
 r[expr.as.numeric.int-as-float]
@@ -612,7 +612,7 @@ r[expr.as.numeric.int-as-float]
   ```rust
   assert_eq!(1337i32 as f32, 1337f32);
   assert_eq!(123_456_789i32 as f32, 123_456_790f32, "Rounded");
-  assert_eq!(0xffffffff_ffffffff_ffffffff_ffffffff_u128 as f32, std::f32::INFINITY);
+  assert_eq!(0xffffffff_ffffffff_ffffffff_ffffffff_u128 as f32, f32::INFINITY);
   ```
 
 r[expr.as.numeric.float-widening]
@@ -620,8 +620,8 @@ r[expr.as.numeric.float-widening]
 
   ```rust
   assert_eq!(1_234.5f32 as f64, 1_234.5f64);
-  assert_eq!(std::f32::INFINITY as f64, std::f64::INFINITY);
-  assert!((std::f32::NAN as f64).is_nan());
+  assert_eq!(f32::INFINITY as f64, f64::INFINITY);
+  assert!((f32::NAN as f64).is_nan());
   ```
 
 r[expr.as.numeric.float-narrowing]
@@ -632,8 +632,8 @@ r[expr.as.numeric.float-narrowing]
   ```rust
   assert_eq!(1_234.5f64 as f32, 1_234.5f32);
   assert_eq!(1_234_567_891.123f64 as f32, 1_234_567_890f32, "Rounded");
-  assert_eq!(std::f64::INFINITY as f32, std::f32::INFINITY);
-  assert!((std::f64::NAN as f32).is_nan());
+  assert_eq!(f64::INFINITY as f32, f32::INFINITY);
+  assert!((f64::NAN as f32).is_nan());
   ```
 
 \* if integer-to-float casts with this rounding mode and overflow behavior are not supported natively by the hardware, these casts will likely be slower than expected.
