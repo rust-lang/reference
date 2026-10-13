@@ -1744,9 +1744,8 @@ fn noreturn_diverges() -> ! {
 ```rust,compile_fail,E0308
 fn noreturn_label_unit_does_not_diverge() -> ! {
     // This expression does not diverge, thus the body does not diverge.
-    core::arch::asm!("jmp {}", label {}, options(noreturn));
-    // ERROR: Expected type !, found ()
-}
+    unsafe { core::arch::asm!("jmp {}", label {}, options(noreturn)); }
+} // ERROR: Expected type !, found ()
 ```
 
 ```rust
