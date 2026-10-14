@@ -65,6 +65,7 @@ r[undefined.runtime]
 * Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
   * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
   * The runtime assumes that a Rust stack frame is not deallocated without executing destructors for local variables owned by the stack frame. This assumption can be violated by C functions like `longjmp`.
+  * For hard-float targets, the runtime assumes that the rounding mode is configured to roundTiesToEven. The rounding mode can be temporarily changed by code running in a different language (if supported by said language), but must be restored before returning to Rust code.
 
 > [!NOTE]
 > Undefined behavior affects the entire program. For example, calling a function in C that exhibits undefined behavior of C means your entire program contains undefined behaviour that can also affect the Rust code. And vice versa, undefined behavior in Rust can cause adverse affects on code executed by any FFI calls to other languages.
