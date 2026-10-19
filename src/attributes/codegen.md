@@ -314,11 +314,6 @@ The `#[target_feature]` attribute is not allowed on the following places:
 - safe trait methods
 - safe default functions in traits
 
-r[attributes.codegen.target_feature.inline]
-Functions marked with `target_feature` are not inlined into a context that
-does not support the given features. The `#[inline(always)]` attribute may not
-be used with a `target_feature` attribute.
-
 r[attributes.codegen.target_feature.availability]
 ### Available features
 
