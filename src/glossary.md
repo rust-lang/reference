@@ -227,6 +227,14 @@ A string slice is the most primitive string type in Rust, written as `str`. It i
 
 Strings slices are always valid UTF-8.
 
+### Target
+
+A *target* is the platform that the compiler produces code for: the combination of CPU architecture, operating system, and ABI that the compiled program will run on, usually identified by a target triple such as `x86_64-unknown-linux-gnu`.
+
+Several parts of the language are defined in terms of the target rather than in absolute terms, such as the size of `usize`, or the values of the `target_*` [conditional compilation] keys. The reference documents those properties as properties of the target, but it does not document which targets exist, nor the properties of any particular target.
+
+[conditional compilation]: conditional-compilation.md
+
 ### Trait
 
 A trait is a language item that is used for describing the functionalities a type must provide. It allows a type to make certain promises about its behavior.
