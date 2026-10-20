@@ -144,6 +144,9 @@ r[undefined.validity.struct]
 r[undefined.validity.union]
 * For a `union`, the exact validity requirements are not decided yet. Obviously, all values that can be created entirely in safe code are valid. If the union has a [zero-sized] field, then every possible value is valid. Further details are [still being debated](https://github.com/rust-lang/unsafe-code-guidelines/issues/438).
 
+r[undefined.validity.maybe-uninit]
+* A [`MaybeUninit<T>`] is always valid (see [lang-types.maybe-uninit.validity]).
+
 r[undefined.validity.reference-box]
 * A reference or [`Box<T>`] must be aligned and non-null, it cannot be [dangling], and it must point to a valid value (in case of dynamically sized types, using the actual dynamic type of the pointee as determined by the [metadata]). Note that the last point (about pointing to a valid value) remains a subject of some debate.
 
@@ -203,6 +206,7 @@ r[undefined.validity.undef]
 [`target_feature`]: attributes/codegen.md#the-target_feature-attribute
 [`UnsafeCell<U>`]: std::cell::UnsafeCell
 [Rustonomicon]: ../nomicon/index.html
+[`MaybeUninit<T>`]: core::mem::MaybeUninit
 [metadata]: dynamic-sized.pointer-types
 [`NonNull<T>`]: core::ptr::NonNull
 [`NonZero<T>`]: core::num::NonZero
