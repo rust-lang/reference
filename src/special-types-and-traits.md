@@ -231,15 +231,15 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [moved from]: expr.move.movable-place
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
-[`static` items]: items/static-items.md
 [size]: layout.properties.size
+[`static` items]: items/static-items.md
 [test functions]: attributes/testing.md#the-test-attribute
 [the standard library]: std
 [trait object]: types/trait-object.md
 [Tuples]: types/tuple.md
 [Type parameters]: types/parameters.md
-[`VaList`]: core::ffi::VaList
 [valid]: undefined.validity
+[`VaList`]: core::ffi::VaList
 [variance]: subtyping.md#variance
 [zero-sized]: glossary.zst
 [Closures]: types/closure.md
