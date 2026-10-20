@@ -48,6 +48,18 @@ r[lang-types.unsafe-cell.interior-mut]
 r[lang-types.unsafe-cell.read-only-alloc]
 It also ensures that [`static` items] which have a type with interior mutability aren't placed in memory marked as read only.
 
+r[lang-types.maybe-uninit]
+## `MaybeUninit<T>`
+
+r[lang-types.maybe-uninit.intro]
+[`MaybeUninit<T>`] is a wrapper type used to construct uninitialized values of type `T`.
+
+r[lang-types.maybe-uninit.validity]
+The value of a [`MaybeUninit<T>`] is always [valid], regardless of any validity requirements for a value of type `T`.
+
+r[lang-types.maybe-uninit.layout]
+[`MaybeUninit<T>`] is guaranteed to have the same [size], [alignment], and [ABI] as `T`.
+
 r[lang-types.phantom-data]
 ## `PhantomData<T>`
 
@@ -188,6 +200,7 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`Arc<Self>`]: std::sync::Arc
 [`Deref`]: std::ops::Deref
 [`DerefMut`]: std::ops::DerefMut
+[`MaybeUninit<T>`]: core::mem::MaybeUninit
 [`Pin<P>`]: std::pin::Pin
 [`Rc<Self>`]: std::rc::Rc
 [`RefUnwindSafe`]: std::panic::RefUnwindSafe
@@ -196,6 +209,8 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [`Unpin`]: std::marker::Unpin
 
 [1-aligned]: layout.properties.align
+[ABI]: glossary.abi
+[alignment]: layout.properties.align
 [Arrays]: types/array.md
 [associated types]: items/associated-items.md#associated-types
 [call expressions]: expressions/call-expr.md
@@ -217,12 +232,14 @@ These implicit `Sized` bounds may be relaxed by using the special `?Sized` bound
 [operators]: expressions/operator-expr.md
 [orphan rules]: items/implementations.md#trait-implementation-coherence
 [`static` items]: items/static-items.md
+[size]: layout.properties.size
 [test functions]: attributes/testing.md#the-test-attribute
 [the standard library]: std
 [trait object]: types/trait-object.md
 [Tuples]: types/tuple.md
 [Type parameters]: types/parameters.md
 [`VaList`]: core::ffi::VaList
+[valid]: undefined.validity
 [variance]: subtyping.md#variance
 [zero-sized]: glossary.zst
 [Closures]: types/closure.md
