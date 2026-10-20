@@ -52,7 +52,7 @@ r[lang-types.maybe-uninit]
 ## `MaybeUninit<T>`
 
 r[lang-types.maybe-uninit.intro]
-[`MaybeUninit<T>`] is a wrapper type used to construct uninitialized values of type `T`.
+[`MaybeUninit<T>`] is a type for values that are laid out like a `T` but need not be a valid `T`. This is useful when allocating and writing to memory intended for `T` values before that memory holds a valid `T`, as when initializing such values in place.
 
 r[lang-types.maybe-uninit.validity]
 A value of type [`MaybeUninit<T>`] is always [valid], regardless of any validity requirements for a value of type `T`.
