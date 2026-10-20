@@ -74,6 +74,108 @@ Extern statics can be either immutable or mutable just like [statics] outside of
 r[items.extern.static.read-only]
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for the static to be initialized before Rust code reads from it. Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB, except if the mutation happens to bytes inside of an `UnsafeCell`.
 
+r[items.extern.static.size]
+An extern static resolves to an allocation that starts at the address of the static; the allocation must have at least the size and alignment of the type it is declared with (see [undefined.extern-static]). If the allocation is larger, accessing the extra bytes is allowed.
+
+> [!NOTE]
+> See [items.extern.attributes.link.kind-raw-dylib.size] for an exception to this rule.
+
+r[items.extern.static.same-symbol]
+An extern static resolves to the same allocation as any other static with the same symbol.
+
+```rust
+#[unsafe(no_mangle)]
+static mut COUNTER: u8 = 0;
+
+unsafe extern "C" {
+    #[link_name = "COUNTER"]
+    static mut COUNTER_ALIAS: u8;
+}
+
+fn main() {
+    unsafe {
+        COUNTER += 1;
+        COUNTER_ALIAS += 2;
+        // The two statics share one allocation.
+        assert!(COUNTER == COUNTER_ALIAS && COUNTER == 3);
+        assert!(&raw const COUNTER == &raw const COUNTER_ALIAS);
+    }
+}
+```
+
+r[items.extern.static.allocations-disjoint]
+The allocation that an extern static resolves to does not include the bytes of any static with a different symbol, even when the linker places the statics in the same section.
+
+> [!NOTE]
+> A pointer to one allocation can't be used, via offsetting, to access bytes in a different allocation. Since statics with different symbols have different allocations, you can't use a pointer derived from one static to access the bytes of another static that has a different symbol.
+>
+> In particular, an extern static that marks the start of a linker section cannot be used to access statics with different symbols placed in that section.
+
+```rust,standalone_crate
+// Bytes placed in a section without a static may be read through the
+// section's start symbol.
+
+// Three bytes placed in a section named `entries`.
+# #[cfg(target_os = "linux")]
+core::arch::global_asm!(
+    ".pushsection entries,\"aR\"", // `R` is like `#[used]`.
+    ".byte 1, 2, 3",
+    ".popsection",
+);
+
+# #[cfg(target_os = "linux")]
+unsafe extern "C" {
+    // On ELF targets, the linker defines these symbols at the start
+    // and the end of the `entries` section.
+    static __start_entries: [u8; 0];
+    static __stop_entries: [u8; 0];
+}
+
+fn main() {
+# #[cfg(target_os = "linux")] {
+    let start = &raw const __start_entries as *const u8;
+    let len = (&raw const __stop_entries).addr() - start.addr();
+    // The bytes of the section belong to no static, so they are part
+    // of the allocation that `__start_entries` resolves to.
+    let entries = unsafe { core::slice::from_raw_parts(start, len) };
+    assert_eq!(entries, &[1, 2, 3]);
+# }
+}
+```
+
+```rust,standalone_crate
+// A static placed in a section is an allocation of its own, which the
+// section's start symbol cannot be used to read.
+
+// A static placed in a section named `entries`.
+# #[cfg(target_os = "linux")]
+#[used]
+#[unsafe(link_section = "entries")]
+static ENTRY: [u8; 3] = [1, 2, 3];
+
+# #[cfg(target_os = "linux")]
+unsafe extern "C" {
+    // On ELF targets, the linker defines these symbols at the start
+    // and the end of the `entries` section.
+    static __start_entries: [u8; 0];
+    static __stop_entries: [u8; 0];
+}
+
+fn main() {
+# #[cfg(target_os = "linux")] {
+    let start = &raw const __start_entries as *const u8;
+    let stop = &raw const __stop_entries as *const u8;
+    // The section holds exactly the bytes of `ENTRY`.
+    assert_eq!(stop.addr() - start.addr(), 3);
+    assert_eq!(start.addr(), (&raw const ENTRY).addr());
+    // But those bytes are the allocation of `ENTRY`, not of
+    // `__start_entries`, so reading them through `start` is undefined
+    // behavior.
+    //let x = unsafe { *start }; // UB.
+# }
+}
+```
+
 r[items.extern.abi]
 ## ABI
 
@@ -368,6 +470,9 @@ Specifying `kind = "dylib"` instructs the Rust compiler to link an import librar
 
 r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
+
+r[items.extern.attributes.link.kind-raw-dylib.size]
+Unlike other extern statics, a `raw-dylib` static must resolve to an allocation whose size is exactly that of the type it is declared with (see [undefined.extern-static-raw-dylib]).
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
