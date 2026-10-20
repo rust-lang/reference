@@ -403,7 +403,7 @@ This appendix provides an index of tokens and common forms with links to where t
 [reserved keyword]: lex.keywords.reserved
 [rest pattern]: patterns.rest
 [return expressions]: expr.return
-[self parameters]: items.fn.params.self-pat
+[self parameters]: items.fn.params.self-param
 [single-element tuple expressions]: expr.tuple
 [slice patterns]: patterns.slice
 [slice types]: type.slice

@@ -76,7 +76,7 @@ Function parameters are irrefutable [patterns], so any pattern that is valid in 
 fn first((value, _): (i32, i32)) -> i32 { value }
 ```
 
-r[items.fn.params.self-pat]
+r[items.fn.params.self-param]
 If the first parameter is a [SelfParam], this indicates that the function is a [method].
 
 r[items.fn.params.self-restriction]
@@ -420,7 +420,7 @@ r[items.fn.c-variadic]
 ## C-variadic functions
 
 r[items.fn.c-variadic.intro]
-A *C-variadic* function accepts a variable argument list `pat: ...` as its final parameter.
+A *C-variadic* function accepts a variable argument list `ap: ...` as its final parameter.
 
 ```rust
 unsafe extern "C" fn f(mut ap: ...) -> f64 {
@@ -435,7 +435,7 @@ unsafe extern "C" fn f(ap: ..., _: ()) {} // ERROR: `...` must be last.
 This parameter stands in for an arbitrary number of arguments that may be passed by the caller.
 
 r[items.fn.c-variadic.parameter-type]
-The type of `pat` in the function body is [`VaList<'_>`].
+The type of `ap` in the function body is [`VaList<'_>`].
 
 ```rust
 # use core::ffi::VaList;
