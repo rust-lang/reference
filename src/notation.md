@@ -65,9 +65,27 @@ r[notation.grammar.visualizations]
 
 Below each grammar block is a button to toggle the display of a [syntax diagram]. A square element is a non-terminal rule, and a rounded rectangle is a terminal.
 
+### Using the grammar
+
+The grammar blocks document tokens that are accepted by the AST, before expansion. Code that is used as an input to a macro, or is disabled using [conditional compilation], needs to be valid at a grammar level but may not meet other rules.
+
+> [!EXAMPLE]
+> Using non-decimal tuple indexes is rejected by [lex.token.literal.int.tuple-field.eq] but is valid in pre-expansion code.
+> ```rust
+> macro_rules! ignore_input {
+>     ($e:expr) => {}
+> }
+>
+> ignore_input!(("first field", 2).0xDEADBEEF);
+>
+> #[cfg(false)]
+> println!("{}", ("first field", 2).0xDEADBEEF);
+> ```
+
 [binary operators]: expressions/operator-expr.md#arithmetic-and-logical-binary-operators
 [byte literals]: tokens.md#r-lex.token.byte.syntax
 [byte string literals]: tokens.md#r-lex.token.str-byte.syntax
+[conditional compilation]: cfg
 [cut after `c"`]: tokens.md#r-lex.token.str-c.syntax
 [cut operator paper]: https://kmizu.github.io/papers/paste513-mizushima.pdf
 [hard cut operator]: notation.md#the-hard-cut-operator
