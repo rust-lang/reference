@@ -55,7 +55,7 @@ r[lang-types.maybe-uninit.intro]
 [`MaybeUninit<T>`] is a wrapper type used to construct uninitialized values of type `T`.
 
 r[lang-types.maybe-uninit.validity]
-The value of a [`MaybeUninit<T>`] is always [valid], regardless of any validity requirements for a value of type `T`.
+A value of type [`MaybeUninit<T>`] is always [valid], regardless of any validity requirements for a value of type `T`.
 
 r[lang-types.maybe-uninit.layout]
 [`MaybeUninit<T>`] is guaranteed to have the same [size], [alignment], and [ABI] as `T`.
