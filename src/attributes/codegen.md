@@ -273,8 +273,6 @@ r[attributes.codegen.optimize]
 r[attributes.codegen.optimize.intro]
 The *`optimize` [attribute]* suggests an optimization goal for the attributed function: size, speed, or none.
 
-This attribute has no effect if optimizations are disabled (i.e. `opt-level` is `0`).
-
 > [!EXAMPLE]
 > ```rust
 > #[optimize(size)]
@@ -286,6 +284,9 @@ This attribute has no effect if optimizations are disabled (i.e. `opt-level` is 
 > #[optimize(none)]
 > pub fn example3() {}
 > ```
+
+> [!NOTE]
+> For `rustc`, the attribute has no effect when optimizations are disabled (`-C opt-level=0`).
 
 r[attributes.codegen.optimize.syntax]
 The syntax for the `optimize` attribute is:
