@@ -281,10 +281,11 @@ A type is zero sized (a ZST) if its size is 0. Such types have at most one possi
 - [Arrays] of length zero (see [layout.array]).
 - [Unions] of zero-sized types (see [items.union.common-storage]).
 - [`PhantomData<T>`] for any type `T` (see [lang-types.phantom-data]).
+- [`MaybeUninit<T>`] for a type `T` that is itself a zero-sized type (see [lang-types.maybe-uninit.layout]).
 
 ```rust
 # use core::marker::PhantomData;
-# use core::mem::{size_of, size_of_val};
+# use core::mem::{MaybeUninit, size_of, size_of_val};
 fn f() {}
 struct S(u8);
 enum E { V(u8) }
@@ -367,10 +368,12 @@ assert_eq!(0, size_of::<E7>());
 assert_eq!(0, size_of::<PhantomData<()>>());
 # // `PhantomData` for a type that is not a ZST.
 assert_eq!(0, size_of::<PhantomData<u16>>());
+assert_eq!(0, size_of::<MaybeUninit<[(); 2]>>());
 ```
 
 [`extern` blocks]: items.extern
 [`extern fn`]: items.fn.extern
+[`MaybeUninit<T>`]: lang-types.maybe-uninit
 [`PhantomData<T>`]: lang-types.phantom-data
 [alignment]: type-layout.md#size-and-alignment
 [arrays]: type.array
