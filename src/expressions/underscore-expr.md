@@ -37,3 +37,16 @@ _ = 2 + 2;
 // equivalent technique using a wildcard pattern in a let-binding
 let _ = 2 + 2;
 ```
+
+r[expr.placeholder.diverging]
+An underscore expression does not [diverge].
+
+```rust,compile_fail,E0308
+fn underscore_does_not_diverge() -> ! {
+    // This expression does not diverge, thus the body does not diverge.
+    _ = 1;
+    // ERROR: Expected type !, found ()
+}
+```
+
+[diverge]: divergence
