@@ -124,10 +124,11 @@ Examples of 1-ZSTs include:
 - `repr(transparent)` [structs] with no fields or where all fields are 1-ZSTs (see [layout.repr.transparent.layout-abi]).
 - [Arrays] of 1-ZSTs (see [layout.array]).
 - [`PhantomData<T>`] for any type `T` (see [lang-types.phantom-data]).
+- [`MaybeUninit<T>`] for a type `T` that is itself a 1-ZST (see [lang-types.maybe-uninit.layout]).
 
 ```rust
 # use core::marker::PhantomData;
-# use core::mem::{align_of, size_of};
+# use core::mem::{MaybeUninit, align_of, size_of};
 #[repr(C)]
 struct C1 {}
 #[repr(C)]
@@ -157,6 +158,7 @@ assert!(is_1_zst::<T1>());
 assert!(is_1_zst::<T2>());
 assert!(is_1_zst::<PhantomData<()>>());
 assert!(is_1_zst::<PhantomData<u16>>());
+assert!(is_1_zst::<MaybeUninit<[(); 2]>>());
 ```
 
 ### Name
