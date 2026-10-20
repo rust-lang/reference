@@ -563,9 +563,9 @@ checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
 
 [[package]]
 name = "railroad"
-version = "0.3.9"
+version = "0.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7286d8b4d9fc00078819e06ff24cefa276f39461ff53b74d63d24736be27192f"
+checksum = "ab680249ce22bf009ea6e6e1340c7a9e7af01dbec3a4751b7956b0c265b590c1"
 dependencies = [
  "unicode-width",
 ]
