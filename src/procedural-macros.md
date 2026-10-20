@@ -57,7 +57,7 @@ r[macro.proc.proc_macro.intro]
 The *`proc_macro` [attribute][attributes]* defines a [function-like][macro.invocation] procedural macro.
 
 > [!EXAMPLE]
-> This macro definition ignores its input and emits a function `answer` into its scope.
+> These macro definitions ignore their inputs. The first emits a function `answer`, and the second emits the expression `42`.
 >
 > <!-- ignore: test doesn't support proc-macro -->
 > ```rust,ignore
@@ -69,19 +69,24 @@ The *`proc_macro` [attribute][attributes]* defines a [function-like][macro.invoc
 > pub fn make_answer(_item: TokenStream) -> TokenStream {
 >     "fn answer() -> u32 { 42 }".parse().unwrap()
 > }
+>
+> #[proc_macro]
+> pub fn make_answer_expr(_item: TokenStream) -> TokenStream {
+>     "42".parse().unwrap()
+> }
 > ```
 >
-> We can use it in a binary crate to print "42" to standard output.
+> We can invoke the first macro in item position and the second in expression position from a binary crate.
 >
 > <!-- ignore: requires external crates -->
 > ```rust,ignore
 > extern crate proc_macro_examples;
-> use proc_macro_examples::make_answer;
+> use proc_macro_examples::{make_answer, make_answer_expr};
 >
 > make_answer!();
 >
 > fn main() {
->     println!("{}", answer());
+>     assert_eq!(make_answer_expr!(), answer());
 > }
 > ```
 
