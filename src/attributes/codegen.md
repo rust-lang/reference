@@ -293,9 +293,7 @@ The syntax for the `optimize` attribute is:
 
 ```grammar,attributes
 @root OptimizeAttribute ->
-      `optimize` `(` `size` `)`
-    | `optimize` `(` `speed` `)`
-    | `optimize` `(` `none` `)`
+    `optimize` `(` ( `size` | `speed` | `none` ) `)`
 ```
 
 r[attributes.codegen.optimize.allowed-positions]
