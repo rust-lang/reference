@@ -299,8 +299,56 @@ The syntax for the `optimize` attribute is:
 r[attributes.codegen.optimize.allowed-positions]
 The `optimize` attribute may only be applied to functions with [bodies] --- [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition] when those functions have a [default definition].
 
+```rust
+// A free function.
+#[optimize(size)]
+pub fn f() {
+    #[optimize(speed)] || (); // A closure.
+    #[optimize(none)] async {}; // An async block.
+}
+
+pub struct S;
+impl S {
+    // An associated function in an inherent impl.
+    #[optimize(size)]
+    pub fn f(&self) {}
+}
+
+pub trait Tr {
+    // An associated function in a trait with a default definition.
+    #[optimize(speed)]
+    fn f(&self) {}
+}
+
+impl Tr for S {
+    // An associated function in a trait impl.
+    #[optimize(none)]
+    fn f(&self) {}
+}
+```
+
+The attribute is rejected on a function without a body.
+
+```rust,compile_fail
+trait Tr {
+    #[optimize(size)] // ERROR: Not allowed without a body.
+    fn f();
+}
+
+unsafe extern "C" {
+    #[optimize(size)] // ERROR: Not allowed without a body.
+    fn g();
+}
+```
+
 r[attributes.codegen.optimize.duplicates]
 The `optimize` attribute may be used only once on a function.
+
+```rust,compile_fail
+#[optimize(size)]
+#[optimize(speed)] // ERROR: Multiple `optimize` attributes.
+fn f() {}
+```
 
 r[attributes.codegen.optimize.modes]
 The `optimize` attribute supports these modes:
