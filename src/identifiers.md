@@ -43,7 +43,7 @@ r[ident.keyword]
 Identifiers may not be a [strict] or [reserved] keyword without the `r#` prefix described below in [raw identifiers](#raw-identifiers).
 
 r[ident.zero-width-chars]
-Zero width non-joiner (ZWNJ U+200C) and zero width joiner (ZWJ U+200D) characters are not allowed in identifiers.
+Zero width non-joiner (ZWNJ U+200C) and zero width joiner (ZWJ U+200D) characters are allowed in identifiers, but will emit an `uncommon_codepoints` warning.
 
 r[ident.ascii-limitations]
 Identifiers are restricted to the ASCII subset of [`XID_Start`] and [`XID_Continue`] in the following situations:
