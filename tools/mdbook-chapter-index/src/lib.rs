@@ -65,10 +65,8 @@ impl ChapterHierarchy {
         let current_indent = "    ".repeat(nesting);
         match self {
             ChapterHierarchy::Leaf(current_page) => {
-                let Some(relative_path) = diff_paths(&current_page.path, root) else {
-                    // Something went wrong
-                    return String::new();
-                };
+                let relative_path =
+                    diff_paths(&current_page.path, root).expect("diff_paths() should succeed");
                 format!(
                     "{current_indent}* [{display}]({link})\n",
                     display = current_page.name,
@@ -76,23 +74,12 @@ impl ChapterHierarchy {
                 )
             }
             ChapterHierarchy::Nested(current_page, inner) => {
-                let Some(relative_path) = diff_paths(&current_page.path, root) else {
-                    // Something went wrong
-                    return String::new();
-                };
+                let relative_path =
+                    diff_paths(&current_page.path, root).expect("diff_paths() should succeed");
                 let inner_display: String = inner
                     .iter()
                     .map(|hierarchy| hierarchy.to_markdown_links(nesting + 1, root))
                     .collect();
-                if inner_display.is_empty() {
-                    // Something went wrong - don't add the extra colon if there
-                    // is no nested list.
-                    return format!(
-                        "{current_indent}* [{display}]({link})\n",
-                        display = current_page.name,
-                        link = relative_path.display()
-                    );
-                }
                 format!(
                     "{current_indent}* [{display}]({link}):\n{inner_display}",
                     display = current_page.name,
@@ -107,7 +94,7 @@ impl ChapterHierarchy {
 ///
 /// # Errors
 ///
-/// Errors come from one of
+/// Errors come from one of:
 ///
 /// - [`mdbook_preprocessor::parse_input()`][mdbook_preprocessor::parse_input]
 /// - [`ChapterIndices::run()`][ChapterIndices::run]
@@ -136,10 +123,10 @@ pub fn process_chapter_indices() -> PreprocessorResult<()> {
 /// index.
 ///
 /// The `headings` configuration can be:
-/// - a string to use for all headings
-/// - a table mapping chapter names to the string to use
+/// - A string to use for all headings.
+/// - A table mapping chapter names to the string to use.
 ///
-/// anything else is ignored and results in the default.
+/// Anything else is ignored and results in the default.
 fn get_configured_header(config: &Config, chapter_name: &String) -> Option<String> {
     let value: toml::Value = config.get("preprocessor.chapter-index.headings").ok()??;
     match value {
@@ -170,10 +157,9 @@ impl ChapterIndices {
             // Draft chapter.
             return;
         };
-        let Some(root_directory) = root_path.parent() else {
-            // Something weird is going on...
-            return;
-        };
+        let root_directory = root_path
+            .parent()
+            .expect("Root path should have a parent directory");
         if !chapter.content.contains(ADD_INDEX_MARKER) {
             return;
         }
@@ -188,7 +174,7 @@ impl ChapterIndices {
             .map(|hierarchy| hierarchy.to_markdown_links(0, root_directory))
             .collect();
         if !index.is_empty() {
-            // Support for custom headings for different pages
+            // Support for custom headings for different pages.
             let index_header = match get_configured_header(config, &chapter.name) {
                 Some(header) => header,
                 None => "Chapter contents".to_owned(),

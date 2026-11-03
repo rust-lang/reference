@@ -7,7 +7,7 @@ use mdbook_preprocessor::errors::Error as PreprocessorError;
 use mdbook_preprocessor::errors::Result as PreprocessorResult;
 
 fn main() -> PreprocessorResult<()> {
-    // Skip index 0 which is the path
+    // Skip index 0 which is the path.
     let mut args = env::args().skip(1);
     if let Some(command) = args.next() {
         return match command.as_str() {
