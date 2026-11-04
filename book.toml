@@ -100,5 +100,9 @@ edition = "2024"
 [preprocessor.spec]
 command = "cargo run --release --manifest-path tools/mdbook-spec/Cargo.toml"
 
+[preprocessor.chapter-index]
+command = "cargo run --release --manifest-path tools/mdbook-chapter-index/Cargo.toml"
+headings = { Appendices = "Appendices" }
+
 [build]
-extra-watch-dirs = ["tools/mdbook-spec/src", "tools/grammar/src"]
+extra-watch-dirs = ["tools/mdbook-spec/src", "tools/grammar/src", "tools/mdbook-chapter-summary/src"]

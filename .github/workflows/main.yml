@@ -107,7 +107,7 @@ jobs:
     - name: Install Rust nightly
       run: |
         rustup set profile minimal
-        rustup toolchain install nightly -c rustc-dev -c llvm-tools
+        rustup toolchain install nightly -c rustc-dev -c llvm-tools -c clippy
         rustup default nightly
     - name: Report versions
       run: |
@@ -117,6 +117,8 @@ jobs:
       run: cargo update -p mdbook-spec --locked
     - name: Test tools
       run: cargo test --workspace --exclude grammar-check
+    - name: Check clippy (mdbook-chapter-index only)
+      run: cargo clippy -p mdbook-chapter-index --all-targets -- -Dwarnings
 
   dev-guide:
     name: dev-guide build check

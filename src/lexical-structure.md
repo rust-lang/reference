@@ -1,3 +1,3 @@
 # Lexical structure
 
-<!-- Editor Note: Oh, there's nothing here -->
+<!-- mdbook-chapter-index:add-index -->
