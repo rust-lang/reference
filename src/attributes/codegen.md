@@ -815,6 +815,7 @@ Feature     | Implicitly Enables  | Description
 `zksed`     |                                                    | [Zksed][rv-zksed] --- ShangMi Suite: SM4 Block Cipher Instructions
 `zksh`      |                                                    | [Zksh][rv-zksh] --- ShangMi Suite: SM3 Hash Function Instructions
 `zkt`       |                                                    | [Zkt][rv-zkt] --- Data Independent Execution Latency Subset
+`zmmul`     |                                                    | [Zmmul][rv-zmmul] --- Multiplication subset of the `M` extension
 `ztso`      |                     | [Ztso][rv-ztso] --- Total Store Ordering
 
 <!-- Keep links near each table to make it easier to move and update. -->
@@ -869,6 +870,7 @@ Feature     | Implicitly Enables  | Description
 [rv-zksed]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zksh]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
 [rv-zkt]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/scalar-crypto.adoc
+[rv-zmmul]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/m-st-ext.adoc#zmmul-extension-version-10
 [rv-ztso]: https://github.com/riscv/riscv-isa-manual/blob/20250508/src/ztso-st-ext.adoc
 
 r[attributes.codegen.target_feature.wasm]
