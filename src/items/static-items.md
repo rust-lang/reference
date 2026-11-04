@@ -4,10 +4,10 @@ r[items.static]
 r[items.static.syntax]
 ```grammar,items
 StaticItem ->
-    ItemSafety?[^extern-safety] `static` `mut`? IDENTIFIER `:` Type ( `=` Expression )? `;`
+    Safety?[^extern-qualifiers] `static` `mut`? IDENTIFIER `:` Type ( `=` Expression )? `;`
 ```
 
-[^extern-safety]: The `safe` and `unsafe` function qualifiers are only allowed semantically within `extern` blocks.
+[^extern-qualifiers]: The `safe` and `unsafe` qualifiers are only allowed semantically within `extern` blocks. *Relevant to editions earlier than Rust 2024*: More specifically within `extern` blocks that are qualified as `unsafe`.
 
 r[items.static.intro]
 A *static item* is similar to a [constant], except that it represents an allocation in the program that is initialized with the initializer expression. All references and raw pointers to the static refer to the same allocation.
