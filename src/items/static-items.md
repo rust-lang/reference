@@ -18,6 +18,10 @@ Static items have the `static` lifetime, which outlives all other lifetimes in a
 r[items.static.storage-disjointness]
 If the `static` has a size of at least 1 byte, this allocation is disjoint from all other such `static` allocations as well as heap allocations and stack-allocated variables. However, the storage of immutable `static` items can overlap with allocations that do not themselves have a unique address, such as [promoteds] and [`const` items][constant].
 
+r[items.static.symbol]
+A static item produces a data [symbol]. The visibility and mangling of the symbol name can be adjusted with
+attributes like [`no_mangle`] and [`export_name`].
+
 r[items.static.namespace]
 The static declaration defines a static value in the [value namespace] of the module or block where it is located.
 
@@ -144,3 +148,6 @@ It can be confusing whether or not you should use a constant item or a static it
 [interior mutable]: ../interior-mutability.md
 [value namespace]: ../names/namespaces.md
 [promoteds]: ../destructors.md#constant-promotion
+[symbol]: ../glossary.md#symbol
+[`no_mangle`]: ../abi.md#the-no_mangle-attribute
+[`export_name`]: ../abi.md#the-export_name-attribute
