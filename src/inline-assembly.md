@@ -549,7 +549,10 @@ Only the following types are allowed as operands for inline assembly:
 - Floating-point numbers
 - Pointers (thin only)
 - Function pointers
-- SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`). This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM).
+- `NonNull<T>` (only as [inputs](#operand-type))
+- Shared and mutable references (only as [inputs](#operand-type))
+- SIMD vectors (structs defined with `#[repr(simd)]` and which implement `Copy`). This includes architecture-specific vector types defined in `std::arch` such as `__m128` (x86) or `int8x16_t` (ARM)
+- `MaybeUninit<T>` for any type `T` listed above.
 
 ```rust
 # #[cfg(target_arch = "x86_64")] {
@@ -563,6 +566,9 @@ unsafe { core::arch::asm!("/* {} */", in(reg) y); }
 let py = &raw const y;
 unsafe { core::arch::asm!("/* {} */", in(reg) py); }
 
+let py = core::ptr::NonNull::from_ref(&y);
+unsafe { core::arch::asm!("/* {} */", in(reg) py); }
+
 // floats as well...
 let f = 1.0f32;
 unsafe { core::arch::asm!("/* {} */", in(xmm_reg) f); }
@@ -573,6 +579,10 @@ unsafe { core::arch::asm!("/* {} */", in(reg) func); }
 
 let z = unsafe { core::arch::x86_64::_mm_set_epi64x(1, 0) };
 unsafe { core::arch::asm!("/* {} */", in(xmm_reg) z); }
+
+// Also `MaybeUninit`s wrapping any of those types.
+let m: core::mem::MaybeUninit<i64>;
+unsafe { core::arch::asm!("/* {} */", out(reg) m); }
 # }
 ```
 
@@ -583,6 +593,11 @@ let x: Foo = Foo;
 // Complex types like structs are not allowed
 unsafe { core::arch::asm!("/* {} */", in(reg) x); }
 // ERROR: cannot use value of type `Foo` for inline assembly
+
+// `NonNull` pointers can only be inputs.
+let y: NonNull<u8>;
+unsafe { core::arch::asm!("/* {} */", out(reg) y); }
+// ERROR: cannot use value of type `NonNull<u8>` for inline assembly
 # }
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
