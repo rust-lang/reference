@@ -65,3 +65,20 @@ for i in 1..11 {
     println!("{}", i);
 }
 ```
+
+r[expr.range.diverging]
+A range expression [diverges] if any of its operands diverges.
+
+```rust
+fn range_lhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    (x..2);
+}
+
+fn range_rhs_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    (1..x);
+}
+```
+
+[diverges]: divergence

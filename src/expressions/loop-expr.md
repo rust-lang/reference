@@ -43,6 +43,21 @@ A `loop` expression repeats execution of its body continuously: `loop { println!
 r[expr.loop.infinite.diverging]
 A `loop` expression without an associated `break` expression is [diverging] and has type [`!`].
 
+```rust
+fn loop_diverges() -> ! {
+    // OK, expression diverges.
+    loop {};
+}
+```
+
+```rust,compile_fail,E0308
+fn loop_with_break_does_not_diverge() -> ! {
+    // This expression does not diverge, thus the body does not diverge.
+    loop { break; };
+    // ERROR: Expected type !, found ()
+}
+```
+
 r[expr.loop.infinite.break]
 A `loop` expression containing associated [`break` expression(s)](#break-expressions) may terminate, and must have type compatible with the value of the `break` expression(s).
 
@@ -77,6 +92,23 @@ let mut i = 0;
 while i < 10 {
     println!("hello");
     i = i + 1;
+}
+```
+
+r[expr.loop.while.diverging]
+A `while` loop does not [diverge].
+
+```rust,compile_fail,E0308
+fn while_diverge_condition(x: !) -> ! {
+    while x {};
+    // ERROR: Expected type !, found ()
+}
+```
+
+```rust,compile_fail,E0308
+fn while_diverge_block(x: !) -> ! {
+    while true { x };
+    // ERROR: Expected type !, found ()
 }
 ```
 
@@ -228,6 +260,35 @@ The variable names `next`, `iter`, and `val` are for exposition only, they do no
 > [!NOTE]
 > The outer `match` is used to ensure that any [temporary values] in `iter_expr` don't get dropped before the loop is finished. `next` is declared before being assigned because it results in types being inferred correctly more often.
 
+r[expr.loop.for.diverging]
+A `for` loop [diverges] if the iterator expression diverges.
+
+```rust
+fn for_iterator_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    for _ in x as &[i32] {};
+}
+```
+
+```rust,compile_fail,E0308
+fn for_body_does_not_diverge() -> ! {
+    for _ in [1, 2, 3] {
+        // Diverging expressions in the loop body does not constitute as
+        // divergence in the loop itself.
+        loop {}
+    };
+    // ERROR: Expected type !, found ()
+}
+```
+
+```rust,compile_fail,E0308
+fn iterator_returns_never_does_not_diverge(x: [!; 1]) -> ! {
+    // An iterator that yields a never type does not diverge.
+    for a in x {};
+    // ERROR: Expected type !, found ()
+}
+```
+
 r[expr.loop.label]
 ## Loop labels
 
@@ -281,6 +342,15 @@ assert_eq!(last, 12);
 
 r[expr.loop.break.diverging]
 A `break` expression is [diverging] and has a type of [`!`].
+
+```rust
+fn break_diverges() {
+    for _ in [1, 2, 3] {
+        // The type of `break` is `!`.
+        let _: ! = break;
+    };
+}
+```
 
 r[expr.loop.break.label]
 A `break` expression is normally associated with the innermost `loop`, `for` or `while` loop enclosing the `break` expression, but a [label](#loop-labels) can be used to specify which enclosing loop is affected. Example:
@@ -338,19 +408,26 @@ let result = 'block: {
 r[expr.loop.block-labels.type]
 The type of a labeled block expression is the [least upper bound] of all of the break operands and the final operand. If the final operand is omitted, the type of the final operand defaults to the [unit type], unless the block [diverges][expr.block.diverging], in which case it is the [never type].
 
-> [!EXAMPLE]
-> ```rust
-> fn example(condition: bool) {
->     let s = String::from("owned");
->
->     let _: &str = 'block: {
->         if condition {
->             break 'block &s;  // &String coerced to &str via Deref
->         }
->         break 'block "literal";  // &'static str coerced to &str
->     };
-> }
-> ```
+```rust
+fn labeled_block_lub(condition: bool) {
+    let s = String::from("owned");
+
+    let _: &str = 'block: {
+        if condition {
+            break 'block &s;  // &String coerced to &str via Deref
+        }
+        break 'block "literal";  // &'static str coerced to &str
+    };
+}
+
+fn labeled_block_diverges(x: !) -> ! {
+    // OK, expression diverges.
+    let _: ! = 'block: {
+        break 'block x;
+        // Final operand is inferred to the never type.
+    };
+}
+```
 
 r[expr.loop.continue]
 ## `continue` expressions
@@ -365,6 +442,15 @@ When `continue` is encountered, the current iteration of the associated loop bod
 
 r[expr.loop.continue.diverging]
 A `continue` expression is [diverging] and has a type of [`!`].
+
+```rust
+fn continue_diverges() {
+    loop {
+        // The type of `continue` is `!`.
+        let _: ! = continue;
+    }
+}
+```
 
 r[expr.loop.continue.while]
 In the case of a `while` loop, the head is the conditional operands controlling the loop.
@@ -418,33 +504,32 @@ The type of a `loop` with associated `break` expressions is the [least upper bou
 r[expr.loop.break-value.diverging]
 A `loop` with associated `break` expressions does not [diverge] if any of the break operands do not diverge. If all of the `break` operands diverge, then the `loop` expression also diverges.
 
-> [!EXAMPLE]
-> ```rust
-> fn diverging_loop_with_break(condition: bool) -> ! {
->     // This loop is diverging because all `break` operands are diverging.
->     loop {
->         if condition {
->             break loop {};
->         } else {
->             break panic!();
->         }
->     }
-> }
-> ```
->
-> ```rust,compile_fail,E0308
-> fn loop_with_non_diverging_break(condition: bool) -> ! {
->     // The type of this loop is i32 even though one of the breaks is
->     // diverging.
->     loop {
->         if condition {
->             break loop {};
->         } else {
->             break 123i32;
->         }
->     } // ERROR: expected `!`, found `i32`
-> }
-> ```
+```rust
+fn diverging_loop_with_break(condition: bool) -> ! {
+    // This loop is diverging because all `break` operands are diverging.
+    loop {
+        if condition {
+            break loop {};
+        } else {
+            break panic!();
+        }
+    }
+}
+```
+
+```rust,compile_fail,E0308
+fn loop_with_non_diverging_break(condition: bool) -> ! {
+    // The type of this loop is i32 even though one of the breaks is
+    // diverging.
+    loop {
+        if condition {
+            break loop {};
+        } else {
+            break 123i32;
+        }
+    } // ERROR: expected `!`, found `i32`
+}
+```
 
 [`!`]: type.never
 [`if` condition chains]: if-expr.md#chains-of-conditions
@@ -452,6 +537,7 @@ A `loop` with associated `break` expressions does not [diverge] if any of the br
 [`match` expression]: match-expr.md
 [boolean type]: ../types/boolean.md
 [diverge]: divergence
+[diverges]: divergence
 [diverging]: divergence
 [labeled block expression]: expr.loop.block-labels
 [least upper bound]: coerce.least-upper-bound
