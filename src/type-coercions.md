@@ -16,12 +16,16 @@ r[coerce.site.intro]
 A coercion can only occur at certain coercion sites in a program; these are typically places where the desired type is explicit or can be derived by propagation from explicit types (without type inference). Possible coercion sites are:
 
 r[coerce.site.let]
-* `let` statements where an explicit type is given.
+* `let` statements where an explicit type is given, unless `ref` or `ref mut` is written in the pattern.
 
    For example, `&mut 42` is coerced to have type `&i8` in the following:
 
    ```rust
    let _: &i8 = &mut 42;
+   ```
+
+   ```rust,compile_fail,E0308
+   let ref x: &i8 = &mut 42; // ERROR: `ref` is written in the pattern, so `&mut 42` is not coerced to `&i8`.
    ```
 
 r[coerce.site.value]
@@ -209,6 +213,70 @@ Additionally, a type `Foo<T>` can implement `CoerceUnsized<Foo<U>>` when `T` imp
 > [!NOTE]
 > While the definition of the unsized coercions and their implementation has been stabilized, the traits themselves are not yet stable and therefore can't be used directly in stable Rust.
 
+r[coerce.reborrow]
+## Reborrowing
+
+r[coerce.reborrow.intro]
+When an expression `e` of type `&mut T` is coerced to a type that is known, when the coercion is checked, to be a reference type or a raw pointer type, including `&mut T` itself, `e` is not moved. Instead, the referent is *reborrowed*: the coercion creates a new reference or raw pointer to `*e`, or to a place reached from `*e` by the coercion. For a reference type, this is an [implicit borrow] of `*e`, mutable when the type is a `&mut` reference, and the rules for borrows apply to it (see [expr.operator.borrow.lifetime]).
+
+```rust
+let mut x = 0;
+let r = &mut x;
+let s: &mut i32 = r; // Reborrows `*r` rather than moving `r`.
+*s += 1;
+*r += 1; // OK: `r` was not moved.
+```
+
+```rust,compile_fail,E0503
+let mut x = 0;
+let r = &mut x;
+let s: &mut i32 = r; // Reborrows `*r`.
+*r += 1; // ERROR: `*r` is borrowed by `s`.
+*s += 1;
+```
+
+```rust,compile_fail,E0382
+let mut x = 0;
+let r = &mut x;
+let s = r; // Moves `r`, since a `let` statement without a type is not a coercion site.
+*s += 1;
+*r += 1; // ERROR: Use of moved value.
+```
+
+```rust
+# let mut x = 0;
+# let r = &mut x;
+fn f(_: &mut i32) {}
+f(r); // Reborrows `*r`.
+f(r); // OK: `r` was not moved.
+```
+
+```rust,compile_fail,E0382
+# let mut x = 0;
+# let r = &mut x;
+fn g<T>(_: T) {}
+g(r); // Moves `r`: the type of `r` determines `T`, so `r` is not coerced to a reference type.
+g(r); // ERROR: Use of moved value.
+```
+
+> [!NOTE]
+> A coercion to a raw pointer type takes a [raw borrow] of `*e` but does not evaluate `*e` in a mutable place expression context, so it does not cause an index or dereference within `*e` to use `IndexMut` or `DerefMut`. This may change in the future. For a `*mut U` target, `*e` must nonetheless be a mutable place expression (see [expr.mut.other-borrows]).
+>
+> ```rust,compile_fail,E0596
+> # let mut a = 0u8;
+> let mut v: Vec<&mut u8> = vec![&mut a];
+> let p: *mut u8 = v[0]; // ERROR: `v[0]` uses `Index`, so `*v[0]` is not mutable.
+> ```
+>
+> ```rust
+> # let mut a = 0u8;
+> let mut v: Vec<&mut u8> = vec![&mut a];
+> let p: *mut u8 = &raw mut *v[0]; // OK: `&raw mut` evaluates `*v[0]` in a mutable place expression context, so `v[0]` uses `IndexMut`.
+> ```
+
+> [!NOTE]
+> A `let` statement without a type is not a coercion site (see [coerce.site]), so `let s = r;` moves `r`. In `g(r)` for `fn g<T>(_: T)`, nothing is known about `T` when the coercion is checked, so `r` is moved and its type determines `T`; in `g::<&mut i32>(r)`, `r` is reborrowed. Likewise, for `r1` and `r2` of type `&mut i32`, in `let a = [r1, r2];` nothing else determines the array's type, so `r1` is moved and determines the element type, and `r2` is coerced to that type and reborrowed. A cast also performs a coercion (see [expr.as.coercions]), so `r as &mut i32` reborrows `*r`. In `let s = if c { r1 } else { r2 };`, the least upper bound coercion applies to the blocks, whose tails are not coercion sites when the `if` has no known type, so both `r1` and `r2` are moved.
+
 r[coerce.least-upper-bound]
 ## Least upper bound coercions
 
@@ -297,6 +365,8 @@ This description is obviously informal. Making it more precise is expected to pr
 [type cast operator]: expressions/operator-expr.md#type-cast-expressions
 [`Unsize`]: std::marker::Unsize
 [`CoerceUnsized`]: std::ops::CoerceUnsized
+[implicit borrow]: expr.implicit-borrow
+[raw borrow]: expr.borrow.raw
 [labeled block expression]: expr.loop.block-labels
 [`loop` expression with break expressions]: expr.loop.break-value
 [method-call expressions]: expressions/method-call-expr.md
