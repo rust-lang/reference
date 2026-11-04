@@ -286,7 +286,7 @@ The *`optimize` [attribute]* suggests an optimization goal for the attributed fu
 > ```
 
 > [!NOTE]
-> For `rustc`, the attribute has no effect when optimizations are disabled (`-C opt-level=0`).
+> For `rustc`, `-C opt-level=0` (the default) disables LLVM optimizations for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable them for the attributed function. `rustc` still applies its own optimizations, other than inlining, to such a function.
 
 r[attributes.codegen.optimize.syntax]
 The syntax for the `optimize` attribute is:
