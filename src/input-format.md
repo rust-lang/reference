@@ -21,10 +21,13 @@ r[input.encoding]
 ## Source encoding
 
 r[input.encoding.utf8]
-Each source file is interpreted as a sequence of Unicode characters encoded in UTF-8.
+Each source file is interpreted as a sequence of Unicode characters encoded in UTF-8. Information on this encoding can be found at <https://www.unicode.org/versions/latest/core-spec/chapter-3/#G31703>.
 
 r[input.encoding.invalid]
 It is an error if the file is not valid UTF-8.
+
+r[input.encoding.unicode-version]
+Unicode is an evolving standard, which Rust tracks. The exact version used by the Rust language is delegated to the standard library, documented at [`char::UNICODE_VERSION`].
 
 r[input.byte-order-mark]
 ## Byte order mark removal
@@ -62,3 +65,4 @@ The resulting sequence of characters is then converted into tokens as described 
 [Crates and source files]: crates-and-source-files.md
 [shebang]: shebang.md
 [whitespace]: whitespace.md
+[`char::UNICODE_VERSION`]: https://doc.rust-lang.org/nightly/std/primitive.char.html#associatedconstant.UNICODE_VERSION

@@ -85,5 +85,5 @@ It is an error to use the [RESERVED_RAW_IDENTIFIER] token.
 [proc-macro]: procedural-macros.md
 [reserved]: keywords.md#reserved-keywords
 [strict]: keywords.md#strict-keywords
-[UAX15]: https://www.unicode.org/reports/tr15/tr15-57.html
-[UAX31]: https://www.unicode.org/reports/tr31/tr31-43.html
+[UAX15]: https://www.unicode.org/reports/tr15
+[UAX31]: https://www.unicode.org/reports/tr31
