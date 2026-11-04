@@ -84,6 +84,25 @@ When `inline` is applied to an [async function] or [async closure], it applies o
 r[attributes.codegen.inline.externally-exported]
 The `inline` attribute is ignored if the function is externally exported with [`no_mangle`] or [`export_name`].
 
+r[attributes.codegen.inline.optimize]
+`#[inline]` and `#[inline(always)]` may not be used with `#[optimize(none)]` on the same function. (See [attributes.codegen.optimize.inline].)
+
+```rust,compile_fail
+#[optimize(none)]
+#[inline] // ERROR: Not allowed.
+fn f() {}
+```
+
+`#[inline]` and `#[inline(always)]` may still be used on a closure or async block that inherits `optimize(none)`. (See [attributes.codegen.optimize.closures].)
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    #[inline] || (); // Inherits `optimize(none)`.
+    #[inline(always)] async {}; // Inherits `optimize(none)`.
+}
+```
+
 <!-- template:attributes -->
 r[attributes.codegen.cold]
 ### The `cold` attribute
@@ -204,6 +223,18 @@ The [testing attributes] cannot be applied to a naked function.
 r[attributes.codegen.naked.target_feature]
 The [`target_feature` attribute] cannot be applied to a naked function.
 
+r[attributes.codegen.naked.optimize]
+The [`optimize` attribute] cannot be applied to a naked function. (See [attributes.codegen.optimize.naked].)
+
+```rust,compile_fail,E0736
+# use core::arch::naked_asm;
+#[optimize(size)] // ERROR: Not allowed on a naked function.
+#[unsafe(naked)]
+pub extern "C" fn f() {
+    naked_asm!("ret")
+}
+```
+
 <!-- TODO: Reflexive rules? -->
 
 r[attributes.codegen.naked.abi]
@@ -234,6 +265,175 @@ Only the first use of the `no_builtins` attribute has effect.
 
 > [!NOTE]
 > `rustc` lints against any use following the first.
+
+<!-- template:attributes -->
+r[attributes.codegen.optimize]
+## The `optimize` attribute
+
+r[attributes.codegen.optimize.intro]
+The *`optimize` [attribute]* suggests an optimization goal for the attributed function: size, speed, or none.
+
+> [!EXAMPLE]
+> ```rust
+> #[optimize(size)]
+> pub fn example1() {}
+>
+> #[optimize(speed)]
+> pub fn example2() {}
+>
+> #[optimize(none)]
+> pub fn example3() {}
+> ```
+
+> [!NOTE]
+> For `rustc`, `-C opt-level=0` (the default) disables LLVM optimizations for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable them for the attributed function. `rustc` still applies its own optimizations, other than inlining, to such a function.
+
+r[attributes.codegen.optimize.syntax]
+The syntax for the `optimize` attribute is:
+
+```grammar,attributes
+@root OptimizeAttribute ->
+    `optimize` `(` ( `size` | `speed` | `none` ) `)`
+```
+
+r[attributes.codegen.optimize.allowed-positions]
+The `optimize` attribute may only be applied to functions with [bodies] --- [closures], [async blocks], [free functions], [associated functions] in an [inherent impl] or [trait impl], and associated functions in a [trait definition] when those functions have a [default definition].
+
+```rust
+// A free function.
+#[optimize(size)]
+pub fn f() {
+    #[optimize(speed)] || (); // A closure.
+    #[optimize(none)] async {}; // An async block.
+}
+
+pub struct S;
+impl S {
+    // An associated function in an inherent impl.
+    #[optimize(size)]
+    pub fn f(&self) {}
+}
+
+pub trait Tr {
+    // An associated function in a trait with a default definition.
+    #[optimize(speed)]
+    fn f(&self) {}
+}
+
+impl Tr for S {
+    // An associated function in a trait impl.
+    #[optimize(none)]
+    fn f(&self) {}
+}
+```
+
+The attribute is rejected on a function without a body.
+
+```rust,compile_fail
+trait Tr {
+    #[optimize(size)] // ERROR: Not allowed without a body.
+    fn f();
+}
+
+unsafe extern "C" {
+    #[optimize(size)] // ERROR: Not allowed without a body.
+    fn g();
+}
+```
+
+r[attributes.codegen.optimize.duplicates]
+The `optimize` attribute may be used only once on a function.
+
+```rust,compile_fail
+#[optimize(size)]
+#[optimize(speed)] // ERROR: Multiple `optimize` attributes.
+fn f() {}
+```
+
+r[attributes.codegen.optimize.modes]
+The `optimize` attribute supports these modes:
+
+- `#[optimize(size)]` suggests optimizing for smaller code, even at the cost of execution speed.
+- `#[optimize(speed)]` suggests optimizing for faster execution, even at the cost of code size.
+- `#[optimize(none)]` suggests compiling the function as though no optimization had been requested for it, disregarding what was requested for the crate as a whole.
+
+> [!NOTE]
+> In every form the attribute is a hint. The compiler may ignore it.
+
+> [!WARNING]
+> `#[optimize(none)]` does not make the function opaque to the optimizer. In addition to ignoring the attribute, the compiler may still optimize the function's callers using what it knows about the function and may still change the function itself in other ways, so the attribute cannot be relied on to keep a computation from being optimized away.
+
+> [!NOTE]
+> `rustc` currently optimizes a function with `#[optimize(none)]` much as it would at `-C opt-level=0`, regardless of the crate's optimization level, and does not inline it into its callers.
+>
+> Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
+
+r[attributes.codegen.optimize.inline]
+`#[optimize(none)]` may not be used with `#[inline]` or `#[inline(always)]` on the same function. It may be used with `#[inline(never)]`. (See [attributes.codegen.inline.optimize].)
+
+```rust,compile_fail
+#[optimize(none)]
+#[inline] // ERROR: Not allowed.
+fn f() {}
+```
+
+A closure or async block that inherits `optimize(none)` may still be marked with `#[inline]` or `#[inline(always)]`. (See [attributes.codegen.optimize.closures].)
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    #[inline] || (); // Inherits `optimize(none)`.
+    #[inline(always)] async {}; // Inherits `optimize(none)`.
+}
+```
+
+r[attributes.codegen.optimize.naked]
+The `optimize` attribute cannot be applied to a [naked function]. (See [attributes.codegen.naked.optimize].)
+
+```rust,compile_fail,E0736
+# use core::arch::naked_asm;
+#[optimize(size)] // ERROR: Not allowed on a naked function.
+#[unsafe(naked)]
+pub extern "C" fn f() {
+    naked_asm!("ret")
+}
+```
+
+r[attributes.codegen.optimize.closures]
+Closures and [async blocks] without an `optimize` attribute of their own inherit the attribute in effect on the innermost enclosing function, closure, or async block, which may itself be one inherited rather than one written directly. The body of an [async function] inherits the attribute in effect on the function, and the body of an [async closure] inherits the attribute in effect on the closure. Items and [const blocks] within a function do not inherit the attribute in effect on the function, nor do the closures and async blocks within them.
+
+```rust
+#[optimize(none)]
+pub fn f() {
+    // This closure has no `optimize` attribute of its own, so its
+    // body inherits `optimize(none)` from `f`.
+    let c = || 1 + 2;
+    c();
+}
+
+#[optimize(size)]
+pub async fn g() {
+    // This body inherits `optimize(size)` from `g`.
+}
+```
+
+r[attributes.codegen.optimize.trait]
+When `optimize` is applied to a function in a [trait], it applies only to the code of the [default definition].
+
+```rust
+pub trait Tr {
+    // The default definition is optimized for size.
+    #[optimize(size)]
+    fn f(&self) {}
+}
+
+pub struct S;
+impl Tr for S {
+    // This implementation of `Tr::f` does not inherit the trait's
+    // `optimize(size)`; it uses the crate's optimization level.
+    fn f(&self) {}
+}
+```
 
 r[attributes.codegen.target_feature]
 ## The `target_feature` attribute
@@ -916,6 +1116,7 @@ If the address of the function is taken as a function pointer, the low bit of th
 [`Location`]: core::panic::Location
 [`naked_asm!`]: asm
 [`no_mangle`]: abi.no_mangle
+[`optimize` attribute]: attributes.codegen.optimize
 [`target_feature` attribute]: attributes.codegen.target_feature
 [`target_feature` conditional compilation option]: ../conditional-compilation.md#target_feature
 [`track_caller` attribute]: attributes.codegen.track_caller
@@ -928,11 +1129,13 @@ If the address of the function is taken as a function pointer, the low bit of th
 [attributes]: ../attributes.md
 [bodies]: items.fn.body
 [closures]: expr.closure
+[const blocks]: expr.block.const
 [default definition]: items.traits.associated-item-decls
 [free functions]: items.fn
 [function body]: items.fn.body
 [functions]: ../items/functions.md
 [inherent impl]: items.impl.inherent
+[naked function]: attributes.codegen.naked
 ["Rust" ABI]: items.extern.abi.rust
 [rust-abi]: ../items/external-blocks.md#abi
 [target architecture]: ../conditional-compilation.md#target_arch
