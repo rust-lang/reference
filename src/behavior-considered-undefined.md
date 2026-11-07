@@ -61,6 +61,12 @@ r[undefined.invalid]
 r[undefined.asm]
 * Incorrect use of inline assembly. For more details, refer to the [rules] to follow when writing code that uses inline assembly.
 
+r[undefined.extern-static]
+* Declaring an `extern static` when the allocation it resolves to is located at address 0 or is smaller, less aligned, or less mutable than declared.
+
+r[undefined.extern-static-raw-dylib]
+* Declaring an `extern static` imported with the [`raw-dylib` link kind] when the allocation it resolves to does not have the same size as the type it is declared with.
+
 r[undefined.runtime]
 * Violating assumptions of the Rust runtime. Most assumptions of the Rust runtime are currently not explicitly documented.
   * For assumptions specifically related to unwinding, see the [panic documentation][unwinding-ffi].
@@ -222,3 +228,4 @@ r[undefined.validity.undef]
 [const-promoted]: destructors.md#constant-promotion
 [lifetime-extended]: destructors.md#temporary-lifetime-extension
 [zero-sized]: glossary.zst
+[`raw-dylib` link kind]: items.extern.attributes.link.raw-dylib
