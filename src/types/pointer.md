@@ -44,6 +44,9 @@ RawPointerType -> `*` ( `mut` | `const` ) TypeNoBounds
 r[type.pointer.raw.intro]
 Raw pointers are pointers without safety or liveness guarantees. Raw pointers are written as `*const T` or `*mut T`. For example `*const i32` means a raw pointer to a 32-bit integer.
 
+> [!NOTE]
+> The dereference of a `*mut T` is a mutable place expression, so it can be assigned to or mutably borrowed, while the dereference of a `*const T` is an immutable place expression. See [expr.mut.valid-places].
+
 r[type.pointer.raw.copy]
 Copying or dropping a raw pointer has no effect on the lifecycle of any other value.
 
