@@ -37,18 +37,17 @@ let foo_ptr_2 = if want_i32 {
 ```
 
 r[type.fn-item.traits]
-All function items implement [`Copy`], [`Clone`], [`Send`], and [`Sync`].
+All function items implement [`Copy`], [`Clone`], and all the [auto traits][lang-types.auto-traits].
 
 [`Fn`], [`FnMut`], and [`FnOnce`] are implemented unless the function has any of the following:
 
 - an [`unsafe`][unsafe.fn] qualifier
 - a [`target_feature` attribute][attributes.codegen.target_feature]
-- an [ABI][items.fn.extern] other than `"Rust"`
+- an [ABI][items.fn.extern] of `"custom"`
+- a [C-variadic][items.fn.c-variadic] rest parameter
 
 [`Clone`]: ../special-types-and-traits.md#clone
 [`Copy`]: ../special-types-and-traits.md#copy
-[`Send`]: ../special-types-and-traits.md#send
-[`Sync`]: ../special-types-and-traits.md#sync
 [coercion]: ../type-coercions.md
 [function pointers]: function-pointer.md
 [zero-sized]: glossary.zst
