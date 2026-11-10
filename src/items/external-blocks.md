@@ -74,6 +74,252 @@ Extern statics can be either immutable or mutable just like [statics] outside of
 r[items.extern.static.read-only]
 An immutable static *must* be initialized before any Rust code is executed. It is not enough for the static to be initialized before Rust code reads from it. Once Rust code runs, mutating an immutable static (from inside or outside Rust) is UB, except if the mutation happens to bytes inside of an `UnsafeCell`.
 
+r[items.extern.static.size]
+An extern static resolves to an allocation that starts at the address of the static; the allocation must have at least the size and alignment of the type it is declared with (see [undefined.extern-static]). If the allocation is larger, accessing the extra bytes is allowed.
+
+> [!NOTE]
+> See [items.extern.attributes.link.kind-raw-dylib.size] for an exception to this rule.
+
+r[items.extern.static.same-symbol]
+An extern static resolves to the same allocation as any other static with the same symbol.
+
+```rust
+#[unsafe(no_mangle)]
+static mut COUNTER: u8 = 0;
+
+unsafe extern "C" {
+    #[link_name = "COUNTER"]
+    static mut COUNTER_ALIAS: u8;
+}
+
+fn main() {
+    unsafe {
+        COUNTER += 1;
+        COUNTER_ALIAS += 2;
+        // The two statics share one allocation.
+        assert!(COUNTER == COUNTER_ALIAS && COUNTER == 3);
+        assert!(&raw const COUNTER == &raw const COUNTER_ALIAS);
+    }
+}
+```
+
+r[items.extern.static.allocations-disjoint]
+The allocation that an extern static resolves to does not include the bytes of any static with a different symbol, even when the linker places the statics in the same section.
+
+> [!NOTE]
+> A pointer to one allocation can't be used, via offsetting, to access bytes in a different allocation. Since statics with different symbols have different allocations, you can't use a pointer derived from one static to access the bytes of another static that has a different symbol.
+>
+> In particular, an extern static that marks the start of a linker section cannot be used to access statics with different symbols placed in that section.
+
+```rust,standalone_crate
+// Bytes placed in a section without a static may be read through the
+// section's start symbol.
+
+// Three bytes placed in a section named `entries`.
+# #[cfg(target_os = "linux")]
+core::arch::global_asm!(
+    ".pushsection entries,\"aR\"", // `R` is like `#[used]`.
+    ".byte 1, 2, 3",
+    ".popsection",
+);
+
+# #[cfg(target_os = "linux")]
+unsafe extern "C" {
+    // On ELF targets, the linker defines these symbols at the start
+    // and the end of the `entries` section.
+    static __start_entries: [u8; 0];
+    static __stop_entries: [u8; 0];
+}
+
+fn main() {
+# #[cfg(target_os = "linux")] {
+    let start = &raw const __start_entries as *const u8;
+    let len = (&raw const __stop_entries).addr() - start.addr();
+    // The bytes of the section belong to no static, so they are part
+    // of the allocation that `__start_entries` resolves to.
+    let entries = unsafe { core::slice::from_raw_parts(start, len) };
+    assert_eq!(entries, &[1, 2, 3]);
+# }
+}
+```
+
+```rust,standalone_crate
+// A static placed in a section is an allocation of its own, which the
+// section's start symbol cannot be used to read.
+
+// A static placed in a section named `entries`.
+# #[cfg(target_os = "linux")]
+#[used]
+#[unsafe(link_section = "entries")]
+static ENTRY: [u8; 3] = [1, 2, 3];
+
+# #[cfg(target_os = "linux")]
+unsafe extern "C" {
+    // On ELF targets, the linker defines these symbols at the start
+    // and the end of the `entries` section.
+    static __start_entries: [u8; 0];
+    static __stop_entries: [u8; 0];
+}
+
+fn main() {
+# #[cfg(target_os = "linux")] {
+    let start = &raw const __start_entries as *const u8;
+    let stop = &raw const __stop_entries as *const u8;
+    // The section holds exactly the bytes of `ENTRY`.
+    assert_eq!(stop.addr() - start.addr(), 3);
+    assert_eq!(start.addr(), (&raw const ENTRY).addr());
+    // But those bytes are the allocation of `ENTRY`, not of
+    // `__start_entries`, so reading them through `start` is undefined
+    // behavior.
+    //let x = unsafe { *start }; // UB.
+# }
+}
+```
+
+r[items.extern.static.decentralized-registration]
+> [!EXAMPLE]
+> ### Decentralized registration
+>
+> Sometimes it's useful for multiple crates (or external compilation units) to be able to each add entries at link time to a single table that can be iterated over at runtime. This can be used, e.g., for registering handlers. It can be done without allocation, without code before `main`, and with `no_std`.
+>
+> We'll describe how to do this *decentralized registration* pattern soundly, using the guarantees provided in this section; then we'll show an optimized form that requires fewer bytes per entry, avoids the overhead of relocation records, and allows the memory pages used for the table to be marked as read-only, which lets them be shared across processes.
+>
+> #### Basic form using pointers as entries
+>
+> In the code below, each `register!` call adds a function pointer to the `handlers` section; `handlers()` returns the resulting table as a slice.
+>
+> ```rust,standalone_crate
+> // This form works on 64-bit ELF targets.
+> #[cfg(all(target_os = "linux", target_pointer_width = "64"))]
+> mod registry {
+>     macro_rules! register {
+>         ($f:path) => {
+>             core::arch::global_asm!(
+>                 // `aw`: Allocated and writable. The memory must be
+>                 //       writable since the pointer is filled in by a
+>                 //       relocation when the program is loaded.
+>                 //  `R`: Retained. This causes the linker to keep the
+>                 //       entry even when nothing refers to it.
+>                 ".pushsection handlers,\"awR\"",
+>                 ".balign 8",
+>                 ".8byte {f}", // An 8-byte entry for 64-bit targets.
+>                 ".popsection",
+>                 f = sym $f,
+>             );
+>         };
+>     }
+>
+>     mod a { // This could be in a different crate.
+>         pub extern "C" fn handler() -> u8 { 1 }
+>         register!(handler);
+>     }
+>
+>     mod b { // This could be in a different crate.
+>         pub extern "C" fn handler() -> u8 { 2 }
+>         register!(handler);
+>     }
+>
+>     pub type Handler = extern "C" fn() -> u8;
+>
+>     unsafe extern "C" {
+>         // On ELF targets, the linker defines these symbols at the
+>         // start and the end of the `handlers` section.
+>         static __start_handlers: [Handler; 0];
+>         static __stop_handlers: [Handler; 0];
+>     }
+>
+>     pub fn handlers() -> &'static [Handler] {
+>         # use core::slice;
+>         let start = (&raw const __start_handlers).cast::<Handler>();
+>         let len = ((&raw const __stop_handlers).addr() - start.addr())
+>             / size_of::<Handler>();
+>         // SAFETY: The entries belong to no static, so they are part
+>         // of the allocation to which `__start_handlers` resolves.
+>         unsafe { slice::from_raw_parts(start, len) }
+>     }
+> }
+>
+> fn main() {
+> # #[cfg(all(target_os = "linux", target_pointer_width = "64"))] {
+>     let sum: u8 = registry::handlers().iter().map(|f| f()).sum();
+>     assert_eq!(sum, 3);
+> # }
+> }
+> ```
+>
+> In this form, the memory for the table must be read-write, as the entries are filled in by a relocation when the program is loaded. And, in a shared library or position-independent executable, each entry requires a relocation record (24 bytes in a 64-bit ELF file).
+>
+> #### Optimized form using place-relative offsets
+>
+> To avoid this overhead and allow the memory pages for the table to be marked read-only, we can instead have each entry hold a 32-bit *place-relative offset*. This offset is the distance from the entry to the handler.
+>
+> In this form, each entry takes just 4 bytes on all platforms. (By contrast, each entry in the basic form can take up to 32 bytes.) As an added benefit, with this form, the assembler directives do not depend on the pointer width.
+>
+> This requires only that the function lie within 2 GiB of the table.
+>
+> ```rust,standalone_crate
+> // This form works on ELF targets regardless of the pointer width.
+> #[cfg(target_os = "linux")]
+> mod registry {
+>     macro_rules! register {
+>         ($f:path) => {
+>             core::arch::global_asm!(
+>                 // Since the entries don't need to be filled in when
+>                 // the program is loaded, the memory can be read-only.
+>                 ".pushsection handlers,\"aR\"",
+>                 ".balign 4",
+>                 ".4byte {f} - .", // Offset from the entry to the handler.
+>                 ".popsection",
+>                 f = sym $f,
+>             );
+>         };
+>     }
+>
+>     # mod a { // This could be in a different crate.
+>     #     pub extern "C" fn handler() -> u8 { 1 }
+>     #     register!(handler);
+>     # }
+>     #
+>     # mod b { // This could be in a different crate.
+>     #     pub extern "C" fn handler() -> u8 { 2 }
+>     #     register!(handler);
+>     # }
+>     #
+>     unsafe extern "C" {
+>         static __start_handlers: [i32; 0];
+>         static __stop_handlers: [i32; 0];
+>     }
+>
+>     pub type Handler = extern "C" fn() -> u8;
+>
+>     pub fn handlers() -> impl Iterator<Item = Handler> {
+>         # use core::{mem, slice};
+>         let start = (&raw const __start_handlers).cast::<i32>();
+>         let len = ((&raw const __stop_handlers).addr() - start.addr())
+>             / size_of::<i32>();
+>         let offsets = unsafe { slice::from_raw_parts(start, len) };
+>         offsets.iter().map(|entry| {
+>             // The address of the function is the address of the entry
+>             // plus the offset stored in the entry.
+>             let addr = (entry as *const i32)
+>                 .addr().wrapping_add_signed(*entry as isize);
+>             unsafe { mem::transmute::<usize, Handler>(addr) }
+>         })
+>     }
+> }
+>
+> fn main() {
+> # #[cfg(target_os = "linux")] {
+>     let sum: u8 = registry::handlers().map(|f| f()).sum();
+>     assert_eq!(sum, 3);
+> # }
+> }
+> ```
+>
+> For shared libraries and position-independent executables, the size saved per entry is the pointer and its relocation record, less the 4-byte offset: 28 bytes on 64-bit targets (an 8-byte pointer and a 24-byte record), and 8 bytes on 32-bit targets, or 12 on those whose relocation records carry an explicit addend, such as PowerPC and RISC-V.
+>
+> Which form should you use? As long as the functions can lie within 2 GiB of the table and you don't need the entries to be pointers, prefer the optimized form.
+
 r[items.extern.abi]
 ## ABI
 
@@ -368,6 +614,9 @@ Specifying `kind = "dylib"` instructs the Rust compiler to link an import librar
 
 r[items.extern.attributes.link.kind-raw-dylib.platform-specific]
 `raw-dylib` is only supported on Windows. Using it when targeting other platforms will result in a compiler error.
+
+r[items.extern.attributes.link.kind-raw-dylib.size]
+Unlike other extern statics, a `raw-dylib` static must resolve to an allocation whose size is exactly that of the type it is declared with (see [undefined.extern-static-raw-dylib]).
 
 r[items.extern.attributes.link.import_name_type]
 #### The `import_name_type` key
