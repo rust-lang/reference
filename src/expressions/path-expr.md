@@ -34,9 +34,28 @@ let slice_reverse = <[i32]>::reverse;
 r[expr.path.const]
 Evaluation of associated constants is handled the same way as [`const` blocks].
 
+r[expr.path.diverging]
+A path expression [diverges] if it has the [never type] and constitutes a [read][divergence.place-read].
+
+```rust
+fn path_diverges(x: !) -> ! {
+    // The path expression is read, so it diverges.
+    x;
+} // OK.
+```
+
+```rust,compile_fail,E0308
+fn path_not_read(x: !) -> ! {
+    // The path expression is not read, so it does not diverge.
+    let _ = x;
+} // ERROR: Expected type !, found ()
+```
+
+[diverges]: divergence
+[never type]: type.never
+[path]: paths
 [place expressions]: ../expressions.md#place-expressions-and-value-expressions
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
-[path]: ../paths.md
 [`static mut`]: ../items/static-items.md#mutable-statics
 [`unsafe` block]: block-expr.md#unsafe-blocks
 [`const` blocks]: block-expr.md#const-blocks
