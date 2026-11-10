@@ -1,0 +1,17 @@
+[package]
+name = "mdbook-chapter-index"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "mdBook preprocessor to include chapter indices with links."
+repository = "https://github.com/rust-lang/reference/"
+publish = false
+
+[dependencies]
+mdbook-preprocessor = "0.5.4"
+pathdiff = "0.2.3"
+serde_json = "1.0.154"
+toml = "1.1"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
