@@ -9,9 +9,9 @@ Function ->
         FunctionReturnType? WhereClause?
         ( BlockExpression | `;` )
 
-FunctionQualifiers -> `const`? `async`?[^async-edition] ItemSafety?[^extern-qualifiers] (`extern` Abi?)?
+FunctionQualifiers -> `const`? `async`?[^async-edition] Safety?[^extern-qualifiers] (`extern` Abi?)?
 
-ItemSafety -> `safe`[^extern-safe] | `unsafe`
+Safety -> `safe`[^safe-semantics] | `unsafe`
 
 Abi -> STRING_LITERAL | RAW_STRING_LITERAL
 
@@ -34,11 +34,11 @@ FunctionReturnType -> `->` Type
 
 [^async-edition]: The `async` qualifier is not allowed in the 2015 edition.
 
-[^extern-safe]: The `safe` function qualifier is only allowed semantically within `extern` blocks.
-
-[^extern-qualifiers]: *Relevant to editions earlier than Rust 2024*: Within `extern` blocks, the `safe` or `unsafe` function qualifier is only allowed when the `extern` is qualified as `unsafe`.
+[^extern-qualifiers]: The `safe` or `unsafe` qualifiers are only allowed semantically within `extern` blocks. *Relevant to editions earlier than Rust 2024*: More specifically within `extern` blocks that are qualified as `unsafe`.
 
 [^fn-param-2015]: Function parameters with only a type are only allowed in an associated function of a [trait item] in the 2015 edition.
+
+[^safe-semantics]: The `safe` qualifier is only allowed semantically on functions within `extern` blocks.
 
 r[items.fn.intro]
 A _function_ consists of a [block] (that's the _body_ of the function), along with a name, a set of parameters, and an output type. Other than a name, all these are optional.
