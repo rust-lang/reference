@@ -1312,7 +1312,7 @@ r[asm.options.global_asm-restriction]
 # fn main() {}
 # #[cfg(target_arch = "x86_64")]
 core::arch::global_asm!("", options(nomem));
-// ERROR: the `nomem` option cannot be used with `global_asm!`
+// ERROR: The `nomem` option cannot be used with `global_asm!`.
 # #[cfg(not(target_arch = "x86_64"))] core::compile_error!("Test not supported on this arch");
 ```
 
