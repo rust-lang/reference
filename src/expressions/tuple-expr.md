@@ -105,11 +105,29 @@ fn tuple_index_diverges(x: (i32, i32)) -> ! {
 }
 ```
 
+> [!NOTE]
+> A tuple indexing expression also diverges if the type of the field is the [never type] and the value is [guaranteed to be read][divergence.place-read] (see [divergence.never-place]).
+>
+> ```rust
+> fn tuple_index_diverging_place_read(x: (i32, !)) -> ! {
+>     // The place expression is read, so it diverges.
+>     let a = x.1;
+> } // OK.
+> ```
+>
+> ```rust,compile_fail,E0308
+> fn tuple_index_diverging_place_not_read(x: (i32, !)) -> ! {
+>     // The place expression is not read, so it does not diverge.
+>     let _ = x.1;
+> } // ERROR: Mismatched types.
+> ```
+
 [array or slice indexing expression]: array-expr.md#array-and-slice-indexing-expressions
 [call expression]: ./call-expr.md
 [decimal literal]: ../tokens.md#integer-literals
 [diverges]: divergence
 [field access expressions]: ./field-expr.html#field-access-expressions
+[never type]: type.never
 [operands]: ../expressions.md
 [parenthetical expression]: grouped-expr.md
 [place expression]: ../expressions.md#place-expressions-and-value-expressions
