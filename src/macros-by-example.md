@@ -456,9 +456,10 @@ The *`macro_export` [attribute][attributes]* exports the macro from the crate an
 
 > [!EXAMPLE]
 > ```rust
-> self::m!();
-> //  ^^^^ OK: Path-based lookup finds `m` in the current module.
-> m!(); // As above.
+> // With `#[macro_export]`, `m` is placed in the crate root for path-based lookup
+> // (an unqualified `m!()` at the crate root finds it too):
+> self::m!(); // OK: Path-based lookup finds `m` in the crate root.
+> m!();       // OK: Unqualified name at the crate root also finds it.
 >
 > mod inner {
 >     super::m!();
