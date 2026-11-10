@@ -11,6 +11,10 @@ r[attributes.codegen.inline]
 r[attributes.codegen.inline.intro]
 The *`inline` [attribute]* suggests whether a copy of the attributed function's code should be placed in the caller rather than generating a call to the function.
 
+r[attribute.codegen.inline.crate-boundaries]
+The attribute also makes it possible for the compiler to inline non-generic functions across crate boundaries.
+Non-generic functions without the *`inline`* [attribute] can not be inlined in another crate.
+
 > [!EXAMPLE]
 > ```rust
 > #[inline]
