@@ -285,9 +285,6 @@ The *`optimize` [attribute]* suggests an optimization goal for the attributed fu
 > pub fn example3() {}
 > ```
 
-> [!NOTE]
-> For `rustc`, `-C opt-level=0` (the default) disables LLVM optimizations for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable them for the attributed function. `rustc` still applies its own optimizations, other than inlining, to such a function.
-
 r[attributes.codegen.optimize.syntax]
 The syntax for the `optimize` attribute is:
 
@@ -367,6 +364,9 @@ The `optimize` attribute supports these modes:
 > `rustc` currently optimizes a function with `#[optimize(none)]` much as it would at `-C opt-level=0`, regardless of the crate's optimization level, and does not inline it into its callers.
 >
 > Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
+
+> [!NOTE]
+> For `rustc`, `-C opt-level=0` (the default) and `-C opt-level=1` disable most of the LLVM optimization pipeline for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable them for the attributed function. These two modes therefore do not have much of an effect at low opt-levels. The point of these modes is that at `-C opt-level=2` or higher, some functions can be marked as preferring a small size over speed, and at `-C opt-level=s` or `-C opt-level=z`, some functions can be marked as preferred speed over a small size.
 
 r[attributes.codegen.optimize.inline]
 `#[optimize(none)]` may not be used with `#[inline]` or `#[inline(always)]` on the same function. It may be used with `#[inline(never)]`. (See [attributes.codegen.inline.optimize].)
