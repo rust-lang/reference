@@ -366,7 +366,7 @@ The `optimize` attribute supports these modes:
 > Settings that base their defaults on the optimization level, such as debug assertions and overflow checks, ignore this attribute and use the crate's optimization level.
 
 > [!NOTE]
-> For `rustc`, `-C opt-level=0` (the default) and `-C opt-level=1` disable most of the LLVM optimization pipeline for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable it for the attributed function. These two modes therefore do not have much of an effect at low optimization levels. The point of these two modes is that some functions can be marked as preferring a smaller size over more speed, which will have effect at `-C opt-level=2` and higher, and some functions can be marked as preferring more speed over a smaller size, which will have effect at `-C opt-level=s` and `-C opt-level=z`.
+> For `rustc`, `-C opt-level=0` (the default) disables most of the LLVM optimization pipeline for the entire crate, and `optimize(size)` and `optimize(speed)` do not enable it for the attributed function. At that optimization level, therefore, these two modes do not have much of an effect. The point of these two modes is that some functions can be marked as preferring a smaller size over more speed, which will have effect at `-C opt-level=2` and higher, and some functions can be marked as preferring more speed over a smaller size, which will have effect at `-C opt-level=s` and `-C opt-level=z`.
 
 r[attributes.codegen.optimize.inline]
 `#[optimize(none)]` may not be used with `#[inline]` or `#[inline(always)]` on the same function. It may be used with `#[inline(never)]`. (See [attributes.codegen.inline.optimize].)
