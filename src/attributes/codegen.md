@@ -368,6 +368,9 @@ The `optimize` attribute supports these modes:
 > [!NOTE]
 > For `rustc`, `-C opt-level=0` (the default) disables the LLVM optimization pipeline for the entire crate, except for the inlining of `inline(always)` functions, and `optimize(size)` and `optimize(speed)` do not enable it for the attributed function. At that optimization level, therefore, these two modes have no optimization effect. The point of these two modes is that some functions can be marked as preferring a smaller size over more speed, which will have effect on optimization at every optimization level except `-C opt-level=0` and `-C opt-level=z`, and some functions can be marked as preferring more speed over a smaller size, which will have effect on optimization at `-C opt-level=s` and `-C opt-level=z`.
 
+> [!NOTE]
+> For `rustc`, `optimize(size)` marks the function for LLVM as one whose code is to be as small as possible. Disabling the LLVM optimization pipeline does not disable the LLVM code generator, which consults this mark when choosing among ways to translate an operation to machine instructions. On some targets, therefore, `optimize(size)` has effect on code generation even at `-C opt-level=0`. For example, when targeting AArch64, a `match` with a small number of closely spaced arms may be compiled to a jump table rather than to a chain of comparisons, and when targeting RISC-V, a division by a constant may be compiled to a division rather than to a multiplication and shifts. Conversely, `optimize(speed)` leaves the function without the marks that `-C opt-level=s` and `-C opt-level=z` otherwise place on every function, so it has effect on code generation at those optimization levels.
+
 r[attributes.codegen.optimize.inline]
 `#[optimize(none)]` may not be used with `#[inline]` or `#[inline(always)]` on the same function. It may be used with `#[inline(never)]`. (See [attributes.codegen.inline.optimize].)
 
