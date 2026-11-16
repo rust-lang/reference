@@ -699,7 +699,7 @@ Feature        | Implicitly Enables | Feature Name
 `sm4`          | `neon`             | FEAT_SM3 & FEAT_SM4 --- Advanced SIMD SM3/4 instructions
 `spe`          |                    | FEAT_SPE --- Statistical Profiling Extension
 `ssbs`         |                    | FEAT_SSBS & FEAT_SSBS2 --- Speculative Store Bypass Safe
-`sve`          | `neon`             | FEAT_SVE --- Scalable Vector Extension
+`sve`          | `neon`, `fp16`     | FEAT_SVE --- Scalable Vector Extension
 `sve2`         | `sve`              | FEAT_SVE2 --- Scalable Vector Extension 2
 `sve2-aes`     | `sve2`, `aes`      | FEAT_SVE_AES & FEAT_SVE_PMULL128 --- SVE AES instructions
 `sve2-bitperm` | `sve2`             | FEAT_SVE2_BitPerm --- SVE Bit Permute
@@ -761,7 +761,7 @@ specification. Many specifications are described in the [RISC-V ISA Manual],
 Feature     | Implicitly Enables  | Description
 ------------|---------------------|-------------------
 `a`         | `zaamo`, `zalrsc`   | [A][rv-a] --- Atomic instructions
-`b`         | `zba`, `zbc`, `zbs` | [B][rv-b] --- Bit Manipulation instructions
+`b`         | `zba`, `zbb`, `zbs` | [B][rv-b] --- Bit Manipulation instructions
 `c`         | `zca`               | [C][rv-c] --- Compressed instructions
 `d`         | `f`                 | [D][rv-d] --- Double-Precision Floating-Point
 `f`         | `zicsr`             | [F][rv-f] --- Single-Precision Floating-Point
@@ -800,8 +800,8 @@ Feature     | Implicitly Enables  | Description
 `zihintpause` |                   | [Zihintpause][rv-zihintpause] --- Pause Hint instruction
 `zihpm`     | `zicsr`             | [Zihpm][rv-zihpm] --- Hardware Performance Counters
 `zimop`     |                     | [Zimop][rv-zimop] --- May-Be-Operations
-`zk`        | `zkn`, `zkr`, `zks`, `zkt`, `zbkb`, `zbkc`, `zkbx` | [Zk][rv-zk] --- Scalar Cryptography
-`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zkbx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
+`zk`        | `zkn`, `zkr`, `zkt` | [Zk][rv-zk] --- Scalar Cryptography
+`zkn`       | `zknd`, `zkne`, `zknh`, `zbkb`, `zbkc`, `zbkx`     | [Zkn][rv-zkn] --- NIST Algorithm suite extension
 `zknd`      |                                                    | [Zknd][rv-zknd] --- NIST Suite: AES Decryption
 `zkne`      |                                                    | [Zkne][rv-zkne] --- NIST Suite: AES Encryption
 `zknh`      |                                                    | [Zknh][rv-zknh] --- NIST Suite: Hash Function Instructions
