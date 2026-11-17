@@ -53,6 +53,9 @@ For the function to be variadic, its `extern` ABI must be one of those listed in
 r[type.fn-pointer.extern-custom]
 An `extern "custom"` function pointer must follow the rules in [items.fn.extern.custom.signature].
 
+r[type.fn-pointer.traits]
+A function pointer implements [the same traits][type.fn-item.traits] as a function item with the same signature.
+
 r[type.fn-pointer.attributes]
 ## Attributes on function pointer parameters
 
