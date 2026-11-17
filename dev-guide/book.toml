@@ -3,8 +3,8 @@ title = "The Rust Reference Developer Guide"
 language = "en"
 
 [output.html]
-git-repository-url = "https://github.com/rust-lang/reference/tree/master/dev-guide"
-edit-url-template = "https://github.com/rust-lang/reference/edit/master/dev-guide/{path}"
+git-repository-url = "https://github.com/rust-lang/reference/tree/main/dev-guide"
+edit-url-template = "https://github.com/rust-lang/reference/edit/main/dev-guide/{path}"
 smart-punctuation = true
 
 [output.html.search]
