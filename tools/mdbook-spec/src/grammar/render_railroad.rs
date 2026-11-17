@@ -175,10 +175,17 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     }
                 }
                 ExpressionKind::NegativeLookahead(e) => {
-                    let forward = render_expression(e, cx, stack)?;
-                    let lbox =
-                        LabeledBox::new(forward, Comment::new("not followed by".to_string()));
-                    Box::new(lbox)
+                    let forward = Sequence::new(vec![
+                        render_expression(e, cx, stack)?,
+                        Box::new(Continuation),
+                    ]);
+                    Box::new(Annotation::new_ahead(Scale::new(
+                        LabeledBox::new(
+                            forward,
+                            Comment::new("⚠️ Ahead must not match".to_owned()),
+                        ),
+                        0.85,
+                    )))
                 }
                 // Treat `e?` and `e{..=1}` / `e{0..=1}` equally.
                 ExpressionKind::Optional(e)
@@ -313,9 +320,8 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                 } => unreachable!("closed range must have upper bound"),
                 ExpressionKind::RepeatRangeNamed(e, name) => {
                     let n = render_expression(e, cx, stack)?;
-                    let cmt = format!("repeat exactly {name} times");
-                    let lbox = LabeledBox::new(n, Comment::new(cmt));
-                    Box::new(lbox)
+                    let cmt = format!("repeat exactly `{name} - 1` times");
+                    Box::new(Repeat::new(n, Comment::new(cmt)))
                 }
                 ExpressionKind::Nt(nt) => node_for_nt(cx, nt),
                 ExpressionKind::Terminal(t) => Box::new(Terminal::new(t.clone())),
@@ -342,9 +348,16 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
                     Box::new(Terminal::new(s))
                 }
                 ExpressionKind::NegExpression(e) => {
-                    let n = render_expression(e, cx, stack)?;
+                    let n = Sequence::new(vec![
+                        Box::new(Continuation) as Box<dyn Node>,
+                        render_expression(e, cx, stack)?,
+                    ]);
                     let ch = node_for_nt(cx, "CHAR");
-                    Box::new(Except::new(Box::new(ch), n))
+                    let assertion = Box::new(Annotation::new_behind(Scale::new(
+                        LabeledBox::new(n, Comment::new("⚠️ Prior must not match".to_owned())),
+                        0.85,
+                    )));
+                    Box::new(Sequence::new(vec![ch, assertion]))
                 }
                 ExpressionKind::Cut(e) => {
                     let rhs = render_expression(e, cx, stack)?;
@@ -361,7 +374,7 @@ fn render_expression(expr: &Expression, cx: &RenderCtx, stack: bool) -> Option<B
         ..
     } = expr.kind
     {
-        let cmt = format!("repeat count {name}");
+        let cmt = format!("repeat count `{name}`");
         let lbox = LabeledBox::new(n, Comment::new(cmt));
         Box::new(lbox) as Box<dyn Node>
     } else {
@@ -408,45 +421,6 @@ fn strip_markdown(s: &str) -> String {
     static LINK_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"(?s)\[([^\]]+)\](?:\[[^\]]*\]|\([^)]*\))?").unwrap());
     LINK_RE.replace_all(s, "$1").to_string()
-}
-
-struct Except {
-    inner: LabeledBox<Box<dyn Node>, Box<dyn Node>>,
-}
-
-impl Except {
-    fn new(inner: Box<dyn Node>, label: Box<dyn Node>) -> Self {
-        let grid = Box::new(VerticalGrid::new(vec![
-            Box::new(Comment::new("⚠️ with the exception of".to_owned())) as Box<dyn Node>,
-            label,
-        ])) as Box<dyn Node>;
-        let mut this = Self {
-            inner: LabeledBox::new(inner, grid),
-        };
-        this.inner
-            .attr("class".to_owned())
-            .or_default()
-            .push_str(" exceptbox");
-        this
-    }
-}
-
-impl Node for Except {
-    fn entry_height(&self) -> i64 {
-        self.inner.entry_height()
-    }
-
-    fn height(&self) -> i64 {
-        self.inner.height()
-    }
-
-    fn width(&self) -> i64 {
-        self.inner.width()
-    }
-
-    fn draw(&self, x: i64, y: i64, h_dir: svg::HDir) -> svg::Element {
-        self.inner.draw(x, y, h_dir)
-    }
 }
 
 #[cfg(test)]
@@ -574,7 +548,7 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("not followed by"),
+            svg.contains("Ahead must not match"),
             "should contain the 'not followed by' label"
         );
         assert!(svg.contains("CHAR"), "should contain the nonterminal name");
@@ -590,7 +564,7 @@ mod tests {
             0,
         );
         let svg = render_to_svg(&expr).unwrap();
-        assert!(svg.contains("not followed by"));
+        assert!(svg.contains("Ahead must not match"));
         assert!(svg.contains("CR"));
     }
 
@@ -607,7 +581,7 @@ mod tests {
             0,
         );
         let svg = render_to_svg(&expr).unwrap();
-        assert!(svg.contains("not followed by"));
+        assert!(svg.contains("Ahead must not match"));
         assert!(svg.contains("e"));
         assert!(svg.contains("E"));
     }
@@ -699,7 +673,7 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("with the exception of"),
+            svg.contains("Prior must not match"),
             "neg expression should have exception label"
         );
     }
@@ -708,7 +682,7 @@ mod tests {
 
     #[test]
     fn repeat_range_named_reference() {
-        // RepeatRangeNamed renders with a "repeat exactly n times"
+        // RepeatRangeNamed renders with a "repeat exactly `n` times"
         // label.
         let expr = Expression::new_kind(
             ExpressionKind::RepeatRangeNamed(
@@ -719,8 +693,8 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("repeat exactly n times"),
-            "expected 'repeat exactly n times' label, got: {svg}"
+            svg.contains("repeat exactly `n - 1` times"),
+            "expected 'repeat exactly `n - 1` times' label, got: {svg}"
         );
     }
 
@@ -739,8 +713,8 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("repeat count n"),
-            "expected 'repeat count n' label, got: {svg}"
+            svg.contains("repeat count `n`"),
+            "expected 'repeat count `n`' label, got: {svg}"
         );
     }
 
@@ -760,8 +734,8 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("repeat count k"),
-            "expected 'repeat count k' label, got: {svg}"
+            svg.contains("repeat count `k`"),
+            "expected 'repeat count `k`' label, got: {svg}"
         );
     }
 
@@ -802,8 +776,8 @@ mod tests {
         );
         let svg = render_to_svg(&expr).unwrap();
         assert!(
-            svg.contains("repeat count n"),
-            "expected 'repeat count n' label on identity range"
+            svg.contains("repeat count `n`"),
+            "expected 'repeat count `n`' label on identity range"
         );
     }
 }
