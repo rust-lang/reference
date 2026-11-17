@@ -147,7 +147,7 @@ r[names.resolution.expansion.imports.ambiguity]
 #### Ambiguities
 
 r[names.resolution.expansion.imports.ambiguity.intro]
-There are certain situations during expansion-time resolution where there are multiple macro definitions, `use` declarations, or modules an import or macro invocation's name could refer to where the compiler cannot consistently determine which candidate should shadow the other. Shadowing cannot be permitted in these situations and the compiler instead emits ambiguity errors.
+There are certain situations during expansion-time resolution where there are multiple macro definitions, `use` declarations, modules, or tools an import or macro invocation's name could refer to where it is ambiguous which candidate should be chosen. Shadowing cannot be permitted in these situations and the compiler instead emits ambiguity errors.
 
 r[names.resolution.expansion.imports.ambiguity.glob-vs-glob]
 Names may not be resolved through ambiguous glob imports. Glob imports are allowed to import conflicting names in the same namespace as long as the name is not used. Names with conflicting candidates from ambiguous glob imports may still be shadowed by non-glob imports and used without producing an error. The errors occur at time of use, not time of import.
@@ -161,7 +161,7 @@ mod m2 {
     pub struct Ambig;
 }
 
-// OK: This brings conficting names in the same namespace into scope
+// OK: This brings conflicting names in the same namespace into scope
 // but they have not been used yet.
 use m1::*;
 use m2::*;
@@ -350,6 +350,30 @@ pub fn f() {
 
 > [!NOTE]
 > This restriction is needed due to implementation details in the compiler, specifically the current scope visitation logic and the complexity of supporting this behavior. This ambiguity error may be removed in the future.
+
+r[names.resolution.expansion.imports.ambiguity.tool-attribute]
+A tool attribute may not be ambiguous. Ambiguity arises when the tool attribute's path overlaps in the macro namespace.
+
+```rust,compile_fail
+mod rustfmt {
+    pub use std::derive as skip;
+}
+
+#[rustfmt::skip] // ERROR attribute macro `rustfmt::skip` is ambiguous
+pub struct X;
+```
+
+Tool attributes exist in the [tool prelude], so items explicitly brought into scope as well as items in the [extern prelude] will shadow them. As these paths can only resolve to either an attribute macro, which is ambiguous, something that isn't valid in an attribute, or only partially resolve, shadowing a tool attribute in this way is also an error.
+
+```rust,compile_fail
+mod rustfmt { }
+
+#[rustfmt::skip] // ERROR cannot find `skip` in `rustfmt`
+pub struct Y;
+```
+
+> [!NOTE]
+> This restriction is needed so that external tools don't need to implement name resolution to determine whether or not their attributes are being shadowed.
 
 r[names.resolution.expansion.macros]
 ### Macros
@@ -573,6 +597,7 @@ r[names.resolution.type-relative]
 [`use` declarations]: ../items/use-declarations.md
 [`use` glob shadowing]: ../items/use-declarations.md#r-items.use.glob.shadowing
 [derive helper scope]: ../procedural-macros.md#r-macro.proc.derive.attributes.scope
+[extern prelude]: ./preludes.md#extern-prelude
 [glob import]: items.use.glob
 [item definitions]: ../items.md
 [macro invocations]: ../macros.md#macro-invocation
@@ -583,5 +608,6 @@ r[names.resolution.type-relative]
 [path-based scope]: ../macros.md#r-macro.invocation.name-resolution
 [scope]: ../names/scopes.md
 [sub-namespace]: ../names/namespaces.md#r-names.namespaces.sub-namespaces
+[tool prelude]: ./preludes.md#tool-prelude
 [type-relative paths]: names.resolution.type-relative
 [visibility]: ../visibility-and-privacy.md
