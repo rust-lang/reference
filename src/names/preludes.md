@@ -148,7 +148,7 @@ r[names.preludes.no_implicit_prelude]
 ## The `no_implicit_prelude` attribute
 
 r[names.preludes.no_implicit_prelude.intro]
-The *`no_implicit_prelude` [attribute]* is used to prevent implicit preludes from being brought into scope.
+The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], and the [`macro_use` prelude] from being brought into scope for a crate or a module and its descendants.
 
 > [!EXAMPLE]
 > ```rust
@@ -178,9 +178,6 @@ The `no_implicit_prelude` attribute may be used any number of times on a form.
 
 > [!NOTE]
 > `rustc` lints against any use following the first.
-
-r[names.preludes.no_implicit_prelude.excluded-preludes]
-The `no_implicit_prelude` attribute prevents the [standard library prelude], [extern prelude], [`macro_use` prelude], and the [tool prelude] from being brought into scope for the module and its descendants.
 
 r[names.preludes.no_implicit_prelude.implicitly-imported-macros]
 > [!NOTE]
@@ -217,8 +214,8 @@ r[names.preludes.no_implicit_prelude.implicitly-imported-macros]
 >
 > For details, see [Rust PR #62086](https://github.com/rust-lang/rust/pull/62086) and [Rust PR #139493](https://github.com/rust-lang/rust/pull/139493).
 
-r[names.preludes.no_implicit_prelude.lang]
-The `no_implicit_prelude` attribute does not affect the [language prelude].
+r[names.preludes.no_implicit_prelude.unaffected]
+The `no_implicit_prelude` attribute does not affect the [language prelude] and [tool prelude].
 
 r[names.preludes.no_implicit_prelude.edition2018]
 > [!EDITION-2018]
