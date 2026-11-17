@@ -59,7 +59,7 @@ r[destructors.scope.intro]
 Each variable or temporary is associated to a *drop scope*. When control flow leaves a drop scope all variables associated to that scope are dropped in reverse order of declaration (for variables) or creation (for temporaries).
 
 r[destructors.scope.desugaring]
-Drop scopes can be determined by replacing [`for`], [`if`], and [`while`] expressions with equivalent expressions using [`match`], [`loop`] and `break`.
+Drop scopes can be determined by replacing [`for`], [`if`], and [`while`] expressions with equivalent expressions using [`match`], [`loop`] and [`break`].
 
 r[destructors.scope.operators]
 Overloaded operators are not distinguished from built-in operators and [binding modes] are not considered.
@@ -701,6 +701,7 @@ There is one additional case to be aware of: when a panic reaches a [non-unwindi
 [tuple expression]: expressions/tuple-expr.md#tuple-expressions
 [tuple indexing expression]: expressions/tuple-expr.md#tuple-indexing-expressions
 
+[`break`]: expressions/loop-expr.md#break-expressions
 [`for`]: expressions/loop-expr.md#iterator-loops
 [`if let`]: expressions/if-expr.md#if-let-patterns
 [`if`]: expressions/if-expr.md#if-expressions
