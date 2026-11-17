@@ -61,6 +61,7 @@ pub fn tokenize(src: &str, edition: Edition) -> Result<Vec<Node>, ParseError> {
             Some(source_map.clone()),
             false, // pretty
             HumanReadableErrorType {
+                no_graphics: false,
                 short: true,
                 unicode: true,
             },
