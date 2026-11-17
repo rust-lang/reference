@@ -1,4 +1,4 @@
-//! Usage tests for the preprocessor.
+//! Usage tests for the chapter indices code.
 
 use mdbook_preprocessor::book::{Book, BookItem, Chapter};
 use mdbook_preprocessor::{PreprocessorContext, config::Config};
