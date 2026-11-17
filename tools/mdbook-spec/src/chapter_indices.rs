@@ -8,7 +8,7 @@ use mdbook_preprocessor::config::Config;
 use pathdiff::diff_paths;
 
 /// Marker to look for and replace in chapter pages.
-const ADD_INDEX_MARKER: &str = "<!-- mdbook-chapter-index:add-index -->";
+const ADD_INDEX_MARKER: &str = "<!-- mdbook-spec:add-chapter-index -->";
 
 /// A page in a chapter, which chapter it is in should be tracked separately.
 struct ChapterPage {

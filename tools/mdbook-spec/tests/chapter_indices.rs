@@ -55,7 +55,7 @@ fn check_preprocessor(ctx: &PreprocessorContext, original: Vec<Chapter>, expecte
 fn no_change() {
     let context = make_context!();
     let chapters = vec![make_chapter!("MAIN_PAGE", "# Main page", [])];
-    // The chapter doesn't have a <!-- mdbook-chapter-index:add-index -->
+    // The chapter doesn't have a <!-- mdbook-spec:add-chapter-index -->
     // directive, so there shouldn't be any changes to the output.
     check_preprocessor(&context, chapters.clone(), chapters);
 }
@@ -67,7 +67,7 @@ fn add_index() {
     // Set up input (one chapter with an index and two nested chapters):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -94,7 +94,7 @@ fn skip_draft() {
     // Set up input (one chapter with an index and nested chapters, including a draft):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -122,7 +122,7 @@ fn only_drafts() {
     // Set up input (one chapter with an index and nested chapters, all of which are drafts):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -150,7 +150,7 @@ fn nested_chapters() {
     ];
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -183,7 +183,7 @@ fn weird_paths() {
     // more complicated paths to the chapter pages):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -221,7 +221,7 @@ fn custom_header() {
     // Set up input (one chapter with an index and two nested chapters):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -253,7 +253,7 @@ fn different_headers() {
     // Set up input (two chapter with indices, each with two nested chapters):
     let mut examples = make_chapter!(
         "Examples",
-        "# Examples\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Examples\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     examples.sub_items = vec![
@@ -262,7 +262,7 @@ fn different_headers() {
     ];
     let mut numbers = make_chapter!(
         "Numbers",
-        "# Numbers\n\n<!-- mdbook-chapter-index:add-index -->",
+        "# Numbers\n\n<!-- mdbook-spec:add-chapter-index -->",
         []
     );
     numbers.sub_items = vec![

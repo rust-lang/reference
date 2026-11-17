@@ -1,3 +1,3 @@
 # Type system
 
-<!-- mdbook-chapter-index:add-index -->
+<!-- mdbook-spec:add-chapter-index -->
