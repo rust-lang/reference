@@ -361,16 +361,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mdbook-chapter-index"
-version = "0.1.0"
-dependencies = [
- "mdbook-preprocessor",
- "pathdiff",
- "serde_json",
- "toml",
-]
-
-[[package]]
 name = "mdbook-core"
 version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
