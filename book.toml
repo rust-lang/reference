@@ -99,6 +99,7 @@ edition = "2024"
 
 [preprocessor.spec]
 command = "cargo run --release --manifest-path tools/mdbook-spec/Cargo.toml"
+headings = { Appendices = "Appendices" }
 
 [build]
 extra-watch-dirs = ["tools/mdbook-spec/src", "tools/grammar/src"]
