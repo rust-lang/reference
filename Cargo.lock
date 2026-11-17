@@ -423,6 +423,7 @@ dependencies = [
  "semver",
  "serde_json",
  "tempfile",
+ "toml",
  "walkdir",
 ]
 

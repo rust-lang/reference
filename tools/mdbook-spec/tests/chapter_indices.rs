@@ -1,8 +1,8 @@
 //! Usage tests for the preprocessor.
 
-use mdbook_chapter_index::ChapterIndices;
 use mdbook_preprocessor::book::{Book, BookItem, Chapter};
-use mdbook_preprocessor::{Preprocessor as _, PreprocessorContext, config::Config};
+use mdbook_preprocessor::{PreprocessorContext, config::Config};
+use mdbook_spec::chapter_indices::ChapterIndices;
 use std::path::PathBuf;
 
 macro_rules! make_context {
@@ -38,11 +38,17 @@ macro_rules! make_chapter {
 }
 
 fn check_preprocessor(ctx: &PreprocessorContext, original: Vec<Chapter>, expected: Vec<Chapter>) {
-    let original_book = Book::new_with_items(original.into_iter().map(BookItem::Chapter).collect());
-    let result = ChapterIndices::new().run(ctx, original_book);
-    let actual_book = result.expect("ChapterIndices::run() should succeed");
+    let updated_book = Book::new_with_items(
+        original
+            .into_iter()
+            .map(|mut ch| {
+                ChapterIndices::process_chapter(&ctx.config, &mut ch);
+                BookItem::Chapter(ch)
+            })
+            .collect(),
+    );
     let expected_book = Book::new_with_items(expected.into_iter().map(BookItem::Chapter).collect());
-    assert_eq!(expected_book, actual_book, "Books should match");
+    assert_eq!(expected_book, updated_book, "Books should match");
 }
 
 #[test]

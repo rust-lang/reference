@@ -1,12 +1,9 @@
-//! Preprocessor to add chapter indices to chapter pages.
+//! Preprocessor logic to add chapter indices to chapter pages.
 
-use std::io;
 use std::path::{Path, PathBuf};
 
-use mdbook_preprocessor::book::{Book, BookItem, Chapter};
+use mdbook_preprocessor::book::{BookItem, Chapter};
 use mdbook_preprocessor::config::Config;
-use mdbook_preprocessor::errors::Result as PreprocessorResult;
-use mdbook_preprocessor::{MDBOOK_VERSION, Preprocessor, PreprocessorContext, parse_input};
 
 use pathdiff::diff_paths;
 
@@ -90,35 +87,6 @@ impl ChapterHierarchy {
     }
 }
 
-/// Process the chapter indices using the [`ChapterIndices`] preprocessor.
-///
-/// # Errors
-///
-/// Errors come from one of:
-///
-/// - [`mdbook_preprocessor::parse_input()`][mdbook_preprocessor::parse_input]
-/// - [`ChapterIndices::run()`][ChapterIndices::run]
-/// - [`serde_json::to_writer()`][serde_json::to_writer]
-pub fn process_chapter_indices() -> PreprocessorResult<()> {
-    let preprocessor = ChapterIndices;
-    let (context, book) = parse_input(io::stdin())?;
-
-    if context.mdbook_version != MDBOOK_VERSION {
-        eprintln!(
-            "Warning: The {} plugin was built against version {} of mdbook, \
-             but is being called from version {}",
-            preprocessor.name(),
-            MDBOOK_VERSION,
-            context.mdbook_version
-        );
-    }
-
-    let processed_book = preprocessor.run(&context, book)?;
-    serde_json::to_writer(io::stdout(), &processed_book)?;
-
-    Ok(())
-}
-
 /// Check the configuration for a custom header to be configured for the chapter
 /// index.
 ///
@@ -145,14 +113,8 @@ fn get_configured_header(config: &Config, chapter_name: &String) -> Option<Strin
 pub struct ChapterIndices;
 
 impl ChapterIndices {
-    /// Construct a new instance of the preprocessor.
-    #[must_use]
-    pub fn new() -> Self {
-        ChapterIndices
-    }
-
     /// Handle a single chapter in the book, updating its content if requested.
-    fn process_chapter(config: &Config, chapter: &mut Chapter) {
+    pub fn process_chapter(config: &Config, chapter: &mut Chapter) {
         let Some(ref root_path) = chapter.path else {
             // Draft chapter.
             return;
@@ -182,16 +144,5 @@ impl ChapterIndices {
             index = format!("{index_header}:\n{index}");
         }
         chapter.content = chapter.content.replace(ADD_INDEX_MARKER, &index);
-    }
-}
-
-impl Preprocessor for ChapterIndices {
-    fn name(&self) -> &'static str {
-        "mdbook-chapter-index"
-    }
-
-    fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> PreprocessorResult<Book> {
-        book.for_each_chapter_mut(|chapter| Self::process_chapter(&ctx.config, chapter));
-        Ok(book)
     }
 }

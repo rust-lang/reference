@@ -1,5 +1,6 @@
 #![deny(rust_2018_idioms, unused_lifetimes)]
 
+use crate::chapter_indices::ChapterIndices;
 use crate::rules::Rules;
 use anyhow::{Context, Result, bail};
 use diagnostics::{Diagnostics, warn_or_err};
@@ -14,6 +15,7 @@ use std::ops::Range;
 use std::path::PathBuf;
 
 mod admonitions;
+pub mod chapter_indices;
 mod grammar;
 mod rules;
 mod std_links;
@@ -142,7 +144,7 @@ impl Preprocessor for Spec {
         "spec"
     }
 
-    fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
+    fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
         let mut diag = Diagnostics::new();
         if diag.deny_warnings && self.rust_root.is_none() {
             bail!("error: SPEC_RUST_ROOT environment variable must be set");
@@ -178,6 +180,7 @@ impl Preprocessor for Spec {
                 ch.content = grammar::insert_summary(&grammar, &ch, &mut diag);
             }
             ch.content = grammar::insert_grammar(&grammar, &ch, &mut diag);
+            ChapterIndices::process_chapter(&ctx.config, ch);
         });
 
         // Final pass will resolve everything as a std link (or error if the
