@@ -31,6 +31,26 @@ A closure expression denotes a function that maps a list of parameters onto the 
 r[expr.closure.unique-type]
 Each closure expression has a unique, anonymous type.
 
+r[expr.closure.diverging]
+A closure expression does not [diverge].
+
+```rust,compile_fail,E0308
+fn closure_does_not_diverge() -> ! {
+    || -> ! { loop {} };
+    // ERROR: Expected type !, found ()
+}
+```
+
+> [!NOTE]
+> If the return type of the closure is the [never type], and the closure is called, then the resulting value will have the never type, and per [divergence.never-value] the resulting expression diverges.
+>
+> ```rust
+> fn closure_call_diverge() -> ! {
+>     // OK, call expression diverges.
+>     || -> ! { loop {} }();
+> }
+> ```
+
 r[expr.closure.captures]
 Significantly, closure expressions _capture their environment_, which regular [function definitions] do not.
 
@@ -105,6 +125,8 @@ Attributes on closure parameters follow the same rules and restrictions as [regu
 [block]: block-expr.md
 [call traits and coercions]: ../types/closure.md#call-traits-and-coercions
 [closure type]: ../types/closure.md
+[diverge]: divergence
 [function definitions]: ../items/functions.md
+[never type]: type.never
 [patterns]: ../patterns.md
 [regular function parameters]: ../items/functions.md#attributes-on-function-parameters
