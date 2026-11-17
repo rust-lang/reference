@@ -40,7 +40,14 @@ r[cfg.predicate]
 Each form of conditional compilation takes a _configuration predicate_ that evaluates to true or false. The predicate is one of the following:
 
 r[cfg.predicate-option]
-* A configuration option. The predicate is true if the option is set, and false if it is unset.
+* A configuration option. A name such as `foo` is true if the option is set as a name, and false
+  otherwise. A key-value pair such as `foo = "bar"` is true if the option is set with the value
+  `"bar"`, and false otherwise.
+
+  Setting a key to a value does not satisfy the name predicate, and setting a key as a name
+  does not satisfy any key-value predicate for that key. Given `--cfg=foo`, `cfg!(foo)` is true
+  and `cfg!(foo = "bar")` is false. Given `--cfg=foo="bar"` instead, `cfg!(foo)` is false and
+  `cfg!(foo = "bar")` is true.
 
 r[cfg.predicate-all]
 * `all()` with a comma-separated list of configuration predicates. It is true if all of the given predicates are true, or if the list is empty.
