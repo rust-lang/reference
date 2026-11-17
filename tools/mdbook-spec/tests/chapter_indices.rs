@@ -1,23 +1,18 @@
 //! Usage tests for the chapter indices code.
 
 use mdbook_preprocessor::book::{Book, BookItem, Chapter};
-use mdbook_preprocessor::{PreprocessorContext, config::Config};
+use mdbook_preprocessor::config::Config;
 use mdbook_spec::chapter_indices::ChapterIndices;
-use std::path::PathBuf;
 
-macro_rules! make_context {
+macro_rules! make_config {
     ( $( $key:literal => $value:literal ),* $(,)? ) => {{
-        let mut context = PreprocessorContext::new(
-            PathBuf::from("/path/to/book"),
-            Config::default(),
-            "test".to_owned(),
-        );
-        context.config.set("preprocessor.chapter-index", "{}")
+        let mut config = Config::default();
+        config.set("preprocessor.chapter-index", "{}")
             .expect("Able to set preprocessor.chapter-index");
         $(
-            context.config.set($key, $value).expect(concat!("Able to set ", $key));
+            config.set($key, $value).expect(concat!("Able to set ", $key));
         )*
-        context
+        config
     }}
 }
 
@@ -37,12 +32,12 @@ macro_rules! make_chapter {
     };
 }
 
-fn check_preprocessor(ctx: &PreprocessorContext, original: Vec<Chapter>, expected: Vec<Chapter>) {
+fn check_preprocessor(config: &Config, original: Vec<Chapter>, expected: Vec<Chapter>) {
     let updated_book = Book::new_with_items(
         original
             .into_iter()
             .map(|mut ch| {
-                ChapterIndices::process_chapter(&ctx.config, &mut ch);
+                ChapterIndices::process_chapter(config, &mut ch);
                 BookItem::Chapter(ch)
             })
             .collect(),
@@ -53,17 +48,17 @@ fn check_preprocessor(ctx: &PreprocessorContext, original: Vec<Chapter>, expecte
 
 #[test]
 fn no_change() {
-    let context = make_context!();
+    let config = make_config!();
     let chapters = vec![make_chapter!("MAIN_PAGE", "# Main page", [])];
     // The chapter doesn't have a <!-- mdbook-spec:add-chapter-index -->
     // directive, so there shouldn't be any changes to the output.
-    check_preprocessor(&context, chapters.clone(), chapters);
+    check_preprocessor(&config, chapters.clone(), chapters);
 }
 
 #[test]
 fn add_index() {
-    // Set up context (default):
-    let context = make_context!();
+    // Set up config (default):
+    let config = make_config!();
     // Set up input (one chapter with an index and two nested chapters):
     let mut examples = make_chapter!(
         "Examples",
@@ -84,13 +79,13 @@ fn add_index() {
     )
     .to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn skip_draft() {
-    // Set up context (default):
-    let context = make_context!();
+    // Set up config (default):
+    let config = make_config!();
     // Set up input (one chapter with an index and nested chapters, including a draft):
     let mut examples = make_chapter!(
         "Examples",
@@ -112,13 +107,13 @@ fn skip_draft() {
     )
     .to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn only_drafts() {
-    // Set up context (default):
-    let context = make_context!();
+    // Set up config (default):
+    let config = make_config!();
     // Set up input (one chapter with an index and nested chapters, all of which are drafts):
     let mut examples = make_chapter!(
         "Examples",
@@ -134,13 +129,13 @@ fn only_drafts() {
     let mut expected = examples.clone();
     expected.content = "# Examples\n\n".to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn nested_chapters() {
-    // Set up context (default):
-    let context = make_context!();
+    // Set up config (default):
+    let config = make_config!();
     // Set up input (one chapter with an index and three nested chapters, one of
     // which has nested chapters of its own):
     let mut numbers = make_chapter!("Numbers", "# Numbers", ["Examples"]);
@@ -172,13 +167,13 @@ fn nested_chapters() {
     )
     .to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn weird_paths() {
-    // Set up context (default):
-    let context = make_context!();
+    // Set up config (default):
+    let config = make_config!();
     // Set up input (one chapter with an index and two nested chapters, with
     // more complicated paths to the chapter pages):
     let mut examples = make_chapter!(
@@ -211,13 +206,13 @@ fn weird_paths() {
     )
     .to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn custom_header() {
-    // Set up context (same custom heading for all indices):
-    let context = make_context!("preprocessor.chapter-index.headings" => "Example pages");
+    // Set up config (same custom heading for all indices):
+    let config = make_config!("preprocessor.chapter-index.headings" => "Example pages");
     // Set up input (one chapter with an index and two nested chapters):
     let mut examples = make_chapter!(
         "Examples",
@@ -239,13 +234,13 @@ fn custom_header() {
     )
     .to_owned();
     // Run the checks:
-    check_preprocessor(&context, vec![examples], vec![expected]);
+    check_preprocessor(&config, vec![examples], vec![expected]);
 }
 
 #[test]
 fn different_headers() {
-    // Set up context (different custom headings for different indices):
-    let context = make_context!(
+    // Set up config (different custom headings for different indices):
+    let config = make_config!(
         "preprocessor.chapter-index.headings" => "{}",
         "preprocessor.chapter-index.headings.Examples" => "Example pages",
         "preprocessor.chapter-index.headings.Numbers" => "Some numbers",
@@ -289,7 +284,7 @@ fn different_headers() {
     .to_owned();
     // Run the checks:
     check_preprocessor(
-        &context,
+        &config,
         vec![examples, numbers],
         vec![expected_examples, expected_numbers],
     );
