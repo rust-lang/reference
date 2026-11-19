@@ -163,7 +163,7 @@ jobs:
         SPEC_RUST_ROOT: ${{ github.workspace }}/rust
       run: mdbook build --dest-dir dist/preview-${{ github.event.pull_request.number }}
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: preview-${{ github.event.pull_request.number }}
         overwrite: true
