@@ -5,6 +5,8 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   grammar-check:
     if: github.repository == 'rust-lang/reference' || github.event_name == 'workflow_dispatch'
