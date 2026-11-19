@@ -201,6 +201,8 @@ jobs:
       # preview is explicitly excluded here since it doesn't run on merge
     runs-on: ubuntu-latest
     steps:
-      - run: jq --exit-status 'all(.result == "success")' <<< '${{ toJson(needs) }}'
+      - run: jq --exit-status 'all(.result == "success")' <<< "${JSON_NEEDS}"
       - name: Done
         run: exit 0
+    env:
+      JSON_NEEDS: ${{ toJson(needs) }}
