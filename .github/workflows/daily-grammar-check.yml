@@ -11,6 +11,8 @@ jobs:
   grammar-check:
     if: github.repository == 'rust-lang/reference' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # Required by `gh issue create` to open a new issue.
     steps:
     - name: Checkout reference repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
