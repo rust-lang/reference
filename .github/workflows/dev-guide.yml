@@ -40,7 +40,7 @@ jobs:
     needs: build
 
     permissions:
-      pages: write
+      pages: write # Required by `actions/deploy-pages` to deploy to Pages.
       id-token: write
 
     environment:
