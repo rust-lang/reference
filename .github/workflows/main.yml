@@ -175,7 +175,8 @@ jobs:
       env:
         SPEC_RELATIVE: 0
         SPEC_RUST_ROOT: ${{ github.workspace }}/rust
-      run: mdbook build --dest-dir dist/preview-${{ github.event.pull_request.number }}
+        GH_PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: mdbook build --dest-dir dist/preview-${GH_PR_NUMBER}
     - name: Upload artifact
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
