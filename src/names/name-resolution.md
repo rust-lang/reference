@@ -161,7 +161,7 @@ mod m2 {
     pub struct Ambig;
 }
 
-// OK: This brings conficting names in the same namespace into scope
+// OK: This brings conflicting names in the same namespace into scope
 // but they have not been used yet.
 use m1::*;
 use m2::*;
