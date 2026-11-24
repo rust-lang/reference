@@ -362,6 +362,9 @@ r[expr.attr.restriction]
 * Before an expression used as a [statement].
 * Elements of [array expressions], [tuple expressions], [call expressions], and tuple-style [struct] expressions.
 * The tail expression of [block expressions].
+* Before [closure expressions] and [method-call expressions]. An attribute before a
+  method-call expression applies to the complete method-call expression, including
+  any chained method calls.
 <!-- Keep list in sync with block-expr.md -->
 
 r[expr.attr.never-before]
@@ -385,6 +388,7 @@ They are never allowed before:
 [borrow]:               expressions/operator-expr.md#borrow-operators
 [call expressions]:     expressions/call-expr.md
 [comparison]:           expressions/operator-expr.md#comparison-operators
+[closure expressions]: expressions/closure-expr.md
 [compound assignment]:  expressions/operator-expr.md#compound-assignment-expressions
 [deref]:                expressions/operator-expr.md#the-dereference-operator
 [destructors]:          destructors.md
@@ -403,6 +407,7 @@ They are never allowed before:
 [macro invocations]:    macro.invocation
 [match]:                expressions/match-expr.md
 [method-call]:          expressions/method-call-expr.md
+[method-call expressions]: expressions/method-call-expr.md
 [Mutable `static` items]: items/static-items.md#mutable-statics
 [Outer attributes]:     attributes.md
 [paths]:                expressions/path-expr.md
