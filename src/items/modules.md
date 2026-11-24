@@ -123,7 +123,7 @@ r[items.mod.attributes]
 ## Attributes on modules
 
 r[items.mod.attributes.intro]
-Modules, like all items, accept outer attributes. They also accept inner attributes: either after `{` for a module with a body, or at the beginning of the source file, after the optional BOM and shebang.
+Modules, like all items, accept outer attributes. They also accept inner attributes: either after `{` for a module with a body, or at the beginning of the source file, after the optional BOM, shebang, and frontmatter.
 
 r[items.mod.attributes.supported]
 The built-in attributes that have meaning on a module are [`cfg`], [`deprecated`], [`doc`], [the lint check attributes], [`path`], and [`no_implicit_prelude`]. Modules also accept macro attributes.
