@@ -5,20 +5,27 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   grammar-check:
     if: github.repository == 'rust-lang/reference' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # Required by `gh issue create` to open a new issue.
     steps:
     - name: Checkout reference repository
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
 
     - name: Checkout rust-lang/rust (shallow clone)
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: rust-lang/rust
         path: rust
         fetch-depth: 1
+        persist-credentials: false
 
     - name: Update rustup
       run: rustup self update
@@ -63,7 +70,7 @@ jobs:
           --label "daily-grammar-check" \
           --body "The daily grammar check failed on $(date +%Y-%m-%d).
         
-        **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        **Workflow Run:** ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
         
         **Command:** \`cargo run --release -p grammar-check -- lex-compare --path rust/tests\`
         
