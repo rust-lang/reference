@@ -9,10 +9,10 @@ PathExpression ->
 ```
 
 r[expr.path.intro]
-A [path] used as an expression context denotes either a local variable or an item.
+A [path] used in an expression context denotes either a variable or an item.
 
 r[expr.path.place]
-Path expressions that resolve to local or static variables are [place expressions]; other paths are [value expressions].
+Path expressions that resolve to [variables] or [static variables] are [place expressions]; other paths are [value expressions].
 
 r[expr.path.safety]
 Using a [`static mut`] variable requires an [`unsafe` block].
@@ -35,7 +35,9 @@ r[expr.path.const]
 Evaluation of associated constants is handled the same way as [`const` blocks].
 
 [place expressions]: ../expressions.md#place-expressions-and-value-expressions
+[static variables]: items.static
 [value expressions]: ../expressions.md#place-expressions-and-value-expressions
+[variables]: variable
 [path]: ../paths.md
 [`static mut`]: ../items/static-items.md#mutable-statics
 [`unsafe` block]: block-expr.md#unsafe-blocks

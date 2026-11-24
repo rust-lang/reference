@@ -80,11 +80,14 @@ r[expr.array.index.syntax]
 IndexExpression -> Expression `[` Expression `]`
 ```
 
+r[expr.array.index.autoderef]
+The indexed operand `a` is automatically dereferenced as many times as necessary to find an array or slice type or a type that implements [`Index`] or [`IndexMut`], as the receiver of a method call is (see [expr.method.autoref-deref]). The following rules, and the rules on [place expressions], apply to the dereferenced operand.
+
 r[expr.array.index.array]
-[Array] and [slice]-typed values can be indexed by writing a square-bracket-enclosed expression of type `usize` (the index) after them. When the array is mutable, the resulting [memory location] can be assigned to.
+An index expression `a[b]` where `a` has an [array] or [slice] type and `b` has type `usize` is built in and evaluates to the location of the element of `a` at index `b`. The element can be assigned to when the index expression is a mutable place expression (see [expr.mut.valid-places]).
 
 r[expr.array.index.trait]
-For other types an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a mutable place expression context, except that when the index expression undergoes [temporary lifetime extension], the indexed expression `a` also has its [temporary scope] extended. Just as with methods, Rust will also insert dereference operations on `a` repeatedly to find an implementation.
+Otherwise, an index expression `a[b]` is equivalent to `*std::ops::Index::index(&a, b)`, or `*std::ops::IndexMut::index_mut(&mut a, b)` in a [mutable place expression context] when the type of `a` also implements `IndexMut` for the index type of that `Index` implementation, except that when the index expression undergoes [temporary lifetime extension], the indexed expression `a` also has its [temporary scope] extended.
 
 ```rust
 // The temporary holding the result of `vec![()]` is extended to
@@ -129,6 +132,8 @@ r[expr.array.index.trait-impl]
 The array index expression can be implemented for types other than arrays and slices by implementing the [Index] and [IndexMut] traits.
 
 [`Copy`]: ../special-types-and-traits.md#copy
+[`Index`]: std::ops::Index
+[`IndexMut`]: std::ops::IndexMut
 [IndexMut]: std::ops::IndexMut
 [Index]: std::ops::Index
 [array]: ../types/array.md
@@ -138,9 +143,10 @@ The array index expression can be implemented for types other than arrays and sl
 [constant item]: ../items/constant-items.md
 [inferred const]: items.generics.const.inferred
 [literal]: ../tokens.md#literals
-[memory location]: ../expressions.md#place-expressions-and-value-expressions
+[mutable place expression context]: expr.mut.intro
 [panic]: ../panic.md
 [path]: path-expr.md
+[place expressions]: expr.place-value
 [slice]: ../types/slice.md
 [temporary lifetime extension]: destructors.scope.lifetime-extension
 [temporary scope]: destructors.scope.temporary
