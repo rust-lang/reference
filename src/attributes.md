@@ -187,9 +187,6 @@ The compiler may allow attributes for external tools where each tool resides in 
 r[attributes.tool.ignored]
 When a tool is not in use, the tool's attributes are accepted without a warning. When the tool is in use, the tool is responsible for processing and interpretation of its attributes.
 
-r[attributes.tool.prelude]
-Tool attributes are not available if the [`no_implicit_prelude`] attribute is used.
-
 ```rust
 // Tells the rustfmt tool to not format the following element.
 #[rustfmt::skip]
