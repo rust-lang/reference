@@ -791,13 +791,13 @@ Some registers have multiple names. These are all treated by the compiler as ide
 | AArch64 | `x30` | `lr` |
 | AArch64 | `sp` | `wsp` |
 | AArch64 | `xzr` | `wzr` |
-| AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]` |
+| AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]`, `z[0-31]` |
 | Arm64EC | `x[0-30]` | `w[0-30]` |
 | Arm64EC | `x29` | `fp` |
 | Arm64EC | `x30` | `lr` |
 | Arm64EC | `sp` | `wsp` |
 | Arm64EC | `xzr` | `wzr` |
-| Arm64EC | `v[0-15]` | `b[0-15]`, `h[0-15]`, `s[0-15]`, `d[0-15]`, `q[0-15]` |
+| Arm64EC | `v[0-15]` | `b[0-15]`, `h[0-15]`, `s[0-15]`, `d[0-15]`, `q[0-15]`, `z[0-15]` |
 | ARM | `r[0-3]` | `a[1-4]` |
 | ARM | `r[4-9]` | `v[1-6]` |
 | ARM | `r9` | `rfp` |
