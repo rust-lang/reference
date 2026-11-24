@@ -223,7 +223,7 @@ r[expr.mut.intro]
 For a place expression to be [assigned][assign] to, mutably [borrowed][borrow], [implicitly mutably borrowed], or bound to a pattern containing `ref mut`, it must be _mutable_. We call these *mutable place expressions*. In contrast, other place expressions are called *immutable place expressions*.
 
 r[expr.mut.valid-places]
-The following expressions can be mutable place expression contexts:
+The following expressions can be mutable:
 
 * Mutable [variables] which are not currently borrowed.
 * [Mutable `static` items].
