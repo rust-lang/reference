@@ -743,6 +743,92 @@ error[E0277]: the trait bound `&str: AsExpression<Integer>` is not satisfied
 
 The first error message includes a somewhat confusing error message about the relationship of `&str` and `Expression`, as well as the unsatisfied trait bound in the blanket impl. After adding `#[diagnostic::do_not_recommend]`, it no longer considers the blanket impl for the recommendation. The message should be a little clearer, with an indication that a string cannot be converted to an `Integer`.
 
+r[attributes.diagnostic.on_unknown]
+### The `diagnostic::on_unknown` attribute
+
+The `#[diagnostic::on_unknown]` attribute should be
+placed on use and module declarations, though it is not an error to be located in other
+positions. This attribute is a hint to the compiler to supplement the error message when the
+annotated declaration is involved in a name resolution error.
+
+Format parameters with the given named parameter will be replaced with the following text:
+
+-  `{Unresolved}` — The `SimplePathSegment` of the import path that could not be resolved.
+-  `{This}` — The name of the annotated item. On `use` statements this is identical to `{Unresolved}`.
+
+The original error message will not be suppressed but is emitted as a note instead.
+
+#### On use declarations
+
+```rust,edition2018,compile_fail,E0432
+#[diagnostic::on_unknown(
+    message = "`{Unresolved}` doesn't exist",
+    label = "you did something silly here"
+)]
+use doesnt_exist;
+```
+This will result in the following error:
+```text
+error[E0432]: `doesnt_exist` doesn't exist
+ --> src/lib.rs:7:5
+  |
+7 | use doesnt_exist;
+  |     ^^^^^^^^^^^^ you did something silly here
+  |
+  = note: unresolved import `doesnt_exist`
+
+For more information about this error, try `rustc --explain E0432`.
+```
+
+#### On module declarations
+
+```rust,edition2018,compile_fail,E0432
+#[diagnostic::on_unknown(
+    message = "module `{This}` is empty, there is no `{Unresolved}` here",
+    label = "can't import something from an empty module"
+)]
+mod empty {}
+
+use empty::what;
+```
+This will result in the following error:
+
+```text
+error[E0432]: module `empty` is empty, there is no `what` here
+ --> src/lib.rs:9:5
+  |
+9 | use empty::what;
+  |     ^^^^^^^----
+  |            |
+  |            can't import something from an empty module
+  |
+  = note: unresolved import `empty::what`
+```
+
+### Edition differences
+
+In the 2015 edition, use paths are relative to the crate root. For example, `use empty` will be resolved relative to the crate root and resolution will not encounter the `mod empty {}` declaration.
+```rust,edition2015,compile_fail,E0432
+#![feature(diagnostic_on_unknown)]
+
+mod foo {
+   #[diagnostic::on_unknown(message = "oh oh")]
+   mod empty {}
+
+   use empty::what;
+}
+```
+
+```text
+error[E0432]: unresolved import `empty`
+ --> src/main.rs:9:8
+  |
+9 |    use empty::what;
+  |        ^^^^^
+  |
+```
+
+
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [`Drop`]: ../special-types-and-traits.md#drop
 [`unsafe` blocks]: ../expressions/block-expr.md#unsafe-blocks
