@@ -697,7 +697,7 @@ If the async closure is lending to its `Future`, then [`FnMut`] and [`Fn`] are *
 > }
 > ```
 >
-> The exception of the the second clause can be illustrated by using a dereference, which does allow `Fn` and `FnMut` to be implemented:
+> The exception of the second clause can be illustrated by using a dereference, which does allow `Fn` and `FnMut` to be implemented:
 >
 > ```rust
 > fn takes_callback<Fut: Future>(c: impl Fn() -> Fut) {}
