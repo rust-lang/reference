@@ -9,7 +9,9 @@ GenericParam -> OuterAttribute* ( LifetimeParam | TypeParam | ConstParam )
 
 LifetimeParam -> Lifetime ( `:` LifetimeBounds? )?
 
-TypeParam -> IDENTIFIER ( `:` Bounds? )? ( `=` Type )?
+TypeParam -> IDENTIFIER ( `:` Bounds? )? DefaultType?
+
+DefaultType -> `=` Type
 
 ConstParam ->
     `const` IDENTIFIER `:` Type
@@ -257,6 +259,110 @@ where
 }
 ```
 
+r[items.generic.defaulttypes]
+## Default types
+
+r[items.generic.defaulttypes.intro]
+Generic type parameters may have default types, using the [DefaultType] syntax. Only type parameters on nominal types and traits may have default types.
+
+Defaulted type parameters behave differently in expression and type contexts.
+
+r[items.generic.defaulttypes.typectx]
+In type contexts, all non-defaulted type arguments are required, but may be specified as the inferred type `_`. Omitted defaulted type arguments will use the provided default.
+
+```rust
+#[derive(Default)]
+struct S1<T=u8>(T);
+#[derive(Default)]
+struct S2<T, U=u8>(T, U);
+// T defaults to u8: QualifiedTypeInPath is type context
+let x = <S1>::default();
+// T defaults to u8: let Type is type context
+let y: S1 = S1::default();
+// U defaults to u8: T is inferred from z2
+let z1: S2<_> = S2::default();
+let z2: S2<u8, _> = z1;
+```
+
+r[items.generic.defaulttypes.exprctx]
+In expression contexts, all omitted type arguments are treated as the inferred type `_`. [RFC 213] states that the provided default type will be used as a fallback during inference, but this seems work inconsistently in practice.
+
+```rust
+#[derive(Debug, Default)]
+struct S<T=u8>(T);
+trait Tr { fn foo(&self); }
+impl Tr for S<u8> {
+    fn foo(&self) {
+        println!("in u8: {:?}", self);
+    }
+}
+impl Tr for S<i32> {
+    fn foo(&self) {
+        println!("in i32: {:?}", self);
+    }
+}
+// unexpectedly i32, due to interaction with integer fallback
+let x = S(1);
+x.foo();
+// u8, due to type annotation on let
+let y: S = S(2);
+y.foo();
+// unexpectedly i32, due to interaction with integer fallback
+S(3).foo();
+
+// errors due to inference failure
+// S::default().foo();
+```
+
+r[items.generic.defaulttypes.add]
+Default type parameters are useful on traits. For example, this is the `Add` trait in the standard library that allows customization of the `+` operator.
+
+```rust
+trait Add<Rhs=Self> {
+    type Output;
+
+    fn add(self, rhs: Rhs) -> Self::Output;
+}
+```
+
+Many users will not need the added flexibility of specifying a different `Rhs` type for `Add`, but it can be useful. For example, `S1` and `S2` wrap `i32` into distinct types. A custom `Add` implementation allows us to add `S1` to `S2` with some extra behavior.
+
+```rust
+# use std::ops::Add;
+#[derive(Debug)]
+struct S1(i32);
+#[derive(Debug)]
+struct S2(i32);
+impl Add for S1 {
+    type Output = S1;
+    fn add(self, rhs: S1) -> S1 {
+        println!("in S1+S1");
+        let (S1(x), S1(y)) = (self, rhs);
+        S1(x + y)
+    }
+}
+impl Add<S2> for S1 {
+    type Output = S1;
+    fn add(self, rhs: S2) -> S1 {
+        println!("in S1+S2");
+        let (S1(x), S2(y)) = (self, rhs);
+        S1(x + 10 * y)
+    }
+}
+println!("{:?}", S1(1) + S1(2));
+println!("{:?}", S1(1) + S2(2));
+```
+
+r[items.generics.defaulttypes.forbidden]
+Default types are not allowed on implementations or functions.
+
+```rust,compile_fail
+struct S;
+trait Tr<T> { fn f(self) -> T; }
+impl<T:Default=u8> Tr<T> for S { fn f(self) -> T { T::default() } }
+fn foo<T=u8>(x: T) {}
+```
+
 r[items.generics.attributes]
 ## Attributes
 
@@ -300,6 +406,7 @@ struct Foo<#[my_flexible_clone(unbounded)] H> {
 [path expression]: ../expressions/path-expr.md
 [raw pointers]: ../types/pointer.md#raw-pointers-const-and-mut
 [references]: ../types/pointer.md#shared-references-
+[RFC 213]: https://rust-lang.github.io/rfcs/0213-defaulted-type-params.html
 [structs]: structs.md
 [tuples]: ../types/tuple.md
 [trait object]: ../types/trait-object.md
