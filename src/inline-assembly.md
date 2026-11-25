@@ -787,14 +787,14 @@ Some registers have multiple names. These are all treated by the compiler as ide
 | x86 | `r[8-15]` | `r[8-15]b`, `r[8-15]w`, `r[8-15]d` |
 | x86 | `xmm[0-31]` | `ymm[0-31]`, `zmm[0-31]` |
 | AArch64 | `x[0-30]` | `w[0-30]` |
-| AArch64 | `x29` | `fp` |
-| AArch64 | `x30` | `lr` |
+| AArch64 | `x29` | `fp`, `wfp` |
+| AArch64 | `x30` | `lr`, `wlr` |
 | AArch64 | `sp` | `wsp` |
 | AArch64 | `xzr` | `wzr` |
 | AArch64 | `v[0-31]` | `b[0-31]`, `h[0-31]`, `s[0-31]`, `d[0-31]`, `q[0-31]`, `z[0-31]` |
 | Arm64EC | `x[0-30]` | `w[0-30]` |
-| Arm64EC | `x29` | `fp` |
-| Arm64EC | `x30` | `lr` |
+| Arm64EC | `x29` | `fp`, `wfp` |
+| Arm64EC | `x30` | `lr`, `wlr` |
 | Arm64EC | `sp` | `wsp` |
 | Arm64EC | `xzr` | `wzr` |
 | Arm64EC | `v[0-15]` | `b[0-15]`, `h[0-15]`, `s[0-15]`, `d[0-15]`, `q[0-15]`, `z[0-15]` |
